@@ -1,3 +1,4 @@
 
 $B392AD Should be formatted as a spritemap
 $84A56F Should be 8bit
+$888607 Needs a label: UNUSED_Instruction_HDMAObject_DecTimer_GotoY_IfNonZero_888607

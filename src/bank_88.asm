@@ -2,6 +2,140 @@
 org $888000
 
 
+;{
+; General comments
+;{
+; Summary of `[$1986] != 0` branch
+; |_[$1986]_____|_Main screen layers__|_Subscreen layers____|_Colour math_|_Colour math layers___________|_Y_|_Misc.________________________________
+; | 2/Eh/20h    | BG1/BG2/    sprites |         BG3         | Additive    | BG1/BG2    /sprites/backdrop | 0 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 4           | BG1    /    sprites |         BG3         | Additive    | BG1/BG2    /sprites/backdrop | 0 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 6           | BG1/BG2/    sprites |         BG3/sprites | Additive    | BG1/BG2/BG3        /backdrop | 0 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 8           | BG1/BG2/    sprites |         BG3/sprites | Additive    |     BG2            /backdrop | 0 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | Ah          | BG1/BG2/    sprites |         BG3         | Additive    |     BG2    /sprites/backdrop | 0 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | Ch          | BG1/BG2/    sprites |         BG3         | Subtractive |     BG2            /backdrop | 0 | Disable colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 10h/12h     | BG1/BG2/    sprites |         BG3         | Additive    | BG1/BG2    /sprites/backdrop | 0 | Enable  colour math subscreen layers,  enable BG3 / colour math window 1 inclusive mask, disable BG3 in window area subscreen
+; | 14h/22h     | BG1/BG2/    sprites |         BG3         | Subtractive |     BG2    /sprites/backdrop | 0 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 16h         | BG1    /    sprites |     BG2/BG3         | Subtractive | BG1        /sprites/backdrop | 4 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 18h/1Eh/30h |         BG3         | BG1/BG2    /sprites | Additive    |         BG3        /backdrop | 2 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 1Ah         | BG1    /BG3/sprites |     BG2             | Additive    | BG1    /BG3/sprites/backdrop | 4 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 1Ch         | BG1    /BG3/sprites |     BG2             | Halved      | BG1    /BG3/sprites          | 0 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 24h         | BG1/BG2/    sprites |         BG3         | Additive    | BG1/BG2    /sprites/backdrop | 0 | Restrict colour math to inside window, disable BG1/BG2 window 1/2 masking, enable BG3/colour math window 1 inclusive mask, disable BG1/BG2/sprites in window area main screen, disable BG3 in window area subscreen
+; | 26h         | BG1/BG2/    sprites |         BG3         | Halved      | BG1/BG2/BG3/sprites/backdrop | 0 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 28h         | BG1/BG2/    sprites |         BG3         | Subtractive |     BG2    /sprites/backdrop | 0 | Disable colour math subscreen layers,  disable window masking, enable all layers in window area, if [$1987] & 80h = 0: colour math subscreen backdrop colour = (5, 0, 0) (red)
+; | 2Ah         | BG1/BG2/    sprites |         BG3         | Subtractive |     BG2    /sprites/backdrop | 0 | Disable colour math subscreen layers,  disable window masking, enable all layers in window area, if [$1987] & 80h = 0: colour math subscreen backdrop colour = (6, 2, 0) (orange)
+; | 2Ch         | BG1/BG2/    sprites |         BG3         | Additive    | BG1/BG2    /sprites/backdrop | 0 | Disable colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 2Eh         | BG1/BG2/    sprites |         BG3         | Subtractive | BG1/BG2    /sprites/backdrop | 0 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 32h         | BG1/BG2/    sprites |         BG3         | Subtractive |     BG2    /sprites/backdrop | 0 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+; | 34h         | BG1/BG2/    sprites |         BG3         | Additive    | BG1/BG2    /sprites/backdrop | 6 | Enable  colour math subscreen layers,  disable window masking, enable all layers in window area
+
+; Attempted explanation of each value:
+;{
+;     Normal: BG1/BG2/sprites are drawn with BG3 added on top
+;     2/Eh/20h: Normal
+
+;     4: Normal, but BG2 is disabled
+;         Used by Phantoon intro
+
+;     6: Normal, but sprites aren't affected by BG3 and sprites are added to BG1/BG2 (instead of hidden)
+;         Unused
+
+;     8: Normal, but BG1/sprites aren't affected by BG3 and sprites are added to BG2 (instead of hidden)
+;         Used in some power off Wrecked Ship rooms
+
+;     Ah: Normal, but BG1 isn't affected by BG3
+;         Used with FX type = spores
+
+;     Ch: Normal, but BG3 is disabled and colour math is subtractive
+;         Used with FX type = fireflea
+
+;     10h/12h: Normal, but BG3 is disabled inside window 1
+;         Used by morph ball eye and varia/gravity suit pickup
+
+;     14h/22h: Normal, but BG1 isn't affected by BG3 and colour math is subtractive
+;         Sometimes use with FX type = water
+
+;     16h: BG1/sprites are drawn after the result of drawing BG2/BG3 is subtracted and Y = 4
+;         Sometimes use with FX type = water
+
+;     18h/1Eh/30h: BG3 is drawn with the result of drawing BG1/BG2/sprites added on top and Y = 2
+;         Used with FX type = lava / acid / fog / Tourian entrance statue, sometimes use with FX type = water
+;         This is equivalent to normal, right? Apparently bypasses sprite colour math limitation(?)
+
+;     1Ah: Normal, but BG2 and BG3 have reversed roles and Y = 4
+;         Used by Phantoon when semi-transparent
+
+;     1Ch: Normal, but BG2 and BG3 have reversed roles, colour addition is halved and backdrop is disabled
+;         Unused
+
+;     24h: BG1/BG2/sprites are drawn the backdrop is added on top inside window 1
+;         Used by Mother Brain
+
+;     26h: Normal, but colour addition is halved
+;         Unused
+
+;     28h: Normal, but BG3 is disabled, colour math is subtractive, and the backdrop subtracts red if there is no power bomb explosion
+;         Used in some default state Crateria rooms, some power off Wrecked Ship rooms, pre plasma beam rooms
+
+;     2Ah: Normal, but BG3 is disabled, colour math is subtractive, and the backdrop subtracts orange if there is no power bomb explosion
+;         Used in blue Brinstar rooms, Kraid's lair entrance, n00b tube side rooms, plasma beam room, some sand falls rooms
+
+;     2Ch: Normal, but BG3 is disabled
+;         Used by FX type = haze and torizos
+
+;     2Eh: Normal, but colour math is subtractive
+;         Unused
+
+;     32h: Normal, but BG1 isn't affected by BG3 and colour math is subtractive
+;         Unused
+
+;     34h: Normal, but Y = 6
+;         Used by Mother Brain phase 2
+;}
+
+; The Y values, power bomb configuration:
+;{
+;     Normal: BG1/BG2/sprites are drawn with BG3 drawn on top, BG3 is disabled inside window 2
+;     Y = 0/2: Normal
+;     Y = 4: BG1/sprites are drawn with the result of drawing BG2/BG3 added on top, BG2/BG3 is disabled inside window 2
+;     Y = 6: Normal, but BG2 isn't affected by BG3
+;}
+
+; $1986: Layer blending configuration
+;{
+;     Set to [FX A] at the start of the HDMA object handler. See "FX per room.asm"
+;     Set to [FX B] by:
+;         $B3B0 ; HDMA object $C3E1, FX layer 3 lava and acid
+;         $C48E ; HDMA object $D847 / $D856, FX layer 3 water / Tourian entrance statue
+;         $D9A1 ; HDMA object $D96C, FX layer 3 rain
+;         $DA47 ; HDMA object $DA2D, FX layer 3 spores
+;         $DB36 ; HDMA object $DB19, FX layer 3 fog
+
+;     Set to 4/1Ah by $E449, Phantoon
+;     Set to Ch by $B0BC, HDMA object $B0AC, FX layer 3 fireflea
+;     Set to 10h by $E917, $E9E6, $EA3C, $EACB, HDMA object $E8EC, morph ball eye
+;     Set to 12h by:
+;         $E026, HDMA object $D5A2, varia suit pickup
+;         $E05C, HDMA object $D67A, gravity suit pickup
+;     Set to 24h by $E767, $E7BC, HDMA object $E751, Mother Brain
+;     Set to 2Ch by:
+;         $DE18/96, HDMA object $DEEB, FX layer 3 haze
+;         $DD43, HDMA object $DD4A, torizos
+;}
+
+; The following is a list of what FX B values are used with each FX type (only FX B is used with FX layer 3)
+;{
+;     FX type = fireflea/both Ceres:     FX B = 2
+;     FX type = spores:                  FX B = Ah
+;     FX type = rain:                    FX B = Eh
+;     FX type = water:                   FX B = 14h/16h/18h
+;     FX type = lava/acid:               FX B = 1Eh
+;     FX type = fog:                     FX B = 30h
+;     FX type = Tourian entrance statue: FX B = 18h
+;}
+;}
+
+
+;;; $8000: Layer blending handler ;;;
 LayerBlending_Handler:
     PHP                                                                  ;888000;
     SEP #$30                                                             ;888001;
@@ -17,13 +151,11 @@ LayerBlending_Handler:
     JSR.W Handle_LayerBlending_PowerBomb                                 ;888015;
     BRA .return                                                          ;888018;
 
-
   .xrayShowBlocks:
     BIT.W $1987                                                          ;88801A;
     BVC .xrayHideBlocks                                                  ;88801D;
     JSR.W Handle_LayerBlending_Xray_CanShowBlocks                        ;88801F;
     BRA .return                                                          ;888022;
-
 
   .xrayHideBlocks:
     LDA.W $1987                                                          ;888024;
@@ -32,7 +164,6 @@ LayerBlending_Handler:
     JSR.W Handle_LayerBlending_Xray_CantShowBlocks                       ;88802B;
     BRA .return                                                          ;88802E;
 
-
   .xrayFirefleaRoom:
     LDA.W $1987                                                          ;888030;
     BIT.B #$10                                                           ;888033;
@@ -40,11 +171,9 @@ LayerBlending_Handler:
     JSR.W Handle_LayerBlending_Xray_FirefleaRoom                         ;888037;
     BRA .return                                                          ;88803A; >_<
 
-
   .return:
     PLP                                                                  ;88803C;
     RTS                                                                  ;88803D;
-
 
   .pointers:
     dw RTS_888074                                                        ;88803E;
@@ -75,10 +204,13 @@ LayerBlending_Handler:
     dw LayerBlending_32                                                  ;888070;
     dw LayerBlending_34                                                  ;888072;
 
+
+;;; $8074: RTS. Layer blending configuration 0/2 ;;;
 RTS_888074:
     RTS                                                                  ;888074;
 
 
+;;; $8075: Initialise layer blending ;;;
 Initialize_LayerBlending:
     STZ.B $60                                                            ;888075;
     STZ.B $61                                                            ;888077;
@@ -96,7 +228,9 @@ Initialize_LayerBlending:
     RTS                                                                  ;88808F;
 
 
+;;; $8090: Layer blending configuration 4 ;;;
 LayerBlending_4_Phantoon:
+; Used by Phantoon
     LDA.B #$11                                                           ;888090;
     STA.B $69                                                            ;888092;
     LDA.B #$04                                                           ;888094;
@@ -104,6 +238,7 @@ LayerBlending_4_Phantoon:
     RTS                                                                  ;888098;
 
 
+;;; $8099: Unused. Layer blending configuration 6 ;;;
 UNUSED_LayerBlending_6_888099:
     LDA.B #$14                                                           ;888099;
     STA.B $6B                                                            ;88809B;
@@ -112,7 +247,12 @@ UNUSED_LayerBlending_6_888099:
     RTS                                                                  ;8880A1;
 
 
+;;; $80A2: Layer blending configuration 8 ;;;
 LayerBlending_8_WreckedShipPowerOff:
+; Used in:
+;     Room CA52, state $CA64 ; Wrecked Ship attic, power off
+;     Room CAF6, state $CB08 ; Wrecked Ship mainstreet, power off
+;     Room CCCB, state $CCDD ; Wrecked Ship map station, power off
     LDA.B #$14                                                           ;8880A2;
     STA.B $6B                                                            ;8880A4;
     LDA.B #$22                                                           ;8880A6;
@@ -120,24 +260,33 @@ LayerBlending_8_WreckedShipPowerOff:
     RTS                                                                  ;8880AA;
 
 
+;;; $80AB: Layer blending configuration Ah ;;;
 LayerBlending_A_Spores:
+; Used with spores
     LDA.B #$32                                                           ;8880AB;
     STA.B $71                                                            ;8880AD;
     RTS                                                                  ;8880AF;
 
 
+;;; $80B0: Layer blending configuration Ch ;;;
 LayerBlending_C_Fireflea:
+; Used with FX type = fireflea
     STZ.B $6E                                                            ;8880B0;
     LDA.B #$A2                                                           ;8880B2;
     STA.B $71                                                            ;8880B4;
     RTS                                                                  ;8880B6;
 
 
+;;; $80B7: RTS. Layer blending configuration Eh ;;;
 RTS_8880B7:
+; Used with FX type = rain
     RTS                                                                  ;8880B7;
 
 
+;;; $80B8: Layer blending configuration 10h/12h ;;;
 LayerBlending_10_12_MorphBallEye_SuitPickup:
+; 10h is used by morph ball eye
+; 12h is used by varia/gravity suit pickup
     LDA.B #$02                                                           ;8880B8;
     STA.B $61                                                            ;8880BA;
     LDA.B #$20                                                           ;8880BC;
@@ -147,13 +296,17 @@ LayerBlending_10_12_MorphBallEye_SuitPickup:
     RTS                                                                  ;8880C4;
 
 
+;;; $80C5: Layer blending configuration 14h/22h ;;;
 LayerBlending_14_22_Water:
+; 14h is sometimes used with FX type = water
     LDA.B #$B3                                                           ;8880C5;
     STA.B $71                                                            ;8880C7;
     RTS                                                                  ;8880C9;
 
 
+;;; $80CA: Layer blending configuration 16h ;;;
 LayerBlending_16_Water:
+; Sometimes used with FX type = water
     LDY.B #$04                                                           ;8880CA;
     LDA.B #$11                                                           ;8880CC;
     STA.B $69                                                            ;8880CE;
@@ -164,7 +317,9 @@ LayerBlending_16_Water:
     RTS                                                                  ;8880D8;
 
 
+;;; $80D9: Layer blending configuration 1Ah ;;;
 LayerBlending_1A_Phantoon:
+; Used by Phantoon
     LDY.B #$04                                                           ;8880D9;
     LDA.B #$15                                                           ;8880DB;
     STA.B $69                                                            ;8880DD;
@@ -175,6 +330,7 @@ LayerBlending_1A_Phantoon:
     RTS                                                                  ;8880E7;
 
 
+;;; $80E8: Layer blending configuration 1Ch ;;;
 LayerBlending_1C:
     LDA.B #$15                                                           ;8880E8;
     STA.B $69                                                            ;8880EA;
@@ -185,7 +341,12 @@ LayerBlending_1C:
     RTS                                                                  ;8880F4;
 
 
+;;; $80F5: Layer blending configuration 18h/1Eh/30h ;;;
 LayerBlending_18_1E_30_Water_LavaAcid_Fog:
+; 18h is sometimes used with FX type = water
+; 18h might be used with FX type = tourian entrance statue?
+; 1Eh is used with FX type = lava/acid
+; 30h is used with FX type = fog
     LDY.B #$02                                                           ;8880F5;
     LDA.B $84                                                            ;8880F7;
     AND.B #$30                                                           ;8880F9;
@@ -202,17 +363,28 @@ LayerBlending_18_1E_30_Water_LavaAcid_Fog:
     RTS                                                                  ;88810B;
 
 
+;;; $810C: RTS. Layer blending configuration 20h ;;;
 RTS_88810C:
     RTS                                                                  ;88810C;
 
 
+;;; $810D: Layer blending configuration 26h ;;;
 LayerBlending_26:
     LDA.B #$77                                                           ;88810D;
     STA.B $71                                                            ;88810F;
     RTS                                                                  ;888111;
 
 
+;;; $8112: Layer blending configuration 28h ;;;
 LayerBlending_28:
+; Used in:
+;     Room 92FD, state $9314 ; Crateria mainstreet, default state
+;     Room 9A44, state $9A56 ; Crateria bomb block hall, default state
+;     Room 9A90, state $9AA2 ; Crateria chozo missile, default state
+;     Room C98E, state $C9A0 ; Wrecked Ship spike floor hall, power off
+;     Room CC6F, state $CC81 ; Pre Phantoon hall, power off
+;     Room D27E ; Plasma beam puyo room
+;     Room D387 ; Pre plasma beam shaft
     STZ.B $6E                                                            ;888112;
     LDA.B #$B3                                                           ;888114;
     STA.B $71                                                            ;888116;
@@ -229,7 +401,21 @@ LayerBlending_28:
     RTS                                                                  ;888129;
 
 
+;;; $812A: Layer blending configuration 2Ah ;;;
 LayerBlending_2A:
+; Used in:
+;     Room 97B5, state $97C6 ; Crateria -> Blue Brinstar elevator, default state
+;     Room 9E9F, state $9EB1 ; Morph ball room, default state
+;     Room 9F11, state $9F23 ; Old Kraid entrance, default state
+;     Room 9F64, state $9F76 ; Blue Brinstar ceiling e-tank hall, default state
+;     Room A6A1 ; Kraid's lair entrance
+;     Room CF54 ; n00b tube west
+;     Room CF80 ; n00b tube east
+;     Room D2AA ; Plasma beam room
+;     Room D54D ; Pre Maridia reserve tank room sand fall room
+;     Room D57A ; Pre PB #66 room sand fall room
+;     Room D86E ; Sandy Maridia sand falls room
+;     Room D898 ; Sand falls
     STZ.B $6E                                                            ;88812A;
     LDA.B #$B3                                                           ;88812C;
     STA.B $71                                                            ;88812E;
@@ -246,17 +432,20 @@ LayerBlending_2A:
     RTS                                                                  ;888141;
 
 
+;;; $8142: Layer blending configuration 2Ch ;;;
 LayerBlending_2C:
     STZ.B $6E                                                            ;888142;
     RTS                                                                  ;888144;
 
 
+;;; $8145: Layer blending configuration 2Eh ;;;
 LayerBlending_2E:
     LDA.B #$B3                                                           ;888145;
     STA.B $71                                                            ;888147;
     RTS                                                                  ;888149;
 
 
+;;; $814A: Layer blending configuration 32h ;;;
 LayerBlending_32:
     LDA.B #$44                                                           ;88814A;
     STA.B $6B                                                            ;88814C;
@@ -265,12 +454,15 @@ LayerBlending_32:
     RTS                                                                  ;888152;
 
 
+;;; $8153: Layer blending configuration 34h ;;;
 LayerBlending_34:
     LDY.B #$06                                                           ;888153;
     RTS                                                                  ;888155;
 
 
+;;; $8156: Layer blending configuration 24h ;;;
 LayerBlending_24_MotherBrain:
+; Used by Mother Brain
     LDA.B #$00                                                           ;888156;
     STA.B $60                                                            ;888158;
     LDA.B #$02                                                           ;88815A;
@@ -292,6 +484,7 @@ LayerBlending_24_MotherBrain:
     RTS                                                                  ;88817A;
 
 
+;;; $817B: Handle layer blending x-ray - can show blocks ;;;
 Handle_LayerBlending_Xray_CanShowBlocks:
     LDA.B #$C8                                                           ;88817B;
     STA.B $60                                                            ;88817D;
@@ -316,6 +509,7 @@ Handle_LayerBlending_Xray_CanShowBlocks:
     RTS                                                                  ;8881A3;
 
 
+;;; $81A4: Handle layer blending x-ray - can't show blocks ;;;
 Handle_LayerBlending_Xray_CantShowBlocks:
     STZ.B $60                                                            ;8881A4;
     LDA.B #$08                                                           ;8881A6;
@@ -348,6 +542,7 @@ Handle_LayerBlending_Xray_CantShowBlocks:
     RTS                                                                  ;8881DA;
 
 
+;;; $81DB: Handle layer blending x-ray - fireflea room ;;;
 Handle_LayerBlending_Xray_FirefleaRoom:
     STZ.B $60                                                            ;8881DB;
     LDA.B #$08                                                           ;8881DD;
@@ -369,7 +564,10 @@ Handle_LayerBlending_Xray_FirefleaRoom:
     RTS                                                                  ;8881FD;
 
 
+;;; $81FE: Handle layer blending power bomb ;;;
 Handle_LayerBlending_PowerBomb:
+;; Parameters:
+;;     Y: Layer blending power bomb configuration
     REP #$30                                                             ;8881FE;
     LDA.W $079B                                                          ;888200;
     CMP.W #RoomHeader_Statues                                            ;888203;
@@ -381,13 +579,14 @@ Handle_LayerBlending_PowerBomb:
     JSR.W (.pointers,X)                                                  ;88820D;
     RTS                                                                  ;888210;
 
-
   .pointers:
     dw Handle_LayerBlending_PowerBomb_0_2                                ;888211;
     dw Handle_LayerBlending_PowerBomb_0_2                                ;888213;
     dw Handle_LayerBlending_PowerBomb_4                                  ;888215;
     dw Handle_LayerBlending_PowerBomb_6                                  ;888217;
 
+
+;;; $8219: Handle layer blending power bomb configuration 0/2 ;;;
 Handle_LayerBlending_PowerBomb_0_2:
     LDA.B #$00                                                           ;888219;
     STA.B $60                                                            ;88821B;
@@ -410,6 +609,7 @@ Handle_LayerBlending_PowerBomb_0_2:
     RTS                                                                  ;88823D;
 
 
+;;; $823E: Handle layer blending power bomb configuration 4 ;;;
 Handle_LayerBlending_PowerBomb_4:
     LDA.B #$80                                                           ;88823E;
     STA.B $60                                                            ;888240;
@@ -432,7 +632,9 @@ Handle_LayerBlending_PowerBomb_4:
     RTS                                                                  ;888262;
 
 
+;;; $8263: Handle layer blending power bomb configuration 6 ;;;
 Handle_LayerBlending_PowerBomb_6:
+; Compared with config 0/2, this one disables colour math on BG2/BG3
     LDA.B #$00                                                           ;888263;
     STA.B $60                                                            ;888265;
     LDA.B #$08                                                           ;888267;
@@ -454,6 +656,7 @@ Handle_LayerBlending_PowerBomb_6:
     RTS                                                                  ;888287;
 
 
+;;; $8288: Enable HDMA objects ;;;
 Enable_HDMAObjects:
     PHP                                                                  ;888288;
     REP #$20                                                             ;888289;
@@ -463,7 +666,9 @@ Enable_HDMAObjects:
     RTL                                                                  ;888292;
 
 
+;;; $8293: Disable HDMA objects ;;;
 Disable_HDMAObjects:
+; Power bombs still work
     PHP                                                                  ;888293;
     REP #$20                                                             ;888294;
     LDA.W #$8000                                                         ;888296;
@@ -472,6 +677,7 @@ Disable_HDMAObjects:
     RTL                                                                  ;88829D;
 
 
+;;; $829E: Wait until the end of a v-blank and clear (H)DMA enable flags ;;;
 Wait_End_VBlank_Clear_HDMA:
     PHP                                                                  ;88829E;
     SEP #$20                                                             ;88829F;
@@ -480,6 +686,8 @@ Wait_End_VBlank_Clear_HDMA:
     STZ.W $420C                                                          ;8882A8;
     PLP                                                                  ;8882AB; fallthrough to Delete_HDMA_Objects
 
+
+;;; $82AC: Delete HDMA objects ;;;
 Delete_HDMAObjects:
     PHP                                                                  ;8882AC;
     SEP #$20                                                             ;8882AD;
@@ -498,7 +706,9 @@ Delete_HDMAObjects:
     RTL                                                                  ;8882C0;
 
 
+;;; $82C1: Initialise special effects for new room ;;;
 Initialise_Special_Effects_for_New_Room:
+; This initial bit regarding earthquake sound effects is strictly for rising acid/lava rooms
     PHP                                                                  ;8882C1;
     REP #$20                                                             ;8882C2;
     STZ.W $0607                                                          ;8882C4;
@@ -517,7 +727,6 @@ Initialise_Special_Effects_for_New_Room:
     CMP.W #RoomHeader_TourianEscape4                                     ;8882E6;
     BEQ .noEarthquakeSFX                                                 ;8882E9;
     BRA .earthquakeSFX                                                   ;8882EB;
-
 
   .noEarthquakeSFX:
     LDA.W #$FFFF                                                         ;8882ED;
@@ -584,10 +793,10 @@ Initialise_Special_Effects_for_New_Room:
     STZ.W $0917                                                          ;88838D;
     STZ.W $0919                                                          ;888390;
     STZ.B $A9                                                            ;888393;
-    LDA.W #RTL_8883E1>>8&$FF00                                           ;888395;
+    LDA.W #.return>>8&$FF00                                              ;888395;
     STA.W $0602                                                          ;888398;
     STA.W $0605                                                          ;88839B;
-    LDA.W #RTL_8883E1                                                    ;88839E;
+    LDA.W #.return                                                       ;88839E;
     STA.W $0601                                                          ;8883A1;
     STA.W $0604                                                          ;8883A4;
     SEP #$20                                                             ;8883A7;
@@ -617,14 +826,22 @@ Initialise_Special_Effects_for_New_Room:
     LDA.B #$5A                                                           ;8883DA;
     STA.B $5A                                                            ;8883DC;
     STA.B $5B                                                            ;8883DE;
-    PLP                                                                  ;8883E0; fallthrough to RTL_8883E1
+    PLP                                                                  ;8883E0;
 
-RTL_8883E1:
+.return:
     RTL                                                                  ;8883E1;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $83E2: Unused. Spawn HDMA object on HDMA channel 2 ;;;
 UNUSED_SpawnHDMAObject_Slot0_Channel4_Index20_8883E2:
+;; Parameters:
+;;     [[S] + 1] + 1: HDMA control
+;;     [[S] + 1] + 2: HDMA target
+;;     [[S] + 1] + 3: HDMA object instruction list pointer
+;; Returns:
+;;     Carry: Clear
+;;     A: HDMA object index
     PHP                                                                  ;8883E2;
     PHB                                                                  ;8883E3;
     REP #$20                                                             ;8883E4;
@@ -636,7 +853,15 @@ UNUSED_SpawnHDMAObject_Slot0_Channel4_Index20_8883E2:
     JMP.W SpawnHDMAObject_SlotX_Hardcoded                                ;8883F3;
 
 
+;;; $83F6: Unused. Spawn HDMA object on HDMA channel 6 ;;;
 UNUSED_SpawnHDMAObject_Slot8_Channel40_Index60_8883F6:
+;; Parameters:
+;;     [[S] + 1] + 1: HDMA control
+;;     [[S] + 1] + 2: HDMA target
+;;     [[S] + 1] + 3: HDMA object instruction list pointer
+;; Returns:
+;;     Carry: Clear
+;;     A: HDMA object index
     PHP                                                                  ;8883F6;
     PHB                                                                  ;8883F7;
     REP #$20                                                             ;8883F8;
@@ -649,7 +874,18 @@ UNUSED_SpawnHDMAObject_Slot8_Channel40_Index60_8883F6:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $840A: Spawn HDMA object on HDMA channel 7 ;;;
 SpawnHDMAObject_SlotA_Channel80_Index70:
+;; Parameters:
+;;     [[S] + 1] + 1: HDMA control
+;;     [[S] + 1] + 2: HDMA target
+;;     [[S] + 1] + 3: HDMA object instruction list pointer
+;; Returns:
+;;     Carry: Clear
+;;     A: HDMA object index
+
+; Called by:
+;     $D865: Spawn BG3 scroll HDMA object
     PHP                                                                  ;88840A;
     PHB                                                                  ;88840B;
     REP #$20                                                             ;88840C;
@@ -657,9 +893,23 @@ SpawnHDMAObject_SlotA_Channel80_Index70:
     STA.B $12                                                            ;888411;
     LDA.W #$0070                                                         ;888413;
     STA.B $14                                                            ;888416;
-    LDX.W #$000A                                                         ;888418;
+    LDX.W #$000A                                                         ;888418; fallthrough to SpawnHDMAObject_SlotX_Hardcoded
 
+
+;;; $841B: Spawn HDMA object to slot [X] (hardcoded parameters) ;;;
 SpawnHDMAObject_SlotX_Hardcoded:
+;; Parameters:
+;;     X: HDMA object index
+;;     [[S] + 1] + 3: HDMA control
+;;     [[S] + 1] + 4: HDMA target
+;;     [[S] + 1] + 5: HDMA object instruction list pointer
+;;     $13: HDMA object channel bitflag
+;;     $14: HDMA object channel index
+;; Returns:
+;;     Carry: Clear
+;;     A: HDMA object index
+
+; Must have DB and P pushed
     SEP #$20                                                             ;88841B;
     LDA.B $05,S                                                          ;88841D;
     PHA                                                                  ;88841F;
@@ -677,7 +927,36 @@ SpawnHDMAObject_SlotX_Hardcoded:
     JMP.W Spawn_HDMAObject_to_Slot_X                                     ;888432;
 
 
+;;; $8435: Spawn HDMA object ;;;
 Spawn_HDMAObject:
+;; Parameters:
+;;     [[S] + 1] + 1: HDMA control
+;;         v = ri000ttt
+;;         r: Read data
+;;         i: Indirect HDMA table
+;;         t: Transfer type
+;;             0: 8-bit
+;;             1: 16-bit / two 8-bit units
+;;             2: 16-bit for write-twice registers / two 8-bit units to same register
+;;             3: Two 16-bit units for two write-twice registers
+;;             4: Two 16-bit units / four 8-bit units
+;;     [[S] + 1] + 2: HDMA target. Common targets:
+;;         $0D: BG1 X scroll (16-bit, write-twice)
+;;         $0E: BG1 Y scroll (16-bit, write-twice)
+;;         $0F: BG2 X scroll (16-bit, write-twice)
+;;         $10: BG2 Y scroll (16-bit, write-twice)
+;;         $11: BG3 X scroll (16-bit, write-twice)
+;;         $12: BG3 Y scroll (16-bit, write-twice)
+;;         $26: Window 1 left position (8-bit)
+;;         $27: Window 1 right position (8-bit)
+;;         $28: Window 2 left position (8-bit)
+;;         $29: Window 2 right position (8-bit)
+;;         $32: Colour math subscreen backdrop colour (8-bit, sometimes used with write-twice)
+;;     [[S] + 1] + 3: HDMA object instruction list pointer
+
+;; Returns:
+;;     Carry: Clear if HDMA object was spawned. Set if HDMA array full
+;;     A: HDMA object index (80h if HDMA array full)
     PHP                                                                  ;888435;
     PHB                                                                  ;888436;
     SEP #$20                                                             ;888437;
@@ -721,7 +1000,22 @@ Spawn_HDMAObject:
     RTL                                                                  ;888476;
 
 
+;;; $8477: Spawn HDMA object to slot [X] (variable parameters) ;;;
 Spawn_HDMAObject_to_Slot_X:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Return address + 1
+;;     [Y] + 0: HDMA control
+;;     [Y] + 1: HDMA target
+;;     [Y] + 2: HDMA object instruction list pointer
+;;     $13: HDMA object channel bitflag
+;;     $14: HDMA object channel index
+;;     $19: HDMA object bank
+;; Returns:
+;;     Carry: Clear
+;;     A: HDMA object index
+
+; Must have DB and P pushed
     LDA.W #.return                                                       ;888477;
     STA.W $18F0,X                                                        ;88847A;
     LDA.W #$0088                                                         ;88847D;
@@ -754,7 +1048,11 @@ Spawn_HDMAObject_to_Slot_X:
     RTL                                                                  ;8884B8;
 
 
+;;; $84B9: HDMA object handler (also handle music queue) ;;;
 HDMAObjectHandler_HandleMusicQueue:
+; Also spawns power bombs that were set as pending due to Samus dying(?) or auto reserve tanks activating
+; Also calls the layer blending handler
+; Seriously, why is the music queue handler called here... >_<;
     PHP                                                                  ;8884B9;
     PHB                                                                  ;8884BA;
     REP #$30                                                             ;8884BB;
@@ -803,6 +1101,7 @@ HDMAObjectHandler_HandleMusicQueue:
     PLP                                                                  ;888515;
     RTL                                                                  ;888516;
 
+; Nothing points here, devs might have misplaced their destination label for the HDMA objects disabled branch ($84EE)
     STZ.B $85                                                            ;888517; dead code
 
   .return:
@@ -811,7 +1110,13 @@ HDMAObjectHandler_HandleMusicQueue:
     RTL                                                                  ;88851B;
 
 
+;;; $851C: HDMA object instruction handler ;;;
 HDMAObject_Instruction_Handler:
+;; Parameter:
+;;     X: HDMA object index
+
+; Some instructions (e.g. sleep) pop the return address pushed to the stack by $854F to return out of *this* routine
+; (marked "terminate processing HDMA object")
     REP #$20                                                             ;88851C;
     LDA.W $18F0,X                                                        ;88851E;
     STA.B $12                                                            ;888521;
@@ -820,7 +1125,6 @@ HDMAObject_Instruction_Handler:
     PHK                                                                  ;888528;
     PEA.W .manualReturn-1                                                ;888529;
     JML.W [$0012]                                                        ;88852C;
-
 
   .manualReturn:
     SEP #$10                                                             ;88852F;
@@ -844,7 +1148,6 @@ HDMAObject_Instruction_Handler:
     PEA.W .loop-1                                                        ;88854F;
     JMP.W ($0012)                                                        ;888552;
 
-
   .timer:
     STA.W $18E4,X                                                        ;888555;
     TYA                                                                  ;888558;
@@ -859,14 +1162,23 @@ HDMAObject_Instruction_Handler:
     RTS                                                                  ;888568;
 
 
+;;; $8569: Instruction - delete ;;;
 Instruction_HDMAObject_Delete:
+;; Parameter:
+;;     X: HDMA object index
     STZ.W $18B4,X                                                        ;888569;
     PLA                                                                  ;88856C;
     SEP #$30                                                             ;88856D;
     RTS                                                                  ;88856F;
 
 
+;;; $8570: Instruction - pre-instruction = [[Y]] ;;;
 Instruction_HDMAObject_PreInstructionInY:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;888570;
     STA.W $18F0,X                                                        ;888573;
     SEP #$20                                                             ;888576;
@@ -880,7 +1192,10 @@ Instruction_HDMAObject_PreInstructionInY:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $8584: Unused. Instruction - clear pre-instruction ;;;
 UNUSED_Instruction_HDMAObject_ClearPreInstruction_888584:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W #.return                                                       ;888584;
     STA.W $18F0,X                                                        ;888587;
 
@@ -888,14 +1203,18 @@ UNUSED_Instruction_HDMAObject_ClearPreInstruction_888584:
     RTS                                                                  ;88858A;
 
 
+;;; $858B: Unused. Instruction - call function [[Y]] ;;;
 UNUSED_Instruction_HDMAObject_CallFunctionY_88858B:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;88858B;
     STA.B $12                                                            ;88858E;
     PHX                                                                  ;888590;
     PHY                                                                  ;888591;
     PEA.W .return-1                                                      ;888592;
     JMP.W ($0012)                                                        ;888595;
-
 
   .return:
     PLY                                                                  ;888598;
@@ -905,7 +1224,12 @@ UNUSED_Instruction_HDMAObject_CallFunctionY_88858B:
     RTS                                                                  ;88859C;
 
 
+;;; $859D: Unused. Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 UNUSED_Instruction_HDMAObject_CallFunctionYWithA_88859D:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;88859D;
     STA.B $12                                                            ;8885A0;
     LDA.W $0002,Y                                                        ;8885A2;
@@ -913,7 +1237,6 @@ UNUSED_Instruction_HDMAObject_CallFunctionYWithA_88859D:
     PHY                                                                  ;8885A6;
     PEA.W .return-1                                                      ;8885A7;
     JMP.W ($0012)                                                        ;8885AA;
-
 
   .return:
     PLY                                                                  ;8885AD;
@@ -926,7 +1249,13 @@ UNUSED_Instruction_HDMAObject_CallFunctionYWithA_88859D:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $85B4: Instruction - call external function [[Y]] ;;;
 Instruction_HDMAObject_CallExternalFunctionInY:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;8885B4;
     STA.B $12                                                            ;8885B7;
     LDA.W $0001,Y                                                        ;8885B9;
@@ -941,13 +1270,17 @@ Instruction_HDMAObject_CallExternalFunctionInY:
     INY                                                                  ;8885C8;
     RTS                                                                  ;8885C9;
 
-
   .externalFunction:
     JML.W [$0012]                                                        ;8885CA;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $85CD: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Instruction_HDMAObject_CallExternalFuncYWithA_8885CD:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;8885CD;
     STA.B $12                                                            ;8885D0;
     LDA.W $0001,Y                                                        ;8885D2;
@@ -964,20 +1297,29 @@ UNUSED_Instruction_HDMAObject_CallExternalFuncYWithA_8885CD:
     TAY                                                                  ;8885E7;
     RTS                                                                  ;8885E8;
 
-
   .externalFunction:
     JML.W [$0012]                                                        ;8885E9;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $85EC: Instruction - go to [[Y]] ;;;
 Instruction_HDMAObject_GotoY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;8885EC;
     TAY                                                                  ;8885EF;
     RTS                                                                  ;8885F0;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $85F1: Unused. Instruction - go to [Y] + ±[[Y]] ;;;
 UNUSED_Instruction_HDMAObject_GotoY_Y_8885F1:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     STY.B $12                                                            ;8885F1;
     DEY                                                                  ;8885F3;
     LDA.W $0000,Y                                                        ;8885F4;
@@ -985,7 +1327,6 @@ UNUSED_Instruction_HDMAObject_GotoY_Y_8885F1:
     BMI .highByte                                                        ;8885F8;
     AND.W #$00FF                                                         ;8885FA;
     BRA +                                                                ;8885FD;
-
 
   .highByte:
     ORA.W #$FF00                                                         ;8885FF;
@@ -995,6 +1336,14 @@ UNUSED_Instruction_HDMAObject_GotoY_Y_8885F1:
     TAY                                                                  ;888605;
     RTS                                                                  ;888606;
 
+
+;;; $8607: Unused. Instruction - decrement timer and go to [[Y]] if non-zero ;;;
+UNUSED_Instruction_HDMAObject_DecTimer_GotoY_IfNonZero_888607:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     DEC.W $1908,X                                                        ;888607;
     BNE Instruction_HDMAObject_GotoY                                     ;88860A;
     INY                                                                  ;88860C;
@@ -1002,14 +1351,26 @@ UNUSED_Instruction_HDMAObject_GotoY_Y_8885F1:
     RTS                                                                  ;88860E;
 
 
+;;; $860F: Unused. Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 UNUSED_Instruction_HDMAObject_DecTimer_GotoYIfNonZero_88860F:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     DEC.W $1908,X                                                        ;88860F;
     BNE UNUSED_Instruction_HDMAObject_GotoY_Y_8885F1                     ;888612;
     INY                                                                  ;888614;
     RTS                                                                  ;888615;
 
 
+;;; $8616: Unused. Instruction - timer = [[Y]] ;;;
 UNUSED_Instruction_HDMAObject_TimerInY_888616:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     SEP #$20                                                             ;888616;
     LDA.W $0000,Y                                                        ;888618;
     STA.W $1908,X                                                        ;88861B;
@@ -1018,7 +1379,13 @@ UNUSED_Instruction_HDMAObject_TimerInY_888616:
     RTS                                                                  ;888621;
 
 
+;;; $8622: Unused. Instruction - HDMA control = [[Y]] ;;;
 UNUSED_Instruction_HDMAObject_HDMAControlInY_888622:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     PHX                                                                  ;888622;
     LDA.W $18C0,X                                                        ;888623;
     AND.W #$00FF                                                         ;888626;
@@ -1032,7 +1399,13 @@ UNUSED_Instruction_HDMAObject_HDMAControlInY_888622:
     RTS                                                                  ;888636;
 
 
+;;; $8637: Unused. Instruction - HDMA target = [[Y]] ;;;
 UNUSED_Instruction_HDMAObject_HDMATargetInY:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     PHX                                                                  ;888637;
     LDA.W $18C0,X                                                        ;888638;
     AND.W #$00FF                                                         ;88863B;
@@ -1046,7 +1419,13 @@ UNUSED_Instruction_HDMAObject_HDMATargetInY:
     RTS                                                                  ;88864B;
 
 
+;;; $864C: Unused. Instruction - HDMA table pointer = [[Y]] ;;;
 UNUSED_Instruction_HDMAObject_HDMATablePointerInY_88864C:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;88864C;
     STA.W $18D8,X                                                        ;88864F;
     INY                                                                  ;888652;
@@ -1055,7 +1434,13 @@ UNUSED_Instruction_HDMAObject_HDMATablePointerInY_88864C:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $8655: Instruction - HDMA table bank = [[Y]] ;;;
 Instruction_HDMAObject_HDMATableBank:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     PHX                                                                  ;888655;
     LDA.W $18C0,X                                                        ;888656;
     AND.W #$00FF                                                         ;888659;
@@ -1069,7 +1454,13 @@ Instruction_HDMAObject_HDMATableBank:
     RTS                                                                  ;888669;
 
 
+;;; $866A: Instruction - indirect HDMA data bank = [[Y]] ;;;
 Instruction_HDMAObject_IndirectHDMATableBank:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     PHX                                                                  ;88866A;
     LDA.W $18C0,X                                                        ;88866B;
     AND.W #$00FF                                                         ;88866E;
@@ -1084,14 +1475,24 @@ Instruction_HDMAObject_IndirectHDMATableBank:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $867F: Unused. Instruction - skip next instruction ;;;
 UNUSED_Instruction_HDMAObject_SkipNextInstruction_88867F:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to after this instruction
+;; Returns:
+;;     Y: Pointer to next instruction
     INY                                                                  ;88867F;
     INY                                                                  ;888680;
     RTS                                                                  ;888681;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $8682: Instruction - sleep ;;;
 Instruction_HDMAObject_Sleep:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to after this instruction
     DEY                                                                  ;888682;
     DEY                                                                  ;888683;
     TYA                                                                  ;888684;
@@ -1101,7 +1502,10 @@ Instruction_HDMAObject_Sleep:
     RTS                                                                  ;88868B;
 
 
+;;; $868C: Raise/lower FX ;;;
 RaiseOrLower_FX:
+;; Returns:
+;;     Carry: set if reached target position, clear otherwise
     LDA.W $197A                                                          ;88868C;
     BMI .returnCarrySet                                                  ;88868F;
     STZ.B $16                                                            ;888691;
@@ -1129,7 +1533,6 @@ RaiseOrLower_FX:
   .return:
     RTS                                                                  ;8886C2;
 
-
   .lower:
     STA.B $17                                                            ;8886C3;
     LDA.W $1976                                                          ;8886C5;
@@ -1150,17 +1553,16 @@ RaiseOrLower_FX:
     SEC                                                                  ;8886E9;
     RTS                                                                  ;8886EA;
 
-
   .returnCarryClear:
     CLC                                                                  ;8886EB;
     RTS                                                                  ;8886EC;
-
 
   .returnCarrySet:
     SEC                                                                  ;8886ED;
     RTS                                                                  ;8886EE;
 
 
+;;; $86EF: Pre-instruction - x-ray - main ;;;
 PreInstruction_Xray_Main:
     PHP                                                                  ;8886EF;
     REP #$30                                                             ;8886F0;
@@ -1188,7 +1590,6 @@ PreInstruction_Xray_Main:
     PLP                                                                  ;888724;
     RTL                                                                  ;888725;
 
-
   .pointers:
     dw HandleXrayScope_State0_NoBeam                                     ;888726;
     dw HandleXrayScope_State1_BeamIsWidening                             ;888728;
@@ -1197,6 +1598,8 @@ PreInstruction_Xray_Main:
     dw HandleXrayScope_State4_DeactivateBeam_RestoreBG2_SecondHalf       ;88872E;
     dw HandleXrayScope_State5_DeactivateBeam_Finish                      ;888730;
 
+
+;;; $8732: Handle x-ray scope - x-ray state = 0 (no beam) ;;;
 HandleXrayScope_State0_NoBeam:
     PHP                                                                  ;888732;
     REP #$30                                                             ;888733;
@@ -1206,7 +1609,6 @@ HandleXrayScope_State0_NoBeam:
     LDA.W #$0003                                                         ;88873C;
     STA.W $0A7A                                                          ;88873F;
     BRA .return                                                          ;888742;
-
 
   .calculateHDMATable:
     JSR.W Calculate_Xray_HDMADataTable                                   ;888744;
@@ -1220,10 +1622,12 @@ HandleXrayScope_State0_NoBeam:
     RTS                                                                  ;888752;
 
 
+;;; $8753: RTS ;;;
 RTS_888753:
     RTS                                                                  ;888753;
 
 
+;;; $8754: Handle x-ray scope - x-ray state = 1 (beam is widening) ;;;
 HandleXrayScope_State1_BeamIsWidening:
     PHP                                                                  ;888754;
     REP #$30                                                             ;888755;
@@ -1233,7 +1637,6 @@ HandleXrayScope_State1_BeamIsWidening:
     LDA.W #$0003                                                         ;88875E;
     STA.W $0A7A                                                          ;888761;
     BRA .return                                                          ;888764;
-
 
 +   JSR.W RTS_888753                                                     ;888766;
     REP #$20                                                             ;888769;
@@ -1268,6 +1671,7 @@ HandleXrayScope_State1_BeamIsWidening:
     RTS                                                                  ;8887AA;
 
 
+;;; $87AB: Handle x-ray scope - x-ray state = 2 (full beam) ;;;
 HandleXrayScope_State2_FullBeam:
     PHP                                                                  ;8887AB;
     REP #$30                                                             ;8887AC;
@@ -1280,13 +1684,13 @@ HandleXrayScope_State2_FullBeam:
     PLP                                                                  ;8887BE;
     RTS                                                                  ;8887BF;
 
-
   .state3:
     INC.W $0A7A                                                          ;8887C0;
     PLP                                                                  ;8887C3;
     RTS                                                                  ;8887C4;
 
 
+;;; $87C5: Handle moving x-ray up/down ;;;
 HandleMovingXray_UpDown:
     PHP                                                                  ;8887C5;
     REP #$30                                                             ;8887C6;
@@ -1297,11 +1701,9 @@ HandleMovingXray_UpDown:
     BNE .down                                                            ;8887D2;
     BRA .return                                                          ;8887D4;
 
-
   .up:
     JSR.W MoveXray_Up                                                    ;8887D6;
     BRA .return                                                          ;8887D9;
-
 
   .down:
     JSR.W MoveXray_Down                                                  ;8887DB;
@@ -1311,6 +1713,7 @@ HandleMovingXray_UpDown:
     RTS                                                                  ;8887DF;
 
 
+;;; $87E0: Move x-ray up ;;;
 MoveXray_Up:
     PHP                                                                  ;8887E0;
     REP #$30                                                             ;8887E1;
@@ -1332,7 +1735,6 @@ MoveXray_Up:
     LDA.W $0A84                                                          ;888802;
     STA.W $0A82                                                          ;888805;
     BRA .return                                                          ;888808;
-
 
   .facingLeft:
     CLC                                                                  ;88880A;
@@ -1360,6 +1762,7 @@ MoveXray_Up:
     RTS                                                                  ;888834;
 
 
+;;; $8835: Move x-ray down ;;;
 MoveXray_Down:
     PHP                                                                  ;888835;
     REP #$30                                                             ;888836;
@@ -1387,7 +1790,6 @@ MoveXray_Down:
     STA.W $0A82                                                          ;888866;
     BRA .return                                                          ;888869;
 
-
   .facingLeft:
     SEC                                                                  ;88886B;
     SBC.W $0A84                                                          ;88886C;
@@ -1413,6 +1815,7 @@ MoveXray_Down:
     RTS                                                                  ;888895;
 
 
+;;; $8896: Calculate x-ray HDMA data table ;;;
 Calculate_Xray_HDMADataTable:
     PHP                                                                  ;888896;
     REP #$30                                                             ;888897;
@@ -1436,7 +1839,6 @@ Calculate_Xray_HDMADataTable:
     TAX                                                                  ;8888C3;
     BRA .checkMovement                                                   ;8888C4;
 
-
   .facingLeft:
     LDA.W $0AF6                                                          ;8888C6;
     SEC                                                                  ;8888C9;
@@ -1456,7 +1858,6 @@ Calculate_Xray_HDMADataTable:
     TAY                                                                  ;8888E6;
     BRA .checkScreenPosition                                             ;8888E7;
 
-
   .crouching:
     LDA.W $0AFA                                                          ;8888E9;
     SEC                                                                  ;8888EC;
@@ -1475,7 +1876,6 @@ Calculate_Xray_HDMADataTable:
     BEQ .offScreen                                                       ;888907;
     BRA .onScreenFromOffScreen                                           ;888909;
 
-
   .leftOfScreen:
     LDA.W $0A1E                                                          ;88890B;
     AND.W #$00FF                                                         ;88890E;
@@ -1483,18 +1883,15 @@ Calculate_Xray_HDMADataTable:
     BEQ .offScreen                                                       ;888914;
     BRA .onScreenFromOffScreen                                           ;888916;
 
-
   .onScreen:
     JSL.L Calc_Xray_HDMADataTable_OnScreen                               ;888918;
     PLP                                                                  ;88891C;
     RTS                                                                  ;88891D;
 
-
   .onScreenFromOffScreen:
     JSL.L Calc_Xray_HDMADataTable_OffScreen                              ;88891E;
     PLP                                                                  ;888922;
     RTS                                                                  ;888923;
-
 
   .offScreen:
     LDX.W #$01FE                                                         ;888924;
@@ -1509,6 +1906,7 @@ Calculate_Xray_HDMADataTable:
     RTS                                                                  ;888933;
 
 
+;;; $8934: Handle x-ray scope - x-ray state = 3 (deactivate beam - restore BG2 - first half) ;;;
 HandleXrayScope_State3_DeactivateBeam_RestoreBG2_FirstHalf:
     PHP                                                                  ;888934;
     REP #$30                                                             ;888935;
@@ -1568,6 +1966,7 @@ HandleXrayScope_State3_DeactivateBeam_RestoreBG2_FirstHalf:
     RTS                                                                  ;8889B9;
 
 
+;;; $89BA: Handle x-ray scope - x-ray state = 4 (deactivate beam - restore BG2 - second half) ;;;
 HandleXrayScope_State4_DeactivateBeam_RestoreBG2_SecondHalf:
     PHP                                                                  ;8889BA;
     REP #$30                                                             ;8889BB;
@@ -1608,6 +2007,7 @@ HandleXrayScope_State4_DeactivateBeam_RestoreBG2_SecondHalf:
     RTS                                                                  ;888A07;
 
 
+;;; $8A08: Handle x-ray scope - x-ray state = 5 (deactivate beam - finish) ;;;
 HandleXrayScope_State5_DeactivateBeam_Finish:
     PHP                                                                  ;888A08;
     REP #$30                                                             ;888A09;
@@ -1626,7 +2026,6 @@ HandleXrayScope_State5_DeactivateBeam_Finish:
     BNE .timeIsFrozen                                                    ;888A29;
     PLP                                                                  ;888A2B;
     RTS                                                                  ;888A2C;
-
 
   .timeIsFrozen:
     STZ.W $0A78                                                          ;888A2D;
@@ -1683,6 +2082,7 @@ HandleXrayScope_State5_DeactivateBeam_Finish:
     RTS                                                                  ;888AA3;
 
 
+;;; $8AA4: Spawn power bomb explosion ;;;
 Spawn_PowerBombExplosion:
     LDA.W $0A78                                                          ;888AA4;
     BNE .pending                                                         ;888AA7;
@@ -1698,13 +2098,13 @@ Spawn_PowerBombExplosion:
     dw InstList_PowerBombExplosion_Window2_RightPosition                 ;888AC4;
     RTL                                                                  ;888AC6;
 
-
   .pending:
     LDA.W #$4000                                                         ;888AC7;
     STA.W $0592                                                          ;888ACA;
     RTL                                                                  ;888ACD;
 
 
+;;; $8ACE: Instruction list - power bomb explosion window 2 left position ;;;
 InstList_PowerBombExplosion_Window2_LeftPosition:
     dw Instruction_HDMAObject_HDMATableBank : db $89                     ;888ACE;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;888AD1;
@@ -1736,6 +2136,8 @@ InstList_PowerBombExplosion_Window2_LeftPosition:
     dw Instruction_HDMAObject_Sleep                                      ;888B10;
     dw Instruction_HDMAObject_Delete                                     ;888B12;
 
+
+;;; $8B14: Power bomb explosion - stage 1 setup (pre-explosion - white) ;;;
 PowerBombExplosion_Setup1_PreExplosion_White:
     SEP #$20                                                             ;888B14;
     LDA.B #$FF                                                           ;888B16;
@@ -1750,12 +2152,14 @@ PowerBombExplosion_Setup1_PreExplosion_White:
     RTL                                                                  ;888B31;
 
 
+;;; $8B32: Power bomb explosion - stage 2 setup (pre-explosion - yellow) ;;;
 PowerBombExplosion_Setup2_PreExplosion_Yellow:
     LDA.W #PowerBomb_PreExplosion_ShapeDefinitionTables_PreScaled        ;888B32;
     STA.W $0CF2                                                          ;888B35;
     RTL                                                                  ;888B38;
 
 
+;;; $8B39: Power bomb explosion - stage 3 setup (explosion - yellow) ;;;
 PowerBombExplosion_Setup3_Explosion_Yellow:
     LDA.W #$0400                                                         ;888B39;
     STA.W $0CEA                                                          ;888B3C;
@@ -1764,13 +2168,17 @@ PowerBombExplosion_Setup3_Explosion_Yellow:
     RTL                                                                  ;888B46;
 
 
+;;; $8B47: Power bomb explosion - stage 4 setup (explosion - white) ;;;
 PowerBombExplosion_Setup4_Explosion_White:
     LDA.W #PowerBomb_Explosion_ShapeDefinitionTiles_PreScaled            ;888B47;
     STA.W $0CF2                                                          ;888B4A;
     RTL                                                                  ;888B4D;
 
 
+;;; $8B4E: Power bomb explosion - clean up and try crystal flash ;;;
 PowerBombExplosion_ClearnUp_TryCrystalFlash:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W $0AF6                                                          ;888B4E;
     CMP.W $0CE2                                                          ;888B51;
     BNE .clearPBFlag                                                     ;888B54;
@@ -1796,6 +2204,7 @@ PowerBombExplosion_ClearnUp_TryCrystalFlash:
     RTL                                                                  ;888B7F;
 
 
+;;; $8B80: Instruction list - power bomb explosion window 2 right position ;;;
 InstList_PowerBombExplosion_Window2_RightPosition:
     dw Instruction_HDMAObject_HDMATableBank : db $89                     ;888B80;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;888B83;
@@ -1804,20 +2213,27 @@ InstList_PowerBombExplosion_Window2_RightPosition:
     dw Instruction_HDMAObject_Sleep                                      ;888B8B;
     dw Instruction_HDMAObject_Delete                                     ;888B8D;
 
+
+;;; $8B8F: Pre-instruction - power bomb explosion - set layer blending window 2 configuration ;;;
 PreInstruction_PowerBombExplosion_SetLayerBlendingWindow2:
+; Used by InstList_PowerBombExplosion_Window2_RightPosition
     LDA.W #$8000                                                         ;888B8F;
     TSB.W $1986                                                          ;888B92;
     RTL                                                                  ;888B95;
 
 
+;;; $8B96: Power bomb stage 5 HDMA object timer ;;;
 PowerBomb_Stage5_HDMAObjectTimer:
     dw $0003                                                             ;888B96;
 
+
+;;; $8B98: Pre-instruction - power bomb explosion - stage 5 - after-glow ;;;
 PreInstruction_PowerBombExplosion_5_AfterGlow:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W $0592                                                          ;888B98;
     BMI .exploding                                                       ;888B9B;
     RTL                                                                  ;888B9D;
-
 
   .exploding:
     DEC.W $1908,X                                                        ;888B9E;
@@ -1856,7 +2272,6 @@ PreInstruction_PowerBombExplosion_5_AfterGlow:
   .return:
     RTL                                                                  ;888BDA;
 
-
   .wake:
     REP #$20                                                             ;888BDB;
     LDA.W #$0001                                                         ;888BDD;
@@ -1866,7 +2281,15 @@ PreInstruction_PowerBombExplosion_5_AfterGlow:
     RTL                                                                  ;888BE9;
 
 
+;;; $8BEA: Calculate power bomb explosion HDMA data tables - pre-scaled - power bomb is left of screen ;;;
 Calc_PowerBombExplo_HDMADataTables_PreScaled_LeftOfScreen:
+;; Parameters:
+;;     X: 0. Power bomb explosion HDMA data table index
+;;     Y: Pre-scaled power bomb explosion shape definition pointer
+
+; Called by:
+;     $8EB2: Pre-instruction - power bomb explosion - stage 4 - explosion - white
+;     $91A8: Pre-instruction - power bomb explosion - stage 2 - pre-explosion - yellow
     LDA.W $0CE6                                                          ;888BEA;
     CLC                                                                  ;888BED;
     ADC.W $0000,Y                                                        ;888BEE;
@@ -1876,7 +2299,6 @@ Calc_PowerBombExplo_HDMADataTables_PreScaled_LeftOfScreen:
     INC A                                                                ;888BF9;
     STA.L $7EC406,X                                                      ;888BFA;
     BRA .next                                                            ;888BFE;
-
 
 +   STA.L $7EC506,X                                                      ;888C00;
     LDA.B #$00                                                           ;888C04;
@@ -1890,7 +2312,15 @@ Calc_PowerBombExplo_HDMADataTables_PreScaled_LeftOfScreen:
     RTS                                                                  ;888C11;
 
 
+;;; $8C12: Calculate power bomb explosion HDMA data tables - pre-scaled - power bomb is on screen ;;;
 Calculate_PowerBombExplo_HDMADataTables_PreScaled_OnScreen:
+;; Parameters:
+;;     X: 0. Power bomb explosion HDMA data table index
+;;     Y: Pre-scaled power bomb explosion shape definition pointer
+
+; Called by:
+;     $8EB2: Pre-instruction - power bomb explosion - stage 4 - explosion - white
+;     $91A8: Pre-instruction - power bomb explosion - stage 2 - pre-explosion - yellow
     LDA.W $0000,Y                                                        ;888C12;
     BEQ .return                                                          ;888C15;
     CLC                                                                  ;888C17;
@@ -1916,7 +2346,15 @@ Calculate_PowerBombExplo_HDMADataTables_PreScaled_OnScreen:
     RTS                                                                  ;888C39;
 
 
+;;; $8C3A: Calculate power bomb explosion HDMA data tables - pre-scaled - power bomb is right of screen ;;;
 Calc_PowerBombExplo_HDMADataTables_PreScaled_RightOfScreen:
+;; Parameters:
+;;     X: 0. Power bomb explosion HDMA data table index
+;;     Y: Pre-scaled power bomb explosion shape definition pointer
+
+; Called by:
+;     $8EB2: Pre-instruction - power bomb explosion - stage 4 - explosion - white
+;     $91A8: Pre-instruction - power bomb explosion - stage 2 - pre-explosion - yellow
     LDA.W $0CE6                                                          ;888C3A;
     SEC                                                                  ;888C3D;
     SBC.W $0000,Y                                                        ;888C3E;
@@ -1926,7 +2364,6 @@ Calc_PowerBombExplo_HDMADataTables_PreScaled_RightOfScreen:
     DEC A                                                                ;888C49;
     STA.L $7EC506,X                                                      ;888C4A;
     BRA .next                                                            ;888C4E;
-
 
 +   STA.L $7EC406,X                                                      ;888C50;
     LDA.B #$FF                                                           ;888C54;
@@ -1940,11 +2377,22 @@ Calc_PowerBombExplo_HDMADataTables_PreScaled_RightOfScreen:
     RTS                                                                  ;888C61;
 
 
+;;; $8C62: Calculate power bomb explosion HDMA object table pointers ;;;
 Calculate_PowerBombExplosion_HDMADataTablePointers:
+;; Parameters:
+;;     X: HDMA object index
+
+; Called by:
+;     $8DE9: Pre-instruction - power bomb explosion - stage 3 - explosion - yellow
+;     $8EB2: Pre-instruction - power bomb explosion - stage 4 - explosion - white
+
+; For on-screen power bomb explosions,
+; the calculation 2FFh - [A] at $8C90 is equivalent to 1FFh + (Y position of screen on power bomb)
+; (1FFh is enough space for a full screen of no-explosion, followed by a screen containing the upper half of the explosion,
+; 2FFh is the table size)
     LDA.W $0592                                                          ;888C62;
     BMI .exploding                                                       ;888C65;
     RTL                                                                  ;888C67;
-
 
   .exploding:
     LDA.W $0CE2                                                          ;888C68;
@@ -1955,7 +2403,6 @@ Calculate_PowerBombExplosion_HDMADataTablePointers:
     CMP.W #$0300                                                         ;888C73;
     BCC +                                                                ;888C76;
     BRA .offScreen                                                       ;888C78;
-
 
 +   STA.W $0CE6                                                          ;888C7A;
     LDA.W $0CE4                                                          ;888C7D;
@@ -1996,7 +2443,18 @@ Calculate_PowerBombExplosion_HDMADataTablePointers:
     RTL                                                                  ;888CC5;
 
 
+;;; $8CC6: Calculate power bomb explosion HDMA data tables - scaled - power bomb is left of screen ;;;
 Calculate_PowerBombExplo_HDMADataTables_Scaled_LeftOfScreen:
+;; Parameters:
+;;     X: Power bomb (pre-)explosion Y radius in pixels / power bomb explosion HDMA data table end index
+;;     Y: 60h. Unscaled power bomb explosion shape definition table index + 60h
+;;     $4202: Power bomb (pre-)explosion X radius in pixels
+;; Returns:
+;;     X: Power bomb explosion HDMA data table index of last padding entry
+
+; Called by:
+;     $8DE9: Pre-instruction - power bomb explosion - stage 3 - explosion - yellow
+;     $90DF: Pre-instruction - power bomb explosion - stage 1 - pre-explosion - white
     LDA.W PowerBomb_ShapeDefinitionTiles_Optimization_A226,Y             ;888CC6;
     STA.W $4203                                                          ;888CC9;
     NOP                                                                  ;888CCC;
@@ -2016,7 +2474,6 @@ Calculate_PowerBombExplo_HDMADataTables_Scaled_LeftOfScreen:
     LDA.B #$FF                                                           ;888CE7;
     BRA .loopDataTable                                                   ;888CE9;
 
-
   .moveToHighByte:
     XBA                                                                  ;888CEB;
     LDA.B #$00                                                           ;888CEC;
@@ -2031,14 +2488,24 @@ Calculate_PowerBombExplo_HDMADataTables_Scaled_LeftOfScreen:
     DEX                                                                  ;888CFC;
     JMP.W .loopDataTable                                                 ;888CFD;
 
-
   .nextShapeDefinite:
     INY                                                                  ;888D00;
     BPL Calculate_PowerBombExplo_HDMADataTables_Scaled_LeftOfScreen      ;888D01;
     RTS                                                                  ;888D03;
 
 
+;;; $8D04: Calculate power bomb explosion HDMA data tables - scaled - power bomb is on screen ;;;
 Calculate_PowerBombExplosion_HDMADataTables_Scaled_OnScreen:
+;; Parameters:
+;;     X: Power bomb (pre-)explosion Y radius in pixels / power bomb explosion HDMA data table end index
+;;     Y: 60h. Unscaled power bomb explosion shape definition table index + 60h
+;;     $4202: Power bomb (pre-)explosion X radius in pixels
+;; Returns:
+;;     X: Power bomb explosion HDMA data table index of last padding entry
+
+; Called by:
+;     $8DE9: Pre-instruction - power bomb explosion - stage 3 - explosion - yellow
+;     $90DF: Pre-instruction - power bomb explosion - stage 1 - pre-explosion - white
     LDA.W PowerBomb_ShapeDefinitionTiles_Optimization_A226,Y             ;888D04;
     STA.W $4203                                                          ;888D07;
     NOP                                                                  ;888D0A;
@@ -2073,14 +2540,24 @@ Calculate_PowerBombExplosion_HDMADataTables_Scaled_OnScreen:
     DEX                                                                  ;888D3E;
     JMP.W .loopDataTable                                                 ;888D3F;
 
-
   .next:
     INY                                                                  ;888D42;
     BPL Calculate_PowerBombExplosion_HDMADataTables_Scaled_OnScreen      ;888D43;
     RTS                                                                  ;888D45;
 
 
+;;; $8D46: Calculate power bomb explosion HDMA data tables - scaled - power bomb is right of screen ;;;
 Calculate_PowerBombExplo_HDMADataTables_Scaled_RightOfScreen:
+;; Parameters:
+;;     X: Power bomb (pre-)explosion Y radius in pixels / power bomb explosion HDMA data table index of last entry
+;;     Y: 60h. Unscaled power bomb explosion shape definition table index + 60h
+;;     $4202: Power bomb (pre-)explosion X radius in pixels
+;; Returns:
+;;     X: Power bomb explosion HDMA data table index of last padding entry
+
+; Called by:
+;     $8DE9: Pre-instruction - power bomb explosion - stage 3 - explosion - yellow
+;     $90DF: Pre-instruction - power bomb explosion - stage 1 - pre-explosion - white
     LDA.W PowerBomb_ShapeDefinitionTiles_Optimization_A226,Y             ;888D46;
     STA.W $4203                                                          ;888D49;
     NOP                                                                  ;888D4C;
@@ -2100,7 +2577,6 @@ Calculate_PowerBombExplo_HDMADataTables_Scaled_RightOfScreen:
     LDA.B #$00                                                           ;888D67;
     BRA +                                                                ;888D69;
 
-
   .lessThan100:
     XBA                                                                  ;888D6B;
     LDA.B #$FF                                                           ;888D6C;
@@ -2117,13 +2593,13 @@ Calculate_PowerBombExplo_HDMADataTables_Scaled_RightOfScreen:
     DEX                                                                  ;888D7D;
     JMP.W .loopDataTable                                                 ;888D7E;
 
-
   .nextShapeDefinition:
     INY                                                                  ;888D81;
     BPL Calculate_PowerBombExplo_HDMADataTables_Scaled_RightOfScreen     ;888D82;
     RTS                                                                  ;888D84;
 
 
+;;; $8D85: Power bomb explosion colours ;;;
 PowerBombExplosion_Colors:
 ; Indexed by [power bomb explosion radius] / 800h
 ; Red, green, blue. Range 0..1Fh
@@ -2167,17 +2643,24 @@ PowerBombExplosion_Colors:
     db $12,$0D,$0D
     db $12,$0D,$0D
 
+
+;;; $8DE5: Power bomb explosion initial radius speed ;;;
 PowerBombExplosion_InitialRadiusSpeed:
     dw $0000                                                             ;888DE5;
 
+
+;;; $8DE7: Power bomb explosion radius acceleration ;;;
 PowerBombExplosion_RadiusAcceleration:
     dw $0030                                                             ;888DE7;
 
+
+;;; $8DE9: Pre-instruction - power bomb explosion - stage 3 - explosion - yellow ;;;
 PreInstruction_PowerBombExplosion_3_Explosion_Yellow:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W $0592                                                          ;888DE9;
     BMI .exploding                                                       ;888DEC;
     RTL                                                                  ;888DEE;
-
 
   .exploding:
     PHP                                                                  ;888DEF;
@@ -2211,14 +2694,11 @@ PreInstruction_PowerBombExplosion_3_Explosion_Yellow:
     BEQ .onScreen                                                        ;888E25;
     JMP.W Calculate_PowerBombExplo_HDMADataTables_Scaled_RightOfScreen   ;888E27;
 
-
   .onScreen:
     JMP.W Calculate_PowerBombExplosion_HDMADataTables_Scaled_OnScreen    ;888E2A;
 
-
   .offScreenLeft:
     JMP.W Calculate_PowerBombExplo_HDMADataTables_Scaled_LeftOfScreen    ;888E2D;
-
 
   .loopPadDataTableBegin:
     STA.L $7EC406,X                                                      ;888E30;
@@ -2278,7 +2758,6 @@ PreInstruction_PowerBombExplosion_3_Explosion_Yellow:
     STZ.W $1908,X                                                        ;888E9E;
     JMP.W .return                                                        ;888EA1;
 
-
   .lessThan8600:
     LDA.W $0CF0                                                          ;888EA4;
     CLC                                                                  ;888EA7;
@@ -2291,11 +2770,13 @@ PreInstruction_PowerBombExplosion_3_Explosion_Yellow:
     RTL                                                                  ;888EB1;
 
 
+;;; $8EB2: Pre-instruction - power bomb explosion - stage 4 - explosion - white ;;;
 PreInstruction_PowerBombExplosion_4_Explosion_White:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W $0592                                                          ;888EB2;
     BMI .exploding                                                       ;888EB5;
     RTL                                                                  ;888EB7;
-
 
   .exploding:
     PHP                                                                  ;888EB8;
@@ -2318,14 +2799,11 @@ PreInstruction_PowerBombExplosion_4_Explosion_White:
     BEQ .onScreen                                                        ;888EDA;
     JMP.W Calc_PowerBombExplo_HDMADataTables_PreScaled_RightOfScreen     ;888EDC;
 
-
   .onScreen:
     JMP.W Calculate_PowerBombExplo_HDMADataTables_PreScaled_OnScreen     ;888EDF;
 
-
   .offScreenLeft:
     JMP.W Calc_PowerBombExplo_HDMADataTables_PreScaled_LeftOfScreen      ;888EE2;
-
 
   .manualReturn:
     SEP #$30                                                             ;888EE5;
@@ -2384,11 +2862,22 @@ PreInstruction_PowerBombExplosion_4_Explosion_White:
     RTL                                                                  ;888F55;
 
 
+;;; $8F56: Calculate power bomb pre-explosion HDMA object table pointers ;;;
 Calculate_PowerBombPreExplosion_HDMAObjectTablePointers:
+;; Parameters:
+;;     X: HDMA object index
+
+; Called by:
+;     $90DF: Pre-instruction - power bomb explosion - stage 1 - pre-explosion - white
+;     $91A8: Pre-instruction - power bomb explosion - stage 2 - pre-explosion - yellow
+
+; For on-screen power bomb explosions,
+; the calculation 2FFh - [A] at $8C90 is equivalent to 1FFh + (Y position of screen on power bomb)
+; (1FFh is enough space for a full screen of no-explosion, followed by a screen containing the upper half of the explosion,
+; 2FFh is the table size)
     LDA.W $0592                                                          ;888F56;
     BMI .exploding                                                       ;888F59;
     RTL                                                                  ;888F5B;
-
 
   .exploding:
     LDA.W $0CE2                                                          ;888F5C;
@@ -2399,7 +2888,6 @@ Calculate_PowerBombPreExplosion_HDMAObjectTablePointers:
     CMP.W #$0300                                                         ;888F67;
     BCC +                                                                ;888F6A;
     BRA .offScreen                                                       ;888F6C;
-
 
 +   STA.W $0CE6                                                          ;888F6E;
     LDA.W $0CE4                                                          ;888F71;
@@ -2441,7 +2929,9 @@ Calculate_PowerBombPreExplosion_HDMAObjectTablePointers:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $8FBA: Unused. Calculate power bomb related HDMA data tables - scaled - power bomb is left of screen ;;;
 UNUSED_CalcPowerBombRelatedHDMATables_Scaled_Left_888FBA:
+; Clone of Calculate_PowerBombExplo_HDMADataTables_Scaled_LeftOfScreen
     LDA.W PowerBomb_ShapeDefinitionTiles_Optimization_A226,Y             ;888FBA;
     STA.W $4203                                                          ;888FBD;
     NOP                                                                  ;888FC0;
@@ -2461,7 +2951,6 @@ UNUSED_CalcPowerBombRelatedHDMATables_Scaled_Left_888FBA:
     LDA.B #$FF                                                           ;888FDB;
     BRA .loop                                                            ;888FDD;
 
-
 +   XBA                                                                  ;888FDF;
     LDA.B #$00                                                           ;888FE0;
 
@@ -2475,14 +2964,15 @@ UNUSED_CalcPowerBombRelatedHDMATables_Scaled_Left_888FBA:
     DEX                                                                  ;888FF0;
     JMP.W .loop                                                          ;888FF1;
 
-
   .next:
     INY                                                                  ;888FF4;
     BPL UNUSED_CalcPowerBombRelatedHDMATables_Scaled_Left_888FBA         ;888FF5;
     RTS                                                                  ;888FF7;
 
 
+;;; $8FF8: Unused. Calculate power bomb related HDMA data tables - scaled - power bomb is on screen ;;;
 UNUSED_CalcPBRelatedHDMADataTables_Scaled_OnScreen_888FF8:
+; Clone of Calculate_PowerBombExplosion_HDMADataTables_Scaled_OnScreen
     LDA.W PowerBomb_ShapeDefinitionTiles_Optimization_A226,Y             ;888FF8;
     STA.W $4203                                                          ;888FFB;
     NOP                                                                  ;888FFE;
@@ -2516,14 +3006,15 @@ UNUSED_CalcPBRelatedHDMADataTables_Scaled_OnScreen_888FF8:
     DEX                                                                  ;889032;
     JMP.W .loop                                                          ;889033;
 
-
   .next:
     INY                                                                  ;889036;
     BPL UNUSED_CalcPBRelatedHDMADataTables_Scaled_OnScreen_888FF8        ;889037;
     RTS                                                                  ;889039;
 
 
+;;; $903A: Unused. Calculate power bomb related HDMA data tables - scaled - power bomb is right of screen ;;;
 UNUSED_CalPBRelatedHDMADataTables_Scaled_OnScreen_88903A:
+; Clone of Calculate_PowerBombExplo_HDMADataTables_Scaled_RightOfScreen
     LDA.W PowerBomb_ShapeDefinitionTiles_Optimization_A226,Y             ;88903A;
     STA.W $4203                                                          ;88903D;
     NOP                                                                  ;889040;
@@ -2543,7 +3034,6 @@ UNUSED_CalPBRelatedHDMADataTables_Scaled_OnScreen_88903A:
     LDA.B #$00                                                           ;88905B;
     BRA +                                                                ;88905D;
 
-
   .lowByteFF:
     XBA                                                                  ;88905F;
     LDA.B #$FF                                                           ;889060;
@@ -2560,7 +3050,6 @@ UNUSED_CalPBRelatedHDMADataTables_Scaled_OnScreen_88903A:
     DEX                                                                  ;889071;
     JMP.W .loop                                                          ;889072;
 
-
   .next:
     INY                                                                  ;889075;
     BPL UNUSED_CalPBRelatedHDMADataTables_Scaled_OnScreen_88903A         ;889076;
@@ -2568,6 +3057,7 @@ UNUSED_CalPBRelatedHDMADataTables_Scaled_OnScreen_88903A:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $9079: Power bomb pre-explosion colours ;;;
 PowerBomb_PreExplosion_Colors:
 ; Indexed by [power bomb pre-explosion radius] / 800h
 ; Red, green, blue. Range 0..1Fh
@@ -2595,7 +3085,9 @@ PowerBomb_PreExplosion_Colors:
     db $16,$16,$06
     db $14,$14,$04
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $90A9: Unused. Power bomb explosion related colours ;;;
 UNUSED_PowerBomb_ExplosionRelated_Colors_8890A9:
 ; These might have been used for the after-glow in earlier development
     db $13,$13,$0F                                                       ;8890A9;
@@ -2615,21 +3107,32 @@ UNUSED_PowerBomb_ExplosionRelated_Colors_8890A9:
     db $01,$01,$01
     db $00,$00,$00
 
+
+;;; $90D9: Unused ;;;
 UNUSED_PowerBombColors_8890D9:
+; There's no (non-pre) explosion parallel to this constant (as there is for initial speed and acceleration),
+; so I can't even speculate what this might have been for
     dw $0001                                                             ;8890D9;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $90DB: Power bomb pre-explosion initial radius speed ;;;
 PowerBomb_PreExplosion_InitialRadiusSpeed:
     dw $3000                                                             ;8890DB;
 
+
+;;; $90DD: Power bomb pre-explosion radius acceleration ;;;
 PowerBomb_PreExplosion_RadiusAcceleration:
     dw $0080                                                             ;8890DD;
 
+
+;;; $90DF: Pre-instruction - power bomb explosion - stage 1 - pre-explosion - white ;;;
 PreInstruction_PowerBombExplosion_1_PreExplosion_White:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W $0592                                                          ;8890DF;
     BMI .exploding                                                       ;8890E2;
     RTL                                                                  ;8890E4;
-
 
   .exploding:
     PHP                                                                  ;8890E5;
@@ -2663,14 +3166,11 @@ PreInstruction_PowerBombExplosion_1_PreExplosion_White:
     BEQ .onScreen                                                        ;88911B;
     JMP.W Calculate_PowerBombExplo_HDMADataTables_Scaled_RightOfScreen   ;88911D;
 
-
   .onScreen:
     JMP.W Calculate_PowerBombExplosion_HDMADataTables_Scaled_OnScreen    ;889120;
 
-
   .offScreenLeft:
     JMP.W Calculate_PowerBombExplo_HDMADataTables_Scaled_LeftOfScreen    ;889123;
-
 
   .loopPadDataTableBegin:
     STA.L $7EC406,X                                                      ;889126;
@@ -2730,7 +3230,6 @@ PreInstruction_PowerBombExplosion_1_PreExplosion_White:
     STZ.W $1908,X                                                        ;889194;
     JMP.W .return                                                        ;889197;
 
-
   .lessThan9200:
     LDA.W $0CF0                                                          ;88919A;
     SEC                                                                  ;88919D;
@@ -2743,11 +3242,13 @@ PreInstruction_PowerBombExplosion_1_PreExplosion_White:
     RTL                                                                  ;8891A7;
 
 
+;;; $91A8: Pre-instruction - power bomb explosion - stage 2 - pre-explosion - yellow ;;;
 PreInstruction_PowerBombExplosion_2_PreExplosion_Yellow:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W $0592                                                          ;8891A8;
     BMI .exploding                                                       ;8891AB;
     RTL                                                                  ;8891AD;
-
 
   .exploding:
     PHP                                                                  ;8891AE;
@@ -2770,14 +3271,11 @@ PreInstruction_PowerBombExplosion_2_PreExplosion_Yellow:
     BEQ .onScreen                                                        ;8891D0;
     JMP.W Calc_PowerBombExplo_HDMADataTables_PreScaled_RightOfScreen     ;8891D2;
 
-
   .onScreen:
     JMP.W Calculate_PowerBombExplo_HDMADataTables_PreScaled_OnScreen     ;8891D5;
 
-
   .offScreenLeft:
     JMP.W Calc_PowerBombExplo_HDMADataTables_PreScaled_LeftOfScreen      ;8891D8;
-
 
   .manualReturn:
     SEP #$30                                                             ;8891DB;
@@ -2834,6 +3332,7 @@ PreInstruction_PowerBombExplosion_2_PreExplosion_Yellow:
     RTL                                                                  ;889245;
 
 
+;;; $9246: Power bomb explosion shape definitions tables - pre-scaled ;;;
 PowerBomb_Explosion_ShapeDefinitionTiles_PreScaled:
 ; Defines the shape of (the bottom) half of a power bomb explosion
 ; Each byte defines the width of the power bomb explosion for that pixel-row, C0h pixel-rows total
@@ -3043,6 +3542,8 @@ PowerBomb_Explosion_ShapeDefinitionTiles_PreScaled:
     db $8A,$89,$86,$85,$82,$7F,$7E,$7B,$79,$76,$73,$72,$6F,$6C,$69,$66   ;889EE6;
     db $62,$5F,$5C,$58,$55,$50,$4D,$49,$44,$3E,$3A,$34,$2C,$24,$19,$00   ;889EF6;
 
+
+;;; $9F06: Power bomb pre-explosion shape definition tables - pre-scaled ;;;
 PowerBomb_PreExplosion_ShapeDefinitionTables_PreScaled:
 ; Defines the shape of (the bottom) half of a power bomb explosion
 ; Each byte defines the width of the power bomb explosion for that pixel-row, C0h pixel-rows total
@@ -3096,6 +3597,8 @@ PowerBomb_PreExplosion_ShapeDefinitionTables_PreScaled:
     db $8A,$89,$86,$85,$82,$7F,$7E,$7B,$79,$76,$73,$72,$6F,$6C,$69,$66   ;88A1E6;
     db $62,$5F,$5C,$58,$55,$50,$4D,$49,$44,$3E,$3A,$34,$2C,$24,$19,$00   ;88A1F6;
 
+
+;;; $A206: Free space ;;;
 PowerBomb_ShapeDefinitionTiles_Optimization_A206:
 ; PJ believes this padding exists purely because of the "optimisation" done in the
 ; "calculate power bomb explosion HDMA data tables - stage 1/3" routines ($8CC6/$8D04/$8D46)
@@ -3109,6 +3612,8 @@ PowerBomb_ShapeDefinitionTiles_Optimization_A226:
     db $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF   ;88A246;
     db $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF   ;88A256;
 
+
+;;; $A266: Power bomb explosion shape definition table - unscaled ;;;
 PowerBombExplosion_ShapeDefinitionTable_Unscaled_width:
 ; This table gives the shape of (the bottom) half of a power bomb explosion with X radius = 100h (Y radius C0h),
 ; starting from the bottom and ending at the center
@@ -3121,7 +3626,10 @@ PowerBombExplosion_ShapeDefinitionTable_Unscaled_topOffset:
     db $BF,$BF,$BE,$BD,$BA,$B8,$B6,$B2,$AF,$AB,$A6,$A2,$9C,$96,$90,$8A   ;88A286;
     db $84,$7D,$75,$6E,$66,$5E,$56,$4D,$45,$3C,$33,$2A,$20,$17,$0D,$04   ;88A296;
 
+
+;;; $A2A6: Spawn crystal flash HDMA objects ;;;
 Spawn_CrystalFlash_HDMAObjects:
+; These HDMAs aren't really needed
     LDA.W #$8000                                                         ;88A2A6;
     STA.W $0592                                                          ;88A2A9;
     JSL.L Spawn_HDMAObject                                               ;88A2AC;
@@ -3133,6 +3641,7 @@ Spawn_CrystalFlash_HDMAObjects:
     RTL                                                                  ;88A2BC;
 
 
+;;; $A2BD: Instruction list - crystal flash window 2 left position ;;;
 InstList_CrystalFlash_Window2_LeftPosition:
     dw Instruction_HDMAObject_HDMATableBank : db $89                     ;88A2BD;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88A2C0;
@@ -3151,6 +3660,8 @@ InstList_CrystalFlash_Window2_LeftPosition:
     dw Instruction_HDMAObject_Sleep                                      ;88A2E0;
     dw Instruction_HDMAObject_Delete                                     ;88A2E2;
 
+
+;;; $A2E4: Crystal flash - setup (1/2) ;;;
 CrystalFlash_Setup_1:
     SEP #$20                                                             ;88A2E4;
     LDA.B #$FF                                                           ;88A2E6;
@@ -3167,6 +3678,7 @@ CrystalFlash_Setup_1:
     RTL                                                                  ;88A308;
 
 
+;;; $A309: Crystal flash - setup (2/2) ;;;
 CrystalFlash_Setup_2:
     LDA.W #$0400                                                         ;88A309;
     STA.W $0CEA                                                          ;88A30C;
@@ -3175,7 +3687,10 @@ CrystalFlash_Setup_2:
     RTL                                                                  ;88A316;
 
 
+;;; $A317: Crystal flash - clean up ;;;
 CrystalFlash_Cleanup:
+;; Parameters:
+;;     X: HDMA object index
     STZ.W $0CEE                                                          ;88A317;
     STZ.W $0592                                                          ;88A31A;
     STZ.W $18B4,X                                                        ;88A31D;
@@ -3185,6 +3700,7 @@ CrystalFlash_Cleanup:
     RTL                                                                  ;88A329;
 
 
+;;; $A32A: Instruction list - crystal flash window 2 right position ;;;
 InstList_CrystalFlash_Window2_RightPosition:
     dw Instruction_HDMAObject_HDMATableBank : db $89                     ;88A32A;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88A32D;
@@ -3193,7 +3709,10 @@ InstList_CrystalFlash_Window2_RightPosition:
     dw Instruction_HDMAObject_Sleep                                      ;88A335;
     dw Instruction_HDMAObject_Delete                                     ;88A337;
 
+
+;;; $A339: Pre-instruction - crystal flash - custom layer blending window 2 configuration ;;;
 PreInstruction_CrystalFlash_CustomLayerBlendingWindow2Config:
+; Setting these variables doesn't achieve anything, as the layer blending is handled entirely by a subsystem using $1986/87
     SEP #$20                                                             ;88A339;
     STZ.W $0060                                                          ;88A33B;
     LDA.B #$08                                                           ;88A33E;
@@ -3211,11 +3730,18 @@ PreInstruction_CrystalFlash_CustomLayerBlendingWindow2Config:
     RTL                                                                  ;88A35C;
 
 
+;;; $A35D: Pre-instruction - crystal flash - stage 2 - after-glow ;;;
 PreInstruction_CrystalFlash_2_AfterGlow:
+;; Parameters:
+;;     X: HDMA object index
+
+; The same as power bomb explosion stage 5 ($8B98) except for using colour components as a wake criterion ($A36A..76) instead of [HDMA object $1938]
+; This is actually a bug, as the colour components are always non-zero in rooms that use a backdrop colour (FX 28h/2Ah), meaning this object never dies
+; If you lay a power bomb afterwards, this does override the backdrop colour to zero and causes this object to clean itself up,
+; but that screws up the power bomb due to the global power bomb state (see $A317)
     LDA.W $0592                                                          ;88A35D;
     BMI .exploding                                                       ;88A360;
     RTL                                                                  ;88A362;
-
 
   .exploding:
     DEC.W $1908,X                                                        ;88A363;
@@ -3257,7 +3783,6 @@ PreInstruction_CrystalFlash_2_AfterGlow:
   .return:
     RTL                                                                  ;88A3A7;
 
-
   .wake:
     REP #$20                                                             ;88A3A8;
     LDA.W #$0001                                                         ;88A3AA;
@@ -3268,7 +3793,9 @@ PreInstruction_CrystalFlash_2_AfterGlow:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $A3B7: Unused. Calculate crystal flash HDMA data tables - pre-scaled - power bomb is left of screen ;;;
 UNUSED_CalcCrystalFlashHDMADataTables_PreScaled_Left_88A3B7:
+; Clone of Calc_PowerBombExplo_HDMADataTables_PreScaled_LeftOfScreen
     LDA.W $0CE6                                                          ;88A3B7;
     CLC                                                                  ;88A3BA;
     ADC.W $0000,Y                                                        ;88A3BB;
@@ -3278,7 +3805,6 @@ UNUSED_CalcCrystalFlashHDMADataTables_PreScaled_Left_88A3B7:
     INC A                                                                ;88A3C6;
     STA.L $7EC406,X                                                      ;88A3C7;
     BRA .loop                                                            ;88A3CB;
-
 
 +   STA.L $7EC506,X                                                      ;88A3CD;
     LDA.B #$00                                                           ;88A3D1;
@@ -3292,7 +3818,9 @@ UNUSED_CalcCrystalFlashHDMADataTables_PreScaled_Left_88A3B7:
     RTS                                                                  ;88A3DE;
 
 
+;;; $A3DF: Unused. Calculate crystal flash HDMA data tables - pre-scaled - power bomb is on screen ;;;
 UNUSED_Calc_CF_HDMADataTables_PreScaled_OnScreen_88A3DF:
+; Clone of Calculate_PowerBombExplo_HDMADataTables_PreScaled_OnScreen
     LDA.W $0000,Y                                                        ;88A3DF;
     BEQ .return                                                          ;88A3E2;
     CLC                                                                  ;88A3E4;
@@ -3317,7 +3845,9 @@ UNUSED_Calc_CF_HDMADataTables_PreScaled_OnScreen_88A3DF:
     RTS                                                                  ;88A406;
 
 
+;;; $A407: Unused. Calculate crystal flash HDMA data tables - pre-scaled - power bomb is right of screen ;;;
 UNUSED_Calc_CF_HDMADataTables_PreScaled_RightOfScreen_88A407:
+; Clone of Calc_PowerBombExplo_HDMADataTables_PreScaled_RightOfScreen
     LDA.W $0CE6                                                          ;88A407;
     SEC                                                                  ;88A40A;
     SBC.W $0000,Y                                                        ;88A40B;
@@ -3327,7 +3857,6 @@ UNUSED_Calc_CF_HDMADataTables_PreScaled_RightOfScreen_88A407:
     DEC A                                                                ;88A416;
     STA.L $7EC506,X                                                      ;88A417;
     BRA .next                                                            ;88A41B;
-
 
 +   STA.L $7EC406,X                                                      ;88A41D;
     LDA.B #$FF                                                           ;88A421;
@@ -3342,11 +3871,12 @@ UNUSED_Calc_CF_HDMADataTables_PreScaled_RightOfScreen_88A407:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $A42F: Calculate crystal flash HDMA object table pointers ;;;
 Calculate_CrystalFlash_HDMAObjectTablePointers:
+; Clone of Calculate_PowerBombExplosion_HDMADataTablePointers
     LDA.W $0592                                                          ;88A42F;
     BMI .exploding                                                       ;88A432;
     RTL                                                                  ;88A434;
-
 
   .exploding:
     LDA.W $0CE2                                                          ;88A435;
@@ -3357,7 +3887,6 @@ Calculate_CrystalFlash_HDMAObjectTablePointers:
     CMP.W #$0300                                                         ;88A440;
     BCC +                                                                ;88A443;
     BRA .offScreen                                                       ;88A445;
-
 
 +   STA.W $0CE6                                                          ;88A447;
     LDA.W $0CE4                                                          ;88A44A;
@@ -3398,7 +3927,9 @@ Calculate_CrystalFlash_HDMAObjectTablePointers:
     RTL                                                                  ;88A492;
 
 
+;;; $A493: Calculate crystal flash HDMA data tables - scaled - power bomb is left of screen ;;;
 Calculate_CrystalFlash_HDMADataTables_Scaled_LeftOfScreen:
+; Clone of Calculate_PowerBombExplo_HDMADataTables_Scaled_LeftOfScreen
     LDA.W PowerBomb_ShapeDefinitionTiles_Optimization_A226,Y             ;88A493;
     STA.W $4203                                                          ;88A496;
     NOP                                                                  ;88A499;
@@ -3418,7 +3949,6 @@ Calculate_CrystalFlash_HDMADataTables_Scaled_LeftOfScreen:
     LDA.B #$FF                                                           ;88A4B4;
     BRA .loop                                                            ;88A4B6;
 
-
   .lowByteZero:
     XBA                                                                  ;88A4B8;
     LDA.B #$00                                                           ;88A4B9;
@@ -3433,14 +3963,15 @@ Calculate_CrystalFlash_HDMADataTables_Scaled_LeftOfScreen:
     DEX                                                                  ;88A4C9;
     JMP.W .loop                                                          ;88A4CA;
 
-
   .next:
     INY                                                                  ;88A4CD;
     BPL Calculate_CrystalFlash_HDMADataTables_Scaled_LeftOfScreen        ;88A4CE;
     RTS                                                                  ;88A4D0;
 
 
+;;; $A4D1: Calculate crystal flash HDMA data tables - scaled - power bomb is on screen ;;;
 Calculate_CrystalFlash_HDMADataTables_Scaled_OnScreen:
+; Clone of Calculate_PowerBombExplosion_HDMADataTables_Scaled_OnScreen
     LDA.W PowerBomb_ShapeDefinitionTiles_Optimization_A226,Y             ;88A4D1;
     STA.W $4203                                                          ;88A4D4;
     NOP                                                                  ;88A4D7;
@@ -3474,14 +4005,15 @@ Calculate_CrystalFlash_HDMADataTables_Scaled_OnScreen:
     DEX                                                                  ;88A50B;
     JMP.W .loop                                                          ;88A50C;
 
-
   .next:
     INY                                                                  ;88A50F;
     BPL Calculate_CrystalFlash_HDMADataTables_Scaled_OnScreen            ;88A510;
     RTS                                                                  ;88A512;
 
 
+;;; $A513: Calculate crystal flash HDMA data tables - scaled - power bomb is right of screen ;;;
 Calculate_CrystalFlash_HDMADataTables_Scaled_RightOfScreen:
+; Clone of Calculate_PowerBombExplo_HDMADataTables_Scaled_RightOfScreen
     LDA.W PowerBomb_ShapeDefinitionTiles_Optimization_A226,Y             ;88A513;
     STA.W $4203                                                          ;88A516;
     NOP                                                                  ;88A519;
@@ -3501,7 +4033,6 @@ Calculate_CrystalFlash_HDMADataTables_Scaled_RightOfScreen:
     LDA.B #$00                                                           ;88A534;
     BRA +                                                                ;88A536;
 
-
   .lowByteFF:
     XBA                                                                  ;88A538;
     LDA.B #$FF                                                           ;88A539;
@@ -3518,18 +4049,21 @@ Calculate_CrystalFlash_HDMADataTables_Scaled_RightOfScreen:
     DEX                                                                  ;88A54A;
     JMP.W .loop                                                          ;88A54B;
 
-
   .next:
     INY                                                                  ;88A54E;
     BPL Calculate_CrystalFlash_HDMADataTables_Scaled_RightOfScreen       ;88A54F;
     RTS                                                                  ;88A551;
 
 
+;;; $A552: Pre-instruction - crystal flash - stage 1 - explosion ;;;
 PreInstruction_CrystalFlash_1_Explosion:
+;; Parameters:
+;;     X: HDMA object index
+
+; Identical to power bomb explosion stage 3 ($8DE9) except for the max radius (at $A5F6, resp. $8E8D)
     LDA.W $0592                                                          ;88A552;
     BMI .exploding                                                       ;88A555;
     RTL                                                                  ;88A557;
-
 
   .exploding:
     PHP                                                                  ;88A558;
@@ -3563,14 +4097,11 @@ PreInstruction_CrystalFlash_1_Explosion:
     BEQ .onScreen                                                        ;88A58E;
     JMP.W Calculate_CrystalFlash_HDMADataTables_Scaled_RightOfScreen     ;88A590;
 
-
   .onScreen:
     JMP.W Calculate_CrystalFlash_HDMADataTables_Scaled_OnScreen          ;88A593;
 
-
   .offScreenLeft:
     JMP.W Calculate_CrystalFlash_HDMADataTables_Scaled_LeftOfScreen      ;88A596;
-
 
   .loopPadDataTableBegin:
     STA.L $7EC406,X                                                      ;88A599;
@@ -3630,7 +4161,6 @@ PreInstruction_CrystalFlash_1_Explosion:
     STZ.W $1908,X                                                        ;88A607;
     JMP.W .return                                                        ;88A60A;
 
-
   .lessThan2000:
     LDA.W $0CF0                                                          ;88A60D;
     CLC                                                                  ;88A610;
@@ -3643,7 +4173,10 @@ PreInstruction_CrystalFlash_1_Explosion:
     RTL                                                                  ;88A61A;
 
 
+;;; $A61B: FX type 22h: unused ;;;
 FXType_20_22_ScrollingSky:
+; Seems like it might have been an early version of the WS entrance scrolling sky + water
+; Trying to use this FX in that room has tragic results though, and the code in its present form is a mess / broken
     PHP                                                                  ;88A61B;
     REP #$30                                                             ;88A61C;
     LDA.W #$04E0                                                         ;88A61E;
@@ -3659,8 +4192,10 @@ FXType_20_22_ScrollingSky:
     JSL.L Spawn_HDMAObject                                               ;88A63A;
     db $42,$0D                                                           ;88A63E;
     dw InstList_FXType_22_BG1XScroll_0                                   ;88A640;
-    PLP                                                                  ;88A642;
+    PLP                                                                  ;88A642; fallthrough to PreInstruction_FXType_22_BG3Yscroll
 
+
+;;; $A643: Pre-instruction - FX type 22h BG3 Y scroll ;;;
 PreInstruction_FXType_22_BG3Yscroll:
     REP #$30                                                             ;88A643;
     JSR.W Damage_Samus_IfSheIsInTheTopRow                                ;88A645;
@@ -3680,13 +4215,23 @@ PreInstruction_FXType_22_BG3Yscroll:
     RTL                                                                  ;88A66B;
 
 
+;;; $A66C: Instruction - HDMA object phase increase timer = 1 ;;;
 Instruction_HDMAObjectPhaseIncreaseTimer_1:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W #$0001                                                         ;88A66C;
     STA.W $1920,X                                                        ;88A66F;
     RTS                                                                  ;88A672;
 
 
+;;; $A673: Pre-instruction - FX type 22h BG3 X scroll ;;;
 PreInstruction_FXType_22_BG3XScroll:
+;; Parameters:
+;;     X: HDMA object index
+
+; $7E:9E02..??: FX type 22h BG3 X scroll indirect HDMA table
+; $7E:9F02..??: FX type 22h BG1 X scroll indirect HDMA table
+; $7E:9E80..??: FX type 22h BG3 X scroll HDMA data table
     PHP                                                                  ;88A673;
     REP #$30                                                             ;88A674;
     PHB                                                                  ;88A676;
@@ -3717,7 +4262,6 @@ PreInstruction_FXType_22_BG3XScroll:
     CPY.W #$0020                                                         ;88A6A5;
     BMI .loop                                                            ;88A6A8;
     BRA .merge                                                           ;88A6AA;
-
 
   .wavy:
     DEC.W $1920,X                                                        ;88A6AC;
@@ -3769,7 +4313,6 @@ PreInstruction_FXType_22_BG3XScroll:
     JSR.W Calculate_FXType_22_IndirectHDMATable                          ;88A713;
     BRA +                                                                ;88A716;
 
-
   .lessThan400:
     LDA.W #$0000                                                         ;88A718;
     STA.L $7E9F02                                                        ;88A71B;
@@ -3802,7 +4345,6 @@ PreInstruction_FXType_22_BG3XScroll:
     INX                                                                  ;88A756;
     BRA .loopPad                                                         ;88A757;
 
-
   .lessThan10:
     TYA                                                                  ;88A759;
     CMP.W #$0000                                                         ;88A75A;
@@ -3825,7 +4367,26 @@ PreInstruction_FXType_22_BG3XScroll:
     RTL                                                                  ;88A785;
 
 
+;;; $A786: Calculate FX type 22h indirect HDMA table ;;;
 Calculate_FXType_22_IndirectHDMATable:
+;; Parameters:
+;;     X: HDMA table index. If 5, writes to BG3 X scroll HDMA table. If 105h, writes to BG1 X scroll HDMA table
+;;     $12: Y position on screen
+;;     $14: HDMA data pointer
+;;     $16: HDMA consecutive data flag. If 0, $14 points to one value used for many scanlines. If 80h, $14 points to consecutive values used for consecutive scanlines
+;; Returns:
+;;     X: HDMA table index
+;;     $12: Y position on screen
+
+; If [$16] = 0:
+;     Set all scanlines to use HDMA data entry [$14] until (at most) layer 1 Y position 4DFh
+; If [$16] = 80h:
+;     If layer 1 Y position 4DFh is within 80h pixels of the HUD:
+;         Set up to 7Fh scanlines to use HDMA data table [$14] until layer 1 Y position 4DFh
+;     Else:
+;         Set 10h scanline strips to use HDMA data table [$14] until the bottom of the screen
+
+; (In the following calculations, 1Fh is the HUD height)
     LDA.W #$04C0                                                         ;88A786;
     SEC                                                                  ;88A789;
     SBC.W $0915                                                          ;88A78A;
@@ -3859,7 +4420,6 @@ Calculate_FXType_22_IndirectHDMATable:
     INX                                                                  ;88A7C1;
     BRA .loop                                                            ;88A7C2;
 
-
   .onlyOneEntryNeeded:
     STA.B $12                                                            ;88A7C4;
 
@@ -3877,6 +4437,7 @@ Calculate_FXType_22_IndirectHDMATable:
     RTS                                                                  ;88A7D7;
 
 
+;;; $A7D8: FX type 20h: scrolling sky / room setup ASM: scrolling sky land ;;;
 FXType_20_ScrollingSky_RoomSetupASM_ScrollingSkyLand:
     PHP                                                                  ;88A7D8;
     SEP #$30                                                             ;88A7D9;
@@ -3897,6 +4458,7 @@ FXType_20_ScrollingSky_RoomSetupASM_ScrollingSkyLand:
     RTL                                                                  ;88A7FF;
 
 
+;;; $A800: Room setup ASM: scrolling sky ocean ;;;
 RoomSetupASM_ScrollingSkyOcean:
     PHP                                                                  ;88A800;
     SEP #$30                                                             ;88A801;
@@ -3913,7 +4475,16 @@ RoomSetupASM_ScrollingSkyOcean:
     RTL                                                                  ;88A81B;
 
 
+;;; $A81C: Calculate FX type 22h BG3 Y scroll HDMA table ;;;
 Calculate_FXType_22_BG3YScrollHDMATable:
+;; Parameters:
+;;     $00: $A8E8. Base address of section top positions
+;;     $03: $A8EA. Base address of strip heights
+;;     $06: $A8EC. Base address of BG3 tilemap Y positions
+;;     $09: $A8EE. Base address of section bottom positions
+;;     $18: 4Eh. Table size (13 entries of 6 bytes)
+;; Returns:
+;;     X: HDMA table index
     PHB                                                                  ;88A81C;
     PHK                                                                  ;88A81D;
     PLB                                                                  ;88A81E;
@@ -3947,14 +4518,12 @@ Calculate_FXType_22_BG3YScrollHDMATable:
     PLB                                                                  ;88A852;
     RTS                                                                  ;88A853;
 
-
   .foundFirstStrip:
     LDA.B $12                                                            ;88A854;
     CMP.W #$04E0                                                         ;88A856;
     BMI .YposMod10                                                       ;88A859;
     AND.W #$001F                                                         ;88A85B;
     BRA +                                                                ;88A85E;
-
 
   .YposMod10:
     AND.W #$000F                                                         ;88A860;
@@ -3971,7 +4540,6 @@ Calculate_FXType_22_BG3YScrollHDMATable:
     SBC.W $0598                                                          ;88A874;
     STA.L $7E9C01,X                                                      ;88A877;
     BRA .next                                                            ;88A87B;
-
 
   .loopHDMATable:
     LDA.B $12                                                            ;88A87D;
@@ -3992,7 +4560,6 @@ Calculate_FXType_22_BG3YScrollHDMATable:
     BMI .loopStrip                                                       ;88A88F;
     PLB                                                                  ;88A891;
     RTS                                                                  ;88A892;
-
 
   .foundStrip:
     LDA.B ($03),Y                                                        ;88A893;
@@ -4022,6 +4589,7 @@ Calculate_FXType_22_BG3YScrollHDMATable:
     RTS                                                                  ;88A8C3;
 
 
+;;; $A8C4: Damage Samus if she is in the top row ;;;
 Damage_Samus_IfSheIsInTheTopRow:
     LDA.W $0AFA                                                          ;88A8C4;
     SEC                                                                  ;88A8C7;
@@ -4031,7 +4599,6 @@ Damage_Samus_IfSheIsInTheTopRow:
     BMI .8damage                                                         ;88A8D0;
     RTS                                                                  ;88A8D2;
 
-
   .8damage:
     LDA.W #$0008                                                         ;88A8D3;
     STA.W $0A50                                                          ;88A8D6;
@@ -4039,11 +4606,14 @@ Damage_Samus_IfSheIsInTheTopRow:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $A8DA: Unused table ;;;
 UNUSED_Table_88A8DA:
 ; Looks like the format of FXType_22_RepeatingBG3StripsTable below
     dw $0000,$0010,$0020,$0020,$0010,$0030,$0040                         ;88A8DA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $A8E8: FX type 22h repeating BG3 strips table ;;;
 FXType_22_RepeatingBG3StripsTable:
 ; This table defines sections of repeating strips of BG3
 ;        _______________ Section top position
@@ -4065,6 +4635,8 @@ FXType_22_RepeatingBG3StripsTable:
     dw $0500,$0020,$00F0
     dw $0600
 
+
+;;; $A938: FX type 22h BG3 X scroll HDMA data ;;;
 FXType_22_BG3XScrollHDMAData:
 ; Looks like only the first line is used (see PreInstruction_FXType_22_BG3XScroll)
     dw $0000,$0001,$0002,$0003,$0003,$0002,$0001,$0000                   ;88A938;
@@ -4132,10 +4704,13 @@ FXType_22_BG3XScrollHDMAData:
     dw $0000,$0001,$0002,$0003,$0003,$0002,$0001,$0000                   ;88AD18;
     dw $0000,$FFFF,$FFFE,$FFFD,$FFFD,$FFFE,$FFFF,$0000                   ;88AD28;
 
+
+;;; $AD38: RTL. Pre-instruction - FX type 22h BG1 X scroll ;;;
 RTL_88AD38:
     RTL                                                                  ;88AD38;
 
 
+;;; $AD39: Instruction list - FX type 22h BG1 X scroll ;;;
 InstList_FXType_22_BG1XScroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88AD39;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88AD3C;
@@ -4148,6 +4723,8 @@ InstList_FXType_22_BG1XScroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88AD4A;
     dw InstList_FXType_22_BG1XScroll_1                                   ;88AD4C;
 
+
+;;; $AD4E: Instruction list - FX type 22h BG3 X scroll ;;;
 InstList_FXType_22_BG3XScroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88AD4E;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88AD51;
@@ -4160,6 +4737,8 @@ InstList_FXType_22_BG3XScroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88AD5F;
     dw InstList_FXType_22_BG3XScroll_1                                   ;88AD61;
 
+
+;;; $AD63: Instruction list - FX type 22h BG3 Y scroll ;;;
 InstList_FXType_22_BG3YScroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88AD63;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88AD66;
@@ -4171,6 +4750,8 @@ InstList_FXType_22_BG3YScroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88AD72;
     dw InstList_FXType_22_BG3YScroll_1                                   ;88AD74;
 
+
+;;; $AD76: Instruction list - scrolling sky land BG2 X scroll ;;;
 InstList_ScrollingSkyLand_BG2XScroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88AD76;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88AD79;
@@ -4182,6 +4763,8 @@ InstList_ScrollingSkyLand_BG2XScroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88AD85;
     dw InstList_ScrollingSkyLand_BG2XScroll_1                            ;88AD87;
 
+
+;;; $AD89: Instruction list - scrolling sky ocean BG2 X scroll ;;;
 InstList_ScrollingSkyOcean_BG2XScroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88AD89;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88AD8C;
@@ -4193,6 +4776,8 @@ InstList_ScrollingSkyOcean_BG2XScroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88AD98;
     dw InstList_ScrollingSkyOcean_BG2XScroll_1                           ;88AD9A;
 
+
+;;; $AD9C: Scrolling sky land chunk pointers ;;;
 ScrollingSkyLand_ChunkPointers:
     dw ScrollingSky_Tilemaps_0                                           ;88AD9C;
     dw ScrollingSky_Tilemaps_1                                           ;88AD9E;
@@ -4200,6 +4785,8 @@ ScrollingSkyLand_ChunkPointers:
     dw ScrollingSky_Tilemaps_3                                           ;88ADA2;
     dw ScrollingSky_Tilemaps_4                                           ;88ADA4;
 
+
+;;; $ADA6: Scrolling sky ocean chunk pointers ;;;
 ScrollingSkyOcean_ChunkPointesr:
     dw ScrollingSky_Tilemaps_0                                           ;88ADA6;
     dw ScrollingSky_Tilemaps_1                                           ;88ADA8;
@@ -4208,6 +4795,8 @@ ScrollingSkyOcean_ChunkPointesr:
     dw ScrollingSky_Tilemaps_5                                           ;88ADAE;
     dw ScrollingSky_Tilemaps_8AE180                                      ;88ADB0;
 
+
+;;; $ADB2: Pre-instruction - scrolling sky land BG2 X scroll ;;;
 PreInstruction_ScrollingSkyLand_BG2XScroll:
     REP #$30                                                             ;88ADB2;
     LDA.W $0A78                                                          ;88ADB4;
@@ -4215,6 +4804,7 @@ PreInstruction_ScrollingSkyLand_BG2XScroll:
     RTL                                                                  ;88ADB9;
 
 
+;;; $ADBA: Pre-instruction - scrolling sky ocean BG2 X scroll ;;;
 PreInstruction_ScrollingSkyOcean_BG2XScroll:
     REP #$30                                                             ;88ADBA;
     LDA.W $0A78                                                          ;88ADBC;
@@ -4222,7 +4812,11 @@ PreInstruction_ScrollingSkyOcean_BG2XScroll:
     RTL                                                                  ;88ADC1;
 
 
+;;; $ADC2: Handle scrolling sky BG2 X scroll HDMA tables ;;;
 Handle_ScrollingSky_BG2XScroll_HDMATables:
+; The $059E HDMA data entry pointer used at $AE05 I low-key suspect should be $059C,
+; which is explicitly set to zero in room setup ASM and otherwise unused,
+; unlike $059E which is never set (but is also otherwise unused)
     SEP #$30                                                             ;88ADC2;
     LDA.B #$4A                                                           ;88ADC4;
     STA.B $59                                                            ;88ADC6;
@@ -4295,7 +4889,6 @@ Handle_ScrollingSky_BG2XScroll_HDMATables:
     SBC.W #$007F                                                         ;88AE59;
     BRA .loopNonScrollingSection                                         ;88AE5C;
 
-
   .lessThan80:
     STA.L $7E9F00,X                                                      ;88AE5E;
     LDA.W #$00B5                                                         ;88AE62;
@@ -4303,7 +4896,6 @@ Handle_ScrollingSky_BG2XScroll_HDMATables:
     LDA.W #$0000                                                         ;88AE69;
     STA.L $7E9F03,X                                                      ;88AE6C;
     RTL                                                                  ;88AE70;
-
 
   .scrollingSection:
     LDA.W ScrollingSky_ScrollingTable_nextEntry,Y                        ;88AE71;
@@ -4343,12 +4935,10 @@ Handle_ScrollingSky_BG2XScroll_HDMATables:
     BPL .terminateTable                                                  ;88AEB4;
     JMP.W .loopIndirectTable                                             ;88AEB6;
 
-
   .terminateTable:
     LDA.W #$0000                                                         ;88AEB9;
     STA.L $7E9F03,X                                                      ;88AEBC;
     RTL                                                                  ;88AEC0;
-
 
 ScrollingSky_ScrollingTable:
 ; Scrolling sky scroll table
@@ -4394,6 +4984,8 @@ ScrollingSky_ScrollingTable:
     dw $0578,$0000,$0000,$9FE0                                           ;88AF83;
     dw $05F0                                                             ;88AF8B;
 
+
+;;; $AF8D: Room main ASM - scrolling sky land ;;;
 RoomMainASM_ScrollingSkyLand:
     LDA.W #ScrollingSkyLand_ChunkPointers                                ;88AF8D;
     STA.B $00                                                            ;88AF90;
@@ -4402,19 +4994,46 @@ RoomMainASM_ScrollingSkyLand:
     BRA RoomMainASM_ScrollingSky                                         ;88AF97;
 
 
+;;; $AF99: Room main ASM - scrolling sky ocean ;;;
 RoomMainASM_ScrollingSkyOcean:
     LDA.W #ScrollingSkyOcean_ChunkPointesr                               ;88AF99;
     STA.B $00                                                            ;88AF9C;
     LDA.W #$0088                                                         ;88AF9E;
-    STA.B $02                                                            ;88AFA1;
+    STA.B $02                                                            ;88AFA1; fallthrough to RoomMainASM_ScrollingSky
 
+
+;;; $AFA3: Room main ASM - scrolling sky ;;;
 RoomMainASM_ScrollingSky:
+;; Parameters:
+;;     $00: Address of scrolling sky chunk pointers
+
+; The scrolling sky tilemap is divided into 800h byte chunks, the entire scrolling sky background is 7 scrolls high and it loaded from $8A:B180..E97F.
+; The landing site scrolling sky uses the first 5 scrolls only;
+; the ocean part of the background is actually stored starting from $8A:D980, which is the 6th scroll into the tilemap.
+; So what happens for the ocean rooms is the 5th scroll is skipped and first 4 scrolls and the last 2 scrolls are spliced together.
+
+; This routine handles the updating of the scrolling sky tilemap (inc. the splicing, which is done indirectly via the table of chunk pointers pointed to by $00).
+; It does this by adding four entries to the VRAM write table, one for each 20h tile row (40h bytes or 20h words), every frame.
+; The updated rows are the first two rows below the screen (entry 2 and 3) and the last two rows behind the HUD (entry 0 and 1).
+
+; Notes on the calculations:
+;     The VRAM write table entry size is (number of tiles in a row) * (size of a tilemap tile) = 20h * 2 = 40h bytes
+;     The VRAM write table entry source address is calculated in two parts from the layer 1 Y position:
+;         A mask is applied to the layer 1 Y position (the 7F8h), this is to clear the least significant 3 bits, which rounds the position down to the nearest tile.
+;         (The fact that the upper bits are lost is irrelevant, as the land version is 5 scrolls max height and the ocean version is 6 scrolls max height).
+;         The upper byte gives which row of scrolls the BG is in, which is used as an index to the provided table (in $00) as the base address of the scrolling sky 'chunk' to be loaded.
+;         The lower byte (after rounding) gives the position of the row *within* the current scroll,
+;         divide by 8 to get which row of tiles the BG is in, and multiply by 40h bytes (size of a tile row) to get the index *into the tilemap chunk*
+;         (equivalently, multiply by 40h/8 = 8).
+;     The VRAM write table entry destination address is similar to the lower byte of the source address.
+;         The VRAM tilemap is 40h tiles high, or 200h pixels, so the mask (1F8h) is rounding down to the nearest tile as before, and also reducing modulo 200h pixels.
+;         Divide by 8 to get which row of tiles the BG is in, and multiply by 20h words (size of a tile row) to get the index *into VRAM*
+;         (equivalently, multiply by 20h/8 = 4)
     LDA.W $0A78                                                          ;88AFA3;
     BEQ .timeNotFrozen                                                   ;88AFA6;
     LDA.W #$0000                                                         ;88AFA8;
     STA.L $7E9F00                                                        ;88AFAB;
     RTL                                                                  ;88AFAF;
-
 
   .timeNotFrozen:
     REP #$30                                                             ;88AFB0;
@@ -4508,16 +5127,23 @@ RoomMainASM_ScrollingSky:
     RTL                                                                  ;88B057;
 
 
+;;; $B058: Fireflea flashing shades ;;;
 Fireflea_Flashing_Shades:
 ; Indexed by [fireflea flashing index] * 2
     dw $0000,$0100,$0200,$0300,$0400,$0500,$0600,$0500                   ;88B058;
     dw $0400,$0300,$0200,$0100                                           ;88B068;
 
+
+;;; $B070: Fireflea darkness shades ;;;
 Fireflea_Darkness_Shades:
 ; Indexed by [fireflea darkness level]
     dw $0000,$0600,$0C00,$1200,$1800,$1900                               ;88B070;
 
+
+;;; $B07C: FX type 24h: fireflea ;;;
 FXType_24_Fireflea:
+; This spawns an HDMA object purely for the pre-instruction, which modifies the colour math backdrop colour
+; The HDMA doesn't actually do anything
     PHP                                                                  ;88B07C;
     REP #$30                                                             ;88B07D;
     LDA.W #$0006                                                         ;88B07F;
@@ -4538,6 +5164,7 @@ FXType_24_Fireflea:
     RTL                                                                  ;88B0AB;
 
 
+;;; $B0AC: Instruction list - fireflea BG3 X scroll ;;;
 InstList_Fireflea_BG3XScroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88B0AC;
     dw Instruction_HDMAObject_PreInstructionInY                          ;88B0AF;
@@ -4548,6 +5175,8 @@ InstList_Fireflea_BG3XScroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88B0B8;
     dw InstList_Fireflea_BG3XScroll_1                                    ;88B0BA;
 
+
+;;; $B0BC: Pre-instruction - fireflea BG3 X scroll ;;;
 PreInstruction_Fireflea_BG3XScroll:
     PHP                                                                  ;88B0BC;
     REP #$30                                                             ;88B0BD;
@@ -4566,7 +5195,6 @@ PreInstruction_Fireflea_BG3XScroll:
     BMI .lessThanA                                                       ;88B0E1;
     LDA.W #$0006                                                         ;88B0E3;
     BRA .storeIndex                                                      ;88B0E6;
-
 
   .lessThanA:
     LDA.W $177A                                                          ;88B0E8;
@@ -4605,7 +5233,12 @@ PreInstruction_Fireflea_BG3XScroll:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $B11E: Unused. Spawn expanding and contracting effect HDMA object ;;;
 UNUSED_Spawn_ExpandingContractingEffect_HDMAObject_88B11E:
+; Causes an expanding and contracting effect, see "expanding message box.asm"
+; The RAM used here is the same as used for the message box animation,
+; usage looks similar too (HDMA table of $85:8363, $05A2..A7 of $85:82B8),
+; so this is not unlikely an early version of the message box animation
     PHP                                                                  ;88B11E;
     REP #$30                                                             ;88B11F;
     STZ.W $05A0                                                          ;88B121;
@@ -4636,6 +5269,7 @@ UNUSED_Spawn_ExpandingContractingEffect_HDMAObject_88B11E:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $B16C: Instruction list - expanding and contracting effect BG2 Y scroll ;;;
 InstList_ExpandingContractingEffect_BG2YScroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88B16C;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88B16F;
@@ -4647,7 +5281,31 @@ InstList_ExpandingContractingEffect_BG2YScroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88B17B;
     dw InstList_ExpandingContractingEffect_BG2YScroll_1                  ;88B17D;
 
+
+;;; $B17F: Pre-instruction - expanding and contracting effect BG2 Y scroll ;;;
 PreInstruction_ExpandingContractingEffect_BG2YScroll:
+; y_low_0  = [$05A4]
+; y_high_0 = [$05A8]
+; expansion_factor = [$05A2] ; scale factor = 1 + expansion_factor / 8000h
+; y_source_low_0  = [$05A6]
+; y_source_high_0 = [$05AA]
+; for (i = 0; i < 20h; ++i)
+; {
+;     y_low  = y_low_0  + i
+;     y_high = y_high_0 - i
+;     delta = i - (expansion_factor * i + 8000h) / 10000h
+;     y_source_low  = y_source_low_0  + delta
+;     y_source_high = y_source_high_0 - delta
+;     $7E:9C00 + y_low  * 2 = y_source_low  - y_low
+;     $7E:9C00 + y_high * 2 = y_source_high - y_high
+; }
+
+; $05A4 += 20h
+; $05A8 -= 20h
+; $05A6 += 20h - expansion_factor / 800h
+; $05AA -= 20h - expansion_factor / 800h
+
+; "expanding contracting test.lua" seems to agree with this maths
     PHP                                                                  ;88B17F;
     REP #$30                                                             ;88B180;
     INC.W $059A                                                          ;88B182;
@@ -4667,7 +5325,6 @@ PreInstruction_ExpandingContractingEffect_BG2YScroll:
     STA.W $05A2                                                          ;88B1A7;
     STZ.W $05A0                                                          ;88B1AA;
     BRA +                                                                ;88B1AD;
-
 
   .expanding:
     LDA.W $05A2                                                          ;88B1AF;
@@ -4728,7 +5385,9 @@ PreInstruction_ExpandingContractingEffect_BG2YScroll:
     RTL                                                                  ;88B21C;
 
 
+;;; $B21D: Handle earthquake sound effect ;;;
 Handle_Earthquake_SoundEffect:
+; For lavaquake and Tourian entrance reveal
     PHX                                                                  ;88B21D;
     PHY                                                                  ;88B21E;
     PHP                                                                  ;88B21F;
@@ -4779,10 +5438,12 @@ Handle_Earthquake_SoundEffect:
     dw $8000
 
 
+;;; $B278: RTL. FX type: none ;;;
 RTL_88B278:
     RTL                                                                  ;88B278;
 
 
+;;; $B279: FX type 2: lava ;;;
 FXType_2_Lava:
     LDA.W #FXRisingFunction_LavaAcid_Normal                              ;88B279;
     STA.W $196C                                                          ;88B27C;
@@ -4800,6 +5461,7 @@ FXType_2_Lava:
     RTL                                                                  ;88B2A0;
 
 
+;;; $B2A1: FX type 4: acid ;;;
 FXType_4_Acid:
     LDA.W #FXRisingFunction_LavaAcid_Normal                              ;88B2A1;
     STA.W $196C                                                          ;88B2A4;
@@ -4817,12 +5479,12 @@ FXType_4_Acid:
     RTL                                                                  ;88B2C8;
 
 
+;;; $B2C9: Handle tide ;;;
 Handle_Tide:
     BIT.W $197D                                                          ;88B2C9;
     BMI .smallTide                                                       ;88B2CC;
     BVS .bigTide                                                         ;88B2CE;
     RTS                                                                  ;88B2D0;
-
 
   .smallTide:
     STZ.W $1970                                                          ;88B2D1;
@@ -4846,7 +5508,6 @@ Handle_Tide:
     ADC.W #$00C0                                                         ;88B2F8;
     BRA .returnSmallTide                                                 ;88B2FB;
 
-
   .smallBelowMidpoint:
     LDA.W $1974                                                          ;88B2FD;
     CLC                                                                  ;88B300;
@@ -4855,7 +5516,6 @@ Handle_Tide:
   .returnSmallTide:
     STA.W $1974                                                          ;88B304;
     RTS                                                                  ;88B307;
-
 
   .bigTide:
     STZ.W $1970                                                          ;88B308;
@@ -4881,7 +5541,6 @@ Handle_Tide:
     ADC.W #$0080                                                         ;88B331;
     BRA .returnBigTide                                                   ;88B334;
 
-
   .bigBelowMidpoint:
     LDA.W $1974                                                          ;88B336;
     CLC                                                                  ;88B339;
@@ -4892,14 +5551,17 @@ Handle_Tide:
     RTS                                                                  ;88B340;
 
 
+;;; $B341: RTS ;;;
 RTS_88B341:
     RTS                                                                  ;88B341;
 
 
+;;; $B342: RTS ;;;
 RTS_88B342:
     RTS                                                                  ;88B342;
 
 
+;;; $B343: FX rising function - lava/acid - normal ;;;
 FXRisingFunction_LavaAcid_Normal:
     LDA.W $197C                                                          ;88B343;
     BEQ .return3                                                         ;88B346;
@@ -4912,7 +5574,6 @@ FXRisingFunction_LavaAcid_Normal:
   .return1:
     RTS                                                                  ;88B354;
 
-
   .negative:
     LDA.W $197A                                                          ;88B355;
     CMP.W $1978                                                          ;88B358;
@@ -4922,7 +5583,6 @@ FXRisingFunction_LavaAcid_Normal:
   .return2:
     RTS                                                                  ;88B35F;
 
-
   .doRise:
     LDA.W #FXRisingFunction_LavaAcid_WaitToRise                          ;88B360;
     STA.W $196C                                                          ;88B363;
@@ -4931,6 +5591,7 @@ FXRisingFunction_LavaAcid_Normal:
     RTS                                                                  ;88B366;
 
 
+;;; $B367: FX rising function - lava/acid - wait to rise ;;;
 FXRisingFunction_LavaAcid_WaitToRise:
     JSR.W Handle_Earthquake_SoundEffect                                  ;88B367;
     LDA.W #$0015                                                         ;88B36A;
@@ -4946,6 +5607,7 @@ FXRisingFunction_LavaAcid_WaitToRise:
     RTS                                                                  ;88B381;
 
 
+;;; $B382: FX rising function - lava/acid - rising ;;;
 FXRisingFunction_LavaAcid_Rising:
     JSR.W Handle_Earthquake_SoundEffect                                  ;88B382;
     LDA.W #$0015                                                         ;88B385;
@@ -4956,7 +5618,6 @@ FXRisingFunction_LavaAcid_Rising:
     BCS .reachedTarget                                                   ;88B394;
     RTS                                                                  ;88B396;
 
-
   .reachedTarget:
     STZ.W $197C                                                          ;88B397;
     LDA.W #FXRisingFunction_LavaAcid_Normal                              ;88B39A;
@@ -4964,17 +5625,33 @@ FXRisingFunction_LavaAcid_Rising:
     RTS                                                                  ;88B3A0;
 
 
+;;; $B3A1: Lava sound effects ;;;
 Lava_SoundEffects:
 ; Sound library 2. Chosen randomly from the following
     db $12,$13,$14,$12,$13,$14,$12,$13                                   ;88B3A1;
 
+
+;;; $B3A9: Instruction - lava sound timer = 70h ;;;
 Instruction_LavaSoundTimer_70:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W #$0070                                                         ;88B3A9;
     STA.W $192C,X                                                        ;88B3AC;
     RTS                                                                  ;88B3AF;
 
 
+;;; $B3B0: Pre-instruction - lava/acid BG3 Y scroll ;;;
 PreInstruction_LavaAcid_BG3YScroll:
+; For on-screen lava/acid,
+; the calculation 200h - [A] at $B477 is equivalent to 100h + (Y position of screen on lava/acid)
+; (100h is the offset of lava/acid in the BG3 tilemap)
+
+; As far as I can tell, the HDMA done here is completely pointless and a big waste of time and space
+; I suspect that lava/acid was a copy+paste job from water FX, and this BG3 HDMA is a leftover by-product
+; The HDMA set up here writes the zero BG3 Y scroll on every scanline up until 8 pixels above the FX tilemap starts,
+; and then writes the calculated [$7E:9C02] BG3 Y scroll for the remaining scanlines
+; But there's (more than) a full screen of transparent padding before the FX tilemap, so this is completely unnecessary
+; It would be sufficient to set $7E:CADC instead of $7E:9C02 at $B41A to set the BG3 Y position via *the* BG3 scroll HDMA object
     PHB                                                                  ;88B3B0;
     LDA.W $1984                                                          ;88B3B1;
     STA.W $1986                                                          ;88B3B4;
@@ -4983,12 +5660,10 @@ PreInstruction_LavaAcid_BG3YScroll:
     PLB                                                                  ;88B3BC;
     RTL                                                                  ;88B3BD;
 
-
   .timeNotFrozen:
     REP #$30                                                             ;88B3BE;
     PEA.W .manualReturn-1                                                ;88B3C0;
     JMP.W ($196C)                                                        ;88B3C3;
-
 
   .manualReturn:
     JSR.W Handle_Tide                                                    ;88B3C6;
@@ -5018,7 +5693,6 @@ PreInstruction_LavaAcid_BG3YScroll:
     ORA.W #$0100                                                         ;88B405;
     BRA .merge                                                           ;88B408;
 
-
   .positive:
     CMP.W #$0100                                                         ;88B40A;
     BCC .onScreen                                                        ;88B40D;
@@ -5026,7 +5700,6 @@ PreInstruction_LavaAcid_BG3YScroll:
   .offScreen:
     LDA.W #$0000                                                         ;88B40F;
     BRA .merge                                                           ;88B412;
-
 
   .onScreen:
     EOR.W #$00FF                                                         ;88B414;
@@ -5068,7 +5741,6 @@ PreInstruction_LavaAcid_BG3YScroll:
     LDA.W #$00FF                                                         ;88B46A;
     BRA .merge2                                                          ;88B46D;
 
-
 +   CMP.W #$0200                                                         ;88B46F;
     BCC .merge2                                                          ;88B472;
 
@@ -5091,6 +5763,7 @@ PreInstruction_LavaAcid_BG3YScroll:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $B48E: Unused ;;;
 UNUSED_WaveDisplacementTable_88B48E:
 ; Wave displacement table. Same as the data at Setup_LavaAcid_BG2YScrollDataTable_VerticallyWavy_waveDisplacementTable
     dw $0000,$0001,$0001,$0000,$0000,$FFFF,$FFFF,$0000                   ;88B48E;
@@ -5099,12 +5772,17 @@ UNUSED_WaveDisplacementTable_88B48E:
     dw $0000,$0001,$0001,$0000,$0000,$FFFF,$FFFF,$0000                   ;88B4BE;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $B4CE: Instruction - HDMA object phase decrease timer = 1 ;;;
 Instruction_HDMAObject_PhaseDecreaseTimer_1:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W #$0001                                                         ;88B4CE;
     STA.W $1920,X                                                        ;88B4D1;
     RTS                                                                  ;88B4D4;
 
 
+;;; $B4D5: Pre-instruction - lava/acid BG2 Y scroll ;;;
 PreInstruction_LavaAcid_BG2YScroll:
     PHB                                                                  ;88B4D5;
     LDA.B $B7                                                            ;88B4D6;
@@ -5120,14 +5798,12 @@ PreInstruction_LavaAcid_BG2YScroll:
     JSR.W Setup_LavaAcid_BG2YScrollDataTable_NotWavy                     ;88B4EC;
     BRA .merge                                                           ;88B4EF;
 
-
   .wavy:
     BIT.W #$0002                                                         ;88B4F1;
     BNE .verticallyWavy                                                  ;88B4F4;
     LDX.W $18B2                                                          ;88B4F6;
     JSR.W Setup_LavaAcid_BG2YScrollDataTable_HorizontallyWavy            ;88B4F9;
     BRA .merge                                                           ;88B4FC;
-
 
   .verticallyWavy:
     LDX.W $18B2                                                          ;88B4FE;
@@ -5149,7 +5825,10 @@ PreInstruction_LavaAcid_BG2YScroll:
     RTL                                                                  ;88B51C;
 
 
+;;; $B51D: Set up lava/acid BG2 Y scroll data table - not wavy ;;;
 Setup_LavaAcid_BG2YScrollDataTable_NotWavy:
+;; Parameters:
+;;     X: HDMA object index
     SEP #$20                                                             ;88B51D;
     LDY.W $18C0,X                                                        ;88B51F;
     LDA.B #$10                                                           ;88B522;
@@ -5169,7 +5848,12 @@ Setup_LavaAcid_BG2YScrollDataTable_NotWavy:
     RTS                                                                  ;88B53A;
 
 
+;;; $B53B: Set up lava/acid BG2 Y scroll data table - horizontally wavy ;;;
 Setup_LavaAcid_BG2YScrollDataTable_HorizontallyWavy:
+;; Parameters:
+;;     X: HDMA object index
+
+; OK so this is suddenly now BG2 *X* scroll here, but this effect is never used in vanilla, so I'm not changing the name
     SEP #$20                                                             ;88B53B;
     LDY.W $18C0,X                                                        ;88B53D;
     LDA.B #$0F                                                           ;88B540;
@@ -5213,12 +5897,15 @@ Setup_LavaAcid_BG2YScrollDataTable_HorizontallyWavy:
     PLX                                                                  ;88B587;
     RTS                                                                  ;88B588;
 
-
   .waveDisplacementTable:
     dw $0000,$0000,$0001,$0001,$0001,$0001,$0000,$0000                   ;88B589;
     dw $FFFF,$FFFF,$FFFF,$FFFF,$0000,$0000,$0000,$0000                   ;88B599;
 
+
+;;; $B5A9: Set up lava/acid BG2 Y scroll data table - vertically wavy ;;;
 Setup_LavaAcid_BG2YScrollDataTable_VerticallyWavy:
+;; Parameters:
+;;     X: HDMA object index
     SEP #$20                                                             ;88B5A9;
     LDY.W $18C0,X                                                        ;88B5AB;
     LDA.B #$10                                                           ;88B5AE;
@@ -5278,6 +5965,7 @@ Setup_LavaAcid_BG2YScrollDataTable_VerticallyWavy:
     dw $0000,$0001,$0001,$0000,$0000,$FFFF,$FFFF,$0000                   ;88B61A;
 
 
+;;; $B62A: Indirect HDMA table - lava/acid BG3 Y scroll ;;;
 IndirectHDMATable_LavaAcid_BG3Yscroll:
 ; 81h,$9C00 x F0h
 ; 81h,$9C02 x 190h
@@ -5930,8 +6618,13 @@ IndirectHDMATable_LavaAcid_BG3Yscroll:
     db $60 : dw $9C02
     db $00
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $BDB1: Unused. Indirect HDMA table ;;;
 UNUSED_IndirectHDMATable_88BDB1:
+; $7E:9C44 is set to [BG2 Y scroll] by the lava/acid BG2 Y scroll pre-instruction,
+; it's possible that this was the upper half of the following table, and this allowed for the wavy effect to be limited to,
+; say, in the acid/lava or just above it
     db $81 : dw $9C44                                                    ;88BDB1;
     db $81 : dw $9C44
     db $81 : dw $9C44
@@ -6190,6 +6883,8 @@ UNUSED_IndirectHDMATable_88BDB1:
     db $81 : dw $9C44
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $C0B1: Indirect HDMA table - lava/acid BG2 Y scroll ;;;
 IndirectHDMATable_LavaAcidBG2_Yscroll:
     db $81 : dw $9C46                                                    ;88C0B1;
     db $81 : dw $9C48
@@ -6465,6 +7160,7 @@ IndirectHDMATable_LavaAcidBG2_Yscroll:
     db $81 : dw $9C64
 
 
+;;; $C3E1: Instruction list - lava/acid BG3 Y scroll ;;;
 InstList_LavaAcidBG3_Yscroll:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88C3E1;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88C3E4;
@@ -6473,6 +7169,8 @@ InstList_LavaAcidBG3_Yscroll:
     dl PreInstruction_LavaAcid_BG3YScroll                                ;88C3EB;
     dw Instruction_HDMAObject_Sleep                                      ;88C3EE;
 
+
+;;; $C3F0: Instruction list - lava/acid BG2 Y scroll ;;;
 InstList_LavaAcidBG2_Yscroll:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88C3F0;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88C3F3;
@@ -6481,6 +7179,8 @@ InstList_LavaAcidBG2_Yscroll:
     dl PreInstruction_LavaAcid_BG2YScroll                                ;88C3FA;
     dw Instruction_HDMAObject_Sleep                                      ;88C3FD;
 
+
+;;; $C3FF: FX type 6: water ;;;
 FXType_6_Water:
     LDA.W #FXRisingFunction_Water_Normal                                 ;88C3FF;
     STA.W $196C                                                          ;88C402;
@@ -6501,6 +7201,7 @@ FXType_6_Water:
     RTL                                                                  ;88C427;
 
 
+;;; $C428: FX rising function - water - normal ;;;
 FXRisingFunction_Water_Normal:
     LDA.W $197C                                                          ;88C428;
     BEQ .return3                                                         ;88C42B;
@@ -6513,7 +7214,6 @@ FXRisingFunction_Water_Normal:
   .return1:
     RTS                                                                  ;88C439;
 
-
   .negative:
     LDA.W $197A                                                          ;88C43A;
     CMP.W $1978                                                          ;88C43D;
@@ -6523,7 +7223,6 @@ FXRisingFunction_Water_Normal:
   .return2:
     RTS                                                                  ;88C444;
 
-
   .doRise:
     LDA.W #FXRisingFunction_Water_WaitToRise                             ;88C445;
     STA.W $196C                                                          ;88C448;
@@ -6532,6 +7231,7 @@ FXRisingFunction_Water_Normal:
     RTS                                                                  ;88C44B;
 
 
+;;; $C44C: FX rising function - water - wait to rise ;;;
 FXRisingFunction_Water_WaitToRise:
     DEC.W $1980                                                          ;88C44C;
     BNE .return                                                          ;88C44F;
@@ -6542,6 +7242,7 @@ FXRisingFunction_Water_WaitToRise:
     RTS                                                                  ;88C457;
 
 
+;;; $C458: FX rising function - water - rising ;;;
 FXRisingFunction_Water_Rising:
     JSR.W RaiseOrLower_FX                                                ;88C458;
     BCC .return                                                          ;88C45B;
@@ -6553,17 +7254,26 @@ FXRisingFunction_Water_Rising:
     RTS                                                                  ;88C466;
 
 
+;;; $C467: Instruction - HDMA object phase increase timer = 1 ;;;
 Instruction_HDMA_Object_Phase_Increase_Timer_1:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W #$0001                                                         ;88C467;
     STA.W $1920,X                                                        ;88C46A;
     RTS                                                                  ;88C46D;
 
 
+;;; $C46E: Wave displacement table - water ;;;
 WaveDisplacementTable_Water:
     dw $0000,$0001,$0001,$0000,$0000,$FFFF,$FFFF,$0000                   ;88C46E;
     dw $0000,$0001,$0001,$0000,$0000,$FFFF,$FFFF,$0000                   ;88C47E;
 
+
+;;; $C48E: Pre-instruction - water BG3 X scroll ;;;
 PreInstruction_Water_BG3_Xscroll:
+; For on-screen water,
+; the calculation 200h - [A] at $C569 is equivalent to 100h + (Y position of screen on FX)
+; (100h is the offset of water in the BG3 tilemap)
     PHB                                                                  ;88C48E;
     LDA.W $1984                                                          ;88C48F;
     STA.W $1986                                                          ;88C492;
@@ -6572,14 +7282,12 @@ PreInstruction_Water_BG3_Xscroll:
     PLB                                                                  ;88C49A;
     RTL                                                                  ;88C49B;
 
-
   .notFrozen:
     PHX                                                                  ;88C49C;
     PHY                                                                  ;88C49D;
     REP #$30                                                             ;88C49E;
     PEA.W .functionReturn-1                                              ;88C4A0;
     JMP.W ($196C)                                                        ;88C4A3;
-
 
   .functionReturn:
     JSR.W Handle_Tide                                                    ;88C4A6;
@@ -6603,7 +7311,6 @@ PreInstruction_Water_BG3_Xscroll:
     ORA.W #$0100                                                         ;88C4D1;
     BRA .merge                                                           ;88C4D4;
 
-
   .notAboveScreen:
     CMP.W #$0100                                                         ;88C4D6;
     BCC .onScreen                                                        ;88C4D9;
@@ -6611,7 +7318,6 @@ PreInstruction_Water_BG3_Xscroll:
   .negative:
     LDA.W #$0000                                                         ;88C4DB;
     BRA .merge                                                           ;88C4DE;
-
 
   .onScreen:
     EOR.W #$00FF                                                         ;88C4E0;
@@ -6625,7 +7331,6 @@ PreInstruction_Water_BG3_Xscroll:
     BPL .lowByte                                                         ;88C4F1;
     ORA.W #$FF00                                                         ;88C4F3;
     BRA +                                                                ;88C4F6;
-
 
   .lowByte:
     AND.W #$00FF                                                         ;88C4F8;
@@ -6682,7 +7387,6 @@ PreInstruction_Water_BG3_Xscroll:
     ORA.W #$0100                                                         ;88C55C;
     BRA .merge2                                                          ;88C55F;
 
-
   .lessThan100:
     CMP.W #$0200                                                         ;88C561;
     BCC .merge2                                                          ;88C564;
@@ -6707,13 +7411,25 @@ PreInstruction_Water_BG3_Xscroll:
     RTL                                                                  ;88C581;
 
 
+;;; $C582: Instruction - HDMA object phase increase timer = 1 ;;;
 Instruction_HDMA_Object_Phase_Increase_Timer_1_duplicate:
+;; Parameters:
+;;     X: HDMA object index
+
+; Clone of Instruction_HDMA_Object_Phase_Increase_Timer_1
     LDA.W #$0001                                                         ;88C582;
     STA.W $1920,X                                                        ;88C585;
     RTS                                                                  ;88C588;
 
 
+;;; $C589: Pre-instruction - water BG2 X scroll ;;;
 PreInstruction_Water_BG2_Xscroll:
+;; Parameters:
+;;     X: HDMA object index
+
+; For on-screen water,
+; the calculation 1FFh - [A] at $C5CE is equivalent to FFh + (Y position of screen on FX)
+; (100h is the offset of water in the BG3 tilemap, and I think FFh is an off-by-one error)
     PHB                                                                  ;88C589;
     LDA.B $B5                                                            ;88C58A;
     STA.L $7E9C44                                                        ;88C58C;
@@ -6727,7 +7443,6 @@ PreInstruction_Water_BG2_Xscroll:
   .notWavy:
     JSR.W Setup_Water_BG2_Xscroll_DataTable_NotWavy                      ;88C5A0;
     BRA .merge                                                           ;88C5A3;
-
 
   .wavy:
     JSR.W Setup_Water_BG2_Xscroll_DataTable_Wavy                         ;88C5A5;
@@ -6746,7 +7461,6 @@ PreInstruction_Water_BG2_Xscroll:
     AND.W #$000F                                                         ;88C5BE;
     ORA.W #$0100                                                         ;88C5C1;
     BRA .merge2                                                          ;88C5C4;
-
 
   .lessThan100:
     CMP.W #$0200                                                         ;88C5C6;
@@ -6769,7 +7483,10 @@ PreInstruction_Water_BG2_Xscroll:
     RTL                                                                  ;88C5E3;
 
 
+;;; $C5E4: Set up water BG2 X scroll data table - wavy ;;;
 Setup_Water_BG2_Xscroll_DataTable_Wavy:
+;; Parameters:
+;;     X: HDMA object index
     DEC.W $1920,X                                                        ;88C5E4;
     BNE +                                                                ;88C5E7;
     LDA.W #$0006                                                         ;88C5E9;
@@ -6818,6 +7535,7 @@ Setup_Water_BG2_Xscroll_DataTable_Wavy:
     RTS                                                                  ;88C635;
 
 
+;;; $C636: Set up water BG2 X scroll data table - not wavy ;;;
 Setup_Water_BG2_Xscroll_DataTable_NotWavy:
     PHX                                                                  ;88C636;
     LDX.B #$1E                                                           ;88C637;
@@ -6832,6 +7550,7 @@ Setup_Water_BG2_Xscroll_DataTable_NotWavy:
     RTS                                                                  ;88C644;
 
 
+;;; $C645: Indirect HDMA table - water BG3 X scroll ;;;
 IndirectHDMATable_WaterBG3XScroll_0:
     db $81 : dw $9C00                                                    ;88C645;
     db $81 : dw $9C00
@@ -7605,6 +8324,8 @@ IndirectHDMATable_WaterBG3XScroll_1:
     db $81 : dw $9C22
     db $00
 
+
+;;; $CF46: Indirect HDMA table - water BG2 X scroll ;;;
 IndirectHDMATable_WaterBG2XScroll:
     db $81 : dw $9C44                                                    ;88CF46;
     db $81 : dw $9C44
@@ -8376,6 +9097,8 @@ IndirectHDMATable_WaterBG2XScroll:
     db $81 : dw $9C66
     db $00
 
+
+;;; $D847: Instruction list - water BG2 X scroll ;;;
 InstList_Water_BG2_Xscroll:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88D847;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88D84A;
@@ -8384,6 +9107,8 @@ InstList_Water_BG2_Xscroll:
     dl PreInstruction_Water_BG2_Xscroll                                  ;88D851;
     dw Instruction_HDMAObject_Sleep                                      ;88D854;
 
+
+;;; $D856: Instruction list - water BG3 X scroll ;;;
 InstList_Water_BG3_Xscroll:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88D856;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88D859;
@@ -8392,17 +9117,26 @@ InstList_Water_BG3_Xscroll:
     dl PreInstruction_Water_BG3_Xscroll                                  ;88D860;
     dw Instruction_HDMAObject_Sleep                                      ;88D863;
 
+
+;;; $D865: Spawn BG3 scroll HDMA object ;;;
 Spawn_BG3_Scroll_HDMA_Object:
+; Applies an HDMA that sets BG3 scrolls to [$7E:CAD8]/[$7E:CADA] every line of the HUD and [$7E:CADC]/[$7E:CADE] after the last line of the HUD
+; Spawned by:
+;     Lava, acid, water, rain, spores, Tourian entrance statue
+;     Draygon's body initialisation
+;     Door transition after scrolling finishes and before the screen fades in
     JSL.L SpawnHDMAObject_SlotA_Channel80_Index70                        ;88D865;
     db $43,$11                                                           ;88D869;
     dw InstList_BG3Scroll_0                                              ;88D86B;
     RTL                                                                  ;88D86D;
 
 
+;;; $D86E: RTL ;;;
 RTL_88D86E:
     RTL                                                                  ;88D86E;
 
 
+;;; $D86F: Indirect HDMA table - BG3 scroll ;;;
 IndirectHDMATable_BG3Scroll:                                             ;88D86F;
     db $81 : dw $CAD8
     db $81 : dw $CAD8
@@ -8438,6 +9172,8 @@ IndirectHDMATable_BG3Scroll:                                             ;88D86F
     db $81 : dw $CADC
     db $00
 
+
+;;; $D8D0: Instruction list - BG3 scroll ;;;
 InstList_BG3Scroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88D8D0;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88D8D3;
@@ -8447,6 +9183,8 @@ InstList_BG3Scroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88D8DA;
     dw InstList_BG3Scroll_1                                              ;88D8DC;
 
+
+;;; $D8DE: FX type 28h: Ceres Ridley ;;;
 FXType_28_CeresRidley:
     JSL.L Spawn_HDMAObject                                               ;88D8DE;
     db $40,$05                                                           ;88D8E2;
@@ -8457,10 +9195,12 @@ FXType_28_CeresRidley:
     RTL                                                                  ;88D8EE;
 
 
+;;; $D8EF: RTL ;;;
 RTL_88D8EF:
     RTL                                                                  ;88D8EF;
 
 
+;;; $D8F0: Indirect HDMA table - Ceres Ridley mode and BG tile size ;;;
 IndirectHDMATable_CeresRidleyMode_BGTileSize:
     db $1F : dw $07EB                                                    ;88D8F0;
     db $60 : dw $07EC
@@ -8468,6 +9208,8 @@ IndirectHDMATable_CeresRidleyMode_BGTileSize:
     db $10 : dw $07EB
     db $00
 
+
+;;; $D8FD: HDMA table - Ceres Ridley main screen layers ;;;
 IndirectHDMATable_CeresRidleyMainScreenLayers:                           ;88D8FD;
     db $1F,$04 ;         BG3
     db $60,$13 ; BG1/BG2/    sprites
@@ -8475,6 +9217,9 @@ IndirectHDMATable_CeresRidleyMainScreenLayers:                           ;88D8FD
     db $10,$12 ;     BG2/    sprites
     db $00
 
+
+
+;;; $D906: Instruction list - Ceres Ridley mode and BG tile size ;;;
 InstList_CeresRidleyMode_BGTileSize_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88D906;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $00             ;88D909;
@@ -8485,12 +9230,15 @@ InstList_CeresRidleyMode_BGTileSize_1:
     dw Instruction_HDMAObject_GotoY                                      ;88D912;
     dw InstList_CeresRidleyMode_BGTileSize_1                             ;88D914;
 
+
+;;; $D916: Instruction - video mode for HUD and floor = 1 ;;;
 Instruction_VideoMode_for_HUD_and_Floor_1:
     LDA.W #$0009                                                         ;88D916;
     STA.W $07EB                                                          ;88D919;
     RTS                                                                  ;88D91C;
 
 
+;;; $D91D: Instruction list - Ceres Ridley main screen layers ;;;
 InstList_CeresRidley_MainScreenLayers_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88D91D;
 
@@ -8499,6 +9247,8 @@ InstList_CeresRidley_MainScreenLayers_1:
     dw Instruction_HDMAObject_GotoY                                      ;88D924;
     dw InstList_CeresRidley_MainScreenLayers_1                           ;88D926;
 
+
+;;; $D928: FX type 2Ah: Ceres elevator ;;;
 FXType_2A_CeresElevator:
     JSL.L Spawn_HDMAObject                                               ;88D928;
     db $40,$05                                                           ;88D92C;
@@ -8506,15 +9256,19 @@ FXType_2A_CeresElevator:
     RTL                                                                  ;88D930;
 
 
+;;; $D931: RTL ;;;
 RTL_88D931:
     RTL                                                                  ;88D931;
 
 
+;;; $D932: Indirect HDMA table - Ceres elevator mode and BG tile size ;;;
 IndirectHDMATable_CeresElevatorMode_BGTileSize:                          ;88D932;
     db $1F : dw $07EB
     db $70 : dw $07EC
     db $00
 
+
+;;; $D939: Instruction list - Ceres elevator mode and BG tile size ;;;
 InstList_CeresElevatorMode_BGTileSize_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88D939;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $00             ;88D93C;
@@ -8525,12 +9279,15 @@ InstList_CeresElevatorMode_BGTileSize_1:
     dw Instruction_HDMAObject_GotoY                                      ;88D945;
     dw InstList_CeresElevatorMode_BGTileSize_1                           ;88D947;
 
+
+;;; $D949: Instruction - video mode for HUD = 1 ;;;
 Instruction_VideoMode_for_HUD_1:
     LDA.W #$0009                                                         ;88D949;
     STA.W $07EB                                                          ;88D94C;
     RTS                                                                  ;88D94F;
 
 
+;;; $D950: FX type Ah: rain ;;;
 FXType_A_Rain:
     SEP #$20                                                             ;88D950;
     LDA.B #$5C                                                           ;88D952;
@@ -8545,6 +9302,7 @@ FXType_A_Rain:
     RTL                                                                  ;88D96B;
 
 
+;;; $D96C: Instruction list - rain BG3 scroll ;;;
 InstList_Rain_BG3Scroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88D96C;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88D96F;
@@ -8557,7 +9315,11 @@ InstList_Rain_BG3Scroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88D97D;
     dw InstList_Rain_BG3Scroll_1                                         ;88D97F;
 
+
+;;; $D981: Instruction - HDMA object BG3 X velocity = randomly ±400h/±600h ;;;
 Instruction_HDMAObjectBG3XVelocity:
+;; Parameters:
+;;     X: HDMA object index
     PHX                                                                  ;88D981;
     LDA.W $05E5                                                          ;88D982;
     LSR A                                                                ;88D985;
@@ -8568,18 +9330,25 @@ Instruction_HDMAObjectBG3XVelocity:
     STA.W $1938,X                                                        ;88D98E;
     RTS                                                                  ;88D991;
 
-
   .BG3XVelocities:
+; BG3 X velocities. Unit 1/100h px/frame
     dw $FA00,$0600,$FC00,$0400                                           ;88D992;
 
+
+;;; $D99A: Unused. Indirect HDMA table ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_IndirectHDMATable_88D99A:
+; Looks like a more space-efficient version of IndirectHDMATable_BG3Scroll
     db $1F : dw $CAD8                                                    ;88D99A;
     db $81 : dw $CADC
     db $00
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $D9A1: Pre-instruction - rain BG3 scroll ;;;
 PreInstruction_RainBG3Scroll:
+;; Parameters:
+;;     X: HDMA object index
     PHB                                                                  ;88D9A1;
     LDY.B #$5C                                                           ;88D9A2;
     STY.B $5B                                                            ;88D9A4;
@@ -8589,7 +9358,6 @@ PreInstruction_RainBG3Scroll:
     BEQ .notFrozen                                                       ;88D9AF;
     PLB                                                                  ;88D9B1;
     RTL                                                                  ;88D9B2;
-
 
   .notFrozen:
     LDA.W $1944,X                                                        ;88D9B3;
@@ -8601,7 +9369,6 @@ PreInstruction_RainBG3Scroll:
     BPL .lowByteD9C7                                                     ;88D9C0;
     ORA.W #$FF00                                                         ;88D9C2;
     BRA +                                                                ;88D9C5;
-
 
   .lowByteD9C7:
     AND.W #$00FF                                                         ;88D9C7;
@@ -8625,7 +9392,6 @@ PreInstruction_RainBG3Scroll:
     ORA.W #$FF00                                                         ;88D9F0;
     BRA +                                                                ;88D9F3;
 
-
   .lowByteD9F5:
     AND.W #$00FF                                                         ;88D9F5;
 
@@ -8642,6 +9408,7 @@ PreInstruction_RainBG3Scroll:
     RTL                                                                  ;88DA10;
 
 
+;;; $DA11: FX type 8: spores ;;;
 FXType_8_Spores:
     SEP #$20                                                             ;88DA11;
     LDA.B #$5C                                                           ;88DA13;
@@ -8656,6 +9423,7 @@ FXType_8_Spores:
     RTL                                                                  ;88DA2C;
 
 
+;;; $DA2D: Instruction list - spores BG3 X scroll ;;;
 InstList_Spores_BG3_Xscroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88DA2D;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88DA30;
@@ -8667,14 +9435,21 @@ InstList_Spores_BG3_Xscroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88DA3C;
     dw InstList_Spores_BG3_Xscroll_1                                     ;88DA3E;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $DA40: Unused. Indirect HDMA table ;;;
 UNUSED_IndirectHDMATable_88DA40:
+; Looks like a more space-efficient version of IndirectHDMATable_BG3Scroll
     db $1F : dw $CAD8                                                    ;88DA40;
     db $81 : dw $CADC
     db $00
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $DA47: Pre-instruction - spores BG3 X scroll ;;;
 PreInstruction_Spores_BG3_Xsscroll:
+;; Parameters:
+;;     X: HDMA object index
     PHB                                                                  ;88DA47;
     LDY.B #$5C                                                           ;88DA48;
     STY.B $5B                                                            ;88DA4A;
@@ -8685,14 +9460,12 @@ PreInstruction_Spores_BG3_Xsscroll:
     PLB                                                                  ;88DA57;
     RTL                                                                  ;88DA58;
 
-
   .notFrozen:
     LDA.W $192C,X                                                        ;88DA59;
     XBA                                                                  ;88DA5C;
     BPL .lowByteDA64                                                     ;88DA5D;
     ORA.W #$FF00                                                         ;88DA5F;
     BRA +                                                                ;88DA62;
-
 
   .lowByteDA64:
     AND.W #$00FF                                                         ;88DA64;
@@ -8711,7 +9484,6 @@ PreInstruction_Spores_BG3_Xsscroll:
     ORA.W #$FF00                                                         ;88DA81;
     BRA +                                                                ;88DA84;
 
-
   .lowByteDA86:
     AND.W #$00FF                                                         ;88DA86;
 
@@ -8728,7 +9500,16 @@ PreInstruction_Spores_BG3_Xsscroll:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $DA9F: Unused. Handle spores waviness ;;;
 UNUSED_HandleSporesWaviness_88DA9F:
+;; Parameters:
+;;     X: HDMA object index
+;;     $12: X position of screen on Samus??
+;;     $14: Y position of screen on FX?
+
+; The above routine $DA47 does store values to $12 and $14 that it doesn't use itself,
+; however those values don't look right for the usage here, and this routine doesn't PLB before returning,
+; which the above routine would need. So I don't think this is an unused section of that routine
     DEC.W $1920,X                                                        ;88DA9F;
     BNE .setupLoop                                                       ;88DAA2;
     LDA.W #$000A                                                         ;88DAA4;
@@ -8769,13 +9550,14 @@ UNUSED_HandleSporesWaviness_88DA9F:
     STA.W $18D8,X                                                        ;88DAE4;
     RTL                                                                  ;88DAE7;
 
-
   .waveDisplacementTable:
 ; Same as WaveDisplacementTable_Water
     dw $0000,$0001,$0001,$0000,$0000,$FFFF,$FFFF,$0000                   ;88DAE8;
     dw $0000,$0001,$0001,$0000,$0000,$FFFF,$FFFF,$0000                   ;88DAF8;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $DB08: FX type Ch: fog ;;;
 FXType_C_Fog:
     SEP #$20                                                             ;88DB08;
     LDA.B #$5C                                                           ;88DB0A;
@@ -8787,6 +9569,7 @@ FXType_C_Fog:
     RTL                                                                  ;88DB18;
 
 
+;;; $DB19: Instruction list - fog BG3 scroll ;;;
 InstList_Fog_BG3_Scroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88DB19;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88DB1C;
@@ -8799,18 +9582,26 @@ InstList_Fog_BG3_Scroll_1:
     dw Instruction_HDMAObject_GotoY                                      ;88DB2A;
     dw InstList_Fog_BG3_Scroll_1                                         ;88DB2C;
 
+
+;;; $DB2E: RTS ;;;
 RTS_88DB2E:
     RTS                                                                  ;88DB2E;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $DB2F: Unused. Indirect HDMA table ;;;
 UNUSED_IndirectHDMATable_88DB2F:
+; Looks like a more space-efficient version of IndirectHDMATable_BG3Scroll
     db $1F : dw $CAD8                                                    ;88DB2F;
     db $81 : dw $CADC
     db $00
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $DB36: Pre-instruction - fog BG3 scroll ;;;
 PreInstruction_Fog_BG3Scroll:
+;; Parameters:
+;;     X: HDMA object index
     PHB                                                                  ;88DB36;
     LDY.B #$5C                                                           ;88DB37;
     STY.B $5B                                                            ;88DB39;
@@ -8821,14 +9612,12 @@ PreInstruction_Fog_BG3Scroll:
     PLB                                                                  ;88DB46;
     RTL                                                                  ;88DB47;
 
-
   .timeNotFrozen:
     LDA.W $1914,X                                                        ;88DB48;
     XBA                                                                  ;88DB4B;
     BPL .lowByteDB53                                                     ;88DB4C;
     ORA.W #$FF00                                                         ;88DB4E;
     BRA +                                                                ;88DB51;
-
 
   .lowByteDB53:
     AND.W #$00FF                                                         ;88DB53;
@@ -8846,7 +9635,6 @@ PreInstruction_Fog_BG3Scroll:
     ORA.W #$FF00                                                         ;88DB6E;
     BRA +                                                                ;88DB71;
 
-
   .lowByteDB73:
     AND.W #$00FF                                                         ;88DB73;
 
@@ -8861,6 +9649,7 @@ PreInstruction_Fog_BG3Scroll:
     RTL                                                                  ;88DB89;
 
 
+;;; $DB8A: FX type 26h: Tourian entrance statue ;;;
 FXType_26_TourianEntranceStatue:
     LDA.W #$000A                                                         ;88DB8A;
     JSL.L CheckIfEvent_inA_HasHappened                                   ;88DB8D;
@@ -8890,7 +9679,10 @@ FXType_26_TourianEntranceStatue:
     RTL                                                                  ;88DBCA;
 
 
+;;; $DBCB: Set Tourian entrance statue BG2 Y scroll ;;;
 Set_TourianEntranceStatue_BG2_Yscroll:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W $1920,X                                                        ;88DBCB;
     CLC                                                                  ;88DBCE;
     ADC.W $0915                                                          ;88DBCF;
@@ -8898,7 +9690,10 @@ Set_TourianEntranceStatue_BG2_Yscroll:
     RTS                                                                  ;88DBD6;
 
 
+;;; $DBD7: Pre-instruction - Tourian entrance statue BG2 Y scroll - wait for locks to be released ;;;
 PreInst_TourianEntranceStatue_BG2_Yscroll_WaitForUnlock:
+;; Parameters:
+;;     X: HDMA object index
     PHP                                                                  ;88DBD7;
     REP #$30                                                             ;88DBD8;
     LDA.W #$0006                                                         ;88DBDA;
@@ -8931,7 +9726,10 @@ PreInst_TourianEntranceStatue_BG2_Yscroll_WaitForUnlock:
     RTL                                                                  ;88DC22;
 
 
+;;; $DC23: Pre-instruction - Tourian entrance statue BG2 Y scroll - descent delay ;;;
 PreInst_TourianEntranceStatue_BG2Yscroll_DescentDelay:
+;; Parameters:
+;;     X: HDMA object index
     JSR.W Handle_Earthquake_SoundEffect                                  ;88DC23;
     LDA.W #$000D                                                         ;88DC26;
     STA.W $183E                                                          ;88DC29;
@@ -8960,7 +9758,10 @@ PreInst_TourianEntranceStatue_BG2Yscroll_DescentDelay:
     RTL                                                                  ;88DC68;
 
 
+;;; $DC69: Pre-instruction - Tourian entrance statue BG2 Y scroll - descending ;;;
 PreInstruction_TourianEntranceStatue_BG2_Yscroll_Descending:
+;; Parameters:
+;;     X: HDMA object index
     JSR.W Handle_Earthquake_SoundEffect                                  ;88DC69;
     LDA.W #$000D                                                         ;88DC6C;
     STA.W $183E                                                          ;88DC6F;
@@ -8999,7 +9800,10 @@ PreInstruction_TourianEntranceStatue_BG2_Yscroll_Descending:
     RTL                                                                  ;88DCB9;
 
 
+;;; $DCBA: Pre-instruction - Tourian entrance statue BG2 Y scroll - enable scrolling ;;;
 PreInst_TourianEntranceStatue_BG2Yscroll_EnableScrolling:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W #$8000                                                         ;88DCBA;
     STA.W $1E6D                                                          ;88DCBD;
     LDA.W #$0202                                                         ;88DCC0;
@@ -9008,7 +9812,13 @@ PreInst_TourianEntranceStatue_BG2Yscroll_EnableScrolling:
     RTL                                                                  ;88DCCA;
 
 
+;;; $DCCB: Instruction - go to [[Y]] if entrance to Tourian is unlocked ;;;
 Instruction_GotoY_ifEntranceToTourianUnlocked:
+;; Parameters:
+;;     X: HDMA object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     STZ.W $192C,X                                                        ;88DCCB;
     STZ.W $1914,X                                                        ;88DCCE;
     LDA.W #$000A                                                         ;88DCD1;
@@ -9022,7 +9832,6 @@ Instruction_GotoY_ifEntranceToTourianUnlocked:
     INY                                                                  ;88DCE9;
     RTS                                                                  ;88DCEA;
 
-
   .gotoY:
     LDA.W #$FF10                                                         ;88DCEB;
     STA.W $1920,X                                                        ;88DCEE;
@@ -9032,6 +9841,7 @@ Instruction_GotoY_ifEntranceToTourianUnlocked:
     RTS                                                                  ;88DCF9;
 
 
+;;; $DCFA: Instruction list - Tourian entrance statue BG2 Y scroll ;;;
 InstList_TourianEntranceStatue_BG2Yscroll_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88DCFA;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88DCFD;
@@ -9054,12 +9864,16 @@ InstList_TourianEntranceStatue_BG2Yscroll_1:
     dw $0001,IndirectHDMATable_TourianEntranceStatue_BG2YScroll          ;88DD22;
     dw Instruction_HDMAObject_Sleep                                      ;88DD26;
 
+
+;;; $DD28: Indirect HDMA table - Tourian entrance statue BG2 Y scroll ;;;
 IndirectHDMATable_TourianEntranceStatue_BG2YScroll:                      ;88DD28;
     db $1F : dw $9E00
     db $01 : dw $9E00
     db $01 : dw $9E00
     db $00
 
+
+;;; $DD32: Spawn Bomb Torizo haze ;;;
 Spawn_BombTorizoHaze:
     JSL.L Spawn_HDMAObject                                               ;88DD32;
     db $02,$32                                                           ;88DD36;
@@ -9070,12 +9884,16 @@ Spawn_BombTorizoHaze:
     RTL                                                                  ;88DD42;
 
 
+;;; $DD43: Pre-instruction - Bomb Torizo haze colour math subscreen backdrop colour ;;;
 PreInst_BombTorizoHaze_ColorMathSubScnBackdropColor:
+; By default, empty space in BG3 is blank tiles, not transparent tiles, to support the blending of foregrounds like water
+; Hence, the colour math backdrop has no effect when BG3 is enabled for colour math, hence why it's disabled here
     LDA.W #$002C                                                         ;88DD43;
     STA.W $1986                                                          ;88DD46;
     RTL                                                                  ;88DD49;
 
 
+;;; $DD4A: Instruction list - Bomb Torizo haze colour math subscreen backdrop colour - green and red components ;;;
 PreInst_BombTorizoHaze_ColorMathSubScnBackColor_GreenRed_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88DD4A;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $88             ;88DD4D;
@@ -9088,9 +9906,13 @@ PreInst_BombTorizoHaze_ColorMathSubScnBackColor_GreenRed_1:
     dw Instruction_HDMAObject_GotoY                                      ;88DD5D;
     dw PreInst_BombTorizoHaze_ColorMathSubScnBackColor_GreenRed_1        ;88DD5F;
 
+
+;;; $DD61: HDMA table - nothing ;;;
 HDMATable_Nothing_88DD61:
     db $00                                                               ;88DD61;
 
+
+;;; $DD62: Instruction list - Bomb Torizo haze colour math subscreen backdrop colour - blue component ;;;
 PreInst_BombTorizoHaze_ColorMathSubScnBackdropColor_Blue_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88DD62;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $88             ;88DD65;
