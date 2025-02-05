@@ -2,18 +2,23 @@
 org $858000
 
 
+;;; $8000: Large message box top/bottom border tilemap ;;;
 Large_MessageBox_TopBottomBorder_Tilemap:
     dw $000E,$000E,$000E,$284E,$284E,$284E,$284E,$284E                   ;858000;
     dw $284E,$280F,$280F,$280F,$280F,$280F,$280F,$280F                   ;858010;
     dw $280F,$280F,$280F,$280F,$280F,$280F,$280F,$280F                   ;858020;
     dw $280F,$280F,$280F,$284E,$284E,$000E,$000E,$000E                   ;858030;
 
+
+;;; $8040: Small message box top/bottom border tilemap ;;;
 Small_MessageBox_TopBottomBorder_Tilemap:
     dw $000E,$000E,$000E,$000E,$000E,$000E,$284E,$284E                   ;858040;
     dw $284E,$284E,$284E,$284E,$284E,$284E,$284E,$284E                   ;858050;
     dw $284E,$284E,$284E,$284E,$284E,$284E,$284E,$284E                   ;858060;
     dw $284E,$000E,$000E,$000E,$000E,$000E,$000E,$000E                   ;858070;
 
+
+;;; $8080: Message box routine ;;;
 MessageBox_Routine:
 ; Parameter:
 ;     A: Message index
@@ -105,6 +110,7 @@ MessageBox_Routine:
     BRA .return                                                          ;8580F8;
 
 
+;;; $80FA: Maybe trigger pause menu or return save confirmation selection ;;;
 MaybeTriggerPauseScreen_or_ReturnSaveConfirmationSelection:
     REP #$30                                                             ;8580FA;
     LDA.W $1C1F                                                          ;8580FC;
@@ -128,6 +134,7 @@ MaybeTriggerPauseScreen_or_ReturnSaveConfirmationSelection:
     RTS                                                                  ;858118;
 
 
+;;; $8119: Play saving sound effect ;;;
 Play_Saving_Sound_Effect:
     REP #$30                                                             ;858119;
     LDA.W #$002E                                                         ;85811B;
@@ -145,6 +152,7 @@ Play_Saving_Sound_Effect:
     RTS                                                                  ;858135;
 
 
+;;; $8136: Wait for lag frame ;;;
 Wait_for_Lag_Frame:
     PHP                                                                  ;858136;
     SEP #$20                                                             ;858137;
@@ -157,6 +165,7 @@ Wait_for_Lag_Frame:
     RTS                                                                  ;858142;
 
 
+;;; $8143: Initialise PPU for message boxes ;;;
 Initialise_PPU_for_MessageBoxes:
     REP #$20                                                             ;858143;
     STZ.W $05F9                                                          ;858145;
@@ -229,6 +238,7 @@ Initialise_PPU_for_MessageBoxes:
     RTS                                                                  ;8581F2;
 
 
+;;; $81F3: Clear message box BG3 tilemap ;;;
 Clear_MessageBox_BG3Tilemap:
     REP #$30                                                             ;8581F3;
     LDX.W #$06FE                                                         ;8581F5;
@@ -261,10 +271,11 @@ Clear_MessageBox_BG3Tilemap:
     JSL.L HandleSounds                                                   ;85823A;
     RTS                                                                  ;85823E;
 
-
   .blankTile:
     dw $000E                                                             ;85823F;
 
+
+;;; $8241: Initialise message box ;;;
 Initialise_MessageBox:
     REP #$30                                                             ;858241;
     LDA.W $1C1F                                                          ;858243;
@@ -283,10 +294,13 @@ Initialise_MessageBox:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $8258: Unused. REP #$30 ;;;
 UNUSED_REP30_858258:
     REP #$30                                                             ;858258;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $825A: Write large message box tilemap ;;;
 Write_Large_MessageBox_Tilemap:
     LDX.W #$0000                                                         ;85825A;
 
@@ -315,6 +329,7 @@ Write_Large_MessageBox_Tilemap:
     RTS                                                                  ;858288;
 
 
+;;; $8289: Write small message box tilemap ;;;
 Write_Small_MessageBox_Tilemap:
     LDY.W #$0000                                                         ;858289;
     LDX.W #$0000                                                         ;85828C;
@@ -343,7 +358,10 @@ Write_Small_MessageBox_Tilemap:
     RTS                                                                  ;8582B7;
 
 
+;;; $82B8: Write message tilemap ;;;
 Write_Message_Tilemap:
+;; Returns:
+;;     X: Message box bottom border tilemap index. $7E:3240 + [$869B + ([message box index] - 1 + 1) * 6 + 4] - [$869B + ([message box index] - 1) * 6 + 4]
     JSR.W Wait_for_Lag_Frame                                             ;8582B8;
     JSL.L HandleMusicQueue                                               ;8582BB;
     JSL.L HandleSounds                                                   ;8582BF;
@@ -397,7 +415,10 @@ Write_Message_Tilemap:
     RTS                                                                  ;85831D;
 
 
+;;; $831E: Set up PPU for active message box ;;;
 Setup_PPU_for_Active_MessageBox:
+;; Parameters:
+;;     $34: BG3 tilemap offset
     JSR.W Setup_MessageBox_BG3_Yscroll_HDMA                              ;85831E;
     JSR.W Wait_for_Lag_Frame                                             ;858321;
     REP #$20                                                             ;858324;
@@ -426,6 +447,7 @@ Setup_PPU_for_Active_MessageBox:
     RTS                                                                  ;858362;
 
 
+;;; $8363: Set up message box BG3 Y scroll HDMA ;;;
 Setup_MessageBox_BG3_Yscroll_HDMA:
     SEP #$20                                                             ;858363;
     LDA.B #$FF                                                           ;858365;
@@ -465,17 +487,23 @@ Setup_MessageBox_BG3_Yscroll_HDMA:
     RTS                                                                  ;8583C4;
 
 
+;;; $83C5: Draw shoot button and set up PPU for large message box ;;;
 DrawShootButton_SetupPPUForLargeMessageBox:
     REP #$30                                                             ;8583C5;
     LDA.W $09B2                                                          ;8583C7;
     BRA DrawSpecialButton_SetupPPUForLargeMessageBox                     ;8583CA;
 
 
+;;; $83CC: Draw run button and set up PPU for large message box ;;;
 DrawRunButton_SetupPPUForLargeMessageBox:
     REP #$30                                                             ;8583CC;
-    LDA.W $09B6                                                          ;8583CE;
+    LDA.W $09B6                                                          ;8583CE; fallthrough to DrawSpecialButton_SetupPPUForLargeMessageBox
 
+
+;;; $83D1: Draw special button and set up PPU for large message box ;;;
 DrawSpecialButton_SetupPPUForLargeMessageBox:
+;; Parameters:
+;;     A: Button binding
     LDY.W #$0000                                                         ;8583D1;
     BIT.W #$0080                                                         ;8583D4;
     BNE .found                                                           ;8583D7;
@@ -513,8 +541,8 @@ DrawSpecialButton_SetupPPUForLargeMessageBox:
     JSR.W Setup_PPU_for_Active_MessageBox                                ;858422;
     RTS                                                                  ;858425;
 
-
-  .buttons:                                                                ;858426;
+  .buttons:      
+; Tile numbers for button letters                                                          ;858426;
     dw $28E0 ; A
     dw $3CE1 ; B
     dw $2CF7 ; X
@@ -524,6 +552,8 @@ DrawSpecialButton_SetupPPUForLargeMessageBox:
     dw $38F1 ; R
     dw $284E ; Blank
 
+
+;;; $8436: Set up PPU for small message box ;;;
 Setup_PPU_for_Small_MessageBox:
     REP #$30                                                             ;858436;
     LDA.W #$01C0                                                         ;858438;
@@ -532,6 +562,7 @@ Setup_PPU_for_Small_MessageBox:
     RTS                                                                  ;858440;
 
 
+;;; $8441: Set up PPU for large message box ;;;
 Setup_PPU_for_Large_MessageBox:
     REP #$30                                                             ;858441;
     LDA.W #$01A0                                                         ;858443;
@@ -540,6 +571,7 @@ Setup_PPU_for_Large_MessageBox:
     RTS                                                                  ;85844B;
 
 
+;;; $844C: Open message box ;;;
 Open_MessageBox:
     REP #$30                                                             ;85844C;
     STZ.W $05A2                                                          ;85844E;
@@ -558,6 +590,7 @@ Open_MessageBox:
     RTS                                                                  ;85846C;
 
 
+;;; $846D: Handle message box interaction ;;;
 Handle_MessageBox_Interaction:
     SEP #$20                                                             ;85846D;
     LDA.W $1C1F                                                          ;85846F;
@@ -598,7 +631,6 @@ Handle_MessageBox_Interaction:
   .busyReturn:
     RTS                                                                  ;8584B4;
 
-
   .save:
     REP #$30                                                             ;8584B5;
     STZ.W $05F9                                                          ;8584B7;
@@ -632,16 +664,13 @@ Handle_MessageBox_Interaction:
     REP #$30                                                             ;8584F3;
     BRA .saveInput                                                       ;8584F5;
 
-
   .return:
     RTS                                                                  ;8584F7;
-
 
   .inputA:
     LDA.W $05F9                                                          ;8584F8;
     BNE .return                                                          ;8584FB;
     BRA .return                                                          ;8584FD;
-
 
   .inputB:
     LDA.W #$0002                                                         ;8584FF;
@@ -649,6 +678,7 @@ Handle_MessageBox_Interaction:
     BRA .return                                                          ;858505;
 
 
+;;; $8507: Toggle save confirmation selection ;;;
 Toggle_Save_Confirmation_Selection:
     LDA.W $05F9                                                          ;858507;
     EOR.W #$0002                                                         ;85850A;
@@ -697,6 +727,7 @@ Toggle_Save_Confirmation_Selection:
     RTS                                                                  ;858573;
 
 
+;;; $8574: Play 2 lag frames of music and sound effects ;;;
 Play_2_Lag_Frames_of_Music_and_Sound_Effects:
     SEP #$30                                                             ;858574;
     LDX.B #$02                                                           ;858576;
@@ -712,6 +743,7 @@ Play_2_Lag_Frames_of_Music_and_Sound_Effects:
     RTS                                                                  ;858588;
 
 
+;;; $8589: Close message box ;;;
 Close_MessageBox:
     REP #$30                                                             ;858589;
 
@@ -725,7 +757,24 @@ Close_MessageBox:
     RTS                                                                  ;85859A;
 
 
+;;; $859B: Write message box BG3 Y scroll HDMA data table ;;;
 Write_MessageBox_BG3_Yscroll_HDMA_DataTable:
+; This algorithm implementation is questionable... decrementing/incrementing $05A4..AB doesn't affect the calculations,
+; probably an artefact leftover from porting the algorithm of the (unused) expanding and contracting effect ($88:B17F)
+; Ideally this code would just do:
+;     $7E:30BC..30F7 = -(18h - [message box animation Y radius] / 100h)
+;     $7E:30F8..3133 = 18h - [message box animation Y radius] / 100h
+;     $7E:3134..31DF = 0
+
+; Given that message box animation Y radius is set to 0 and increased by 200h per frame (for opening the message box, the process happens backwards for closing):
+;     The rows between Y positions 5Eh..7Bh are initially scrolled down by 18px, scrolling up 2px per frame
+;     The rows between Y positions 7Ch..99h are initially scrolled up by 18px, scrolling down 2px per frame
+
+; So basically the message appears to emerge out of thin air halfway between lines 7Bh and 7Ch
+; Note that whilst only 18h pixels of the message are scrolled out on either side, the HDMA is affecting 1Eh lines on either side.
+; The large message box actually is larger than 18h * 2 pixels, so the HDMA does make sense;
+; the fact hat only 18h pixels are scrolled makes large message boxes abruptly expand at the end (actually quite hard to notice),
+; but making the scroll affect more than 18h pixels on small message boxes wouldn't have any visible effect for some frames, causing a (more noticeable) delay
     PHP                                                                  ;85859B;
     JSR.W Wait_for_Lag_Frame                                             ;85859C;
     REP #$30                                                             ;85859F;
@@ -787,6 +836,7 @@ Write_MessageBox_BG3_Yscroll_HDMA_DataTable:
     RTS                                                                  ;858619;
 
 
+;;; $861A: Restore PPU ;;;
 Restore_PPU:
     REP #$20                                                             ;85861A;
     JSR.W Wait_for_Lag_Frame                                             ;85861C;
@@ -836,7 +886,20 @@ Restore_PPU:
     RTS                                                                  ;85869A;
 
 
+;;; $869B: Message definitions ;;;
 MessageDefinitionsPointers:
+; Summary of ASM routines:
+;     $825A: Write large message box tilemap
+;     $8289: Write small message box tilemap
+
+;     $83C5: Draw shoot button and set up PPU for large message box
+;     $83CC: Draw run button and set up PPU for large message box
+;     $8436: Set up PPU for small message box
+;     $8441: Set up PPU for large message box
+
+; In addition to using the correct ASM routines, the message tilemap will have to be the right size;
+; *however*, the size of the message tilemap is calculated by subtracting the message tilemap pointer from *the next entry's message tilemap pointer*.
+; This is why there are terminator entries (1Bh and 1Dh)
   .modifyMessageBox:
     dw Setup_PPU_for_Small_MessageBox                                    ;85869B; 1: Energy tank
   .drawInitialMessageBox:
@@ -929,6 +992,8 @@ MessageDefinitionsPointers:
     dw Write_Small_MessageBox_Tilemap                                    ;858745;
     dw MessageTilemaps_saveCompleted                                     ;858747;
 
+
+;;; $8749: Special button tilemap offsets ;;;
 Special_Button_Tilemap_Offsets:                                          ;858749;
     dw $0000 ; 1: Energy tank
     dw $012A ; 2: Missile
@@ -957,6 +1022,7 @@ Special_Button_Tilemap_Offsets:                                          ;858749
     dw $0000 ; 19h: Reserve tank
     dw $0000 ; 1Ah: Gravity suit
     dw $0000 ; 1Bh: Dummy
+
 
 MessageTilemaps:
   .energyTank:
@@ -1316,6 +1382,7 @@ MessageTilemaps_NO:
     dw $3C4E,$000E,$000E,$000E,$000E,$000E,$000E,$000E                   ;859631;
 
     dw $0000                                                             ;859641;
+
 
 Freespace_Bank85_9643:                                                   ;859643;
 ; $69BD bytes
