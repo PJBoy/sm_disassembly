@@ -2,6 +2,7 @@
 org $878000
 
 
+;;; $8000: Enable animated tiles objects ;;;
 Enable_AnimatedTilesObjects:
     PHP                                                                  ;878000;
     REP #$20                                                             ;878001;
@@ -11,6 +12,7 @@ Enable_AnimatedTilesObjects:
     RTL                                                                  ;87800A;
 
 
+;;; $800B: Disable animated tiles objects ;;;
 Disable_AnimatedTilesObjects:
     PHP                                                                  ;87800B;
     REP #$20                                                             ;87800C;
@@ -20,6 +22,7 @@ Disable_AnimatedTilesObjects:
     RTL                                                                  ;878015;
 
 
+;;; $8016: Clear animated tiles objects ;;;
 Clear_AnimatedTilesObjects:
     PHP                                                                  ;878016;
     REP #$30                                                             ;878017;
@@ -36,7 +39,10 @@ Clear_AnimatedTilesObjects:
     RTL                                                                  ;878026;
 
 
+;;; $8027: Spawn animated tiles object ;;;
 Spawn_AnimatedTilesObject:
+;; Parameter:
+;;     Y: Animated tiles object ID
     PHP                                                                  ;878027;
     PHB                                                                  ;878028;
     PHX                                                                  ;878029;
@@ -55,7 +61,6 @@ Spawn_AnimatedTilesObject:
     PLP                                                                  ;87803A;
     SEC                                                                  ;87803B;
     RTL                                                                  ;87803C;
-
 
   .found:
     TYA                                                                  ;87803D;
@@ -77,6 +82,7 @@ Spawn_AnimatedTilesObject:
     RTL                                                                  ;878063;
 
 
+;;; $8064: Animated tiles objects handler ;;;
 AnimatedTilesObject_Handler:
     PHP                                                                  ;878064;
     PHB                                                                  ;878065;
@@ -104,7 +110,10 @@ AnimatedTilesObject_Handler:
     RTL                                                                  ;878084;
 
 
+;;; $8085: Process animated tiles object ;;;
 Process_AnimatedTilesObject:
+; Some instructions (e.g. delete) pop the return address pushed to the stack by $809A to return out of *this* routine
+; (marked "terminate processing animated tiles object")
     LDX.W $1EF3                                                          ;878085;
     DEC.W $1F19,X                                                        ;878088;
     BNE .return                                                          ;87808B;
@@ -119,7 +128,6 @@ Process_AnimatedTilesObject:
     PEA.W .loop-1                                                        ;87809A;
     JMP.W ($1F49)                                                        ;87809D;
 
-
   .notInstruction:
     STA.W $1F19,X                                                        ;8780A0;
     LDA.W $0002,Y                                                        ;8780A3;
@@ -133,20 +141,33 @@ Process_AnimatedTilesObject:
     RTS                                                                  ;8780B1;
 
 
+;;; $80B2: Instruction - delete ;;;
 Instruction_AnimatedTilesObject_Delete:
+;; Parameters:
+;;     X: Animated tiles object index
     STZ.W $1EF5,X                                                        ;8780B2;
     PLA                                                                  ;8780B5;
     RTS                                                                  ;8780B6;
 
 
+;;; $80B7: Instruction - go to [[Y]] ;;;
 Instruction_AnimatedTilesObject_GotoY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;8780B7;
     TAY                                                                  ;8780BA;
     RTS                                                                  ;8780BB;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $80BC: Unused. Instruction - go to [Y] + ±[[Y]] ;;;
 UNUSED_Instruction_AnimatedTilesObject_GotoYPlusY_8780BC:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     STY.W $1F49                                                          ;8780BC;
     DEY                                                                  ;8780BF;
     LDA.W $0000,Y                                                        ;8780C0;
@@ -154,7 +175,6 @@ UNUSED_Instruction_AnimatedTilesObject_GotoYPlusY_8780BC:
     BMI .highByte                                                        ;8780C4;
     AND.W #$00FF                                                         ;8780C6;
     BRA +                                                                ;8780C9;
-
 
   .highByte:
     ORA.W #$FF00                                                         ;8780CB;
@@ -165,7 +185,13 @@ UNUSED_Instruction_AnimatedTilesObject_GotoYPlusY_8780BC:
     RTS                                                                  ;8780D3;
 
 
+;;; $80D4: Unused. Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 UNUSED_Inst_AnimTilesObject_DecTimer_GotoYIfNonZero_8780D4:
+;; Parameters:
+;;     X: Animated tiles object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     DEC.W $1F01,X                                                        ;8780D4;
     BNE Instruction_AnimatedTilesObject_GotoY                            ;8780D7;
     INY                                                                  ;8780D9;
@@ -173,14 +199,26 @@ UNUSED_Inst_AnimTilesObject_DecTimer_GotoYIfNonZero_8780D4:
     RTS                                                                  ;8780DB;
 
 
+;;; $80DC: Unused. Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 UNUSED_Inst_AnimTilesObject_DecTimer_GotoYPlusYIfNon0_8780DC:
+;; Parameters:
+;;     X: Animated tiles object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     DEC.W $1F01,X                                                        ;8780DC;
     BNE UNUSED_Instruction_AnimatedTilesObject_GotoYPlusY_8780BC         ;8780DF;
     INY                                                                  ;8780E1;
     RTS                                                                  ;8780E2;
 
 
+;;; $80E3: Unused. Instruction - timer = [[Y]] ;;;
 UNUSED_Instruction_AnimatedTilesObject_TimerInY_8780E3:
+;; Parameters:
+;;     X: Animated tiles object index
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     SEP #$20                                                             ;8780E3;
     LDA.W $0000,Y                                                        ;8780E5;
     STA.W $1F01,X                                                        ;8780E8;
@@ -189,11 +227,17 @@ UNUSED_Instruction_AnimatedTilesObject_TimerInY_8780E3:
     RTS                                                                  ;8780EE;
 
 
+;;; $80EF: Unused. RTS ;;;
 UNUSED_RTS_8780EF:
     RTS                                                                  ;8780EF;
 
 
+;;; $80F0: Unused. Instruction - queue music track [[Y]] ;;;
 UNUSED_Instruction_AnimatedTilesObject_QueueMusicTrackInY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;8780F0;
     AND.W #$00FF                                                         ;8780F3;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8780F6;
@@ -201,6 +245,7 @@ UNUSED_Instruction_AnimatedTilesObject_QueueMusicTrackInY:
     RTS                                                                  ;8780FB;
 
 
+;;; $80FC: Unused. Instruction - queue sound [[Y]], sound library 1, max queued sounds allowed = 6 ;;;
 UNUSED_Inst_AnimTilesObject_QueueSoundInY_Lib1_Max6_8780FC:
     LDA.W $0000,Y                                                        ;8780FC;
     AND.W #$00FF                                                         ;8780FF;
@@ -209,7 +254,12 @@ UNUSED_Inst_AnimTilesObject_QueueSoundInY_Lib1_Max6_8780FC:
     RTS                                                                  ;878107;
 
 
+;;; $8108: Unused. Instruction - queue sound [[Y]], sound library 2, max queued sounds allowed = 6 ;;;
 UNUSED_Inst_AnimTilesObject_QueueSoundInY_Lib2_Max6_878108:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;878108;
     AND.W #$00FF                                                         ;87810B;
     JSL.L QueueSound_Lib2_Max6                                           ;87810E;
@@ -217,7 +267,12 @@ UNUSED_Inst_AnimTilesObject_QueueSoundInY_Lib2_Max6_878108:
     RTS                                                                  ;878113;
 
 
+;;; $8114: Unused. Instruction - queue sound [[Y]], sound library 3, max queued sounds allowed = 6 ;;;
 UNUSED_Inst_AnimTilesObject_QueueSoundInY_Lib3_Max6_878114:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;878114;
     AND.W #$00FF                                                         ;878117;
     JSL.L QueueSound_Lib3_Max6                                           ;87811A;
@@ -225,7 +280,12 @@ UNUSED_Inst_AnimTilesObject_QueueSoundInY_Lib3_Max6_878114:
     RTS                                                                  ;87811F;
 
 
+;;; $8120: Unused. Instruction - go to [[Y] + 1] if any of the boss bits [[Y]] are set ;;;
 UNUSED_Inst_AnimTilesObject_GotoYIfBossBitsInYSet_878120:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;878120;
     INY                                                                  ;878123;
     AND.W #$00FF                                                         ;878124;
@@ -233,14 +293,18 @@ UNUSED_Inst_AnimTilesObject_GotoYIfBossBitsInYSet_878120:
     BCC .notSet                                                          ;87812B;
     JMP.W Instruction_AnimatedTilesObject_GotoY                          ;87812D;
 
-
   .notSet:
     INY                                                                  ;878130;
     INY                                                                  ;878131;
     RTS                                                                  ;878132;
 
 
+;;; $8133: Unused. Instruction - set the boss bits [[Y]] ;;;
 UNUSED_Instruction_AnimatedTilesObject_SetBossBitsY_878133:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;878133;
     AND.W #$00FF                                                         ;878136;
     JSL.L SetBossBitsInAForCurrentArea                                   ;878139;
@@ -249,7 +313,12 @@ UNUSED_Instruction_AnimatedTilesObject_SetBossBitsY_878133:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $813F: Instruction - go to [[Y] + 2] if the event [[Y]] is set ;;;
 Instruction_AnimatedTilesObject_GotoYIfEventYSet:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;87813F;
     INY                                                                  ;878142;
     INY                                                                  ;878143;
@@ -257,13 +326,13 @@ Instruction_AnimatedTilesObject_GotoYIfEventYSet:
     BCC .notSet                                                          ;878148;
     JMP.W Instruction_AnimatedTilesObject_GotoY                          ;87814A;
 
-
   .notSet:
     INY                                                                  ;87814D;
     INY                                                                  ;87814E;
     RTS                                                                  ;87814F;
 
 
+;;; $8150: Instruction - set event [[Y]] ;;;
 Instruction_AnimatedTilesObject_SetEventY:
     LDA.W $0000,Y                                                        ;878150;
     JSL.L MarkEvent_inA                                                  ;878153;
@@ -273,6 +342,7 @@ Instruction_AnimatedTilesObject_SetEventY:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $815A: Unused. Instruction - lock Samus ;;;
 UNUSED_Instruction_AnimatedTilesObject_LockSamus_87815A:
     LDA.W #$0000                                                         ;87815A;
     JSL.L Run_Samus_Command                                              ;87815D;
@@ -280,12 +350,14 @@ UNUSED_Instruction_AnimatedTilesObject_LockSamus_87815A:
 
 
 UNUSED_Instruction_AnimatedTilesObject_UnlockSamus_878162:
+;;; $8162: Unused. Instruction - unlock Samus ;;;
     LDA.W #$0001                                                         ;878162;
     JSL.L Run_Samus_Command                                              ;878165;
     RTS                                                                  ;878169;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $816A: Instruction list - animated tiles object $8251 (vertical spikes) ;;;
 InstList_AnimatedTilesObject_VerticalSpikes:
     dw $0008,AnimatedTiles_VerticalSpikes_0                              ;87816A;
     dw $0008,AnimatedTiles_VerticalSpikes_1                              ;87816E;
@@ -294,6 +366,8 @@ InstList_AnimatedTilesObject_VerticalSpikes:
     dw Instruction_AnimatedTilesObject_GotoY                             ;87817A;
     dw InstList_AnimatedTilesObject_VerticalSpikes                       ;87817C;
 
+
+;;; $817E: Instruction list - animated tiles object $8257 (horizontal spikes) ;;;
 InstList_AnimatedTilesObject_HorizontalSpikes:
     dw $0008,AnimatedTiles_HorizontalSpikes_0                            ;87817E;
     dw $0008,AnimatedTiles_HorizontalSpikes_1                            ;878182;
@@ -302,6 +376,8 @@ InstList_AnimatedTilesObject_HorizontalSpikes:
     dw Instruction_AnimatedTilesObject_GotoY                             ;87818E;
     dw InstList_AnimatedTilesObject_HorizontalSpikes                     ;878190;
 
+
+;;; $8192: Instruction list - animated tiles object $825D (Crateria lake) ;;;
 InstList_AnimatedTilesObject_CrateriaLake:
     dw $000A,AnimatedTiles_CrateriaLake_0                                ;878192;
     dw $000A,AnimatedTiles_CrateriaLake_1                                ;878196;
@@ -310,6 +386,8 @@ InstList_AnimatedTilesObject_CrateriaLake:
     dw Instruction_AnimatedTilesObject_GotoY                             ;8781A2;
     dw InstList_AnimatedTilesObject_CrateriaLake                         ;8781A4;
 
+
+;;; $81A6: Instruction list - animated tiles object $8263/$8269 (Crateria lava) ;;;
 UNUSED_InstList_AnimatedTilesObject_CrateriaLava_8781A6:
     dw $000A,UNUSED_AnimatedTiles_CrateriaLava_0_878B64                  ;8781A6;
     dw $000A,UNUSED_AnimatedTiles_CrateriaLava_1_878C24                  ;8781AA;
@@ -318,7 +396,11 @@ UNUSED_InstList_AnimatedTilesObject_CrateriaLava_8781A6:
     dw Instruction_AnimatedTilesObject_GotoY                             ;8781B6;
     dw UNUSED_InstList_AnimatedTilesObject_CrateriaLava_8781A6           ;8781B8;
 
+
+;;; $81BA: Instruction - wait until area boss is dead ;;;
 Instruction_AnimatedTilesObject_WaitUntilAreaBossIsDead:
+;; Parameters:
+;;     X: Animated tiles object index
     LDA.W #$0001                                                         ;8781BA;
     JSL.L CheckIfBossBitsForCurrentAreaMatchAnyBitsInA                   ;8781BD;
     BCS .return                                                          ;8781C1;
@@ -330,6 +412,7 @@ Instruction_AnimatedTilesObject_WaitUntilAreaBossIsDead:
     RTS                                                                  ;8781CA;
 
 
+;;; $81CB: Instruction list - animated tiles object $826F (Wrecked Ship screen) ;;;
 InstList_AnimatedTilesObject_WreckedShipScreen_0:
     dw Instruction_AnimatedTilesObject_WaitUntilAreaBossIsDead           ;8781CB;
 
@@ -341,6 +424,8 @@ InstList_AnimatedTilesObject_WreckedShipScreen_1:
     dw Instruction_AnimatedTilesObject_GotoY                             ;8781DD;
     dw InstList_AnimatedTilesObject_WreckedShipScreen_1                  ;8781DF;
 
+
+;;; $81E1: Instruction list - animated tiles object $8275 (Wrecked Ship treadmill - rightwards) ;;;
 InstList_AnimTilesObject_WreckedShipTreadmill_Rightwards_0:
     dw Instruction_AnimatedTilesObject_WaitUntilAreaBossIsDead           ;8781E1;
 
@@ -352,6 +437,8 @@ InstList_AnimTilesObject_WreckedShipTreadmill_Rightwards_1:
     dw Instruction_AnimatedTilesObject_GotoY                             ;8781F3;
     dw InstList_AnimTilesObject_WreckedShipTreadmill_Rightwards_1        ;8781F5;
 
+
+;;; $81F7: Instruction list - animated tiles object $827B (Wrecked Ship treadmill - leftwards) ;;;
 InstList_AnimTilesObject_WreckedShipTreadmill_Leftwards_0:
     dw Instruction_AnimatedTilesObject_WaitUntilAreaBossIsDead           ;8781F7;
 
@@ -363,6 +450,8 @@ InstList_AnimTilesObject_WreckedShipTreadmill_Leftwards_1:
     dw Instruction_AnimatedTilesObject_GotoY                             ;878209;
     dw InstList_AnimTilesObject_WreckedShipTreadmill_Leftwards_1         ;87820B;
 
+
+;;; $820D: Instruction list - animated tiles object $8281 (Brinstar mouth) ;;;
 InstList_AnimatedTilesObject_BrinstarMouth:
     dw $0010,AnimatedTiles_BrinstarMouth_0                               ;87820D;
     dw $0010,AnimatedTiles_BrinstarMouth_1                               ;878211;
@@ -371,6 +460,8 @@ InstList_AnimatedTilesObject_BrinstarMouth:
     dw Instruction_AnimatedTilesObject_GotoY                             ;87821D;
     dw InstList_AnimatedTilesObject_BrinstarMouth                        ;87821F;
 
+
+;;; $8221: Instruction list - animated tiles object $8287 (Maridia sand ceiling) ;;;
 InstList_AnimatedTilesObject_MaridiaSandCeiling:
     dw $000A,AnimatedTiles_MaridiaSandCeiling_0                          ;878221;
     dw $000A,AnimatedTiles_MaridiaSandCeiling_1                          ;878225;
@@ -379,6 +470,8 @@ InstList_AnimatedTilesObject_MaridiaSandCeiling:
     dw Instruction_AnimatedTilesObject_GotoY                             ;878231;
     dw InstList_AnimatedTilesObject_MaridiaSandCeiling                   ;878233;
 
+
+;;; $8235: Instruction list - animated tiles object $828D (Maridia sand falling) ;;;
 InstList_AnimatedTilesObject_MaridiaSandFalling:
     dw $000A,AnimatedTiles_MaridiaSandFalling_0                          ;878235;
     dw $000A,AnimatedTiles_MaridiaSandFalling_1                          ;878239;
@@ -387,9 +480,14 @@ InstList_AnimatedTilesObject_MaridiaSandFalling:
     dw Instruction_AnimatedTilesObject_GotoY                             ;878245;
     dw InstList_AnimatedTilesObject_MaridiaSandFalling                   ;878247;
 
+
+;;; $8249: Instruction list - animated tiles object $824B (nothing) ;;;
 InstList_AnimatedTilesObject_Nothing:
     dw Instruction_AnimatedTilesObject_Delete                            ;878249;
 
+
+;;; $824B: Animated tiles objects - FX ;;;
+; Instruction list, size, VRAM address
 AnimatedTilesObjects_FX_nothing:
     dw InstList_AnimatedTilesObject_Nothing                              ;87824B;
     dw $0000,$0000                                                       ;87824D;
@@ -440,6 +538,8 @@ AnimatedTilesObjects_FX_maridiaSandFalling:
     dw InstList_AnimatedTilesObject_MaridiaSandFalling                   ;87828D;
     dw $0020,$1020                                                       ;87828F;
 
+
+;;; $8293: Instruction list - animated tiles object $82AB (lava) ;;;
 InstList_AnimatedTilesObject_Lava:
     dw $000D,AnimatedTiles_Lava_0                                        ;878293;
     dw $000D,AnimatedTiles_Lava_1                                        ;878297;
@@ -449,10 +549,14 @@ InstList_AnimatedTilesObject_Lava:
     dw Instruction_AnimatedTilesObject_GotoY                             ;8782A7;
     dw InstList_AnimatedTilesObject_Lava                                 ;8782A9;
 
+
+;;; $82AB: Animated tiles object - lava ;;;
 AnimatedTilesObject_Lava:
     dw InstList_AnimatedTilesObject_Lava                                 ;8782AB;
     dw $0040,$4280                                                       ;8782AD;
 
+
+;;; $82B1: Instruction list - animated tiles object $82C9 (acid) ;;;
 InstList_AnimatedTilesObject_Acid:
     dw $000A,AnimatedTiles_Acid_0                                        ;8782B1;
     dw $000A,AnimatedTiles_Acid_1                                        ;8782B5;
@@ -462,10 +566,14 @@ InstList_AnimatedTilesObject_Acid:
     dw Instruction_AnimatedTilesObject_GotoY                             ;8782C5;
     dw InstList_AnimatedTilesObject_Acid                                 ;8782C7;
 
+
+;;; $82C9: Animated tiles object - acid ;;;
 AnimatedTilesObject_Acid:
     dw InstList_AnimatedTilesObject_Acid                                 ;8782C9;
     dw $0040,$4280                                                       ;8782CB;
 
+
+;;; $82CF: Instruction list - animated tiles object $82E7 (rain) ;;;
 InstList_AnimatedTilesObject_Rain:
     dw $000A,AnimatedTiles_Rain_0                                        ;8782CF;
     dw $000A,AnimatedTiles_Rain_1                                        ;8782D3;
@@ -475,10 +583,14 @@ InstList_AnimatedTilesObject_Rain:
     dw Instruction_AnimatedTilesObject_GotoY                             ;8782E3;
     dw InstList_AnimatedTilesObject_Rain                                 ;8782E5;
 
+
+;;; $82E7: Animated tiles object - rain ;;;
 AnimatedTilesObject_Rain:
     dw InstList_AnimatedTilesObject_Rain                                 ;8782E7;
     dw $0050,$4280                                                       ;8782E9;
 
+
+;;; $82ED: Instruction list - animated tiles object $82FD (spores) ;;;
 InstList_AnimatedTilesObject_Spores:
     dw $000A,AnimatedTiles_Spores_0                                      ;8782ED;
     dw $000A,AnimatedTiles_Spores_1                                      ;8782F1;
@@ -486,11 +598,19 @@ InstList_AnimatedTilesObject_Spores:
     dw Instruction_AnimatedTilesObject_GotoY                             ;8782F9;
     dw InstList_AnimatedTilesObject_Spores                               ;8782FB;
 
+
+;;; $82FD: Animated tiles object - spores ;;;
 AnimatedTilesObject_Spores:
     dw InstList_AnimatedTilesObject_Spores                               ;8782FD;
     dw $0030,$4280                                                       ;8782FF;
 
+
+;;; $8303: Instruction - go to [[Y] + 2] if any of the boss bits [[Y]] for area [[Y] + 1] are set ;;;
 Instruction_AnimTilesObject_GotoYIfAnyBossBitsYSetForAreaY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     PHX                                                                  ;878303;
     LDA.W $0001,Y                                                        ;878304;
     AND.W #$00FF                                                         ;878307;
@@ -504,14 +624,18 @@ Instruction_AnimTilesObject_GotoYIfAnyBossBitsYSetForAreaY:
     BEQ .notSet                                                          ;878318;
     JMP.W Instruction_AnimatedTilesObject_GotoY                          ;87831A;
 
-
   .notSet:
     INY                                                                  ;87831D;
     INY                                                                  ;87831E;
     RTS                                                                  ;87831F;
 
 
+;;; $8320: Instruction - spawn Tourian statue eye glow enemy projectile with parameter [[Y]] ;;;
 Instruction_AnimTilesObject_SpawnTourianStatueEyeGlowParamY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     PHY                                                                  ;878320;
     LDA.W $0000,Y                                                        ;878321;
     LDY.W #EnemyProjectile_TourianStatueEyeGlow                          ;878324;
@@ -522,7 +646,12 @@ Instruction_AnimTilesObject_SpawnTourianStatueEyeGlowParamY:
     RTS                                                                  ;87832E;
 
 
+;;; $832F: Instruction - spawn Tourian statue's soul enemy projectile with parameter [[Y]] ;;;
 Instruction_AnimTilesObject_SpawnTourianStatuesSoulParamY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     PHY                                                                  ;87832F;
     LDA.W $0000,Y                                                        ;878330;
     LDY.W #EnemyProjectile_TourianStatueSoul                             ;878333;
@@ -533,11 +662,15 @@ Instruction_AnimTilesObject_SpawnTourianStatuesSoulParamY:
     RTS                                                                  ;87833D;
 
 
+;;; $833E: Instruction - go to [[Y]] if Tourian statue is busy releasing lock ;;;
 Instruction_AnimatedTilesObject_GotoYIfTourianStatueBusy:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $1E6F                                                          ;87833E;
     BPL .notBusy                                                         ;878341;
     JMP.W Instruction_AnimatedTilesObject_GotoY                          ;878343;
-
 
   .notBusy:
     INY                                                                  ;878346;
@@ -545,7 +678,12 @@ Instruction_AnimatedTilesObject_GotoYIfTourianStatueBusy:
     RTS                                                                  ;878348;
 
 
+;;; $8349: Instruction - Tourian statue animation state |= [[Y]] ;;;
 Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;878349;
     TSB.W $1E6F                                                          ;87834C;
     INY                                                                  ;87834F;
@@ -553,7 +691,12 @@ Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY:
     RTS                                                                  ;878351;
 
 
+;;; $8352: Instruction - Tourian statue animation state &= ~[[Y]] ;;;
 Instruction_AnimatedTilesObject_TourianStatueResetAnimStateY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;878352;
     TRB.W $1E6F                                                          ;878355;
     INY                                                                  ;878358;
@@ -561,7 +704,12 @@ Instruction_AnimatedTilesObject_TourianStatueResetAnimStateY:
     RTS                                                                  ;87835A;
 
 
+;;; $835B: Instruction - clear 3 colours of palette data at $7E:C000 + [[Y]] ;;;
 Instruction_AnimatedTilesObject_Clear3ColorsOfPaletteData:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     PHX                                                                  ;87835B;
     LDX.W $0000,Y                                                        ;87835C;
     LDA.W #$0000                                                         ;87835F;
@@ -574,7 +722,12 @@ Instruction_AnimatedTilesObject_Clear3ColorsOfPaletteData:
     RTS                                                                  ;878371;
 
 
+;;; $8372: Instruction - spawn palette FX object [[Y]] ;;;
 Instruction_AnimatedTilesObject_SpawnPaletteFXObjectInY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     PHY                                                                  ;878372;
     LDA.W $0000,Y                                                        ;878373;
     TAY                                                                  ;878376;
@@ -585,7 +738,12 @@ Instruction_AnimatedTilesObject_SpawnPaletteFXObjectInY:
     RTS                                                                  ;87837E;
 
 
+;;; $837F: Instruction - write 8 colours of target palette data to $7E:C200 + [[Y]] ;;;
 Instruction_AnimatedTilesObject_Write8ColorsOfTargetPaletteD:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     PHX                                                                  ;87837F;
     PHY                                                                  ;878380;
     LDX.W $0000,Y                                                        ;878381;
@@ -606,10 +764,11 @@ Instruction_AnimatedTilesObject_Write8ColorsOfTargetPaletteD:
     INY                                                                  ;87839A;
     RTS                                                                  ;87839B;
 
-
   .palleteData:
     dw $3800,$7F58,$6ED5,$5A71,$49EE,$356A,$24E7,$1083                   ;87839C;
 
+
+;;; $83AC: Instruction list - animated tiles object $854C (Tourian statue - Phantoon) ;;;
 InstList_AnimatedTilesObject_TourianStatuePhantoon:
     dw Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY,$0001  ;8783AC;
     dw Instruction_AnimatedTilesObject_GotoYIfEventYSet,$0006            ;8783B0;
@@ -650,6 +809,8 @@ InstList_AnimatedTilesObject_TourianStatuePhantoon_grey:
     dw Instruction_AnimatedTilesObject_Write8ColorsOfTargetPaletteD,$0140 ;87840E;
     dw Instruction_AnimatedTilesObject_Delete                            ;878412;
 
+
+;;; $8414: Instruction list - animated tiles object $8552 (Tourian statue - Ridley) ;;;
 InstList_AnimatedTilesObject_TourianStatueRidley:
     dw Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY,$0002  ;878414;
     dw Instruction_AnimatedTilesObject_GotoYIfEventYSet,$0007            ;878418;
@@ -690,6 +851,8 @@ InstList_AnimatedTilesObject_TourianStatueRidley_grey:
     dw Instruction_AnimatedTilesObject_Write8ColorsOfTargetPaletteD,$0120 ;878476;
     dw Instruction_AnimatedTilesObject_Delete                            ;87847A;
 
+
+;;; $847C: Instruction list - animated tiles object $8558 (Tourian statue - Kraid) ;;;
 InstList_AnimatedTilesObject_TourianStatueKraid:
     dw Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY,$0004  ;87847C;
     dw Instruction_AnimatedTilesObject_GotoYIfEventYSet,$0009            ;878480;
@@ -730,6 +893,8 @@ InstList_AnimatedTilesObject_TourianStatueKraid_grey:
     dw Instruction_AnimatedTilesObject_Write8ColorsOfTargetPaletteD,$00E0 ;8784DE;
     dw Instruction_AnimatedTilesObject_Delete                            ;8784E2;
 
+
+;;; $84E4: Instruction list - animated tiles object $855E (Tourian statue - Draygon) ;;;
 InstList_AnimatedTilesObject_TourianStatueDraygon:
     dw Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY,$0008  ;8784E4;
     dw Instruction_AnimatedTilesObject_GotoYIfEventYSet,$0008            ;8784E8;
@@ -770,6 +935,8 @@ InstList_AnimatedTilesObject_TourianStatueDraygon_grey:
     dw Instruction_AnimatedTilesObject_Write8ColorsOfTargetPaletteD,$00C0 ;878546;
     dw Instruction_AnimatedTilesObject_Delete                            ;87854A;
 
+
+;;; $854C: Animated tiles objects - Tourian entrance statue ;;;
 AnimatedTilesObject_TourianStatuePhantoon:
     dw InstList_AnimatedTilesObject_TourianStatuePhantoon                ;87854C;
     dw $0080,$7800                                                       ;87854E;
@@ -786,6 +953,8 @@ AnimatedTilesObject_TourianStatueDraygon:
     dw InstList_AnimatedTilesObject_TourianStatueDraygon                 ;87855E;
     dw $0080,$0CA0                                                       ;878560;
 
+
+;;; $8564: Crateria lake ;;;
 AnimatedTiles_CrateriaLake_0:
 incbin "../data/AnimatedTiles_CrateriaLake_0.bin" ; $200 bytes
 
@@ -795,6 +964,8 @@ incbin "../data/AnimatedTiles_CrateriaLake_1.bin" ; $200 bytes
 AnimatedTiles_CrateriaLake_2:
 incbin "../data/AnimatedTiles_CrateriaLake_2.bin" ; $200 bytes
 
+
+;;; $8B64: Unused. Crateria lava ;;;
 UNUSED_AnimatedTiles_CrateriaLava_0_878B64:
 incbin "../data/UNUSED_AnimatedTiles_CrateriaLava_0.bin" ; $C0 bytes
 
@@ -807,6 +978,8 @@ incbin "../data/UNUSED_AnimatedTiles_CrateriaLava_2.bin" ; $C0 bytes
 UNUSED_AnimatedTiles_CrateriaLava_3_878DA4:
 incbin "../data/UNUSED_AnimatedTiles_CrateriaLava_3.bin" ; $C0 bytes
 
+
+;;; $8E64: Wrecked Ship treadmill ;;;
 AnimatedTiles_WreckedShipTreadmill_0:
 incbin "../data/AnimatedTiles_WreckedShipTreadmill_0.bin" ; $20 bytes
 
@@ -819,6 +992,8 @@ incbin "../data/AnimatedTiles_WreckedShipTreadmill_2.bin" ; $20 bytes
 AnimatedTiles_WreckedShipTreadmill_3:
 incbin "../data/AnimatedTiles_WreckedShipTreadmill_3.bin" ; $20 bytes
 
+
+;;; $8EE4: Wrecked Ship screen ;;;
 AnimatedTiles_WreckedShipScreen_0:
 incbin "../data/AnimatedTiles_WreckedShipScreen_0.bin" ; $80 bytes
 
@@ -828,11 +1003,15 @@ incbin "../data/AnimatedTiles_WreckedShipScreen_1.bin" ; $80 bytes
 AnimatedTiles_WreckedShipScreen_2:
 incbin "../data/AnimatedTiles_WreckedShipScreen_2.bin" ; $80 bytes
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9064: "X" ;;;
 UNUSED_AnimatedTiles_X_879064:
 incbin "../data/AnimatedTiles_X_879064.bin" ; $100 bytes
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $9164: Maridia sand falling ;;;
 AnimatedTiles_MaridiaSandFalling_0:
 incbin "../data/AnimatedTiles_MaridiaSandFalling_0.bin" ; $20 bytes
 
@@ -845,6 +1024,8 @@ incbin "../data/AnimatedTiles_MaridiaSandFalling_2.bin" ; $20 bytes
 AnimatedTiles_MaridiaSandFalling_3:
 incbin "../data/AnimatedTiles_MaridiaSandFalling_3.bin" ; $20 bytes
 
+
+;;; $91E4: Maridia sand ceiling ;;;
 AnimatedTiles_MaridiaSandCeiling_0:
 incbin "../data/AnimatedTiles_MaridiaSandCeiling_0.bin" ; $40 bytes
 
@@ -857,11 +1038,15 @@ incbin "../data/AnimatedTiles_MaridiaSandCeiling_2.bin" ; $40 bytes
 AnimatedTiles_MaridiaSandCeiling_3:
 incbin "../data/AnimatedTiles_MaridiaSandCeiling_3.bin" ; $40 bytes
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $92E4: "X" ;;;
 UNUSED_AnimatedTiles_X_8792E4:
 incbin "../data/AnimatedTiles_X_8792E4.bin" ; $80 bytes
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $9364: Phantoon statue ;;;
 AnimatedTiles_PhantoonStatue_0:
 incbin "../data/AnimatedTiles_PhantoonStatue_0.bin" ; $80 bytes
 
@@ -871,6 +1056,8 @@ incbin "../data/AnimatedTiles_PhantoonStatue_1.bin" ; $80 bytes
 AnimatedTiles_PhantoonStatue_2:
 incbin "../data/AnimatedTiles_PhantoonStatue_2.bin" ; $80 bytes
 
+
+;;; $94E4: Ridley statue ;;;
 AnimatedTiles_RidleyStatue_0:
 incbin "../data/AnimatedTiles_RidleyStatue_0.bin" ; $40 bytes
 
@@ -880,6 +1067,8 @@ incbin "../data/AnimatedTiles_RidleyStatue_1.bin" ; $40 bytes
 AnimatedTiles_RidleyStatue_2:
 incbin "../data/AnimatedTiles_RidleyStatue_2.bin" ; $40 bytes
 
+
+;;; $95A4: Draygon statue ;;;
 AnimatedTiles_DraygonStatue_0:
 incbin "../data/AnimatedTiles_DraygonStatue_0.bin" ; $80 bytes
 
@@ -889,6 +1078,8 @@ incbin "../data/AnimatedTiles_DraygonStatue_1.bin" ; $80 bytes
 AnimatedTiles_DraygonStatue_2:
 incbin "../data/AnimatedTiles_DraygonStatue_2.bin" ; $80 bytes
 
+
+;;; $9724: Kraid statue ;;;
 AnimatedTiles_KraidStatue_0:
 incbin "../data/AnimatedTiles_KraidStatue_0.bin" ; $40 bytes
 
@@ -898,18 +1089,28 @@ incbin "../data/AnimatedTiles_KraidStatue_1.bin" ; $40 bytes
 AnimatedTiles_KraidStatue_2:
 incbin "../data/AnimatedTiles_KraidStatue_2.bin" ; $40 bytes
 
+
+;;; $97E4: Phantoon statue - other ;;;
 AnimatedTiles_PhantoonStatue_Other:
 incbin "../data/AnimatedTiles_PhantoonStatue_Other.bin" ; $80 bytes
 
+
+;;; $9864: Ridley statue - other ;;;
 AnimatedTiles_RidleyStatue_Other:
 incbin "../data/AnimatedTiles_RidleyStatue_Other.bin" ; $40 bytes
 
+
+;;; $98A4: Draygon statue - other ;;;
 AnimatedTiles_DraygonStatue_Other:
 incbin "../data/AnimatedTiles_DraygonStatue_Other.bin" ; $40 bytes
 
+
+;;; $98E4: Kraid statue - other ;;;
 AnimatedTiles_KraidStatue_Other:
 incbin "../data/AnimatedTiles_KraidStatue_Other.bin" ; $80 bytes
 
+
+;;; $9964: Brinstar mouth ;;;
 AnimatedTiles_BrinstarMouth_0:
 incbin "../data/AnimatedTiles_BrinstarMouth_0.bin" ; $E0 bytes
 
@@ -919,6 +1120,8 @@ incbin "../data/AnimatedTiles_BrinstarMouth_1.bin" ; $E0 bytes
 AnimatedTiles_BrinstarMouth_2:
 incbin "../data/AnimatedTiles_BrinstarMouth_2.bin" ; $E0 bytes
 
+
+;;; $9C04: Vertical spikes ;;;
 AnimatedTiles_VerticalSpikes_0:
 incbin "../data/AnimatedTiles_VerticalSpikes_0.bin" ; $80 bytes
 
@@ -928,6 +1131,8 @@ incbin "../data/AnimatedTiles_VerticalSpikes_1.bin" ; $80 bytes
 AnimatedTiles_VerticalSpikes_2:
 incbin "../data/AnimatedTiles_VerticalSpikes_2.bin" ; $80 bytes
 
+
+;;; $9D84: Horizontal spikes ;;;
 AnimatedTiles_HorizontalSpikes_0:
 incbin "../data/AnimatedTiles_HorizontalSpikes_0.bin" ; $80 bytes
 
@@ -937,11 +1142,15 @@ incbin "../data/AnimatedTiles_HorizontalSpikes_1.bin" ; $80 bytes
 AnimatedTiles_HorizontalSpikes_2:
 incbin "../data/AnimatedTiles_HorizontalSpikes_2.bin" ; $80 bytes
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9F04: "X" ;;;
 UNUSED_AnimatedTiles_X_879F04:
 incbin "../data/AnimatedTiles_X_879F04.bin" ; $660 bytes
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $A564: Lava ;;;
 AnimatedTiles_Lava_0:
 incbin "../data/AnimatedTiles_Lava_0.bin" ; $40 bytes
 
@@ -957,6 +1166,8 @@ incbin "../data/AnimatedTiles_Lava_3.bin" ; $40 bytes
 AnimatedTiles_Lava_4:
 incbin "../data/AnimatedTiles_Lava_4.bin" ; $40 bytes
 
+
+;;; $A6A4: Acid ;;;
 AnimatedTiles_Acid_0:
 incbin "../data/AnimatedTiles_Acid_0.bin" ; $40 bytes
 
@@ -972,6 +1183,8 @@ incbin "../data/AnimatedTiles_Acid_3.bin" ; $40 bytes
 AnimatedTiles_Acid_4:
 incbin "../data/AnimatedTiles_Acid_4.bin" ; $40 bytes
 
+
+;;; $A7E4: Spores ;;;
 AnimatedTiles_Spores_0:
 incbin "../data/AnimatedTiles_Spores_0.bin" ; $30 bytes
 
@@ -981,6 +1194,8 @@ incbin "../data/AnimatedTiles_Spores_1.bin" ; $30 bytes
 AnimatedTiles_Spores_2:
 incbin "../data/AnimatedTiles_Spores_2.bin" ; $30 bytes
 
+
+;;; $A874: Rain ;;;
 AnimatedTiles_Rain_0:
 incbin "../data/AnimatedTiles_Rain_0.bin" ; $50 bytes
 
@@ -996,6 +1211,8 @@ incbin "../data/AnimatedTiles_Rain_3.bin" ; $50 bytes
 AnimatedTiles_Rain_4:
 incbin "../data/AnimatedTiles_Rain_4.bin" ; $50 bytes
 
+
+;;; $AA04: Zeros ;;;
 Freespace_Bank87_AA04:
 ; $360 zero bytes
     db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;87AA04;
@@ -1053,11 +1270,16 @@ Freespace_Bank87_AA04:
     db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;87AD44;
     db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;87AD54;
 
+
+;;; $AD64: Tiles - enemy $F03F (Tourian entrance statue ghost) ;;;
 Tiles_TourianStatuesSoul:
 incbin "../data/Tiles_TourianEntranceStatueGhost.bin" ; $600 bytes
 
+
+;;; $B364: Tiles - enemy $EFFF (Tourian entrance statue) ;;;
 Tiles_TourianStatue:
 incbin "../data/Tiles_TourianEntranceStatue.bin" ; $1600 bytes
+
 
 Freespace_Bank87_C964:                                                   ;87C964;
 ; $369C bytes
