@@ -444,7 +444,7 @@ Spawn_Hardcoded_PLM:
     LDA.W #$0000                                                         ;848433;
     STA.W $1DC7,X                                                        ;848436;
     STA.L $7EDF0C,X                                                      ;848439;
-    LDA.W #RTS_848469                                                    ;84843D;
+    LDA.W #.return                                                       ;84843D;
     STA.W $1CD7,X                                                        ;848440;
     LDA.W $0002,Y                                                        ;848443;
     STA.W $1D27,X                                                        ;848446;
@@ -464,7 +464,7 @@ Spawn_Hardcoded_PLM:
     RTL                                                                  ;848468;
 
 
-RTS_848469:
+  .return:
     RTS                                                                  ;848469;
 
 
@@ -520,7 +520,7 @@ Spawn_Room_PLM:
     TAY                                                                  ;8484B1;
     LDA.W #$0000                                                         ;8484B2;
     STA.L $7EDF0C,X                                                      ;8484B5;
-    LDA.W #RTS_8484E6                                                    ;8484B9;
+    LDA.W #.return                                                       ;8484B9;
     STA.W $1CD7,X                                                        ;8484BC;
     LDA.W $0002,Y                                                        ;8484BF;
     STA.W $1D27,X                                                        ;8484C2;
@@ -540,8 +540,7 @@ Spawn_Room_PLM:
     CLC                                                                  ;8484E4;
     RTL                                                                  ;8484E5;
 
-
-RTS_8484E6:
+  .return:
     RTS                                                                  ;8484E6;
 
 
@@ -575,7 +574,7 @@ Spawn_PLM_to_CurrentBlockIndex:;; Parameter:
     STA.W $1C87,X                                                        ;848501;
     TYA                                                                  ;848504;
     STA.W $1C37,X                                                        ;848505;
-    LDA.W #RTS_84853D                                                    ;848508;
+    LDA.W #.return                                                       ;848508;
     STA.W $1CD7,X                                                        ;84850B;
     LDA.W $0002,Y                                                        ;84850E;
     STA.W $1D27,X                                                        ;848511;
@@ -596,8 +595,7 @@ Spawn_PLM_to_CurrentBlockIndex:;; Parameter:
     PLB                                                                  ;84853B;
     RTL                                                                  ;84853C;
 
-
-RTS_84853D:
+  .return:
     RTS                                                                  ;84853D;
 
 
@@ -651,7 +649,7 @@ UNUSED_Spawn_Enemy_PLM_84853E:
     PLA                                                                  ;848579;
     STA.W $1C37,X                                                        ;84857A;
     TAY                                                                  ;84857D;
-    LDA.W #RTS_8485B3                                                    ;84857E;
+    LDA.W #.return                                                       ;84857E;
     STA.W $1CD7,X                                                        ;848581;
     LDA.W $0002,Y                                                        ;848584;
     STA.W $1D27,X                                                        ;848587;
@@ -671,11 +669,10 @@ UNUSED_Spawn_Enemy_PLM_84853E:
     PLY                                                                  ;8485B0;
     PLB                                                                  ;8485B1;
     RTL                                                                  ;8485B2;
-endif ; !FEATURE_KEEP_UNREFERENCED
 
-
-RTS_8485B3:
+  .return:
     RTS                                                                  ;8485B3;
+endif ; !FEATURE_KEEP_UNREFERENCED
 
 
 ;;; $85B4: PLM handler ;;;
@@ -892,11 +889,10 @@ Instruction_PLM_PreInstruction_inY:
 Instruction_PLM_ClearPreInstruction:
 ;; Parameters:
 ;;     X: PLM index
-    LDA.W #RTS_8486D0                                                    ;8486CA;
-    STA.W $1CD7,X                                                        ;8486CD; fallthrough to RTS_8486D0
+    LDA.W #.return                                                       ;8486CA;
+    STA.W $1CD7,X                                                        ;8486CD;
 
-
-RTS_8486D0:
+  .return:
     RTS                                                                  ;8486D0;
 
 

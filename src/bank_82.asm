@@ -14020,12 +14020,11 @@ GameOptionsMenu_A_ScrollControllerSettingsUp:
     SEC                                                                  ;82F287;
     SBC.W #$0002                                                         ;82F288;
     STA.B $B3                                                            ;82F28B;
-    BNE RTS_82F295                                                       ;82F28D;
+    BNE .return                                                          ;82F28D;
     LDA.W #$0007                                                         ;82F28F;
-    STA.W $0DE2                                                          ;82F292; fallthrough to RTS_82F295
+    STA.W $0DE2                                                          ;82F292;
 
-
-RTS_82F295:
+  .return:
     RTS                                                                  ;82F295;
 
 

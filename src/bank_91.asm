@@ -774,10 +774,10 @@ Instruction_DemoInputObject_PreInstructionInY:
 
 Instruction_DemoInputObject_ClearPreInstruction:
     REP #$30                                                             ;91843F;
-    LDA.W #RTS_918447                                                    ;918441;
-    STA.W $0A7A                                                          ;918444; fallthrough to RTS_918447
+    LDA.W #.return                                                       ;918441;
+    STA.W $0A7A                                                          ;918444;
 
-RTS_918447:
+  .return:
     RTS                                                                  ;918447;
 
 

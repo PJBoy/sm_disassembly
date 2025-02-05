@@ -6147,11 +6147,11 @@ Function_Rinka_Fire:
     AND.W #$00FF                                                         ;A2B824;
     STA.B $12                                                            ;A2B827;
     LDA.W #$0120                                                         ;A2B829;
-    JSL.L Math_86C26C                                                    ;A2B82C;
+    JSL.L CalculateXVelocityFromSpeedAndAngle                            ;A2B82C;
     LDX.W $0E54                                                          ;A2B830;
     STA.W $0FAA,X                                                        ;A2B833;
     LDA.W #$0120                                                         ;A2B836;
-    JSL.L Math_86C272                                                    ;A2B839;
+    JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A2B839;
     LDX.W $0E54                                                          ;A2B83D;
     STA.W $0FAC,X                                                        ;A2B840;
 

@@ -9914,10 +9914,10 @@ UpdateRidleysUSwoopSpeedAndAngle:
     AND.W #$00FF                                                         ;A6D84F;
     STA.B $12                                                            ;A6D852;
     LDA.L $7E7816                                                        ;A6D854;
-    JSL.L Math_86C26C                                                    ;A6D858;
+    JSL.L CalculateXVelocityFromSpeedAndAngle                            ;A6D858;
     STA.W $0FAA                                                          ;A6D85C;
     LDA.L $7E7816                                                        ;A6D85F;
-    JSL.L Math_86C272                                                    ;A6D863;
+    JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A6D863;
     STA.W $0FAC                                                          ;A6D867;
     RTS                                                                  ;A6D86A;
 
@@ -10997,7 +10997,7 @@ UNUSED_ProjectileCollision_A6E01B:
     LDA.W #$0300                                                         ;A6E054;
 
 +   PHA                                                                  ;A6E057;
-    JSL.L Math_86C26C                                                    ;A6E058;
+    JSL.L CalculateXVelocityFromSpeedAndAngle                            ;A6E058;
     STA.B $12                                                            ;A6E05C;
     LDX.W $0E54                                                          ;A6E05E;
     EOR.W $0FAA,X                                                        ;A6E061;
@@ -11008,7 +11008,7 @@ UNUSED_ProjectileCollision_A6E01B:
     STA.W $0FAA,X                                                        ;A6E06C;
 
 +   PLA                                                                  ;A6E06F;
-    JSL.L Math_86C272                                                    ;A6E070;
+    JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A6E070;
     STA.B $12                                                            ;A6E074;
     LDX.W $0E54                                                          ;A6E076;
     EOR.W $0FAC,X                                                        ;A6E079;
@@ -11759,10 +11759,10 @@ Instruction_Ridley_CalculateFireballAngleAndXYSpeeds:
 
   .merge:
     LDA.W #$0500                                                         ;A6E8EB;
-    JSL.L Math_86C26C                                                    ;A6E8EE;
+    JSL.L CalculateXVelocityFromSpeedAndAngle                            ;A6E8EE;
     STA.L $7E7832                                                        ;A6E8F2;
     LDA.W #$0500                                                         ;A6E8F6;
-    JSL.L Math_86C272                                                    ;A6E8F9;
+    JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A6E8F9;
     STA.L $7E7834                                                        ;A6E8FD;
     PLY                                                                  ;A6E901;
     PLX                                                                  ;A6E902;

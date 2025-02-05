@@ -1102,10 +1102,10 @@ Function_MotherBrainBody_ClearBottomMiddleTubes:
     JSL.L Spawn_Hardcoded_PLM                                            ;A98AD6;
     db $07,$07                                                           ;A98ADA;
     dw PLMEntries_clearMotherBrainsBottomMiddleTubes                     ;A98ADC;
-    LDA.W #RTS_A98AE4                                                    ;A98ADE;
-    STA.W $0FF0                                                          ;A98AE1; fallthrough to RTS_A98AE4
+    LDA.W #.return                                                       ;A98ADE;
+    STA.W $0FF0                                                          ;A98AE1;
 
-RTS_A98AE4:
+  .return:
     RTS                                                                  ;A98AE4;
 
 
@@ -6440,7 +6440,7 @@ MoveSamusTowardsWallDueToRainbowBeam:
     LDA.L $7E8022                                                        ;A9BBBD;
     STA.B $12                                                            ;A9BBC1;
     LDA.W #$1000                                                         ;A9BBC3;
-    JSL.L Math_86C272                                                    ;A9BBC6;
+    JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A9BBC6;
     JSR.W MoveSamusVerticallyTowardsCeilingFloor                         ;A9BBCA;
     CLC                                                                  ;A9BBCD;
 
@@ -9050,11 +9050,11 @@ UpdateBabyMetroidCutsceneSpeedAndAngle:
     AND.W #$00FF                                                         ;A9CF80;
     STA.B $12                                                            ;A9CF83;
     LDA.L $7E7816,X                                                      ;A9CF85;
-    JSL.L Math_86C26C                                                    ;A9CF89;
+    JSL.L CalculateXVelocityFromSpeedAndAngle                            ;A9CF89;
     LDX.W $0E54                                                          ;A9CF8D;
     STA.W $0FAA,X                                                        ;A9CF90;
     LDA.L $7E7816,X                                                      ;A9CF93;
-    JSL.L Math_86C272                                                    ;A9CF97;
+    JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A9CF97;
     LDX.W $0E54                                                          ;A9CF9B;
     STA.W $0FAC,X                                                        ;A9CF9E;
     RTS                                                                  ;A9CFA1;
@@ -13813,13 +13813,13 @@ EnemyTouch_BabyMetroid:
     STA.B $12                                                            ;A9F81E;
     LDA.W #$0040                                                         ;A9F820;
     PHA                                                                  ;A9F823;
-    JSL.L Math_86C26C                                                    ;A9F824;
+    JSL.L CalculateXVelocityFromSpeedAndAngle                            ;A9F824;
     LDX.W $0E54                                                          ;A9F828;
     CLC                                                                  ;A9F82B;
     ADC.W $0FAA,X                                                        ;A9F82C;
     STA.W $0FAA,X                                                        ;A9F82F;
     PLA                                                                  ;A9F832;
-    JSL.L Math_86C272                                                    ;A9F833;
+    JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A9F833;
     LDX.W $0E54                                                          ;A9F837;
     CLC                                                                  ;A9F83A;
     ADC.W $0FAC,X                                                        ;A9F83B;
@@ -13861,13 +13861,13 @@ EnemyShot_BabyMetroid:
     LDA.W #$00F0                                                         ;A9F884;
 
 +   PHA                                                                  ;A9F887;
-    JSL.L Math_86C26C                                                    ;A9F888;
+    JSL.L CalculateXVelocityFromSpeedAndAngle                            ;A9F888;
     LDX.W $0E54                                                          ;A9F88C;
     CLC                                                                  ;A9F88F;
     ADC.W $0FAA,X                                                        ;A9F890;
     STA.W $0FAA,X                                                        ;A9F893;
     PLA                                                                  ;A9F896;
-    JSL.L Math_86C272                                                    ;A9F897;
+    JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A9F897;
     LDX.W $0E54                                                          ;A9F89B;
     CLC                                                                  ;A9F89E;
     ADC.W $0FAC,X                                                        ;A9F89F;
