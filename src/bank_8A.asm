@@ -2,6 +2,7 @@
 org $8A8000
 
 
+;;; $8000: Lava tilemap ;;;
 FX_Layer3_Tilemaps_lava:
     dw $1850,$1851,$1852,$1850,$1851,$1852,$1850,$1851                   ;8A8000;
     dw $1852,$1850,$1851,$1852,$1850,$1851,$1852,$1850                   ;8A8010;
@@ -136,6 +137,8 @@ FX_Layer3_Tilemaps_lava:
     dw $1853,$1853,$1853,$1853,$1853,$1853,$1853,$1853                   ;8A8820;
     dw $1853,$1853,$1853,$1853,$1853,$1853,$1853,$1853                   ;8A8830;
 
+
+;;; $8840: Acid tilemap ;;;
 FX_Layer3_Tilemaps_acid:
     dw $0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E                   ;8A8840;
     dw $0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E                   ;8A8850;
@@ -270,6 +273,8 @@ FX_Layer3_Tilemaps_acid:
     dw $0053,$0053,$0053,$0053,$0053,$0053,$0053,$0053                   ;8A9060;
     dw $0053,$0053,$0053,$0053,$0053,$0053,$0053,$0053                   ;8A9070;
 
+
+;;; $9080: Water tilemap ;;;
 FX_Layer3_Tilemaps_water:
     dw $0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E                   ;8A9080;
     dw $0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E,$0C4E                   ;8A9090;
@@ -404,6 +409,8 @@ FX_Layer3_Tilemaps_water:
     dw $38AC,$38AD,$38AE,$38AF,$38AC,$38AD,$38AE,$38AF                   ;8A98A0;
     dw $38AC,$38AD,$38AE,$38AF,$38AC,$38AD,$38AE,$38AF                   ;8A98B0;
 
+
+;;; $98C0: Spores tilemap ;;;
 FX_Layer3_Tilemaps_spores:
     dw $184E,$184E,$184E,$184E,$184E,$184E,$184E,$184E                   ;8A98C0;
     dw $184E,$184E,$184E,$184E,$184E,$184E,$184E,$184E                   ;8A98D0;
@@ -538,6 +545,8 @@ FX_Layer3_Tilemaps_spores:
     dw $184E,$184E,$184E,$184E,$184E,$184E,$184E,$184E                   ;8AA0E0;
     dw $184E,$184E,$184E,$1852,$184E,$184E,$184E,$184E                   ;8AA0F0;
 
+
+;;; $A100: Rain tilemap ;;;
 FX_Layer3_Tilemaps_rain:
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;8AA100;
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;8AA110;
@@ -672,6 +681,8 @@ FX_Layer3_Tilemaps_rain:
     dw $184E,$184E,$184E,$1850,$184E,$184E,$184E,$3852                   ;8AA920;
     dw $184E,$184E,$184E,$184E,$1851,$184E,$184E,$1854                   ;8AA930;
 
+
+;;; $A940: Fog tilemap ;;;
 FX_Layer3_Tilemaps_fog:
     dw $184E,$184E,$184E,$184E,$184E,$184E,$184E,$184E                   ;8AA940;
     dw $184E,$184E,$184E,$184E,$184E,$184E,$184E,$184E                   ;8AA950;
@@ -806,6 +817,8 @@ FX_Layer3_Tilemaps_fog:
     dw $184E,$184E,$184E,$184E,$184E,$184E,$184E,$184E                   ;8AB160;
     dw $D88A,$D889,$D888,$D887,$988A,$184E,$184E,$184E                   ;8AB170;
 
+
+;;; $B180: Scrolling sky tilemaps ;;;
 ScrollingSky_Tilemaps_0:
     dw $147C,$147C,$147C,$147C,$147C,$147C,$147C,$147C                   ;8AB180;
     dw $147C,$147C,$147C,$147C,$147C,$147C,$147C,$147C                   ;8AB190;
@@ -1715,6 +1728,7 @@ ScrollingSky_Tilemaps_8AE180:
     dw $192C,$192D,$192E,$192F,$192E,$192F,$192C,$192D                   ;8AE950;
     dw $192E,$192F,$192E,$192F,$192C,$192D,$192E,$192F                   ;8AE960;
     dw $192E,$192F,$192C,$192D,$192E,$192F,$192E,$192F                   ;8AE970;
+
 
 Freespace_Bank8A_E980:                                                   ;8AE980;
 ; $1680 bytes

@@ -9923,9 +9923,13 @@ PreInst_BombTorizoHaze_ColorMathSubScnBackdropColor_Blue_1:
     dw Instruction_HDMAObject_GotoY                                      ;88DD70;
     dw PreInst_BombTorizoHaze_ColorMathSubScnBackdropColor_Blue_1        ;88DD72;
 
+
+;;; $DD74: HDMA table - nothing ;;;
 HDMATable_Nothing_88DD74:
     db $00                                                               ;88DD74;
 
+
+;;; $DD75: HDMA table - Bomb Torizo haze colour math subscreen backdrop colour - green and red components ;;;
 HDMATable_BombTorizoHaze_ColorMathSubScnBackColor_GreenRed:
     db $48,$20,$40                                                       ;88DD75;
     db $0A,$21,$41
@@ -9945,6 +9949,8 @@ HDMATable_BombTorizoHaze_ColorMathSubScnBackColor_GreenRed:
     db $0A,$25,$45
     db $00
 
+
+;;; $DDA6: HDMA table - Bomb Torizo haze colour math subscreen backdrop colour - blue component ;;;
 HDMATable_BombTorizoHaze_ColorMathSubScnBackdropColor_Blue:
     db $48,$80                                                           ;88DDA6;
     db $0A,$81
@@ -9964,6 +9970,8 @@ HDMATable_BombTorizoHaze_ColorMathSubScnBackdropColor_Blue:
     db $0A,$88
     db $00
 
+
+;;; $DDC7: FX type 2Ch: Ceres haze ;;;
 FXType_2C_CeresHaze:
     LDA.W #$0001                                                         ;88DDC7;
     JSL.L CheckIfBossBitsForCurrentAreaMatchAnyBitsInA                   ;88DDCA;
@@ -9973,7 +9981,6 @@ FXType_2C_CeresHaze:
     dw InstList_CeresHaze_ColorMathSubScnBackColor_RidleyAlive_0         ;88DDD6;
     RTL                                                                  ;88DDD8;
 
-
   .alive:
     JSL.L Spawn_HDMAObject                                               ;88DDD9;
     db $40,$32                                                           ;88DDDD;
@@ -9982,11 +9989,18 @@ FXType_2C_CeresHaze:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $DDE2: Unused. Set Ceres haze pre-instruction for no fade ;;;
 UNUSED_Set_CeresHaze_PreInstruction_for_NoFade_88DDE2:
     LDA.W #UNUSED_PreInst_CeresHaze_ColorMathSubScnBackdropColor_NoFade  ;88DDE2;
-    STA.W $18F0,X                                                        ;88DDE5;
+    STA.W $18F0,X                                                        ;88DDE5; fallthrough to UNUSED_PreInst_CeresHaze_ColorMathSubScnBackdropColor_NoFade
 
+
+;;; $DDE8: Unused. Pre-instruction - Ceres haze colour math subscreen backdrop colour - no fade ;;;
 UNUSED_PreInst_CeresHaze_ColorMathSubScnBackdropColor_NoFade:
+;; Parameters:
+;;     X: HDMA object index
+
+; I assume this routine was used before they realised they needed to handle door transition fade
     LDY.B #$20                                                           ;88DDE8;
     STY.B $74                                                            ;88DDEA;
     LDY.B #$40                                                           ;88DDEC;
@@ -10012,15 +10026,25 @@ UNUSED_PreInst_CeresHaze_ColorMathSubScnBackdropColor_NoFade:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $DE10: Pre-instruction - Ceres haze colour math subscreen backdrop colour - Ceres Ridley alive ;;;
 PreInst_CeresHaze_ColorMathSubScnBackdropColor_RidleyIsAlive:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W #$0080                                                         ;88DE10;
     BRA Setup_CeresHaze_ColorMathSubScnBackColor_HDMAObject_FadingIn     ;88DE13;
 
 
+;;; $DE15: Pre-instruction - Ceres haze colour math subscreen backdrop colour - Ceres Ridley dead ;;;
 PreInst_CeresHaze_ColorMathSubScnBackdropColor_RidleyIsDead:
-    LDA.W #$0020                                                         ;88DE15;
+;; Parameters:
+;;     X: HDMA object index
+    LDA.W #$0020                                                         ;88DE15; fallthrough to Setup_CeresHaze_ColorMathSubScnBackColor_HDMAObject_FadingIn
 
+
+;;; $DE18: Set up Ceres haze colour math subscreen backdrop colour HDMA object pre-instruction for fading in ;;;
 Setup_CeresHaze_ColorMathSubScnBackColor_HDMAObject_FadingIn:
+;; Parameters:
+;;     X: HDMA object index
     STA.W $1920,X                                                        ;88DE18;
     STZ.W $1914,X                                                        ;88DE1B;
     LDA.W $099C                                                          ;88DE1E;
@@ -10028,12 +10052,15 @@ Setup_CeresHaze_ColorMathSubScnBackColor_HDMAObject_FadingIn:
     BEQ .fadingIn                                                        ;88DE24;
     RTL                                                                  ;88DE26;
 
-
   .fadingIn:
     LDA.W #PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadingIn    ;88DE27;
     STA.W $18F0,X                                                        ;88DE2A;
 
+
+;;; $DE2D: Pre-instruction - Ceres haze colour math subscreen backdrop colour - fading in ;;;
 PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadingIn:
+;; Parameters:
+;;     X: HDMA object index
     LDY.B #$20                                                           ;88DE2D;
     STY.B $74                                                            ;88DE2F;
     LDY.B #$40                                                           ;88DE31;
@@ -10070,14 +10097,16 @@ PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadingIn:
     INC.W $1914,X                                                        ;88DE69;
     RTL                                                                  ;88DE6C;
 
-
   .done:
     LDA.W #PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadedIn     ;88DE6D;
     STA.W $18F0,X                                                        ;88DE70;
     RTL                                                                  ;88DE73;
 
 
+;;; $DE74: Pre-instruction - Ceres haze colour math subscreen backdrop colour - faded in ;;;
 PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadedIn:
+;; Parameters:
+;;     X: HDMA object index
     LDY.B #$20                                                           ;88DE74;
     STY.B $74                                                            ;88DE76;
     LDY.B #$40                                                           ;88DE78;
@@ -10091,14 +10120,16 @@ PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadedIn:
     BEQ .fadingOut                                                       ;88DE8C;
     RTL                                                                  ;88DE8E;
 
-
   .fadingOut:
     LDA.W #PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadingOut   ;88DE8F;
     STA.W $18F0,X                                                        ;88DE92;
     RTL                                                                  ;88DE95;
 
 
+;;; $DE96: Pre-instruction - Ceres haze colour math subscreen backdrop colour - fading out ;;;
 PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadingOut:
+;; Parameters:
+;;     X: HDMA object index
     LDY.B #$20                                                           ;88DE96;
     STY.B $74                                                            ;88DE98;
     LDY.B #$40                                                           ;88DE9A;
@@ -10137,6 +10168,7 @@ PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadingOut:
     RTL                                                                  ;88DED2;
 
 
+;;; $DED3: Instruction list - Ceres haze colour math subscreen backdrop colour - Ceres Ridley not dead ;;;
 InstList_CeresHaze_ColorMathSubScnBackColor_RidleyAlive_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88DED3;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88DED6;
@@ -10149,9 +10181,13 @@ InstList_CeresHaze_ColorMathSubScnBackColor_RidleyAlive_1:
     dw Instruction_HDMAObject_GotoY                                      ;88DEE6;
     dw InstList_CeresHaze_ColorMathSubScnBackColor_RidleyAlive_1         ;88DEE8;
 
+
+;;; $DEEA: Empty HDMA table ;;;
 Empty_HDMATable_88DEEA:
     db $00                                                               ;88DEEA;
 
+
+;;; $DEEB: Instruction list - Ceres haze colour math subscreen backdrop colour - Ceres Ridley dead ;;;
 InstList_CeresHaze_ColorMathSubScnBackColor_RidleyDead_0:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88DEEB;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88DEEE;
@@ -10164,9 +10200,13 @@ InstList_CeresHaze_ColorMathSubScnBackColor_RidleyDead_1:
     dw Instruction_HDMAObject_GotoY                                      ;88DEFE;
     dw InstList_CeresHaze_ColorMathSubScnBackColor_RidleyDead_1          ;88DF00;
 
+
+;;; $DF02: Empty HDMA table ;;;
 Empty_HDMATable_88DF02:
     db $00                                                               ;88DF02;
 
+
+;;; $DF03: Indirect HDMA table - Ceres haze colour math subscreen backdrop colour ;;;
 IndirectHDMATable_CeresHaze_ColorMathSubScnBackdropColor:
     db $40 : dw $9D00                                                    ;88DF03;
     db $08 : dw $9D01
@@ -10186,6 +10226,8 @@ IndirectHDMATable_CeresHaze_ColorMathSubScnBackdropColor:
     db $08 : dw $9D0F
     db $00
 
+
+;;; $DF34: Spawn Draygon main screen layers HDMA object ;;;
 Spawn_DraygonMainScreenLayers_HDMAObject:
     JSL.L Spawn_HDMAObject                                               ;88DF34;
     db $00,$2C                                                           ;88DF38;
@@ -10194,6 +10236,7 @@ Spawn_DraygonMainScreenLayers_HDMAObject:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $DF3D: Unused ;;;
 UNUSED_SpawnHDMAObject_88DF3D:
     JSL.L Spawn_HDMAObject                                               ;88DF3D;
     db $00,$2C                                                           ;88DF41;
@@ -10201,6 +10244,7 @@ UNUSED_SpawnHDMAObject_88DF3D:
     RTL                                                                  ;88DF45;
 
 
+;;; $DF46: Unused ;;;
 UNUSED_SpawnHDMAObject_88DF46:
     JSL.L Spawn_HDMAObject                                               ;88DF46;
     db $02,$12                                                           ;88DF4A;
@@ -10209,6 +10253,7 @@ UNUSED_SpawnHDMAObject_88DF46:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $DF4F: Instruction list - Draygon main screen layers - initial ;;;
 InstList_DraygonMainScreenLayers_Initial:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88DF4F;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $88             ;88DF52;
@@ -10217,23 +10262,33 @@ InstList_DraygonMainScreenLayers_Initial:
     dw Instruction_HDMAObject_PreInstructionInY                          ;88DF5A;
     dl PreInstruction_DraygonMainScreenLayers                            ;88DF5C;
 
+
+;;; $DF5F: Instruction list - Draygon main screen layers - Draygon is around middle of screen ;;;
 InstList_DraygonMainScreenLayers_DraygonAroundMiddle:
     dw $0001,HDMATable_DraygonMainScreenLayers_DraygonAroundMiddle       ;88DF5F;
     dw Instruction_HDMAObject_Sleep                                      ;88DF63;
 
+
+;;; $DF65: Instruction list - Draygon main screen layers - Draygon is around bottom of screen ;;;
 InstList_DraygonMainScreenLayers_DraygonAroundBottom:
     dw $0001,HDMATable_DraygonMainScreenLayers_DraygonAroundBottom       ;88DF65;
     dw Instruction_HDMAObject_Sleep                                      ;88DF69;
 
+
+;;; $DF6B: Instruction list - Draygon main screen layers - Draygon is around top of screen ;;;
 InstList_DraygonMainScreenLayers_DraygonAroundTop:
     dw $0001,HDMATable_DraygonMainScreenLayers_DraygonAroundTop          ;88DF6B;
     dw Instruction_HDMAObject_Sleep                                      ;88DF6F;
 
+
+;;; $DF71: Instruction list - Draygon main screen layers - Draygon is off-screen ;;;
 InstList_DraygonMainScreenLayers_DraygonOffScreen:
     dw $0001,HDMATable_DraygonMainScreenLayers_DraygonOffScreen          ;88DF71;
     dw Instruction_HDMAObject_Sleep                                      ;88DF75;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $DF77: Instruction list - unused BG3 Y scroll ;;;
 UNUSED_InstList_BG3_Yscroll_0_88DF77:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88DF77;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $88             ;88DF7A;
@@ -10249,19 +10304,26 @@ UNUSED_InstList_BG3_Yscroll_1_88DF87:
     dw Instruction_HDMAObject_Sleep                                      ;88DF8F;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $DF91: RTL ;;;
 RTL_88DF91:
     RTL                                                                  ;88DF91;
 
 
+;;; $DF92: RTL ;;;
 RTL_88DF92:
     RTL                                                                  ;88DF92;
 
 
+;;; $DF93: RTL ;;;
 RTL_88DF93:
     RTL                                                                  ;88DF93;
 
 
+;;; $DF94: Pre-instruction - Draygon main screen layers ;;;
 PreInstruction_DraygonMainScreenLayers:
+;; Parameters:
+;;     X: HDMA object index
     LDA.W $0F86                                                          ;88DF94;
     BIT.W #$0200                                                         ;88DF97;
     BNE .offScreen                                                       ;88DF9A;
@@ -10290,14 +10352,12 @@ PreInstruction_DraygonMainScreenLayers:
     BMI .aroundMiddle                                                    ;88DFCF;
     BRA .aroundBottom                                                    ;88DFD1;
 
-
   .aroundTop:
     LDA.W #$0001                                                         ;88DFD3;
     STA.W $18E4,X                                                        ;88DFD6;
     LDA.W #InstList_DraygonMainScreenLayers_DraygonAroundTop             ;88DFD9;
     STA.W $18CC,X                                                        ;88DFDC;
     RTL                                                                  ;88DFDF;
-
 
   .offScreen:
     LDA.W #$0001                                                         ;88DFE0;
@@ -10306,14 +10366,12 @@ PreInstruction_DraygonMainScreenLayers:
     STA.W $18CC,X                                                        ;88DFE9;
     RTL                                                                  ;88DFEC;
 
-
   .aroundBottom:
     LDA.W #$0001                                                         ;88DFED;
     STA.W $18E4,X                                                        ;88DFF0;
     LDA.W #InstList_DraygonMainScreenLayers_DraygonAroundBottom          ;88DFF3;
     STA.W $18CC,X                                                        ;88DFF6;
     RTL                                                                  ;88DFF9;
-
 
   .aroundMiddle:
     LDA.W #$0001                                                         ;88DFFA;
@@ -10323,35 +10381,46 @@ PreInstruction_DraygonMainScreenLayers:
     RTL                                                                  ;88E006;
 
 
+;;; $E007: HDMA table - Draygon main screen layers - Draygon is around middle of screen ;;;
 HDMATable_DraygonMainScreenLayers_DraygonAroundMiddle:                   ;88E007;
     db $1F,$04 ;         BG3
     db $81,$13 ; BG1/BG2/    sprites
     db $00
 
+
+;;; $E00C: HDMA table - Draygon main screen layers - Draygon is around bottom of screen ;;;
 HDMATable_DraygonMainScreenLayers_DraygonAroundBottom:                   ;88E00C;
     db $1F,$04 ;         BG3
     db $60,$11 ; BG1/        sprites
     db $81,$13 ; BG1/BG2/    sprites
     db $00
 
+
+;;; $E013: HDMA table - Draygon main screen layers - Draygon is around top of screen ;;;
 HDMATable_DraygonMainScreenLayers_DraygonAroundTop:                      ;88E013;
     db $1F,$04 ;         BG3
     db $40,$13 ; BG1/BG2/    sprites
     db $81,$11 ; BG1/        sprites
     db $00
 
+
+;;; $E01A: HDMA table - Draygon main screen layers - Draygon is off-screen ;;;
 HDMATable_DraygonMainScreenLayers_DraygonOffScreen:                      ;88E01A;
     db $1F,$04 ;         BG3
     db $81,$11 ; BG1/        sprites
     db $00
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $E01F: HDMA table - unused BG3 Y scroll ;;;
 UNUSED_HDMATable_BG3_Yscroll:
     db $40 : dw $0000                                                    ;88E01F;
     db $81 : dw $0020
     db $00
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $E026: Pre-instruction - varia suit pickup ;;;
 PreInstruction_VariaSuitPickup:
     PHP                                                                  ;88E026;
     REP #$30                                                             ;88E027;
@@ -10375,16 +10444,17 @@ PreInstruction_VariaSuitPickup:
     PLP                                                                  ;88E04C;
     RTL                                                                  ;88E04D;
 
-
   .pointers:
     dw SuitPickup_Stage0_LightBeamAppears                                ;88E04E;
     dw SuitPickup_Stage1_LightBeamWidens_Linear                          ;88E050;
-    dw SuitPickup_Stage3_LightBeamWidens_Curved                          ;88E052;
+    dw SuitPickup_Stage2_LightBeamWidens_Curved                          ;88E052;
     dw VariaSuitPickup_Stage3_GiveSamusVariaSuit                         ;88E054;
     dw SuitPickup_Stage4_LightBeamShrinks                                ;88E056;
     dw SuitPickup_Stage5_LightBeamDissipates                             ;88E058;
     dw VariaSuitPickup_Stage6                                            ;88E05A;
 
+
+;;; $E05C: Pre-instruction - gravity suit pickup ;;;
 PreInstruction_GravitySuitPickup:
     PHP                                                                  ;88E05C;
     REP #$30                                                             ;88E05D;
@@ -10408,17 +10478,20 @@ PreInstruction_GravitySuitPickup:
     PLP                                                                  ;88E082;
     RTL                                                                  ;88E083;
 
-
   .poitners:
     dw SuitPickup_Stage0_LightBeamAppears                                ;88E084;
     dw SuitPickup_Stage1_LightBeamWidens_Linear                          ;88E086;
-    dw SuitPickup_Stage3_LightBeamWidens_Curved                          ;88E088;
+    dw SuitPickup_Stage2_LightBeamWidens_Curved                          ;88E088;
     dw GravitySuitPickup_Stage3_GiveSamusGravitySuit                     ;88E08A;
     dw SuitPickup_Stage4_LightBeamShrinks                                ;88E08C;
     dw SuitPickup_Stage5_LightBeamDissipates                             ;88E08E;
     dw GravitySuitPickup_Stage6                                          ;88E090;
 
+
+;;; $E092: Suit pickup stage 0 - light beam appears ;;;
 SuitPickup_Stage0_LightBeamAppears:
+;; Returns:
+;;     Carry: Set. Not finished
     LDA.W $0DEE                                                          ;88E092;
     CLC                                                                  ;88E095;
     ADC.W #$0008                                                         ;88E096;
@@ -10458,11 +10531,14 @@ SuitPickup_Stage0_LightBeamAppears:
     SEC                                                                  ;88E0D3;
     RTS                                                                  ;88E0D4;
 
-
   .positions:
     db $78,$78                                                           ;88E0D5;
 
+
+;;; $E0D7: Suit pickup stage 1 - light beam widens - linear ;;;
 SuitPickup_Stage1_LightBeamWidens_Linear:
+;; Returns:
+;;     Carry: Set. Not finished
     SEP #$20                                                             ;88E0D7;
     LDA.W $0DEE                                                          ;88E0D9;
     SEC                                                                  ;88E0DC;
@@ -10494,7 +10570,8 @@ SuitPickup_Stage1_LightBeamWidens_Linear:
     RTS                                                                  ;88E112;
 
 
-SuitPickup_Stage3_LightBeamWidens_Curved:
+;;; $E113: Suit pickup stage 2 - light beam widens - curved ;;;
+SuitPickup_Stage2_LightBeamWidens_Curved:
     JSR.W AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToWhite    ;88E113;
     REP #$10                                                             ;88E116;
     SEP #$20                                                             ;88E118;
@@ -10514,7 +10591,6 @@ SuitPickup_Stage3_LightBeamWidens_Curved:
     STA.W $0DEF                                                          ;88E133;
     REP #$20                                                             ;88E136;
     BRA .loopSetup                                                       ;88E138;
-
 
   .lessThanZero:
     REP #$20                                                             ;88E13A;
@@ -10587,13 +10663,15 @@ SuitPickup_Stage3_LightBeamWidens_Curved:
     RTS                                                                  ;88E1B9;
 
 
+;;; $E1BA: Suit pickup stage 4 - light beam shrinks ;;;
 SuitPickup_Stage4_LightBeamShrinks:
+;; Returns:
+;;     Carry: Set. Not finished
     LDA.W $0DF2                                                          ;88E1BA;
     BIT.W #$FF00                                                         ;88E1BD;
     BNE .advanceToOrange                                                 ;88E1C0;
     JSR.W AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToOrange   ;88E1C2;
     BRA +                                                                ;88E1C5;
-
 
   .advanceToOrange:
     JSR.W AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToBlue     ;88E1C7;
@@ -10653,7 +10731,10 @@ SuitPickup_Stage4_LightBeamShrinks:
     RTS                                                                  ;88E22A;
 
 
+;;; $E22B: Suit pickup stage 5 - light beam dissipates ;;;
 SuitPickup_Stage5_LightBeamDissipates:
+;; Returns:
+;;     Carry: Set. Not finished
     SEP #$20                                                             ;88E22B;
     LDA.W $0DEE                                                          ;88E22D;
     CLC                                                                  ;88E230;
@@ -10677,11 +10758,20 @@ SuitPickup_Stage5_LightBeamDissipates:
     RTS                                                                  ;88E257;
 
 
+;;; $E258: Varia suit pickup stage 6 ;;;
 VariaSuitPickup_Stage6:
+;; Returns:
+;;     Carry: Clear. Finished
     LDA.W #$0003                                                         ;88E258;
-    JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;88E25B;
+    JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;88E25B; fallthrough to GravitySuitPickup_Stage6
 
+
+;;; $E25F: Gravity suit pickup stage 6 ;;;
 GravitySuitPickup_Stage6:
+;; Returns:
+;;     Carry: Clear. Finished
+
+; Called by varia suit pickup stage 6 too
     SEP #$20                                                             ;88E25F;
     LDA.B #$80                                                           ;88E261;
     STA.B $76                                                            ;88E263;
@@ -10717,6 +10807,7 @@ GravitySuitPickup_Stage6:
     RTS                                                                  ;88E2B3;
 
 
+;;; $E2B4: Advance suit pickup colour math subscreen backdrop transition to white ;;;
 AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToWhite:
     SEP #$20                                                             ;88E2B4;
     LDA.W $0DF0                                                          ;88E2B6;
@@ -10760,6 +10851,7 @@ AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToWhite:
     RTS                                                                  ;88E2F8;
 
 
+;;; $E2F9: Advance suit pickup colour math subscreen backdrop transition to orange ;;;
 AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToOrange:
     SEP #$20                                                             ;88E2F9;
     LDA.W $0DF0                                                          ;88E2FB;
@@ -10788,7 +10880,12 @@ AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToOrange:
     RTS                                                                  ;88E31F;
 
 
+;;; $E320: Varia suit pickup stage 3 - give Samus varia suit ;;;
 VariaSuitPickup_Stage3_GiveSamusVariaSuit:
+;; Returns:
+;;     Carry: Set. Not finished
+
+; This code is all redundant, as varia suit is already given to Samus by the PLM
     LDA.W $09A2                                                          ;88E320;
     ORA.W #$0001                                                         ;88E323;
     STA.W $09A2                                                          ;88E326;
@@ -10813,7 +10910,12 @@ VariaSuitPickup_Stage3_GiveSamusVariaSuit:
     RTS                                                                  ;88E360;
 
 
+;;; $E361: Gravity suit pickup stage 3 - give Samus gravity suit ;;;
 GravitySuitPickup_Stage3_GiveSamusGravitySuit:
+;; Returns:
+;;     Carry: Set. Not finished
+
+; This code is all redundant, as gravity suit is already given to Samus by the PLM
     LDA.W $09A2                                                          ;88E361;
     ORA.W #$0020                                                         ;88E364;
     STA.W $09A2                                                          ;88E367;
@@ -10838,6 +10940,7 @@ GravitySuitPickup_Stage3_GiveSamusGravitySuit:
     RTS                                                                  ;88E3A1;
 
 
+;;; $E3A2: Advance suit pickup colour math subscreen backdrop transition to blue ;;;
 AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToBlue:
     SEP #$20                                                             ;88E3A2;
     LDA.W $0DF0                                                          ;88E3A4;
@@ -10866,6 +10969,7 @@ AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToBlue:
     RTS                                                                  ;88E3C8;
 
 
+;;; $E3C9: Suit pickup light beam curve widths ;;;
 SuitPickup_LightBeam_CurveWidths:
 ; Indexed by scanline for upper half (`FFh - scanline` for lower half)
     db $01,$02,$03,$04,$05,$06,$07,$07,$08,$08,$09,$09,$0A,$0A,$0B,$0B   ;88E3C9;
@@ -10877,6 +10981,8 @@ SuitPickup_LightBeam_CurveWidths:
     db $17,$17,$17,$17,$17,$17,$17,$18,$18,$18,$18,$18,$18,$18,$18,$18   ;88E429;
     db $18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18   ;88E439;
 
+
+;;; $E449: Pre-instruction - Phantoon semi-transparency ;;;
 PreInstruction_PhantoonSemiTransparency:
     PHP                                                                  ;88E449;
     SEP #$10                                                             ;88E44A;
@@ -10889,12 +10995,10 @@ PreInstruction_PhantoonSemiTransparency:
     BEQ .delete                                                          ;88E45A;
     BRA .return                                                          ;88E45C;
 
-
   .BG2Disabled:
     LDA.W #$0004                                                         ;88E45E;
     STA.W $1986                                                          ;88E461;
     BRA .return                                                          ;88E464;
-
 
   .semiTransparent:
     LDA.W #$001A                                                         ;88E466;
@@ -10903,7 +11007,6 @@ PreInstruction_PhantoonSemiTransparency:
   .return:
     PLP                                                                  ;88E46C;
     RTL                                                                  ;88E46D;
-
 
   .delete:
     LDA.W #$0004                                                         ;88E46E;
@@ -10919,6 +11022,7 @@ PreInstruction_PhantoonSemiTransparency:
     RTL                                                                  ;88E486;
 
 
+;;; $E487: Spawn wavy Phantoon HDMA object ;;;
 Spawn_WavyPhantoon_HDMAObject:
     PHP                                                                  ;88E487;
     PHB                                                                  ;88E488;
@@ -10940,11 +11044,10 @@ Spawn_WavyPhantoon_HDMAObject:
     RTL                                                                  ;88E4A7;
 
 
+;;; $E4A8: Instruction list - wavy Phantoon BG2 X scroll ;;;
 InstList_WavyPhantoon_BG2_Xscroll:
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88E4A8;
-                                                                   ;88E4AA;
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88E4AB;
-                                                                   ;88E4AD;
     dw Instruction_Setup_WavyPhantoon                                    ;88E4AE;
     dw Instruction_HDMAObject_PreInstructionInY                          ;88E4B0;
     dl PreInstruction_WavyPhantoon                                       ;88E4B2;
@@ -10952,7 +11055,11 @@ InstList_WavyPhantoon_BG2_Xscroll:
     dw Instruction_HDMAObject_Sleep                                      ;88E4B9;
     dw Instruction_HDMAObject_Delete                                     ;88E4BB;
 
+
+;;; $E4BD: Instruction - set up wavy Phantoon ;;;
 Instruction_Setup_WavyPhantoon:
+;; Parameters:
+;;     X: HDMA object index
     PHP                                                                  ;88E4BD;
     REP #$30                                                             ;88E4BE;
     LDA.W $1034                                                          ;88E4C0;
@@ -10982,7 +11089,6 @@ Instruction_Setup_WavyPhantoon:
     STA.L $7E9018                                                        ;88E517;
     BRA .merge                                                           ;88E51B;
 
-
   .wavelengthDoubled:
     LDA.W #$00C0                                                         ;88E51D;
     STA.L $7E9000                                                        ;88E520;
@@ -11011,7 +11117,30 @@ Instruction_Setup_WavyPhantoon:
     RTS                                                                  ;88E566;
 
 
+;;; $E567: Pre-instruction - wavy Phantoon ;;;
 PreInstruction_WavyPhantoon:
+; If [wavy Phantoon mode] = 0:
+;     Delete HDMA object
+;     Return
+
+; Decrement HDMA object phase increase timer
+; If [HDMA object phase increase timer] = 0:
+;     HDMA object phase increase timer = 1
+;     HDMA object wave phase += [wavy Phantoon phase delta] * 2
+
+; If Phantoon wavelength doubled ([wavy Phantoon mode] & 1 = 0):
+;     n = 40h
+; Else:
+;     n = 20h
+
+; t_0 = [HDMA object wave phase] / 2
+; r = [wavy Phantoon amplitude] / 100h
+; For i in 0..n-1:
+;     t = t_0 + i * 80h / n
+;     $7E:9100 + i*2       = [BG2 X scroll] + r * sin(t * pi / 80h)
+;     $7E:9100 + n*2 + i*2 = [BG2 X scroll] - r * sin(t * pi / 80h)
+
+; This routine could be rewritten to be considerably faster by using the 8-bit sine table and using the 16-bit x 8-bit signed multiplication registers ($211B et al)
     PHP                                                                  ;88E567;
     REP #$30                                                             ;88E568;
     LDA.W $0FF4                                                          ;88E56A;
@@ -11026,7 +11155,6 @@ PreInstruction_WavyPhantoon:
     PLP                                                                  ;88E580;
     RTL                                                                  ;88E581;
 
-
   .phantoonEnabled:
     BIT.W #$0001                                                         ;88E582;
     BNE .doubledE593                                                     ;88E585;
@@ -11035,7 +11163,6 @@ PreInstruction_WavyPhantoon:
     LDA.W #$0040                                                         ;88E58C;
     STA.B $1E                                                            ;88E58F;
     BRA +                                                                ;88E591;
-
 
   .doubledE593:
     LDA.W #$0004                                                         ;88E593;
@@ -11068,7 +11195,6 @@ PreInstruction_WavyPhantoon:
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;88E5C6;
     BPL .positive                                                        ;88E5CA;
     JMP.W .negative                                                      ;88E5CC;
-
 
   .positive:
     STA.B $12                                                            ;88E5CF;
@@ -11136,7 +11262,6 @@ PreInstruction_WavyPhantoon:
     ADC.B $12                                                            ;88E64D;
     STA.L $7E9100,X                                                      ;88E64F;
     JMP.W .next                                                          ;88E653;
-
 
   .negative:
     EOR.W #$FFFF                                                         ;88E656;
@@ -11213,7 +11338,6 @@ PreInstruction_WavyPhantoon:
     BPL +                                                                ;88E6E2;
     JMP.W .loop                                                          ;88E6E4;
 
-
 +   LDA.W $0FF4                                                          ;88E6E7;
     BIT.W #$0001                                                         ;88E6EA;
     BNE .doubledE706                                                     ;88E6ED;
@@ -11230,7 +11354,6 @@ PreInstruction_WavyPhantoon:
     DEX                                                                  ;88E701;
     BPL .loopNotDoubled                                                  ;88E702;
     BRA .return                                                          ;88E704;
-
 
   .doubledE706:
     LDX.W #$007E                                                         ;88E706;
@@ -11252,15 +11375,19 @@ PreInstruction_WavyPhantoon:
     RTL                                                                  ;88E71D;
 
 
+;;; $E71E: Spawn Mother Brain rising HDMA object ;;;
 Spawn_MotherBrainRising_HDMAObject:
+; Prevent Mother Brain's legs (sprites) from appearing over the floor
     JSL.L Spawn_HDMAObject                                               ;88E71E;
     db $00,$2C                                                           ;88E722;
-    dw InstList_MotherBrainRising_MainScreenLayers                       ;88E724;
+    dw InstList_MotherBrainRising_MainScreenLayers                       ;88E724; fallthrough to RTL_88E726
+
 
 RTL_88E726:
     RTL                                                                  ;88E726;
 
 
+;;; $E727: Instruction list - Mother Brain rising main screen layers ;;;
 InstList_MotherBrainRising_MainScreenLayers:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88E727;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $88             ;88E72A;
@@ -11271,6 +11398,8 @@ InstList_MotherBrainRising_MainScreenLayers:
     dw $0001,HDMATable_MotherBrainRising_MainScreenLayers                ;88E737;
     dw Instruction_HDMAObject_Sleep                                      ;88E73B;
 
+
+;;; $E73D: HDMA table - Mother Brain rising main screen layers ;;;
 HDMATable_MotherBrainRising_MainScreenLayers:                            ;88E73D;
     db $20,$04 ;         BG3
     db $18,$15 ; BG1/    BG3/sprites
@@ -11279,6 +11408,8 @@ HDMATable_MotherBrainRising_MainScreenLayers:                            ;88E73D
     db $08,$05 ; BG1/    BG3
     db $00
 
+
+;;; $E748: Spawn Mother Brain rainbow beam HDMA object ;;;
 Spawn_MotherBrainRainbowBeam_HDMAObject:
     JSL.L Spawn_HDMAObject                                               ;88E748;
     db $41,$26                                                           ;88E74C;
@@ -11286,6 +11417,7 @@ Spawn_MotherBrainRainbowBeam_HDMAObject:
     RTL                                                                  ;88E750;
 
 
+;;; $E751: Instruction list - Mother Brain rainbow beam window 1 position ;;;
 InstList_MotherBrainRainbowBeam_Window1Position:
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88E751;
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88E754;
@@ -11296,6 +11428,8 @@ InstList_MotherBrainRainbowBeam_Window1Position:
     dw $0001,$9C00                                                       ;88E761;
     dw Instruction_HDMAObject_Sleep                                      ;88E765;
 
+
+;;; $E767: Initialise rainbow beam ;;;
 Initialise_Rainbow_Beam:
     PHP                                                                  ;88E767;
     SEP #$20                                                             ;88E768;
@@ -11334,6 +11468,7 @@ Initialise_Rainbow_Beam:
     RTL                                                                  ;88E7BB;
 
 
+;;; $E7BC: Pre-instruction - Mother Brain rainbow beam ;;;
 PreInstruction_MotherBrainRainbowBeam:
     PHP                                                                  ;88E7BC;
     REP #$30                                                             ;88E7BD;
@@ -11357,7 +11492,6 @@ PreInstruction_MotherBrainRainbowBeam:
     PLP                                                                  ;88E7E3;
     RTL                                                                  ;88E7E4;
 
-
   .delete:
     LDX.W $18B2                                                          ;88E7E5;
     STZ.W $18B4,X                                                        ;88E7E8;
@@ -11365,6 +11499,7 @@ PreInstruction_MotherBrainRainbowBeam:
     RTL                                                                  ;88E7EC;
 
 
+;;; $E7ED: Set rainbow beam colour math subscreen backdrop colour ;;;
 Set_RainbowBeam_ColorMathSubscreenBackdropColor:
     LDX.W $1914                                                          ;88E7ED;
     LDA.W .table,X                                                       ;88E7F0;
@@ -11372,7 +11507,6 @@ Set_RainbowBeam_ColorMathSubscreenBackdropColor:
     STZ.W $1914                                                          ;88E7F5;
     LDA.W .table                                                         ;88E7F8;
     BRA .setColor                                                        ;88E7FB;
-
 
   .notSet:
     INC.W $1914                                                          ;88E7FD;
@@ -11424,6 +11558,7 @@ Set_RainbowBeam_ColorMathSubscreenBackdropColor:
     dw $FFFF,$FFFF,$FFFF,$FFFF,$FFFF,$FFFF ; Excess terminators
 
 
+;;; $E8D9: Spawn morph ball eye beam HDMA object ;;;
 Spawn_MorphBallEyeBeam_HDMAObject:
     PHP                                                                  ;88E8D9;
     PHB                                                                  ;88E8DA;
@@ -11440,6 +11575,7 @@ Spawn_MorphBallEyeBeam_HDMAObject:
     RTL                                                                  ;88E8EB;
 
 
+;;; $E8EC: Instruction list - window 1 position - morph ball eye beam ;;;
 InstList_MorphBallEyeBeam_Window1Position:
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88E8EC;
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88E8EF;
@@ -11458,7 +11594,11 @@ InstList_MorphBallEyeBeam_Window1Position:
     dw Instruction_HDMAObject_Sleep                                      ;88E913;
     dw Instruction_HDMAObject_Delete                                     ;88E915;
 
+
+;;; $E917: Instruction - initialise morph ball eye beam HDMA ;;;
 Instruction_Initialise_MorphBallEyeBeam_HDMA:
+;; Parameters:
+;;     X: HDMA object index
     PHP                                                                  ;88E917;
     SEP #$20                                                             ;88E918;
     REP #$10                                                             ;88E91A;
@@ -11500,7 +11640,10 @@ Instruction_Initialise_MorphBallEyeBeam_HDMA:
     RTS                                                                  ;88E986;
 
 
+;;; $E987: Update morph ball eye beam HDMA data table and colour math subscreen backdrop colour ;;;
 Update_MorphBallEyeBeam_HDMATable_ColorMathSubScnBackColor:
+;; Parameters:
+;;     X: HDMA object index
     PHP                                                                  ;88E987;
     REP #$30                                                             ;88E988;
     PHX                                                                  ;88E98A;
@@ -11528,7 +11671,6 @@ Update_MorphBallEyeBeam_HDMATable_ColorMathSubScnBackColor:
     JSL.L Calc_Xray_HDMADataTable_OnScreen                               ;88E9B9;
     BRA .merge                                                           ;88E9BD;
 
-
   .offScreen:
     SEP #$20                                                             ;88E9BF;
     LDA.B #$7E                                                           ;88E9C1;
@@ -11552,7 +11694,10 @@ Update_MorphBallEyeBeam_HDMATable_ColorMathSubScnBackColor:
     RTS                                                                  ;88E9E5;
 
 
+;;; $E9E6: Pre-instruction - morph ball eye beam HDMA - beam is widening ;;;
 PreInstruction_MorphBallEyeBeam_BeamIsWidening:
+;; Parameters:
+;;     X: HDMA object index
     PHP                                                                  ;88E9E6;
     REP #$30                                                             ;88E9E7;
     LDA.W #$0010                                                         ;88E9E9;
@@ -11589,7 +11734,10 @@ PreInstruction_MorphBallEyeBeam_BeamIsWidening:
     RTL                                                                  ;88EA3B;
 
 
+;;; $EA3C: Pre-instruction - morph ball eye beam HDMA - full beam ;;;
 PreInstruction_MorphBallEyeBeamHDMA_FullBeam:
+;; Parameters:
+;;     X: HDMA object index
     PHP                                                                  ;88EA3C;
     REP #$30                                                             ;88EA3D;
     LDA.W #$0010                                                         ;88EA3F;
@@ -11605,7 +11753,6 @@ PreInstruction_MorphBallEyeBeamHDMA_FullBeam:
     STA.W $18E4,X                                                        ;88EA58;
     PLP                                                                  ;88EA5B;
     RTL                                                                  ;88EA5C;
-
 
   .update:
     JSR.W Update_MorphBallEyeBeam_HDMATable_ColorMathSubScnBackColor     ;88EA5D;
@@ -11654,7 +11801,11 @@ PreInstruction_MorphBallEyeBeamHDMA_FullBeam:
     db $2E,$4E,$80, $00
     db $2F,$4F,$80, $00
 
+
+;;; $EACB: Pre-instruction - morph ball eye beam HDMA - deactivate beam ;;;
 PreInstruction_MorphBallEyeBeamHDMA_DeactivateBeam:
+;; Parameters:
+;;     X: HDMA object index
     PHP                                                                  ;88EACB;
     REP #$30                                                             ;88EACC;
     LDA.W #$0010                                                         ;88EACE;
@@ -11695,7 +11846,6 @@ PreInstruction_MorphBallEyeBeamHDMA_DeactivateBeam:
     STA.W $18E4,X                                                        ;88EB24;
     BRA .return                                                          ;88EB27;
 
-
   .notDone:
     REP #$20                                                             ;88EB29;
     JSR.W Update_MorphBallEyeBeam_HDMATable_ColorMathSubScnBackColor     ;88EB2B;
@@ -11729,6 +11879,7 @@ PreInstruction_MorphBallEyeBeamHDMA_DeactivateBeam:
     RTL                                                                  ;88EB57;
 
 
+;;; $EB58: Spawn title sequence gradient HDMA objects ;;;
 Spawn_TitleSequenceGradient_HDMAObjects:
     PHP                                                                  ;88EB58;
     PHB                                                                  ;88EB59;
@@ -11748,6 +11899,7 @@ Spawn_TitleSequenceGradient_HDMAObjects:
     RTL                                                                  ;88EB72;
 
 
+;;; $EB73: Instruction list - colour math subscreen backdrop colour - title sequence gradient ;;;
 InstList_ColorMathSubScnBackdropColor_TitleSequenceGradient:
     dw Instruction_HDMAObject_HDMATableBank : db $7E                     ;88EB73;
     dw Instruction_Setup_TitleSequenceGradient_HDMATable                 ;88EB76;
@@ -11757,6 +11909,8 @@ InstList_ColorMathSubScnBackdropColor_TitleSequenceGradient:
     dw Instruction_HDMAObject_Sleep                                      ;88EB81;
     dw Instruction_HDMAObject_Delete                                     ;88EB83;
 
+
+;;; $EB85: Instruction list - colour math control register B - title sequence gradient ;;;
 InstList_ColorMathControlRegB_TitleSequenceGradient:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88EB85;
     dw Instruction_HDMAObject_PreInstructionInY                          ;88EB88;
@@ -11765,6 +11919,8 @@ InstList_ColorMathControlRegB_TitleSequenceGradient:
     dw Instruction_HDMAObject_Sleep                                      ;88EB91;
     dw Instruction_HDMAObject_Delete                                     ;88EB93;
 
+
+;;; $EB95: HDMA table - colour math control register B - title sequence gradient ;;;
 HDMATable_ColorMathControlRegB_TitleSequenceGradient:                    ;88EB95;
     db $40,$A1 ;\
     db $3A,$A1 ;} Enable subtractive colour math on BG1/backdrop
@@ -11772,6 +11928,8 @@ HDMATable_ColorMathControlRegB_TitleSequenceGradient:                    ;88EB95
     db $40,$31 ;} Enable colour math on BG1/sprites/backdrop
     db $00,$00
 
+
+;;; $EB9F: Instruction - set up title sequence gradient HDMA table ;;;
 Instruction_Setup_TitleSequenceGradient_HDMATable:
     PHP                                                                  ;88EB9F;
     SEP #$20                                                             ;88EBA0;
@@ -11786,6 +11944,7 @@ Instruction_Setup_TitleSequenceGradient_HDMATable:
     RTS                                                                  ;88EBAF;
 
 
+;;; $EBB0: Pre-instruction - colour math subscreen backdrop colour - title sequence gradient ;;;
 PreInst_ColorMathSubScnBackdropColor_TitleSequenceGradient:
     PHP                                                                  ;88EBB0;
     REP #$30                                                             ;88EBB1;
@@ -11806,6 +11965,7 @@ PreInst_ColorMathSubScnBackdropColor_TitleSequenceGradient:
     RTL                                                                  ;88EBD1;
 
 
+;;; $EBD2: Pre-instruction - colour math control register B - title sequence gradient ;;;
 PreInstruction_ColorMathControlRegB_TitleSequenceGradient:
     PHP                                                                  ;88EBD2;
     REP #$30                                                             ;88EBD3;
@@ -11825,6 +11985,7 @@ PreInstruction_ColorMathControlRegB_TitleSequenceGradient:
     RTL                                                                  ;88EBEF;
 
 
+;;; $EBF0: Spawn intro cutscene cross-fade HDMA object ;;;
 SpawnIntroCutsceneCrossFade_HDMAObject:
     PHP                                                                  ;88EBF0;
     PHB                                                                  ;88EBF1;
@@ -11841,6 +12002,7 @@ SpawnIntroCutsceneCrossFade_HDMAObject:
     RTL                                                                  ;88EC02;
 
 
+;;; $EC03: Instruction list - intro cutscene cross-fade ;;;
 InstList_IntroCutsceneCrossFade:
     dw Instruction_HDMAObject_HDMATableBank : db $88                     ;88EC03;
     dw Instruction_HDMAObject_PreInstructionInY                          ;88EC06;
@@ -11849,6 +12011,8 @@ InstList_IntroCutsceneCrossFade:
     dw Instruction_HDMAObject_Sleep                                      ;88EC0F;
     dw Instruction_HDMAObject_Delete                                     ;88EC11;
 
+
+;;; $EC13: HDMA table - intro cutscene cross-fade colour math control register B ;;;
 HDMATable_IntroCutsceneCrossFade_ColorMathControlRegB:                   ;88EC13;
     db $17,$02 ; Enable colour math on BG2
     db $60,$06 ; Enable colour math on BG2/BG3
@@ -11856,6 +12020,8 @@ HDMATable_IntroCutsceneCrossFade_ColorMathControlRegB:                   ;88EC13
     db $48,$02 ; Enable colour math on BG2
     db $00,$00
 
+
+;;; $EC1D: Pre-instruction - intro cutscene cross-fade ;;;
 PreInstruction_IntroCutsceneCrossFade:
     PHP                                                                  ;88EC1D;
     REP #$30                                                             ;88EC1E;
@@ -11875,7 +12041,9 @@ PreInstruction_IntroCutsceneCrossFade:
     RTL                                                                  ;88EC3A;
 
 
+;;; $EC3B: Spawn wavy Samus HDMA object ;;;
 Spawn_WavySamus_HDMAObject:
+; Almost identical to doubled wavelength wavy Phantoon
     PHP                                                                  ;88EC3B;
     PHB                                                                  ;88EC3C;
     PHK                                                                  ;88EC3D;
@@ -11911,6 +12079,7 @@ Spawn_WavySamus_HDMAObject:
     RTL                                                                  ;88EC89;
 
 
+;;; $EC8A: Instruction list - wavy Samus ;;;
 InstList_WavySamus:
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;88EC8A;
     dw Instruction_HDMAObject_HDMATableBank : db $00                     ;88EC8D;
@@ -11921,7 +12090,11 @@ InstList_WavySamus:
     dw Instruction_HDMAObject_Sleep                                      ;88EC9B;
     dw Instruction_HDMAObject_Delete                                     ;88EC9D;
 
+
+;;; $EC9F: Instruction - set up wavy Samus ;;;
 Instruction_Setup_WavySamus:
+;; Parameters:
+;;     X: HDMA object index
     PHP                                                                  ;88EC9F;
     REP #$30                                                             ;88ECA0;
     LDA.W #$FFFE                                                         ;88ECA2;
@@ -11934,6 +12107,7 @@ Instruction_Setup_WavySamus:
     RTS                                                                  ;88ECB5;
 
 
+;;; $ECB6: Pre-instruction - wavy Samus ;;;
 PreInstruction_WavySamus:
     PHP                                                                  ;88ECB6;
     REP #$30                                                             ;88ECB7;
@@ -11948,7 +12122,6 @@ PreInstruction_WavySamus:
     STA.W $18E4,X                                                        ;88ECCC;
     PLP                                                                  ;88ECCF;
     RTL                                                                  ;88ECD0;
-
 
   .enabled:
     LDA.W #$0004                                                         ;88ECD1;
@@ -11974,7 +12147,6 @@ PreInstruction_WavySamus:
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;88ECF9;
     BPL +                                                                ;88ECFD;
     JMP.W .negative                                                      ;88ECFF;
-
 
 +   STA.B $12                                                            ;88ED02;
     SEP #$20                                                             ;88ED04;
@@ -12041,7 +12213,6 @@ PreInstruction_WavySamus:
     ADC.B $12                                                            ;88ED80;
     STA.L $7E9800,X                                                      ;88ED82;
     JMP.W .next                                                          ;88ED86;
-
 
   .negative:
     EOR.W #$FFFF                                                         ;88ED89;
@@ -12117,7 +12288,6 @@ PreInstruction_WavySamus:
     CPX.B $1E                                                            ;88EE13;
     BPL +                                                                ;88EE15;
     JMP.W .loop                                                          ;88EE17;
-
 
 +   LDX.W #$007E                                                         ;88EE1A;
 
