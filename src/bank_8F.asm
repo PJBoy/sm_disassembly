@@ -2,7 +2,11 @@
 org $8F8000
 
 
+;;; $8000: PLM populations ;;;
 PLMPopulation_LandingSite_State0_1_2:                                    ;8F8000;
+; Room $91F8, state $9213: PLM
+; Room $91F8, state $922D: PLM
+; Room $91F8, state $9247: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $1E, $28, RoomPLM_LandingSite_0)
     %PLMPopEntry(PLMEntries_upwardsExtension, $1E, $27, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $1E, $26, $8000)
@@ -12,6 +16,7 @@ PLMPopulation_LandingSite_State0_1_2:                                    ;8F8000
     dw $0000
 
 PLMPopulation_LandingSite_State3:                                        ;8F8026;
+; Room $91F8, state $9261: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $1E, $28, RoomPLM_LandingSite_0)
     %PLMPopEntry(PLMEntries_upwardsExtension, $1E, $27, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $1E, $26, $8000)
@@ -23,10 +28,14 @@ PLMPopulation_LandingSite_State3:                                        ;8F8026
     dw $0000
 
 PLMPopulation_GauntletEntrance_State0_1:
+; Room $92B3, state $92C5: PLM
+; Room $92B3, state $92DF: PLM
     dw $0000                                                             ;8F8058;
 
-PLMPopulation_Parlor_State0_1:                                           ;8F8058;
-    %PLMPopEntry(PLMEntries_ScrollPLM, $3F, $0B, RoomPLM_Parlor_0)       ;8F805A;
+PLMPopulation_Parlor_State0_1:                                           ;8F805A;
+; Room $92FD, state $9314: PLM
+; Room $92FD, state $932E: PLM
+    %PLMPopEntry(PLMEntries_ScrollPLM, $3F, $0B, RoomPLM_Parlor_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $43, $0B, RoomPLM_Parlor_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $16, $0D, RoomPLM_Parlor_2)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $17, $0D, $8000)
@@ -56,7 +65,8 @@ PLMPopulation_Parlor_State0_1:                                           ;8F8058
     %PLMPopEntry(PLMEntries_redDoorFacingLeft, $1E, $36, $0005)
     dw $0000
 
-PLMPopulation_Parlor_State2:
+PLMPopulation_Parlor_State2:                                             ;8F8104;
+; Room $92FD, state $9348: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $3F, $0B, RoomPLM_Parlor_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $43, $0B, RoomPLM_Parlor_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $16, $0D, RoomPLM_Parlor_2)
@@ -93,14 +103,17 @@ PLMPopulation_Parlor_State2:
     dw $0000
 
 PLMPopulation_CrateriaPowerBombs:                                        ;8F81CC;
+; Room $93AA, state $93B7: PLM
     %PLMPopEntry(PLMEntries_PowerBombTank, $1D, $07, $0000)
     dw $0000
 
-PLMPopulation_CrateriaSave:
+PLMPopulation_CrateriaSave:                                              ;8F81D4;
+; Room $93D5, state $93E2: PLM
     %PLMPopEntry(PLMEntries_saveStation, $05, $0B, $0001)
     dw $0000
 
 PLMPopulation_WestOcean:                                                 ;8F81DC;
+; Room $93FE, state $940B: PLM
     %PLMPopEntry(PLMEntries_greyDoorFacingLeft, $5E, $36, $900B)
     %PLMPopEntry(PLMEntries_greenDoorFacingLeft, $7E, $46, $000C)
     %PLMPopEntry(PLMEntries_MissileTank, $02, $5B, $0001)
@@ -109,9 +122,11 @@ PLMPopulation_WestOcean:                                                 ;8F81DC
     dw $0000
 
 PLMPopulation_BowlingAlleyPath:
+; Room $9461, state $946E: PLM
     dw $0000                                                             ;8F81FC;
 
 PLMPopulation_CrateriaKihunter:                                          ;8F81FE;
+; Room $948C, state $9499: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $17, $0F, RoomPLM_CrateriaKihunter_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $18, $0F, $8000)
     %PLMPopEntry(PLMEntries_ScrollPLM, $16, $0C, RoomPLM_CrateriaKihunter_2)
@@ -123,43 +138,55 @@ PLMPopulation_CrateriaKihunter:                                          ;8F81FE
     dw $0000
 
 PLMPopulation_ForgottenHighwayElev:                                      ;8F8230;
+; Room $94CC, state $94D9: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $08, $0D, RoomPLM_ForgottenHighwayElev_0)
     dw $0000
 
 PLMPopulation_EastOcean:
+; Room $94FD, state $950A: PLM
     dw $0000                                                             ;8F8238;
 
 PLMPopulation_ForgottenHighwayKagos:
+; Room $9552, state $955F: PLM
     dw $0000                                                             ;8F823A;
 
 PLMPopulation_CrabMaze:
+; Room $957D, state $958A: PLM
     dw $0000                                                             ;8F823C;
 
 PLMPopulation_ForgottenHighwayElbow:                                     ;8F823E;
+; Room $95A8, state $95B5: PLM
     %PLMPopEntry(PLMEntries_yellowDoorFacingUp, $06, $0D, $000F)
     dw $0000
 
 PLMPopulation_CrateriaTube:
+; Room $95D4, state $95E1: PLM
     dw $0000                                                             ;8F8246;
 
 PLMPopulation_Moat:                                                      ;8F8248;
+; Room $95FF, state $960C: PLM
     %PLMPopEntry(PLMEntries_MissileTank, $0E, $09, $0004)
     dw $0000
 
 PLMPopulation_RedBinstarElev:                                            ;8F8250;
+; Room $962A, state $9637: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $08, $0D, RoomPLM_RedBinstarElev_0)
     %PLMPopEntry(PLMEntries_yellowDoorFacingDown, $06, $02, $0010)
     dw $0000
 
 PLMPopulation_GauntletETank:                                             ;8F825E;
+; Room $965B, state $9668: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $54, $0C, RoomPLM_GauntletETank_0)
     %PLMPopEntry(PLMEntries_EnergyTank, $53, $08, $0005)
     dw $0000
 
 PLMPopulation_PreBowling:
+; Room $968F, state $969C: PLM
     dw $0000                                                             ;8F826C;
 
 PLMPopulation_Climb_State_0_1:                                           ;8F826E;
+; Room $96BA, state $96D1: PLM
+; Room $96BA, state $96EB: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $1D, $05, RoomPLM_Climb_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $20, $05, RoomPLM_Climb_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $1D, $76, RoomPLM_Climb_2)
@@ -189,6 +216,7 @@ PLMPopulation_Climb_State_0_1:                                           ;8F826E
     dw $0000
 
 PLMPopulation_Climb_State2:                                              ;8F830C;
+; Room $96BA, state $9705: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $1D, $05, RoomPLM_Climb_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $20, $05, RoomPLM_Climb_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $1D, $76, RoomPLM_Climb_2)
@@ -220,6 +248,7 @@ PLMPopulation_Climb_State2:                                              ;8F830C
     dw $0000
 
 PLMPopulation_Pit_0:                                                     ;8F83B6;
+; Room $975C, state $976D: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $04, $0F, $97AB)
     %PLMPopEntry(PLMEntries_ScrollPLM, $06, $0F, RoomPLM_Pit_0_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $05, $09, RoomPLM_Pit_2)
@@ -227,6 +256,7 @@ PLMPopulation_Pit_0:                                                     ;8F83B6
     dw $0000
 
 PLMPopulation_Pit_1:                                                     ;8F83D0;
+; Room $975C, state $9787: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $04, $0F, RoomPLM_Pit_0_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $06, $0F, RoomPLM_Pit_0_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $05, $09, RoomPLM_Pit_2)
@@ -236,47 +266,61 @@ PLMPopulation_Pit_1:                                                     ;8F83D0
     dw $0000
 
 PLMPopulation_ElevToBlueBrinstar_State0_1:                               ;8F83F6;
+; Room $97B5, state $97C6: PLM
+; Room $97B5, state $97E0: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $07, $0D, RoomPLM_ElevToBlueBrinstar)
     dw $0000
 
 PLMPopulation_BombTorizo_State0_1:                                       ;8F83FE;
+; Room $9804, state $981B: PLM
+; Room $9804, state $9835: PLM
     %PLMPopEntry(PLMEntries_bombTorizoGreyDoor, $01, $06, $081B)
     %PLMPopEntry(PLMEntries_BombsChozoOrb, $0C, $0A, $0007)
     %PLMPopEntry(PLMEntries_BombTorizosCrumblingChozo, $0D, $0B, $0000)
     dw $0000
 
 PLMPopulation_BombTorizo_State2:                                         ;8F8412;
+; Room $9804, state $984F: PLM
     %PLMPopEntry(PLMEntries_SetsMetroidsClearedStatesWhenRequired, $08, $08, $000E)
     %PLMPopEntry(PLMEntries_greyDoorFacingRight, $01, $06, $181C)
     dw $0000
 
 PLMPopulation_Flyway_State0_1:                                           ;8F8420;
+; Room $9879, state $9890: PLM
+; Room $9879, state $98AA: PLM
     %PLMPopEntry(PLMEntries_redDoorFacingLeft, $2E, $06, $001D)
     dw $0000
 
-PLMPopulation_Flyway_State2:
+PLMPopulation_Flyway_State2:                                             ;8F8428;
+; Room $9879, state $98C4: PLM
     %PLMPopEntry(PLMEntries_SetsMetroidsClearedStatesWhenRequired, $08, $08, $0010)
     dw $0000
 
 PLMPopulation_PreMapFlyway:
+; Room $98E2, state $98EF: PLM
     dw $0000                                                             ;8F8430;
 
 PLMPopulation_Terminator:                                                ;8F8432;
+; Room $990D, state $991A: PLM
     %PLMPopEntry(PLMEntries_EnergyTank, $07, $2A, $0008)
     dw $0000
 
 PLMPopulation_GreenBrinstarElev:                                         ;8F843A;
+; Room $9938, state $9945: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $07, $0D, RoomPLM_GreenBrinstarElev_0)
     dw $0000
 
 PLMPopulation_LowerMushrooms:
+; Room $9969, state $9976: PLM
     dw $0000                                                             ;8F8442;
 
 PLMPopulation_CrateriaMap:                                               ;8F8444;
+; Room $9994, state $99A1: PLM
     %PLMPopEntry(PLMEntries_mapStation, $0B, $0A, $8000)
     dw $0000
 
 PLMPopulation_GreenPiratesShaft:                                         ;8F844C;
+; Room $99BD, state $99CA: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $07, $43, RoomPLM_GreenPiratesShaft_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $08, $43, $8000)
     %PLMPopEntry(PLMEntries_ScrollPLM, $09, $46, RoomPLM_GreenPiratesShaft_2)
@@ -287,23 +331,29 @@ PLMPopulation_GreenPiratesShaft:                                         ;8F844C
     dw $0000
 
 PLMPopulation_CrateriaSuper:                                             ;8F8478;
+; Room $99F9, state $9A06: PLM
     %PLMPopEntry(PLMEntries_SuperMissileTank, $3B, $09, $000B)
     dw $0000
 
 PLMPopulation_FinalMissileBombway_State0:
+; Room $9A44, state $9A56: PLM
     dw $0000                                                             ;8F8480;
 
 PLMPopulation_FinalMissileBombway_State1:
+; Room $9A44, state $9A70: PLM
     dw $0000                                                             ;8F8482;
 
 PLMPopulation_FinalMissile_State0:
+; Room $9A90, state $9AA2: PLM
     dw $0000                                                             ;8F8484;
 
 PLMPopulation_FinalMissile_State1:                                       ;8F8486;
+; Room $9A90, state $9ABC: PLM
     %PLMPopEntry(PLMEntries_MissileTank, $04, $07, $000C)
     dw $0000
 
-PLMPopulation_GreenBrinstarMainShaft:
+PLMPopulation_GreenBrinstarMainShaft:                                    ;8F848E;
+; Room $9AD9, state $9AE6: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $07, $71, RoomPLM_GreenBrinstarMainShaft_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $10, $A8, RoomPLM_GreenBrinstarMainShaft_1_2)
     %PLMPopEntry(PLMEntries_ScrollPLM, $21, $A8, RoomPLM_GreenBrinstarMainShaft_1_2)
@@ -318,17 +368,20 @@ PLMPopulation_GreenBrinstarMainShaft:
     %PLMPopEntry(PLMEntries_greyDoorFacingLeft, $0E, $76, $9024)
     dw $0000
 
-PLMPopulation_SporeSpawnSuper:
+PLMPopulation_SporeSpawnSuper:                                           ;8F84D8;
+; Room $9B5B, state $9B68: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $17, $0B, RoomPLM_SporeSpawnSuper_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $18, $0B, $8000)
     %PLMPopEntry(PLMEntries_SuperMissileTankChozoOrb, $1A, $87, $000E)
     dw $0000
 
-PLMPopulation_BrinstarPreMap:
+PLMPopulation_BrinstarPreMap:                                            ;8F84EC;
+; Room $9B9D, state $9BAA: PLM
     %PLMPopEntry(PLMEntries_greyDoorFacingLeft, $2E, $06, $0C25)
     dw $0000
 
 PLMPopulation_EarlySupers:                                               ;8F84F4;
+; Room $9BC8, state $9BD5: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $29, $0E, RoomPLM_EarlySupers_0_4)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $2A, $0E, $8000)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $2B, $0E, $8000)
@@ -340,6 +393,7 @@ PLMPopulation_EarlySupers:                                               ;8F84F4
     dw $0000
 
 PLMPopulation_BrinstarReserveTank:                                       ;8F8526;
+; Room $9C07, state $9C14: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $0E, $0B, RoomPLM_BrinstarReserveTank_0)
     %PLMPopEntry(PLMEntries_ReserveTankChozoOrb, $0B, $07, $0011)
     %PLMPopEntry(PLMEntries_MissileTankShotBlock, $1E, $07, $0012)
@@ -347,18 +401,22 @@ PLMPopulation_BrinstarReserveTank:                                       ;8F8526
     dw $0000
 
 PLMPopulation_GreenBrinstarMap:                                          ;8F8540;
+; Room $9C35, state $9C42: PLM
     %PLMPopEntry(PLMEntries_mapStation, $05, $0A, $8000)
     dw $0000
 
 PLMPopulation_GreenBrinstarFirefleas:                                    ;8F8548;
+; Room $9C5E, state $9C6B: PLM
     %PLMPopEntry(PLMEntries_greenDoorFacingRight, $01, $26, $0027)
     dw $0000
 
 PLMPopulation_GreenBrinstarMissileRefill:                                ;8F8550;
+; Room $9C89, state $9C96: PLM
     %PLMPopEntry(PLMEntries_missileStation, $04, $0A, $0014)
     dw $0000
 
 PLMPopulation_Dachora:                                                   ;8F8558;
+; Room $9CB3, state $9CC0: PLM
     %PLMPopEntry(PLMEntries_downwardsExtension, $45, $0E, $8000)
     %PLMPopEntry(PLMEntries_leftwardsExtension, $45, $0D, $8000)
     %PLMPopEntry(PLMEntries_leftwardsExtension, $46, $0D, $8000)
@@ -385,6 +443,7 @@ PLMPopulation_Dachora:                                                   ;8F8558
     dw $0000                                                             ;8F85E2;
 
 PLMPopulation_BigPink:                                                   ;8F8550;
+; Room $9D19, state $9D26: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $2E, $6B, RoomPLM_BigPink_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $20, $7A, RoomPLM_BigPink_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $3D, $57, RoomPLM_BigPink_2)
@@ -401,15 +460,19 @@ PLMPopulation_BigPink:                                                   ;8F8550
     dw $0000
 
 PLMPopulation_SporeSpawnKihunters:                                       ;8F8634;
+; Room $9D9C, state $9DA9: PLM
     %PLMPopEntry(PLMEntries_greyDoorFacingRight, $01, $06, $0C2C)
     %PLMPopEntry(PLMEntries_greyDoorFacingDown, $36, $03, $0C2D)
     dw $0000
 
 PLMPopulation_SporeSpawn_State0_1:                                       ;8F8642;
+; Room $9DC7, state $9DD9: PLM
+; Room $9DC7, state $9DF3: PLM
     %PLMPopEntry(PLMEntries_greenDoorFacingUp, $06, $2E, $002E)
     dw $0000
 
 PLMPopulation_PinkBrinstarPowerBombs:                                    ;8F864A;
+; Room $9E11, state $9E1E: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $08, $0E, RoomPLM_PinkBrinstarPowerBombs_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $08, $0B, RoomPLM_PinkBrinstarPowerBombs_1)
     %PLMPopEntry(PLMEntries_greyDoorFacingLeft, $1E, $06, $0C2F)
@@ -417,6 +480,7 @@ PLMPopulation_PinkBrinstarPowerBombs:                                    ;8F864A
     dw $0000
 
 PLMPopulation_GreenHillZone:                                             ;8F8664;
+; Room $9E52, state $9E5F: PLM
     %PLMPopEntry(PLMEntries_downwardsClosedGate, $64, $37, $8000)
     %PLMPopEntry(PLMEntries_downwardsGateShotblock, $64, $37, $0000)
     %PLMPopEntry(PLMEntries_yellowDoorFacingLeft, $1E, $06, $0030)
@@ -424,6 +488,7 @@ PLMPopulation_GreenHillZone:                                             ;8F8664
     dw $0000
 
 PLMPopulation_MorphBall_State0:                                          ;8F867E;
+; Room $9E9F, state $9EB1: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $1F, $2B, RoomPLM_MorphBall_0)
     %PLMPopEntry(PLMEntries_upwardsExtension, $08, $23, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $08, $24, $8000)
@@ -444,6 +509,7 @@ PLMPopulation_MorphBall_State0:                                          ;8F867E
     dw $0000
 
 PLMPopulation_MorphBall_State1:                                          ;8F86E6;
+; Room $9E9F, state $9ECB: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $1F, $2B, RoomPLM_MorphBall_0)
     %PLMPopEntry(PLMEntries_upwardsExtension, $08, $23, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $08, $24, $8000)
@@ -465,6 +531,8 @@ PLMPopulation_MorphBall_State1:                                          ;8F86E6
     dw $0000
 
 PLMPopulation_ConstructionZone_State0_1:                                 ;8F8754;
+; Room $9F11, state $9F23: PLM
+; Room $9F11, state $9F3D: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $04, $0B, RoomPLM_ConstructionZone_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $05, $0B, $8000)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $06, $0B, $8000)
@@ -477,6 +545,8 @@ PLMPopulation_ConstructionZone_State0_1:                                 ;8F8754
     dw $0000
 
 PLMPopulation_BlueBrinstarETank_State0_1:                                ;8F878C;
+; Room $9F64, state $9F76: PLM
+; Room $9F64, state $9F90: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $27, $0B, RoomPLM_BlueBrinstarETank_0_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $27, $26, RoomPLM_BlueBrinstarETank_0_1)
     %PLMPopEntry(PLMEntries_MissileTank, $2E, $29, $001C)
@@ -484,13 +554,16 @@ PLMPopulation_BlueBrinstarETank_State0_1:                                ;8F878C
     dw $0000
 
 PLMPopulation_NoobBridge:                                                ;8F87A6;
+; Room $9FBA, state $9FC7: PLM
     %PLMPopEntry(PLMEntries_greenDoorFacingLeft, $5E, $06, $0033)
     dw $0000
 
 PLMPopulation_GreenBrinstarBeetoms:
+; Room $9FE5, state $9FF2: PLM
     dw $0000                                                             ;8F87AE;
 
 PLMPopulation_EtecoonETank:                                              ;8F87B0;
+; Room $A011, state $A01E: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $07, $0B, RoomPLM_EtecoonETank_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $08, $0B, $8000)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $09, $0B, $8000)
@@ -499,18 +572,22 @@ PLMPopulation_EtecoonETank:                                              ;8F87B0
     dw $0000
 
 PLMPopulation_EtecoonSuper:                                              ;8F87D0;
+; Room $A051, state $A05E: PLM
     %PLMPopEntry(PLMEntries_SuperMissileTank, $07, $09, $001F)
     dw $0000
 
 PLMPopulation_DachoraEnergyRefill:                                       ;8F87D8;
+; Room $A07B, state $A088: PLM
     %PLMPopEntry(PLMEntries_energyStation, $04, $0A, $0020)
     dw $0000
 
 PLMPopulation_SporeSpawnFarming:                                         ;8F87E0;
+; Room $A0A4, state $A0B1: PLM
     %PLMPopEntry(PLMEntries_greenDoorFacingRight, $01, $06, $0035)
     dw $0000
 
 PLMPopulation_WaterwayETank:                                             ;8F87E8;
+; Room $A0D2, state $A0DF: PLM
     %PLMPopEntry(PLMEntries_upwardsExtension, $0F, $09, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $0F, $0A, $8000)
     %PLMPopEntry(PLMEntries_ScrollPLM, $0F, $0B, RoomPLM_WaterwayETank)
@@ -518,26 +595,31 @@ PLMPopulation_WaterwayETank:                                             ;8F87E8
     dw $0000
 
 PLMPopulation_FirstMissile:                                              ;8F8802;
+; Room $A107, state $A114: PLM
     %PLMPopEntry(PLMEntries_MissileTankChozoOrb, $04, $07, $0022)
     dw $0000
 
-PLMPopulation_PinkBrinstarHoppers:
+PLMPopulation_PinkBrinstarHoppers:                                       ;8F880A;
+; Room $A130, state $A13D: PLM
     %PLMPopEntry(PLMEntries_downwardsClosedGate, $11, $04, $8000)
     %PLMPopEntry(PLMEntries_downwardsGateShotblock, $11, $04, $0002)
     %PLMPopEntry(PLMEntries_greyDoorFacingRight, $01, $16, $0C36)
     %PLMPopEntry(PLMEntries_greyDoorFacingLeft, $1E, $16, $0C37)
     dw $0000
 
-PLMPopulation_HopperETank:
+PLMPopulation_HopperETank:                                               ;8F8824;
+; Room $A15B, state $A168: PLM
     %PLMPopEntry(PLMEntries_EnergyTank, $0B, $09, $0023)
     dw $0000
 
-PLMPopulation_BigPinkSaveRoom:
+PLMPopulation_BigPinkSaveRoom:                                           ;8F882C;
+; Room $A184, state $A191: PLM
     %PLMPopEntry(PLMEntries_saveStation, $05, $0B, $0000)
     dw $0000
 
 PLMPopulation_BlueBrinstarBoulders:
     dw $0000                                                             ;8F8834;
+; Room $A1AD, state $A1BA: PLM
 
 PLMPopulation_BillyMays:
     %PLMPopEntry(PLMEntries_MissileTank, $07, $09, $0024)
@@ -1219,7 +1301,9 @@ PLMPopulation_LNSave:                                                    ;8F918C
     dw $0000
 
 
+;;; $9194: Setup ASM: clear a few blocks after saving animals and shake screen ;;;
 SetupASM_ClearBlocksAfterSavingAnimalsAndShakeScreen:
+; Room $92FD, state $9348. Crateria mainstreet, Zebes timebomb set
     JSL.L Spawn_Hardcoded_PLM                                            ;8F9194;
     db $3D,$0B                                                           ;8F9198;
     dw PLMEntries_ClearCrateriaMainstreetEscapePassageIfCrittersEsc      ;8F919A;
@@ -1230,63 +1314,173 @@ SetupASM_ClearBlocksAfterSavingAnimalsAndShakeScreen:
     RTS                                                                  ;8F91A8;
 
 
+;;; $91A9: Setup ASM: auto-destroy the wall during escape ;;;
 SetupASM_AutoDestroyWallDuringEscape:
+; Room $96BA, state $9705. Old Tourian escape shaft, Zebes timebomb set
     JSL.L Spawn_Hardcoded_PLM                                            ;8F91A9;
     db $10,$87                                                           ;8F91AD;
     dw PLMEntries_MakeOldTourianEscapeShaftFakeWallExplode               ;8F91AF;
     RTS                                                                  ;8F91B1;
 
 
+;;; $91B2: Setup ASM: turn wall into shotblocks during escape ;;;
 SetupASM_TurnWallIntoShotBlocksDuringEscape:
+; Room $9804, state $984F. Bomb Torizo's room, Zebes timebomb set
     JSL.L Spawn_Hardcoded_PLM                                            ;8F91B2;
     db $0F,$0A                                                           ;8F91B6;
     dw PLMEntries_CrittersEscapeBlock                                    ;8F91B8;
     RTS                                                                  ;8F91BA;
 
 
+;;; $91BB: Setup ASM: RTS ;;;
 RTS_8F91BB:
+; Room $9879, state $98C4. Pre Bomb Torizo room, Zebes timebomb set
     RTS                                                                  ;8F91BB;
 
 
+;;; $91BC: Setup ASM: RTS ;;;
 RTS_8F91BC:
+; Room $92FD, state $932E. Crateria mainstreet, Zebes is awake
+; Room $96BA, state $96EB. Old Tourian escape shaft, Zebes is awake
+; Room $975C, state $9787. Old Mother Brain room, morph & missiles
+; Room $97B5, state $97E0. Crateria -> Blue Brinstar, morph & missiles
+; Room $9E9F, state $9ECB. Morph ball room, Zebes is awake
+; Room $9F11, state $9F3D. Pre-missiles room, Zebes is awake
+; Room $9F64, state $9F90. Ceiling E-tank room, Zebes is awake
     RTS                                                                  ;8F91BC;
 
 
+;;; $91BD: Setup ASM: shake the screen and call $88A7D8 during the escape ;;;
 SetupASM_ShakeScreenAndCall88A7D8DuringEscape:
+; Room $91F8, state $9261. Landing site, Zebes timebomb set
     LDA.W #$0006                                                         ;8F91BD;
     STA.W $183E                                                          ;8F91C0;
     LDA.W #$FFFF                                                         ;8F91C3;
-    STA.W $1840                                                          ;8F91C6;
+    STA.W $1840                                                          ;8F91C6; fallthrough to SetupASM_ScrollingSkyLand
 
+
+;;; $91C9: Setup ASM: scrolling sky land ;;;
 SetupASM_ScrollingSkyLand:
+; Room $91F8, state $9213. Landing site, power bombs
+; Room $91F8, state $922D. Landing site, Zebes is awake
+; Room $91F8, state $9247. Landing site, default
     JSL.L FXType_20_ScrollingSky_RoomSetupASM_ScrollingSkyLand           ;8F91C9;
     RTS                                                                  ;8F91CD;
 
 
+;;; $91CE: Setup ASM: scrolling sky ocean ;;;
 SetupASM_ScrollingSkyOcean:
+; Room $93FE. Wrecked Ship entrance
+; Room $94FD. Wrecked Ship back door
+; Room $968F. Orange zoomer room
     JSL.L RoomSetupASM_ScrollingSkyOcean                                 ;8F91CE;
-
-RTS_8F91D2:
     RTS                                                                  ;8F91D2;
 
 
+;;; $91D3: Setup ASM: RTS ;;;
 RTS_8F91D3:
+; Room $92B3. Gauntlet east
+; Room $92FD, state $9314. Crateria mainstreet, default
+; Room $93AA. Landing site power bomb room
+; Room $93D5. Crateria save room
+; Room $9461. Pre orange zoomer room
+; Room $948C. Pre moat room
+; Room $94CC. Crateria -> Maridia
+; Room $9552. East Crateria kago shaft
+; Room $957D. East Crateria maze
+; Room $95A8. East Crateria maze -> elevator room
+; Room $95D4. Crateria transport tube
+; Room $95FF. Moat
+; Room $962A. Crateria -> Red Brinstar
+; Room $965B. Gauntlet west
     RTS                                                                  ;8F91D3;
 
 
+;;; $91D4: Setup ASM: RTS ;;;
 RTS_8F91D4:
+; Room $96BA, state $96D1. Old Tourian escape shaft, default
+; Room $975C, state $976D. Old Mother Brain room, default
+; Room $97B5, state $97C6. Crateria -> Blue Brinstar, default
+; Room $9804, state $981B. Bomb Torizo's room, default
+; Room $9804, state $9835. Bomb Torizo's room, Bomb Torizo dead
+; Room $9879, state $9890. Pre Bomb Torizo room, default
+; Room $9879, state $98AA. Pre Bomb Torizo room, Bomb Torizo dead
+; Room $98E2. Crateria pre map room hall
+; Room $990D. Crateria diagonal room
+; Room $9938. Crateria -> Green Brinstar
+; Room $9969. West Crateria kago hall
+; Room $9994. Crateria map room
+; Room $99BD. Crateria space pirate shaft
+; Room $99F9. Old Tourian escape shaft parallel
+; Room $9A44. Crateria bomb hall
+; Room $9A90. Crateria missile room
     RTS                                                                  ;8F91D4;
 
 
+;;; $91D5: Setup ASM: RTS ;;;
 RTS_8F91D5:
+; Room $9AD9. Green Brinstar mainstreet
+; Room $9B5B. Spore Spawn's super missile shaft
+; Room $9B9D. Brinstar pre map room hall
+; Room $9BC8. Green Brinstar gate hater
+; Room $9C07. Green Brinstar reserve tank room
+; Room $9C35. Brinstar map room
+; Room $9C5E. Fireflea room
+; Room $9C89. Green Brinstar missile station
+; Room $9CB3. Dachora room
+; Room $9D19. Pink Brinstar mainstreet
+; Room $9D9C. Pre Spore Spawn room
+; Room $9DC7. Spore Spawn's room
+; Room $9E11. Pink Brinstar giant sidehopper room
+; Room $9E52. Brinstar diagonal room
+; Room $9E9F, state $9EB1. Morph ball room, default
+; Room $9F11, state $9F23. Pre-missiles room, default
+; Room $9F64, state $9F76. Ceiling E-tank room, default
+; Room $9FBA. n00b bridge
+; Room $9FE5. Brinstar false floor beetom room
+; Room $A011. Brinstar false floor hall
+; Room $A051. Brinstar post false floor super missile room
+; Room $A07B. Dachora energy station
+; Room $A0A4. Post Spore Spawn's super missile shaft hall
+; Room $A0D2. Pink Brinstar flooded hall
+; Room $A107. Blue Brinstar missile room
+; Room $A130. Pink Brinstar wave beam gate room
+; Room $A15B. Pink Brinstar energy tank room
+; Room $A184. Pink Brinstar save room
+; Room $A1AD. Blue Brinstar boulder room
+; Room $A1D8. Blue Brinstar double missile room
+; Room $A201. Green Brinstar save room
+; Room $A22A. Brinstar false floor save room
     RTS                                                                  ;8F91D5;
 
 
+;;; $91D6: Setup ASM: RTS ;;;
 RTS_8F91D6:
+; Room $A253. Red Brinstar mainstreet
+; Room $A293. Red Brinstar grapple ceiling spike floor hall
+; Room $A2CE. X-ray room
+; Room $A2F7. Red Brinstar damage boost hall
+; Room $A322. Red Brinstar -> Crateria
+; Room $A37C. Red Brinstar giant sidehopper room
+; Room $A3AE. Red Brinstar power bomb room
+; Room $A3DD. Red Brinstar skree hall
+; Room $A408. Pre spazer room
+; Room $A447. Spazer room
+; Room $A471. Kraid BTS madness
+; Room $A4B1. Kraid beetom room
+; Room $A4DA. Kraid kihunter room
+; Room $A521. Kraid space pirate hall
+; Room $A56B. Pre Kraid room
+; Room $A59F. Kraid's room
+; Room $A5ED. Crateria pre Tourian hall
+; Room $A618. Red Brinstar energy station
+; Room $A641. Kraid refill station
     RTS                                                                  ;8F91D6;
 
 
+;;; $91D7: Setup ASM: run statue unlocking animations ;;;
 SetupASM_RunStatueUnlockingAnimations:
+; Room $A66A. Tourian entrance
     LDY.W #AnimatedTilesObject_TourianStatueKraid                        ;8F91D7;
     JSL.L Spawn_AnimatedTilesObject                                      ;8F91DA;
     LDY.W #AnimatedTilesObject_TourianStatuePhantoon                     ;8F91DE;
@@ -1298,22 +1492,105 @@ SetupASM_RunStatueUnlockingAnimations:
     RTS                                                                  ;8F91F3;
 
 
+;;; $91F4: Setup ASM: RTS ;;;
 RTS_8F91F4:
+; Room $A6A1: Kraid's gauntlet entrance
+; Room $A6E2: Varia suit room
+; Room $A70B: Kraid's lair save room
+; Room $A734: Red Brinstar save room
     RTS                                                                  ;8F91F4;
 
 
+;;; $91F5: Setup ASM: RTS ;;;
 RTS_8F91F5:
+; Room $A75D. Norfair post gate hater hall
+; Room $A788. Norfair lava hidden missile room
+; Room $A7B3. Norfair hi-jump requirement room
+; Room $A7DE. Norfair mainstreet
+; Room $A815. Norfair gate hater
+; Room $A865. Norfair ice-beam testing room
+; Room $A890. Ice beam room
+; Room $A8B9. Pre ice beam room
+; Room $A8F8. Impossible to find missile shaft
+; Room $A923. Norfair diagonal room
     RTS                                                                  ;8F91F5;
 
 
+;;; $91F6: Setup ASM: RTS ;;;
 RTS_8F91F6:
+; Room $A98D. Crocomire's room
+; Room $A9E5. Hi jump room
+; Room $AA0E. Norfair grapple ceiling room
+; Room $AA41. Pre hi jump room
+; Room $AA82. Post Crocomire room
+; Room $AAB5. Post Crocomire save room
+; Room $AADE. Post Crocomire power bomb room
+; Room $AB07. Post Crocomire shaft
+; Room $AB3B. Post Crocomire oscillating spikey acid room
+; Room $AB64. Post Crocomire lake room
+; Room $AB8F. Huge jump room
+; Room $ABD2. Post Crocomire fune room
+; Room $AC00. Post grapple room
+; Room $AC2B. Grapple room
+; Room $AC5A. Norfair reserve tank room
+; Room $AC83. Bubble Norfair pre reserve tank room room
+; Room $ACB3. Bubble Norfair mainstreet
+; Room $ACF0. Speed booster lavaquake room
+; Room $AD1B. Speed booster room
+; Room $AD5E. Lower Norfair -> Bubble Norfair
+; Room $ADAD. Pre wave beam room
+; Room $ADDE. Wave beam room
+; Room $AE07. Norfair sinking tripper room
+; Room $AE32. Norfair funes and lavaquake room
+; Room $AE74. Pre Lower Norfair entrance shaft
+; Room $AEB4. Norfair multiviola and magdollite hall
+; Room $AEDF. Norfair pre pointless infinite enemy room shaft
+; Room $AF14. Lower Norfair entrance
+; Room $AF3F. Norfair -> Lower Norfair
+; Room $AF72. Norfair wave beam requirement room
+; Room $AFA3. Norfair long lavaquake hall
+; Room $AFCE. Boring near-Crocomire hall
+; Room $AFFB. Norfair grapple ceiling spike floor hall
+; Room $B026. Norfair energy station
+; Room $B051. Norfair pointless infinite enemy room
+; Room $B07A. Pre speed booster lavaquake room
+; Room $B0B4. Norfair map room
+; Room $B0DD. Bubble Norfair save room
+; Room $B106. Norfair speed blockade room
+; Room $B139. Norfair stone zoomer shaft
+; Room $B167. Norfair mainstreet save room
+; Room $B192. Pre Crocomire save room
     RTS                                                                  ;8F91F6;
 
 
+;;; $91F7: Setup ASM: RTS ;;;
 RTS_8F91F7:
+; Room $B1E5. Golden chozo room
+; Room $B236. Lower Norfair mainstreet
+; Room $B283. Golden Torizo's room
+; Room $B2DA. Post Golden Torizo ripper ii room
+; Room $B305. Lower Norfair energy station
+; Room $B32E. Ridley's room
+; Room $B37A. Pre Ridley room
+; Room $B3A5. Lower Norfair power bombable floor shaft
+; Room $B3E1. Unused room
+; Room $B40A. Lower Norfair big many levelled room
+; Room $B457. Lower Norfair breakable pillars hall
+; Room $B482. Lower Norfair holtz room
+; Room $B4AD. Lower Norfair wall jumping space pirates shaft
+; Room $B4E5. Lower Norfair big lavaquake room
+; Room $B510. Lower Norfair mini maze room
+; Room $B55A. Lower Norfair crumble walls power bomb room
+; Room $B585. Lower Norfair kihunter shaft
+; Room $B5D5. Lower Norfair super desgeega hall
+; Room $B62B. Elite pirate hall
+; Room $B656. Lower Norfair oscillating lava kihunter room
+; Room $B698. Ridley's energy tank
+; Room $B6C1. Screw attack room
     RTS                                                                  ;8F91F7;
 
 
+;;; $91F8: Room headers, scroll data, door lists ;;;
 RoomHeader_LandingSite:
     db $00,$00,$17,$00,$09,$05,$70,$A0,$00                               ;8F91F8;
     dw RoomDoors_LandingSite                                             ;8F9201;
@@ -6312,6 +6589,8 @@ RoomState_LNSave:
 RoomDoors_LNSave:
     dw Door_LNSave_0                                                     ;8FB768;
 
+
+;;; $B76A: Library backgrounds ;;;
 LibBG_ScrollingSky_Tilemaps_LandingSite:
     dw $000E                                                             ;8FB76A;
     dw Door_GauntletEntrance_0                                           ;8FB76C;
@@ -6488,7 +6767,10 @@ LibBG_Crateria_2_BrickRoom:
     dl $7E4000                                                           ;8FB968;
     dw $4C00,$0800,$0000                                                 ;8FB96B;
 
+
+;;; $B971: Door ASM: start Wrecked Ship treadmill west entrance ;;;
 DoorASM_StartWreckedShipTreadmillWestEntrance:
+; Room $93FE, door list index 1: Door
     LDY.W #AnimatedTilesObjects_FX_wreckedShipTreadmillRightwards        ;8FB971;
     JSL.L Spawn_AnimatedTilesObject                                      ;8FB974;
     JSL.L Spawn_Hardcoded_PLM                                            ;8FB978;
@@ -6497,7 +6779,12 @@ DoorASM_StartWreckedShipTreadmillWestEntrance:
     RTS                                                                  ;8FB980;
 
 
+;;; $B981: Door ASM: scroll 6 = green ;;;
 DoorASM_Scroll_6_Green:
+; Room $93D5, door list index 0: Door
+; Room $96BA, door list index 0: Door
+; Room $98E2, door list index 0: Door
+; Room $9A44, door list index 1: Door
     PHP                                                                  ;8FB981;
     SEP #$20                                                             ;8FB982;
     LDA.B #$02                                                           ;8FB984;
@@ -6506,7 +6793,9 @@ DoorASM_Scroll_6_Green:
     RTS                                                                  ;8FB98B;
 
 
+;;; $B98C: Door ASM: scroll 0 = blue ;;;
 DoorASM_Scroll_0_Blue:
+; Room $990D, door list index 1: Door
     PHP                                                                  ;8FB98C;
     SEP #$20                                                             ;8FB98D;
     LDA.B #$01                                                           ;8FB98F;
@@ -6515,7 +6804,9 @@ DoorASM_Scroll_0_Blue:
     RTS                                                                  ;8FB996;
 
 
+;;; $B997: Door ASM: scroll 13h = blue ;;;
 DoorASM_Scroll_13_Blue:
+; Room $92B3, door list index 0: Door
     PHP                                                                  ;8FB997;
     SEP #$20                                                             ;8FB998;
     LDA.B #$01                                                           ;8FB99A;
@@ -6524,7 +6815,9 @@ DoorASM_Scroll_13_Blue:
     RTS                                                                  ;8FB9A1;
 
 
+;;; $B9A2: Door ASM: scroll 4 = red, 8 = green ;;;
 DoorASM_Scroll_4_Red_8_Green:
+; Room $9879, door list index 0: Door
     PHP                                                                  ;8FB9A2;
     SEP #$20                                                             ;8FB9A3;
     LDA.B #$00                                                           ;8FB9A5;
@@ -6535,7 +6828,9 @@ DoorASM_Scroll_4_Red_8_Green:
     RTS                                                                  ;8FB9B2;
 
 
+;;; $B9B3: Door ASM: scroll 8..Bh = red ;;;
 DoorASM_Scroll_8_9_A_B_Red:
+; Room $93FE, door list index 4: Door
     PHP                                                                  ;8FB9B3;
     SEP #$20                                                             ;8FB9B4;
     LDA.B #$00                                                           ;8FB9B6;
@@ -6547,7 +6842,9 @@ DoorASM_Scroll_8_9_A_B_Red:
     RTS                                                                  ;8FB9C9;
 
 
+;;; $B9CA: Door ASM: scroll 2..5,Bh..Dh,11h = red ;;;
 DoorASM_Scroll_2_3_4_5_B_C_D_11_Red:
+; Room $968F, door list index 1: Door
     PHP                                                                  ;8FB9CA;
     SEP #$20                                                             ;8FB9CB;
     LDA.B #$00                                                           ;8FB9CD;
@@ -6563,7 +6860,9 @@ DoorASM_Scroll_2_3_4_5_B_C_D_11_Red:
     RTS                                                                  ;8FB9F0;
 
 
+;;; $B9F1: Door ASM: scroll 1,4 = green ;;;
 DoorASM_Scroll_1_4_Green:
+; Room $962A, door list index 0: Door
     PHP                                                                  ;8FB9F1;
     SEP #$20                                                             ;8FB9F2;
     LDA.B #$02                                                           ;8FB9F4;
@@ -6573,7 +6872,9 @@ DoorASM_Scroll_1_4_Green:
     RTS                                                                  ;8FB9FF;
 
 
+;;; $BA00: Door ASM: scroll 2 = blue ;;;
 DoorASM_Scroll_2_Blue:
+; Room $99F9, door list index 0: Door
     PHP                                                                  ;8FBA00;
     SEP #$20                                                             ;8FBA01;
     LDA.B #$01                                                           ;8FBA03;
@@ -6582,7 +6883,9 @@ DoorASM_Scroll_2_Blue:
     RTS                                                                  ;8FBA0A;
 
 
+;;; $BA0B: Door ASM: scroll 17h = blue ;;;
 DoorASM_Scroll_17_Blue:
+; Room $99F9, door list index 1: Door
     PHP                                                                  ;8FBA0B;
     SEP #$20                                                             ;8FBA0C;
     LDA.B #$01                                                           ;8FBA0E;
@@ -6591,7 +6894,9 @@ DoorASM_Scroll_17_Blue:
     RTS                                                                  ;8FBA15;
 
 
+;;; $BA16: Door ASM: scroll 4 = blue ;;;
 DoorASM_Scroll_4_Blue:
+; Room $99BD, door list index 3: Door
     PHP                                                                  ;8FBA16;
     SEP #$20                                                             ;8FBA17;
     LDA.B #$01                                                           ;8FBA19;
@@ -6600,7 +6905,9 @@ DoorASM_Scroll_4_Blue:
     RTS                                                                  ;8FBA20;
 
 
+;;; $BA21: Door ASM: scroll 6 = green ;;;
 DoorASM_Scroll_6_Green_duplicate:
+; Room $962A, door list index 1: Door
     PHP                                                                  ;8FBA21;
     SEP #$20                                                             ;8FBA22;
     LDA.B #$02                                                           ;8FBA24;
@@ -6609,7 +6916,9 @@ DoorASM_Scroll_6_Green_duplicate:
     RTS                                                                  ;8FBA2B;
 
 
+;;; $BA2C: Door ASM: scroll 3 = green ;;;
 DoorASM_Scroll_3_Green:
+; Room $965B, door list index 1: Door
     PHP                                                                  ;8FBA2C;
     SEP #$20                                                             ;8FBA2D;
     LDA.B #$02                                                           ;8FBA2F;
@@ -6618,6 +6927,7 @@ DoorASM_Scroll_3_Green:
     RTS                                                                  ;8FBA36;
 
 
+;;; $BA37: Library background ;;;
 LibBG_Brinstar_6_Vertical_GlowPatches:                                   ;8FBA37;
     dw $0004 : dl Background_Brinstar_6_Vertical_GlowPatches : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
@@ -6789,7 +7099,11 @@ LibBG_Brinstar_7_BlueGridBlocks:                                         ;8FBCEC
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
+
+;;; $BD07: Door ASM: scroll 18h,1Ch = green ;;;
 DoorASM_Scroll_18_1C_Green:
+; Room $9AD9, door list index 8: Door
+; Room $9FE5, door list index 0: Door
     PHP                                                                  ;8FBD07;
     SEP #$20                                                             ;8FBD08;
     LDA.B #$02                                                           ;8FBD0A;
@@ -6799,7 +7113,10 @@ DoorASM_Scroll_18_1C_Green:
     RTS                                                                  ;8FBD15;
 
 
+;;; $BD16: Door ASM: scroll 5..6 = blue ;;;
 DoorASM_Scroll_5_6_Blue:
+; Room $9AD9, door list index 7: Door
+; Room $A22A, door list index 0: Door
     PHP                                                                  ;8FBD16;
     SEP #$20                                                             ;8FBD17;
     LDA.B #$01                                                           ;8FBD19;
@@ -6809,7 +7126,11 @@ DoorASM_Scroll_5_6_Blue:
     RTS                                                                  ;8FBD24;
 
 
+;;; $BD25: Door ASM: scroll 1Dh = blue ;;;
 DoorASM_Scroll_1D_Blue:
+; Room $9938, door list index 1: Door
+; Room $9AD9, door list index 6: Door
+; Room $A011, door list index 2: Door
     PHP                                                                  ;8FBD25;
     SEP #$20                                                             ;8FBD26;
     LDA.B #$01                                                           ;8FBD28;
@@ -6818,7 +7139,9 @@ DoorASM_Scroll_1D_Blue:
     RTS                                                                  ;8FBD2F;
 
 
+;;; $BD30: Door ASM: scroll 2..3 = green ;;;
 DoorASM_Scroll_2_3_Green:
+; Room $9D19, door list index 2: Door
     PHP                                                                  ;8FBD30;
     SEP #$20                                                             ;8FBD31;
     LDA.B #$02                                                           ;8FBD33;
@@ -6828,7 +7151,9 @@ DoorASM_Scroll_2_3_Green:
     RTS                                                                  ;8FBD3E;
 
 
+;;; $BD3F: Door ASM: scroll 0 = red, 1 = green ;;;
 DoorASM_Scroll_0_Red_1_Green:
+; Room $A471, door list index 0: Door
     PHP                                                                  ;8FBD3F;
     SEP #$20                                                             ;8FBD40;
     LDA.B #$00                                                           ;8FBD42;
@@ -6839,7 +7164,9 @@ DoorASM_Scroll_0_Red_1_Green:
     RTS                                                                  ;8FBD4F;
 
 
+;;; $BD50: Door ASM: scroll Bh = green ;;;
 DoorASM_Scroll_B_Green:
+; Room $A07B, door list index 0: Door
     PHP                                                                  ;8FBD50;
     SEP #$20                                                             ;8FBD51;
     LDA.B #$02                                                           ;8FBD53;
@@ -6848,7 +7175,9 @@ DoorASM_Scroll_B_Green:
     RTS                                                                  ;8FBD5A;
 
 
+;;; $BD5B: Door ASM: scroll 1Ch = red, 1Dh = blue ;;;
 DoorASM_Scroll_Scroll_1C_Red_1D_Blue:
+; Room $A0A4, door list index 1: Door
     PHP                                                                  ;8FBD5B;
     SEP #$20                                                             ;8FBD5C;
     LDA.B #$00                                                           ;8FBD5E;
@@ -6859,7 +7188,9 @@ DoorASM_Scroll_Scroll_1C_Red_1D_Blue:
     RTS                                                                  ;8FBD6B;
 
 
+;;; $BD6C: Door ASM: scroll 4 = red ;;;
 DoorASM_Scroll_4_Red:
+; Room $9AD9, door list index 5: Door
     PHP                                                                  ;8FBD6C;
     SEP #$20                                                             ;8FBD6D;
     LDA.B #$00                                                           ;8FBD6F;
@@ -6868,7 +7199,9 @@ DoorASM_Scroll_4_Red:
     RTS                                                                  ;8FBD76;
 
 
+;;; $BD77: Door ASM: scroll 20h,24h..25h = green ;;;
 DoorASM_Scroll_20_24_25_Green:
+; Room $A0D2, door list index 0: Door
     PHP                                                                  ;8FBD77;
     SEP #$20                                                             ;8FBD78;
     LDA.B #$02                                                           ;8FBD7A;
@@ -6879,7 +7212,9 @@ DoorASM_Scroll_20_24_25_Green:
     RTS                                                                  ;8FBD89;
 
 
+;;; $BD8A: Door ASM: scroll 2 = blue ;;;
 DoorASM_Scroll_2_Blue_duplicate:
+; Room $A1AD, door list index 0: Door
     PHP                                                                  ;8FBD8A;
     SEP #$20                                                             ;8FBD8B;
     LDA.B #$01                                                           ;8FBD8D;
@@ -6888,7 +7223,9 @@ DoorASM_Scroll_2_Blue_duplicate:
     RTS                                                                  ;8FBD94;
 
 
+;;; $BD95: Door ASM: scroll 0 = green ;;;
 DoorASM_Scroll_0_Green:
+; Room $A641, door list index 0: Door
     PHP                                                                  ;8FBD95;
     SEP #$20                                                             ;8FBD96;
     LDA.B #$02                                                           ;8FBD98;
@@ -6897,7 +7234,10 @@ DoorASM_Scroll_0_Green:
     RTS                                                                  ;8FBD9F;
 
 
+;;; $BDA0: Door ASM: scroll 6..7 = green ;;;
 DoorASM_Scroll_6_7_Green:
+; Room $A3DD, door list index 0: Door
+; Room $A618, door list index 0: Door
     PHP                                                                  ;8FBDA0;
     SEP #$20                                                             ;8FBDA1;
     LDA.B #$02                                                           ;8FBDA3;
@@ -6907,7 +7247,9 @@ DoorASM_Scroll_6_7_Green:
     RTS                                                                  ;8FBDAE;
 
 
+;;; $BDAF: Door ASM: scroll 1 = blue, 2 = red ;;;
 DoorASM_Scroll_1_Blue_2_Red:
+; Room $A322, door list index 4: Door
     PHP                                                                  ;8FBDAF;
     SEP #$20                                                             ;8FBDB0;
     LDA.B #$01                                                           ;8FBDB2;
@@ -6918,7 +7260,9 @@ DoorASM_Scroll_1_Blue_2_Red:
     RTS                                                                  ;8FBDBF;
 
 
+;;; $BDC0: Door ASM: scroll 1 = blue, 3 = red ;;;
 DoorASM_Scroll_1_Blue_3_Red:
+; Room $9DC7, door list index 0: Door
     PHP                                                                  ;8FBDC0;
     SEP #$20                                                             ;8FBDC1;
     LDA.B #$01                                                           ;8FBDC3;
@@ -6929,7 +7273,9 @@ DoorASM_Scroll_1_Blue_3_Red:
     RTS                                                                  ;8FBDD0;
 
 
+;;; $BDD1: Door ASM: scroll 0 = red, 4 = blue ;;;
 DoorASM_Scroll_0_Red_4_Blue:
+; Room $A6A1, door list index 0: Door
     PHP                                                                  ;8FBDD1;
     SEP #$20                                                             ;8FBDD2;
     LDA.B #$00                                                           ;8FBDD4;
@@ -6940,7 +7286,9 @@ DoorASM_Scroll_0_Red_4_Blue:
     RTS                                                                  ;8FBDE1;
 
 
+;;; $BDE2: Door ASM: scroll 2..3 = blue ;;;
 DoorASM_Scroll_2_3_Blue:
+; Room $A70B, door list index 0: Door
     PHP                                                                  ;8FBDE2;
     SEP #$20                                                             ;8FBDE3;
     LDA.B #$01                                                           ;8FBDE5;
@@ -6950,7 +7298,9 @@ DoorASM_Scroll_2_3_Blue:
     RTS                                                                  ;8FBDF0;
 
 
+;;; $BDF1: Door ASM: scroll 0..1 = green ;;;
 DoorASM_Scroll_0_1_Green:
+; Room $A447, door list index 0: Door
     PHP                                                                  ;8FBDF1;
     SEP #$20                                                             ;8FBDF2;
     LDA.B #$02                                                           ;8FBDF4;
@@ -6960,7 +7310,9 @@ DoorASM_Scroll_0_1_Green:
     RTS                                                                  ;8FBDFF;
 
 
+;;; $BE00: Door ASM: scroll 1 = green ;;;
 DoorASM_Scroll_1_Green:
+; Room $A184, door list index 0: Door
     PHP                                                                  ;8FBE00;
     SEP #$20                                                             ;8FBE01;
     LDA.B #$02                                                           ;8FBE03;
@@ -6969,7 +7321,9 @@ DoorASM_Scroll_1_Green:
     RTS                                                                  ;8FBE0A;
 
 
+;;; $BE0B: Door ASM: scroll Fh,12h = green ;;;
 DoorASM_Scroll_F_12_Green:
+; Room $A3AE, door list index 0: Door
     PHP                                                                  ;8FBE0B;
     SEP #$20                                                             ;8FBE0C;
     LDA.B #$02                                                           ;8FBE0E;
@@ -6979,7 +7333,9 @@ DoorASM_Scroll_F_12_Green:
     RTS                                                                  ;8FBE19;
 
 
+;;; $BE1A: Door ASM: scroll 6 = green ;;;
 DoorASM_Scroll_6_Green_duplicate_again:
+; Room $A2F7, door list index 1: Door
     PHP                                                                  ;8FBE1A;
     SEP #$20                                                             ;8FBE1B;
     LDA.B #$02                                                           ;8FBE1D;
@@ -6988,7 +7344,9 @@ DoorASM_Scroll_6_Green_duplicate_again:
     RTS                                                                  ;8FBE24;
 
 
+;;; $BE25: Door ASM: scroll 0 = green, 1 = blue ;;;
 DoorASM_Scroll_0_Green_1_Blue:
+; Room $A107, door list index 0: Door
     PHP                                                                  ;8FBE25;
     SEP #$20                                                             ;8FBE26;
     LDA.B #$02                                                           ;8FBE28;
@@ -6999,20 +7357,37 @@ DoorASM_Scroll_0_Green_1_Blue:
     RTS                                                                  ;8FBE35;
 
 
+;;; $BE36: Door ASM: scroll 2 = green ;;;
 DoorASM_Scroll_2_Green:
+; Room $9AD9, door list index 0: Door
     SEP #$20                                                             ;8FBE36;
     LDA.B #$02                                                           ;8FBE38;
     STA.L $7ECD22                                                        ;8FBE3A;
     RTS                                                                  ;8FBE3E;
 
 
+;;; $BE3F: Library background ;;;
 LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright:                        ;8FBE3F;
+; Room $A75D, state $A76A: Post ice beam mockball hall
+; Room $A865, state $A872: Ice beam practice room
+; Room $A9E5, state $A9F2: Hi-jump room
+; Room $AD1B, state $AD28: Speed booster room
+; Room $B106, state $B113: Norfair speed blockade hall
     dw $0004 : dl Background_Norfair_9_A_SmallPatternBrownPurple_Bright : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_A_SmallPatternBrownPurple_0:                             ;8FBE5A;
+; Room $A815, state $A822: Ice beam mockball hall
+; Room $A890, state $A89D: Ice beam room
+; Room $A8B9, state $A8C6: Pre ice beam shaft
+; Room $A923, state $A930: Norfair slope
+; Room $AB64, state $AB71: Double lake grapple practice room
+; Room $ACF0, state $ACFD: Speed booster lavaquake
+; Room $AF14, state $AF21: Lower Norfair entrance
+; Room $B4E5, state $B4F2: Lower Norfair lavaquake room
+; Room $B585, state $B592: Lower Norfair kihunter shaft
     dw $0004 : dl Background_Norfair_9_A_SmallPatternBrownPurple_0 : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
@@ -7027,66 +7402,109 @@ UNUSED_LibBG_Norfair_9_A_SmallPatternBrownPurple_1_8FBE75:               ;8FBE75
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 LibBG_Norfair_9_HorizontalPatternBrick:                                  ;8FBE90;
+; Room $B3E1, state $B3EE: Unused room
     dw $0004 : dl Background_Norfair_9_HorizontalPatternBrick : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_VerticalPatternBrick:                                    ;8FBEAB;
+; Room $B3A5, state $B3B2: Lower Norfair power bomb floor shaft
     dw $0004 : dl Background_Norfair_9_VerticalPatternBrick : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_A_CavernStalagtites:                                     ;8FBEC6;
+; Room $AADE, state $AAEB: Post Crocomire power bombs room
+; Room $AB3B, state $AB48: Post Crocomire fluctuating acid missiles cave
+; Room $AC00, state $AC0D: Single lake grapple practice room
+; Room $ADDE, state $ADEB: Wave beam room
+; Room $AE07, state $AE14: Norfair sinking kamer hall
+; Room $AEB4, state $AEC1: Norfair multiviola and lavamen hall
+; Room $AF3F, state $AF4C: Norfair -> Lower Norfair elevator
+; Room $AFA3, state $AFB0: Norfair long lavaquake hall
+; Room $AFCE, state $AFDB: Boring near-Crocomire hall
+; Room $AFFB, state $B008: Norfair spike floor hall
     dw $0004 : dl Background_Norfair_9_A_CavernStalagtites : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_A_CavernVertical:                                        ;8FBEE1;
+; Room $A7DE, state $A7EB: Norfair mainstreet
+; Room $A8F8, state $A905: Crumble block platform shaft
+; Room $AB07, state $AB14: Post Crocomire shaft
+; Room $ABD2, state $ABDF: Grapple practice shaft
+; Room $AC2B, state $AC38: Grapple room
+; Room $B139, state $B146: Norfair stone zoomer shaft
     dw $0004 : dl Background_Norfair_9_A_CavernVertical : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_CavernHorizontalRuins:                                   ;8FBEFC;
+; Room $B4AD, state $B4BA: Lower Norfair wall jumping space pirates shaft
     dw $0004 : dl Background_Norfair_9_CavernHorizontalRuins : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_CavernVerticalRuins:                                     ;8FBF17;
+; Room $B236, state $B243: Lower Norfair mainstreet
+; Room $B2DA, state $B2E7: Screw attack practice
+; Room $B457, state $B464: Lower Norfair breakable pillars hall
     dw $0004 : dl Background_Norfair_9_CavernVerticalRuins : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_CavernRoomPillars:                                       ;8FBF32;
+; Room $B1E5, state $B1F2: Golden chozo statue lava lake
+; Room $B32E, state $B340: Ridley
+; Room $B32E, state $B35A: Ridley
+; Room $B55A, state $B567: Lower Norfair crumble walls power bomb room
+; Room $B5D5, state $B5E2: Lower Norfair super desgeega hall
+; Room $B698, state $B6A5: Ridley's energy tank
+; Room $B6C1, state $B6CE: Screw attack shaft
     dw $0004 : dl Background_Norfair_9_CavernRoomPillars : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_RoomStatues:                                             ;8FBF4D;
+; Room $B37A, state $B387: Pre Ridley hall
+; Room $B482, state $B48F: Lower Norfair holtz room
+; Room $B62B, state $B638: Elite pirate hall
     dw $0004 : dl Background_Norfair_9_RoomStatues : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_PurplePatches:                                           ;8FBF68;
+; Room $AC5A, state $AC67: Bubble Norfair reserve tank room
+; Room $AEDF, state $AEEC: Pre "useless cave" shaft
+; Room $B051, state $B05E: "useless cave"
+; Room $B40A, state $B417: Lower Norfair multi-level one-way shaft
+; Room $B510, state $B51D: Lower Norfair mini metal maze room
+; Room $B656, state $B663: Impossible's x-ray room
     dw $0004 : dl Background_Norfair_9_PurplePatches : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_Bubbles:                                                 ;8FBF83;
+; Room $AC83, state $AC90: Bubble Norfair pre reserve tank room
+; Room $ACB3, state $ACC0: Bubble Norfair mainstreet
     dw $0004 : dl Background_Norfair_9_Bubbles : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
+
+;;; $BF9E: Door ASM: scroll 3..4 = red, 6..8 = blue ;;;
 DoorASM_Scroll_3_4_Red_6_7_8_Blue:
+; Room $B283, door list index 0: Door
     PHP                                                                  ;8FBF9E;
     SEP #$20                                                             ;8FBF9F;
     LDA.B #$00                                                           ;8FBFA1;
@@ -7100,7 +7518,9 @@ DoorASM_Scroll_3_4_Red_6_7_8_Blue:
     RTS                                                                  ;8FBFBA;
 
 
+;;; $BFBB: Door ASM: scroll 1..3 = blue, 4 = green, 6 = red ;;;
 DoorASM_Scroll_1_2_3_Blue_4_Green_6_Red:
+; Room $B55A, door list index 1: Door
     PHP                                                                  ;8FBFBB;
     SEP #$20                                                             ;8FBFBC;
     LDA.B #$01                                                           ;8FBFBE;
@@ -7115,7 +7535,9 @@ DoorASM_Scroll_1_2_3_Blue_4_Green_6_Red:
     RTS                                                                  ;8FBFD9;
 
 
+;;; $BFDA: Door ASM: scroll 0..1 = blue ;;;
 DoorASM_Scroll_0_1_Blue:
+; Room $AA82, door list index 0: Door
     PHP                                                                  ;8FBFDA;
     SEP #$20                                                             ;8FBFDB;
     LDA.B #$01                                                           ;8FBFDD;
@@ -7125,7 +7547,9 @@ DoorASM_Scroll_0_1_Blue:
     RTS                                                                  ;8FBFE8;
 
 
+;;; $BFE9: Door ASM: scroll 0 = blue, 1 = red ;;;
 DoorASM_Scroll_0_Blue_1_Red:
+; Room $ACF0, door list index 0: Door
     PHP                                                                  ;8FBFE9;
     SEP #$20                                                             ;8FBFEA;
     LDA.B #$00                                                           ;8FBFEC;
@@ -7136,7 +7560,9 @@ DoorASM_Scroll_0_Blue_1_Red:
     RTS                                                                  ;8FBFF9;
 
 
+;;; $BFFA: Door ASM: scroll Ah = green ;;;
 DoorASM_Scroll_A_Green:
+; Room $A865, door list index 1: Door
     PHP                                                                  ;8FBFFA;
     SEP #$20                                                             ;8FBFFB;
     LDA.B #$02                                                           ;8FBFFD;
@@ -7146,6 +7572,7 @@ DoorASM_Scroll_A_Green:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C005: Unused. Door ASM: scroll 0 = blue, 2 = red ;;;
 UNUSED_DoorASM_Scroll_0_Blue_2_Red_8FC005:
     PHP                                                                  ;8FC005;
     SEP #$20                                                             ;8FC006;
@@ -7158,7 +7585,9 @@ UNUSED_DoorASM_Scroll_0_Blue_2_Red_8FC005:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C016: Door ASM: scroll 0,2 = green ;;;
 DoorASM_Scroll_0_2_Green:
+; Room $A9E5, door list index 0: Door
     PHP                                                                  ;8FC016;
     SEP #$20                                                             ;8FC017;
     LDA.B #$02                                                           ;8FC019;
@@ -7168,7 +7597,9 @@ DoorASM_Scroll_0_2_Green:
     RTS                                                                  ;8FC024;
 
 
+;;; $C025: Door ASM: scroll 6..7 = blue, 8 = red ;;;
 DoorASM_Scroll_6_7_Blue_8_Red:
+; Room $AE74, door list index 1: Door
     PHP                                                                  ;8FC025;
     SEP #$20                                                             ;8FC026;
     LDA.B #$01                                                           ;8FC028;
@@ -7180,7 +7611,9 @@ DoorASM_Scroll_6_7_Blue_8_Red:
     RTS                                                                  ;8FC039;
 
 
+;;; $C03A: Door ASM: scroll 2 = red, 3 = blue ;;;
 DoorASM_Scroll_2_Red_3_Blue:
+; Room $A890, door list index 0: Door
     PHP                                                                  ;8FC03A;
     SEP #$20                                                             ;8FC03B;
     LDA.B #$00                                                           ;8FC03D;
@@ -7191,7 +7624,9 @@ DoorASM_Scroll_2_Red_3_Blue:
     RTS                                                                  ;8FC04A;
 
 
+;;; $C04B: Door ASM: scroll 7 = green ;;;
 DoorASM_Scroll_7_Green:
+; Room $B62B, door list index 1: Door
     PHP                                                                  ;8FC04B;
     SEP #$20                                                             ;8FC04C;
     LDA.B #$02                                                           ;8FC04E;
@@ -7200,7 +7635,10 @@ DoorASM_Scroll_7_Green:
     RTS                                                                  ;8FC055;
 
 
+;;; $C056: Door ASM: scroll 1 = red, 2 = blue ;;;
 DoorASM_Scroll_1_Red_2_Blue:
+; Room $B2DA, door list index 1: Door
+; Room $B457, door list index 0: Door
     PHP                                                                  ;8FC056;
     SEP #$20                                                             ;8FC057;
     LDA.B #$00                                                           ;8FC059;
@@ -7211,7 +7649,9 @@ DoorASM_Scroll_1_Red_2_Blue:
     RTS                                                                  ;8FC066;
 
 
+;;; $C067: Door ASM: scroll 0 = blue, 3 = red ;;;
 DoorASM_Scroll_0_Blue_3_Red:
+; Room $B4E5, door list index 1: Door
     PHP                                                                  ;8FC067;
     SEP #$20                                                             ;8FC068;
     LDA.B #$00                                                           ;8FC06A;
@@ -7222,7 +7662,9 @@ DoorASM_Scroll_0_Blue_3_Red:
     RTS                                                                  ;8FC077;
 
 
+;;; $C078: Door ASM: scroll 1 = blue, 4 = red ;;;
 DoorASM_Scroll_1_Blue_4_Red:
+; Room $B55A, door list index 0: Door
     PHP                                                                  ;8FC078;
     SEP #$20                                                             ;8FC079;
     LDA.B #$01                                                           ;8FC07B;
@@ -7233,7 +7675,9 @@ DoorASM_Scroll_1_Blue_4_Red:
     RTS                                                                  ;8FC088;
 
 
+;;; $C089: Door ASM: scroll 0 = blue, 1..3 = red ;;;
 DoorASM_Scroll_0_Blue_1_2_3_Red:
+; Room $B1E5, door list index 0: Door
     PHP                                                                  ;8FC089;
     SEP #$20                                                             ;8FC08A;
     LDA.B #$01                                                           ;8FC08C;
@@ -7246,7 +7690,9 @@ DoorASM_Scroll_0_Blue_1_2_3_Red:
     RTS                                                                  ;8FC0A1;
 
 
+;;; $C0A2: Door ASM: scroll 0 = green ;;;
 DoorASM_Scroll_0_Green_duplicate:
+; Room $B40A, door list index 1: Door
     PHP                                                                  ;8FC0A2;
     SEP #$20                                                             ;8FC0A3;
     LDA.B #$02                                                           ;8FC0A5;
@@ -7255,7 +7701,9 @@ DoorASM_Scroll_0_Green_duplicate:
     RTS                                                                  ;8FC0AC;
 
 
+;;; $C0AD: Door ASM: scroll 0..1 = blue, 4 = red ;;;
 DoorASM_Scroll_0_1_Blue_4_Red:
+; Room $B510, door list index 1: Door
     PHP                                                                  ;8FC0AD;
     SEP #$20                                                             ;8FC0AE;
     LDA.B #$01                                                           ;8FC0B0;
@@ -7267,7 +7715,9 @@ DoorASM_Scroll_0_1_Blue_4_Red:
     RTS                                                                  ;8FC0C1;
 
 
+;;; $C0C2: Door ASM: scroll 0 = blue, 3 = red ;;;
 DoorASM_Scroll_0_Blue_3_Red_duplicate:
+; Room $B6EE, door list index 2: Door
     PHP                                                                  ;8FC0C2;
     SEP #$20                                                             ;8FC0C3;
     LDA.B #$01                                                           ;8FC0C5;
@@ -7278,7 +7728,9 @@ DoorASM_Scroll_0_Blue_3_Red_duplicate:
     RTS                                                                  ;8FC0D2;
 
 
+;;; $C0D3: Door ASM: scroll 0 = blue ;;;
 DoorASM_Scroll_0_Blue_duplicate:
+; Room $AC5A, door list index 0: Door
     PHP                                                                  ;8FC0D3;
     SEP #$20                                                             ;8FC0D4;
     LDA.B #$01                                                           ;8FC0D6;
@@ -7287,7 +7739,9 @@ DoorASM_Scroll_0_Blue_duplicate:
     RTS                                                                  ;8FC0DD;
 
 
+;;; $C0DE: Door ASM: scroll 0 = blue, 1 = red ;;;
 DoorASM_Scroll_0_Blue_1_Red_duplicate:
+; Room $ACB3, door list index 3: Door
     PHP                                                                  ;8FC0DE;
     SEP #$20                                                             ;8FC0DF;
     LDA.B #$01                                                           ;8FC0E1;
@@ -7298,7 +7752,9 @@ DoorASM_Scroll_0_Blue_1_Red_duplicate:
     RTS                                                                  ;8FC0EE;
 
 
+;;; $C0EF: Door ASM: scroll 18h = blue ;;;
 DoorASM_Scroll_18_Blue:
+; Room $A8F8, door list index 0: Door
     PHP                                                                  ;8FC0EF;
     SEP #$20                                                             ;8FC0F0;
     LDA.B #$01                                                           ;8FC0F2;
@@ -7307,7 +7763,9 @@ DoorASM_Scroll_18_Blue:
     RTS                                                                  ;8FC0F9;
 
 
+;;; $C0FA: Door ASM: scroll 2 = blue, 3 = red ;;;
 DoorASM_Scroll_2_Blue_3_Red:
+; Room $AFFB, door list index 1: Door
     PHP                                                                  ;8FC0FA;
     SEP #$20                                                             ;8FC0FB;
     LDA.B #$00                                                           ;8FC0FD;
@@ -7318,7 +7776,9 @@ DoorASM_Scroll_2_Blue_3_Red:
     RTS                                                                  ;8FC10A;
 
 
+;;; $C10B: Door ASM: scroll Eh = red ;;;
 DoorASM_Scroll_E_Red:
+; Room $B4AD, door list index 0: Door
     PHP                                                                  ;8FC10B;
     SEP #$20                                                             ;8FC10C;
     LDA.B #$00                                                           ;8FC10E;
@@ -7327,20 +7787,37 @@ DoorASM_Scroll_E_Red:
     RTS                                                                  ;8FC115;
 
 
+;;; $C116: Main ASM: scrolling sky land ;;;
 MainASM_ScrollingSkyLand:
+; Room $91F8, state $9213. Landing site, power bombs
+; Room $91F8, state $922D. Landing site, Zebes is awake
+; Room $91F8, state $9247. Landing site, default
+; Room $93AA. Landing site power bomb room
     JSL.L RoomMainASM_ScrollingSkyLand                                   ;8FC116;
     RTS                                                                  ;8FC11A;
 
 
+;;; $C11B: Main ASM: scrolling sky ocean ;;;
 MainASM_ScrollingSkyOcean:
+; Room $93FE. Wrecked Ship entrance
+; Room $94FD. Wrecked Ship back door
+; Room $968F. Orange zoomer room
     JSL.L RoomMainASM_ScrollingSkyOcean                                  ;8FC11B;
     RTS                                                                  ;8FC11F;
 
 
+;;; $C120: Main ASM: scrolling sky land, Zebes timebomb set ;;;
 MainASM_ScrollingSkyLand_ZebesTimebombSet:
-    JSL.L RoomMainASM_ScrollingSkyLand                                   ;8FC120;
+; Room $91F8, state $9261. Landing site, Zebes timebomb set
+    JSL.L RoomMainASM_ScrollingSkyLand                                   ;8FC120; fallthrough to MainASM_SetScreenShaking_GenerateRandomExplosions
 
+
+;;; $C124: Main ASM: set screen shaking and generate random explosions ;;;
 MainASM_SetScreenShaking_GenerateRandomExplosions:
+; Room $92FD, state $9348. Crateria mainstreet, Zebes timebomb set
+; Room $96BA, state $9705. Old Tourian escape shaft, Zebes timebomb set
+; Room $9804, state $984F. Bomb Torizo's room, Zebes timebomb set
+; Room $9879, state $98C4. Pre Bomb Torizo room, Zebes timebomb set
     JSR.W GenerateRandomExplosionOnEvenFramesOnRandomNonBlankTile        ;8FC124;
     LDA.W $1840                                                          ;8FC127;
     ORA.W #$8000                                                         ;8FC12A;
@@ -7348,6 +7825,7 @@ MainASM_SetScreenShaking_GenerateRandomExplosions:
     RTS                                                                  ;8FC130;
 
 
+;;; $C131: Generate random explosion on even frames on random non-blank tile ;;;
 GenerateRandomExplosionOnEvenFramesOnRandomNonBlankTile:
     LDA.W $0A78                                                          ;8FC131;
     BNE .return                                                          ;8FC134;
@@ -7395,6 +7873,7 @@ GenerateRandomExplosionOnEvenFramesOnRandomNonBlankTile:
     RTS                                                                  ;8FC182;
 
 
+;;; $C183: Generate random explosion on every fourth frame ;;;
 GenerateRandomExplosionOnEveryFourthFrame:
     LDA.W $0A78                                                          ;8FC183;
     BNE GenerateRandomExplosionAt_12_14_return                           ;8FC186;
@@ -7412,9 +7891,12 @@ GenerateRandomExplosionOnEveryFourthFrame:
     AND.W #$00FF                                                         ;8FC1A0;
     CLC                                                                  ;8FC1A3;
     ADC.W $0915                                                          ;8FC1A4;
-    STA.B $14                                                            ;8FC1A7;
+    STA.B $14                                                            ;8FC1A7; fallthrough to GenerateRandomExplosionAt_12_14
 
+
+;;; $C1A9: Generate random explosion at ([$12], [$14]) ;;;
 GenerateRandomExplosionAt_12_14:
+; Note that if [random number] & Fh >= 8, then X is some garbage value (instead of random) for the purposes of indexing the sprite object IDs array
     JSL.L GenerateRandomNumber                                           ;8FC1A9;
     AND.W #$000F                                                         ;8FC1AD;
     CMP.W #$0008                                                         ;8FC1B0;
@@ -7437,7 +7919,6 @@ GenerateRandomExplosionAt_12_14:
   .return:
     RTS                                                                  ;8FC1D5;
 
-
 ExplosionSpriteObjectIDs:
 ; 3 = small explosion, 9 = small dust cloud, Ch = smoke, 12h = short big dust cloud, 15h = big dust cloud
     db $03,$03,$09,$0C,$0C,$12,$12,$15                                   ;8FC1D6;
@@ -7445,7 +7926,12 @@ ExplosionSpriteObjectIDs:
 ExplosionSoundEffects:
     db $24,$00,$00,$25,$00,$00,$00,$00                                   ;8FC1DE;
 
+
+;;; $C1E6: Main ASM: scroll screen right in Dachora room ;;;
 MainASM_ScrollScreenRightInDachoraRoom:
+; Room $9CB3. Dachora room
+; The intent of the code is probably to scroll the screen so that it's centred when falling down the shaft;
+; in practice, the conditions for the scrolling never occur
     LDA.L $7ECD2B                                                        ;8FC1E6;
     AND.W #$00FF                                                         ;8FC1EA;
     CMP.W #$0002                                                         ;8FC1ED;
@@ -7464,6 +7950,7 @@ MainASM_ScrollScreenRightInDachoraRoom:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C209: Unused. PLM metadata - Crateria / Brinstar / Norfair ;;;
 UNUSED_8FC209:                                                           ;8FC209;
 ; See UNUSED_UnknownUnreferenced_8FE881 for the other areas
     dw $0051 ; "Next" item / refill station index (50h is the last used one, see "Item PLMs.asm")
@@ -7474,6 +7961,8 @@ UNUSED_8FC209:                                                           ;8FC209
     dw $0006 ; Number of save stations in Norfair
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $C215: PLM populations ;;;
 PLMPopulation_BowlingAlley_State0:                                       ;8FC215;
     %PLMPopEntry(PLMEntries_ScrollPLM, $1F, $2D, RoomPLM_BowlingAlley_0)
     %PLMPopEntry(PLMEntries_upwardsExtension, $41, $26, $8000)
@@ -8053,40 +8542,118 @@ PLMPopulation_58Escape_State0_1:
 PLMPopulation_CeresRidley_State0_1:
     dw $0000                                                             ;8FC8C5;
 
+
+;;; $C8C7: Setup ASM: RTS ;;;
 RTS_8FC8C7:
+; Room $C98E. Walking chozo room
+; Room $CA08. Wrecked Ship entrance treadmill
+; Room $CA52. Wrecked Ship attic
+; Room $CAAE. Wrecked Ship attic missile tank room
+; Room $CAF6. Wrecked Ship mainstreet
+; Room $CB8B. Wrecked Ship flooded spikey hall
+; Room $CBD5. Wrecked Ship -> East Crateria
+; Room $CC27. Wrecked Ship energy tank chozo room
     RTS                                                                  ;8FC8C7;
 
 
+;;; $C8C8: Setup ASM: spawn pre Phantoon room enemy projectile ;;;
 SetupASM_SpawnPrePhantoonRoomEnemyProjectile:
+; Room $CC6F. Pre Phantoon room
     LDY.W #EnemyProjectile_PrePhantoonRoom                               ;8FC8C8;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;8FC8CB;
     RTS                                                                  ;8FC8CF;
 
 
+;;; $C8D0: Setup ASM: RTS ;;;
 RTS_8FC8D0:
+; Room $CCCB. Wrecked Ship map room
+; Room $CD13. Phantoon's room
+; Room $CD5C. Wrecked Ship first drowned room
+; Room $CDA8. Wrecked Ship obvious super missile room
+; Room $CDF1. Wrecked Ship hidden super missile hall
+; Room $CE40. Gravity suit room
+; Room $CE8A. Wrecked Ship save room, Phantoon dead
     RTS                                                                  ;8FC8D0;
 
 
+;;; $C8D1: Setup ASM: RTS ;;;
 RTS_8FC8D1:
+; Room $CED2. n00b tube save room
+; Room $CEFB. n00b tube
+; Room $CF54. n00b tube west
+; Room $CF80. n00b tube east
+; Room $CFC9. Maridia mainstreet
+; Room $D017. Maridia space pirate room
+; Room $D055. Maridia spinning turtle room
+; Room $D08A. Maridia green gate hall
+; Room $D0B9. Mt. Doom
+; Room $D104. Maridia -> Red Brinstar
+; Room $D13B. Sandy Maridia missile and super missile room
+; Room $D16D. Sandy Maridia memu room
+; Room $D1A3. Maridia pink room
+; Room $D1DD. Sandy Maridia unused passage to Sandy Maridia mainstreet
+; Room $D21C. Maridia broken glass tube room
+; Room $D252. Maridia broken glass tube room east
+; Room $D27E. Plasma beam puyo room
+; Room $D2AA. Plasma beam room
+; Room $D2D9. Sandy room thin platform hall
+; Room $D30B. Maridia -> Crateria
+; Room $D340. Sandy Maridia mainstreet
+; Room $D387. Pre plasma beam shaft
+; Room $D3B6. Maridia map room
     RTS                                                                  ;8FC8D1;
 
 
+;;; $C8D2: Setup ASM: RTS ;;;
 RTS_8FC8D2:
+; Room $D408. Elevatube
+; Room $D433. Sandy Maridia drowning sand pit room
+; Room $D461. Sand falls west
+; Room $D48E. Elevatube south
+; Room $D4C2. Sand falls east
+; Room $D4EF. Maridia reserve tank room
+; Room $D51E. PB #66 room
+; Room $D54D. Pre Maridia reserve tank room sand fall room
+; Room $D57A. Pre PB #66 room sand fall room
+; Room $D5A7. Snail room
+; Room $D5EC. Sandy Maridia sand pit room
+; Room $D617. Mochtroid room
+; Room $D646. Pre Shaktool room
+; Room $D69A. Pre Shaktool room section
+; Room $D6D0. Springball room
+; Room $D6FD. Sand falls sand pit
+; Room $D72A. Maridia grapple room
+; Room $D765. Snail room save room
+; Room $D78F. Pre Draygon room
+; Room $D7E4. Maridia speed blockade room
+; Room $D81A. Draygon save room
+; Room $D845. Maridia missile station
+; Room $D86E. Sandy Maridia sand falls room
+; Room $D898. Sand falls
     RTS                                                                  ;8FC8D2;
 
 
+;;; $C8D3: Setup ASM: set up Shaktool's room's PLM ;;;
 SetupASM_SetupShaktoolsRoomPLM:
+; Room $D8C5, state $D8D7. Shaktool's room, default
     JSL.L Spawn_Hardcoded_PLM                                            ;8FC8D3;
     db $00,$00                                                           ;8FC8D7;
     dw PLMEntries_shaktoolsRoom                                          ;8FC8D9;
     RTS                                                                  ;8FC8DB;
 
 
+;;; $C8DC: Setup ASM: RTS ;;;
 RTS_8FC8DC:
+; Room $D8C5, state $D8F1. Shaktool's event is set
+; Room $D913, state $D920. Maridia grapple wall shaft
+; Room $D95E. Botwoon's room
+; Room $D9AA. Space jump room
     RTS                                                                  ;8FC8DC;
 
 
+;;; $C8DD: Setup ASM: set pausing code for Draygon ;;;
 SetupASM_SetPausingCodeForDraygon:
+; Room $DA60. Draygon's room
     LDA.W #PauseHook_Draygon>>8&$FF00                                    ;8FC8DD;
     STA.W $0602                                                          ;8FC8E0;
     LDA.W #PauseHook_Draygon                                             ;8FC8E3;
@@ -8098,12 +8665,15 @@ SetupASM_SetPausingCodeForDraygon:
     RTS                                                                  ;8FC8F5;
 
 
+;;; $C8F6: Pause hook - Draygon ;;;
 PauseHook_Draygon:
+; Set interrupt handler to main gameplay
     LDA.W #$0004                                                         ;8FC8F6;
     STA.B $A7                                                            ;8FC8F9;
     RTL                                                                  ;8FC8FB;
 
 
+;;; $C8FC: Unpause hook - Draygon ;;;
 UnpauseHook_Draygon:
     LDA.W $18B6                                                          ;8FC8FC;
     CMP.W #$0008                                                         ;8FC8FF;
@@ -8115,7 +8685,9 @@ UnpauseHook_Draygon:
     RTL                                                                  ;8FC909;
 
 
+;;; $C90A: Setup ASM: set collected map ;;;
 SetupASM_SetCollectedMap:
+; Room $DAAE. Tourian -> Crateria
     REP #$30                                                             ;8FC90A;
     LDX.W $079F                                                          ;8FC90C;
     LDA.L $7ED908,X                                                      ;8FC90F;
@@ -8125,11 +8697,29 @@ SetupASM_SetCollectedMap:
     RTS                                                                  ;8FC91D;
 
 
+;;; $C91E: Setup ASM: RTS ;;;
 RTS_8FC91E:
+; Room $DAE1. Metroid room 1
+; Room $DB31. Metroid room 2
+; Room $DB7D. Metroid room 3
+; Room $DBCD. Metroid room 4
+; Room $DC19. Tourian super-sidehopper room
+; Room $DC65. Drained Torizo room
+; Room $DCB1. Shitroid room
+; Room $DCFF. Post Shitroid room
+; Room $DD2E. Tourian refill station
+; Room $DD58. Mother Brain's room
+; Room $DDC4. Tourian eye-door room
+; Room $DDF3. Pre Mother Brain room
+; Room $DE23. Mother Brain save room
     RTS                                                                  ;8FC91E;
 
 
+;;; $C91F: Setup ASM: set Zebes timebomb event and set light horizontal room shaking ;;;
 SetupASM_SetZebesTimebombEvent_SetLightHorizontalRoomShaking:
+; Room $DE4D. Escape room 1
+; The Zebes timebomb set event was already marked by Mother Brain when she started the time ($A9:B313),
+; no reason to do it here
     LDA.W #$000E                                                         ;8FC91F;
     JSL.L MarkEvent_inA                                                  ;8FC922;
     LDA.W #$0012                                                         ;8FC926;
@@ -8139,7 +8729,9 @@ SetupASM_SetZebesTimebombEvent_SetLightHorizontalRoomShaking:
     RTS                                                                  ;8FC932;
 
 
+;;; $C933: Setup ASM: set light horizontal room shaking ;;;
 SetupASM_SetLightHorizontalRoomShaking:
+; Room $DE7A. Escape room 2
     LDA.W #$0012                                                         ;8FC933;
     STA.W $183E                                                          ;8FC936;
     STA.W $07E3                                                          ;8FC939;
@@ -8149,7 +8741,9 @@ SetupASM_SetLightHorizontalRoomShaking:
     RTS                                                                  ;8FC945;
 
 
+;;; $C946: Setup ASM: set medium horizontal room shaking ;;;
 SetupASM_SetMediumHorizontalRoomShaking:
+; Room $DEA7. Escape room 3
     LDA.W #$0015                                                         ;8FC946;
     STA.W $183E                                                          ;8FC949;
     LDA.W #$FFFF                                                         ;8FC94C;
@@ -8157,7 +8751,9 @@ SetupASM_SetMediumHorizontalRoomShaking:
     RTS                                                                  ;8FC952;
 
 
+;;; $C953: Setup ASM: set up escape room 4's PLM and set medium horizontal room shaking ;;;
 SetupASM_SetupEscapeRoom4sPLM_SetMediumHorizontalRoomShaking:
+; Room $DEDE. Escape room 4
     JSL.L Spawn_Hardcoded_PLM                                            ;8FC953;
     db $10,$10                                                           ;8FC957;
     dw PLMEntries_RaiseAcidInEscapeRoomBeforeOldTourianEscapeShaft       ;8FC959;
@@ -8170,17 +8766,28 @@ SetupASM_SetupEscapeRoom4sPLM_SetMediumHorizontalRoomShaking:
     RTS                                                                  ;8FC96D;
 
 
+;;; $C96E: Setup ASM: turn Ceres door to solid blocks and spawn Ceres haze ;;;
 SetupASM_TurnCeresDoorToSolidBlocks_SpawnCeresHaze:
+; Room $DF45, state $DF71. Ceres elevator, Ceres Ridley dead
     JSL.L Spawn_Hardcoded_PLM                                            ;8FC96E; fallthrough to SetupASM_SpawnCeresHaze
     db $0F,$26                                                           ;8FC972;
     dw PLMEntries_turnCeresElevatorDoorToSolidBlocksDuringEscape         ;8FC974;
 
+
+;;; $C976: Setup ASM: Spawn Ceres haze ;;;
 SetupASM_SpawnCeresHaze:
+; Room $DF45, state $DF57. Ceres elevator default
+; Room $DF8D. Ceres pre elevator hall
+; Room $DFD7. Ceres shaft
+; Room $E021. Ceres baby Metroid hall
+; Room $E06B. Pre Ceres Ridley hall
     JSL.L FXType_2C_CeresHaze                                            ;8FC976;
     RTS                                                                  ;8FC97A;
 
 
+;;; $C97B: Setup ASM: Set BG1/2 tiles base address and spawn Ceres haze ;;;
 SetupASM_SetBG1_2_TilesBaseAddress_SpawnCeresHaze:
+; Room $E0B5. Ceres Ridley's room
     PHP                                                                  ;8FC97B;
     SEP #$20                                                             ;8FC97C;
     LDA.B #$66                                                           ;8FC97E;
@@ -8192,6 +8799,7 @@ SetupASM_SetBG1_2_TilesBaseAddress_SpawnCeresHaze:
     RTS                                                                  ;8FC98D;
 
 
+;;; $C98E: Room headers, scroll data, door lists ;;;
 RoomHeader_BowlingAlley:
     db $00,$03,$0A,$0B,$06,$03,$70,$A0,$00                               ;8FC98E;
     dw RoomDoors_BowlingAlley                                            ;8FC997;
@@ -11400,19 +12008,28 @@ RoomState_CeresRidley_1:
 RoomDoors_CeresRidley:
     dw Door_CeresRidley                                                  ;8FE0FB;
 
-LibBG_Phantoon_State0:                                                   ;8FE0FD;
+
+;;; $E0FD: Library background ;;;
+LibBG_Phantoon_State0:         
+; Room $CD13, state $CD25: Phantoon                                          ;8FE0FD;
     dw $0002 : dl $7E2000 : dw $4800,$1000
     dw $0000
 
-LibBG_Draygon_State0:                                                    ;8FE108;
+LibBG_Draygon_State0:
+; Room $DA60, state $DA72: Draygon                                                    ;8FE108;
     dw $0002 : dl $7E2000 : dw $4800,$1000
     dw $0000
 
 LibBG_Phantoon_Draygon_State1:
+; Room $CD13, state $CD3F: Phantoon
+; Room $DA60, state $DA8C: Draygon
     dw $000A
-    dw $0000                                                       ;8FE113;
+    dw $0000
 
 LibBG_WreckedShip_4_5_EntranceHall:                                      ;8FE117;
+; Room $CA08, state $CA1A: Wrecked Ship entrance treadmill
+; Room $CA08, state $CA34: Wrecked Ship entrance treadmill
+; Room $E82C, state $E839: Debug room
     dw $0004 : dl Background_WreckedShip_4_5_EntranceHall_0 : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
@@ -11427,40 +12044,65 @@ UNUSED_LibBG_WreckedShip_4_5_EntranceHall_1_8FE132:                      ;8FE132
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 LibBG_WreckedShip_4_5_Columns_Tubes:                                     ;8FE14D;
+; Room $CB8B, state $CB9D: Wrecked Ship flooded spikey hall
+; Room $CB8B, state $CBB7: Wrecked Ship flooded spikey hall
+; Room $CC6F, state $CC81: Pre Phantoon hall
+; Room $CC6F, state $CC9B: Pre Phantoon hall
     dw $0004 : dl Background_WreckedShip_4_5_Columns_Tubes : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_WreckedShip_4_5_ExperimentRoom:                                    ;8FE168;
+; Room $CA52, state $CA64: Wrecked Ship attic
+; Room $CA52, state $CA7E: Wrecked Ship attic
     dw $0004 : dl Background_WreckedShip_4_5_ExperimentRoom : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_WreckedShip_4_5_Panels_Vents:                                      ;8FE183;
+; Room $CD5C, state $CD6E: Wrecked Ship first flooded room
+; Room $CD5C, state $CD88: Wrecked Ship first flooded room
+; Room $CDA8, state $CDBA: Wrecked Ship obvious super missile room
+; Room $CDA8, state $CDD4: Wrecked Ship obvious super missile room
+; Room $CDF1, state $CE1D: Wrecked Ship hidden super missile hall
+; Room $CE40, state $CE52: Gravity suit room
+; Room $CE40, state $CE6C: Gravity suit room
     dw $0004 : dl Background_WreckedShip_4_5_Panels_Vents : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_WreckedShip_4_5_Panels_Vents_Horizontal:                           ;8FE19E;
+; Room $CAF6, state $CB08: Wrecked Ship mainstreet
+; Room $CAF6, state $CB22: Wrecked Ship mainstreet
+; Room $CBD5, state $CBE7: Wrecked Ship east exit
+; Room $CBD5, state $CC01: Wrecked Ship east exit
+; Room $CDF1, state $CE03: Wrecked Ship hidden super missile hall
     dw $0004 : dl Background_WreckedShip_4_5_Panels_Vents_Horizontal : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_WreckedShip_4_5_Panels_Vents_Vertical:                             ;8FE1B9;
+; Room $CAAE, state $CAC0: Wrecked Ship attic missile tank room
+; Room $CAAE, state $CADA: Wrecked Ship attic missile tank room
     dw $0004 : dl Background_WreckedShip_4_5_Panels_Vents_Vertical : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_CeresElevator_State0_1:                                            ;8FE1D4;
+; Room $DF45, state $DF57: Ceres elevator shaft
+; Room $DF45, state $DF71: Ceres elevator shaft
     dw $000A
     dw $0000
 
+
+;;; $E1D8: Door ASM: start Wrecked Ship treadmill east entrance ;;;
 DoorASM_StartWreckedShipTreadmillEastEntrance:
+; Room $CAF6, door list index 0: Door
     LDY.W #AnimatedTilesObjects_FX_wreckedShipTreadmillLeftwards         ;8FE1D8;
     JSL.L Spawn_AnimatedTilesObject                                      ;8FE1DB;
     JSL.L Spawn_Hardcoded_PLM                                            ;8FE1DF;
@@ -11469,7 +12111,9 @@ DoorASM_StartWreckedShipTreadmillEastEntrance:
     RTS                                                                  ;8FE1E7;
 
 
+;;; $E1E8: Door ASM: scroll 1 = blue ;;;
 DoorASM_Scroll_1_Blue:
+; Room $CB8B, door list index 0: Door
     PHP                                                                  ;8FE1E8;
     SEP #$20                                                             ;8FE1E9;
     LDA.B #$01                                                           ;8FE1EB;
@@ -11478,7 +12122,9 @@ DoorASM_Scroll_1_Blue:
     RTS                                                                  ;8FE1F2;
 
 
+;;; $E1F3: Door ASM: scroll 0 = green ;;;
 DoorASM_Scroll_0_Green_duplicate_again:
+; Room $CC27, door list index 0: Door
     PHP                                                                  ;8FE1F3;
     SEP #$20                                                             ;8FE1F4;
     LDA.B #$02                                                           ;8FE1F6;
@@ -11487,7 +12133,9 @@ DoorASM_Scroll_0_Green_duplicate_again:
     RTS                                                                  ;8FE1FD;
 
 
+;;; $E1FE: Door ASM: scroll 3 = red, 4 = blue ;;;
 DoorASM_Scroll_3_Red_4_Blue:
+; Room $CD13, door list index 0: Door
     PHP                                                                  ;8FE1FE;
     SEP #$20                                                             ;8FE1FF;
     LDA.B #$00                                                           ;8FE201;
@@ -11498,7 +12146,9 @@ DoorASM_Scroll_3_Red_4_Blue:
     RTS                                                                  ;8FE20E;
 
 
+;;; $E20F: Door ASM: scroll 29h = blue ;;;
 DoorASM_Scroll_29_Blue:
+; Room $CDF1, door list index 0: Door
     PHP                                                                  ;8FE20F;
     SEP #$20                                                             ;8FE210;
     LDA.B #$01                                                           ;8FE212;
@@ -11507,7 +12157,9 @@ DoorASM_Scroll_29_Blue:
     RTS                                                                  ;8FE219;
 
 
+;;; $E21A: Door ASM: scroll 28h,2E = green ;;;
 DoorASM_Scroll_28_2E_Green:
+; Room $CC6F, door list index 0: Door
     PHP                                                                  ;8FE21A;
     SEP #$20                                                             ;8FE21B;
     LDA.B #$02                                                           ;8FE21D;
@@ -11517,7 +12169,9 @@ DoorASM_Scroll_28_2E_Green:
     RTS                                                                  ;8FE228;
 
 
+;;; $E229: Door ASM: scroll 6..Bh = red ;;;
 DoorASM_Scroll_6_7_8_9_A_B_Red:
+; Room $CE40, door list index 1: Door
     PHP                                                                  ;8FE229;
     SEP #$20                                                             ;8FE22A;
     LDA.B #$00                                                           ;8FE22C;
@@ -11531,17 +12185,24 @@ DoorASM_Scroll_6_7_8_9_A_B_Red:
     RTS                                                                  ;8FE247;
 
 
+;;; $E248: Library background ;;;
 LibBG_Maridia_B_BrownWall:                                               ;8FE248;
+; Room $D08A, state $D097: Maridia green gate hall
     dw $0004 : dl Background_Maridia_B_BrownWall : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$1000
     dw $0000
 
 LibBG_Maridia_C_GreenWall:                                               ;8FE25A;
+; Room $D461, state $D46E: Sand falls west
+; Room $D4C2, state $D4CF: Sand falls east
     dw $0004 : dl Background_Maridia_C_GreenWall : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$1000
     dw $0000
 
+
+;;; $E26C: Door ASM: set up elevatube from south ;;;
 DoorASM_SetupElevatubeFromSouth:
+; Room $D48E, door list index 2: Door
     LDA.W #$FF00                                                         ;8FE26C;
     STA.W $07E5                                                          ;8FE26F;
     STZ.W $07E3                                                          ;8FE272;
@@ -11557,7 +12218,9 @@ DoorASM_SetupElevatubeFromSouth:
     RTS                                                                  ;8FE290;
 
 
+;;; $E291: Door ASM: set up elevatube from north ;;;
 DoorASM_SetupElevatubeFromNorth:
+; Room $D340, door list index 1: Door
     LDA.W #$0100                                                         ;8FE291;
     STA.W $07E5                                                          ;8FE294;
     STZ.W $07E3                                                          ;8FE297;
@@ -11573,7 +12236,9 @@ DoorASM_SetupElevatubeFromNorth:
     RTS                                                                  ;8FE2B5;
 
 
+;;; $E2B6: Main ASM: elevatube ;;;
 MainASM_Elevatube:
+; Room $D408. Maridia elevatube
     LDA.W #$0080                                                         ;8FE2B6;
     STA.W $0AF6                                                          ;8FE2B9;
     STZ.W $0AF8                                                          ;8FE2BC;
@@ -11611,13 +12276,17 @@ MainASM_Elevatube:
     RTS                                                                  ;8FE300;
 
 
+;;; $E301: Door ASM: reset elevatube on north exit ;;;
 DoorASM_ResetElevatubeOnNorthExit:
+; Room $D408, door list index 1: Door
     LDA.W #$0001                                                         ;8FE301;
     JSL.L Run_Samus_Command                                              ;8FE304;
     RTS                                                                  ;8FE308;
 
 
+;;; $E309: Door ASM: reset elevatube on south exit ;;;
 DoorASM_ResetElevatubeOnSouthExit:
+; Room $D408, door list index 0: Door
     LDA.W #$0202                                                         ;8FE309;
     STA.L $7ECD20                                                        ;8FE30C;
     LDA.W #$0001                                                         ;8FE310;
@@ -11625,7 +12294,9 @@ DoorASM_ResetElevatubeOnSouthExit:
     RTS                                                                  ;8FE317;
 
 
+;;; $E318: Door ASM: scroll Ah = red, Bh = blue ;;;
 DoorASM_Scroll_A_Red_B_Blue:
+; Room $D845, door list index 0: Door
     PHP                                                                  ;8FE318;
     SEP #$20                                                             ;8FE319;
     LDA.B #$00                                                           ;8FE31B;
@@ -11637,6 +12308,7 @@ DoorASM_Scroll_A_Red_B_Blue:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $E329: Unused. Door ASM: scroll 10h = blue, 11h = red ;;;
 UNUSED_DoorASM_Scroll_4_Green_8FE329:
     PHP                                                                  ;8FE329;
     SEP #$20                                                             ;8FE32A;
@@ -11648,6 +12320,7 @@ UNUSED_DoorASM_Scroll_4_Green_8FE329:
     RTS                                                                  ;8FE339;
 
 
+;;; $E33A: Unused. Door ASM: scroll 4 = green ;;;
 UNUSED_DoorASM_Scroll_4_Green_8FE33A:
     PHP                                                                  ;8FE33A;
     SEP #$20                                                             ;8FE33B;
@@ -11658,7 +12331,9 @@ UNUSED_DoorASM_Scroll_4_Green_8FE33A:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $E345: Door ASM: scroll 0 = red, 4 = blue ;;;
 DoorASM_Scroll_0_Red_4_Blue_duplicate:
+; Room $CEFB, door list index 2: Door
     PHP                                                                  ;8FE345;
     SEP #$20                                                             ;8FE346;
     LDA.B #$00                                                           ;8FE348;
@@ -11669,7 +12344,10 @@ DoorASM_Scroll_0_Red_4_Blue_duplicate:
     RTS                                                                  ;8FE355;
 
 
+;;; $E356: Door ASM: scroll 0 = red, 1 = blue ;;;
 DoorASM_Scroll_0_Red_1_Blue:
+; Room $CF80, door list index 2: Door
+; Room $D3B6, door list index 0: Door
     PHP                                                                  ;8FE356;
     SEP #$20                                                             ;8FE357;
     LDA.B #$00                                                           ;8FE359;
@@ -11680,7 +12358,9 @@ DoorASM_Scroll_0_Red_1_Blue:
     RTS                                                                  ;8FE366;
 
 
+;;; $E367: Door ASM: scroll 9 = red, Ah = blue ;;;
 DoorASM_Scroll_9_Red_A_Blue:
+; Room $D104, door list index 1: Door
     PHP                                                                  ;8FE367;
     SEP #$20                                                             ;8FE368;
     LDA.B #$00                                                           ;8FE36A;
@@ -11691,7 +12371,10 @@ DoorASM_Scroll_9_Red_A_Blue:
     RTS                                                                  ;8FE377;
 
 
+;;; $E378: Door ASM: scroll 0,2 = red, 1 = blue ;;;
 DoorASM_Scroll_0_2_Red_1_Blue:
+; Room $CF54, door list index 0: Door
+; Room $CF80, door list index 0: Door
     PHP                                                                  ;8FE378;
     SEP #$20                                                             ;8FE379;
     LDA.B #$00                                                           ;8FE37B;
@@ -11703,7 +12386,9 @@ DoorASM_Scroll_0_2_Red_1_Blue:
     RTS                                                                  ;8FE38C;
 
 
+;;; $E38D: Door ASM: scroll 1 = blue ;;;
 DoorASM_Scroll_1_Blue_duplicate:
+; Room $D7E4, door list index 0: Door
     PHP                                                                  ;8FE38D;
     SEP #$20                                                             ;8FE38E;
     LDA.B #$01                                                           ;8FE390;
@@ -11712,7 +12397,9 @@ DoorASM_Scroll_1_Blue_duplicate:
     RTS                                                                  ;8FE397;
 
 
+;;; $E398: Door ASM: scroll 6 = blue ;;;
 DoorASM_Scroll_6_Blue:
+; Room $D5A7, door list index 0: Door
     PHP                                                                  ;8FE398;
     SEP #$20                                                             ;8FE399;
     LDA.B #$01                                                           ;8FE39B;
@@ -11721,7 +12408,10 @@ DoorASM_Scroll_6_Blue:
     RTS                                                                  ;8FE3A2;
 
 
+;;; $E3A3: Door ASM: scroll 4 = red ;;;
 DoorASM_Scroll_4_Red_duplicate:
+; Room $D4C2, door list index 1: Door
+; Room $D69A, door list index 0: Door
     PHP                                                                  ;8FE3A3;
     SEP #$20                                                             ;8FE3A4;
     LDA.B #$00                                                           ;8FE3A6;
@@ -11731,6 +12421,7 @@ DoorASM_Scroll_4_Red_duplicate:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $E3AE: Unused. Door ASM: scroll 1 = red ;;;
 UNUSED_DoorASM_Scroll_1_Red_8FE3AE:
     PHP                                                                  ;8FE3AE;
     SEP #$20                                                             ;8FE3AF;
@@ -11741,7 +12432,9 @@ UNUSED_DoorASM_Scroll_1_Red_8FE3AE:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $E3B9: Door ASM: scroll 4,7 = red ;;;
 DoorASM_Scroll_4_7_Red:
+; Room $D646, door list index 3: Door
     PHP                                                                  ;8FE3B9;
     SEP #$20                                                             ;8FE3BA;
     LDA.B #$00                                                           ;8FE3BC;
@@ -11751,7 +12444,9 @@ DoorASM_Scroll_4_7_Red:
     RTS                                                                  ;8FE3C7;
 
 
+;;; $E3C8: Door ASM: scroll 1 = blue, 2 = red ;;;
 DoorASM_Scroll_1_Blue_2_Red_duplicate:
+; Room $D8C5, door list index 0: Door
     PHP                                                                  ;8FE3C8;
     SEP #$20                                                             ;8FE3C9;
     LDA.B #$00                                                           ;8FE3CB;
@@ -11762,7 +12457,9 @@ DoorASM_Scroll_1_Blue_2_Red_duplicate:
     RTS                                                                  ;8FE3D8;
 
 
+;;; $E3D9: Door ASM: scroll 0,2 = green ;;;
 DoorASM_Scroll_0_2_Green_duplicate:
+; Room $DA60, door list index 0: Door
     PHP                                                                  ;8FE3D9;
     SEP #$20                                                             ;8FE3DA;
     LDA.B #$02                                                           ;8FE3DC;
@@ -11772,55 +12469,90 @@ DoorASM_Scroll_0_2_Green_duplicate:
     RTS                                                                  ;8FE3E7;
 
 
+;;; $E3E8: Library background ;;;
 LibBG_Tourian_D_MechanicalRoom:                                          ;8FE3E8;
+; Room $DAAE, state $DABB: Tourian -> Crateria elevator
+; Room $DB31, state $DB43: Metroid room 2
+; Room $DB31, state $DB5D: Metroid room 2
+; Room $DBCD, state $DBDF: Metroid room 4
+; Room $DBCD, state $DBF9: Metroid room 4
     dw $0004 : dl Background_Tourian_D_MechanicalRoom : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_MechanicalRoom_Letterbox:                                ;8FE403;
+; Room $DAE1, state $DAF3: Metroid room 1
+; Room $DAE1, state $DB0D: Metroid room 1
+; Room $DB7D, state $DB8F: Metroid room 3
+; Room $DB7D, state $DBA9: Metroid room 3
     dw $0004 : dl Background_Tourian_D_MechanicalRoom_Letterbox : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_VerticalStructures:                                      ;8FE41E;
+; Room $DC19, state $DC2B: Tourian super-sidehopper room
+; Room $DC19, state $DC45: Tourian super-sidehopper room
+; Room $DC65, state $DC77: Drained Torizo room
+; Room $DC65, state $DC91: Drained Torizo room
+; Room $DCB1, state $DCC3: Shitroid room
+; Room $DCB1, state $DCDD: Shitroid room
+; Room $DCFF, state $DD0C: Post Shitroid room
+; Room $DDC4, state $DDD1: Tourian eye-door room
     dw $0004 : dl Background_Tourian_D_VerticalStructures : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_PipeRoom_Letterbox:                                      ;8FE439;
+; Room $DE4D, state $DE5A: Escape room 1
     dw $0004 : dl Background_Tourian_D_PipeRoom_Letterbox : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_PipeRoom_VerticalSeparation:                             ;8FE454;
+; Room $DDF3, state $DE00: Pre Mother Brain shaft
+; Room $DE7A, state $DE87: Escape room 2
     dw $0004 : dl Background_Tourian_D_PipeRoom_VerticalSeparation : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_PipeRoom:                                                ;8FE46F;
+; Room $DEA7, state $DEB4: Escape room 3
+; Room $DEDE, state $DEEB: Escape room 4
     dw $0004 : dl Background_Tourian_D_PipeRoom : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_E_PipeRoom_Dark:                                           ;8FE48A;
+; Room $DD58, state $DD6E: Mother Brain
+; Room $DD58, state $DD88: Mother Brain
+; Room $DD58, state $DDA2: Mother Brain
     dw $0004 : dl Background_Tourian_E_PipeRoom_Dark : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_E_StatueHall:                                            ;8FE4A5;
+; Room $DF8D, state $DF9F: Ceres pre elevator hall
+; Room $DF8D, state $DFB9: Ceres pre elevator hall
+; Room $DFD7, state $DFE9: Ceres stairs
+; Room $DFD7, state $E003: Ceres stairs
+; Room $E06B, state $E07D: Pre Ceres Ridley hall
+; Room $E06B, state $E097: Pre Ceres Ridley hall
     dw $0004 : dl Background_Tourian_D_E_StatueHall : dw $4000
     dw $0002 : dl $7E4000 : dw $4800,$0800
     dw $0002 : dl $7E4000 : dw $4C00,$0800
     dw $0000
 
+
+;;; $E4C0: Door ASM: scroll 0..1 = green ;;;
 DoorASM_Scroll_0_1_Green_duplicate:
+; Room $DAAE, door list index 1: Door
     PHP                                                                  ;8FE4C0;
     SEP #$20                                                             ;8FE4C1;
     LDA.B #$02                                                           ;8FE4C3;
@@ -11830,7 +12562,9 @@ DoorASM_Scroll_0_1_Green_duplicate:
     RTS                                                                  ;8FE4CE;
 
 
+;;; $E4CF: Door ASM: scroll 8 = blue, 9 = red ;;;
 DoorASM_Scroll_8_Blue_9_Red:
+; Room $DEDE, door list index 1: Door
     PHP                                                                  ;8FE4CF;
     SEP #$20                                                             ;8FE4D0;
     LDA.B #$01                                                           ;8FE4D2;
@@ -11841,7 +12575,9 @@ DoorASM_Scroll_8_Blue_9_Red:
     RTS                                                                  ;8FE4DF;
 
 
+;;; $E4E0: Door ASM: to Ceres elevator shaft ;;;
 DoorASM_ToCeresElevatorShaft:
+; Room $DF8D, door list index 0: Door
     SEP #$20                                                             ;8FE4E0;
     LDA.B #$07                                                           ;8FE4E2;
     STA.B $56                                                            ;8FE4E4;
@@ -11865,7 +12601,9 @@ DoorASM_ToCeresElevatorShaft:
     RTS                                                                  ;8FE512;
 
 
+;;; $E513: Door ASM: from Ceres elevator shaft ;;;
 DoorASM_FromCeresElevatorShaft:
+; Room $DF45, door list index 0: Door
     SEP #$20                                                             ;8FE513;
     LDA.B #$09                                                           ;8FE515;
     STA.B $56                                                            ;8FE517;
@@ -11874,16 +12612,25 @@ DoorASM_FromCeresElevatorShaft:
     RTS                                                                  ;8FE51E;
 
 
+;;; $E51F: Main ASM: Ceres elevator shaft ;;;
 MainASM_CeresElevatorShaft:
+; Handles landing on elevator and setting mode 7 rotation matrix
+; Room $DF45. Ceres elevator shaft
     JSL.L RoomMainASM_CeresElevatorShaft                                 ;8FE51F;
     RTS                                                                  ;8FE523;
 
 
+;;; $E524: Main ASM: RTS ;;;
 RTS_8FE524:
+; Room $DFD7. Ceres shaft
+; Room $E021. Ceres baby Metroid hall
+; Room $E06B. Pre Ceres Ridley hall
     RTS                                                                  ;8FE524;
 
 
+;;; $E525: Main ASM: spawn Ceres pre elevator hall falling debris ;;;
 MainASM_SpawnCeresPreElevatorHallFallingDebris:
+; Room $DF8D. Ceres pre elevator hall
     LDA.W $093F                                                          ;8FE525;
     BEQ RTS_8FE524                                                       ;8FE528;
     DEC.W $07E1                                                          ;8FE52A;
@@ -11904,12 +12651,14 @@ MainASM_SpawnCeresPreElevatorHallFallingDebris:
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;8FE54C;
     RTS                                                                  ;8FE550;
 
-
   .debrisXpos:
     dw $0050,$0060,$0070,$0080,$0090,$00A0,$00B0,$00C0                   ;8FE551;
     dw $00D0,$00E0,$00F0,$0110,$0130,$0150,$0170,$0190                   ;8FE561;
 
+
+;;; $E571: Main ASM: handle Ceres Ridley getaway cutscene ;;;
 MainASM_HandleCeresRidleyGetawayCutscene:
+; Room $E0B5. Ceres Ridley's room
     LDA.W $093F                                                          ;8FE571;
     LSR A                                                                ;8FE574;
     BCC .return                                                          ;8FE575;
@@ -11919,14 +12668,16 @@ MainASM_HandleCeresRidleyGetawayCutscene:
     RTS                                                                  ;8FE57B;
 
 
+;;; $E57C: Main ASM: shake screen switching between light horizontal and medium diagonal ;;;
 MainASM_ShakeScreenSwitchingBetweenLightHorizAndMediumDiag:
+; Room $DE7A. Escape room 2
+; Horizontal screen shaking with a 1/80h chance of becoming medium diagonal for 2Ah frames
     LDA.W $07E1                                                          ;8FE57C;
     BEQ .resetQuakeTimer                                                 ;8FE57F;
     DEC.W $07E1                                                          ;8FE581;
     BNE MainASM_GenerateRandomExplosionOnEveryFourthFrame                ;8FE584;
     LDA.W #$0012                                                         ;8FE586;
     BRA +                                                                ;8FE589;
-
 
   .resetQuakeTimer:
     JSL.L GenerateRandomNumber                                           ;8FE58B;
@@ -11936,21 +12687,27 @@ MainASM_ShakeScreenSwitchingBetweenLightHorizAndMediumDiag:
     STA.W $07E1                                                          ;8FE597;
     LDA.W #$0017                                                         ;8FE59A;
 
-+   STA.W $183E                                                          ;8FE59D;
++   STA.W $183E                                                          ;8FE59D; fallthrough to MainASM_GenerateRandomExplosionOnEveryFourthFrame
 
+
+;;; $E5A0: Main ASM: generate random explosion on every fourth frame ;;;
 MainASM_GenerateRandomExplosionOnEveryFourthFrame:
+; Room $DE4D. Escape room 1
+; Room $DEA7. Escape room 3
     JSR.W GenerateRandomExplosionOnEveryFourthFrame                      ;8FE5A0;
     RTS                                                                  ;8FE5A3;
 
 
+;;; $E5A4: Main ASM: shake screen switching between medium horizontal and strong diagonal ;;;
 MainASM_ShakeScreenSwitchingBetweenMediumHorizAndStrongDiag:
+; Room $DEDE. Escape room 4
+; Horizontal screen shaking with a 3/200h chance of becoming strong diagonal for 2Ah frames
     LDA.W $07E1                                                          ;8FE5A4;
     BEQ .resetQuakeTimer                                                 ;8FE5A7;
     DEC.W $07E1                                                          ;8FE5A9;
     BNE .noEarthquakeChange                                              ;8FE5AC;
     LDA.W #$0015                                                         ;8FE5AE;
     BRA +                                                                ;8FE5B1;
-
 
   .resetQuakeTimer:
     JSL.L GenerateRandomNumber                                           ;8FE5B3;
@@ -11969,6 +12726,7 @@ MainASM_ShakeScreenSwitchingBetweenMediumHorizAndStrongDiag:
     RTS                                                                  ;8FE5D1;
 
 
+;;; $E5D2: Room state checking handler ;;;
 Room_State_Checking_Handler:
     TXA                                                                  ;8FE5D2;
     CLC                                                                  ;8FE5D3;
@@ -11984,13 +12742,16 @@ Room_State_Checking_Handler:
     JMP.W ($07B7)                                                        ;8FE5E3;
 
 
+;;; $E5E6: Use state pointer [X] ;;;
 Use_StatePointer_inX:
+; Room state check: default
     STX.W $07BB                                                          ;8FE5E6;
     PLA                                                                  ;8FE5E9;
     RTL                                                                  ;8FE5EA;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $E5EB: Unused. Room state check: door ;;;
 UNUSED_RoomStateCheck_Door_8FE5EB:
     LDA.W $0000,X                                                        ;8FE5EB;
     CMP.W $078D                                                          ;8FE5EE;
@@ -11998,7 +12759,6 @@ UNUSED_RoomStateCheck_Door_8FE5EB:
     LDA.W $0002,X                                                        ;8FE5F3;
     TAX                                                                  ;8FE5F6;
     JMP.W Use_StatePointer_inX                                           ;8FE5F7;
-
 
 +   INX                                                                  ;8FE5FA;
     INX                                                                  ;8FE5FB;
@@ -12008,6 +12768,7 @@ UNUSED_RoomStateCheck_Door_8FE5EB:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $E5FF: Room state check: main area boss is dead ;;;
 RoomStateCheck_MainAreaBossIsDead:
     LDA.W #$0001                                                         ;8FE5FF;
     JSL.L CheckIfBossBitsForCurrentAreaMatchAnyBitsInA                   ;8FE602;
@@ -12016,12 +12777,12 @@ RoomStateCheck_MainAreaBossIsDead:
     TAX                                                                  ;8FE60B;
     JMP.W Use_StatePointer_inX                                           ;8FE60C;
 
-
 +   INX                                                                  ;8FE60F;
     INX                                                                  ;8FE610;
     RTS                                                                  ;8FE611;
 
 
+;;; $E612: Room state check: event has been set ;;;
 RoomStateCheck_EventHasBeenSet:
     LDA.W $0000,X                                                        ;8FE612;
     AND.W #$00FF                                                         ;8FE615;
@@ -12031,13 +12792,13 @@ RoomStateCheck_EventHasBeenSet:
     TAX                                                                  ;8FE621;
     JMP.W Use_StatePointer_inX                                           ;8FE622;
 
-
 +   INX                                                                  ;8FE625;
     INX                                                                  ;8FE626;
     INX                                                                  ;8FE627;
     RTS                                                                  ;8FE628;
 
 
+;;; $E629: Room state check: boss is dead ;;;
 RoomStateCheck_BossIsDead:
     LDA.W $0000,X                                                        ;8FE629;
     AND.W #$00FF                                                         ;8FE62C;
@@ -12047,7 +12808,6 @@ RoomStateCheck_BossIsDead:
     TAX                                                                  ;8FE638;
     JMP.W Use_StatePointer_inX                                           ;8FE639;
 
-
 +   INX                                                                  ;8FE63C;
     INX                                                                  ;8FE63D;
     INX                                                                  ;8FE63E;
@@ -12055,6 +12815,7 @@ RoomStateCheck_BossIsDead:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $E640: Unused. Room state check: morphball ;;;
 UNUSED_RoomStateCheck_Morphball_8FE640:
     LDA.W $09A4                                                          ;8FE640;
     AND.W #$0004                                                         ;8FE643;
@@ -12063,13 +12824,13 @@ UNUSED_RoomStateCheck_Morphball_8FE640:
     TAX                                                                  ;8FE64B;
     JMP.W Use_StatePointer_inX                                           ;8FE64C;
 
-
 +   INX                                                                  ;8FE64F;
     INX                                                                  ;8FE650;
     RTS                                                                  ;8FE651;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $E652: Room state check: morphball and missiles ;;;
 RoomStateCheck_MorphballAndMissiles:
     LDA.W $09A4                                                          ;8FE652;
     BIT.W #$0004                                                         ;8FE655;
@@ -12080,12 +12841,12 @@ RoomStateCheck_MorphballAndMissiles:
     TAX                                                                  ;8FE662;
     JMP.W Use_StatePointer_inX                                           ;8FE663;
 
-
 +   INX                                                                  ;8FE666;
     INX                                                                  ;8FE667;
     RTS                                                                  ;8FE668;
 
 
+;;; $E669: Room state check: power bombs ;;;
 RoomStateCheck_PowerBombs:
     LDA.W $09D0                                                          ;8FE669;
     BEQ +                                                                ;8FE66C;
@@ -12093,13 +12854,13 @@ RoomStateCheck_PowerBombs:
     TAX                                                                  ;8FE671;
     JMP.W Use_StatePointer_inX                                           ;8FE672;
 
-
 +   INX                                                                  ;8FE675;
     INX                                                                  ;8FE676;
     RTS                                                                  ;8FE677;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $E678: Unused. Room state check: speed booster ;;;
 UNUSED_RoomStateCheck_SpeedBooster_8FE678:
     LDA.W $09A4                                                          ;8FE678;
     AND.W #$2000                                                         ;8FE67B;
@@ -12108,12 +12869,13 @@ UNUSED_RoomStateCheck_SpeedBooster_8FE678:
     TAX                                                                  ;8FE683;
     JMP.W Use_StatePointer_inX                                           ;8FE684;
 
-
 +   INX                                                                  ;8FE687;
     INX                                                                  ;8FE688;
     RTS                                                                  ;8FE689;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $E68A: Door closing PLMs ;;;
 Door_Closing_PLMs:
 ; Spawned by Spawn_Door_Closing_PLM during door transition
     dw $0000                                                             ;8FE68A; 0: Non-closing door facing right
@@ -12130,150 +12892,181 @@ Door_Closing_PLMs:
     dw PLMEntries_gateThatClosesInEscapeRoom1_PLM                        ;8FE6A0; Bh: Gate that closes during escape in room after Mother Brain
 
 Tileset_Table_0_UpperCrateria:
-    dl TileTables_0_1_UpperCrateria                                      ;8FE6A2;
-    dl Tiles_0_1_UpperCrateria                                           ;8FE6A5;
-    dl Palettes_0_UpperCrateria                                          ;8FE6A8;
+; 0: Upper Crateria
+    dl TileTables_0_1_UpperCrateria                                      ;8FE6A2; Tile table pointer
+    dl Tiles_0_1_UpperCrateria                                           ;8FE6A5; Tiles pointer
+    dl Palettes_0_UpperCrateria                                          ;8FE6A8; Palette pointer
 
 Tileset_Table_1_RedCrateria:
-    dl TileTables_0_1_UpperCrateria                                      ;8FE6AB;
-    dl Tiles_0_1_UpperCrateria                                           ;8FE6AE;
-    dl Palettes_1_RedCrateria                                            ;8FE6B1;
+; 1: Red Crateria
+    dl TileTables_0_1_UpperCrateria                                      ;8FE6AB; Tile table pointer
+    dl Tiles_0_1_UpperCrateria                                           ;8FE6AE; Tiles pointer
+    dl Palettes_1_RedCrateria                                            ;8FE6B1; Palette pointer
 
 Tileset_Table_2_LowerCrateria:
-    dl TileTables_2_3_LowerCrateria                                      ;8FE6B4;
-    dl Tiles_2_3_LowerCrateria                                           ;8FE6B7;
-    dl Palettes_2_LowerCrateria                                          ;8FE6BA;
+; 2: Lower Crateria
+    dl TileTables_2_3_LowerCrateria                                      ;8FE6B4; Tile table pointer
+    dl Tiles_2_3_LowerCrateria                                           ;8FE6B7; Tiles pointer
+    dl Palettes_2_LowerCrateria                                          ;8FE6BA; Palette pointer
 
 Tileset_Table_3_OldTourian:
-    dl TileTables_2_3_LowerCrateria                                      ;8FE6BD;
-    dl Tiles_2_3_LowerCrateria                                           ;8FE6C0;
-    dl Palettes_3_OldTourian                                             ;8FE6C3;
+; 3: Old Tourian
+    dl TileTables_2_3_LowerCrateria                                      ;8FE6BD; Tile table pointer
+    dl Tiles_2_3_LowerCrateria                                           ;8FE6C0; Tiles pointer
+    dl Palettes_3_OldTourian                                             ;8FE6C3; Palette pointer
 
 Tileset_Table_4_WreckedShip_PowerOn:
-    dl TileTables_4_5_WreckedShip                                        ;8FE6C6;
-    dl Tiles_4_5_WreckedShip                                             ;8FE6C9;
-    dl Palettes_4_WreckedShip_PowerOn                                    ;8FE6CC;
+; 4: Wrecked Ship - power on
+    dl TileTables_4_5_WreckedShip                                        ;8FE6C6; Tile table pointer
+    dl Tiles_4_5_WreckedShip                                             ;8FE6C9; Tiles pointer
+    dl Palettes_4_WreckedShip_PowerOn                                    ;8FE6CC; Palette pointer
 
 Tileset_Table_5_WreckedShip_PowerOff:
-    dl TileTables_4_5_WreckedShip                                        ;8FE6CF;
-    dl Tiles_4_5_WreckedShip                                             ;8FE6D2;
-    dl Palettes_5_WreckedShip_PowerOff                                   ;8FE6D5;
+; 5: Wrecked Ship - power off
+    dl TileTables_4_5_WreckedShip                                        ;8FE6CF; Tile table pointer
+    dl Tiles_4_5_WreckedShip                                             ;8FE6D2; Tiles pointer
+    dl Palettes_5_WreckedShip_PowerOff                                   ;8FE6D5; Palette pointer
 
 Tileset_Table_6_GreenBlueBrinstar:
-    dl TileTables_6_GreenBlueBrinstar                                    ;8FE6D8;
-    dl Tiles_6_GreenBlueBrinstar                                         ;8FE6DB;
-    dl Palettes_6_GreenBlueBrinstar                                      ;8FE6DE;
+; 6: Green/blue Brinstar
+    dl TileTables_6_GreenBlueBrinstar                                    ;8FE6D8; Tile table pointer
+    dl Tiles_6_GreenBlueBrinstar                                         ;8FE6DB; Tiles pointer
+    dl Palettes_6_GreenBlueBrinstar                                      ;8FE6DE; Palette pointer
 
 Tileset_Table_7_RedBrinstar_Kraid:
-    dl TileTables_7_8_RedBrinstar_Kraid_StatuesHall                      ;8FE6E1;
-    dl Tiles_7_8_RedBrinstar_Kraid_StatuesHall                           ;8FE6E4;
-    dl Palettes_7_RedBrinstar_Kraid                                      ;8FE6E7;
+; 7: Red Brinstar / Kraid's lair
+    dl TileTables_7_8_RedBrinstar_Kraid_StatuesHall                      ;8FE6E1; Tile table pointer
+    dl Tiles_7_8_RedBrinstar_Kraid_StatuesHall                           ;8FE6E4; Tiles pointer
+    dl Palettes_7_RedBrinstar_Kraid                                      ;8FE6E7; Palette pointer
 
 Tileset_Table_8_StatuesHall:
-    dl TileTables_7_8_RedBrinstar_Kraid_StatuesHall                      ;8FE6EA;
-    dl Tiles_7_8_RedBrinstar_Kraid_StatuesHall                           ;8FE6ED;
-    dl Palettes_8_StatuesHall                                            ;8FE6F0;
+; 8: Pre Tourian entrance corridor
+    dl TileTables_7_8_RedBrinstar_Kraid_StatuesHall                      ;8FE6EA; Tile table pointer
+    dl Tiles_7_8_RedBrinstar_Kraid_StatuesHall                           ;8FE6ED; Tiles pointer
+    dl Palettes_8_StatuesHall                                            ;8FE6F0; Palette pointer
 
 Tileset_Table_9_HeatedNorfair:
-    dl TileTables_9_A_Norfair                                            ;8FE6F3;
-    dl Tiles_9_A_Norfair                                                 ;8FE6F6;
-    dl Palettes_9_HeatedNorfair                                          ;8FE6F9;
+; 9: Heated Norfair
+    dl TileTables_9_A_Norfair                                            ;8FE6F3; Tile table pointer
+    dl Tiles_9_A_Norfair                                                 ;8FE6F6; Tiles pointer
+    dl Palettes_9_HeatedNorfair                                          ;8FE6F9; Palette pointer
 
 Tileset_Table_A_UnheatedNofair:
-    dl TileTables_9_A_Norfair                                            ;8FE6FC;
-    dl Tiles_9_A_Norfair                                                 ;8FE6FF;
-    dl Palettes_A_UnheatedNorfair                                        ;8FE702;
+; Ah: Unheated Norfair
+    dl TileTables_9_A_Norfair                                            ;8FE6FC; Tile table pointer
+    dl Tiles_9_A_Norfair                                                 ;8FE6FF; Tiles pointer
+    dl Palettes_A_UnheatedNorfair                                        ;8FE702; Palette pointer
 
 Tileset_Table_B_SandlessMaridia:
-    dl TileTables_B_SandlessMaridia                                      ;8FE705;
-    dl Tiles_B_SandlessMaridia                                           ;8FE708;
-    dl Palettes_B_SandlessMaridia                                        ;8FE70B;
+; Bh: Sandless Maridia
+    dl TileTables_B_SandlessMaridia                                      ;8FE705; Tile table pointer
+    dl Tiles_B_SandlessMaridia                                           ;8FE708; Tiles pointer
+    dl Palettes_B_SandlessMaridia                                        ;8FE70B; Palette pointer
 
 Tileset_Table_C_SandyMaridia:
-    dl TileTables_C_SandyMaridia                                         ;8FE70E;
-    dl Tiles_C_SandyMaridia                                              ;8FE711;
-    dl Palettes_C_SandyMaridia                                           ;8FE714;
+; Ch: Sandy Maridia
+    dl TileTables_C_SandyMaridia                                         ;8FE70E; Tile table pointer
+    dl Tiles_C_SandyMaridia                                              ;8FE711; Tiles pointer
+    dl Palettes_C_SandyMaridia                                           ;8FE714; Palette pointer
 
 Tileset_Table_D_Tourian:
-    dl TileTables_D_E_Tourian                                            ;8FE717;
-    dl Tiles_D_E_Tourian                                                 ;8FE71A;
-    dl Palettes_D_Tourian                                                ;8FE71D;
+; Dh: Tourian
+    dl TileTables_D_E_Tourian                                            ;8FE717; Tile table pointer
+    dl Tiles_D_E_Tourian                                                 ;8FE71A; Tiles pointer
+    dl Palettes_D_Tourian                                                ;8FE71D; Palette pointer
 
 Tileset_Table_E_MotherBrain:
-    dl TileTables_D_E_Tourian                                            ;8FE720;
-    dl Tiles_D_E_Tourian                                                 ;8FE723;
-    dl Palettes_E_MotherBrain                                            ;8FE726;
+; Eh: Mother Brain's room
+    dl TileTables_D_E_Tourian                                            ;8FE720; Tile table pointer
+    dl Tiles_D_E_Tourian                                                 ;8FE723; Tiles pointer
+    dl Palettes_E_MotherBrain                                            ;8FE726; Palette pointer
 
 Tileset_Table_F_BlueCeres:
-    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE729;
-    dl Tiles_F_10_Ceres                                                  ;8FE72C;
-    dl Palettes_F_11_13_BlueCeres                                        ;8FE72F;
+; Fh: Blue Ceres
+    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE729; Tile table pointer
+    dl Tiles_F_10_Ceres                                                  ;8FE72C; Tiles pointer
+    dl Palettes_F_11_13_BlueCeres                                        ;8FE72F; Palette pointer
 
 Tileset_Table_10_WhiteCeres:
-    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE732;
-    dl Tiles_F_10_Ceres                                                  ;8FE735;
-    dl Palettes_10_12_14_WhiteCeres                                      ;8FE738;
+; 10h: White Ceres
+    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE732; Tile table pointer
+    dl Tiles_F_10_Ceres                                                  ;8FE735; Tiles pointer
+    dl Palettes_10_12_14_WhiteCeres                                      ;8FE738; Palette pointer
 
 Tileset_Table_11_BlueCeresElevator:
-    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE73B;
-    dl Tiles_11_12_CeresElevator                                         ;8FE73E;
-    dl Palettes_F_11_13_BlueCeres                                        ;8FE741;
+; 11h: Blue Ceres elevator
+    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE73B; Tile table pointer
+    dl Tiles_11_12_CeresElevator                                         ;8FE73E; Tiles pointer
+    dl Palettes_F_11_13_BlueCeres                                        ;8FE741; Palette pointer
 
 Tileset_Table_12_WhiteCeresElevator:
-    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE744;
-    dl Tiles_11_12_CeresElevator                                         ;8FE747;
-    dl Palettes_10_12_14_WhiteCeres                                      ;8FE74A;
+; 12h: White Ceres elevator
+    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE744; Tile table pointer
+    dl Tiles_11_12_CeresElevator                                         ;8FE747; Tiles pointer
+    dl Palettes_10_12_14_WhiteCeres                                      ;8FE74A; Palette pointer
 
 Tileset_Table_13_BlueCeresRidley:
-    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE74D;
-    dl Tiles_13_14_CeresRidley                                           ;8FE750;
-    dl Palettes_F_11_13_BlueCeres                                        ;8FE753;
+; 13h: Blue Ceres Ridley's room
+    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE74D; Tile table pointer
+    dl Tiles_13_14_CeresRidley                                           ;8FE750; Tiles pointer
+    dl Palettes_F_11_13_BlueCeres                                        ;8FE753; Palette pointer
 
 Tileset_Table_14_WhiteCeresRidley:
-    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE756;
-    dl Tiles_13_14_CeresRidley                                           ;8FE759;
-    dl Palettes_10_12_14_WhiteCeres                                      ;8FE75C;
+; 14h: White Ceres Ridley's room
+    dl TileTables_F_10_11_12_13_14_Ceres                                 ;8FE756; Tile table pointer
+    dl Tiles_13_14_CeresRidley                                           ;8FE759; Tiles pointer
+    dl Palettes_10_12_14_WhiteCeres                                      ;8FE75C; Palette pointer
 
 Tileset_Table_15_Map_Statues:
-    dl TileTables_15_16_17_18_19_UtilityRoom_Statues                     ;8FE75F;
-    dl Tiles_15_16_17_18_19_UtilityRoom_Statues                          ;8FE762;
-    dl Palettes_Map_Statues                                              ;8FE765;
+; 15h: Map room / Tourian entrance
+    dl TileTables_15_16_17_18_19_UtilityRoom_Statues                     ;8FE75F; Tile table pointer
+    dl Tiles_15_16_17_18_19_UtilityRoom_Statues                          ;8FE762; Tiles pointer
+    dl Palettes_Map_Statues                                              ;8FE765; Palette pointer
 
 Tileset_Table_16_WreckedShipMap_PowerOff:
-    dl TileTables_15_16_17_18_19_UtilityRoom_Statues                     ;8FE768;
-    dl Tiles_15_16_17_18_19_UtilityRoom_Statues                          ;8FE76B;
-    dl Palettes_16_WreckedShipMap_PowerOff                               ;8FE76E;
+; 16h: Wrecked Ship map room - power off
+    dl TileTables_15_16_17_18_19_UtilityRoom_Statues                     ;8FE768; Tile table pointer
+    dl Tiles_15_16_17_18_19_UtilityRoom_Statues                          ;8FE76B; Tiles pointer
+    dl Palettes_16_WreckedShipMap_PowerOff                               ;8FE76E; Palette pointer
 
 Tileset_Table_17_BlueRefill:
-    dl TileTables_15_16_17_18_19_UtilityRoom_Statues                     ;8FE771;
-    dl Tiles_15_16_17_18_19_UtilityRoom_Statues                          ;8FE774;
-    dl Palettes_17_BlueRefill                                            ;8FE777;
+; 17h: Blue refill room
+    dl TileTables_15_16_17_18_19_UtilityRoom_Statues                     ;8FE771; Tile table pointer
+    dl Tiles_15_16_17_18_19_UtilityRoom_Statues                          ;8FE774; Tiles pointer
+    dl Palettes_17_BlueRefill                                            ;8FE777; Palette pointer
 
 Tileset_Table_18_YellowRefill:
-    dl TileTables_15_16_17_18_19_UtilityRoom_Statues                     ;8FE77A;
-    dl Tiles_15_16_17_18_19_UtilityRoom_Statues                          ;8FE77D;
-    dl Palettes_18_YellowRefill                                          ;8FE780;
+; 18h: Yellow refill room
+    dl TileTables_15_16_17_18_19_UtilityRoom_Statues                     ;8FE77A; Tile table pointer
+    dl Tiles_15_16_17_18_19_UtilityRoom_Statues                          ;8FE77D; Tiles pointer
+    dl Palettes_18_YellowRefill                                          ;8FE780; Palette pointer
 
 Tileset_Table_19_SaveStation:
-    dl TileTables_15_16_17_18_19_UtilityRoom_Statues                     ;8FE783;
-    dl Tiles_15_16_17_18_19_UtilityRoom_Statues                          ;8FE786;
-    dl Palettes_19_SaveStation                                           ;8FE789;
+; 19h: Save room
+    dl TileTables_15_16_17_18_19_UtilityRoom_Statues                     ;8FE783; Tile table pointer
+    dl Tiles_15_16_17_18_19_UtilityRoom_Statues                          ;8FE786; Tiles pointer
+    dl Palettes_19_SaveStation                                           ;8FE789; Palette pointer
 
 Tileset_Table_1A_Kraid:
-    dl TileTables_1A_Kraid                                               ;8FE78C;
-    dl Tiles_1A_Kraid                                                    ;8FE78F;
-    dl Palettes_1A_Kraid                                                 ;8FE792;
+; 1Ah: Kraid's room
+    dl TileTables_1A_Kraid                                               ;8FE78C; Tile table pointer
+    dl Tiles_1A_Kraid                                                    ;8FE78F; Tiles pointer
+    dl Palettes_1A_Kraid                                                 ;8FE792; Palette pointer
 
 Tileset_Table_1B_Crocomire:
-    dl TileTables_1B_Crocomire                                           ;8FE795;
-    dl Tiles_1B_Crocomire                                                ;8FE798;
-    dl Palettes_1B_Crocomire                                             ;8FE79B;
+; 1Bh: Crocomire's room
+    dl TileTables_1B_Crocomire                                           ;8FE795; Tile table pointer
+    dl Tiles_1B_Crocomire                                                ;8FE798; Tiles pointer
+    dl Palettes_1B_Crocomire                                             ;8FE79B; Palette pointer
 
 Tileset_Table_1C_Draygon:
-    dl TileTables_1C_Draygon                                             ;8FE79E;
-    dl Tiles_1C_Draygon                                                  ;8FE7A1;
-    dl Palettes_1C_Draygon                                               ;8FE7A4;
+; 1Ch: Draygon's room
+    dl TileTables_1C_Draygon                                             ;8FE79E; Tile table pointer
+    dl Tiles_1C_Draygon                                                  ;8FE7A1; Tiles pointer
+    dl Palettes_1C_Draygon                                               ;8FE7A4; Palette pointer
 
+
+;;; $E7A7: Tileset pointers ;;;
 Tileset_Pointers:
     dw Tileset_Table_0_UpperCrateria                                     ;8FE7A7;
     dw Tileset_Table_1_RedCrateria                                       ;8FE7A9;
@@ -12305,39 +13098,45 @@ Tileset_Pointers:
     dw Tileset_Table_1B_Crocomire                                        ;8FE7DD;
     dw Tileset_Table_1C_Draygon                                          ;8FE7DF;
 
-Music_Pointers:
-    dl SPC_Engine                                                        ;8FE7E1;
-    dl Music_TitleSequence                                               ;8FE7E4;
-    dl Music_EmptyCrateria                                               ;8FE7E7;
-    dl Music_LowerCrateria                                               ;8FE7EA;
-    dl Music_UpperCrateria                                               ;8FE7ED;
-    dl Music_GreenBrinstar                                               ;8FE7F0;
-    dl Music_RedBrinstar                                                 ;8FE7F3;
-    dl Music_UpperNofair                                                 ;8FE7F6;
-    dl Music_LowerNorfair                                                ;8FE7F9;
-    dl Music_Maridia                                                     ;8FE7FC;
-    dl Music_Tourian                                                     ;8FE7FF;
-    dl Music_MotherBrain                                                 ;8FE802;
-    dl Music_BossFight1                                                  ;8FE805;
-    dl Music_BossFight2                                                  ;8FE808;
-    dl Music_MiniBossFight                                               ;8FE80B;
-    dl Music_Ceres                                                       ;8FE80E;
-    dl Music_WreckedShip                                                 ;8FE811;
-    dl Music_ZebesExplosion                                              ;8FE814;
-    dl Music_Intro                                                       ;8FE817;
-    dl Music_Death                                                       ;8FE81A;
-    dl Music_Credits                                                     ;8FE81D;
-    dl Music_TheLastMetroidIsInCaptivity                                 ;8FE820;
-    dl Music_TheGalaxyIsAtPeace                                          ;8FE823;
-    dl Music_BabyMetroid_BossFight2                                      ;8FE826;
-    dl Music_SamusTheme_UpperCrateria                                    ;8FE829;
 
+;;; $E7E1: Music pointers ;;;
+Music_Pointers:
+    dl SPC_Engine                                                        ;8FE7E1; 0   - SPC engine
+    dl Music_TitleSequence                                               ;8FE7E4; 3   - Title sequence
+    dl Music_EmptyCrateria                                               ;8FE7E7; 6   - Empty Crateria
+    dl Music_LowerCrateria                                               ;8FE7EA; 9   - Lower Crateria
+    dl Music_UpperCrateria                                               ;8FE7ED; Ch  - Upper Crateria
+    dl Music_GreenBrinstar                                               ;8FE7F0; Fh  - Green Brinstar
+    dl Music_RedBrinstar                                                 ;8FE7F3; 12h - Red Brinstar
+    dl Music_UpperNofair                                                 ;8FE7F6; 15h - Upper Norfair
+    dl Music_LowerNorfair                                                ;8FE7F9; 18h - Lower Norfair
+    dl Music_Maridia                                                     ;8FE7FC; 1Bh - Maridia
+    dl Music_Tourian                                                     ;8FE7FF; 1Eh - Tourian
+    dl Music_MotherBrain                                                 ;8FE802; 21h - Mother Brain
+    dl Music_BossFight1                                                  ;8FE805; 24h - Boss fight 1
+    dl Music_BossFight2                                                  ;8FE808; 27h - Boss fight 2
+    dl Music_MiniBossFight                                               ;8FE80B; 2Ah - Miniboss fight
+    dl Music_Ceres                                                       ;8FE80E; 2Dh - Ceres
+    dl Music_WreckedShip                                                 ;8FE811; 30h - Wrecked Ship
+    dl Music_ZebesExplosion                                              ;8FE814; 33h - Zebes boom
+    dl Music_Intro                                                       ;8FE817; 36h - Intro
+    dl Music_Death                                                       ;8FE81A; 39h - Death
+    dl Music_Credits                                                     ;8FE81D; 3Ch - Credits
+    dl Music_TheLastMetroidIsInCaptivity                                 ;8FE820; 3Fh - "The last Metroid is in captivity"
+    dl Music_TheGalaxyIsAtPeace                                          ;8FE823; 42h - "The galaxy is at peace"
+    dl Music_BabyMetroid_BossFight2                                      ;8FE826; 45h - Shitroid (same as boss fight 2)
+    dl Music_SamusTheme_UpperCrateria                                    ;8FE829; 48h - Samus theme (same as upper Crateria)
+
+
+;;; $E82C: Debug room ;;;
 RoomHeader_Debug:
+; Room $E82C: Header
     db $00,$07,$00,$00,$06,$02,$70,$A0,$00                               ;8FE82C;
     dw RoomDoors_Debug                                                   ;8FE835;
     dw Use_StatePointer_inX                                              ;8FE837;
 
 RoomState_Debug:
+; Room $E82C, state $E839: Header
     dl LevelData_DebugRoom                                               ;8FE839;
     db $0B,$00,$00                                                       ;8FE83C;
     dw FXHeader_Debug_MotherBrain_State2                                 ;8FE83F;
@@ -12349,6 +13148,7 @@ RoomState_Debug:
     dw $0000                                                             ;8FE851;
 
 RoomDoors_Debug:
+; Room $E82C: Door list
     dw UNUSED_Door_Debug_0_83ABC4                                        ;8FE853;
     dw UNUSED_Door_Debug_1_83ABCF                                        ;8FE855;
     dw UNUSED_Door_Debug_2_83ABDA                                        ;8FE857;
@@ -12371,9 +13171,11 @@ UNUSED_LibraryBackground_8FE85B:                                         ;8FE85B
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 RoomPLM_Debug:
+; Room $E82C, state $E839: PLM
     db $00,$00                                                           ;8FE87F;
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $E881: Unused. PLM metadata - Wrecked Ship / Maridia / Tourian (/ Ceres?) ;;;
 UNUSED_UnknownUnreferenced_8FE881:                                       ;8FE881;
 ; See UNUSED_8FC209 for the other areas
     dw $009E ; "Next" item / refill station index (9Dh is the last used one, see "Item PLMs.asm" from bank logs)
@@ -12385,6 +13187,8 @@ UNUSED_UnknownUnreferenced_8FE881:                                       ;8FE881
     dw $0000 ; Number of save stations in Ceres?                         
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $E88F: Execute setup ASM ;;;
 Execute_Room_Setup_ASM:
     PHP                                                                  ;8FE88F;
     PHB                                                                  ;8FE890;
@@ -12402,6 +13206,7 @@ Execute_Room_Setup_ASM:
     RTL                                                                  ;8FE8A2;
 
 
+;;; $E8A3: Execute door ASM ;;;
 Execute_Door_ASM:
     PHP                                                                  ;8FE8A3;
     PHB                                                                  ;8FE8A4;
@@ -12415,13 +13220,13 @@ Execute_Door_ASM:
     PEA.W .return-1                                                      ;8FE8B4;
     JMP.W ($0012)                                                        ;8FE8B7;
 
-
   .return:
     PLB                                                                  ;8FE8BA;
     PLP                                                                  ;8FE8BB;
     RTL                                                                  ;8FE8BC;
 
 
+;;; $E8BD: Execute room main ASM ;;;
 Execute_Room_Main_ASM:
     LDX.W $07DF                                                          ;8FE8BD;
     BEQ .return                                                          ;8FE8C0;
@@ -12436,7 +13241,9 @@ Execute_Room_Main_ASM:
     RTL                                                                  ;8FE8CC;
 
 
+;;; $E8CD: Main ASM: Crocomire's room shaking ;;;
 MainASM_CrocomiresRoomShaking:
+; Room $A98D. Crocomire's room
     LDA.W $0F86                                                          ;8FE8CD;
     BIT.W #$0200                                                         ;8FE8D0;
     BNE .return                                                          ;8FE8D3;
@@ -12453,7 +13260,6 @@ MainASM_CrocomiresRoomShaking:
     BMI +                                                                ;8FE8EF;
     LDA.W $0FEE                                                          ;8FE8F1;
     BRA .scroll                                                          ;8FE8F4;
-
 
 +   LDA.W #$0007                                                         ;8FE8F6;
     CLC                                                                  ;8FE8F9;
@@ -12477,7 +13283,6 @@ MainASM_CrocomiresRoomShaking:
   .return:
     RTS                                                                  ;8FE915;
 
-
   .branch:
     LDA.W $0FAC                                                          ;8FE916;
     CMP.W #$0022                                                         ;8FE919;
@@ -12494,13 +13299,11 @@ MainASM_CrocomiresRoomShaking:
     STA.W $0911                                                          ;8FE933;
     RTS                                                                  ;8FE936;
 
-
 +   LDA.W $0911                                                          ;8FE937;
     SEC                                                                  ;8FE93A;
     SBC.W #$0004                                                         ;8FE93B;
     STA.W $0911                                                          ;8FE93E;
     RTS                                                                  ;8FE941;
-
 
   .behindWallRumbling:
     LDA.W $0915                                                          ;8FE942;
@@ -12512,7 +13315,11 @@ MainASM_CrocomiresRoomShaking:
     RTS                                                                  ;8FE94F;
 
 
+;;; $E950: Main ASM: Ridley's room shaking ;;;
 MainASM_RidleysRoomShaking:
+; Room $B32E. Ridley's room
+; Scrolls background in circle when Ridley's tail explosion sets $10A8 (when? Doesn't seem to ever happen)
+; It's actually probably a good thing if this never happens, messing with the BG scroll registers can break scrolling
     LDA.W $10A8                                                          ;8FE950;
     BEQ .return                                                          ;8FE953;
     DEC A                                                                ;8FE955;
@@ -12538,12 +13345,14 @@ MainASM_RidleysRoomShaking:
   .return:
     RTS                                                                  ;8FE97A;
 
-
   .Xspeeds:
+; X scroll speeds
     dw $0000,$0002,$0002,$0002,$0000,$FFFE,$FFFE,$FFFE                   ;8FE97B;
 
   .Yspeeds:
+; Y scroll speeds
     dw $FFFE,$FFFE,$0000,$0002,$0002,$0002,$0000,$FFFE                   ;8FE98B;
+
 
 Freespace_Bank8F_E99B:                                                   ;8FE99B;
 ; $1665 bytes
