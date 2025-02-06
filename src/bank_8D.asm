@@ -2,6 +2,7 @@
 org $8D8000
 
 
+;;; $8000: Enemy projectile spritemaps ;;;
 EnemyProjSpritemaps:
 EnemyProjSpritemaps_Blank_Default:
     dw $0000                                                             ;8D8000;
@@ -6389,6 +6390,7 @@ EnemyProjSpritemaps_Sparks_2:
     %spritemapEntry(0, $1FC, $FC, 0, 0, 2, 0, $10D)
 
 
+;;; $C4C2: Enable palette FX objects ;;;
 Enable_PaletteFXObjects:
     PHP                                                                  ;8DC4C2;
     REP #$20                                                             ;8DC4C3;
@@ -6398,6 +6400,7 @@ Enable_PaletteFXObjects:
     RTL                                                                  ;8DC4CC;
 
 
+;;; $C4CD: Disable palette FX objects ;;;
 Disable_PaletteFXObjects:
     PHP                                                                  ;8DC4CD;
     REP #$20                                                             ;8DC4CE;
@@ -6407,6 +6410,7 @@ Disable_PaletteFXObjects:
     RTL                                                                  ;8DC4D7;
 
 
+;;; $C4D8: Clear palette FX objects ;;;
 Clear_PaletteFXObjects:
     PHP                                                                  ;8DC4D8;
     REP #$30                                                             ;8DC4D9;
@@ -6423,7 +6427,13 @@ Clear_PaletteFXObjects:
     RTL                                                                  ;8DC4E8;
 
 
+;;; $C4E9: Spawn palette FX object ;;;
 Spawn_PaletteFXObject:
+;; Parameter:
+;;     Y: Palette FX object ID
+;; Returns:
+;;     Y: Palette FX object index if carry clear
+;;     Carry: Clear if palette FX object spawned, otherwise set
     PHP                                                                  ;8DC4E9;
     PHB                                                                  ;8DC4EA;
     PHX                                                                  ;8DC4EB;
@@ -6442,7 +6452,6 @@ Spawn_PaletteFXObject:
     PLP                                                                  ;8DC4FC;
     SEC                                                                  ;8DC4FD;
     RTL                                                                  ;8DC4FE;
-
 
   .zero:
     TYA                                                                  ;8DC4FF;
@@ -6466,10 +6475,12 @@ Spawn_PaletteFXObject:
     RTL                                                                  ;8DC525;
 
 
+;;; $C526: RTS ;;;
 RTS_8DC526:
     RTS                                                                  ;8DC526;
 
 
+;;; $C527: Palette FX object handler ;;;
 PaletteFXObject_Handler:
     PHP                                                                  ;8DC527;
     PHB                                                                  ;8DC528;
@@ -6498,6 +6509,7 @@ PaletteFXObject_Handler:
     RTL                                                                  ;8DC549;
 
 
+;;; $C54A: Process palette FX object ;;;
 Process_PaleteFXObject:
     REP #$30                                                             ;8DC54A;
     JSR.W ($1EAD,X)                                                      ;8DC54C;
@@ -6516,7 +6528,6 @@ Process_PaleteFXObject:
     PEA.W .loopDetermineColorIndex-1                                     ;8DC564;
     JMP.W ($0012)                                                        ;8DC567;
 
-
   .timer:
     STA.W $1ECD,X                                                        ;8DC56A;
     LDA.W $1E8D,X                                                        ;8DC56D;
@@ -6529,7 +6540,6 @@ Process_PaleteFXObject:
     PEA.W .loopWriteColors-1                                             ;8DC578;
     JMP.W ($0012)                                                        ;8DC57B;
 
-
   .storeColor:
     STA.L $7EC000,X                                                      ;8DC57E;
     INX                                                                  ;8DC582;
@@ -6538,23 +6548,25 @@ Process_PaleteFXObject:
     INY                                                                  ;8DC585;
     JMP.W .loopWriteColors                                               ;8DC586;
 
-
-Process_PaleteFXObject_done:
+  .done:
+; Eventually, the ASM processing will jump here (via $C595)
     LDX.W $1E7B                                                          ;8DC589;
     TYA                                                                  ;8DC58C;
     CLC                                                                  ;8DC58D;
     ADC.W #$0004                                                         ;8DC58E;
     STA.W $1EBD,X                                                        ;8DC591;
 
-Process_PaleteFXObject_return:
+  .return:
     RTS                                                                  ;8DC594;
 
 
+;;; $C595: Instruction - done ;;;
 Instruction_PaletteFXObject_Done:
     PLA                                                                  ;8DC595;
     JMP.W Process_PaleteFXObject_done                                    ;8DC596;
 
 
+;;; $C599: Instruction - colour index += 4 ;;;
 Instruction_PaletteFXObject_ColorIndex_Plus4:
     TXA                                                                  ;8DC599;
     CLC                                                                  ;8DC59A;
@@ -6565,6 +6577,7 @@ Instruction_PaletteFXObject_ColorIndex_Plus4:
     RTS                                                                  ;8DC5A1;
 
 
+;;; $C5A2: Instruction - colour index += 6 ;;;
 Instruction_PaletteFXObject_ColorIndex_Plus6:
     TXA                                                                  ;8DC5A2;
     CLC                                                                  ;8DC5A3;
@@ -6575,6 +6588,7 @@ Instruction_PaletteFXObject_ColorIndex_Plus6:
     RTS                                                                  ;8DC5AA;
 
 
+;;; $C5AB: Instruction - colour index += 8 ;;;
 Instruction_PaletteFXObject_ColorIndex_Plus8:
     TXA                                                                  ;8DC5AB;
     CLC                                                                  ;8DC5AC;
@@ -6585,6 +6599,7 @@ Instruction_PaletteFXObject_ColorIndex_Plus8:
     RTS                                                                  ;8DC5B3;
 
 
+;;; $C5B4: Instruction - colour index += 10h ;;;
 Instruction_PaletteFXObject_ColorIndex_Plus10:
     TXA                                                                  ;8DC5B4;
     CLC                                                                  ;8DC5B5;
@@ -6595,6 +6610,7 @@ Instruction_PaletteFXObject_ColorIndex_Plus10:
     RTS                                                                  ;8DC5BC;
 
 
+;;; $C5BD: Instruction - colour index += 12h ;;;
 Instruction_PaletteFXObject_ColorIndex_Plus12:
     TXA                                                                  ;8DC5BD;
     CLC                                                                  ;8DC5BE;
@@ -6606,6 +6622,7 @@ Instruction_PaletteFXObject_ColorIndex_Plus12:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C5C6: Unused. Instruction - colour index += 1Eh ;;;
 UNUSED_Instruction_PaletteFXObject_ColorIndex_Plus1E_8DC5C6:
     TXA                                                                  ;8DC5C6;
     CLC                                                                  ;8DC5C7;
@@ -6617,12 +6634,14 @@ UNUSED_Instruction_PaletteFXObject_ColorIndex_Plus1E_8DC5C6:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C5CF: Instruction - delete ;;;
 Instruction_Delete_8DC5CF:
     STZ.W $1E7D,X                                                        ;8DC5CF;
     PLA                                                                  ;8DC5D2;
     RTS                                                                  ;8DC5D3;
 
 
+;;; $C5D4: Instruction - pre-instruction = [[Y]] ;;;
 Instruction_PaletteFXObject_PreInstructionInY:
     LDA.W $0000,Y                                                        ;8DC5D4;
     STA.W $1EAD,X                                                        ;8DC5D7;
@@ -6632,16 +6651,18 @@ Instruction_PaletteFXObject_PreInstructionInY:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C5DD: Unused. Instruction - clear pre-instruction ;;;
 UNUSED_Inst_PaletteFXObject_ClearPreInstruction_8DC5DD:
-    LDA.W #RTS_8DC5E3                                                    ;8DC5DD;
+    LDA.W #.return                                                       ;8DC5DD;
     STA.W $1EAD,X                                                        ;8DC5E0;
-endif ; !FEATURE_KEEP_UNREFERENCED
 
-RTS_8DC5E3:
+  .return:
     RTS                                                                  ;8DC5E3;
+endif ; !FEATURE_KEEP_UNREFERENCED
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C5E4: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Inst_PaletteFXObject_CallExternalFunctionInY_8DC5E4:
     LDA.W $0000,Y                                                        ;8DC5E4;
     STA.B $12                                                            ;8DC5E7;
@@ -6656,11 +6677,11 @@ UNUSED_Inst_PaletteFXObject_CallExternalFunctionInY_8DC5E4:
     INY                                                                  ;8DC5F9;
     RTS                                                                  ;8DC5FA;
 
-
   .externalFunction:
     JML.W [$0012]                                                        ;8DC5FB;
 
 
+;;; $C5FE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_PaletteFXObject_CallExternalFuncInYWithA_8DC5FE:
     LDA.W $0000,Y                                                        ;8DC5FE;
     STA.B $12                                                            ;8DC601;
@@ -6677,12 +6698,12 @@ UNUSED_Inst_PaletteFXObject_CallExternalFuncInYWithA_8DC5FE:
     TAY                                                                  ;8DC619;
     RTS                                                                  ;8DC61A;
 
-
   .externalFunction:
     JML.W [$0012]                                                        ;8DC61B;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C61E: Instruction - go to [[Y]] ;;;
 Instruction_PaletteFXObject_GotoY:
     LDA.W $0000,Y                                                        ;8DC61E;
     TAY                                                                  ;8DC621;
@@ -6690,6 +6711,7 @@ Instruction_PaletteFXObject_GotoY:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C623: Unused. Instruction - go to [Y] + ±[[Y]] ;;;
 UNUSED_Instruction_PaletteFXObject_GotoYPlusY_8DC623:
     STY.B $12                                                            ;8DC623;
     DEY                                                                  ;8DC625;
@@ -6698,7 +6720,6 @@ UNUSED_Instruction_PaletteFXObject_GotoYPlusY_8DC623:
     BMI .highByte                                                        ;8DC62A;
     AND.W #$00FF                                                         ;8DC62C;
     BRA +                                                                ;8DC62F;
-
 
   .highByte:
     ORA.W #$FF00                                                         ;8DC631;
@@ -6710,6 +6731,7 @@ UNUSED_Instruction_PaletteFXObject_GotoYPlusY_8DC623:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C639: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_PaletteFXObject_DecrementTimer_GotoYIfNonZero:
     DEC.W $1EDD,X                                                        ;8DC639;
     BNE Instruction_PaletteFXObject_GotoY                                ;8DC63C;
@@ -6719,6 +6741,7 @@ Instruction_PaletteFXObject_DecrementTimer_GotoYIfNonZero:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C641: Unused. Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 UNUSED_Inst_PaletteFXObject_DecTimer_GotoYIfNonZero_8DC641:
     DEC.W $1EDD,X                                                        ;8DC641;
     BNE UNUSED_Instruction_PaletteFXObject_GotoYPlusY_8DC623             ;8DC644;
@@ -6727,6 +6750,7 @@ UNUSED_Inst_PaletteFXObject_DecTimer_GotoYIfNonZero_8DC641:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C648: Instruction - timer = [[Y]] ;;;
 Instruction_PaletteFXObject_TimerInY:
     SEP #$20                                                             ;8DC648;
     LDA.W $0000,Y                                                        ;8DC64A;
@@ -6736,10 +6760,12 @@ Instruction_PaletteFXObject_TimerInY:
     RTS                                                                  ;8DC653;
 
 
+;;; $C654: Unused. RTS ;;;
 RTS_8DC654:
     RTS                                                                  ;8DC654;
 
 
+;;; $C655: Instruction - palette FX object colour index = [[Y]] ;;;
 Instruction_PaletteFXObject_ColorIndexInY:
     LDA.W $0000,Y                                                        ;8DC655;
     STA.W $1E8D,X                                                        ;8DC658;
@@ -6749,6 +6775,7 @@ Instruction_PaletteFXObject_ColorIndexInY:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C65E: Unused. Instruction - queue music track [[Y]] ;;;
 UNUSED_Instruction_PaletteFXObject_QueueMusicTrackInY_8DC65E:
     LDA.W $0000,Y                                                        ;8DC65E;
     AND.W #$00FF                                                         ;8DC661;
@@ -6757,6 +6784,7 @@ UNUSED_Instruction_PaletteFXObject_QueueMusicTrackInY_8DC65E:
     RTS                                                                  ;8DC669;
 
 
+;;; $C66A: Unused. Instruction - queue sound [[Y]], sound library 1, max queued sounds allowed = 6 ;;;
 UNUSED_Inst_PaletteFXObject_QueueSoundInY_Lib1_Max6_8DC66A:
     LDA.W $0000,Y                                                        ;8DC66A;
     JSL.L QueueSound_Lib1_Max6                                           ;8DC66D;
@@ -6765,6 +6793,7 @@ UNUSED_Inst_PaletteFXObject_QueueSoundInY_Lib1_Max6_8DC66A:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C673: Instruction - queue sound [[Y]], sound library 2, max queued sounds allowed = 6 ;;;
 UNUSED_Inst_PaletteFXObject_QueueSoundInY_Lib2_Max6_8DC673:
     LDA.W $0000,Y                                                        ;8DC673;
     JSL.L QueueSound_Lib2_Max6                                           ;8DC676;
@@ -6773,6 +6802,7 @@ UNUSED_Inst_PaletteFXObject_QueueSoundInY_Lib2_Max6_8DC673:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C67C: Unused. Instruction - queue sound [[Y]], sound library 3, max queued sounds allowed = 6 ;;;
 UNUSED_Inst_PaletteFXObject_QueueSoundInY_Lib3_Max6_8DC67C:
     LDA.W $0000,Y                                                        ;8DC67C;
     JSL.L QueueSound_Lib3_Max6                                           ;8DC67F;
@@ -6781,55 +6811,55 @@ UNUSED_Inst_PaletteFXObject_QueueSoundInY_Lib3_Max6_8DC67C:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C685: RTS ;;;
 RTS_8DC685:
     RTS                                                                  ;8DC685;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C686: Unused ;;;
 UNUSED_8DC686:
 ; Looks like garbage data
     dw $1000,$C690,$C595,$C61E,$C686,$0180,$0000,$0000                   ;8DC686;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $C696: Instruction list - palette FX object $E194 (fade in Super Metroid title logo) ;;;
 InstList_PaletteFXObject_FadeInSuperMetroidTitleLogo:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0142                   ;8DC696;
     dw $0003
-    dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
-    dw $0000,$0000,$0000,$0000,$0000,$0000,$0000
+    dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
     dw Instruction_PaletteFXObject_Done
     dw $0003
-    dw $1084,$0084,$0064,$0064,$0044,$0024,$0004,$0004
-    dw $0003,$0002,$0401,$0400,$0C63,$0421,$0000
+    dw $1084,$0084,$0064,$0064,$0044,$0024,$0004,$0004,$0003,$0002,$0401,$0400,$0C63,$0421,$0000
     dw Instruction_PaletteFXObject_Done
     dw $0003
-    dw $2108,$0508,$00E8,$00C8,$0088,$0048,$0028,$0008
-    dw $0006,$0405,$0803,$0C01,$18C6,$0C42,$0400
+    dw $2108,$0508,$00E8,$00C8,$0088,$0048,$0028,$0008,$0006,$0405,$0803,$0C01,$18C6,$0C42,$0400
     dw Instruction_PaletteFXObject_Done
     dw $0003
-    dw $35AD,$05AD,$056D,$052D,$00CD,$008D,$004D,$000D
-    dw $000A,$0407,$0C05,$1422,$2529,$1484,$0400
+    dw $35AD,$05AD,$056D,$052D,$00CD,$008D,$004D,$000D,$000A,$0407,$0C05,$1422,$2529,$1484,$0400
     dw Instruction_PaletteFXObject_Done
     dw $0003
-    dw $4631,$0A31,$05D1,$0591,$0531,$00B1,$0051,$0011
-    dw $000D,$080A,$1026,$1823,$318C,$1CA5,$0800
+    dw $4631,$0A31,$05D1,$0591,$0531,$00B1,$0051,$0011,$000D,$080A,$1026,$1823,$318C,$1CA5,$0800
     dw Instruction_PaletteFXObject_Done
     dw $0003
-    dw $5AD6,$0AD6,$0A56,$09F6,$0576,$00F6,$0076,$0016
-    dw $0011,$080C,$1428,$2044,$3DEF,$24E7,$0800
+    dw $5AD6,$0AD6,$0A56,$09F6,$0576,$00F6,$0076,$0016,$0011,$080C,$1428,$2044,$3DEF,$24E7,$0800
     dw Instruction_PaletteFXObject_Done
     dw $0003
-    dw $6B5A,$0F5A,$0ADA,$0A5A,$05BA,$011A,$009A,$001A
-    dw $0014,$0C0F,$182A,$2845,$4A52,$2D08,$0C00
+    dw $6B5A,$0F5A,$0ADA,$0A5A,$05BA,$011A,$009A,$001A,$0014,$0C0F,$182A,$2845,$4A52,$2D08,$0C00
     dw Instruction_PaletteFXObject_Done
     dw $0003
-    dw $7FFF,$13FF,$0F5F,$0EBF,$0A1F,$055F,$04BF,$001F
-    dw $0018,$1032,$204C,$3066,$5AB5,$354A,$1000
+    dw $7FFF,$13FF,$0F5F,$0EBF,$0A1F,$055F,$04BF,$001F,$0018,$1032,$204C,$3066,$5AB5,$354A,$1000
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $C7AC: Instruction list - palette FX object $E198 (fade in Nintendo boot logo) ;;;
 InstList_PaletteFXObject_FadeInNintendoBootLogo:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0132                   ;8DC7AC;
 
+
+;;; $C7B0: Instruction list - common section of $C7AC / $C7F2 ;;;
 InstList_PaletteFXObject_Common_FadeInLogo:
     dw $0003                                                             ;8DC7B0;
     dw $0C63,$0C20
@@ -6857,11 +6887,15 @@ InstList_PaletteFXObject_Common_FadeInLogo:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $C7F2: Instruction list - palette FX object $E19C (fade in Nintendo copyright) ;;;
 InstList_PaletteFXObject_FadeInNintendoCopyright:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0192                   ;8DC7F2;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DC7F6;
     dw InstList_PaletteFXObject_Common_FadeInLogo                        ;8DC7F8;
 
+
+;;; $C7FA: Instruction list - palette FX object $E1A0 (title screen baby metroid tube light) ;;;
 InstList_PaletteFXObject_TitleScreenBabyMetroidTubeLight_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0054                   ;8DC7FA;
 
@@ -6893,6 +6927,8 @@ InstList_PaletteFXObject_TitleScreenBabyMetroidTubeLight_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_TitleScreenBabyMetroidTubeLight_1
 
+
+;;; $C862: Instruction list - palette FX object $E1A4 (title screen flickering displays) ;;;
 InstList_PaletteFXObject_TitleScreenFlickeringDisplays_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$005C                   ;8DC862;
 
@@ -6906,6 +6942,8 @@ InstList_PaletteFXObject_TitleScreenFlickeringDisplays_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_TitleScreenFlickeringDisplays_1
 
+
+;;; $C87A: Instruction list - palette FX object $E1A8 (cutscene gunship engine flicker) ;;;
 InstList_PaletteFXObject_CutsceneGunshipEngineFlicker_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00BE                   ;8DC87A;
 
@@ -6919,9 +6957,13 @@ InstList_PaletteFXObject_CutsceneGunshipEngineFlicker_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_CutsceneGunshipEngineFlicker_1
 
+
+;;; $C88E: Instruction list - palette FX object $E1AC (cutscene Ceres navigation lights - sprite Ceres) ;;;
 InstList_PaletteFXObject_CutsceneCeresNavigationLight_Sprite:
     dw Instruction_PaletteFXObject_ColorIndexInY,$01DA                   ;8DC88E;
 
+
+;;; $C892: Instruction list - common section of $C88E / $C906 ;;;
 InstList_PaletteFXObject_Common_CeresNavigationLights:
     dw $0004                                                             ;8DC892;
     dw $001F,$0000
@@ -6968,11 +7010,15 @@ InstList_PaletteFXObject_Common_CeresNavigationLights:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Common_CeresNavigationLights
 
+
+;;; $C906: Instruction list - palette FX object $E1B8 (cutscene Ceres navigation lights - BG Ceres) ;;;
 InstList_PaletteFXObject_CutsceneCeresNavigationLights_BG:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00DA                   ;8DC906;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DC90A;
     dw InstList_PaletteFXObject_Common_CeresNavigationLights             ;8DC90C;
 
+
+;;; $C90E: Instruction list - palette FX object $E1B0 (fade in PLANET ZEBES text) ;;;
 InstList_PaletteFXObject_FadeInPlanetZebesText:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0102                   ;8DC90E;
     dw $0003
@@ -7001,6 +7047,8 @@ InstList_PaletteFXObject_FadeInPlanetZebesText:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $C964: Instruction list - palette FX object $E1B4 (fade out PLANET ZEBES text) ;;;
 InstList_PaletteFXObject_FadeOutPlanetZebesText:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0102                   ;8DC964;
     dw $0003
@@ -7029,6 +7077,8 @@ InstList_PaletteFXObject_FadeOutPlanetZebesText:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $C9BA: Instruction list - palette FX object $E1BC (old Mother Brain fight background lights) ;;;
 InstList_PaletteFXObject_OldMotherBrainFightBGLights_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0028                   ;8DC9BA;
 
@@ -7078,6 +7128,8 @@ InstList_PaletteFXObject_OldMotherBrainFightBGLights_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_OldMotherBrainFightBGLights_1
 
+
+;;; $CA4E: Instruction list - palette FX object $E1C0 (gunship glow) ;;;
 InstList_PaletteFXObject_GunshipGlow_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$01FE                   ;8DCA4E;
 
@@ -7127,6 +7179,8 @@ InstList_PaletteFXObject_GunshipGlow_1:
     dw Instruction_PaletteFXObject_GotoY                                 ;8DCAA6;
     dw InstList_PaletteFXObject_GunshipGlow_1                            ;8DCAA8;
 
+
+;;; $CAAA: Instruction list - palette FX object $E1C4 (fade out zoomed out exploding Zebes) ;;;
 InstList_PaletteFXObject_FadeOutZoomedOutExplodingZebes:
     dw Instruction_PaletteFXObject_ColorIndexInY,$01E0                   ;8DCAAA;
     dw $0008
@@ -7152,6 +7206,8 @@ InstList_PaletteFXObject_FadeOutZoomedOutExplodingZebes:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $CB3C: Instruction list - palette FX object $E1C8 (wide part of Zebes explosion - foreground) ;;;
 InstList_PaletteFXObject_WidePartOfZebesExplosion_Foreground:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0002                   ;8DCB3C;
     dw $0004
@@ -7204,6 +7260,8 @@ InstList_PaletteFXObject_WidePartOfZebesExplosion_Foreground:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $CD62: Instruction list - palette FX object $E1CC (Zebes explosion finale) ;;;
 InstList_PaletteFXObject_ZebesExplosionFinale:
     dw Instruction_PaletteFXObject_ColorIndexInY                         ;8DCD62;
     dw $0002
@@ -7344,14 +7402,20 @@ InstList_PaletteFXObject_ZebesExplosionFinale:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $D362: Instruction list - palette FX object $E1E8 (wide part of Zebes explosion - background) ;;;
 InstList_PaletteFXObject_WidePartOfZebesExplosion_Background:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0022                   ;8DD362;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DD366;
     dw InstList_PaletteFXObject_Common_ZebesExplosion                    ;8DD368;
 
+
+;;; $D36A: Instruction list - palette FX object $E1D0 (white out space during Zebes explosion) ;;;
 InstList_PaletteFXObject_WhiteOutSpaceDuringZebesExplosion:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0000                   ;8DD36A;
 
+
+;;; $D36E: Instruction list - common section of $D362 / $D36A ;;;
 InstList_PaletteFXObject_Common_ZebesExplosion:
     dw $000E                                                             ;8DD36E;
     dw $0000
@@ -7400,6 +7464,8 @@ InstList_PaletteFXObject_Common_ZebesExplosion:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $D3CA: Instruction list - palette FX object $E1D4 (Zebes explosion planet afterglow) ;;;
 InstList_PaletteFXObject_ZebesExplosionPlanetAfterGlow_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$01C2                   ;8DD3CA;
 
@@ -7425,6 +7491,8 @@ InstList_PaletteFXObject_ZebesExplosionPlanetAfterGlow_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_ZebesExplosionPlanetAfterGlow_1
 
+
+;;; $D44A: Instruction list - palette FX object $E1D8 (exploding Zebes lava) ;;;
 InstList_PaletteFXObject_ExplodingZebesLava_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0080                   ;8DD44A;
 
@@ -7462,6 +7530,8 @@ InstList_PaletteFXObject_ExplodingZebesLava_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_ExplodingZebesLava_1
 
+
+;;; $D48E: Instruction list - palette FX object $E1DC (fade out exploding Zebes crust) ;;;
 InstList_PaletteFXObject_FadeOutExplodingZebesCrust:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0082                   ;8DD48E;
     dw $0014
@@ -7490,6 +7560,8 @@ InstList_PaletteFXObject_FadeOutExplodingZebesCrust:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $D5A4: Instruction list - palette FX object $E1E0 (fade out exploding Zebes grey clouds) ;;;
 InstList_PaletteFXObject_FadeOutExplodingZebesGreyClouds:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00A2                   ;8DD5A4;
     dw $000E
@@ -7518,6 +7590,8 @@ InstList_PaletteFXObject_FadeOutExplodingZebesGreyClouds:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $D6BA: Instruction list - palette FX object $E1E4 (gunship emerging from Zebes explosion) ;;;
 InstList_PaletteFXObject_GunshipEmergingFromZebesExplosion:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00A0                   ;8DD6BA;
     dw $0018
@@ -7570,6 +7644,8 @@ InstList_PaletteFXObject_GunshipEmergingFromZebesExplosion:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $D900: Instruction list - palette FX object $E1F0 (hyper beam) ;;;
 InstList_PaletteFXObject_HyperBeam_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$01C2                   ;8DD900;
 
@@ -7607,7 +7683,9 @@ InstList_PaletteFXObject_HyperBeam_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_HyperBeam_1
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $D9D0: Instruction list - palette FX object $E1EC (unused) ;;;
 UNUSED_InstList_PaletteFXObject_8DD9D0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00A0                   ;8DD9D0;
     dw $0002
@@ -7646,6 +7724,8 @@ UNUSED_InstList_PaletteFXObject_8DD9D0:
     dw Instruction_Delete_8DC5CF
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $DB62: Instruction list - palette FX object $E1F4 (Samus loading - power suit) ;;;
 InstList_PaletteFXObject_SamusLoading_PowerSuit_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0180                   ;8DDB62;
     dw Instruction_PaletteFXObject_TimerInY : db $24                     ;8DDB66;
@@ -7697,6 +7777,8 @@ InstList_PaletteFXObject_SamusLoading_PowerSuit_4:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $DCC8: Instruction list - palette FX object $E1F8 (Samus loading - varia suit) ;;;
 InstList_PaletteFXObject_SamusLoading_VairaSuit_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0180                   ;8DDCC8;
     dw Instruction_PaletteFXObject_TimerInY : db $24                     ;8DDCCC;
@@ -7748,6 +7830,8 @@ InstList_PaletteFXObject_SamusLoading_VairaSuit_4:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $DE2E: Instruction list - palette FX object $E1FC (Samus loading - gravity suit) ;;;
 InstList_PaletteFXObject_SamusLoading_GravitySuit_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0180                   ;8DDE2E;
     dw Instruction_PaletteFXObject_TimerInY : db $24                     ;8DDE32;
@@ -7799,6 +7883,8 @@ InstList_PaletteFXObject_SamusLoading_GravitySuit_4:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $DF94: Instruction list - palette FX object $E200 (post-credits Super Metroid icon glare) ;;;
 InstList_PaletteFXObject_PostCreditsSuperMetroidIconGlare:
     dw Instruction_PaletteFXObject_ColorIndexInY,$01E0                   ;8DDF94;
     dw $0001
@@ -7845,96 +7931,122 @@ InstList_PaletteFXObject_PostCreditsSuperMetroidIconGlare:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $E192: Instruction list - delete ;;;
 InstList_PaletteFXObject_Delete:
     dw Instruction_Delete_8DC5CF                                         ;8DE192;
 
+
+;;; $E194: Palette FX objects ;;;
 PaletteFXObjects_FadeInSuperMetroidTitleLogo:
+; Fade in Super Metroid title logo
     dw RTS_8DC685                                                        ;8DE194;
     dw InstList_PaletteFXObject_FadeInSuperMetroidTitleLogo              ;8DE196;
 
 if !FEATURE_KEEP_UNREFERENCED
 PaletteFXObjects_FadeInNintendoBootLogoForUnusedCode:
+; Fade in Nintendo boot logo (for unused code)
     dw RTS_8DC685                                                        ;8DE198;
     dw InstList_PaletteFXObject_FadeInNintendoBootLogo                   ;8DE19A;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 PaletteFXObjects_FadeInNintendoCopyright:
+; Fade in Nintendo copyright
     dw RTS_8DC685                                                        ;8DE19C;
     dw InstList_PaletteFXObject_FadeInNintendoCopyright                  ;8DE19E;
 
 PaletteFXObjects_TitleScreenBabyMetroidTubeLight:
+; Title screen baby metroid tube light
     dw RTS_8DC685                                                        ;8DE1A0;
     dw InstList_PaletteFXObject_TitleScreenBabyMetroidTubeLight_0        ;8DE1A2;
 
 PaletteFXObjects_TitleScreenFlickeringDisplays:
+; Title screen flickering displays
     dw RTS_8DC685                                                        ;8DE1A4;
     dw InstList_PaletteFXObject_TitleScreenFlickeringDisplays_0          ;8DE1A6;
 
 PaletteFXObjects_CutsceneGunshipEngineFlicker:
+; Cutscene gunship engine flicker
     dw RTS_8DC685                                                        ;8DE1A8;
     dw InstList_PaletteFXObject_CutsceneGunshipEngineFlicker_0           ;8DE1AA;
 
 PaletteFXObjects_CutsceneCeresNavigationLights_SpriteCeres:
+; Cutscene Ceres navigation lights - sprite Ceres
     dw RTS_8DC685                                                        ;8DE1AC;
     dw InstList_PaletteFXObject_CutsceneCeresNavigationLight_Sprite      ;8DE1AE;
 
 PaletteFXObjects_FadeInPlanetZebesText:
+; Fade in PLANET ZEBES text
     dw RTS_8DC685                                                        ;8DE1B0;
     dw InstList_PaletteFXObject_FadeInPlanetZebesText                    ;8DE1B2;
 
 PaletteFXObjects_FadeOutPlanetZebesText:
+; Fade out PLANET ZEBES text
     dw RTS_8DC685                                                        ;8DE1B4;
     dw InstList_PaletteFXObject_FadeOutPlanetZebesText                   ;8DE1B6;
 
 PaletteFXObjects_CutsceneCeresNavigationLights_BGCeres:
+; Cutscene Ceres navigation lights - BG Ceres
     dw RTS_8DC685                                                        ;8DE1B8;
     dw InstList_PaletteFXObject_CutsceneCeresNavigationLights_BG         ;8DE1BA;
 
 PaletteFXObjects_OldMotherBrainFightBackgroundLights:
+; Old Mother Brain fight background lights
     dw Setup_PaletteFXObject_OldMotherBrainFightBackgroundLights         ;8DE1BC;
     dw InstList_PaletteFXObject_OldMotherBrainFightBGLights_0            ;8DE1BE;
 
 PaletteFXObjects_GunshipGlow:
+; Gunship glow
     dw RTS_8DC685                                                        ;8DE1C0;
     dw InstList_PaletteFXObject_GunshipGlow_0                            ;8DE1C2;
 
 PaletteFXObjects_FadeOutZoomedOutExplodingZebes:
+; Fade out zoomed out exploding Zebes
     dw RTS_8DC685                                                        ;8DE1C4;
     dw InstList_PaletteFXObject_FadeOutZoomedOutExplodingZebes           ;8DE1C6;
 
 PaletteFXObjects_WidePartOfZebesExplosion_Foreground:
+; Wide part of Zebes explosion - foreground
     dw RTS_8DC685                                                        ;8DE1C8;
     dw InstList_PaletteFXObject_WidePartOfZebesExplosion_Foreground      ;8DE1CA;
 
 PaletteFXObjects_ZebesExplosionFinale:
+; Zebes explosion finale
     dw RTS_8DC685                                                        ;8DE1CC;
     dw InstList_PaletteFXObject_ZebesExplosionFinale                     ;8DE1CE;
 
 PaletteFXObjects_WhiteOutSpaceDuringZebesExplosion:
+; White out space during Zebes explosion
     dw RTS_8DC685                                                        ;8DE1D0;
     dw InstList_PaletteFXObject_WhiteOutSpaceDuringZebesExplosion        ;8DE1D2;
 
 PaletteFXObjects_ZebesExplosionPlanetAfterglow:
+; Zebes explosion planet afterglow
     dw RTS_8DC685                                                        ;8DE1D4;
     dw InstList_PaletteFXObject_ZebesExplosionPlanetAfterGlow_0          ;8DE1D6;
 
 PaletteFXObjects_ExplodingZebesLava:
+; Exploding Zebes lava
     dw RTS_8DC685                                                        ;8DE1D8;
     dw InstList_PaletteFXObject_ExplodingZebesLava_0                     ;8DE1DA;
 
 PaletteFXObjects_FadeOutExplodingZebesCrust:
+; Fade out exploding Zebes crust
     dw RTS_8DC685                                                        ;8DE1DC;
     dw InstList_PaletteFXObject_FadeOutExplodingZebesCrust               ;8DE1DE;
 
 PaletteFXObjects_FadeOutExplodingZebesGreyClouds:
+; Fade out exploding Zebes grey clouds
     dw RTS_8DC685                                                        ;8DE1E0;
     dw InstList_PaletteFXObject_FadeOutExplodingZebesGreyClouds          ;8DE1E2;
 
 PaletteFXObjects_GunshipEmergineFromZebesExplosion:
+; Gunship emerging from Zebes explosion
     dw RTS_8DC685                                                        ;8DE1E4;
     dw InstList_PaletteFXObject_GunshipEmergingFromZebesExplosion        ;8DE1E6;
 
 PaletteFXObjects_WidePartOfZebesExplosion_Background:
+; Wide part of Zebes explosion - background
     dw RTS_8DC685                                                        ;8DE1E8;
     dw InstList_PaletteFXObject_WidePartOfZebesExplosion_Background      ;8DE1EA;
 
@@ -7945,31 +8057,39 @@ UNUSED_PaletteFXObjects_8DE1EC:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 PaletteFXObjects_HyperBeam:
+; Hyper beam
     dw RTS_8DC685                                                        ;8DE1F0;
     dw InstList_PaletteFXObject_HyperBeam_0                              ;8DE1F2;
 
 PaletteFXObjects_SamusLoading_PowerSuit:
+; Samus loading - power suit
     dw RTS_8DC685                                                        ;8DE1F4;
     dw InstList_PaletteFXObject_SamusLoading_PowerSuit_0                 ;8DE1F6;
 
 PaletteFXObjects_SamusLoading_VariaSuit:
+; Samus loading - varia suit
     dw RTS_8DC685                                                        ;8DE1F8;
     dw InstList_PaletteFXObject_SamusLoading_VairaSuit_0                 ;8DE1FA;
 
 PaletteFXObjects_SamusLoading_GravitySuit:
+; Samus loading - gravity suit
     dw RTS_8DC685                                                        ;8DE1FC;
     dw InstList_PaletteFXObject_SamusLoading_GravitySuit_0               ;8DE1FE;
 
 PaletteFXObjects_PostCreditsSuperMetroidIcon:
+; Post-credits Super Metroid icon
     dw RTS_8DC685                                                        ;8DE200;
     dw InstList_PaletteFXObject_PostCreditsSuperMetroidIconGlare         ;8DE202;
 
+
+;;; $E204: Setup - palette FX object $E1BC (old Mother Brain fight background lights) ;;;
 Setup_PaletteFXObject_OldMotherBrainFightBackgroundLights:
     LDA.W #PreInstruction_PaletteFXObject_DeleteIfIntroPage2IsActive     ;8DE204;
     STA.W $1EAD,Y                                                        ;8DE207;
     RTS                                                                  ;8DE20A;
 
 
+;;; $E20B: Pre-instruction - delete if intro page 2 is active ;;;
 PreInstruction_PaletteFXObject_DeleteIfIntroPage2IsActive:
     LDA.W $1F51                                                          ;8DE20B;
     CMP.W #CinematicFunction_Intro_Page2                                 ;8DE20E;
@@ -7983,27 +8103,38 @@ PreInstruction_PaletteFXObject_DeleteIfIntroPage2IsActive:
     RTS                                                                  ;8DE21F;
 
 
+;;; $E220: Instruction list - palette FX object $F745 (nothing) ;;;
 InstList_PaletteFXObject_Nothing:
     dw Instruction_Delete_8DC5CF                                         ;8DE220;
 
+
+;;; $E222: Instruction list - palette FX object $F749 (grey out Tourian statue - Draygon) ;;;
 InstList_PaletteFXObject_GreyOutTourianStatue_Draygon:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00C0                   ;8DE222;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DE226;
     dw InstList_PaletteFXObject_Common_GreyOutTourianStatue              ;8DE228;
 
+
+;;; $E22A: Instruction list - palette FX object $F74D (grey out Tourian statue - Kraid) ;;;
 InstList_PaletteFXObject_GreyOutTourianStatue_Kraid:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00E0                   ;8DE22A;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DE22E;
     dw InstList_PaletteFXObject_Common_GreyOutTourianStatue              ;8DE230;
 
+
+;;; $E232: Instruction list - palette FX object $F751 (grey out Tourian statue - Ridley) ;;;
 InstList_PaletteFXObject_GreyOutTourianStatue_Ridley:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0120                   ;8DE232;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DE236;
     dw InstList_PaletteFXObject_Common_GreyOutTourianStatue              ;8DE238;
 
+
+;;; $E23A: Instruction list - palette FX object $F755 (grey out Tourian statue - Phantoon) ;;;
 InstList_PaletteFXObject_GreyOutTourianStatue_Phantoon:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0140                   ;8DE23A;
 
+
+;;; $E23E: Instruction list - common section of above instruction lists ;;;
 InstList_PaletteFXObject_Common_GreyOutTourianStatue:
     dw $0008                                                             ;8DE23E;
     dw $0000,$57FF,$2BFF,$1F3C,$0278,$01B0,$010B,$0087
@@ -8031,6 +8162,8 @@ InstList_PaletteFXObject_Common_GreyOutTourianStatue:
     dw Instruction_PaletteFXObject_Done
     dw Instruction_Delete_8DC5CF
 
+
+;;; $E2E0: Pre-instruction - delete if enemy 0 died ;;;
 PreInstruction_PaletteFXObject_DeleteIfEnemy0Died:
     LDA.W $0F8C                                                          ;8DE2E0;
     BNE .return                                                          ;8DE2E3;
@@ -8040,6 +8173,7 @@ PreInstruction_PaletteFXObject_DeleteIfEnemy0Died:
     RTS                                                                  ;8DE2E8;
 
 
+;;; $E2E9: Instruction list - palette FX object $F759 (Bomb Torizo belly) ;;;
 InstList_PaletteFXObject_BombTorizoBelly_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0132                   ;8DE2E9;
     dw Instruction_PaletteFXObject_PreInstructionInY                     ;8DE2ED;
@@ -8067,6 +8201,8 @@ InstList_PaletteFXObject_BombTorizoBelly_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_BombTorizoBelly_1
 
+
+;;; $E331: Instruction list - palette FX object $F75D (Golden Torizo belly) ;;;
 InstList_PaletteFXObject_GoldenTorizoBelly_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0132                   ;8DE331;
     dw Instruction_PaletteFXObject_PreInstructionInY                     ;8DE335;
@@ -8094,7 +8230,10 @@ InstList_PaletteFXObject_GoldenTorizoBelly_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_GoldenTorizoBelly_1
 
+
+;;; $E379: Pre-instruction - Samus in heat ;;;
 PreInstruction_PaletteFXObject_SamusInHeat:
+; Contains heat damage check
     LDA.W $09A2                                                          ;8DE379;
     AND.W #$0021                                                         ;8DE37C;
     BNE +                                                                ;8DE37F;
@@ -8128,13 +8267,11 @@ PreInstruction_PaletteFXObject_SamusInHeat:
     LDA.W #.InstListPointers_gravity                                     ;8DE3C6;
     BRA .setInstListPointer                                              ;8DE3C9;
 
-
   .checkVaria:
     BIT.W #$0001                                                         ;8DE3CB;
     BEQ .powerSuit                                                       ;8DE3CE;
     LDA.W #.InstListPointers_varia                                       ;8DE3D0;
     BRA .setInstListPointer                                              ;8DE3D3;
-
 
   .powerSuit:
     LDA.W #.InstListPointers_power                                        ;8DE3D5;
@@ -8146,7 +8283,6 @@ PreInstruction_PaletteFXObject_SamusInHeat:
 
   .return:
     RTS                                                                  ;8DE3DF;
-
 
   .InstListPointers:
   ..gravity:
@@ -8203,6 +8339,8 @@ PreInstruction_PaletteFXObject_SamusInHeat:
     dw InstList_PaletteFXObject_SamusInHeat_PowerSuit_F                  ;8DE43C;
     dw InstList_PaletteFXObject_SamusInHeat_PowerSuit_10                 ;8DE43E;
 
+
+;;; $E440: Setup - palette FX object $F761 (Norfair 1 / Tourian 1) ;;;
 Setup_PaletteFXObject_Norfair1_Tourian1:
     LDA.W $09A2                                                          ;8DE440;
     BIT.W #$0020                                                         ;8DE443;
@@ -8210,13 +8348,11 @@ Setup_PaletteFXObject_Norfair1_Tourian1:
     LDA.W #InstList_PaletteFXObject_SamusInHeat_GravitySuit_0            ;8DE448;
     BRA +                                                                ;8DE44B;
 
-
   .checkVaria:
     BIT.W #$0001                                                         ;8DE44D;
     BEQ .powerSuit                                                       ;8DE450;
     LDA.W #InstList_PaletteFXObject_SamusInHeat_VariaSuit_0              ;8DE452;
     BRA +                                                                ;8DE455;
-
 
   .powerSuit:
     LDA.W #InstList_PaletteFXObject_SamusInHeat_PowerSuit_0              ;8DE457;
@@ -8225,6 +8361,7 @@ Setup_PaletteFXObject_Norfair1_Tourian1:
     RTS                                                                  ;8DE45D;
 
 
+;;; $E45E: Instruction list - Samus in heat - power suit ;;;
 InstList_PaletteFXObject_SamusInHeat_PowerSuit_0:
     dw Instruction_PaletteFXObject_PreInstructionInY                     ;8DE45E;
     dw PreInstruction_PaletteFXObject_SamusInHeat                        ;8DE460;
@@ -8314,6 +8451,8 @@ InstList_PaletteFXObject_SamusInHeat_PowerSuit_11:
     dw Instruction_PaletteFXObject_GotoY                                 ;8DE686;
     dw InstList_PaletteFXObject_SamusInHeat_PowerSuit_1                  ;8DE688;
 
+
+;;; $E68A: Instruction list - Samus in heat - varia suit ;;;
 InstList_PaletteFXObject_SamusInHeat_VariaSuit_0:
     dw Instruction_PaletteFXObject_PreInstructionInY                     ;8DE68A;
     dw PreInstruction_PaletteFXObject_SamusInHeat                        ;8DE68C;
@@ -8405,6 +8544,8 @@ InstList_PaletteFXObject_SamusInHeat_VariaSuit_12:
     dw Instruction_PaletteFXObject_GotoY                                 ;8DE8B2;
     dw InstList_PaletteFXObject_SamusInHeat_VariaSuit_2                  ;8DE8B4;
 
+
+;;; $E8B6: Instruction list - Samus in heat - gravity suit ;;;
 InstList_PaletteFXObject_SamusInHeat_GravitySuit_0:
     dw Instruction_PaletteFXObject_PreInstructionInY                     ;8DE8B6;
     dw PreInstruction_PaletteFXObject_SamusInHeat                        ;8DE8B8;
@@ -8494,7 +8635,11 @@ InstList_PaletteFXObject_SamusInHeat_GravitySuit_11:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_SamusInHeat_GravitySuit_2
 
+
+;;; $EAE2: Instruction list - palette FX object $F76D/$F771 (Wrecked Ship 1) ;;;
 InstList_PaletteFXObject_WreckedShip1_0:
+; Green lights (BG1/2 palette 4 colours Ch..Dh)
+; Used by most Wrecked Ship rooms in powered on state
     dw Instruction_PaletteFXObject_ColorIndexInY,$0098                   ;8DEAE2;
 
 InstList_PaletteFXObject_WreckedShip1_1:
@@ -8525,7 +8670,9 @@ InstList_PaletteFXObject_WreckedShip1_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_WreckedShip1_1
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $EB2A: Unused. Pre-instruction - wait until area boss is dead ;;;
 UNUSED_PreInstruction_PaletteFXObject_WaitUntilAreBossIsDead:
     LDA.W #$0001                                                         ;8DEB2A;
     JSL.L CheckIfBossBitsForCurrentAreaMatchAnyBitsInA                   ;8DEB2D;
@@ -8539,7 +8686,10 @@ UNUSED_PreInstruction_PaletteFXObject_WaitUntilAreBossIsDead:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $EB3B: Instruction list - palette FX object $F765 (Crateria 1) ;;;
 InstList_PaletteFXObject_Crateria1_0:
+; Lightning (BG1/2 palette 5 colours 4..Bh)
+; Used by landing site prior to acquiring power bombs
     dw Instruction_PaletteFXObject_PreInstructionInY                     ;8DEB3B;
     dw PreInst_PaletteFXObject_RestartCrateria1IfSamusIsntLowEnough      ;8DEB3D;
     dw Instruction_PaletteFXObject_ColorIndexInY,$00A8                   ;8DEB3F;
@@ -8597,6 +8747,8 @@ InstList_PaletteFXObject_Crateria1_3:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Crateria1_1
 
+
+;;; $EC59: Pre-instruction - restart Crateria 1 instruction list if Samus isn't low enough ;;;
 PreInst_PaletteFXObject_RestartCrateria1IfSamusIsntLowEnough:
     LDA.W $0AFA                                                          ;8DEC59;
     CMP.W #$0380                                                         ;8DEC5C;
@@ -8611,6 +8763,7 @@ PreInst_PaletteFXObject_RestartCrateria1IfSamusIsntLowEnough:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $EC6E: Instruction list - palette FX object $F769 (unused. Dark lightning) ;;;
 UNUSED_InstList_PaletteFXObject_DarkLightning_0_8DEC6E:
     dw Instruction_PaletteFXObject_PreInstructionInY                     ;8DEC6E;
     dw UNUSED_PreInst_PalFXObj_RestartDarkLightningIfSamus_8DED84        ;8DEC70;
@@ -8672,6 +8825,8 @@ UNUSED_InstList_PaletteFXObject_DarkLightning_3_8DED34:
     dw Instruction_PaletteFXObject_GotoY
     dw UNUSED_InstList_PaletteFXObject_DarkLightning_1_8DEC76
 
+
+;;; $ED84: Pre-instruction - restart dark lightning instruction list if Samus isn't low enough ;;;
 UNUSED_PreInst_PalFXObj_RestartDarkLightningIfSamus_8DED84:
     LDA.W $0AFA                                                          ;8DED84;
     CMP.W #$0380                                                         ;8DED87;
@@ -8686,7 +8841,10 @@ UNUSED_PreInst_PalFXObj_RestartDarkLightningIfSamus_8DED84:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $ED99: Instruction list - palette FX object $F775 (Brinstar 1) ;;;
 InstList_PaletteFXObject_Brinstar1_0:
+; Blue background spores (BG1/2 palette 7 colours 1..3)
+; Used by Brinstar rooms with the blue spores background (e.g. Green Brinstar mainstreet, n00b bridge)
     dw Instruction_PaletteFXObject_ColorIndexInY,$00E2                   ;8DED99;
 
 InstList_PaletteFXObject_Brinstar1_1:
@@ -8721,7 +8879,12 @@ InstList_PaletteFXObject_Brinstar1_1:
     dw Instruction_PaletteFXObject_GotoY                                 ;8DEE29;
     dw InstList_PaletteFXObject_Brinstar1_1                              ;8DEE2B;
 
+
+;;; $EE2D: Instruction list - palette FX object $F779 (Brinstar 8) ;;;
 InstList_PaletteFXObject_Brinstar8_0:
+; Spore Spawn blue background spores (BG1/2 palette 7 colours 1..3)
+; Used by Spore Spawn's room
+; Clone of Brinstar 1 except pre-instruction is set
     dw Instruction_PaletteFXObject_PreInstructionInY                     ;8DEE2D;
     dw PreInstruction_PaletteFXObject_DeleteIfAreaMiniBossIsDead         ;8DEE2F;
     dw Instruction_PaletteFXObject_ColorIndexInY,$00E2                   ;8DEE31;
@@ -8772,6 +8935,8 @@ InstList_PaletteFXObject_Brinstar8_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Brinstar8_1
 
+
+;;; $EEC5: Pre-instruction - delete palette FX object if area mini-boss is dead ;;;
 PreInstruction_PaletteFXObject_DeleteIfAreaMiniBossIsDead:
     PHX                                                                  ;8DEEC5;
     LDX.W $079F                                                          ;8DEEC6;
@@ -8785,7 +8950,10 @@ PreInstruction_PaletteFXObject_DeleteIfAreaMiniBossIsDead:
     RTS                                                                  ;8DEED6;
 
 
+;;; $EED7: Instruction list - palette FX object $F77D (Brinstar 2) ;;;
 InstList_PaletteFXObject_Brinstar2_0:
+; Red background glow (BG1/2 palette 6 colours 4..Bh)
+; Used by Red Brinstar rooms with red background (mainstreet, damage boost hall, -> Crateria elevator)
     dw Instruction_PaletteFXObject_ColorIndexInY,$00C8                   ;8DEED7;
 
 InstList_PaletteFXObject_Brinstar2_1:
@@ -8834,7 +9002,11 @@ InstList_PaletteFXObject_Brinstar2_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Brinstar2_1
 
+
+;;; $EFF7: Instruction list - palette FX object $F781 (Crateria 80h / Brinstar 4) ;;;
 InstList_PaletteFXObject_Crateria80_Brinstar4_0:
+; Beacon flashing (BG1/2 palette 7 colours 1..3 / Dh)
+; Used by pre Tourian hall, red Brinstar mainstreet, red Brinstar -> Crateria elevator and the first three rooms of Kraid's lair
     dw Instruction_PaletteFXObject_ColorIndexInY,$00E2                   ;8DEFF7;
 
 InstList_PaletteFXObject_Crateria80_Brinstar4_1:
@@ -8892,6 +9064,8 @@ InstList_PaletteFXObject_Crateria80_Brinstar4_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Crateria80_Brinstar4_1
 
+
+;;; $F08E: Instruction list - palette FX object $F785 (Norfair 2) ;;;
 InstList_PaletteFXObject_Norfair2_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$006A                   ;8DF08E;
 
@@ -8995,6 +9169,8 @@ InstList_PaletteFXObject_Norfair2_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Norfair2_1
 
+
+;;; $F1C6: Instruction - $1EED = [[Y]] ;;;
 Instruction_PaletteFXObject_1EED_InY:
     LDA.W $0000,Y                                                        ;8DF1C6;
     AND.W #$00FF                                                         ;8DF1C9;
@@ -9003,6 +9179,7 @@ Instruction_PaletteFXObject_1EED_InY:
     RTS                                                                  ;8DF1D0;
 
 
+;;; $F1D1: Instruction list - palette FX object $F789 (Norfair 4) ;;;
 InstList_PaletteFXObject_Norfair4_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0082                   ;8DF1D1;
 
@@ -9090,6 +9267,8 @@ InstList_PaletteFXObject_Norfair4_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Norfair4_1
 
+
+;;; $F2D9: Instruction list - palette FX object $F78D (Norfair 8) ;;;
 InstList_PaletteFXObject_Norfair8_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00A2                   ;8DF2D9;
 
@@ -9177,6 +9356,8 @@ InstList_PaletteFXObject_Norfair8_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Norfair8_1
 
+
+;;; $F3E1: Instruction list - palette FX object $F791 (Norfair 10h) ;;;
 InstList_PaletteFXObject_Norfair10_0:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00C2                   ;8DF3E1;
 
@@ -9264,7 +9445,11 @@ InstList_PaletteFXObject_Norfair10_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Norfair10_1
 
+
+;;; $F4E9: Instruction list - palette FX object $F795 (Maridia 1) ;;;
 InstList_PaletteFXObject_Maridia1_0:
+; Sand pits (BG1/2 palette 2 colours 4..Bh)
+; Used by rooms with sand pits
     dw Instruction_PaletteFXObject_ColorIndexInY,$0048                   ;8DF4E9;
 
 InstList_PaletteFXObject_Maridia1_1:
@@ -9283,7 +9468,11 @@ InstList_PaletteFXObject_Maridia1_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Maridia1_1
 
+
+;;; $F541: Instruction list - palette FX object $F799 (Maridia 2) ;;;
 InstList_PaletteFXObject_Maridia2_0:
+; Sand falls (BG1/2 palette 2 colours 8..Bh)
+; Used by sand fall rooms, snail room save station and Botwoon's room
     dw Instruction_PaletteFXObject_ColorIndexInY,$0050                   ;8DF541;
 
 InstList_PaletteFXObject_Maridia2_1:
@@ -9302,7 +9491,11 @@ InstList_PaletteFXObject_Maridia2_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Maridia2_1
 
+
+;;; $F579: Instruction list - palette FX object $F79D (Maridia 4) ;;;
 InstList_PaletteFXObject_Maridia4_0:
+; Background waterfalls (BG1/2 palette 3 colours 8..Fh)
+; Used by the spike room and two grapple rooms near Draygon
     dw Instruction_PaletteFXObject_ColorIndexInY,$0068                   ;8DF579;
 
 InstList_PaletteFXObject_Maridia4_1:
@@ -9333,7 +9526,10 @@ InstList_PaletteFXObject_Maridia4_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Maridia4_1
 
+
+;;; $F621: Pre-instruction - delete if two more palette FX objects are spawned ;;;
 PreInstruction_PaletteFXObject_DeleteIf2MoreObjectsSpawned:
+; Huh. Weird...
     LDA.W $1E79,X                                                        ;8DF621;
     BEQ .return                                                          ;8DF624;
     STZ.W $1E7D,X                                                        ;8DF626;
@@ -9342,14 +9538,22 @@ PreInstruction_PaletteFXObject_DeleteIf2MoreObjectsSpawned:
     RTS                                                                  ;8DF629;
 
 
+;;; $F62A: Instruction list - palette FX object $F7A5 (Tourian 4) ;;;
 InstList_PaletteFXObject_Tourian4:
+; Clone of Tourian 2
     dw Instruction_PaletteFXObject_ColorIndexInY,$00E8                   ;8DF62A;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DF62E;
     dw InstList_PaletteFXObject_Common_Tourian2_Tourian4_0               ;8DF630;
 
+
+;;; $F632: Instruction list - palette FX object $F7A1 (Tourian 2) ;;;
 InstList_PaletteFXObject_Tourian2:
+; Glowing arkanoid blocks and red orbs (BG1/2 palette 7 colours 4 / 8..Eh)
+; Used by most Tourian rooms
     dw Instruction_PaletteFXObject_ColorIndexInY,$00E8                   ;8DF632;
 
+
+;;; $F636: Instruction list - common section of Tourian 2 / 4 ;;;
 InstList_PaletteFXObject_Common_Tourian2_Tourian4_0:
     dw Instruction_PaletteFXObject_PreInstructionInY                     ;8DF636;
     dw PreInstruction_PaletteFXObject_DeleteIf2MoreObjectsSpawned        ;8DF638;
@@ -9413,6 +9617,8 @@ InstList_PaletteFXObject_Common_Tourian2_Tourian4_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Common_Tourian2_Tourian4_1
 
+
+;;; $F730: Setup - palette FX object $F779 (Brinstar 8) ;;;
 Setup_PaletteFXObject_Brinstar8:
     PHX                                                                  ;8DF730;
     LDX.W $079F                                                          ;8DF731;
@@ -9427,49 +9633,61 @@ Setup_PaletteFXObject_Brinstar8:
     RTS                                                                  ;8DF744;
 
 
+;;; $F745: Palette FX objects ;;;
 PaletteFXObjects_Nothing:
+; Nothing
     dw RTS_8DC685                                                        ;8DF745;
     dw InstList_PaletteFXObject_Nothing                                  ;8DF747;
 
 PaletteFXObjects_GreyOutTourianStatue_Draygon:
+; Grey out Tourian statue - Draygon
     dw RTS_8DC685                                                        ;8DF749;
     dw InstList_PaletteFXObject_GreyOutTourianStatue_Draygon             ;8DF74B;
 
 PaletteFXObjects_GreyOutTourianStatue_Kraid:
+; Grey out Tourian statue - Kraid
     dw RTS_8DC685                                                        ;8DF74D;
     dw InstList_PaletteFXObject_GreyOutTourianStatue_Kraid               ;8DF74F;
 
 PaletteFXObjects_GreyOutTourianStatue_Ridley:
+; Grey out Tourian statue - Ridley
     dw RTS_8DC685                                                        ;8DF751;
     dw InstList_PaletteFXObject_GreyOutTourianStatue_Ridley              ;8DF753;
 
 PaletteFXObjects_GreyOutTourianStatue_Phantoon:
+; Grey out Tourian statue - Phantoon
     dw RTS_8DC685                                                        ;8DF755;
     dw InstList_PaletteFXObject_GreyOutTourianStatue_Phantoon            ;8DF757;
 
 PaletteFXObjects_BombTorizoBelly:
+; Bomb Torizo belly
     dw RTS_8DC685                                                        ;8DF759;
     dw InstList_PaletteFXObject_BombTorizoBelly_0                        ;8DF75B;
 
 PaletteFXObjects_GoldenTorizoBelly:
+; Golden Torizo belly
     dw RTS_8DC685                                                        ;8DF75D;
     dw InstList_PaletteFXObject_GoldenTorizoBelly_0                      ;8DF75F;
 
 PaletteFXObjects_Norfair1_Tourian1:
+; Norfair 1 / Tourian 1
     dw Setup_PaletteFXObject_Norfair1_Tourian1                           ;8DF761;
     dw InstList_PaletteFXObject_SamusInHeat_PowerSuit_0                  ;8DF763;
 
 PaletteFXObjects_Crateria1_Lightning:
+; Crateria 1 - lightning
     dw RTS_8DC685                                                        ;8DF765;
     dw InstList_PaletteFXObject_Crateria1_0                              ;8DF767;
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_PaletteFXObjects_DarkLightning_8DF769:
+; Unused. Dark lightning
     dw RTS_8DC685                                                        ;8DF769;
     dw UNUSED_InstList_PaletteFXObject_DarkLightning_0_8DEC6E            ;8DF76B;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 PaletteFXObjects_WreckedShip1_GreenLights:
+; Wrecked Ship 1 - green lights
     dw RTS_8DC685                                                        ;8DF76D;
     dw InstList_PaletteFXObject_WreckedShip1_0                           ;8DF76F;
 
@@ -9478,58 +9696,75 @@ PaletteFXObjects_WreckedShip1_GreenLights_duplicate:
     dw InstList_PaletteFXObject_WreckedShip1_0                           ;8DF773;
 
 PaletteFXObjects_Brinstar1_BlueBackgroundSpores:
+; Brinstar 1 - blue background spores
     dw RTS_8DC685                                                        ;8DF775;
     dw InstList_PaletteFXObject_Brinstar1_0                              ;8DF777;
 
 PaletteFXObjects_Brinstar8_SporeSpawnBlueBackgroundSpores:
+; Brinstar 8 - Spore Spawn blue background spores
     dw Setup_PaletteFXObject_Brinstar8                                   ;8DF779;
     dw InstList_PaletteFXObject_Brinstar8_0                              ;8DF77B;
 
 PaletteFXObjects_Brinstar2_RedBackgroundGlow:
+; Brinstar 2 - red background glow
     dw RTS_8DC685                                                        ;8DF77D;
     dw InstList_PaletteFXObject_Brinstar2_0                              ;8DF77F;
 
 PaletteFXObjects_Crateria80_Brinstar4_BeaconFlashing:
+; Crateria 80h / Brinstar 4 - beacon flashing
     dw RTS_8DC685                                                        ;8DF781;
     dw InstList_PaletteFXObject_Crateria80_Brinstar4_0                   ;8DF783;
 
 PaletteFXObjects_Norfair2:
+; Norfair 2
     dw RTS_8DC685                                                        ;8DF785;
     dw InstList_PaletteFXObject_Norfair2_0                               ;8DF787;
 
 PaletteFXObjects_Norfair4:
+; Norfair 4
     dw RTS_8DC685                                                        ;8DF789;
     dw InstList_PaletteFXObject_Norfair4_0                               ;8DF78B;
 
 PaletteFXObjects_Norfair8:
+; Norfair 8
     dw RTS_8DC685                                                        ;8DF78D;
     dw InstList_PaletteFXObject_Norfair8_0                               ;8DF78F;
 
 PaletteFXObjects_Norfair10:
+; Norfair 10h
     dw RTS_8DC685                                                        ;8DF791;
     dw InstList_PaletteFXObject_Norfair10_0                              ;8DF793;
 
 PaletteFXObjects_Maridia1_SandPits:
+; Maridia 1 - sand pits
     dw RTS_8DC685                                                        ;8DF795;
     dw InstList_PaletteFXObject_Maridia1_0                               ;8DF797;
 
 PaletteFXObjects_Maridia2_SandFalls:
+; Maridia 2 - sand falls
     dw RTS_8DC685                                                        ;8DF799;
     dw InstList_PaletteFXObject_Maridia2_0                               ;8DF79B;
 
 PaletteFXObjects_Maridia4_BackgroundWaterfalls:
+; Maridia 4 - background waterfalls
     dw RTS_8DC685                                                        ;8DF79D;
     dw InstList_PaletteFXObject_Maridia4_0                               ;8DF79F;
 
 PaletteFXObjects_Tourian2_GlowingArkanoidBlocksAndRedOrbs:
+; Tourian 2 - glowing arkanoid blocks and red orbs
     dw RTS_8DC685                                                        ;8DF7A1;
     dw InstList_PaletteFXObject_Tourian2                                 ;8DF7A3;
 
 UNUSED_PaletteFXObjects_Tourian4_8DF7A5:
+; Tourian 4 - unused clone of Tourian 2
     dw RTS_8DC685                                                        ;8DF7A5;
     dw InstList_PaletteFXObject_Tourian4                                 ;8DF7A7;
 
+
+;;; $F7A9: Instruction list - palette FX object $FFC9 (Tourian 8) ;;;
 InstList_PaletteFXObject_Tourian8_0:
+; Shutter red flashing (sprite palette 1 colours 9..Eh)
+; Used by escape room 1
     dw Instruction_PaletteFXObject_ColorIndexInY,$0132                   ;8DF7A9;
 
 InstList_PaletteFXObject_Tourian8_1:
@@ -9578,7 +9813,10 @@ InstList_PaletteFXObject_Tourian8_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Tourian8_1
 
+
+;;; $F891: Instruction list - palette FX object $FFCD (Tourian 10h) ;;;
 InstList_PaletteFXObject_Tourian10_0:
+; Background red flashing (BG1/2 palette 3 colours 8..Bh)
     dw Instruction_PaletteFXObject_ColorIndexInY,$0070                   ;8DF891;
 
 InstList_PaletteFXObject_Tourian10_1:
@@ -9627,14 +9865,24 @@ InstList_PaletteFXObject_Tourian10_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Tourian10_1
 
+
+;;; $F941: Instruction list - palette FX object $FFD1 (Tourian 20h) ;;;
 InstList_PaletteFXObject_Tourian20:
+; General level red flashing (BG1/2 palette 5 colours 4..9 / Eh)
+; Used by Tourian escape rooms
     dw Instruction_PaletteFXObject_ColorIndexInY,$00A8                   ;8DF941;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DF945;
     dw InstList_PaletteFXObject_Common_Tourian20_Tourian40               ;8DF947;
 
+
+;;; $F949: Instruction list - palette FX object $FFD5 (Tourian 40h) ;;;
 InstList_PaletteFXObject_Tourian40:
+; Red flashing arkanoid blocks and red orbs (BG1/2 palette 7 colours 4..9 / Eh)
+; Used by Tourian escape rooms
     dw Instruction_PaletteFXObject_ColorIndexInY,$00E8                   ;8DF949;
 
+
+;;; $F94D: Instruction list - common section of Tourian 20h / 40h ;;;
 InstList_PaletteFXObject_Common_Tourian20_Tourian40:
     dw $0002                                                             ;8DF94D;
     dw $5294,$39CE,$2108,$1084,$0019,$0012
@@ -9709,7 +9957,11 @@ InstList_PaletteFXObject_Common_Tourian20_Tourian40:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Common_Tourian20_Tourian40
 
+
+;;; $FA69: Instruction list - palette FX object $FFD9 (Crateria 8) ;;;
 InstList_PaletteFXObject_Crateria8_0:
+; Old Tourian red flashing (BG1/2 palette 5 colours 1..3 / 8..Bh / Eh)
+; Used by old Tourian escape shaft during escape
     dw Instruction_PaletteFXObject_ColorIndexInY,$00A2                   ;8DFA69;
 
 InstList_PaletteFXObject_Crateria8_1:
@@ -9814,7 +10066,11 @@ InstList_PaletteFXObject_Crateria8_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Crateria8_1
 
+
+;;; $FBC1: Instruction list - palette FX object $FFDD (Crateria 10h) ;;
 InstList_PaletteFXObject_Crateria10_0:
+; Old Tourian background railings flash orange (BG1/2 palette 6 colours 9..Bh)
+; Used by old Tourian escape shaft during escape
     dw Instruction_PaletteFXObject_ColorIndexInY,$00D2                   ;8DFBC1;
 
 InstList_PaletteFXObject_Crateria10_1:
@@ -9866,7 +10122,10 @@ InstList_PaletteFXObject_Crateria10_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Crateria10_1
 
+
+;;; $FC5F: Instruction list - palette FX object $FFE1 (Crateria 20h) ;;;
 InstList_PaletteFXObject_Crateria20_0:
+; Used by old Tourian escape shaft during escape
     dw Instruction_PaletteFXObject_ColorIndexInY,$00AA                   ;8DFC5F;
 
 InstList_PaletteFXObject_Crateria20_1:
@@ -9918,7 +10177,11 @@ InstList_PaletteFXObject_Crateria20_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Crateria20_1
 
+
+;;; $FCFD: Instruction list - palette FX object $FFE5 (Crateria 2) ;;;
 InstList_PaletteFXObject_Crateria2_0:
+; Upper Crateria red flashing (BG1/2 palette 4 colours 1..7)
+; Used by landing site and Crateria mainstreet during escape
     dw Instruction_PaletteFXObject_ColorIndexInY,$0082                   ;8DFCFD;
 
 InstList_PaletteFXObject_Crateria2_1:
@@ -9967,7 +10230,11 @@ InstList_PaletteFXObject_Crateria2_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Crateria2_1
 
+
+;;; $FE01: Instruction list - palette FX object $FFE9 (Crateria 4) ;;;
 InstList_PaletteFXObject_Crateria4_0:
+; Yellow lightning (BG1/2 palette 5 colours 1..Bh)
+; Used by landing site during escape
     dw Instruction_PaletteFXObject_ColorIndexInY,$00A2                   ;8DFE01;
 
 InstList_PaletteFXObject_Crateria4_1:
@@ -10007,7 +10274,11 @@ InstList_PaletteFXObject_Crateria4_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Crateria4_1
 
+
+;;; $FF27: Instruction list - palette FX object $FFED (Crateria 40h) ;;;
 InstList_PaletteFXObject_Crateria40_0:
+; Slightly modifies an unnoticeable pixel in a CRE block (BG1/2 palette 5 colours 7..Bh)
+; Used by Crateria mainstreet during escape
     dw Instruction_PaletteFXObject_ColorIndexInY,$00AE                   ;8DFF27;
 
 InstList_PaletteFXObject_Crateria40_1:
@@ -10047,45 +10318,58 @@ InstList_PaletteFXObject_Crateria40_1:
     dw Instruction_PaletteFXObject_GotoY
     dw InstList_PaletteFXObject_Crateria40_1
 
+
+;;; $FFC9: Palette FX objects ;;;
 PaletteFXObjects_Tourian8_ShutterRedFlashing:
+; Tourian 8 - shutter red flashing
     dw RTS_8DC685                                                        ;8DFFC9;
     dw InstList_PaletteFXObject_Tourian8_0                               ;8DFFCB;
 
 PaletteFXObjects_Tourian10_BackgroundRedFlashing:
+; Tourian 10h - background red flashing
     dw RTS_8DC685                                                        ;8DFFCD;
     dw InstList_PaletteFXObject_Tourian10_0                              ;8DFFCF;
 
 PaletteFXObjects_Tourian20_GeneralLevelRedFlashing:
+; Tourian 20h - general level red flashing
     dw RTS_8DC685                                                        ;8DFFD1;
     dw InstList_PaletteFXObject_Tourian20                                ;8DFFD3;
 
 PaletteFXObjects_Tourian40_RedFlashingArkanoidBlocksRedOrbs:
+; Tourian 40h - red flashing arkanoid blocks and red orbs
     dw RTS_8DC685                                                        ;8DFFD5;
     dw InstList_PaletteFXObject_Tourian40                                ;8DFFD7;
 
 PaletteFXObjects_Crateria8_OldTourianRedFlashing:
+; Crateria 8 - old Tourian red flashing
     dw RTS_8DC685                                                        ;8DFFD9;
     dw InstList_PaletteFXObject_Crateria8_0                              ;8DFFDB;
 
 PaletteFXObjects_Crateria10_OldTourianBGRailingsFlashYellow:
+; Crateria 10h - old Tourian background railings flash orange
     dw RTS_8DC685                                                        ;8DFFDD;
     dw InstList_PaletteFXObject_Crateria10_0                             ;8DFFDF;
 
 PaletteFXObjects_Crateria20_OldTourianBGPanelsFlashYellow:
+; Crateria 20h - old Tourian background panels flash yellow
     dw RTS_8DC685                                                        ;8DFFE1;
     dw InstList_PaletteFXObject_Crateria20_0                             ;8DFFE3;
 
 PaletteFXObjects_Crateria2_UpperCrateriaRedFlashing:
+; Crateria 2 - upper Crateria red flashing
     dw RTS_8DC685                                                        ;8DFFE5;
     dw InstList_PaletteFXObject_Crateria2_0                              ;8DFFE7;
 
 PaletteFXObjects_Crateria4_YellowLightning:
+; Crateria 4 - yellow lightning
     dw RTS_8DC685                                                        ;8DFFE9;
     dw InstList_PaletteFXObject_Crateria4_0                              ;8DFFEB;
 
 PaletteFXObjects_Crateria40_SlightlyModifiesAPixelInCREBlock:
+; Crateria 40h - slightly modifies an unnoticeable pixel in a CRE block
     dw RTS_8DC685                                                        ;8DFFED;
     dw InstList_PaletteFXObject_Crateria40_0                             ;8DFFEF;
+
 
 Freespace_Bank8D_FFF1:                                                   ;8DFFF1;
 ; $F bytes
