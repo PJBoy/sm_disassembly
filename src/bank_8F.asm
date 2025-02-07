@@ -621,38 +621,46 @@ PLMPopulation_BlueBrinstarBoulders:
     dw $0000                                                             ;8F8834;
 ; Room $A1AD, state $A1BA: PLM
 
-PLMPopulation_BillyMays:
+PLMPopulation_BillyMays:                                                 ;8F8836;
+; Room $A1D8, state $A1E5: PLM
     %PLMPopEntry(PLMEntries_MissileTank, $07, $09, $0024)
     %PLMPopEntry(PLMEntries_MissileTankShotBlock, $05, $0C, $0025)
     dw $0000
 
-PLMPopulation_GreenBrinstarSave:
+PLMPopulation_GreenBrinstarSave:                                         ;8F8844;
+; Room $A201, state $A20E: PLM
     %PLMPopEntry(PLMEntries_saveStation, $05, $0B, $0001)
     dw $0000
 
-PLMPopulation_EtecoonSave:
+PLMPopulation_EtecoonSave:                                               ;8F884C;
+; Room $A22A, state $A237: PLM
     %PLMPopEntry(PLMEntries_saveStation, $05, $0B, $0002)
     dw $0000
 
-PLMPopulation_RedTower:
+PLMPopulation_RedTower:                                                  ;8F8854;
+; Room $A253, state $A260: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $09, $6A, RoomPLM_RedTower_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $0A, $6A, $8000)
     %PLMPopEntry(PLMEntries_greenDoorFacingRight, $01, $96, $0038)
     %PLMPopEntry(PLMEntries_yellowDoorFacingRight, $01, $66, $0039)
     dw $0000
 
-PLMPopulation_RedBrinstarFirefleas:
+PLMPopulation_RedBrinstarFirefleas:                                      ;8F886E;
+; Room $A293, state $A2A0: PLM
     %PLMPopEntry(PLMEntries_redDoorFacingRight, $01, $06, $003A)
     dw $0000
 
-PLMPopulation_XrayScope:
+PLMPopulation_XrayScope:                                                 ;8F8876;
+; Room $A2CE, state $A2DB: PLM
     %PLMPopEntry(PLMEntries_XrayScopeChozoOrb, $05, $07, $0026)
     dw $0000
 
 PLMPopulation_Hellway:
+; Room $A2F7, state $A304: PLM
     dw $0000                                                             ;8F887E;
 
-PLMPopulation_Caterpillar:
+PLMPopulation_Caterpillar:                                               ;8F8880;
+; Room $A322, state $A32F: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $05, $5E, RoomPLM_Caterpillar_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $06, $5E, $8000)
     %PLMPopEntry(PLMEntries_ScrollPLM, $10, $37, RoomPLM_Caterpillar_2)
@@ -665,7 +673,8 @@ PLMPopulation_Caterpillar:
     %PLMPopEntry(PLMEntries_greenDoorFacingRight, $01, $76, $003D)
     dw $0000
 
-PLMPopulation_BetaPowerBomb:
+PLMPopulation_BetaPowerBomb:                                             ;8F88BE;
+; Room $A37C, state $A389: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $07, $0E, RoomPLM_BetaPowerBomb_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $08, $0E, $8000)
     %PLMPopEntry(PLMEntries_PowerBombTank, $04, $13, $0027)
@@ -673,6 +682,7 @@ PLMPopulation_BetaPowerBomb:
     dw $0000
 
 PLMPopulation_AlphaPowerBomb:                                            ;8F88D8;
+; Room $A3AE, state $A3BB: PLM
     %PLMPopEntry(PLMEntries_upwardsExtension, $0F, $04, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $0F, $05, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $0F, $06, $8000)
@@ -687,9 +697,11 @@ PLMPopulation_AlphaPowerBomb:                                            ;8F88D8
     dw $0000
 
 PLMPopulation_SkreeBoost:
+; Room $A3DD, state $A3EA: PLM
     dw $0000                                                             ;8F891C;
 
-PLMPopulation_BelowSpazer:
+PLMPopulation_BelowSpazer:                                               ;8F891E;
+; Room $A408, state $A415: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $10, $11, RoomPLM_BelowSpazer_0_8_A)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $11, $11, $8000)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $12, $11, $8000)
@@ -706,10 +718,12 @@ PLMPopulation_BelowSpazer:
     dw $0000
 
 PLMPopulation_Spazer:                                                    ;8F896E;
+; Room $A447, state $A454: PLM
     %PLMPopEntry(PLMEntries_SpazerChozoOrb, $0B, $09, $002A)
     dw $0000
 
 PLMPopulation_WarehouseZeela:                                            ;8F8976;
+; Room $A471, state $A47E: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $02, $0B, RoomPLM_WarehouseZeela_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $02, $19, RoomPLM_WarehouseZeela_1_3)
     %PLMPopEntry(PLMEntries_ScrollPLM, $07, $19, RoomPLM_WarehouseZeela_2)
@@ -718,11 +732,13 @@ PLMPopulation_WarehouseZeela:                                            ;8F8976
     dw $0000
 
 PLMPopulation_WarehouseETank:                                            ;8F8996;
+; Room $A4B1, state $A4BE: PLM
     %PLMPopEntry(PLMEntries_greyDoorFacingLeft, $0E, $06, $0C41)
     %PLMPopEntry(PLMEntries_EnergyTankShotBlock, $05, $04, $002B)
     dw $0000
 
 PLMPopulation_WarehouseKihunter:                                         ;8F89A4;
+; Room $A4DA, state $A4E7: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $17, $0B, RoomPLM_WarehouseKihunter_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $17, $0E, RoomPLM_WarehouseKihunter_1)
     %PLMPopEntry(PLMEntries_upwardsExtension, $0B, $04, $8000)
@@ -739,11 +755,14 @@ PLMPopulation_WarehouseKihunter:                                         ;8F89A4
     dw $0000
 
 PLMPopulation_MiniKraid_State0_1:                                        ;8F89F4;
+; Room $A521, state $A533: PLM
+; Room $A521, state $A54D: PLM
     %PLMPopEntry(PLMEntries_greyDoorFacingLeft, $5E, $06, $0C42)
     %PLMPopEntry(PLMEntries_greyDoorFacingRight, $01, $06, $0C43)
     dw $0000
 
 PLMPopulation_KraidEyeDoor:                                              ;8F8A02;
+; Room $A56B, state $A578: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $03, $12, RoomPLM_KraidEyeDoor_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $04, $12, $8000)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $05, $12, $8000)
@@ -754,27 +773,34 @@ PLMPopulation_KraidEyeDoor:                                              ;8F8A02
     dw $0000
 
 PLMPopulation_Kraid_State0_1:                                            ;8F8A2E;
+; Room $A59F, state $A5B1: PLM
+; Room $A59F, state $A5CB: PLM
     %PLMPopEntry(PLMEntries_greyDoorFacingLeft, $1E, $16, $0046)
     %PLMPopEntry(PLMEntries_greyDoorFacingRight, $01, $16, $0047)
     dw $0000
 
 PLMPopulation_StatuesHallway:
+; Room $A5ED, state $A5FA: PLM
     dw $0000                                                             ;8F8A3C;
 
 PLMPopulation_RedTowerRefill:                                            ;8F8A3E;
+; Room $A618, state $A625: PLM
     %PLMPopEntry(PLMEntries_energyStation, $04, $0A, $002D)
     dw $0000
 
 PLMPopulation_KraidRefill:                                               ;8F8A46;
+; Room $A641, state $A64E: PLM
     %PLMPopEntry(PLMEntries_missileStation, $09, $0A, $002E)
     %PLMPopEntry(PLMEntries_energyStation, $07, $0A, $002F)
     dw $0000
 
 PLMPopulation_Statues:                                                   ;8F8A54;
+; Room $A66A, state $A677: PLM
     %PLMPopEntry(PLMEntries_greyDoorFacingRight, $01, $06, $9448)
     dw $0000
 
 PLMPopulation_WarehouseEntrance:                                         ;8F8A5C;
+; Room $A6A1, state $A6AE: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $07, $0C, RoomPLM_WarehouseEntrance_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $08, $0C, $8000)
     %PLMPopEntry(PLMEntries_ScrollPLM, $10, $09, RoomPLM_WarehouseEntrance_2)
@@ -796,49 +822,60 @@ PLMPopulation_WarehouseEntrance:                                         ;8F8A5C
     dw $0000
 
 PLMPopulation_VariaSuit:                                                 ;8F8ACA;
+; Room $A6E2, state $A6EF: PLM
     %PLMPopEntry(PLMEntries_VariaSuitChozoOrb, $07, $09, $0030)
     dw $0000
 
 PLMPopulation_WarehouseSave:                                             ;8F8AD2;
+; Room $A70B, state $A718: PLM
     %PLMPopEntry(PLMEntries_saveStation, $07, $0B, $0003)
     dw $0000
 
 PLMPopulation_RedBrinstarSave:                                           ;8F8ADA;
+; Room $A734, state $A741: PLM
     %PLMPopEntry(PLMEntries_saveStation, $07, $0B, $0004)
     dw $0000
 
 PLMPopulation_IceBeamAcid:
+; Room $A75D, state $A76A: PLM
     dw $0000                                                             ;8F8AE2;
 
 PLMPopulation_Cathedral:                                                 ;8F8AE4;
+; Room $A788, state $A795: PLM
     %PLMPopEntry(PLMEntries_MissileTankShotBlock, $22, $1C, $0031)
     %PLMPopEntry(PLMEntries_greenDoorFacingLeft, $2E, $16, $0049)
     dw $0000
 
 PLMPopulation_CathedralEntrance:                                         ;8F8AF2;
+; Room $A7B3, state $A7C0: PLM
     %PLMPopEntry(PLMEntries_redDoorFacingLeft, $2E, $06, $004A)
     dw $0000
 
 PLMPopulation_BusinessCenter:                                            ;8F8AFA;
+; Room $A7DE, state $A7EB: PLM
     %PLMPopEntry(PLMEntries_elevatorPlatform, $06, $2C, $8000)
     %PLMPopEntry(PLMEntries_greenDoorFacingRight, $01, $36, $004B)
     %PLMPopEntry(PLMEntries_yellowDoorFacingRight, $01, $46, $004C)
     %PLMPopEntry(PLMEntries_redDoorFacingRight, $01, $56, $004D)
     dw $0000
 
-PLMPopulation_IceBeamGate:
+PLMPopulation_IceBeamGate:                                               ;8F8B14;
+; Room $A815, state $A822: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $37, $2D, RoomPLM_IceBeamGate_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $38, $2D, $8000)
     dw $0000
 
 PLMPopulation_IceBeamTutorial:
+; Room $A865, state $A872: PLM
     dw $0000                                                             ;8F8B22;
 
 PLMPopulation_IceBeam:                                                   ;8F8B24;
+; Room $A890, state $A89D: PLM
     %PLMPopEntry(PLMEntries_IceBeamChozoOrb, $0C, $07, $0032)
     dw $0000
 
 PLMPopulation_IceBeamSnake:                                              ;8F8B2C;
+; Room $A8B9, state $A8C6: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $0F, $17, RoomPLM_IceBeamSnake_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $0D, $17, RoomPLM_IceBeamSnake_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $11, $17, RoomPLM_IceBeamSnake_2)
@@ -846,10 +883,12 @@ PLMPopulation_IceBeamSnake:                                              ;8F8B2C
     dw $0000
 
 PLMPopulation_CrumbleShaft:                                              ;8F8B46;
+; Room $A8F8, state $A905: PLM
     %PLMPopEntry(PLMEntries_MissileTankShotBlock, $01, $08, $0033)
     dw $0000
 
 PLMPopulation_CrocomireSpeedway:                                         ;8F8B4E;
+; Room $A923, state $A930: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $9E, $28, RoomPLM_CrocomireSpeedway_0)
     %PLMPopEntry(PLMEntries_upwardsExtension, $9E, $27, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $9E, $26, $8000)
@@ -866,21 +905,26 @@ PLMPopulation_CrocomireSpeedway:                                         ;8F8B4E
     dw $0000
 
 PLMPopulation_Crocomire_State0_1:                                        ;8F8B9E;
+; Room $A98D, state $A99F: PLM
+; Room $A98D, state $A9B9: PLM
     %PLMPopEntry(PLMEntries_greyDoorFacingDown, $36, $02, $044F)
     %PLMPopEntry(PLMEntries_EnergyTank, $7D, $06, $0034)
     dw $0000
 
 PLMPopulation_HiJumpBoots:                                               ;8F8BAC;
+; Room $A9E5, state $A9F2: PLM
     %PLMPopEntry(PLMEntries_HiJumpBootsChozoOrb, $03, $0A, $0035)
     dw $0000
 
 PLMPopulation_CrocomireEscape:                                           ;8F8BB4;
+; Room $AA0E, state $AA1B: PLM
     %PLMPopEntry(PLMEntries_downwardsClosedGate, $06, $05, $8000)
     %PLMPopEntry(PLMEntries_downwardsGateShotblock, $06, $05, $000A)
     %PLMPopEntry(PLMEntries_MissileTank, $0D, $09, $0036)
     dw $0000
 
 PLMPopulation_HiJumpETank:                                               ;8F8BC8;
+; Room $AA41, state $AA4E: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $10, $0C, RoomPLM_HiJumpETank_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $0F, $05, RoomPLM_HiJumpETank_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $08, $1C, RoomPLM_HiJumpETank_2)
@@ -891,71 +935,87 @@ PLMPopulation_HiJumpETank:                                               ;8F8BC8
     dw $0000
 
 PLMPopulation_PostCrocFarming:                                           ;8F8BF4;
+; Room $AA82, state $AA8F: PLM
     %PLMPopEntry(PLMEntries_redDoorFacingRight, $01, $06, $0051)
     dw $0000
 
 PLMPopulation_PostCrocSave:                                              ;8F8BFC;
+; Room $AAB5, state $AAC2: PLM
     %PLMPopEntry(PLMEntries_saveStation, $07, $0B, $0000)
     dw $0000
 
 PLMPopulation_PostCrocPowerBombs:                                        ;8F8C04;
+; Room $AADE, state $AAEB: PLM
     %PLMPopEntry(PLMEntries_PowerBombTank, $07, $08, $0039)
     dw $0000
 
 PLMPopulation_PostCrocShaft:                                             ;8F8C0C;
+; Room $AB07, state $AB14: PLM
     %PLMPopEntry(PLMEntries_redDoorFacingLeft, $0E, $36, $0052)
     dw $0000
 
 PLMPopulation_PostCrocMissile:                                           ;8F8C14;
+; Room $AB3B, state $AB48: PLM
     %PLMPopEntry(PLMEntries_MissileTank, $3C, $09, $003A)
     dw $0000
 
 PLMPopulation_GrappleTutorial3:                                          ;8F8C1C;
+; Room $AB64, state $AB71: PLM
     %PLMPopEntry(PLMEntries_downwardsClosedGate, $2A, $05, $8000)
     %PLMPopEntry(PLMEntries_downwardsGateShotblock, $2A, $05, $0008)
     dw $0000
 
 PLMPopulation_PostCrocJump:                                              ;8F8C2A;
+; Room $AB8F, state $AB9C: PLM
     %PLMPopEntry(PLMEntries_MissileTank, $43, $09, $003B)
     dw $0000
 
 PLMPopulation_GrappleTutorial2:
+; Room $ABD2, state $ABDF: PLM
     dw $0000                                                             ;8F8C32;
 
 PLMPopulation_GrappleTutorial1:
+; Room $AC00, state $AC0D: PLM
     dw $0000                                                             ;8F8C34;
 
 PLMPopulation_GrappleBeam:                                               ;8F8C36;
+; Room $AC2B, state $AC38: PLM
     %PLMPopEntry(PLMEntries_GrappleBeamChozoOrb, $04, $27, $003C)
     dw $0000
 
 PLMPopulation_NorfairReserveTank:                                        ;8F8C3E;
+; Room $AC5A, state $AC67: PLM
     %PLMPopEntry(PLMEntries_ReserveTankChozoOrb, $02, $07, $003D)
     %PLMPopEntry(PLMEntries_MissileTankShotBlock, $07, $0B, $003E)
     dw $0000
 
 PLMPopulation_GreenBubblesMissiles:                                      ;8F8C4C;
+; Room $AC83, state $AC90: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $10, $05, RoomPLM_GreenBubblesMissiles_0)
     %PLMPopEntry(PLMEntries_MissileTank, $14, $0A, $003F)
     dw $0000
 
 PLMPopulation_BubbleMountain:                                            ;8F8C5A;
+; Room $ACB3, state $ACC0: PLM
     %PLMPopEntry(PLMEntries_greenDoorFacingRight, $01, $06, $0053)
     %PLMPopEntry(PLMEntries_greenDoorFacingLeft, $1E, $06, $0054)
     %PLMPopEntry(PLMEntries_MissileTank, $14, $3C, $0040)
     dw $0000
 
 PLMPopulation_SpeedBoosterHall:                                          ;8F8C6E;
+; Room $ACF0, state $ACFD: PLM
     %PLMPopEntry(PLMEntries_SpeedBoosterEscape, $00, $00, $8000)
     %PLMPopEntry(PLMEntries_MissileTankShotBlock, $BC, $13, $0041)
     %PLMPopEntry(PLMEntries_redDoorFacingLeft, $BE, $16, $0055)
     dw $0000
 
 PLMPopulation_SpeedBooster:                                              ;8F8C82;
+; Room $AD1B, state $AD28: PLM
     %PLMPopEntry(PLMEntries_SpeedBoosterChozoOrb, $0B, $06, $0042)
     dw $0000
 
 PLMPopulation_SingleChamber:                                             ;8F8C8A;
+; Room $AD5E, state $AD6B: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $0D, $08, RoomPLM_SingleChamber_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $10, $08, RoomPLM_SingleChamber_1_4)
     %PLMPopEntry(PLMEntries_upwardsExtension, $4D, $0A, $8000)
@@ -965,6 +1025,7 @@ PLMPopulation_SingleChamber:                                             ;8F8C8A
     dw $0000
 
 PLMPopulation_DoubleChamber:                                             ;8F8CB0;
+; Room $ADAD, state $ADBA: PLM
     %PLMPopEntry(PLMEntries_downwardsClosedGate, $1A, $05, $8000)
     %PLMPopEntry(PLMEntries_downwardsGateShotblock, $1A, $05, $0000)
     %PLMPopEntry(PLMEntries_MissileTank, $1F, $09, $0043)
@@ -972,13 +1033,16 @@ PLMPopulation_DoubleChamber:                                             ;8F8CB0
     dw $0000
 
 PLMPopulation_WaveBeam:                                                  ;8F8CCA;
+; Room $ADDE, state $ADEB: PLM
     %PLMPopEntry(PLMEntries_WaveBeamChozoOrb, $0B, $06, $0044)
     dw $0000
 
 PLMPopulation_SpikyPlatformsTunnel:
+; Room $AE07, state $AE14: PLM
     dw $0000                                                             ;8F8CD2;
 
 PLMPopulation_Volcano:                                                   ;8F8CD4;
+; Room $AE32, state $AE3F: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $20, $29, RoomPLM_Volcano_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $1F, $29, RoomPLM_Volcano_1)
     %PLMPopEntry(PLMEntries_upwardsExtension, $19, $24, $8000)
@@ -994,6 +1058,7 @@ PLMPopulation_Volcano:                                                   ;8F8CD4
     dw $0000
 
 PLMPopulation_KronicBoost:                                               ;8F8D1E;
+; Room $AE74, state $AE81: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $0F, $17, RoomPLM_KronicBoost_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $11, $17, RoomPLM_KronicBoost_1)
     %PLMPopEntry(PLMEntries_upwardsExtension, $08, $15, $8000)
@@ -1006,9 +1071,11 @@ PLMPopulation_KronicBoost:                                               ;8F8D1E
     dw $0000
 
 PLMPopulation_MagdolliteTunnel:
+; Room $AEB4, state $AEC1: PLM
     dw $0000                                                             ;8F8D56;
 
 PLMPopulation_PurpleShaft:                                               ;8F8D58;
+; Room $AEDF, state $AEEC: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $02, $0B, RoomPLM_PurpleShaft_0_3)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $03, $0B, $8000)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $04, $0B, $8000)
@@ -1018,34 +1085,43 @@ PLMPopulation_PurpleShaft:                                               ;8F8D58
     dw $0000
 
 PLMPopulation_LavaDive:
+; Room $AF14, state $AF21: PLM
     dw $0000                                                             ;8F8D7E;
 
 PLMPopulation_LowerNorfairElev:                                          ;8F8D80;
+; Room $AF3F, state $AF4C: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $08, $0B, RoomPLM_LowerNorfairElev_0)
     dw $0000
 
 PLMPopulation_UpperNorfairFarming:                                       ;8F8D88;
+; Room $AF72, state $AF7F: PLM
     %PLMPopEntry(PLMEntries_downwardsClosedGate, $06, $15, $8000)
     %PLMPopEntry(PLMEntries_downwardsGateShotblock, $06, $15, $0000)
     dw $0000
 
 PLMPopulation_RisingTide:
+; Room $AFA3, state $AFB0: PLM
     dw $0000                                                             ;8F8D96;
 
 PLMPopulation_AcidSnakesTunnel:
+; Room $AFCE, state $AFDB: PLM
     dw $0000                                                             ;8F8D98;
 
 PLMPopulation_SpikyAcidSnakesTunnel:
+; Room $AFFB, state $B008: PLM
     dw $0000                                                             ;8F8D9A;
 
 PLMPopulation_UpperNorfairRefill:                                        ;8F8D9C;
+; Room $B026, state $B033: PLM
     %PLMPopEntry(PLMEntries_energyStation, $07, $0A, $0045)
     dw $0000
 
 PLMPopulation_PurpleFarming:
+; Room $B051, state $B05E: PLM
     dw $0000                                                             ;8F8DA4;
 
 PLMPopulation_BatCave:                                                   ;8F8DA6;
+; Room $B07A, state $B087: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $09, $0C, RoomPLM_BatCave_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $0A, $0C, $8000)
     %PLMPopEntry(PLMEntries_ScrollPLM, $09, $10, RoomPLM_BatCave_2)
@@ -1057,37 +1133,46 @@ PLMPopulation_BatCave:                                                   ;8F8DA6
     dw $0000
 
 PLMPopulation_NorfairMap:                                                ;8F8DD8;
+; Room $B0B4, state $B0C1: PLM
     %PLMPopEntry(PLMEntries_mapStation, $05, $0A, $8000)
     dw $0000
 
 PLMPopulation_BubbleMountainSave:                                        ;8F8DE0;
+; Room $B0DD, state $B0EA: PLM
     %PLMPopEntry(PLMEntries_saveStation, $05, $0B, $0001)
     dw $0000
 
 PLMPopulation_FrogSpeedway:
+; Room $B106, state $B113: PLM
     dw $0000                                                             ;8F8DE8;
 
 PLMPopulation_RedPirateShaft:
+; Room $B139, state $B146: PLM
     dw $0000                                                             ;8F8DEA;
 
 PLMPopulation_FrogSave:                                                  ;8F8DEC;
+; Room $B167, state $B174: PLM
     %PLMPopEntry(PLMEntries_saveStation, $07, $0B, $0002)
     dw $0000
 
 PLMPopulation_CrocomireSave:                                             ;8F8DF4;
+; Room $B192, state $B19F: PLM
     %PLMPopEntry(PLMEntries_saveStation, $07, $0B, $0003)
     dw $0000
 
 PLMPopulation_LNElevSave:                                                ;8F8DFC;
+; Room $B1BB, state $B1C8: PLM
     %PLMPopEntry(PLMEntries_saveStation, $05, $0B, $0004)
     dw $0000
 
 PLMPopulation_AcidStatue:                                                ;8F8E04;
+; Room $B1E5, state $B1F2: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $0C, $1E, RoomPLM_AcidStatue_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $0C, $23, RoomPLM_AcidStatue_1)
     dw $0000
 
 PLMPopulation_MainHall:                                                  ;8F8E12;
+; Room $B236, state $B243: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $47, $08, RoomPLM_MainHall_0_2)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $48, $08, $8000)
     %PLMPopEntry(PLMEntries_ScrollPLM, $47, $23, RoomPLM_MainHall_0_2)
@@ -1098,6 +1183,8 @@ PLMPopulation_MainHall:                                                  ;8F8E12
     dw $0000
 
 PLMPopulation_GoldenTorizo_State0_1:                                     ;8F8E3E;
+; Room $B283, state $B295: PLM
+; Room $B283, state $B2AF: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $04, $0C, RoomPLM_GoldenTorizo_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $05, $0C, $8000)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $06, $0C, $8000)
@@ -1112,26 +1199,32 @@ PLMPopulation_GoldenTorizo_State0_1:                                     ;8F8E3E
     dw $0000
 
 PLMPopulation_FastRipper:                                                ;8F8E82;
+; Room $B2DA, state $B2E7: PLM
     %PLMPopEntry(PLMEntries_downwardsClosedGate, $34, $05, $8000)
     %PLMPopEntry(PLMEntries_downwardsGateShotblock, $34, $05, $0008)
     dw $0000
 
 PLMPopulation_GTEnergyRefill:                                            ;8F8E90;
+; Room $B305, state $B312: PLM
     %PLMPopEntry(PLMEntries_energyStation, $08, $0A, $0048)
     dw $0000
 
 PLMPopulation_Ridley_State0_1:                                           ;8F8E98;
+; Room $B32E, state $B340: PLM
+; Room $B32E, state $B35A: PLM
     %PLMPopEntry(PLMEntries_greyDoorFacingLeft, $0E, $06, $005A)
     %PLMPopEntry(PLMEntries_greyDoorFacingRight, $01, $16, $005B)
     dw $0000
 
 PLMPopulation_LNFarming:                                                 ;8F8EA6;
+; Room $B37A, state $B387: PLM
     %PLMPopEntry(PLMEntries_EyeDoorFacingRight, $01, $06, $005C)
     %PLMPopEntry(PLMEntries_EyeDoorBottomFacingRight, $01, $09, $005C)
     %PLMPopEntry(PLMEntries_EyeDoorEyeFacingRight, $01, $07, $005C)
     dw $0000
 
 PLMPopulation_FastPillarsSetup:                                          ;8F8EBA;
+; Room $B3A5, state $B3B2: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $07, $21, RoomPLM_FastPillarsSetup_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $08, $21, $8000)
     %PLMPopEntry(PLMEntries_ScrollPLM, $07, $1B, RoomPLM_FastPillarsSetup_2)
@@ -1140,10 +1233,12 @@ PLMPopulation_FastPillarsSetup:                                          ;8F8EBA
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_PLMPopulation_8FB3EE:
+; Room $B3E1, state $B3EE: PLM
     dw $0000                                                             ;8F8ED4;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 PLMPopulation_MickeyMouse:                                               ;8F8ED6;
+; Room $B40A, state $B417: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $30, $16, RoomPLM_MickeyMouse_0)
     %PLMPopEntry(PLMEntries_ScrollPLM, $32, $16, RoomPLM_MickeyMouse_1)
     %PLMPopEntry(PLMEntries_ScrollPLM, $2D, $16, RoomPLM_MickeyMouse_2)
@@ -1163,12 +1258,15 @@ PLMPopulation_MickeyMouse:                                               ;8F8ED6
     dw $0000
 
 PLMPopulation_Pillar:
+; Room $B457, state $B464: PLM
     dw $0000                                                             ;8F8F38;
 
 PLMPopulation_Plowerhouse:
+; Room $B482, state $B48F: PLM
     dw $0000                                                             ;8F8F3A;
 
 PLMPopulation_WorstRoomInTheGame:                                        ;8F8F3C;
+; Room $B4AD, state $B4BA: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $03, $10, RoomPLM_WorstRoomInTheGame_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $04, $10, $8000)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $05, $10, $8000)
@@ -1182,9 +1280,11 @@ PLMPopulation_WorstRoomInTheGame:                                        ;8F8F3C
     dw $0000
 
 PLMPopulation_Amphitheatre:
+; Room $B4E5, state $B4F2: PLM
     dw $0000                                                             ;8F8F7A;
 
 PLMPopulation_LNSpringBallMaze:                                          ;8F8F7C;
+; Room $B510, state $B51D: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $0C, $09, RoomPLM_LNSpringBallMaze_0)
     %PLMPopEntry(PLMEntries_upwardsExtension, $0C, $08, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $0C, $07, $8000)
@@ -1202,10 +1302,12 @@ PLMPopulation_LNSpringBallMaze:                                          ;8F8F7C
     dw $0000
 
 PLMPopulation_LNEscapePowerBombs:                                        ;8F8FD2;
+; Room $B55A, state $B567: PLM
     %PLMPopEntry(PLMEntries_PowerBombTank, $0C, $08, $004B)
     dw $0000
 
 PLMPopulation_RedKihunterShaft:                                          ;8F8FDA;
+; Room $B585, state $B592: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $11, $48, RoomPLM_RedKihunterShaft_0_4)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $09, $46, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $08, $46, $8000)
@@ -1224,6 +1326,7 @@ PLMPopulation_RedKihunterShaft:                                          ;8F8FDA
     dw $0000
 
 PLMPopulation_Wasteland:                                                 ;8F9036;
+; Room $B5D5, state $B5E2: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $17, $0D, RoomPLM_Wasteland_0)
     %PLMPopEntry(PLMEntries_rightwardsExtension, $18, $0D, $8000)
     %PLMPopEntry(PLMEntries_ScrollPLM, $15, $08, RoomPLM_Wasteland_2)
@@ -1251,10 +1354,12 @@ PLMPopulation_Wasteland:                                                 ;8F9036
     dw $0000
 
 PLMPopulation_MetalPirates:                                              ;8F90C8;
+; Room $B62B, state $B638: PLM
     %PLMPopEntry(PLMEntries_greyDoorFacingRight, $01, $06, $0C60)
     dw $0000
 
 PLMPopulation_ThreeMusketeers:                                           ;8F90D0;
+; Room $B656, state $B663: PLM
     %PLMPopEntry(PLMEntries_ScrollPLM, $0B, $2A, RoomPLM_ThreeMusketeers_0)
     %PLMPopEntry(PLMEntries_upwardsExtension, $0B, $29, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $0B, $28, $8000)
@@ -1267,14 +1372,17 @@ PLMPopulation_ThreeMusketeers:                                           ;8F90D0
     dw $0000
 
 PLMPopulation_RidleyETank:                                               ;8F9108;
+; Room $B698, state $B6A5: PLM
     %PLMPopEntry(PLMEntries_EnergyTankShotBlock, $0E, $0B, $004E)
     dw $0000
 
 PLMPopulation_ScrewAttack:                                               ;8F9110;
+; Room $B6C1, state $B6CE: PLM
     %PLMPopEntry(PLMEntries_ScrewAttackChozoOrb, $0B, $28, $004F)
     dw $0000
 
 PLMPopulation_LNFireflea:                                                ;8F9118;
+; Room $B6EE, state $B6FB: PLM
     %PLMPopEntry(PLMEntries_upwardsExtension, $1F, $36, $8000)
     %PLMPopEntry(PLMEntries_upwardsExtension, $1F, $37, $8000)
     %PLMPopEntry(PLMEntries_ScrollPLM, $1F, $38, RoomPLM_LNFireflea_2)
@@ -1297,6 +1405,7 @@ PLMPopulation_LNFireflea:                                                ;8F9118
     dw $0000
 
 PLMPopulation_LNSave:                                                    ;8F918C;
+; Room $B741, state $B74E: PLM
     %PLMPopEntry(PLMEntries_saveStation, $07, $0B, $0005)
     dw $0000
 
@@ -6591,181 +6700,116 @@ RoomDoors_LNSave:
 
 
 ;;; $B76A: Library backgrounds ;;;
-LibBG_ScrollingSky_Tilemaps_LandingSite:
-    dw $000E                                                             ;8FB76A;
-    dw Door_GauntletEntrance_0                                           ;8FB76C;
-    dl ScrollingSky_Tilemaps_2                                           ;8FB76E;
-    dw $4800,$0800,$000E                                                 ;8FB771;
-    dw Door_Parlor_1                                                     ;8FB777;
-    dl ScrollingSky_Tilemaps_4                                           ;8FB779;
-    dw $4800,$0800,$000E                                                 ;8FB77C;
-    dw Door_CrateriaPowerBombs_0                                         ;8FB782;
-    dl ScrollingSky_Tilemaps_1                                           ;8FB784;
-    dw $4C00,$0800,$000E                                                 ;8FB787;
-    dw Door_CrateriaTube_0                                               ;8FB78D;
-    dl ScrollingSky_Tilemaps_4                                           ;8FB78F;
-    dw $4800,$0800,$000E                                                 ;8FB792;
-    dw Door_LandingSite_LandingCutscene                                  ;8FB798;
-    dl ScrollingSky_Tilemaps_0                                           ;8FB79A;
-    dw $4800,$0800,$000E                                                 ;8FB79D;
-    dw Door_DemoSet3_0_2_4                                               ;8FB7A3;
-    dl ScrollingSky_Tilemaps_2                                           ;8FB7A5;
-    dw $4800,$0800,$0000                                                 ;8FB7A8;
+LibBG_ScrollingSky_Tilemaps_LandingSite:                                 ;8FB76A;
+    dw $000E,Door_GauntletEntrance_0 : dl ScrollingSky_Tilemaps_2 : dw $4800,$0800
+    dw $000E,Door_Parlor_1 : dl ScrollingSky_Tilemaps_4 : dw $4800,$0800
+    dw $000E,Door_CrateriaPowerBombs_0 : dl ScrollingSky_Tilemaps_1 : dw $4C00,$0800
+    dw $000E,Door_CrateriaTube_0 : dl ScrollingSky_Tilemaps_4 : dw $4800,$0800
+    dw $000E,Door_LandingSite_LandingCutscene : dl ScrollingSky_Tilemaps_0 : dw $4800,$0800
+    dw $000E,Door_DemoSet3_0_2_4 : dl ScrollingSky_Tilemaps_2 : dw $4800,$0800
+    dw $0000
 
-LibBG_ScrollingSky_Tilemaps_WreckedShipEntrance:
-    dw $000E                                                             ;8FB7AE;
-    dw Door_BowlingAlleyPath_0                                           ;8FB7B0;
-    dl ScrollingSky_Tilemaps_2                                           ;8FB7B2;
-    dw $4800,$0800,$000E                                                 ;8FB7B5;
-    dw Door_Moat_1                                                       ;8FB7BB;
-    dl ScrollingSky_Tilemaps_5                                           ;8FB7BD;
-    dw $4800,$0800,$000E                                                 ;8FB7C0;
-    dw Door_BowlingAlley_0                                               ;8FB7C6;
-    dl ScrollingSky_Tilemaps_1                                           ;8FB7C8;
-    dw $4C00,$0800,$000E                                                 ;8FB7CB;
-    dw Door_WreckedShipEntrance_0                                        ;8FB7D1;
-    dl ScrollingSky_Tilemaps_5                                           ;8FB7D3;
-    dw $4800,$0800,$000E                                                 ;8FB7D6;
-    dw Door_Attic_2                                                      ;8FB7DC;
-    dl ScrollingSky_Tilemaps_0                                           ;8FB7DE;
-    dw $4800,$0800,$000E                                                 ;8FB7E1;
-    dw Door_GravitySuit_0                                                ;8FB7E7;
-    dl ScrollingSky_Tilemaps_3                                           ;8FB7E9;
-    dw $4C00,$0800,$0000                                                 ;8FB7EC;
+LibBG_ScrollingSky_Tilemaps_WreckedShipEntrance:                         ;8FB7AE;
+    dw $000E,Door_BowlingAlleyPath_0 : dl ScrollingSky_Tilemaps_2 : dw $4800,$0800
+    dw $000E,Door_Moat_1 : dl ScrollingSky_Tilemaps_5 : dw $4800,$0800
+    dw $000E,Door_BowlingAlley_0 : dl ScrollingSky_Tilemaps_1 : dw $4C00,$0800
+    dw $000E,Door_WreckedShipEntrance_0 : dl ScrollingSky_Tilemaps_5 : dw $4800,$0800
+    dw $000E,Door_Attic_2 : dl ScrollingSky_Tilemaps_0 : dw $4800,$0800
+    dw $000E,Door_GravitySuit_0 : dl ScrollingSky_Tilemaps_3 : dw $4C00,$0800
+    dw $0000
 
-LibBG_ScrollingSky_Tilemaps_EastOcean:
-    dw $000E                                                             ;8FB7F2;
-    dw Door_ForgottenHighwayKagos_0                                      ;8FB7F4;
-    dl ScrollingSky_Tilemaps_5                                           ;8FB7F6;
-    dw $4800,$0800,$000E                                                 ;8FB7F9;
-    dw Door_ElectricDeath_0                                              ;8FB7FF;
-    dl ScrollingSky_Tilemaps_5                                           ;8FB801;
-    dw $4800,$0800,$0000                                                 ;8FB804;
+LibBG_ScrollingSky_Tilemaps_EastOcean:                                   ;8FB7F2;
+    dw $000E,Door_ForgottenHighwayKagos_0 : dl ScrollingSky_Tilemaps_5 : dw $4800,$0800
+    dw $000E,Door_ElectricDeath_0 : dl ScrollingSky_Tilemaps_5 : dw $4800,$0800
+    dw $0000
 
-LibBG_ScrollingSky_Tilemaps_BowlingAlley:
-    dw $0002                                                             ;8FB80A;
-    dl ScrollingSky_Tilemaps_2                                           ;8FB80C;
-    dw $4800,$0800,$0000                                                 ;8FB80F;
+LibBG_ScrollingSky_Tilemaps_BowlingAlley:                                ;8FB80A;
+    dw $0002 : dl ScrollingSky_Tilemaps_2 : dw $4800,$0800
+    dw $0000
 
-LibBG_Brinstar_1A_Kraid_Upper_Lower:
-    dw $0008                                                             ;8FB815;
-    dl Tiles_Standard_BG3                                                ;8FB817;
-    dw $2000,$1000,$0004                                                 ;8FB81A;
-    dl Background_Brinstar_1A_Kraid_Upper                                ;8FB820;
-    dw $4000,$0002                                                       ;8FB823;
-    dl $7E4000                                                           ;8FB827;
-    dw $4000,$1000,$0004                                                 ;8FB82A;
-    dl Background_Brinstar_1A_Kraid_Lower_0                              ;8FB830;
-    dw $4000,$0002                                                       ;8FB833;
-    dl $7E4000                                                           ;8FB837;
-    dw $4800,$1000,$0000                                                 ;8FB83A;
+LibBG_Brinstar_1A_Kraid_Upper_Lower:                                     ;8FB815;
+    dw $0008 : dl Tiles_Standard_BG3 : dw $2000,$1000
+    dw $0004 : dl Background_Brinstar_1A_Kraid_Upper : dw $4000
+    dw $0002 : dl $7E4000 : dw $4000,$1000
+    dw $0004 : dl Background_Brinstar_1A_Kraid_Lower_0 : dw $4000
+    dw $0002 : dl $7E4000 : dw $4800,$1000
+    dw $0000
 
-LibBG_Standard_BG3_Tiles:
-    dw $0008                                                             ;8FB840;
-    dl Tiles_Standard_BG3                                                ;8FB842;
-    dw $2000,$1000,$000C,$0000                                           ;8FB845;
+LibBG_Standard_BG3_Tiles:                                                ;8FB840;
+    dw $0008 : dl Tiles_Standard_BG3 : dw $2000,$1000,$000C,$0000
 
-LibBG_Crocomire_State0:
-    dw $0002                                                             ;8FB84D;
-    dl $7E2000                                                           ;8FB84F;
-    dw $4800,$1000,$0000                                                 ;8FB852;
+LibBG_Crocomire_State0:                                                  ;8FB84D;
+    dw $0002 : dl $7E2000 : dw $4800,$1000
+    dw $0000
 
-LibBG_Crocomire_State1:
-    dw $0002                                                             ;8FB858;
-    dl $7E2000                                                           ;8FB85A;
-    dw $4800,$1000,$0000                                                 ;8FB85D;
+LibBG_Crocomire_State1:                                                  ;8FB858;
+    dw $0002 : dl $7E2000 : dw $4800,$1000
+    dw $0000
 
 if !FEATURE_KEEP_UNREFERENCED
-UNUSED_LibBG_Brinstar_1A_Kraid_Lower_8FB863:
-    dw $0004                                                             ;8FB863;
-    dl Background_Brinstar_1A_Kraid_Lower_1                              ;8FB865;
-    dw $4000,$0002                                                       ;8FB868;
-    dl $7E4000                                                           ;8FB86C;
-    dw $4800,$0800,$0002                                                 ;8FB86F;
-    dl $7E4000                                                           ;8FB875;
-    dw $4C00,$0800,$0000                                                 ;8FB878;
+UNUSED_LibBG_Brinstar_1A_Kraid_Lower_8FB863:                             ;8FB863;
+    dw $0004 : dl Background_Brinstar_1A_Kraid_Lower_1 : dw $4000,$0002
+    dl $7E4000
+    dw $4800,$0800
+    dw $0002
+    dl $7E4000
+    dw $4C00,$0800
+    dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
-LibBG_Crateria_0_VerticalPatternRocks:
-    dw $0004                                                             ;8FB87E;
-    dl Background_Crateria_0_VerticalPatternRocks                        ;8FB880;
-    dw $4000,$0002                                                       ;8FB883;
-    dl $7E4000                                                           ;8FB887;
-    dw $4800,$0800,$0002                                                 ;8FB88A;
-    dl $7E4000                                                           ;8FB890;
-    dw $4C00,$0800,$0000                                                 ;8FB893;
+LibBG_Crateria_0_VerticalPatternRocks:                                   ;8FB87E;
+    dw $0004 : dl Background_Crateria_0_VerticalPatternRocks : dw $4000
+    dw $0002 : dl $7E4000 : dw $4800,$0800
+    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0000
 
-LibBG_Crateria_0_HorizontalPatternRocks:
-    dw $0004                                                             ;8FB899;
-    dl Background_Crateria_0_HorizontalPatternRocks                      ;8FB89B;
-    dw $4000,$0002                                                       ;8FB89E;
-    dl $7E4000                                                           ;8FB8A2;
-    dw $4800,$0800,$0002                                                 ;8FB8A5;
-    dl $7E4000                                                           ;8FB8AB;
-    dw $4C00,$0800,$0000                                                 ;8FB8AE;
+LibBG_Crateria_0_HorizontalPatternRocks:                                 ;8FB899;
+    dw $0004 : dl Background_Crateria_0_HorizontalPatternRocks : dw $4000
+    dw $0002 : dl $7E4000 : dw $4800,$0800
+    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0000
 
-LibBG_Crateria_0_Rocks:
-    dw $0004                                                             ;8FB8B4;
-    dl Background_Crateria_0_Rocks                                       ;8FB8B6;
-    dw $4000,$0002                                                       ;8FB8B9;
-    dl $7E4000                                                           ;8FB8BD;
-    dw $4800,$0800,$0002                                                 ;8FB8C0;
-    dl $7E4000                                                           ;8FB8C6;
-    dw $4C00,$0800,$0000                                                 ;8FB8C9;
+LibBG_Crateria_0_Rocks:                                                  ;8FB8B4;
+    dw $0004 : dl Background_Crateria_0_Rocks : dw $4000
+    dw $0002 : dl $7E4000 : dw $4800,$0800
+    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0000
 
-LibBG_Crateria_2_PurpleRocks:
-    dw $0004                                                             ;8FB8CF;
-    dl Background_Crateria_2_PurpleRocks                                 ;8FB8D1;
-    dw $4000,$0002                                                       ;8FB8D4;
-    dl $7E4000                                                           ;8FB8D8;
-    dw $4800,$0800,$0002                                                 ;8FB8DB;
-    dl $7E4000                                                           ;8FB8E1;
-    dw $4C00,$0800,$0000                                                 ;8FB8E4;
+LibBG_Crateria_2_PurpleRocks:                                            ;8FB8CF;
+    dw $0004 : dl Background_Crateria_2_PurpleRocks : dw $4000
+    dw $0002 : dl $7E4000 : dw $4800,$0800
+    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0000
 
-LibBG_Crateria_2_BrickRoom_WallArt_Dark:
-    dw $0004                                                             ;8FB8EA;
-    dl Background_Crateria_2_BrickRoom_WallArt_Dark                      ;8FB8EC;
-    dw $4000,$0002                                                       ;8FB8EF;
-    dl $7E4000                                                           ;8FB8F3;
-    dw $4800,$0800,$0002                                                 ;8FB8F6;
-    dl $7E4000                                                           ;8FB8FC;
-    dw $4C00,$0800,$0000                                                 ;8FB8FF;
+LibBG_Crateria_2_BrickRoom_WallArt_Dark:                                 ;8FB8EA;
+    dw $0004 : dl Background_Crateria_2_BrickRoom_WallArt_Dark : dw $4000
+    dw $0002 : dl $7E4000 : dw $4800,$0800
+    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0000
 
-LibBG_Crateria_2_3_Mechanical:
-    dw $0004                                                             ;8FB905;
-    dl Background_Crateria_2_3_Mechanical                                ;8FB907;
-    dw $4000,$0002                                                       ;8FB90A;
-    dl $7E4000                                                           ;8FB90E;
-    dw $4800,$0800,$0002                                                 ;8FB911;
-    dl $7E4000                                                           ;8FB917;
-    dw $4C00,$0800,$0000                                                 ;8FB91A;
+LibBG_Crateria_2_3_Mechanical:                                           ;8FB905;
+    dw $0004 : dl Background_Crateria_2_3_Mechanical : dw $4000
+    dw $0002 : dl $7E4000 : dw $4800,$0800
+    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0000
 
-LibBG_Crateria_2_BrickRoom_WallArt:
-    dw $0004                                                             ;8FB920;
-    dl Background_Crateria_2_BrickRoom_WallArt                           ;8FB922;
-    dw $4000,$0002                                                       ;8FB925;
-    dl $7E4000                                                           ;8FB929;
-    dw $4800,$0800,$0002                                                 ;8FB92C;
-    dl $7E4000                                                           ;8FB932;
-    dw $4C00,$0800,$0000                                                 ;8FB935;
+LibBG_Crateria_2_BrickRoom_WallArt:                                      ;8FB920;
+    dw $0004 : dl Background_Crateria_2_BrickRoom_WallArt : dw $4000
+    dw $0002 : dl $7E4000 : dw $4800,$0800
+    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0000
 
-LibBG_Crateria_2_Elevator:
-    dw $0004                                                             ;8FB93B;
-    dl Background_Crateria_2_Elevator                                    ;8FB93D;
-    dw $4000,$0002                                                       ;8FB940;
-    dl $7E4000                                                           ;8FB944;
-    dw $4800,$0800,$0002                                                 ;8FB947;
-    dl $7E4000                                                           ;8FB94D;
-    dw $4C00,$0800,$0000                                                 ;8FB950;
+LibBG_Crateria_2_Elevator:                                               ;8FB93B;
+    dw $0004 : dl Background_Crateria_2_Elevator : dw $4000
+    dw $0002 : dl $7E4000 : dw $4800,$0800
+    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0000
 
-LibBG_Crateria_2_BrickRoom:
-    dw $0004                                                             ;8FB956;
-    dl Background_Crateria_2_BrickRoom                                   ;8FB958;
-    dw $4000,$0002                                                       ;8FB95B;
-    dl $7E4000                                                           ;8FB95F;
-    dw $4800,$0800,$0002                                                 ;8FB962;
-    dl $7E4000                                                           ;8FB968;
-    dw $4C00,$0800,$0000                                                 ;8FB96B;
+LibBG_Crateria_2_BrickRoom:                                              ;8FB956;
+    dw $0004 : dl Background_Crateria_2_BrickRoom : dw $4000
+    dw $0002 : dl $7E4000 : dw $4800,$0800
+    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0000
 
 
 ;;; $B971: Door ASM: start Wrecked Ship treadmill west entrance ;;;
@@ -12010,7 +12054,7 @@ RoomDoors_CeresRidley:
 
 
 ;;; $E0FD: Library background ;;;
-LibBG_Phantoon_State0:         
+LibBG_Phantoon_State0:
 ; Room $CD13, state $CD25: Phantoon                                          ;8FE0FD;
     dw $0002 : dl $7E2000 : dw $4800,$1000
     dw $0000
@@ -13184,7 +13228,7 @@ UNUSED_UnknownUnreferenced_8FE881:                                       ;8FE881
     dw $0001 ; Number of save stations in Wrecked Ship
     dw $0004 ; Number of save stations in Maridia
     dw $0002 ; Number of save stations in Tourian
-    dw $0000 ; Number of save stations in Ceres?                         
+    dw $0000 ; Number of save stations in Ceres?
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
