@@ -2,6 +2,7 @@
 org $908000
 
 
+;;; $8000: Animate Samus ;;;
 AnimateSamus:
     PHP                                                                  ;908000;
     REP #$30                                                             ;908001;
@@ -25,7 +26,6 @@ AnimateSamus:
     INC A                                                                ;90802C;
     STA.W $0A96                                                          ;90802D;
     BRA .handleDelay                                                     ;908030;
-
 
   .neutralJump:
     LDA.W $0B36                                                          ;908032;
@@ -58,7 +58,6 @@ AnimateSamus:
     PLP                                                                  ;908065;
     RTS                                                                  ;908066;
 
-
   .pointers:
     dw AnimateSamus_FX_None                                              ;908067;
     dw AnimateSamus_FX_Lava                                              ;908069;
@@ -69,11 +68,26 @@ AnimateSamus:
     dw RTS_908077                                                        ;908073;
     dw RTS_908077                                                        ;908075;
 
+
+;;; $8077: RTS ;;;
 RTS_908077:
+; 8: Spores
+; Ah: Rain
+; Ch: Fog
+; 28h: Ceres Ridley
+; 2Ah: Ceres elevator
+; 2Ch: Haze
     RTS                                                                  ;908077;
 
 
+;;; $8078: Animate Samus - FX = none ;;;
 AnimateSamus_FX_None:
+;; Parameters:
+;;     $12: Samus bottom boundary
+;;     $14: Samus top boundary
+
+; 0: None
+; 20h: Scrolling sky
     LDA.W $0A66                                                          ;908078;
     STA.W $0A9C                                                          ;90807B;
     LDA.W $0AD2                                                          ;90807E;
@@ -82,7 +96,6 @@ AnimateSamus_FX_None:
     BNE +                                                                ;908086;
     STZ.W $0AD2                                                          ;908088;
     RTS                                                                  ;90808B;
-
 
 +   STZ.W $0AD2                                                          ;90808C;
     LDA.W #$000E                                                         ;90808F;
@@ -103,18 +116,23 @@ AnimateSamus_FX_None:
   .goto_Spawn_WaterSplash_AirBubbles:
     BRA Spawn_WaterSplash_AirBubbles                                     ;9080B5;
 
-
   .return:
     RTS                                                                  ;9080B7;
 
 
+;;; $80B8: Animate Samus - FX = water ;;;
 AnimateSamus_FX_Water:
+;; Parameters:
+;;     $12: Samus bottom boundary
+;;     $14: Samus top boundary
+
+; 6h: Water
+; 26h: Tourian entrance statue
     LDA.W $195E                                                          ;9080B8;
     BMI AnimateSamus_FX_None                                             ;9080BB;
     CMP.B $12                                                            ;9080BD;
     BMI +                                                                ;9080BF;
     BRA AnimateSamus_FX_None                                             ;9080C1;
-
 
 +   LDA.W $197E                                                          ;9080C3;
     BIT.W #$0004                                                         ;9080C6;
@@ -127,9 +145,14 @@ AnimateSamus_FX_Water:
     LDA.W #$0001                                                         ;9080D9;
     STA.W $0AD2                                                          ;9080DC;
     LDA.W #$000D                                                         ;9080DF;
-    JSL.L QueueSound_Lib2_Max6                                           ;9080E2;
+    JSL.L QueueSound_Lib2_Max6                                           ;9080E2; fallthrough to Spawn_WaterSplash_AirBubbles
 
+
+;;; $80E6: Spawn water splash and air bubbles ;;;
 Spawn_WaterSplash_AirBubbles:
+;; Parameters:
+;;     $12: Samus bottom boundary
+;;     $14: Samus top boundary
     LDA.W $0A1F                                                          ;9080E6;
     AND.W #$00FF                                                         ;9080E9;
     TAX                                                                  ;9080EC;
@@ -145,7 +168,6 @@ Spawn_WaterSplash_AirBubbles:
     LDA.W $195E                                                          ;908107;
     STA.W $0AE4                                                          ;90810A;
     BRA Spawn_AirBubbles                                                 ;90810D;
-
 
   .grounded:
     LDA.W #$0100                                                         ;90810F;
@@ -165,9 +187,14 @@ Spawn_WaterSplash_AirBubbles:
     SEC                                                                  ;908134;
     SBC.W #$0004                                                         ;908135;
     STA.W $0AE4                                                          ;908138;
-    STA.W $0AE6                                                          ;90813B;
+    STA.W $0AE6                                                          ;90813B; fallthrough to Spawn_AirBubbles
 
+
+;;; $813E: Spawn air bubbles ;;;
 Spawn_AirBubbles:
+;; Parameters:
+;;     $12: Samus bottom boundary
+;;     $14: Samus top boundary
     LDA.B $14                                                            ;90813E;
     SEC                                                                  ;908140;
     SBC.W #$0018                                                         ;908141;
@@ -196,7 +223,6 @@ Spawn_AirBubbles:
     LDA.W #$000F                                                         ;90817F;
     BRA .queueSFX                                                        ;908182;
 
-
   .bubblesSFX:
     LDA.W #$0011                                                         ;908184;
 
@@ -220,6 +246,7 @@ Spawn_AirBubbles:
     RTS                                                                  ;9081A3;
 
 
+;;; $81A4: Water splash type table ;;;
 WaterSplash_TypeTable:                                                   ;9081A4;
 ; 0: diving splash, else footstep splashes
     db $01 ;* 0: Standing
@@ -251,7 +278,16 @@ WaterSplash_TypeTable:                                                   ;9081A4
     db $00 ; 1Ah: Grabbed by Draygon
     db $00 ; 1Bh: Shinespark / crystal flash / drained by metroid / damaged by MB's attacks
 
+
+;;; $81C0: Animate Samus - FX = lava ;;;
 AnimateSamus_FX_Lava:
+;; Parameters:
+;;     $12: Samus bottom boundary
+;;     $14: Samus top boundary
+
+; 2: Lava
+; 22h: Unused
+; Contains lava damage / gravity suit check
     LDA.W $1962                                                          ;9081C0;
     BMI .goto_AnimateSamus_FX_None                                       ;9081C3;
     CMP.B $12                                                            ;9081C5;
@@ -285,10 +321,8 @@ AnimateSamus_FX_Lava:
     STA.W $0A50                                                          ;908207;
     BRA AnimateSamus_SubmergedInLavaAcid                                 ;90820A;
 
-
   .goto_AnimateSamus_FX_None:
     JMP.W AnimateSamus_FX_None                                           ;90820C;
-
 
   .gravityEquipped:
     STZ.W $0A9C                                                          ;90820F;
@@ -297,7 +331,14 @@ AnimateSamus_FX_Lava:
     RTS                                                                  ;908218;
 
 
+;;; $8219: Animate Samus - FX = acid ;;;
 AnimateSamus_FX_Acid:
+;; Parameters:
+;;     $12: Samus bottom boundary
+;;     $14: Samus top boundary
+
+; 4: Acid
+; 24h: Fireflea
     LDA.W $1962                                                          ;908219;
     BMI AnimateSamus_FX_Lava_goto_AnimateSamus_FX_None                   ;90821C;
     CMP.B $12                                                            ;90821E;
@@ -317,9 +358,14 @@ AnimateSamus_FX_Acid:
     STA.W $0A4E                                                          ;908240;
     LDA.W $0A50                                                          ;908243;
     ADC.W SamusPhysicsConstants_AcidDamagePerFrame                       ;908246;
-    STA.W $0A50                                                          ;908249;
+    STA.W $0A50                                                          ;908249; fallthrough to AnimateSamus_SubmergedInLavaAcid
 
+
+;;; $824C: Animate Samus - Samus is submerged in lava/acid ;;;
 AnimateSamus_SubmergedInLavaAcid:
+;; Parameters:
+;;     $12: Samus bottom boundary
+;;     $14: Samus top boundary
     LDA.W SamusPhysicsConstants_AnimationDelayInLavaAcid                 ;90824C;
     STA.W $0A9C                                                          ;90824F;
     LDA.W #$0002                                                         ;908252;
@@ -380,6 +426,7 @@ AnimateSamus_SubmergedInLavaAcid:
     RTS                                                                  ;9082DB;
 
 
+;;; $82DC: Handle Samus animation delay ;;;
 Handle_Samus_AnimationDelay:
     PHP                                                                  ;9082DC;
     SEP #$20                                                             ;9082DD;
@@ -402,7 +449,6 @@ Handle_Samus_AnimationDelay:
     JSR.W Handle_NormalAnimationDelay                                    ;908300;
     BRA .return                                                          ;908303;
 
-
 +   JSR.W Handle_SpeedBooster_AnimationDelay                             ;908305;
     TAX                                                                  ;908308;
     BEQ .return                                                          ;908309;
@@ -422,7 +468,6 @@ Handle_Samus_AnimationDelay:
     PLP                                                                  ;908322;
     RTS                                                                  ;908323;
 
-
   .pointers:
     dw CLCRTS_908344                                                     ;908324;
     dw CLCRTS_908344                                                     ;908326;
@@ -441,12 +486,20 @@ Handle_Samus_AnimationDelay:
     dw AnimDelay_E_GotoY                                                 ;908340;
     dw AnimDelay_F_GotoBeginning                                         ;908342;
 
+
+;;; $8344: Clear carry. Animation delay instruction 0..5 ;;;
 CLCRTS_908344:
     CLC                                                                  ;908344;
     RTS                                                                  ;908345;
 
 
+;;; $8346: Animation delay instruction 6 - go to beginning if [Samus health] >= 30 ;;;
 AnimDelay_6_GotoBeginningIfSamusNotLowEnergy:
+; Used by:
+;     1: Facing right - normal
+;     2: Facing left  - normal
+;     27h: Facing right - crouching
+;     28h: Facing left  - crouching
     LDA.W $09C2                                                          ;908346;
     CMP.W #$001E                                                         ;908349;
     BMI .lowEnergy                                                       ;90834C;
@@ -454,7 +507,6 @@ AnimDelay_6_GotoBeginningIfSamusNotLowEnergy:
     STY.W $0A96                                                          ;908351;
     SEC                                                                  ;908354;
     RTS                                                                  ;908355;
-
 
   .lowEnergy:
     LDA.W $0A96                                                          ;908356;
@@ -465,7 +517,11 @@ AnimDelay_6_GotoBeginningIfSamusNotLowEnergy:
     RTS                                                                  ;90835F;
 
 
+;;; $8360: Animation delay instruction 7 - set drained Samus movement handler ;;;
 AnimDelay_7_SetDrainedSamusMovementHandler:
+; Used by:
+;     E8h: Facing right - Samus drained - crouching
+;     E9h: Facing left  - Samus drained - crouching
     LDA.W #SamusMovementHandler_SamusDrained_Falling                     ;908360;
     STA.W $0A58                                                          ;908363;
     LDA.W $0A96                                                          ;908366;
@@ -476,7 +532,46 @@ AnimDelay_7_SetDrainedSamusMovementHandler:
     RTS                                                                  ;90836F;
 
 
+;;; $8370: Animation delay instruction 8 - enable auto-jump hack and transition to pose if not jumping ;;;
 AnimDelay_8_EnableAutoJumpHack_TransitionToPoseIfNotJumping:
+; Used by:
+;     25h/26h / 2Fh/30h / 43h/44h / 87h/88h / 8Bh..9Ah / 9Ch..A3h: Turning -> 2/1 / 52h/51h / 28h/27h / 2Ah/29h / 4/3/8/7/16h/15h/18h/17h/2Ch/2Bh/2Eh/2Dh/86h/85h/74h/73h/6/5/6Ah/69h/6Eh/6Dh/72h/71h
+;         1: Facing right - normal
+;         2: Facing left  - normal
+;         3: Facing right - aiming up
+;         4: Facing left  - aiming up
+;         5: Facing right - aiming up-right
+;         6: Facing left  - aiming up-left
+;         7: Facing right - aiming down-right
+;         8: Facing left  - aiming down-left
+;         15h: Facing right - normal jump - aiming up
+;         16h: Facing left  - normal jump - aiming up
+;         17h: Facing right - normal jump - aiming down
+;         18h: Facing left  - normal jump - aiming down
+;         27h: Facing right - crouching
+;         28h: Facing left  - crouching
+;         29h: Facing right - falling
+;         2Ah: Facing left  - falling
+;         2Bh: Facing right - falling - aiming up
+;         2Ch: Facing left  - falling - aiming up
+;         2Dh: Facing right - falling - aiming down
+;         2Eh: Facing left  - falling - aiming down
+;         51h: Facing right - normal jump - not aiming - moving forward
+;         52h: Facing left  - normal jump - not aiming - moving forward
+;         69h: Facing right - normal jump - aiming up-right
+;         6Ah: Facing left  - normal jump - aiming up-left
+;         6Dh: Facing right - falling - aiming up-right
+;         6Eh: Facing left  - falling - aiming up-left
+;         71h: Facing right - crouching - aiming up-right
+;         72h: Facing left  - crouching - aiming up-left
+;         73h: Facing right - crouching - aiming down-right
+;         74h: Facing left  - crouching - aiming down-left
+;         85h: Facing right - crouching - aiming up
+;         86h: Facing left  - crouching - aiming up
+;     A4h..A7h / E0h..E7h: Landing from jump -> 1/2/1/2 / 3..8/1/2
+;     BFh..C4h: Moonwalking - turn/jump -> 1Ah/19h/1Ah/19h/1Ah/19h
+;         19h: Facing right - spin jump
+;         1Ah: Facing left  - spin jump
     LDA.W $0A60                                                          ;908370;
     CMP.W #SamusPoseInputHandler_Demo                                    ;908373;
     BEQ .goto_TransitionToPose                                           ;908376;
@@ -495,13 +590,26 @@ AnimDelay_8_EnableAutoJumpHack_TransitionToPoseIfNotJumping:
   .goto_TransitionToPose:
     JMP.W AnimDelay_D_TransitionToPose                                   ;908395;
 
-
   .return:
     CLC                                                                  ;908398;
     RTS                                                                  ;908399;
 
 
+;;; $839A: Animation delay instruction 9 - transition to pose depending on item equipped and Y speed ;;;
 AnimDelay_9_TransitionToPoseDependingOnItemEquippedAndYSpeed:
+; Used by:
+;     37h: Facing right - morphing transition. F9,0002,1D,31,79,7D
+;         1Dh: Facing right - morph ball - no springball - on ground
+;         31h: Facing right - morph ball - no springball - in air
+;         79h: Facing right - morph ball - spring ball - on ground
+;         7Dh: Facing right - morph ball - spring ball - falling
+;     38h: Facing left  - morphing transition. F9,0002,41,32,7A,7E
+;         41h: Facing left - morph ball - no springball - on ground
+;         32h: Facing left - morph ball - no springball - in air
+;         7Ah: Facing left - morph ball - spring ball - on ground
+;         7Eh: Facing left - morph ball - spring ball - falling
+;     DBh: Unused. F9,0002,1D,31,79,7D
+;     DCh: Unused. F9,0002,DF,DF,DF,DF (unused, related to Draygon?)
     INY                                                                  ;90839A;
     LDA.B [$00],Y                                                        ;90839B;
     STA.B $12                                                            ;90839D;
@@ -519,7 +627,6 @@ AnimDelay_9_TransitionToPoseDependingOnItemEquippedAndYSpeed:
     STA.W $0A2C                                                          ;9083B7;
     BRA .return                                                          ;9083BA;
 
-
 +   INY                                                                  ;9083BC;
     INY                                                                  ;9083BD;
     INY                                                                  ;9083BE;
@@ -527,7 +634,6 @@ AnimDelay_9_TransitionToPoseDependingOnItemEquippedAndYSpeed:
     AND.W #$00FF                                                         ;9083C1;
     STA.W $0A2C                                                          ;9083C4;
     BRA .return                                                          ;9083C7;
-
 
   .equippedItems:
     LDA.W $0B2E                                                          ;9083C9;
@@ -542,7 +648,6 @@ AnimDelay_9_TransitionToPoseDependingOnItemEquippedAndYSpeed:
     AND.W #$00FF                                                         ;9083D9;
     STA.W $0A2C                                                          ;9083DC;
     BRA .return                                                          ;9083DF;
-
 
 +   INY                                                                  ;9083E1;
     INY                                                                  ;9083E2;
@@ -560,6 +665,7 @@ AnimDelay_9_TransitionToPoseDependingOnItemEquippedAndYSpeed:
     RTS                                                                  ;9083F5;
 
 
+;;; $83F6: Unused. Animation delay instruction Ah - transition to pose depending on Y speed ;;;
 UNUSED_AnimDelay_A_TransitionToPoseDependingOnYSpeed_9083F6:
     LDA.W $0B2E                                                          ;9083F6;
     BNE .nonZeroYSpeed                                                   ;9083F9;
@@ -570,7 +676,6 @@ UNUSED_AnimDelay_A_TransitionToPoseDependingOnYSpeed_9083F6:
     AND.W #$00FF                                                         ;908403;
     STA.W $0A2C                                                          ;908406;
     BRA +                                                                ;908409;
-
 
   .nonZeroYSpeed:
     INY                                                                  ;90840B;
@@ -585,7 +690,11 @@ UNUSED_AnimDelay_A_TransitionToPoseDependingOnYSpeed_9083F6:
     RTS                                                                  ;90841C;
 
 
+;;; $841D: Animation delay instruction Bh - select animation delay sequence for wall-jump ;;;
 AnimDelay_B_SelectAnimDelaySequenceForWallJump:
+; Used by:
+;     83h: Facing right - wall jump
+;     84h: Facing left  - wall jump
     LDA.W $09A2                                                          ;90841D;
     BIT.W #$0020                                                         ;908420;
     BNE .notSubmerged                                                    ;908423;
@@ -598,7 +707,6 @@ AnimDelay_B_SelectAnimDelaySequenceForWallJump:
     BIT.W #$0004                                                         ;908435;
     BNE .notSubmerged                                                    ;908438;
     BRA .submerged                                                       ;90843A;
-
 
   .lessThanZero:
     LDA.W $1962                                                          ;90843C;
@@ -623,7 +731,6 @@ AnimDelay_B_SelectAnimDelaySequenceForWallJump:
     SEC                                                                  ;908461;
     RTS                                                                  ;908462;
 
-
   .spaceJump:
     LDA.W #$003E                                                         ;908463;
     JSL.L QueueSound_Lib1_Max6                                           ;908466;
@@ -634,7 +741,6 @@ AnimDelay_B_SelectAnimDelaySequenceForWallJump:
     TAY                                                                  ;908474;
     SEC                                                                  ;908475;
     RTS                                                                  ;908476;
-
 
   .screwAttack:
     LDA.W #$0033                                                         ;908477;
@@ -648,7 +754,15 @@ AnimDelay_B_SelectAnimDelaySequenceForWallJump:
     RTS                                                                  ;90848A;
 
 
+;;; $848B: Unused. Animation delay instruction Ch - transition to pose depending on item equipped ;;;
 UNUSED_AnimDelay_C_TransToPoseDependingOnItemEquipped_90848B:
+; Used by:
+;     3Fh: Unused. FC,0002,1D,79
+;         1Dh: Facing right - morph ball - no springball - on ground
+;         79h: Facing right - morph ball - spring ball - on ground
+;     40h: Unused. FC,0002,41,7A
+;         41h: Facing left - morph ball - no springball - on ground
+;         7Ah: Facing left - morph ball - spring ball - on ground
     INY                                                                  ;90848B;
     LDA.B [$00],Y                                                        ;90848C;
     STA.B $12                                                            ;90848E;
@@ -661,7 +775,6 @@ UNUSED_AnimDelay_C_TransToPoseDependingOnItemEquipped_90848B:
     AND.W #$00FF                                                         ;90849B;
     STA.W $0A2C                                                          ;90849E;
     BRA .return                                                          ;9084A1;
-
 
   .equippedItems:
     INY                                                                  ;9084A3;
@@ -678,7 +791,51 @@ UNUSED_AnimDelay_C_TransToPoseDependingOnItemEquipped_90848B:
     RTS                                                                  ;9084B5;
 
 
+;;; $84B6: Animation delay instruction Dh - transition to pose ;;;
 AnimDelay_D_TransitionToPose:
+; Also see instruction 8, which calls this instruction.
+
+; Used by:
+;     35h/36h / F1h..F6h: Crouching transition -> 27h/28h / 85h/86h/71h..74h
+;         27h: Facing right - crouching
+;         28h: Facing left  - crouching
+;         85h: Facing right - crouching - aiming up
+;         86h: Facing left  - crouching - aiming up
+;         71h: Facing right - crouching - aiming up-right
+;         72h: Facing left  - crouching - aiming up-left
+;         73h: Facing right - crouching - aiming down-right
+;         74h: Facing left  - crouching - aiming down-left
+
+;     3Bh/3Ch / F7h..FCh: Standing transition -> 1/2 / 3..8
+;         1: Facing right - normal
+;         2: Facing left  - normal
+;         3: Facing right - aiming up
+;         4: Facing left  - aiming up
+;         5: Facing right - aiming up-right
+;         6: Facing left  - aiming up-left
+;         7: Facing right - aiming down-right
+;         8: Facing left  - aiming down-left
+
+;     3Dh/3Eh: Unmorphing transition -> 27h/28h
+
+;     4Bh/4Ch / 55h..5Ah: Normal jump transition -> 4Dh/4Eh / 15h/16h/69h..6Ch
+;         4Dh: Facing right - normal jump - not aiming - not moving - gun not extended
+;         4Eh: Facing left  - normal jump - not aiming - not moving - gun not extended
+;         15h: Facing right - normal jump - aiming up
+;         16h: Facing left  - normal jump - aiming up
+;         69h: Facing right - normal jump - aiming up-right
+;         6Ah: Facing left  - normal jump - aiming up-left
+;         6Bh: Facing right - normal jump - aiming down-right
+;         6Ch: Facing left  - normal jump - aiming down-left
+
+;     D3h/D4h: Crystal flash -> 1/2
+
+;     E8h..EBh: Samus drained -> 1/2/1/2
+
+;     39h/3Ah / C6h / DDh/DEh: Unused -> 20h/42h / BAh / 1/BAh
+;         20h: Unused
+;         42h: Unused
+;         BAh: Facing left  - grabbed by Draygon - not moving - not aiming
     INY                                                                  ;9084B6;
     LDA.B [$00],Y                                                        ;9084B7;
     AND.W #$00FF                                                         ;9084B9;
@@ -689,6 +846,7 @@ AnimDelay_D_TransitionToPose:
     RTS                                                                  ;9084C6;
 
 
+;;; $84C7: Animation delay instruction Eh - go to [Y] - [[$00] + [Y] + 1] ;;;
 AnimDelay_E_GotoY:
     INY                                                                  ;9084C7;
     LDA.B [$00],Y                                                        ;9084C8;
@@ -703,6 +861,7 @@ AnimDelay_E_GotoY:
     RTS                                                                  ;9084DA;
 
 
+;;; $84DB: Animation delay instruction Fh - go to beginning ;;;
 AnimDelay_F_GotoBeginning:
     LDY.W #$0000                                                         ;9084DB;
     STY.W $0A96                                                          ;9084DE;
@@ -710,7 +869,18 @@ AnimDelay_F_GotoBeginning:
     RTS                                                                  ;9084E2;
 
 
+;;; $84E3: Handle normal animation delay ;;;
 Handle_NormalAnimationDelay:
+;; Parameters:
+;;     Y: Samus animation frame
+;;     $00: Samus animation delay data pointer
+
+; If check enabled and running:
+;     If speed booster equipped:
+;         Load animation delay data pointer from $91:B5DE table
+;     Else:
+;         Load animation delay data pointer from $91:B5D1
+; Set animation frame timer
     PHP                                                                  ;9084E3;
     SEP #$20                                                             ;9084E4;
     PHB                                                                  ;9084E6;
@@ -736,7 +906,6 @@ Handle_NormalAnimationDelay:
     STA.B $00                                                            ;908513;
     BRA .return                                                          ;908515;
 
-
   .noSpeedBooster:
     LDA.L AnimationDelayTable_Running_NoSpeedBooster_pointer             ;908517;
     STA.B $00                                                            ;90851B;
@@ -752,7 +921,33 @@ Handle_NormalAnimationDelay:
     RTS                                                                  ;90852B;
 
 
+;;; $852C: Handle speed booster animation delay ;;;
 Handle_SpeedBooster_AnimationDelay:
+;; Parameters:
+;;     Y: Samus animation frame
+;;     $00: Samus animation delay data pointer
+
+; If check enabled and running and pressing run:
+;     If speed booster not equipped:
+;         Samus animation frame = 0
+;         Load animation delay data pointer from $91:B5D1
+;         A = 0
+;     Else:
+;         Decrement speed boost timer
+;         If [speed boost timer] = 0:
+;             If [speed boost counter] != 4:
+;                 Increment speed boost counter
+;                 If [speed boost counter] = 4:
+;                     Play speed echo sound effect
+;                     BUG: This overwrites A with the number of sounds queued if the queue is not full
+;                          Causing the index for the $91:B61F table to be 5 sometimes, which greater than the table size,
+;                          which causes the blue suit fail when speed boosting sometimes (mostly in heated rooms)
+;             Load speed boost timer from $91:B61F table
+;             Samus animation frame = 0
+;             Load animation delay data pointer from $91:B5DE
+;             A = 0
+; Set animation frame timer
+; A = [[$00] + [Samus animation frame]]
     PHP                                                                  ;90852C;
     SEP #$20                                                             ;90852D;
     PHB                                                                  ;90852F;
@@ -765,13 +960,11 @@ Handle_SpeedBooster_AnimationDelay:
     BNE .checkPressingRun                                                ;90853B;
     JMP.W .finish                                                        ;90853D;
 
-
   .checkPressingRun:
     LDA.B $8B                                                            ;908540;
     BIT.W $09B6                                                          ;908542;
     BNE .checkMovementType                                               ;908545;
     JMP.W .finish                                                        ;908547;
-
 
   .checkMovementType:
     LDA.W $0A1F                                                          ;90854A;
@@ -779,7 +972,6 @@ Handle_SpeedBooster_AnimationDelay:
     CMP.W #$0001                                                         ;908550;
     BEQ .speedBoosterEquipped                                            ;908553;
     JMP.W .finish                                                        ;908555;
-
 
   .speedBoosterEquipped:
     LDA.W $09A2                                                          ;908558;
@@ -796,7 +988,6 @@ Handle_SpeedBooster_AnimationDelay:
     STA.W $0A94                                                          ;908575;
     LDA.W #$0000                                                         ;908578;
     BRA .return                                                          ;90857B;
-
 
   .speedBoostTimer:
     LDA.W $0B3E                                                          ;90857D;
@@ -837,7 +1028,6 @@ Handle_SpeedBooster_AnimationDelay:
     LDA.W #$0000                                                         ;9085D5;
     BRA .return                                                          ;9085D8;
 
-
   .finish:
     LDA.B [$00],Y                                                        ;9085DA;
     AND.W #$00FF                                                         ;9085DC;
@@ -848,7 +1038,9 @@ Handle_SpeedBooster_AnimationDelay:
     RTS                                                                  ;9085E1;
 
 
+;;; $85E2: Draw Samus (not including arm cannon nor speed echoes) ;;;
 Draw_Samus:
+; Does not draw non-closed arm cannon, speed echoes, nor charge / grapple flare
     PHP                                                                  ;9085E2;
     PHB                                                                  ;9085E3;
     SEP #$20                                                             ;9085E4;
@@ -866,7 +1058,6 @@ Draw_Samus:
     BIT.W #$0001                                                         ;9085FE;
     BEQ +                                                                ;908601;
     JMP.W .invisible                                                     ;908603;
-
 
 +   LDA.W $0A1C                                                          ;908606;
     ASL A                                                                ;908609;
@@ -904,6 +1095,7 @@ Draw_Samus:
     RTS                                                                  ;90864D;
 
 
+;;; $864E: Function pointer table - check if Samus bottom half drawn ;;;
 Draw_Samus_pointers:
     dw DetermineIf_SamusBottomHalf_IsDrawn_Standing                      ;90864E; 0: Standing
     dw Flag_SamusBottomHalfIsDrawn                                       ;908650; 1: Running
@@ -934,18 +1126,43 @@ Draw_Samus_pointers:
     dw Flag_SamusBottomHalfIsDrawn                                       ;908682; 1Ah: Grabbed by Draygon
     dw DetermineIf_SamusBottomHalf_IsDrawn_Shinespark_CF_Drained         ;908684; 1Bh: Shinespark / crystal flash / drained by metroid / damaged by MB's attacks
 
+
+;;; $8686: Flag that Samus bottom half is drawn ;;;
 Flag_SamusBottomHalfIsDrawn:
+; 1: Running
+; 2: Normal jumping
+; 5: Crouching
+; 6: Falling
+; Bh: Unused
+; Ch: Unused
+; Eh: Turning around - on ground
+; 10h: Moonwalking
+; 15h: Ran into a wall
+; 16h: Grappling
+; 17h: Turning around - jumping
+; 18h: Turning around - falling
+; 1Ah: Grabbed by Draygon
     SEC                                                                  ;908686;
     RTS                                                                  ;908687;
 
 
+;;; $8688: Flag that Samus bottom half is not drawn ;;;
 Flag_SamusBottomHalfIsNotDrawn:
+; 4: Morph ball - on ground
+; 7: Unused
+; 8: Morph ball - falling
+; 9: Unused
+; 11h: Spring ball - on ground
+; 12h: Spring ball - in air
+; 13h: Spring ball - falling
     STZ.W $0ACA                                                          ;908688;
     CLC                                                                  ;90868B;
     RTS                                                                  ;90868C;
 
 
+;;; $868D: Determine if Samus bottom half is drawn - standing ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_Standing:
+; If Samus is facing forward without varia/suit, spawns an extra sprite to cover the left part of her chest
     LDA.W $0A1C                                                          ;90868D;
     CMP.W #$0000                                                         ;908690;
     BEQ .facingForward                                                   ;908693;
@@ -953,7 +1170,6 @@ DetermineIf_SamusBottomHalf_IsDrawn_Standing:
   .return:
     SEC                                                                  ;908695;
     RTS                                                                  ;908696;
-
 
   .facingForward:
     LDX.W $0590                                                          ;908697;
@@ -978,7 +1194,10 @@ DetermineIf_SamusBottomHalf_IsDrawn_Standing:
     BRA .return                                                          ;9086C4;
 
 
+;;; $86C6: Determine if Samus bottom half is drawn - spin jumping ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_SpinJumping:
+; Samus animation frame is 0 during the spin jump start-up
+; Samus animation frame is >= Bh during the wall jump eligible animation
     LDA.W $0A1C                                                          ;9086C6;
     CMP.W #$0081                                                         ;9086C9;
     BEQ .returnCarrySet                                                  ;9086CC;
@@ -995,7 +1214,6 @@ DetermineIf_SamusBottomHalf_IsDrawn_SpinJumping:
     SEC                                                                  ;9086E2;
     RTS                                                                  ;9086E3;
 
-
   .spinning:
     CMP.W #$000B                                                         ;9086E4;
     BPL .returnCarrySet                                                  ;9086E7;
@@ -1004,6 +1222,7 @@ DetermineIf_SamusBottomHalf_IsDrawn_SpinJumping:
     RTS                                                                  ;9086ED;
 
 
+;;; $86EE: Determine if Samus bottom half is drawn - knockback / crystal flash ending ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_Knockback_CFEnding:
     LDA.W $0A1C                                                          ;9086EE;
     CMP.W #$00D7                                                         ;9086F1;
@@ -1011,7 +1230,6 @@ DetermineIf_SamusBottomHalf_IsDrawn_Knockback_CFEnding:
     CMP.W #$00D8                                                         ;9086F6;
     BEQ .crystalFlashEnding                                              ;9086F9;
     BRA .returnCarrySet                                                  ;9086FB;
-
 
   .crystalFlashEnding:
     LDA.W $0A96                                                          ;9086FD;
@@ -1022,14 +1240,16 @@ DetermineIf_SamusBottomHalf_IsDrawn_Knockback_CFEnding:
     SEC                                                                  ;908705;
     RTS                                                                  ;908706;
 
-
   .noBottom:
     STZ.W $0ACA                                                          ;908707;
     CLC                                                                  ;90870A;
     RTS                                                                  ;90870B;
 
 
+;;; $870C: Determine if Samus bottom half is drawn - crouching/standing/morphing/unmorphing transition ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_TransitionPoses:
+; .noBottom is used for poses 37h..3Ah / 3Dh..40h (morphing/unmorphing transition and some unused poses)
+; .unused is used for poses DBh..DEh (unused)
     LDA.W $0A1C                                                          ;90870C;
     CMP.W #$00F1                                                         ;90870F;
     BPL .returnCarrySet                                                  ;908712;
@@ -1045,17 +1265,14 @@ DetermineIf_SamusBottomHalf_IsDrawn_TransitionPoses:
     BEQ .returnCarrySet                                                  ;90872B;
     BRA .noBottom                                                        ;90872D;
 
-
   .returnCarrySet:
     SEC                                                                  ;90872F;
     RTS                                                                  ;908730;
-
 
   .noBottom:
     STZ.W $0ACA                                                          ;908731;
     CLC                                                                  ;908734;
     RTS                                                                  ;908735;
-
 
   .unused:
     CMP.W #$00DD                                                         ;908736;
@@ -1064,7 +1281,6 @@ DetermineIf_SamusBottomHalf_IsDrawn_TransitionPoses:
     BEQ .returnCarrySet                                                  ;90873E;
     BRA .noBottom                                                        ;908740;
 
-
   .greaterThanDD:
     LDA.W $0A96                                                          ;908742;
     CMP.W #$0002                                                         ;908745;
@@ -1072,6 +1288,7 @@ DetermineIf_SamusBottomHalf_IsDrawn_TransitionPoses:
     BRA .noBottom                                                        ;90874A;
 
 
+;;; $874C: Determine if Samus bottom half is drawn - unused movement type Dh ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_UnusedMovementTypeD:
     LDA.W $0A1C                                                          ;90874C;
     CMP.W #$0065                                                         ;90874F;
@@ -1087,13 +1304,13 @@ DetermineIf_SamusBottomHalf_IsDrawn_UnusedMovementTypeD:
     SEC                                                                  ;908761;
     RTS                                                                  ;908762;
 
-
   .noBottom:
     STZ.W $0ACA                                                          ;908763;
     CLC                                                                  ;908766;
     RTS                                                                  ;908767;
 
 
+;;; $8768: Determine if Samus bottom half is drawn - wall jumping ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_WallJumping:
     LDA.W $0A96                                                          ;908768;
     CMP.W #$0003                                                         ;90876B;
@@ -1103,7 +1320,6 @@ DetermineIf_SamusBottomHalf_IsDrawn_WallJumping:
     SEC                                                                  ;908770;
     RTS                                                                  ;908771;
 
-
   .spinning:
     CMP.W #$000D                                                         ;908772;
     BPL .returnCarrySet                                                  ;908775;
@@ -1112,6 +1328,7 @@ DetermineIf_SamusBottomHalf_IsDrawn_WallJumping:
     RTS                                                                  ;90877B;
 
 
+;;; $877C: Determine if Samus bottom half is drawn - damage boost ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_DamageBoost:
     LDA.W $0A96                                                          ;90877C;
     CMP.W #$0002                                                         ;90877F;
@@ -1121,7 +1338,6 @@ DetermineIf_SamusBottomHalf_IsDrawn_DamageBoost:
     SEC                                                                  ;908784;
     RTS                                                                  ;908785;
 
-
   .spinning:
     CMP.W #$0009                                                         ;908786;
     BPL .returnCarrySet                                                  ;908789;
@@ -1130,6 +1346,7 @@ DetermineIf_SamusBottomHalf_IsDrawn_DamageBoost:
     RTS                                                                  ;90878F;
 
 
+;;; $8790: Determine if Samus bottom half is drawn - shinespark / crystal flash / drained by metroid / damaged by MB's attacks ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_Shinespark_CF_Drained:
     LDA.W $0A1C                                                          ;908790;
     CMP.W #$00CF                                                         ;908793;
@@ -1139,7 +1356,6 @@ DetermineIf_SamusBottomHalf_IsDrawn_Shinespark_CF_Drained:
     CMP.W #$00CC                                                         ;90879D;
     BEQ .noBottom                                                        ;9087A0;
     BRA .returnCarrySet                                                  ;9087A2;
-
 
   .notShinespark:
     CMP.W #$00E8                                                         ;9087A4;
@@ -1155,14 +1371,15 @@ DetermineIf_SamusBottomHalf_IsDrawn_Shinespark_CF_Drained:
     SEC                                                                  ;9087B6;
     RTS                                                                  ;9087B7;
 
-
   .noBottom:
     STZ.W $0ACA                                                          ;9087B8;
     CLC                                                                  ;9087BB;
     RTS                                                                  ;9087BC;
 
 
+;;; $87BD: Draw Samus echoes ;;;
 DrawSamusEchoes:
+; Draws the echoes that trail behind Samus when she's running or shinesparking, but not during the shinespark crash
     PHP                                                                  ;9087BD;
     REP #$30                                                             ;9087BE;
     LDA.W $0AAE                                                          ;9087C0;
@@ -1173,7 +1390,6 @@ DrawSamusEchoes:
     BEQ +                                                                ;9087CE;
     PLP                                                                  ;9087D0;
     RTS                                                                  ;9087D1;
-
 
 +   LDA.W $0AB2                                                          ;9087D2;
     BEQ +                                                                ;9087D5;
@@ -1189,7 +1405,6 @@ DrawSamusEchoes:
     PLP                                                                  ;9087E8;
     RTS                                                                  ;9087E9;
 
-
   .mergingEchoes:
     LDY.W #$0002                                                         ;9087EA;
 
@@ -1204,7 +1419,6 @@ DrawSamusEchoes:
     SBC.W #$0002                                                         ;9087FD;
     STA.W $0AB8,Y                                                        ;908800;
     BRA .noYAdjustment                                                   ;908803;
-
 
 +   CLC                                                                  ;908805;
     ADC.W #$0002                                                         ;908806;
@@ -1223,7 +1437,6 @@ DrawSamusEchoes:
     STA.W $0AB0,Y                                                        ;908823;
     BRA .next                                                            ;908826;
 
-
   .positive:
     LDA.W $0AB0,Y                                                        ;908828;
     CLC                                                                  ;90882B;
@@ -1234,7 +1447,6 @@ DrawSamusEchoes:
     LDA.W #$0000                                                         ;908837;
     STA.W $0AB0,Y                                                        ;90883A;
     BRA .next                                                            ;90883D;
-
 
   .drawEcho:
     JSR.W DrawSamusEcho                                                  ;90883F;
@@ -1254,7 +1466,10 @@ DrawSamusEchoes:
     RTS                                                                  ;908854;
 
 
+;;; $8855: Draw Samus echo ;;;
 DrawSamusEcho:
+;; Parameters:
+;;     Y: Speed echo index
     PHY                                                                  ;908855;
     LDA.W $0A1C                                                          ;908856;
     ASL A                                                                ;908859;
@@ -1278,7 +1493,6 @@ DrawSamusEcho:
 
 +   PLY                                                                  ;90887E;
     RTS                                                                  ;90887F;
-
 
   .addSpritemap:
     TAY                                                                  ;908880;
@@ -1313,7 +1527,12 @@ DrawSamusEcho:
     RTS                                                                  ;9088B9;
 
 
+;;; $88BA: Draw shinespark crash echo circle ;;;
 DrawShinesparkCrashEchoCircle:
+;; Parameters:
+;;     X: Speed echo index
+
+; Draws the echoes that circle around Samus on shinespark crash
     PHP                                                                  ;9088BA;
     PHB                                                                  ;9088BB;
     SEP #$20                                                             ;9088BC;
@@ -1326,7 +1545,6 @@ DrawShinesparkCrashEchoCircle:
     BIT.W #$0001                                                         ;9088C8;
     BNE +                                                                ;9088CB;
     JMP.W .return                                                        ;9088CD;
-
 
 +   LDA.W $0A1C                                                          ;9088D0;
     ASL A                                                                ;9088D3;
@@ -1361,7 +1579,6 @@ DrawShinesparkCrashEchoCircle:
     PLY                                                                  ;908906;
     PLX                                                                  ;908907;
     BRA .return                                                          ;908908;
-
 
 +   TAY                                                                  ;90890A;
     PLA                                                                  ;90890B;
@@ -1405,7 +1622,9 @@ DrawShinesparkCrashEchoCircle:
     RTS                                                                  ;908952;
 
 
+;;; $8953: Draw shinespark crash echo projectiles ;;;
 DrawShinesparkCrashEchoProjectiles:
+; Draws the echoes that fire away from Samus after shinespark crash
     PHP                                                                  ;908953;
     REP #$30                                                             ;908954;
     LDA.W $05B6                                                          ;908956;
@@ -1426,6 +1645,7 @@ DrawShinesparkCrashEchoProjectiles:
     RTL                                                                  ;908975;
 
 
+;;; $8976: Draw Samus starting death animation ;;;
 Draw_Samus_Starting_Death_Animation:
     PHP                                                                  ;908976;
     PHB                                                                  ;908977;
@@ -1450,7 +1670,10 @@ Draw_Samus_Starting_Death_Animation:
     RTL                                                                  ;908997;
 
 
+;;; $8998: Draw Samus during death animation ;;;
 Draw_Samus_During_Death_Animation:
+; This is the same as Draw_Inanimate_Samus, except that layer 1 position is added to Samus spritemap position for some reason,
+; to account for this, there's code at $9B:B409 that subtracts the layer 1 position from Samus position...
     PHP                                                                  ;908998;
     PHB                                                                  ;908999;
     SEP #$20                                                             ;90899A;
@@ -1508,7 +1731,16 @@ Draw_Samus_During_Death_Animation:
     RTL                                                                  ;9089FF;
 
 
+;;; $8A00: Draw inanimate Samus ;;;
 Draw_Inanimate_Samus:
+; Used to draw Samus during:
+;     Door transition
+;     Using elevator
+;     Taken fatal damage
+;     Game state 15h (death sequence, pre-flashing)
+
+; Compared to Draw_Samus, this routine doesn't update $0A96/$0ACA for speed echo drawing,
+; and doesn't have the checks for being invisible
     PHP                                                                  ;908A00;
     PHB                                                                  ;908A01;
     SEP #$20                                                             ;908A02;
@@ -1550,7 +1782,9 @@ Draw_Inanimate_Samus:
     RTL                                                                  ;908A4B;
 
 
+;;; $8A4C: Handle atmospheric effects ;;;
 Handle_AtmosphericEffects:
+; Water splash, air bubbles, footsteps
     PHP                                                                  ;908A4C;
     REP #$30                                                             ;908A4D;
     LDY.W #$0006                                                         ;908A4F;
@@ -1584,7 +1818,6 @@ Handle_AtmosphericEffects:
     PLX                                                                  ;908A83;
     BRA .execute                                                         ;908A84;
 
-
 +   PHX                                                                  ;908A86;
     LDA.W AtmosphericGraphics_AnimationTimers,X                          ;908A87;
     CLC                                                                  ;908A8A;
@@ -1603,7 +1836,6 @@ Handle_AtmosphericEffects:
     STA.W $0AEC,Y                                                        ;908AA7;
     BRA .next                                                            ;908AAA;
 
-
   .execute:
     JSR.W (.pointers,X)                                                  ;908AAC;
 
@@ -1613,7 +1845,6 @@ Handle_AtmosphericEffects:
     BPL .loop                                                            ;908AB1;
     PLP                                                                  ;908AB3;
     RTS                                                                  ;908AB4;
-
 
   .pointers:
     dw $0000                                                             ;908AB5;
@@ -1625,7 +1856,12 @@ Handle_AtmosphericEffects:
     dw AtmosphericEffects_6_7_Dust                                       ;908AC1;
     dw AtmosphericEffects_6_7_Dust                                       ;908AC3;
 
+
+;;; $8AC5: Handle atmospheric effects - [atmospheric graphic type] = 1/2 (footstep splashes) ;;;
 AtmosphericEffects_1_2_FootstepSplashes:
+;; Parameters:
+;;     X: Atmospheric graphic type
+;;     Y: Atmospheric graphic index
     PHY                                                                  ;908AC5;
     LDA.W $0AEC,Y                                                        ;908AC6;
     AND.W #$00FF                                                         ;908AC9;
@@ -1663,14 +1899,17 @@ AtmosphericEffects_1_2_FootstepSplashes:
     PLY                                                                  ;908B11;
     RTS                                                                  ;908B12;
 
-
   .return:
     PLY                                                                  ;908B13;
     PLY                                                                  ;908B14;
     RTS                                                                  ;908B15;
 
 
+;;; $8B16: Handle atmospheric effects - [atmospheric graphic type] = 3 (diving splash) ;;;
 AtmosphericEffects_3_DivingSplash:
+;; Parameters:
+;;     X: Atmospheric graphic type
+;;     Y: Atmospheric graphic index
     PHY                                                                  ;908B16;
     LDA.W $0AEC,Y                                                        ;908B17;
     AND.W #$00FF                                                         ;908B1A;
@@ -1684,7 +1923,11 @@ AtmosphericEffects_3_DivingSplash:
     BRA AddAtmosphericSpritemapToOAM                                     ;908B2C;
 
 
+;;; $8B2E: Handle atmospheric effects - [atmospheric graphic type] = 4 (lava surface damage) ;;;
 AtmosphericEffects_4_LavaSurfaceDamage:
+;; Parameters:
+;;     X: Atmospheric graphic type
+;;     Y: Atmospheric graphic index
     TYA                                                                  ;908B2E;
     BIT.W #$0004                                                         ;908B2F;
     BNE .greaterThanEqualTo4                                             ;908B32;
@@ -1693,7 +1936,6 @@ AtmosphericEffects_4_LavaSurfaceDamage:
     ADC.W #$0001                                                         ;908B38;
     STA.W $0ADC,Y                                                        ;908B3B;
     BRA +                                                                ;908B3E;
-
 
   .greaterThanEqualTo4:
     LDA.W $0ADC,Y                                                        ;908B40;
@@ -1708,7 +1950,11 @@ AtmosphericEffects_4_LavaSurfaceDamage:
     JMP.W AtmosphericEffects_1_2_FootstepSplashes                        ;908B54;
 
 
+;;; $8B57: Handle atmospheric effects - [atmospheric graphic type] = 6/7 (dust) ;;;
 AtmosphericEffects_6_7_Dust:
+;; Parameters:
+;;     X: Atmospheric graphic type
+;;     Y: Atmospheric graphic index
     LDA.W $0AE4,Y                                                        ;908B57;
     SEC                                                                  ;908B5A;
     SBC.W #$0001                                                         ;908B5B;
@@ -1716,7 +1962,11 @@ AtmosphericEffects_6_7_Dust:
     JMP.W AtmosphericEffects_1_2_FootstepSplashes                        ;908B61;
 
 
+;;; $8B64: Handle atmospheric effects - [atmospheric graphic type] = 5 (bubbles) ;;;
 AtmosphericEffects_5_Bubbles:
+;; Parameters:
+;;     X: Atmospheric graphic type
+;;     Y: Atmospheric graphic index
     PHY                                                                  ;908B64;
     LDA.W $0AEC,Y                                                        ;908B65;
     AND.W #$00FF                                                         ;908B68;
@@ -1724,8 +1974,10 @@ AtmosphericEffects_5_Bubbles:
     LDA.W #$0186                                                         ;908B6D;
     CLC                                                                  ;908B70;
     ADC.B $12                                                            ;908B71;
-    PHA                                                                  ;908B73;
+    PHA                                                                  ;908B73; fallthrough to AddAtmosphericSpritemapToOAM
 
+
+;;; $8B74: Add atmospheric spritemap to OAM ;;;
 AddAtmosphericSpritemapToOAM:
     LDA.W $0ADC,Y                                                        ;908B74;
     SEC                                                                  ;908B77;
@@ -1742,13 +1994,13 @@ AddAtmosphericSpritemapToOAM:
     PLY                                                                  ;908B8E;
     RTS                                                                  ;908B8F;
 
-
   .return:
     PLA                                                                  ;908B90;
     PLY                                                                  ;908B91;
     RTS                                                                  ;908B92;
 
 
+;;; $8B93: Atmospheric graphics animation timers ;;;
 AtmosphericGraphics_AnimationTimers:
 ; Indexed by [atmospheric graphics type] * 2
     dw $0000                                                             ;908B93;
@@ -1784,10 +2036,14 @@ AtmosphericGraphics_6_Dust:
 AtmosphericGraphics_7_Dust:
     dw $0003,$0004,$0005,$0006                                           ;908BE7;
 
+
+;;; $8BEF: Number of atmospheric graphics animation frames ;;;
 AtmosphericGraphics_NumberOfAnimationFrames:
 ; Indexed by [atmospheric graphics type] * 2
     dw $0000,$0004,$0004,$0009,$0004,$0008,$0004,$0004                   ;908BEF;
 
+
+;;; $8BFF: Atmospheric graphics sprite tile number and attributes ;;;
 AtmosphericGraphics_SpriteTileNumberAttributes:
 ; Indexed by [atmospheric graphics type] * 2
     dw $0000                                                             ;908BFF;
@@ -1806,7 +2062,14 @@ AtmosphericGraphics_SpriteTileNumberAttributes_1_Footstep:
 AtmosphericGraphics_SpriteTileNumberAttribute_4_6_7_LavaDust:
     dw $2A48,$2A49,$2A4A,$2A4B                                           ;908C17;
 
+
+;;; $8C1F: Calculate Samus spritemap position ;;;
 Calculate_SamusSpritemapPosition:
+;; Parameters:
+;;     X: Samus pose * 2
+;; Returns:
+;;     X: Samus spritemap X position
+;;     Y: Samus spritemap Y position
     LDA.W $093F                                                          ;908C1F;
     BPL .notCeres                                                        ;908C22;
     LDA.W $0AF6                                                          ;908C24;
@@ -1828,7 +2091,6 @@ Calculate_SamusSpritemapPosition:
     STA.W $0AF6                                                          ;908C4B;
     RTS                                                                  ;908C4E;
 
-
   .notCeres:
     TXY                                                                  ;908C4F;
     LDA.W $0A1F                                                          ;908C50;
@@ -1837,7 +2099,6 @@ Calculate_SamusSpritemapPosition:
     TAX                                                                  ;908C57;
     JSR.W (.pointers,X)                                                  ;908C58;
     RTS                                                                  ;908C5B;
-
 
   .pointers:
     dw CalculateSamusSpritemapPosition_Standing                          ;908C5C; *0: Standing
@@ -1869,7 +2130,14 @@ Calculate_SamusSpritemapPosition:
     dw CalculateUsualSamusSpritemapPosition                              ;908C90;  1Ah: Grabbed by Draygon
     dw CalculateSamusSpritemapPosition_Shinespark_CF_Drained             ;908C92; *1Bh: Shinespark / crystal flash / drained by metroid / damaged by MB's attacks
 
+
+;;; $8C94: Calculate usual Samus spritemap position ;;;
 CalculateUsualSamusSpritemapPosition:
+;; Parameters:
+;;     Y: Samus pose * 2
+;; Returns:
+;;     X: Samus spritemap X position
+;;     Y: Samus spritemap Y position
     TYA                                                                  ;908C94;
     ASL A                                                                ;908C95;
     ASL A                                                                ;908C96;
@@ -1896,7 +2164,13 @@ CalculateUsualSamusSpritemapPosition:
     RTS                                                                  ;908CC2;
 
 
+;;; $8CC3: Calculate Samus spritemap position - standing ;;;
 CalculateSamusSpritemapPosition_Standing:
+;; Parameters:
+;;     Y: Samus pose * 2
+;; Returns:
+;;     X: Samus spritemap X position
+;;     Y: Samus spritemap Y position
     PHB                                                                  ;908CC3;
     PHK                                                                  ;908CC4;
     PLB                                                                  ;908CC5;
@@ -1934,7 +2208,6 @@ CalculateSamusSpritemapPosition_Standing:
     PLB                                                                  ;908D05;
     RTS                                                                  ;908D06;
 
-
   .facingForward:
     LDA.W $0A96                                                          ;908D07;
     CMP.W #$0002                                                         ;908D0A;
@@ -1953,19 +2226,26 @@ CalculateSamusSpritemapPosition_Standing:
     PLB                                                                  ;908D26;
     RTS                                                                  ;908D27;
 
-
   .data:                                                                 ;908D28;
     db $03,$06,$00,$00 ; Facing right - landing from normal jump
     db $03,$06,$00,$00 ; Facing left-   landing from normal jump
     db $03,$03,$06,$00 ; Facing right - landing from spin jump
     db $03,$03,$06,$00 ; Facing left-   landing from spin jump
 
+
+;;; $8D38: Go to calculate usual Samus spritemap position ;;;
 Goto_CalculateUsualSamusSpritemapPosition:
     PLB                                                                  ;908D38;
     JMP.W CalculateUsualSamusSpritemapPosition                           ;908D39;
 
 
+;;; $8D3C: Calculate Samus spritemap position - crouching/standing/morphing/unmorphing transition ;;;
 CalculateSamusSpritemapPosition_TransitionPoses:
+;; Parameters:
+;;     Y: Samus pose * 2
+;; Returns:
+;;     X: Samus spritemap X position
+;;     Y: Samus spritemap Y position
     PHB                                                                  ;908D3C;
     PHK                                                                  ;908D3D;
     PLB                                                                  ;908D3E;
@@ -2003,7 +2283,6 @@ CalculateSamusSpritemapPosition_TransitionPoses:
     PLB                                                                  ;908D7E;
     RTS                                                                  ;908D7F;
 
-
   .data:                                                                 ;908D80;
     db $F8,$00 ; Facing right - crouching transition
     db $F8,$00 ; Facing left-   crouching transition
@@ -2018,7 +2297,14 @@ CalculateSamusSpritemapPosition_TransitionPoses:
     db $00,$00 ; Unused
     db $00,$00 ; Unused
 
+
+;;; $8D98: Calculate Samus spritemap position - shinespark / crystal flash / drained by metroid / damaged by MB's attacks ;;;
 CalculateSamusSpritemapPosition_Shinespark_CF_Drained:
+;; Parameters:
+;;     Y: Samus pose * 2
+;; Returns:
+;;     X: Samus spritemap X position
+;;     Y: Samus spritemap Y position
     PHB                                                                  ;908D98;
     PHK                                                                  ;908D99;
     PLB                                                                  ;908D9A;
@@ -2039,10 +2325,8 @@ CalculateSamusSpritemapPosition_Shinespark_CF_Drained:
     LDA.W #$FFFD                                                         ;908DB9;
     BRA .merge                                                           ;908DBC;
 
-
   .goto_CalculateUsualSamusSpritemapPosition:
     JMP.W Goto_CalculateUsualSamusSpritemapPosition                      ;908DBE;
-
 
   .drainedNotStanding:
     LDX.W $0A96                                                          ;908DC1;
@@ -2069,12 +2353,13 @@ CalculateSamusSpritemapPosition_Shinespark_CF_Drained:
     PLB                                                                  ;908DED;
     RTS                                                                  ;908DEE;
 
-
   .data:
 ; Samus drained - crouching
     db $07,$05,$F8,$F8,$F8,$F8,$F8,$FB,$04,$04,$04,$04,$00,$00,$04,$FD   ;908DEF;
     db $FB,$00,$00,$04,$FD,$FB,$FD,$04,$00,$00,$04,$00,$00,$04,$00,$00   ;908DFF;
 
+
+;;; $8E0F: Set liquid physics type ;;;
 SetLiquidPhysicsType:
     PHP                                                                  ;908E0F;
     PHB                                                                  ;908E10;
@@ -2090,7 +2375,6 @@ SetLiquidPhysicsType:
     PLP                                                                  ;908E24;
     RTL                                                                  ;908E25;
 
-
   .pointers:
     dw SetLiquidPhysicsType_Air                                          ;908E26; ; 0: None / 20h: Unused scrolling sky
     dw SetLiquidPhysicsType_LavaAcid                                     ;908E28; ; 2: Lava / 22h: Unused
@@ -2101,12 +2385,17 @@ SetLiquidPhysicsType:
     dw SetLiquidPhysicsType_Air                                          ;908E32; ; Ch: Fog / 2Ch: Ceres haze
     dw SetLiquidPhysicsType_Air                                          ;908E34;
 
+
+;;; $8E36: Set liquid physics type - air ;;;
 SetLiquidPhysicsType_Air:
     STZ.W $0AD2                                                          ;908E36;
     RTS                                                                  ;908E39;
 
 
+;;; $8E3A: Set liquid physics type - lava/acid ;;;
 SetLiquidPhysicsType_LavaAcid:
+;; Parameters:
+;;     $12: Samus bottom boundary
     LDA.W $1962                                                          ;908E3A;
     BMI SetLiquidPhysicsType_Air                                         ;908E3D;
     CMP.B $12                                                            ;908E3F;
@@ -2116,13 +2405,15 @@ SetLiquidPhysicsType_LavaAcid:
     RTS                                                                  ;908E49;
 
 
+;;; $8E4A: Set liquid physics type - water ;;;
 SetLiquidPhysicsType_Water:
+;; Parameters:
+;;     $12: Samus bottom boundary
     LDA.W $195E                                                          ;908E4A;
     BMI SetLiquidPhysicsType_Air                                         ;908E4D;
     CMP.B $12                                                            ;908E4F;
     BMI +                                                                ;908E51;
     BRA SetLiquidPhysicsType_Air                                         ;908E53;
-
 
 +   LDA.W $197E                                                          ;908E55;
     BIT.W #$0004                                                         ;908E58;
@@ -2132,6 +2423,7 @@ SetLiquidPhysicsType_Water:
     RTS                                                                  ;908E63;
 
 
+;;; $8E64: Samus X movement ;;;
 Samus_X_Movement:
     PHP                                                                  ;908E64;
     REP #$30                                                             ;908E65;
@@ -2144,6 +2436,7 @@ Samus_X_Movement:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $8E75: Unused ;;;
 UNUSED_SamusMovement_908E75:
     PHP                                                                  ;908E75;
     REP #$30                                                             ;908E76;
@@ -2163,7 +2456,6 @@ UNUSED_SamusMovement_908E75:
     STZ.W $0DD0                                                          ;908E99;
     BRA .return                                                          ;908E9C;
 
-
 +   LDA.W #$0002                                                         ;908E9E;
     STA.W $0B4A                                                          ;908EA1;
 
@@ -2176,7 +2468,10 @@ UNUSED_SamusMovement_908E75:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $8EA9: Move Samus horizontally ;;;
 MoveSamus_Horizontally:
+;; Parameters:
+;;     $12.$14: Samus X base speed
     LDA.W $0B4A                                                          ;908EA9;
     BEQ .notTurning                                                      ;908EAC;
     CMP.W #$0002                                                         ;908EAE;
@@ -2186,7 +2481,6 @@ MoveSamus_Horizontally:
     CMP.W #$0008                                                         ;908EB9;
     BEQ .leftwards                                                       ;908EBC;
     BRA .rightwards                                                      ;908EBE;
-
 
   .notTurning:
     LDA.W $0A1E                                                          ;908EC0;
@@ -2198,7 +2492,6 @@ MoveSamus_Horizontally:
     JSR.W CalculateSamusXDisplacement_ForMovingRight                     ;908ECB;
     BRA .merge                                                           ;908ECE;
 
-
   .leftwards:
     JSR.W CalculateSamusXDisplacement_ForMovingLeft                      ;908ED0;
 
@@ -2208,12 +2501,12 @@ MoveSamus_Horizontally:
     JSR.W MoveSamus_Right                                                ;908ED7;
     RTS                                                                  ;908EDA;
 
-
   .left:
     JSR.W MoveSamus_Left                                                 ;908EDB;
     RTS                                                                  ;908EDE;
 
 
+;;; $8EDF: Move Samus horizontally - knockback or bomb jump ;;;
 MoveSamus_Horizontally_KnockbackBombJump:
     PHP                                                                  ;908EDF;
     REP #$30                                                             ;908EE0;
@@ -2224,7 +2517,6 @@ MoveSamus_Horizontally_KnockbackBombJump:
     LDA.W $0A54                                                          ;908EED;
     BNE .rightwards                                                      ;908EF0;
     BRA .leftwards                                                       ;908EF2;
-
 
 +   LDX.W #SamusPhysicsConstants_XAccelSpeeds_DiagonalBombJump           ;908EF4;
     JSR.W CalculateSamusXBaseSpeed_DecelerationAllowed                   ;908EF7;
@@ -2237,7 +2529,6 @@ MoveSamus_Horizontally_KnockbackBombJump:
     JSR.W CalculateSamusXDisplacement_ForMovingRight                     ;908F05;
     BRA .merge                                                           ;908F08;
 
-
   .leftwards:
     JSR.W CalculateSamusXDisplacement_ForMovingLeft                      ;908F0A;
 
@@ -2247,7 +2538,6 @@ MoveSamus_Horizontally_KnockbackBombJump:
     JSR.W MoveSamus_Right                                                ;908F11;
     BRA .return                                                          ;908F14;
 
-
   .left:
     JSR.W MoveSamus_Left                                                 ;908F16;
 
@@ -2256,6 +2546,7 @@ MoveSamus_Horizontally_KnockbackBombJump:
     RTS                                                                  ;908F1A;
 
 
+;;; $8F1B: Handle end of bomb jump ;;;
 Handle_EndOfBombJump:
     PHP                                                                  ;908F1B;
     REP #$30                                                             ;908F1C;
@@ -2273,7 +2564,6 @@ Handle_EndOfBombJump:
     STA.W $0A60                                                          ;908F3B;
     BRA .return                                                          ;908F3E;
 
-
 +   STZ.W $0B2C                                                          ;908F40;
     STZ.W $0B2E                                                          ;908F43;
     LDA.W #$0002                                                         ;908F46;
@@ -2290,6 +2580,7 @@ Handle_EndOfBombJump:
     RTS                                                                  ;908F5E;
 
 
+;;; $8F5F: Move Samus horizontally - pushed by Ceres Ridley ;;;
 MoveSamus_Horizontally_PushedByCeresRidley:
     PHP                                                                  ;908F5F;
     REP #$30                                                             ;908F60;
@@ -2301,7 +2592,6 @@ MoveSamus_Horizontally_PushedByCeresRidley:
     JSR.W CalculateSamusXDisplacement_ForMovingRight                     ;908F70;
     BRA +                                                                ;908F73;
 
-
   .left:
     JSR.W CalculateSamusXDisplacement_ForMovingLeft                      ;908F75;
 
@@ -2309,7 +2599,6 @@ MoveSamus_Horizontally_PushedByCeresRidley:
     BMI .moveLeft                                                        ;908F7A;
     JSR.W MoveSamus_Right                                                ;908F7C;
     BRA .return                                                          ;908F7F;
-
 
   .moveLeft:
     JSR.W MoveSamus_Left                                                 ;908F81;
@@ -2319,6 +2608,7 @@ MoveSamus_Horizontally_PushedByCeresRidley:
     RTS                                                                  ;908F85;
 
 
+;;; $8F86: Move Samus vertically - pushed by Ceres Ridley ;;;
 MoveSamus_Vertically_PushedByCeresRidley:
     PHP                                                                  ;908F86;
     REP #$30                                                             ;908F87;
@@ -2342,7 +2632,9 @@ MoveSamus_Vertically_PushedByCeresRidley:
     RTS                                                                  ;908FB2;
 
 
+;;; $8FB3: Samus jumping movement ;;;
 Samus_Jumping_Movement:
+; Used for normal jumping, spring ball - in air, wall jumping, damage boost
     PHP                                                                  ;908FB3;
     REP #$30                                                             ;908FB4;
     JSR.W Handle_Samus_XExtraRunSpeed                                    ;908FB6;
@@ -2360,7 +2652,6 @@ Samus_Jumping_Movement:
     JSR.W MoveSamus_HorizontallyWithZeroBaseXSpeed                       ;908FD3;
     JSR.W MoveSamus_ByExtraYDisplacement                                 ;908FD6;
     JMP.W .return                                                        ;908FD9; >.<
-
 
   .jumping:
     LDA.W $0B36                                                          ;908FDC;
@@ -2398,7 +2689,6 @@ Samus_Jumping_Movement:
     STZ.W $0DD0                                                          ;909028;
     BRA .noXMovement                                                     ;90902B;
 
-
   .wallJumping:
     LDA.W $0B4A                                                          ;90902D;
     BNE .XMovement                                                       ;909030;
@@ -2416,6 +2706,7 @@ Samus_Jumping_Movement:
     RTS                                                                  ;90903F;
 
 
+;;; $9040: Samus spin jumping movement ;;;
 Samus_SpinJumping_Movement:
     PHP                                                                  ;909040;
     REP #$30                                                             ;909041;
@@ -2450,13 +2741,11 @@ Samus_SpinJumping_Movement:
     BEQ +                                                                ;909086;
     BRA .allowXMovement                                                  ;909088;
 
-
   .leftwards:
     LDA.B $8B                                                            ;90908A;
     BIT.W #$0200                                                         ;90908C;
     BEQ +                                                                ;90908F;
     BRA .allowXMovement                                                  ;909091;
-
 
 +   STZ.B $12                                                            ;909093;
     STZ.B $14                                                            ;909095;
@@ -2465,7 +2754,6 @@ Samus_SpinJumping_Movement:
     STZ.W $0DD0                                                          ;90909D;
     STZ.W $0B4A                                                          ;9090A0;
     BRA .merge                                                           ;9090A3;
-
 
   .allowXMovement:
     LDA.W $0B4A                                                          ;9090A5;
@@ -2487,6 +2775,7 @@ Samus_SpinJumping_Movement:
     RTS                                                                  ;9090C3;
 
 
+;;; $90C4: Check if Samus has started falling ;;;
 CheckIfSamusHasStartedFalling:
     PHP                                                                  ;9090C4;
     REP #$30                                                             ;9090C5;
@@ -2505,6 +2794,7 @@ CheckIfSamusHasStartedFalling:
     RTS                                                                  ;9090E1;
 
 
+;;; $90E2: Samus Y movement - with speed calculations ;;;
 Samus_Y_Movement_WithSpeedCalculations:
     PHP                                                                  ;9090E2;
     REP #$30                                                             ;9090E3;
@@ -2523,7 +2813,6 @@ Samus_Y_Movement_WithSpeedCalculations:
     SBC.W $0B34                                                          ;909104;
     STA.W $0B2E                                                          ;909107;
     BRA +                                                                ;90910A;
-
 
   .down:
     LDA.W $0B2E                                                          ;90910C;
@@ -2569,7 +2858,6 @@ Samus_Y_Movement_WithSpeedCalculations:
     JSR.W MoveSamus_Down                                                 ;90915E;
     BRA .return                                                          ;909161;
 
-
   .moveUp:
     JSR.W MoveSamus_Up                                                   ;909163;
 
@@ -2578,6 +2866,7 @@ Samus_Y_Movement_WithSpeedCalculations:
     RTS                                                                  ;909167;
 
 
+;;; $9168: Samus falling movement ;;;
 Samus_Falling_Movement:
     PHP                                                                  ;909168;
     REP #$30                                                             ;909169;
@@ -2598,7 +2887,6 @@ Samus_Falling_Movement:
     STZ.W $0DD0                                                          ;90918F;
     BRA +                                                                ;909192;
 
-
   .pressingLeftRight:
     JSR.W MoveSamus_Horizontally                                         ;909194;
 
@@ -2608,6 +2896,7 @@ Samus_Falling_Movement:
     RTS                                                                  ;90919E;
 
 
+;;; $919F: Samus morphed falling movement ;;;
 Samus_Morphed_Falling_Movement:
     PHP                                                                  ;90919F;
     REP #$30                                                             ;9091A0;
@@ -2634,6 +2923,7 @@ Samus_Morphed_Falling_Movement:
     RTS                                                                  ;9091D0;
 
 
+;;; $91D1: Samus morphed bouncing movement ;;;
 Samus_Morphed_Bouncing_Movement:
     PHP                                                                  ;9091D1;
     REP #$30                                                             ;9091D2;
@@ -2680,11 +2970,9 @@ Samus_Morphed_Bouncing_Movement:
     JSR.W MoveSamus_Down                                                 ;90922D;
     BRA .return                                                          ;909230;
 
-
   .moveUp:
     JSR.W MoveSamus_Up                                                   ;909232;
     BRA .return                                                          ;909235;
-
 
   .noExtraDisplacement:
     JSR.W CheckIfSamusHasStartedFalling                                  ;909237;
@@ -2695,7 +2983,12 @@ Samus_Morphed_Bouncing_Movement:
     RTS                                                                  ;90923E;
 
 
+;;; $923F: Samus Y movement - no speed calculations ;;;
 Samus_Y_Movement_NoSpeedCalculations:
+; Total X speed is added to distance moved down in an attempt to keep Samus in contact with downwards slopes
+; (unless it's already been determined that she's on a slope, in which case no adjustment is made)
+; You'll note that this only works up to a steepness of 45°, which may or may not be intentional...
+; If you wanted Samus to not fall off steep slopes, it might be better to just try pushing Samus to the bottom of the block that's one pixel down?
     PHP                                                                  ;90923F;
     REP #$30                                                             ;909240;
     LDA.W $0B5C                                                          ;909242;
@@ -2711,7 +3004,6 @@ Samus_Y_Movement_NoSpeedCalculations:
     STA.B $12                                                            ;90925A;
     BRA .gotoMoveDown                                                    ;90925C;
 
-
   .adjustedBySlope:
     STZ.B $14                                                            ;90925E;
     LDA.W #$0001                                                         ;909260;
@@ -2719,7 +3011,6 @@ Samus_Y_Movement_NoSpeedCalculations:
 
   .gotoMoveDown:
     BRA .moveDown                                                        ;909265;
-
 
   .useExtraDisplacement:
     STZ.B $14                                                            ;909267;
@@ -2738,7 +3029,6 @@ Samus_Y_Movement_NoSpeedCalculations:
     JSR.W MoveSamus_Down                                                 ;90927E;
     BRA .return                                                          ;909281;
 
-
   .moveUp:
     JSR.W MoveSamus_Up                                                   ;909283;
 
@@ -2747,6 +3037,7 @@ Samus_Y_Movement_NoSpeedCalculations:
     RTS                                                                  ;909287;
 
 
+;;; $9288: Move Samus by extra Samus Y displacement ;;;
 MoveSamus_ByExtraYDisplacement:
     PHP                                                                  ;909288;
     REP #$30                                                             ;909289;
@@ -2756,7 +3047,6 @@ MoveSamus_ByExtraYDisplacement:
     BNE .move                                                            ;909293;
     PLP                                                                  ;909295;
     RTS                                                                  ;909296;
-
 
   .move:
     STZ.B $14                                                            ;909297;
@@ -2773,7 +3063,6 @@ MoveSamus_ByExtraYDisplacement:
     JSR.W MoveSamus_Down                                                 ;9092AE;
     BRA .return                                                          ;9092B1;
 
-
   .moveUp:
     JSR.W MoveSamus_Up                                                   ;9092B3;
 
@@ -2782,12 +3071,14 @@ MoveSamus_ByExtraYDisplacement:
     RTS                                                                  ;9092B7;
 
 
+;;; $92B8: Simple Samus Y movement ;;;
 Simple_Samus_Y_Movement:
+;; Returns:
+;;     Carry: set if [Samus Y direction] != none, clear otherwise
     LDA.W $0B36                                                          ;9092B8;
     BNE .movingUpDown                                                    ;9092BB;
     CLC                                                                  ;9092BD;
     RTS                                                                  ;9092BE;
-
 
   .movingUpDown:
     JSR.W CheckIfSamusHasStartedFalling                                  ;9092BF;
@@ -2796,12 +3087,16 @@ Simple_Samus_Y_Movement:
     RTS                                                                  ;9092C6;
 
 
+;;; $92C7: Simple Samus Y movement ;;;
 Simple_Samus_Y_Movement_duplicate:
+;; Returns:
+;;     Carry: set if [Samus Y direction] != none, clear otherwise
+
+; Clone of Simple_Samus_Y_Movement
     LDA.W $0B36                                                          ;9092C7;
     BNE .movingUpDown                                                    ;9092CA;
     CLC                                                                  ;9092CC;
     RTS                                                                  ;9092CD;
-
 
   .movingUpDown:
     JSR.W CheckIfSamusHasStartedFalling                                  ;9092CE;
@@ -2811,11 +3106,11 @@ Simple_Samus_Y_Movement_duplicate:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $92D6: Unused ;;;
 UNUSED_MoveSamus_9092D6:
     PHP                                                                  ;9092D6;
     REP #$30                                                             ;9092D7;
     BRA .uselessBranch                                                   ;9092D9; >.<
-
 
   .uselessBranch:
     LDA.W $0AFA                                                          ;9092DB;
@@ -2828,7 +3123,10 @@ UNUSED_MoveSamus_9092D6:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $92E9: RTS ;;;
 RTS_9092E9:
+; Looks like an old routine that was RTS'd out
+; Called by $A75F: Samus movement - ran into a wall
     RTS                                                                  ;9092E9;
 
     PHP                                                                  ;9092EA;
@@ -2845,18 +3143,15 @@ RTS_9092E9:
     BNE .rightwards                                                      ;909304;
     BRA .return                                                          ;909306;
 
-
   .facingLeft:
     LDA.B $8B                                                            ;909308;
     BIT.W #$0200                                                         ;90930A;
     BNE .leftwards                                                       ;90930D;
     BRA .return                                                          ;90930F;
 
-
   .rightwards:
     JSR.W CalculateSamusXDisplacement_ForMovingRight                     ;909311;
     BRA .merge                                                           ;909314;
-
 
   .leftwards:
     JSR.W CalculateSamusXDisplacement_ForMovingLeft                      ;909316;
@@ -2866,7 +3161,6 @@ RTS_9092E9:
     BMI .moveLeft                                                        ;90931B;
     JSR.W MoveSamus_Right                                                ;90931D;
     BRA +                                                                ;909320;
-
 
   .moveLeft:
     JSR.W MoveSamus_Left                                                 ;909322;
@@ -2881,7 +3175,6 @@ RTS_9092E9:
     STA.W $0A28                                                          ;909338;
     BRA +                                                                ;90933B;
 
-
   .leftFacing:
     LDA.W #$000A                                                         ;90933D;
     STA.W $0A28                                                          ;909340;
@@ -2893,6 +3186,7 @@ RTS_9092E9:
     RTS                                                                  ;909347;
 
 
+;;; $9348: Move Samus horizontally with zero base X speed ;;;
 MoveSamus_HorizontallyWithZeroBaseXSpeed:
     STZ.B $12                                                            ;909348;
     STZ.B $14                                                            ;90934A;
@@ -2900,6 +3194,7 @@ MoveSamus_HorizontallyWithZeroBaseXSpeed:
     RTS                                                                  ;90934F;
 
 
+;;; $9350: Move Samus left by -[$12].[$14] ;;;
 MoveSamus_Left:
     PHP                                                                  ;909350;
     REP #$30                                                             ;909351;
@@ -2923,7 +3218,6 @@ MoveSamus_Left:
     JSL.L Align_SamusYPosition_WithNonSquareSlope                        ;909376;
     PLP                                                                  ;90937A;
     RTS                                                                  ;90937B;
-
 
   .noSolidEnemyCollision:
     LDA.B $12                                                            ;90937C;
@@ -2953,6 +3247,7 @@ MoveSamus_Left:
     RTS                                                                  ;9093B0;
 
 
+;;; $93B1: Move Samus right by [$12].[$14] ;;;
 MoveSamus_Right:
     PHP                                                                  ;9093B1;
     REP #$30                                                             ;9093B2;
@@ -2965,7 +3260,6 @@ MoveSamus_Right:
     JSL.L Align_SamusYPosition_WithNonSquareSlope                        ;9093C4;
     PLP                                                                  ;9093C8;
     RTS                                                                  ;9093C9;
-
 
 +   JSL.L MoveSamusRight_NoSolidEnemyCollision                           ;9093CA;
     LDA.B $14                                                            ;9093CE;
@@ -2983,6 +3277,7 @@ MoveSamus_Right:
     RTS                                                                  ;9093EB;
 
 
+;;; $93EC: Move Samus up by -[$12].[$14] ;;;
 MoveSamus_Up:
     PHP                                                                  ;9093EC;
     REP #$30                                                             ;9093ED;
@@ -3007,7 +3302,6 @@ MoveSamus_Up:
     PLP                                                                  ;909418;
     RTS                                                                  ;909419;
 
-
 +   LDA.B $12                                                            ;90941A;
     EOR.W #$FFFF                                                         ;90941C;
     STA.B $12                                                            ;90941F;
@@ -3028,6 +3322,7 @@ MoveSamus_Up:
     RTS                                                                  ;90943F;
 
 
+;;; $9440: Move Samus down by [$12].[$14] ;;;
 MoveSamus_Down:
     PHP                                                                  ;909440;
     REP #$30                                                             ;909441;
@@ -3042,7 +3337,6 @@ MoveSamus_Down:
     PLP                                                                  ;909459;
     RTS                                                                  ;90945A;
 
-
   .move:
     JSL.L MoveSamusDown_NoSolidEnemyCollision                            ;90945B;
     LDA.B $14                                                            ;90945F;
@@ -3054,6 +3348,7 @@ MoveSamus_Down:
     RTS                                                                  ;90946D;
 
 
+;;; $946E: Samus movement handler - released from grapple swing ;;;
 SamusMovementHandler_ReleasedFromGrappleSwing:
     LDA.W $0B36                                                          ;90946E;
     CMP.W #$0001                                                         ;909471;
@@ -3086,7 +3381,6 @@ SamusMovementHandler_ReleasedFromGrappleSwing:
     STZ.W $0DD0                                                          ;9094B4;
     BRA .YMovement                                                       ;9094B7;
 
-
   .pressingLeftRight:
     JSR.W MoveSamus_Horizontally                                         ;9094B9;
 
@@ -3101,6 +3395,7 @@ SamusMovementHandler_ReleasedFromGrappleSwing:
     RTS                                                                  ;9094CA;
 
 
+;;; $94CB: Samus movement handler - Samus drained - falling ;;;
 SamusMovementHandler_SamusDrained_Falling:
     JSR.W Samus_Y_Movement_WithSpeedCalculations                         ;9094CB;
     LDA.W $0DD0                                                          ;9094CE;
@@ -3118,7 +3413,11 @@ SamusMovementHandler_SamusDrained_Falling:
     RTS                                                                  ;9094EB;
 
 
+;;; $94EC: Main scrolling routine ;;;
 Main_Scrolling_Routine:
+; Called by:
+;     $82:8B44: Game state 8 (main gameplay)
+;     $82:E675 (unused door transition routine)
     PHP                                                                  ;9094EC;
     PHB                                                                  ;9094ED;
     PHK                                                                  ;9094EE;
@@ -3138,7 +3437,6 @@ Main_Scrolling_Routine:
     ADC.W #$0003                                                         ;90950B;
     STA.W $0911                                                          ;90950E;
     BRA .grappleScrollHorizontalEnd                                      ;909511;
-
 
 +   CMP.W #$0060                                                         ;909513;
     BCS .grappleScrollHorizontalEnd                                      ;909516;
@@ -3163,7 +3461,6 @@ Main_Scrolling_Routine:
     STA.W $0915                                                          ;909539;
     BRA .grappleScrollVerticalEnd                                        ;90953C;
 
-
 +   CMP.W #$0070                                                         ;90953E;
     BCS .grappleScrollVerticalEnd                                        ;909541;
 
@@ -3177,7 +3474,6 @@ Main_Scrolling_Routine:
     JSL.L HandleScrollZones_HorizontalAutoscrolling                      ;90954D;
     JSL.L HandleScrollZones_VerticalAutoscrolling                        ;909551;
     BRA .finishedScrolling                                               ;909555;
-
 
   .normalScrolling:
     JSR.W Calculate_CameraXSpeed                                         ;909557;
@@ -3204,6 +3500,7 @@ Main_Scrolling_Routine:
     RTL                                                                  ;909588;
 
 
+;;; $9589: Scrolling finished hook - Spore Spawn fight ;;;
 ScrollingFinishedHook_SporeSpawnFight:
     LDA.W #$01D0                                                         ;909589;
     CMP.W $0915                                                          ;90958C;
@@ -3215,6 +3512,7 @@ ScrollingFinishedHook_SporeSpawnFight:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9595: Unused. Camera X speed = 0.0 ;;;
 UNUSED_CameraXSpeed_0_909595:
     PHP                                                                  ;909595;
     REP #$30                                                             ;909596;
@@ -3225,6 +3523,7 @@ UNUSED_CameraXSpeed_0_909595:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $95A0: Handle horizontal scrolling ;;;
 Handle_Horizontal_Scrolling:
     PHP                                                                  ;9095A0;
     REP #$30                                                             ;9095A1;
@@ -3233,7 +3532,6 @@ Handle_Horizontal_Scrolling:
     BNE +                                                                ;9095A9;
     JSL.L HandleScrollZones_HorizontalAutoscrolling                      ;9095AB;
     JMP.W .return                                                        ;9095AF;
-
 
 +   LDA.W $0911                                                          ;9095B2;
     STA.B $12                                                            ;9095B5;
@@ -3251,7 +3549,6 @@ Handle_Horizontal_Scrolling:
     BEQ .right                                                           ;9095D0;
     BRA .left                                                            ;9095D2;
 
-
   .forwards:
     LDA.W $0B4A                                                          ;9095D4;
     CMP.W #$0001                                                         ;9095D7;
@@ -3268,7 +3565,6 @@ Handle_Horizontal_Scrolling:
     SBC.W .facingRight,X                                                 ;9095EE;
     STA.W $0B0A                                                          ;9095F1;
     BRA .merge                                                           ;9095F4;
-
 
   .left:
     LDX.W $0941                                                          ;9095F6;
@@ -3292,7 +3588,6 @@ Handle_Horizontal_Scrolling:
     JSL.L HandleScrollZones_ScrollingRight                               ;909620;
     BRA .return                                                          ;909624;
 
-
 +   LDA.W $090F                                                          ;909626;
     SEC                                                                  ;909629;
     SBC.W $0DA4                                                          ;90962A;
@@ -3313,6 +3608,7 @@ Handle_Horizontal_Scrolling:
     dw $00A0,$0050,$0020,$00E0                                           ;909647;
 
 
+;;; $964F: Handle vertical scrolling ;;;
 Handle_Vertical_Scrolling:
     PHP                                                                  ;90964F;
     REP #$30                                                             ;909650;
@@ -3321,7 +3617,6 @@ Handle_Vertical_Scrolling:
     BNE +                                                                ;909658;
     JSL.L HandleScrollZones_VerticalAutoscrolling                        ;90965A;
     JMP.W .return                                                        ;90965E;
-
 
 +   LDA.W $0915                                                          ;909661;
     STA.B $12                                                            ;909664;
@@ -3333,7 +3628,6 @@ Handle_Vertical_Scrolling:
     SBC.W $07AD                                                          ;909672;
     STA.W $0B0E                                                          ;909675;
     BRA +                                                                ;909678;
-
 
   .up:
     LDA.W $0AFA                                                          ;90967A;
@@ -3355,7 +3649,6 @@ Handle_Vertical_Scrolling:
     JSL.L HandleScrollZones_ScrollingDown                                ;9096A1;
     BRA .return                                                          ;9096A5;
 
-
   .idealLessThanActual:
     LDA.W $0913                                                          ;9096A7;
     SEC                                                                  ;9096AA;
@@ -3371,14 +3664,19 @@ Handle_Vertical_Scrolling:
     RTS                                                                  ;9096BF;
 
 
+;;; $96C0: Calculate camera X speed ;;;
 Calculate_CameraXSpeed:
+; This check to go to .right doesn't include the subpixel position,
+; so that branch may be taken even if Samus moved left, so long as she hasn't reached the next pixel
+; In that case, the ([Samus X position] - [Samus previous X position]) calculation results in a value -1.0 < x < 0.0,
+; and as such, "absolute X distance Samus moved last frame + 1" can be less than 1
+; >_>;
     PHP                                                                  ;9096C0;
     REP #$30                                                             ;9096C1;
     LDA.W $0AF6                                                          ;9096C3;
     CMP.W $0B10                                                          ;9096C6;
     BMI +                                                                ;9096C9;
     BRA .right                                                           ;9096CB;
-
 
 +   LDA.W $0B12                                                          ;9096CD;
     SEC                                                                  ;9096D0;
@@ -3390,7 +3688,6 @@ Calculate_CameraXSpeed:
     ADC.W SamusPhysicsConstants_CameraXOffsetFromSamusWhenTurning        ;9096DE;
     STA.W $0DA2                                                          ;9096E1;
     BRA .return                                                          ;9096E4;
-
 
   .right:
     LDA.W $0AF8                                                          ;9096E6;
@@ -3408,14 +3705,15 @@ Calculate_CameraXSpeed:
     RTS                                                                  ;9096FE;
 
 
+;;; $96FF: Calculate the vertical distance Samus has moved last frame + 1 ;;;
 CalculateVerticalDistanceSamusMovedLastFrame:
+; Result can be less than 1.0, see Calculate_CameraXSpeed
     PHP                                                                  ;9096FF;
     REP #$30                                                             ;909700;
     LDA.W $0AFA                                                          ;909702;
     CMP.W $0B14                                                          ;909705;
     BMI +                                                                ;909708;
     BRA .down                                                            ;90970A;
-
 
 +   LDA.W $0B16                                                          ;90970C;
     SEC                                                                  ;90970F;
@@ -3427,7 +3725,6 @@ CalculateVerticalDistanceSamusMovedLastFrame:
     ADC.W SamusPhysicsConstants_CameraXOffsetFromSamusWhenTurning        ;90971D;
     STA.W $0DA6                                                          ;909720;
     BRA .return                                                          ;909723;
-
 
   .down:
     LDA.W $0AFC                                                          ;909725;
@@ -3445,7 +3742,10 @@ CalculateVerticalDistanceSamusMovedLastFrame:
     RTS                                                                  ;90973D;
 
 
+;;; $973E: Handle Samus X extra run speed ;;;
 Handle_Samus_XExtraRunSpeed:
+; If not eligible to run or not running, set extra run speed to zero
+; Otherwise accelerate and cap at max speed, depending on speed booster
     PHP                                                                  ;90973E;
     REP #$30                                                             ;90973F;
     LDA.W $09A2                                                          ;909741;
@@ -3458,7 +3758,6 @@ Handle_Samus_XExtraRunSpeed:
     BMI .submerged                                                       ;909754;
     BRA .gravity                                                         ;909756;
 
-
   .negativeYPosition:
     LDA.W $1962                                                          ;909758;
     BMI .gravity                                                         ;90975B;
@@ -3469,7 +3768,6 @@ Handle_Samus_XExtraRunSpeed:
     LDX.W #$0000                                                         ;909761;
     BRA .gravityContinued                                                ;909764;
 
-
   .submerged:
     LDA.W $197E                                                          ;909766;
     BIT.W #$0004                                                         ;909769;
@@ -3478,7 +3776,6 @@ Handle_Samus_XExtraRunSpeed:
   .gotoNotRunning:
     JMP.W .notRunning                                                    ;90976E;
 
-
   .gravityContinued:
     LDA.W $0A1F                                                          ;909771;
     AND.W #$00FF                                                         ;909774;
@@ -3486,13 +3783,11 @@ Handle_Samus_XExtraRunSpeed:
     BEQ .checkDash                                                       ;90977A;
     JMP.W .notRunning                                                    ;90977C;
 
-
   .checkDash:
     LDA.B $8B                                                            ;90977F;
     AND.W $09B6                                                          ;909781;
     BNE .running                                                         ;909784;
     JMP.W .notRunning                                                    ;909786;
-
 
   .running:
     LDA.W $09A2                                                          ;909789;
@@ -3520,7 +3815,6 @@ Handle_Samus_XExtraRunSpeed:
     STA.W $0B44                                                          ;9097C2;
     BRA .done                                                            ;9097C5;
 
-
   .noSpeedBooster:
     LDA.W $0B3C                                                          ;9097C7;
     BNE +                                                                ;9097CA;
@@ -3540,7 +3834,6 @@ Handle_Samus_XExtraRunSpeed:
     STA.W $0B44                                                          ;9097EE;
     BRA .done                                                            ;9097F1;
 
-
   .accelerating:
     LDA.W $0B44                                                          ;9097F3;
     CLC                                                                  ;9097F6;
@@ -3550,7 +3843,6 @@ Handle_Samus_XExtraRunSpeed:
     ADC.W SamusPhysicsConstants_XAccelerations_DashHeld,X                ;909800;
     STA.W $0B42                                                          ;909803;
     BRA .done                                                            ;909806;
-
 
   .notRunning:
     LDA.W $0B3C                                                          ;909808;
@@ -3571,6 +3863,7 @@ Handle_Samus_XExtraRunSpeed:
     RTS                                                                  ;909825;
 
 
+;;; $9826: Move Samus right by [$12].[$14], no collision detection ;;;
 MoveSamus_Right_NoCollisionDetection:
     LDA.W $0AF8                                                          ;909826;
     CLC                                                                  ;909829;
@@ -3586,6 +3879,7 @@ MoveSamus_Right_NoCollisionDetection:
     RTS                                                                  ;909841;
 
 
+;;; $9842: Move Samus left by [$12].[$14], no collision detection ;;;
 MoveSamus_Left_NoCollisionDetection:
     LDA.W $0AF8                                                          ;909842;
     SEC                                                                  ;909845;
@@ -3611,6 +3905,7 @@ MoveSamus_Left_NoCollisionDetection:
     RTS                                                                  ;909870;
 
 
+;;; $9871: Move Samus down by [$12].[$14], no collision detection ;;;
 MoveSamus_Down_NoCollisionDetection:
     LDA.W $0AFC                                                          ;909871;
     CLC                                                                  ;909874;
@@ -3626,6 +3921,7 @@ MoveSamus_Down_NoCollisionDetection:
     RTS                                                                  ;90988C;
 
 
+;;; $988D: Move Samus up by [$12].[$14], no collision detection ;;;
 MoveSamus_Up_NoCollisionDetection:
     LDA.W $0AFC                                                          ;90988D;
     SEC                                                                  ;909890;
@@ -3651,6 +3947,7 @@ MoveSamus_Up_NoCollisionDetection:
     RTS                                                                  ;9098BB;
 
 
+;;; $98BC: Make Samus jump ;;;
 Make_Samus_Jump:
     PHP                                                                  ;9098BC;
     PHB                                                                  ;9098BD;
