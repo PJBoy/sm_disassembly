@@ -2,6 +2,7 @@
 org $928000
 
 
+;;; $8000: Set Samus tiles definitions for current animation ;;;
 Set_SamusTilesDefinitions_ForCurrentAnimation:
     PHP                                                                  ;928000;
     PHB                                                                  ;928001;
@@ -83,6 +84,7 @@ Set_SamusTilesDefinitions_ForCurrentAnimation:
     RTL                                                                  ;92808C;
 
 
+;;; $808D: Samus spritemap table ;;;
 SamusSpritemapTable:
 ; Indexed by [$92:9263/945D + [Samus pose] * 2] + [Samus animation frame]
     dw UNUSED_Debug_SamusSpritemap_0_9290ED                              ;92808D;
@@ -2694,11 +2696,15 @@ SamusSpritemapTable:
 ; 082F. Top half - CC: Facing left-   shinespark - vertical
     dw SamusSpritemaps_C17D                                              ;9290EB;
 
+
+;;; $90ED: Samus spritemaps - debug ;;;
 UNUSED_Debug_SamusSpritemap_0_9290ED:
+; Unused. Samus spritemap 0
     dw $0001                                                             ;9290ED;
     %spritemapEntry(0, $1FC, $FC, 0, 0, 3, 0, $15A)
 
 UNUSED_Debug_SamusSpritemap_1_9290F4:
+; Unused. Samus spritemap 1
     dw $0019                                                             ;9290F4;
     %spritemapEntry(0, $39, $E8, 0, 0, 3, 0, $136)
     %spritemapEntry(0, $31, $E8, 0, 0, 3, 0, $144)
@@ -2728,11 +2734,13 @@ UNUSED_Debug_SamusSpritemap_1_9290F4:
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_929173:
+; Unused
     dw $0001                                                             ;929173;
     %spritemapEntry(0, $00, $00, 0, 0, 3, 5, $5F)
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 SamusTileViewer_SamusTopHalf:
+; Samus tile viewer - Samus top half
     dw $0010                                                             ;92917A;
     %spritemapEntry(0, $18, $00, 0, 0, 3, 4, $17)
     %spritemapEntry(0, $10, $00, 0, 0, 3, 4, $16)
@@ -2752,6 +2760,7 @@ SamusTileViewer_SamusTopHalf:
     %spritemapEntry(0, $1E0, $F8, 0, 0, 3, 4, $00)
 
 SamusTileViewer_SamusBottomHalf:
+; Samus tile viewer - Samus bottom half
     dw $0010                                                             ;9291CC;
     %spritemapEntry(0, $18, $00, 0, 0, 3, 4, $1F)
     %spritemapEntry(0, $10, $00, 0, 0, 3, 4, $1E)
@@ -2771,6 +2780,7 @@ SamusTileViewer_SamusBottomHalf:
     %spritemapEntry(0, $1E0, $F8, 0, 0, 3, 4, $08)
 
 SamusTileViewer_Beam:
+; Samus tile viewer - beam
     dw $0008                                                             ;92921E;
     %spritemapEntry(0, $18, $00, 0, 0, 3, 6, $37)
     %spritemapEntry(0, $10, $00, 0, 0, 3, 6, $36)
@@ -2782,6 +2792,7 @@ SamusTileViewer_Beam:
     %spritemapEntry(0, $1E0, $00, 0, 0, 3, 6, $30)
 
 SamusTileViewer_GrappleBeam:
+; Samus tile viewer - grapple beam
     dw $0005                                                             ;929248;
     %spritemapEntry(0, $00, $00, 0, 0, 3, 5, $24)
     %spritemapEntry(0, $1F8, $00, 0, 0, 3, 5, $23)
@@ -2789,6 +2800,8 @@ SamusTileViewer_GrappleBeam:
     %spritemapEntry(0, $1E8, $00, 0, 0, 3, 5, $21)
     %spritemapEntry(0, $1E0, $00, 0, 0, 3, 5, $20)
 
+
+;;; $9263: Samus spritemap table indices - top half ;;;
 SamusSpritemapTableIndices_TopHalf:
 ; Indexed by [Samus pose], base indices into SamusSpritemapTable
     dw $0002,$019A,$01A3,$01AD,$01AF,$01B1,$01B3,$01B5                   ;929263;
@@ -2824,6 +2837,8 @@ SamusSpritemapTableIndices_TopHalf:
     dw $0433,$01CD,$01CF,$01B1,$01B3,$01B5,$01B7,$01CD                   ;929443;
     dw $01CF,$01B1,$01B3,$01B5,$01B7                                     ;929453;
 
+
+;;; $945D: Samus spritemap table indices - bottom half ;;;
 SamusSpritemapTableIndices_BottomHalf:
 ; Indexed by [Samus pose], base indices into SamusSpritemapTable
     dw $0062,$04AA,$04B3,$04C0,$04C2,$04C0,$04C2,$04C0                   ;92945D;
@@ -2859,6 +2874,8 @@ SamusSpritemapTableIndices_BottomHalf:
     dw $069B,$0679,$067A,$0679,$067A,$0679,$067A,$0679                   ;92963D;
     dw $067A,$0679,$067A,$0679,$067A                                     ;92964D;
 
+
+;;; $9657: Samus spritemaps ;;;
 SamusSpritemaps_9657:
     dw $0002                                                             ;929657;
     %spritemapEntry(1, $43FB, $F8, 0, 0, 2, 4, $00)
@@ -6955,6 +6972,8 @@ SamusSpritemaps_CBB5:
 ;     n: Part 1 size, n = 0 means 10000h bytes are transferred
 ;     N: Part 2 size, N = 0 means no bytes are transferred
 
+
+;;; $CBEE: Samus top tiles - set 0 (general) ;;;
 SamusTopTiles_Set0_CBEE:
 ; Actually used by:
 ;     9: Moving right - not aiming - frame 0
@@ -7317,6 +7336,8 @@ UNUSED_SamusTopTiles_Set0_92CCC7:
     dl SamusTiles_Top_Set0_Entry1F : dw $0100,$0040                      ;92CCC7;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $CCCE: Samus top tiles - set 1 (general) ;;;
 UNUSED_SamusTopTiles_Set1_92CCCE:
     dl SamusTiles_Top_Set1_Entry0 : dw $00C0,$0080                       ;92CCCE;
 
@@ -7574,6 +7595,8 @@ SamusTopTiles_Set1_CD99:
 ; 82h: Facing left-   screw attack - frame 1Bh
     dl SamusTiles_Top_Set1_Entry1D : dw $00C0,$0080                      ;92CD99;
 
+
+;;; $CDA0: Samus top tiles - set 2 (general) ;;;
 SamusTopTiles_Set2_CDA0:
 ; 4Bh: Facing right - normal jump transition - frame 0
 ; A4h: Facing right - landing from normal jump - frame 0
@@ -7786,6 +7809,8 @@ SamusTopTiles_Set2_CE79:
 ; 4Fh: Facing left-   damage boost - frame 9
     dl SamusTiles_Top_Set2_Entry1F : dw $00C0,$0040                      ;92CE79;
 
+
+;;; $CE80: Samus top tiles - set 3 (facing clockwise - grappling - in air - upside up) ;;;
 SamusTopTiles_Set3_CE80:
 ; 5Dh: Unused - frame 18h
 ; 5Dh: Unused - frame 38h
@@ -8037,6 +8062,8 @@ UNUSED_SamusTopTiles_Set3_92CEF0:
     dl SamusTiles_Top_Set3_Entry10 : dw $00C0,$0080                      ;92CEF0;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $CEF7: Samus top tiles - set 4 (facing anticlockwise - grappling - in air - upside up) ;;;
 SamusTopTiles_Set4_CEF7:
 ; 62h: Unused - frame 8
 ; 62h: Unused - frame 28h
@@ -8156,6 +8183,8 @@ UNUSED_SamusTopTiles_Set4_92CF67:
     dl SamusTiles_Top_Set4_Entry10 : dw $0100,$00E0                      ;92CF67;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $CF6E: Samus top tiles - set 5 (facing clockwise - grappling - in air - upside down) ;;;
 SamusTopTiles_Set5_CF6E:
 ; 5Dh: Unused - frame 8
 ; 5Dh: Unused - frame 28h
@@ -8401,6 +8430,8 @@ UNUSED_SamusTopTiles_Set5_92CFDE:
     dl SamusTiles_Top_Set5_Entry10 : dw $00C0,$0080                      ;92CFDE;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $CFE5: Samus top tiles - set 6 (facing anticlockwise - grappling - in air - upside down) ;;;
 SamusTopTiles_Set6_CFE5:
 ; 62h: Unused - frame 18h
 ; 62h: Unused - frame 38h
@@ -8518,6 +8549,8 @@ UNUSED_SamusTopTiles_Set6_92D055:
     dl SamusTiles_Top_Set6_Entry10 : dw $0100,$00E0                      ;92D055;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $D05C: Samus top tiles - set 7 (standing, crouching, drained) ;;;
 SamusTopTiles_Set7_D05C:
 ; E9h: Facing left-   Samus drained - crouching/falling - frame 8
 ; E9h: Facing left-   Samus drained - crouching/falling - frame 1Ah
@@ -8699,6 +8732,8 @@ SamusTopTiles_Set7_D0E1:
 ; B5h: Facing left-   grappling - crouching - frame 7
     dl SamusTiles_Top_Set7_Entry13 : dw $00C0,$0040                      ;92D0E1;
 
+
+;;; $D0E8: Samus top tiles - set 8 (Samus appearance electricity) ;;;
 SamusTopTiles_Set8_D0E8:
 ; 0: Facing forward - power suit - frame 3
 ; 0: Facing forward - power suit - frame 5
@@ -8919,6 +8954,8 @@ SamusTopTiles_Set8_D127:
 ; 9Bh: Facing forward - varia/gravity suit - frame 5Eh
     dl SamusTiles_Top_Set8_Entry9 : dw $00E0,$0000                       ;92D127;
 
+
+;;; $D12E: Samus top tiles - set 9 (moving - gun extended) ;;;
 SamusTopTiles_Set9_D12E:
 ; Bh: Moving right - gun extended - frame 0
 ; Bh: Moving right - gun extended - frame 5
@@ -8987,6 +9024,8 @@ SamusTopTiles_Set9_D197:
 ; Ch: Moving left-   gun extended - frame 1
     dl SamusTiles_Top_Set9_EntryF : dw $00C0,$0040                       ;92D197;
 
+
+;;; $D19E: Samus bottom tiles - set 0 (general) ;;;
 SamusBottomTiles_Set0_D19E:
 ; Actually used by:
 ;     9: Moving right - not aiming - frame 0
@@ -9482,6 +9521,8 @@ SamusBottomTiles_Set0_D277:
 ; 82h: Facing left-   screw attack - frame 1Bh
     dl SamusTiles_Bottom_Set0_Entry1F : dw $0080,$0080                   ;92D277;
 
+
+;;; $D27E: Samus bottom tiles - set 1 (general) ;;;
 SamusBottomTiles_Set1_D27E:
 ; 49h: Facing left-   moonwalk - frame 3
 ; 4Ah: Facing right - moonwalk - frame 3
@@ -9866,6 +9907,8 @@ SamusBottomTiles_Set1_D357:
 ; EAh: Facing right - Samus drained - standing - frames 0..3
     dl SamusTiles_Bottom_Set1_Entry1F : dw $0060,$0040                   ;92D357;
 
+
+;;; $D35E: Samus bottom tiles - set 2 (facing clockwise - grappling - in air - upside up) ;;;
 SamusBottomTiles_Set2_D35E:
 ; 5Dh: Unused - frames 17h..19h
 ; 5Eh: Unused - frames 17h..19h
@@ -10074,6 +10117,8 @@ UNUSED_SamusBottomTiles_Set2_92D3FF:
     dl SamusTiles_Bottom_Set2_Entry17 : dw $0080,$0080                   ;92D3FF;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $D406: Samus bottom tiles - set 4 (facing clockwise - grappling - in air - upside down) ;;;
 SamusBottomTiles_Set4_D406:
 ; 5Dh: Unused - frames 7..9
 ; 5Eh: Unused - frames 7..9
@@ -10267,6 +10312,8 @@ UNUSED_SamusBottomTiles_Set4_92D4A0:
     dl SamusTiles_Bottom_Set4_Entry16 : dw $0080,$0080                   ;92D4A0;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $D4A7: Samus bottom tiles - set 5 (facing anticlockwise - grappling - in air - upside up) ;;;
 SamusBottomTiles_Set5_D4A7:
 ; 62h: Unused - frames 7..9
 ; B3h: Facing anticlockwise - grapple - in air - frames 7..9
@@ -10389,6 +10436,8 @@ UNUSED_SamusBottomTiles_Set5_92D548:
     dl SamusTiles_Bottom_Set5_Entry17 : dw $0080,$0080                   ;92D548;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $D54F: Samus bottom tiles - set 6 (facing anticlockwise - grappling - in air - upside down) ;;;
 SamusBottomTiles_Set6_D54F:
 ; 62h: Unused - frames 17h..19h
 ; B3h: Facing anticlockwise - grapple - in air - frames 17h..19h
@@ -10500,6 +10549,8 @@ SamusBottomTiles_Set6_D5E9:
 ; B3h: Facing anticlockwise - grapple - in air - frames 25h..26h
     dl SamusTiles_Bottom_Set6_Entry16 : dw $0080,$0080                   ;92D5E9;
 
+
+;;; $D5F0: Samus bottom tiles - set 8 (facing forward) ;;;
 SamusBottomTiles_Set8_D5F0:
 ; 0: Facing forward - power suit - frames 2..5Fh
     dl SamusTiles_Bottom_Set8_Entry0 : dw $0100,$0100                    ;92D5F0;
@@ -10513,6 +10564,8 @@ UNUSED_SamusBottomTiles_Set8_92D5FE:
     dl SamusTiles_Bottom_Set8_Entry2 : dw $0020,$0000                    ;92D5FE;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $D605: Samus bottom tiles - set Ah (general) ;;;
 SamusBottomTiles_SetA_D605:
 ; 3: Facing right - aiming up - frames 0..1
 ; 5: Facing right - aiming up-right - frame 0
@@ -10533,6 +10586,8 @@ SamusBottomTiles_SetA_D60C:
 ; E9h: Facing left-   Samus drained - crouching/falling - frame 15h
     dl SamusTiles_Bottom_SetA_Entry1 : dw $00C0,$0080                    ;92D60C;
 
+
+;;; $D613: Samus top tiles - set Ah (morph ball, spin jump, screw attack sparks) ;;;
 SamusTopTiles_SetA_D613:
 ; 1Dh: Facing right - morph ball - no springball - on ground - frame 0
 ; 1Eh: Moving right - morph ball - no springball - on ground - frame 0
@@ -10914,6 +10969,8 @@ SamusTopTiles_SetA_D69F:
 ; 84h: Facing left-   wall jump - frames 2Ch..2Eh
     dl SamusTiles_Top_SetA_Entry14 : dw $0020,$0000                      ;92D69F;
 
+
+;;; $D6A6: Samus top tiles - set Bh (morphing transition, unused morph ball bounce) ;;;
 UNUSED_SamusTopTiles_SetB_92D6A6:
     dl SamusTiles_Top_SetB_Entry0 : dw $0020,$0000                       ;92D6A6;
 
@@ -10987,6 +11044,8 @@ SamusTopTiles_SetB_D6D0:
 ; E8h: Facing right - Samus drained - crouching/falling - frame 2
     dl SamusTiles_Top_SetB_Entry6 : dw $00C0,$0040                       ;92D6D0;
 
+
+;;; $D6D7: Samus bottom tiles - set 3 (unused) ;;;
 UNUSED_SamusBottomTiles_Set3_92D6D7:
     dl UNUSED_SamusTiles_Bottom_Set3_Entry0_9EE9C0 : dw $0040,$0040      ;92D6D7;
 
@@ -11040,6 +11099,8 @@ UNUSED_SamusBottomTiles_Set3_92D747:
     dl UNUSED_SamusTiles_Bottom_Set3_Entry10_9EF5C0 : dw $0080,$0080     ;92D747;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $D74E: Samus top tiles - set Ch (crystal flash, vertical shinespark) ;;;
 SamusTopTiles_SetC_D74E:
 ; CBh: Facing right - shinespark - vertical - frame 0
     dl SamusTiles_Top_SetC_Entry0 : dw $0100,$00C0                       ;92D74E;
@@ -11076,6 +11137,8 @@ SamusTopTiles_SetC_D77F:
 ; D3h: Facing right - crystal flash - frame 8
     dl SamusTiles_Top_SetC_Entry7 : dw $0100,$0040                       ;92D77F;
 
+
+;;; $D786: Samus bottom tiles - set 7 (crystal flash bubble) ;;;
 SamusBottomTiles_Set7_D786:
 ; D3h: Facing right - crystal flash - frame 0
 ; D3h: Facing right - crystal flash - frame Dh
@@ -11097,6 +11160,8 @@ SamusBottomTiles_Set7_D794:
 ; D4h: Facing left-   crystal flash - frames 6..9
     dl SamusTiles_Bottom_Set7_Entry2 : dw $0100,$0100                    ;92D794;
 
+
+;;; $D79B: Samus bottom tiles - set 9 (space jump) ;;;
 SamusBottomTiles_Set9_D79B:
 ; 1Bh: Facing right - space jump - frame 1
 ; 1Ch: Facing left-   space jump - frame 1
@@ -11249,6 +11314,9 @@ SamusBottomTiles_Set9_D7CC:
 ; 84h: Facing left-   wall jump - frame 2Eh
     dl SamusTiles_Bottom_Set9_Entry7 : dw $0100,$0100                    ;92D7CC;
 
+
+;;; $D7D3: Samus spritemaps - atmospheric graphics ;;;
+; Bubbles
 SamusSpritemaps_AtmosphericGraphics_Bubbles_0:
     dw $0002                                                             ;92D7D3;
     %spritemapEntry(0, $1FC, $FE, 0, 0, 3, 5, $25)
@@ -11299,6 +11367,7 @@ SamusSpritemaps_AtmosphericGraphics_Bubbles_8:
     dw $0001                                                             ;92D851;
     %spritemapEntry(0, $1FC, $EC, 1, 0, 3, 5, $40)
 
+; Diving splash
 SamusSpritemaps_AtmosphericGraphics_DivingSplash_0:
     dw $0003                                                             ;92D858;
     dw $C3F8 : db $00 : dw $3A9A
@@ -11362,6 +11431,8 @@ SamusSpritemaps_AtmosphericGraphics_DivingSplash_8:
     %spritemapEntry(0, $00, $FC, 0, 0, 3, 5, $C7)
     %spritemapEntry(0, $1F8, $FA, 0, 0, 3, 5, $C7)
 
+
+;;; $D91E: Samus top half tiles animation - tiles definition pointers ;;;
 SamusTopHalfTilesAnimation_TilesDefinitionPointers:
 ; Indexed by first byte of animation definition
 ; Pointers to lists of DMA entries, sub-indexed by second byte of animation definition
@@ -11379,6 +11450,8 @@ SamusTopHalfTilesAnimation_TilesDefinitionPointers:
     dw UNUSED_SamusTopTiles_SetB_92D6A6                                  ;92D934;
     dw SamusTopTiles_SetC_D74E                                           ;92D936;
 
+
+;;; $D938: Samus bottom half tiles animation - tiles definition pointers ;;;
 SamusBottomHalfTilesAnimation_TilesDefinitionPointers:
 ; Indexed by third byte of animation definition
 ; Pointers to lists of DMA entries, sub-indexed by fourth byte of animation definition
@@ -11394,6 +11467,8 @@ SamusBottomHalfTilesAnimation_TilesDefinitionPointers:
     dw SamusBottomTiles_Set9_D79B                                        ;92D94A;
     dw SamusBottomTiles_SetA_D605                                        ;92D94C;
 
+
+;;; $D94E: Samus tiles animation - animation definition pointers ;;;
 SamusTilesAnimation_AnimationDefinitionPointers:
 ; Indexed by [Samus pose]
     dw SamusTilesAnimation_AnimationDefinitions_EA24                     ;92D94E;
@@ -11651,11 +11726,12 @@ SamusTilesAnimation_AnimationDefinitionPointers:
     dw SamusTilesAnimation_AnimationDefinitions_DD94                     ;92DB46;
 
 
+;;; $DB48: Samus tiles animation - animation definitions ;;;
+SamusTilesAnimation_AnimationDefinitions_DB48:
 ; Animation definitions are indexed by [Samus animation frame]
 ; First byte indexes the top half tiles definitions pointer table ($D91E) for a pointer to a list of DMA entries that is indexed by the second byte
 ; Third byte indexes the bottom half tiles definitions pointer table ($D938) for a pointer to a list of DMA entries that is indexed by the fourth byte
 
-SamusTilesAnimation_AnimationDefinitions_DB48:
 ; 01: Facing right - normal
 ; 47: Unused
 ; 89: Facing right - ran into a wall
@@ -12582,7 +12658,11 @@ SamusTilesAnimation_AnimationDefinitions_EBA4:
     db $08,$09,$08,$01, $08,$00,$08,$01, $08,$07,$08,$01, $08,$00,$08,$01 ;92ED04;
     db $08,$08,$08,$01, $08,$00,$08,$01, $08,$09,$08,$01, $08,$00,$08,$01 ;92ED14;
 
+
+;;; $ED24: Play Samus fanfare ;;;
 PlaySamusFanfare:
+;; Returns:
+;;     Carry: set if finished fanfare, else clear
     PHP                                                                  ;92ED24;
     PHB                                                                  ;92ED25;
     PHK                                                                  ;92ED26;
@@ -12595,14 +12675,12 @@ PlaySamusFanfare:
     JSL.L QueueMusicDataOrTrack_YFrameDelay                              ;92ED35;
     BRA .not5                                                            ;92ED39;
 
-
   .nonZero:
     CMP.W #$0005                                                         ;92ED3B;
     BNE .not5                                                            ;92ED3E;
     LDA.W #$0168                                                         ;92ED40;
     JSL.L Play_Room_Music_Track_After_A_Frames                           ;92ED43;
     BRA .not5                                                            ;92ED47;
-
 
   .not5:
     LDA.W $0DEC                                                          ;92ED49;
@@ -12611,7 +12689,6 @@ PlaySamusFanfare:
     BPL .greaterThanEqualTo168                                           ;92ED50;
     STA.W $0DEC                                                          ;92ED52;
     BRA .return                                                          ;92ED55;
-
 
   .greaterThanEqualTo168:
     LDA.W $0A20                                                          ;92ED57;
@@ -12628,7 +12705,6 @@ PlaySamusFanfare:
     SEC                                                                  ;92ED74;
     RTL                                                                  ;92ED75;
 
-
   .return:
     PLB                                                                  ;92ED76;
     PLP                                                                  ;92ED77;
@@ -12636,6 +12712,7 @@ PlaySamusFanfare:
     RTL                                                                  ;92ED79;
 
 
+;;; $ED7A: Debug. Samus tile viewer ;;;
 Debug_SamusTileViewer:
     PHP                                                                  ;92ED7A;
     PHB                                                                  ;92ED7B;
@@ -12668,6 +12745,7 @@ Debug_SamusTileViewer:
     RTL                                                                  ;92EDBD;
 
 
+;;; $EDBE: Draw Samus' suit exploding ;;;
 DrawSamusSuitExploding:
     PHP                                                                  ;92EDBE;
     PHB                                                                  ;92EDBF;
@@ -12683,7 +12761,6 @@ DrawSamusSuitExploding:
     ADC.W $0DE4                                                          ;92EDD3;
     STA.B $12                                                            ;92EDD6;
     BRA +                                                                ;92EDD8;
-
 
   .facingLeft:
     LDA.W #$0825                                                         ;92EDDA;
