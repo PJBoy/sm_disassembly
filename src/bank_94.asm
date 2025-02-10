@@ -2,12 +2,18 @@
 org $948000
 
 
+;;; $8000: Post grapple collision detection - horizontal - slope - non-square ;;;
 PostGrappleCollisionDetection_Horizontal_Slope_NonSquare:
+;; Parameters:
+;;     X: Block index
+;;     $20: Samus left/right boundary
+;; Returns:
+;;     Carry: Set if Samus collides with slope, clear otherwise
+;;     A: If carry set, X depth into slope in pixels
     LDA.W $0B02                                                          ;948000;
     LSR A                                                                ;948003;
     BCC .left                                                            ;948004;
     JMP.W .right                                                         ;948006;
-
 
   .left:
     LDA.W $0DC4                                                          ;948009;
@@ -25,7 +31,6 @@ PostGrappleCollisionDetection_Horizontal_Slope_NonSquare:
     BEQ ..centerInBlock                                                  ;948023;
     CLC                                                                  ;948025;
     RTS                                                                  ;948026;
-
 
   ..centerInBlock:
     LDA.B $20                                                            ;948027;
@@ -45,7 +50,6 @@ PostGrappleCollisionDetection_Horizontal_Slope_NonSquare:
     BMI ..blockBTSMSB                                                    ;948048;
     LDA.W $0AFA                                                          ;94804A;
     BRA +                                                                ;94804D;
-
 
   ..blockBTSMSB:
     LDA.W $0AFA                                                          ;94804F;
@@ -67,15 +71,12 @@ PostGrappleCollisionDetection_Horizontal_Slope_NonSquare:
     SEC                                                                  ;94806C;
     RTS                                                                  ;94806D;
 
-
   ..returnCarryClear:
     CLC                                                                  ;94806E;
     RTS                                                                  ;94806F;
 
-
   ..gotoSolid:
     JMP.W PostGrappleCollisionDetection_Horizontal_Solid                 ;948070;
-
 
   .right:
     LDA.W $0DC4                                                          ;948073;
@@ -93,7 +94,6 @@ PostGrappleCollisionDetection_Horizontal_Slope_NonSquare:
     BEQ ..centerInBlock                                                  ;94808D;
     CLC                                                                  ;94808F;
     RTS                                                                  ;948090;
-
 
   ..centerInBlock:
     LDA.B $20                                                            ;948091;
@@ -113,7 +113,6 @@ PostGrappleCollisionDetection_Horizontal_Slope_NonSquare:
     BMI ..blockBTSMSB                                                    ;9480B2;
     LDA.W $0AFA                                                          ;9480B4;
     BRA +                                                                ;9480B7;
-
 
   ..blockBTSMSB:
     LDA.W $0AFA                                                          ;9480B9;
@@ -135,22 +134,26 @@ PostGrappleCollisionDetection_Horizontal_Slope_NonSquare:
     SEC                                                                  ;9480D9;
     RTS                                                                  ;9480DA;
 
-
   ..returnCarryClear:
     CLC                                                                  ;9480DB;
     RTS                                                                  ;9480DC;
-
 
   ..gotoSolid:
     JMP.W PostGrappleCollisionDetection_Horizontal_Solid                 ;9480DD;
 
 
+;;; $80E0: Post grapple collision detection - vertical - slope - non-square ;;;
 PostGrappleCollisionDetection_Vertical_Slope_NonSquare:
+;; Parameters:
+;;     X: Block index
+;;     $20: Samus bottom/top boundary
+;; Returns:
+;;     Carry: Set if Samus collides with slope, clear otherwise
+;;     A: If carry set, Y depth into slope in pixels
     LDA.W $0B02                                                          ;9480E0;
     LSR A                                                                ;9480E3;
     BCC .up                                                              ;9480E4;
     JMP.W .down                                                          ;9480E6;
-
 
   .up:
     LDA.W $0DC4                                                          ;9480E9;
@@ -169,7 +172,6 @@ PostGrappleCollisionDetection_Vertical_Slope_NonSquare:
     CLC                                                                  ;948105;
     RTS                                                                  ;948106;
 
-
   ..centerInBlock:
     LDA.B $20                                                            ;948107;
     AND.W #$000F                                                         ;948109;
@@ -187,7 +189,6 @@ PostGrappleCollisionDetection_Vertical_Slope_NonSquare:
     BMI ..blockBTS40                                                     ;948124;
     LDA.W $0AF6                                                          ;948126;
     BRA +                                                                ;948129;
-
 
   ..blockBTS40:
     LDA.W $0AF6                                                          ;94812B;
@@ -209,15 +210,12 @@ PostGrappleCollisionDetection_Vertical_Slope_NonSquare:
     SEC                                                                  ;948148;
     RTS                                                                  ;948149;
 
-
   ..returnCarryClear:
     CLC                                                                  ;94814A;
     RTS                                                                  ;94814B;
 
-
   ..gotoSolid:
     JMP.W PostGrappleCollisionDetection_Vertical_Solid                   ;94814C;
-
 
   .down:
     LDA.W $0DC4                                                          ;94814F;
@@ -236,7 +234,6 @@ PostGrappleCollisionDetection_Vertical_Slope_NonSquare:
     CLC                                                                  ;94816B;
     RTS                                                                  ;94816C;
 
-
   ..centerInBlock:
     LDA.B $20                                                            ;94816D;
     AND.W #$000F                                                         ;94816F;
@@ -254,7 +251,6 @@ PostGrappleCollisionDetection_Vertical_Slope_NonSquare:
     BMI ..blockBTS40                                                     ;94818A;
     LDA.W $0AF6                                                          ;94818C;
     BRA +                                                                ;94818F;
-
 
   ..blockBTS40:
     LDA.W $0AF6                                                          ;948191;
@@ -276,17 +272,24 @@ PostGrappleCollisionDetection_Vertical_Slope_NonSquare:
     SEC                                                                  ;9481B1;
     RTS                                                                  ;9481B2;
 
-
   ..returnCarryClear:
     CLC                                                                  ;9481B3;
     RTS                                                                  ;9481B4;
-
 
   ..gotoSolid:
     JMP.W PostGrappleCollisionDetection_Vertical_Solid                   ;9481B5;
 
 
+;;; $81B8: Post grapple collision detection - horizontal - slope - square ;;;
 PostGrappleCollisionDetection_Horizontal_Slope_Square:
+;; Parameters:
+;;     X: Block index
+;;     $1A: Number of blocks left to check (0 if final (bottom) block)
+;;     $1C: Samus' Y block span
+;;     $20: Samus left/right boundary
+;; Returns:
+;;     Carry: Set if Samus collides with solid slope, clear otherwise
+;;     A: If carry set, X depth into slope in pixels
     LDA.L $7F6402,X                                                      ;9481B8;
     AND.W #$001F                                                         ;9481BC;
     ASL A                                                                ;9481BF;
@@ -318,7 +321,6 @@ PostGrappleCollisionDetection_Horizontal_Slope_Square:
     BMI .solid                                                           ;9481F4;
     BRA .noCollision                                                     ;9481F6;
 
-
   .top:
     CMP.B $1C                                                            ;9481F8;
     BNE .checkBothHalves                                                 ;9481FA;
@@ -343,7 +345,6 @@ PostGrappleCollisionDetection_Horizontal_Slope_Square:
     CLC                                                                  ;948217;
     RTS                                                                  ;948218;
 
-
   .solid:
     LDA.W $0B02                                                          ;948219;
     LSR A                                                                ;94821C;
@@ -353,7 +354,6 @@ PostGrappleCollisionDetection_Horizontal_Slope_Square:
     SEC                                                                  ;948224;
     RTS                                                                  ;948225;
 
-
   .left:
     LDA.B $20                                                            ;948226;
     AND.W #$0007                                                         ;948228;
@@ -362,7 +362,16 @@ PostGrappleCollisionDetection_Horizontal_Slope_Square:
     RTS                                                                  ;94822F;
 
 
+;;; $8230: Post grapple collision detection - vertical - slope - square ;;;
 PostGrappleCollisionDetection_Vertical_Slope_Square:
+;; Parameters:
+;;     X: Block index
+;;     $1A: Number of blocks left to check (0 if final (rightmost) block)
+;;     $1C: Samus' X block span
+;;     $20: Samus bottom/top boundary
+;; Returns:
+;;     Carry: Set if Samus collides with solid slope, clear otherwise
+;;     A: If carry set, Y depth into slope in pixels
     LDA.L $7F6402,X                                                      ;948230;
     AND.W #$001F                                                         ;948234;
     ASL A                                                                ;948237;
@@ -393,7 +402,6 @@ PostGrappleCollisionDetection_Vertical_Slope_Square:
     BMI .solid                                                           ;94826B;
     BRA .returnNoCollision                                               ;94826D;
 
-
   .leftmostBlock:
     CMP.B $1C                                                            ;94826F;
     BNE .checkBothHalves                                                 ;948271;
@@ -418,7 +426,6 @@ PostGrappleCollisionDetection_Vertical_Slope_Square:
     CLC                                                                  ;94828E;
     RTS                                                                  ;94828F;
 
-
   .solid:
     LDA.W $0B02                                                          ;948290;
     LSR A                                                                ;948293;
@@ -428,7 +435,6 @@ PostGrappleCollisionDetection_Vertical_Slope_Square:
     SEC                                                                  ;94829B;
     RTS                                                                  ;94829C;
 
-
   .up:
     LDA.B $20                                                            ;94829D;
     AND.W #$0007                                                         ;94829F;
@@ -437,12 +443,21 @@ PostGrappleCollisionDetection_Vertical_Slope_Square:
     RTS                                                                  ;9482A6;
 
 
+;;; $82A7: Clear carry ;;;
 CLCRTS_9482A7:
     CLC                                                                  ;9482A7;
     RTS                                                                  ;9482A8;
 
 
+;;; $82A9: Post grapple collision detection - horizontal - slope ;;;
 PostGrappleCollisionDetection_Horizontal_Slope:
+;; Parameters:
+;;     $1A: Number of blocks left to check (0 if final (bottom) block)
+;;     $1C: Samus' Y block span
+;;     $20: Samus left/right boundary
+;; Returns:
+;;     Carry: Set if Samus collides with slope, clear otherwise
+;;     A: If carry set, X depth into slope in pixels
     LDX.W $0DC4                                                          ;9482A9;
     LDA.L $7F6402,X                                                      ;9482AC;
     AND.W #$001F                                                         ;9482B0;
@@ -450,19 +465,32 @@ PostGrappleCollisionDetection_Horizontal_Slope:
     BCC .gotoSquare                                                      ;9482B6;
     JMP.W PostGrappleCollisionDetection_Horizontal_Slope_NonSquare       ;9482B8;
 
-
   .gotoSquare:
     JMP.W PostGrappleCollisionDetection_Horizontal_Slope_Square          ;9482BB;
 
 
+;;; $82BE: Post grapple collision detection - horizontal - solid ;;;
 PostGrappleCollisionDetection_Horizontal_Solid:
+;; Parameters:
+;;     $20: Samus left/right boundary
+;; Returns:
+;;     Carry: Set (Samus collides with block)
+;;     A: X depth into block in pixels
     LDA.B $20                                                            ;9482BE;
     AND.W #$000F                                                         ;9482C0;
     SEC                                                                  ;9482C3;
     RTS                                                                  ;9482C4;
 
 
+;;; $82C5: Post grapple collision detection - vertical - slope ;;;
 PostGrappleCollisionDetection_Vertical_Slope:
+;; Parameters:
+;;     $1A: Number of blocks left to check (0 if final (rightmost) block)
+;;     $1C: Samus' X block span
+;;     $20: Samus bottom/top boundary
+;; Returns:
+;;     Carry: Set if Samus collides with slope, clear otherwise
+;;     A: If carry set, Y depth into slope in pixels
     LDX.W $0DC4                                                          ;9482C5;
     LDA.L $7F6402,X                                                      ;9482C8;
     AND.W #$001F                                                         ;9482CC;
@@ -470,18 +498,24 @@ PostGrappleCollisionDetection_Vertical_Slope:
     BCC .gotoSquare                                                      ;9482D2;
     JMP.W PostGrappleCollisionDetection_Vertical_Slope_NonSquare         ;9482D4;
 
-
   .gotoSquare:
     JMP.W PostGrappleCollisionDetection_Vertical_Slope_Square            ;9482D7;
 
 
+;;; $82DA: Post grapple collision detection - vertical - solid ;;;
 PostGrappleCollisionDetection_Vertical_Solid:
+;; Parameters:
+;;     $20: Samus bottom/top boundary
+;; Returns:
+;;     Carry: Set (Samus collides with block)
+;;     A: Y depth into block in pixels
     LDA.B $20                                                            ;9482DA;
     AND.W #$000F                                                         ;9482DC;
     SEC                                                                  ;9482DF;
     RTS                                                                  ;9482E0;
 
 
+;;; $82E1: Post grapple collision detection - horizontal - jump table ;;;
 PostGrappleCollisionDetection_Horizontal_JumpTable:
     dw CLCRTS_9482A7                                                     ;9482E1;  0: Air
     dw PostGrappleCollisionDetection_Horizontal_Slope                    ;9482E3; *1: Slope
@@ -500,6 +534,8 @@ PostGrappleCollisionDetection_Horizontal_JumpTable:
     dw PostGrappleCollisionDetection_Horizontal_Solid                    ;9482FD;  Eh: Grapple block
     dw PostGrappleCollisionDetection_Horizontal_Solid                    ;9482FF;  Fh: Bombable block
 
+
+;;; $8301: Post grapple collision detection - vertical - jump table ;;;
 PostGrappleCollisionDetection_Vertical_JumpTable:
     dw CLCRTS_9482A7                                                     ;948301;  0: Air
     dw PostGrappleCollisionDetection_Vertical_Slope                      ;948303; *1: Slope
@@ -518,7 +554,17 @@ PostGrappleCollisionDetection_Vertical_JumpTable:
     dw PostGrappleCollisionDetection_Vertical_Solid                      ;94831D;  Eh: Grapple block
     dw PostGrappleCollisionDetection_Vertical_Solid                      ;94831F;  Fh: Bombable block
 
+
+;;; $8321: Post grapple collision detection - horizontal - single block ;;;
 PostGrappleCollisionDetection_Horizontal_SingleBlock:
+;; Parameters:
+;;     X: Block index
+;;     $1A: Number of blocks left to check (0 if final (bottom) block)
+;;     $1C: Samus Y block span
+;;     $20: Samus left/right boundary
+;; Returns:
+;;     Carry: Set if Samus collides with block, clear otherwise
+;;     A: If carry set, X depth into block in pixels
     PHX                                                                  ;948321;
     TXA                                                                  ;948322;
     LSR A                                                                ;948323;
@@ -535,7 +581,16 @@ PostGrappleCollisionDetection_Horizontal_SingleBlock:
     RTS                                                                  ;948337;
 
 
+;;; $8338: Post grapple collision detection - vertical - single block ;;;
 PostGrappleCollisionDetection_Vertical_SingleBlock:
+;; Parameters:
+;;     X: Block index
+;;     $1A: Number of blocks left to check (0 if final (rightmost) block)
+;;     $1C: Samus' X block span
+;;     $20: Samus bottom/top boundary
+;; Returns:
+;;     Carry: Set if Samus collides with block, clear otherwise
+;;     A: If carry set, Y depth into block in pixels
     PHX                                                                  ;948338;
     TXA                                                                  ;948339;
     LSR A                                                                ;94833A;
@@ -552,6 +607,7 @@ PostGrappleCollisionDetection_Vertical_SingleBlock:
     RTS                                                                  ;94834E;
 
 
+;;; $834F: Post grapple collision detection - rightwards ;;;
 PostGrappleCollisionDetection_Rightwards:
     PHB                                                                  ;94834F;
     PHK                                                                  ;948350;
@@ -610,6 +666,7 @@ PostGrappleCollisionDetection_Rightwards:
     RTS                                                                  ;9483B0;
 
 
+;;; $83B1: Post grapple collision detection - leftwards ;;;
 PostGrappleCollisionDetection_Leftwards:
     PHB                                                                  ;9483B1;
     PHK                                                                  ;9483B2;
@@ -666,6 +723,7 @@ PostGrappleCollisionDetection_Leftwards:
     RTS                                                                  ;94840E;
 
 
+;;; $840F: Post grapple collision detection - downwards ;;;
 PostGrappleCollisionDetection_Downwards:
     PHB                                                                  ;94840F;
     PHK                                                                  ;948410;
@@ -721,6 +779,7 @@ PostGrappleCollisionDetection_Downwards:
     RTS                                                                  ;948469;
 
 
+;;; $846A: Post grapple collision detection - upwards ;;;
 PostGrappleCollisionDetection_Upwards:
     PHB                                                                  ;94846A;
     PHK                                                                  ;94846B;
@@ -775,7 +834,11 @@ PostGrappleCollisionDetection_Upwards:
     RTS                                                                  ;9484C3;
 
 
+;;; $84C4: Post grapple collision detection - horizontal ;;;
 PostGrappleCollisionDetection_Horizontal:
+; Called by PostGrappleCollisionDetection
+; This routine is used to calculate $0E04/06 (distance to eject Samus left/right), which is never read,
+; making this routine and all its subroutines entirely pointless
     PHP                                                                  ;9484C4;
     JSR.W PostGrappleCollisionDetection_Rightwards                       ;9484C5;
     JSR.W PostGrappleCollisionDetection_Leftwards                        ;9484C8;
@@ -783,7 +846,9 @@ PostGrappleCollisionDetection_Horizontal:
     RTL                                                                  ;9484CC;
 
 
+;;; $84CD: Post grapple collision detection - vertical ;;;
 PostGrappleCollisionDetection_Vertical:
+; Called by PostGrappleCollisionDetection, sometimes twice (if Samus was ejected up and her hitbox is >= 10h pixels tall)
     PHP                                                                  ;9484CD;
     JSR.W PostGrappleCollisionDetection_Downwards                        ;9484CE;
     JSR.W PostGrappleCollisionDetection_Upwards                          ;9484D1;
@@ -791,7 +856,13 @@ PostGrappleCollisionDetection_Vertical:
     RTL                                                                  ;9484D5;
 
 
+;;; $84D6: Samus block collision reaction - horizontal - slope - non-square ;;;
 SamusBlockCollisionDetection_Horizontal_Slope_NonSquare:
+;; Parameters:
+;;     $12.$14: Distance to check for collision
+;; Returns:
+;;     Carry: Clear (no collision)
+;;     $12.$14: Adjusted distance to move Samus
     LDA.W $1E77                                                          ;9484D6;
     BIT.W #$0080                                                         ;9484D9;
     BNE .returnNoCollision                                               ;9484DC;
@@ -802,7 +873,6 @@ SamusBlockCollisionDetection_Horizontal_Slope_NonSquare:
   .returnNoCollision:
     CLC                                                                  ;9484E6;
     RTS                                                                  ;9484E7;
-
 
   .SamusOnSlopeSurface:
     LDA.W $1E77                                                          ;9484E8;
@@ -823,7 +893,6 @@ SamusBlockCollisionDetection_Horizontal_Slope_NonSquare:
     ADC.W .speedModifiers,X                                              ;948509;
     BCC .backToReality                                                   ;94850C;
     BRA .backToReality                                                   ;94850E;
-
 
 +   LDA.W $0B48                                                          ;948510;
     SEC                                                                  ;948513;
@@ -852,7 +921,6 @@ SamusBlockCollisionDetection_Horizontal_Slope_NonSquare:
     CLC                                                                  ;948544;
     RTS                                                                  ;948545;
 
-
   .right:
     LDA.W $0B48                                                          ;948546;
     ORA.W $0B46                                                          ;948549;
@@ -865,7 +933,6 @@ SamusBlockCollisionDetection_Horizontal_Slope_NonSquare:
     ADC.W .speedModifiers,X                                              ;94855A;
     BCC ..backToReality                                                  ;94855D;
     BRA ..backToReality                                                  ;94855F;
-
 
 +   LDA.W $0B48                                                          ;948561;
     SEC                                                                  ;948564;
@@ -928,7 +995,19 @@ SamusBlockCollisionDetection_Horizontal_Slope_NonSquare:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $8606: Unused ;;;
 UNUSED_948606:
+;; Parameters:
+;;     X: Block index
+;;     $12: Distance to check for collision
+;;     $18: Target X position
+;; Returns:
+;;     Carry: Set if Samus collides with solid slope, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
+
+; This resembles $8000 adapted for block collision, or $86FE adapted for horizontal collision
+; I guess this was written before it was decided that non-square slopes shouldn't have solid horizontal collision
+; Looking at $86FE, I assume there's supposed to be a collision direction check here to branch to BRANCH_RIGHT
     LDA.W $0DC4                                                          ;948606;
     STA.W $4204                                                          ;948609;
     SEP #$20                                                             ;94860C;
@@ -944,7 +1023,6 @@ UNUSED_948606:
     BEQ .centerInBlock                                                   ;948620;
     CLC                                                                  ;948622;
     RTS                                                                  ;948623;
-
 
   .centerInBlock:
     LDA.B $18                                                            ;948624;
@@ -967,7 +1045,6 @@ UNUSED_948606:
     BMI .blockBTSMSB                                                     ;94864C;
     LDA.W $0AFA                                                          ;94864E;
     BRA +                                                                ;948651;
-
 
   .blockBTSMSB:
     LDA.W $0AFA                                                          ;948653;
@@ -995,15 +1072,12 @@ UNUSED_948606:
     SEC                                                                  ;94867C;
     RTS                                                                  ;94867D;
 
-
   ..returnNoCollision:
     CLC                                                                  ;94867E;
     RTS                                                                  ;94867F;
 
-
   .gotoSolidShootableGrapple:
     JMP.W SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple   ;948680;
-
 
   .right:
     LDA.W $0DC4                                                          ;948683;
@@ -1021,7 +1095,6 @@ UNUSED_948606:
     BEQ ..centerInBlock                                                  ;94869D;
     CLC                                                                  ;94869F;
     RTS                                                                  ;9486A0;
-
 
   ..centerInBlock:
     LDA.B $18                                                            ;9486A1;
@@ -1044,7 +1117,6 @@ UNUSED_948606:
     BMI ..blockBTSMSB                                                    ;9486C7;
     LDA.W $0AFA                                                          ;9486C9;
     BRA +                                                                ;9486CC;
-
 
   ..blockBTSMSB:
     LDA.W $0AFA                                                          ;9486CE;
@@ -1072,23 +1144,28 @@ UNUSED_948606:
     SEC                                                                  ;9486F7;
     RTS                                                                  ;9486F8;
 
-
   ..returnNoCollision:
     CLC                                                                  ;9486F9;
     RTS                                                                  ;9486FA;
-
 
   ..gotoSolidShootableGrapple:
     JMP.W SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple   ;9486FB;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $86FE: Samus block collision reaction - vertical - slope - non-square ;;;
 SamusBlockCollisionReaction_Vertical_Slope_NonSquare:
+;; Parameters:
+;;     X: Block index
+;;     $12: Distance to check for collision
+;;     $18: Target Y position
+;; Returns:
+;;     Carry: Set if Samus collides with solid slope, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     LDA.W $0B02                                                          ;9486FE;
     LSR A                                                                ;948701;
     BCC .up                                                              ;948702;
     JMP.W .down                                                          ;948704;
-
 
   .up:
     LDA.W $0DC4                                                          ;948707;
@@ -1106,7 +1183,6 @@ SamusBlockCollisionReaction_Vertical_Slope_NonSquare:
     BEQ ..centerInBlock                                                  ;948721;
     CLC                                                                  ;948723;
     RTS                                                                  ;948724;
-
 
   ..centerInBlock:
     LDA.B $18                                                            ;948725;
@@ -1128,7 +1204,6 @@ SamusBlockCollisionReaction_Vertical_Slope_NonSquare:
     BMI ..blockBTS40                                                     ;948749;
     LDA.W $0AF6                                                          ;94874B;
     BRA +                                                                ;94874E;
-
 
   ..blockBTS40:
     LDA.W $0AF6                                                          ;948750;
@@ -1156,15 +1231,12 @@ SamusBlockCollisionReaction_Vertical_Slope_NonSquare:
     SEC                                                                  ;948779;
     RTS                                                                  ;94877A;
 
-
   ..returnNoCollision:
     CLC                                                                  ;94877B;
     RTS                                                                  ;94877C;
 
-
   ..gotoReturnNoCollision:
     JMP.W ..returnNoCollision                                            ;94877D; >.<
-
 
   .down:
     LDA.W $0DC4                                                          ;948780;
@@ -1182,7 +1254,6 @@ SamusBlockCollisionReaction_Vertical_Slope_NonSquare:
     BEQ ..centerInBlock                                                  ;94879A;
     CLC                                                                  ;94879C;
     RTS                                                                  ;94879D;
-
 
   ..centerInBlock:
     LDA.B $18                                                            ;94879E;
@@ -1204,7 +1275,6 @@ SamusBlockCollisionReaction_Vertical_Slope_NonSquare:
     BMI ..blockBTS40                                                     ;9487C0;
     LDA.W $0AF6                                                          ;9487C2;
     BRA +                                                                ;9487C5;
-
 
   ..blockBTS40:
     LDA.W $0AF6                                                          ;9487C7;
@@ -1232,12 +1302,12 @@ SamusBlockCollisionReaction_Vertical_Slope_NonSquare:
     SEC                                                                  ;9487F0;
     RTS                                                                  ;9487F1;
 
-
   ..returnNoCollision:
     CLC                                                                  ;9487F2;
     RTS                                                                  ;9487F3;
 
 
+;;; $87F4: Align Samus Y position with non-square slope ;;;
 Align_SamusYPosition_WithNonSquareSlope:
     PHB                                                                  ;9487F4;
     PHK                                                                  ;9487F5;
@@ -1246,7 +1316,6 @@ Align_SamusYPosition_WithNonSquareSlope:
     BIT.W #$0002                                                         ;9487FA;
     BNE .bottom                                                          ;9487FD;
     JMP.W .return                                                        ;9487FF;
-
 
   .bottom:
     LDA.W $0AF6                                                          ;948802;
@@ -1290,7 +1359,6 @@ Align_SamusYPosition_WithNonSquareSlope:
     BMI ..blockBTS40                                                     ;94885B;
     LDA.W $0AF6                                                          ;94885D;
     BRA +                                                                ;948860;
-
 
   ..blockBTS40:
     LDA.W $0AF6                                                          ;948862;
@@ -1354,7 +1422,6 @@ Align_SamusYPosition_WithNonSquareSlope:
     LDA.W $0AF6                                                          ;9488E6;
     BRA +                                                                ;9488E9;
 
-
   ..blockBTS40:
     LDA.W $0AF6                                                          ;9488EB;
     EOR.W #$000F                                                         ;9488EE;
@@ -1385,13 +1452,16 @@ Align_SamusYPosition_WithNonSquareSlope:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $891B: Unused slope definition ;;;
 UNUSED_SlopeDefinitions_94891B:
     db $0F,$0E,$0D,$0C,$0B,$0A,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00   ;94891B;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $892B: Slope definitions (slope left X offset by Y pixel) ;;;
 SlopeDefinitions_SlopeLeftXOffsetByYPixel:
 ; ALMOST unused, used only by post-grapple collision detection (which has no effect), but referenced by some unused code too
-; Data here looks incorrect, many of the rows here are identical to $8B2B
+; Data here looks incorrect, many of the rows here are identical to SlopeDefinitions_SlopeTopXOffsetByYPixel
 ; Indexed by ([block BTS] & 1Fh) * 10h + [Samus Y position] % 10h
     db $10,$10,$10,$10,$10,$10,$10,$10,$00,$00,$00,$00,$00,$00,$00,$00   ;94892B;
     db $08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08   ;94893B;
@@ -1426,6 +1496,8 @@ SlopeDefinitions_SlopeLeftXOffsetByYPixel:
     db $14,$14,$14,$14,$14,$14,$0E,$0B,$08,$05,$02,$00,$00,$00,$00,$00   ;948B0B; 1Eh: Unused. Middle third-width triangle
     db $10,$0D,$0A,$07,$04,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;948B1B; 1Fh: Unused. Lower third-width triangle
 
+
+;;; $8B2B: Slope definitions (slope top Y offset by X pixel) ;;;
 SlopeDefinitions_SlopeTopXOffsetByYPixel:
 ; Indexed by ([block BTS] & 1Fh) * 10h + [Samus X position] % 10h
     db $08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08   ;948B2B;
@@ -1461,7 +1533,19 @@ SlopeDefinitions_SlopeTopXOffsetByYPixel:
     db $14,$14,$14,$14,$14,$14,$0E,$0B,$08,$05,$02,$00,$00,$00,$00,$00   ;948D0B; 1Eh: Unused. Middle third-width triangle
     db $10,$0D,$0A,$07,$04,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;948D1B; 1Fh: Unused. Lower third-width triangle
 
+
+;;; $8D2B: Samus block collision reaction - horizontal - slope - square ;;;
 SamusBlockCollisionReaction_Horizontal_Slope_Square:
+;; Parameters:
+;;     A: [Block BTS] & 1Fh
+;;     X: Block index
+;;     $12.$14: Distance to check for collision
+;;     $1A: Number of blocks left to check (0 if final (bottom) block)
+;;     $1C: Samus' Y block span
+;;     $20: Target boundary position (left/right depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     ASL A                                                                ;948D2B;
     ASL A                                                                ;948D2C;
     STA.W $0DD4                                                          ;948D2D;
@@ -1491,7 +1575,6 @@ SamusBlockCollisionReaction_Horizontal_Slope_Square:
     BMI .solid                                                           ;948D60;
     BRA .returnNoCollision                                               ;948D62;
 
-
   .top:
     CMP.B $1C                                                            ;948D64;
     BNE .checkBothHalves                                                 ;948D66;
@@ -1516,7 +1599,6 @@ SamusBlockCollisionReaction_Horizontal_Slope_Square:
     CLC                                                                  ;948D83;
     RTS                                                                  ;948D84;
 
-
   .solid:
     STZ.B $14                                                            ;948D85;
     LDA.B $20                                                            ;948D87;
@@ -1536,7 +1618,6 @@ SamusBlockCollisionReaction_Horizontal_Slope_Square:
     SEC                                                                  ;948DA4;
     RTS                                                                  ;948DA5;
 
-
   .negative12:
     ORA.W #$0007                                                         ;948DA6;
     SEC                                                                  ;948DA9;
@@ -1553,7 +1634,18 @@ SamusBlockCollisionReaction_Horizontal_Slope_Square:
     RTS                                                                  ;948DBC;
 
 
+;;; $8DBD: Samus block collision reaction - vertical - slope - square ;;;
 SamusBlockCollisionReaction_Vertical_Slope_Square:
+;; Parameters:
+;;     A: [Block BTS] & 1Fh
+;;     X: Block index
+;;     $12: Distance to check for collision
+;;     $1A: Number of blocks left to check (0 if final (rightmost) block)
+;;     $1C: Samus' X block span
+;;     $20: Target boundary position (top/bottom depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if Samus collides with solid slope, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     ASL A                                                                ;948DBD;
     ASL A                                                                ;948DBE;
     STA.W $0DD4                                                          ;948DBF;
@@ -1582,7 +1674,6 @@ SamusBlockCollisionReaction_Vertical_Slope_Square:
     BMI .solid                                                           ;948DF1;
     BRA .returnNoCollision                                               ;948DF3;
 
-
   .checkLeft:
     CMP.B $1C                                                            ;948DF5;
     BNE .checkBothHalves                                                 ;948DF7;
@@ -1607,7 +1698,6 @@ SamusBlockCollisionReaction_Vertical_Slope_Square:
     CLC                                                                  ;948E14;
     RTS                                                                  ;948E15;
 
-
   .solid:
     STZ.B $14                                                            ;948E16;
     LDA.B $20                                                            ;948E18;
@@ -1629,7 +1719,6 @@ SamusBlockCollisionReaction_Vertical_Slope_Square:
     SEC                                                                  ;948E3B;
     RTS                                                                  ;948E3C;
 
-
   .negative12:
     ORA.W #$0007                                                         ;948E3D;
     SEC                                                                  ;948E40;
@@ -1646,6 +1735,7 @@ SamusBlockCollisionReaction_Vertical_Slope_Square:
     RTS                                                                  ;948E53;
 
 
+;;; $8E54: Square slope definitions ;;;
 SquareSlopeDefinitions_Bank94:                                           ;948E54;
 ; Enemies use $A0:C435, enemy projectiles use $86:8729
 ; 0 = air, 80h = solid
@@ -1660,8 +1750,14 @@ SquareSlopeDefinitions_Bank94:                                           ;948E54
     db $00,$80,$80,$80 ; 3: Three-quarters
     db $80,$80,$80,$80 ; 4: Whole
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $8E68: Unused. Determine Samus suit palette index ;;;
 UNUSED_DetermineSamusSuitPaletteIndex_948E68:
+;; Returns:
+;;     Y: 4 if gravity suit equipped, 2 if varia suit equipped, 0 otherwise
+
+; Basing this routine name on Determine_SamusSuitPalette_Index
     LDY.W #$0004                                                         ;948E68;
     LDA.W $09A2                                                          ;948E6B;
     BIT.W #$0020                                                         ;948E6E;
@@ -1678,21 +1774,25 @@ UNUSED_DetermineSamusSuitPaletteIndex_948E68:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $8E7D: Unused. Clear carry ;;;
 CLCRTS_948E7D:
     CLC                                                                  ;948E7D;
     RTS                                                                  ;948E7E;
 
 
+;;; $8E7F: Unused. Clear carry ;;;
 CLCRTS_948E7F:
     CLC                                                                  ;948E7F;
     RTS                                                                  ;948E80;
 
 
+;;; $8E81: Clear carry ;;;
 CLCRTS_948E81:
     CLC                                                                  ;948E81;
     RTS                                                                  ;948E82;
 
 
+;;; $8E83: Samus block collision reaction - spike block - BTS 0 (generic spike) ;;;
 SamusBlockCollisionReaction_SpikeBlock_BTS0_GenericSpike:
     LDA.W $079F                                                          ;948E83;
     CMP.W #$0003                                                         ;948E86;
@@ -1723,7 +1823,6 @@ SamusBlockCollisionReaction_SpikeBlock_BTS0_GenericSpike:
     STA.W $0A54                                                          ;948EC6;
     BRA .return                                                          ;948EC9;
 
-
   .left:
     STZ.W $0A54                                                          ;948ECB;
 
@@ -1731,6 +1830,7 @@ SamusBlockCollisionReaction_SpikeBlock_BTS0_GenericSpike:
     RTS                                                                  ;948ECE;
 
 
+;;; $8ECF: Samus block collision reaction - spike block - BTS 1 (Kraid's lair spike) ;;;
 SamusBlockCollisionReaction_SpikeBlock_BTS1_KraidsLairSpike:
     LDA.W $18A8                                                          ;948ECF;
     BNE .return                                                          ;948ED2;
@@ -1761,7 +1861,9 @@ SamusBlockCollisionReaction_SpikeBlock_BTS1_KraidsLairSpike:
     RTS                                                                  ;948F09;
 
 
+;;; $8F0A: Samus block collision reaction - spike block - BTS 3 (Draygon's broken turret) ;;;
 SamusBlockCollisionReact_SpikeBlock_BTS3_DraygonBrokenTurret:
+; Clone of SamusBlockCollisionReaction_SpikeBlock_BTS1_KraidsLairSpike
     LDA.W $18A8                                                          ;948F0A;
     BNE .return                                                          ;948F0D;
     LDA.W #$003C                                                         ;948F0F;
@@ -1783,7 +1885,6 @@ SamusBlockCollisionReact_SpikeBlock_BTS3_DraygonBrokenTurret:
     STA.W $0A54                                                          ;948F3C;
     BRA .return                                                          ;948F3F;
 
-
   .left:
     STZ.W $0A54                                                          ;948F41;
 
@@ -1791,17 +1892,28 @@ SamusBlockCollisionReact_SpikeBlock_BTS3_DraygonBrokenTurret:
     RTS                                                                  ;948F44;
 
 
+;;; $8F45: Set carry ;;;
 SECRTS_948F45:
     SEC                                                                  ;948F45;
     RTS                                                                  ;948F46;
 
 
+;;; $8F47: Clear carry ;;;
 CLCRTS_948F47:
     CLC                                                                  ;948F47;
     RTS                                                                  ;948F48;
 
 
+;;; $8F49: Samus block collision reaction - horizontal - solid/shootable/grapple block ;;;
 SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple:
+;; Parameters:
+;;     $12: Distance to check for collision
+;;     $20: Target boundary position (left/right depending on sign of [$12])
+;; Returns:
+;;     Carry: Set. Unconditional collision
+;;     $12.$14: Distance to collision
+
+; RTS this routine to enable walk through walls, works surprisingly effectively
     STZ.B $14                                                            ;948F49;
     LDA.B $20                                                            ;948F4B;
     BIT.B $12                                                            ;948F4D;
@@ -1821,7 +1933,6 @@ SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple:
     SEC                                                                  ;948F69;
     RTS                                                                  ;948F6A;
 
-
   .negative12:
     ORA.W #$000F                                                         ;948F6B;
     SEC                                                                  ;948F6E;
@@ -1838,7 +1949,14 @@ SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple:
     RTS                                                                  ;948F81;
 
 
+;;; $8F82: Samus block collision reaction - vertical - solid/shootable/grapple block ;;;
 SamusBlockCollisionReaction_Vertical_SolidShootableGrapple:
+;; Parameters:
+;;     $12: Distance to check for collision
+;;     $20: Target boundary position (top/bottom depending on sign of [$12])
+;; Returns:
+;;     Carry: Set. Unconditional collision
+;;     $12.$14: Distance to collision
     STZ.B $14                                                            ;948F82;
     LDA.B $20                                                            ;948F84;
     BIT.B $12                                                            ;948F86;
@@ -1858,7 +1976,6 @@ SamusBlockCollisionReaction_Vertical_SolidShootableGrapple:
     SEC                                                                  ;948FA2;
     RTS                                                                  ;948FA3;
 
-
   .negative12:
     ORA.W #$000F                                                         ;948FA4;
     SEC                                                                  ;948FA7;
@@ -1875,7 +1992,16 @@ SamusBlockCollisionReaction_Vertical_SolidShootableGrapple:
     RTS                                                                  ;948FBA;
 
 
+;;; $8FBB: Samus block collision reaction - horizontal - slope ;;;
 SamusBlockCollisionReaction_Horizontal_Slope:
+;; Parameters:
+;;     $12.$14: Distance to check for collision
+;;     $1A: Number of blocks left to check (0 if final (bottom) block)
+;;     $1C: Samus' Y block span
+;;     $20: Target boundary position (left/right depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     LDX.W $0DC4                                                          ;948FBB;
     LDA.L $7F6402,X                                                      ;948FBE;
     AND.W #$001F                                                         ;948FC2;
@@ -1886,12 +2012,21 @@ SamusBlockCollisionReaction_Horizontal_Slope:
     STA.W $1E77                                                          ;948FD1;
     JMP.W SamusBlockCollisionDetection_Horizontal_Slope_NonSquare        ;948FD4;
 
-
   .gotoSquare:
     JMP.W SamusBlockCollisionReaction_Horizontal_Slope_Square            ;948FD7;
 
 
+;;; $8FDA: Samus block collision reaction - vertical - slope ;;;
 SamusBlockCollisionReaction_Vertical_Slope:
+;; Parameters:
+;;     $12.$14: Distance to check for collision
+;;     $18: Target Y position
+;;     $1A: Number of blocks left to check (0 if final (rightmost) block)
+;;     $1C: Samus' X block span
+;;     $20: Target boundary position (top/bottom depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     LDX.W $0DC4                                                          ;948FDA;
     LDA.L $7F6402,X                                                      ;948FDD;
     AND.W #$001F                                                         ;948FE1;
@@ -1901,11 +2036,11 @@ SamusBlockCollisionReaction_Vertical_Slope:
     STA.W $1E77                                                          ;948FED;
     JMP.W SamusBlockCollisionReaction_Vertical_Slope_NonSquare           ;948FF0;
 
-
   .gotoSquare:
     JMP.W SamusBlockCollisionReaction_Vertical_Slope_Square              ;948FF3;
 
 
+;;; $8FF6: Samus block collision reaction - vertical - spike air - jump table ;;;
 SamusBlockCollisionReaction_Vertical_SpikeAir_JumpTable:
 ; Yeah, great table
     dw CLCRTS_948E81                                                     ;948FF6;
@@ -1926,12 +2061,16 @@ SamusBlockCollisionReaction_Vertical_SpikeAir_JumpTable:
     dw CLCRTS_948E81                                                     ;949014;
     dw CLCRTS_948E81                                                     ;949016;
 
+
+;;; $9018: Clear carry ;;;
 CLCRTS_949018:
     CLC                                                                  ;949018;
     RTS                                                                  ;949019;
 
 
+;;; $901A: Samus block collision reaction - vertical - spike air ;;;
 SamusBlockCollisionReaction_Vertical_SpikeAir:
+; Does nothing
     LDX.W $0DC4                                                          ;94901A;
     LDA.L $7F6402,X                                                      ;94901D;
     AND.W #$00FF                                                         ;949021;
@@ -1942,6 +2081,7 @@ SamusBlockCollisionReaction_Vertical_SpikeAir:
     RTS                                                                  ;94902A;
 
 
+;;; $902B: Samus block collision reaction - spike block - jump table ;;;
 SamusBlockCollisionReaction_Vertical_SpikeBlock_JumpTable:
     dw SamusBlockCollisionReaction_SpikeBlock_BTS0_GenericSpike          ;94902B;
     dw SamusBlockCollisionReaction_SpikeBlock_BTS1_KraidsLairSpike       ;94902D;
@@ -1960,7 +2100,15 @@ SamusBlockCollisionReaction_Vertical_SpikeBlock_JumpTable:
     dw SECRTS_948F45                                                     ;949047;
     dw SECRTS_948F45                                                     ;949049;
 
+
+;;; $904B: Samus block collision reaction - horizontal - spike block ;;;
 SamusBlockCollisionReaction_Horizontal_SpikeBlock:
+;; Parameters:
+;;     $12: Distance to check for collision
+;;     $20: Target boundary position (left/right depending on sign of [$12])
+;; Returns:
+;;     Carry: Set. Unconditional collision
+;;     $12.$14: Distance to collision
     LDX.W $0DC4                                                          ;94904B;
     LDA.L $7F6402,X                                                      ;94904E;
     ASL A                                                                ;949052;
@@ -1970,7 +2118,14 @@ SamusBlockCollisionReaction_Horizontal_SpikeBlock:
     JMP.W SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple   ;94905A;
 
 
+;;; $905D: Samus block collision reaction - vertical - spike block ;;;
 SamusBlockCollisionReaction_Vertical_SpikeBlock:
+;; Parameters:
+;;     $12: Distance to check for collision
+;;     $20: Target boundary position (top/bottom depending on sign of [$12])
+;; Returns:
+;;     Carry: Set. Unconditional collision
+;;     $12.$14: Distance to collision
     LDX.W $0DC4                                                          ;94905D;
     LDA.L $7F6402,X                                                      ;949060;
     ASL A                                                                ;949064;
@@ -1980,7 +2135,15 @@ SamusBlockCollisionReaction_Vertical_SpikeBlock:
     JMP.W SamusBlockCollisionReaction_Vertical_SolidShootableGrapple     ;94906C;
 
 
+;;; $906F: Samus block collision reaction - horizontal - special air ;;;
 SamusBlockCollisionReaction_Horizontal_SpecialAir:
+;; Parameters:
+;;     $12.$14: Distance to check for collision
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
+
+; Area independent BTS can never cause a collision, but area dependent BTS can (according to the carry returned by their PLM setup)
     LDX.W $0DC4                                                          ;94906F;
     LDA.L $7F6401,X                                                      ;949072;
     AND.W #$FF00                                                         ;949076;
@@ -1992,7 +2155,6 @@ SamusBlockCollisionReaction_Horizontal_SpecialAir:
     JSL.L Spawn_PLM_to_CurrentBlockIndex                                 ;949081;
     CLC                                                                  ;949085;
     RTS                                                                  ;949086;
-
 
   .blockBTSMSB:
     AND.W #$007F                                                         ;949087;
@@ -2008,7 +2170,15 @@ SamusBlockCollisionReaction_Horizontal_SpecialAir:
     RTS                                                                  ;94909C;
 
 
+;;; $909D: Samus block collision reaction - vertical - special air ;;;
 SamusBlockCollisionReaction_Vertical_SpecialAir:
+;; Parameters:
+;;     $12.$14: Distance to check for collision
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
+
+; Clone of SamusBlockCollisionReaction_Horizontal_SpecialAir
     LDX.W $0DC4                                                          ;94909D;
     LDA.L $7F6401,X                                                      ;9490A0;
     AND.W #$FF00                                                         ;9490A4;
@@ -2020,7 +2190,6 @@ SamusBlockCollisionReaction_Vertical_SpecialAir:
     JSL.L Spawn_PLM_to_CurrentBlockIndex                                 ;9490AF;
     CLC                                                                  ;9490B3;
     RTS                                                                  ;9490B4;
-
 
   .blockBTSMSB:
     AND.W #$007F                                                         ;9490B5;
@@ -2036,7 +2205,14 @@ SamusBlockCollisionReaction_Vertical_SpecialAir:
     RTS                                                                  ;9490CA;
 
 
+;;; $90CB: Samus block collision reaction - horizontal - special block ;;;
 SamusBlockCollisionReaction_Horizontal_SpecialBlock:
+;; Parameters:
+;;     $12.$14: Distance to check for collision
+;;     $20: Target boundary position (left/right depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     LDX.W $0DC4                                                          ;9490CB;
     LDA.L $7F6401,X                                                      ;9490CE;
     AND.W #$FF00                                                         ;9490D2;
@@ -2049,10 +2225,8 @@ SamusBlockCollisionReaction_Horizontal_SpecialBlock:
     BCC .return                                                          ;9490E1;
     JMP.W SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple   ;9490E3;
 
-
   .return:
     RTS                                                                  ;9490E6;
-
 
   .areaDependent:
     AND.W #$007F                                                         ;9490E7;
@@ -2068,12 +2242,18 @@ SamusBlockCollisionReaction_Horizontal_SpecialBlock:
     BCC ..return                                                         ;9490FC;
     JMP.W SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple   ;9490FE;
 
-
   ..return:
     RTS                                                                  ;949101;
 
 
+;;; $9102: Samus block collision reaction - vertical - special block ;;;
 SamusBlockCollisionReaction_Vertical_SpecialBlock:
+;; Parameters:
+;;     $12.$14: Distance to check for collision
+;;     $20: Target boundary position (left/right depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     LDX.W $0DC4                                                          ;949102;
     LDA.L $7F6401,X                                                      ;949105;
     AND.W #$FF00                                                         ;949109;
@@ -2086,10 +2266,8 @@ SamusBlockCollisionReaction_Vertical_SpecialBlock:
     BCC .return                                                          ;949118;
     JMP.W SamusBlockCollisionReaction_Vertical_SolidShootableGrapple     ;94911A;
 
-
   .return:
     RTS                                                                  ;94911D;
-
 
   .areaDependent:
     AND.W #$007F                                                         ;94911E;
@@ -2105,12 +2283,13 @@ SamusBlockCollisionReaction_Vertical_SpecialBlock:
     BCC ..return                                                         ;949133;
     JMP.W SamusBlockCollisionReaction_Vertical_SolidShootableGrapple     ;949135;
 
-
   ..return:
     RTS                                                                  ;949138;
 
 
-SamusBlockCollisionReaction_Special_PLMTable_areaIndependent:
+;;; $9139: Samus block collision reaction - special - PLM table ;;;
+SamusBlockCollisionReaction_Special_PLMTable:
+  .areaIndependent:
     dw PLMEntries_Collision_1x1RespawningCrumbleBlock                    ;949139;
     dw PLMEntries_Collision_2x1RespawningCrumbleBlock                    ;94913B;
     dw PLMEntries_Collision_1x2RespawningCrumbleBlock                    ;94913D;
@@ -2192,7 +2371,7 @@ SamusBlockCollisionReaction_Special_PLMTable_areaIndependent:
     dw PLMEntries_nothing                                                ;9491D5;
     dw PLMEntries_nothing                                                ;9491D7;
 
-SamusBlockCollisionReaction_Special_PLMTable_crateria:
+  .crateria:
     dw PLMEntries_nothing                                                ;9491D9;
     dw PLMEntries_nothing                                                ;9491DB;
     dw PLMEntries_nothing                                                ;9491DD;
@@ -2210,7 +2389,7 @@ SamusBlockCollisionReaction_Special_PLMTable_crateria:
     dw PLMEntries_nothing                                                ;9491F5;
     dw PLMEntries_nothing                                                ;9491F7;
 
-SamusBlockCollisionReaction_Special_PLMTable_brinstar:
+  .brinstar:
     dw PLMEntries_collisionReactionClearCarry                            ;9491F9;
     dw PLMEntries_collisionReactionClearCarry                            ;9491FB;
     dw PLMEntries_Collision_BTS82                                        ;9491FD;
@@ -2228,7 +2407,7 @@ SamusBlockCollisionReaction_Special_PLMTable_brinstar:
     dw PLMEntries_nothing                                                ;949215;
     dw PLMEntries_nothing                                                ;949217;
 
-SamusBlockCollisionReaction_Special_PLMTable_norfair:
+  .norfair:
     dw PLMEntries_nothing                                                ;949219;
     dw PLMEntries_nothing                                                ;94921B;
     dw PLMEntries_nothing                                                ;94921D;
@@ -2246,7 +2425,7 @@ SamusBlockCollisionReaction_Special_PLMTable_norfair:
     dw PLMEntries_nothing                                                ;949235;
     dw PLMEntries_nothing                                                ;949237;
 
-SamusBlockCollisionReaction_Special_PLMTable_wreckedShip:
+  .wreckedShip:
     dw PLMEntries_Collision_WreckedShipChozoHandCheck                    ;949239;
     dw PLMEntries_nothing                                                ;94923B;
     dw PLMEntries_nothing                                                ;94923D;
@@ -2264,7 +2443,7 @@ SamusBlockCollisionReaction_Special_PLMTable_wreckedShip:
     dw PLMEntries_nothing                                                ;949255;
     dw PLMEntries_nothing                                                ;949257;
 
-SamusBlockCollisionReaction_Special_PLMTable_maridia:
+  .maridia:
     dw PLMEntries_collisionReactionQuicksandSurface                      ;949259;
     dw PLMEntries_collisionReactionQuicksandSurface                      ;94925B;
     dw PLMEntries_collisionReactionQuicksandSurface                      ;94925D;
@@ -2282,7 +2461,7 @@ SamusBlockCollisionReaction_Special_PLMTable_maridia:
     dw PLMEntries_nothing                                                ;949275;
     dw PLMEntries_nothing                                                ;949277;
 
-SamusBlockCollisionReaction_Special_PLMTable_tourian:
+  .tourian:
     dw PLMEntries_nothing                                                ;949279;
     dw PLMEntries_nothing                                                ;94927B;
     dw PLMEntries_nothing                                                ;94927D;
@@ -2300,7 +2479,7 @@ SamusBlockCollisionReaction_Special_PLMTable_tourian:
     dw PLMEntries_nothing                                                ;949295;
     dw PLMEntries_nothing                                                ;949297;
 
-SamusBlockCollisionReaction_Special_PLMTable_ceres:
+  .ceres:
     dw PLMEntries_nothing                                                ;949299;
     dw PLMEntries_nothing                                                ;94929B;
     dw PLMEntries_nothing                                                ;94929D;
@@ -2318,7 +2497,7 @@ SamusBlockCollisionReaction_Special_PLMTable_ceres:
     dw PLMEntries_nothing                                                ;9492B5;
     dw PLMEntries_nothing                                                ;9492B7;
 
-SamusBlockCollisionReaction_Special_PLMTable_debug:
+  .debug:
     dw PLMEntries_nothing                                                ;9492B9;
     dw PLMEntries_nothing                                                ;9492BB;
     dw PLMEntries_nothing                                                ;9492BD;
@@ -2336,7 +2515,7 @@ SamusBlockCollisionReaction_Special_PLMTable_debug:
     dw PLMEntries_nothing                                                ;9492D5;
     dw PLMEntries_nothing                                                ;9492D7;
 
-SamusBlockCollisionReaction_Special_PLMTable_AirPointers:
+  .AirPointers:
 ; Special air pointers to the above
     dw SamusBlockCollisionReaction_Special_PLMTable_crateria             ;9492D9;
     dw SamusBlockCollisionReaction_Special_PLMTable_brinstar             ;9492DB;
@@ -2347,7 +2526,7 @@ SamusBlockCollisionReaction_Special_PLMTable_AirPointers:
     dw SamusBlockCollisionReaction_Special_PLMTable_ceres                ;9492E5;
     dw SamusBlockCollisionReaction_Special_PLMTable_debug                ;9492E7;
 
-SamusBlockCollisionReaction_Special_PLMTable_BlockPointers:
+  .BlockPointers:
 ; Special block pointers to the above
     dw SamusBlockCollisionReaction_Special_PLMTable_crateria             ;9492E9;
     dw SamusBlockCollisionReaction_Special_PLMTable_brinstar             ;9492EB;
@@ -2358,7 +2537,11 @@ SamusBlockCollisionReaction_Special_PLMTable_BlockPointers:
     dw SamusBlockCollisionReaction_Special_PLMTable_ceres                ;9492F5;
     dw SamusBlockCollisionReaction_Special_PLMTable_debug                ;9492F7;
 
+
+;;; $92F9: Samus block collision reaction - horizontal - bombable air ;;;
 SamusBlockCollisionReaction_Horizontal_BombableAir:
+;; Returns:
+;;     Carry: Clear. No collision
     LDX.W $0DC4                                                          ;9492F9;
     LDA.L $7F6401,X                                                      ;9492FC;
     AND.W #$FF00                                                         ;949300;
@@ -2371,13 +2554,17 @@ SamusBlockCollisionReaction_Horizontal_BombableAir:
     CLC                                                                  ;94930F;
     RTS                                                                  ;949310;
 
-
   .returnNoCollision:
     CLC                                                                  ;949311;
     RTS                                                                  ;949312;
 
 
+;;; $9313: Samus block collision reaction - vertical - bombable air ;;;
 SamusBlockCollisionReaction_Vertical_BombableAir:
+;; Returns:
+;;     Carry: Clear. No collision
+
+; Clone of SamusBlockCollisionReaction_Horizontal_BombableAir
     LDX.W $0DC4                                                          ;949313;
     LDA.L $7F6401,X                                                      ;949316;
     AND.W #$FF00                                                         ;94931A;
@@ -2390,13 +2577,19 @@ SamusBlockCollisionReaction_Vertical_BombableAir:
     CLC                                                                  ;949329;
     RTS                                                                  ;94932A;
 
-
   .returnNoCollision:
     CLC                                                                  ;94932B;
     RTS                                                                  ;94932C;
 
 
+;;; $932D: Samus block collision reaction - horizontal - bomb block ;;;
 SamusBlockCollisionReaction_Horizontal_BombBlock:
+;; Parameters:
+;;     $12: Distance to check for collision
+;;     $20: Target boundary position (left/right depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: If carry set, distance to collision
     LDX.W $0DC4                                                          ;94932D;
     LDA.L $7F6401,X                                                      ;949330;
     AND.W #$FF00                                                         ;949334;
@@ -2409,16 +2602,21 @@ SamusBlockCollisionReaction_Horizontal_BombBlock:
     BCC .return                                                          ;949343;
     JMP.W SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple   ;949345;
 
-
   .gotoSolidShootableGrapple:
     JMP.W SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple   ;949348;
-
 
   .return:
     RTS                                                                  ;94934B;
 
 
+;;; $934C: Samus block collision reaction - vertical - bomb block ;;;
 SamusBlockCollisionReaction_Vertical_BombBlock:
+;; Parameters:
+;;     $12: Distance to check for collision
+;;     $20: Target boundary position (top/bottom depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: If carry set, distance to collision
     LDX.W $0DC4                                                          ;94934C;
     LDA.L $7F6401,X                                                      ;94934F;
     AND.W #$FF00                                                         ;949353;
@@ -2431,15 +2629,14 @@ SamusBlockCollisionReaction_Vertical_BombBlock:
     BCC .return                                                          ;949362;
     JMP.W SamusBlockCollisionReaction_Vertical_SolidShootableGrapple     ;949364;
 
-
   .gotoSolidShootableGrapple:
     JMP.W SamusBlockCollisionReaction_Vertical_SolidShootableGrapple     ;949367;
-
 
   .return:
     RTS                                                                  ;94936A;
 
 
+;;; $936B: Samus block collision reaction - bombable - PLM table ;;;
 SamusBlockCollisionReaction_Bombable_PLMTable:
     dw PLMEntries_Collision_1x1RespawningBombBlock                       ;94936B;
     dw PLMEntries_Collision_2x1RespawningBombBlock                       ;94936D;
@@ -2458,7 +2655,15 @@ SamusBlockCollisionReaction_Bombable_PLMTable:
     dw PLMEntries_nothing                                                ;949387;
     dw PLMEntries_nothing                                                ;949389;
 
+
+;;; $938B: Samus block collision reaction - horizontal - door ;;;
 SamusBlockCollisionReaction_Horizontal_Door:
+;; Parameters:
+;;     $12: Distance to check for collision
+;;     $20: Target boundary position (left/right depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: If carry set, distance to collision
     LDA.W #DoorTransitionFunction_HandleElevator                         ;94938B;
     STA.W $099C                                                          ;94938E;
     LDX.W $0DC4                                                          ;949391;
@@ -2480,7 +2685,6 @@ SamusBlockCollisionReaction_Horizontal_Door:
     CLC                                                                  ;9493BB;
     RTS                                                                  ;9493BC;
 
-
   .notAPointer:
     LDA.W $0A1C                                                          ;9493BD;
     CMP.W #$0009                                                         ;9493C0;
@@ -2492,7 +2696,14 @@ SamusBlockCollisionReaction_Horizontal_Door:
     JMP.W SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple   ;9493CB;
 
 
+;;; $93CE: Samus block collision reaction - vertical - door ;;;
 SamusBlockCollisionReaction_Vertical_Door:
+;; Parameters:
+;;     $12: Distance to check for collision
+;;     $20: Target boundary position (top/bottom depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: If carry set, distance to collision
     LDA.W #DoorTransitionFunction_HandleElevator                         ;9493CE;
     STA.W $099C                                                          ;9493D1;
     LDX.W $0DC4                                                          ;9493D4;
@@ -2514,7 +2725,6 @@ SamusBlockCollisionReaction_Vertical_Door:
     CLC                                                                  ;9493FE;
     RTS                                                                  ;9493FF;
 
-
   .notAPointer:
     LDA.W $0A1C                                                          ;949400;
     CMP.W #$0009                                                         ;949403;
@@ -2526,7 +2736,13 @@ SamusBlockCollisionReaction_Vertical_Door:
     JMP.W SamusBlockCollisionReaction_Vertical_SolidShootableGrapple     ;94940E;
 
 
+;;; $9411: Block shot/bombed/grappled/collision/inside reaction - horizontal extension ;;;
 BlockShotBombedGrappledCollisionInsideReaction_HorizontalExt:
+;; Returns:
+;;     Carry: Clear. No collision
+
+; If BTS is 0, acts like air
+; Otherwise, offsets block index by block BTS, updates X, and loops back to the `JSR (xxxx, X)` instruction that jumped to here
     LDX.W $0DC4                                                          ;949411;
     LDA.L $7F6402,X                                                      ;949414;
     AND.W #$00FF                                                         ;949418;
@@ -2535,7 +2751,6 @@ BlockShotBombedGrappledCollisionInsideReaction_HorizontalExt:
     BNE .highByte                                                        ;949420;
     AND.W #$00FF                                                         ;949422;
     BRA +                                                                ;949425;
-
 
   .highByte:
     ORA.W #$FF00                                                         ;949427;
@@ -2562,7 +2777,14 @@ BlockShotBombedGrappledCollisionInsideReaction_HorizontalExt:
     RTS                                                                  ;949446;
 
 
+;;; $9447: Block shot/bombed/grappled/collision/inside reaction - vertical extension ;;;
 BlockShotBombedGrappledCollisionInsideReaction_VerticalExt:
+;; Returns:
+;;     Carry: Clear. No collision
+
+; If BTS is 0, acts like air
+; Otherwise, offsets block index by block BTS, updates X, and loops back to the `JSR (xxxx, X)` instruction that jumped to here
+; Uses an addition/subtraction loop for multiplication, which is probably faster for an offset of 1 or maybe 2
     LDX.W $0DC4                                                          ;949447;
     LDA.L $7F6402,X                                                      ;94944A;
     AND.W #$00FF                                                         ;94944E;
@@ -2578,7 +2800,6 @@ BlockShotBombedGrappledCollisionInsideReaction_VerticalExt:
     DEC.W $0DD4                                                          ;949462;
     BNE .loopUpper                                                       ;949465;
     JMP.W +                                                              ;949467;
-
 
   .highByte:
     ORA.W #$FF00                                                         ;94946A;
@@ -2611,7 +2832,10 @@ BlockShotBombedGrappledCollisionInsideReaction_VerticalExt:
     RTS                                                                  ;949494;
 
 
+;;; $9495: Calculate Samus Y block span ;;;
 CalculateSamusYBlockSpan:
+; A = $1A = $1C = ([Samus Y position] + [Samus Y radius] - 1) / 10h
+;               - ([Samus Y position] - [Samus Y radius]) / 10h
     LDA.W $0AFA                                                          ;949495;
     SEC                                                                  ;949498;
     SBC.W $0B00                                                          ;949499;
@@ -2632,7 +2856,10 @@ CalculateSamusYBlockSpan:
     RTS                                                                  ;9494B4;
 
 
+;;; $94B5: Calculate Samus X block span ;;;
 CalculateSamusXBlockSpan:
+; A = $1A = $1C = ([Samus X position] + [Samus X radius] - 1) / 10h
+;               - ([Samus X position] - [Samus X radius]) / 10h
     LDA.W $0AF6                                                          ;9494B5;
     SEC                                                                  ;9494B8;
     SBC.W $0AFE                                                          ;9494B9;
@@ -2653,6 +2880,7 @@ CalculateSamusXBlockSpan:
     RTS                                                                  ;9494D4;
 
 
+;;; $94D5: Samus block collision reaction pointers - horizontal ;;;
 SamusBlockCollisionReactionPointers_Horizontal:
     dw CLCRTS_948F47                                                     ;9494D5; *0: Air
     dw SamusBlockCollisionReaction_Horizontal_Slope                      ;9494D7;  1: Slope
@@ -2671,6 +2899,8 @@ SamusBlockCollisionReactionPointers_Horizontal:
     dw SamusBlockCollisionReaction_Horizontal_SolidShootableGrapple      ;9494F1;  Eh: Grapple block
     dw SamusBlockCollisionReaction_Horizontal_BombBlock                  ;9494F3;  Fh: Bombable block
 
+
+;;; $94F5: Samus block collision reaction pointers - vertical ;;;
 SamusBlockCollisionReactionPointers_Vertical:
     dw CLCRTS_948F47                                                     ;9494F5; 0: Air
     dw SamusBlockCollisionReaction_Vertical_Slope                        ;9494F7; 1: Slope
@@ -2689,7 +2919,18 @@ SamusBlockCollisionReactionPointers_Vertical:
     dw SamusBlockCollisionReaction_Vertical_SolidShootableGrapple        ;949511; Eh: Grapple block
     dw SamusBlockCollisionReaction_Vertical_BombBlock                    ;949513; Fh: Bombable block
 
+
+;;; $9515: Samus block collision reaction - horizontal ;;;
 SamusBlockCollisionReaction_Horizontal:
+;; Parameters:
+;;     X: Block index (multiple of 2)
+;;     $12.$14: Distance to check for collision
+;;     $1A: Number of blocks left to check (0 if final (bottom) block)
+;;     $1C: Samus' Y block span
+;;     $20: Target boundary position (left/right depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     PHX                                                                  ;949515;
     TXA                                                                  ;949516;
     LSR A                                                                ;949517;
@@ -2706,7 +2947,16 @@ SamusBlockCollisionReaction_Horizontal:
     RTS                                                                  ;94952B;
 
 
+;;; $952C: Samus block collision reaction - vertical ;;;
 SamusBlockCollisionReaction_Vertical:
+;; Parameters:
+;;     X: Block index (multiple of 2)
+;;     $12.$14: Distance to check for collision
+;;     $18: Target Y position
+;;     $20: Target boundary position (top/bottom depending on sign of [$12])
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     PHX                                                                  ;94952C;
     TXA                                                                  ;94952D;
     LSR A                                                                ;94952E;
@@ -2723,7 +2973,13 @@ SamusBlockCollisionReaction_Vertical:
     RTS                                                                  ;949542;
 
 
+;;; $9543: Samus block collision detection - horizontal ;;;
 SamusBlockCollisionDetection_Horizontal:
+;; Parameters:
+;;     $12.$14: Distance to move Samus
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     JSR.W CalculateSamusYBlockSpan                                       ;949543;
     LDA.W $0AFA                                                          ;949546;
     SEC                                                                  ;949549;
@@ -2749,7 +3005,6 @@ SamusBlockCollisionDetection_Horizontal:
     SEC                                                                  ;949571;
     SBC.W $0AFE                                                          ;949572;
     BRA +                                                                ;949575;
-
 
   .movingRight:
     CLC                                                                  ;949577;
@@ -2779,13 +3034,18 @@ SamusBlockCollisionDetection_Horizontal:
     CLC                                                                  ;94959A;
     RTS                                                                  ;94959B;
 
-
   .returnCollision:
     SEC                                                                  ;94959C;
     RTS                                                                  ;94959D;
 
 
+;;; $959E: Samus block collision detection - vertical - left to right ;;;
 SamusBlockCollisionDetection_Vertical_LeftToRight:
+;; Parameters:
+;;     $12.$14: Distance to move Samus
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     JSR.W CalculateSamusXBlockSpan                                       ;94959E;
     LDA.W $0AFC                                                          ;9495A1;
     CLC                                                                  ;9495A4;
@@ -2799,7 +3059,6 @@ SamusBlockCollisionDetection_Vertical_LeftToRight:
     SEC                                                                  ;9495B4;
     SBC.W $0B00                                                          ;9495B5;
     BRA +                                                                ;9495B8;
-
 
   .movingDown:
     CLC                                                                  ;9495BA;
@@ -2839,13 +3098,18 @@ SamusBlockCollisionDetection_Vertical_LeftToRight:
     CLC                                                                  ;9495F1;
     RTS                                                                  ;9495F2;
 
-
   .returnCollision:
     SEC                                                                  ;9495F3;
     RTS                                                                  ;9495F4;
 
 
+;;; $95F5: Samus block collision detection - vertical - right to left ;;;
 SamusBlockCollisionDetection_Vertical_RightToLeft:
+;; Parameters:
+;;     $12.$14: Distance to check for collision
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance to move Samus or distance to collision
     JSR.W CalculateSamusXBlockSpan                                       ;9495F5;
     STZ.B $1A                                                            ;9495F8;
     LDA.W $0AFC                                                          ;9495FA;
@@ -2860,7 +3124,6 @@ SamusBlockCollisionDetection_Vertical_RightToLeft:
     SEC                                                                  ;94960D;
     SBC.W $0B00                                                          ;94960E;
     BRA +                                                                ;949611;
-
 
   .movingDown:
     CLC                                                                  ;949613;
@@ -2903,12 +3166,12 @@ SamusBlockCollisionDetection_Vertical_RightToLeft:
     CLC                                                                  ;94964F;
     RTS                                                                  ;949650;
 
-
   .returnCollision:
     SEC                                                                  ;949651;
     RTS                                                                  ;949652;
 
 
+;;; $9653: $12.$14 = |[$12].[$14]| ;;;
 Get_12_14_949653:
     LDA.B $12                                                            ;949653;
     BPL .return                                                          ;949655;
@@ -2925,7 +3188,9 @@ Get_12_14_949653:
     RTS                                                                  ;949668;
 
 
+;;; $9669: $12.$14 = |[$12].[$14]| ;;;
 Get_12_14_949669:
+; So good they coded it twice
     LDA.B $12                                                            ;949669;
     BPL .return                                                          ;94966B;
     EOR.W #$FFFF                                                         ;94966D;
@@ -2941,7 +3206,20 @@ Get_12_14_949669:
     RTS                                                                  ;94967E;
 
 
+;;; $967F: Wall jump block collision detection ;;;
 WallJumpBlockCollisionDetection:
+;; Parameters:
+;;     $12.$14: Distance to check for collision
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12: If carry set: collision distance
+
+; Wrapper function of SamusBlockCollisionDetection_Horizontal for wall-jump check ($90:9D35/ BombAndPowerBombExplosionBlockCollisionHandling) that ignores special air/block collisions
+; The result stored to $0DD0 is unused
+
+; By setting $0B02 to Fh, all of the collision direction checks in special air/block collision PLM setup routines
+; (map/energy/missile station left/right access, quicksand surface, save station / chozo hand trigger, crumble block)
+; result in no effect (no other subroutine of SamusBlockCollisionDetection_Horizontal checks collision direction)
     PHP                                                                  ;94967F;
     PHB                                                                  ;949680;
     PHK                                                                  ;949681;
@@ -2960,7 +3238,6 @@ WallJumpBlockCollisionDetection:
     STA.W $0DD0                                                          ;94969D;
     RTL                                                                  ;9496A0;
 
-
   .noCollision:
     JSR.W Get_12_14_949653                                               ;9496A1;
     PLB                                                                  ;9496A4;
@@ -2970,7 +3247,17 @@ WallJumpBlockCollisionDetection:
     RTL                                                                  ;9496AA;
 
 
+;;; $96AB: Block collision detection due to change of pose ;;;
 BlockCollisionDetectionDueToChangeOfPose:
+;; Parameters:
+;;     $12: Distance to check for collision (assume less than 10h)
+;;     $14: 0. Subdistance to check for collision
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12: Adjusted distance to move Samus or distance to collision
+
+; Check for collision with the one or two blocks (depending on the distance to check) above or below Samus (depending on the sign of $12),
+; ignoring special air/block collisions
     LDA.B $12                                                            ;9496AB;
     BPL .positive                                                        ;9496AD;
     EOR.W #$FFFF                                                         ;9496AF;
@@ -2981,7 +3268,6 @@ BlockCollisionDetectionDueToChangeOfPose:
     BNE +                                                                ;9496B6;
     JSL.L BlockCollisionDetectionDueToChangeOfPose_SingleBlock           ;9496B8;
     RTL                                                                  ;9496BC;
-
 
 +   LDA.B $12                                                            ;9496BD;
     PHA                                                                  ;9496BF;
@@ -2998,7 +3284,6 @@ BlockCollisionDetectionDueToChangeOfPose:
     PLA                                                                  ;9496D6;
     RTL                                                                  ;9496D7;
 
-
   .noCollision:
     PLA                                                                  ;9496D8;
     STA.B $14                                                            ;9496D9;
@@ -3008,7 +3293,22 @@ BlockCollisionDetectionDueToChangeOfPose:
     RTL                                                                  ;9496E2;
 
 
+;;; $96E3: Block collision detection due to change of pose - single block ;;;
 BlockCollisionDetectionDueToChangeOfPose_SingleBlock:
+;; Parameters:
+;;     $12: Distance to check for collision (assume less than 8)
+;;     $14: 0. Subdistance to check for collision
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12: Adjusted distance to move Samus or distance to collision
+
+; The result stored to $0DD0 is unused
+
+; By setting $0B02 to Fh, all of the collision direction checks in special air/block collision PLM setup routines *except for quicksand surface*
+; (map/energy/missile station left/right access, save station / chozo hand trigger, crumble block)
+; result in no effect (no other subroutine of SamusBlockCollisionDetection_Vertical_LeftToRight / SamusBlockCollisionDetection_Vertical_RightToLeft checks collision direction)
+; Quicksand surface collision is partially disabled, but can still set the Samus is in quicksand flag
+; Not really sure if it makes sense to disable these interactions...
     PHP                                                                  ;9496E3;
     PHB                                                                  ;9496E4;
     REP #$30                                                             ;9496E5;
@@ -3038,7 +3338,6 @@ BlockCollisionDetectionDueToChangeOfPose_SingleBlock:
     STA.W $0DD0                                                          ;949710;
     RTL                                                                  ;949713;
 
-
   .noCollision:
     JSR.W Get_12_14_949669                                               ;949714;
     PLB                                                                  ;949717;
@@ -3048,7 +3347,13 @@ BlockCollisionDetectionDueToChangeOfPose_SingleBlock:
     RTL                                                                  ;94971D;
 
 
+;;; $971E: Move Samus right by [$12].[$14], no solid enemy collision ;;;
 MoveSamusRight_NoSolidEnemyCollision:
+;; Parameters:
+;;     $12.$14: Distance to move Samus
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance Samus was moved
     PHP                                                                  ;94971E;
     PHB                                                                  ;94971F;
     PHK                                                                  ;949720;
@@ -3073,7 +3378,6 @@ MoveSamusRight_NoSolidEnemyCollision:
     STA.W $0DD0                                                          ;949747;
     RTL                                                                  ;94974A;
 
-
   .noCollision:
     LDA.W $0AF8                                                          ;94974B;
     CLC                                                                  ;94974E;
@@ -3089,7 +3393,13 @@ MoveSamusRight_NoSolidEnemyCollision:
     RTL                                                                  ;949762;
 
 
+;;; $9763: Move Samus down by [$12].[$14], no solid enemy collision ;;;
 MoveSamusDown_NoSolidEnemyCollision:
+;; Parameters:
+;;     $12.$14: Distance to move Samus
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $12.$14: Adjusted distance Samus was moved
     PHP                                                                  ;949763;
     PHB                                                                  ;949764;
     REP #$30                                                             ;949765;
@@ -3128,7 +3438,6 @@ MoveSamusDown_NoSolidEnemyCollision:
     STA.W $0DD0                                                          ;94979E;
     RTL                                                                  ;9497A1;
 
-
   .noCollision:
     LDA.W $0AFC                                                          ;9497A2;
     CLC                                                                  ;9497A5;
@@ -3146,7 +3455,10 @@ MoveSamusDown_NoSolidEnemyCollision:
     RTL                                                                  ;9497BE;
 
 
+;;; $97BF: Block inside reaction - slope ;;;
 BlockInsideReaction_Slope:
+; Check if the slope is a square slope (BTS 0..5) or not. Then do nothing
+; Maybe they cared about the carry flag at one point, but probably not
     LDX.W $0DC4                                                          ;9497BF;
     LDA.L $7F6402,X                                                      ;9497C2;
     AND.W #$001F                                                         ;9497C6;
@@ -3154,22 +3466,25 @@ BlockInsideReaction_Slope:
     BCS .returnDuplicate                                                 ;9497CC; >.<
     RTS                                                                  ;9497CE;
 
-
   .returnDuplicate:
     RTS                                                                  ;9497CF;
 
 
+;;; $97D0: Block inside reaction - air/shootable air/unused air/bombable air ;;;
 BlockInsideReaction_Air_ShootableAir_BombableAir:
     LDA.W #SamusXSpeedTable_Normal                                       ;9497D0;
     STA.W $0A6C                                                          ;9497D3;
     RTS                                                                  ;9497D6;
 
 
+;;; $97D7: RTS ;;;
 RTS_9497D7:
     RTS                                                                  ;9497D7;
 
 
+;;; $97D8: Clear carry. Block inside reaction - spike air - BTS 0 (unused) ;;;
 CLCRTS_9497D8:
+; Looks like this block's effect was NOP'd out, although this block is never used anyway
     CLC                                                                  ;9497D8;
     RTS                                                                  ;9497D9;
 
@@ -3186,6 +3501,7 @@ CLCRTS_9497D8:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $97F2: Unused. Some kind of upwards boost ;;;
 UNUSED_SomeKindOfUpwardsBoost_9497F2:
     LDA.W $0B36                                                          ;9497F2;
     CMP.W #$0001                                                         ;9497F5;
@@ -3197,7 +3513,6 @@ UNUSED_SomeKindOfUpwardsBoost_9497F2:
     CLC                                                                  ;949806;
     RTS                                                                  ;949807;
 
-
   .down:
     STZ.W $0B2E                                                          ;949808;
     STZ.W $0B2C                                                          ;94980B;
@@ -3206,15 +3521,19 @@ UNUSED_SomeKindOfUpwardsBoost_9497F2:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $9810: Unused. Clear carry ;;;
 CLCRTS_949810:
     CLC                                                                  ;949810;
     RTS                                                                  ;949811;
 
 
+;;; $9812: Clear carry. Block inside reaction - spike air - BTS 1 (unused) ;;;
 CLCRTS_949812:
+; Looks like this block's effect was NOP'd out, although this block is never used anyway
     CLC                                                                  ;949812;
     RTS                                                                  ;949813;
 
+; Damages Samus, kills her jump height, gives her lava X speed physics
     LDY.W #$0000                                                         ;949814;
     LDA.W $0A4E                                                          ;949817;
     CLC                                                                  ;94981A;
@@ -3236,7 +3555,6 @@ CLCRTS_949812:
     CLC                                                                  ;949847;
     RTS                                                                  ;949848;
 
-
   .down:
     STZ.W $0B2E                                                          ;949849;
     STZ.W $0B2C                                                          ;94984C;
@@ -3257,10 +3575,12 @@ CLCRTS_949812:
     dw       $0002                                                       ;949863;
 
 
+;;; $9865: RTS ;;;
 RTS_949865:
     RTS                                                                  ;949865;
 
 
+;;; $9866: Block inside reaction - spike air - BTS 2 (air spike) ;;;
 BlockInsideReaction_SpikeAir_BTS2_AirSpike:
     LDA.W $0A6E                                                          ;949866;
     BNE .return                                                          ;949869;
@@ -3285,7 +3605,6 @@ BlockInsideReaction_SpikeAir_BTS2_AirSpike:
     STA.W $0A54                                                          ;94989D;
     BRA .return                                                          ;9498A0;
 
-
   .facingRight:
     STZ.W $0A54                                                          ;9498A2;
 
@@ -3295,6 +3614,7 @@ BlockInsideReaction_SpikeAir_BTS2_AirSpike:
     RTS                                                                  ;9498AB;
 
 
+;;; $98AC: Block inside reaction - spike air - jump table ;;;
 BlockInsideReaction_SpikeAir_JumpTable:
     dw CLCRTS_9497D8                                                     ;9498AC;
     dw CLCRTS_949812                                                     ;9498AE;
@@ -3313,6 +3633,8 @@ BlockInsideReaction_SpikeAir_JumpTable:
     dw RTS_9497D7                                                        ;9498C8;
     dw RTS_9497D7                                                        ;9498CA;
 
+
+;;; $98CC: Block inside reaction - spike air ;;;
 BlockInsideReaction_SpikeAir:
     LDX.W $0DC4                                                          ;9498CC;
     LDA.L $7F6402,X                                                      ;9498CF;
@@ -3323,18 +3645,21 @@ BlockInsideReaction_SpikeAir:
     RTS                                                                  ;9498DB;
 
 
+;;; $98DC: Block inside reaction - solid/door/spike/special/shootable/grapple/bombable block ;;;
 BlockInsideReaction_SolidDoorSpikeSpecialShotGrappleBomb:
     LDA.W #SamusXSpeedTable_Normal                                       ;9498DC;
     STA.W $0A6C                                                          ;9498DF;
     RTS                                                                  ;9498E2;
 
 
+;;; $98E3: Block inside reaction - special air - default ;;;
 BlockInsideReaction_SpecialAir_Default:
     LDA.W #SamusXSpeedTable_Normal                                       ;9498E3;
     STA.W $0A6C                                                          ;9498E6;
     RTS                                                                  ;9498E9;
 
 
+;;; $98EA: Block inside reaction - special air - BTS 8 (Wrecked Ship treadmill - rightwards) ;;;
 BlockInsideReaction_SpecialAir_BTS8_WSTreadmill_Right:
     LDA.W $079F                                                          ;9498EA;
     CMP.W #$0003                                                         ;9498ED;
@@ -3356,6 +3681,7 @@ BlockInsideReaction_SpecialAir_BTS8_WSTreadmill_Right:
     RTS                                                                  ;94990F;
 
 
+;;; $9910: Block inside reaction - special air - BTS 9 (Wrecked Ship treadmill - leftwards) ;;;
 BlockInsideReaction_SpecialAir_BTS9_WSTreadmill_Left:
     LDA.W $079F                                                          ;949910;
     CMP.W #$0003                                                         ;949913;
@@ -3377,6 +3703,7 @@ BlockInsideReaction_SpecialAir_BTS9_WSTreadmill_Left:
     RTS                                                                  ;949935;
 
 
+;;; $9936: Block inside reaction - special air - BTS Ah (rightwards treadmill) ;;;
 BlockInsideReaction_SpecialAir_BTSA_RightwardsTreadmill:
     STZ.W $0B56                                                          ;949936;
     LDA.W #$0002                                                         ;949939;
@@ -3386,6 +3713,7 @@ BlockInsideReaction_SpecialAir_BTSA_RightwardsTreadmill:
     RTS                                                                  ;949945;
 
 
+;;; $9946: Block inside reaction - special air - BTS Bh (leftwards treadmill) ;;;
 BlockInsideReaction_SpecialAir_BTSB_LeftwardsTreadmill:
     STZ.W $0B56                                                          ;949946;
     LDA.W #$FFFE                                                         ;949949;
@@ -3395,7 +3723,15 @@ BlockInsideReaction_SpecialAir_BTSB_LeftwardsTreadmill:
     RTS                                                                  ;949955;
 
 
+;;; $9956: Block inside reaction - special air - BTS 46h (scroll PLM trigger) ;;;
 BlockInsideReaction_SpecialAir_BTS46_ScrollPLMTrigger:
+; This routine is weird, block collision should have already spawned the scroll PLM trigger PLM,
+; and the check here means the PLM is only spawned here if Samus' bottom boundary is in a different block than her center,
+; which seems a bit random. As far as I can tell, this reaction can just be replaced with the default BlockInsideReaction_SpecialAir_Default
+
+; Note that this routine doesn't set the Samus X speed table pointer,
+; so spawning Samus in a scroll PLM will cause calculations to be done with a garbage pointer,
+; which can cause Samus to get flung horizontally (notably in quickmet, this never happens in vanilla)
     LDA.W $1E73                                                          ;949956;
     CMP.W #$0001                                                         ;949959;
     BNE .return                                                          ;94995C;
@@ -3406,6 +3742,7 @@ BlockInsideReaction_SpecialAir_BTS46_ScrollPLMTrigger:
     RTS                                                                  ;949965;
 
 
+;;; $9966: Block inside reaction - special air - jump table ;;;
 BlockInsideReaction_SpecialAir_JumpTable:
     dw BlockInsideReaction_SpecialAir_Default                            ;949966;
     dw BlockInsideReaction_SpecialAir_Default                            ;949968;
@@ -3488,8 +3825,11 @@ BlockInsideReaction_SpecialAir_JumpTable:
     dw BlockInsideReaction_SpecialAir_Default                            ;949A02;
     dw BlockInsideReaction_SpecialAir_Default                            ;949A04;
 
+
+;;; $9A06: Block inside reaction - special air - PLM table ;;;
+BlockInsideReaction_SpecialAir_PLMTable:
 ; Region dependent
-BlockInsideReaction_SpecialAir_PLMTable_crateria:
+  .crateria:
     dw PLMEntries_insideReactionCrateria80                               ;949A06;
     dw PLMEntries_nothing                                                ;949A08;
     dw PLMEntries_nothing                                                ;949A0A;
@@ -3507,7 +3847,7 @@ BlockInsideReaction_SpecialAir_PLMTable_crateria:
     dw PLMEntries_nothing                                                ;949A22;
     dw PLMEntries_nothing                                                ;949A24;
 
-BlockInsideReaction_SpecialAir_PLMTable_brinstar:
+  .brinstar:
     dw PLMEntries_insideReactionBrinstarFloorPlant                       ;949A26;
     dw PLMEntries_insideReactionBrinstarCeilingPlant                     ;949A28;
     dw PLMEntries_nothing                                                ;949A2A;
@@ -3525,7 +3865,7 @@ BlockInsideReaction_SpecialAir_PLMTable_brinstar:
     dw PLMEntries_nothing                                                ;949A42;
     dw PLMEntries_nothing                                                ;949A44;
 
-BlockInsideReaction_SpecialAir_PLMTable_norfair:
+  .norfair:
     dw PLMEntries_insideReactionNothing_B653                             ;949A46;
     dw PLMEntries_insideReactionNothing_B657                             ;949A48;
     dw PLMEntries_insideReactionNothing_B65B                             ;949A4A;
@@ -3543,7 +3883,7 @@ BlockInsideReaction_SpecialAir_PLMTable_norfair:
     dw PLMEntries_nothing                                                ;949A62;
     dw PLMEntries_nothing                                                ;949A64;
 
-BlockInsideReaction_SpecialAir_PLMTable_wreckedShip:
+  .wreckedShip:
     dw PLMEntries_nothing                                                ;949A66;
     dw PLMEntries_nothing                                                ;949A68;
     dw PLMEntries_nothing                                                ;949A6A;
@@ -3561,7 +3901,7 @@ BlockInsideReaction_SpecialAir_PLMTable_wreckedShip:
     dw PLMEntries_nothing                                                ;949A82;
     dw PLMEntries_nothing                                                ;949A84;
 
-BlockInsideReaction_SpecialAir_PLMTable_maridia:
+  .maridia:
     dw PLMEntries_insideReactionQuicksandSurface                         ;949A86;
     dw PLMEntries_insideReactionQuicksandSurface                         ;949A88;
     dw PLMEntries_insideReactionQuicksandSurface                         ;949A8A;
@@ -3579,7 +3919,7 @@ BlockInsideReaction_SpecialAir_PLMTable_maridia:
     dw PLMEntries_nothing                                                ;949AA2;
     dw PLMEntries_nothing                                                ;949AA4;
 
-BlockInsideReaction_SpecialAir_PLMTable_tourian:
+  .tourian:
     dw PLMEntries_nothing                                                ;949AA6;
     dw PLMEntries_nothing                                                ;949AA8;
     dw PLMEntries_nothing                                                ;949AAA;
@@ -3597,7 +3937,7 @@ BlockInsideReaction_SpecialAir_PLMTable_tourian:
     dw PLMEntries_nothing                                                ;949AC2;
     dw PLMEntries_nothing                                                ;949AC4;
 
-BlockInsideReaction_SpecialAir_PLMTable_ceres:
+  .ceres:
     dw PLMEntries_nothing                                                ;949AC6;
     dw PLMEntries_nothing                                                ;949AC8;
     dw PLMEntries_nothing                                                ;949ACA;
@@ -3615,7 +3955,7 @@ BlockInsideReaction_SpecialAir_PLMTable_ceres:
     dw PLMEntries_nothing                                                ;949AE2;
     dw PLMEntries_nothing                                                ;949AE4;
 
-BlockInsideReaction_SpecialAir_PLMTable_debug:
+  .debug:
     dw PLMEntries_insideReactionCrateria80                               ;949AE6;
     dw PLMEntries_nothing                                                ;949AE8;
     dw PLMEntries_nothing                                                ;949AEA;
@@ -3633,7 +3973,7 @@ BlockInsideReaction_SpecialAir_PLMTable_debug:
     dw PLMEntries_nothing                                                ;949B02;
     dw PLMEntries_nothing                                                ;949B04;
 
-BlockInsideReaction_SpecialAir_PLMTable_Pointers:
+  .Pointers:
     dw BlockInsideReaction_SpecialAir_PLMTable_crateria                  ;949B06;
     dw BlockInsideReaction_SpecialAir_PLMTable_brinstar                  ;949B08;
     dw BlockInsideReaction_SpecialAir_PLMTable_norfair                   ;949B0A;
@@ -3643,6 +3983,8 @@ BlockInsideReaction_SpecialAir_PLMTable_Pointers:
     dw BlockInsideReaction_SpecialAir_PLMTable_ceres                     ;949B12;
     dw BlockInsideReaction_SpecialAir_PLMTable_debug                     ;949B14;
 
+
+;;; $9B16: Block inside reaction - special air ;;;
 BlockInsideReaction_SpecialAir:
     LDX.W $0DC4                                                          ;949B16;
     LDA.L $7F6401,X                                                      ;949B19;
@@ -3653,7 +3995,6 @@ BlockInsideReaction_SpecialAir:
     TAX                                                                  ;949B24;
     JSR.W (BlockInsideReaction_SpecialAir_JumpTable,X)                   ;949B25;
     RTS                                                                  ;949B28;
-
 
   .negativeBTS:
     XBA                                                                  ;949B29;
@@ -3670,6 +4011,7 @@ BlockInsideReaction_SpecialAir:
     RTS                                                                  ;949B3F;
 
 
+;;; $9B40: Block inside reaction pointers ;;;
 BlockInsideReactionPointers:
     dw BlockInsideReaction_Air_ShootableAir_BombableAir                  ;949B40; *0: Air
     dw BlockInsideReaction_Slope                                         ;949B42;  1: Slope
@@ -3688,7 +4030,15 @@ BlockInsideReactionPointers:
     dw BlockInsideReaction_SolidDoorSpikeSpecialShotGrappleBomb          ;949B5C; *Eh: Grapple block
     dw BlockInsideReaction_SolidDoorSpikeSpecialShotGrappleBomb          ;949B5E; *Fh: Bombable block
 
+
+;;; $9B60: Samus block inside handling ;;;
 SamusBlockInsideHandling:
+; This routine uses XOR to test if two values are different, which is fine,
+; but chaining it a second time ($94:9BEB) doesn't work at all,
+; so that branch is very unlikely to be taken >_<;
+; Result is that if Samus' top and center are in the same block (and her bottom is in a different block),
+; that block's inside reaction will usually be executed twice
+; I guess the reaction of the block her top is inside *won't* be executed under some circumstances too
     PHB                                                                  ;949B60;
     PHK                                                                  ;949B61;
     PLB                                                                  ;949B62;
@@ -3780,7 +4130,10 @@ SamusBlockInsideHandling:
     RTL                                                                  ;949C1C;
 
 
+;;; $9C1D: Calculate block at ([$1A] + [$1E], [$1C] + [$20]) ;;;
 CalculateBlockAt_12_1E_1C_20:
+; Every call site sets $1E and $20 to zero
+; Sets X to zero if block index is calculated successfully (for no reason)
     PHP                                                                  ;949C1D;
     REP #$30                                                             ;949C1E;
     LDA.B $1A                                                            ;949C20;
@@ -3825,7 +4178,6 @@ CalculateBlockAt_12_1E_1C_20:
     STA.W $0DC4                                                          ;949C66;
     BRA .return                                                          ;949C69;
 
-
   .giveUp:
     LDA.W #$FFFF                                                         ;949C6B;
     STA.W $0DC4                                                          ;949C6E;
@@ -3835,7 +4187,17 @@ CalculateBlockAt_12_1E_1C_20:
     RTS                                                                  ;949C72;
 
 
+;;; $9C73: Determine projectile proto type ;;;
 DetermineProjectile_Prototype:
+;; Parameters:
+;;     X: Projectile index
+
+; Called only as part of BombAndPowerBombExplosionBlockCollisionHandling for determining if a (power) bomb is a normal bomb or not
+; Highly likely that this is based on an old model of the projectile system and was supposed to have been entirely abandoned,
+; but here we are
+
+; The is a frame after the end of a power bomb explosion where this subroutine is called where the projectile type is 0,
+; cause the code at $9C83 to be executed. I doubt this is intentional
     PHP                                                                  ;949C73;
     PHB                                                                  ;949C74;
     PHX                                                                  ;949C75;
@@ -3858,7 +4220,6 @@ DetermineProjectile_Prototype:
     STA.W $0DD2                                                          ;949C97;
     BRA .return                                                          ;949C9A;
 
-
   .notBeam:
     ASL A                                                                ;949C9C;
     INC A                                                                ;949C9D;
@@ -3874,7 +4235,12 @@ DetermineProjectile_Prototype:
     RTS                                                                  ;949CAB;
 
 
+;;; $9CAC: (Power) bomb explosion block collision handling ;;;
 BombAndPowerBombExplosionBlockCollisionHandling:
+;; Parameters:
+;;     X: Projectile index
+
+; Executed for bombs on every frame, not just the frame(s) an explosion is active o_O
     PHP                                                                  ;949CAC;
     PHB                                                                  ;949CAD;
     PHK                                                                  ;949CAE;
@@ -3907,7 +4273,6 @@ BombAndPowerBombExplosionBlockCollisionHandling:
     JSR.W PowerBombExplosionBlockCollisionHandling                       ;949CE9;
     BRA .return                                                          ;949CEC;
 
-
   .bomb:
     JSR.W BombExplosionBlockCollisionHandling                            ;949CEE;
 
@@ -3917,7 +4282,10 @@ BombAndPowerBombExplosionBlockCollisionHandling:
     RTL                                                                  ;949CF3;
 
 
+;;; $9CF4: Bomb explosion block collision handling ;;;
 BombExplosionBlockCollisionHandling:
+;; Parameters:
+;;     X: Projectile index
     LDA.W $0C7C,X                                                        ;949CF4;
     BNE .return                                                          ;949CF7;
     LDA.W $0C18,X                                                        ;949CF9;
@@ -3946,10 +4314,12 @@ BombExplosionBlockCollisionHandling:
     RTS                                                                  ;949D32;
 
 
+;;; $9D33: RTS ;;;
 RTS_949D33:
     RTS                                                                  ;949D33;
 
 
+;;; $9D34: Move block index X one row up ;;;
 MoveBlockIndexX_OneBlockUp:
     TXA                                                                  ;949D34;
     SEC                                                                  ;949D35;
@@ -3959,6 +4329,7 @@ MoveBlockIndexX_OneBlockUp:
     RTS                                                                  ;949D3D;
 
 
+;;; $9D3E: Move block index X one row down, one column right ;;;
 MoveBlockIndexX_OneRowDown_OneColumnRight:
     TXA                                                                  ;949D3E;
     SEC                                                                  ;949D3F;
@@ -3969,6 +4340,7 @@ MoveBlockIndexX_OneRowDown_OneColumnRight:
     RTS                                                                  ;949D48;
 
 
+;;; $9D49: Move block index X two columns left ;;;
 MoveBlockIndexX_TwoColumnsLeft:
     DEX                                                                  ;949D49;
     DEX                                                                  ;949D4A;
@@ -3977,7 +4349,9 @@ MoveBlockIndexX_TwoColumnsLeft:
     RTS                                                                  ;949D4D;
 
 
+;;; $9D4E: Move block index X one row down, one column right ;;;
 MoveBlockIndexX_OneRowDown_OneColumRight_duplicate:
+; Clone of MoveBlockIndexX_OneRowDown_OneColumnRight
     TXA                                                                  ;949D4E;
     SEC                                                                  ;949D4F;
     ADC.W $07A5                                                          ;949D50;
@@ -3987,17 +4361,22 @@ MoveBlockIndexX_OneRowDown_OneColumRight_duplicate:
     RTS                                                                  ;949D58;
 
 
+;;; $9D59: Clear carry ;;;
 CLCRTS_949D59:
     CLC                                                                  ;949D59;
     RTS                                                                  ;949D5A;
 
 
+;;; $9D5B: Set carry ;;;
 SECRTS_949D5B:
     SEC                                                                  ;949D5B;
     RTS                                                                  ;949D5C;
 
 
+;;; $9D5D: Spread bomb block reaction - slope ;;;
 BombSpreadBlockReaction_Slope:
+;; Returns:
+;;     Carry: Set if collision detected, clear otherwise
     LDX.W $0DC4                                                          ;949D5D;
     LDA.L $7F6402,X                                                      ;949D60;
     AND.W #$001F                                                         ;949D64;
@@ -4005,12 +4384,12 @@ BombSpreadBlockReaction_Slope:
     BCC .returnCollision                                                 ;949D6A;
     JMP.W BlockShotReaction_Horizontal_Slope_NonSquare                   ;949D6C;
 
-
   .returnCollision:
     SEC                                                                  ;949D6F;
     RTS                                                                  ;949D70;
 
 
+;;; $9D71: Block bombed reaction - special block ;;;
 BlockBombedReaction_SpecialBlock:
     LDX.W $0DC4                                                          ;949D71;
     LDA.L $7F6401,X                                                      ;949D74;
@@ -4024,7 +4403,6 @@ BlockBombedReaction_SpecialBlock:
     REP #$40                                                             ;949D87;
     SEC                                                                  ;949D89;
     RTS                                                                  ;949D8A;
-
 
   .areaDependent:
     AND.W #$007F                                                         ;949D8B;
@@ -4042,7 +4420,9 @@ BlockBombedReaction_SpecialBlock:
     RTS                                                                  ;949DA3;
 
 
-BlockBombedReaction_SpecialBlock_PLMTable_areaIndependent:
+;;; $9DA4: Block bombed reaction - special block - PLM table ;;;
+BlockBombedReaction_SpecialBlock_PLMTable:
+  .areaIndependent:
     dw PLMEntries_1x1RespawningCrumbleBlock                              ;949DA4;
     dw PLMEntries_2x1RespawningCrumbleBlock                              ;949DA6;
     dw PLMEntries_1x2RespawningCrumbleBlock                              ;949DA8;
@@ -4060,7 +4440,7 @@ BlockBombedReaction_SpecialBlock_PLMTable_areaIndependent:
     dw PLMEntries_BombReaction_SpeedBoostBlock                           ;949DC0;
     dw PLMEntries_BombReaction_SpeedBoostBlock                           ;949DC2;
 
-BlockBombedReaction_SpecialBlock_PLMTable_crateria:
+  .crateria:
     dw PLMEntries_nothing                                                ;949DC4;
     dw PLMEntries_nothing                                                ;949DC6;
     dw PLMEntries_nothing                                                ;949DC8;
@@ -4070,7 +4450,7 @@ BlockBombedReaction_SpecialBlock_PLMTable_crateria:
     dw PLMEntries_nothing                                                ;949DD0;
     dw PLMEntries_nothing                                                ;949DD2;
 
-BlockBombedReaction_SpecialBlock_PLMTable_brinstar:
+  .brinstar:
     dw PLMEntries_nothing                                                ;949DD4;
     dw PLMEntries_nothing                                                ;949DD6;
     dw PLMEntries_BombReaction_SpeedBoostBlock                           ;949DD8;
@@ -4080,7 +4460,7 @@ BlockBombedReaction_SpecialBlock_PLMTable_brinstar:
     dw PLMEntries_nothing                                                ;949DE0;
     dw PLMEntries_nothing                                                ;949DE2;
 
-BlockBombedReaction_SpecialBlock_PLMTable_norfair:
+  .norfair:
     dw PLMEntries_nothing                                                ;949DE4;
     dw PLMEntries_nothing                                                ;949DE6;
     dw PLMEntries_nothing                                                ;949DE8;
@@ -4090,7 +4470,7 @@ BlockBombedReaction_SpecialBlock_PLMTable_norfair:
     dw PLMEntries_nothing                                                ;949DF0;
     dw PLMEntries_nothing                                                ;949DF2;
 
-BlockBombedReaction_SpecialBlock_PLMTable_wreckedShip:
+  .wreckedShip:
     dw PLMEntries_nothing                                                ;949DF4;
     dw PLMEntries_nothing                                                ;949DF6;
     dw PLMEntries_nothing                                                ;949DF8;
@@ -4100,7 +4480,7 @@ BlockBombedReaction_SpecialBlock_PLMTable_wreckedShip:
     dw PLMEntries_nothing                                                ;949E00;
     dw PLMEntries_nothing                                                ;949E02;
 
-BlockBombedReaction_SpecialBlock_PLMTable_maridia:
+  .maridia:
     dw PLMEntries_nothing                                                ;949E04;
     dw PLMEntries_nothing                                                ;949E06;
     dw PLMEntries_nothing                                                ;949E08;
@@ -4110,7 +4490,7 @@ BlockBombedReaction_SpecialBlock_PLMTable_maridia:
     dw PLMEntries_nothing                                                ;949E10;
     dw PLMEntries_nothing                                                ;949E12;
 
-BlockBombedReaction_SpecialBlock_PLMTable_tourian:
+  .tourian:
     dw PLMEntries_nothing                                                ;949E14;
     dw PLMEntries_nothing                                                ;949E16;
     dw PLMEntries_nothing                                                ;949E18;
@@ -4120,7 +4500,7 @@ BlockBombedReaction_SpecialBlock_PLMTable_tourian:
     dw PLMEntries_nothing                                                ;949E20;
     dw PLMEntries_nothing                                                ;949E22;
 
-BlockBombedReaction_SpecialBlock_PLMTable_ceres:
+  .ceres:
     dw PLMEntries_nothing                                                ;949E24;
     dw PLMEntries_nothing                                                ;949E26;
     dw PLMEntries_nothing                                                ;949E28;
@@ -4130,7 +4510,7 @@ BlockBombedReaction_SpecialBlock_PLMTable_ceres:
     dw PLMEntries_nothing                                                ;949E30;
     dw PLMEntries_nothing                                                ;949E32;
 
-BlockBombedReaction_SpecialBlock_PLMTable_debug:
+  .debug:
     dw PLMEntries_nothing                                                ;949E34;
     dw PLMEntries_nothing                                                ;949E36;
     dw PLMEntries_nothing                                                ;949E38;
@@ -4140,7 +4520,7 @@ BlockBombedReaction_SpecialBlock_PLMTable_debug:
     dw PLMEntries_nothing                                                ;949E40;
     dw PLMEntries_nothing                                                ;949E42;
 
-BlockBombedReaction_SpecialBlock_PLMTable_areaPointers:
+  .areaPointers:
     dw BlockBombedReaction_SpecialBlock_PLMTable_crateria                ;949E44;
     dw BlockBombedReaction_SpecialBlock_PLMTable_brinstar                ;949E46;
     dw BlockBombedReaction_SpecialBlock_PLMTable_norfair                 ;949E48;
@@ -4150,11 +4530,17 @@ BlockBombedReaction_SpecialBlock_PLMTable_areaPointers:
     dw BlockBombedReaction_SpecialBlock_PLMTable_ceres                   ;949E50;
     dw BlockBombedReaction_SpecialBlock_PLMTable_debug                   ;949E52;
 
+
+;;; $9E54: RTS ;;;
 RTS_949E54:
     RTS                                                                  ;949E54;
 
 
+;;; $9E55: Block shot/bombed/grappled reaction - shootable air ;;;
 BlockBombShotGrappledReaction_ShootableAir:
+;; Returns:
+;;     Carry: Clear. No collision
+;;     Overflow: Clear (no effect)
     LDX.W $0DC4                                                          ;949E55;
     LDA.L $7F6401,X                                                      ;949E58;
     AND.W #$FF00                                                         ;949E5C;
@@ -4168,14 +4554,17 @@ BlockBombShotGrappledReaction_ShootableAir:
     CLC                                                                  ;949E6D; >.<
     RTS                                                                  ;949E6E;
 
-
   .returnDuplicate:
     REP #$40                                                             ;949E6F;
     CLC                                                                  ;949E71; >.<
     RTS                                                                  ;949E72;
 
 
+;;; $9E73: Block shot/bombed/grappled reaction - shootable block ;;;
 BlockBombShotGrappledReaction_ShootableBlock:
+;; Returns:
+;;     Carry: Set. Unconditional collision
+;;     Overflow: Clear. Cancel grapple beam
     LDX.W $0DC4                                                          ;949E73;
     LDA.L $7F6401,X                                                      ;949E76;
     AND.W #$FF00                                                         ;949E7A;
@@ -4188,7 +4577,6 @@ BlockBombShotGrappledReaction_ShootableBlock:
     REP #$40                                                             ;949E89;
     SEC                                                                  ;949E8B;
     RTS                                                                  ;949E8C;
-
 
   .areaDependent:
     AND.W #$007F                                                         ;949E8D;
@@ -4206,7 +4594,9 @@ BlockBombShotGrappledReaction_ShootableBlock:
     RTS                                                                  ;949EA5;
 
 
-BlockBombShotGrappledReaction_Shootable_PLMTable_noArea:
+;;; $9EA6: Block shot/bombed/grappled reaction - shootable - PLM table ;;;
+BlockBombShotGrappledReaction_Shootable_PLMTable:
+  .noArea:
     dw PLMEntries_Reaction_1x1RespawningShotBlock                        ;949EA6;
     dw PLMEntries_Reaction_2x1RespawningShotBlock                        ;949EA8;
     dw PLMEntries_Reaction_1x2RespawningShotBlock                        ;949EAA;
@@ -4288,7 +4678,7 @@ BlockBombShotGrappledReaction_Shootable_PLMTable_noArea:
     dw PLMEntries_nothing                                                ;949F42;
     dw PLMEntries_Reaction_CrittersEscapeBlock                           ;949F44;
 
-BlockBombShotGrappledReaction_Shootable_PLMTable_crateria:
+  .crateria:
     dw PLMEntries_nothing                                                ;949F46;
     dw PLMEntries_nothing                                                ;949F48;
     dw PLMEntries_nothing                                                ;949F4A;
@@ -4298,7 +4688,7 @@ BlockBombShotGrappledReaction_Shootable_PLMTable_crateria:
     dw PLMEntries_nothing                                                ;949F52;
     dw PLMEntries_nothing                                                ;949F54;
 
-BlockBombShotGrappledReaction_Shootable_PLMTable_brinstar:
+  .brinstar:
     dw PLMEntries_nothing                                                ;949F56;
     dw PLMEntries_nothing                                                ;949F58;
     dw PLMEntries_nothing                                                ;949F5A;
@@ -4308,7 +4698,7 @@ BlockBombShotGrappledReaction_Shootable_PLMTable_brinstar:
     dw PLMEntries_nothing                                                ;949F62;
     dw PLMEntries_nothing                                                ;949F64;
 
-BlockBombShotGrappledReaction_Shootable_PLMTable_norfair:
+  .norfair:
     dw PLMEntries_nothing                                                ;949F66;
     dw PLMEntries_nothing                                                ;949F68;
     dw PLMEntries_nothing                                                ;949F6A;
@@ -4318,7 +4708,7 @@ BlockBombShotGrappledReaction_Shootable_PLMTable_norfair:
     dw PLMEntries_nothing                                                ;949F72;
     dw PLMEntries_nothing                                                ;949F74;
 
-BlockBombShotGrappledReaction_Shootable_PLMTable_wreckedShip:
+  .wreckedShip:
     dw PLMEntries_nothing                                                ;949F76;
     dw PLMEntries_nothing                                                ;949F78;
     dw PLMEntries_nothing                                                ;949F7A;
@@ -4328,7 +4718,7 @@ BlockBombShotGrappledReaction_Shootable_PLMTable_wreckedShip:
     dw PLMEntries_nothing                                                ;949F82;
     dw PLMEntries_nothing                                                ;949F84;
 
-BlockBombShotGrappledReaction_Shootable_PLMTable_maridia:
+  .maridia:
     dw PLMEntries_nothing                                                ;949F86;
     dw PLMEntries_nothing                                                ;949F88;
     dw PLMEntries_nothing                                                ;949F8A;
@@ -4338,7 +4728,7 @@ BlockBombShotGrappledReaction_Shootable_PLMTable_maridia:
     dw PLMEntries_nothing                                                ;949F92;
     dw PLMEntries_nothing                                                ;949F94;
 
-BlockBombShotGrappledReaction_Shootable_PLMTable_tourian:
+  .tourian:
     dw PLMEntries_nothing                                                ;949F96;
     dw PLMEntries_nothing                                                ;949F98;
     dw PLMEntries_nothing                                                ;949F9A;
@@ -4348,7 +4738,7 @@ BlockBombShotGrappledReaction_Shootable_PLMTable_tourian:
     dw PLMEntries_nothing                                                ;949FA2;
     dw PLMEntries_nothing                                                ;949FA4;
 
-BlockBombShotGrappledReaction_Shootable_PLMTable_ceres:
+  .ceres:
     dw PLMEntries_nothing                                                ;949FA6;
     dw PLMEntries_nothing                                                ;949FA8;
     dw PLMEntries_nothing                                                ;949FAA;
@@ -4358,7 +4748,7 @@ BlockBombShotGrappledReaction_Shootable_PLMTable_ceres:
     dw PLMEntries_nothing                                                ;949FB2;
     dw PLMEntries_nothing                                                ;949FB4;
 
-BlockBombShotGrappledReaction_Shootable_PLMTable_debug:
+  .debug:
     dw PLMEntries_nothing                                                ;949FB6;
     dw PLMEntries_nothing                                                ;949FB8;
     dw PLMEntries_nothing                                                ;949FBA;
@@ -4368,7 +4758,7 @@ BlockBombShotGrappledReaction_Shootable_PLMTable_debug:
     dw PLMEntries_nothing                                                ;949FC2;
     dw PLMEntries_nothing                                                ;949FC4;
 
-BlockBombShotGrappledReaction_Shootable_PLMTable_areaPointer:
+  .areaPointer:
     dw BlockBombShotGrappledReaction_Shootable_PLMTable_crateria         ;949FC6;
     dw BlockBombShotGrappledReaction_Shootable_PLMTable_brinstar         ;949FC8;
     dw BlockBombShotGrappledReaction_Shootable_PLMTable_norfair          ;949FCA;
@@ -4378,7 +4768,12 @@ BlockBombShotGrappledReaction_Shootable_PLMTable_areaPointer:
     dw BlockBombShotGrappledReaction_Shootable_PLMTable_ceres            ;949FD2;
     dw BlockBombShotGrappledReaction_Shootable_PLMTable_debug            ;949FD4;
 
+
+;;; $9FD6: Block shot/bombed/grappled reaction - bombable air ;;;
 BlockShotBombedGrappledReaction_BombableAir:
+;; Returns:
+;;     Carry: Clear. No collision
+;;     Overflow: Clear (no effect)
     LDX.W $0DC4                                                          ;949FD6;
     LDA.L $7F6401,X                                                      ;949FD9;
     AND.W #$FF00                                                         ;949FDD;
@@ -4392,14 +4787,17 @@ BlockShotBombedGrappledReaction_BombableAir:
     CLC                                                                  ;949FEE; >.<
     RTS                                                                  ;949FEF;
 
-
   .returnDuplicate:
     REP #$40                                                             ;949FF0;
     CLC                                                                  ;949FF2; >.<
     RTS                                                                  ;949FF3;
 
 
+;;; $9FF4: Block shot/bombed/grappled reaction - bombable block ;;;
 BlockShotBombedGrappledReaction_BombableBlock:
+;; Returns:
+;;     Carry: Set. Unconditional collision
+;;     Overflow: Clear. Cancel grapple beam
     LDX.W $0DC4                                                          ;949FF4;
     LDA.L $7F6401,X                                                      ;949FF7;
     AND.W #$FF00                                                         ;949FFB;
@@ -4413,13 +4811,13 @@ BlockShotBombedGrappledReaction_BombableBlock:
     SEC                                                                  ;94A00C;
     RTS                                                                  ;94A00D;
 
-
   .returnDuplicate:
     REP #$40                                                             ;94A00E;
     SEC                                                                  ;94A010;
     RTS                                                                  ;94A011;
 
 
+;;; $A012: Block shot/bombed/grappled reaction - bombable - PLM table ;;;
 BlockShotBombedGrappledReaction_Bombable_PLMTable:
     dw PLMEntries_Reaction_1x1RespawningBombBlock                        ;94A012;
     dw PLMEntries_Reaction_2x1RespawningBombBlock                        ;94A014;
@@ -4438,6 +4836,8 @@ BlockShotBombedGrappledReaction_Bombable_PLMTable:
     dw PLMEntries_nothing                                                ;94A02E;
     dw PLMEntries_nothing                                                ;94A030;
 
+
+;;; $A032: Block bombed reaction pointers ;;;
 BlockBombedReactionPointers:
     dw CLCRTS_949D59                                                     ;94A032;  0: Air
     dw CLCRTS_949D59                                                     ;94A034;  1: Slope
@@ -4456,7 +4856,11 @@ BlockBombedReactionPointers:
     dw SECRTS_949D5B                                                     ;94A04E;  Eh: Grapple block
     dw BlockShotBombedGrappledReaction_BombableBlock                     ;94A050; *Fh: Bombable block
 
+
+;;; $A052: Block bombed reaction ;;;
 BlockBombedReaction:
+;; Parameters:
+;;     X: Block index
     PHX                                                                  ;94A052;
     STX.W $0DC4                                                          ;94A053;
     LSR.W $0DC4                                                          ;94A056;
@@ -4472,7 +4876,10 @@ BlockBombedReaction:
     RTS                                                                  ;94A069;
 
 
+;;; $A06A: Power bomb explosion block collision handling ;;;
 PowerBombExplosionBlockCollisionHandling:
+;; Parameters:
+;;     X: Projectile index
     LDA.W $0C7C,X                                                        ;94A06A;
     BEQ .zero                                                            ;94A06D;
     BPL .return                                                          ;94A06F;
@@ -4480,7 +4887,6 @@ PowerBombExplosionBlockCollisionHandling:
 
   .return:
     RTS                                                                  ;94A074;
-
 
   .zero:
     LDA.W $0CEB                                                          ;94A075;
@@ -4561,7 +4967,13 @@ PowerBombExplosionBlockCollisionHandling:
     RTS                                                                  ;94A0F3;
 
 
+;;; $A0F4: Power bomb explosion block collision handling - row ;;;
 PowerBombExplosionBlockCollisionHandling_Row:
+;; Parameters:
+;;     A low: Origin Y block
+;;     A high: Origin X block
+;;     $16: Power bomb left boundary
+;;     $18: Power bomb right boundary
     SEP #$20                                                             ;94A0F4;
     STA.W $4202                                                          ;94A0F6;
     LDA.W $07A5                                                          ;94A0F9;
@@ -4588,7 +5000,13 @@ PowerBombExplosionBlockCollisionHandling_Row:
     RTS                                                                  ;94A119;
 
 
+;;; $A11A: Power bomb explosion block collision handling - column ;;;
 PowerBombExplosionBlockCollisionHandling_Column:
+;; Parameters:
+;;     A low: Origin Y block
+;;     A high: Origin X block
+;;     $1A: Power bomb top boundary
+;;     $1C: Power bomb bottom boundary
     SEP #$20                                                             ;94A11A;
     STA.W $4202                                                          ;94A11C;
     LDA.W $07A5                                                          ;94A11F;
@@ -4618,7 +5036,18 @@ PowerBombExplosionBlockCollisionHandling_Column:
     RTS                                                                  ;94A146;
 
 
+;;; $A147: Block shot reaction - horizontal - slope ;;;
 BlockShotReaction_Horizontal_Slope:
+;; Parameters:
+;;     $1A: Projectile Y span - 1
+;;     $1C: Target boundary (left/right depending on sign of projectile velocity)
+;;     $1E: (Super) missile flag
+;;     $26: Number of blocks left to check - 1
+;;     $28: Target number of collisions - 1
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $26: Remaining number of blocks left to check - 1
+;;     $28: Remaining target number of collisions - 1
     LDX.W $0DC4                                                          ;94A147;
     LDA.L $7F6402,X                                                      ;94A14A;
     AND.W #$001F                                                         ;94A14E;
@@ -4626,17 +5055,28 @@ BlockShotReaction_Horizontal_Slope:
     BCC .gotoSquare                                                      ;94A154;
     JMP.W BlockShotReaction_Horizontal_Slope_NonSquare                   ;94A156;
 
-
   .gotoSquare:
     JMP.W BlockShotReaction_Horizontal_Slope_Square                      ;94A159;
 
 
+;;; $A15C: Unused. Set carry ;;;
 SECRTS_94A15C:
     SEC                                                                  ;94A15C;
     RTS                                                                  ;94A15D;
 
 
+;;; $A15E: Block shot reaction - vertical - slope ;;;
 BlockShotReaction_Vertical_Slope:
+;; Parameters:
+;;     $1A: Projectile Y span - 1
+;;     $1C: Target boundary (left/right depending on sign of projectile velocity)
+;;     $1E: (Super) missile flag
+;;     $26: Number of blocks left to check - 1
+;;     $28: Target number of collisions - 1
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $26: Remaining number of blocks left to check - 1
+;;     $28: Remaining target number of collisions - 1
     LDX.W $0DC4                                                          ;94A15E;
     LDA.L $7F6402,X                                                      ;94A161;
     AND.W #$001F                                                         ;94A165;
@@ -4644,16 +5084,17 @@ BlockShotReaction_Vertical_Slope:
     BCC .gotoSquare                                                      ;94A16B;
     JMP.W BlockShotReaction_Vertical_Slope_NonSquare                     ;94A16D;
 
-
   .gotoSquare:
     JMP.W BlockShotReaction_Vertical_Slope_Square                        ;94A170;
 
 
+;;; $A173: Unused. Set carry ;;;
 SECRTS_94A173:
     SEC                                                                  ;94A173;
     RTS                                                                  ;94A174;
 
 
+;;; $A175: Block shot reaction pointers - horizontal ;;;
 BlockShotReactionPointers_Horizontal:
     dw CLCRTS_949D59                                                     ;94A175;  0: Air
     dw BlockShotReaction_Horizontal_Slope                                ;94A177; *1: Slope
@@ -4672,6 +5113,8 @@ BlockShotReactionPointers_Horizontal:
     dw SECRTS_949D5B                                                     ;94A191;  Eh: Grapple block
     dw BlockShotBombedGrappledReaction_BombableBlock                     ;94A193; *Fh: Bombable block
 
+
+;;; $A195: Block shot reaction pointers - vertical ;;;
 BlockShotReactionPointers_Vertical:
 ; Same as horizontal pointers except for slope
     dw CLCRTS_949D59                                                     ;94A195;  0: Air
@@ -4691,7 +5134,20 @@ BlockShotReactionPointers_Vertical:
     dw SECRTS_949D5B                                                     ;94A1B1;  Eh: Grapple block
     dw BlockShotBombedGrappledReaction_BombableBlock                     ;94A1B3; *Fh: Bombable block
 
+
+;;; $A1B5: Block shot reaction - horizontal ;;;
 BlockShotReaction_Horizontal:
+;; Parameters:
+;;     X: Block index
+;;     $1A: Projectile Y span - 1
+;;     $1C: Target boundary (left/right depending on sign of projectile velocity)
+;;     $1E: (Super) missile flag
+;;     $26: Number of blocks left to check - 1
+;;     $28: Target number of collisions - 1
+;; Returns:
+;;     Carry: set if collided with block, clear otherwise
+;;     $26: Remaining number of blocks left to check - 1
+;;     $28: Remaining target number of collisions - 1
     CPX.W $07B9                                                          ;94A1B5;
     BCS .return                                                          ;94A1B8;
     PHX                                                                  ;94A1BA;
@@ -4715,7 +5171,19 @@ BlockShotReaction_Horizontal:
     RTS                                                                  ;94A1D5;
 
 
+;;; $A1D6: Block shot reaction - vertical ;;;
 BlockShotReaction_Vertical:
+;; Parameters:
+;;     X: Block index
+;;     $1A: Projectile X span - 1
+;;     $1C: Target boundary (top/bottom depending on sign of projectile velocity)
+;;     $1E: (Super) missile flag
+;;     $26: Number of blocks left to check - 1
+;;     $28: Target number of collisions - 1
+;; Returns:
+;;     Carry: set if collided with block, clear otherwise
+;;     $26: Remaining number of blocks left to check - 1
+;;     $28: Remaining target number of collisions - 1
     CPX.W $07B9                                                          ;94A1D6;
     BCS .return                                                          ;94A1D9;
     PHX                                                                  ;94A1DB;
@@ -4739,7 +5207,14 @@ BlockShotReaction_Vertical:
     RTS                                                                  ;94A1F6;
 
 
+;;; $A1F7: Calculate projectile Y block span ;;;
 CalculateProjectileYBlockSpan:
+;; Returns:
+;;     $1A: Projectile Y span - 1
+;;     $26: Number of blocks left to check - 1
+;;     $28: Target number of collisions - 1
+
+; $1A = $26 = $28 = (projectile bottom boundary) / 10h - (projectile top boundary) / 10h
     LDA.W $0B78,X                                                        ;94A1F7;
     SEC                                                                  ;94A1FA;
     SBC.W $0BC8,X                                                        ;94A1FB;
@@ -4761,7 +5236,14 @@ CalculateProjectileYBlockSpan:
     RTS                                                                  ;94A218;
 
 
+;;; $A219: Calculate projectile X block span ;;;
 CalculateProjectileXBlockSpan:
+;; Returns:
+;;     $1A: Projectile X span - 1
+;;     $26: Number of blocks left to check - 1
+;;     $28: Target number of collisions - 1
+
+; $1A = $26 = $28 = (projectile right boundary) / 10h - (projectile left boundary) / 10h
     LDA.W $0B64,X                                                        ;94A219;
     SEC                                                                  ;94A21C;
     SBC.W $0BB4,X                                                        ;94A21D;
@@ -4783,7 +5265,12 @@ CalculateProjectileXBlockSpan:
     RTS                                                                  ;94A23A;
 
 
+;;; $A23B: Move beam horizontally - no wave beam ;;;
 MoveBeamHorizontally_NoWaveBeam:
+;; Parameters:
+;;     X: Projectile index
+;; Returns:
+;;     Carry: set if collided with block, clear otherwise
     PHB                                                                  ;94A23B;
     PHX                                                                  ;94A23C;
     PHK                                                                  ;94A23D;
@@ -4825,7 +5312,6 @@ MoveBeamHorizontally_NoWaveBeam:
     DEC A                                                                ;94A286;
     BRA +                                                                ;94A287;
 
-
   .negative14:
     SEC                                                                  ;94A289;
     SBC.W $0BB4,X                                                        ;94A28A;
@@ -4865,7 +5351,6 @@ MoveBeamHorizontally_NoWaveBeam:
     CLC                                                                  ;94A2C0;
     RTL                                                                  ;94A2C1;
 
-
   .completeCollision:
     PLX                                                                  ;94A2C2;
     JSL.L Kill_Projectile                                                ;94A2C3;
@@ -4874,7 +5359,12 @@ MoveBeamHorizontally_NoWaveBeam:
     RTL                                                                  ;94A2C9;
 
 
+;;; $A2CA: Move beam vertically - no wave beam ;;;
 MoveBeamVertically_NoWaveBeam:
+;; Parameters:
+;;     X: Projectile index
+;; Returns:
+;;     Carry: set if collided with block, clear otherwise
     PHB                                                                  ;94A2CA;
     PHX                                                                  ;94A2CB;
     PHK                                                                  ;94A2CC;
@@ -4903,7 +5393,6 @@ MoveBeamVertically_NoWaveBeam:
     ADC.W $0BC8,X                                                        ;94A2FA;
     DEC A                                                                ;94A2FD;
     BRA +                                                                ;94A2FE;
-
 
   .negative14:
     SEC                                                                  ;94A300;
@@ -4953,7 +5442,6 @@ MoveBeamVertically_NoWaveBeam:
     CLC                                                                  ;94A348;
     RTL                                                                  ;94A349;
 
-
   .completeCollision:
     PLX                                                                  ;94A34A;
     JSL.L Kill_Projectile                                                ;94A34B;
@@ -4962,7 +5450,12 @@ MoveBeamVertically_NoWaveBeam:
     RTL                                                                  ;94A351;
 
 
+;;; $A352: Move beam horizontally - wave beam ;;;
 MoveBeamHorizontally_WaveBeam:
+;; Parameters:
+;;     X: Projectile index
+;; Returns:
+;;     Carry: Clear. No collision
     PHB                                                                  ;94A352;
     PHX                                                                  ;94A353;
     PHK                                                                  ;94A354;
@@ -5003,7 +5496,6 @@ MoveBeamHorizontally_WaveBeam:
     ADC.W $0BB4,X                                                        ;94A39A;
     DEC A                                                                ;94A39D;
     BRA +                                                                ;94A39E;
-
 
   .leftBoundary:
     SEC                                                                  ;94A3A0;
@@ -5050,7 +5542,12 @@ MoveBeamHorizontally_WaveBeam:
     RTL                                                                  ;94A3E3;
 
 
+;;; $A3E4: Move beam vertically - wave beam ;;;
 MoveBeamVertically_WaveBeam:
+;; Parameters:
+;;     X: Projectile index
+;; Returns:
+;;     Carry: Clear. No collision
     PHB                                                                  ;94A3E4;
     PHX                                                                  ;94A3E5;
     PHK                                                                  ;94A3E6;
@@ -5079,7 +5576,6 @@ MoveBeamVertically_WaveBeam:
     ADC.W $0BC8,X                                                        ;94A414;
     DEC A                                                                ;94A417;
     BRA +                                                                ;94A418;
-
 
   .negative14:
     SEC                                                                  ;94A41A;
@@ -5135,7 +5631,12 @@ MoveBeamVertically_WaveBeam:
     RTL                                                                  ;94A46E;
 
 
+;;; $A46F: Move (super) missile horizontally ;;;
 MoveMissileHorizontally:
+;; Parameters:
+;;     X: Projectile index
+;; Returns:
+;;     Carry: set if collided with block, clear otherwise
     PHB                                                                  ;94A46F;
     PHX                                                                  ;94A470;
     PHK                                                                  ;94A471;
@@ -5192,7 +5693,6 @@ MoveMissileHorizontally:
     CLC                                                                  ;94A4CF;
     RTL                                                                  ;94A4D0;
 
-
   .collision:
     PLX                                                                  ;94A4D1;
     JSL.L Kill_Projectile                                                ;94A4D2;
@@ -5201,7 +5701,12 @@ MoveMissileHorizontally:
     RTL                                                                  ;94A4D8;
 
 
+;;; $A4D9: Move (super) missile vertically ;;;
 MoveMissileVertically:
+;; Parameters:
+;;     X: Projectile index
+;; Returns:
+;;     Carry: set if collided with block, clear otherwise
     PHB                                                                  ;94A4D9;
     PHX                                                                  ;94A4DA;
     PHK                                                                  ;94A4DB;
@@ -5258,7 +5763,6 @@ MoveMissileVertically:
     CLC                                                                  ;94A539;
     RTL                                                                  ;94A53A;
 
-
   .collision:
     PLX                                                                  ;94A53B;
     JSL.L Kill_Projectile                                                ;94A53C;
@@ -5267,7 +5771,17 @@ MoveMissileVertically:
     RTL                                                                  ;94A542;
 
 
+;;; $A543: Block shot reaction - horizontal - slope - non-square ;;;
 BlockShotReaction_Horizontal_Slope_NonSquare:
+;; Parameters:
+;;     $26: Number of blocks left to check - 1
+;;     $28: Target number of collisions - 1
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $26: Remaining number of blocks left to check - 1
+;;     $28: Remaining target number of collisions - 1
+
+; Used for spread bomb collision also
     REP #$20                                                             ;94A543;
     LDX.W $0DC4                                                          ;94A545;
     LDY.W $0DDE                                                          ;94A548;
@@ -5288,7 +5802,15 @@ BlockShotReaction_Horizontal_Slope_NonSquare:
     RTS                                                                  ;94A568;
 
 
+;;; $A569: Block shot reaction - vertical - slope - non-square ;;;
 BlockShotReaction_Vertical_Slope_NonSquare:
+;; Parameters:
+;;     $26: Number of blocks left to check - 1
+;;     $28: Target number of collisions - 1
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $26: Remaining number of blocks left to check - 1
+;;     $28: Remaining target number of collisions - 1
     REP #$20                                                             ;94A569;
     LDX.W $0DC4                                                          ;94A56B;
     LDY.W $0DDE                                                          ;94A56E;
@@ -5309,7 +5831,18 @@ BlockShotReaction_Vertical_Slope_NonSquare:
     RTS                                                                  ;94A58E;
 
 
+;;; $A58F: Block shot reaction - slope - non-square ;;;
 BlockShotReaction_Slope_NonSquare:
+;; Parameters:
+;;     X: Block index
+;;     $26: Number of blocks left to check - 1
+;;     $28: Target number of collisions - 1
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $26: Remaining number of blocks left to check - 1
+;;     $28: Remaining target number of collisions - 1
+
+; Used for spread bomb collision also ($26/$28 don't matter in that case)
     LDA.L $7F6402,X                                                      ;94A58F;
     AND.W #$001F                                                         ;94A593;
     ASL A                                                                ;94A596;
@@ -5323,7 +5856,6 @@ BlockShotReaction_Slope_NonSquare:
     LDA.W $0B64,Y                                                        ;94A5A4;
     BRA +                                                                ;94A5A7;
 
-
   .blockBTS40:
     LDA.W $0B64,Y                                                        ;94A5A9;
     EOR.W #$000F                                                         ;94A5AC;
@@ -5335,7 +5867,6 @@ BlockShotReaction_Slope_NonSquare:
     LDA.L $7F6401,X                                                      ;94A5B7;
     BMI .blockBTSMSB                                                     ;94A5BB;
     JMP.W .YFlip                                                         ;94A5BD;
-
 
   .blockBTSMSB:
     PLX                                                                  ;94A5C0;
@@ -5351,13 +5882,11 @@ BlockShotReaction_Slope_NonSquare:
     CLC                                                                  ;94A5DA;
     RTS                                                                  ;94A5DB;
 
-
   .collision:
     STZ.B $26                                                            ;94A5DC;
     STZ.B $28                                                            ;94A5DE;
     SEC                                                                  ;94A5E0;
     RTS                                                                  ;94A5E1;
-
 
   .YFlip:
     PLX                                                                  ;94A5E2;
@@ -5372,7 +5901,6 @@ BlockShotReaction_Slope_NonSquare:
     CLC                                                                  ;94A5F9;
     RTS                                                                  ;94A5FA;
 
-
   ..collision:
     STZ.B $26                                                            ;94A5FB;
     STZ.B $28                                                            ;94A5FD;
@@ -5380,6 +5908,7 @@ BlockShotReaction_Slope_NonSquare:
     RTS                                                                  ;94A600;
 
 
+;;; $A601: Spread bomb block reaction pointers ;;;
 BombSpreadBlockReaction_Pointers:
     dw CLCRTS_949D59                                                     ;94A601;  0: Air
     dw BombSpreadBlockReaction_Slope                                     ;94A603; *1: Slope
@@ -5398,7 +5927,13 @@ BombSpreadBlockReaction_Pointers:
     dw SECRTS_949D5B                                                     ;94A61D;  Eh: Grapple block
     dw SECRTS_949D5B                                                     ;94A61F;  Fh: Bombable block
 
+
+;;; $A621: Spread bomb block collision detection ;;;
 BombSpreadBlockCollisionDetection:
+;; Parameters:
+;;     X: Projectile index
+;; Returns:
+;;     Carry: Set if collision detected, clear otherwise
     PHP                                                                  ;94A621;
     PHB                                                                  ;94A622;
     PHK                                                                  ;94A623;
@@ -5418,7 +5953,6 @@ BombSpreadBlockCollisionDetection:
     BNE .nonZeroTimer                                                    ;94A640;
     JSR.W BombExplosionBlockCollisionHandling                            ;94A642;
     BRA .returnNoCollision                                               ;94A645;
-
 
   .nonZeroTimer:
     LDA.W $0DC4                                                          ;94A647;
@@ -5442,7 +5976,6 @@ BombSpreadBlockCollisionDetection:
     CLC                                                                  ;94A664;
     RTL                                                                  ;94A665;
 
-
   .returnCollision:
     PLB                                                                  ;94A666;
     PLP                                                                  ;94A667;
@@ -5450,7 +5983,17 @@ BombSpreadBlockCollisionDetection:
     RTL                                                                  ;94A669;
 
 
+;;; $A66A: Block shot reaction - horizontal - slope - square ;;;
 BlockShotReaction_Horizontal_Slope_Square:
+;; Parameters:
+;;     A: [Block BTS] & 1Fh
+;;     X: Block index
+;;     $1A: Projectile Y span - 1
+;;     $1C: Target boundary (left/right depending on sign of projectile velocity)
+;;     $1E: (Super) missile flag
+;;     $26: Number of blocks left to check - 1
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     ASL A                                                                ;94A66A;
     ASL A                                                                ;94A66B;
     STA.W $0DD4                                                          ;94A66C;
@@ -5498,10 +6041,8 @@ BlockShotReaction_Horizontal_Slope_Square:
     CLC                                                                  ;94A6BE;
     RTS                                                                  ;94A6BF;
 
-
   .gotoReturnCollision:
     JMP.W .returnCollision                                               ;94A6C0; >.<
-
 
   .multiBlock:
     LDA.B $26                                                            ;94A6C3;
@@ -5515,7 +6056,6 @@ BlockShotReaction_Horizontal_Slope_Square:
     LDA.W SquareSlopeDefinitions_Bank94-1,X                              ;94A6D4;
     BMI .completeWaste                                                   ;94A6D7;
     BRA .returnNoCollisionDuplicate                                      ;94A6D9;
-
 
   .topBlockCheck:
     CMP.B $1A                                                            ;94A6DB;
@@ -5541,15 +6081,12 @@ BlockShotReaction_Horizontal_Slope_Square:
     CLC                                                                  ;94A6FA;
     RTS                                                                  ;94A6FB;
 
-
   .completeWaste:
     JMP.W .returnCollision                                               ;94A6FC;
-
 
   .returnCollision:
     SEC                                                                  ;94A6FF;
     RTS                                                                  ;94A700;
-
 
   .missile:
     LDY.W $0DDE                                                          ;94A701;
@@ -5565,13 +6102,22 @@ BlockShotReaction_Horizontal_Slope_Square:
     CLC                                                                  ;94A716;
     RTS                                                                  ;94A717;
 
-
   .returnCollisionDuplicate:
     SEC                                                                  ;94A718;
     RTS                                                                  ;94A719;
 
 
+;;; $A71A: Block shot reaction - vertical - slope - square ;;;
 BlockShotReaction_Vertical_Slope_Square:
+;; Parameters:
+;;     A: [Block BTS] & 1Fh
+;;     X: Block index
+;;     $1A: Projectile X span - 1
+;;     $1C: Target boundary (top/bottom depending on sign of projectile velocity)
+;;     $1E: (Super) missile flag
+;;     $26: Number of blocks left to check - 1
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     ASL A                                                                ;94A71A;
     ASL A                                                                ;94A71B;
     STA.W $0DD4                                                          ;94A71C;
@@ -5618,10 +6164,8 @@ BlockShotReaction_Vertical_Slope_Square:
     CLC                                                                  ;94A76D;
     RTS                                                                  ;94A76E;
 
-
   .gotoReturnCollision:
     JMP.W .returnCollision                                               ;94A76F;
-
 
   .multiBlock:
     LDA.B $26                                                            ;94A772;
@@ -5635,7 +6179,6 @@ BlockShotReaction_Vertical_Slope_Square:
     LDA.W SquareSlopeDefinitions_Bank94-1,X                              ;94A783;
     BMI .gotoNowhere                                                     ;94A786;
     BRA .returnNoCollisionDuplicate                                      ;94A788;
-
 
   .leftmostBlockCheck:
     CMP.B $1A                                                            ;94A78A;
@@ -5661,15 +6204,12 @@ BlockShotReaction_Vertical_Slope_Square:
     CLC                                                                  ;94A7A9;
     RTS                                                                  ;94A7AA;
 
-
   .gotoNowhere:
     JMP.W .returnCollision                                               ;94A7AB; >.<
-
 
   .returnCollision:
     SEC                                                                  ;94A7AE;
     RTS                                                                  ;94A7AF;
-
 
   .missile:
     LDY.W $0DDE                                                          ;94A7B0;
@@ -5686,25 +6226,35 @@ BlockShotReaction_Vertical_Slope_Square:
     CLC                                                                  ;94A7C5;
     RTS                                                                  ;94A7C6;
 
-
   .returnCollisionDuplicate:
     SEC                                                                  ;94A7C7;
     RTS                                                                  ;94A7C8;
 
 
+;;; $A7C9: Block grapple reaction - air / spike air / special air / unused air ;;;
 BlockGrappleReaction_Air_SpikeAir_SpecialAir:
+;; Returns:
+;;     Carry: Clear. No collision
+;;     Overflow: Clear (no effect)
     REP #$40                                                             ;94A7C9;
     CLC                                                                  ;94A7CB; >.<
     RTS                                                                  ;94A7CC;
 
 
+;;; $A7CD: Block grapple reaction - slope / solid block / door block / special block ;;;
 BlockGrappleReaction_Slope_SolidBlock_DoorBlock_SpecialBlock:
+;; Returns:
+;;     Carry: Set. Unconditional collision
+;;     Overflow: Clear. Cancel grapple beam
     REP #$40                                                             ;94A7CD;
     SEC                                                                  ;94A7CF;
     RTS                                                                  ;94A7D0;
 
 
+;;; $A7D1: Block grapple reaction - grapple block ;;;
 BlockGrappleReaction_GrappleBlock:
+;; Returns:
+;;     Carry/overflow: Clear if BTS >= 80h, otherwise set according to PLM initialisation (always set)
     LDA.W #$8000                                                         ;94A7D1;
     TRB.W $0CF4                                                          ;94A7D4;
     LDX.W $0DC4                                                          ;94A7D7;
@@ -5718,12 +6268,10 @@ BlockGrappleReaction_GrappleBlock:
     JSL.L Spawn_PLM_to_CurrentBlockIndex                                 ;94A7E9;
     RTS                                                                  ;94A7ED;
 
-
 +   AND.W #$007F                                                         ;94A7EE; >_<
     REP #$40                                                             ;94A7F1;
     CLC                                                                  ;94A7F3;
     RTS                                                                  ;94A7F4;
-
 
   .PLMs:
     dw PLMEntries_Grappled_GrappleBlock                                  ;94A7F5;
@@ -5731,7 +6279,15 @@ BlockGrappleReaction_GrappleBlock:
     dw PLMEntries_Grappled_BreakableGrappleBlock                         ;94A7F9;
     dw PLMEntries_Grappled_GrappleBlock                                  ;94A7FB;
 
+
+;;; $A7FD: Block grapple reaction - spike block ;;;
 BlockGrappleReaction_SpikeBlock:
+;; Returns:
+;;     Carry/overflow: Clear if BTS >= 80h, otherwise set according to PLM initialisation
+;;         BTS 3h (Draygon's broken turret): Set carry and overflow
+;;         Otherwise: Clear carry and overflow
+
+; Spawn PLM for spike block
     LDX.W $0DC4                                                          ;94A7FD;
     LDA.L $7F6401,X                                                      ;94A800;
     XBA                                                                  ;94A804;
@@ -5743,12 +6299,10 @@ BlockGrappleReaction_SpikeBlock:
     JSL.L Spawn_PLM_to_CurrentBlockIndex                                 ;94A80F;
     RTS                                                                  ;94A813;
 
-
 +   AND.W #$007F                                                         ;94A814; >_<
     REP #$40                                                             ;94A817;
     CLC                                                                  ;94A819;
     RTS                                                                  ;94A81A;
-
 
   .PLMs:
     dw PLMEntries_Grappled_GenericSpikeBlock                             ;94A81B;
@@ -5768,6 +6322,8 @@ BlockGrappleReaction_SpikeBlock:
     dw PLMEntries_Grappled_GenericSpikeBlock                             ;94A837;
     dw PLMEntries_Grappled_GenericSpikeBlock                             ;94A839;
 
+
+;;; $A83B: Block grapple reaction pointers ;;;
 BlockGrappleReaction_Pointers:
     dw BlockGrappleReaction_Air_SpikeAir_SpecialAir                      ;94A83B;  0: Air
     dw BlockGrappleReaction_Slope_SolidBlock_DoorBlock_SpecialBlock      ;94A83D;  1: Slope
@@ -5786,7 +6342,15 @@ BlockGrappleReaction_Pointers:
     dw BlockGrappleReaction_GrappleBlock                                 ;94A857; *Eh: Grapple block
     dw BlockShotBombedGrappledReaction_BombableBlock                     ;94A859; *Fh: Bombable block
 
+
+;;; $A85B: Grapple beam block collision detection ;;;
 GrappleBeamBlockCollisionDetection:
+;; Returns:
+;;     Carry: Set if collision, otherwise clear
+;;     Overflow: If carry set; set if connecting to block, clear if grapple beam cancelled
+
+; Checks the four points given by quarter increments of grapple velocity for block collision
+; Grapple is connected if *any* point results in a connection, otherwise grapple cancel is determined by the *last* point
     PHB                                                                  ;94A85B;
     PHK                                                                  ;94A85C;
     PLB                                                                  ;94A85D;
@@ -5868,7 +6432,6 @@ GrappleBeamBlockCollisionDetection:
     PLB                                                                  ;94A916;
     RTL                                                                  ;94A917;
 
-
   .notConnected:
     DEC.W $0D8A                                                          ;94A918;
     BNE .loop                                                            ;94A91B;
@@ -5876,7 +6439,11 @@ GrappleBeamBlockCollisionDetection:
     RTL                                                                  ;94A91E;
 
 
+;;; $A91F: Block grapple reaction ;;;
 BlockGrappleReaction:
+;; Returns:
+;;     Carry: Set if collision, otherwise clear
+;;     Overflow: If carry set; set if connecting to block, clear if grapple beam cancelled
     PHB                                                                  ;94A91F;
     PHK                                                                  ;94A920;
     PLB                                                                  ;94A921;
@@ -5912,7 +6479,16 @@ BlockGrappleReaction:
     RTL                                                                  ;94A956;
 
 
+;;; $A957: Calculate position from grapple beam end with distance and angle ;;;
 CalculatePositionFromGrappleBeamEndWithDistanceAndAngle:
+;; Parameters:
+;;     $0D82: Grapple beam end angle * 2
+;;     $0D84: Distance from grapple beam end
+;; Returns:
+;;     $0D90: X position
+;;     $0D92: Y position
+;;     $0D94: X block
+;;     $0D96: Y block
     LDX.W $0D82                                                          ;94A957;
     LDA.W $0CF4                                                          ;94A95A;
     BMI .grapplingEnemy                                                  ;94A95D;
@@ -5922,7 +6498,6 @@ CalculatePositionFromGrappleBeamEndWithDistanceAndAngle:
     AND.W #$FFF0                                                         ;94A968;
     ORA.W #$0008                                                         ;94A96B;
     BRA +                                                                ;94A96E;
-
 
   .angleLessThan80:
     LDA.W $0D08                                                          ;94A970;
@@ -5936,7 +6511,6 @@ CalculatePositionFromGrappleBeamEndWithDistanceAndAngle:
     AND.W #$FFF0                                                         ;94A985;
     ORA.W #$0008                                                         ;94A988;
     BRA .setEndPosition                                                  ;94A98B;
-
 
   .notBetween40_C0:
     LDA.W $0D0C                                                          ;94A98D;
@@ -5960,7 +6534,6 @@ CalculatePositionFromGrappleBeamEndWithDistanceAndAngle:
     ADC.W $0D84                                                          ;94A9B2;
     BRA +                                                                ;94A9B5;
 
-
   .not100:
     SEP #$20                                                             ;94A9B7;
     STA.W $4203                                                          ;94A9B9;
@@ -5974,7 +6547,6 @@ CalculatePositionFromGrappleBeamEndWithDistanceAndAngle:
     ADC.W $0D08                                                          ;94A9C8;
     BRA +                                                                ;94A9CB;
 
-
   .negative:
     CMP.W #$FF00                                                         ;94A9CD;
     BNE .notFF00                                                         ;94A9D0;
@@ -5982,7 +6554,6 @@ CalculatePositionFromGrappleBeamEndWithDistanceAndAngle:
     SEC                                                                  ;94A9D5;
     SBC.W $0D84                                                          ;94A9D6;
     BRA +                                                                ;94A9D9;
-
 
   .notFF00:
     SEP #$20                                                             ;94A9DB;
@@ -6016,7 +6587,6 @@ CalculatePositionFromGrappleBeamEndWithDistanceAndAngle:
     ADC.W $0D84                                                          ;94AA12;
     BRA +                                                                ;94AA15;
 
-
   .not100again:
     SEP #$20                                                             ;94AA17;
     STA.W $4203                                                          ;94AA19;
@@ -6030,7 +6600,6 @@ CalculatePositionFromGrappleBeamEndWithDistanceAndAngle:
     ADC.W $0D0C                                                          ;94AA28;
     BRA +                                                                ;94AA2B;
 
-
   .negativeAgain:
     CMP.W #$FF00                                                         ;94AA2D;
     BNE .notFF00again                                                    ;94AA30;
@@ -6038,7 +6607,6 @@ CalculatePositionFromGrappleBeamEndWithDistanceAndAngle:
     SEC                                                                  ;94AA35;
     SBC.W $0D84                                                          ;94AA36;
     BRA +                                                                ;94AA39;
-
 
   .notFF00again:
     SEP #$20                                                             ;94AA3B;
@@ -6066,7 +6634,13 @@ CalculatePositionFromGrappleBeamEndWithDistanceAndAngle:
     RTS                                                                  ;94AA63;
 
 
+;;; $AA64: Grapple swing collision reaction ;;;
 GrappleSwingCollisionReaction:
+;; Parameters:
+;;     $0D94: X block
+;;     $0D96: Y block
+;; Returns:
+;;     Carry: set if collision, clear otherwise
     SEP #$20                                                             ;94AA64;
     LDA.W $0D96                                                          ;94AA66;
     STA.W $4202                                                          ;94AA69;
@@ -6094,7 +6668,6 @@ GrappleSwingCollisionReaction:
     CLC                                                                  ;94AA94;
     RTS                                                                  ;94AA95;
 
-
   .returnCollision:
     PLX                                                                  ;94AA96;
     PLA                                                                  ;94AA97;
@@ -6102,17 +6675,25 @@ GrappleSwingCollisionReaction:
     RTS                                                                  ;94AA99;
 
 
+;;; $AA9A: Clear carry ;;;
 CLCRTS_94AA9A:
     CLC                                                                  ;94AA9A;
     RTS                                                                  ;94AA9B;
 
 
+;;; $AA9C: Set carry ;;;
 SECRTS_94AA9C:
     SEC                                                                  ;94AA9C;
     RTS                                                                  ;94AA9D;
 
 
+;;; $AA9E: Grapple swing collision reaction - spike air ;;;
 GrappleSwingCollisionReaction_SpikeAir:
+;; Returns:
+;;     Carry: Clear. No collision
+
+; There's really no reason to have this reaction, the spike air inside reaction does this damage anyway
+; Although you can set grapple swing specific damage here if you want...
     LDA.W $18A8                                                          ;94AA9E;
     BNE .return                                                          ;94AAA1;
     LDX.W $0DC4                                                          ;94AAA3;
@@ -6139,7 +6720,6 @@ GrappleSwingCollisionReaction_SpikeAir:
     CLC                                                                  ;94AAD5;
     RTS                                                                  ;94AAD6;
 
-
   .zeroes0:
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;94AAD7;
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;94AAE7;
@@ -6148,7 +6728,11 @@ GrappleSwingCollisionReaction_SpikeAir:
     dw $0000,$0000,$0010,$0000,$0000,$0000,$0000,$0000                   ;94AAF7;
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;94AB07;
 
+
+;;; $AB17: Grapple swing collision reaction - spike block ;;;
 GrappleSwingCollisionReaction_SpikeBlock:
+;; Returns:
+;;     Carry: Set. Unconditional collision
     LDA.W $18A8                                                          ;94AB17;
     BNE .return                                                          ;94AB1A;
     LDX.W $0DC4                                                          ;94AB1C;
@@ -6175,7 +6759,6 @@ GrappleSwingCollisionReaction_SpikeBlock:
     SEC                                                                  ;94AB4E;
     RTS                                                                  ;94AB4F;
 
-
   .zeroes:
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;94AB50;
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;94AB60;
@@ -6184,6 +6767,8 @@ GrappleSwingCollisionReaction_SpikeBlock:
     dw $003C,$0010,$0000,$0000,$0000,$0000,$0000,$0000                   ;94AB70;
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;94AB80;
 
+
+;;; $AB90: Grapple swing collision reaction pointers ;;;
 GrappleSwingCollisionReaction_Pointers:
     dw CLCRTS_94AA9A                                                     ;94AB90;  0: Air
     dw SECRTS_94AA9C                                                     ;94AB92;  1: Slope
@@ -6202,7 +6787,10 @@ GrappleSwingCollisionReaction_Pointers:
     dw SECRTS_94AA9C                                                     ;94ABAC;  Eh: Grapple block
     dw SECRTS_94AA9C                                                     ;94ABAE;  Fh: Bombable block
 
+
+;;; $ABB0: Grapple swing collision reaction ;;;
 GrappleSwingCollisionReaction_duplicate:
+; Clone of GrappleSwingCollisionReaction
     SEP #$20                                                             ;94ABB0;
     LDA.W $0D96                                                          ;94ABB2;
     STA.W $4202                                                          ;94ABB5;
@@ -6230,7 +6818,6 @@ GrappleSwingCollisionReaction_duplicate:
     CLC                                                                  ;94ABE0;
     RTS                                                                  ;94ABE1;
 
-
   .returnCollision:
     PLX                                                                  ;94ABE2;
     PLA                                                                  ;94ABE3;
@@ -6238,7 +6825,13 @@ GrappleSwingCollisionReaction_duplicate:
     RTS                                                                  ;94ABE5;
 
 
+;;; $ABE6: Grapple swing collision detection due to swinging ;;;
 GrappleSwingCollisionDetectionDueToSwinging:
+;; Returns:
+;;     Carry: set if collision, clear otherwise
+;;     $0D98: Distance of grapple swing collision from Samus' feet. Unit 8px
+
+; Checks 6(!) points along the 48px line projecting 8px beyond the grapple beam start position
     LDA.W #$0006                                                         ;94ABE6;
     STA.W $0D98                                                          ;94ABE9;
     LDA.W #$0008                                                         ;94ABEC;
@@ -6259,12 +6852,12 @@ GrappleSwingCollisionDetectionDueToSwinging:
     CLC                                                                  ;94AC0D;
     RTS                                                                  ;94AC0E;
 
-
   .return:
     NOP                                                                  ;94AC0F; >_<
     RTS                                                                  ;94AC10;
 
 
+;;; $AC11: Update grapple beam start position during grapple swinging ;;;
 UpdateGrappleBeamStartPositionDuringGrappleSwinging:
     LDA.W $0CFB                                                          ;94AC11;
     AND.W #$00FF                                                         ;94AC14;
@@ -6280,6 +6873,7 @@ UpdateGrappleBeamStartPositionDuringGrappleSwinging:
     RTL                                                                  ;94AC30;
 
 
+;;; $AC31: Handle grapple beam length change ;;;
 HandleGrappleBeamLengthChange:
     PHB                                                                  ;94AC31;
     PHK                                                                  ;94AC32;
@@ -6288,11 +6882,9 @@ HandleGrappleBeamLengthChange:
     BNE .nonZeroLengthDelta                                              ;94AC37;
     JMP.W .returnCarryClear                                              ;94AC39;
 
-
   .nonZeroLengthDelta:
     BMI .positiveGrappleBeamLengthDelta                                  ;94AC3C;
     JMP.W .increaseLength                                                ;94AC3E;
-
 
   .positiveGrappleBeamLengthDelta:
     LDA.W $0CFE                                                          ;94AC41;
@@ -6336,14 +6928,12 @@ HandleGrappleBeamLengthChange:
     CLC                                                                  ;94AC93;
     RTL                                                                  ;94AC94;
 
-
   .collision:
     LDA.W $0D8A                                                          ;94AC95;
     STA.W $0CFE                                                          ;94AC98;
     PLB                                                                  ;94AC9B;
     SEC                                                                  ;94AC9C;
     RTL                                                                  ;94AC9D;
-
 
   .increaseLength:
     LDA.W $0CFE                                                          ;94AC9E;
@@ -6387,12 +6977,12 @@ HandleGrappleBeamLengthChange:
     CLC                                                                  ;94ACF0;
     RTL                                                                  ;94ACF1;
 
+; Unused copy+paste of .collision
     LDA.W $0D8A                                                          ;94ACF2; dead code
     STA.W $0CFE                                                          ;94ACF5;
     PLB                                                                  ;94ACF8;
     SEC                                                                  ;94ACF9;
     RTL                                                                  ;94ACFA;
-
 
   .returnCarryClear:
     PLB                                                                  ;94ACFB;
@@ -6400,7 +6990,9 @@ HandleGrappleBeamLengthChange:
     RTL                                                                  ;94ACFD;
 
 
+;;; $ACFE: Handle grapple beam swinging movement ;;;
 HandleGrappleBeamSwingingMovement:
+; The clockwise and anticlockwise branches are identical except for the INC/DEC in the loop >_>;
     PHB                                                                  ;94ACFE;
     PHK                                                                  ;94ACFF;
     PLB                                                                  ;94AD00;
@@ -6425,7 +7017,6 @@ HandleGrappleBeamSwingingMovement:
     STA.W $0D9C                                                          ;94AD29;
     JMP.W .anticlockwise                                                 ;94AD2C;
 
-
   .preClockwise:
     JSL.L A_Y_16bit_UnsignedMultiplication                               ;94AD2F;
     LDA.W $05F2                                                          ;94AD33;
@@ -6433,10 +7024,8 @@ HandleGrappleBeamSwingingMovement:
     STA.W $0D9C                                                          ;94AD38;
     BRA .clockwise                                                       ;94AD3B;
 
-
   .gotoFailedMovement:
     JMP.W .failedMovement                                                ;94AD3D;
-
 
   .clockwise:
     CLC                                                                  ;94AD40;
@@ -6487,12 +7076,10 @@ HandleGrappleBeamSwingingMovement:
     BPL ..zero                                                           ;94AD9F;
     BRA ..returnCarryClear                                               ;94ADA1;
 
-
 +   SEC                                                                  ;94ADA3;
     SBC.W #$0006                                                         ;94ADA4;
     BMI ..zero                                                           ;94ADA7;
     BRA ..returnCarryClear                                               ;94ADA9;
-
 
   ..zero:
     LDA.W #$0000                                                         ;94ADAB;
@@ -6502,7 +7089,6 @@ HandleGrappleBeamSwingingMovement:
     PLB                                                                  ;94ADB1;
     CLC                                                                  ;94ADB2;
     RTL                                                                  ;94ADB3;
-
 
   ..collision:
     LDA.W $0D86                                                          ;94ADB4;
@@ -6530,7 +7116,6 @@ HandleGrappleBeamSwingingMovement:
     SEC                                                                  ;94ADE7;
     RTL                                                                  ;94ADE8;
 
-
   ..bounce:
     LDA.W #$0010                                                         ;94ADE9;
     STA.W $0D30                                                          ;94ADEC;
@@ -6551,7 +7136,6 @@ HandleGrappleBeamSwingingMovement:
     PLB                                                                  ;94AE0D;
     SEC                                                                  ;94AE0E;
     RTL                                                                  ;94AE0F;
-
 
   .anticlockwise:
     CLC                                                                  ;94AE10;
@@ -6602,12 +7186,10 @@ HandleGrappleBeamSwingingMovement:
     BPL ..zero                                                           ;94AE6F;
     BRA ..returnCarryClear                                               ;94AE71;
 
-
 +   SEC                                                                  ;94AE73;
     SBC.W #$0006                                                         ;94AE74;
     BMI ..zero                                                           ;94AE77;
     BRA ..returnCarryClear                                               ;94AE79;
-
 
   ..zero:
     LDA.W #$0000                                                         ;94AE7B;
@@ -6617,7 +7199,6 @@ HandleGrappleBeamSwingingMovement:
     PLB                                                                  ;94AE81;
     CLC                                                                  ;94AE82;
     RTL                                                                  ;94AE83;
-
 
   ..collision:
     LDA.W $0D86                                                          ;94AE84;
@@ -6644,7 +7225,6 @@ HandleGrappleBeamSwingingMovement:
     SEC                                                                  ;94AEB7;
     RTL                                                                  ;94AEB8;
 
-
   ..bounce:
     LDA.W #$0010                                                         ;94AEB9;
     STA.W $0D30                                                          ;94AEBC;
@@ -6666,12 +7246,13 @@ HandleGrappleBeamSwingingMovement:
     SEC                                                                  ;94AEDE;
     RTL                                                                  ;94AEDF;
 
-
   .failedMovement:
+; Looks like RTL'd out code
     PLB                                                                  ;94AEE0;
     CLC                                                                  ;94AEE1;
     RTL                                                                  ;94AEE2;
 
+; This code would make Samus drop if she failed too many failed movements in a row (such as holding right from rest)
     LDA.W $0CFA                                                          ;94AEE3; dead code
     EOR.W $0D26                                                          ;94AEE6;
     BMI ..rising                                                         ;94AEE9;
@@ -6689,7 +7270,6 @@ HandleGrappleBeamSwingingMovement:
     SEC                                                                  ;94AF03;
     RTL                                                                  ;94AF04;
 
-
   ..rising:
     STZ.W $0D38                                                          ;94AF05;
     PLB                                                                  ;94AF08;
@@ -6697,7 +7277,11 @@ HandleGrappleBeamSwingingMovement:
     RTL                                                                  ;94AF0A;
 
 
+;;; $AF0B: Clear carry ;;;
 CLCRTL_94AF0B:
+; Looks like RTL'd out code
+; Either required a parameter X and the loop fixed, or there was supposed to be code to set X in the loop
+; Appears to (try to) check for block collisions of the entire grapple beam, and drop grapple beam if so
     CLC                                                                  ;94AF0B;
     RTL                                                                  ;94AF0C;
 
@@ -6762,7 +7346,6 @@ CLCRTL_94AF0B:
     CLC                                                                  ;94AF7C;
     RTL                                                                  ;94AF7D;
 
-
 +   LDA.W #GrappleBeamFunction_Dropped                                   ;94AF7E;
     STA.W $0D32                                                          ;94AF81;
     PLB                                                                  ;94AF84;
@@ -6770,6 +7353,7 @@ CLCRTL_94AF0B:
     RTL                                                                  ;94AF86;
 
 
+;;; $AF87: Initialise grapple segment animations ;;;
 InitializeGrappleSegmentAnimations:
     LDX.W #$001E                                                         ;94AF87;
 
@@ -6795,7 +7379,18 @@ InitializeGrappleSegmentAnimations:
     RTL                                                                  ;94AFB9;
 
 
+;;; $AFBA: Draw grapple beam ;;;
 DrawGrappleBeam:
+; Uses:
+;     $0CFE: Grapple beam length
+;     $0D08: Grapple beam end X position
+;     $0D0C: Grapple beam end Y position
+;     $0D1A: Grapple beam flare X position
+;     $0D1C: Grapple beam flare Y position
+;     $0D42..61: Grapple segment animation instruction timers
+;     $0D62..81: Grapple segment animation instruction list pointers
+
+; Doesn't use [grapple beam end angle] except for unused calculation at $AFF7
     PHB                                                                  ;94AFBA;
     PHK                                                                  ;94AFBB;
     PLB                                                                  ;94AFBC;
@@ -6889,7 +7484,6 @@ DrawGrappleBeam:
     INY                                                                  ;94B067;
     JMP.W ($0024)                                                        ;94B068;
 
-
   .notInstruction:
     STA.W $0D42,X                                                        ;94B06B;
     TYA                                                                  ;94B06E;
@@ -6923,7 +7517,6 @@ DrawGrappleBeam:
     JSR.W DrawGrappleBeamEnd_NotConnected                                ;94B0A0;
     BRA .return                                                          ;94B0A3;
 
-
   .connectedEnd:
     JSR.W DrawGrappleBeamEnd_Connected                                   ;94B0A5;
 
@@ -6932,7 +7525,19 @@ DrawGrappleBeam:
     RTL                                                                  ;94B0A9;
 
 
+;;; $B0AA: Draw grapple segment ;;;
 DrawGrappleSegment:
+;; Parameters:
+;;     Y: Tile number and attributes
+;;     $14.$12: X position
+;;     $18.$16: Y position
+;;     $1C.$1A: Width
+;;     $20.$1E: Height
+
+; The branch at $B0C3 seems like it was supposed to be BEQ to set the high X position bit if X position >= 100h,
+; but it checks $14 after the width is added, so that would need to be fixed too to make the dead code useful
+; The X position is checked to be < 100h by callers, so there is no point in doing this check anyway
+; Tldr, $B0C0..D2 can be eliminated entirely
     LDX.W $0590                                                          ;94B0AA;
     CLC                                                                  ;94B0AD;
     LDA.B $14                                                            ;94B0AE;
@@ -6947,6 +7552,7 @@ DrawGrappleSegment:
     AND.W #$0100                                                         ;94B0C0;
     BRA +                                                                ;94B0C3;
 
+; Nothing points to this
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;94B0C5; dead code
     STA.B $22                                                            ;94B0C9;
     LDA.B ($22)                                                          ;94B0CB;
@@ -6972,12 +7578,14 @@ DrawGrappleSegment:
     RTS                                                                  ;94B0F3;
 
 
+;;; $B0F4: Instruction - go to [[Y]] ;;;
 Instruction_DrawGrappleBeam_GotoY:
     LDA.W $0000,Y                                                        ;94B0F4;
     TAY                                                                  ;94B0F7;
     RTS                                                                  ;94B0F8;
 
 
+;;; $B0F9: Draw grapple beam end - not connected ;;;
 DrawGrappleBeamEnd_NotConnected:
     LDA.W $0D0C                                                          ;94B0F9;
     SEC                                                                  ;94B0FC;
@@ -7019,7 +7627,9 @@ DrawGrappleBeamEnd_NotConnected:
     RTS                                                                  ;94B14A;
 
 
+;;; $B14B: Draw grapple beam end - connected ;;;
 DrawGrappleBeamEnd_Connected:
+; Equivalent to DrawGrappleBeamEnd_NotConnected
     LDX.W $0590                                                          ;94B14B;
     CLC                                                                  ;94B14E;
     LDA.W $0D08                                                          ;94B14F;
@@ -7049,6 +7659,7 @@ DrawGrappleBeamEnd_Connected:
     RTS                                                                  ;94B18A;
 
 
+;;; $B18B: Instruction lists - grapple segment animations ;;;
 InstList_DrawGrappleBeam_GrappleSegmentAnimations_0:
     dw $0005,$3A21                                                       ;94B18B;
 
@@ -7071,12 +7682,14 @@ Freespace_Bank94_B19F:                                                   ;94B19F
 warnpc $94C800
 org $94C800
 
+
+;;; $C800: Tiles - gunship liftoff dust clouds ;;;
 Tiles_GunshipLiftoffDustClouds:
 incbin "../data/Tiles_GunshipLiftoffDustClouds.bin" ; $1400 bytes
 
+
 Freespace_Bank94_DC00:                                                   ;94DC00;
 ; $1400 bytes
-
 
 warnpc $94E000
 ; see bank_94..99.asm
