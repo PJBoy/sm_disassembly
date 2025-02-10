@@ -2,6 +2,7 @@
 org $9A8000
 
 
+;;; $8000: Initial palette ;;;
 ; Palette loaded when loading a save or demo. (although nothing is displayed during this time)
 ; Palettes for common sprites, beams and flashing enemies are loaded from here during door transition
 Initial_Palette_BGPalette0:
@@ -68,15 +69,23 @@ Initial_Palette_spritePalette7:
     dw $3800,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;9A81E0;
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;9A81F0;
 
+
+;;; $8200: Tiles - grapple beam - horizontal ;;;
 Tiles_GrappleBeam_Horizontal_Beam:
 incbin "../data/Tiles_GrappleBeam_Horizontal_Beam.bin" ; $800 bytes
 
+
+;;; $8A00: Tiles - grapple beam - diagonal ;;;
 Tiles_GrappleBeam_Diagonal_Beam:
 incbin "../data/Tiles_GrappleBeam_Diagonal_Beam.bin" ; $800 bytes
 
+
+;;; $9200: Tiles - grapple beam - vertical ;;;
 Tiles_GrappleBeam_Vertical_Beam:
 incbin "../data/Tiles_GrappleBeam_Vertical_Beam.bin" ; $800 bytes
 
+
+;;; $9A00: Tiles - non-closed arm cannon - vertical ;;;
 Tiles_NonClosed_ArmCannon_Vertical_0:
 incbin "../data/Tiles_NonClosed_ArmCannon_Vertical_0.bin" ; $200 bytes
 
@@ -86,6 +95,8 @@ incbin "../data/Tiles_NonClosed_ArmCannon_Vertical_1.bin" ; $200 bytes
 Tiles_NonClosed_ArmCannon_Vertical_2:
 incbin "../data/Tiles_NonClosed_ArmCannon_Vertical_2.bin" ; $200 bytes
 
+
+;;; $A000: Tiles - non-closed arm cannon - horizontal ;;;
 Tiles_NonClosed_ArmCannon_Horizontal_0:
 incbin "../data/Tiles_NonClosed_ArmCannon_Horizontal_0.bin" ; $200 bytes
 
@@ -95,6 +106,8 @@ incbin "../data/Tiles_NonClosed_ArmCannon_Horizontal_1.bin" ; $200 bytes
 Tiles_NonClosed_ArmCannon_Horizontal_2:
 incbin "../data/Tiles_NonClosed_ArmCannon_Horizontal_2.bin" ; $200 bytes
 
+
+;;; $A600: Tiles - non-closed arm cannon - downwards diagonal ;;;
 Tiles_NonClosed_ArmCannon_DownwardsDiagonal_0:
 incbin "../data/Tiles_NonClosed_ArmCannon_DownwardsDiagonal_0.bin" ; $200 bytes
 
@@ -104,6 +117,8 @@ incbin "../data/Tiles_NonClosed_ArmCannon_DownwardsDiagonal_1.bin" ; $200 bytes
 Tiles_NonClosed_ArmCannon_DownwardsDiagonal_2:
 incbin "../data/Tiles_NonClosed_ArmCannon_DownwardsDiagonal_2.bin" ; $200 bytes
 
+
+;;; $AC00: Tiles - non-closed arm cannon - upwards diagonal ;;;
 Tiles_NonClosed_ArmCannon_UpwardsDiagonal_0:
 incbin "../data/Tiles_NonClosed_ArmCannon_UpwardsDiagonal_0.bin" ; $200 bytes
 
@@ -113,9 +128,13 @@ incbin "../data/Tiles_NonClosed_ArmCannon_UpwardsDiagonal_1.bin" ; $200 bytes
 Tiles_NonClosed_ArmCannon_UpwardsDiagonal_2:
 incbin "../data/Tiles_NonClosed_ArmCannon_UpwardsDiagonal_2.bin" ; $200 bytes
 
+
+;;; $B200: Standard BG3 tiles ;;;
 Tiles_Standard_BG3:
 incbin "../data/Tiles_Standard_BG3.bin" ; $1000 bytes
 
+
+;;; $C200: Clear BG2 tilemap ;;;
 Clear_BG2Tilemap:
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;9AC200;
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;9AC210;
@@ -374,30 +393,45 @@ Clear_BG2Tilemap:
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;9AD1E0;
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;9AD1F0;
 
+
+;;; $D200: Standard sprite tiles ;;;
 Tiles_Standard_Sprite_0:
 incbin "../data/Tiles_Standard_Sprite_0.bin" ; $1800 bytes
 
 Tiles_Standard_Sprite_1:
 incbin "../data/Tiles_Standard_Sprite_1.bin" ; $800 bytes
 
+
+;;; $F200: Tiles - power beam ;;;
 Tiles_PowerBeam:
 incbin "../data/Tiles_PowerBeam.bin" ; $200 bytes
 
+
+;;; $F400: Tiles - ice beam ;;;
 Tiles_IceBeam:
 incbin "../data/Tiles_IceBeam.bin" ; $200 bytes
 
+
+;;; $F600: Tiles - wave beam ;;;
 Tiles_WaveBeam:
 incbin "../data/Tiles_WaveBeam.bin" ; $200 bytes
 
+
+;;; $F800: Tiles - plasma beam ;;;
 Tiles_PlasmaBeam:
 incbin "../data/Tiles_PlasmaBeam.bin" ; $200 bytes
 
+
+;;; $FA00: Tiles - spazer beam ;;;
 Tiles_Spazer:
 incbin "../data/Tiles_Spazer.bin" ; $200 bytes
 
+
+;;; $FC00: Standard target sprite palette line 0 (whites and greys for flashing) ;;;
 Standard_Target_Sprite_Palette_Line0:
     dw $0000,$7FFF,$77BD,$6B5A,$6318,$7FFF,$77BD,$6B5A                   ;9AFC00;
     dw $6318,$7FFF,$77BD,$6B5A,$6318,$7FFF,$77BD,$6B5A                   ;9AFC10;
+
 
 Freespace_Bank9A_FC20:                                                   ;9AFC20;
 ; $3E0 bytes
