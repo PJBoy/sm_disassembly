@@ -2,7 +2,12 @@
 org $938000
 
 
+;;; $8000: Initialise projectile ;;;
 InitializeProjectile:
+;; Parameters:
+;;     X: Projectile index
+
+; Used for beam (uncharged / charged / hyper), (super) missile, ice SBA
     PHP                                                                  ;938000;
     PHB                                                                  ;938001;
     PHK                                                                  ;938002;
@@ -24,7 +29,6 @@ InitializeProjectile:
     TAY                                                                  ;938024;
     BRA .merge                                                           ;938025;
 
-
   .charged:
     AND.W #$000F                                                         ;938027;
     ASL A                                                                ;93802A;
@@ -32,7 +36,6 @@ InitializeProjectile:
     LDA.W SamusProjectileDataPointers_ChargedBeams,Y                     ;93802C;
     TAY                                                                  ;93802F;
     BRA .merge                                                           ;938030;
-
 
   .notBeam:
     XBA                                                                  ;938032;
@@ -47,7 +50,6 @@ InitializeProjectile:
     STA.W $0C2C,X                                                        ;93803F;
     BPL .dontCrash                                                       ;938042;
     JML.L Crash_Handler                                                  ;938044;
-
 
   .dontCrash:
     INY                                                                  ;938048;
@@ -72,7 +74,9 @@ InitializeProjectile:
     RTL                                                                  ;938070;
 
 
+;;; $8071: Initialise super missile link ;;;
 InitializeSuperMissileLink:
+; Instruction list is InstList_SamusProjectile_SuperMissileLink (loop of single instruction with 8x8 radius and dummy empty spritemap)
     PHP                                                                  ;938071;
     PHB                                                                  ;938072;
     PHK                                                                  ;938073;
@@ -89,7 +93,6 @@ InitializeSuperMissileLink:
     BPL .dontCrash                                                       ;938089;
     JML.L Crash_Handler                                                  ;93808B;
 
-
   .dontCrash:
     INY                                                                  ;93808F;
     INY                                                                  ;938090;
@@ -102,6 +105,7 @@ InitializeSuperMissileLink:
     RTL                                                                  ;93809F;
 
 
+;;; $80A0: Initialise (power) bomb ;;;
 InitializeBomb:
     PHP                                                                  ;9380A0;
     PHB                                                                  ;9380A1;
@@ -119,7 +123,6 @@ InitializeBomb:
     BPL .dontCrash                                                       ;9380B8;
     JML.L Crash_Handler                                                  ;9380BA;
 
-
   .dontCrash:
     INY                                                                  ;9380BE;
     INY                                                                  ;9380BF;
@@ -132,7 +135,9 @@ InitializeBomb:
     RTL                                                                  ;9380CE;
 
 
+;;; $80CF: Part of kill projectile - queue sound effect and set instruction ;;;
 PartOfKillProjectile_QueueSFX_SetInstruction:
+; Called by Kill_Projectile
     PHP                                                                  ;9380CF;
     PHB                                                                  ;9380D0;
     PHK                                                                  ;9380D1;
@@ -150,7 +155,6 @@ PartOfKillProjectile_QueueSFX_SetInstruction:
     LDA.W #$000C                                                         ;9380EF;
     JSL.L QueueSound_Lib2_Max6                                           ;9380F2;
     BRA .return                                                          ;9380F6;
-
 
   .notBeam:
     LDA.W $1F51                                                          ;9380F8;
@@ -170,7 +174,6 @@ PartOfKillProjectile_QueueSFX_SetInstruction:
     LDA.W ProjectileDataTable_NonBeam_MissileExplosion_pointer           ;938117;
     STA.W $0C40,X                                                        ;93811A;
     BRA .setCooldown                                                     ;93811D;
-
 
   .superMissile:
     LDA.W ProjectileDataTable_NonBeam_SuperMissileExplosion_pointer      ;93811F;
@@ -197,6 +200,7 @@ PartOfKillProjectile_QueueSFX_SetInstruction:
     RTL                                                                  ;93814D;
 
 
+;;; $814E: Initialise bomb explosion ;;;
 Initialize_Bomb_Explosion:
     PHP                                                                  ;93814E;
     PHB                                                                  ;93814F;
@@ -212,6 +216,7 @@ Initialize_Bomb_Explosion:
     RTL                                                                  ;938162;
 
 
+;;; $8163: Initialise shinespark echo or spazer SBA trail projectile ;;;
 Initialize_ShinesparkEcho_or_SpazerSBATrailProjectile:
     PHP                                                                  ;938163;
     PHB                                                                  ;938164;
@@ -235,7 +240,6 @@ Initialize_ShinesparkEcho_or_SpazerSBATrailProjectile:
     BPL .dontCrash                                                       ;938188;
     JML.L Crash_Handler                                                  ;93818A;
 
-
   .dontCrash:
     INY                                                                  ;93818E;
     INY                                                                  ;93818F;
@@ -252,7 +256,9 @@ Initialize_ShinesparkEcho_or_SpazerSBATrailProjectile:
     RTL                                                                  ;9381A3;
 
 
+;;; $81A4: Initialise SBA projectile ;;;
 InitializeSBAProjectile:
+; Excluding ice SBA, which is run as a regular projectile
     PHP                                                                  ;9381A4;
     PHB                                                                  ;9381A5;
     PHK                                                                  ;9381A6;
@@ -269,7 +275,6 @@ InitializeSBAProjectile:
     BPL .dontCrash                                                       ;9381BC;
     JML.L Crash_Handler                                                  ;9381BE;
 
-
   .dontCrash:
     LDA.W $0002,Y                                                        ;9381C2;
     STA.W $0C40,X                                                        ;9381C5;
@@ -280,6 +285,7 @@ InitializeSBAProjectile:
     RTL                                                                  ;9381D0;
 
 
+;;; $81D1: $16 = projectile trail frame ;;;
 Get_ProjectileTrailFrame:
     PHP                                                                  ;9381D1;
     PHB                                                                  ;9381D2;
@@ -299,7 +305,9 @@ Get_ProjectileTrailFrame:
     RTL                                                                  ;9381E8;
 
 
+;;; $81E9: Projectile instruction handler ;;;
 ProjectileInstructionHandler:
+; Called by Handle_Projectiles
     PHP                                                                  ;9381E9;
     PHB                                                                  ;9381EA;
     PHK                                                                  ;9381EB;
@@ -318,7 +326,6 @@ ProjectileInstructionHandler:
     INY                                                                  ;938202;
     PEA.W .loop-1                                                        ;938203;
     JMP.W ($0012)                                                        ;938206;
-
 
   .timer:
     STA.W $0C54,X                                                        ;938209;
@@ -341,6 +348,7 @@ ProjectileInstructionHandler:
     RTL                                                                  ;93822E;
 
 
+;;; $822F: Instruction - delete ;;;
 Instruction_SamusProjectile_Delete:
     REP #$30                                                             ;93822F;
     JSL.L Clear_Projectile                                               ;938231;
@@ -350,6 +358,7 @@ Instruction_SamusProjectile_Delete:
     RTL                                                                  ;938238;
 
 
+;;; $8239: Instruction - go to [[Y]] ;;;
 Instruction_SamusProjectile_GotoY:
     REP #$30                                                             ;938239;
     LDA.W $0000,Y                                                        ;93823B;
@@ -358,6 +367,7 @@ Instruction_SamusProjectile_GotoY:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $8240: Unused. Instruction - go to [[Y] + 2] if [bomb timer] <= [[Y]] else go to [[Y] + 4] ;;;
 UNUSED_Instruction_SamusProj_GotoY_BasedOnBombTimer_938240:
     REP #$30                                                             ;938240;
     LDA.W $0000,Y                                                        ;938242;
@@ -367,7 +377,6 @@ UNUSED_Instruction_SamusProj_GotoY_BasedOnBombTimer_938240:
     TAY                                                                  ;93824D;
     RTS                                                                  ;93824E;
 
-
   .lessThanY:
     LDA.W $0002,Y                                                        ;93824F;
     TAY                                                                  ;938252;
@@ -375,6 +384,7 @@ UNUSED_Instruction_SamusProj_GotoY_BasedOnBombTimer_938240:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $8254: Draw projectiles ;;;
 DrawProjectiles:
     PHP                                                                  ;938254;
     REP #$30                                                             ;938255;
@@ -385,7 +395,6 @@ DrawProjectiles:
     LDA.W $0C40,X                                                        ;93825D;
     BNE +                                                                ;938260;
     JMP.W .next                                                          ;938262;
-
 
 +   LDA.W $0C18,X                                                        ;938265;
     BIT.W #$0F10                                                         ;938268;
@@ -400,12 +409,10 @@ DrawProjectiles:
     BNE .draw                                                            ;93827E;
     BRA .next                                                            ;938280;
 
-
 +   LDA.W $05B6                                                          ;938282;
     BIT.W #$0001                                                         ;938285;
     BNE .next                                                            ;938288;
     BRA .draw                                                            ;93828A;
-
 
   .spazerPlasma:
     TXA                                                                  ;93828C;
@@ -416,12 +423,10 @@ DrawProjectiles:
     BNE .next                                                            ;938298;
     BRA .draw                                                            ;93829A;
 
-
 +   LDA.W $05B6                                                          ;93829C;
     BIT.W #$0002                                                         ;93829F;
     BEQ .next                                                            ;9382A2;
     BRA .draw                                                            ;9382A4;
-
 
   .noFlickering:
     AND.W #$0F00                                                         ;9382A6;
@@ -434,7 +439,6 @@ DrawProjectiles:
     JSL.L Calculate_ProjectilePosition_InRotatingElevatorRoom            ;9382B3;
     LDA.B $12                                                            ;9382B7;
     BRA .positionCalculated                                              ;9382B9;
-
 
   .noRotation:
     LDA.W $0B64,X                                                        ;9382BB;
@@ -454,7 +458,6 @@ DrawProjectiles:
     JSL.L AddProjectileSpritemapToOAM                                    ;9382D7;
     BRA .loadIndex                                                       ;9382DB;
 
-
 +   LDA.W $0CB8,X                                                        ;9382DD;
     BPL .loadIndex                                                       ;9382E0;
     JSL.L RTL_818AB7                                                     ;9382E2;
@@ -469,7 +472,6 @@ DrawProjectiles:
     BMI .echoes                                                          ;9382EE;
     JMP.W .loop                                                          ;9382F0;
 
-
   .echoes:
     JSL.L DrawShinesparkCrashEchoProjectiles                             ;9382F3;
     JSL.L HandleProjectileTrails                                         ;9382F7;
@@ -478,7 +480,11 @@ DrawProjectiles:
 
 
 if !FEATURE_KEEP_UNREFERENCED
-UNUSED_PartialDrawProjectiles_9282FD:
+;;; $82FD: Unused. Partial draw projectiles ;;;
+UNUSED_PartialDrawProjectiles_9982FD:
+; Compared to DrawProjectiles, this routine doesn't handle flickering,
+; doesn't draw shinespark crash echoes, and doesn't handle Ceres elevator room rotation.
+; It also randomly subtracts 8 from the projectile's Y position.
     PHP                                                                  ;9382FD;
     REP #$30                                                             ;9382FE;
     LDX.W #$0008                                                         ;938300;
@@ -504,7 +510,6 @@ UNUSED_PartialDrawProjectiles_9282FD:
     JSL.L AddProjectileSpritemapToOAM                                    ;93832B;
     BRA .getIndex                                                        ;93832F;
 
-
 +   LDA.W $0CB8,X                                                        ;938331;
     BPL .getIndex                                                        ;938334;
     JSL.L RTL_818AB7                                                     ;938336;
@@ -519,7 +524,6 @@ UNUSED_PartialDrawProjectiles_9282FD:
     BMI .timerExpired                                                    ;938342;
     JMP.W .loop                                                          ;938344;
 
-
   .timerExpired:
     JSL.L HandleProjectileTrails                                         ;938347;
     PLP                                                                  ;93834B;
@@ -527,6 +531,7 @@ UNUSED_PartialDrawProjectiles_9282FD:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $834D: Draw bombs and projectile explosions ;;;
 DrawBombsAndProjectileExplosions:
     PHP                                                                  ;93834D;
     REP #$30                                                             ;93834E;
@@ -548,7 +553,6 @@ DrawBombsAndProjectileExplosions:
     JSL.L Calculate_ProjectilePosition_InRotatingElevatorRoom            ;938372;
     LDA.B $12                                                            ;938376;
     BRA .calculatedPosition                                              ;938378;
-
 
   .powerBomb:
     LDA.W $0C7C,X                                                        ;93837A;
@@ -576,7 +580,6 @@ DrawBombsAndProjectileExplosions:
     LDX.W $0DDE                                                          ;9383A7;
     BRA .next                                                            ;9383AA;
 
-
   .offScreen:
     LDA.W $0CB8,X                                                        ;9383AC;
     JSL.L RTL_818AB7                                                     ;9383AF;
@@ -591,9 +594,12 @@ DrawBombsAndProjectileExplosions:
     RTL                                                                  ;9383BE;
 
 
+;;; $83BF: Hyper beam damage value ;;;
 HyperBeamDamageValue:
     dw $03E8                                                             ;9383BF;
 
+
+;;; $83C1: Projectile damage and instruction list table pointers ;;;
 SamusProjectileDataPointers_UnchargedBeams:
 ; Uncharged beams. Indexed by beam type
     dw ProjectileDataTable_Uncharged_Power                               ;9383C1;
@@ -668,6 +674,8 @@ SamusProjectileDataPointers_SuperMissileLink:
     dw $0000                                                             ;93842D;
     dw ProjectileDataTable_NonBeam_SuperMissileLink                      ;93842F;
 
+
+;;; $8431: Projectile damage and instruction list tables ;;;
 ProjectileDataTable_Uncharged_Power:
     dw $0014                                                             ;938431; Damage
     dw InstList_SamusProjectile_Power_Up                                 ;938433; Up, facing right
@@ -1093,58 +1101,78 @@ UNUSED_ProjectileDataTable_NonBeam_Projectile27_9386D7:
     dw $0000                                                             ;9386D7;
     dw UNUSED_InstList_SamusProjectile_Projectile27_93A16D               ;9386D9;
 
+
+;;; $86DB: Instruction list - power - up ;;;
 InstList_SamusProjectile_Power_Up:
     dw $000F,ProjectileFlareSpritemaps_Power_2                           ;9386DB;
     db $04,$04 : dw $0000                                                ;9386DF;
     dw Instruction_SamusProjectile_GotoY                                 ;9386E3;
     dw InstList_SamusProjectile_Power_Up                                 ;9386E5;
 
+
+;;; $86E7: Instruction list - power - up-right ;;;
 InstList_SamusProjectile_Power_UpRight:
     dw $000F,ProjectileFlareSpritemaps_Power_3                           ;9386E7;
     db $08,$04 : dw $0000                                                ;9386EB;
     dw Instruction_SamusProjectile_GotoY                                 ;9386EF;
     dw InstList_SamusProjectile_Power_UpRight                            ;9386F1;
 
+
+;;; $86F3: Instruction list - power - right ;;;
 InstList_SamusProjectile_Power_Right:
     dw $000F,ProjectileFlareSpritemaps_Power_4                           ;9386F3;
     db $08,$04 : dw $0000                                                ;9386F7;
     dw Instruction_SamusProjectile_GotoY                                 ;9386FB;
     dw InstList_SamusProjectile_Power_Right                              ;9386FD;
 
+
+;;; $86FF: Instruction list - power - down-right ;;;
 InstList_SamusProjectile_Power_DownRight:
     dw $000F,ProjectileFlareSpritemaps_Power_5                           ;9386FF;
     db $08,$04 : dw $0000                                                ;938703;
     dw Instruction_SamusProjectile_GotoY                                 ;938707;
     dw InstList_SamusProjectile_Power_DownRight                          ;938709;
 
+
+;;; $870B: Instruction list - power - down ;;;
 InstList_SamusProjectile_Power_Down:
     dw $000F,ProjectileFlareSpritemaps_Power_6                           ;93870B;
     db $04,$04 : dw $0000                                                ;93870F;
     dw Instruction_SamusProjectile_GotoY                                 ;938713;
     dw InstList_SamusProjectile_Power_Down                               ;938715;
 
+
+;;; $8717: Instruction list - power - down-left ;;;
 InstList_SamusProjectile_Power_DownLeft:
     dw $000F,ProjectileFlareSpritemaps_Power_7                           ;938717;
     db $08,$04 : dw $0000                                                ;93871B;
     dw Instruction_SamusProjectile_GotoY                                 ;93871F;
     dw InstList_SamusProjectile_Power_DownLeft                           ;938721;
 
+
+;;; $8723: Instruction list - power - left ;;;
 InstList_SamusProjectile_Power_Left:
     dw $000F,ProjectileFlareSpritemaps_Power_0                           ;938723;
     db $08,$04 : dw $0000                                                ;938727;
     dw Instruction_SamusProjectile_GotoY                                 ;93872B;
     dw InstList_SamusProjectile_Power_Left                               ;93872D;
 
+
+;;; $872F: Instruction list - power - up-left ;;;
 InstList_SamusProjectile_Power_UpLeft:
     dw $000F,ProjectileFlareSpritemaps_Power_1                           ;93872F;
     db $08,$04 : dw $0000                                                ;938733;
     dw Instruction_SamusProjectile_GotoY                                 ;938737;
     dw InstList_SamusProjectile_Power_UpLeft                             ;938739;
 
+
+;;; $873B: Instruction list - wave / ice + wave - up ;;;
 InstList_SamusProjectile_Wave_IceWave_Up:
     dw $0004,Spritemap_Nothing_93A117                                    ;93873B;
     db $0C,$04 : dw $0000                                                ;93873F;
 
+
+;;; $8743: Instruction list - wave / ice + wave - down ;;;
 InstList_SamusProjectile_Wave_IceWave_Down:
     dw $0001,ProjectileFlareSpritemaps_Wave_IceWave_0                    ;938743;
     db $0C,$04 : dw $0000                                                ;938747;
@@ -1181,6 +1209,8 @@ InstList_SamusProjectile_Wave_IceWave_Down:
     dw Instruction_SamusProjectile_GotoY                                 ;9387C3;
     dw InstList_SamusProjectile_Wave_IceWave_Down                        ;9387C5;
 
+
+;;; $87C7: Instruction list - wave / ice + wave - down-left / up-right ;;;
 InstList_SamusProjectile_Wave_IceWave_DownLeft_UpRight:
     dw $0001,ProjectileFlareSpritemaps_Wave_IceWave_0                    ;9387C7;
     db $08,$08 : dw $0000                                                ;9387CB;
@@ -1217,6 +1247,8 @@ InstList_SamusProjectile_Wave_IceWave_DownLeft_UpRight:
     dw Instruction_SamusProjectile_GotoY                                 ;938847;
     dw InstList_SamusProjectile_Wave_IceWave_DownLeft_UpRight            ;938849;
 
+
+;;; $884B: Instruction list - wave / ice + wave - left / right ;;;
 InstList_SamusProjectile_Wave_IceWave_Left_Right:
     dw $0001,ProjectileFlareSpritemaps_Wave_IceWave_0                    ;93884B;
     db $04,$0C : dw $0000                                                ;93884F;
@@ -1253,6 +1285,8 @@ InstList_SamusProjectile_Wave_IceWave_Left_Right:
     dw Instruction_SamusProjectile_GotoY                                 ;9388CB;
     dw InstList_SamusProjectile_Wave_IceWave_Left_Right                  ;9388CD;
 
+
+;;; $88CF: Instruction list - wave / ice + wave - down-right / up-left ;;;
 InstList_SamusProjectile_Wave_IceWave_DownRight_UpLeft:
     dw $0001,ProjectileFlareSpritemaps_Wave_IceWave_0                    ;9388CF;
     db $08,$08 : dw $0000                                                ;9388D3;
@@ -1289,6 +1323,8 @@ InstList_SamusProjectile_Wave_IceWave_DownRight_UpLeft:
     dw Instruction_SamusProjectile_GotoY                                 ;93894F;
     dw InstList_SamusProjectile_Wave_IceWave_DownRight_UpLeft            ;938951;
 
+
+;;; $8953: Instruction list - ice ;;;
 InstList_SamusProjectile_Ice:
     dw $0001,ProjectileFlareSpritemaps_Ice_0                             ;938953;
     db $08,$08 : dw $0000                                                ;938957;
@@ -1301,6 +1337,8 @@ InstList_SamusProjectile_Ice:
     dw Instruction_SamusProjectile_GotoY                                 ;938973;
     dw InstList_SamusProjectile_Ice                                      ;938975;
 
+
+;;; $8977: Instruction list - spazer / spazer + ice - up ;;;
 InstList_SamusProjectile_Spazer_SpazerIce_Up_0:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_23                    ;938977;
     db $0C,$08 : dw $0000                                                ;93897B;
@@ -1313,6 +1351,8 @@ InstList_SamusProjectile_Spazer_SpazerIce_Up_1:
     dw Instruction_SamusProjectile_GotoY                                 ;93898F;
     dw InstList_SamusProjectile_Spazer_SpazerIce_Up_1                    ;938991;
 
+
+;;; $8993: Instruction list - spazer / spazer + ice - up-right ;;;
 InstList_SamusProjectile_Spazer_SpazerIce_UpRight_0:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_0                     ;938993;
     db $08,$08 : dw $0000                                                ;938997;
@@ -1325,6 +1365,8 @@ InstList_SamusProjectile_Spazer_SpazerIce_UpRight_1:
     dw Instruction_SamusProjectile_GotoY                                 ;9389AB;
     dw InstList_SamusProjectile_Spazer_SpazerIce_UpRight_1               ;9389AD;
 
+
+;;; $89AF: Instruction list - spazer / spazer + ice - right ;;;
 InstList_SamusProjectile_Spazer_SpazerIce_Right_0:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_29                    ;9389AF;
     db $08,$0C : dw $0000                                                ;9389B3;
@@ -1337,6 +1379,8 @@ InstList_SamusProjectile_Spazer_SpazerIce_Right_1:
     dw Instruction_SamusProjectile_GotoY                                 ;9389C7;
     dw InstList_SamusProjectile_Spazer_SpazerIce_Right_1                 ;9389C9;
 
+
+;;; $89CB: Instruction list - spazer / spazer + ice - down-right ;;;
 InstList_SamusProjectile_Spazer_SpazerIce_DownRight_0:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_6                     ;9389CB;
     db $08,$08 : dw $0000                                                ;9389CF;
@@ -1349,6 +1393,8 @@ InstList_SamusProjectile_Spazer_SpazerIce_DownRight_1:
     dw Instruction_SamusProjectile_GotoY                                 ;9389E3;
     dw InstList_SamusProjectile_Spazer_SpazerIce_DownRight_1             ;9389E5;
 
+
+;;; $89E7: Instruction list - spazer / spazer + ice - down ;;;
 InstList_SamusProjectile_Spazer_SpazerIce_Down_0:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_17                    ;9389E7;
     db $0C,$08 : dw $0000                                                ;9389EB;
@@ -1361,6 +1407,8 @@ InstList_SamusProjectile_Spazer_SpazerIce_Down_1:
     dw Instruction_SamusProjectile_GotoY                                 ;9389FF;
     dw InstList_SamusProjectile_Spazer_SpazerIce_Down_1                  ;938A01;
 
+
+;;; $8A03: Instruction list - spazer / spazer + ice - down-left ;;;
 InstList_SamusProjectile_Spazer_SpazerIce_DownLeft_0:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_C                     ;938A03;
     db $08,$08 : dw $0000                                                ;938A07;
@@ -1373,6 +1421,8 @@ InstList_SamusProjectile_Spazer_SpazerIce_DownLeft_1:
     dw Instruction_SamusProjectile_GotoY                                 ;938A1B;
     dw InstList_SamusProjectile_Spazer_SpazerIce_DownLeft_1              ;938A1D;
 
+
+;;; $8A1F: Instruction list - spazer / spazer + ice - left ;;;
 InstList_SamusProjectile_Spazer_SpazerIce_Left_0:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_1D                    ;938A1F;
     db $08,$0C : dw $0000                                                ;938A23;
@@ -1385,6 +1435,8 @@ InstList_SamusProjectile_Spazer_SpazerIce_Left_1:
     dw Instruction_SamusProjectile_GotoY                                 ;938A37;
     dw InstList_SamusProjectile_Spazer_SpazerIce_Left_1                  ;938A39;
 
+
+;;; $8A3B: Instruction list - spazer / spazer + ice - up-left ;;;
 InstList_SamusProjectile_Spazer_SpazerIce_UpLeft_0:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_11                    ;938A3B;
     db $08,$08 : dw $0000                                                ;938A3F;
@@ -1397,6 +1449,8 @@ InstList_SamusProjectile_Spazer_SpazerIce_UpLeft_1:
     dw Instruction_SamusProjectile_GotoY                                 ;938A53;
     dw InstList_SamusProjectile_Spazer_SpazerIce_UpLeft_1                ;938A55;
 
+
+;;; $8A57: Instruction list - spazer + wave / spazer + ice + wave - up ;;;
 InstList_SamusProjectile_SpazerWave_SpazerIceWave_Up:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_23                    ;938A57;
     db $0C,$08 : dw $0000                                                ;938A5B;
@@ -1421,6 +1475,8 @@ InstList_SamusProjectile_SpazerWave_SpazerIceWave_Up:
     dw Instruction_SamusProjectile_GotoY                                 ;938AA7;
     dw InstList_SamusProjectile_SpazerWave_SpazerIceWave_Up              ;938AA9;
 
+
+;;; $8AAB: Instruction list - spazer + wave / spazer + ice + wave - up-right ;;;
 InstList_SamusProjectile_SpazerWave_SpazerIceWave_UpRight:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_0                     ;938AAB;
     db $08,$08 : dw $0000                                                ;938AAF;
@@ -1445,6 +1501,8 @@ InstList_SamusProjectile_SpazerWave_SpazerIceWave_UpRight:
     dw Instruction_SamusProjectile_GotoY                                 ;938AFB;
     dw InstList_SamusProjectile_SpazerWave_SpazerIceWave_UpRight         ;938AFD;
 
+
+;;; $8AFF: Instruction list - spazer + wave / spazer + ice + wave - right ;;;
 InstList_SamusProjectile_SpazerWave_SpazerIceWave_Right:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_29                    ;938AFF;
     db $08,$0C : dw $0000                                                ;938B03;
@@ -1469,6 +1527,8 @@ InstList_SamusProjectile_SpazerWave_SpazerIceWave_Right:
     dw Instruction_SamusProjectile_GotoY                                 ;938B4F;
     dw InstList_SamusProjectile_SpazerWave_SpazerIceWave_Right           ;938B51;
 
+
+;;; $8B53: Instruction list - spazer + wave / spazer + ice + wave - down-right ;;;
 InstList_SamusProjectile_SpazerWave_SpazerIceWave_DownRight:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_6                     ;938B53;
     db $08,$08 : dw $0000                                                ;938B57;
@@ -1493,6 +1553,8 @@ InstList_SamusProjectile_SpazerWave_SpazerIceWave_DownRight:
     dw Instruction_SamusProjectile_GotoY                                 ;938BA3;
     dw InstList_SamusProjectile_SpazerWave_SpazerIceWave_DownRight       ;938BA5;
 
+
+;;; $8BA7: Instruction list - spazer + wave / spazer + ice + wave - down ;;;
 InstList_SamusProjectile_SpazerWave_SpazerIceWave_Down:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_17                    ;938BA7;
     db $0C,$08 : dw $0000                                                ;938BAB;
@@ -1517,6 +1579,8 @@ InstList_SamusProjectile_SpazerWave_SpazerIceWave_Down:
     dw Instruction_SamusProjectile_GotoY                                 ;938BF7;
     dw InstList_SamusProjectile_SpazerWave_SpazerIceWave_Down            ;938BF9;
 
+
+;;; $8BFB: Instruction list - spazer + wave / spazer + ice + wave - down-left ;;;
 InstList_SamusProjectile_SpazerWave_SpazerIceWave_DownLeft:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_C                     ;938BFB;
     db $08,$08 : dw $0000                                                ;938BFF;
@@ -1541,6 +1605,8 @@ InstList_SamusProjectile_SpazerWave_SpazerIceWave_DownLeft:
     dw Instruction_SamusProjectile_GotoY                                 ;938C4B;
     dw InstList_SamusProjectile_SpazerWave_SpazerIceWave_DownLeft        ;938C4D;
 
+
+;;; $8C4F: Instruction list - spazer + wave / spazer + ice + wave - left ;;;
 InstList_SamusProjectile_SpazerWave_SpazerIceWave_Left:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_1D                    ;938C4F;
     db $08,$0C : dw $0000                                                ;938C53;
@@ -1565,6 +1631,8 @@ InstList_SamusProjectile_SpazerWave_SpazerIceWave_Left:
     dw Instruction_SamusProjectile_GotoY                                 ;938C9F;
     dw InstList_SamusProjectile_SpazerWave_SpazerIceWave_Left            ;938CA1;
 
+
+;;; $8CA3: Instruction list - spazer + wave / spazer + ice + wave - up-left ;;;
 InstList_SamusProjectile_SpazerWave_SpazerIceWave_UpLeft:
     dw $0002,ProjectileFlareSpritemaps_S_SI_SW_SIW_11                    ;938CA3;
     db $08,$08 : dw $0000                                                ;938CA7;
@@ -1589,6 +1657,8 @@ InstList_SamusProjectile_SpazerWave_SpazerIceWave_UpLeft:
     dw Instruction_SamusProjectile_GotoY                                 ;938CF3;
     dw InstList_SamusProjectile_SpazerWave_SpazerIceWave_UpLeft          ;938CF5;
 
+
+;;; $8CF7: Instruction list - plasma / plasma + ice - down / up ;;;
 InstList_SamusProjectile_Plasma_PlasmaIce_Down_Up_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_4             ;938CF7;
     db $08,$10 : dw $0000                                                ;938CFB;
@@ -1599,6 +1669,8 @@ InstList_SamusProjectile_Plasma_PlasmaIce_Down_Up_1:
     dw Instruction_SamusProjectile_GotoY                                 ;938D07;
     dw InstList_SamusProjectile_Plasma_PlasmaIce_Down_Up_1               ;938D09;
 
+
+;;; $8D0B: Instruction list - plasma / plasma + ice - down-left / up-right ;;;
 InstList_SamusProjectile_Plasma_PlasmaIce_DownLeft_UpRight_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_C             ;938D0B;
     db $08,$08 : dw $0000                                                ;938D0F;
@@ -1609,6 +1681,8 @@ InstList_SamusProjectile_Plasma_PlasmaIce_DownLeft_UpRight_1:
     dw Instruction_SamusProjectile_GotoY                                 ;938D1B;
     dw InstList_SamusProjectile_Plasma_PlasmaIce_DownLeft_UpRight_1      ;938D1D;
 
+
+;;; $8D1F: Instruction list - plasma / plasma + ice - left / right ;;;
 InstList_SamusProjectile_Plasma_PlasmaIce_Left_Right_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_0             ;938D1F;
     db $08,$08 : dw $0000                                                ;938D23;
@@ -1619,6 +1693,8 @@ InstList_SamusProjectile_Plasma_PlasmaIce_Left_Right_1:
     dw Instruction_SamusProjectile_GotoY                                 ;938D2F;
     dw InstList_SamusProjectile_Plasma_PlasmaIce_Left_Right_1            ;938D31;
 
+
+;;; $8D33: Instruction list - plasma / plasma + ice - down-right / up-left ;;;
 InstList_SamusProjectile_Plasma_PlasmaIce_DownRight_UpLeft_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_8             ;938D33;
     db $08,$08 : dw $0000                                                ;938D37;
@@ -1629,10 +1705,14 @@ InstList_SamusProjectile_Plasma_PlasmaIce_DownRight_UpLeft_1:
     dw Instruction_SamusProjectile_GotoY                                 ;938D43;
     dw InstList_SamusProjectile_Plasma_PlasmaIce_DownRight_UpLeft_1      ;938D45;
 
+
+;;; $8D47: Instruction list - plasma + ice + wave - down / up ;;;
 InstList_SamusProjectile_PlasmaIceWave_Down_Up:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_4             ;938D47;
     db $0C,$10 : dw $0000                                                ;938D4B;
 
+
+;;; $8D4F: Instruction list - plasma + wave - down / up ;;;
 InstList_SamusProjectile_PlasmaWave_Down_Up:
     dw $0002,ProjectileFlareSpritemaps_Charged_PW_PIW_14                 ;938D4F;
     db $0C,$10 : dw $0001                                                ;938D53;
@@ -1653,10 +1733,14 @@ InstList_SamusProjectile_PlasmaWave_Down_Up:
     dw Instruction_SamusProjectile_GotoY                                 ;938D8F;
     dw InstList_SamusProjectile_PlasmaWave_Down_Up                       ;938D91;
 
+
+;;; $8D93: Instruction list - plasma + ice + wave - down-left / up-right ;;;
 InstList_SamusProjectile_PlasmaIceWave_DownLeft_UpRight:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_C             ;938D93;
     db $08,$08 : dw $0000                                                ;938D97;
 
+
+;;; $8D9B: Instruction list - plasma + wave - down-left / up-right ;;;
 InstList_SamusProjectile_PlasmaWave_DownLeft_UpRight:
     dw $0002,ProjectileFlareSpritemaps_Charged_PW_PIW_32                 ;938D9B;
     db $08,$08 : dw $0001                                                ;938D9F;
@@ -1677,6 +1761,8 @@ InstList_SamusProjectile_PlasmaWave_DownLeft_UpRight:
     dw Instruction_SamusProjectile_GotoY                                 ;938DDB;
     dw InstList_SamusProjectile_PlasmaWave_DownLeft_UpRight              ;938DDD;
 
+
+;;; $8DDF: Instruction list - plasma + wave / plasma + ice + wave - left / right ;;;
 InstList_SamusProj_PlasmaWave_PlasmaIceWave_Left_Right_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_0             ;938DDF;
     db $08,$0C : dw $0000                                                ;938DE3;
@@ -1701,10 +1787,14 @@ InstList_SamusProj_PlasmaWave_PlasmaIceWave_Left_Right_1:
     dw Instruction_SamusProjectile_GotoY                                 ;938E27;
     dw InstList_SamusProj_PlasmaWave_PlasmaIceWave_Left_Right_1          ;938E29;
 
+
+;;; $8E2B: Instruction list - plasma + ice + wave - down-right / up-left ;;;
 InstList_SamusProjectile_PlasmaIceWave_DownRight_UpLeft:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_8             ;938E2B;
     db $08,$08 : dw $0000                                                ;938E2F;
 
+
+;;; $8E33: Instruction list - plasma + wave - down-right / up-left ;;;
 InstList_SamusProjectile_PlasmaWave_DownRight_UpLeft:
     dw $0002,ProjectileFlareSpritemaps_Charged_PW_PIW_A                  ;938E33;
     db $08,$08 : dw $0001                                                ;938E37;
@@ -1725,6 +1815,8 @@ InstList_SamusProjectile_PlasmaWave_DownRight_UpLeft:
     dw Instruction_SamusProjectile_GotoY                                 ;938E73;
     dw InstList_SamusProjectile_PlasmaWave_DownRight_UpLeft              ;938E75;
 
+
+;;; $8E77: Instruction list - charged power - up ;;;
 InstList_SamusProjectile_Charged_Power_Up:
     dw $0001,ProjectileFlareSpritemaps_Charged_Power_2                   ;938E77;
     db $08,$08 : dw $0000                                                ;938E7B;
@@ -1733,6 +1825,8 @@ InstList_SamusProjectile_Charged_Power_Up:
     dw Instruction_SamusProjectile_GotoY                                 ;938E87;
     dw InstList_SamusProjectile_Charged_Power_Up                         ;938E89;
 
+
+;;; $8E8B: Instruction list - charged power - up-right ;;;
 InstList_SamusProjectile_Charged_Power_UpRight:
     dw $0001,ProjectileFlareSpritemaps_Charged_Power_3                   ;938E8B;
     db $08,$08 : dw $0000                                                ;938E8F;
@@ -1741,6 +1835,8 @@ InstList_SamusProjectile_Charged_Power_UpRight:
     dw Instruction_SamusProjectile_GotoY                                 ;938E9B;
     dw InstList_SamusProjectile_Charged_Power_UpRight                    ;938E9D;
 
+
+;;; $8E9F: Instruction list - charged power - right ;;;
 InstList_SamusProjectile_Charged_Power_Right:
     dw $0001,ProjectileFlareSpritemaps_Charged_Power_4                   ;938E9F;
     db $08,$08 : dw $0000                                                ;938EA3;
@@ -1749,6 +1845,8 @@ InstList_SamusProjectile_Charged_Power_Right:
     dw Instruction_SamusProjectile_GotoY                                 ;938EAF;
     dw InstList_SamusProjectile_Charged_Power_Right                      ;938EB1;
 
+
+;;; $8EB3: Instruction list - charged power - down-right ;;;
 InstList_SamusProjectile_Charged_Power_DownRight:
     dw $0001,ProjectileFlareSpritemaps_Charged_Power_5                   ;938EB3;
     db $08,$08 : dw $0000                                                ;938EB7;
@@ -1757,6 +1855,8 @@ InstList_SamusProjectile_Charged_Power_DownRight:
     dw Instruction_SamusProjectile_GotoY                                 ;938EC3;
     dw InstList_SamusProjectile_Charged_Power_DownRight                  ;938EC5;
 
+
+;;; $8EC7: Instruction list - charged power - down ;;;
 InstList_SamusProjectile_Charged_Power_Down:
     dw $0001,ProjectileFlareSpritemaps_Charged_Power_6                   ;938EC7;
     db $08,$08 : dw $0000                                                ;938ECB;
@@ -1765,6 +1865,8 @@ InstList_SamusProjectile_Charged_Power_Down:
     dw Instruction_SamusProjectile_GotoY                                 ;938ED7;
     dw InstList_SamusProjectile_Charged_Power_Down                       ;938ED9;
 
+
+;;; $8EDB: Instruction list - charged power - down-left ;;;
 InstList_SamusProjectile_Charged_Power_DownLeft:
     dw $0001,ProjectileFlareSpritemaps_Charged_Power_7                   ;938EDB;
     db $08,$08 : dw $0000                                                ;938EDF;
@@ -1773,6 +1875,8 @@ InstList_SamusProjectile_Charged_Power_DownLeft:
     dw Instruction_SamusProjectile_GotoY                                 ;938EEB;
     dw InstList_SamusProjectile_Charged_Power_DownLeft                   ;938EED;
 
+
+;;; $8EEF: Instruction list - charged power - left ;;;
 InstList_SamusProjectile_Charged_Power_Left:
     dw $0001,ProjectileFlareSpritemaps_Charged_Power_0                   ;938EEF;
     db $08,$08 : dw $0000                                                ;938EF3;
@@ -1781,6 +1885,8 @@ InstList_SamusProjectile_Charged_Power_Left:
     dw Instruction_SamusProjectile_GotoY                                 ;938EFF;
     dw InstList_SamusProjectile_Charged_Power_Left                       ;938F01;
 
+
+;;; $8F03: Instruction list - charged power - up-left ;;;
 InstList_SamusProjectile_Charged_Power_UpLeft:
     dw $0001,ProjectileFlareSpritemaps_Charged_Power_1                   ;938F03;
     db $08,$08 : dw $0000                                                ;938F07;
@@ -1789,10 +1895,14 @@ InstList_SamusProjectile_Charged_Power_UpLeft:
     dw Instruction_SamusProjectile_GotoY                                 ;938F13;
     dw InstList_SamusProjectile_Charged_Power_UpLeft                     ;938F15;
 
+
+;;; $8F17: Instruction list - charged wave - up ;;;
 InstList_SamusProjectile_Charged_Wave_Up:
     dw $0003,Spritemap_Nothing_93A117                                    ;938F17;
     db $0C,$08 : dw $0000                                                ;938F1B;
 
+
+;;; $8F1F: Instruction list - charged wave - down ;;;
 InstList_SamusProjectile_Charged_Wave_Down:
     dw $0001,ProjectileFlareSpritemaps_ChargedWave_WaveSBA_0             ;938F1F;
     db $0C,$08 : dw $0000                                                ;938F23;
@@ -1829,6 +1939,8 @@ InstList_SamusProjectile_Charged_Wave_Down:
     dw Instruction_SamusProjectile_GotoY                                 ;938F9F;
     dw InstList_SamusProjectile_Charged_Wave_Down                        ;938FA1;
 
+
+;;; $8FA3: Instruction list - charged wave - down-left / up-right ;;;
 InstList_SamusProjectile_Charged_Wave_DownLeft_UpRight:
     dw $0001,ProjectileFlareSpritemaps_ChargedWave_WaveSBA_0             ;938FA3;
     db $08,$08 : dw $0000                                                ;938FA7;
@@ -1865,6 +1977,8 @@ InstList_SamusProjectile_Charged_Wave_DownLeft_UpRight:
     dw Instruction_SamusProjectile_GotoY                                 ;939023;
     dw InstList_SamusProjectile_Charged_Wave_DownLeft_UpRight            ;939025;
 
+
+;;; $9027: Instruction list - charged wave - left / right ;;;
 InstList_SamusProjectile_Charged_Wave_Left_Right:
     dw $0001,ProjectileFlareSpritemaps_ChargedWave_WaveSBA_0             ;939027;
     db $08,$0C : dw $0000                                                ;93902B;
@@ -1901,6 +2015,8 @@ InstList_SamusProjectile_Charged_Wave_Left_Right:
     dw Instruction_SamusProjectile_GotoY                                 ;9390A7;
     dw InstList_SamusProjectile_Charged_Wave_Left_Right                  ;9390A9;
 
+
+;;; $90AB: Instruction list - charged wave - down-right / up-left ;;;
 InstList_SamusProjectile_Charged_Wave_DownRight_UpLeft:
     dw $0001,ProjectileFlareSpritemaps_ChargedWave_WaveSBA_0             ;9390AB;
     db $08,$08 : dw $0000                                                ;9390AF;
@@ -1937,6 +2053,8 @@ InstList_SamusProjectile_Charged_Wave_DownRight_UpLeft:
     dw Instruction_SamusProjectile_GotoY                                 ;93912B;
     dw InstList_SamusProjectile_Charged_Wave_DownRight_UpLeft            ;93912D;
 
+
+;;; $912F: Instruction list - charged ice ;;;
 InstList_SamusProjectile_Charged_Ice:
     dw $0001,ProjectileFlareSpritemaps_Charged_Ice_0                     ;93912F;
     db $08,$08 : dw $0000                                                ;939133;
@@ -1949,10 +2067,14 @@ InstList_SamusProjectile_Charged_Ice:
     dw Instruction_SamusProjectile_GotoY                                 ;93914F;
     dw InstList_SamusProjectile_Charged_Ice                              ;939151;
 
+
+;;; $9153: Instruction list - charged ice + wave - up ;;;
 InstList_SamusProjectile_Charged_IW_Up:
     dw $0003,Spritemap_Nothing_93A117                                    ;939153;
     db $0C,$08 : dw $0000                                                ;939157;
 
+
+;;; $915B: Instruction list - charged ice + wave - down ;;;
 InstList_SamusProjectile_Charged_IW_Down:
     dw $0001,ProjectileFlareSpritemaps_ChargedIceWave_0                  ;93915B;
     db $0C,$08 : dw $0000                                                ;93915F;
@@ -1989,6 +2111,8 @@ InstList_SamusProjectile_Charged_IW_Down:
     dw Instruction_SamusProjectile_GotoY                                 ;9391DB;
     dw InstList_SamusProjectile_Charged_IW_Down                          ;9391DD;
 
+
+;;; $91DF: Instruction list - charged ice + wave - down-left / up-right ;;;
 InstList_SamusProjectile_Charged_IW_DownLeft_UpRight:
     dw $0001,ProjectileFlareSpritemaps_ChargedIceWave_0                  ;9391DF;
     db $08,$08 : dw $0000                                                ;9391E3;
@@ -2025,6 +2149,8 @@ InstList_SamusProjectile_Charged_IW_DownLeft_UpRight:
     dw Instruction_SamusProjectile_GotoY                                 ;93925F;
     dw InstList_SamusProjectile_Charged_IW_DownLeft_UpRight              ;939261;
 
+
+;;; $9263: Instruction list - charged ice + wave - left / right ;;;
 InstList_SamusProjectile_Charged_IW_Left_Right:
     dw $0001,ProjectileFlareSpritemaps_ChargedIceWave_0                  ;939263;
     db $08,$0C : dw $0000                                                ;939267;
@@ -2061,6 +2187,8 @@ InstList_SamusProjectile_Charged_IW_Left_Right:
     dw Instruction_SamusProjectile_GotoY                                 ;9392E3;
     dw InstList_SamusProjectile_Charged_IW_Left_Right                    ;9392E5;
 
+
+;;; $92E7: Instruction list - charged ice + wave - down-right / up-left ;;;
 InstList_SamusProjectile_Charged_IW_DownRight_UpLeft:
     dw $0001,ProjectileFlareSpritemaps_ChargedIceWave_0                  ;9392E7;
     db $08,$08 : dw $0000                                                ;9392EB;
@@ -2097,6 +2225,8 @@ InstList_SamusProjectile_Charged_IW_DownRight_UpLeft:
     dw Instruction_SamusProjectile_GotoY                                 ;939367;
     dw InstList_SamusProjectile_Charged_IW_DownRight_UpLeft              ;939369;
 
+
+;;; $936B: Instruction list - charged spazer / spazer + ice - down / up ;;;
 InstList_SamusProjectile_Charged_S_SI_Down_Up_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_4C            ;93936B;
     db $0C,$08 : dw $0000                                                ;93936F;
@@ -2123,6 +2253,8 @@ InstList_SamusProjectile_Charged_S_SI_Down_Up_1:
     dw Instruction_SamusProjectile_GotoY                                 ;9393BB;
     dw InstList_SamusProjectile_Charged_S_SI_Down_Up_1                   ;9393BD;
 
+
+;;; $93BF: Instruction list - charged spazer / spazer + ice - down-left / up-right ;;;
 InstList_SamusProjectile_Charged_S_SI_DownLeft_UpRight_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_4E            ;9393BF;
     db $08,$08 : dw $0000                                                ;9393C3;
@@ -2149,6 +2281,8 @@ InstList_SamusProjectile_Charged_S_SI_DownLeft_UpRight_1:
     dw Instruction_SamusProjectile_GotoY                                 ;93940F;
     dw InstList_SamusProjectile_Charged_S_SI_DownLeft_UpRight_1          ;939411;
 
+
+;;; $9413: Instruction list - charged spazer / spazer + ice - left / right ;;;
 InstList_SamusProjectile_Charged_S_SI_Left_Right_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_51            ;939413;
     db $08,$0C : dw $0000                                                ;939417;
@@ -2175,6 +2309,8 @@ InstList_SamusProjectile_Charged_S_SI_Left_Right_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939463;
     dw InstList_SamusProjectile_Charged_S_SI_Left_Right_1                ;939465;
 
+
+;;; $9467: Instruction list - charged spazer / spazer + ice - down-right / up-left ;;;
 InstList_SamusProjectile_Charged_S_SI_DownRight_UpLeft_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_53            ;939467;
     db $08,$08 : dw $0000                                                ;93946B;
@@ -2201,6 +2337,8 @@ InstList_SamusProjectile_Charged_S_SI_DownRight_UpLeft_1:
     dw Instruction_SamusProjectile_GotoY                                 ;9394B7;
     dw InstList_SamusProjectile_Charged_S_SI_DownRight_UpLeft_1          ;9394B9;
 
+
+;;; $94BB: Instruction list - charged spazer + wave / spazer + ice + wave - up ;;;
 InstList_SamusProjectile_Charged_SW_SIW_Up_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_4C            ;9394BB;
     db $0C,$08 : dw $0000                                                ;9394BF;
@@ -2255,6 +2393,8 @@ InstList_SamusProjectile_Charged_SW_SIW_Up_1:
     dw Instruction_SamusProjectile_GotoY                                 ;93957B;
     dw InstList_SamusProjectile_Charged_SW_SIW_Up_1                      ;93957D;
 
+
+;;; $957F: Instruction list - charged spazer + wave / spazer + ice + wave - up-right ;;;
 InstList_SamusProjectile_Charged_SW_SIW_UpRight_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_4E            ;93957F;
     db $08,$08 : dw $0000                                                ;939583;
@@ -2309,6 +2449,8 @@ InstList_SamusProjectile_Charged_SW_SIW_UpRight_1:
     dw Instruction_SamusProjectile_GotoY                                 ;93963F;
     dw InstList_SamusProjectile_Charged_SW_SIW_UpRight_1                 ;939641;
 
+
+;;; $9643: Instruction list - charged spazer + wave / spazer + ice + wave - right ;;;
 InstList_SamusProjectile_Charged_SW_SIW_Right_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_51            ;939643;
     db $08,$0C : dw $0000                                                ;939647;
@@ -2363,6 +2505,8 @@ InstList_SamusProjectile_Charged_SW_SIW_Right_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939703;
     dw InstList_SamusProjectile_Charged_SW_SIW_Right_1                   ;939705;
 
+
+;;; $9707: Instruction list - charged spazer + wave / spazer + ice + wave - down-right ;;;
 InstList_SamusProjectile_Charged_SW_SIW_DownRight_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_53            ;939707;
     db $08,$08 : dw $0000                                                ;93970B;
@@ -2417,6 +2561,8 @@ InstList_SamusProjectile_Charged_SW_SIW_DownRight_1:
     dw Instruction_SamusProjectile_GotoY                                 ;9397C7;
     dw InstList_SamusProjectile_Charged_SW_SIW_DownRight_1               ;9397C9;
 
+
+;;; $97CB: Instruction list - charged spazer + wave / spazer + ice + wave - down ;;;
 InstList_SamusProjectile_Charged_SW_SIW_Down_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_55            ;9397CB;
     db $0C,$08 : dw $0000                                                ;9397CF;
@@ -2471,6 +2617,8 @@ InstList_SamusProjectile_Charged_SW_SIW_Down_1:
     dw Instruction_SamusProjectile_GotoY                                 ;93988B;
     dw InstList_SamusProjectile_Charged_SW_SIW_Down_1                    ;93988D;
 
+
+;;; $988F: Instruction list - charged spazer + wave / spazer + ice + wave - down-left ;;;
 InstList_SamusProjectile_Charged_SW_SIW_DownLeft_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_4E            ;93988F;
     db $08,$08 : dw $0000                                                ;939893;
@@ -2525,6 +2673,8 @@ InstList_SamusProjectile_Charged_SW_SIW_DownLeft_1:
     dw Instruction_SamusProjectile_GotoY                                 ;93994F;
     dw InstList_SamusProjectile_Charged_SW_SIW_DownLeft_1                ;939951;
 
+
+;;; $9953: Instruction list - charged spazer + wave / spazer + ice + wave - left ;;;
 InstList_SamusProjectile_Charged_SW_SIW_Left_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_48            ;939953;
     db $08,$0C : dw $0000                                                ;939957;
@@ -2579,6 +2729,8 @@ InstList_SamusProjectile_Charged_SW_SIW_Left_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939A13;
     dw InstList_SamusProjectile_Charged_SW_SIW_Left_1                    ;939A15;
 
+
+;;; $9A17: Instruction list - charged spazer + wave / spazer + ice + wave - up-left ;;;
 InstList_SamusProjectile_Charged_SW_SIW_UpLeft_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_S_SI_SW_SIW_4A            ;939A17;
     db $08,$08 : dw $0000                                                ;939A1B;
@@ -2633,6 +2785,8 @@ InstList_SamusProjectile_Charged_SW_SIW_UpLeft_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939AD7;
     dw InstList_SamusProjectile_Charged_SW_SIW_UpLeft_1                  ;939AD9;
 
+
+;;; $9ADB: Instruction list - charged plasma / plasma + ice - down / up ;;;
 InstList_SamusProjectile_Charged_P_PI_Down_Up_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_4             ;939ADB;
     db $08,$08 : dw $0000                                                ;939ADF;
@@ -2655,6 +2809,8 @@ InstList_SamusProjectile_Charged_P_PI_Down_Up_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939B1B;
     dw InstList_SamusProjectile_Charged_P_PI_Down_Up_1                   ;939B1D;
 
+
+;;; $9B1F: Instruction list - charged plasma / plasma + ice - down-left / up-right ;;;
 InstList_SamusProjectile_Charged_P_PI_DownLeft_UpRight_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_C             ;939B1F;
     db $08,$08 : dw $0000                                                ;939B23;
@@ -2677,6 +2833,8 @@ InstList_SamusProjectile_Charged_P_PI_DownLeft_UpRight_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939B5F;
     dw InstList_SamusProjectile_Charged_P_PI_DownLeft_UpRight_1          ;939B61;
 
+
+;;; $9B63: Instruction list - charged plasma / plasma + ice - left / right ;;;
 InstList_SamusProjectile_Charged_P_PI_Left_Right_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_0             ;939B63;
     db $08,$08 : dw $0000                                                ;939B67;
@@ -2699,6 +2857,8 @@ InstList_SamusProjectile_Charged_P_PI_Left_Right_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939BA3;
     dw InstList_SamusProjectile_Charged_P_PI_Left_Right_1                ;939BA5;
 
+
+;;; $9BA7: Instruction list - charged plasma / plasma + ice - down-right / up-left ;;;
 InstList_SamusProjectile_Charged_P_PI_DownRight_UpLeft_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_8             ;939BA7;
     db $08,$08 : dw $0000                                                ;939BAB;
@@ -2721,6 +2881,8 @@ InstList_SamusProjectile_Charged_P_PI_DownRight_UpLeft_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939BE7;
     dw InstList_SamusProjectile_Charged_P_PI_DownRight_UpLeft_1          ;939BE9;
 
+
+;;; $9BEB: Instruction list - charged plasma + wave / plasma + ice + wave - down / up ;;;
 InstList_SamusProjectile_Charged_PW_PIW_Down_Up_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_4             ;939BEB;
     db $0C,$08 : dw $0000                                                ;939BEF;
@@ -2771,6 +2933,8 @@ InstList_SamusProjectile_Charged_PW_PIW_Down_Up_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939C9B;
     dw InstList_SamusProjectile_Charged_PW_PIW_Down_Up_1                 ;939C9D;
 
+
+;;; $9C9F: Instruction list - charged plasma + wave / plasma + ice + wave - down-left / up-right ;;;
 InstList_SamusProjectile_Charged_PW_PIW_DownLeft_UpRight_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_C             ;939C9F;
     db $08,$08 : dw $0000                                                ;939CA3;
@@ -2821,6 +2985,8 @@ InstList_SamusProjectile_Charged_PW_PIW_DownLeft_UpRight_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939D4F;
     dw InstList_SamusProjectile_Charged_PW_PIW_DownLeft_UpRight_1        ;939D51;
 
+
+;;; $9D53: Instruction list - charged plasma + wave / plasma + ice + wave - left / right ;;;
 InstList_SamusProjectile_Charged_PW_PIW_Left_Right_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_0             ;939D53;
     db $08,$0C : dw $0000                                                ;939D57;
@@ -2871,6 +3037,8 @@ InstList_SamusProjectile_Charged_PW_PIW_Left_Right_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939E03;
     dw InstList_SamusProjectile_Charged_PW_PIW_Left_Right_1              ;939E05;
 
+
+;;; $9E07: Instruction list - charged plasma + wave / plasma + ice + wave - down-right / up-left ;;;
 InstList_SamusProjectile_Charged_PW_PIW_DownRight_UpLeft_0:
     dw $0001,ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_8             ;939E07;
     db $08,$08 : dw $0000                                                ;939E0B;
@@ -2921,108 +3089,144 @@ InstList_SamusProjectile_Charged_PW_PIW_DownRight_UpLeft_1:
     dw Instruction_SamusProjectile_GotoY                                 ;939EB7;
     dw InstList_SamusProjectile_Charged_PW_PIW_DownRight_UpLeft_1        ;939EB9;
 
+
+;;; $9EBB: Instruction list - missiles - up ;;;
 InstList_SamusProjectile_Missiles_Up:
     dw $000F,ProjectileFlareSpritemaps_Missile_2                         ;939EBB;
     db $04,$04 : dw $0000                                                ;939EBF;
     dw Instruction_SamusProjectile_GotoY                                 ;939EC3;
     dw InstList_SamusProjectile_Missiles_Up                              ;939EC5;
 
+
+;;; $9EC7: Instruction list - missiles - up-right ;;;
 InstList_SamusProjectile_Missiles_UpRight:
     dw $000F,ProjectileFlareSpritemaps_Missile_3                         ;939EC7;
     db $04,$04 : dw $0000                                                ;939ECB;
     dw Instruction_SamusProjectile_GotoY                                 ;939ECF;
     dw InstList_SamusProjectile_Missiles_UpRight                         ;939ED1;
 
+
+;;; $9ED3: Instruction list - missiles - right ;;;
 InstList_SamusProjectile_Missiles_Right:
     dw $000F,ProjectileFlareSpritemaps_Missile_4                         ;939ED3;
     db $04,$04 : dw $0000                                                ;939ED7;
     dw Instruction_SamusProjectile_GotoY                                 ;939EDB;
     dw InstList_SamusProjectile_Missiles_Right                           ;939EDD;
 
+
+;;; $9EDF: Instruction list - missiles - down-right ;;;
 InstList_SamusProjectile_Missiles_DownRight:
     dw $000F,ProjectileFlareSpritemaps_Missile_5                         ;939EDF;
     db $04,$04 : dw $0000                                                ;939EE3;
     dw Instruction_SamusProjectile_GotoY                                 ;939EE7;
     dw InstList_SamusProjectile_Missiles_DownRight                       ;939EE9;
 
+
+;;; $9EEB: Instruction list - missiles - down ;;;
 InstList_SamusProjectile_Missiles_Down:
     dw $000F,ProjectileFlareSpritemaps_Missile_6                         ;939EEB;
     db $04,$04 : dw $0000                                                ;939EEF;
     dw Instruction_SamusProjectile_GotoY                                 ;939EF3;
     dw InstList_SamusProjectile_Missiles_Down                            ;939EF5;
 
+
+;;; $9EF7: Instruction list - missiles - down-left ;;;
 InstList_SamusProjectile_Missiles_DownLeft:
     dw $000F,ProjectileFlareSpritemaps_Missile_7                         ;939EF7;
     db $04,$04 : dw $0000                                                ;939EFB;
     dw Instruction_SamusProjectile_GotoY                                 ;939EFF;
     dw InstList_SamusProjectile_Missiles_DownLeft                        ;939F01;
 
+
+;;; $9F03: Instruction list - missiles - left ;;;
 InstList_SamusProjectile_Missiles_Left:
     dw $000F,ProjectileFlareSpritemaps_Missile_0                         ;939F03;
     db $04,$04 : dw $0000                                                ;939F07;
     dw Instruction_SamusProjectile_GotoY                                 ;939F0B;
     dw InstList_SamusProjectile_Missiles_Left                            ;939F0D;
 
+
+;;; $9F0F: Instruction list - missiles - up-left ;;;
 InstList_SamusProjectile_Missiles_UpLeft:
     dw $000F,ProjectileFlareSpritemaps_Missile_1                         ;939F0F;
     db $04,$04 : dw $0000                                                ;939F13;
     dw Instruction_SamusProjectile_GotoY                                 ;939F17;
     dw InstList_SamusProjectile_Missiles_UpLeft                          ;939F19;
 
+
+;;; $9F1B: Instruction list - super missile - up ;;;
 InstList_SamusProjectile_SuperMissiles_Up:
     dw $000F,ProjectileFlareSpritemaps_SuperMissile_2                    ;939F1B;
     db $08,$08 : dw $0000                                                ;939F1F;
     dw Instruction_SamusProjectile_GotoY                                 ;939F23;
     dw InstList_SamusProjectile_SuperMissiles_Up                         ;939F25;
 
+
+;;; $9F27: Instruction list - super missile - up-right ;;;
 InstList_SamusProjectile_SuperMissiles_UpRight:
     dw $000F,ProjectileFlareSpritemaps_SuperMissile_3                    ;939F27;
     db $08,$08 : dw $0000                                                ;939F2B;
     dw Instruction_SamusProjectile_GotoY                                 ;939F2F;
     dw InstList_SamusProjectile_SuperMissiles_UpRight                    ;939F31;
 
+
+;;; $9F33: Instruction list - super missile - right ;;;
 InstList_SamusProjectile_SuperMissiles_Right:
     dw $000F,ProjectileFlareSpritemaps_SuperMissile_4                    ;939F33;
     db $08,$08 : dw $0000                                                ;939F37;
     dw Instruction_SamusProjectile_GotoY                                 ;939F3B;
     dw InstList_SamusProjectile_SuperMissiles_Right                      ;939F3D;
 
+
+;;; $9F3F: Instruction list - super missile - down-right ;;;
 InstList_SamusProjectile_SuperMissiles_DownRight:
     dw $000F,ProjectileFlareSpritemaps_SuperMissile_5                    ;939F3F;
     db $08,$08 : dw $0000                                                ;939F43;
     dw Instruction_SamusProjectile_GotoY                                 ;939F47;
     dw InstList_SamusProjectile_SuperMissiles_DownRight                  ;939F49;
 
+
+;;; $9F4B: Instruction list - super missile - down ;;;
 InstList_SamusProjectile_SuperMissiles_Down:
     dw $000F,ProjectileFlareSpritemaps_SuperMissile_6                    ;939F4B;
     db $08,$08 : dw $0000                                                ;939F4F;
     dw Instruction_SamusProjectile_GotoY                                 ;939F53;
     dw InstList_SamusProjectile_SuperMissiles_Down                       ;939F55;
 
+
+;;; $9F57: Instruction list - super missile - down-left ;;;
 InstList_SamusProjectile_SuperMissiles_DownLeft:
     dw $000F,ProjectileFlareSpritemaps_SuperMissile_7                    ;939F57;
     db $08,$08 : dw $0000                                                ;939F5B;
     dw Instruction_SamusProjectile_GotoY                                 ;939F5F;
     dw InstList_SamusProjectile_SuperMissiles_DownLeft                   ;939F61;
 
+
+;;; $9F63: Instruction list - super missile - left ;;;
 InstList_SamusProjectile_SuperMissiles_Left:
     dw $000F,ProjectileFlareSpritemaps_SuperMissile_0                    ;939F63;
     db $08,$08 : dw $0000                                                ;939F67;
     dw Instruction_SamusProjectile_GotoY                                 ;939F6B;
     dw InstList_SamusProjectile_SuperMissiles_Left                       ;939F6D;
 
+
+;;; $9F6F: Instruction list - super missile - up-left ;;;
 InstList_SamusProjectile_SuperMissiles_UpLeft:
     dw $000F,ProjectileFlareSpritemaps_SuperMissile_1                    ;939F6F;
     db $08,$08 : dw $0000                                                ;939F73;
     dw Instruction_SamusProjectile_GotoY                                 ;939F77;
     dw InstList_SamusProjectile_SuperMissiles_UpLeft                     ;939F79;
 
+
+;;; $9F7B: Instruction list - super missile link ;;;
 InstList_SamusProjectile_SuperMissileLink:
     dw $000F,Spritemap_Nothing_93A117                                    ;939F7B;
     db $08,$08 : dw $0000                                                ;939F7F;
     dw Instruction_SamusProjectile_GotoY                                 ;939F83;
     dw InstList_SamusProjectile_SuperMissileLink                         ;939F85;
 
+
+;;; $9F87: Instruction list - power bomb ;;;
 InstList_SamusProjectile_PowerBomb:
     dw $0005,ProjectileFlareSpritemaps_PowerBomb_0                       ;939F87;
     db $04,$04 : dw $0000                                                ;939F8B;
@@ -3034,6 +3238,7 @@ InstList_SamusProjectile_PowerBomb:
     dw InstList_SamusProjectile_PowerBomb                                ;939FA1;
 
 InstList_SamusProjectile_PowerBomb_FastAnimation:
+; Fast animation. Plays when bomb timer reaches Fh (see $90:C157)
     dw $0001                                                             ;939FA3;
     dw ProjectileFlareSpritemaps_PowerBomb_0                             ;939FA5;
     db $04,$04 : dw $0000                                                ;939FA7;
@@ -3044,6 +3249,8 @@ InstList_SamusProjectile_PowerBomb_FastAnimation:
     dw Instruction_SamusProjectile_GotoY                                 ;939FBB;
     dw InstList_SamusProjectile_PowerBomb_FastAnimation                  ;939FBD;
 
+
+;;; $9FBF: Instruction list - bomb ;;;
 InstList_SamusProjectile_Bomb:
     dw $0005,ProjectileFlareSpritemaps_Bomb_0                            ;939FBF;
     db $04,$04 : dw $0000                                                ;939FC3;
@@ -3056,6 +3263,7 @@ InstList_SamusProjectile_Bomb:
     dw Instruction_SamusProjectile_GotoY                                 ;939FDF;
     dw InstList_SamusProjectile_Bomb                                     ;939FE1;
 
+; Fast animation. Plays when bomb timer reaches Fh (see $90:C128)
 InstList_SamusProjectile_Bomb_FastAnimation:
     dw $0001,ProjectileFlareSpritemaps_Bomb_0                            ;939FE3;
     db $04,$04 : dw $0000                                                ;939FE7;
@@ -3068,6 +3276,8 @@ InstList_SamusProjectile_Bomb_FastAnimation:
     dw Instruction_SamusProjectile_GotoY                                 ;93A003;
     dw InstList_SamusProjectile_Bomb_FastAnimation                       ;93A005;
 
+
+;;; $A007: Instruction list - beam explosion ;;;
 InstList_SamusProjectile_BeamExplosion:
     dw $0003,ProjectileFlareSpritemaps_BeamExplosion_0                   ;93A007;
     db $00,$00 : dw $0000                                                ;93A00B;
@@ -3083,6 +3293,8 @@ InstList_SamusProjectile_BeamExplosion:
     db $00,$00 : dw $0000                                                ;93A033;
     dw Instruction_SamusProjectile_Delete                                ;93A037;
 
+
+;;; $A039: Instruction list - missile explosion ;;;
 InstList_SamusProjectile_MissileExplosion:
     dw $0003,ProjectileFlareSpritemaps_MissileExplosion_0                ;93A039;
     db $08,$08 : dw $0000                                                ;93A03D;
@@ -3098,6 +3310,8 @@ InstList_SamusProjectile_MissileExplosion:
     db $08,$08 : dw $0000                                                ;93A065;
     dw Instruction_SamusProjectile_Delete                                ;93A069;
 
+
+;;; $A06B: Instruction list - bomb explosion ;;;
 InstList_SamusProjectile_BombExplosion:
     dw $0002,ProjectileFlareSpritemaps_BombExplosion_PlasmaSBA_0         ;93A06B;
     db $08,$08 : dw $0000                                                ;93A06F;
@@ -3111,6 +3325,8 @@ InstList_SamusProjectile_BombExplosion:
     db $10,$10 : dw $0000                                                ;93A08F;
     dw Instruction_SamusProjectile_Delete                                ;93A093;
 
+
+;;; $A095: Instruction list - plasma SBA ;;;
 InstList_SamusProjectile_PlasmaSBA:
     dw $0002,ProjectileFlareSpritemaps_BombExplosion_PlasmaSBA_0         ;93A095;
     db $08,$08 : dw $0000                                                ;93A099;
@@ -3125,6 +3341,8 @@ InstList_SamusProjectile_PlasmaSBA:
     dw Instruction_SamusProjectile_GotoY                                 ;93A0BD;
     dw InstList_SamusProjectile_PlasmaSBA                                ;93A0BF;
 
+
+;;; $A0C1: Instruction list - super missile explosion ;;;
 InstList_SamusProjectile_SuperMissileExplosion:
     dw $0005,ProjectileFlareSpritemaps_SuperMissileExplosion_0           ;93A0C1;
     db $08,$08 : dw $0000                                                ;93A0C5;
@@ -3140,6 +3358,8 @@ InstList_SamusProjectile_SuperMissileExplosion:
     db $10,$10 : dw $0000                                                ;93A0ED;
     dw Instruction_SamusProjectile_Delete                                ;93A0F1;
 
+
+;;; $A0F3: Instruction list - unused projectile 25h ;;;
 UNUSED_InstList_SamusProjectile_Projectile25_93A0F3:
     dw $0002,Spritemap_Nothing_93A117                                    ;93A0F3;
     db $10,$20 : dw $0000                                                ;93A0F7;
@@ -3152,9 +3372,13 @@ UNUSED_InstList_SamusProjectile_Projectile25_93A0F3:
     dw Instruction_SamusProjectile_GotoY                                 ;93A113;
     dw UNUSED_InstList_SamusProjectile_Projectile25_93A0F3               ;93A115;
 
+
+;;; $A117: Spritemap - nothing ;;;
 Spritemap_Nothing_93A117:
     dw $0000                                                             ;93A117;
 
+
+;;; $A119: Instruction list - shinespark echoes ;;;
 InstList_SamusProjectile_ShinesparkEcho:
     dw $0002,Spritemap_Nothing_93A117                                    ;93A119;
     db $20,$20 : dw $0000                                                ;93A11D;
@@ -3167,6 +3391,8 @@ InstList_SamusProjectile_ShinesparkEcho:
     dw Instruction_SamusProjectile_GotoY                                 ;93A139;
     dw InstList_SamusProjectile_ShinesparkEcho                           ;93A13B;
 
+
+;;; $A13D: Instruction list - spazer SBA trail ;;;
 InstList_SamusProjectile_SpazerSBATrail_0:
     dw $0002,Spritemap_Nothing_93A117                                    ;93A13D;
     db $04,$08 : dw $0000                                                ;93A141;
@@ -3179,6 +3405,8 @@ InstList_SamusProjectile_SpazerSBATrail_1:
     dw Instruction_SamusProjectile_GotoY                                 ;93A155;
     dw InstList_SamusProjectile_SpazerSBATrail_1                         ;93A157;
 
+
+;;; $A159: Instruction list - wave SBA ;;;
 InstList_SamusProjectile_WaveSBA:
     dw $0008,ProjectileFlareSpritemaps_ChargedWave_WaveSBA_0             ;93A159;
     db $04,$04 : dw $0000                                                ;93A15D;
@@ -3187,6 +3415,8 @@ InstList_SamusProjectile_WaveSBA:
     dw Instruction_SamusProjectile_GotoY                                 ;93A169;
     dw InstList_SamusProjectile_WaveSBA                                  ;93A16B;
 
+
+;;; $A16D: Instruction list - unused shinespark beam (projectile 27h) ;;;
 UNUSED_InstList_SamusProjectile_Projectile27_93A16D:
     dw $0003,ProjectileFlareSpritemaps_BeamExplosion_0                   ;93A16D;
     db $00,$00 : dw $0000                                                ;93A171;
@@ -3203,6 +3433,8 @@ UNUSED_InstList_SamusProjectile_Projectile27_93A16D:
     dw Instruction_SamusProjectile_GotoY                                 ;93A19D;
     dw UNUSED_InstList_SamusProjectile_Projectile27_93A16D               ;93A19F;
 
+
+;;; $A1A1: Flare spritemap pointers ;;;
 FlareSpritemapPointers:
 ; Index 3Eh is used for a shinespark windup effect by unused function UNUSED_DrawShinesparkWindupEffectSprite_93F5E2
     dw ProjectileFlareSpritemaps_Flare_Charge_Hyper_Grapple_0            ;93A1A1;
@@ -3273,6 +3505,7 @@ FlareSpritemapPointers:
     dw ProjectileFlareSpritemaps_BombExplosion_PlasmaSBA_5               ;93A223;
 
 
+;;; $A225: Flare spritemap table index offsets ;;;
 FlareSpritemapTable_IndexOffsets:
 ;        _______________ Flare (charge beam / hyper beam / grapple beam)
 ;       |      _________ Flare slow sparks (charge beam / hyper beam)
@@ -3283,6 +3516,8 @@ FlareSpritemapTable_IndexOffsets:
   .facingLeft:
     dw $0000,$002A,$0030                                                 ;93A22B;
 
+
+;;; $A231: Projectile / flare spritemaps ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_ProjectileFlareSpritemaps_93A231:
     dw $0001                                                             ;93A231;
@@ -9330,6 +9565,8 @@ ProjectileFlareSpritemaps_Charged_P_PI_PW_PIW_1F:
     %spritemapEntry(0, $04, $F8, 0, 1, 2, 6, $35)
     %spritemapEntry(0, $0C, $F0, 0, 1, 2, 6, $35)
 
+
+;;; $F5E2: Unused. Draw shinespark windup effect sprite ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_DrawShinesparkWindupEffectSprite_93F5E2:
     PHP                                                                  ;93F5E2;
