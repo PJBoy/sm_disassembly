@@ -12054,13 +12054,13 @@ RoomDoors_CeresRidley:
 
 
 ;;; $E0FD: Library background ;;;
-LibBG_Phantoon_State0:
-; Room $CD13, state $CD25: Phantoon                                          ;8FE0FD;
+LibBG_Phantoon_State0:                                                   ;8FE0FD;
+; Room $CD13, state $CD25: Phantoon
     dw $0002 : dl $7E2000 : dw $4800,$1000
     dw $0000
 
-LibBG_Draygon_State0:
-; Room $DA60, state $DA72: Draygon                                                    ;8FE108;
+LibBG_Draygon_State0:                                                    ;8FE108;
+; Room $DA60, state $DA72: Draygon
     dw $0002 : dl $7E2000 : dw $4800,$1000
     dw $0000
 
