@@ -2,106 +2,189 @@
 org $A08000
 
 
+
+; Loading the game:
+;     $8A1E - load enemies - at $80:A0CA (start gameplay)
+;     $8CD7 - initialise enemies and transfer tiles to VRAM - at $82:80C9/80F9/814C (game state 6/1Fh/28h), executed 6 times for 6 frames
+
+; Main gameplay (game state 8):
+;     $8EB6 - determine which enemies to process
+;     $9785 - Samus / projectile interaction handler
+;     $8FD4 - main enemy routine
+;         $9758 - enemy collision handling
+;         $C26A - process enemy instructions
+;         $9423 - add enemy to drawing queue
+;     $A8F0 - Samus / solid enemy collision detection, executed at least twice
+;     $9894 - enemy projectile / Samus collision detection
+;     $996C - enemy projectile / projectile collision detection
+;     $A306 - process enemy power bomb interaction
+;     $884D - draw Samus, projectiles, enemies and enemy projectiles
+;         $944A - write enemy OAM
+;         $88C4 - execute enemy graphics drawn hook
+;     $9726 - handle queuing enemy BG2 tilemap VRAM transfer
+;     $8687 - handle room shaking
+;     $9169 - decrement Samus hurt timers and clear active enemy indices
+
+; Door transition whilst screen is fading out (game state Ah/Bh):
+;     $8EB6 - determine which enemies to process
+;     $8FD4 - main enemy routine
+;     $884D - draw Samus, enemies and enemy projectiles
+
+; Door transition whilst screen is scrolling (game state Bh):
+;     Enemy tiles are processed via enemy set data by $82:DFD1 during door transition function $E4A9
+;     $8A1E - load enemies - at $82:E4A9
+;         $896F - load enemy set data (just mirrors enemy set into RAM ($7E:D559), debug/pointless)
+;         $8A6D - clear enemy data and process enemy set
+;             $8D64 - process enemy set (from ROM directly) (loads enemy palettes and allocates space for tiles ($0E5A, $7E:EF5C))
+;         $8C6C - load enemy tile data (loads enemy tiles into $7E:7000 from enemy loading data ($0E5A), this data is then DMA'd by $8CD7 (but not $8A9E))
+;     $8A9E - initialise enemies - at $82:E4A9 (clear enemy tiles ($7E:7000), load enemy population data into enemy data)
+;         $8BF3 - load enemy GFX indices (determines enemy VRAM tiles index and palette index ($0F98/96 / $7E:7006/08) from enemy set (again, from ROM directly))
+;         $88D0 - record enemy spawn data (mirrors enemy population data to $7E:701E..39)
+;         $8BE9 - execute enemy initialisation AI
+
+; Door transition whilst screen is fading in (game state Bh):
+;     $8EB6 - determine which enemies to process
+;     $8FD4 - main enemy routine
+;     $884D - draw Samus, enemies and enemy projectiles
+;     $9726 - handle queuing enemy BG2 tilemap VRAM transfer
+
+
+; Common to all enemy code banks
+
+;;; $8000: Grapple AI - no interaction. Also unfreezes enemies(!) ;;;
 Common_GrappleAI_NoInteraction:
+; Used by skultera, Draygon body, fire arc, Phantoon, etecoon, dachora and WS ghost
     JSL.L GrappleAI_SwitchEnemyAIToMainAI                                ;A08000;
     RTL                                                                  ;A08004;
 
 
+;;; $8005: Grapple AI - Samus latches on ;;;
 Common_GrappleAI_SamusLatchesOn:
+; Used by gripper and Crocomire
     JSL.L GrappleAI_SamusLatchesOnWithGrapple                            ;A08005;
     RTL                                                                  ;A08009;
 
 
+;;; $800A: Grapple AI - kill enemy ;;;
 Common_GrappleAI_KillEnemy:
+; Common
     JSL.L GrappleAI_EnemyGrappleDeath                                    ;A0800A;
     RTL                                                                  ;A0800E;
 
 
+;;; $800F: Grapple AI - cancel grapple beam ;;;
 Common_GrappleAI_CancelGrappleBeam:
+; Common
     JSL.L GrappleAI_SwitchToFrozenAI                                     ;A0800F;
     RTL                                                                  ;A08013;
 
 
+;;; $8014: Grapple AI - Samus latches on - no invincibility ;;;
 Common_GrappleAI_SamusLatchesOn_NoInvincibility:
+; Used by powamp
     JSL.L GrappleAI_SamusLatchesOnWithGrapple_NoInvincibility            ;A08014;
     RTL                                                                  ;A08018;
 
 
+;;; $8019: Unused. Grapple AI - Samus latches on - paralyse enemy ;;;
 UNUSED_Common_GrappleAI_SamusLatchesOn_ParalyzeEnemy_A08019:
     JSL.L GrappleAI_SamusLatchesOnWithGrapple_ParalyzeEnemy              ;A08019;
     RTL                                                                  ;A0801D;
 
 
+;;; $801E: Grapple AI - hurt Samus ;;;
 Common_GrappleAI_HurtSamus:
+; Used by WS spark
+; Hurt reaction happens in $9B:B932
     JSL.L GrappleAI_SwitchToFrozenAI_duplicate                           ;A0801E;
     RTL                                                                  ;A08022;
 
 
+;;; $8023: Normal enemy touch AI ;;;
 Common_NormalEnemyTouchAI:
     JSL.L NormalEnemyTouchAI                                             ;A08023;
     RTL                                                                  ;A08027;
 
 
+;;; $8028: Normal touch AI - no death check ;;;
 Common_NormalTouchAI_NoDeathCheck:
     JSL.L NormalEnemyTouchAI_NoDeathCheck_External                       ;A08028;
     RTL                                                                  ;A0802C;
 
 
+;;; $802D: Normal enemy shot AI ;;;
 Common_NormalEnemyShotAI:
     JSL.L NormalEnemyShotAI                                              ;A0802D;
     RTL                                                                  ;A08031;
 
 
+;;; $8032: Normal enemy shot AI - no death check, no enemy shot graphic ;;;
 Common_NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;A08032;
     RTL                                                                  ;A08036;
 
 
+;;; $8037: Normal enemy power bomb AI ;;;
 Common_NormalEnemyPowerBombAI:
     JSL.L NormalEnemyPowerBombAI                                         ;A08037;
     RTL                                                                  ;A0803B;
 
 
+;;; $803C: Normal enemy power bomb AI - no death check ;;;
 Common_NormalEnemyPowerBombAI_NoDeathCheck:
+; Kraid's power bomb AI
     JSL.L NormalEnemyPowerBombAI_NoDeathCheck_External                   ;A0803C;
     RTL                                                                  ;A08040;
 
 
+;;; $8041: Normal enemy frozen AI ;;;
 Common_NormalEnemyFrozenAI:
     JSL.L NormalEnemyFrozenAI                                            ;A08041;
     RTL                                                                  ;A08045;
 
 
+;;; $8046: Creates a dud shot ;;;
 Common_CreateADudShot:
     JSL.L CreateADudShot                                                 ;A08046;
     RTL                                                                  ;A0804A;
 
 
+;;; $804B: RTS ;;;
 RTS_A0804B:
     RTS                                                                  ;A0804B;
 
 
+;;; $804C: RTL ;;;
 RTL_A0804C:
     RTL                                                                  ;A0804C;
 
 
+;;; $804D: Spritemap - nothing ;;;
 Spritemap_Common_Nothing:
     dw $0000                                                             ;A0804D;
 
+
+;;; $804F: Extended spritemap - nothing ;;;
 ExtendedSpritemap_Common_Nothing:
     dw $0001,$0000,$0000                                                 ;A0804F;
     dw Spritemap_Common_Nothing                                          ;A08055;
     dw Hitbox_Common_Nothing                                             ;A08057;
 
+
+;;; $8059: Hitbox - nothing ;;;
 Hitbox_Common_Nothing:
 ; [n entries] [[left offset] [top offset] [right offset] [bottom offset] [p touch] [p shot]]...
     dw $0001,$0000,$0000,$0000,$0000                                     ;A08059;
     dw Common_NormalEnemyTouchAI                                         ;A08063;
     dw Common_NormalEnemyShotAI                                          ;A08065;
 
+
+;;; $8067: Instruction list - delete enemy ;;;
 InstList_Common_DeleteEnemy:
     dw Instruction_Common_DeleteEnemy                                    ;A08067;
 
+
+;;; $8069: Two NOPs ;;;
 NOPNOP_A08069:
 ; Used as palette by respawning enemy placeholder and Draygon's eye o_O
     NOP                                                                  ;A08069;
@@ -116,7 +199,9 @@ Instruction_Common_Enemy0FB2_InY:
     RTL                                                                  ;A08073;
 
 
+;;; $806B: Instruction - enemy $0FB2 = [[Y]] ;;;
 Instruction_Common_SetEnemy0FB2ToRTS:
+; Used only by torizos (for enemy movement function) and escape etecoon (for enemy function)
     LDA.W #RTS_A0807B                                                    ;A08074;
     STA.W $0FB2,X                                                        ;A08077;
     RTL                                                                  ;A0807A;
@@ -126,6 +211,7 @@ RTS_A0807B:
     RTS                                                                  ;A0807B;
 
 
+;;; $807C: Instruction - delete enemy ;;;
 Instruction_Common_DeleteEnemy:
     LDA.W $0F86,X                                                        ;A0807C;
     ORA.W #$0200                                                         ;A0807F;
@@ -135,6 +221,7 @@ Instruction_Common_DeleteEnemy:
     RTL                                                                  ;A08089;
 
 
+;;; $808A: Instruction - call function [[Y]] ;;;
 Instruction_Common_CallFunctionInY:
     LDA.W $0000,Y                                                        ;A0808A;
     STA.B $12                                                            ;A0808D;
@@ -142,7 +229,6 @@ Instruction_Common_CallFunctionInY:
     PHX                                                                  ;A08090;
     PEA.W .manualReturn-1                                                ;A08091;
     JMP.W ($0012)                                                        ;A08094;
-
 
   .manualReturn:
     PLX                                                                  ;A08097;
@@ -152,6 +238,7 @@ Instruction_Common_CallFunctionInY:
     RTL                                                                  ;A0809B;
 
 
+;;; $809C: Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 Instruction_Common_CallFunctionInY_WithA:
     LDA.W $0000,Y                                                        ;A0809C;
     STA.B $12                                                            ;A0809F;
@@ -160,7 +247,6 @@ Instruction_Common_CallFunctionInY_WithA:
     PHX                                                                  ;A080A5;
     PEA.W .manualReturn-1                                                ;A080A6;
     JMP.W ($0012)                                                        ;A080A9;
-
 
   .manualReturn:
     PLX                                                                  ;A080AC;
@@ -173,6 +259,7 @@ Instruction_Common_CallFunctionInY_WithA:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $80B5: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Instruction_Common_CallExternalFunctionInY_A080B5:
     LDA.W $0000,Y                                                        ;A080B5;
     STA.B $12                                                            ;A080B8;
@@ -188,11 +275,11 @@ UNUSED_Instruction_Common_CallExternalFunctionInY_A080B5:
     INY                                                                  ;A080C9;
     RTL                                                                  ;A080CA;
 
-
   .externalFunction:
     JML.W [$0012]                                                        ;A080CB;
 
 
+;;; $80CE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_Common_CallExternalFunctionInY_WithA_A080CE:
     LDA.W $0000,Y                                                        ;A080CE;
     STA.B $12                                                            ;A080D1;
@@ -210,18 +297,19 @@ UNUSED_Inst_Common_CallExternalFunctionInY_WithA_A080CE:
     TAY                                                                  ;A080E8;
     RTL                                                                  ;A080E9;
 
-
   .externalFunction:
     JML.W [$0012]                                                        ;A080EA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $80ED: Instruction - go to [[Y]] ;;;
 Instruction_Common_GotoY:
     LDA.W $0000,Y                                                        ;A080ED;
     TAY                                                                  ;A080F0;
     RTL                                                                  ;A080F1;
 
 
+;;; $80F2: Instruction - go to [[Y]] + ±[[Y]] ;;;
 Instruction_Common_GotoY_PlusY:
     STY.B $12                                                            ;A080F2;
     DEY                                                                  ;A080F4;
@@ -230,7 +318,6 @@ Instruction_Common_GotoY_PlusY:
     BMI .highByte                                                        ;A080F9;
     AND.W #$00FF                                                         ;A080FB;
     BRA +                                                                ;A080FE;
-
 
   .highByte:
     ORA.W #$FF00                                                         ;A08100;
@@ -241,6 +328,7 @@ Instruction_Common_GotoY_PlusY:
     RTL                                                                  ;A08107;
 
 
+;;; $8108: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_Common_DecrementTimer_GotoYIfNonZero:
     DEC.W $0F90,X                                                        ;A08108;
     BNE Instruction_Common_GotoY                                         ;A0810B;
@@ -249,6 +337,7 @@ Instruction_Common_DecrementTimer_GotoYIfNonZero:
     RTL                                                                  ;A0810F;
 
 
+;;; $8110: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_Common_DecrementTimer_GotoYIfNonZero_duplicate:
     DEC.W $0F90,X                                                        ;A08110;
     BNE Instruction_Common_GotoY                                         ;A08113;
@@ -257,6 +346,7 @@ Instruction_Common_DecrementTimer_GotoYIfNonZero_duplicate:
     RTL                                                                  ;A08117;
 
 
+;;; $8118: Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 Instruction_Common_DecrementTimer_GotoY_PlusY_IfNonZero:
     SEP #$20                                                             ;A08118;
     DEC.W $0F90,X                                                        ;A0811A;
@@ -266,6 +356,7 @@ Instruction_Common_DecrementTimer_GotoY_PlusY_IfNonZero:
     RTL                                                                  ;A08122;
 
 
+;;; $8123: Instruction - timer = [[Y]] ;;;
 Instruction_Common_TimerInY:
     LDA.W $0000,Y                                                        ;A08123;
     STA.W $0F90,X                                                        ;A08126;
@@ -274,12 +365,14 @@ Instruction_Common_TimerInY:
     RTL                                                                  ;A0812B;
 
 
+;;; $812C: Instruction - skip next instruction ;;;
 Instruction_Common_SkipNextInstruction:
     INY                                                                  ;A0812C;
     INY                                                                  ;A0812D;
     RTL                                                                  ;A0812E;
 
 
+;;; $812F: Instruction - sleep ;;;
 Instruction_Common_Sleep:
     DEY                                                                  ;A0812F;
     DEY                                                                  ;A08130;
@@ -290,7 +383,12 @@ Instruction_Common_Sleep:
     RTL                                                                  ;A08139;
 
 
+;;; $813A: Instruction - wait [[Y]] frames ;;;
 Instruction_Common_WaitYFrames:
+; Set instruction timer and terminate processing enemy instructions
+; Used for running a delay that doesn't update graphics,
+; useful for e.g. GT eye beam attack ($AA:D10D), implemented by an instruction list that has no graphical instructions,
+; which allows it to be called from multiple different poses
     LDA.W $0000,Y                                                        ;A0813A;
     STA.W $0F94,X                                                        ;A0813D;
     INY                                                                  ;A08140;
@@ -302,6 +400,7 @@ Instruction_Common_WaitYFrames:
     RTL                                                                  ;A0814A;
 
 
+;;; $814B: Instruction - transfer [[Y]] bytes from [[Y] + 2] to VRAM [[Y] + 5] ;;;
 Instruction_Common_TransferYBytesInYToVRAM:
     PHX                                                                  ;A0814B;
     LDX.W $0330                                                          ;A0814C;
@@ -325,6 +424,7 @@ Instruction_Common_TransferYBytesInYToVRAM:
     RTL                                                                  ;A08172;
 
 
+;;; $8173: Instruction - enable off-screen processing ;;;
 Instruction_Common_EnableOffScreenProcessing:
     LDA.W $0F86,X                                                        ;A08173;
     ORA.W #$0800                                                         ;A08176;
@@ -332,6 +432,7 @@ Instruction_Common_EnableOffScreenProcessing:
     RTL                                                                  ;A0817C;
 
 
+;;; $817D: Instruction - disable off-screen processing ;;;
 Instruction_Common_DisableOffScreenProcessing:
     LDA.W $0F86,X                                                        ;A0817D;
     AND.W #$F7FF                                                         ;A08180;
@@ -339,12 +440,13 @@ Instruction_Common_DisableOffScreenProcessing:
     RTL                                                                  ;A08186;
 
 
+;;; $8187: Common enemy speeds - linearly increasing ;;;
+CommonEnemySpeeds_LinearlyIncreasing:
 ;        _____________________ Speed
 ;       |      _______________ Subspeed
 ;       |     |      _________ Negated speed
 ;       |     |     |      ___ Negated subspeed
 ;       |     |     |     |
-CommonEnemySpeeds_LinearlyIncreasing:
   .speed:
     dw $0000                                                             ;A08187;
   .subspeed:
@@ -419,14 +521,15 @@ CommonEnemySpeeds_LinearlyIncreasing:
     dw $0004,$0000,$FFFC,$0000
 
 
+;;; $838F: Common enemy speeds - quadratically increasing ;;;
+CommonEnemySpeeds_QuadraticallyIncreasing:
+; I.e. gravity
+; Used by e.g. Botwoon when dying and falling to the floor
 ;        _____________________ Subspeed
 ;       |      _______________ Speed
 ;       |     |      _________ Negated subspeed
 ;       |     |     |      ___ Negated speed
 ;       |     |     |     |
-CommonEnemySpeeds_QuadraticallyIncreasing:
-; I.e. gravity
-; Used by e.g. Botwoon when dying and falling to the floor
   .subspeed:
     dw $0000                                                             ;A0838F;
   .speed:
@@ -531,7 +634,9 @@ CommonEnemySpeeds_QuadraticallyIncreasing:
     dw $74F9,$0011,$8B07,$FFEE
 
 
+;;; $8687: Handle room shaking ;;;
 Handle_Room_Shaking:
+; Enemy projectile shaking is handled by $86:8427
     PHB                                                                  ;A08687;
     PEA.W $A000                                                          ;A08688;
     PLB                                                                  ;A0868B;
@@ -577,7 +682,6 @@ Handle_Room_Shaking:
     STA.B $B7                                                            ;A086DB;
     BRA .decrementEarthquakeTimer                                        ;A086DD;
 
-
   .timerExpired:
     LDA.B $B1                                                            ;A086DF;
     CLC                                                                  ;A086E1;
@@ -609,6 +713,7 @@ Handle_Room_Shaking:
     RTL                                                                  ;A08711;
 
 
+;;; $8712: Set all active enemies to shake horizontally for two frames ;;;
 SetAllActiveEnemiesToShakeHorizontallyFor2Frames:
     PHY                                                                  ;A08712;
     PHX                                                                  ;A08713;
@@ -625,14 +730,15 @@ SetAllActiveEnemiesToShakeHorizontallyFor2Frames:
     INY                                                                  ;A08727;
     BRA .loop                                                            ;A08728;
 
-
   .return:
     PLX                                                                  ;A0872A;
     PLY                                                                  ;A0872B;
     RTS                                                                  ;A0872C;
 
 
+;;; $872D: BG shake displacements ;;;
 BGShakeDisplacements:
+; Enemy projectile shaking displacements are at $86:846B
 ;      /------horizontal------\ /------vertical------\   /------diagonal------\
 ;       BG1X  BG1Y  BG2X  BG2Y
   .BG1X:
@@ -655,6 +761,8 @@ BGShakeDisplacements:
     dw $0000,$0000,$0002,$0000, $0000,$0000,$0000,$0002, $0000,$0000,$0002,$0002 ;} BG2 only and enemies
     dw $0000,$0000,$0003,$0000, $0000,$0000,$0000,$0003, $0000,$0000,$0003,$0003 ;/
 
+
+;;; $884D: Draw Samus, projectiles, enemies and enemy projectiles ;;;
 Draw_Samus_Projectiles_Enemies_and_Enemy_Projectiles:
     PHB                                                                  ;A0884D;
     PEA.W $A000                                                          ;A0884E;
@@ -674,7 +782,6 @@ Draw_Samus_Projectiles_Enemies_and_Enemy_Projectiles:
     BNE .layerNot3                                                       ;A0886F;
     JSL.L DrawSamusAndProjectiles                                        ;A08871;
     BRA .layerNot6                                                       ;A08875;
-
 
   .layerNot3:
     CMP.W #$0006                                                         ;A08877;
@@ -712,13 +819,11 @@ Draw_Samus_Projectiles_Enemies_and_Enemy_Projectiles:
     INC.W $0E32                                                          ;A088B7;
     BRA .loopMain                                                        ;A088BA;
 
-
   .finish:
     PHB                                                                  ;A088BC;
     JSL.L .executeHook                                                   ;A088BD;
     PLB                                                                  ;A088C1;
     BRA .return                                                          ;A088C2;
-
 
   .executeHook:
     LDA.W $178E                                                          ;A088C4;
@@ -728,13 +833,17 @@ Draw_Samus_Projectiles_Enemies_and_Enemy_Projectiles:
     PLB                                                                  ;A088CA;
     JML.W [$178C]                                                        ;A088CB;
 
-
   .return:
     PLB                                                                  ;A088CE;
     RTL                                                                  ;A088CF;
 
 
+;;; $88D0: Record enemy spawn data ;;;
 Record_EnemySpawnData:
+;; Parameters:
+;;     Y: Enemy index
+
+; Used almost exclusively by debug enemy spawner. Rinka uses X/Y position
     PHX                                                                  ;A088D0;
     PHY                                                                  ;A088D1;
     TYX                                                                  ;A088D2;
@@ -798,7 +907,9 @@ Record_EnemySpawnData:
     RTL                                                                  ;A0896E;
 
 
+;;; $896F: Debug. Load enemy set data ;;;
 Debug_LoadEnemySetData:
+; This enemy set data is never used, not even by the enemy debugger. This routine serves no purpose
     LDA.W #$0000                                                         ;A0896F;
     LDX.W #$0000                                                         ;A08972;
     LDY.W #$00A0                                                         ;A08975;
@@ -875,12 +986,15 @@ Debug_LoadEnemySetData:
     TAX                                                                  ;A08A1A;
     BRA .loop                                                            ;A08A1B;
 
-
   .return:
     RTL                                                                  ;A08A1D;
 
 
+;;; $8A1E: Load enemies (load and process enemy set, clear enemy data, load enemy tile data) ;;;
 Load_Enemies:
+; Called when loading the game, and during door transition
+; This routine loads enemy tile data, which during door transition has already loaded by $82:DFD1, making the call to $8C6C a fairly hefty waste of time
+; Aside from loading tile data, this routine also loads palette data, and the enemy GFX data needed for respawn
     PHP                                                                  ;A08A1E;
     PHB                                                                  ;A08A1F;
     PEA.W $A000                                                          ;A08A20;
@@ -913,6 +1027,7 @@ Load_Enemies:
     RTL                                                                  ;A08A6C;
 
 
+;;; $8A6D: Clear enemy data and process enemy set ;;;
 ClearEnemyData_ProcessEnemySet:
     PHP                                                                  ;A08A6D;
     PHB                                                                  ;A08A6E;
@@ -937,7 +1052,6 @@ ClearEnemyData_ProcessEnemySet:
     BNE .processEnemySet                                                 ;A08A93;
     JMP.W .return                                                        ;A08A95;
 
-
   .processEnemySet:
     JSR.W ProcessEnemySet_LoadPalettesAndEnemyLoadingData                ;A08A98;
 
@@ -947,6 +1061,7 @@ ClearEnemyData_ProcessEnemySet:
     RTL                                                                  ;A08A9D;
 
 
+;;; $8A9E: Initialise enemies ;;;
 Initialise_Enemies:
     PHP                                                                  ;A08A9E;
     PHB                                                                  ;A08A9F;
@@ -988,7 +1103,6 @@ Initialise_Enemies:
     CMP.W #$FFFF                                                         ;A08AE5;
     BNE +                                                                ;A08AE8;
     JMP.W .return                                                        ;A08AEA;
-
 
 +   STZ.W $0E48                                                          ;A08AED;
     LDY.W #$0000                                                         ;A08AF0;
@@ -1083,7 +1197,6 @@ Initialise_Enemies:
     BEQ +                                                                ;A08BCA;
     JMP.W .loop                                                          ;A08BCC;
 
-
 +   STY.W $0E4C                                                          ;A08BCF;
     TYA                                                                  ;A08BD2;
     LSR A                                                                ;A08BD3;
@@ -1102,8 +1215,8 @@ Initialise_Enemies:
     PLP                                                                  ;A08BE7;
     RTL                                                                  ;A08BE8;
 
-
   .executeInitAI:
+; Execute enemy initialisation AI
     LDA.W $0FA6,Y                                                        ;A08BE9;
     XBA                                                                  ;A08BEC;
     PHA                                                                  ;A08BED;
@@ -1112,7 +1225,11 @@ Initialise_Enemies:
     JML.W [$1784]                                                        ;A08BF0;
 
 
+;;; $8BF3: Load enemy GFX indices ;;;
 LoadEnemyGFXIndices:
+;; Parameters:
+;;     X: Enemy population index
+;;     Y: Enemy data index
     PHX                                                                  ;A08BF3;
     PHY                                                                  ;A08BF4;
     STX.B $12                                                            ;A08BF5;
@@ -1147,7 +1264,6 @@ LoadEnemyGFXIndices:
     STA.B $1C                                                            ;A08C2F;
     BRA .loop                                                            ;A08C31;
 
-
   .notFound:
     LDX.B $14                                                            ;A08C33;
     STZ.W $0F98,X                                                        ;A08C35;
@@ -1159,7 +1275,6 @@ LoadEnemyGFXIndices:
     PLY                                                                  ;A08C49;
     PLX                                                                  ;A08C4A;
     RTS                                                                  ;A08C4B;
-
 
   .found:
     LDX.B $1C                                                            ;A08C4C;
@@ -1178,7 +1293,10 @@ LoadEnemyGFXIndices:
     RTS                                                                  ;A08C6B;
 
 
+;;; $8C6C: Load enemy tile data ;;;
 LoadEnemyTileData:
+; Loads enemy tile data to $7E:7000+, this is then transferred to VRAM when loading the game, but ignored and cleared during door transition >_>
+; Note how this routine can't load enemy graphics from hirom banks due to setting the DB to the tile data bank (which kills short address accesses to WRAM)
     REP #$30                                                             ;A08C6C;
     LDX.W #$01FE                                                         ;A08C6E;
 
@@ -1239,7 +1357,9 @@ LoadEnemyTileData:
     RTL                                                                  ;A08CD6;
 
 
+;;; $8CD7: Transfer enemy tiles to VRAM and initialise enemies ;;;
 TransferEnemyTilesToVRAM_InitialiseEnemies:
+; To be executed 6 times
     REP #$30                                                             ;A08CD7;
     LDA.W $0E7C                                                          ;A08CD9;
     BNE .nonZeroSrcAddr                                                  ;A08CDC;
@@ -1253,7 +1373,6 @@ TransferEnemyTilesToVRAM_InitialiseEnemies:
     BNE .notFFFF                                                         ;A08CED;
     RTL                                                                  ;A08CEF;
 
-
   .notFFFF:
     CMP.W #$FFFE                                                         ;A08CF0;
     BNE .notFFFE                                                         ;A08CF3;
@@ -1261,7 +1380,6 @@ TransferEnemyTilesToVRAM_InitialiseEnemies:
     LDA.W #$FFFF                                                         ;A08CF9;
     STA.W $0E7C                                                          ;A08CFC;
     RTL                                                                  ;A08CFF;
-
 
   .notFFFE:
     CMP.W #$9800                                                         ;A08D00;
@@ -1287,7 +1405,6 @@ TransferEnemyTilesToVRAM_InitialiseEnemies:
     STA.W $0330                                                          ;A08D2F;
     RTL                                                                  ;A08D32;
 
-
   .finish:
     LDA.W #$FFFE                                                         ;A08D33;
     STA.W $0E7C                                                          ;A08D36;
@@ -1295,6 +1412,7 @@ TransferEnemyTilesToVRAM_InitialiseEnemies:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $8D3A: Unused. Load enemy width, height, health, layer and bank ;;;
 UNUSED_LoadEnemyWidthHeightHealthLayerBank_A08D3A:
     PHX                                                                  ;A08D3A;
     PHY                                                                  ;A08D3B;
@@ -1317,6 +1435,7 @@ UNUSED_LoadEnemyWidthHeightHealthLayerBank_A08D3A:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $8D64: Process enemy set (load palettes and enemy loading data) ;;;
 ProcessEnemySet_LoadPalettesAndEnemyLoadingData:
     PHX                                                                  ;A08D64;
     PHY                                                                  ;A08D65;
@@ -1347,7 +1466,6 @@ ProcessEnemySet_LoadPalettesAndEnemyLoadingData:
     CMP.W #$FFFF                                                         ;A08DB3;
     BNE .notFFFF                                                         ;A08DB6;
     JMP.W .return                                                        ;A08DB8;
-
 
   .notFFFF:
     TAX                                                                  ;A08DBB;
@@ -1467,13 +1585,13 @@ ProcessEnemySet_LoadPalettesAndEnemyLoadingData:
     STA.B $1C                                                            ;A08EAE;
     JMP.W .loop                                                          ;A08EB0;
 
-
   .return:
     PLY                                                                  ;A08EB3;
     PLX                                                                  ;A08EB4;
     RTS                                                                  ;A08EB5;
 
 
+;;; $8EB6: Determine which enemies to process ;;;
 Determine_Which_Enemies_to_Process:
     PHB                                                                  ;A08EB6;
     PEA.W $A000                                                          ;A08EB7;
@@ -1487,7 +1605,6 @@ Determine_Which_Enemies_to_Process:
     LDA.W $183C                                                          ;A08ECA;
     BEQ .resetIndex                                                      ;A08ECD;
     JMP.W .loopProcessOffscreen                                          ;A08ECF;
-
 
   .resetIndex:
     LDX.W #$0000                                                         ;A08ED2; >_<
@@ -1504,7 +1621,6 @@ Determine_Which_Enemies_to_Process:
     BEQ ..notDeleted                                                     ;A08EEB;
     STZ.W $0F78,X                                                        ;A08EED;
     JMP.W .next                                                          ;A08EF0;
-
 
   ..notDeleted:
     BIT.W #$0800                                                         ;A08EF3;
@@ -1561,7 +1677,6 @@ Determine_Which_Enemies_to_Process:
     BPL .done                                                            ;A08F61;
     JMP.W .loop                                                          ;A08F63;
 
-
   .done:
     LDA.W #$FFFF                                                         ;A08F66;
     LDY.W $17A4                                                          ;A08F69;
@@ -1570,7 +1685,6 @@ Determine_Which_Enemies_to_Process:
     STA.W $17EC,Y                                                        ;A08F72;
     PLB                                                                  ;A08F75;
     RTL                                                                  ;A08F76;
-
 
   .loopProcessOffscreen:
     LDX.W $0E54                                                          ;A08F77;
@@ -1583,7 +1697,6 @@ Determine_Which_Enemies_to_Process:
     BEQ ..notDeleted                                                     ;A08F8A;
     STZ.W $0F78,X                                                        ;A08F8C;
     BRA .nextProcessOffscreen                                            ;A08F8F;
-
 
   ..notDeleted:
     TXA                                                                  ;A08F91;
@@ -1619,7 +1732,82 @@ Determine_Which_Enemies_to_Process:
     RTL                                                                  ;A08FD3;
 
 
+;;; $8FD4: Main enemy routine ;;;
 Main_Enemy_Routine:
+; If [first unused enemy index] != 0:
+; {
+;     If [enemy index to shake] != FFFFh:
+;         Enemy [enemy index to shake] shake timer = 40h
+;         Enemy index to shake = FFFFh
+;
+;     Interactive enemy indices index = 0 (used for some collision routines)
+;
+;     Active enemy indices index = 0
+;     While [active enemy index] != FFFFh:
+;     {
+;         Enemy index = [active enemy index]
+;         Enemy data pointer = $0F78 + [enemy index]
+;         Enemy AI bank = [enemy bank]
+;
+;         If enemy is tangible:
+;         {
+;             If [enemy invincibility timer] != 0:
+;                 Decrement enemy invincibility timer
+;             Else if sprite interactions enabled:
+;             {
+;                 If time is not frozen and enemy time is not frozen:
+;                     Enemy collision handling
+;                     If [enemy ID] = 0: (enemy was killed?)
+;                         Go to BRANCH_DRAW_ENEMY_END
+;
+;                 If enemy is paralysed:
+;                     Go to BRANCH_PROCESS_AI_END
+;             }
+;         }
+;
+;         Enable enemy drawing
+;         If time is frozen or enemy time is frozen:
+;         {
+;             If [enemy time is frozen AI pointer] != 0:
+;                 Enemy AI pointer = [enemy time is frozen AI pointer]
+;                 Execute enemy AI pointer in enemy bank
+;         }
+;         Else:
+;         {
+;             X = 0
+;             If [enemy AI handler] != 0:
+;                 X = bit index of lowest set bit of enemy AI handler
+;
+;             Enemy AI pointer = [[enemy ID] + 18h + [X] * 2]
+;             Execute enemy AI pointer in enemy bank
+;             Increment enemy frame counter
+;             If enemy processes instructions:
+;                 Enemy processing stage = 2
+;                 Process enemy instructions
+;         }
+;
+;         BRANCH_PROCESS_AI_END:
+;         If enemy is paralysed:
+;             If [enemy flash timer] = 1 or [enemy frozen timer] = 1:
+;                 Enemy death
+;
+;         If (enemy is on-screen or enemy uses extended spritemap format) and enemy is not deleted and enemy is not invisible and enemy drawing is enabled:
+;             Add enemy to drawing queue
+;
+;         BRANCH_DRAW_ENEMY_END:
+;         If [enemy flash timer] != 0 and time is not frozen and enemy time is not frozen:
+;             Decrement enemy flash timer
+;             If [enemy flash timer] < 8:
+;                 Unset enemy hurt AI
+;
+;         Active enemy indices index += 2
+;     }
+;
+;     Handle sprite objects
+;     Increment number of times main enemy routine has been executed
+;     Enemy indices when Samus collides with solid enemy = FFFFh
+;     Distances between Samus and enemy when Samus collides with solid enemy = 0
+; }
     PHB                                                                  ;A08FD4;
     PEA.W $A000                                                          ;A08FD5;
     PLB                                                                  ;A08FD8;
@@ -1628,7 +1816,6 @@ Main_Enemy_Routine:
     LDA.W $0E4C                                                          ;A08FDC;
     BNE .processEnemies                                                  ;A08FDF;
     JMP.W .return                                                        ;A08FE1;
-
 
   .processEnemies:
     LDA.W $0E1C                                                          ;A08FE4;
@@ -1651,7 +1838,6 @@ Main_Enemy_Routine:
     BNE ..notFFFF                                                        ;A09008;
     JMP.W .return                                                        ;A0900A;
 
-
   ..notFFFF:
     STA.W $0E54                                                          ;A0900D;
     TAX                                                                  ;A09010;
@@ -1668,7 +1854,6 @@ Main_Enemy_Routine:
     DEC.W $0FA0,X                                                        ;A0902B;
     JMP.W .interactEnd                                                   ;A0902E;
 
-
   .notInvincible:
     LDA.W $0E12                                                          ;A09031;
     BNE .interactEnd                                                     ;A09034;
@@ -1680,7 +1865,6 @@ Main_Enemy_Routine:
     LDA.W $0F78,X                                                        ;A09044;
     BNE .checkParalyzed                                                  ;A09047;
     JMP.W .drawEnemyEnd                                                  ;A09049;
-
 
   .checkParalyzed:
     LDX.W $0E54                                                          ;A0904C;
@@ -1700,7 +1884,6 @@ Main_Enemy_Routine:
     STA.W $1784                                                          ;A0906B;
     BRA .determineAIEnd                                                  ;A0906E;
 
-
   .timeNotFrozen:
     LDX.W #$0000                                                         ;A09070;
     LDY.W $0E54                                                          ;A09073;
@@ -1712,7 +1895,6 @@ Main_Enemy_Routine:
     LSR A                                                                ;A0907C;
     BCS +                                                                ;A0907D;
     BRA .loopBitIndex                                                    ;A0907F;
-
 
 +   TXA                                                                  ;A09081;
     ASL A                                                                ;A09082;
@@ -1728,7 +1910,6 @@ Main_Enemy_Routine:
     PLB                                                                  ;A09093;
     BRA +                                                                ;A09094;
 
-
   .executeAI:
     LDX.W $0E54                                                          ;A09096;
     LDA.W $0FA6,X                                                        ;A09099;
@@ -1738,7 +1919,6 @@ Main_Enemy_Routine:
     PLB                                                                  ;A090A1;
     PLB                                                                  ;A090A2;
     JML.W [$1784]                                                        ;A090A3;
-
 
 +   LDA.W $0A78                                                          ;A090A6;
     ORA.W $185E                                                          ;A090A9;
@@ -1778,7 +1958,6 @@ Main_Enemy_Routine:
     BEQ +                                                                ;A090FE;
     BRA .drawEnemyEnd                                                    ;A09100;
 
-
 +   LDX.W $0E54                                                          ;A09102;
     LDA.W $0F86,X                                                        ;A09105;
     BIT.W #$0300                                                         ;A09108;
@@ -1807,7 +1986,6 @@ Main_Enemy_Routine:
     INC.W $17A8                                                          ;A0913F;
     JMP.W .loop                                                          ;A09142;
 
-
   .return:
     JSL.L HandleSpriteObjects                                            ;A09145;
     INC.W $0E44                                                          ;A09149;
@@ -1824,6 +2002,7 @@ Main_Enemy_Routine:
     RTL                                                                  ;A09168;
 
 
+;;; $9169: Decrement Samus hurt timers and clear active enemy indices lists ;;;
 DecrementSamusHurtTimers_ClearActiveEnemyIndicesLists:
     LDA.W $18A8                                                          ;A09169;
     BEQ +                                                                ;A0916C;
@@ -1844,6 +2023,7 @@ DecrementSamusHurtTimers_ClearActiveEnemyIndicesLists:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $918B: Unused. Logging routine for a specific vertical enemy reaction ;;;
 UNUSED_LoggingRoutineForASpecificVertcalEnemyReaction_A0918B:
     PHB                                                                  ;A0918B;
     LDA.W $1848                                                          ;A0918C;
@@ -1895,7 +2075,14 @@ UNUSED_LoggingRoutineForASpecificVertcalEnemyReaction_A0918B:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $920E: Spawn enemy drops ;;;
 Spawn_Enemy_Drops:
+;; Parameters:
+;;     A: Enemy header pointer (to check drop rates)
+;;     $12: X position
+;;     $14: Y position
+
+; Used for boss deaths and enemy projectiles, but not normal enemy death
     PHP                                                                  ;A0920E;
     PHB                                                                  ;A0920F;
     PHX                                                                  ;A09210;
@@ -1915,7 +2102,10 @@ Spawn_Enemy_Drops:
     RTL                                                                  ;A0922A;
 
 
+;;; $922B: Delete enemy and any connected enemies ;;;
 DeleteEnemyAndAnyConnectedEnemies:
+; This is called only by rinkas in Mother Brain's room when deleted due to Mother Brain first form defeat
+; Rinka has 1 part >_>;
     PHB                                                                  ;A0922B;
     LDX.W $0E54                                                          ;A0922C;
     PHX                                                                  ;A0922F;
@@ -1940,7 +2130,11 @@ DeleteEnemyAndAnyConnectedEnemies:
     RTL                                                                  ;A0924A;
 
 
+;;; $924B: Debug. Spawn enemy to enemy index [Y] ;;;
 Debug_SpawnEnemy_ToEnemyIndex_inY:
+;; Parameters:
+;;     X: New enemy population data
+;;     Y: New enemy index
     PHB                                                                  ;A0924B;
     STX.W $0E20                                                          ;A0924C;
     STY.W $0E4A                                                          ;A0924F;
@@ -1958,7 +2152,20 @@ Debug_SpawnEnemy_ToEnemyIndex_inY:
     JMP.W SpawnEnemy_AlwaysSucceed                                       ;A09272;
 
 
+;;; $9275: Spawn enemy ;;;
 SpawnEnemy:
+;; Parameters:
+;;     X: New enemy population data
+;; Returns:
+;;     A: 0 if successfully spawned, FFFFh otherwise
+;;     X: New enemy index (or 800h if failed to spawn)
+
+; This routine attempts to find (number of enemy parts) consecutive free enemy slots, and calls $92DB if it succeeds
+; It has a couple problems for multi-part enemies
+; Looking forward at $92DB, $0E26 is supposed to be the number of enemy parts (non-decremented). Further evidenced by the debug spawn routine above
+; $0E22 should be reset back to [number of enemy parts] - 1 as part of LOOP_FIRST_ENEMY,
+; otherwise after finding one free slot and then finding one occupied slot,
+; the loop will try to find one fewer consecutive slots
     PHB                                                                  ;A09275;
     STX.W $0E20                                                          ;A09276;
     LDA.W $0E54                                                          ;A09279;
@@ -2000,7 +2207,6 @@ SpawnEnemy:
     BMI .loopOtherEnemies                                                ;A092C3;
     BRA .notFound                                                        ;A092C5;
 
-
   .next:
     LDA.W $0E4A                                                          ;A092C7;
     CLC                                                                  ;A092CA;
@@ -2015,7 +2221,14 @@ SpawnEnemy:
     RTL                                                                  ;A092DA;
 
 
+;;; $92DB: Spawn enemy ;;;
 SpawnEnemy_AlwaysSucceed:
+;; Parameters:
+;;     DB:$0E20: New enemy population data
+;;     $0E26: Number of enemy parts to spawn. 0 acts like 1 (thanks to the BEQ at $93E2)
+;; Returns:
+;;     A: 0. This routine doesn't check if it's overwriting an enemy or not and has no bounds checking, so it always succeeds
+;;     X: New enemy index
     LDY.W $0E4A                                                          ;A092DB;
     LDX.W $0E20                                                          ;A092DE;
     LDA.W $0000,X                                                        ;A092E1;
@@ -2035,7 +2248,6 @@ SpawnEnemy_AlwaysSucceed:
     STA.W $0F98,Y                                                        ;A0930B;
     STA.W $0F96,Y                                                        ;A0930E;
     BRA +                                                                ;A09311;
-
 
   .graphics:
     LDA.L $7EEF64,X                                                      ;A09313;
@@ -2128,7 +2340,6 @@ SpawnEnemy_AlwaysSucceed:
     STA.W $0E20                                                          ;A093FA;
     JMP.W SpawnEnemy_AlwaysSucceed                                       ;A093FD;
 
-
   .setAI:
     LDA.W $1788                                                          ;A09400;
     STA.W $1784                                                          ;A09403;
@@ -2141,8 +2352,8 @@ SpawnEnemy_AlwaysSucceed:
     PLB                                                                  ;A09418;
     RTL                                                                  ;A09419;
 
-
   .executeAI:
+; Execute enemy AI pointer
     LDA.W $0FA5,Y                                                        ;A0941A;
     PHA                                                                  ;A0941D;
     PLB                                                                  ;A0941E;
@@ -2150,6 +2361,7 @@ SpawnEnemy_AlwaysSucceed:
     JML.W [$1784]                                                        ;A09420;
 
 
+;;; $9423: Add enemy to drawing queue ;;;
 AddEnemyToDrawingQueue:
     PHX                                                                  ;A09423;
     PHY                                                                  ;A09424;
@@ -2172,6 +2384,7 @@ AddEnemyToDrawingQueue:
     RTS                                                                  ;A09449;
 
 
+;;; $944A: Write enemy OAM (if not on frozen or invincible frame) ;;;
 WriteEnemyOAM_IfNotFrozenOrInvincibleFrame:
     PHB                                                                  ;A0944A;
     LDX.W $0E54                                                          ;A0944B;
@@ -2204,7 +2417,6 @@ WriteEnemyOAM_IfNotFrozenOrInvincibleFrame:
     DEC.W $0E22                                                          ;A0948A;
     BRA .decrementShakeTimer                                             ;A0948D;
 
-
   .zeroCounter:
     INC.B $14                                                            ;A0948F;
     INC.W $0E22                                                          ;A09491;
@@ -2221,7 +2433,6 @@ WriteEnemyOAM_IfNotFrozenOrInvincibleFrame:
     LDA.W #$0000                                                         ;A094A4;
     BRA .determinedPalette                                               ;A094A7;
 
-
   .timerExpired:
     LDA.W $0F9E,X                                                        ;A094A9;
     BEQ .useEnemyPalette                                                 ;A094AC;
@@ -2233,7 +2444,6 @@ WriteEnemyOAM_IfNotFrozenOrInvincibleFrame:
   .palette6:
     LDA.W #$0C00                                                         ;A094B8;
     BRA .determinedPalette                                               ;A094BB;
-
 
   .useEnemyPalette:
     LDA.W $0F96,X                                                        ;A094BD;
@@ -2257,7 +2467,6 @@ WriteEnemyOAM_IfNotFrozenOrInvincibleFrame:
     JSL.L AddSpritemapToOAM_WithBaseTileNumber_8AB8                      ;A094EE;
     PLB                                                                  ;A094F2;
     RTS                                                                  ;A094F3;
-
 
   .extendedSpritemap:
     LDA.W $0F8E,X                                                        ;A094F4;
@@ -2294,7 +2503,6 @@ WriteEnemyOAM_IfNotFrozenOrInvincibleFrame:
     JSR.W ProcessExtendedTilemap                                         ;A09533;
     BRA .next                                                            ;A09536;
 
-
   .notExtendedSpritemap:
     LDA.W $0000,Y                                                        ;A09538;
     CLC                                                                  ;A0953B;
@@ -2318,7 +2526,6 @@ WriteEnemyOAM_IfNotFrozenOrInvincibleFrame:
     JSL.L AddSpritemapToOAM_WithBaseTileNumber_8B22                      ;A09564;
     BRA .pullY                                                           ;A09568;
 
-
   .offScreen:
     LDY.B $16                                                            ;A0956A;
     JSL.L AddSpritemapToOAM_WithBaseTileNumber_Offscreen_8B96            ;A0956C;
@@ -2337,6 +2544,7 @@ WriteEnemyOAM_IfNotFrozenOrInvincibleFrame:
     RTS                                                                  ;A0957D;
 
 
+;;; $957E: Normal enemy frozen AI ;;;
 NormalEnemyFrozenAI:
     PHX                                                                  ;A0957E;
     PHY                                                                  ;A0957F;
@@ -2350,7 +2558,6 @@ NormalEnemyFrozenAI:
     BEQ .unsetFrozenAI                                                   ;A09594;
     LDA.W #$0001                                                         ;A09596;
     BRA .return                                                          ;A09599;
-
 
   .unsetFrozenAI:
     LDA.W $0F8A,X                                                        ;A0959B;
@@ -2366,6 +2573,7 @@ NormalEnemyFrozenAI:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $95AD: Unused. Execute enemy AI ;;;
 UNUSED_ExecuteEnemyAI_A095AD:
     PHB                                                                  ;A095AD;
     PHP                                                                  ;A095AE;
@@ -2384,7 +2592,6 @@ UNUSED_ExecuteEnemyAI_A095AD:
     BCS +                                                                ;A095C3;
     BRA .loop                                                            ;A095C5;
 
-
 +   TXA                                                                  ;A095C7;
     ASL A                                                                ;A095C8;
     CLC                                                                  ;A095C9;
@@ -2399,8 +2606,8 @@ UNUSED_ExecuteEnemyAI_A095AD:
     PLB                                                                  ;A095DF;
     RTL                                                                  ;A095E0;
 
-
   .executeAI:
+; Execute enemy AI pointer
     LDX.W $0E54                                                          ;A095E1;
     LDA.W $0FA6,X                                                        ;A095E4;
     STA.W $1786                                                          ;A095E7;
@@ -2411,7 +2618,9 @@ UNUSED_ExecuteEnemyAI_A095AD:
     JML.W [$1784]                                                        ;A095EE;
 
 
+;;; $95F1: Unused. Respawn enemy ;;;
 UNUSED_RespawnEnemy_A095F1:
+; See $86:F264 for the used routine
     PHB                                                                  ;A095F1;
     PEA.W $A000                                                          ;A095F2;
     PLB                                                                  ;A095F5;
@@ -2486,7 +2695,6 @@ UNUSED_RespawnEnemy_A095F1:
     PLB                                                                  ;A096B8;
     RTL                                                                  ;A096B9;
 
-
   .executeAI:
     LDX.W $0E54                                                          ;A096BA;
     LDA.W $0FA6,X                                                        ;A096BD;
@@ -2499,7 +2707,23 @@ UNUSED_RespawnEnemy_A095F1:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $96CA: Process extended tilemap ;;;
 ProcessExtendedTilemap:
+;; Parameters:
+;;     [$16]: Pointer to extended tilemap
+
+; Crashes if writing >= 2800h bytes
+
+; Extended tilemap format:
+;     FFFE                      ; Enables extended tilemap
+;     dddd nnnn xxxx xxxx [...] ; First entry
+;     dddd nnnn xxxx xxxx [...] ; Second entry
+;     [...]                     ; Other entries
+;     FFFF                      ; Terminator
+; where
+;     d: Destination address (in bank $7E)
+;     n: Number of tiles (size of tilemap / 2)
+;     x: Tilemap
     PHY                                                                  ;A096CA;
     LDY.B $16                                                            ;A096CB;
     INY                                                                  ;A096CD;
@@ -2530,7 +2754,6 @@ ProcessExtendedTilemap:
     BNE .innerLoop                                                       ;A096F3;
     JMP.W .loop                                                          ;A096F5;
 
-
   .unrolled:
     LDA.W $0000,Y                                                        ;A096F8;
     STA.L $7E0000,X                                                      ;A096FB;
@@ -2554,14 +2777,15 @@ ProcessExtendedTilemap:
     BNE .unrolled                                                        ;A0971C;
     JMP.W .loop                                                          ;A0971E;
 
-
   .return:
     INC.W $0E1E                                                          ;A09721;
     PLY                                                                  ;A09724;
     RTS                                                                  ;A09725;
 
 
+;;; $9726: Handle queuing enemy BG2 tilemap VRAM transfer ;;;
 Handle_Queuing_Enemy_BG2_Tilemap_VRAM_Transfer:
+; Used by Phantoon, Draygon, Crocomire and Mother Brain
     LDA.W $0E1E                                                          ;A09726;
     BEQ .clearTransferFlag                                               ;A09729;
     LDA.W $0A78                                                          ;A0972B;
@@ -2586,6 +2810,7 @@ Handle_Queuing_Enemy_BG2_Tilemap_VRAM_Transfer:
     RTL                                                                  ;A09757;
 
 
+;;; $9758: Enemy collision handling ;;;
 EnemyCollisionHandling:
     PHP                                                                  ;A09758;
     PHB                                                                  ;A09759;
@@ -2604,7 +2829,6 @@ EnemyCollisionHandling:
     PLP                                                                  ;A09776;
     RTS                                                                  ;A09777;
 
-
   .notExtendedSpritemap:
     JSR.W Enemy_vs_ProjectileCollisionHandling                           ;A09778;
     JSR.W Enemy_vs_Bomb_CollisionHandling                                ;A0977B;
@@ -2614,11 +2838,14 @@ EnemyCollisionHandling:
     RTS                                                                  ;A09783;
 
 
+;;; $9784: RTL ;;;
 RTL_A09784:
     RTL                                                                  ;A09784;
 
 
+;;; $9785: Samus / projectile interaction handling ;;;
 Samus_Projectiles_Interaction_Handling:
+; Handles bomb jumps and damage due to reflected projectiles
     PHB                                                                  ;A09785;
     PEA.W $A000                                                          ;A09786;
     PLB                                                                  ;A09789;
@@ -2639,7 +2866,6 @@ Samus_Projectiles_Interaction_Handling:
     PLB                                                                  ;A097A9;
     RTL                                                                  ;A097AA;
 
-
   .bombIsActive:
     LDA.W #$000A                                                         ;A097AB;
     STA.W $187C                                                          ;A097AE;
@@ -2650,13 +2876,11 @@ Samus_Projectiles_Interaction_Handling:
     PLB                                                                  ;A097B6;
     RTL                                                                  ;A097B7;
 
-
   .checkContactDamage:
     LDA.W $0A6E                                                          ;A097B8;
     BEQ .resetProjectileIndex                                            ;A097BB;
     PLB                                                                  ;A097BD;
     RTL                                                                  ;A097BE;
-
 
   .resetProjectileIndex:
     STZ.W $18A6                                                          ;A097BF;
@@ -2669,7 +2893,6 @@ Samus_Projectiles_Interaction_Handling:
     BNE .hasDamage                                                       ;A097CA;
     JMP.W .next                                                          ;A097CC;
 
-
   .hasDamage:
     LDA.W $0C18,Y                                                        ;A097CF;
     BIT.W #$8000                                                         ;A097D2;
@@ -2680,7 +2903,6 @@ Samus_Projectiles_Interaction_Handling:
 
   .gotoNext:
     JMP.W .next                                                          ;A097DF;
-
 
   .interactive:
     LDA.W $0C04,Y                                                        ;A097E2;
@@ -2713,7 +2935,6 @@ Samus_Projectiles_Interaction_Handling:
     BCC .checkBombType                                                   ;A09818;
     BRA .next                                                            ;A0981A;
 
-
   .checkBombType:
     LDA.W $0C18,Y                                                        ;A0981C;
     AND.W #$FF00                                                         ;A0981F;
@@ -2733,11 +2954,9 @@ Samus_Projectiles_Interaction_Handling:
     LDA.W #$0003                                                         ;A0983E;
     BRA .storeBombJumpDirection                                          ;A09841;
 
-
   .left:
     LDA.W #$0001                                                         ;A09843;
     BRA .storeBombJumpDirection                                          ;A09846;
-
 
   .straight:
     LDA.W #$0002                                                         ;A09848;
@@ -2745,7 +2964,6 @@ Samus_Projectiles_Interaction_Handling:
   .storeBombJumpDirection:
     STA.W $0A56                                                          ;A0984B;
     BRA .next                                                            ;A0984E;
-
 
   .notABomb:
     LDA.W $0C04,Y                                                        ;A09850;
@@ -2769,7 +2987,6 @@ Samus_Projectiles_Interaction_Handling:
     STY.W $0A54                                                          ;A0987F;
     BRA .returnLower                                                     ;A09882;
 
-
   .next:
     INC.W $18A6                                                          ;A09884;
     LDA.W $18A6                                                          ;A09887;
@@ -2777,12 +2994,12 @@ Samus_Projectiles_Interaction_Handling:
     BEQ .returnLower                                                     ;A0988D;
     JMP.W .loop                                                          ;A0988F;
 
-
   .returnLower:
     PLB                                                                  ;A09892;
     RTL                                                                  ;A09893;
 
 
+;;; $9894: Enemy projectile / Samus collision handling ;;;
 EnemyProjectile_Samus_Collision_Handling:
     PHP                                                                  ;A09894;
     PHB                                                                  ;A09895;
@@ -2797,7 +3014,6 @@ EnemyProjectile_Samus_Collision_Handling:
     PLB                                                                  ;A098A9;
     PLP                                                                  ;A098AA;
     RTL                                                                  ;A098AB;
-
 
   .notInvincible:
     LDA.W $0A6E                                                          ;A098AC;
@@ -2816,7 +3032,6 @@ EnemyProjectile_Samus_Collision_Handling:
     AND.W #$00FF                                                         ;A098CA;
     BNE .hasXHitbox                                                      ;A098CD;
     JMP.W .next                                                          ;A098CF;
-
 
   .hasXHitbox:
     STA.W $0E20                                                          ;A098D2;
@@ -2852,7 +3067,6 @@ EnemyProjectile_Samus_Collision_Handling:
     BCC .handleCollision                                                 ;A0990E;
     BRA .next                                                            ;A09910;
 
-
   .handleCollision:
     JSR.W HandleEnemyProjectileCollisionWithSamus                        ;A09912;
 
@@ -2868,7 +3082,10 @@ EnemyProjectile_Samus_Collision_Handling:
     RTL                                                                  ;A09922;
 
 
+;;; $9923: Handle enemy projectile collision with Samus ;;;
 HandleEnemyProjectileCollisionWithSamus:
+;; Parameters:
+;;     X: Enemy projectile index
     LDA.W #$0060                                                         ;A09923;
     STA.W $18A8                                                          ;A09926;
     LDA.W #$0005                                                         ;A09929;
@@ -2904,6 +3121,7 @@ HandleEnemyProjectileCollisionWithSamus:
     RTS                                                                  ;A0996B;
 
 
+;;; $996C: Enemy projectile / projectile collision handling ;;;
 Projectile_vs_Projectile_Collision_Handling:
     PHP                                                                  ;A0996C;
     PHB                                                                  ;A0996D;
@@ -2918,7 +3136,6 @@ Projectile_vs_Projectile_Collision_Handling:
     PLB                                                                  ;A09981;
     PLP                                                                  ;A09982;
     RTL                                                                  ;A09983;
-
 
   .setIndex:
     LDA.W #$0022                                                         ;A09984;
@@ -2974,14 +3191,24 @@ Projectile_vs_Projectile_Collision_Handling:
     BMI .return                                                          ;A099F1;
     JMP.W .loopEnemyProjectile                                           ;A099F3;
 
-
   .return:
     PLB                                                                  ;A099F6;
     PLP                                                                  ;A099F7;
     RTL                                                                  ;A099F8;
 
 
+;;; $99F9: Handle enemy projectile collision with projectile ;;;
 HandleEnemyProjectileCollisionWithProjectile:
+;; Parameters:
+;;     X: Enemy projectile index
+;;     Y: Projectile index
+
+; Code at $9A3D for creating the dud shot graphics uses the wrong index register for the projectile position,
+; meaning the sprite object usually doesn't appear (used for fire arc and Botwoon)
+
+; Why does getting shot mask off all the property bits?
+; The first ASM instructions of the shot instruction list *are* executed in time to disable Samus collision before the next check,
+; but the low priority is applied for drawing this frame
     LDA.W $0C18,Y                                                        ;A099F9;
     BIT.W #$0008                                                         ;A099FC;
     BNE .plasmaBeam                                                      ;A099FF;
@@ -3011,7 +3238,6 @@ HandleEnemyProjectileCollisionWithProjectile:
     PLY                                                                  ;A09A3B;
     RTS                                                                  ;A09A3C;
 
-
   .buggyDudShot:
     LDA.W $0B64,X                                                        ;A09A3D;
     STA.B $12                                                            ;A09A40;
@@ -3026,7 +3252,9 @@ HandleEnemyProjectileCollisionWithProjectile:
     RTS                                                                  ;A09A59;
 
 
+;;; $9A5A: Enemy / Samus collision handling - extended spritemap ;;;
 EnemySamusCollisionHandling_ExtendedSpritemap:
+; This routine disables Samus' invincibility if she is using blue suit or screw attack (unless there are no tangible enemies)
     PHB                                                                  ;A09A5A;
     LDX.W $0E54                                                          ;A09A5B;
     LDA.W $0FA6,X                                                        ;A09A5E;
@@ -3052,13 +3280,11 @@ EnemySamusCollisionHandling_ExtendedSpritemap:
     PLB                                                                  ;A09A89;
     RTS                                                                  ;A09A8A;
 
-
   .touch:
     LDA.W $0A6E                                                          ;A09A8B;
     BEQ .normalContact                                                   ;A09A8E;
     STZ.W $18A8                                                          ;A09A90;
     BRA .notInvincible                                                   ;A09A93;
-
 
   .normalContact:
     LDA.W $18A8                                                          ;A09A95;
@@ -3139,13 +3365,11 @@ EnemySamusCollisionHandling_ExtendedSpritemap:
     JSL.L .executeAI                                                     ;A09B3D;
     BRA .returnLower                                                     ;A09B41;
 
-
   .executeAI:
     LDX.W $1878                                                          ;A09B43;
     LDA.W $0008,X                                                        ;A09B46;
     STA.W $1784                                                          ;A09B49;
     JML.W [$1784]                                                        ;A09B4C;
-
 
   .nextHitboxEntry:
     LDA.W $1878                                                          ;A09B4F;
@@ -3158,7 +3382,6 @@ EnemySamusCollisionHandling_ExtendedSpritemap:
     BMI .nextSpritemapEntry                                              ;A09B61;
     JMP.W .loopHitboxes                                                  ;A09B63;
 
-
   .nextSpritemapEntry:
     LDA.W $186E                                                          ;A09B66;
     CLC                                                                  ;A09B69;
@@ -3170,12 +3393,12 @@ EnemySamusCollisionHandling_ExtendedSpritemap:
     BMI .returnLower                                                     ;A09B78;
     JMP.W .loopSpritemapEntries                                          ;A09B7A;
 
-
   .returnLower:
     PLB                                                                  ;A09B7D;
     RTS                                                                  ;A09B7E;
 
 
+;;; $9B7F: Enemy / projectile collision handling - extended spritemap ;;;
 Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
     PHB                                                                  ;A09B7F;
     LDX.W $0E54                                                          ;A09B80;
@@ -3191,7 +3414,6 @@ Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
     BNE .nonZeroCounter                                                  ;A09B97;
     PLB                                                                  ;A09B99;
     RTS                                                                  ;A09B9A;
-
 
   .nonZeroCounter:
     STA.W $060F                                                          ;A09B9B;
@@ -3210,7 +3432,6 @@ Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
   .returnUpper:
     PLB                                                                  ;A09BBC;
     RTS                                                                  ;A09BBD;
-
 
 +   LDX.W $0E54                                                          ;A09BBE;
     LDA.W $0F86,X                                                        ;A09BC1;
@@ -3240,7 +3461,6 @@ Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
 
   .gotoNextProjectile:
     JMP.W .nextProjectile                                                ;A09BF8;
-
 
   .validProjectile:
     LDX.W $0E54                                                          ;A09BFB;
@@ -3274,7 +3494,6 @@ Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
     BNE .entriesRemaining                                                ;A09C36;
     JMP.W .nextSpritemapEntry                                            ;A09C38;
 
-
   .entriesRemaining:
     STA.W $060D                                                          ;A09C3B;
     INX                                                                  ;A09C3E;
@@ -3296,7 +3515,6 @@ Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
     CMP.W $1870                                                          ;A09C5C;
     BPL +                                                                ;A09C5F;
     JMP.W .nextHitbox                                                    ;A09C61;
-
 
 +   LDA.W $0004,X                                                        ;A09C64;
     CLC                                                                  ;A09C67;
@@ -3352,7 +3570,6 @@ Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
     JSL.L .executeCollision                                              ;A09CD9;
     BRA .returnLower                                                     ;A09CDD;
 
-
   .nextHitbox:
     LDA.W $1878                                                          ;A09CDF;
     CLC                                                                  ;A09CE2;
@@ -3362,7 +3579,6 @@ Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
     BEQ .nextSpritemapEntry                                              ;A09CEC;
     BMI .nextSpritemapEntry                                              ;A09CEE;
     JMP.W .loopHitboxes                                                  ;A09CF0;
-
 
   .nextSpritemapEntry:
     LDA.W $186E                                                          ;A09CF3;
@@ -3374,7 +3590,6 @@ Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
     BMI .nextProjectile                                                  ;A09D02;
     JMP.W .loopSpritemapEntries                                          ;A09D04;
 
-
   .nextProjectile:
     INC.W $18A6                                                          ;A09D07;
     LDA.W $18A6                                                          ;A09D0A;
@@ -3382,11 +3597,9 @@ Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
     BPL .returnLower                                                     ;A09D10;
     JMP.W .loopProjectiles                                               ;A09D12;
 
-
   .returnLower:
     PLB                                                                  ;A09D15;
     RTS                                                                  ;A09D16;
-
 
   .executeCollision:
     LDX.W $1878                                                          ;A09D17;
@@ -3395,7 +3608,9 @@ Enemy_vs_Projectile_CollisionHandling_ExtendedSpritemap:
     JML.W [$1784]                                                        ;A09D20;
 
 
+;;; $9D23: Enemy / bomb collision handling - extended spritemap ;;;
 Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
+; I don't really see any reason why this routine should be separate from $9B7F
     PHB                                                                  ;A09D23;
     LDX.W $0E54                                                          ;A09D24;
     LDA.W $0FA6,X                                                        ;A09D27;
@@ -3427,7 +3642,6 @@ Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
     PLB                                                                  ;A09D64;
     RTS                                                                  ;A09D65;
 
-
 +   LDA.W $0CD2                                                          ;A09D66;
     BEQ .returnUpper                                                     ;A09D69;
     LDA.W #$0005                                                         ;A09D6B;
@@ -3442,7 +3656,6 @@ Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
     BNE .notZeroX                                                        ;A09D7C;
     JMP.W .nextProjectile                                                ;A09D7E;
 
-
   .notZeroX:
     LDA.W $0C18,Y                                                        ;A09D81;
     BEQ .gotoNextProjectile                                              ;A09D84;
@@ -3453,12 +3666,10 @@ Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
   .gotoNextProjectile:
     JMP.W .nextProjectile                                                ;A09D8E;
 
-
   .bomb:
     LDA.W $0C7C,Y                                                        ;A09D91;
     BEQ .timerExpired                                                    ;A09D94;
     JMP.W .nextProjectile                                                ;A09D96;
-
 
   .timerExpired:
     LDA.W $0F8E,X                                                        ;A09D99;
@@ -3491,7 +3702,6 @@ Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
     BNE +                                                                ;A09DD1;
     JMP.W .nextSpritemapEntry                                            ;A09DD3;
 
-
 +   STA.W $060D                                                          ;A09DD6;
     INX                                                                  ;A09DD9;
     INX                                                                  ;A09DDA;
@@ -3512,7 +3722,6 @@ Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
     CMP.W $1870                                                          ;A09DF7;
     BPL +                                                                ;A09DFA;
     JMP.W .nextHitbox                                                    ;A09DFC;
-
 
 +   LDA.W $0004,X                                                        ;A09DFF;
     CLC                                                                  ;A09E02;
@@ -3547,7 +3756,6 @@ Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
     JSL.L .executeCollision                                              ;A09E4A;
     BRA .returnLower                                                     ;A09E4E;
 
-
   .nextHitbox:
     LDA.W $1878                                                          ;A09E50;
     CLC                                                                  ;A09E53;
@@ -3558,7 +3766,6 @@ Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
     BEQ .nextSpritemapEntry                                              ;A09E60;
     BMI .nextSpritemapEntry                                              ;A09E62;
     JMP.W .loopHitboxes                                                  ;A09E64;
-
 
   .nextSpritemapEntry:
     LDA.W $186E                                                          ;A09E67;
@@ -3571,7 +3778,6 @@ Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
     BMI .nextProjectile                                                  ;A09E79;
     JMP.W .loopSpritemapEntries                                          ;A09E7B;
 
-
   .nextProjectile:
     INC.W $18A6                                                          ;A09E7E;
     LDA.W $18A6                                                          ;A09E81;
@@ -3579,11 +3785,9 @@ Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
     BEQ .returnLower                                                     ;A09E87;
     JMP.W .loopProjectiles                                               ;A09E89;
 
-
   .returnLower:
     PLB                                                                  ;A09E8C;
     RTS                                                                  ;A09E8D;
-
 
   .executeCollision:
     LDX.W $1878                                                          ;A09E8E;
@@ -3592,7 +3796,23 @@ Enemy_vs_Bomb_CollisionHandling_ExtendedSpritemap:
     JML.W [$1784]                                                        ;A09E97;
 
 
+;;; $9E9A: Enemy / grapple beam collision detection ;;;
 EnemyGrappleBeamCollisionDetection:
+;; Returns:
+;;     A: Grapple reaction index
+;;     {
+;;         0: Otherwise
+;;         1: Enemy grapple AI = $8005 - Samus latches on
+;;         2: Enemy grapple AI = $800A - kill enemy
+;;         3: Enemy grapple AI = $800F - cancel grapple beam
+;;         4: Enemy grapple AI = $8014 - Samus latches on - no invincibility
+;;         5: Enemy grapple AI = $8019 - Samus latches on - paralyse enemy
+;;         6: Enemy grapple AI = $801E - hurt Samus
+;;     }
+;;     $12: Collided enemy ID if collision, otherwise 0
+
+; Grapple reaction indices 1/4/5 set the grapple beam's end position to the enemy's position.
+; Collision detection ignores the extended hitbox format
     PHB                                                                  ;A09E9A;
     PHX                                                                  ;A09E9B;
     PHY                                                                  ;A09E9C;
@@ -3600,7 +3820,6 @@ EnemyGrappleBeamCollisionDetection:
     JSL.L Run_Samus_Command                                              ;A09EA0;
     BNE +                                                                ;A09EA4;
     JMP.W .grappleIndexDetermined                                        ;A09EA6;
-
 
 +   STZ.W $18A6                                                          ;A09EA9;
     STZ.W $17AA                                                          ;A09EAC;
@@ -3617,7 +3836,6 @@ EnemyGrappleBeamCollisionDetection:
     PLX                                                                  ;A09EC3;
     PLB                                                                  ;A09EC4;
     RTL                                                                  ;A09EC5;
-
 
   .notFFFF:
     TAX                                                                  ;A09EC6;
@@ -3654,7 +3872,6 @@ EnemyGrappleBeamCollisionDetection:
     INC.W $17AA                                                          ;A09EFC;
     INC.W $17AA                                                          ;A09EFF;
     JMP.W .loop                                                          ;A09F02;
-
 
   .hit:
     LDA.W #$0001                                                         ;A09F05;
@@ -3701,7 +3918,6 @@ EnemyGrappleBeamCollisionDetection:
     PLB                                                                  ;A09F58;
     RTL                                                                  ;A09F59;
 
-
   .attachGrapple:
     PHA                                                                  ;A09F5A;
     LDX.W $0E54                                                          ;A09F5B;
@@ -3713,6 +3929,7 @@ EnemyGrappleBeamCollisionDetection:
     BRA .return                                                          ;A09F6B;
 
 
+;;; $9F6D: Switch enemy AI to main AI ;;;
 GrappleAI_SwitchEnemyAIToMainAI:
     LDX.W $0E54                                                          ;A09F6D;
     STZ.W $0F8A,X                                                        ;A09F70;
@@ -3722,6 +3939,7 @@ GrappleAI_SwitchEnemyAIToMainAI:
     RTL                                                                  ;A09F7C;
 
 
+;;; $9F7D: Samus latches on with grapple ;;;
 GrappleAI_SamusLatchesOnWithGrapple:
     LDX.W $0E54                                                          ;A09F7D;
     LDX.W $0E54                                                          ;A09F80; >_<
@@ -3748,7 +3966,6 @@ GrappleAI_SamusLatchesOnWithGrapple:
     STZ.W $0F8A,X                                                        ;A09FB6;
     RTL                                                                  ;A09FB9;
 
-
   .frozen:
     LDX.W $0E54                                                          ;A09FBA;
     LDA.W #$0004                                                         ;A09FBD;
@@ -3756,6 +3973,7 @@ GrappleAI_SamusLatchesOnWithGrapple:
     RTL                                                                  ;A09FC3;
 
 
+;;; $9FC4: Enemy grapple death ;;;
 GrappleAI_EnemyGrappleDeath:
     LDX.W $0E54                                                          ;A09FC4;
     LDX.W $0E54                                                          ;A09FC7;
@@ -3768,6 +3986,7 @@ GrappleAI_EnemyGrappleDeath:
     RTL                                                                  ;A09FDE;
 
 
+;;; $9FDF: Switch to frozen AI ;;;
 GrappleAI_SwitchToFrozenAI:
     LDX.W $0E54                                                          ;A09FDF;
     LDA.W #$0004                                                         ;A09FE2;
@@ -3775,6 +3994,7 @@ GrappleAI_SwitchToFrozenAI:
     RTL                                                                  ;A09FE8;
 
 
+;;; $9FE9: Samus latches on with grapple - no invincibility ;;;
 GrappleAI_SamusLatchesOnWithGrapple_NoInvincibility:
     LDX.W $0E54                                                          ;A09FE9;
     LDA.W $0F9E,X                                                        ;A09FEC;
@@ -3795,7 +4015,6 @@ GrappleAI_SamusLatchesOnWithGrapple_NoInvincibility:
     STZ.W $0F8A,X                                                        ;A0A014;
     RTL                                                                  ;A0A017;
 
-
   .executeAI:
     LDX.W $0E54                                                          ;A0A018;
     LDA.W $0FA6,X                                                        ;A0A01B;
@@ -3805,7 +4024,6 @@ GrappleAI_SamusLatchesOnWithGrapple_NoInvincibility:
     PLB                                                                  ;A0A023;
     PLB                                                                  ;A0A024;
     JML.W [$1784]                                                        ;A0A025;
-
 
   .frozen:
     LDX.W $0E54                                                          ;A0A028;
@@ -3818,6 +4036,7 @@ GrappleAI_SamusLatchesOnWithGrapple_NoInvincibility:
     RTL                                                                  ;A0A03D;
 
 
+;;; $A03E: Samus latches on with grapple - paralyse enemy ;;;
 GrappleAI_SamusLatchesOnWithGrapple_ParalyzeEnemy:
     LDX.W $0E54                                                          ;A0A03E;
     LDX.W $0E54                                                          ;A0A041;
@@ -3840,14 +4059,19 @@ GrappleAI_SamusLatchesOnWithGrapple_ParalyzeEnemy:
     RTL                                                                  ;A0A06F;
 
 
+;;; $A070: Switch to frozen AI ;;;
 GrappleAI_SwitchToFrozenAI_duplicate:
+; Clone of GrappleAI_SwitchToFrozenAI
     LDX.W $0E54                                                          ;A0A070;
     LDA.W #$0004                                                         ;A0A073;
     STA.W $0F8A,X                                                        ;A0A076;
     RTL                                                                  ;A0A079;
 
 
+;;; $A07A: Enemy / Samus collision handling ;;;
 Enemy_vs_Samus_CollisionHandling:
+; $A091 is the cause of screw attack cancelling invincibility (need to check $9A8B too)
+; Not the cause of crystal flash insta-death, that would be $90:D6D6
     PHB                                                                  ;A0A07A;
     REP #$30                                                             ;A0A07B;
     PEA.W $A000                                                          ;A0A07D;
@@ -3862,7 +4086,6 @@ Enemy_vs_Samus_CollisionHandling:
     BEQ .normalContactDamage                                             ;A0A094;
     STZ.W $18A8                                                          ;A0A096;
     BRA .tangible                                                        ;A0A099;
-
 
   .normalContactDamage:
     LDA.W $18A8                                                          ;A0A09B;
@@ -3880,7 +4103,6 @@ Enemy_vs_Samus_CollisionHandling:
     PLB                                                                  ;A0A0B6;
     RTS                                                                  ;A0A0B7;
 
-
   .tangible:
     LDX.W $0E54                                                          ;A0A0B8;
     LDY.W $0F78,X                                                        ;A0A0BB;
@@ -3893,7 +4115,6 @@ Enemy_vs_Samus_CollisionHandling:
   ..return:
     PLB                                                                  ;A0A0CB;
     RTS                                                                  ;A0A0CC;
-
 
   .hasTouchAI:
     LDX.W $0E54                                                          ;A0A0CD;
@@ -3928,7 +4149,6 @@ Enemy_vs_Samus_CollisionHandling:
     PLB                                                                  ;A0A100;
     RTS                                                                  ;A0A101;
 
-
 +   LDX.W $0E54                                                          ;A0A102;
     LDA.W $0F8E,X                                                        ;A0A105;
     ASL A                                                                ;A0A108;
@@ -3943,14 +4163,13 @@ Enemy_vs_Samus_CollisionHandling:
     PLB                                                                  ;A0A11E;
     RTS                                                                  ;A0A11F;
 
-
   .gotoExecuteEnemyTouch:
     JSL.L .executeEnemyTouch                                             ;A0A120;
     PLB                                                                  ;A0A124;
     RTS                                                                  ;A0A125;
 
-
   .executeEnemyTouch:
+; Execute enemy touch
     LDY.W $0E54                                                          ;A0A126;
     LDA.W $0FA6,Y                                                        ;A0A129;
     XBA                                                                  ;A0A12C;
@@ -3965,6 +4184,7 @@ Enemy_vs_Samus_CollisionHandling:
     JML.W [$1784]                                                        ;A0A140;
 
 
+;;; $A143: Enemy / projectile collision handling ;;;
 Enemy_vs_ProjectileCollisionHandling:
     PHB                                                                  ;A0A143;
     LDX.W $0E54                                                          ;A0A144;
@@ -3982,7 +4202,6 @@ Enemy_vs_ProjectileCollisionHandling:
   .returnUpper:
     PLB                                                                  ;A0A15D;
     RTS                                                                  ;A0A15E;
-
 
   .nonZeroCounter:
     LDY.W $0E54                                                          ;A0A15F;
@@ -4018,7 +4237,6 @@ Enemy_vs_ProjectileCollisionHandling:
   .gotoNextProjectile:
     JMP.W .nextProjectile                                                ;A0A1A3;
 
-
   .validProjectile:
     LDA.W $0B64,Y                                                        ;A0A1A6;
     SEC                                                                  ;A0A1A9;
@@ -4047,7 +4265,6 @@ Enemy_vs_ProjectileCollisionHandling:
     CMP.W $0F84,X                                                        ;A0A1D1;
     BCC .checkSuper                                                      ;A0A1D4;
     BRA .nextProjectile                                                  ;A0A1D6;
-
 
   .checkSuper:
     LDA.W $0C18,Y                                                        ;A0A1D8;
@@ -4080,7 +4297,6 @@ Enemy_vs_ProjectileCollisionHandling:
     JSL.L .executeEnemyShot                                              ;A0A210;
     BRA .returnLower                                                     ;A0A214;
 
-
   .nextProjectile:
     INC.W $18A6                                                          ;A0A216;
     LDA.W $18A6                                                          ;A0A219;
@@ -4088,13 +4304,12 @@ Enemy_vs_ProjectileCollisionHandling:
     BEQ .returnLower                                                     ;A0A21F;
     JMP.W .loop                                                          ;A0A221;
 
-
   .returnLower:
     PLB                                                                  ;A0A224;
     RTS                                                                  ;A0A225;
 
-
   .executeEnemyShot:
+; Execute enemy shot
     LDY.W $0E54                                                          ;A0A226;
     LDX.W $0F78,Y                                                        ;A0A229;
     LDA.L $A00032,X                                                      ;A0A22C;
@@ -4102,6 +4317,7 @@ Enemy_vs_ProjectileCollisionHandling:
     JML.W [$1784]                                                        ;A0A233;
 
 
+;;; $A236: Enemy / bomb collision handling ;;;
 Enemy_vs_Bomb_CollisionHandling:
     PHB                                                                  ;A0A236;
     LDX.W $0E54                                                          ;A0A237;
@@ -4119,7 +4335,6 @@ Enemy_vs_Bomb_CollisionHandling:
   .returnUpper:
     PLB                                                                  ;A0A250;
     RTS                                                                  ;A0A251;
-
 
   .nonZeroCounter:
     LDY.W $0E54                                                          ;A0A252;
@@ -4143,7 +4358,6 @@ Enemy_vs_Bomb_CollisionHandling:
     BNE .projectileType                                                  ;A0A27B;
     JMP.W .next                                                          ;A0A27D;
 
-
   .projectileType:
     LDA.W $0C7C,Y                                                        ;A0A280;
     BNE .next                                                            ;A0A283;
@@ -4155,7 +4369,6 @@ Enemy_vs_Bomb_CollisionHandling:
     BIT.W #$8000                                                         ;A0A293;
     BNE .bomb                                                            ;A0A296;
     JMP.W .next                                                          ;A0A298;
-
 
   .bomb:
     LDA.W $0B64,Y                                                        ;A0A29B;
@@ -4198,7 +4411,6 @@ Enemy_vs_Bomb_CollisionHandling:
     JSL.L .executeEnemyShot                                              ;A0A2E0;
     BRA .returnLower                                                     ;A0A2E4;
 
-
   .next:
     INC.W $18A6                                                          ;A0A2E6;
     LDA.W $18A6                                                          ;A0A2E9;
@@ -4206,13 +4418,12 @@ Enemy_vs_Bomb_CollisionHandling:
     BEQ .returnLower                                                     ;A0A2EF;
     JMP.W .loop                                                          ;A0A2F1;
 
-
   .returnLower:
     PLB                                                                  ;A0A2F4;
     RTS                                                                  ;A0A2F5;
 
-
   .executeEnemyShot:
+; Execute enemy shot
     LDY.W $0E54                                                          ;A0A2F6;
     LDX.W $0F78,Y                                                        ;A0A2F9;
     LDA.L $A00032,X                                                      ;A0A2FC;
@@ -4220,7 +4431,12 @@ Enemy_vs_Bomb_CollisionHandling:
     JML.W [$1784]                                                        ;A0A303;
 
 
+;;; $A306: Process enemy power bomb interaction ;;;
 Process_Enemy_PowerBomb_Interaction:
+; This routine is relying on $12 and $14 (the calculated power bomb explosion radius) not being modified over the course of the loop(!)
+; This doesn't hold true if an enemy is killed by the power bomb (see e.g. $A3E6) >_>;
+; For respawning enemies, $12 = 4000h in their enemy death, making power bombs effectively infinite wide for the remaining enemies that frame
+; For non-respawning enemies, $12 = 0 in their enemy death, making power bombs effectively zero sized for the remaining enemies that frame
     PHB                                                                  ;A0A306;
     LDA.W #$0005                                                         ;A0A307;
     STA.L $7EF378                                                        ;A0A30A;
@@ -4230,7 +4446,6 @@ Process_Enemy_PowerBomb_Interaction:
     BNE .hasRadius                                                       ;A0A316;
     PLB                                                                  ;A0A318;
     RTL                                                                  ;A0A319;
-
 
   .hasRadius:
     LSR A                                                                ;A0A31A;
@@ -4299,8 +4514,8 @@ Process_Enemy_PowerBomb_Interaction:
     PLB                                                                  ;A0A39D;
     RTL                                                                  ;A0A39E;
 
-
   .executeEnemyAI:
+; Execute enemy AI
     LDX.W $0E54                                                          ;A0A39F;
     LDA.W $0FA6,X                                                        ;A0A3A2;
     STA.W $1786                                                          ;A0A3A5;
@@ -4311,7 +4526,15 @@ Process_Enemy_PowerBomb_Interaction:
     JML.W [$1784]                                                        ;A0A3AC;
 
 
+;;; $A3AF: Enemy death ;;;
 EnemyDeath:
+;; Parameter:
+;;     A: Death animation. Range 0..4
+;;         0: Small explosion. Used by grapple killed, power bomb killed, refill candy, fire pillar, boulder, creepy crawlies, skree, Norfair fireball, fireflea, waver, rinka, polyp, fly, owtch, puyo, boyon, zebetite, bang
+;;         1: Killed by Samus contact. Also used by bang
+;;         2: Normal explosion. Used by super missile killed default, atomic / robot / ghost, bull / floater / oum / yard / fish, fune, sidehopper, desgeega, mochtroid, slug, sciser, metaree, chute, rio, squeept, rio, cacatac
+;;         3: Fake Kraid explosion
+;;         4: Big explosion. Used by space pirates, Shaktool, ki-hunter, dragon, kago, yapping maw, evir, metroid, super-sidehopper/desgeega, tatori
     PHP                                                                  ;A0A3AF;
     PHB                                                                  ;A0A3B0;
     PEA.W $A000                                                          ;A0A3B1;
@@ -4365,7 +4588,13 @@ EnemyDeath:
     RTL                                                                  ;A0A40F;
 
 
+;;; $A410: Rinka death ;;;
 RinkaDeath:
+;; Parameter:
+;;     A: Death animation. Range 0..4
+;;         0/3/4: Small explosion
+;;         1: Killed by Samus contact
+;;         2: Normal explosion
     PHP                                                                  ;A0A410;
     PHB                                                                  ;A0A411;
     PEA.W $A000                                                          ;A0A412;
@@ -4409,7 +4638,12 @@ RinkaDeath:
     RTL                                                                  ;A0A45D;
 
 
+;;; $A45E: Suit damage division ;;;
 Suit_Damage_Division:
+;; Parameter:
+;;     A: Damage
+;; Returns:
+;;     A/$12: Damage divided by 1/2/4 if power/varia/gravity suit equipped
     STA.B $12                                                            ;A0A45E;
     LDA.W $09A2                                                          ;A0A460;
     BIT.W #$0020                                                         ;A0A463;
@@ -4422,7 +4656,6 @@ Suit_Damage_Division:
     LDA.B $12                                                            ;A0A46D;
     RTL                                                                  ;A0A46F;
 
-
   .quarterDamage:
     LSR.B $12                                                            ;A0A470;
     LSR.B $12                                                            ;A0A472;
@@ -4430,6 +4663,7 @@ Suit_Damage_Division:
     RTL                                                                  ;A0A476;
 
 
+;;; $A477: Normal enemy touch AI ;;;
 NormalEnemyTouchAI:
     LDX.W $0E54                                                          ;A0A477;
     JSR.W NormalEnemyTouchAI_NoDeathCheck                                ;A0A47A;
@@ -4446,6 +4680,7 @@ NormalEnemyTouchAI:
     RTL                                                                  ;A0A496;
 
 
+;;; $A497: Normal enemy touch AI - no death check (external) ;;;
 NormalEnemyTouchAI_NoDeathCheck_External:
     LDX.W $0E54                                                          ;A0A497;
     JSR.W NormalEnemyTouchAI_NoDeathCheck                                ;A0A49A;
@@ -4453,11 +4688,16 @@ NormalEnemyTouchAI_NoDeathCheck_External:
     RTL                                                                  ;A0A4A0;
 
 
+;;; $A4A1: Normal enemy touch AI - no death check ;;;
 NormalEnemyTouchAI_NoDeathCheck:
+; Damage values:
+;     Speed boosting:      $A4AF
+;     Shinesparking:       $A4BA
+;     Screw attack:        $A4C2
+;     Pseudo screw attack: $A4CC
     LDA.W $0A6E                                                          ;A0A4A1;
     BNE .notNormal                                                       ;A0A4A4;
     JMP.W .normalSamus                                                   ;A0A4A6;
-
 
   .notNormal:
     CLC                                                                  ;A0A4A9;
@@ -4480,7 +4720,6 @@ NormalEnemyTouchAI_NoDeathCheck:
     LDA.W #$0004                                                         ;A0A4D4;
     JSL.L Run_Samus_Command                                              ;A0A4D7;
     BRA .damageCalculated                                                ;A0A4DB;
-
 
   .defaultDamage:
     LDY.W #$00C8                                                         ;A0A4DD;
@@ -4516,10 +4755,8 @@ NormalEnemyTouchAI_NoDeathCheck:
     STA.B $12                                                            ;A0A51C;
     BRA .damage                                                          ;A0A51E;
 
-
   .return:
     RTS                                                                  ;A0A520;
-
 
   .damage:
     LDX.W $0E54                                                          ;A0A521;
@@ -4551,7 +4788,6 @@ NormalEnemyTouchAI_NoDeathCheck:
     JSL.L QueueSound_Lib2_Max1                                           ;A0A55D;
     RTS                                                                  ;A0A561;
 
-
   .normalSamus:
     LDX.W $0E54                                                          ;A0A562;
     LDA.W $0F78,X                                                        ;A0A565;
@@ -4576,6 +4812,7 @@ NormalEnemyTouchAI_NoDeathCheck:
     RTS                                                                  ;A0A596;
 
 
+;;; $A597: Normal enemy power bomb AI ;;;
 NormalEnemyPowerBombAI:
     LDX.W $0E54                                                          ;A0A597;
     JSR.W NormalEnemyPowerBombAI_NoDeathCheck                            ;A0A59A;
@@ -4592,13 +4829,16 @@ NormalEnemyPowerBombAI:
     RTL                                                                  ;A0A5B6;
 
 
+;;; $A5B7: Normal enemy power bomb AI - no death check (external) ;;;
 NormalEnemyPowerBombAI_NoDeathCheck_External:
+; Called by rinka, fake Kraid, Kraid, Draygon, Ridley, Mother Brain
     LDX.W $0E54                                                          ;A0A5B7;
     JSR.W NormalEnemyPowerBombAI_NoDeathCheck                            ;A0A5BA;
     LDX.W $0E54                                                          ;A0A5BD;
     RTL                                                                  ;A0A5C0;
 
 
+;;; $A5C1: Normal enemy power bomb AI - no death check ;;;
 NormalEnemyPowerBombAI_NoDeathCheck:
     LDX.W $0E54                                                          ;A0A5C1;
     LDA.W $0F78,X                                                        ;A0A5C4;
@@ -4660,6 +4900,7 @@ NormalEnemyPowerBombAI_NoDeathCheck:
     RTS                                                                  ;A0A63C;
 
 
+;;; $A63D: Normal enemy shot AI ;;;
 NormalEnemyShotAI:
     STZ.W $0E2E                                                          ;A0A63D;
     LDX.W $0E54                                                          ;A0A640;
@@ -4699,7 +4940,6 @@ NormalEnemyShotAI:
     TAY                                                                  ;A0A68D;
     BRA .enemyDeath                                                      ;A0A68E;
 
-
   .superMissile:
     LDA.W $0F78,X                                                        ;A0A690;
     TAX                                                                  ;A0A693;
@@ -4717,6 +4957,7 @@ NormalEnemyShotAI:
     RTL                                                                  ;A0A6A6;
 
 
+;;; $A6A7: Normal enemy shot AI - no death check, no enemy shot graphic (external) ;;;
 NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External:
     STZ.W $0E2E                                                          ;A0A6A7;
     LDX.W $0E54                                                          ;A0A6AA;
@@ -4725,7 +4966,10 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External:
     RTL                                                                  ;A0A6B3;
 
 
+;;; $A6B4: Normal enemy shot AI - no death check ;;;
 NormalEnemyShotAI_NoDeathCheck:
+; Used by Spore Spawn
+; Shame it's not used by NormalEnemyShotAI
     STZ.W $0E2E                                                          ;A0A6B4;
     LDX.W $0E54                                                          ;A0A6B7;
     JSR.W NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic              ;A0A6BA;
@@ -4746,7 +4990,15 @@ NormalEnemyShotAI_NoDeathCheck:
     RTL                                                                  ;A0A6DD;
 
 
+;;; $A6DE: Normal enemy shot AI - no death check, no enemy shot graphic ;;;
 NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
+; Vulnerability format:
+;     v = f000dddd
+;     If v = FFh:
+;         Freeze, no damage
+;     Else:
+;         d: Damage multiplier * 2
+;         f: Does not freeze
     PHB                                                                  ;A0A6DE;
     LDA.W $18A6                                                          ;A0A6DF;
     ASL A                                                                ;A0A6E2;
@@ -4783,7 +5035,6 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     BNE .checkCharge                                                     ;A0A728;
     JMP.W .freeze                                                        ;A0A72A;
 
-
   .checkCharge:
     LDA.B $12                                                            ;A0A72D;
     BIT.W #$0010                                                         ;A0A72F;
@@ -4809,7 +5060,6 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     STA.W $187A                                                          ;A0A75D;
     JMP.W .damage                                                        ;A0A760;
 
-
   .notBeam:
     AND.W #$0F00                                                         ;A0A763;
     CMP.W #$0100                                                         ;A0A766;
@@ -4826,7 +5076,6 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     STA.W $0E32                                                          ;A0A77C;
     BRA .calculateDamage                                                 ;A0A77F;
 
-
   .notMissile:
     CMP.W #$0500                                                         ;A0A781;
     BNE .checkPowerBomb                                                  ;A0A784;
@@ -4836,7 +5085,6 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     STA.W $0E32                                                          ;A0A78F;
     BRA .calculateDamage                                                 ;A0A792;
 
-
   .checkPowerBomb:
     CMP.W #$0300                                                         ;A0A794;
     BNE .noDamage                                                        ;A0A797;
@@ -4845,7 +5093,6 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     AND.W #$007F                                                         ;A0A79F;
     STA.W $0E32                                                          ;A0A7A2;
     JMP.W .calculateDamage                                               ;A0A7A5;
-
 
   .noDamage:
     LDA.W $18A6                                                          ;A0A7A8;
@@ -4867,7 +5114,6 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     PLX                                                                  ;A0A7D2;
     PLB                                                                  ;A0A7D3;
     RTS                                                                  ;A0A7D4;
-
 
   .freeze:
     LDX.W $0E54                                                          ;A0A7D5;
@@ -4894,7 +5140,6 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     PLX                                                                  ;A0A805;
     PLB                                                                  ;A0A806;
     RTS                                                                  ;A0A807;
-
 
   .damage:
     PLX                                                                  ;A0A808;
@@ -4979,7 +5224,6 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     PLB                                                                  ;A0A8B2;
     RTS                                                                  ;A0A8B3;
 
-
   .enemyHealthZero:
     LDA.W #$0000                                                         ;A0A8B4;
 
@@ -4989,6 +5233,7 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     RTS                                                                  ;A0A8BB;
 
 
+;;; $A8BC: Creates a dud shot ;;;
 CreateADudShot:
     PHX                                                                  ;A0A8BC;
     PHY                                                                  ;A0A8BD;
@@ -5016,7 +5261,36 @@ CreateADudShot:
     RTL                                                                  ;A0A8EF;
 
 
+;;; $A8F0: Samus / solid enemy collision detection ;;;
 Samus_vs_SolidEnemy_CollisionDetection:
+;; Parameters:
+;;     $12.$14: Distance to check for collision
+;; Returns:
+;;     A: FFFFh if collision detected, 0 otherwise
+;;     $12: If collision detected: distance to collision
+;;     $14: If collision detected: 0
+;;     $16: If collision detected: index of colliding enemy
+
+; Solid enemy means an interactive enemy ($17EC) that is either frozen or whose hitbox is solid to Samus ([enemy properties] & 8000h != 0)
+; If Samus is already partly within a solid enemy, that doesn't count as a collision
+
+; Amazingly, there are no subroutine calls in here
+
+; This routine considers it a collision if Samus' front boundary is one pixel in front of an enemy's front boundary,
+; which seems to be important for moving solid enemies
+; (otherwise if this routine were called with [$12].[$14] = 0.0, no collision would be detected even if the enemy is moving towards Samus)
+; If you NOP'd out the INC at $A9A9 for example, you can do a short hop on one of the rising platform enemies and fall straight through
+
+; The BEQs at $A931/A959/A980/A9A7 I can't make sense of based on the above logic. Seems like the increments/decrements should be unconditional
+; Perhaps it affects the logic for choosing between .touching and .notTouching(?) Didn't notice any jank when NOP'ing the BEQs
+
+; On the zebetite skip:
+; The way this behaviour is implemented is effectively just incrementing the $12 parameter (unfortunately not written so straight forwardly)
+; Consequently, Samus can collide with enemies one pixel further than she should be able to reach (i.e. one pixel further than in block collision),
+; which explains why Samus collides with the frozen rinka in the zebetite skip, even though it's 2 pixels deep into the wall
+; Because a collision is reported in this case, no Samus block collision detection is done, meaning Samus doesn't collide with the wall,
+; and because the zebetite's right boundary is aligned with the wall (one pixel further right than the rinka's),
+; Samus is now horizontally inside the zebetite, and so no horizontal collision will be detected due to the zebetite
     PHP                                                                  ;A0A8F0;
     PHB                                                                  ;A0A8F1;
     PEA.W $A000                                                          ;A0A8F2;
@@ -5027,13 +5301,11 @@ Samus_vs_SolidEnemy_CollisionDetection:
     BEQ .returnZeroUpper                                                 ;A0A8FC;
     BRA .execute                                                         ;A0A8FE;
 
-
   .returnZeroUpper:
     LDA.W #$0000                                                         ;A0A900;
     PLB                                                                  ;A0A903;
     PLP                                                                  ;A0A904;
     RTL                                                                  ;A0A905;
-
 
   .execute:
     LDA.W $0B02                                                          ;A0A906;
@@ -5041,7 +5313,6 @@ Samus_vs_SolidEnemy_CollisionDetection:
     ASL A                                                                ;A0A90C;
     TAX                                                                  ;A0A90D;
     JMP.W (.pointers,X)                                                  ;A0A90E;
-
 
   .pointers:
     dw .left                                                             ;A0A911;
@@ -5073,7 +5344,6 @@ Samus_vs_SolidEnemy_CollisionDetection:
     STA.W $18A0                                                          ;A0A93F;
     JMP.W .targetPositionSet                                             ;A0A942;
 
-
   .right:
     LDA.B $12                                                            ;A0A945;
     CLC                                                                  ;A0A947;
@@ -5096,7 +5366,6 @@ Samus_vs_SolidEnemy_CollisionDetection:
     STA.W $18A0                                                          ;A0A967;
     BRA .targetPositionSet                                               ;A0A96A;
 
-
   .up:
     LDA.W $0AFA                                                          ;A0A96C;
     SEC                                                                  ;A0A96F;
@@ -5118,7 +5387,6 @@ Samus_vs_SolidEnemy_CollisionDetection:
     LDA.W $0AF8                                                          ;A0A98B;
     STA.W $189C                                                          ;A0A98E;
     BRA .targetPositionSet                                               ;A0A991;
-
 
   .down:
     LDA.B $12                                                            ;A0A993;
@@ -5156,7 +5424,6 @@ Samus_vs_SolidEnemy_CollisionDetection:
     BNE .valid                                                           ;A0A9D3;
     JMP.W .returnZeroLower                                               ;A0A9D5;
 
-
   .valid:
     STA.W $18A6                                                          ;A0A9D8;
     TAX                                                                  ;A0A9DB;
@@ -5166,7 +5433,6 @@ Samus_vs_SolidEnemy_CollisionDetection:
     BIT.W #$8000                                                         ;A0A9E4;
     BNE .notFrozenNotSolid                                               ;A0A9E7;
     JMP.W .next                                                          ;A0A9E9;
-
 
   .notFrozenNotSolid:
     TXA                                                                  ;A0A9EC;
@@ -5204,14 +5470,12 @@ Samus_vs_SolidEnemy_CollisionDetection:
   .gotoNext:
     JMP.W .next                                                          ;A0AA21;
 
-
   .collision:
     LDA.W $0B02                                                          ;A0AA24;
     AND.W #$0003                                                         ;A0AA27;
     ASL A                                                                ;A0AA2A;
     TAX                                                                  ;A0AA2B;
     JMP.W (.collisionPointers,X)                                         ;A0AA2C;
-
 
   .collisionPointers:
     dw .collisionLeft                                                    ;A0AA2F;
@@ -5234,14 +5498,11 @@ Samus_vs_SolidEnemy_CollisionDetection:
     BPL ..gotoNotTouching                                                ;A0AA51;
     JMP.W .gotoNextLower                                                 ;A0AA53;
 
-
   ..gotoNotTouching:
     JMP.W .notTouching                                                   ;A0AA56;
 
-
   ..gotoTouching:
     JMP.W .touching                                                      ;A0AA59;
-
 
   .collisionRight:
     LDX.W $18A6                                                          ;A0AA5C;
@@ -5258,10 +5519,8 @@ Samus_vs_SolidEnemy_CollisionDetection:
     BPL ..gotoNotTouching                                                ;A0AA76;
     JMP.W .gotoNextLower                                                 ;A0AA78;
 
-
   ..gotoNotTouching:
     JMP.W .notTouching                                                   ;A0AA7B;
-
 
   .collisionUp:
     LDX.W $18A6                                                          ;A0AA7E;
@@ -5278,10 +5537,8 @@ Samus_vs_SolidEnemy_CollisionDetection:
     BPL ..gotoNotTouching                                                ;A0AA98;
     JMP.W .gotoNextLower                                                 ;A0AA9A;
 
-
   ..gotoNotTouching:
     JMP.W .notTouching                                                   ;A0AA9D;
-
 
   .collisionDown:
     LDX.W $18A6                                                          ;A0AAA0;
@@ -5298,12 +5555,10 @@ Samus_vs_SolidEnemy_CollisionDetection:
     BPL .notTouching                                                     ;A0AABA;
     JMP.W .gotoNextLower                                                 ;A0AABC;
 
-
   .next:
     INC.W $17AA                                                          ;A0AABF;
     INC.W $17AA                                                          ;A0AAC2;
     JMP.W .loop                                                          ;A0AAC5;
-
 
   .touching:
     STZ.W $0AFC                                                          ;A0AAC8;
@@ -5341,7 +5596,6 @@ Samus_vs_SolidEnemy_CollisionDetection:
     PLB                                                                  ;A0AB1F;
     PLP                                                                  ;A0AB20;
     RTL                                                                  ;A0AB21;
-
 
   .notTouching:
     PHA                                                                  ;A0AB22;
@@ -5381,17 +5635,14 @@ Samus_vs_SolidEnemy_CollisionDetection:
     PLP                                                                  ;A0AB79;
     RTL                                                                  ;A0AB7A;
 
-
   .returnZeroLower:
     LDA.W #$0000                                                         ;A0AB7B;
     PLB                                                                  ;A0AB7E;
     PLP                                                                  ;A0AB7F;
     RTL                                                                  ;A0AB80;
 
-
   .gotoNextLower:
     JMP.W .next                                                          ;A0AB81;
-
 
 if !FEATURE_KEEP_UNREFERENCED
   .unused:
@@ -5434,7 +5685,6 @@ if !FEATURE_KEEP_UNREFERENCED
     PLP                                                                  ;A0ABDF;
     RTL                                                                  ;A0ABE0;
 
-
   ..return:
     LDA.W #$0000                                                         ;A0ABE1;
     PLB                                                                  ;A0ABE4;
@@ -5443,7 +5693,10 @@ if !FEATURE_KEEP_UNREFERENCED
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $ABE7: Check if enemy is touching Samus from below ;;;
 CheckIfEnemyIsTouchingSamusFromBelow:
+;; Returns:
+;;     A: FFFFh if touching Samus, otherwise 0
     LDA.W $0AF6                                                          ;A0ABE7;
     SEC                                                                  ;A0ABEA;
     SBC.W $0F7A,X                                                        ;A0ABEB;
@@ -5458,7 +5711,6 @@ CheckIfEnemyIsTouchingSamusFromBelow:
     BCC .checkY                                                          ;A0ABFD;
     LDA.W #$0000                                                         ;A0ABFF;
     RTL                                                                  ;A0AC02;
-
 
   .checkY:
     LDA.W $0AFA                                                          ;A0AC03;
@@ -5480,14 +5732,16 @@ CheckIfEnemyIsTouchingSamusFromBelow:
     LDA.W #$0000                                                         ;A0AC21;
     RTL                                                                  ;A0AC24;
 
-
   .touching:
     LDA.W #$FFFF                                                         ;A0AC25;
     RTL                                                                  ;A0AC28;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $AC29: Unused. Check if Samus is touching enemy from above ;;;
 UNUSED_CheckIfEnemyIsTouchingSamusFromAbove_A0AC29:
+;; Returns:
+;;     A: FFFFh if touching Samus, otherwise 0
     LDA.W $0AF6                                                          ;A0AC29;
     SEC                                                                  ;A0AC2C;
     SBC.W $0F7A,X                                                        ;A0AC2D;
@@ -5502,7 +5756,6 @@ UNUSED_CheckIfEnemyIsTouchingSamusFromAbove_A0AC29:
     BCC .checkY                                                          ;A0AC3F;
     LDA.W #$0000                                                         ;A0AC41;
     RTL                                                                  ;A0AC44;
-
 
   .checkY:
     LDA.W $0AFA                                                          ;A0AC45;
@@ -5522,14 +5775,16 @@ UNUSED_CheckIfEnemyIsTouchingSamusFromAbove_A0AC29:
     LDA.W #$0000                                                         ;A0AC5F;
     RTL                                                                  ;A0AC62;
 
-
   .touching:
     LDA.W #$FFFF                                                         ;A0AC63;
     RTL                                                                  ;A0AC66;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $AC67: Check if enemy is touching Samus ;;;
 CheckIfEnemyIsTouchingSamus:
+;; Returns:
+;;     A: FFFFh if touching Samus, otherwise 0
     LDA.W $0AF6                                                          ;A0AC67;
     SEC                                                                  ;A0AC6A;
     SBC.W $0F7A,X                                                        ;A0AC6B;
@@ -5547,7 +5802,6 @@ CheckIfEnemyIsTouchingSamus:
     LDA.W #$0000                                                         ;A0AC84;
     RTL                                                                  ;A0AC87;
 
-
   .checkY:
     LDA.W $0AFA                                                          ;A0AC88;
     SEC                                                                  ;A0AC8B;
@@ -5564,13 +5818,29 @@ CheckIfEnemyIsTouchingSamus:
     LDA.W #$0000                                                         ;A0ACA0;
     RTL                                                                  ;A0ACA3;
 
-
   .touching:
     LDA.W #$FFFF                                                         ;A0ACA4;
     RTL                                                                  ;A0ACA7;
 
 
+;;; $ACA8: Calculate distance and angle of Samus from enemy ;;;
 CalculateDistanceAndAngleOfSamusFromEnemy:
+;; Parameters:
+;;     $0E32: Enemy X position
+;;     $0E34: Enemy Y position
+;;     $0E36: Samus X position
+;;     $0E38: Samus Y position
+;; Returns:
+;;     Carry: Set if error, clear otherwise
+;;     A: If carry clear, distance from enemy to Samus
+;;     $0E3A: If carry clear, angle from enemy to Samus
+
+; Called by yapping maw only
+; Avoids sqrt and division operations with the identity
+;     sqrt(x² + y²) = x cos(arctan(x, y)) + y sin(arctan(x, y))
+; (tweaked to account for SM's angle convention)
+; Slightly unfortunate second call to $C0AE, would have been sufficient to call it once to get $0E3A and normalise the quadrant with
+;     LDA $0E3A : AND #$007F : CMP #$0040 : BCS + : EOR #$007F : INC : + : STA $0E24
     PHX                                                                  ;A0ACA8;
     PHY                                                                  ;A0ACA9;
     LDA.W $0E36                                                          ;A0ACAA;
@@ -5633,7 +5903,6 @@ CalculateDistanceAndAngleOfSamusFromEnemy:
     CLC                                                                  ;A0AD2D;
     RTL                                                                  ;A0AD2E;
 
-
   .returnError:
     PLY                                                                  ;A0AD2F;
     PLX                                                                  ;A0AD30;
@@ -5642,6 +5911,7 @@ CalculateDistanceAndAngleOfSamusFromEnemy:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $AD33: Unused. Enemy $0FB0 = max(0, [enemy $0FB0] - 1). If [enemy $0FB0] = 0, A = 1, else A = 0 ;;;
 UNUSED_EnemyVariable_ZeroOrMax_A0AD33:
     PHB                                                                  ;A0AD33;
     SEP #$20                                                             ;A0AD34;
@@ -5657,6 +5927,7 @@ UNUSED_EnemyVariable_ZeroOrMax_A0AD33:
     RTL                                                                  ;A0AD49;
 
 
+;;; $AD4F: Unused. A = sgn([A]) (zero is special case) ;;;
 UNUSED_SignedA_ZeroIsSpecialCase_A0AD4A:
     LDA.W #$0001                                                         ;A0AD4A;
     PLB                                                                  ;A0AD4D;
@@ -5666,26 +5937,24 @@ UNUSED_SignedA_ZeroIsSpecialCase_A0AD4A:
     LDA.W #$0000                                                         ;A0AD51;
     RTL                                                                  ;A0AD54;
 
-
   .notZero:
     CMP.W #$8000                                                         ;A0AD55;
     BMI .return1                                                         ;A0AD58;
     LDA.W #$FFFF                                                         ;A0AD5A;
     RTL                                                                  ;A0AD5D;
 
-
   .return1:
     LDA.W #$0001                                                         ;A0AD5E;
     RTL                                                                  ;A0AD61;
 
 
+;;; $AD62: Unused. A = |[A]| ;;;
 UNUSED_NegateA_A0AD62:
     TAY                                                                  ;A0AD62;
     AND.W #$8000                                                         ;A0AD63;
     BNE +                                                                ;A0AD66;
     TYA                                                                  ;A0AD68;
     RTL                                                                  ;A0AD69;
-
 
 +   TYA                                                                  ;A0AD6A;
     EOR.W #$FFFF                                                         ;A0AD6B;
@@ -5694,7 +5963,10 @@ UNUSED_NegateA_A0AD62:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $AD70: Check if enemy centre is on screen or not ;;;
 CheckIfEnemyCenterIsOnScreen:
+;; Returns:
+;;     A/zero: 0/set if enemy centre is on screen, 1/clear otherwise
     LDX.W $0E54                                                          ;A0AD70;
     LDA.W $0F7A,X                                                        ;A0AD73;
     CMP.W $0911                                                          ;A0AD76;
@@ -5715,13 +5987,19 @@ CheckIfEnemyCenterIsOnScreen:
     LDA.W #$0000                                                         ;A0AD9B;
     RTL                                                                  ;A0AD9E;
 
-
   .offScreen:
     LDA.W #$0001                                                         ;A0AD9F;
     RTL                                                                  ;A0ADA2;
 
 
+;;; $ADA3: Check if enemy centre is over [A] pixels off-screen ;;;
 CheckIfEnemyCenterIsOverAPixelsOffScreen:
+;; Parameters:
+;;     A: Target off-screen distance
+;; Returns:
+;;     Zero: Clear if enemy centre is over [A] pixels off-screen, set otherwise
+
+; Called by evir only
     PHX                                                                  ;A0ADA3;
     STA.B $12                                                            ;A0ADA4;
     LDX.W $0E54                                                          ;A0ADA6;
@@ -5753,14 +6031,16 @@ CheckIfEnemyCenterIsOverAPixelsOffScreen:
     LDA.W #$0000                                                         ;A0ADDE;
     RTL                                                                  ;A0ADE1;
 
-
   .offScreen:
     PLX                                                                  ;A0ADE2;
     LDA.W #$0001                                                         ;A0ADE3;
     RTL                                                                  ;A0ADE6;
 
 
+;;; $ADE7: Check if enemy is on screen or not off screen ;;;
 CheckIfEnemyIsOnScreen:
+;; Returns:
+;;     A/zero: 0/set if enemy centre is on screen, 1/clear otherwise
     PHX                                                                  ;A0ADE7;
     LDX.W $0E54                                                          ;A0ADE8;
     LDA.W $0F7A,X                                                        ;A0ADEB;
@@ -5789,18 +6069,42 @@ CheckIfEnemyIsOnScreen:
     LDA.W #$0000                                                         ;A0AE20;
     RTL                                                                  ;A0AE23;
 
-
   .offScreen:
     PLX                                                                  ;A0AE24;
     LDA.W #$0001                                                         ;A0AE25;
     RTL                                                                  ;A0AE28;
 
 
+;;; $AE29: Determine direction of Samus from enemy ;;;
 DetermineDirectionOfSamusFromEnemy:
+;; Returns:
+;;     A: Direction
+;;         0: Up         - Samus is not within 2 block rows of enemy, is within 2 block columns of enemy, and Samus is above enemy
+;;         1: Up-right   - Samus is not within 2 blocks of enemy, Samus is right of enemy, and Samus is above enemy
+;;         2: Right      - Samus is within 2 block rows of enemy and Samus is right of enemy
+;;         3: Down-right - Samus is not within 2 blocks of enemy, Samus is right of enemy, and Samus is below enemy
+;;         4: Down       - Samus is not within 2 block rows of enemy, is within 2 block columns of enemy, and Samus is below enemy
+;;         6: Down-left  - Samus is not within 2 blocks of enemy, Samus is left of enemy, and Samus is below enemy
+;;         7: Left       - Samus is within 2 block rows of enemy and Samus is left of enemy
+;;         8: Up-left    - Samus is not within 2 blocks of enemy, Samus is left of enemy, and Samus is above enemy
+
+; Graphically, return values are as follows where # is the enemy and each numeral is a block
+; 8888 0000 1111
+; 8888 0000 1111
+; 8888 0000 1111
+; 7777 7722 2222
+; 7777 7722 2222
+; 7777 77#2 2222
+; 7777 7722 2222
+; 6666 4444 3333
+; 6666 4444 3333
+; 6666 4444 3333
+
+; Note that 5 and 9 cannot be returned, but otherwise these values match up with the projectile directions ($0C04)
     LDX.W $0E54                                                          ;A0AE29;
     LDA.W #$0020                                                         ;A0AE2C;
     JSL.L IsSamusWithingAPixelRowsOfEnemy                                ;A0AE2F;
-    BEQ notLeftNorRight                                                  ;A0AE33;
+    BEQ .notLeftNorRight                                                 ;A0AE33;
     LDY.W #$0002                                                         ;A0AE35;
     JSL.L Get_SamusX_minus_EnemyX                                        ;A0AE38;
     BPL +                                                                ;A0AE3C;
@@ -5809,11 +6113,10 @@ DetermineDirectionOfSamusFromEnemy:
 +   TYA                                                                  ;A0AE41;
     RTL                                                                  ;A0AE42;
 
-
-notLeftNorRight:
+  .notLeftNorRight:
     LDA.W #$0020                                                         ;A0AE43;
     JSL.L IsSamusWithinAPixelColumnsOfEnemy                              ;A0AE46;
-    BEQ notAboveOrBelow                                                  ;A0AE4A;
+    BEQ .notAboveOrBelow                                                 ;A0AE4A;
     LDY.W #$0004                                                         ;A0AE4C;
     JSL.L Get_SamusY_minus_EnemyY                                        ;A0AE4F;
     BPL +                                                                ;A0AE53;
@@ -5822,8 +6125,7 @@ notLeftNorRight:
 +   TYA                                                                  ;A0AE58;
     RTL                                                                  ;A0AE59;
 
-
-notAboveOrBelow:
+  .notAboveOrBelow:
     JSL.L Get_SamusX_minus_EnemyX                                        ;A0AE5A;
     BMI .notDiagonallyRight                                              ;A0AE5E;
     LDY.W #$0003                                                         ;A0AE60;
@@ -5833,7 +6135,6 @@ notAboveOrBelow:
 
 +   TYA                                                                  ;A0AE6C;
     RTL                                                                  ;A0AE6D;
-
 
   .notDiagonallyRight:
     LDY.W #$0006                                                         ;A0AE6E;
@@ -5846,7 +6147,11 @@ notAboveOrBelow:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $AE7C: Unused. Proto instruction list handler ;;;
 UNUSED_ProtoInstructionListHandler_A0AE7C:
+; Uses $A0:002A(!) as pointer to instruction list pointer table, indexed by [enemy $0F92] * 2
+; Enemy $0F90 is the instruction list pointer, and these instruction lists terminate with FFFFh and loop with FFFEh
+; No support for ASM commands
     LDX.W $0E54                                                          ;A0AE7C;
     LDA.W $0F78,X                                                        ;A0AE7F;
     TAX                                                                  ;A0AE82;
@@ -5869,7 +6174,6 @@ UNUSED_ProtoInstructionListHandler_A0AE7C:
     LDA.W #$0000                                                         ;A0AEAA;
     RTL                                                                  ;A0AEAD;
 
-
 +   STY.B $00                                                            ;A0AEAE;
     LDY.W $0F90,X                                                        ;A0AEB0;
 
@@ -5881,7 +6185,6 @@ UNUSED_ProtoInstructionListHandler_A0AE7C:
     BNE .notTerminated                                                   ;A0AEBD;
     LDY.W #$0000                                                         ;A0AEBF;
     JMP.W .loop                                                          ;A0AEC2;
-
 
   .notTerminated:
     STA.W $0F8E,X                                                        ;A0AEC5;
@@ -5896,13 +6199,13 @@ UNUSED_ProtoInstructionListHandler_A0AE7C:
     LDA.W #$0000                                                         ;A0AED5;
     RTL                                                                  ;A0AED8;
 
-
   .return1:
     LDA.W #$0001                                                         ;A0AED9;
     RTL                                                                  ;A0AEDC;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $AEDD: A = [Samus Y position] - [enemy Y position] ;;;
 Get_SamusY_minus_EnemyY:
     LDA.W $0AFA                                                          ;A0AEDD;
     SEC                                                                  ;A0AEE0;
@@ -5910,6 +6213,7 @@ Get_SamusY_minus_EnemyY:
     RTL                                                                  ;A0AEE4;
 
 
+;;; $AEE5: A = [Samus X position] - [enemy X position] ;;;
 Get_SamusX_minus_EnemyX:
     LDA.W $0AF6                                                          ;A0AEE5;
     SEC                                                                  ;A0AEE8;
@@ -5917,6 +6221,7 @@ Get_SamusX_minus_EnemyX:
     RTL                                                                  ;A0AEEC;
 
 
+;;; $AEED: Is Samus within [A] pixel rows of enemy ;;;
 IsSamusWithingAPixelRowsOfEnemy:
     STA.W $0E20                                                          ;A0AEED;
     LDY.W $0AFA                                                          ;A0AEF0;
@@ -5929,12 +6234,12 @@ IsSamusWithingAPixelRowsOfEnemy:
     LDA.W #$0001                                                         ;A0AF03;
     RTL                                                                  ;A0AF06;
 
-
   .returnZero:
     LDA.W #$0000                                                         ;A0AF07;
     RTL                                                                  ;A0AF0A;
 
 
+;;; $AF0B: Is Samus within [A] pixel columns of enemy ;;;
 IsSamusWithinAPixelColumnsOfEnemy:
     STA.W $0E20                                                          ;A0AF0B;
     LDY.W $0AF6                                                          ;A0AF0E;
@@ -5947,14 +6252,15 @@ IsSamusWithinAPixelColumnsOfEnemy:
     LDA.W #$0001                                                         ;A0AF21;
     RTL                                                                  ;A0AF24;
 
-
   .returnZero:
     LDA.W #$0000                                                         ;A0AF25;
     RTL                                                                  ;A0AF28;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $AF29: Unused. Enemy X += [$14].[$12] ;;;
 UNUSED_MoveEnemyX_NoCollision_A0AF29:
+; Unused. Clone of MoveEnemyX_plus_12_14
     LDA.W $0F7C,X                                                        ;A0AF29;
     CLC                                                                  ;A0AF2C;
     ADC.B $12                                                            ;A0AF2D;
@@ -5965,7 +6271,9 @@ UNUSED_MoveEnemyX_NoCollision_A0AF29:
     RTL                                                                  ;A0AF3A;
 
 
+;;; $AF3B: Unused. Enemy Y += [$14].[$12] ;;;
 UNUSED_MoveEnemyY_NoCollision_A0AF3B:
+; Unused. Clone of MoveEnemyY_plus_12_14
     LDA.W $0F80,X                                                        ;A0AF3B;
     CLC                                                                  ;A0AF3E;
     ADC.B $12                                                            ;A0AF3F;
@@ -5976,11 +6284,12 @@ UNUSED_MoveEnemyY_NoCollision_A0AF3B:
     RTL                                                                  ;A0AF4C;
 
 
+;;; $AF4D: Unused. Move enemy left/right/up/down by [$14].[$12] ;;;
 UNUSED_MoveEnemy_12_14_A0AF4D:
+; Broken. Uses X for jump table index, but is needed for enemy index
     ASL A                                                                ;A0AF4D;
     TAX                                                                  ;A0AF4E;
     JMP.W (.pointers,X)                                                  ;A0AF4F;
-
 
   .pointers:
     dw MoveEnemyX_minus_12_14                                            ;A0AF52;
@@ -5989,6 +6298,8 @@ UNUSED_MoveEnemy_12_14_A0AF4D:
     dw MoveEnemyY_plus_12_14                                             ;A0AF58;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $AF5A: Enemy X -= [$14].[$12] ;;;
 MoveEnemyX_minus_12_14:
     LDA.W $0F7C,X                                                        ;A0AF5A;
     SEC                                                                  ;A0AF5D;
@@ -6000,6 +6311,7 @@ MoveEnemyX_minus_12_14:
     RTL                                                                  ;A0AF6B;
 
 
+;;; $AF6C: Enemy X += [$14].[$12] ;;;
 MoveEnemyX_plus_12_14:
     LDA.W $0F7C,X                                                        ;A0AF6C;
     CLC                                                                  ;A0AF6F;
@@ -6011,6 +6323,7 @@ MoveEnemyX_plus_12_14:
     RTL                                                                  ;A0AF7D;
 
 
+;;; $AF7E: Enemy Y -= [$14].[$12] ;;;
 MoveEnemyY_minus_12_14:
     LDA.W $0F80,X                                                        ;A0AF7E;
     SEC                                                                  ;A0AF81;
@@ -6022,6 +6335,7 @@ MoveEnemyY_minus_12_14:
     RTL                                                                  ;A0AF8F;
 
 
+;;; $AF90: Enemy Y += [$14].[$12] ;;;
 MoveEnemyY_plus_12_14:
     LDA.W $0F80,X                                                        ;A0AF90;
     CLC                                                                  ;A0AF93;
@@ -6034,6 +6348,7 @@ MoveEnemyY_plus_12_14:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $AFA2: Unused. Extra Samus X displacement = [Samus X position] - [$14].[$12] ;;;
 UNUSED_MoveSamus_ExtraXDisplacement_minus_12_14_A0AFA2:
     LDA.W $0AF8                                                          ;A0AFA2;
     SEC                                                                  ;A0AFA5;
@@ -6045,6 +6360,7 @@ UNUSED_MoveSamus_ExtraXDisplacement_minus_12_14_A0AFA2:
     RTL                                                                  ;A0AFB3;
 
 
+;;; $AFB4: Unused. Extra Samus X displacement = [Samus X position] + [$14].[$12] ;;;
 UNUSED_MoveSamus_ExtraXDisplacement_plus_12_14_A0AFB4:
     LDA.W $0AF8                                                          ;A0AFB4;
     CLC                                                                  ;A0AFB7;
@@ -6056,6 +6372,7 @@ UNUSED_MoveSamus_ExtraXDisplacement_plus_12_14_A0AFB4:
     RTL                                                                  ;A0AFC5;
 
 
+;;; $AFC6: Unused. Extra Samus Y displacement = [Samus X position] - [$14].[$12] ;;;
 UNUSED_MoveSamus_ExtraYDisplacement_minus_12_14_A0AFC6:
     LDA.W $0AFC                                                          ;A0AFC6;
     SEC                                                                  ;A0AFC9;
@@ -6067,6 +6384,7 @@ UNUSED_MoveSamus_ExtraYDisplacement_minus_12_14_A0AFC6:
     RTL                                                                  ;A0AFD7;
 
 
+;;; $AFD8: Unused. Extra Samus Y displacement = [Samus X position] + [$14].[$12] ;;;
 UNUSED_MoveSamus_ExtraYDisplacement_plus_12_14_A0AFD8:
     LDA.W $0AFC                                                          ;A0AFD8;
     CLC                                                                  ;A0AFDB;
@@ -6079,6 +6397,7 @@ UNUSED_MoveSamus_ExtraYDisplacement_plus_12_14_A0AFD8:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $AFEA: Sign extend A ;;;
 Sign_Extend_A:
     STA.W $0E32                                                          ;A0AFEA;
     AND.W #$0080                                                         ;A0AFED;
@@ -6087,12 +6406,12 @@ Sign_Extend_A:
     ORA.W #$FF00                                                         ;A0AFF5;
     RTL                                                                  ;A0AFF8;
 
-
 +   LDA.W $0E32                                                          ;A0AFF9;
     RTL                                                                  ;A0AFFC;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $AFFD: Unused. A *= 10h ;;;
 UNUSED_MultiplyBy10_A0AFFD:
     ASL A                                                                ;A0AFFD;
     ASL A                                                                ;A0AFFE;
@@ -6102,7 +6421,9 @@ UNUSED_MultiplyBy10_A0AFFD:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $B002: A *= 20h ;;;
 MultiplyBy20_A0B002:
+; Used by ProcessEnemySet_LoadPalettesAndEnemyLoadingData to convert palette index to palette bits
     ASL A                                                                ;A0B002;
     ASL A                                                                ;A0B003;
     ASL A                                                                ;A0B004;
@@ -6112,6 +6433,7 @@ MultiplyBy20_A0B002:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $B008: Unused. A *= 30h ;;;
 UNUSED_MultiplyBy30_A0B008:
     ASL A                                                                ;A0B008;
     ASL A                                                                ;A0B009;
@@ -6125,6 +6447,7 @@ UNUSED_MultiplyBy30_A0B008:
     RTL                                                                  ;A0B017;
 
 
+;;; $B018: Unused. A *= 40h ;;;
 UNUSED_MultiplyBy40_A0B018:
     ASL A                                                                ;A0B018;
     ASL A                                                                ;A0B019;
@@ -6135,6 +6458,7 @@ UNUSED_MultiplyBy40_A0B018:
     RTL                                                                  ;A0B01E;
 
 
+;;; $B01F: Unused. A = xxyz -> A = xxzy ;;;
 UNUSED_SwapLowByteNybbles_A0B01F:
     PHA                                                                  ;A0B01F;
     AND.W #$FF00                                                         ;A0B020;
@@ -6155,6 +6479,7 @@ UNUSED_SwapLowByteNybbles_A0B01F:
     RTL                                                                  ;A0B03F;
 
 
+;;; $B040: Unused. A = xyzz -> A = yxzz ;;;
 UNUSED_SwapHighByteNybbles_A0B040:
     PHA                                                                  ;A0B040;
     AND.W #$00FF                                                         ;A0B041;
@@ -6172,10 +6497,12 @@ UNUSED_SwapHighByteNybbles_A0B040:
     ASL A                                                                ;A0B059;
     AND.W #$FF00                                                         ;A0B05A;
     ORA.W $0E34                                                          ;A0B05D;
-
-UNUSED_XBA_A0B060:
     RTL                                                                  ;A0B060;
 
+
+;;; $B061: Unused. A = xxyy -> A = yyxx ;;;
+UNUSED_XBA_A0B060:
+; Whoever wrote these three nybble swapping routines must've thought XBA had to be done in 8-bit mode
     SEP #$20                                                             ;A0B061; >_<
     XBA                                                                  ;A0B063;
     REP #$20                                                             ;A0B064;
@@ -6183,6 +6510,7 @@ UNUSED_XBA_A0B060:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $B067: A = |[A]| ;;;
 NegateA_A0B067:
     STA.W $0E32                                                          ;A0B067;
     AND.W #$8000                                                         ;A0B06A;
@@ -6196,6 +6524,7 @@ NegateA_A0B067:
     RTL                                                                  ;A0B07C;
 
 
+;;; $B07D: A = |[Y] - [X]| ;;;
 GetSignedYMinusX_A0B07D:
     PHX                                                                  ;A0B07D;
     PHY                                                                  ;A0B07E;
@@ -6219,25 +6548,30 @@ GetSignedYMinusX_A0B07D:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $B0A0: Unused. A = -[A] ;;;
 UNUSED_GetNegativeA_A0B0A0:
     EOR.W #$FFFF                                                         ;A0B0A0;
     INC A                                                                ;A0B0A3;
     RTL                                                                  ;A0B0A4;
 
 
+;;; $B0A5: Unused. A = sgn([A]) (zero counts as positive) ;;;
 UNUSED_SignedA_ZeroCountsAsPositive_A0B0A5:
     AND.W #$8000                                                         ;A0B0A5;
     BEQ +                                                                ;A0B0A8;
     LDA.W #$FFFF                                                         ;A0B0AA;
     RTL                                                                  ;A0B0AD;
 
-
 +   LDA.W #$0001                                                         ;A0B0AE;
     RTL                                                                  ;A0B0B1;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $B0B2: 8-bit cosine multiplication ;;;
 EightBitCosineMultiplication_A0B0B2:
+; $0E36.$0E38 = cos([A] * pi / 80h) * FFh * [$0E32] / 100h
+
+; Bug. Only accurate for angles in the range C0h..3Fh (see EightBitSineMultiplication_A0B0DA)
     CLC                                                                  ;A0B0B2;
     ADC.W #$0040                                                         ;A0B0B3;
     AND.W #$00FF                                                         ;A0B0B6;
@@ -6252,7 +6586,11 @@ EightBitCosineMultiplication_A0B0B2:
     RTL                                                                  ;A0B0C5;
 
 
+;;; $B0C6: 8-bit negative sine multiplication ;;;
 EightBitNegativeSineMultiplication_A0B0C6:
+; $0E36.$0E38 = -sin([A] * pi / 80h) * FFh * [$0E32] / 100h
+
+; Bug. Only accurate for angles in the range 80h..FFh (see EightBitSineMultiplication_A0B0DA)
     CLC                                                                  ;A0B0C6;
     ADC.W #$0080                                                         ;A0B0C7;
     AND.W #$00FF                                                         ;A0B0CA;
@@ -6267,7 +6605,16 @@ EightBitNegativeSineMultiplication_A0B0C6:
     RTL                                                                  ;A0B0D9;
 
 
+;;; $B0DA: 8-bit sine multiplication ;;;
 EightBitSineMultiplication_A0B0DA:
+; $0E36.$0E38 = sin([$0E34] * pi / 80h) * FFh * [$0E32] / 100h
+
+; Bug. Only accurate for angles in the range 0..7Fh because the negation code of $B11B..2E does not do a correct multi-word increment.
+; Accurate code would be more like:
+;     LDA $0E38 : EOR #$FFFF : CLC : ADC #$0001 : STA $0E38
+;     LDA $0E36 : EOR #$FFFF : ADC #$0000 : STA $0E36
+
+; Results for negative angles with this bug are almost always 1.0 greater than they should be
     SEP #$20                                                             ;A0B0DA;
     LDA.B #$A0                                                           ;A0B0DC;
     PHA                                                                  ;A0B0DE;
@@ -6313,6 +6660,7 @@ EightBitSineMultiplication_A0B0DA:
     RTS                                                                  ;A0B132;
 
 
+;;; $B133: Addresses for enemy drawing queues ;;;
 AddressesForEnemyDrawingQueues:
 ; Indexed by [enemy layer] * 2
     dw $0E84                                                             ;A0B133;
@@ -6325,6 +6673,7 @@ AddressesForEnemyDrawingQueues:
     dw $0F48                                                             ;A0B141;
 
 
+;;; $B143: Sine/cosine tables ;;;
 ; Generate 16-bit tables with
 ;     [int((0x7FFF+0.5) * math.sin(i * math.pi / 0x80)) for i in range(0x40 * n_quadrants)]
 
@@ -6333,18 +6682,21 @@ AddressesForEnemyDrawingQueues:
 
 ; Unsigned 8-bit table is the same as the signed-extended first half, except cos(0) is capped at FFh
 SineCosineTables_8bitSine:
+; 8-bit sine
     db $00,$06,$0C,$12,$19,$1F,$25,$2B,$31,$38,$3E,$44,$4A,$50,$56,$5C   ;A0B143;
     db $61,$67,$6D,$73,$78,$7E,$83,$88,$8E,$93,$98,$9D,$A2,$A7,$AB,$B0   ;A0B153;
     db $B5,$B9,$BD,$C1,$C5,$C9,$CD,$D1,$D4,$D8,$DB,$DE,$E1,$E4,$E7,$EA   ;A0B163;
     db $EC,$EE,$F1,$F3,$F4,$F6,$F8,$F9,$FB,$FC,$FD,$FE,$FE,$FF,$FF,$FF   ;A0B173;
 
 SineCosineTables_8bitCosine:
+; 8-bit cosine
     db $FF,$FF,$FF,$FF,$FE,$FE,$FD,$FC,$FB,$F9,$F8,$F6,$F4,$F3,$F1,$EE   ;A0B183;
     db $EC,$EA,$E7,$E4,$E1,$DE,$DB,$D8,$D4,$D1,$CD,$C9,$C5,$C1,$BD,$B9   ;A0B193;
     db $B5,$B0,$AB,$A7,$A2,$9D,$98,$93,$8E,$88,$83,$7E,$78,$73,$6D,$67   ;A0B1A3;
     db $61,$5C,$56,$50,$4A,$44,$3E,$38,$31,$2B,$25,$1F,$19,$12,$0C,$06   ;A0B1B3;
 
 SineCosineTables_16bitSine:
+; 16-bit sine
     dw $0000,$0324,$0647,$096A,$0C8B,$0FAB,$12C7,$15E1                   ;A0B1C3;
     dw $18F8,$1C0B,$1F19,$2223,$2527,$2826,$2B1F,$2E10                   ;A0B1D3;
     dw $30FB,$33DE,$36B9,$398C,$3C56,$3F17,$41CD,$447A                   ;A0B1E3;
@@ -6355,6 +6707,7 @@ SineCosineTables_16bitSine:
     dw $7D89,$7E1D,$7E9C,$7F09,$7F61,$7FA6,$7FD8,$7FF5                   ;A0B233;
 
 SineCosineTables_16bitCosine:
+; 16-bit cosine
     dw $7FFF,$7FF5,$7FD8,$7FA6,$7F61,$7F09,$7E9C,$7E1D                   ;A0B243;
     dw $7D89,$7CE3,$7C29,$7B5C,$7A7C,$7989,$7884,$776B                   ;A0B253;
     dw $7641,$7504,$73B5,$7254,$70E2,$6F5E,$6DC9,$6C23                   ;A0B263;
@@ -6365,6 +6718,7 @@ SineCosineTables_16bitCosine:
     dw $18F8,$15E1,$12C7,$0FAB,$0C8B,$096A,$0647,$0324                   ;A0B2B3;
 
 SineCosineTables_16bitNegativeSine:
+; 16-bit negative sine
     dw $0000,$FCDC,$F9B9,$F696,$F375,$F055,$ED39,$EA1F                   ;A0B2C3;
     dw $E708,$E3F5,$E0E7,$DDDD,$DAD9,$D7DA,$D4E1,$D1F0                   ;A0B2D3;
     dw $CF05,$CC22,$C947,$C674,$C3AA,$C0E9,$BE33,$BB86                   ;A0B2E3;
@@ -6375,6 +6729,7 @@ SineCosineTables_16bitNegativeSine:
     dw $8277,$81E3,$8164,$80F7,$809F,$805A,$8028,$800B                   ;A0B333;
 
 SineCosineTables_16bitNegativeCosine:
+; 16-bit negative cosine
     dw $8001,$800B,$8028,$805A,$809F,$80F7,$8164,$81E3                   ;A0B343;
     dw $8277,$831D,$83D7,$84A4,$8584,$8677,$877C,$8895                   ;A0B353;
     dw $89BF,$8AFC,$8C4B,$8DAC,$8F1E,$90A2,$9237,$93DD                   ;A0B363;
@@ -6385,6 +6740,7 @@ SineCosineTables_16bitNegativeCosine:
     dw $E708,$EA1F,$ED39,$F055,$F375,$F696,$F9B9,$FCDC                   ;A0B3B3;
 
 SineCosineTables_NegativeCosine_SignExtended:
+; 8-bit negative cosine, sign-extended
     dw $FF00,$FF01,$FF01,$FF01,$FF02,$FF02,$FF03,$FF04                   ;A0B3C3;
     dw $FF05,$FF07,$FF08,$FF0A,$FF0C,$FF0D,$FF0F,$FF12                   ;A0B3D3;
     dw $FF14,$FF16,$FF19,$FF1C,$FF1F,$FF22,$FF25,$FF28                   ;A0B3E3;
@@ -6395,6 +6751,7 @@ SineCosineTables_NegativeCosine_SignExtended:
     dw $FFCF,$FFD5,$FFDB,$FFE1,$FFE7,$FFEE,$FFF4,$FFFA                   ;A0B433;
 
 SineCosineTables_8bitSine_SignExtended:
+; 8-bit sine, sign-extended
     dw $0000,$0006,$000C,$0012,$0019,$001F,$0025,$002B                   ;A0B443;
     dw $0031,$0038,$003E,$0044,$004A,$0050,$0056,$005C                   ;A0B453;
     dw $0061,$0067,$006D,$0073,$0078,$007E,$0083,$0088                   ;A0B463;
@@ -6405,6 +6762,7 @@ SineCosineTables_8bitSine_SignExtended:
     dw $00FB,$00FC,$00FD,$00FE,$00FE,$00FF,$00FF,$00FF                   ;A0B4B3;
 
 SineCosineTables_8bitCosine_SignExtended:
+; 8-bit cosine, sign-extended
     dw $0100,$00FF,$00FF,$00FF,$00FE,$00FE,$00FD,$00FC                   ;A0B4C3;
     dw $00FB,$00F9,$00F8,$00F6,$00F4,$00F3,$00F1,$00EE                   ;A0B4D3;
     dw $00EC,$00EA,$00E7,$00E4,$00E1,$00DE,$00DB,$00D8                   ;A0B4E3;
@@ -6415,6 +6773,7 @@ SineCosineTables_8bitCosine_SignExtended:
     dw $0031,$002B,$0025,$001F,$0019,$0012,$000C,$0006                   ;A0B533;
 
 SineCosineTables_8bitNegativeSign_SignExtended:
+; 8-bit negative sine, sign-extended
     dw $0000,$FFFA,$FFF4,$FFEE,$FFE7,$FFE1,$FFDB,$FFD5                   ;A0B543;
     dw $FFCF,$FFC8,$FFC2,$FFBC,$FFB6,$FFB0,$FFAA,$FFA4                   ;A0B553;
     dw $FF9F,$FF99,$FF93,$FF8D,$FF88,$FF82,$FF7D,$FF78                   ;A0B563;
@@ -6425,6 +6784,7 @@ SineCosineTables_8bitNegativeSign_SignExtended:
     dw $FF05,$FF04,$FF03,$FF02,$FF02,$FF01,$FF01,$FF01                   ;A0B5B3;
 
 SineCosineTables_8bitNegativeCosign_SignExtended:
+; 8-bit negative cosine, sign-extended
     dw $FF00,$FF01,$FF01,$FF01,$FF02,$FF02,$FF03,$FF04                   ;A0B5C3;
     dw $FF05,$FF07,$FF08,$FF0A,$FF0C,$FF0D,$FF0F,$FF12                   ;A0B5D3;
     dw $FF14,$FF16,$FF19,$FF1C,$FF1F,$FF22,$FF25,$FF28                   ;A0B5E3;
@@ -6489,7 +6849,21 @@ Do_Some_Math_With_Sine_Cosine_Terrible_Label_Name:
     RTL                                                                  ;A0B690;
 
 
+;;; $B691: Move enemy according to angle and X/Y speeds ;;;
 MoveEnemyAccordingToAngleAndXYSpeeds:
+;; Parameters:
+;;     $0E20: Angle. Standard maths angle convention
+;;     $0E24.$0E26: X speed
+;;     $0E28.$0E2A: Y speed
+
+; Standard maths angle convention:
+;          40h
+;           |
+;     80h   #    0
+;
+;          C0h
+;
+; Where # is the origin and | is the negative y axis
     PHX                                                                  ;A0B691;
     LDX.W $0E54                                                          ;A0B692;
     LDA.W $0E20                                                          ;A0B695;
@@ -6505,7 +6879,6 @@ MoveEnemyAccordingToAngleAndXYSpeeds:
     ADC.W $0E24                                                          ;A0B6AE;
     STA.W $0F7A,X                                                        ;A0B6B1;
     BRA +                                                                ;A0B6B4;
-
 
   .greaterThanEqualTo80:
     LDA.W $0F7C,X                                                        ;A0B6B6;
@@ -6530,7 +6903,6 @@ MoveEnemyAccordingToAngleAndXYSpeeds:
     STA.W $0F7E,X                                                        ;A0B6E5;
     BRA .return                                                          ;A0B6E8;
 
-
   .lessThan80:
     LDA.W $0F80,X                                                        ;A0B6EA;
     SEC                                                                  ;A0B6ED;
@@ -6545,7 +6917,13 @@ MoveEnemyAccordingToAngleAndXYSpeeds:
     RTL                                                                  ;A0B6FE;
 
 
+;;; $B6FF: 16bit ($26) * 16bit ($28) = 32bit ($2A) ;;;
 Multiplication_32bit_A0B6FF:
+;; Parameters:
+;;     $26: Multiplicand. Let $26 = a + b * 100h
+;;     $28: Multiplicand. Let $28 = c + d * 100h
+;; Returns:
+;;     $2A..2D: 32-bit result
     PHX                                                                  ;A0B6FF;
     PHY                                                                  ;A0B700;
     PHP                                                                  ;A0B701;
@@ -6605,7 +6983,20 @@ Multiplication_32bit_A0B6FF:
     RTL                                                                  ;A0B760;
 
 
+;;; $B761: 32-bit unsigned division ;;;
 UnsignedDivision_32bit_A0B761:
+;; Parameters:
+;;     $2A..2D: Dividend
+;;     $2E..31: Divisor
+;; Returns:
+;;     $26..29: Remainder
+;;     $2A..2D: Quotient
+
+; Called by Draygon
+; Very slow. When profiled on a Draygon fight, I got:
+;     Minimum: ~14.5k master cycles (10.6 scanlines)
+;     Average: ~16.2k master cycles (11.9 scanlines)
+;     Maximum: ~17.3k master cycles (12.7 scanlines)
     PHP                                                                  ;A0B761;
     PHB                                                                  ;A0B762;
     PHK                                                                  ;A0B763;
@@ -6619,7 +7010,6 @@ UnsignedDivision_32bit_A0B761:
     STZ.B $2C                                                            ;A0B771;
     STZ.B $2A                                                            ;A0B773;
     BRA .return                                                          ;A0B775;
-
 
   .loopCounter:
     LDX.W #$0021                                                         ;A0B777;
@@ -6646,14 +7036,15 @@ UnsignedDivision_32bit_A0B761:
     STY.B $26                                                            ;A0B79A;
     BRA .loop                                                            ;A0B79C;
 
-
   .return:
     PLB                                                                  ;A0B79E;
     PLP                                                                  ;A0B79F;
     RTL                                                                  ;A0B7A0;
 
 
+;;; $B7A1: Cap scrolling speed ;;;
 CapScrollingSpeed:
+; Called by Draygon and yapping maw
     PHX                                                                  ;A0B7A1;
     PHY                                                                  ;A0B7A2;
     LDA.W $0AFA                                                          ;A0B7A3;
@@ -6698,6 +7089,7 @@ CapScrollingSpeed:
     RTL                                                                  ;A0B7ED;
 
 
+;;; $B7EE: Unsigned sine table ;;;
 UnsignedSineTable:
 ; sin(t * pi / 80h) * FFFFh
     dw $0000,$0648,$0C8F,$12D5,$1917,$1F56,$258F,$2BC3                   ;A0B7EE;
@@ -6717,6 +7109,8 @@ UnsignedSineTable:
     dw $61F7,$5C21,$563E,$504D,$4A4F,$4447,$3E33,$3816                   ;A0B8CE;
     dw $31F1,$2BC3,$258F,$1F56,$1917,$12D5,$0C8F,$0648                   ;A0B8DE;
 
+
+;;; $B8EE: Fake Kraid death item drop routine ;;;
 MiniKraidDeathItemDropRoutine:
     PHX                                                                  ;A0B8EE;
     PHY                                                                  ;A0B8EF;
@@ -6750,6 +7144,7 @@ MiniKraidDeathItemDropRoutine:
     RTL                                                                  ;A0B92A;
 
 
+;;; $B92B: Gold ninja space pirate death item drop routine ;;;
 MetalNinjaPirateDeathItemDropRoutine:
     PHX                                                                  ;A0B92B;
     PHY                                                                  ;A0B92C;
@@ -6783,6 +7178,7 @@ MetalNinjaPirateDeathItemDropRoutine:
     RTL                                                                  ;A0B967;
 
 
+;;; $B968: Metroid death item drop routine ;;;
 MetroidDeathItemDropRoutine:
     PHX                                                                  ;A0B968;
     PHY                                                                  ;A0B969;
@@ -6816,6 +7212,7 @@ MetroidDeathItemDropRoutine:
     RTL                                                                  ;A0B9A4;
 
 
+;;; $B9A5: Ridley death item drop routine ;;;
 RidleyDeathItemDropRoutine:
     PHX                                                                  ;A0B9A5;
     PHY                                                                  ;A0B9A6;
@@ -6845,6 +7242,7 @@ RidleyDeathItemDropRoutine:
     RTL                                                                  ;A0B9D7;
 
 
+;;; $B9D8: Crocomire death item drop routine ;;;
 CrocomireDeathItemDropRoutine:
     PHX                                                                  ;A0B9D8;
     PHY                                                                  ;A0B9D9;
@@ -6874,6 +7272,7 @@ CrocomireDeathItemDropRoutine:
     RTL                                                                  ;A0BA0A;
 
 
+;;; $BA0B: Phantoon death item drop routine ;;;
 PhantoonDeathItemDropRoutine:
     PHX                                                                  ;A0BA0B;
     PHY                                                                  ;A0BA0C;
@@ -6903,6 +7302,7 @@ PhantoonDeathItemDropRoutine:
     RTL                                                                  ;A0BA3D;
 
 
+;;; $BA3E: Botwoon death item drop routine ;;;
 BotwoonDeathItemDropRoutine:
     PHX                                                                  ;A0BA3E;
     PHY                                                                  ;A0BA3F;
@@ -6932,6 +7332,7 @@ BotwoonDeathItemDropRoutine:
     RTL                                                                  ;A0BA70;
 
 
+;;; $BA71: Kraid death item drop routine ;;;
 KraidDeathItemDropRoutine:
     PHX                                                                  ;A0BA71;
     PHY                                                                  ;A0BA72;
@@ -6961,6 +7362,7 @@ KraidDeathItemDropRoutine:
     RTL                                                                  ;A0BAA3;
 
 
+;;; $BAA4: Bomb Torizo death item drop routine ;;;
 BombTorizoDeathItemDropRoutine:
     PHX                                                                  ;A0BAA4;
     PHY                                                                  ;A0BAA5;
@@ -6990,6 +7392,7 @@ BombTorizoDeathItemDropRoutine:
     RTL                                                                  ;A0BAD6;
 
 
+;;; $BAD7: Golden Torizo death item drop routine ;;;
 GoldenTorizoDeathItemDropRoutine:
     PHX                                                                  ;A0BAD7;
     PHY                                                                  ;A0BAD8;
@@ -7019,6 +7422,7 @@ GoldenTorizoDeathItemDropRoutine:
     RTL                                                                  ;A0BB09;
 
 
+;;; $BB0A: Spore Spawn death item drop routine ;;;
 SporeSpawnDeathItemDropRoutine:
     PHX                                                                  ;A0BB0A;
     PHY                                                                  ;A0BB0B;
@@ -7048,6 +7452,7 @@ SporeSpawnDeathItemDropRoutine:
     RTL                                                                  ;A0BB3C;
 
 
+;;; $BB3D: Draygon death item drop routine ;;;
 DraygonDeathItemDropRoutine:
     PHX                                                                  ;A0BB3D;
     PHY                                                                  ;A0BB3E;
@@ -7077,7 +7482,14 @@ DraygonDeathItemDropRoutine:
     RTL                                                                  ;A0BB6F;
 
 
+;;; $BB70: Calculate the block containing a pixel position ;;;
 CalculateTheBlockContainingAPixelPosition:
+;; Parameters:
+;;     [S] + 4: Y position
+;;     [S] + 6: X position
+
+; Call after pushing a X then Y pixel position onto the stack (2 bytes each)
+; $0DC4 is set to the block index. The stack is cleaned up (do not try to pop Y and X position from stack)
     LDA.B $04,S                                                          ;A0BB70;
     LSR A                                                                ;A0BB72;
     LSR A                                                                ;A0BB73;
@@ -7105,7 +7517,10 @@ CalculateTheBlockContainingAPixelPosition:
     RTL                                                                  ;A0BB9A;
 
 
+;;; $BB9B: Check if X distance between enemy and Samus is at least [A] ;;;
 CheckIfXDistanceBetweenEnemyAndSamusIsAtLeastA:
+;; Returns:
+;;     Carry: Set if X distance between enemy and Samus is at least [A], clear otherwise
     PHA                                                                  ;A0BB9B;
     LDA.W $0AF6                                                          ;A0BB9C;
     SEC                                                                  ;A0BB9F;
@@ -7120,7 +7535,10 @@ CheckIfXDistanceBetweenEnemyAndSamusIsAtLeastA:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $BBAD: Unused. Check if Y distance between enemy and Samus is at least [A] ;;;
 UNUSED_CheckIfYDistanceBetweenEnemyAndSamusIsAtLeastA_A0BBAD:
+;; Returns:
+;;     Carry: Set if Y distance between enemy and Samus is at least [A], clear otherwise
     PHA                                                                  ;A0BBAD;
     LDA.W $0AFA                                                          ;A0BBAE;
     SEC                                                                  ;A0BBB1;
@@ -7135,7 +7553,12 @@ UNUSED_CheckIfYDistanceBetweenEnemyAndSamusIsAtLeastA_A0BBAD:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $BBBF: Check for horizontal "solid" block collision ;;;
 CheckForHorizontalSolidBlockCollision:
+;; Parameters:
+;;     $14.$12: Distance to check for collision (signed)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     PHB                                                                  ;A0BBBF;
     SEP #$20                                                             ;A0BBC0;
     LDA.B #$A0                                                           ;A0BBC2;
@@ -7185,7 +7608,6 @@ CheckForHorizontalSolidBlockCollision:
     DEC A                                                                ;A0BC15;
     BRA +                                                                ;A0BC16;
 
-
   .targetLeftBoundary:
     SEC                                                                  ;A0BC18;
     SBC.W $0F82,X                                                        ;A0BC19;
@@ -7215,7 +7637,6 @@ CheckForHorizontalSolidBlockCollision:
     PLB                                                                  ;A0BC3D;
     RTL                                                                  ;A0BC3E;
 
-
 +   PLX                                                                  ;A0BC3F;
     STZ.B $12                                                            ;A0BC40;
     LDA.B $22                                                            ;A0BC42;
@@ -7234,7 +7655,6 @@ CheckForHorizontalSolidBlockCollision:
     PLB                                                                  ;A0BC5B;
     RTL                                                                  ;A0BC5C;
 
-
   .movingLeft:
     ORA.W #$000F                                                         ;A0BC5D;
     SEC                                                                  ;A0BC60;
@@ -7252,7 +7672,12 @@ CheckForHorizontalSolidBlockCollision:
     RTL                                                                  ;A0BC75;
 
 
+;;; $BC76: Check for vertical "solid" block collision ;;;
 CheckForVerticalSolidBlockCollision:
+;; Parameters:
+;;     $14.$12: Distance to check for collision (signed)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     PHB                                                                  ;A0BC76;
     SEP #$20                                                             ;A0BC77;
     LDA.B #$A0                                                           ;A0BC79;
@@ -7289,7 +7714,6 @@ CheckForVerticalSolidBlockCollision:
     ADC.W $0F84,X                                                        ;A0BCB1;
     DEC A                                                                ;A0BCB4;
     BRA +                                                                ;A0BCB5;
-
 
   .targetFrontBoundary:
     SEC                                                                  ;A0BCB7;
@@ -7329,7 +7753,6 @@ CheckForVerticalSolidBlockCollision:
     PLB                                                                  ;A0BCED;
     RTL                                                                  ;A0BCEE;
 
-
 +   PLX                                                                  ;A0BCEF;
     STZ.B $12                                                            ;A0BCF0;
     LDA.B $22                                                            ;A0BCF2;
@@ -7349,7 +7772,6 @@ CheckForVerticalSolidBlockCollision:
     PLB                                                                  ;A0BD0B;
     RTL                                                                  ;A0BD0C;
 
-
   .movingUp:
     ORA.W #$000F                                                         ;A0BD0D;
     SEC                                                                  ;A0BD10;
@@ -7368,7 +7790,13 @@ CheckForVerticalSolidBlockCollision:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $BD26: Unused. Move enemy right by [$14].[$12], no block collision reactions ;;;
 UNUSED_MoveEnemyRight_NoBlockCollisionReactions_A0BD26:
+;; Parameters:
+;;     A: Direction. 0 = left, 1 = right
+;;     $14.$12: Distance to move (signed)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     PHB                                                                  ;A0BD26;
     SEP #$20                                                             ;A0BD27;
     LDA.B #$A0                                                           ;A0BD29;
@@ -7420,7 +7848,6 @@ UNUSED_MoveEnemyRight_NoBlockCollisionReactions_A0BD26:
     DEC A                                                                ;A0BD7F;
     BRA +                                                                ;A0BD80;
 
-
   .zero1C:
     LDA.W $0F7C,X                                                        ;A0BD82;
     SEC                                                                  ;A0BD85;
@@ -7461,7 +7888,6 @@ UNUSED_MoveEnemyRight_NoBlockCollisionReactions_A0BD26:
     PLB                                                                  ;A0BDC0;
     RTL                                                                  ;A0BDC1;
 
-
 +   PLX                                                                  ;A0BDC2;
     STZ.W $0F7C,X                                                        ;A0BDC3;
     LDA.B $1C                                                            ;A0BDC6;
@@ -7479,7 +7905,6 @@ UNUSED_MoveEnemyRight_NoBlockCollisionReactions_A0BD26:
     SEC                                                                  ;A0BDDC;
     PLB                                                                  ;A0BDDD;
     RTL                                                                  ;A0BDDE;
-
 
   .movingLeft:
     LDA.B $22                                                            ;A0BDDF;
@@ -7500,7 +7925,13 @@ UNUSED_MoveEnemyRight_NoBlockCollisionReactions_A0BD26:
     RTL                                                                  ;A0BDF5;
 
 
+;;; $BDF6: Unused. Move enemy down by [$14].[$12], no block collision reactions ;;;
 UNUSED_MoveEnemyDown_NoBlockCollisionReactions_A0BDF6:
+;; Parameters:
+;;     A: Direction. 0 = up, 1 = down
+;;     $14.$12: Distance to move (unsigned)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     PHB                                                                  ;A0BDF6;
     SEP #$20                                                             ;A0BDF7;
     LDA.B #$A0                                                           ;A0BDF9;
@@ -7539,7 +7970,6 @@ UNUSED_MoveEnemyDown_NoBlockCollisionReactions_A0BDF6:
     ADC.W $0F84,X                                                        ;A0BE34;
     DEC A                                                                ;A0BE37;
     BRA +                                                                ;A0BE38;
-
 
   .zero1C:
     LDA.W $0F80,X                                                        ;A0BE3A;
@@ -7590,7 +8020,6 @@ UNUSED_MoveEnemyDown_NoBlockCollisionReactions_A0BDF6:
     PLB                                                                  ;A0BE89;
     RTL                                                                  ;A0BE8A;
 
-
 +   PLX                                                                  ;A0BE8B;
     STZ.W $0F80,X                                                        ;A0BE8C;
     LDA.B $1C                                                            ;A0BE8F;
@@ -7608,7 +8037,6 @@ UNUSED_MoveEnemyDown_NoBlockCollisionReactions_A0BDF6:
     SEC                                                                  ;A0BEA5;
     PLB                                                                  ;A0BEA6;
     RTL                                                                  ;A0BEA7;
-
 
   .movingUp:
     LDA.B $22                                                            ;A0BEA8;
@@ -7629,7 +8057,13 @@ UNUSED_MoveEnemyDown_NoBlockCollisionReactions_A0BDF6:
     RTL                                                                  ;A0BEBE;
 
 
+;;; $BEBF: Unused. Check for horizontal "solid" block collision ;;;
 UNUSED_CheckForHorizontalSolidBlockCollision_A0BEBF:
+;; Parameters:
+;;     A: Direction. 0 = left, 1 = right
+;;     $14.$12: Distance to check for collision (unsigned)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     STA.B $1C                                                            ;A0BEBF;
     PHB                                                                  ;A0BEC1;
     SEP #$20                                                             ;A0BEC2;
@@ -7681,7 +8115,6 @@ UNUSED_CheckForHorizontalSolidBlockCollision_A0BEBF:
     DEC A                                                                ;A0BF18;
     BRA +                                                                ;A0BF19;
 
-
   .zero1C:
     LDA.W $0F7C,X                                                        ;A0BF1B;
     SEC                                                                  ;A0BF1E;
@@ -7718,7 +8151,6 @@ UNUSED_CheckForHorizontalSolidBlockCollision_A0BEBF:
     PLB                                                                  ;A0BF4F;
     RTL                                                                  ;A0BF50;
 
-
 +   PLX                                                                  ;A0BF51;
     STZ.B $12                                                            ;A0BF52;
     LDA.B $1C                                                            ;A0BF54;
@@ -7736,7 +8168,6 @@ UNUSED_CheckForHorizontalSolidBlockCollision_A0BEBF:
     SEC                                                                  ;A0BF6C;
     PLB                                                                  ;A0BF6D;
     RTL                                                                  ;A0BF6E;
-
 
   .movingLeft:
     LDA.B $22                                                            ;A0BF6F;
@@ -7757,7 +8188,16 @@ UNUSED_CheckForHorizontalSolidBlockCollision_A0BEBF:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $BF8A: Check for vertical "solid" block collision ;;;
 CheckForVerticalSolidBlockCollision_SkreeMetaree:
+;; Parameters:
+;;     A: Bit 0 = direction. Clear = up, set = down
+;;     X: Enemy index
+;;     $14.$12: Distance to check for collision (unsigned)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+
+; Used by skree/metaree. Only used for downwards direction
     STA.B $1C                                                            ;A0BF8A;
     PHB                                                                  ;A0BF8C;
     SEP #$20                                                             ;A0BF8D;
@@ -7796,7 +8236,6 @@ CheckForVerticalSolidBlockCollision_SkreeMetaree:
     ADC.W $0F84,X                                                        ;A0BFC8;
     DEC A                                                                ;A0BFCB;
     BRA +                                                                ;A0BFCC;
-
 
   .zero1C:
     LDA.W $0F80,X                                                        ;A0BFCE;
@@ -7843,7 +8282,6 @@ CheckForVerticalSolidBlockCollision_SkreeMetaree:
     PLB                                                                  ;A0C013;
     RTL                                                                  ;A0C014;
 
-
 +   PLX                                                                  ;A0C015;
     STZ.B $12                                                            ;A0C016;
     LDA.B $1C                                                            ;A0C018;
@@ -7861,7 +8299,6 @@ CheckForVerticalSolidBlockCollision_SkreeMetaree:
     SEC                                                                  ;A0C030;
     PLB                                                                  ;A0C031;
     RTL                                                                  ;A0C032;
-
 
   .movingUp:
     LDA.B $22                                                            ;A0C033;
@@ -7881,7 +8318,24 @@ CheckForVerticalSolidBlockCollision_SkreeMetaree:
     RTL                                                                  ;A0C04D;
 
 
+;;; $C04E: Calculate angle of Samus from enemy projectile ;;;
 CalculateAngleOfSamusFromEnemyProjectile:
+;; Parameters:
+;;     X: Origin enemy projectile index
+;; Returns:
+;;     A: The angle between the line from the enemy projectile to Samus and the negative y axis in 100h / (2 pi) radians
+
+; Graphically:
+;           0
+;           |
+;     C0h   #   40h
+;
+;          80h
+;
+; Where # is the origin enemy projectile and | is the negative y axis
+
+; Assumes Samus and enemy are with FFh pixels of each other in both dimensions
+; Used by Golden Torizo super missile
     PHP                                                                  ;A0C04E;
     REP #$30                                                             ;A0C04F;
     LDA.W $0AF6                                                          ;A0C051;
@@ -7895,7 +8349,23 @@ CalculateAngleOfSamusFromEnemyProjectile:
     JMP.W CalculateAngleOfXYOffset                                       ;A0C063;
 
 
+;;; $C066: Calculate angle of Samus from enemy ;;;
 CalculateAngleOfSamusFromEnemy:
+;; Parameters:
+;;     X: Origin enemy index
+;; Returns:
+;;     A: The angle between the line from the enemy to Samus and the negative y axis in 100h / (2 pi) radians
+
+; Graphically:
+;           0
+;           |
+;     C0h   #   40h
+;
+;          80h
+;
+; Where # is the origin enemy and | is the negative y axis
+
+; Assumes Samus and enemy are with FFh pixels of each other in both dimensions
     PHP                                                                  ;A0C066;
     REP #$30                                                             ;A0C067;
     LDA.W $0AF6                                                          ;A0C069;
@@ -7910,7 +8380,22 @@ CalculateAngleOfSamusFromEnemy:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C07E: Unused. Calculate angle of enemy [Y] from enemy [X] ;;;
 UNUSED_CalculateAngleOfEnemyYFromEnemyX_A0C07E:
+;; Parameters:
+;;     X: Origin enemy index
+;;     Y: Target enemy index
+;; Returns:
+;;     A: The angle between the line from enemy [X] to enemy [Y] and the negative y axis in 100h / (2 pi) radians
+
+; Graphically:
+;           0
+;           |
+;     C0h   #   40h
+;
+;          80h
+;
+; Where # is the origin enemy and | is the negative y axis
     PHP                                                                  ;A0C07E;
     REP #$30                                                             ;A0C07F;
     LDA.W $0F7A,Y                                                        ;A0C081;
@@ -7925,7 +8410,26 @@ UNUSED_CalculateAngleOfEnemyYFromEnemyX_A0C07E:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C096: Calculate angle of enemy [X] from enemy [Y] ;;;
 CalculateAngleOfEnemyYFromEnemyX:
+;; Parameters:
+;;     X: Target enemy index
+;;     Y: Origin enemy index
+;; Returns:
+;;     A: The angle between the line from enemy [Y] to enemy [X] and the negative y axis in 100h / (2 pi) radians
+
+; Graphically:
+;           0
+;           |
+;     C0h   #   40h
+;
+;          80h
+;
+; Where # is the origin enemy and | is the negative y axis
+
+; Assumes enemies are with FFh pixels of each other in both dimensions
+
+; Used by shaktool
     PHP                                                                  ;A0C096;
     REP #$30                                                             ;A0C097;
     LDA.W $0F7A,X                                                        ;A0C099;
@@ -7939,11 +8443,53 @@ CalculateAngleOfEnemyYFromEnemyX:
     JMP.W CalculateAngleOfXYOffset                                       ;A0C0AB;
 
 
+;;; $C0AE: Calculate angle of ([$12], [$14]) offset ;;;
 CalculateAngleOf_12_14_Offset:
-    PHP                                                                  ;A0C0AE;
-    REP #$30                                                             ;A0C0AF;
+;; Parameters:
+;;     $12: X offset
+;;     $14: Y offset
+;; Returns:
+;;     A: The angle between the line from (0, 0) to (x, y) and the negative y axis in 100h / (2 pi) radians
 
+; Graphically:
+;           0
+;           |
+;     C0h   #   40h
+;
+;          80h
+;
+; Where # is the origin and | is the negative y axis
+
+; Assumes -FFh <= x,y <= FFh
+    PHP                                                                  ;A0C0AE;
+    REP #$30                                                             ;A0C0AF; fallthrough to CalculateAngleOfXYOffset
+
+
+;;; $C0B1: Calculate angle of (x, y) offset ;;;
 CalculateAngleOfXYOffset:
+;; Parameters:
+;;     $12: X offset
+;;     $14: Y offset
+;; Returns:
+;;     A: The angle between the line from (0, 0) to (x, y) and the negative y axis in 100h / (2 pi) radians
+
+; Graphically:
+;           0
+;           |
+;     C0h   #   40h
+;
+;          80h
+;
+; Where # is the origin and | is the negative y axis
+
+; Assumes PSR has been pushed
+; Assumes -FFh <= x,y <= FFh
+
+; Determines the result octant from the signs of the parameter co-ordinates,
+; then approximates the inverse tangent within the octant as:
+;     100h/(2 pi) arctan(z) ~= 32 z
+; Which is approximating the taylor series around zero up to the second order:
+;     100h/(2 pi) arctan(z) ~= 40.7 z
     PHX                                                                  ;A0C0B1;
     LDX.W #$0000                                                         ;A0C0B2;
     LDA.B $12                                                            ;A0C0B5;
@@ -7978,7 +8524,6 @@ CalculateAngleOfXYOffset:
     PLP                                                                  ;A0C0E8;
     RTL                                                                  ;A0C0E9;
 
-
   .pointers:
     dw CalculateAngleOfXYOffset_BottomRightLowerOctant                   ;A0C0EA;
     dw CalculateAngleOfXYOffset_TopRightUpperOctant                      ;A0C0EC;
@@ -7999,14 +8544,16 @@ CalculateAngleOfXYOffset:
     PLP                                                                  ;A0C108;
     RTL                                                                  ;A0C109;
 
-
   ..pointers:
     dw CalculateAngleOfXYOffset_BottomRightUpperOctant                   ;A0C10A;
     dw CalculateAngleOfXYOffset_TopRightLowerOctant                      ;A0C10C;
     dw CalculateAngleOfXYOffset_BottomLeftUpperOctant                    ;A0C10E;
     dw CalculateAngleOfXYOffset_TopLeftLowerOctant                       ;A0C110;
 
+
+;;; $C112: Calculate angle of (x, y) offset - bottom right upper octant ;;;
 CalculateAngleOfXYOffset_BottomRightUpperOctant:
+; A = 40h + quotient / 8
     LDA.W $4214                                                          ;A0C112;
     LSR A                                                                ;A0C115;
     LSR A                                                                ;A0C116;
@@ -8017,7 +8564,9 @@ CalculateAngleOfXYOffset_BottomRightUpperOctant:
     RTS                                                                  ;A0C11F;
 
 
+;;; $C120: Calculate angle of (x, y) offset - bottom right lower octant ;;;
 CalculateAngleOfXYOffset_BottomRightLowerOctant:
+; A = 80h - quotient / 8
     LDA.W $4214                                                          ;A0C120;
     LSR A                                                                ;A0C123;
     LSR A                                                                ;A0C124;
@@ -8030,6 +8579,7 @@ CalculateAngleOfXYOffset_BottomRightLowerOctant:
     RTS                                                                  ;A0C131;
 
 
+;;; $C132: Calculate angle of (x, y) offset - top right upper octant ;;;
 CalculateAngleOfXYOffset_TopRightUpperOctant:
     LDA.W $4214                                                          ;A0C132;
     LSR A                                                                ;A0C135;
@@ -8039,7 +8589,9 @@ CalculateAngleOfXYOffset_TopRightUpperOctant:
     RTS                                                                  ;A0C13B;
 
 
+;;; $C13C: Calculate angle of (x, y) offset - top right lower octant ;;;
 CalculateAngleOfXYOffset_TopRightLowerOctant:
+; A = 40h - quotient / 8
     LDA.W $4214                                                          ;A0C13C;
     LSR A                                                                ;A0C13F;
     LSR A                                                                ;A0C140;
@@ -8052,7 +8604,9 @@ CalculateAngleOfXYOffset_TopRightLowerOctant:
     RTS                                                                  ;A0C14D;
 
 
+;;; $C14E: Calculate angle of (x, y) offset - bottom left lower octant ;;;
 CalculateAngleOfXYOffset_BottomLeftLowerOctant:
+; A = 80h + quotient / 8
     LDA.W $4214                                                          ;A0C14E;
     LSR A                                                                ;A0C151;
     LSR A                                                                ;A0C152;
@@ -8063,7 +8617,9 @@ CalculateAngleOfXYOffset_BottomLeftLowerOctant:
     RTS                                                                  ;A0C15B;
 
 
+;;; $C15C: Calculate angle of (x, y) offset - bottom left upper octant ;;;
 CalculateAngleOfXYOffset_BottomLeftUpperOctant:
+; A = C0h - quotient / 8
     LDA.W $4214                                                          ;A0C15C;
     LSR A                                                                ;A0C15F;
     LSR A                                                                ;A0C160;
@@ -8076,7 +8632,9 @@ CalculateAngleOfXYOffset_BottomLeftUpperOctant:
     RTS                                                                  ;A0C16D;
 
 
+;;; $C16E: Calculate angle of (x, y) offset - top left lower octant ;;;
 CalculateAngleOfXYOffset_TopLeftLowerOctant:
+; A = C0h + quotient / 8
     LDA.W $4214                                                          ;A0C16E;
     LSR A                                                                ;A0C171;
     LSR A                                                                ;A0C172;
@@ -8087,7 +8645,9 @@ CalculateAngleOfXYOffset_TopLeftLowerOctant:
     RTS                                                                  ;A0C17B;
 
 
+;;; $C17C: Calculate angle of (x, y) offset - top left upper octant ;;;
 CalculateAngleOfXYOffset_TopLeftUpperOctant:
+; A = 100h - quotient / 8
     LDA.W $4214                                                          ;A0C17C;
     LSR A                                                                ;A0C17F;
     LSR A                                                                ;A0C180;
@@ -8100,7 +8660,12 @@ CalculateAngleOfXYOffset_TopLeftUpperOctant:
     RTS                                                                  ;A0C18D;
 
 
+;;; $C18E: Check if enemy is horizontally off-screen ;;;
 CheckIfEnemyIsHorizontallyOffScreen:
+;; Parameters:
+;;     X: Enemy index
+;; Returns:
+;;     A/carry: Set if off-screen, clear otherwise
     LDA.W $0F7A,X                                                        ;A0C18E;
     BMI .offScreen                                                       ;A0C191;
     CLC                                                                  ;A0C193;
@@ -8117,7 +8682,6 @@ CheckIfEnemyIsHorizontallyOffScreen:
     CLC                                                                  ;A0C1AA;
     RTL                                                                  ;A0C1AB;
 
-
   .offScreen:
     LDA.W #$0001                                                         ;A0C1AC;
     SEC                                                                  ;A0C1AF;
@@ -8125,7 +8689,12 @@ CheckIfEnemyIsHorizontallyOffScreen:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C1B1: Unused. Check if enemy is vertically off-screen ;;;
 UNUSED_CheckIfEnemyIsVerticallyOffScreen_A0C1B1:
+;; Parameters:
+;;     X: Enemy index
+;; Returns:
+;;     A/carry: Set if off-screen, clear otherwise
     LDA.W $0F7E,X                                                        ;A0C1B1;
     BMI .offScreen                                                       ;A0C1B4;
     CLC                                                                  ;A0C1B6;
@@ -8142,14 +8711,15 @@ UNUSED_CheckIfEnemyIsVerticallyOffScreen_A0C1B1:
     CLC                                                                  ;A0C1CD;
     RTL                                                                  ;A0C1CE;
 
-
   .offScreen:
     LDA.W #$0001                                                         ;A0C1CF;
     SEC                                                                  ;A0C1D2;
     RTL                                                                  ;A0C1D3;
 
 
+;;; $C1D4: Unused. Assess Samus threat level ;;;
 UNUSED_AssessSamusThreatLevel_A0C1D4:
+; ?
     LDA.W $09C4                                                          ;A0C1D4;
     STA.W $4204                                                          ;A0C1D7;
     SEP #$20                                                             ;A0C1DA;
@@ -8165,13 +8735,11 @@ UNUSED_AssessSamusThreatLevel_A0C1D4:
     LDA.W #$0001                                                         ;A0C1EE;
     BRA .store12                                                         ;A0C1F1;
 
-
 +   ASL A                                                                ;A0C1F3;
     CMP.W $09C2                                                          ;A0C1F4;
     BCC .load3                                                           ;A0C1F7;
     LDA.W #$0002                                                         ;A0C1F9;
     BRA .store12                                                         ;A0C1FC;
-
 
   .load3:
     LDA.W #$0003                                                         ;A0C1FE;
@@ -8235,6 +8803,7 @@ UNUSED_AssessSamusThreatLevel_A0C1D4:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C26A: Process enemy instructions ;;;
 ProcessEnemyInstructions:
     PHB                                                                  ;A0C26A;
     LDX.W $0E54                                                          ;A0C26B;
@@ -8242,7 +8811,7 @@ ProcessEnemyInstructions:
     AND.W #$0004                                                         ;A0C271;
     BNE .return                                                          ;A0C274;
     DEC.W $0F94,X                                                        ;A0C276;
-    BNE ProcessEnemyInstructions_noUpdate                                ;A0C279;
+    BNE .noUpdate                                                        ;A0C279;
     LDA.W $0FA5,X                                                        ;A0C27B;
     PHA                                                                  ;A0C27E;
     PLB                                                                  ;A0C27F;
@@ -8272,12 +8841,12 @@ ProcessEnemyInstructions:
     ORA.W #$8000                                                         ;A0C2A9;
     STA.W $0F88,X                                                        ;A0C2AC;
 
-  .return: ; sleep, wait, delete
+  .return:
+; Sleep/wait/delete instructions return to here
     PLB                                                                  ;A0C2AF;
     RTS                                                                  ;A0C2B0;
 
-
-ProcessEnemyInstructions_noUpdate:
+  .noUpdate:
     LDA.W $0F88,X                                                        ;A0C2B1;
     AND.W #$7FFF                                                         ;A0C2B4;
     STA.W $0F88,X                                                        ;A0C2B7;
@@ -8285,17 +8854,22 @@ ProcessEnemyInstructions_noUpdate:
     RTS                                                                  ;A0C2BB;
 
 
+;;; $C2BC: Clear carry ;;;
 CLCRTS_A0C2BC:
     CLC                                                                  ;A0C2BC;
     RTS                                                                  ;A0C2BD;
 
 
+;;; $C2BE: Set carry ;;;
 SECRTS_A0C2BE:
     SEC                                                                  ;A0C2BE;
     RTS                                                                  ;A0C2BF;
 
 
+;;; $C2C0: Enemy block collision reaction - spike ;;;
 EnemyBlockCollisionReaction_Spike:
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     LDX.W $0DC4                                                          ;A0C2C0;
     LDA.L $7F6402,X                                                      ;A0C2C3;
     AND.W #$007F                                                         ;A0C2C7;
@@ -8307,11 +8881,9 @@ EnemyBlockCollisionReaction_Spike:
     CLC                                                                  ;A0C2D6;
     RTS                                                                  ;A0C2D7;
 
-
   .returnCollision:
     SEC                                                                  ;A0C2D8;
     RTS                                                                  ;A0C2D9;
-
 
   .PLMs:
     dw $0000                                                             ;A0C2DA;
@@ -8331,14 +8903,26 @@ EnemyBlockCollisionReaction_Spike:
     dw $0000                                                             ;A0C2F6;
     dw PLMEntries_EnemyBreakableBlock                                    ;A0C2F8;
 
+
+;;; $C2FA: Enemy block collision reaction - horizontal - slope ;;;
 EnemyBlockCollisionReaction_Horizontal_Slope:
+;; Parameters:
+;;     $14.$12: Distance to check for collision
+;;     $1A: Target boundary position (left/right)
+;;     $1C: Number of blocks left to check (0 if final (bottom) block)
+;;     $1E: Enemy Y block span
+;;     $20: In non-square slope collision:
+;;         8000h: Process slopes
+;;         4000h: Treat slopes as walls
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $14.$12: If carry clear, adjusted distance to move Samus
     LDX.W $0DC4                                                          ;A0C2FA;
     LDA.L $7F6402,X                                                      ;A0C2FD;
     AND.W #$001F                                                         ;A0C301;
     CMP.W #$0005                                                         ;A0C304;
     BCS .nonSquare                                                       ;A0C307;
     JMP.W EnemyBlockCollisionReaction_Horizontal_Slope_Square            ;A0C309;
-
 
   .nonSquare:
     LDA.L $7F6402,X                                                      ;A0C30C;
@@ -8347,7 +8931,17 @@ EnemyBlockCollisionReaction_Horizontal_Slope:
     JMP.W EnemyBlockCollisionReaction_Horizontal_Slope_NonSquare         ;A0C316;
 
 
+;;; $C319: Enemy block collision reaction - vertical - slope ;;;
 EnemyBlockCollisionReaction_Vertical_Slope:
+;; Parameters:
+;;     A: [Block BTS] & 1Fh
+;;     X: Block index
+;;     $18: Target Y position
+;;     $1A: Target boundary position (top/bottom)
+;;     $1C: Number of blocks left to check (0 if final (rightmost) block)
+;;     $1E: Enemy X block span
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     LDX.W $0DC4                                                          ;A0C319;
     LDA.L $7F6402,X                                                      ;A0C31C;
     AND.W #$001F                                                         ;A0C320;
@@ -8355,12 +8949,20 @@ EnemyBlockCollisionReaction_Vertical_Slope:
     BCS .nonSquare                                                       ;A0C326;
     JMP.W EnemyBlockCollisionReaction_Vertical_Slope_Square              ;A0C328;
 
-
   .nonSquare:
     JMP.W EnemyBlockCollisionReaction_Vertical_Slope_NonSquare           ;A0C32B;
 
 
+;;; $C32E: Enemy block collision reaction - horizontal - slope - square ;;;
 EnemyBlockCollisionReaction_Horizontal_Slope_Square:
+;; Parameters:
+;;     A: [Block BTS] & 1Fh
+;;     X: Block index
+;;     $1A: Target boundary position (left/right)
+;;     $1C: Number of blocks left to check (0 if final (bottom) block)
+;;     $1E: Enemy Y block span
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     ASL A                                                                ;A0C32E;
     ASL A                                                                ;A0C32F;
     STA.W $0DD4                                                          ;A0C330;
@@ -8391,7 +8993,6 @@ EnemyBlockCollisionReaction_Horizontal_Slope_Square:
     BMI .solid                                                           ;A0C367;
     BRA .returnNoCollision                                               ;A0C369;
 
-
   .topBlockCheck:
     CMP.B $1E                                                            ;A0C36B;
     BNE .checkBothHalves                                                 ;A0C36D;
@@ -8416,13 +9017,12 @@ EnemyBlockCollisionReaction_Horizontal_Slope_Square:
     CLC                                                                  ;A0C38C;
     RTS                                                                  ;A0C38D;
 
-
   .solid:
     SEC                                                                  ;A0C38E;
     RTS                                                                  ;A0C38F;
 
-
   .deadCode:
+; Looks like code that was RTS'd out from a time where these collision reaction set the enemy position directly (now moved to MoveEnemyRightBy_14_12_Common_solid)
     TYX                                                                  ;A0C390;
     STZ.W $0F7C,X                                                        ;A0C391;
     LDA.B $1A                                                            ;A0C394;
@@ -8435,7 +9035,6 @@ EnemyBlockCollisionReaction_Horizontal_Slope_Square:
     SEC                                                                  ;A0C3A4;
     RTS                                                                  ;A0C3A5;
 
-
   ..right:
     ORA.W #$0007                                                         ;A0C3A6;
     SEC                                                                  ;A0C3A9;
@@ -8445,7 +9044,16 @@ EnemyBlockCollisionReaction_Horizontal_Slope_Square:
     RTS                                                                  ;A0C3B1;
 
 
+;;; $C3B2: Enemy block collision reaction - vertical - slope - square ;;;
 EnemyBlockCollisionReaction_Vertical_Slope_Square:
+;; Parameters:
+;;     A: [Block BTS] & 1Fh
+;;     X: Block index
+;;     $1A: Target boundary position (top/bottom)
+;;     $1C: Number of blocks left to check (0 if final (rightmost) block)
+;;     $1E: Enemy X block span
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     ASL A                                                                ;A0C3B2;
     ASL A                                                                ;A0C3B3;
     STA.W $0DD4                                                          ;A0C3B4;
@@ -8475,7 +9083,6 @@ EnemyBlockCollisionReaction_Vertical_Slope_Square:
     BMI .solid                                                           ;A0C3EA;
     BRA .returnNoCollision                                               ;A0C3EC;
 
-
   .leftmostBlockCheck:
     CMP.B $1E                                                            ;A0C3EE;
     BNE .checkBothHalves                                                 ;A0C3F0;
@@ -8500,13 +9107,13 @@ EnemyBlockCollisionReaction_Vertical_Slope_Square:
     CLC                                                                  ;A0C40F;
     RTS                                                                  ;A0C410;
 
-
   .solid:
     SEC                                                                  ;A0C411;
     RTS                                                                  ;A0C412;
 
-
   .deadCode:
+; Looks like code that was RTS'd out. Without this code, enemies don't align with slopes when the collide with them,
+; e.g. an enemy falling at 5px/frame can "land" 4px above a half-height slope
     TYX                                                                  ;A0C413;
     STZ.W $0F80,X                                                        ;A0C414;
     LDA.B $1A                                                            ;A0C417;
@@ -8519,7 +9126,6 @@ EnemyBlockCollisionReaction_Vertical_Slope_Square:
     SEC                                                                  ;A0C427;
     RTS                                                                  ;A0C428;
 
-
   ..bottom:
     ORA.W #$0007                                                         ;A0C429;
     SEC                                                                  ;A0C42C;
@@ -8529,6 +9135,7 @@ EnemyBlockCollisionReaction_Vertical_Slope_Square:
     RTS                                                                  ;A0C434;
 
 
+;;; $C435: Square slope definitions ;;;
 SquareSlopeDefinitions_BankA0:                                           ;A0C435;
 ; Copy of $94:8E54 for enemies
 ; 7Fh- = air, 80h+ = solid
@@ -8544,18 +9151,29 @@ SquareSlopeDefinitions_BankA0:                                           ;A0C435
     db $00,$81,$82,$83 ; 3: Three-quarters
     db $80,$81,$82,$83 ; 4: Whole
 
+
+;;; $C449: Enemy block collision reaction - horizontal - slope - non-square ;;;
 EnemyBlockCollisionReaction_Horizontal_Slope_NonSquare:
+;; Parameters:
+;;     $14.$12: Distance to check for collision
+;;     $1A: Target boundary position (left/right)
+;;     $1C: Number of blocks left to check (0 if final (bottom) block)
+;;     $1E: Enemy Y block span
+;;     $20: In non-square slope collision:
+;;         8000h: Process slopes
+;;         4000h: Treat slopes as walls
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $14.$12: If carry clear, adjusted distance to move Samus
     BIT.B $20                                                            ;A0C449;
     BMI .processSlopes                                                   ;A0C44B;
     BVS .returnCollision                                                 ;A0C44D;
     CLC                                                                  ;A0C44F;
     RTS                                                                  ;A0C450;
 
-
   .returnCollision:
     SEC                                                                  ;A0C451;
     RTS                                                                  ;A0C452;
-
 
   .processSlopes:
     LDA.W $1E77                                                          ;A0C453;
@@ -8582,7 +9200,6 @@ EnemyBlockCollisionReaction_Horizontal_Slope_NonSquare:
     STA.B $14                                                            ;A0C484;
     CLC                                                                  ;A0C486;
     RTS                                                                  ;A0C487;
-
 
 +   LDA.L .adjustedDistanceMult,X                                        ;A0C488;
     TAY                                                                  ;A0C48C;
@@ -8634,12 +9251,18 @@ EnemyBlockCollisionReaction_Horizontal_Slope_NonSquare:
     dw $6000,$0050 ; 1Eh: Unused. Middle third-width triangle
     dw $6000,$0050 ; 1Fh: Unused. Lower third-width triangle
 
+
+;;; $C51F: Enemy block collision reaction - vertical - slope - non-square ;;;
 EnemyBlockCollisionReaction_Vertical_Slope_NonSquare:
+;; Parameters:
+;;     $14: Distance to check for collision
+;;     $18: Target Y position
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     LDY.W $0E54                                                          ;A0C51F;
     LDA.B $14                                                            ;A0C522;
     BPL +                                                                ;A0C524;
     JMP.W .up                                                            ;A0C526;
-
 
 +   LDX.W $0DC4                                                          ;A0C529;
     STX.W $4204                                                          ;A0C52C;
@@ -8656,7 +9279,6 @@ EnemyBlockCollisionReaction_Vertical_Slope_NonSquare:
     BEQ +                                                                ;A0C543;
     CLC                                                                  ;A0C545;
     RTS                                                                  ;A0C546;
-
 
 +   LDA.B $18                                                            ;A0C547;
     CLC                                                                  ;A0C549;
@@ -8677,7 +9299,6 @@ EnemyBlockCollisionReaction_Vertical_Slope_NonSquare:
     BMI .blockBTS40                                                      ;A0C569;
     LDA.W $0F7A,Y                                                        ;A0C56B;
     BRA +                                                                ;A0C56E;
-
 
   .blockBTS40:
     LDA.W $0F7A,Y                                                        ;A0C570;
@@ -8703,11 +9324,9 @@ EnemyBlockCollisionReaction_Vertical_Slope_NonSquare:
     SEC                                                                  ;A0C59A;
     RTS                                                                  ;A0C59B;
 
-
   .returnUpper:
     CLC                                                                  ;A0C59C;
     RTS                                                                  ;A0C59D;
-
 
   .up:
     LDX.W $0DC4                                                          ;A0C59E;
@@ -8725,7 +9344,6 @@ EnemyBlockCollisionReaction_Vertical_Slope_NonSquare:
     BEQ +                                                                ;A0C5B8;
     CLC                                                                  ;A0C5BA;
     RTS                                                                  ;A0C5BB;
-
 
 +   LDA.B $18                                                            ;A0C5BC;
     SEC                                                                  ;A0C5BE;
@@ -8746,7 +9364,6 @@ EnemyBlockCollisionReaction_Vertical_Slope_NonSquare:
     BMI ..blockBTS40                                                     ;A0C5E0;
     LDA.W $0F7A,Y                                                        ;A0C5E2;
     BRA +                                                                ;A0C5E5;
-
 
   ..blockBTS40:
     LDA.W $0F7A,Y                                                        ;A0C5E7;
@@ -8774,13 +9391,19 @@ EnemyBlockCollisionReaction_Vertical_Slope_NonSquare:
     SEC                                                                  ;A0C615;
     RTS                                                                  ;A0C616;
 
-
   .returnLower:
     CLC                                                                  ;A0C617;
     RTS                                                                  ;A0C618;
 
 
+;;; $C619: Enemy block collision reaction - horizontal extension ;;;
 EnemyBlockCollisionReaction_HorizontalExtension:
+;; Returns:
+;;     Carry: Clear. No collision
+
+; Clone of $94:9411
+; If BTS is 0, acts like air
+; Otherwise, offsets block index by block BTS, updates X, and loops back to the `JSR (xxxx, X)` instruction that jumped to here
     LDX.W $0DC4                                                          ;A0C619;
     LDA.L $7F6402,X                                                      ;A0C61C;
     AND.W #$00FF                                                         ;A0C620;
@@ -8789,7 +9412,6 @@ EnemyBlockCollisionReaction_HorizontalExtension:
     BNE .highByte                                                        ;A0C628;
     AND.W #$00FF                                                         ;A0C62A;
     BRA +                                                                ;A0C62D;
-
 
   .highByte:
     ORA.W #$FF00                                                         ;A0C62F;
@@ -8816,7 +9438,14 @@ EnemyBlockCollisionReaction_HorizontalExtension:
     RTS                                                                  ;A0C64E;
 
 
+;;; $C64F: Enemy block collision reaction - vertical extension ;;;
 EnemyBlockCollisionReaction_VerticalExtension:
+;; Returns:
+;;     Carry: Clear. No collision
+
+; Clone of $94:9447
+; If BTS is 0, acts like air
+; Otherwise, offsets block index by block BTS, updates X, and loops back to the `JSR (xxxx, X)` instruction that jumped to here
     LDX.W $0DC4                                                          ;A0C64F;
     LDA.L $7F6402,X                                                      ;A0C652;
     AND.W #$00FF                                                         ;A0C656;
@@ -8830,8 +9459,7 @@ EnemyBlockCollisionReaction_VerticalExtension:
     ADC.W $07A5                                                          ;A0C667;
     DEC.W $0DD4                                                          ;A0C66A;
     BNE -                                                                ;A0C66D;
-    JMP.W +                                                              ;A0C66F;
-
+    JMP.W +                                                              ;A0C66F
 
   .highByte:
     ORA.W #$FF00                                                         ;A0C672;
@@ -8864,28 +9492,62 @@ EnemyBlockCollisionReaction_VerticalExtension:
     RTS                                                                  ;A0C69C;
 
 
+;;; $C69D: Move enemy right by [$14].[$12], treat slopes as walls ;;;
 MoveEnemyRightBy_14_12_TreatSlopesAsWalls:
+;; Parameters:
+;;     X: Enemy index
+;;     $14.$12: Distance to move (signed)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+
+; Used by oum
     LDA.W #$4000                                                         ;A0C69D;
     STA.B $20                                                            ;A0C6A0;
     BRA MoveEnemyRightBy_14_12_Common                                    ;A0C6A2;
 
 
+;;; $C6A4: Move enemy right by [$14].[$12], process slopes ;;;
 MoveEnemyRightBy_14_12_ProcessSlopes:
+;; Parameters:
+;;     X: Enemy index
+;;     $14.$12: Distance to move (signed)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+
+; Call $A0:C8AD if this routine returns carry clear to adjust the enemy's position for any slopes
+; Used by yard and Wrecked Ship orange zoomer
     LDA.W #$8000                                                         ;A0C6A4;
     STA.B $20                                                            ;A0C6A7;
     BRA MoveEnemyRightBy_14_12_Common                                    ;A0C6A9;
 
 
+;;; $C6AB: Move enemy right by [$14].[$12], ignore slopes ;;;
 MoveEnemyRightBy_14_12_IgnoreSlopes:
-    STZ.B $20                                                            ;A0C6AB;
+;; Parameters:
+;;     X: Enemy index
+;;     $14.$12: Distance to move (signed)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
 
+; This is the commonly used one
+    STZ.B $20                                                            ;A0C6AB; fallthrough to MoveEnemyRightBy_14_12_Common
+
+
+;;; $C6AD: Move enemy right by [$14].[$12] ;;;
 MoveEnemyRightBy_14_12_Common:
+;; Parameters:
+;;     X: Enemy index
+;;     $14.$12: Distance to move (signed)
+;;     $20: In non-square slope collision:
+;;         8000h: Process slopes
+;;         4000h: Treat slopes as walls
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     LDA.B $12                                                            ;A0C6AD;
     ORA.B $14                                                            ;A0C6AF;
     BNE .notZero                                                         ;A0C6B1;
     CLC                                                                  ;A0C6B3;
     RTL                                                                  ;A0C6B4;
-
 
   .notZero:
     PHX                                                                  ;A0C6B5;
@@ -8932,7 +9594,6 @@ MoveEnemyRightBy_14_12_Common:
     DEC A                                                                ;A0C704;
     BRA +                                                                ;A0C705;
 
-
   .targetLeftBoundary:
     SEC                                                                  ;A0C707;
     SBC.W $0F82,X                                                        ;A0C708;
@@ -8969,10 +9630,10 @@ MoveEnemyRightBy_14_12_Common:
     CLC                                                                  ;A0C73F;
     RTL                                                                  ;A0C740;
 
+; Nothing points here
     PLX                                                                  ;A0C741; dead code
     SEC                                                                  ;A0C742;
     RTL                                                                  ;A0C743;
-
 
   .solid:
     PLX                                                                  ;A0C744;
@@ -8990,7 +9651,6 @@ MoveEnemyRightBy_14_12_Common:
     STA.W $0F7C,X                                                        ;A0C75D;
     SEC                                                                  ;A0C760;
     RTL                                                                  ;A0C761;
-
 
   .movingLeft:
     ORA.W #$000F                                                         ;A0C762;
@@ -9010,29 +9670,59 @@ MoveEnemyRightBy_14_12_Common:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C778: Unused. Move enemy down by [$14].[$12] ;;;
 UNUSED_MoveEnemyDownBy_14_12_A0C778:
+;; Parameters:
+;;     X: Enemy index
+;;     $12: Y suboffset to move by
+;;     $14: Y offset to move by
+;; Returns:
+;;     Carry: Set if collided with wall
     LDA.W #$4000                                                         ;A0C778;
     STA.B $20                                                            ;A0C77B;
     BRA MoveEnemyDownBy_14_12_BranchEntry                                ;A0C77D;
 
 
+;;; $C77F: Unused. Move enemy down by [$14].[$12] ;;;
 UNUSED_MoveEnemyDownBy_14_12_A0C77F:
+;; Parameters:
+;;     X: Enemy index
+;;     $12: Y suboffset to move by
+;;     $14: Y offset to move by
+;; Returns:
+;;     Carry: Set if collided with wall
     LDA.W #$8000                                                         ;A0C77F;
     STA.B $20                                                            ;A0C782;
     BRA MoveEnemyDownBy_14_12_BranchEntry                                ;A0C784;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C786: Move enemy down by [$14].[$12] ;;;
 MoveEnemyDownBy_14_12:
-    STZ.B $20                                                            ;A0C786;
+;; Parameters:
+;;     X: Enemy index
+;;     $14.$12: Distance to move (signed)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
 
+; This is the commonly (and only) used one
+    STZ.B $20                                                            ;A0C786; fallthrough to MoveEnemyDownBy_14_12_BranchEntry
+
+
+;;; $C788: Move enemy down by [$14].[$12] ;;;
 MoveEnemyDownBy_14_12_BranchEntry:
+;; Parameters:
+;;     X: Enemy index
+;;     $14.$12: Distance to move (signed)
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+
+; The value of $20 actually has no effect for vertical movement
     LDA.B $12                                                            ;A0C788;
     ORA.B $14                                                            ;A0C78A;
     BNE .notZero                                                         ;A0C78C;
     CLC                                                                  ;A0C78E;
     RTL                                                                  ;A0C78F;
-
 
   .notZero:
     PHX                                                                  ;A0C790;
@@ -9066,7 +9756,6 @@ MoveEnemyDownBy_14_12_BranchEntry:
     ADC.W $0F84,X                                                        ;A0C7C4;
     DEC A                                                                ;A0C7C7;
     BRA +                                                                ;A0C7C8;
-
 
   .targetFrontBoundary:
     SEC                                                                  ;A0C7CA;
@@ -9110,10 +9799,10 @@ MoveEnemyDownBy_14_12_BranchEntry:
     CLC                                                                  ;A0C80C;
     RTL                                                                  ;A0C80D;
 
+; Nothing points here
     PLX                                                                  ;A0C80E; dead code
     SEC                                                                  ;A0C80F;
     RTL                                                                  ;A0C810;
-
 
   .solid:
     PLX                                                                  ;A0C811;
@@ -9132,7 +9821,6 @@ MoveEnemyDownBy_14_12_BranchEntry:
     SEC                                                                  ;A0C82D;
     RTL                                                                  ;A0C82E;
 
-
   .movingUp:
     ORA.W #$000F                                                         ;A0C82F;
     SEC                                                                  ;A0C832;
@@ -9150,7 +9838,21 @@ MoveEnemyDownBy_14_12_BranchEntry:
     RTL                                                                  ;A0C844;
 
 
+;;; $C845: Enemy horizontal block reaction ;;;
 EnemyHorizontalBlockReaction:
+;; Parameters
+;;     A: Block
+;;     X: Block index (multiple of 2)
+;;     $14.$12: Distance to check for collision
+;;     $1A: Target boundary position (left/right)
+;;     $1C: Number of blocks left to check (0 if final (bottom) block)
+;;     $1E: Enemy Y block span
+;;     $20: In non-square slope collision:
+;;         8000h: Process slopes
+;;         4000h: Treat slopes as walls
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
+;;     $14.$12: If carry clear, adjusted distance to move Samus
     PHX                                                                  ;A0C845;
     TXY                                                                  ;A0C846;
     AND.W #$F000                                                         ;A0C847;
@@ -9165,7 +9867,6 @@ EnemyHorizontalBlockReaction:
     JSR.W (.pointers,X)                                                  ;A0C854;
     PLX                                                                  ;A0C857;
     RTS                                                                  ;A0C858;
-
 
   .pointers:
     dw CLCRTS_A0C2BC                                                     ;A0C859;  0: Air
@@ -9185,7 +9886,19 @@ EnemyHorizontalBlockReaction:
     dw SECRTS_A0C2BE                                                     ;A0C875;  Eh: Grapple block
     dw SECRTS_A0C2BE                                                     ;A0C877;  Fh: Bombable block
 
+
+;;; $C879: Enemy vertical block reaction ;;;
 EnemyVerticalBlockReaction:
+;; Parameters
+;;     A: Block
+;;     X: Block index (multiple of 2)
+;;     $14.$12: Distance to check for collision
+;;     $18: Target Y position
+;;     $1A: Target boundary position (top/bottom)
+;;     $1C: Number of blocks left to check (0 if final (rightmost) block)
+;;     $1E: Enemy X block span
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     PHX                                                                  ;A0C879;
     TXY                                                                  ;A0C87A;
     AND.W #$F000                                                         ;A0C87B;
@@ -9200,7 +9913,6 @@ EnemyVerticalBlockReaction:
     JSR.W (.pointers,X)                                                  ;A0C888;
     PLX                                                                  ;A0C88B;
     RTS                                                                  ;A0C88C;
-
 
   .pointers:
     dw CLCRTS_A0C2BC                                                     ;A0C88D;  0: Air
@@ -9220,7 +9932,16 @@ EnemyVerticalBlockReaction:
     dw SECRTS_A0C2BE                                                     ;A0C8A9;  Eh: Grapple block
     dw SECRTS_A0C2BE                                                     ;A0C8AB;  Fh: Bombable block
 
+
+;;; $C8AD: Align enemy Y position with non-square slope ;;;
 AlignEnemyYPositionWIthNonSquareSlope:
+;; Parameters:
+;;     X: Enemy index
+;; Returns:
+;;     Carry: Set if position was adjusted by slope, otherwise clear
+
+; Align enemy vertically to slopes if currently in contact with slopes
+; Call this after MoveEnemyRightBy_14_12_ProcessSlopes if it returns carry clear
     PHY                                                                  ;A0C8AD;
     PHX                                                                  ;A0C8AE;
     CLC                                                                  ;A0C8AF;
@@ -9268,7 +9989,6 @@ AlignEnemyYPositionWIthNonSquareSlope:
     BMI .blockBTS40                                                      ;A0C909;
     LDA.W $0F7A,Y                                                        ;A0C90B;
     BRA +                                                                ;A0C90E;
-
 
   .blockBTS40:
     LDA.W $0F7A,Y                                                        ;A0C910;
@@ -9331,7 +10051,6 @@ AlignEnemyYPositionWIthNonSquareSlope:
     LDA.W $0F7A,Y                                                        ;A0C98D;
     BRA +                                                                ;A0C990;
 
-
   ..blockBTS40:
     LDA.W $0F7A,Y                                                        ;A0C992;
     EOR.W #$000F                                                         ;A0C995;
@@ -9362,13 +10081,14 @@ AlignEnemyYPositionWIthNonSquareSlope:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C9BF: Unused. Common enemy projectile speeds - linearly increasing ;;;
+UNUSED_CommonEnemyProjectileSpeeds_LinearlyIncreasing_A0C9BF:
+; Clone of CommonEnemySpeeds_LinearlyIncreasing
 ;        _____________________ Speed
 ;       |      _______________ Subspeed
 ;       |     |      _________ Negated speed
 ;       |     |     |      ___ Negated subspeed
 ;       |     |     |     |
-UNUSED_CommonEnemyProjectileSpeeds_LinearlyIncreasing_A0C9BF:
-; Clone of CommonEnemySpeeds_LinearlyIncreasing
   .speed:
     dw $0000                                                             ;A0C9BF;
   .subspeed:
@@ -9444,14 +10164,15 @@ UNUSED_CommonEnemyProjectileSpeeds_LinearlyIncreasing_A0C9BF:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $CBC7: Common enemy projectile speeds - quadratically increasing ;;;
+CommonEnemyProjectileSpeeds_QuadraticallyIncreasing:
+; Clone of CommonEnemySpeeds_QuadraticallyIncreasing
+; Used by Botwoon's body when dying and falling to the floor, and polyp rock
 ;        _____________________ Subspeed
 ;       |      _______________ Speed
 ;       |     |      _________ Negated subspeed
 ;       |     |     |      ___ Negated speed
 ;       |     |     |     |
-CommonEnemyProjectileSpeeds_QuadraticallyIncreasing:
-; Clone of CommonEnemySpeeds_QuadraticallyIncreasing
-; Used by Botwoon's body when dying and falling to the floor, and polyp rock
   .subspeed:
     dw $0000                                                             ;A0CBC7;
   .speed:
@@ -9556,6 +10277,7 @@ CommonEnemyProjectileSpeeds_QuadraticallyIncreasing:
     dw $74F9,$0011,$8B07,$FFEE
 
 
+;;; $CEBF: Enemy headers ;;;
 EnemyHeaders_Boyon:
 EnemyHeaders:
   .tileDataSize:
@@ -13938,6 +14660,7 @@ EnemyHeaders_PirateSilverWalking:
     dw EnemyDropChances_PirateSilverWalking                              ;A0F7CD;
     dw EnemyVulnerabilities_PirateSilverWall_PirateSilverWalking         ;A0F7CF;
     dw EnemyName_PirateSilverWalking                                     ;A0F7D1;
+
 
 Freespace_BankA0_F7D3:                                                   ;A0F7D3;
 ; $82D bytes
