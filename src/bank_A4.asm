@@ -2,112 +2,153 @@
 org $A48000
 
 
+; Common to all enemy code banks
+
+;;; $8000: Grapple AI - no interaction. Also unfreezes enemies(!) ;;;
 CommonA4_GrappleAI_NoInteraction:
+; Used by skultera, Draygon body, fire arc, Phantoon, etecoon, dachora and WS ghost
     JSL.L GrappleAI_SwitchEnemyAIToMainAI                                ;A48000;
     RTL                                                                  ;A48004;
 
 
+;;; $8005: Grapple AI - Samus latches on ;;;
 CommonA4_GrappleAI_SamusLatchesOn:
+; Used by gripper and Crocomire
     JSL.L GrappleAI_SamusLatchesOnWithGrapple                            ;A48005;
     RTL                                                                  ;A48009;
 
 
+;;; $800A: Grapple AI - kill enemy ;;;
 CommonA4_GrappleAI_KillEnemy:
+; Common
     JSL.L GrappleAI_EnemyGrappleDeath                                    ;A4800A;
     RTL                                                                  ;A4800E;
 
 
+;;; $800F: Grapple AI - cancel grapple beam ;;;
 CommonA4_GrappleAI_CancelGrappleBeam:
+; Common
     JSL.L GrappleAI_SwitchToFrozenAI                                     ;A4800F;
     RTL                                                                  ;A48013;
 
 
+;;; $8014: Grapple AI - Samus latches on - no invincibility ;;;
 CommonA4_GrappleAI_SamusLatchesOn_NoInvincibility:
+; Used by powamp
     JSL.L GrappleAI_SamusLatchesOnWithGrapple_NoInvincibility            ;A48014;
     RTL                                                                  ;A48018;
 
 
+;;; $8019: Unused. Grapple AI - Samus latches on - paralyse enemy ;;;
 UNUSED_CommonA4_GrappleAI_SamusLatchesOn_ParalyzeEnemy_A48019:
     JSL.L GrappleAI_SamusLatchesOnWithGrapple_ParalyzeEnemy              ;A48019;
     RTL                                                                  ;A4801D;
 
 
+;;; $801E: Grapple AI - hurt Samus ;;;
 CommonA4_GrappleAI_HurtSamus:
+; Used by WS spark
+; Hurt reaction happens in $9B:B932
     JSL.L GrappleAI_SwitchToFrozenAI_duplicate                           ;A4801E;
     RTL                                                                  ;A48022;
 
 
+;;; $8023: Normal enemy touch AI ;;;
 CommonA4_NormalEnemyTouchAI:
     JSL.L NormalEnemyTouchAI                                             ;A48023;
     RTL                                                                  ;A48027;
 
 
+;;; $8028: Normal touch AI - no death check ;;;
 CommonA4_NormalTouchAI_NoDeathCheck:
     JSL.L NormalEnemyTouchAI_NoDeathCheck_External                       ;A48028;
     RTL                                                                  ;A4802C;
 
 
+;;; $802D: Normal enemy shot AI ;;;
 CommonA4_NormalEnemyShotAI:
     JSL.L NormalEnemyShotAI                                              ;A4802D;
     RTL                                                                  ;A48031;
 
 
+;;; $8032: Normal enemy shot AI - no death check, no enemy shot graphic ;;;
 CommonA4_NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;A48032;
     RTL                                                                  ;A48036;
 
 
+;;; $8037: Normal enemy power bomb AI ;;;
 CommonA4_NormalEnemyPowerBombAI:
     JSL.L NormalEnemyPowerBombAI                                         ;A48037;
     RTL                                                                  ;A4803B;
 
 
+;;; $803C: Normal enemy power bomb AI - no death check ;;;
 CommonA4_NormalEnemyPowerBombAI_NoDeathCheck:
+; Kraid's power bomb AI
     JSL.L NormalEnemyPowerBombAI_NoDeathCheck_External                   ;A4803C;
     RTL                                                                  ;A48040;
 
 
+;;; $8041: Normal enemy frozen AI ;;;
 CommonA4_NormalEnemyFrozenAI:
     JSL.L NormalEnemyFrozenAI                                            ;A48041;
     RTL                                                                  ;A48045;
 
 
+;;; $8046: Creates a dud shot ;;;
 CommonA4_CreateADudShot:
     JSL.L CreateADudShot                                                 ;A48046;
     RTL                                                                  ;A4804A;
 
 
+;;; $804B: RTS ;;;
 RTS_A4804B:
     RTS                                                                  ;A4804B;
 
 
+;;; $804C: RTL ;;;
 RTL_A4804C:
     RTL                                                                  ;A4804C;
 
 
+;;; $804D: Spritemap - nothing ;;;
 Spritemap_CommonA4_Nothing:
     dw $0000                                                             ;A4804D;
 
+
+;;; $804F: Extended spritemap - nothing ;;;
 ExtendedSpritemap_CommonA4_Nothing:
     dw $0001                                                             ;A4804F;
     dw $0000,$0000
     dw Spritemap_CommonA4_Nothing                                        ;A48055;
     dw Hitbox_CommonA4_Nothing                                           ;A48057;
 
+
+;;; $8059: Hitbox - nothing ;;;
 Hitbox_CommonA4_Nothing:
+; [n entries] [[left offset] [top offset] [right offset] [bottom offset] [p touch] [p shot]]...
     dw $0001                                                             ;A48059;
     dw $0000,$0000,$0000,$0000
     dw CommonA4_NormalEnemyTouchAI                                       ;A48063;
     dw CommonA4_NormalEnemyShotAI                                        ;A48065;
 
+
+;;; $8067: Instruction list - delete enemy ;;;
 InstList_CommonA4_DeleteEnemy:
     dw Instruction_CommonA4_DeleteEnemy                                  ;A48067;
 
+
+;;; $8069: Two NOPs ;;;
 NOPNOP_A48069:
+; Used as palette by respawning enemy placeholder and Draygon's eye o_O
     NOP                                                                  ;A48069;
     NOP                                                                  ;A4806A;
 
+
+;;; $806B: Instruction - enemy $0FB2 = [[Y]] ;;;
 Instruction_CommonA4_Enemy0FB2_InY:
+; Used only by torizos (for enemy movement function) and escape etecoon (for enemy function)
     LDA.W $0000,Y                                                        ;A4806B;
     STA.W $0FB2,X                                                        ;A4806E;
     INY                                                                  ;A48071;
@@ -115,6 +156,7 @@ Instruction_CommonA4_Enemy0FB2_InY:
     RTL                                                                  ;A48073;
 
 
+;;; $8074: Instruction - enemy $0FB2 = RTS ;;;
 Instruction_CommonA4_SetEnemy0FB2ToRTS:
     LDA.W #RTS_A4807B                                                    ;A48074;
     STA.W $0FB2,X                                                        ;A48077;
@@ -125,6 +167,7 @@ RTS_A4807B:
     RTS                                                                  ;A4807B;
 
 
+;;; $807C: Instruction - delete enemy ;;;
 Instruction_CommonA4_DeleteEnemy:
     LDA.W $0F86,X                                                        ;A4807C;
     ORA.W #$0200                                                         ;A4807F;
@@ -134,6 +177,7 @@ Instruction_CommonA4_DeleteEnemy:
     RTL                                                                  ;A48089;
 
 
+;;; $808A: Instruction - call function [[Y]] ;;;
 Instruction_CommonA4_CallFunctionInY:
     LDA.W $0000,Y                                                        ;A4808A;
     STA.B $12                                                            ;A4808D;
@@ -141,7 +185,6 @@ Instruction_CommonA4_CallFunctionInY:
     PHX                                                                  ;A48090;
     PEA.W .manualReturn-1                                                ;A48091;
     JMP.W ($0012)                                                        ;A48094;
-
 
   .manualReturn:
     PLX                                                                  ;A48097;
@@ -151,6 +194,7 @@ Instruction_CommonA4_CallFunctionInY:
     RTL                                                                  ;A4809B;
 
 
+;;; $809C: Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 Instruction_CommonA4_CallFunctionInY_WithA:
     LDA.W $0000,Y                                                        ;A4809C;
     STA.B $12                                                            ;A4809F;
@@ -159,7 +203,6 @@ Instruction_CommonA4_CallFunctionInY_WithA:
     PHX                                                                  ;A480A5;
     PEA.W .manualReturn-1                                                ;A480A6;
     JMP.W ($0012)                                                        ;A480A9;
-
 
   .manualReturn:
     PLX                                                                  ;A480AC;
@@ -172,6 +215,7 @@ Instruction_CommonA4_CallFunctionInY_WithA:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $80B5: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Instruction_CommonA4_CallExternalFunctionInY_A480B5:
     LDA.W $0000,Y                                                        ;A480B5;
     STA.B $12                                                            ;A480B8;
@@ -187,11 +231,11 @@ UNUSED_Instruction_CommonA4_CallExternalFunctionInY_A480B5:
     INY                                                                  ;A480C9;
     RTL                                                                  ;A480CA;
 
-
   .externalFunction:
     JML.W [$0012]                                                        ;A480CB;
 
 
+;;; $80CE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_CommonA4_CallExternalFunctionInY_WithA_A480CE:
     LDA.W $0000,Y                                                        ;A480CE;
     STA.B $12                                                            ;A480D1;
@@ -209,18 +253,19 @@ UNUSED_Inst_CommonA4_CallExternalFunctionInY_WithA_A480CE:
     TAY                                                                  ;A480E8;
     RTL                                                                  ;A480E9;
 
-
   .externalFunction:
     JML.W [$0012]                                                        ;A480EA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $80ED: Instruction - go to [[Y]] ;;;
 Instruction_CommonA4_GotoY:
     LDA.W $0000,Y                                                        ;A480ED;
     TAY                                                                  ;A480F0;
     RTL                                                                  ;A480F1;
 
 
+;;; $80F2: Instruction - go to [[Y]] + ±[[Y]] ;;;
 Instruction_CommonA4_GotoY_PlusY:
     STY.B $12                                                            ;A480F2;
     DEY                                                                  ;A480F4;
@@ -229,7 +274,6 @@ Instruction_CommonA4_GotoY_PlusY:
     BMI .highByte                                                        ;A480F9;
     AND.W #$00FF                                                         ;A480FB;
     BRA +                                                                ;A480FE;
-
 
   .highByte:
     ORA.W #$FF00                                                         ;A48100;
@@ -240,6 +284,7 @@ Instruction_CommonA4_GotoY_PlusY:
     RTL                                                                  ;A48107;
 
 
+;;; $8108: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA4_DecrementTimer_GotoYIfNonZero:
     DEC.W $0F90,X                                                        ;A48108;
     BNE Instruction_CommonA4_GotoY                                       ;A4810B;
@@ -248,6 +293,7 @@ Instruction_CommonA4_DecrementTimer_GotoYIfNonZero:
     RTL                                                                  ;A4810F;
 
 
+;;; $8110: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA4_DecrementTimer_GotoYIfNonZero_duplicate:
     DEC.W $0F90,X                                                        ;A48110;
     BNE Instruction_CommonA4_GotoY                                       ;A48113;
@@ -256,6 +302,7 @@ Instruction_CommonA4_DecrementTimer_GotoYIfNonZero_duplicate:
     RTL                                                                  ;A48117;
 
 
+;;; $8118: Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 Instruction_CommonA4_DecrementTimer_GotoY_PlusY_IfNonZero:
     SEP #$20                                                             ;A48118;
     DEC.W $0F90,X                                                        ;A4811A;
@@ -265,6 +312,7 @@ Instruction_CommonA4_DecrementTimer_GotoY_PlusY_IfNonZero:
     RTL                                                                  ;A48122;
 
 
+;;; $8123: Instruction - timer = [[Y]] ;;;
 Instruction_CommonA4_TimerInY:
     LDA.W $0000,Y                                                        ;A48123;
     STA.W $0F90,X                                                        ;A48126;
@@ -273,12 +321,14 @@ Instruction_CommonA4_TimerInY:
     RTL                                                                  ;A4812B;
 
 
+;;; $812C: Instruction - skip next instruction ;;;
 Instruction_CommonA4_SkipNextInstruction:
     INY                                                                  ;A4812C;
     INY                                                                  ;A4812D;
     RTL                                                                  ;A4812E;
 
 
+;;; $812F: Instruction - sleep ;;;
 Instruction_CommonA4_Sleep:
     DEY                                                                  ;A4812F;
     DEY                                                                  ;A48130;
@@ -289,7 +339,12 @@ Instruction_CommonA4_Sleep:
     RTL                                                                  ;A48139;
 
 
+;;; $813A: Instruction - wait [[Y]] frames ;;;
 Instruction_CommonA4_WaitYFrames:
+; Set instruction timer and terminate processing enemy instructions
+; Used for running a delay that doesn't update graphics,
+; useful for e.g. GT eye beam attack ($AA:D10D), implemented by an instruction list that has no graphical instructions,
+; which allows it to be called from multiple different poses
     LDA.W $0000,Y                                                        ;A4813A;
     STA.W $0F94,X                                                        ;A4813D;
     INY                                                                  ;A48140;
@@ -301,6 +356,7 @@ Instruction_CommonA4_WaitYFrames:
     RTL                                                                  ;A4814A;
 
 
+;;; $814B: Instruction - transfer [[Y]] bytes from [[Y] + 2] to VRAM [[Y] + 5] ;;;
 Instruction_CommonA4_TransferYBytesInYToVRAM:
     PHX                                                                  ;A4814B;
     LDX.W $0330                                                          ;A4814C;
@@ -324,6 +380,7 @@ Instruction_CommonA4_TransferYBytesInYToVRAM:
     RTL                                                                  ;A48172;
 
 
+;;; $8173: Instruction - enable off-screen processing ;;;
 Instruction_CommonA4_EnableOffScreenProcessing:
     LDA.W $0F86,X                                                        ;A48173;
     ORA.W #$0800                                                         ;A48176;
@@ -331,6 +388,7 @@ Instruction_CommonA4_EnableOffScreenProcessing:
     RTL                                                                  ;A4817C;
 
 
+;;; $817D: Instruction - disable off-screen processing ;;;
 Instruction_CommonA4_DisableOffScreenProcessing:
     LDA.W $0F86,X                                                        ;A4817D;
     AND.W #$F7FF                                                         ;A48180;
@@ -338,12 +396,13 @@ Instruction_CommonA4_DisableOffScreenProcessing:
     RTL                                                                  ;A48186;
 
 
+;;; $8187: Common enemy speeds - linearly increasing ;;;
+CommonA4EnemySpeeds_LinearlyIncreasing:
 ;        _____________________ Speed
 ;       |      _______________ Subspeed
 ;       |     |      _________ Negated speed
 ;       |     |     |      ___ Negated subspeed
 ;       |     |     |     |
-CommonA4EnemySpeeds_LinearlyIncreasing:
   .speed:
     dw $0000                                                             ;A48187;
   .subspeed:
@@ -418,12 +477,13 @@ CommonA4EnemySpeeds_LinearlyIncreasing:
     dw $0004,$0000,$FFFC,$0000
 
 
+;;; $838F: Common enemy speeds - quadratically increasing ;;;
+CommonA4EnemySpeeds_QuadraticallyIncreasing:
 ;        _____________________ Subspeed
 ;       |      _______________ Speed
 ;       |     |      _________ Negated subspeed
 ;       |     |     |      ___ Negated speed
 ;       |     |     |     |
-CommonA4EnemySpeeds_QuadraticallyIncreasing:
 ; I.e. gravity
 ; Used by e.g. Botwoon when dying and falling to the floor
   .subspeed:

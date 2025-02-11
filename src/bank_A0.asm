@@ -13979,7 +13979,7 @@ UNUSED_EnemyHeaders_SpinningTurtleEye_A0F153:
     dw $0001,$0000                                                       ;A0F167;
     dw UNUSED_MainAI_SpinningTurtleEye_B3870E                            ;A0F16B;
     dw CommonB3_GrappleAI_CancelGrappleBeam                              ;A0F16D;
-    dw CommonB3_RTL_B3804C                                               ;A0F16F;
+    dw RTL_B3804C                                                        ;A0F16F;
     dw CommonB3_NormalEnemyFrozenAI                                      ;A0F171;
     dw $0000                                                             ;A0F173;
     dw $0000                                                             ;A0F175;
@@ -14005,7 +14005,7 @@ EnemyHeaders_Zeb:
     dw $0001,$0000                                                       ;A0F1A7;
     dw MainAI_Zeb_Zebbo                                                  ;A0F1AB;
     dw CommonB3_GrappleAI_KillEnemy                                      ;A0F1AD;
-    dw CommonB3_RTL_B3804C                                               ;A0F1AF;
+    dw RTL_B3804C                                                        ;A0F1AF;
     dw CommonB3_NormalEnemyFrozenAI                                      ;A0F1B1;
     dw $0000                                                             ;A0F1B3;
     dw $0000                                                             ;A0F1B5;
@@ -14031,7 +14031,7 @@ EnemyHeaders_Zebbo:
     dw $0001,$0000                                                       ;A0F1E7;
     dw MainAI_Zeb_Zebbo                                                  ;A0F1EB;
     dw CommonB3_GrappleAI_KillEnemy                                      ;A0F1ED;
-    dw CommonB3_RTL_B3804C                                               ;A0F1EF;
+    dw RTL_B3804C                                                        ;A0F1EF;
     dw CommonB3_NormalEnemyFrozenAI                                      ;A0F1F1;
     dw $0000                                                             ;A0F1F3;
     dw $0000                                                             ;A0F1F5;
@@ -14057,7 +14057,7 @@ EnemyHeaders_Gamet:
     dw $0005,$0000                                                       ;A0F227;
     dw MainAI_Gamet                                                      ;A0F22B;
     dw CommonB3_GrappleAI_KillEnemy                                      ;A0F22D;
-    dw CommonB3_RTL_B3804C                                               ;A0F22F;
+    dw RTL_B3804C                                                        ;A0F22F;
     dw CommonB3_NormalEnemyFrozenAI                                      ;A0F231;
     dw $0000                                                             ;A0F233;
     dw $0000                                                             ;A0F235;
@@ -14083,7 +14083,7 @@ EnemyHeaders_Geega:
     dw $0001,$0000                                                       ;A0F267;
     dw MainAI_Geega                                                      ;A0F26B;
     dw CommonB3_GrappleAI_KillEnemy                                      ;A0F26D;
-    dw CommonB3_RTL_B3804C                                               ;A0F26F;
+    dw RTL_B3804C                                                        ;A0F26F;
     dw CommonB3_NormalEnemyFrozenAI                                      ;A0F271;
     dw $0000                                                             ;A0F273;
     dw $0000                                                             ;A0F275;
@@ -14109,7 +14109,7 @@ EnemyHeaders_Botwoon:
     dw $0001,$0000                                                       ;A0F2A7;
     dw MainAI_Botwoon                                                    ;A0F2AB;
     dw CommonB3_GrappleAI_CancelGrappleBeam                              ;A0F2AD;
-    dw CommonB3_RTL_B3804C                                               ;A0F2AF;
+    dw RTL_B3804C                                                        ;A0F2AF;
     dw CommonB3_NormalEnemyFrozenAI                                      ;A0F2B1;
     dw $0000                                                             ;A0F2B3;
     dw $0000                                                             ;A0F2B5;
@@ -14136,7 +14136,7 @@ EnemyHeaders_EtecoonEscape:
     dw $0001,$0000                                                       ;A0F2E7;
     dw MainAI_EtecoonEscape                                              ;A0F2EB;
     dw CommonB3_GrappleAI_NoInteraction                                  ;A0F2ED;
-    dw CommonB3_RTL_B3804C                                               ;A0F2EF;
+    dw RTL_B3804C                                                        ;A0F2EF;
     dw CommonB3_NormalEnemyFrozenAI                                      ;A0F2F1;
     dw $0000                                                             ;A0F2F3;
     dw $0000                                                             ;A0F2F5;
@@ -14144,8 +14144,8 @@ EnemyHeaders_EtecoonEscape:
     dw RTL_A0804C                                                        ;A0F2FB;
     dw $0000                                                             ;A0F2F9;
     dd $00000000                                                         ;A0F2FF;
-    dw CommonB3_RTL_B3804C                                               ;A0F303;
-    dw CommonB3_RTL_B3804C                                               ;A0F305;
+    dw RTL_B3804C                                                        ;A0F303;
+    dw RTL_B3804C                                                        ;A0F305;
     dw $0000                                                             ;A0F307;
     dl Tiles_Etecoon                                                     ;A0F309;
     db $05                                                               ;A0F30C;
@@ -14163,7 +14163,7 @@ EnemyHeaders_DachoraEscape:
     dw $0001,$0000                                                       ;A0F327;
     dw RTL_B3EB1A                                                        ;A0F32B;
     dw CommonB3_GrappleAI_NoInteraction                                  ;A0F32D;
-    dw CommonB3_RTL_B3804C                                               ;A0F32F;
+    dw RTL_B3804C                                                        ;A0F32F;
     dw CommonB3_NormalEnemyFrozenAI                                      ;A0F331;
     dw $0000                                                             ;A0F333;
     dw $0000                                                             ;A0F335;
@@ -14171,8 +14171,8 @@ EnemyHeaders_DachoraEscape:
     dw RTL_A0804C                                                        ;A0F33B;
     dw $0000                                                             ;A0F339;
     dd $00000000                                                         ;A0F33F;
-    dw CommonB3_RTL_B3804C                                               ;A0F343;
-    dw CommonB3_RTL_B3804C                                               ;A0F345;
+    dw RTL_B3804C                                                        ;A0F343;
+    dw RTL_B3804C                                                        ;A0F345;
     dw $0000                                                             ;A0F347;
     dl Tiles_Dachora                                                     ;A0F349;
     db $05                                                               ;A0F34C;

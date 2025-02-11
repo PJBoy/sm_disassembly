@@ -2,356 +2,415 @@
 org $A98000
 
 
+; Common to all enemy code banks
+
+;;; $8000: Grapple AI - no interaction. Also unfreezes enemies(!) ;;;
 CommonA9_GrappleAI_NoInteraction:
-    JSL.L GrappleAI_SwitchEnemyAIToMainAI                                ;A98000;
-    RTL                                                                  ;A98004;
+; Used by skultera, Draygon body, fire arc, Phantoon, etecoon, dachora and WS ghost
+    JSL.L GrappleAI_SwitchEnemyAIToMainAI                                ;A58000;
+    RTL                                                                  ;A58004;
 
 
+;;; $8005: Grapple AI - Samus latches on ;;;
 CommonA9_GrappleAI_SamusLatchesOn:
-    JSL.L GrappleAI_SamusLatchesOnWithGrapple                            ;A98005;
-    RTL                                                                  ;A98009;
+; Used by gripper and Crocomire
+    JSL.L GrappleAI_SamusLatchesOnWithGrapple                            ;A58005;
+    RTL                                                                  ;A58009;
 
 
+;;; $800A: Grapple AI - kill enemy ;;;
 CommonA9_GrappleAI_KillEnemy:
-    JSL.L GrappleAI_EnemyGrappleDeath                                    ;A9800A;
-    RTL                                                                  ;A9800E;
+; Common
+    JSL.L GrappleAI_EnemyGrappleDeath                                    ;A5800A;
+    RTL                                                                  ;A5800E;
 
 
+;;; $800F: Grapple AI - cancel grapple beam ;;;
 CommonA9_GrappleAI_CancelGrappleBeam:
-    JSL.L GrappleAI_SwitchToFrozenAI                                     ;A9800F;
-    RTL                                                                  ;A98013;
+; Common
+    JSL.L GrappleAI_SwitchToFrozenAI                                     ;A5800F;
+    RTL                                                                  ;A58013;
 
 
+;;; $8014: Grapple AI - Samus latches on - no invincibility ;;;
 CommonA9_GrappleAI_SamusLatchesOn_NoInvincibility:
-    JSL.L GrappleAI_SamusLatchesOnWithGrapple_NoInvincibility            ;A98014;
-    RTL                                                                  ;A98018;
+; Used by powamp
+    JSL.L GrappleAI_SamusLatchesOnWithGrapple_NoInvincibility            ;A58014;
+    RTL                                                                  ;A58018;
 
 
+;;; $8019: Unused. Grapple AI - Samus latches on - paralyse enemy ;;;
 UNUSED_CommonA9_GrappleAI_SamusLatchesOn_ParalyzeEnemy_A98019:
-    JSL.L GrappleAI_SamusLatchesOnWithGrapple_ParalyzeEnemy              ;A98019;
-    RTL                                                                  ;A9801D;
+    JSL.L GrappleAI_SamusLatchesOnWithGrapple_ParalyzeEnemy              ;A58019;
+    RTL                                                                  ;A5801D;
 
 
+;;; $801E: Grapple AI - hurt Samus ;;;
 CommonA9_GrappleAI_HurtSamus:
-    JSL.L GrappleAI_SwitchToFrozenAI_duplicate                           ;A9801E;
-    RTL                                                                  ;A98022;
+; Used by WS spark
+; Hurt reaction happens in $9B:B932
+    JSL.L GrappleAI_SwitchToFrozenAI_duplicate                           ;A5801E;
+    RTL                                                                  ;A58022;
 
 
+;;; $8023: Normal enemy touch AI ;;;
 CommonA9_NormalEnemyTouchAI:
-    JSL.L NormalEnemyTouchAI                                             ;A98023;
-    RTL                                                                  ;A98027;
+    JSL.L NormalEnemyTouchAI                                             ;A58023;
+    RTL                                                                  ;A58027;
 
 
+;;; $8028: Normal touch AI - no death check ;;;
 CommonA9_NormalTouchAI_NoDeathCheck:
-    JSL.L NormalEnemyTouchAI_NoDeathCheck_External                       ;A98028;
-    RTL                                                                  ;A9802C;
+    JSL.L NormalEnemyTouchAI_NoDeathCheck_External                       ;A58028;
+    RTL                                                                  ;A5802C;
 
 
+;;; $802D: Normal enemy shot AI ;;;
 CommonA9_NormalEnemyShotAI:
-    JSL.L NormalEnemyShotAI                                              ;A9802D;
-    RTL                                                                  ;A98031;
+    JSL.L NormalEnemyShotAI                                              ;A5802D;
+    RTL                                                                  ;A58031;
 
 
+;;; $8032: Normal enemy shot AI - no death check, no enemy shot graphic ;;;
 CommonA9_NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
-    JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;A98032;
-    RTL                                                                  ;A98036;
+    JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;A58032;
+    RTL                                                                  ;A58036;
 
 
+;;; $8037: Normal enemy power bomb AI ;;;
 CommonA9_NormalEnemyPowerBombAI:
-    JSL.L NormalEnemyPowerBombAI                                         ;A98037;
-    RTL                                                                  ;A9803B;
+    JSL.L NormalEnemyPowerBombAI                                         ;A58037;
+    RTL                                                                  ;A5803B;
 
 
+;;; $803C: Normal enemy power bomb AI - no death check ;;;
 CommonA9_NormalEnemyPowerBombAI_NoDeathCheck:
-    JSL.L NormalEnemyPowerBombAI_NoDeathCheck_External                   ;A9803C;
-    RTL                                                                  ;A98040;
+; Kraid's power bomb AI
+    JSL.L NormalEnemyPowerBombAI_NoDeathCheck_External                   ;A5803C;
+    RTL                                                                  ;A58040;
 
 
+;;; $8041: Normal enemy frozen AI ;;;
 CommonA9_NormalEnemyFrozenAI:
-    JSL.L NormalEnemyFrozenAI                                            ;A98041;
-    RTL                                                                  ;A98045;
+    JSL.L NormalEnemyFrozenAI                                            ;A58041;
+    RTL                                                                  ;A58045;
 
 
+;;; $8046: Creates a dud shot ;;;
 CommonA9_CreateADudShot:
-    JSL.L CreateADudShot                                                 ;A98046;
-    RTL                                                                  ;A9804A;
+    JSL.L CreateADudShot                                                 ;A58046;
+    RTL                                                                  ;A5804A;
 
 
+;;; $804B: RTS ;;;
 RTS_A9804B:
-    RTS                                                                  ;A9804B;
+    RTS                                                                  ;A5804B;
 
 
+;;; $804C: RTL ;;;
 RTL_A9804C:
-    RTL                                                                  ;A9804C;
+    RTL                                                                  ;A5804C;
 
 
+;;; $804D: Spritemap - nothing ;;;
 Spritemap_CommonA9_Nothing:
-    dw $0000                                                             ;A9804D;
+    dw $0000                                                             ;A5804D;
 
+
+;;; $804F: Extended spritemap - nothing ;;;
 ExtendedSpritemap_CommonA9_Nothing:
-    dw $0001                                                             ;A9804F;
+    dw $0001                                                             ;A5804F;
     dw $0000,$0000
-    dw Spritemap_CommonA9_Nothing                                        ;A98055;
-    dw Hitbox_CommonA9_Nothing                                           ;A98057;
+    dw Spritemap_CommonA9_Nothing                                        ;A58055;
+    dw Hitbox_CommonA9_Nothing                                           ;A58057;
 
+
+;;; $8059: Hitbox - nothing ;;;
 Hitbox_CommonA9_Nothing:
-    dw $0001                                                             ;A98059;
+; [n entries] [[left offset] [top offset] [right offset] [bottom offset] [p touch] [p shot]]...
+    dw $0001                                                             ;A58059;
     dw $0000,$0000,$0000,$0000
-    dw CommonA9_NormalEnemyTouchAI                                       ;A98063;
-    dw CommonA9_NormalEnemyShotAI                                        ;A98065;
+    dw CommonA9_NormalEnemyTouchAI                                       ;A58063;
+    dw CommonA9_NormalEnemyShotAI                                        ;A58065;
 
+
+;;; $8067: Instruction list - delete enemy ;;;
 InstList_CommonA9_DeleteEnemy:
-    dw Instruction_CommonA9_DeleteEnemy                                  ;A98067;
+    dw Instruction_CommonA9_DeleteEnemy                                  ;A58067;
 
+
+;;; $8069: Two NOPs ;;;
 NOPNOP_A98069:
-    NOP                                                                  ;A98069;
-    NOP                                                                  ;A9806A;
+; Used as palette by respawning enemy placeholder and Draygon's eye o_O
+    NOP                                                                  ;A58069;
+    NOP                                                                  ;A5806A;
 
+
+;;; $806B: Instruction - enemy $0FB2 = [[Y]] ;;;
 Instruction_CommonA9_Enemy0FB2_InY:
-    LDA.W $0000,Y                                                        ;A9806B;
-    STA.W $0FB2,X                                                        ;A9806E;
-    INY                                                                  ;A98071;
-    INY                                                                  ;A98072;
-    RTL                                                                  ;A98073;
+; Used only by torizos (for enemy movement function) and escape etecoon (for enemy function)
+    LDA.W $0000,Y                                                        ;A5806B;
+    STA.W $0FB2,X                                                        ;A5806E;
+    INY                                                                  ;A58071;
+    INY                                                                  ;A58072;
+    RTL                                                                  ;A58073;
 
 
+;;; $8074: Instruction - enemy $0FB2 = RTS ;;;
 Instruction_CommonA9_SetEnemy0FB2ToRTS:
-    LDA.W #RTS_A9807B                                                    ;A98074;
-    STA.W $0FB2,X                                                        ;A98077;
-    RTL                                                                  ;A9807A;
+    LDA.W #RTS_A9807B                                                    ;A58074;
+    STA.W $0FB2,X                                                        ;A58077;
+    RTL                                                                  ;A5807A;
 
 
 RTS_A9807B:
-    RTS                                                                  ;A9807B;
+    RTS                                                                  ;A5807B;
 
 
+;;; $807C: Instruction - delete enemy ;;;
 Instruction_CommonA9_DeleteEnemy:
-    LDA.W $0F86,X                                                        ;A9807C;
-    ORA.W #$0200                                                         ;A9807F;
-    STA.W $0F86,X                                                        ;A98082;
-    PLA                                                                  ;A98085;
-    PEA.W ProcessEnemyInstructions_return-1                              ;A98086;
-    RTL                                                                  ;A98089;
+    LDA.W $0F86,X                                                        ;A5807C;
+    ORA.W #$0200                                                         ;A5807F;
+    STA.W $0F86,X                                                        ;A58082;
+    PLA                                                                  ;A58085;
+    PEA.W ProcessEnemyInstructions_return-1                              ;A58086;
+    RTL                                                                  ;A58089;
 
 
+;;; $808A: Instruction - call function [[Y]] ;;;
 Instruction_CommonA9_CallFunctionInY:
-    LDA.W $0000,Y                                                        ;A9808A;
-    STA.B $12                                                            ;A9808D;
-    PHY                                                                  ;A9808F;
-    PHX                                                                  ;A98090;
-    PEA.W .manualReturn-1                                                ;A98091;
-    JMP.W ($0012)                                                        ;A98094;
-
+    LDA.W $0000,Y                                                        ;A5808A;
+    STA.B $12                                                            ;A5808D;
+    PHY                                                                  ;A5808F;
+    PHX                                                                  ;A58090;
+    PEA.W .manualReturn-1                                                ;A58091;
+    JMP.W ($0012)                                                        ;A58094;
 
   .manualReturn:
-    PLX                                                                  ;A98097;
-    PLY                                                                  ;A98098;
-    INY                                                                  ;A98099;
-    INY                                                                  ;A9809A;
-    RTL                                                                  ;A9809B;
+    PLX                                                                  ;A58097;
+    PLY                                                                  ;A58098;
+    INY                                                                  ;A58099;
+    INY                                                                  ;A5809A;
+    RTL                                                                  ;A5809B;
 
 
+;;; $809C: Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 Instruction_CommonA9_CallFunctionInY_WithA:
-    LDA.W $0000,Y                                                        ;A9809C;
-    STA.B $12                                                            ;A9809F;
-    LDA.W $0002,Y                                                        ;A980A1;
-    PHY                                                                  ;A980A4;
-    PHX                                                                  ;A980A5;
-    PEA.W .manualReturn-1                                                ;A980A6;
-    JMP.W ($0012)                                                        ;A980A9;
-
+    LDA.W $0000,Y                                                        ;A5809C;
+    STA.B $12                                                            ;A5809F;
+    LDA.W $0002,Y                                                        ;A580A1;
+    PHY                                                                  ;A580A4;
+    PHX                                                                  ;A580A5;
+    PEA.W .manualReturn-1                                                ;A580A6;
+    JMP.W ($0012)                                                        ;A580A9;
 
   .manualReturn:
-    PLX                                                                  ;A980AC;
-    PLY                                                                  ;A980AD;
-    TYA                                                                  ;A980AE;
-    CLC                                                                  ;A980AF;
-    ADC.W #$0004                                                         ;A980B0;
-    TAY                                                                  ;A980B3;
-    RTL                                                                  ;A980B4;
+    PLX                                                                  ;A580AC;
+    PLY                                                                  ;A580AD;
+    TYA                                                                  ;A580AE;
+    CLC                                                                  ;A580AF;
+    ADC.W #$0004                                                         ;A580B0;
+    TAY                                                                  ;A580B3;
+    RTL                                                                  ;A580B4;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $80B5: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Instruction_CommonA9_CallExternalFunctionInY_A980B5:
-    LDA.W $0000,Y                                                        ;A980B5;
-    STA.B $12                                                            ;A980B8;
-    LDA.W $0001,Y                                                        ;A980BA;
-    STA.B $13                                                            ;A980BD;
-    PHX                                                                  ;A980BF;
-    PHY                                                                  ;A980C0;
-    JSL.L .externalFunction                                              ;A980C1;
-    PLY                                                                  ;A980C5;
-    PLX                                                                  ;A980C6;
-    INY                                                                  ;A980C7;
-    INY                                                                  ;A980C8;
-    INY                                                                  ;A980C9;
-    RTL                                                                  ;A980CA;
-
+    LDA.W $0000,Y                                                        ;A580B5;
+    STA.B $12                                                            ;A580B8;
+    LDA.W $0001,Y                                                        ;A580BA;
+    STA.B $13                                                            ;A580BD;
+    PHX                                                                  ;A580BF;
+    PHY                                                                  ;A580C0;
+    JSL.L .externalFunction                                              ;A580C1;
+    PLY                                                                  ;A580C5;
+    PLX                                                                  ;A580C6;
+    INY                                                                  ;A580C7;
+    INY                                                                  ;A580C8;
+    INY                                                                  ;A580C9;
+    RTL                                                                  ;A580CA;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;A980CB;
+    JML.W [$0012]                                                        ;A580CB;
 
 
+;;; $80CE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_CommonA9_CallExternalFunctionInY_WithA_A980CE:
-    LDA.W $0000,Y                                                        ;A980CE;
-    STA.B $12                                                            ;A980D1;
-    LDA.W $0001,Y                                                        ;A980D3;
-    STA.B $13                                                            ;A980D6;
-    LDA.W $0003,Y                                                        ;A980D8;
-    PHX                                                                  ;A980DB;
-    PHY                                                                  ;A980DC;
-    JSL.L .externalFunction                                              ;A980DD;
-    PLY                                                                  ;A980E1;
-    PLX                                                                  ;A980E2;
-    TYA                                                                  ;A980E3;
-    CLC                                                                  ;A980E4;
-    ADC.W #$0005                                                         ;A980E5;
-    TAY                                                                  ;A980E8;
-    RTL                                                                  ;A980E9;
-
+    LDA.W $0000,Y                                                        ;A580CE;
+    STA.B $12                                                            ;A580D1;
+    LDA.W $0001,Y                                                        ;A580D3;
+    STA.B $13                                                            ;A580D6;
+    LDA.W $0003,Y                                                        ;A580D8;
+    PHX                                                                  ;A580DB;
+    PHY                                                                  ;A580DC;
+    JSL.L .externalFunction                                              ;A580DD;
+    PLY                                                                  ;A580E1;
+    PLX                                                                  ;A580E2;
+    TYA                                                                  ;A580E3;
+    CLC                                                                  ;A580E4;
+    ADC.W #$0005                                                         ;A580E5;
+    TAY                                                                  ;A580E8;
+    RTL                                                                  ;A580E9;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;A980EA;
+    JML.W [$0012]                                                        ;A580EA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $80ED: Instruction - go to [[Y]] ;;;
 Instruction_CommonA9_GotoY:
-    LDA.W $0000,Y                                                        ;A980ED;
-    TAY                                                                  ;A980F0;
-    RTL                                                                  ;A980F1;
+    LDA.W $0000,Y                                                        ;A580ED;
+    TAY                                                                  ;A580F0;
+    RTL                                                                  ;A580F1;
 
 
+;;; $80F2: Instruction - go to [[Y]] + ±[[Y]] ;;;
 Instruction_CommonA9_GotoY_PlusY:
-    STY.B $12                                                            ;A980F2;
-    DEY                                                                  ;A980F4;
-    LDA.W $0000,Y                                                        ;A980F5;
-    XBA                                                                  ;A980F8;
-    BMI .highByte                                                        ;A980F9;
-    AND.W #$00FF                                                         ;A980FB;
-    BRA +                                                                ;A980FE;
-
+    STY.B $12                                                            ;A580F2;
+    DEY                                                                  ;A580F4;
+    LDA.W $0000,Y                                                        ;A580F5;
+    XBA                                                                  ;A580F8;
+    BMI .highByte                                                        ;A580F9;
+    AND.W #$00FF                                                         ;A580FB;
+    BRA +                                                                ;A580FE;
 
   .highByte:
-    ORA.W #$FF00                                                         ;A98100;
+    ORA.W #$FF00                                                         ;A58100;
 
-+   CLC                                                                  ;A98103;
-    ADC.B $12                                                            ;A98104;
-    TAY                                                                  ;A98106;
-    RTL                                                                  ;A98107;
++   CLC                                                                  ;A58103;
+    ADC.B $12                                                            ;A58104;
+    TAY                                                                  ;A58106;
+    RTL                                                                  ;A58107;
 
 
+;;; $8108: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA9_DecrementTimer_GotoYIfNonZero:
-    DEC.W $0F90,X                                                        ;A98108;
-    BNE Instruction_CommonA9_GotoY                                       ;A9810B;
-    INY                                                                  ;A9810D;
-    INY                                                                  ;A9810E;
-    RTL                                                                  ;A9810F;
+    DEC.W $0F90,X                                                        ;A58108;
+    BNE Instruction_CommonA9_GotoY                                       ;A5810B;
+    INY                                                                  ;A5810D;
+    INY                                                                  ;A5810E;
+    RTL                                                                  ;A5810F;
 
 
+;;; $8110: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA9_DecrementTimer_GotoYIfNonZero_duplicate:
-    DEC.W $0F90,X                                                        ;A98110;
-    BNE Instruction_CommonA9_GotoY                                       ;A98113;
-    INY                                                                  ;A98115;
-    INY                                                                  ;A98116;
-    RTL                                                                  ;A98117;
+    DEC.W $0F90,X                                                        ;A58110;
+    BNE Instruction_CommonA9_GotoY                                       ;A58113;
+    INY                                                                  ;A58115;
+    INY                                                                  ;A58116;
+    RTL                                                                  ;A58117;
 
 
+;;; $8118: Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 Instruction_CommonA9_DecrementTimer_GotoY_PlusY_IfNonZero:
-    SEP #$20                                                             ;A98118;
-    DEC.W $0F90,X                                                        ;A9811A;
-    REP #$20                                                             ;A9811D;
-    BNE Instruction_CommonA9_GotoY_PlusY                                 ;A9811F;
-    INY                                                                  ;A98121;
-    RTL                                                                  ;A98122;
+    SEP #$20                                                             ;A58118;
+    DEC.W $0F90,X                                                        ;A5811A;
+    REP #$20                                                             ;A5811D;
+    BNE Instruction_CommonA9_GotoY_PlusY                                 ;A5811F;
+    INY                                                                  ;A58121;
+    RTL                                                                  ;A58122;
 
 
+;;; $8123: Instruction - timer = [[Y]] ;;;
 Instruction_CommonA9_TimerInY:
-    LDA.W $0000,Y                                                        ;A98123;
-    STA.W $0F90,X                                                        ;A98126;
-    INY                                                                  ;A98129;
-    INY                                                                  ;A9812A;
-    RTL                                                                  ;A9812B;
+    LDA.W $0000,Y                                                        ;A58123;
+    STA.W $0F90,X                                                        ;A58126;
+    INY                                                                  ;A58129;
+    INY                                                                  ;A5812A;
+    RTL                                                                  ;A5812B;
 
 
+;;; $812C: Instruction - skip next instruction ;;;
 Instruction_CommonA9_SkipNextInstruction:
-    INY                                                                  ;A9812C;
-    INY                                                                  ;A9812D;
-    RTL                                                                  ;A9812E;
+    INY                                                                  ;A5812C;
+    INY                                                                  ;A5812D;
+    RTL                                                                  ;A5812E;
 
 
+;;; $812F: Instruction - sleep ;;;
 Instruction_CommonA9_Sleep:
-    DEY                                                                  ;A9812F;
-    DEY                                                                  ;A98130;
-    TYA                                                                  ;A98131;
-    STA.W $0F92,X                                                        ;A98132;
-    PLA                                                                  ;A98135;
-    PEA.W ProcessEnemyInstructions_return-1                              ;A98136;
-    RTL                                                                  ;A98139;
+    DEY                                                                  ;A5812F;
+    DEY                                                                  ;A58130;
+    TYA                                                                  ;A58131;
+    STA.W $0F92,X                                                        ;A58132;
+    PLA                                                                  ;A58135;
+    PEA.W ProcessEnemyInstructions_return-1                              ;A58136;
+    RTL                                                                  ;A58139;
 
 
+;;; $813A: Instruction - wait [[Y]] frames ;;;
 Instruction_CommonA9_WaitYFrames:
-    LDA.W $0000,Y                                                        ;A9813A;
-    STA.W $0F94,X                                                        ;A9813D;
-    INY                                                                  ;A98140;
-    INY                                                                  ;A98141;
-    TYA                                                                  ;A98142;
-    STA.W $0F92,X                                                        ;A98143;
-    PLA                                                                  ;A98146;
-    PEA.W ProcessEnemyInstructions_return-1                              ;A98147;
-    RTL                                                                  ;A9814A;
+; Set instruction timer and terminate processing enemy instructions
+; Used for running a delay that doesn't update graphics,
+; useful for e.g. GT eye beam attack ($AA:D10D), implemented by an instruction list that has no graphical instructions,
+; which allows it to be called from multiple different poses
+    LDA.W $0000,Y                                                        ;A5813A;
+    STA.W $0F94,X                                                        ;A5813D;
+    INY                                                                  ;A58140;
+    INY                                                                  ;A58141;
+    TYA                                                                  ;A58142;
+    STA.W $0F92,X                                                        ;A58143;
+    PLA                                                                  ;A58146;
+    PEA.W ProcessEnemyInstructions_return-1                              ;A58147;
+    RTL                                                                  ;A5814A;
 
 
+;;; $814B: Instruction - transfer [[Y]] bytes from [[Y] + 2] to VRAM [[Y] + 5] ;;;
 Instruction_CommonA9_TransferYBytesInYToVRAM:
-    PHX                                                                  ;A9814B;
-    LDX.W $0330                                                          ;A9814C;
-    LDA.W $0000,Y                                                        ;A9814F;
-    STA.B $D0,X                                                          ;A98152;
-    LDA.W $0002,Y                                                        ;A98154;
-    STA.B $D2,X                                                          ;A98157;
-    LDA.W $0003,Y                                                        ;A98159;
-    STA.B $D3,X                                                          ;A9815C;
-    LDA.W $0005,Y                                                        ;A9815E;
-    STA.B $D5,X                                                          ;A98161;
-    TXA                                                                  ;A98163;
-    CLC                                                                  ;A98164;
-    ADC.W #$0007                                                         ;A98165;
-    STA.W $0330                                                          ;A98168;
-    TYA                                                                  ;A9816B;
-    CLC                                                                  ;A9816C;
-    ADC.W #$0007                                                         ;A9816D;
-    TAY                                                                  ;A98170;
-    PLX                                                                  ;A98171;
-    RTL                                                                  ;A98172;
+    PHX                                                                  ;A5814B;
+    LDX.W $0330                                                          ;A5814C;
+    LDA.W $0000,Y                                                        ;A5814F;
+    STA.B $D0,X                                                          ;A58152;
+    LDA.W $0002,Y                                                        ;A58154;
+    STA.B $D2,X                                                          ;A58157;
+    LDA.W $0003,Y                                                        ;A58159;
+    STA.B $D3,X                                                          ;A5815C;
+    LDA.W $0005,Y                                                        ;A5815E;
+    STA.B $D5,X                                                          ;A58161;
+    TXA                                                                  ;A58163;
+    CLC                                                                  ;A58164;
+    ADC.W #$0007                                                         ;A58165;
+    STA.W $0330                                                          ;A58168;
+    TYA                                                                  ;A5816B;
+    CLC                                                                  ;A5816C;
+    ADC.W #$0007                                                         ;A5816D;
+    TAY                                                                  ;A58170;
+    PLX                                                                  ;A58171;
+    RTL                                                                  ;A58172;
 
 
+;;; $8173: Instruction - enable off-screen processing ;;;
 Instruction_CommonA9_EnableOffScreenProcessing:
-    LDA.W $0F86,X                                                        ;A98173;
-    ORA.W #$0800                                                         ;A98176;
-    STA.W $0F86,X                                                        ;A98179;
-    RTL                                                                  ;A9817C;
+    LDA.W $0F86,X                                                        ;A58173;
+    ORA.W #$0800                                                         ;A58176;
+    STA.W $0F86,X                                                        ;A58179;
+    RTL                                                                  ;A5817C;
 
 
+;;; $817D: Instruction - disable off-screen processing ;;;
 Instruction_CommonA9_DisableOffScreenProcessing:
-    LDA.W $0F86,X                                                        ;A9817D;
-    AND.W #$F7FF                                                         ;A98180;
-    STA.W $0F86,X                                                        ;A98183;
-    RTL                                                                  ;A98186;
+    LDA.W $0F86,X                                                        ;A5817D;
+    AND.W #$F7FF                                                         ;A58180;
+    STA.W $0F86,X                                                        ;A58183;
+    RTL                                                                  ;A58186;
 
 
+;;; $8187: Common enemy speeds - linearly increasing ;;;
+CommonA9EnemySpeeds_LinearlyIncreasing:
 ;        _____________________ Speed
 ;       |      _______________ Subspeed
 ;       |     |      _________ Negated speed
 ;       |     |     |      ___ Negated subspeed
 ;       |     |     |     |
-CommonA9EnemySpeeds_LinearlyIncreasing:
   .speed:
-    dw $0000                                                             ;A98187;
+    dw $0000                                                             ;A58187;
   .subspeed:
-    dw       $0000                                                       ;A98189;
+    dw       $0000                                                       ;A58189;
   .negatedSpeed:
-    dw             $0000                                                 ;A9818B;
+    dw             $0000                                                 ;A5818B;
   .negatedSubspeed:
-    dw                   $0000                                           ;A9818D;
+    dw                   $0000                                           ;A5818D;
     dw $0000,$1000,$FFFF,$F000
     dw $0000,$2000,$FFFF,$E000
     dw $0000,$3000,$FFFF,$D000
@@ -418,22 +477,23 @@ CommonA9EnemySpeeds_LinearlyIncreasing:
     dw $0004,$0000,$FFFC,$0000
 
 
+;;; $838F: Common enemy speeds - quadratically increasing ;;;
+CommonA9EnemySpeeds_QuadraticallyIncreasing:
+; I.e. gravity
+; Used by e.g. Botwoon when dying and falling to the floor
 ;        _____________________ Subspeed
 ;       |      _______________ Speed
 ;       |     |      _________ Negated subspeed
 ;       |     |     |      ___ Negated speed
 ;       |     |     |     |
-CommonA9EnemySpeeds_QuadraticallyIncreasing:
-; I.e. gravity
-; Used by e.g. Botwoon when dying and falling to the floor
   .subspeed:
-    dw $0000                                                             ;A9838F;
+    dw $0000                                                             ;A5838F;
   .speed:
-    dw       $0000                                                       ;A98391;
+    dw       $0000                                                       ;A58391;
   .negatedSubspeed:
-    dw             $0000                                                 ;A98393;
+    dw             $0000                                                 ;A58393;
   .negatedSpeed:
-    dw                   $0000                                           ;A98395;
+    dw                   $0000                                           ;A58395;
     dw $0109,$0000,$FEF7,$FFFF
     dw $031B,$0000,$FCE5,$FFFF
     dw $0636,$0000,$F9CA,$FFFF

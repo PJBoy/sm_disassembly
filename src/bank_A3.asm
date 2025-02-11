@@ -2,112 +2,153 @@
 org $A38000
 
 
+; Common to all enemy code banks
+
+;;; $8000: Grapple AI - no interaction. Also unfreezes enemies(!) ;;;
 CommonA3_GrappleAI_NoInteraction:
+; Used by skultera, Draygon body, fire arc, Phantoon, etecoon, dachora and WS ghost
     JSL.L GrappleAI_SwitchEnemyAIToMainAI                                ;A38000;
     RTL                                                                  ;A38004;
 
 
+;;; $8005: Grapple AI - Samus latches on ;;;
 CommonA3_GrappleAI_SamusLatchesOn:
+; Used by gripper and Crocomire
     JSL.L GrappleAI_SamusLatchesOnWithGrapple                            ;A38005;
     RTL                                                                  ;A38009;
 
 
+;;; $800A: Grapple AI - kill enemy ;;;
 CommonA3_GrappleAI_KillEnemy:
+; Common
     JSL.L GrappleAI_EnemyGrappleDeath                                    ;A3800A;
     RTL                                                                  ;A3800E;
 
 
+;;; $800F: Grapple AI - cancel grapple beam ;;;
 CommonA3_GrappleAI_CancelGrappleBeam:
+; Common
     JSL.L GrappleAI_SwitchToFrozenAI                                     ;A3800F;
     RTL                                                                  ;A38013;
 
 
+;;; $8014: Grapple AI - Samus latches on - no invincibility ;;;
 CommonA3_GrappleAI_SamusLatchesOn_NoInvincibility:
+; Used by powamp
     JSL.L GrappleAI_SamusLatchesOnWithGrapple_NoInvincibility            ;A38014;
     RTL                                                                  ;A38018;
 
 
+;;; $8019: Unused. Grapple AI - Samus latches on - paralyse enemy ;;;
 UNUSED_CommonA3_GrappleAI_SamusLatchesOn_ParalyzeEnemy_A38019:
     JSL.L GrappleAI_SamusLatchesOnWithGrapple_ParalyzeEnemy              ;A38019;
     RTL                                                                  ;A3801D;
 
 
+;;; $801E: Grapple AI - hurt Samus ;;;
 CommonA3_GrappleAI_HurtSamus:
+; Used by WS spark
+; Hurt reaction happens in $9B:B932
     JSL.L GrappleAI_SwitchToFrozenAI_duplicate                           ;A3801E;
     RTL                                                                  ;A38022;
 
 
+;;; $8023: Normal enemy touch AI ;;;
 CommonA3_NormalEnemyTouchAI:
     JSL.L NormalEnemyTouchAI                                             ;A38023;
     RTL                                                                  ;A38027;
 
 
+;;; $8028: Normal touch AI - no death check ;;;
 CommonA3_NormalTouchAI_NoDeathCheck:
     JSL.L NormalEnemyTouchAI_NoDeathCheck_External                       ;A38028;
     RTL                                                                  ;A3802C;
 
 
+;;; $802D: Normal enemy shot AI ;;;
 CommonA3_NormalEnemyShotAI:
     JSL.L NormalEnemyShotAI                                              ;A3802D;
     RTL                                                                  ;A38031;
 
 
+;;; $8032: Normal enemy shot AI - no death check, no enemy shot graphic ;;;
 CommonA3_NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;A38032;
     RTL                                                                  ;A38036;
 
 
+;;; $8037: Normal enemy power bomb AI ;;;
 CommonA3_NormalEnemyPowerBombAI:
     JSL.L NormalEnemyPowerBombAI                                         ;A38037;
     RTL                                                                  ;A3803B;
 
 
+;;; $803C: Normal enemy power bomb AI - no death check ;;;
 CommonA3_NormalEnemyPowerBombAI_NoDeathCheck:
+; Kraid's power bomb AI
     JSL.L NormalEnemyPowerBombAI_NoDeathCheck_External                   ;A3803C;
     RTL                                                                  ;A38040;
 
 
+;;; $8041: Normal enemy frozen AI ;;;
 CommonA3_NormalEnemyFrozenAI:
     JSL.L NormalEnemyFrozenAI                                            ;A38041;
     RTL                                                                  ;A38045;
 
 
+;;; $8046: Creates a dud shot ;;;
 CommonA3_CreateADudShot:
     JSL.L CreateADudShot                                                 ;A38046;
     RTL                                                                  ;A3804A;
 
 
+;;; $804B: RTS ;;;
 RTS_A3804B:
     RTS                                                                  ;A3804B;
 
 
+;;; $804C: RTL ;;;
 RTL_A3804C:
     RTL                                                                  ;A3804C;
 
 
+;;; $804D: Spritemap - nothing ;;;
 Spritemap_CommonA3_Nothing:
     dw $0000                                                             ;A3804D;
 
+
+;;; $804F: Extended spritemap - nothing ;;;
 ExtendedSpritemap_CommonA3_Nothing:
     dw $0001                                                             ;A3804F;
     dw $0000,$0000
     dw Spritemap_CommonA3_Nothing                                        ;A38055;
     dw Hitbox_CommonA3_Nothing                                           ;A38057;
 
+
+;;; $8059: Hitbox - nothing ;;;
 Hitbox_CommonA3_Nothing:
+; [n entries] [[left offset] [top offset] [right offset] [bottom offset] [p touch] [p shot]]...
     dw $0001                                                             ;A38059;
     dw $0000,$0000,$0000,$0000
     dw CommonA3_NormalEnemyTouchAI                                       ;A38063;
     dw CommonA3_NormalEnemyShotAI                                        ;A38065;
 
+
+;;; $8067: Instruction list - delete enemy ;;;
 InstList_CommonA3_DeleteEnemy:
     dw Instruction_CommonA3_DeleteEnemy                                  ;A38067;
 
+
+;;; $8069: Two NOPs ;;;
 NOPNOP_A38069:
+; Used as palette by respawning enemy placeholder and Draygon's eye o_O
     NOP                                                                  ;A38069;
     NOP                                                                  ;A3806A;
 
+
+;;; $806B: Instruction - enemy $0FB2 = [[Y]] ;;;
 Instruction_CommonA3_Enemy0FB2_InY:
+; Used only by torizos (for enemy movement function) and escape etecoon (for enemy function)
     LDA.W $0000,Y                                                        ;A3806B;
     STA.W $0FB2,X                                                        ;A3806E;
     INY                                                                  ;A38071;
@@ -115,6 +156,7 @@ Instruction_CommonA3_Enemy0FB2_InY:
     RTL                                                                  ;A38073;
 
 
+;;; $8074: Instruction - enemy $0FB2 = RTS ;;;
 Instruction_CommonA3_SetEnemy0FB2ToRTS:
     LDA.W #RTS_A3807B                                                    ;A38074;
     STA.W $0FB2,X                                                        ;A38077;
@@ -125,6 +167,7 @@ RTS_A3807B:
     RTS                                                                  ;A3807B;
 
 
+;;; $807C: Instruction - delete enemy ;;;
 Instruction_CommonA3_DeleteEnemy:
     LDA.W $0F86,X                                                        ;A3807C;
     ORA.W #$0200                                                         ;A3807F;
@@ -134,6 +177,7 @@ Instruction_CommonA3_DeleteEnemy:
     RTL                                                                  ;A38089;
 
 
+;;; $808A: Instruction - call function [[Y]] ;;;
 Instruction_CommonA3_CallFunctionInY:
     LDA.W $0000,Y                                                        ;A3808A;
     STA.B $12                                                            ;A3808D;
@@ -141,7 +185,6 @@ Instruction_CommonA3_CallFunctionInY:
     PHX                                                                  ;A38090;
     PEA.W .manualReturn-1                                                ;A38091;
     JMP.W ($0012)                                                        ;A38094;
-
 
   .manualReturn:
     PLX                                                                  ;A38097;
@@ -151,6 +194,7 @@ Instruction_CommonA3_CallFunctionInY:
     RTL                                                                  ;A3809B;
 
 
+;;; $809C: Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 Instruction_CommonA3_CallFunctionInY_WithA:
     LDA.W $0000,Y                                                        ;A3809C;
     STA.B $12                                                            ;A3809F;
@@ -159,7 +203,6 @@ Instruction_CommonA3_CallFunctionInY_WithA:
     PHX                                                                  ;A380A5;
     PEA.W .manualReturn-1                                                ;A380A6;
     JMP.W ($0012)                                                        ;A380A9;
-
 
   .manualReturn:
     PLX                                                                  ;A380AC;
@@ -172,6 +215,7 @@ Instruction_CommonA3_CallFunctionInY_WithA:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $80B5: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Instruction_CommonA3_CallExternalFunctionInY_A380B5:
     LDA.W $0000,Y                                                        ;A380B5;
     STA.B $12                                                            ;A380B8;
@@ -187,11 +231,11 @@ UNUSED_Instruction_CommonA3_CallExternalFunctionInY_A380B5:
     INY                                                                  ;A380C9;
     RTL                                                                  ;A380CA;
 
-
   .externalFunction:
     JML.W [$0012]                                                        ;A380CB;
 
 
+;;; $80CE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_CommonA3_CallExternalFunctionInY_WithA_A380CE:
     LDA.W $0000,Y                                                        ;A380CE;
     STA.B $12                                                            ;A380D1;
@@ -209,18 +253,19 @@ UNUSED_Inst_CommonA3_CallExternalFunctionInY_WithA_A380CE:
     TAY                                                                  ;A380E8;
     RTL                                                                  ;A380E9;
 
-
   .externalFunction:
     JML.W [$0012]                                                        ;A380EA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $80ED: Instruction - go to [[Y]] ;;;
 Instruction_CommonA3_GotoY:
     LDA.W $0000,Y                                                        ;A380ED;
     TAY                                                                  ;A380F0;
     RTL                                                                  ;A380F1;
 
 
+;;; $80F2: Instruction - go to [[Y]] + ±[[Y]] ;;;
 Instruction_CommonA3_GotoY_PlusY:
     STY.B $12                                                            ;A380F2;
     DEY                                                                  ;A380F4;
@@ -230,7 +275,6 @@ Instruction_CommonA3_GotoY_PlusY:
     AND.W #$00FF                                                         ;A380FB;
     BRA +                                                                ;A380FE;
 
-
   .highByte:
     ORA.W #$FF00                                                         ;A38100;
 
@@ -239,15 +283,17 @@ Instruction_CommonA3_GotoY_PlusY:
     TAY                                                                  ;A38106;
     RTL                                                                  ;A38107;
 
-    DEC.W $0F90,X                                                        ;A38108;
 
+;;; $8108: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA3_DecrementTimer_GotoYIfNonZero:
+    DEC.W $0F90,X                                                        ;A38108;
     BNE Instruction_CommonA3_GotoY                                       ;A3810B;
     INY                                                                  ;A3810D;
     INY                                                                  ;A3810E;
     RTL                                                                  ;A3810F;
 
 
+;;; $8110: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA3_DecrementTimer_GotoYIfNonZero_duplicate:
     DEC.W $0F90,X                                                        ;A38110;
     BNE Instruction_CommonA3_GotoY                                       ;A38113;
@@ -256,6 +302,7 @@ Instruction_CommonA3_DecrementTimer_GotoYIfNonZero_duplicate:
     RTL                                                                  ;A38117;
 
 
+;;; $8118: Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 Instruction_CommonA3_DecrementTimer_GotoY_PlusY_IfNonZero:
     SEP #$20                                                             ;A38118;
     DEC.W $0F90,X                                                        ;A3811A;
@@ -265,6 +312,7 @@ Instruction_CommonA3_DecrementTimer_GotoY_PlusY_IfNonZero:
     RTL                                                                  ;A38122;
 
 
+;;; $8123: Instruction - timer = [[Y]] ;;;
 Instruction_CommonA3_TimerInY:
     LDA.W $0000,Y                                                        ;A38123;
     STA.W $0F90,X                                                        ;A38126;
@@ -273,12 +321,14 @@ Instruction_CommonA3_TimerInY:
     RTL                                                                  ;A3812B;
 
 
+;;; $812C: Instruction - skip next instruction ;;;
 Instruction_CommonA3_SkipNextInstruction:
     INY                                                                  ;A3812C;
     INY                                                                  ;A3812D;
     RTL                                                                  ;A3812E;
 
 
+;;; $812F: Instruction - sleep ;;;
 Instruction_CommonA3_Sleep:
     DEY                                                                  ;A3812F;
     DEY                                                                  ;A38130;
@@ -289,7 +339,12 @@ Instruction_CommonA3_Sleep:
     RTL                                                                  ;A38139;
 
 
+;;; $813A: Instruction - wait [[Y]] frames ;;;
 Instruction_CommonA3_WaitYFrames:
+; Set instruction timer and terminate processing enemy instructions
+; Used for running a delay that doesn't update graphics,
+; useful for e.g. GT eye beam attack ($AA:D10D), implemented by an instruction list that has no graphical instructions,
+; which allows it to be called from multiple different poses
     LDA.W $0000,Y                                                        ;A3813A;
     STA.W $0F94,X                                                        ;A3813D;
     INY                                                                  ;A38140;
@@ -301,6 +356,7 @@ Instruction_CommonA3_WaitYFrames:
     RTL                                                                  ;A3814A;
 
 
+;;; $814B: Instruction - transfer [[Y]] bytes from [[Y] + 2] to VRAM [[Y] + 5] ;;;
 Instruction_CommonA3_TransferYBytesInYToVRAM:
     PHX                                                                  ;A3814B;
     LDX.W $0330                                                          ;A3814C;
@@ -324,6 +380,7 @@ Instruction_CommonA3_TransferYBytesInYToVRAM:
     RTL                                                                  ;A38172;
 
 
+;;; $8173: Instruction - enable off-screen processing ;;;
 Instruction_CommonA3_EnableOffScreenProcessing:
     LDA.W $0F86,X                                                        ;A38173;
     ORA.W #$0800                                                         ;A38176;
@@ -331,6 +388,7 @@ Instruction_CommonA3_EnableOffScreenProcessing:
     RTL                                                                  ;A3817C;
 
 
+;;; $817D: Instruction - disable off-screen processing ;;;
 Instruction_CommonA3_DisableOffScreenProcessing:
     LDA.W $0F86,X                                                        ;A3817D;
     AND.W #$F7FF                                                         ;A38180;
@@ -338,12 +396,13 @@ Instruction_CommonA3_DisableOffScreenProcessing:
     RTL                                                                  ;A38186;
 
 
+;;; $8187: Common enemy speeds - linearly increasing ;;;
+CommonA3EnemySpeeds_LinearlyIncreasing:
 ;        _____________________ Speed
 ;       |      _______________ Subspeed
 ;       |     |      _________ Negated speed
 ;       |     |     |      ___ Negated subspeed
 ;       |     |     |     |
-CommonA3EnemySpeeds_LinearlyIncreasing:
   .speed:
     dw $0000                                                             ;A38187;
   .subspeed:
@@ -418,14 +477,15 @@ CommonA3EnemySpeeds_LinearlyIncreasing:
     dw $0004,$0000,$FFFC,$0000
 
 
+;;; $838F: Common enemy speeds - quadratically increasing ;;;
+CommonA3EnemySpeeds_QuadraticallyIncreasing:
+; I.e. gravity
+; Used by e.g. Botwoon when dying and falling to the floor
 ;        _____________________ Subspeed
 ;       |      _______________ Speed
 ;       |     |      _________ Negated subspeed
 ;       |     |     |      ___ Negated speed
 ;       |     |     |     |
-CommonA3EnemySpeeds_QuadraticallyIncreasing:
-; I.e. gravity
-; Used by e.g. Botwoon when dying and falling to the floor
   .subspeed:
     dw $0000                                                             ;A3838F;
   .speed:
