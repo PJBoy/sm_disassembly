@@ -590,7 +590,11 @@ CommonA5EnemySpeeds_QuadraticallyIncreasing:
     dw $74F9,$0011,$8B07,$FFEE
 
 
+;;; $8687: Initialisation AI - enemy $DE3F (Draygon body) ;;;
 InitAI_DraygonBody:
+; Draygon's making the error of trying to set the instruction list pointer of enemies that haven't yet spawned
+; When an enemy spawns, its RAM gets cleared or initialised from enemy header, so these stores have no effect
+; The enemies set their own instruction list pointers in their init AI, which match up except for the arms, which use InstList_DraygonArms_FacingLeft_Idle_0 instead of InstList_DraygonArms_FacingLeft_NearSwoopApex
     LDX.W #$0030                                                         ;A58687;
 
   .loopTargetPalette:
@@ -639,6 +643,7 @@ InitAI_DraygonBody:
     RTL                                                                  ;A586FB;
 
 
+;;; $86FC: Main AI - enemy $DE3F (Draygon body) ;;;
 MainAI_DraygonBody:
     LDX.W $0E54                                                          ;A586FC;
     JSR.W ($0FA8,X)                                                      ;A586FF;
@@ -653,6 +658,7 @@ MainAI_DraygonBody:
     RTL                                                                  ;A5871A;
 
 
+;;; $871B: Draygon body function - fight intro - initial delay ;;;
 Function_DraygonBody_FightIntro_InitialDelay:
     JSR.W HandleFiringWallTurret                                         ;A5871B;
     LDX.W $0E54                                                          ;A5871E; >.<
@@ -680,7 +686,6 @@ Function_DraygonBody_FightIntro_InitialDelay:
     INC.W $0FAA                                                          ;A58752;
     RTS                                                                  ;A58755;
 
-
   .done:
     LDA.W #Function_DraygonBody_FightIntro_Dance                         ;A58756;
     STA.W $0FA8                                                          ;A58759;
@@ -701,6 +706,7 @@ Function_DraygonBody_FightIntro_InitialDelay:
     RTS                                                                  ;A5878A;
 
 
+;;; $878B: Draygon body function - fight intro - dance ;;;
 Function_DraygonBody_FightIntro_Dance:
     JSR.W HandleFiringWallTurret                                         ;A5878B;
     LDX.W $0E54                                                          ;A5878E; >.<
@@ -711,7 +717,6 @@ Function_DraygonBody_FightIntro_Dance:
     INC.W $0FAA                                                          ;A5879C;
     RTS                                                                  ;A5879F;
 
-
   .startFight:
     LDA.W #Function_DraygonBody_SwoopRight_Setup                         ;A587A0;
     STA.W $0FA8                                                          ;A587A3;
@@ -719,6 +724,7 @@ Function_DraygonBody_FightIntro_Dance:
     RTS                                                                  ;A587A9;
 
 
+;;; $87AA: Handle firing wall turret ;;;
 HandleFiringWallTurret:
     LDA.W $05B6                                                          ;A587AA;
     AND.W #$003F                                                         ;A587AD;
@@ -756,6 +762,7 @@ HandleFiringWallTurret:
     dw $01BC,$0188
 
 
+;;; $87F4: Draygon body function - swoop right - setup ;;;
 Function_DraygonBody_SwoopRight_Setup:
     JSR.W HandleFiringWallTurret                                         ;A587F4;
     LDX.W $0E54                                                          ;A587F7; >.<
@@ -771,6 +778,7 @@ Function_DraygonBody_SwoopRight_Setup:
     RTS                                                                  ;A58816;
 
 
+;;; $8817: Calculate Draygon swoop Y positions ;;;
 CalculateDraygonSwoopYPositions:
     LDA.W #$0180                                                         ;A58817;
     STA.W $0E28                                                          ;A5881A;
@@ -807,14 +815,12 @@ CalculateDraygonSwoopYPositions:
   .crash:
     BRA .crash                                                           ;A58867;
 
-
 +   LDA.L $7E7800                                                        ;A58869;
     BMI .leftSideReset                                                   ;A5886D;
     SEC                                                                  ;A5886F;
     SBC.W $0AF6                                                          ;A58870;
     JSL.L NegateA_A0B067                                                 ;A58873;
     BRA +                                                                ;A58877;
-
 
   .leftSideReset:
     JSL.L NegateA_A0B067                                                 ;A58879;
@@ -842,6 +848,7 @@ CalculateDraygonSwoopYPositions:
     RTS                                                                  ;A588B0;
 
 
+;;; $88B1: Draygon body function - swoop right - descending ;;;
 Function_DraygonBody_SwoopRight_Descending:
     JSR.W HandleFiringWallTurret                                         ;A588B1;
     JSR.W HandleShortDraygonBreathBubbles                                ;A588B4;
@@ -872,7 +879,6 @@ Function_DraygonBody_SwoopRight_Descending:
     STA.W $0F7A                                                          ;A588F6;
     RTS                                                                  ;A588F9;
 
-
   .apex:
     LDA.W #Function_DraygonBody_SwoopRight_Apex                          ;A588FA;
     STA.W $0FA8                                                          ;A588FD;
@@ -880,7 +886,9 @@ Function_DraygonBody_SwoopRight_Descending:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $8901: Unused.  ;;;
 UNUSED_Draygon_FireGoop_A58901:
+; Fire goop?
     LDA.W $05B6                                                          ;A58901;
     AND.W #$000F                                                         ;A58904;
     BNE .return                                                          ;A58907;
@@ -900,6 +908,7 @@ UNUSED_Draygon_FireGoop_A58901:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $8922: Draygon body function - swoop right - apex ;;;
 Function_DraygonBody_SwoopRight_Apex:
     JSR.W HandleFiringWallTurret                                         ;A58922;
     LDX.W $0E54                                                          ;A58925; >.<
@@ -923,7 +932,9 @@ Function_DraygonBody_SwoopRight_Apex:
     RTS                                                                  ;A58950;
 
 
+;;; $8951: Draygon body function - swoop right - ascending ;;;
 Function_DraygonBody_SwoopRight_Ascending:
+; [random number] % 2: 0 = goop, 1 = swoop
     JSR.W HandleFiringWallTurret                                         ;A58951;
     LDY.W $0E54                                                          ;A58954;
     LDX.W $0FAA                                                          ;A58957;
@@ -953,7 +964,6 @@ Function_DraygonBody_SwoopRight_Ascending:
     STA.W $0F7A                                                          ;A58996;
     RTS                                                                  ;A58999;
 
-
 +   STZ.W $0FAA                                                          ;A5899A;
     LDA.W $05E5                                                          ;A5899D;
     AND.W #$0001                                                         ;A589A0;
@@ -962,14 +972,16 @@ Function_DraygonBody_SwoopRight_Ascending:
     STA.W $0FA8                                                          ;A589A8;
     RTS                                                                  ;A589AB;
 
-
   .goopLeft:
     LDA.W #Function_DraygonBody_GoopLeft_Setup                           ;A589AC;
     STA.W $0FA8                                                          ;A589AF;
     RTS                                                                  ;A589B2;
 
 
+;;; $89B3: Draygon body function - swoop left - setup ;;;
 Function_DraygonBody_SwoopLeft_Setup:
+; Uses $0E26(!) which was calculated as part of CalculateDraygonSwoopYPositions
+; $0FAC contains the same value and is part of enemy RAM instead of a random temporary >_<;
     JSR.W HandleFiringWallTurret                                         ;A589B3;
     LDX.W $0E54                                                          ;A589B6; >.<
     LDA.L $7E7804                                                        ;A589B9;
@@ -1001,6 +1013,7 @@ Function_DraygonBody_SwoopLeft_Setup:
     RTS                                                                  ;A589FF;
 
 
+;;; $8A00: Draygon body function - swoop left - descending ;;;
 Function_DraygonBody_SwoopLeft_Descending:
     JSR.W HandleFiringWallTurret                                         ;A58A00;
     JSR.W HandleShortDraygonBreathBubbles                                ;A58A03;
@@ -1031,13 +1044,13 @@ Function_DraygonBody_SwoopLeft_Descending:
     STA.W $0F7A                                                          ;A58A45;
     RTS                                                                  ;A58A48;
 
-
   .apex:
     LDA.W #Function_DraygonBody_SwoopLeft_Apex                           ;A58A49;
     STA.W $0FA8                                                          ;A58A4C;
     RTS                                                                  ;A58A4F;
 
 
+;;; $8A50: Draygon body function - swoop left - apex ;;;
 Function_DraygonBody_SwoopLeft_Apex:
     JSR.W HandleFiringWallTurret                                         ;A58A50;
     LDX.W $0E54                                                          ;A58A53; >.<
@@ -1047,7 +1060,6 @@ Function_DraygonBody_SwoopLeft_Apex:
     SEC                                                                  ;A58A5F;
     SBC.L $7E7800                                                        ;A58A60;
     BRA +                                                                ;A58A64;
-
 
   .leftSideReset:
     EOR.W #$FFFF                                                         ;A58A66;
@@ -1072,7 +1084,9 @@ Function_DraygonBody_SwoopLeft_Apex:
     RTS                                                                  ;A58A8F;
 
 
+;;; $8A90: Draygon body function - swoop left - ascending ;;;
 Function_DraygonBody_SwoopLeft_Ascending:
+; [random number] % 2: 0 = goop, 1 = swoop
     JSR.W HandleFiringWallTurret                                         ;A58A90;
     JSR.W HandleShortDraygonBreathBubbles                                ;A58A93;
     LDY.W $0E54                                                          ;A58A96;
@@ -1102,7 +1116,6 @@ Function_DraygonBody_SwoopLeft_Ascending:
     STA.W $0F7A                                                          ;A58AD8;
     RTS                                                                  ;A58ADB;
 
-
   .chooseAttack:
     LDA.W $05E5                                                          ;A58ADC;
     AND.W #$0001                                                         ;A58ADF;
@@ -1116,7 +1129,6 @@ Function_DraygonBody_SwoopLeft_Ascending:
     STA.W $0F7E                                                          ;A58AF8;
     RTS                                                                  ;A58AFB;
 
-
   .goop:
     LDA.W #Function_DraygonBody_GoopRight_Setup                          ;A58AFC;
     STA.W $0FA8                                                          ;A58AFF;
@@ -1125,6 +1137,7 @@ Function_DraygonBody_SwoopLeft_Ascending:
     RTS                                                                  ;A58B09;
 
 
+;;; $8B0A: Draygon body function - goop right - setup ;;;
 Function_DraygonBody_GoopRight_Setup:
     JSR.W HandleFiringWallTurret                                         ;A58B0A;
     LDA.W #$FFB0                                                         ;A58B0D;
@@ -1152,6 +1165,7 @@ Function_DraygonBody_GoopRight_Setup:
     RTS                                                                  ;A58B51;
 
 
+;;; $8B52: Draygon body function - goop right - move until Samus in range ;;;
 Function_DraygonBody_GoopRight_MoveUntilSamusInRange:
     JSR.W HandleFiringWallTurret                                         ;A58B52;
     JSR.W HandleShortDraygonBreathBubbles                                ;A58B55;
@@ -1166,7 +1180,6 @@ Function_DraygonBody_GoopRight_MoveUntilSamusInRange:
     LDA.W #$0010                                                         ;A58B6E;
     STA.L $7E7806                                                        ;A58B71;
     RTS                                                                  ;A58B75;
-
 
   .tooFar:
     LDA.W #$0020                                                         ;A58B76;
@@ -1191,6 +1204,7 @@ Function_DraygonBody_GoopRight_MoveUntilSamusInRange:
     RTS                                                                  ;A58BAD;
 
 
+;;; $8BAE: Draygon body function - goop right - firing goops ;;;
 Function_DraygonBody_GoopRight_FiringGoops:
     JSR.W HandleFiringWallTurret                                         ;A58BAE;
     LDA.W $0A66                                                          ;A58BB1;
@@ -1234,7 +1248,6 @@ Function_DraygonBody_GoopRight_FiringGoops:
   .return:
     RTS                                                                  ;A58C13;
 
-
   .reloadSpeedDivisor:
     LDA.W $0A66                                                          ;A58C14;
     BEQ .done                                                            ;A58C17;
@@ -1243,7 +1256,6 @@ Function_DraygonBody_GoopRight_FiringGoops:
     LDA.W #Function_DraygonBody_ChaseSamus                               ;A58C19;
     STA.W $0FA8                                                          ;A58C1C;
     RTS                                                                  ;A58C1F;
-
 
   .done:
     LDA.W #InstList_DraygonArms_FacingRight_Idle_0                       ;A58C20;
@@ -1255,6 +1267,7 @@ Function_DraygonBody_GoopRight_FiringGoops:
     RTS                                                                  ;A58C32;
 
 
+;;; $8C33: Draygon body function - goop right - move until off-screen ;;;
 Function_DraygonBody_GoopRight_MoveUntilOffScreen:
     JSR.W HandleShortDraygonBreathBubbles                                ;A58C33;
     LDA.W #$0020                                                         ;A58C36;
@@ -1283,7 +1296,6 @@ Function_DraygonBody_GoopRight_MoveUntilOffScreen:
   .return:
     RTS                                                                  ;A58C74;
 
-
   .done:
     LDA.W #Function_DraygonBody_SwoopLeft_Setup                          ;A58C75;
     STA.W $0FA8                                                          ;A58C78;
@@ -1296,6 +1308,7 @@ Function_DraygonBody_GoopRight_MoveUntilOffScreen:
     RTS                                                                  ;A58C8D;
 
 
+;;; $8C8E: Draygon body function - goop left - setup ;;;
 Function_DraygonBody_GoopLeft_Setup:
     LDA.L $7E7804                                                        ;A58C8E;
     STA.W $0F7A                                                          ;A58C92;
@@ -1322,6 +1335,7 @@ Function_DraygonBody_GoopLeft_Setup:
     RTS                                                                  ;A58CD3;
 
 
+;;; $8CD4: Draygon body function - goop left - move until Samus in range ;;;
 Function_DraygonBody_GoopLeft_MoveUntilSamusInRange:
     JSR.W HandleFiringWallTurret                                         ;A58CD4;
     JSR.W HandleShortDraygonBreathBubbles                                ;A58CD7;
@@ -1336,7 +1350,6 @@ Function_DraygonBody_GoopLeft_MoveUntilSamusInRange:
     LDA.W #$0010                                                         ;A58CF0;
     STA.L $7E7806                                                        ;A58CF3;
     RTS                                                                  ;A58CF7;
-
 
   .tooFar:
     LDA.W #$0020                                                         ;A58CF8;
@@ -1361,6 +1374,7 @@ Function_DraygonBody_GoopLeft_MoveUntilSamusInRange:
     RTS                                                                  ;A58D2F;
 
 
+;;; $8D30: Draygon body function - goop left - firing goops ;;;
 Function_DraygonBody_GoopLeft_FiringGoops:
     LDA.W $0A66                                                          ;A58D30;
     BNE .SamusGooped                                                     ;A58D33;
@@ -1403,7 +1417,6 @@ Function_DraygonBody_GoopLeft_FiringGoops:
   .return:
     RTS                                                                  ;A58D92;
 
-
   .reloadSpeedDivisor:
     LDA.W $0A66                                                          ;A58D93;
     BEQ .done                                                            ;A58D96;
@@ -1412,7 +1425,6 @@ Function_DraygonBody_GoopLeft_FiringGoops:
     LDA.W #Function_DraygonBody_ChaseSamus                               ;A58D98;
     STA.W $0FA8                                                          ;A58D9B;
     RTS                                                                  ;A58D9E;
-
 
   .done:
     LDA.W #InstList_DraygonArms_FacingLeft_Idle_0                        ;A58D9F;
@@ -1424,6 +1436,7 @@ Function_DraygonBody_GoopLeft_FiringGoops:
     RTS                                                                  ;A58DB1;
 
 
+;;; $8DB2: Draygon body function - goop left - move until off-screen ;;;
 Function_DraygonBody_GoopLeft_MoveUntilOffScreen:
     JSR.W HandleShortDraygonBreathBubbles                                ;A58DB2;
     LDA.W $0A66                                                          ;A58DB5;
@@ -1454,12 +1467,10 @@ Function_DraygonBody_GoopLeft_MoveUntilOffScreen:
   .return:
     RTS                                                                  ;A58DF8;
 
-
   .SamusGooped:
     LDA.W #Function_DraygonBody_ChaseSamus                               ;A58DF9;
     STA.W $0FA8                                                          ;A58DFC;
     RTS                                                                  ;A58DFF;
-
 
   .done:
     LDA.W #Function_DraygonBody_SwoopRight_Setup                         ;A58E00;
@@ -1473,6 +1484,7 @@ Function_DraygonBody_GoopLeft_MoveUntilOffScreen:
     RTS                                                                  ;A58E18;
 
 
+;;; $8E19: Draygon body function - chase Samus ;;;
 Function_DraygonBody_ChaseSamus:
     JSR.W HandleFiringWallTurret                                         ;A58E19;
     LDA.W $0A66                                                          ;A58E1C;
@@ -1480,7 +1492,6 @@ Function_DraygonBody_ChaseSamus:
     LDA.W #Function_DraygonBody_GrabbedSamus_FlyStraightUp               ;A58E21;
     STA.W $0FA8                                                          ;A58E24;
     RTS                                                                  ;A58E27;
-
 
   .SamusStillGooped:
     LDA.W $0F86                                                          ;A58E28;
@@ -1507,7 +1518,6 @@ Function_DraygonBody_ChaseSamus:
     CMP.W #$0008                                                         ;A58E5A;
     BPL .notGrabbed                                                      ;A58E5D;
     BRA .grab                                                            ;A58E5F;
-
 
   .notGrabbed:
     LDA.W $0AF6                                                          ;A58E61;
@@ -1539,7 +1549,6 @@ Function_DraygonBody_ChaseSamus:
     STA.W $0E2A                                                          ;A58EA1;
     JSL.L MoveEnemyAccordingToAngleAndXYSpeeds                           ;A58EA4;
     RTS                                                                  ;A58EA8;
-
 
   .grab:
     LDY.W #InstList_DraygonArms_FacingLeft_Grab                          ;A58EA9;
@@ -1578,13 +1587,13 @@ Function_DraygonBody_ChaseSamus:
     STA.W $0FA8                                                          ;A58F05;
     RTS                                                                  ;A58F08;
 
-
   .retreat:
     LDA.W #Function_DraygonBody_RepelledByGrapple                        ;A58F09;
     STA.W $0FA8                                                          ;A58F0C;
     RTS                                                                  ;A58F0F;
 
 
+;;; $8F10: Draygon body function - repelled by grapple ;;;
 Function_DraygonBody_RepelledByGrapple:
     LDA.W #GrappleBeamFunction_Dropped                                   ;A58F10;
     STA.W $0D32                                                          ;A58F13;
@@ -1593,10 +1602,12 @@ Function_DraygonBody_RepelledByGrapple:
     RTS                                                                  ;A58F1C;
 
 
+;;; $8F1D: Unused. RTS ;;;
 RTS_A58F1D:
     RTS                                                                  ;A58F1D;
 
 
+;;; $8F1E: Draygon body function - grabbed Samus - moving to target position ;;;
 Function_DraygonBody_GrabbedSamus_MovingToTargetPosition:
     LDA.W $0A64                                                          ;A58F1E;
     BIT.W #$0001                                                         ;A58F21;
@@ -1614,7 +1625,6 @@ Function_DraygonBody_GrabbedSamus_MovingToTargetPosition:
     STA.W $0F8A                                                          ;A58F3F;
     RTS                                                                  ;A58F42;
 
-
   .notGrappled:
     LDA.W $0F7A                                                          ;A58F43;
     SEC                                                                  ;A58F46;
@@ -1629,7 +1639,6 @@ Function_DraygonBody_GrabbedSamus_MovingToTargetPosition:
     CMP.W #$0002                                                         ;A58F5E;
     BPL .notReachedTarget                                                ;A58F61;
     BRA .reachedTargetPosition                                           ;A58F63;
-
 
   .notReachedTarget:
     LDA.W #$0100                                                         ;A58F65;
@@ -1663,7 +1672,6 @@ Function_DraygonBody_GrabbedSamus_MovingToTargetPosition:
     JSR.W MoveSamusWithDraygon                                           ;A58FAC;
     RTS                                                                  ;A58FAF;
 
-
   .reachedTargetPosition:
     LDA.W #Function_DraygonBody_GrabbedSamus_RisingSpiralMovement        ;A58FB0;
     STA.W $0FA8                                                          ;A58FB3;
@@ -1683,6 +1691,7 @@ Function_DraygonBody_GrabbedSamus_MovingToTargetPosition:
     RTS                                                                  ;A58FD5;
 
 
+;;; $8FD6: Draygon body function - grabbed Samus - rising spiral movement ;;;
 Function_DraygonBody_GrabbedSamus_RisingSpiralMovement:
     LDA.W $0A64                                                          ;A58FD6;
     BIT.W #$0001                                                         ;A58FD9;
@@ -1700,7 +1709,6 @@ Function_DraygonBody_GrabbedSamus_RisingSpiralMovement:
     STA.W $0F8A                                                          ;A58FF7;
     RTS                                                                  ;A58FFA;
 
-
   .notGrappled:
     LDA.W $05E5                                                          ;A58FFB;
     AND.W #$00FF                                                         ;A58FFE;
@@ -1710,7 +1718,6 @@ Function_DraygonBody_GrabbedSamus_RisingSpiralMovement:
     LDA.W #Function_DraygonBody_GrabbedSamus_TailWhip                    ;A5900A;
     STA.W $0FA8                                                          ;A5900D;
     RTS                                                                  ;A59010;
-
 
   .noSpank:
     LDA.L $7E780A                                                        ;A59011;
@@ -1791,6 +1798,7 @@ Function_DraygonBody_GrabbedSamus_RisingSpiralMovement:
     RTS                                                                  ;A590D3;
 
 
+;;; $90D4: Draygon body function - grabbed Samus - tail whip ;;;
 Function_DraygonBody_GrabbedSamus_TailWhip:
     JSR.W MoveSamusWithDraygon                                           ;A590D4;
     LDA.L $7E7818                                                        ;A590D7;
@@ -1819,6 +1827,7 @@ Function_DraygonBody_GrabbedSamus_TailWhip:
     RTS                                                                  ;A59104;
 
 
+;;; $9105: Draygon body function - grabbed Samus - final tail whips - start ;;;
 Function_DraygonBody_GrabbedSamus_FinalSpanking_Start:
     JSR.W MoveSamusWithDraygon                                           ;A59105;
     LDY.W #InstList_DraygonTail_FacingLeft_FinalTailWhips_0              ;A59108;
@@ -1835,11 +1844,14 @@ Function_DraygonBody_GrabbedSamus_FinalSpanking_Start:
     RTS                                                                  ;A59123;
 
 
+;;; $9124: Draygon body function - grabbed Samus - final tail whips - ongoing ;;;
 Function_DraygonBody_GrabbedSamus_FinalSpanking_Ongoing:
+; Draygon tail instruction list eventually sets Draygon body function = Function_DraygonBody_GrabbedSamus_FlailTail_FlyStraightUp
     JSR.W MoveSamusWithDraygon                                           ;A59124;
     RTS                                                                  ;A59127;
 
 
+;;; $9128: Draygon body function - flail tail and fly straight up ;;;
 Function_DraygonBody_GrabbedSamus_FlailTail_FlyStraightUp:
     JSL.L ReleaseSamusFromDraygon_external                               ;A59128;
     STZ.W $0A64                                                          ;A5912C;
@@ -1860,6 +1872,7 @@ Function_DraygonBody_GrabbedSamus_FlailTail_FlyStraightUp:
     RTS                                                                  ;A59153;
 
 
+;;; $9154: Draygon body function - fly straight up ;;;
 Function_DraygonBody_GrabbedSamus_FlyStraightUp:
     JSR.W HandleFiringWallTurret                                         ;A59154;
     LDA.W $0F7E                                                          ;A59157;
@@ -1868,7 +1881,6 @@ Function_DraygonBody_GrabbedSamus_FlyStraightUp:
     STA.W $0F7E                                                          ;A5915E;
     BMI .offScreenTop                                                    ;A59161;
     RTS                                                                  ;A59163;
-
 
   .offScreenTop:
     LDA.W $0F86                                                          ;A59164;
@@ -1884,6 +1896,7 @@ Function_DraygonBody_GrabbedSamus_FlyStraightUp:
     RTS                                                                  ;A59184;
 
 
+;;; $9185: Draygon body function - death sequence - drift to death spot ;;;
 Function_DraygonBody_DeathSequence_DriftToDeathSpot:
     LDX.W $0E54                                                          ;A59185; >.<
     LDA.W $0FA4,X                                                        ;A59188;
@@ -1970,10 +1983,8 @@ Function_DraygonBody_DeathSequence_DriftToDeathSpot:
     BPL .gotoReturn                                                      ;A59243;
     BRA .done                                                            ;A59245;
 
-
   .gotoReturn:
-    JMP.W .return                                                        ;A59247;
-
+    JMP.W .return                                                        ;A59247; >.<
 
   .done:
     JSR.W SpawnDeathSequenceEvirSpriteObjects                            ;A5924A;
@@ -2007,6 +2018,7 @@ Function_DraygonBody_DeathSequence_DriftToDeathSpot:
     RTS                                                                  ;A59293;
 
 
+;;; $9294: Draygon body function - death sequence - wait for evirs ;;;
 Function_DraygonBody_DeathSequence_WaitForEvirs:
     JSR.W HandleDyingDraygonSmoke                                        ;A59294;
     DEC.W $0FAA                                                          ;A59297;
@@ -2014,7 +2026,6 @@ Function_DraygonBody_DeathSequence_WaitForEvirs:
     BEQ .timerExpired                                                    ;A5929D;
     JSR.W HandleDeathSequenceEvirMovement                                ;A5929F;
     BRA .return                                                          ;A592A2;
-
 
   .timerExpired:
     LDA.W #Function_DraygonBody_DeathSequence_BuriedByEvirs              ;A592A4;
@@ -2024,6 +2035,7 @@ Function_DraygonBody_DeathSequence_WaitForEvirs:
     RTS                                                                  ;A592AA;
 
 
+;;; $92AB: Draygon body function - death sequence - buried by evirs ;;;
 Function_DraygonBody_DeathSequence_BuriedByEvirs:
     JSR.W HandleDyingDraygonSmoke                                        ;A592AB;
     JSR.W HandleDeathSequenceEvirMovement                                ;A592AE;
@@ -2050,6 +2062,7 @@ Function_DraygonBody_DeathSequence_BuriedByEvirs:
     RTS                                                                  ;A592E9;
 
 
+;;; $92EA: Handle dying Draygon smoke ;;;
 HandleDyingDraygonSmoke:
     PHY                                                                  ;A592EA;
     PHX                                                                  ;A592EB;
@@ -2078,6 +2091,7 @@ HandleDyingDraygonSmoke:
     RTS                                                                  ;A5931B;
 
 
+;;; $931C: Handle short Draygon breath bubbles ;;;
 HandleShortDraygonBreathBubbles:
     LDA.W $0FA4,X                                                        ;A5931C;
     AND.W #$007F                                                         ;A5931F;
@@ -2099,6 +2113,7 @@ HandleShortDraygonBreathBubbles:
     RTS                                                                  ;A59341;
 
 
+;;; $9342: Enemy graphics drawn hook - Draygon - set BG2 X/Y scroll ;;;
 EnemyGraphicsDrawnHook_Draygon_SetBG2XYScroll:
     LDA.W $0911                                                          ;A59342;
     SEC                                                                  ;A59345;
@@ -2119,6 +2134,7 @@ EnemyGraphicsDrawnHook_Draygon_SetBG2XYScroll:
     RTL                                                                  ;A59366;
 
 
+;;; $9367: Unused. Debug. Draygon controller 2 input handling ;;;
 Debug_DraygonController2InputHandling:
     LDX.W #$0000                                                         ;A59367;
     LDA.B $8D                                                            ;A5936A;
@@ -2126,7 +2142,6 @@ Debug_DraygonController2InputHandling:
     BEQ .notPressingX                                                    ;A5936F;
     JSL.L Debug_MoveDraygonWithDpad_Fast                                 ;A59371;
     BRA +                                                                ;A59375;
-
 
   .notPressingX:
     JSL.L Debug_MoveDraygonWithDpad_Slow                                 ;A59377;
@@ -2146,7 +2161,6 @@ Debug_DraygonController2InputHandling:
     STA.W $0F94                                                          ;A59397;
     BRA .return                                                          ;A5939A;
 
-
   .fireGoopEnd:
     BIT.W #$8000                                                         ;A5939C;
     BEQ .tailWhipEnd                                                     ;A5939F;
@@ -2160,7 +2174,6 @@ Debug_DraygonController2InputHandling:
     LDA.W #$0001                                                         ;A593B0;
     STA.W $1014                                                          ;A593B3;
     BRA .return                                                          ;A593B6;
-
 
   .tailWhipEnd:
     BIT.W #$0080                                                         ;A593B8;
@@ -2176,7 +2189,6 @@ Debug_DraygonController2InputHandling:
     STA.W $1054                                                          ;A593CF;
     BRA .return                                                          ;A593D2;
 
-
   .grabEnd:
     BIT.W #$0040                                                         ;A593D4;
     BEQ .return                                                          ;A593D7; >.<
@@ -2185,6 +2197,7 @@ Debug_DraygonController2InputHandling:
     RTL                                                                  ;A593D9;
 
 
+;;; $93DA: Debug. Move Draygon with d-pad - slow ;;;
 Debug_MoveDraygonWithDpad_Slow:
     LDA.B $8D                                                            ;A593DA;
     BIT.W #$0200                                                         ;A593DC;
@@ -2197,7 +2210,6 @@ Debug_MoveDraygonWithDpad_Slow:
     LDA.W #$0000                                                         ;A593EF;
     STA.L $7E8000                                                        ;A593F2;
     BRA +                                                                ;A593F6;
-
 
   .notPressingLeft:
     BIT.W #$0100                                                         ;A593F8;
@@ -2221,7 +2233,6 @@ Debug_MoveDraygonWithDpad_Slow:
     DEC.W $0F7E                                                          ;A59422;
     BRA .return                                                          ;A59425;
 
-
   .notPressingUp:
     BIT.W #$0400                                                         ;A59427;
     BEQ .return                                                          ;A5942A;
@@ -2231,6 +2242,7 @@ Debug_MoveDraygonWithDpad_Slow:
     RTL                                                                  ;A5942F;
 
 
+;;; $9430: Debug. Move Draygon with d-pad - fast ;;;
 Debug_MoveDraygonWithDpad_Fast:
     LDA.B $8D                                                            ;A59430;
     BIT.W #$0200                                                         ;A59432;
@@ -2247,7 +2259,6 @@ Debug_MoveDraygonWithDpad_Fast:
     LDA.W #$0000                                                         ;A5944E;
     STA.L $7E8000                                                        ;A59451;
     BRA +                                                                ;A59455;
-
 
   .noPressingLeft:
     BIT.W #$0100                                                         ;A59457;
@@ -2278,7 +2289,6 @@ Debug_MoveDraygonWithDpad_Fast:
     STA.W $0F7E                                                          ;A59491;
     BRA .return                                                          ;A59494;
 
-
   .notPressingUp:
     BIT.W #$0400                                                         ;A59496;
     BEQ .return                                                          ;A59499;
@@ -2292,6 +2302,7 @@ Debug_MoveDraygonWithDpad_Fast:
     RTL                                                                  ;A594A8;
 
 
+;;; $94A9: Move Samus with Draygon ;;;
 MoveSamusWithDraygon:
     LDY.W #$0008                                                         ;A594A9;
     LDA.L $7E8000,X                                                      ;A594AC;
@@ -2319,6 +2330,7 @@ MoveSamusWithDraygon:
     RTS                                                                  ;A594DC;
 
 
+;;; $94DD: Instruction - Draygon instructions lists = [[Y]], [[Y] + 2], [[Y] + 4], [[Y] + 6] ;;;
 Instruction_Draygon_SetInstList_Body_Eye_Tail_Arms:
     PHY                                                                  ;A594DD;
     LDA.W $0000,Y                                                        ;A594DE;
@@ -2343,6 +2355,7 @@ Instruction_Draygon_SetInstList_Body_Eye_Tail_Arms:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $950D: Unused. Draygon instruction list pointers ;;;
 Unused_DraygonInstListPointers_A5950D:
 ; Not an exhaustive list of pointers. Assuming they were used for some unknown debug purpose
     ; Draygon arms
@@ -2383,6 +2396,8 @@ Unused_DraygonInstListPointers_A5950D:
     dw $0000                                                             ;A5954B;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $954D: Hurt AI - enemy $DE3F (Draygon) ;;;
 HurtAI_Draygon:
     LDY.W #Palette_Draygon_BG12_5                                        ;A5954D;
     LDX.W $0E54                                                          ;A59550;
@@ -2467,11 +2482,13 @@ HurtAI_Draygon:
     RTL                                                                  ;A595E9;
 
 
+;;; $95EA: Enemy touch - enemy $DE3F (Draygon) ;;;
 EnemyTouch_Draygon:
     JSL.L NormalEnemyTouchAI_NoDeathCheck_External                       ;A595EA;
     BRA DraygonReaction_Common                                           ;A595EE;
 
 
+;;; $95F0: Enemy shot - enemy $DE7F (Draygon) ;;;
 EnemyShot_Draygon:
     LDA.L $7E781E                                                        ;A595F0;
     CLC                                                                  ;A595F4;
@@ -2484,17 +2501,20 @@ EnemyShot_Draygon:
     BRA DraygonReaction_Common                                           ;A59605;
 
 
+;;; $9607: Power bomb reaction - enemy $DE3F (Draygon) ;;;
 PowerBombReaction_Draygon:
     JSL.L NormalEnemyPowerBombAI_NoDeathCheck_External                   ;A59607;
     BRA DraygonReaction_Common                                           ;A5960B; >.<
 
 
+;;; $960D: Draygon reaction ;;;
 DraygonReaction_Common:
+; The calculations for the X/Y speed for drifting to the death point ($965B) are copy+pasted from Spore Spawn code,
+; the results ($7E:8010..17) aren't actually used by Draygon, instead they're recalculated every frame by Function_DraygonBody_DeathSequence_DriftToDeathSpot >_<;
     LDX.W $0E54                                                          ;A5960D;
     LDA.W $0F8C,X                                                        ;A59610;
     BEQ .dead                                                            ;A59613;
     JMP.W .notDead                                                       ;A59615;
-
 
   .dead:
     LDA.W #GrappleBeamFunction_Dropped                                   ;A59618;
@@ -2553,12 +2573,12 @@ DraygonReaction_Common:
     STA.L $7E8016                                                        ;A596A6;
     RTL                                                                  ;A596AA;
 
-
   .notDead:
     JSR.W DraygonHealthBasedPaletteHandling                              ;A596AB;
     RTL                                                                  ;A596AE;
 
 
+;;; $96AF: Draygon health-based palette table ;;;
 DraygonHealthBasedPaletteTable:                                          ;A596AF;
 ; Colours 1..4
     dw $0319,$0254,$018F,$00CA ; Health >= 5250
@@ -2570,6 +2590,8 @@ DraygonHealthBasedPaletteTable:                                          ;A596AF
     dw $007E,$0077,$0050,$0028 ; Health >= 750
     dw $001F,$0017,$0010,$0008 ; Health < 750
 
+
+;;; $96EF: Draygon health-based palette thresholds ;;;
 DraygonHealthBasedPaletteThresholds:                                     ;A596EF;
     dw $1482 ; 5250
     dw $1194 ; 4500
@@ -2581,6 +2603,8 @@ DraygonHealthBasedPaletteThresholds:                                     ;A596EF
     dw $0000 ; 0
     dw $FFFF ; Terminator
 
+
+;;; $9701: Draygon health-based palette handling ;;;
 DraygonHealthBasedPaletteHandling:
     LDX.W #$0000                                                         ;A59701;
 
@@ -2591,7 +2615,6 @@ DraygonHealthBasedPaletteHandling:
     INX                                                                  ;A5970C;
     INX                                                                  ;A5970D;
     BRA .loopFindThreshold                                               ;A5970E;
-
 
   .found:
     TXA                                                                  ;A59710;
@@ -2618,6 +2641,7 @@ DraygonHealthBasedPaletteHandling:
     RTS                                                                  ;A59735;
 
 
+;;; $9736: Instruction - enemy function = [[Y]] ;;;
 Instruction_Draygon_FunctionInY:
     LDA.W $0000,Y                                                        ;A59736;
     STA.W $0FA8,X                                                        ;A59739;
@@ -2626,6 +2650,7 @@ Instruction_Draygon_FunctionInY:
     RTL                                                                  ;A5973E;
 
 
+;;; $973F: Instruction - spawn dying Draygon sprite object - big dust cloud ;;;
 Inst_Draygon_SpawnDyingDraygonSpriteObject_BigDustCloud:
     PHY                                                                  ;A5973F;
     PHX                                                                  ;A59740;
@@ -2639,6 +2664,7 @@ Inst_Draygon_SpawnDyingDraygonSpriteObject_BigDustCloud:
     RTL                                                                  ;A59751;
 
 
+;;; $9752: Instruction - spawn dying Draygon sprite object - small explosion ;;;
 Inst_Draygon_SpawnDyingDraygonSpriteObject_SmallExplosion:
     PHY                                                                  ;A59752;
     PHX                                                                  ;A59753;
@@ -2652,6 +2678,7 @@ Inst_Draygon_SpawnDyingDraygonSpriteObject_SmallExplosion:
     RTL                                                                  ;A59764;
 
 
+;;; $9765: Instruction - spawn dying Draygon sprite object - big explosion ;;;
 Inst_Draygon_SpawnDyingDraygonSpriteObject_BigExplosion:
     PHY                                                                  ;A59765;
     PHX                                                                  ;A59766;
@@ -2665,6 +2692,7 @@ Inst_Draygon_SpawnDyingDraygonSpriteObject_BigExplosion:
     RTL                                                                  ;A59777;
 
 
+;;; $9778: Instruction - spawn dying Draygon sprite object - breath bubbles ;;;
 Inst_Draygon_SpawnDyingDraygonSpriteObject_BreathBubbles:
     PHY                                                                  ;A59778;
     PHX                                                                  ;A59779;
@@ -2678,6 +2706,7 @@ Inst_Draygon_SpawnDyingDraygonSpriteObject_BreathBubbles:
     RTL                                                                  ;A5978A;
 
 
+;;; $978B: Generate random dying Draygon sprite object position ;;;
 GenerateRandomDyingDraygonSpriteObjectPosition:
     JSL.L GenerateRandomNumber                                           ;A5978B;
     LDA.W $05E5                                                          ;A5978F;
@@ -2702,9 +2731,12 @@ GenerateRandomDyingDraygonSpriteObjectPosition:
     RTS                                                                  ;A597B8;
 
 
+;;; $97B9: Instruction list - sleep ;;;
 InstList_Draygon_Sleep:
     dw Instruction_Common_Sleep                                          ;A597B9;
 
+
+;;; $97BB: Instruction list - Draygon body - facing left - reset ;;;
 InstList_DraygonBody_FacingLeft_Reset:
     dw Instruction_Draygon_SetInstList_Body_Eye_Tail_Arms                ;A597BB;
     dw InstList_DraygonBody_FacingLeft_Idle                              ;A597BD;
@@ -2717,6 +2749,8 @@ InstList_DraygonBody_FacingLeft_Reset:
     dw $0001,ExtendedSpritemap_Draygon_1A                                ;A597CB;
     dw Instruction_Common_Sleep                                          ;A597CF;
 
+
+;;; $97D1: Instruction list - Draygon body - facing right - reset ;;;
 InstList_DraygonBody_FacingRight_Reset:
     dw Instruction_Draygon_SetInstList_Body_Eye_Tail_Arms                ;A597D1;
     dw InstList_DraygonBody_FacingRight_Idle                             ;A597D3;
@@ -2729,6 +2763,8 @@ InstList_DraygonBody_FacingRight_Reset:
     dw $0001,ExtendedSpritemap_Draygon_4A                                ;A597E1;
     dw Instruction_Common_Sleep                                          ;A597E5;
 
+
+;;; $97E7: Instruction list - Draygon arms - facing left - idle ;;;
 InstList_DraygonArms_FacingLeft_Idle_0:
     dw $0005,ExtendedSpritemap_Draygon_4                                 ;A597E7;
     dw $0005,ExtendedSpritemap_Draygon_5                                 ;A597EB;
@@ -2742,7 +2778,9 @@ InstList_DraygonArms_FacingLeft_Idle_0:
 InstList_DraygonArms_FacingLeft_Idle_1:
     dw Instruction_Common_Sleep                                          ;A59803;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9805: Unused. Instruction list - Draygon arms ;;;
 UNUSED_InstList_DraygonArms_A59805:
     dw $0001,ExtendedSpritemap_Draygon_1D                                ;A59805;
     dw $0001,ExtendedSpritemap_Draygon_1C                                ;A59809;
@@ -2750,6 +2788,8 @@ UNUSED_InstList_DraygonArms_A59805:
     dw Instruction_Common_Sleep                                          ;A59811;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $9813: Instruction list - Draygon arms - facing left - near swoop apex ;;;
 InstList_DraygonArms_FacingLeft_NearSwoopApex:
     dw $0001,ExtendedSpritemap_Draygon_1B                                ;A59813;
     dw $0001,ExtendedSpritemap_Draygon_1C                                ;A59817;
@@ -2757,7 +2797,10 @@ InstList_DraygonArms_FacingLeft_NearSwoopApex:
     dw $0040,ExtendedSpritemap_Draygon_1E                                ;A5981F;
     dw Instruction_Common_Sleep                                          ;A59823;
 
+
+;;; $9825: Instruction list - Draygon arms - facing left - fake grab ;;;
 Debug_InstList_DraygonArms_FacingLeft_FakeGrab:
+; Only set by debug routine
     dw $0001,ExtendedSpritemap_Draygon_1B                                ;A59825;
     dw $0001,ExtendedSpritemap_Draygon_1C                                ;A59829;
     dw $0001,ExtendedSpritemap_Draygon_1D                                ;A5982D;
@@ -2768,6 +2811,8 @@ Debug_InstList_DraygonArms_FacingLeft_FakeGrab:
     dw Instruction_Common_GotoY                                          ;A59841;
     dw InstList_DraygonArms_FacingLeft_Idle_0                            ;A59843;
 
+
+;;; $9845: Instruction list - Draygon arms - facing left - grab ;;;
 InstList_DraygonArms_FacingLeft_Grab:
     dw $0001,ExtendedSpritemap_Draygon_1B                                ;A59845;
     dw $0001,ExtendedSpritemap_Draygon_1C                                ;A59849;
@@ -2779,6 +2824,8 @@ InstList_DraygonArms_FacingLeft_Grab:
     dw $0001,ExtendedSpritemap_Draygon_1C                                ;A59861;
     dw Instruction_Common_Sleep                                          ;A59865;
 
+
+;;; $9867: Instruction list - Draygon body - facing left - dying ;;;
 InstList_DraygonArms_FacingLeft_Dying:
     dw $0005,ExtendedSpritemap_Draygon_A                                 ;A59867;
     dw $0005,ExtendedSpritemap_Draygon_B                                 ;A5986B;
@@ -2787,7 +2834,9 @@ InstList_DraygonArms_FacingLeft_Dying:
     dw Instruction_Common_GotoY                                          ;A59877;
     dw InstList_DraygonBody_Dying_0                                      ;A59879;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $987B: Unused. Instruction list - Draygon body ;;;
 UNUSED_InstList_DraygonBody_A5987B:
     dw $0005,ExtendedSpritemap_Draygon_C                                 ;A5987B;
     dw $0005,ExtendedSpritemap_Draygon_B                                 ;A5987F;
@@ -2795,6 +2844,8 @@ UNUSED_InstList_DraygonBody_A5987B:
     dw Instruction_Common_Sleep                                          ;A59887;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $9889: Instruction list - Draygon body - facing left - idle ;;;
 InstList_DraygonBody_FacingLeft_Idle:
     dw Instruction_Draygon_RoomLoadingInterruptCmd_BeginHUDDraw          ;A59889;
     dw Instruction_Draygon_EyeFunctionInY                                ;A5988B;
@@ -2802,12 +2853,15 @@ InstList_DraygonBody_FacingLeft_Idle:
     dw $0001,ExtendedSpritemap_Draygon_1A                                ;A5988F;
     dw Instruction_Common_Sleep                                          ;A59893;
 
+
+;;; $9895: Instruction - room loading interrupt command = Draygon's room - begin HUD drawing ;;;
 Instruction_Draygon_RoomLoadingInterruptCmd_BeginHUDDraw:
     LDA.W #$000C                                                         ;A59895;
     STA.B $A9                                                            ;A59898;
     RTL                                                                  ;A5989A;
 
 
+;;; $989B: Instruction list - Draygon body - dying ;;;
 InstList_DraygonBody_Dying_0:
     dw Instruction_Draygon_QueueSFXInY_Lib3_Max6,$001B                   ;A5989B;
     dw Instruction_DraygonBody_SetAsIntangible                           ;A5989F;
@@ -2835,6 +2889,8 @@ InstList_DraygonBody_Dying_2:
     dw Instruction_Common_GotoY                                          ;A598CF;
     dw InstList_DraygonBody_Dying_2                                      ;A598D1;
 
+
+;;; $98D3: Instruction - paralyse Draygon tail and arms ;;;
 Instruction_Draygon_ParalyseDraygonTailAndArms:
     PHX                                                                  ;A598D3;
     PHY                                                                  ;A598D4;
@@ -2850,9 +2906,12 @@ Instruction_Draygon_ParalyseDraygonTailAndArms:
     RTL                                                                  ;A598EC;
 
 
+;;; $98ED: Instruction list - delete ;;;
 InstList_Draygon_Delete:
     dw Instruction_Common_DeleteEnemy                                    ;A598ED;
 
+
+;;; $98EF: Instruction - set Draygon body as intangible ;;;
 Instruction_DraygonBody_SetAsIntangible:
     PHX                                                                  ;A598EF;
     LDX.W $0E54                                                          ;A598F0;
@@ -2863,6 +2922,7 @@ Instruction_DraygonBody_SetAsIntangible:
     RTL                                                                  ;A598FD;
 
 
+;;; $98FE: Instruction list - Draygon body - facing left - fire goop ;;;
 InstList_DraygonBody_FacingLeft_FireGoop:
     dw $0001,ExtendedSpritemap_Draygon_E                                 ;A598FE;
     dw $0002,ExtendedSpritemap_Draygon_F                                 ;A59902;
@@ -2875,6 +2935,8 @@ InstList_DraygonBody_FacingLeft_FireGoop:
     dw $0001,ExtendedSpritemap_Draygon_E                                 ;A5991C;
     dw Instruction_Common_Sleep                                          ;A59920;
 
+
+;;; $9922: Instruction list - Draygon body - facing left - roar ;;;
 InstList_DraygonBody_FacingLeft_Roar:
     dw Instruction_Draygon_QueueSFXInY_Lib2_Max6,$0073                   ;A59922;
     dw $0006,ExtendedSpritemap_Draygon_E                                 ;A59924;
@@ -2886,6 +2948,8 @@ InstList_DraygonBody_FacingLeft_Roar:
     dw $0006,ExtendedSpritemap_Draygon_E                                 ;A5993E;
     dw Instruction_Common_Sleep                                          ;A59942;
 
+
+;;; $9944: Instruction list - Draygon eye - facing left - idle ;;;
 InstList_DraygonEye_FacingLeft_Idle:
     dw $0015,ExtendedSpritemap_Draygon_12                                ;A59944;
     dw $0005,ExtendedSpritemap_Draygon_13                                ;A59948;
@@ -2903,6 +2967,8 @@ InstList_DraygonEye_FacingLeft_Idle:
     dw Function_DraygonEye_FacingLeft                                    ;A59976;
     dw Instruction_Common_Sleep                                          ;A59978;
 
+
+;;; $997A: Instruction list - Draygon eye - facing left - dying ;;;
 InstList_DraygonEye_FacingLeft_Dying_0:
     dw Instruction_Common_TimerInY,$0004                                 ;A5997A;
 
@@ -2917,6 +2983,8 @@ InstList_DraygonEye_FacingLeft_Dying_1:
     dw $0010,ExtendedSpritemap_Draygon_14                                ;A59996;
     dw Instruction_Common_Sleep                                          ;A5999A;
 
+
+;;; $999C: Instruction list - Draygon eye - facing left - dead ;;;
 InstList_DraygonEye_FacingLeft_Dead:
     dw $0020,ExtendedSpritemap_Draygon_15                                ;A5999C;
     dw $0020,ExtendedSpritemap_Draygon_14                                ;A599A0;
@@ -2924,22 +2992,32 @@ InstList_DraygonEye_FacingLeft_Dead:
     dw $0001,ExtendedSpritemap_Draygon_12                                ;A599A8;
     dw Instruction_Common_Sleep                                          ;A599AC;
 
+
+;;; $99AE: Instruction list - Draygon eye - facing left - looking left ;;;
 InstList_DraygonEye_FacingLeft_LookingLeft:
     dw $0001,ExtendedSpritemap_Draygon_16                                ;A599AE;
     dw Instruction_Common_Sleep                                          ;A599B2;
 
+
+;;; $99B4: Instruction list - Draygon eye - facing left - looking right ;;;
 InstList_DraygonEye_FacingLeft_LookingRight:
     dw $0001,ExtendedSpritemap_Draygon_17                                ;A599B4;
     dw Instruction_Common_Sleep                                          ;A599B8;
 
+
+;;; $99BA: Instruction list - Draygon eye - facing left - looking up ;;;
 InstList_DraygonEye_FacingLeft_LookingUp:
     dw $0001,ExtendedSpritemap_Draygon_18                                ;A599BA;
     dw Instruction_Common_Sleep                                          ;A599BE;
 
+
+;;; $99C0: Instruction list - Draygon eye - facing left - looking down ;;;
 InstList_DraygonEye_FacingLeft_LookingDown:
     dw $0001,ExtendedSpritemap_Draygon_19                                ;A599C0;
     dw Instruction_Common_Sleep                                          ;A599C4;
 
+
+;;; $99C6: Instruction list - Draygon tail - facing left - idle ;;;
 InstList_DraygonTail_FacingLeft_Idle_0:
     dw $0008,ExtendedSpritemap_Draygon_22                                ;A599C6;
     dw $0007,ExtendedSpritemap_Draygon_23                                ;A599CA;
@@ -2959,7 +3037,10 @@ InstList_DraygonTail_FacingLeft_Idle_0:
 InstList_DraygonTail_FacingLeft_Idle_1:
     dw Instruction_Common_Sleep                                          ;A599FA;
 
+
+;;; $99FC: Instruction list - Draygon tail - facing left - fake tail whip ;;;
 InstList_DraygonTail_FacingLeft_FakeTailWhip:
+; Set as initial instruction list for some reason, otherwise only set by debug routine
     dw Instruction_DraygonBody_DisplaceGraphics,$FFFF,$FFFF              ;A599FC;
     dw $0010,ExtendedSpritemap_Draygon_24                                ;A599FE;
     dw Instruction_DraygonBody_DisplaceGraphics,$FFFE,$FFFE              ;A59A06;
@@ -2985,6 +3066,8 @@ InstList_DraygonTail_FacingLeft_FakeTailWhip:
     dw Instruction_Common_GotoY                                          ;A59A64;
     dw InstList_DraygonTail_FacingLeft_Idle_0                            ;A59A66;
 
+
+;;; $9A68: Instruction list - Draygon tail - facing left - final tail whips ;;;
 InstList_DraygonTail_FacingLeft_FinalTailWhips_0:
     dw Instruction_Common_TimerInY,$0004                                 ;A59A68;
 
@@ -3023,6 +3106,8 @@ InstList_DraygonTail_FacingLeft_FinalTailWhips_1:
 InstList_DraygonTail_FacingLeft_FinalTailWhips_2:
     dw Instruction_Common_Sleep                                          ;A59AE6;
 
+
+;;; $9AE8: Instruction list - Draygon tail - facing left - tail whip ;;;
 InstList_DraygonTail_FacingLeft_TailWhip:
     dw Instruction_DraygonBody_DisplaceGraphics,$FFFF,$FFFF              ;A59AE8;
     dw $0002,ExtendedSpritemap_Draygon_24                                ;A59AEA;
@@ -3051,7 +3136,10 @@ InstList_DraygonTail_FacingLeft_TailWhip:
     dw Instruction_Common_GotoY                                          ;A59B56;
     dw InstList_DraygonTail_FacingLeft_Idle_0                            ;A59B58;
 
+
+;;; $9B5A: Instruction list - Draygon tail - facing left - tail flail ;;;
 InstList_DraygonTail_FacingLeft_TailFlail:
+; A tail whip move that Draygon does when Samus isn't grabbed (so it doesn't move Draygon's back or do a Samus hit)
     dw $0002,ExtendedSpritemap_Draygon_24                                ;A59B5A;
     dw $0006,ExtendedSpritemap_Draygon_29                                ;A59B5E;
     dw $0005,ExtendedSpritemap_Draygon_2A                                ;A59B62;
@@ -3070,7 +3158,10 @@ InstList_DraygonTail_FacingLeft_TailFlail:
     dw Instruction_Common_GotoY                                          ;A59B96;
     dw InstList_DraygonTail_FacingLeft_Idle_0                            ;A59B98;
 
+
+;;; $9B9A: Instruction - Draygon tail whip hit ;;;
 Instruction_DraygonTail_TailWhipHit:
+; Uses the damage from the Draygon body enemy and not the Draygon tail enemy :(
     PHX                                                                  ;A59B9A;
     PHY                                                                  ;A59B9B;
     LDA.W #$0018                                                         ;A59B9C;
@@ -3098,6 +3189,7 @@ Instruction_DraygonTail_TailWhipHit:
     RTL                                                                  ;A59BD9;
 
 
+;;; $9BDA: Instruction list - Draygon arms - facing right - idle ;;;
 InstList_DraygonArms_FacingRight_Idle_0:
     dw $0005,ExtendedSpritemap_Draygon_34                                ;A59BDA;
     dw $0005,ExtendedSpritemap_Draygon_35                                ;A59BDE;
@@ -3111,7 +3203,9 @@ InstList_DraygonArms_FacingRight_Idle_0:
 InstList_DraygonArms_FacingRight_Idle_1:
     dw Instruction_Common_Sleep                                          ;A59BF6;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9BF8: Unused. Instruction list - Draygon arms ;;;
 UNUSED_InstList_DraygonArms_A59BF8:
     dw $0001,ExtendedSpritemap_Draygon_4D                                ;A59BF8;
     dw $0001,ExtendedSpritemap_Draygon_4C                                ;A59BFC;
@@ -3119,6 +3213,8 @@ UNUSED_InstList_DraygonArms_A59BF8:
     dw Instruction_Common_Sleep                                          ;A59C04;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $9C06: Instruction list - Draygon arms - facing right - near swoop apex ;;;
 InstList_DraygonArms_FacingRight_NearSwoopApex:
     dw $0001,ExtendedSpritemap_Draygon_4B                                ;A59C06;
     dw $0001,ExtendedSpritemap_Draygon_4C                                ;A59C0A;
@@ -3126,7 +3222,10 @@ InstList_DraygonArms_FacingRight_NearSwoopApex:
     dw $0040,ExtendedSpritemap_Draygon_4E                                ;A59C12;
     dw Instruction_Common_Sleep                                          ;A59C16;
 
+
+;;; $9C18: Instruction list - Draygon arms - facing right - fake grab ;;;
 Debug_InstList_DraygonArms_FacingRight_FakeGrab:
+; Only set by debug routine
     dw $0001,ExtendedSpritemap_Draygon_4B                                ;A59C18;
     dw $0001,ExtendedSpritemap_Draygon_4C                                ;A59C1C;
     dw $0001,ExtendedSpritemap_Draygon_4D                                ;A59C20;
@@ -3137,6 +3236,8 @@ Debug_InstList_DraygonArms_FacingRight_FakeGrab:
     dw Instruction_Common_GotoY                                          ;A59C34;
     dw InstList_DraygonArms_FacingRight_Idle_0                           ;A59C36;
 
+
+;;; $9C38: Instruction list - Draygon arms - facing right - grab ;;;
 InstList_DraygonArms_FacingRight_Grab:
     dw $0001,ExtendedSpritemap_Draygon_4B                                ;A59C38;
     dw $0001,ExtendedSpritemap_Draygon_4C                                ;A59C3C;
@@ -3148,6 +3249,8 @@ InstList_DraygonArms_FacingRight_Grab:
     dw $0001,ExtendedSpritemap_Draygon_4C                                ;A59C54;
     dw Instruction_Common_Sleep                                          ;A59C58;
 
+
+;;; $9C5A: Instruction list - Draygon body - facing right - dying ;;;
 InstList_DraygonArms_FacingRight_Dying_0:
     dw $0005,ExtendedSpritemap_Draygon_3A                                ;A59C5A;
     dw $0005,ExtendedSpritemap_Draygon_3B                                ;A59C5E;
@@ -3159,7 +3262,9 @@ InstList_DraygonArms_FacingRight_Dying_0:
 InstList_DraygonBody_FacingRight_Dying_1:
     dw Instruction_Common_Sleep                                          ;A59C6E;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9C70: Unused. Instruction list - Draygon body ;;;
 UNUSED_InstList_DraygonBody_A59C70:
     dw $0005,ExtendedSpritemap_Draygon_3C                                ;A59C70;
     dw $0005,ExtendedSpritemap_Draygon_3B                                ;A59C74;
@@ -3167,6 +3272,8 @@ UNUSED_InstList_DraygonBody_A59C70:
     dw Instruction_Common_Sleep                                          ;A59C7C;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $9C7E: Instruction list - Draygon body - facing right - idle ;;;
 InstList_DraygonBody_FacingRight_Idle:
     dw Instruction_Draygon_RoomLoadingInterruptCmd_BeginHUDDraw_dup      ;A59C7E;
     dw Instruction_Draygon_EyeFunctionInY                                ;A59C80;
@@ -3174,12 +3281,15 @@ InstList_DraygonBody_FacingRight_Idle:
     dw $0001,ExtendedSpritemap_Draygon_4A                                ;A59C84;
     dw Instruction_Common_Sleep                                          ;A59C88;
 
+
+;;; $9C8A: Instruction - room loading interrupt command = Draygon's room - begin HUD drawing ;;;
 Instruction_Draygon_RoomLoadingInterruptCmd_BeginHUDDraw_dup:
     LDA.W #$000C                                                         ;A59C8A;
     STA.B $A9                                                            ;A59C8D;
     RTL                                                                  ;A59C8F;
 
 
+;;; $9C90: Instruction list - Draygon body - facing right - fire goop ;;;
 InstList_DraygonBody_FacingRight_FireGoop:
     dw $0001,ExtendedSpritemap_Draygon_3E                                ;A59C90;
     dw $0002,ExtendedSpritemap_Draygon_3F                                ;A59C94;
@@ -3192,6 +3302,8 @@ InstList_DraygonBody_FacingRight_FireGoop:
     dw $0001,ExtendedSpritemap_Draygon_3E                                ;A59CAE;
     dw Instruction_Common_Sleep                                          ;A59CB2;
 
+
+;;; $9CB4: Instruction list - Draygon body - facing right - roar ;;;
 InstList_DraygonBody_FacingRight_Roar:
     dw Instruction_Draygon_QueueSFXInY_Lib2_Max6,$0073                   ;A59CB4;
     dw $0006,ExtendedSpritemap_Draygon_3E                                ;A59CB6;
@@ -3203,6 +3315,8 @@ InstList_DraygonBody_FacingRight_Roar:
     dw $0006,ExtendedSpritemap_Draygon_3E                                ;A59CD0;
     dw Instruction_Common_Sleep                                          ;A59CD4;
 
+
+;;; $9CD6: Instruction list - Draygon eye - facing right - idle ;;;
 InstList_DraygonEye_FacingRight_Idle:
     dw $0015,ExtendedSpritemap_Draygon_42                                ;A59CD6;
     dw $0005,ExtendedSpritemap_Draygon_43                                ;A59CDA;
@@ -3220,7 +3334,9 @@ InstList_DraygonEye_FacingRight_Idle:
     dw Function_DraygonEye_FacingLeft                                    ;A59D08;
     dw Instruction_Common_Sleep                                          ;A59D0A;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9D0C: Unused. Instruction list - Draygon eye ;;;
 UNUSED_InstList_DraygonEye_A59D0C:
     dw $0015,ExtendedSpritemap_Draygon_42                                ;A59D0C;
     dw $0005,ExtendedSpritemap_Draygon_43                                ;A59D10;
@@ -3228,6 +3344,8 @@ UNUSED_InstList_DraygonEye_A59D0C:
     dw $000A,ExtendedSpritemap_Draygon_45                                ;A59D18;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $9D1C: Instruction list - Draygon eye - facing right - dying ;;;
 InstList_DraygonEye_FacingRight_Dying_0:
     dw Instruction_Common_TimerInY,$0004                                 ;A59D1C;
 
@@ -3242,6 +3360,8 @@ InstList_DraygonEye_FacingRight_Dying_1:
     dw $0010,ExtendedSpritemap_Draygon_44                                ;A59D38;
     dw Instruction_Common_Sleep                                          ;A59D3C;
 
+
+;;; $9D3E: Instruction list - Draygon eye - facing right - dead ;;;
 InstList_DraygonEye_FacingRight_Dead:
     dw $0020,ExtendedSpritemap_Draygon_45                                ;A59D3E;
     dw $0020,ExtendedSpritemap_Draygon_44                                ;A59D42;
@@ -3249,22 +3369,32 @@ InstList_DraygonEye_FacingRight_Dead:
     dw $0001,ExtendedSpritemap_Draygon_42                                ;A59D4A;
     dw Instruction_Common_Sleep                                          ;A59D4E;
 
+
+;;; $9D50: Instruction list - Draygon eye - facing right - looking right ;;;
 InstList_DraygonEye_FacingRight_LookingRight:
     dw $0001,ExtendedSpritemap_Draygon_46                                ;A59D50;
     dw Instruction_Common_Sleep                                          ;A59D54;
 
+
+;;; $9D56: Instruction list - Draygon eye - facing right - looking left ;;;
 InstList_DraygonEye_FacingRight_LookingLeft:
     dw $0001,ExtendedSpritemap_Draygon_47                                ;A59D56;
     dw Instruction_Common_Sleep                                          ;A59D5A;
 
+
+;;; $9D5C: Instruction list - Draygon eye - facing right - looking up ;;;
 InstList_DraygonEye_FacingRight_LookingUp:
     dw $0001,ExtendedSpritemap_Draygon_48                                ;A59D5C;
     dw Instruction_Common_Sleep                                          ;A59D60;
 
+
+;;; $9D62: Instruction list - Draygon eye - facing right - looking down ;;;
 InstList_DraygonEye_FacingRight_LookingDown:
     dw $0001,ExtendedSpritemap_Draygon_49                                ;A59D62;
     dw Instruction_Common_Sleep                                          ;A59D66;
 
+
+;;; $9D68: Instruction list - Draygon tail - facing right - idle ;;;
 InstList_DraygonTail_FacingRight_Idle_0:
     dw $0008,ExtendedSpritemap_Draygon_59                                ;A59D68;
     dw $0007,ExtendedSpritemap_Draygon_5A                                ;A59D6C;
@@ -3284,7 +3414,10 @@ InstList_DraygonTail_FacingRight_Idle_0:
 InstList_DraygonTail_FacingRight_Idle_1:
     dw Instruction_Common_Sleep                                          ;A59D9C;
 
+
+;;; $9D9E: Instruction list - Draygon tail - facing right - fake tail whip ;;;
 Debug_InstList_DraygonTail_FacingRight_FakeTailWhip:
+; Only set by debug routine
     dw Instruction_DraygonBody_DisplaceGraphics,$0001,$FFFF              ;A59D9E;
     dw $0010,ExtendedSpritemap_Draygon_5B                                ;A59DA0;
     dw Instruction_DraygonBody_DisplaceGraphics,$0002,$FFFE              ;A59DA8;
@@ -3310,6 +3443,8 @@ Debug_InstList_DraygonTail_FacingRight_FakeTailWhip:
     dw Instruction_Common_GotoY                                          ;A59E06;
     dw InstList_DraygonTail_FacingRight_Idle_0                           ;A59E08;
 
+
+;;; $9E0A: Instruction - displace Draygon body graphics [[Y]] px left, [[Y] + 2] px down ;;;
 Instruction_DraygonBody_DisplaceGraphics:
     PHX                                                                  ;A59E0A;
     PHY                                                                  ;A59E0B;
@@ -3326,6 +3461,7 @@ Instruction_DraygonBody_DisplaceGraphics:
     RTL                                                                  ;A59E20;
 
 
+;;; $9E21: Instruction list - Draygon tail - facing right - final tail whips ;;;
 InstList_DraygonTail_FacingRight_FinalTailWhips_0:
     dw Instruction_Common_TimerInY,$0004                                 ;A59E21;
 
@@ -3364,6 +3500,8 @@ InstList_DraygonTail_FacingRight_FinalTailWhips_1:
 InstList_DraygonTail_FacingRight_FinalTailWhips_2:
     dw Instruction_Common_Sleep                                          ;A59E9F;
 
+
+;;; $9EA1: Instruction list - Draygon tail - facing right - tail whip ;;;
 InstList_DraygonTail_FacingRight_TailWhip_0:
     dw Instruction_DraygonBody_DisplaceGraphics,$0001,$FFFF              ;A59EA1;
     dw $0002,ExtendedSpritemap_Draygon_5B                                ;A59EA3;
@@ -3395,7 +3533,10 @@ InstList_DraygonTail_FacingRight_TailWhip_0:
 InstList_DraygonTail_FacingRight_TailWhip_1:
     dw Instruction_Common_Sleep                                          ;A59F13;
 
+
+;;; $9F15: Instruction list - Draygon tail - facing right - tail flail ;;;
 InstList_DraygonTail_FacingRight_TailFlail_0:
+; A tail whip move that Draygon does when Samus isn't grabbed (so it doesn't move Draygon's back or do a Samus hit)
     dw $0002,ExtendedSpritemap_Draygon_5B                                ;A59F15;
     dw $0006,ExtendedSpritemap_Draygon_60                                ;A59F19;
     dw $0005,ExtendedSpritemap_Draygon_61                                ;A59F1D;
@@ -3417,6 +3558,8 @@ InstList_DraygonTail_FacingRight_TailFlail_0:
 InstList_DraygonTail_FacingRight_TailFlail_1:
     dw Instruction_Common_Sleep                                          ;A59F55;
 
+
+;;; $9F57: Instruction - Draygon body function = [[Y]] ;;;
 Instruction_Draygon_BodyFunctionInY:
     LDA.W $0000,Y                                                        ;A59F57;
     STA.W $0FA8                                                          ;A59F5A;
@@ -3425,6 +3568,7 @@ Instruction_Draygon_BodyFunctionInY:
     RTL                                                                  ;A59F5F;
 
 
+;;; $9F60: Instruction - queue sound [[Y]], sound library 2, max sounds allowed = 6 ;;;
 Instruction_Draygon_QueueSFXInY_Lib2_Max6:
     PHX                                                                  ;A59F60;
     PHY                                                                  ;A59F61;
@@ -3437,6 +3581,7 @@ Instruction_Draygon_QueueSFXInY_Lib2_Max6:
     RTL                                                                  ;A59F6D;
 
 
+;;; $9F6E: Instruction - queue sound [[Y]], sound library 3, max sounds allowed = 6 ;;;
 Instruction_Draygon_QueueSFXInY_Lib3_Max6:
     PHX                                                                  ;A59F6E;
     PHY                                                                  ;A59F6F;
@@ -3449,7 +3594,9 @@ Instruction_Draygon_QueueSFXInY_Lib3_Max6:
     RTL                                                                  ;A59F7B;
 
 
+;;; $9F7C: Instruction - spawn Draygon goop - leftwards ;;;
 Instruction_Draygon_SpawnGoop_Leftwards:
+; Doesn't set enemy projectile initialisation parameter 0 (speed) :/
     PHX                                                                  ;A59F7C;
     PHY                                                                  ;A59F7D;
     LDX.W $0E54                                                          ;A59F7E;
@@ -3474,7 +3621,9 @@ Instruction_Draygon_SpawnGoop_Leftwards:
     RTL                                                                  ;A59FAD;
 
 
+;;; $9FAE: Instruction - spawn Draygon goop - rightwards ;;;
 Instruction_Draygon_SpawnGoop_Rightwards:
+; Doesn't set enemy projectile initialisation parameter 0 (speed) :/
     PHX                                                                  ;A59FAE;
     PHY                                                                  ;A59FAF;
     LDX.W $0E54                                                          ;A59FB0;
@@ -3499,7 +3648,9 @@ Instruction_Draygon_SpawnGoop_Rightwards:
     RTL                                                                  ;A59FDF;
 
 
+;;; $9FE0: Handle death sequence evir movement ;;;
 HandleDeathSequenceEvirMovement:
+; Where does $0E24 come from? Maybe CalculateDraygonSwoopYPositions? Only used when moving left. Supposed to be `SBC #$0000`?
     PHY                                                                  ;A59FE0;
     LDX.W #$003E                                                         ;A59FE1;
     LDY.W #$0014                                                         ;A59FE4;
@@ -3518,7 +3669,6 @@ HandleDeathSequenceEvirMovement:
     ADC.W #$0000                                                         ;A5A003;
     STA.L $7EF0F8,X                                                      ;A5A006;
     BRA .YPosition                                                       ;A5A00A;
-
 
 +   LDA.L $7EF178,X                                                      ;A5A00C;
     SEC                                                                  ;A5A010;
@@ -3543,7 +3693,6 @@ HandleDeathSequenceEvirMovement:
     STA.L $7EF1F8,X                                                      ;A5A042;
     BRA .nextSpriteObject                                                ;A5A046;
 
-
 +   LDA.L $7EF278,X                                                      ;A5A048;
     SEC                                                                  ;A5A04C;
     SBC.W DraygonDeathSequenceEvirSubSpeeds_Y,Y                          ;A5A04D;
@@ -3563,11 +3712,11 @@ HandleDeathSequenceEvirMovement:
     PLY                                                                  ;A5A067;
     RTS                                                                  ;A5A068;
 
-
   .gotoLoop:
     JMP.W .loop                                                          ;A5A069;
 
 
+;;; $A06C: Spawn death sequence evir sprite objects ;;;
 SpawnDeathSequenceEvirSpriteObjects:
     PHX                                                                  ;A5A06C;
     PHY                                                                  ;A5A06D;
@@ -3582,7 +3731,7 @@ SpawnDeathSequenceEvirSpriteObjects:
     LDX.W #$0002                                                         ;A5A07C;
     LDY.W #$0014                                                         ;A5A07F;
 
-loopLeft:
+  .loopLeft:
     LDA.W DraygonDeathSequenceEvirSpawnPositions_X,Y                     ;A5A082;
     STA.B $12                                                            ;A5A085;
     LDA.W DraygonDeathSequenceEvirSpawnPositions_Y,Y                     ;A5A087;
@@ -3597,7 +3746,7 @@ loopLeft:
     DEY                                                                  ;A5A09C;
     DEY                                                                  ;A5A09D;
     DEX                                                                  ;A5A09E;
-    BPL loopLeft                                                         ;A5A09F;
+    BPL .loopLeft                                                        ;A5A09F;
     LDX.W #$0002                                                         ;A5A0A1;
 
   .loopRight:
@@ -3621,6 +3770,7 @@ loopLeft:
     RTS                                                                  ;A5A0C5;
 
 
+;;; $A0C6: Clear sprite objects ;;;
 Draygon_ClearSpriteObjects:
     PHX                                                                  ;A5A0C6;
     PHY                                                                  ;A5A0C7;
@@ -3637,6 +3787,7 @@ Draygon_ClearSpriteObjects:
     RTS                                                                  ;A5A0D8;
 
 
+;;; $A0D9: Spawn fight intro evir sprite objects ;;;
 SpawnFightIntroEvirSpriteObjects:
     PHX                                                                  ;A5A0D9;
     PHY                                                                  ;A5A0DA;
@@ -3681,7 +3832,12 @@ SpawnFightIntroEvirSpriteObjects:
     RTS                                                                  ;A5A13D;
 
 
+;;; $A13E: Handle Draygon fight intro dance ;;;
 HandleDraygonFightIntroDance:
+; There's 8 entries in the movement latency table MovementLatencyForEachEvirSpriteObject, but only 4 evir are processed
+; I guess there was supposed to be 8 originally and then it was reduced to 4?
+; In any case, it's the first four entries of the table that are used, where the last 4 would have made more sense
+; The consequence of this is a 128 frames of this routine doing nothing
     PHY                                                                  ;A5A13E;
     LDX.W #$003E                                                         ;A5A13F;
 
@@ -3725,15 +3881,14 @@ HandleDraygonFightIntroDance:
     PLY                                                                  ;A5A194;
     RTS                                                                  ;A5A195;
 
-
   .deleteSpriteObject:
     LDA.W #$0000                                                         ;A5A196;
     STA.L $7EEF78,X                                                      ;A5A199;
     BRA .next                                                            ;A5A19D;
 
 
-MovementLatencyForEachEvirSpriteObject:
 ; Movement latency for each evir sprite object (each evir moves 80h bytes later in the movement table than the next)
+MovementLatencyForEachEvirSpriteObject:
     dw $FC80,$FD00,$FD80,$FE00                                           ;A5A19F;
 
 if !FEATURE_KEEP_UNREFERENCED
@@ -3741,6 +3896,8 @@ UNUSED_MovementLatencyForEachEvirSpriteObject_A5A1A7:
     dw $FE80,$FF00,$FF80,$0000                                           ;A5A1A7;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $A1AF: Death sequence evir subspeeds ;;;
 DraygonDeathSequenceEvirSubSpeeds:
 ;        _________ X subspeed
 ;       |      ___ Y subspeed
@@ -3755,6 +3912,8 @@ DraygonDeathSequenceEvirSubSpeeds:
     dw $8E39,$D4DA ;  0xFFFF * cos(28h * pi / 80h), 0xFFFF * sin(28h * pi / 80h)
     dw $D4DA,$8E39 ;  0xFFFF * cos(18h * pi / 80h), 0xFFFF * sin(18h * pi / 80h)
 
+
+;;; $A1C7: Death sequence evir spawn positions ;;;
 DraygonDeathSequenceEvirSpawnPositions:
 ;        _________ X position
 ;       |      ___ Y position
@@ -3769,6 +3928,8 @@ DraygonDeathSequenceEvirSpawnPositions:
     dw $021A,$0059
     dw $02A6,$00E5
 
+
+;;; $A1DF: Death sequence evir angles ;;;
 DraygonDeathSequenceEvirAngles:
 ; Used *only* to decide the sign of the X/Y subspeeds at DraygonDeathSequenceEvirSubSpeeds
 ; 0 = left(!), positive = clockwise
@@ -3779,6 +3940,8 @@ DraygonDeathSequenceEvirAngles:
     dw $0028,$0000
     dw $0018,$0000
 
+
+;;; $A1F7: Draygon palettes ;;;
 Palette_Draygon_Sprite7:
 ; Sprite palette 7
     dw $3800,$3F57,$2E4D,$00E2,$0060,$3AB0,$220B,$1166                   ;A5A1F7;
@@ -3809,6 +3972,8 @@ Palette_Draygon_WhiteFlash:
     dw $3800,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF                   ;A5A297;
     dw $7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF                   ;A5A2A7;
 
+
+;;; $A2B7: Draygon extended spritemaps ;;;
 ExtendedSpritemap_Draygon_0:
     dw $0001                                                             ;A5A2B7;
     dw $0000,$0000
@@ -4673,6 +4838,8 @@ ExtendedSpritemap_Draygon_66:
     dw Spritemap_Draygon_40                                              ;A5A949;
     dw Hitbox_Draygon_1B                                                 ;A5A94B;
 
+
+;;; $A94D: Draygon hitboxes ;;;
 Hitbox_Draygon_0:
     dw $0001                                                             ;A5A94D;
     dw $0000,$0000,$0017,$001F
@@ -4955,6 +5122,8 @@ Hitbox_Draygon_2D:
 Hitbox_Draygon_2E:
     dw $0000                                                             ;A5ABDD;
 
+
+;;; $ABDF: Draygon spritemaps / extended tilemaps ;;;
 Spritemap_Draygon_0:
     dw $0004                                                             ;A5ABDF;
     %spritemapEntry(1, $08, $10, 0, 0, 0, 3, $121)
@@ -6260,6 +6429,7 @@ Spritemap_Draygon_5D:
     %spritemapEntry(1, $1F8, $F8, 0, 0, 2, 3, $180)
 
 
+;;; $C46B: Initialisation AI - enemy $DE7F (Draygon eye) ;;;
 InitAI_DraygonEye:
     LDX.W $0E54                                                          ;A5C46B;
     LDA.W #InstList_DraygonEye_FacingLeft_Idle                           ;A5C46E;
@@ -6269,6 +6439,7 @@ InitAI_DraygonEye:
     RTL                                                                  ;A5C47A;
 
 
+;;; $C47B: Instruction - Draygon eye function = [[Y]] ;;;
 Instruction_Draygon_EyeFunctionInY:
     PHY                                                                  ;A5C47B;
     LDA.W $0000,Y                                                        ;A5C47C;
@@ -6279,12 +6450,14 @@ Instruction_Draygon_EyeFunctionInY:
     RTL                                                                  ;A5C485;
 
 
+;;; $C486: Main AI - enemy $DE7F (Draygon eye) ;;;
 MainAI_DraygonEye:
     LDX.W $0E54                                                          ;A5C486;
     JSR.W ($0FA8,X)                                                      ;A5C489;
     RTL                                                                  ;A5C48C;
 
 
+;;; $C48D: Draygon eye function - facing left ;;;
 Function_DraygonEye_FacingLeft:
     LDA.W $0FA4,X                                                        ;A5C48D;
     AND.W #$007F                                                         ;A5C490;
@@ -6348,6 +6521,7 @@ Function_DraygonEye_FacingLeft:
     RTS                                                                  ;A5C512;
 
 
+;;; $C513: Draygon eye function - facing right ;;;
 Function_DraygonEye_FacingRight:
     LDA.W $0FA4,X                                                        ;A5C513;
     AND.W #$007F                                                         ;A5C516;
@@ -6411,6 +6585,7 @@ Function_DraygonEye_FacingRight:
     RTS                                                                  ;A5C598;
 
 
+;;; $C599: Initialisation AI - enemy $DEBF (Draygon tail) ;;;
 InitAI_DraygonTail:
     LDX.W $0E54                                                          ;A5C599;
     LDA.W #InstList_DraygonTail_FacingLeft_FakeTailWhip                  ;A5C59C;
@@ -6421,18 +6596,22 @@ InitAI_DraygonTail:
     RTL                                                                  ;A5C5A9;
 
 
+;;; $C5AA: RTL. Main AI - enemy $DEBF (Draygon tail) ;;;
 RTL_A5C5AA:
     RTL                                                                  ;A5C5AA;
 
 
+;;; $C5AB: RTL ;;;
 RTL_A5C5AB:
     RTL                                                                  ;A5C5AB;
 
 
+;;; $C5AC: RTL ;;;
 RTL_A5C5AC:
     RTL                                                                  ;A5C5AC;
 
 
+;;; $C5AD: Initialisation AI - enemy $DEFF (Draygon arms) ;;;
 InitAI_DraygonArms:
     LDX.W $0E54                                                          ;A5C5AD;
     LDA.W #InstList_DraygonArms_FacingLeft_Idle_0                        ;A5C5B0;
@@ -6445,19 +6624,23 @@ InitAI_DraygonArms:
     RTL                                                                  ;A5C5C3;
 
 
+;;; $C5C4: RTL. Main AI - enemy $DEFF (Draygon arms) ;;;
 RTL_A5C5C4:
     RTL                                                                  ;A5C5C4;
 
 
+;;; $C5C5: RTL ;;;
 RTL_A5C5C5:
     RTL                                                                  ;A5C5C5;
 
 
+;;; $C5C6: RTL ;;;
 RTL_A5C5C6:
     RTL                                                                  ;A5C5C6;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C5C7: Unused Draygon fight intro dance data ;;;
 UNUSED_DraygonFightIntroDanceData_KeikoLove_A5C5C7:
     db $01,$FF, $01,$00, $00,$FF, $01,$00, $01,$FF, $01,$00, $00,$FF, $01,$00 ;A5C5C7;
     db $01,$FF, $01,$00, $00,$FF, $01,$00, $01,$FF, $00,$FF, $01,$00, $01,$FF ;A5C5D7;
@@ -6593,6 +6776,8 @@ UNUSED_DraygonFightIntroDanceData_KeikoLove_A5C5C7:
     db $01,$00, $01,$FF, $01,$FF, $01,$00, $01,$FF, $01,$00, $01,$FF, $01,$00 ;A5CDF7;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $CE07: Draygon fight intro dance data ;;;
 DraygonFightIntroDanceData_KeikoLove:
 ; The Keiko love dance
 ; The table index is incremented by 4 per movement instead of 2, so only entries 2k for some k are used
@@ -6849,6 +7034,8 @@ DraygonFightIntroDanceData_KeikoLove:
     db $00,$01, $01,$01, $00,$01, $00,$01, $01,$01, $00,$01, $01,$01, $00,$01 ;A5DDA7;
     db $01,$01, $01,$00, $00,$01, $01,$01, $80,$80, $80,$80, $80,$80, $80,$80 ;A5DDB7;
 
+
+;;; $DDC7: Unused Draygon fight intro dance data ;;;
 DraygonFightIntroDanceData_KeikoLove_EvirsAlreadyDeleted:
 ; This section is read even though the evirs are deleted at this point
 ; (deleted due to the 80,80 terminator, but the movement routine sets their position anyway)
@@ -6947,11 +7134,15 @@ UNUSED_DraygonFightIntroDanceData_KeikoLove_A5DF47:
     db $02,$00                                                           ;A5E357;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $E359: Palette - enemy $DF3F/$DF7F (Spore Spawn) ;;;
 Palette_SporeSpawn:
 ; Sprite palette 7. Spores
     dw $0000,$3F57,$2E4D,$00E2,$0060,$3AB0,$220B,$1166                   ;A5E359;
     dw $0924,$57FF,$3AB5,$1DCE,$00E7,$03FF,$0216,$00B0                   ;A5E369;
 
+
+;;; $E379: Spore Spawn health-based palettes ;;;
 ; Sprite palette 1. Spore Spawn and spore spawner
 Palette_SporeSpawn_HealthBased_0:                                        ;A5E379;
     dw $0000,$3F57,$2E4D,$00E2,$0060,$3AB0,$220B,$1166,$0924,$57FF,$3AB5,$1DCE,$00E7,$03FF,$0216,$00B0 ; Health >= 770
@@ -6962,6 +7153,8 @@ Palette_SporeSpawn_HealthBased_2:                                        ;A5E3B9
 Palette_SporeSpawn_HealthBased_3:                                        ;A5E3D9;
     dw $3800,$094A,$0908,$0463,$0000,$0929,$04C6,$04A5,$0484,$2631,$156D,$0D09,$0085,$019F,$00D7,$006C ; Health < 70
 
+
+;;; $E3F9: Spore Spawn death sequence palettes ;;;
 ; Sprite palette 1. Spore Spawn and spore spawner
 Palette_SporeSpawn_DeathSequence_0:
     dw $3800,$094A,$0908,$0463,$0000,$0929,$04C6,$04A5                   ;A5E3F9;
@@ -7053,6 +7246,8 @@ Palette_SporeSpawn_DeathSequence_Background_6:
     dw $3800,$19B2,$0D0D,$0089,$19B2,$0D0D,$0089,$0002                   ;A5E699;
     dw $04CB,$04CB,$092E,$0004,$7FFF,$7FFF,$19B2,$0002                   ;A5E6A9;
 
+
+;;; $E6B9: Instruction list - initial - Spore Spawn is dead ;;;
 InstList_SporeSpawn_Initial_Dead:
     dw Instruction_SporeSpawn_LoadDeathSequenceTargetPalette,$00C0       ;A5E6B9;
     dw Instruction_SporeSpawn_FunctionInY                                ;A5E6BD;
@@ -7060,6 +7255,8 @@ InstList_SporeSpawn_Initial_Dead:
     dw $0001,ExtendedSpritemap_SporeSpawn_Dead                           ;A5E6C1;
     dw Instruction_Common_Sleep                                          ;A5E6C5;
 
+
+;;; $E6C7: Instruction list - initial - Spore Spawn is alive ;;;
 InstList_SporeSpawn_Initial_Alive:
     dw $0100,ExtendedSpritemap_SporeSpawn_Closed_Closing_Opening_0       ;A5E6C7;
     dw Instruction_SporeSpawn_FunctionInY                                ;A5E6CB;
@@ -7067,12 +7264,16 @@ InstList_SporeSpawn_Initial_Alive:
     dw $0001,ExtendedSpritemap_SporeSpawn_Closed_Closing_Opening_0       ;A5E6CF;
     dw Instruction_Common_Sleep                                          ;A5E6D3;
 
+
+;;; $E6D5: Instruction list - fight has started ;;;
 InstList_SporeSpawn_FightHasStarted:
     dw Instruction_SporeSpawn_SetMaxXRadiusAndAngleDelta,$0040,$0001     ;A5E6D5;
     dw Instruction_SporeSpawn_FunctionInY                                ;A5E6D7;
     dw Function_SporeSpawn_Moving                                        ;A5E6DD;
     dw $0300,ExtendedSpritemap_SporeSpawn_Closed_Closing_Opening_0       ;A5E6DF;
 
+
+;;; $E6E3: Instruction list - open and stop ;;;
 InstList_SporeSpawn_OpenAndStop_0:
     dw Instruction_SporeSpawn_SporeGenerationFlagInY,$0001               ;A5E6E3;
     dw Instruction_SporeSpawn_QueueSFXInY_Lib2_Max6,$002C                ;A5E6E7;
@@ -7097,6 +7298,8 @@ InstList_SporeSpawn_OpenAndStop_1:
     dw Instruction_Common_DecrementTimer_GotoYIfNonZero_duplicate        ;A5E725;
     dw InstList_SporeSpawn_OpenAndStop_1                                 ;A5E727;
 
+
+;;; $E729: Instruction list - close and move ;;;
 InstList_SporeSpawn_CloseAndMove:
     dw $0008,ExtendedSpritemap_SporeSpawn_Closed_Closing_Opening_6       ;A5E729;
     dw $0008,ExtendedSpritemap_SporeSpawn_Closed_Closing_Opening_5       ;A5E72D;
@@ -7115,7 +7318,10 @@ InstList_SporeSpawn_CloseAndMove:
     dw Instruction_Common_GotoY                                          ;A5E75B;
     dw InstList_SporeSpawn_OpenAndStop_0                                 ;A5E75D;
 
+
+;;; $E75F: Instruction - increase Spore Spawn max X radius ;;;
 Instruction_SporeSpawn_IncreaseMaxXRadius:
+; This function has no effect, Spore Spawn max X radius is always 30h or 40h
     LDA.L $7E7816                                                        ;A5E75F;
     CLC                                                                  ;A5E763;
     ADC.W #$0008                                                         ;A5E764;
@@ -7127,6 +7333,7 @@ Instruction_SporeSpawn_IncreaseMaxXRadius:
     RTL                                                                  ;A5E770;
 
 
+;;; $E771: Instruction - clear Spore Spawn damaged flag ;;;
 Instruction_SporeSpawn_ClearDamagedFlag:
     PHX                                                                  ;A5E771;
     PHY                                                                  ;A5E772;
@@ -7137,6 +7344,7 @@ Instruction_SporeSpawn_ClearDamagedFlag:
     RTL                                                                  ;A5E77C;
 
 
+;;; $E77D: Instruction list - death sequence ;;;
 InstList_SporeSpawn_DeathSequence_0:
     dw Instruction_SporeSpawn_FunctionInY                                ;A5E77D;
     dw Function_SporeSpawn_SetupDeath                                    ;A5E77F;
@@ -7190,7 +7398,9 @@ InstList_SporeSpawn_DeathSequence_2:
     dw Instruction_SporeSpawn_CallSporeSpawnDeathItemDropRoutine         ;A5E80D;
     dw Instruction_Common_Sleep                                          ;A5E80F;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $E811: Unused. Instruction - Spore Spawn max X radius = [[Y]], angle delta = [[Y] + 2], angle = [[Y] + 4] ;;;
 UNUSED_Instruction_SporeSpawn_SetMaxXRadiusAndAngles_A5E811:
     LDA.W $0000,Y                                                        ;A5E811;
     STA.L $7E7816                                                        ;A5E814;
@@ -7206,6 +7416,7 @@ UNUSED_Instruction_SporeSpawn_SetMaxXRadiusAndAngles_A5E811:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $E82D: Instruction - Spore Spawn max X radius = [[Y]], angle delta = [[Y] + 2] ;;;
 Instruction_SporeSpawn_SetMaxXRadiusAndAngleDelta:
     LDA.W $0000,Y                                                        ;A5E82D;
     STA.L $7E7816                                                        ;A5E830;
@@ -7219,6 +7430,7 @@ Instruction_SporeSpawn_SetMaxXRadiusAndAngleDelta:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $E840: Unused. Instruction - Spore Spawn max X radius = [[Y]] ;;;
 UNUSED_Instruction_SporeSpawn_MaxXRadiusInY_A5E840:
     LDA.W $0000,Y                                                        ;A5E840;
     STA.L $7E7816                                                        ;A5E843;
@@ -7227,6 +7439,7 @@ UNUSED_Instruction_SporeSpawn_MaxXRadiusInY_A5E840:
     RTL                                                                  ;A5E849;
 
 
+;;; $E84A: Unused. Instruction - Spore Spawn angle delta = [[Y]] ;;;
 UNUSED_Instruction_SporeSpawn_AngleDeltaInY_A5E84A:
     LDA.W $0000,Y                                                        ;A5E84A;
     STA.L $7E7818                                                        ;A5E84D;
@@ -7235,6 +7448,7 @@ UNUSED_Instruction_SporeSpawn_AngleDeltaInY_A5E84A:
     RTL                                                                  ;A5E853;
 
 
+;;; $E854: Unused. Instruction - Spore Spawn max X radius += [[Y]] ;;;
 UNUSED_Instruction_SporeSpawn_MaxXRadiusPlusY_A5E854:
     LDA.L $7E7816                                                        ;A5E854;
     CLC                                                                  ;A5E858;
@@ -7245,6 +7459,7 @@ UNUSED_Instruction_SporeSpawn_MaxXRadiusPlusY_A5E854:
     RTL                                                                  ;A5E862;
 
 
+;;; $E863: Unused. Instruction - Spore Spawn angle delta += [[Y]] ;;;
 UNUSED_Instruction_SporeSpawn_AngleDeltaPlusY_A5E863:
     LDA.L $7E7818                                                        ;A5E863;
     CLC                                                                  ;A5E867;
@@ -7256,6 +7471,7 @@ UNUSED_Instruction_SporeSpawn_AngleDeltaPlusY_A5E863:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $E872: Instruction - spore generation flag = [[Y]] ;;;
 Instruction_SporeSpawn_SporeGenerationFlagInY:
     LDA.W $0000,Y                                                        ;A5E872;
     STA.L $7E9000                                                        ;A5E875;
@@ -7264,6 +7480,7 @@ Instruction_SporeSpawn_SporeGenerationFlagInY:
     RTL                                                                  ;A5E87B;
 
 
+;;; $E87C: Instruction - Spore Spawn harden ;;;
 Instruction_SporeSpawn_Harden:
     LDA.W #$0080                                                         ;A5E87C;
     STA.W $0F7A                                                          ;A5E87F;
@@ -7276,6 +7493,7 @@ Instruction_SporeSpawn_Harden:
     RTL                                                                  ;A5E894;
 
 
+;;; $E895: Instruction - queue sound [[Y]], sound library 2, max queued sounds allowed = 6 ;;;
 Instruction_SporeSpawn_QueueSFXInY_Lib2_Max6:
     PHX                                                                  ;A5E895;
     PHY                                                                  ;A5E896;
@@ -7288,6 +7506,7 @@ Instruction_SporeSpawn_QueueSFXInY_Lib2_Max6:
     RTL                                                                  ;A5E8A2;
 
 
+;;; $E8A3: Unused. Instruction - queue sound [[Y]], sound library 3, max queued sounds allowed = 6 ;;;
 Instruction_SporeSpawn_QueueSFXInY_Lib3_Max6:
     PHX                                                                  ;A5E8A3;
     PHY                                                                  ;A5E8A4;
@@ -7300,6 +7519,7 @@ Instruction_SporeSpawn_QueueSFXInY_Lib3_Max6:
     RTL                                                                  ;A5E8B0;
 
 
+;;; $E8B1: Instruction - call Spore Spawn death item drop routine ;;;
 Instruction_SporeSpawn_CallSporeSpawnDeathItemDropRoutine:
     PHX                                                                  ;A5E8B1;
     PHY                                                                  ;A5E8B2;
@@ -7309,6 +7529,7 @@ Instruction_SporeSpawn_CallSporeSpawnDeathItemDropRoutine:
     RTL                                                                  ;A5E8B9;
 
 
+;;; $E8BA: Instruction - enemy function = [[Y]] ;;;
 Instruction_SporeSpawn_FunctionInY:
     PHY                                                                  ;A5E8BA;
     PHX                                                                  ;A5E8BB;
@@ -7322,6 +7543,7 @@ Instruction_SporeSpawn_FunctionInY:
     RTL                                                                  ;A5E8C9;
 
 
+;;; $E8CA: Instruction - load Spore Spawn death sequence palette, palette data offset [[Y]] ;;;
 Instruction_SporeSpawn_LoadDeathSequencePalette:
     PHY                                                                  ;A5E8CA;
     PHX                                                                  ;A5E8CB;
@@ -7358,7 +7580,7 @@ Instruction_SporeSpawn_LoadDeathSequencePalette:
     TAY                                                                  ;A5E903;
     LDX.W #$0000                                                         ;A5E904;
 
-Instruction_SporeSpawn_.loopBG12Palette7:
+  .loopBG12Palette7:
     LDA.W Palette_SporeSpawn_DeathSequence_Background_0,Y                ;A5E907;
     STA.L $7EC0E0,X                                                      ;A5E90A;
     INY                                                                  ;A5E90E;
@@ -7366,7 +7588,7 @@ Instruction_SporeSpawn_.loopBG12Palette7:
     INX                                                                  ;A5E910;
     INX                                                                  ;A5E911;
     CPX.W #$0020                                                         ;A5E912;
-    BNE Instruction_SporeSpawn_.loopBG12Palette7                         ;A5E915;
+    BNE .loopBG12Palette7                                                ;A5E915;
     PLX                                                                  ;A5E917;
     PLY                                                                  ;A5E918;
     INY                                                                  ;A5E919;
@@ -7374,7 +7596,9 @@ Instruction_SporeSpawn_.loopBG12Palette7:
     RTL                                                                  ;A5E91B;
 
 
+;;; $E91C: Instruction - load Spore Spawn death sequence target palette, palette data offset [[Y]] ;;;
 Instruction_SporeSpawn_LoadDeathSequenceTargetPalette:
+; Similar to Instruction_SporeSpawn_LoadDeathSequencePalette, but writing to target palette colours instead (called before fade-in)
     PHY                                                                  ;A5E91C;
     PHX                                                                  ;A5E91D;
     STY.B $12                                                            ;A5E91E;
@@ -7426,6 +7650,7 @@ Instruction_SporeSpawn_LoadDeathSequenceTargetPalette:
     RTL                                                                  ;A5E96D;
 
 
+;;; $E96E: Instruction - spawn Spore Spawn hardening dust cloud ;;;
 Instruction_SporeSpawn_SpawnHardeningDustCloud:
     PHY                                                                  ;A5E96E;
     PHX                                                                  ;A5E96F;
@@ -7459,6 +7684,7 @@ Instruction_SporeSpawn_SpawnHardeningDustCloud:
     RTL                                                                  ;A5E9B0;
 
 
+;;; $E9B1: Instruction - spawn Spore Spawn dying explosion ;;;
 Instruction_SporeSpawn_SpawnDyingExplosion:
     PHY                                                                  ;A5E9B1;
     PHX                                                                  ;A5E9B2;
@@ -7493,6 +7719,7 @@ Instruction_SporeSpawn_SpawnDyingExplosion:
     RTL                                                                  ;A5E9F4;
 
 
+;;; $E9F5: Spawn Spore Spawn ceiling dust cloud ;;;
 SpawnSporeSpawnCeilingDustCloud:
     PHY                                                                  ;A5E9F5;
     PHX                                                                  ;A5E9F6;
@@ -7522,6 +7749,7 @@ SpawnSporeSpawnCeilingDustCloud:
     RTL                                                                  ;A5EA29;
 
 
+;;; $EA2A: Initialisation AI - enemy $DF3F/$DF7F (Spore Spawn) ;;;
 InitAI_SporeSpawn:
     LDY.W #$0000                                                         ;A5EA2A;
     LDX.W #$0000                                                         ;A5EA2D;
@@ -7578,7 +7806,6 @@ InitAI_SporeSpawn:
     STZ.W $07E9                                                          ;A5EABB;
     RTL                                                                  ;A5EABE;
 
-
   .alive:
     LDX.W $0E54                                                          ;A5EABF;
     LDA.W #InstList_SporeSpawn_Initial_Alive                             ;A5EAC2;
@@ -7610,16 +7837,19 @@ InitAI_SporeSpawn:
     RTL                                                                  ;A5EB12;
 
 
+;;; $EB13: Main AI - enemy $DF3F/$DF7F (Spore Spawn) ;;;
 MainAI_SporeSpawn:
     LDX.W $0E54                                                          ;A5EB13;
     JSR.W ($0FA8,X)                                                      ;A5EB16;
     RTL                                                                  ;A5EB19;
 
 
+;;; $EB1A: RTS ;;;
 RTS_A5EB1A:
     RTS                                                                  ;A5EB1A;
 
 
+;;; $EB1B: Spore Spawn function - descent ;;;
 Function_SporeSpawn_Descent:
     JSR.W UpdateSporeSpawnStalkSegmentPositions                          ;A5EB1B;
     LDX.W $0E54                                                          ;A5EB1E;
@@ -7644,6 +7874,7 @@ Function_SporeSpawn_Descent:
     RTS                                                                  ;A5EB51;
 
 
+;;; $EB52: Spore Spawn function - moving ;;;
 Function_SporeSpawn_Moving:
     JSR.W UpdateSporeSpawnStalkSegmentPositions                          ;A5EB52;
     LDA.L $7E7816                                                        ;A5EB55;
@@ -7673,6 +7904,7 @@ Function_SporeSpawn_Moving:
     RTS                                                                  ;A5EB9A;
 
 
+;;; $EB9B: Spore Spawn function - set up death ;;;
 Function_SporeSpawn_SetupDeath:
     LDX.W $0E54                                                          ;A5EB9B;
     LDA.W #$0080                                                         ;A5EB9E;
@@ -7707,6 +7939,7 @@ Function_SporeSpawn_SetupDeath:
     RTS                                                                  ;A5EBED;
 
 
+;;; $EBEE: Spore Spawn function - dying ;;;
 Function_SporeSpawn_Dying:
     LDX.W $0E54                                                          ;A5EBEE;
     LDA.L $7E8010,X                                                      ;A5EBF1;
@@ -7742,6 +7975,7 @@ Function_SporeSpawn_Dying:
     RTS                                                                  ;A5EC48;
 
 
+;;; $EC49: Update Spore Spawn stalk segment positions ;;;
 UpdateSporeSpawnStalkSegmentPositions:
     LDA.W $0F7A                                                          ;A5EC49;
     SEC                                                                  ;A5EC4C;
@@ -7774,7 +8008,6 @@ UpdateSporeSpawnStalkSegmentPositions:
     STA.W $1A6D                                                          ;A5EC8B;
     STA.L $7E8004                                                        ;A5EC8E;
     BRA .checkY                                                          ;A5EC92;
-
 
   .positiveX:
     LSR A                                                                ;A5EC94;
@@ -7837,7 +8070,6 @@ UpdateSporeSpawnStalkSegmentPositions:
     STA.L $7E800A                                                        ;A5ED18;
     BRA .return                                                          ;A5ED1C;
 
-
   .positiveY:
     LSR A                                                                ;A5ED1E;
     STA.B $12                                                            ;A5ED1F;
@@ -7868,6 +8100,7 @@ UpdateSporeSpawnStalkSegmentPositions:
     RTS                                                                  ;A5ED59;
 
 
+;;; $ED5A: Enemy shot - Spore Spawn - vulnerable ;;;
 EnemyShot_SporeSpawn_Vulnerable:
     LDA.W $18A6                                                          ;A5ED5A;
     ASL A                                                                ;A5ED5D;
@@ -7878,7 +8111,6 @@ EnemyShot_SporeSpawn_Vulnerable:
     BIT.W #$0010                                                         ;A5ED67;
     BNE .notBeam                                                         ;A5ED6A;
     RTL                                                                  ;A5ED6C;
-
 
   .notBeam:
     JSL.L NormalEnemyShotAI_NoDeathCheck                                 ;A5ED6D;
@@ -7931,21 +8163,26 @@ EnemyShot_SporeSpawn_Vulnerable:
     BEQ EnemyShot_SporeSpawn                                             ;A5EDDF;
     STA.L $7E8800                                                        ;A5EDE1;
     TYA                                                                  ;A5EDE5;
-    JSL.L LoadSporeSpawnHealthBasedPalette                               ;A5EDE6;
+    JSL.L LoadSporeSpawnHealthBasedPalette                               ;A5EDE6; fallthrough to EnemyShot_SporeSpawn
 
+
+;;; $EDEA: Enemy shot - enemy $DF3F/$DF7F (Spore Spawn) ;;;
 EnemyShot_SporeSpawn:
     BRA SporeSpawnReaction_Common                                        ;A5EDEA;
 
 
+;;; $EDEC: Enemy touch - enemy $DF3F/$DF7F (Spore Spawn) ;;;
 EnemyTouch_SporeSpawn:
     JSL.L NormalEnemyTouchAI_NoDeathCheck_External                       ;A5EDEC;
     BRA SporeSpawnReaction_Common                                        ;A5EDF0;
 
 
+;;; $EDF2: RTL. Power bomb reaction - enemy $DF3F (Spore Spawn) ;;;
 PowerBombReaction_SporeSpawn:
     RTL                                                                  ;A5EDF2; >.<
 
 
+;;; $EDF3: Spore Spawn reaction ;;;
 SporeSpawnReaction_Common:
     LDX.W $0E54                                                          ;A5EDF3;
     LDA.W $0F8C,X                                                        ;A5EDF6;
@@ -7984,7 +8221,13 @@ SporeSpawnReaction_Common:
     RTL                                                                  ;A5EE49;
 
 
+;;; $EE4A: Load Spore Spawn health-based palette ;;;
 LoadSporeSpawnHealthBasedPalette:
+;; Parameters:
+;;     A: Palette data offset
+
+; Rather unfortunate that this routine is only called from one place, and that place does a TYA to get the argument in A,
+; only for this routine to put it *back* into Y anyway and needlessly preserve Y on the stack
     PHY                                                                  ;A5EE4A;
     PHX                                                                  ;A5EE4B;
     STA.B $12                                                            ;A5EE4C;
@@ -8005,6 +8248,7 @@ LoadSporeSpawnHealthBasedPalette:
     RTL                                                                  ;A5EE64;
 
 
+;;; $EE65: Spore Spawn extended spritemaps ;;;
 ExtendedSpritemap_SporeSpawn_Dead:
     dw $0001                                                             ;A5EE65;
     dw $0000,$0000                                                       ;A5EE67;
@@ -8151,6 +8395,8 @@ ExtendedSpritemap_SporeSpawn_FullyOpen_2:
     dw Spritemap_SporeSpawn_D                                            ;A5EF6F;
     dw Hitbox_SporeSpawn_D                                               ;A5EF71;
 
+
+;;; $EF73: Spore Spawn hitboxes ;;;
 Hitbox_SporeSpawn_0:
     dw $0002                                                             ;A5EF73;
     dw $FFD7,$FFE2,$0029,$001E
@@ -8370,6 +8616,8 @@ Hitbox_SporeSpawn_14:
     dw EnemyTouch_SporeSpawn                                             ;A5F209;
     dw CommonA5_CreateADudShot                                           ;A5F20B;
 
+
+;;; $F20D: Spore Spawn spritemaps ;;;
 Spritemap_SporeSpawn_0:
     dw $001A                                                             ;A5F20D;
     %spritemapEntry(1, $00, $F0, 0, 1, 2, 0, $124)
