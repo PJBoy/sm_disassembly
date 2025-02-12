@@ -11327,10 +11327,13 @@ Spritemap_Reflec_7:
     %spritemapEntry(1, $1F2, $05, 1, 0, 2, 0, $10B)
 
 
+;;; $DFA2: Palette - enemy $DC3F (Wrecked Ship orange zoomer) ;;;
 Palette_HZoomer:
     dw $3800,$7F5A,$3BE0,$2680,$0920,$4F5A,$36B5,$2610                   ;A3DFA2;
     dw $1DCE,$5294,$39CE,$2108,$1084,$033B,$0216,$0113                   ;A3DFB2;
 
+
+;;; $DFC2: Instruction - enemy function = [[Y]] ;;;
 Instruction_HZoomer_FunctionInY:
     LDA.W $0000,Y                                                        ;A3DFC2;
     STA.W $0FB2,X                                                        ;A3DFC5;
@@ -11339,6 +11342,7 @@ Instruction_HZoomer_FunctionInY:
     RTL                                                                  ;A3DFCA;
 
 
+;;; $DFCB: Instruction list - Wrecked Ship orange zoomer - upside right ;;;
 InstList_HZoomer_UpsideRight_0:
     dw Instruction_HZoomer_FunctionInY                                   ;A3DFCB;
     dw Function_HZoomer_CrawlingVertically                               ;A3DFCD;
@@ -11352,6 +11356,8 @@ InstList_HZoomer_UpsideRight_1:
     dw Instruction_Common_GotoY                                          ;A3DFE3;
     dw InstList_HZoomer_UpsideRight_1                                    ;A3DFE5;
 
+
+;;; $DFE7: Instruction list - Wrecked Ship orange zoomer - upside left ;;;
 InstList_HZoomer_UpsideLeft_0:
     dw Instruction_HZoomer_FunctionInY                                   ;A3DFE7;
     dw Function_HZoomer_CrawlingVertically                               ;A3DFE9;
@@ -11365,6 +11371,8 @@ InstList_HZoomer_UpsideLeft_1:
     dw Instruction_Common_GotoY                                          ;A3DFFF;
     dw InstList_HZoomer_UpsideLeft_1                                     ;A3E001;
 
+
+;;; $E003: Instruction list - Wrecked Ship orange zoomer - upside down ;;;
 InstList_HZoomer_UpsideDown_0:
     dw Instruction_HZoomer_FunctionInY                                   ;A3E003;
     dw Function_HZoomer_CrawlingHorizontally                             ;A3E005;
@@ -11378,6 +11386,8 @@ InstList_HZoomer_UpsideDown_1:
     dw Instruction_Common_GotoY                                          ;A3E01B;
     dw InstList_HZoomer_UpsideDown_1                                     ;A3E01D;
 
+
+;;; $E01F: Instruction list - Wrecked Ship orange zoomer - upside up ;;;
 InstList_HZoomer_UpsideUp_0:
     dw Instruction_HZoomer_FunctionInY                                   ;A3E01F;
     dw Function_HZoomer_CrawlingHorizontally                             ;A3E021;
@@ -11391,6 +11401,8 @@ InstList_HZoomer_UpsideUp_1:
     dw Instruction_Common_GotoY                                          ;A3E037;
     dw InstList_HZoomer_UpsideUp_1                                       ;A3E039;
 
+
+;;; $E03B: Wrecked Ship orange zoomer initial instruction list pointers ;;;
 HZoomerInitialInstListPointers:
 ; Indexed by [enemy initialisation parameter] * 2
     dw InstList_HZoomer_UpsideRight_0                                    ;A3E03B; 0: Upside right
@@ -11398,7 +11410,10 @@ HZoomerInitialInstListPointers:
     dw InstList_HZoomer_UpsideDown_0                                     ;A3E03F; 2: Upside down
     dw InstList_HZoomer_UpsideUp_0                                       ;A3E041; 3: Upside up
 
+
+;;; $E043: Initialisation AI - enemy $DC3F (Wrecked Ship orange zoomer) ;;;
 InitAI_HZoomer:
+; Not sure why the devs didn't use the common init AI $E67A like the other creepy crawlies
     LDX.W $0E54                                                          ;A3E043;
     LDA.W $0F92,X                                                        ;A3E046;
     AND.W #$0003                                                         ;A3E049;
@@ -11423,7 +11438,6 @@ InitAI_HZoomer:
     STA.W $0FA8,X                                                        ;A3E077;
     RTL                                                                  ;A3E07A;
 
-
 +   CMP.W #$0002                                                         ;A3E07B;
     BNE .return                                                          ;A3E07E;
     LDA.W $0FAA,X                                                        ;A3E080;
@@ -11435,11 +11449,13 @@ InitAI_HZoomer:
     RTL                                                                  ;A3E08A;
 
 
+;;; $E08B: Main AI - enemy $DC3F (Wrecked Ship orange zoomer) ;;;
 MainAI_HZoomer:
     LDX.W $0E54                                                          ;A3E08B;
     JMP.W ($0FB2,X)                                                      ;A3E08E;
 
 
+;;; $E091: Wrecked Ship orange zoomer function - crawling vertically ;;;
 Function_HZoomer_CrawlingVertically:
     LDA.W $1840                                                          ;A3E091;
     CMP.W #$001E                                                         ;A3E094;
@@ -11464,7 +11480,6 @@ Function_HZoomer_CrawlingVertically:
     BPL .inc                                                             ;A3E0BD;
     DEC A                                                                ;A3E0BF;
     BRA .moveRight                                                       ;A3E0C0;
-
 
   .inc:
     INC A                                                                ;A3E0C2;
@@ -11495,7 +11510,6 @@ Function_HZoomer_CrawlingVertically:
     BMI .return                                                          ;A3E0F8;
     BRA .negateY                                                         ;A3E0FA;
 
-
   .SamusRightOfZHoomer:
     LDA.W $0FAA,X                                                        ;A3E0FC;
     BPL .return                                                          ;A3E0FF;
@@ -11507,7 +11521,6 @@ Function_HZoomer_CrawlingVertically:
   .return:
     STA.W $0FAA,X                                                        ;A3E105;
     RTL                                                                  ;A3E108;
-
 
   .insideTurn:
     LDA.W $0FA8,X                                                        ;A3E109;
@@ -11527,7 +11540,6 @@ Function_HZoomer_CrawlingVertically:
     STA.W $0F94,X                                                        ;A3E128;
     RTL                                                                  ;A3E12B;
 
-
   .outsideTurn:
     LDA.L $7E7808,X                                                      ;A3E12C;
     INC A                                                                ;A3E130;
@@ -11539,7 +11551,6 @@ Function_HZoomer_CrawlingVertically:
     LDA.W #Function_Crawlers_Falling                                     ;A3E141;
     STA.W $0FB2,X                                                        ;A3E144;
     RTL                                                                  ;A3E147;
-
 
   .notFalling:
     LDA.W $0FAA,X                                                        ;A3E148;
@@ -11559,6 +11570,7 @@ Function_HZoomer_CrawlingVertically:
     RTL                                                                  ;A3E167;
 
 
+;;; $E168: Wrecked Ship orange zoomer function - crawling horizontally ;;;
 Function_HZoomer_CrawlingHorizontally:
     LDA.W $1840                                                          ;A3E168;
     CMP.W #$001E                                                         ;A3E16B;
@@ -11583,7 +11595,6 @@ Function_HZoomer_CrawlingHorizontally:
     BPL .inc                                                             ;A3E194;
     DEC A                                                                ;A3E196;
     BRA .moveDown                                                        ;A3E197;
-
 
   .inc:
     INC A                                                                ;A3E199;
@@ -11614,7 +11625,6 @@ Function_HZoomer_CrawlingHorizontally:
     BMI .return                                                          ;A3E1CF;
     BRA .negate                                                          ;A3E1D1;
 
-
   .SamusToTheRight:
     LDA.W $0FA8,X                                                        ;A3E1D3;
     BPL .return                                                          ;A3E1D6;
@@ -11626,7 +11636,6 @@ Function_HZoomer_CrawlingHorizontally:
   .return:
     STA.W $0FA8,X                                                        ;A3E1DC;
     RTL                                                                  ;A3E1DF;
-
 
   .insideTurn:
     LDA.W $0FAA,X                                                        ;A3E1E0;
@@ -11645,7 +11654,6 @@ Function_HZoomer_CrawlingHorizontally:
     STA.W $0F94,X                                                        ;A3E1FC;
     RTL                                                                  ;A3E1FF;
 
-
   .outsideTurn:
     LDA.L $7E7808,X                                                      ;A3E200;
     INC A                                                                ;A3E204;
@@ -11657,7 +11665,6 @@ Function_HZoomer_CrawlingHorizontally:
     LDA.W #Function_Crawlers_Falling                                     ;A3E215;
     STA.W $0FB2,X                                                        ;A3E218;
     RTL                                                                  ;A3E21B;
-
 
   .notFalling:
     LDA.W $0FA8,X                                                        ;A3E21C;
@@ -11677,10 +11684,13 @@ Function_HZoomer_CrawlingHorizontally:
     RTL                                                                  ;A3E23B;
 
 
+;;; $E23C: Palette - enemy $DC7F (zeela) ;;;
 Palette_Zeela:
     dw $3800,$3F5A,$2E50,$00E5,$0063,$3AB3,$220E,$1169                   ;A3E23C;
     dw $0927,$03FF,$02F7,$0210,$0108,$7FFF,$0299,$0170                   ;A3E24C;
 
+
+;;; $E25C: Instruction list - zeela / zoomer - upside right ;;;
 InstList_Zeela_Zoomer_UpsideRight_0:
     dw Instruction_Crawlers_FunctionInY                                  ;A3E25C;
     dw Function_Crawlers_CrawlingVertically                              ;A3E25E;
@@ -11694,6 +11704,8 @@ InstList_Zeela_Zoomer_UpsideRight_1:
     dw Instruction_Common_GotoY                                          ;A3E274;
     dw InstList_Zeela_Zoomer_UpsideRight_1                               ;A3E276;
 
+
+;;; $E278: Instruction list - zeela / zoomer - upside left ;;;
 InstList_Zeela_Zoomer_UpsideLeft_0:
     dw Instruction_Crawlers_FunctionInY                                  ;A3E278;
     dw Function_Crawlers_CrawlingVertically                              ;A3E27A;
@@ -11707,6 +11719,8 @@ InstList_Zeela_Zoomer_UpsideLeft_1:
     dw Instruction_Common_GotoY                                          ;A3E290;
     dw InstList_Zeela_Zoomer_UpsideLeft_1                                ;A3E292;
 
+
+;;; $E294: Instruction list - zeela / zoomer - upside down ;;;
 InstList_Zeela_Zoomer_UpsideDown_0:
     dw Instruction_Crawlers_FunctionInY                                  ;A3E294;
     dw Function_Crawlers_CrawlingHorizontally                            ;A3E296;
@@ -11720,6 +11734,8 @@ InstList_Zeela_Zoomer_UpsideDown_1:
     dw Instruction_Common_GotoY                                          ;A3E2AC;
     dw InstList_Zeela_Zoomer_UpsideDown_1                                ;A3E2AE;
 
+
+;;; $E2B0: Instruction list - zeela / zoomer - upside up ;;;
 InstList_Zeela_Zoomer_UpsideUp_0:
     dw Instruction_Crawlers_FunctionInY                                  ;A3E2B0;
     dw Function_Crawlers_CrawlingHorizontally                            ;A3E2B2;
@@ -11733,12 +11749,19 @@ InstList_Zeela_Zoomer_UpsideUp_1:
     dw Instruction_Common_GotoY                                          ;A3E2C8;
     dw InstList_Zeela_Zoomer_UpsideUp_1                                  ;A3E2CA;
 
+
+;;; $E2CC: Zeela / zoomer initial instruction list pointers ;;;
 InitialInstListPointers_Crawlers:
+; Used by: zeela, zoomer, stone zoomer, sova
+
+; Indexed by [enemy initialisation parameter] * 2
     dw InstList_Zeela_Zoomer_UpsideRight_0                               ;A3E2CC;
     dw InstList_Zeela_Zoomer_UpsideLeft_0                                ;A3E2CE;
     dw InstList_Zeela_Zoomer_UpsideDown_0                                ;A3E2D0;
     dw InstList_Zeela_Zoomer_UpsideUp_0                                  ;A3E2D2;
 
+
+;;; $E2D4: Initialisation AI - enemy $DC7F (zeela) ;;;
 InitAI_Zeela:
     LDX.W $0E54                                                          ;A3E2D4;
     LDA.W $0F92,X                                                        ;A3E2D7;
@@ -11750,6 +11773,8 @@ InitAI_Zeela:
     JMP.W InitAI_Crawlers_Common                                         ;A3E2E5;
 
 
+;;; $E2E8: Zeela / zoomer spritemaps ;;;
+; Used by: zeela, zoomer, stone zoomer, sova, Wrecked Ship orange zoomer
 Spritemap_Crawlers_UpsideUp_FacingRight_0:
     dw $0004                                                             ;A3E2E8;
     %spritemapEntry(0, $02, $00, 0, 0, 2, 0, $121)
@@ -11963,10 +11988,13 @@ Spritemap_Crawlers_UpsideRight_4:
     %spritemapEntry(1, $1F8, $F0, 0, 1, 2, 0, $104)
 
 
+;;; $E57C: Palette - enemy $DCBF (sova) ;;;
 Palette_Sova:
     dw $3800,$02FF,$01BF,$000F,$0008,$01BF,$011B,$00BA                   ;A3E57C;
     dw $0011,$7FFF,$039C,$0237,$00D1,$3BE0,$2680,$1580                   ;A3E58C;
 
+
+;;; $E59C: Initialisation AI - enemy $DCBF (sova) ;;;
 InitAI_Sova:
     LDX.W $0E54                                                          ;A3E59C;
     LDA.W $0F92,X                                                        ;A3E59F;
@@ -11978,14 +12006,19 @@ InitAI_Sova:
     JMP.W InitAI_Crawlers_Common                                         ;A3E5AD;
 
 
+;;; $E5B0: Palette - enemy $DCFF (zoomer) ;;;
 Palette_Zoomer:
     dw $3800,$72FA,$55B0,$2845,$1801,$6210,$496B,$38C6                   ;A3E5B0;
     dw $2C63,$7FE0,$7DA0,$48E0,$30A0,$03FF,$0237,$00D1                   ;A3E5C0;
 
+
+;;; $E5D0: Palette - enemy $DD3F (stone zoomer) ;;;
 Palette_MZoomer:
     dw $3800,$7FFF,$4ED3,$1926,$0481,$5F57,$4691,$360D                   ;A3E5D0;
     dw $2DCB,$6BBA,$56B2,$2947,$18C3,$7FFF,$4ED3,$1926                   ;A3E5E0;
 
+
+;;; $E5F0: Creepy crawly speed table ;;;
 CrawlersSpeedTable:
 ; Speed. Unit is 1/100h px/frame. Indexed by [enemy parameter 1] * 2
     dw $0040,$0080,$00C0,$0100,$0140,$0180,$01C0,$0200                   ;A3E5F0;
@@ -11994,6 +12027,7 @@ CrawlersSpeedTable:
     dw $0740,$0780,$07C0,$0800,$0840,$0880,$0800,$0000                   ;A3E620;
 
 
+;;; $E630: Creepy crawly instruction list pointer table ;;;
 ; Instruction list pointers. Indexed by [enemy parameter 2]
 CrawlersInstListPointerTable_upsideDown:
     dw InstList_Zeela_Zoomer_UpsideDown_0                                ;A3E630; 0: (Stone) zoomer
@@ -12027,6 +12061,8 @@ CrawlersInstListPointerTable_upsideLeft:
     dw InstList_Sciser_UpsideLeft_0                                      ;A3E65C; 8: Sciser
     dw InstList_Zero_UpsideLeft_FacingUp_0                               ;A3E65E; Ah: Zero
 
+
+;;; $E660: Instruction - enemy function = [[Y]] ;;;
 Instruction_Crawlers_FunctionInY:
     LDA.W $0000,Y                                                        ;A3E660;
     STA.W $0FB2,X                                                        ;A3E663;
@@ -12035,6 +12071,7 @@ Instruction_Crawlers_FunctionInY:
     RTL                                                                  ;A3E668;
 
 
+;;; $E669: Initialisation AI - enemy $DCFF/$DD3F (zoomer / stone zoomer) ;;;
 InitAI_Zoomer_MZoomer:
     LDX.W $0E54                                                          ;A3E669;
     LDA.W $0F92,X                                                        ;A3E66C;
@@ -12044,7 +12081,10 @@ InitAI_Zoomer_MZoomer:
     LDA.W InitialInstListPointers_Crawlers,Y                             ;A3E674;
     STA.W $0F92,X                                                        ;A3E677; fallthrough to InitAI_Crawlers_Common
 
+
+;;; $E67A: Creepy crawly common initialisation AI ;;;
 InitAI_Crawlers_Common:
+; Used by: sciser, zero, viola, yard, zeela, zoomer, sova, stone zoomer
     LDA.W #Spritemap_CommonA3_Nothing                                    ;A3E67A;
     STA.W $0F8E,X                                                        ;A3E67D;
     LDA.W #$0001                                                         ;A3E680;
@@ -12070,7 +12110,6 @@ InitAI_Crawlers_Common:
     STA.W $0FA8,X                                                        ;A3E6AE;
     RTL                                                                  ;A3E6B1;
 
-
   .properties:
     CMP.W #$0002                                                         ;A3E6B2;
     BNE .return                                                          ;A3E6B5;
@@ -12083,11 +12122,13 @@ InitAI_Crawlers_Common:
     RTL                                                                  ;A3E6C1;
 
 
+;;; $E6C2: Main AI - enemy $D77F/$D7BF/$DABF/$DC7F/$DCBF/$DCFF/$DD3F (sciser / zero / viola / zeela / zoomer) ;;;
 MainAI_Crawlers:
     LDX.W $0E54                                                          ;A3E6C2;
     JMP.W ($0FB2,X)                                                      ;A3E6C5;
 
 
+;;; $E6C8: Creepy crawly function - crawling vertically ;;;
 Function_Crawlers_CrawlingVertically:
     LDA.W $1840                                                          ;A3E6C8;
     CMP.W #$001E                                                         ;A3E6CB;
@@ -12114,7 +12155,6 @@ Function_Crawlers_CrawlingVertically:
     DEC A                                                                ;A3E6F6;
     BRA .moveRight                                                       ;A3E6F7;
 
-
   .inc:
     INC A                                                                ;A3E6F9;
 
@@ -12137,7 +12177,6 @@ Function_Crawlers_CrawlingVertically:
     BCS .insideTurn                                                      ;A3E71E;
     RTL                                                                  ;A3E720;
 
-
   .insideTurn:
     LDA.W $0FA8,X                                                        ;A3E721;
     EOR.W #$FFFF                                                         ;A3E724;
@@ -12149,7 +12188,6 @@ Function_Crawlers_CrawlingVertically:
     LDA.W CrawlersInstListPointerTable_upsideDown,Y                      ;A3E733;
     BRA +                                                                ;A3E736;
 
-
   .insideTurn_up:
     LDA.W CrawlersInstListPointerTable_upsideUp,Y                        ;A3E738;
 
@@ -12157,7 +12195,6 @@ Function_Crawlers_CrawlingVertically:
     LDA.W #$0001                                                         ;A3E73E;
     STA.W $0F94,X                                                        ;A3E741;
     RTL                                                                  ;A3E744;
-
 
   .outsideTurn:
     LDA.L $7E7808,X                                                      ;A3E745;
@@ -12171,7 +12208,6 @@ Function_Crawlers_CrawlingVertically:
     STA.W $0FB2,X                                                        ;A3E75D;
     RTL                                                                  ;A3E760;
 
-
   .negate:
     LDA.W $0FAA,X                                                        ;A3E761;
     EOR.W #$FFFF                                                         ;A3E764;
@@ -12183,7 +12219,6 @@ Function_Crawlers_CrawlingVertically:
     LDA.W CrawlersInstListPointerTable_upsideDown,Y                      ;A3E773;
     BRA .outsideTurn_up                                                  ;A3E776;
 
-
   .positiveYVelocity:
     LDA.W CrawlersInstListPointerTable_upsideUp,Y                        ;A3E778;
 
@@ -12194,6 +12229,7 @@ Function_Crawlers_CrawlingVertically:
     RTL                                                                  ;A3E784;
 
 
+;;; $E785: Creepy crawly function - falling ;;;
 Function_Crawlers_Falling:
     LDA.L $7E7802,X                                                      ;A3E785;
     STA.B $12                                                            ;A3E789;
@@ -12216,7 +12252,6 @@ Function_Crawlers_Falling:
     LDA.L $7E7806,X                                                      ;A3E7B7;
     STA.W $0FB2,X                                                        ;A3E7BB;
     RTL                                                                  ;A3E7BE;
-
 
   .noCollision:
     LDA.L $7E7804,X                                                      ;A3E7BF;
@@ -12242,6 +12277,7 @@ Function_Crawlers_Falling:
     RTL                                                                  ;A3E7F1;
 
 
+;;; $E7F2: Creepy crawly function - crawling horizontally ;;;
 Function_Crawlers_CrawlingHorizontally:
     LDA.W $1840                                                          ;A3E7F2;
     CMP.W #$001E                                                         ;A3E7F5;
@@ -12268,7 +12304,6 @@ Function_Crawlers_CrawlingHorizontally:
     DEC A                                                                ;A3E820;
     BRA .moveDown                                                        ;A3E821;
 
-
   .inc:
     INC A                                                                ;A3E823;
 
@@ -12284,7 +12319,6 @@ Function_Crawlers_CrawlingHorizontally:
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A3E83C;
     RTL                                                                  ;A3E840;
 
-
   .insideTurn:
     LDA.W $0FAA,X                                                        ;A3E841;
     EOR.W #$FFFF                                                         ;A3E844;
@@ -12296,7 +12330,6 @@ Function_Crawlers_CrawlingHorizontally:
     LDA.W CrawlersInstListPointerTable_upsideRight,Y                     ;A3E853;
     BRA +                                                                ;A3E856;
 
-
   ..left:
     LDA.W CrawlersInstListPointerTable_upsideLeft,Y                      ;A3E858;
 
@@ -12304,7 +12337,6 @@ Function_Crawlers_CrawlingHorizontally:
     LDA.W #$0001                                                         ;A3E85E;
     STA.W $0F94,X                                                        ;A3E861;
     RTL                                                                  ;A3E864;
-
 
   .outsideTurn:
     LDA.L $7E7808,X                                                      ;A3E865;
@@ -12318,7 +12350,6 @@ Function_Crawlers_CrawlingHorizontally:
     STA.W $0FB2,X                                                        ;A3E87D;
     RTL                                                                  ;A3E880;
 
-
   .notFalling:
     LDA.W $0FA8,X                                                        ;A3E881;
     EOR.W #$FFFF                                                         ;A3E884;
@@ -12330,7 +12361,6 @@ Function_Crawlers_CrawlingHorizontally:
     LDA.W CrawlersInstListPointerTable_upsideRight,Y                     ;A3E893;
     BRA +                                                                ;A3E896;
 
-
   .outsideTurn_left:
     LDA.W CrawlersInstListPointerTable_upsideLeft,Y                      ;A3E898;
 
@@ -12340,6 +12370,7 @@ Function_Crawlers_CrawlingHorizontally:
     RTL                                                                  ;A3E8A4;
 
 
+;;; $E8A5: Adjust enemy X velocity for slopes ;;;
 AdjustEnemyXVelocityForSlopes:
     LDA.W $0F7A,X                                                        ;A3E8A5;
     PHA                                                                  ;A3E8A8;
@@ -12349,7 +12380,6 @@ AdjustEnemyXVelocityForSlopes:
     SEC                                                                  ;A3E8B1;
     SBC.W $0F84,X                                                        ;A3E8B2;
     BRA .positiveYVelocity                                               ;A3E8B5;
-
 
   .negativeYVelocity:
     CLC                                                                  ;A3E8B7;
@@ -12392,7 +12422,6 @@ AdjustEnemyXVelocityForSlopes:
     STA.B $14                                                            ;A3E90C;
     RTS                                                                  ;A3E90E;
 
-
   .multiply:
     JSL.L A_Y_16bit_UnsignedMultiplication                               ;A3E90F;
     LDA.W $05F1                                                          ;A3E913;
@@ -12400,7 +12429,6 @@ AdjustEnemyXVelocityForSlopes:
     LDA.W $05F3                                                          ;A3E918;
     STA.B $14                                                            ;A3E91B;
     RTS                                                                  ;A3E91D;
-
 
   .normalSpeed:
     LDX.W $0E54                                                          ;A3E91E;
@@ -12453,10 +12481,14 @@ AdjustEnemyXVelocityForSlopes:
     dw $6000,$0050 ; 1Eh: Unused. Middle third-width triangle
     dw $6000,$0050 ; 1Fh: Unused. Lower third-width triangle
 
+
+;;; $E9AF: Palette - enemy $DD7F (metroid) ;;;
 Palette_Metroid:
     dw $3800,$6BF5,$06E1,$0641,$05A1,$5E5F,$183F,$1014                   ;A3E9AF;
     dw $080A,$0404,$4F9F,$3ED8,$2E12,$6F70,$7FFF,$5EE0                   ;A3E9BF;
 
+
+;;; $E9CF: Instruction list - metroid - chasing Samus ;;;
 InstList_Metroid_ChasingSamus:
     dw $0010,Spritemap_Metroid_Insides_0                                 ;A3E9CF;
     dw $0010,Spritemap_Metroid_Insides_1                                 ;A3E9D3;
@@ -12482,6 +12514,8 @@ InstList_Metroid_ChasingSamus:
     dw Instruction_Common_GotoY                                          ;A3EA21;
     dw InstList_Metroid_ChasingSamus                                     ;A3EA23;
 
+
+;;; $EA25: Instruction list - metroid - draining Samus ;;;
 InstList_Metroid_DrainingSamus:
     dw $0010,Spritemap_Metroid_Insides_0                                 ;A3EA25;
     dw $0010,Spritemap_Metroid_Insides_1                                 ;A3EA29;
@@ -12492,6 +12526,8 @@ InstList_Metroid_DrainingSamus:
     dw Instruction_Common_GotoY                                          ;A3EA3B;
     dw InstList_Metroid_DrainingSamus                                    ;A3EA3D;
 
+
+;;; $EA3F: Bombed off X velocities ;;;
 BombedOffVelocities:
 ;        _____________________ Frame 0
 ;       |      _______________ Frame 3
@@ -12503,6 +12539,8 @@ BombedOffVelocities:
   .Y:
     dw $0000,$FFFE,$0000,$0002                                           ;A3EA47;
 
+
+;;; $EA4F: Initialisation AI - enemy $DD7F (metroid) ;;;
 InitAI_Metroid:
     LDX.W $0E54                                                          ;A3EA4F;
     LDA.W #InstList_Metroid_ChasingSamus                                 ;A3EA52;
@@ -12537,6 +12575,7 @@ InitAI_Metroid:
     RTL                                                                  ;A3EAA4;
 
 
+;;; $EAA5: Instruction - play Metroid draining Samus ;;;
 Instruction_Metroid_PlayDrainingSamusSFX:
     PHX                                                                  ;A3EAA5;
     PHY                                                                  ;A3EAA6;
@@ -12547,6 +12586,7 @@ Instruction_Metroid_PlayDrainingSamusSFX:
     RTL                                                                  ;A3EAB0;
 
 
+;;; $EAB1: Instruction - play random Metroid cry ;;;
 Instruction_Metroid_PlayRandomMetroidSFX:
     PHX                                                                  ;A3EAB1;
     PHY                                                                  ;A3EAB2;
@@ -12570,6 +12610,7 @@ endif ; !FEATURE_KEEP_UNREFERENCED
     dw $0050,$0058,$005A,$0050,$0058,$005A,$0058,$005A                   ;A3EAD6;
 
 
+;;; $EAE6: Frozen AI - enemy $DD7F (metroid) ;;;
 FrozenAI_Metroid:
     JSL.L CommonA3_NormalEnemyFrozenAI                                   ;A3EAE6;
     LDX.W $0E54                                                          ;A3EAEA;
@@ -12600,7 +12641,9 @@ FrozenAI_Metroid:
     RTL                                                                  ;A3EB32;
 
 
+;;; $EB33: Hurt AI - enemy $DD7F (metroid) ;;;
 HurtAI_Metroid:
+; Synch flashing with sprite objects
     LDX.W $0E54                                                          ;A3EB33;
     LDY.W #$F1FF                                                         ;A3EB36; >.<
     LDA.W $0F9C,X                                                        ;A3EB39;
@@ -12624,7 +12667,6 @@ HurtAI_Metroid:
     STA.L $7EF078,X                                                      ;A3EB6C;
     RTL                                                                  ;A3EB70;
 
-
   .flash:
     LDX.W $0E54                                                          ;A3EB71;
     LDA.L $7E7800,X                                                      ;A3EB74;
@@ -12641,6 +12683,7 @@ HurtAI_Metroid:
     RTL                                                                  ;A3EB97;
 
 
+;;; $EB98: Main AI - enemy $DD7F (metroid) ;;;
 MainAI_Metroid:
     LDX.W $0E54                                                          ;A3EB98;
     LDA.W $0AFA                                                          ;A3EB9B;
@@ -12685,14 +12728,17 @@ MainAI_Metroid:
     STA.L $7EF2F8,X                                                      ;A3EC04;
     RTL                                                                  ;A3EC08;
 
-
   .pointers:
     dw Function_Metroid_0_ChaseSamus                                     ;A3EC09;
     dw Function_Metroid_1_LatchOntoSamus                                 ;A3EC0B;
     dw Function_Metroid_2_LatchedOntoSamus                               ;A3EC0D;
     dw Function_Metroid_3_BombedOffSamus                                 ;A3EC0F;
 
+
+;;; $EC11: Metroid function index 0 - chase Samus ;;;
 Function_Metroid_0_ChaseSamus:
+;; Parameter:
+;;     $0E32: [Samus Y position] - 8
     LDX.W $0E54                                                          ;A3EC11;
     STZ.B $12                                                            ;A3EC14;
     STZ.B $14                                                            ;A3EC16;
@@ -12720,7 +12766,6 @@ Function_Metroid_0_ChaseSamus:
     BCC .moveDown                                                        ;A3EC45;
     LDA.W #$0003                                                         ;A3EC47;
     BRA .storeYVelocity                                                  ;A3EC4A;
-
 
   .negativeY:
     CMP.W #$FFFD                                                         ;A3EC4C;
@@ -12772,7 +12817,6 @@ Function_Metroid_0_ChaseSamus:
     LDA.W #$0003                                                         ;A3ECAC;
     BRA .storeXVelocity                                                  ;A3ECAF;
 
-
   .negativeX:
     CMP.W #$FFFD                                                         ;A3ECB1;
     BCS .moveRight                                                       ;A3ECB4;
@@ -12798,7 +12842,15 @@ Function_Metroid_0_ChaseSamus:
     RTS                                                                  ;A3ECDB;
 
 
+;;; $ECDC: Metroid function index 1 - latch onto Samus ;;;
 Function_Metroid_1_LatchOntoSamus:
+;; Parameter:
+;;     $0E32: [Samus Y position] - 8
+
+; This calculation of $14 = ((Samus position) - (metroid position)) * 20h is strange,
+; the result if non-zero will always be a huge value that has to be clamped to ±3
+; Hard to believe it's the intentional operation, possibly the intended destination of the calculation was $13,
+; though the sign extension code would have to be modified in that case too...
     LDX.W $0E54                                                          ;A3ECDC;
     STZ.B $12                                                            ;A3ECDF;
     STZ.B $14                                                            ;A3ECE1;
@@ -12823,7 +12875,6 @@ Function_Metroid_1_LatchOntoSamus:
     BCC .moveDown                                                        ;A3ED06;
     LDA.W #$0003                                                         ;A3ED08;
     BRA .alwaysClamped                                                   ;A3ED0B;
-
 
   .negativeY:
     CMP.W #$FFFD                                                         ;A3ED0D;
@@ -12872,7 +12923,6 @@ Function_Metroid_1_LatchOntoSamus:
     LDA.W #$0003                                                         ;A3ED61;
     BRA .storeXVelocity                                                  ;A3ED64;
 
-
   .negativeX:
     CMP.W #$FFFD                                                         ;A3ED66;
     BCS .moveRight                                                       ;A3ED69;
@@ -12898,7 +12948,10 @@ Function_Metroid_1_LatchOntoSamus:
     RTS                                                                  ;A3ED8E;
 
 
+;;; $ED8F: Metroid function index 2 - latched onto Samus ;;;
 Function_Metroid_2_LatchedOntoSamus:
+;; Parameter:
+;;     $0E32: [Samus Y position] - 8
     LDX.W $0E54                                                          ;A3ED8F;
     LDA.W $0AF6                                                          ;A3ED92;
     STA.W $0F7A,X                                                        ;A3ED95;
@@ -12911,6 +12964,7 @@ Function_Metroid_2_LatchedOntoSamus:
     RTS                                                                  ;A3EDAA;
 
 
+;;; $EDAB: Metroid function index 3 - bombed off Samus ;;;
 Function_Metroid_3_BombedOffSamus:
     LDX.W $0E54                                                          ;A3EDAB;
     LDA.W $0FB0,X                                                        ;A3EDAE;
@@ -12941,6 +12995,7 @@ Function_Metroid_3_BombedOffSamus:
     RTS                                                                  ;A3EDEA;
 
 
+;;; $EDEB: Enemy touch - enemy $DD7F (metroid) ;;;
 EnemyTouch_Metroid:
     LDA.W $0AFA                                                          ;A3EDEB;
     SEC                                                                  ;A3EDEE;
@@ -12999,7 +13054,6 @@ EnemyTouch_Metroid:
   .return:
     RTL                                                                  ;A3EE56;
 
-
   .normal:
     LDX.W $0E54                                                          ;A3EE57;
     LDA.W $0FB2,X                                                        ;A3EE5A;
@@ -13056,6 +13110,7 @@ EnemyTouch_Metroid:
     RTL                                                                  ;A3EECD;
 
 
+;;; $EECE: Deal metroid contact damage to Samus ;;;
 DealMetroidContactDamageToSamus:
     LDA.W $0AFA                                                          ;A3EECE;
     SEC                                                                  ;A3EED1;
@@ -13069,11 +13124,9 @@ DealMetroidContactDamageToSamus:
     LDA.W #$6000                                                         ;A3EEE3;
     BRA .merge                                                           ;A3EEE6;
 
-
   .gravitySuit:
     LDA.W #$3000                                                         ;A3EEE8;
     BRA .merge                                                           ;A3EEEB;
-
 
   .powerSuit:
     LDA.W #$C000                                                         ;A3EEED;
@@ -13092,6 +13145,7 @@ DealMetroidContactDamageToSamus:
     RTS                                                                  ;A3EF06;
 
 
+;;; $EF07: Enemy shot - enemy $DD7F (metroid) ;;;
 EnemyShot_Metroid:
     LDA.W $0AFA                                                          ;A3EF07;
     SEC                                                                  ;A3EF0A;
@@ -13138,7 +13192,6 @@ EnemyShot_Metroid:
   .returnUpper:
     RTL                                                                  ;A3EF78;
 
-
   .notFrozen:
     LDA.W $0FB2,X                                                        ;A3EF79;
     CMP.W #$0002                                                         ;A3EF7C;
@@ -13160,7 +13213,6 @@ EnemyShot_Metroid:
 
   .returnLower:
     RTL                                                                  ;A3EFAB;
-
 
   .notLatched:
     STZ.W $0FA8,X                                                        ;A3EFAC;
@@ -13231,7 +13283,6 @@ EnemyShot_Metroid:
     STA.W $0F8A,X                                                        ;A3F033;
     RTL                                                                  ;A3F036;
 
-
   .noFreeze:
     STA.W $0FB6,X                                                        ;A3F037;
 
@@ -13241,6 +13292,7 @@ EnemyShot_Metroid:
     RTL                                                                  ;A3F041;
 
 
+;;; $F042: Power bomb reaction - enemy $DD7F (metroid) ;;;
 PowerBombReaction_Metroid:
     JSL.L NormalEnemyPowerBombAI                                         ;A3F042;
     LDA.W $0F8C,X                                                        ;A3F046;
@@ -13262,6 +13314,7 @@ PowerBombReaction_Metroid:
     RTL                                                                  ;A3F070;
 
 
+;;; $F071: Metroid spritemaps ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Spritemap_Metroid_Shell_A3F071:
     dw $000A                                                             ;A3F071;
