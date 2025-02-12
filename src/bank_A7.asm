@@ -590,30 +590,41 @@ CommonA7EnemySpeeds_QuadraticallyIncreasing:
     dw $74F9,$0011,$8B07,$FFEE
 
 
+;;; $8687: Palette - enemy $E2BF/$E2FF/$E33F/$E37F/$E3BF/$E3FF/$E43F/$E47F (Kraid) ;;;
 Palette_Kraid:
     dw $3800,$559D,$1816,$100D,$4B9F,$3F37,$36D0,$2E69                   ;A78687;
     dw $2608,$1DA6,$1125,$08C5,$0003,$6318,$7FFF,$0000                   ;A78697;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $86A7: Unused. Palette ;;;
 UNUSED_Palette_Kraid_A786A7:
 ; Clone of Palette_Kraid
     dw $3800,$559D,$1816,$100D,$4B9F,$3F37,$36D0,$2E69                   ;A786A7;
     dw $2608,$1DA6,$1125,$08C5,$0003,$6318,$7FFF,$0000                   ;A786B7;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $86C7: Kraid room background palette ;;;
 Palette_KraidRoomBackground:
 ; BG palette 6
     dw $0400,$2D6B,$2D6B,$2D6B,$1986,$14C2,$0840,$0400                   ;A786C7;
     dw $31ED,$18C6,$10C3,$0420,$0252,$2D6B,$4A52,$0000                   ;A786D7;
 
+
+;;; $86E7: Instruction list - Kraid foot - initial ;;;
 InstList_KraidFoot_Initial:
     dw $7FFF,ExtendedSpritemap_KraidFoot_Initial                         ;A786E7;
     dw Instruction_Common_Sleep                                          ;A786EB;
 
+
+;;; $86ED: Instruction list - Kraid foot - Kraid is big - neutral ;;;
 InstList_KraidFoot_KraidIsBig_Neutral:
     dw $7FFF,ExtendedSpritemap_KraidFoot_0                               ;A786ED;
     dw Instruction_Common_Sleep                                          ;A786F1;
 
+
+;;; $86F3: Instruction list - Kraid foot - Kraid is big - walking forwards ;;;
 InstList_KraidFoot_KraidIsBig_WalkingForward_0:
     dw Instruction_Kraid_NOP_A7B633                                      ;A786F3;
     dw $0004,ExtendedSpritemap_KraidFoot_0                               ;A786F5;
@@ -683,7 +694,10 @@ InstList_KraidFoot_KraidIsBig_WalkingForward_0:
 InstList_KraidFoot_KraidIsBig_WalkingForward_1:
     dw Instruction_Common_Sleep                                          ;A787BB;
 
+
+;;; $87BD: Instruction list - Kraid foot - lunge forward ;;;
 InstList_KraidFoot_LungeForward_0:
+; This is just InstList_KraidFoot_KraidIsBig_WalkingForward_0 but faster
     dw Instruction_Kraid_NOP_A7B633                                      ;A787BD;
     dw $0001,ExtendedSpritemap_KraidFoot_0                               ;A787BF;
     dw $0001,ExtendedSpritemap_KraidFoot_1                               ;A787C3;
@@ -752,6 +766,8 @@ InstList_KraidFoot_LungeForward_0:
 InstList_KraidFoot_LungeForward_1:
     dw Instruction_Common_Sleep                                          ;A78885;
 
+
+;;; $8887: Instruction list - Kraid foot - Kraid is big - walking backwards ;;;
 InstList_KraidFoot_KraidIsBig_WalkingBackwards_0:
     dw Instruction_Kraid_NOP_A7B633                                      ;A78887;
     dw Instruction_Kraid_XPositionPlus3                                  ;A78889;
@@ -815,7 +831,9 @@ InstList_KraidFoot_KraidIsBig_WalkingBackwards_1:
     dw Instruction_Common_GotoY                                          ;A78939;
     dw InstList_KraidFoot_KraidIsBig_WalkingBackwards_0                  ;A7893B;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $893D: Unused. Instruction list - Kraid foot - walking backwards - fast ;;;
 UNUSED_InstList_KraidFoot_WalkingBackwards_Fast_A7893D:
     dw Instruction_Kraid_NOP_A7B633                                      ;A7893D;
     dw UNUSED_Instruction_Kraid_MoveRight_A7B683                         ;A7893F;
@@ -878,6 +896,8 @@ UNUSED_InstList_KraidFoot_WalkingBackwards_Fast_A7893D:
     dw UNUSED_InstList_KraidFoot_WalkingBackwards_Fast_A7893D            ;A789F1;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $89F3: Instruction list - Kraid arm - normal ;;;
 InstList_KraidArm_Normal_0:
     dw $0006,ExtendedSpritemap_KraidArm_General_0                        ;A789F3;
     dw $0006,ExtendedSpritemap_KraidArm_General_1                        ;A789F7;
@@ -903,6 +923,8 @@ InstList_KraidArm_Normal_1:
     dw Instruction_Common_GotoY                                          ;A78A3D;
     dw InstList_KraidArm_Normal_0                                        ;A78A3F;
 
+
+;;; $8A41: Instruction list - Kraid arm - slow ;;;
 InstList_KraidArm_Slow:
     dw $0008,ExtendedSpritemap_KraidArm_General_0                        ;A78A41;
     dw $0008,ExtendedSpritemap_KraidArm_General_1                        ;A78A45;
@@ -926,6 +948,8 @@ InstList_KraidArm_Slow:
     dw Instruction_Common_GotoY                                          ;A78A8B;
     dw InstList_KraidArm_Slow                                            ;A78A8D;
 
+
+;;; $8A8F: Instruction - slow Kraid arm if Kraid has less than half health ;;;
 Instruction_KraidArm_SlowArmIfLessThanHalfHealth:
     LDA.W $0F8C                                                          ;A78A8F;
     CMP.L $7E7812                                                        ;A78A92;
@@ -939,7 +963,9 @@ Instruction_KraidArm_SlowArmIfLessThanHalfHealth:
     RTL                                                                  ;A78AA3;
 
 
+;;; $8AA4: Instruction list - Kraid arm - rising/sinking ;;;
 InstList_KraidArm_RisingSinking:
+; Same as InstList_KraidArm_Normal_0, but the spritemaps all have lower priority sprites
     dw $0006,ExtendedSpritemap_KraidArm_RisingSinking_0                  ;A78AA4;
     dw $0006,ExtendedSpritemap_KraidArm_RisingSinking_1                  ;A78AA8;
     dw $0006,ExtendedSpritemap_KraidArm_RisingSinking_2                  ;A78AAC;
@@ -961,20 +987,28 @@ InstList_KraidArm_RisingSinking:
     dw Instruction_Common_GotoY                                          ;A78AEC;
     dw InstList_KraidArm_RisingSinking                                   ;A78AEE;
 
+
+;;; $8AF0: Instruction list - Kraid arm - dying / preparing to lunge forward ;;;
 InstList_KraidArm_Dying_PreparingToLungeForward:
     dw $0006,ExtendedSpritemap_KraidArm_General_0                        ;A78AF0;
     dw $0006,ExtendedSpritemap_KraidArm_Dying_PreparingToLungeForward_0  ;A78AF4;
     dw $7FFF,ExtendedSpritemap_KraidArm_Dying_PreparingToLungeForward_1  ;A78AF8;
     dw Instruction_Common_Sleep                                          ;A78AFC;
 
+
+;;; $8AFE: Instruction list - Kraid lint - initial ;;;
 InstList_KraidLint_Initial:
     dw $7FFF,Spritemap_KraidLint_Initial                                 ;A78AFE;
     dw Instruction_Common_Sleep                                          ;A78B02;
 
+
+;;; $8B04: Instruction list - Kraid lint - Kraid is big ;;;
 InstList_KraidLint_KraidIsBig:
     dw $7FFF,Spritemap_KraidLint_KraidIsBig                              ;A78B04;
     dw Instruction_Common_Sleep                                          ;A78B08;
 
+
+;;; $8B0A: Instruction list - fingernail ;;;
 InstList_KraidNail:
     dw $0003,Spritemap_KraidNail_0                                       ;A78B0A;
     dw $0003,Spritemap_KraidNail_1                                       ;A78B0E;
@@ -987,6 +1021,8 @@ InstList_KraidNail:
     dw Instruction_Common_GotoY                                          ;A78B2A;
     dw InstList_KraidNail                                                ;A78B2C;
 
+
+;;; $8B2E: Unused. Extended spritemaps - Kraid arm ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_ExtendedSpritemap_KraidArm_A78B2E:
     dw $0002                                                             ;A78B2E;
@@ -1151,6 +1187,8 @@ UNUSED_ExtendedSpritemap_KraidArm_A78C62:
     dw Hitbox_KraidArm_10                                                ;A78C6A;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $8C6C: Spritemap - Kraid lint - Kraid is big ;;;
 Spritemap_KraidLint_KraidIsBig:
     dw $0005                                                             ;A78C6C;
     %spritemapEntry(0, $1F4, $08, 0, 0, 2, 0, $1C2)
@@ -1159,6 +1197,8 @@ Spritemap_KraidLint_KraidIsBig:
     %spritemapEntry(1, $1E4, $F8, 0, 0, 2, 0, $1A0)
     %spritemapEntry(1, $04, $F8, 0, 0, 2, 0, $1A9)
 
+
+;;; $8C87: Unused. Extended spritemaps - Kraid foot ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_ExtendedSpritemap_KraidFoot_A78C87:
     dw $0001                                                             ;A78C87;
@@ -1209,6 +1249,8 @@ UNUSED_ExtendedSpritemap_KraidFoot_A78CD9:
     dw UNUSED_Hitbox_KraidFoot_A79461                                    ;A78CE1;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $8CE3: Extended spritemaps - Kraid foot ;;;
 ExtendedSpritemap_KraidFoot_0:
     dw $0002                                                             ;A78CE3;
     dw $0008,$0028
@@ -1524,6 +1566,9 @@ ExtendedSpritemap_KraidFoot_22:
     dw Spritemap_KraidFoot_0                                             ;A78F55;
     dw Hitbox_KraidFoot                                                  ;A78F57;
 
+
+;;; $8F59: Extended spritemaps - Kraid arm ;;;
+; General
 ExtendedSpritemap_KraidArm_General_0:
     dw $0005                                                             ;A78F59;
     dw $FFDC,$FFDF
@@ -1704,6 +1749,7 @@ ExtendedSpritemap_KraidArm_General_9:
     dw Spritemap_KraidArm_General_9                                      ;A790F9;
     dw Hitbox_KraidArm_A                                                 ;A790FB;
 
+; Rising/sinking
 ExtendedSpritemap_KraidArm_RisingSinking_0:
     dw $0005                                                             ;A790FD;
     dw $FFDC,$FFDF
@@ -1884,6 +1930,7 @@ ExtendedSpritemap_KraidArm_RisingSinking_9:
     dw Spritemap_KraidArm_RisingSinking_9                                ;A7929D;
     dw Hitbox_KraidArm_A                                                 ;A7929F;
 
+; Dying / preparing to lunge forward
 ExtendedSpritemap_KraidArm_Dying_PreparingToLungeForward_0:
     dw $0001                                                             ;A792A1;
     dw $0000,$0000
@@ -1896,13 +1943,17 @@ ExtendedSpritemap_KraidArm_Dying_PreparingToLungeForward_1:
     dw Spritemap_KraidArm_Dying_PreparingToLunge_1                       ;A792B1;
     dw Hitbox_KraidArm_Dying_PreparingToLungeForward_1                   ;A792B3;
 
+
+;;; $92B5: Hitbox - Kraid lint ;;;
 Hitbox_KraidLint:
     dw $0001                                                             ;A792B5;
     dw $FFE8,$FFFC,$0004,$0006                                           ;A792B7;
     dw EnemyTouch_KraidArm_KraidFoot_Normal                              ;A792BF;
     dw RTL_A794B5                                                        ;A792C1;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $92C3: Unused. Hitbox - Kraid foot ;;;
 UNUSED_Hitbox_KraidFoot:
     dw $0001                                                             ;A792C3;
     dw $FFF8,$FFF8,$0007,$0007
@@ -1910,6 +1961,8 @@ UNUSED_Hitbox_KraidFoot:
     dw RTL_A794B5                                                        ;A792CF;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $92D1: Hitboxes - Kraid arm ;;;
 Hitbox_KraidArm_0:
     dw $0002                                                             ;A792D1;
     dw $FFF3,$FFF5,$FFFD,$FFFB
@@ -2054,13 +2107,17 @@ Hitbox_KraidArm_12:
     dw EnemyTouch_KraidArm_KraidFoot_Normal                              ;A7944F;
     dw EnemyShot_KraidArm                                                ;A79451;
 
+
+;;; $9453: Hitbox - Kraid foot ;;;
 Hitbox_KraidFoot:
     dw $0001                                                             ;A79453;
     dw $FFFA,$FFFA,$0006,$0006
     dw EnemyTouch_KraidArm_KraidFoot_Normal                              ;A7945D;
     dw RTL_A794B5                                                        ;A7945F;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9461: Unused. Hitbox - Kraid foot ;;;
 UNUSED_Hitbox_KraidFoot_A79461:
     dw $0001                                                             ;A79461;
     dw $FFFE,$FFFD,$0002,$0003
@@ -2068,6 +2125,8 @@ UNUSED_Hitbox_KraidFoot_A79461:
     dw RTL_A794B5                                                        ;A7946D;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $946F: Hitboxes - Kraid arm - dying / preparing to lunge forward ;;;
 Hitbox_KraidArm_Dying_PreparingToLungeForward_0:
     dw $0001                                                             ;A7946F;
     dw $FFC0,$FFD0,$FFE0,$FFF0
@@ -2080,29 +2139,35 @@ Hitbox_KraidArm_Dying_PreparingToLungeForward_1:
     dw EnemyTouch_KraidArm_KraidFoot_Normal                              ;A79487;
     dw EnemyShot_KraidArm                                                ;A79489;
 
+
+;;; $948B: Enemy touch - Kraid arm/foot - normal ;;;
 EnemyTouch_KraidArm_KraidFoot_Normal:
     JSL.L NormalEnemyTouchAI                                             ;A7948B; fallthrough to RTL_A7948F
+
 
 RTL_A7948F:
     RTL                                                                  ;A7948F;
 
 
+;;; $9490: Enemy touch - enemy $E2FF (Kraid arm) ;;;
 EnemyTouch_KraidArm:
     LDA.W $18A8                                                          ;A79490;
     BEQ .SamusInvincible                                                 ;A79493;
     RTL                                                                  ;A79495;
 
-
   .SamusInvincible:
     JSR.W PushSamusBack                                                  ;A79496;
     LDA.W #Function_KraidLint_FireLint                                   ;A79499;
-    STA.W $10A8                                                          ;A7949C;
+    STA.W $10A8                                                          ;A7949C; fallthrough to EnemyTouch_Kraid
 
+
+;;; $949F: Enemy touch - enemy $E2BF (Kraid) ;;;
 EnemyTouch_Kraid:
     JSL.L NormalEnemyTouchAI_NoDeathCheck_External                       ;A7949F;
     RTL                                                                  ;A794A3;
 
 
+;;; $94A4: Push Samus back ;;;
 PushSamusBack:
     LDA.W #$0004                                                         ;A794A4;
     STA.W $0B58                                                          ;A794A7;
@@ -2111,13 +2176,16 @@ PushSamusBack:
     RTS                                                                  ;A794B0;
 
 
+;;; $94B1: Normal enemy shot ;;;
 NormalEnemyShot:
     JSL.L NormalEnemyShotAI                                              ;A794B1; fallthrough to RTL_A794B5
+
 
 RTL_A794B5:
     RTL                                                                  ;A794B5;
 
 
+;;; $94B6: Enemy shot - Kraid arm ;;;
 EnemyShot_KraidArm:
     TYX                                                                  ;A794B6;
     JSR.W SpawnExplosionProjectile                                       ;A794B7;
@@ -2128,6 +2196,7 @@ EnemyShot_KraidArm:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $94C4: Unused. Spritemap - Kraid lint ;;;
 UNUSED_Spritemap_KraidLint_A794C4:
     dw $0004                                                             ;A794C4;
     %spritemapEntry(0, $00, $08, 0, 0, 2, 0, $1C2)
@@ -2135,11 +2204,15 @@ UNUSED_Spritemap_KraidLint_A794C4:
     %spritemapEntry(1, $00, $F8, 0, 0, 2, 0, $1A2)
     %spritemapEntry(1, $1F0, $F8, 0, 0, 2, 0, $1A0)
 
+
+;;; $94DA: Unused. Spritemap - Kraid foot ;;;
 UNUSED_Spritemap_KraidFoot_A794DA:
     dw $0001                                                             ;A794DA;
     %spritemapEntry(1, $1F8, $F8, 0, 0, 2, 0, $1A9)
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $94E1: Spritemaps - Kraid arm - general ;;;
 Spritemap_KraidArm_General_0:
     dw $0001                                                             ;A794E1;
     %spritemapEntry(1, $1F2, $F4, 0, 0, 3, 0, $126)
@@ -2244,6 +2317,8 @@ Spritemap_KraidArm_General_D:
     %spritemapEntry(1, $1EC, $E5, 0, 0, 3, 0, $122)
     %spritemapEntry(1, $1DC, $DD, 0, 0, 3, 0, $120)
 
+
+;;; $95DE: Spritemaps - Kraid foot ;;;
 Spritemap_KraidFoot_0:
     dw $0008                                                             ;A795DE;
     %spritemapEntry(1, $20, $1C, 0, 0, 3, 0, $15A)
@@ -2303,6 +2378,8 @@ Spritemap_KraidFoot_4:
     %spritemapEntry(1, $1F0, $FC, 0, 0, 3, 0, $1D6)
     %spritemapEntry(1, $1E0, $FC, 0, 0, 3, 0, $1D4)
 
+
+;;; $96C4: Unused. Spritemaps - Kraid foot ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Spritemap_KraidFoot_A796C4:
     dw $0001                                                             ;A796C4;
@@ -2313,6 +2390,8 @@ UNUSED_Spritemap_KraidFoot_A796CB:
     %spritemapEntry(0, $1FC, $FC, 0, 0, 2, 0, $1D2)
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $96D2: Kraid instruction list - roar ;;;
 InstList_Kraid_Roar_0:
     dw $000A                                                             ;A796D2; Timer
     dw Tilemap_KraidHead_0                                               ;A796D4; Tilemap
@@ -2361,6 +2440,8 @@ InstList_Kraid_Roar_7:
 InstList_Kraid_Roar_8:
     dw $FFFF                                                             ;A7970C;
 
+
+;;; $970E: Kraid instruction list - dying roar ;;;
 InstList_Kraid_DyingRoar_0:
     dw $0014                                                             ;A7970E; Timer
     dw Tilemap_KraidHead_0                                               ;A79710; Tilemap
@@ -2395,6 +2476,8 @@ InstList_Kraid_DyingRoar_1:
     dw $FFFF                                                             ;A79746; Invulnerable mouth hitbox
     dw $FFFF                                                             ;A79748;
 
+
+;;; $974A: Kraid instruction list - eye glowing ;;;
 InstList_Kraid_EyeGlowing_0:
     dw $0005                                                             ;A7974A; Timer
     dw Tilemap_KraidHead_0                                               ;A7974C; Tilemap
@@ -2412,6 +2495,8 @@ InstList_Kraid_EyeGlowing_1:
     dw $FFFF                                                             ;A79760; Invulnerable mouth hitbox
     dw $FFFF                                                             ;A79762;
 
+
+;;; $9764: Kraid instruction list - dying ;;;
 InstList_Kraid_Dying_0:
     dw $0019                                                             ;A79764; Timer
     dw Tilemap_KraidHead_0                                               ;A79766; Tilemap
@@ -2434,6 +2519,8 @@ InstList_Kraid_Dying_1:
     dw Hitbox_KraidMouth_7                                               ;A79784; Invulnerable mouth hitbox
     dw $FFFF                                                             ;A79786;
 
+
+;;; $9788: Kraid mouth hitboxes ;;;
 ;        _____________________ Left
 ;       |      _______________ Top
 ;       |     |      _________ Right
@@ -2464,6 +2551,7 @@ Hitbox_KraidMouth_7:
     dw $0000,$FF90,$0020,$FFB0                                           ;A797C0;
 
 
+;;; $97C8: Kraid head tilemaps ;;;
 ; The last row of each of these tilemaps isn't actually drawn
 Tilemap_KraidHead_0:
     dw $0338,$0338,$0338,$0338,$0338,$0338,$0338,$0338                   ;A797C8;
@@ -2665,6 +2753,8 @@ Tilemap_KraidHead_3:
     dw $3C70,$3C71,$3D42,$0338,$0338,$0338,$0338,$0338                   ;A7A3A8;
     dw $0338,$0338,$0338,$0338,$0338,$0338,$0338,$0338                   ;A7A3B8;
 
+
+;;; $A3C8: Unused. Extended spritemaps - Kraid arm ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_ExtendedSpritemap_KraidArm_A7A3C8:
     dw $0002                                                             ;A7A3C8;
@@ -2757,6 +2847,8 @@ UNUSED_ExtendedSpritemap_KraidArm_A7A46A:
     dw Hitbox_KraidArm_A                                                 ;A7A47A;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $A47C: Spritemaps - Kraid arm - rising/sinking ;;;
 Spritemap_KraidArm_RisingSinking_0:
     dw $0001                                                             ;A7A47C;
     %spritemapEntry(1, $1F2, $F4, 0, 0, 2, 0, $126)
@@ -2807,6 +2899,7 @@ Spritemap_KraidArm_RisingSinking_A:
     %spritemapEntry(1, $1F4, $F4, 0, 0, 2, 0, $12C)
 
 
+;;; $A4E2: Unused. Extended spritemaps - Kraid arm ;;;
 UNUSED_ExtendedSpritemap_KraidArm_A7A4E2:
     dw $0001                                                             ;A7A4E2;
     dw $0000,$0000
@@ -2825,6 +2918,8 @@ UNUSED_ExtendedSpritemap_KraidArm_A7A4F6:
     dw Spritemap_KraidArm_RisingSinking_B                                ;A7A4FC;
     dw Hitbox_KraidArm_10                                                ;A7A4FE;
 
+
+;;; $A500: Spritemaps - Kraid arm - rising/sinking ;;;
 Spritemap_KraidArm_RisingSinking_B:
     dw $0003                                                             ;A7A500;
     %spritemapEntry(1, $1F4, $F8, 0, 0, 2, 0, $104)
@@ -2854,6 +2949,7 @@ Spritemap_KraidArm_RisingSinking_D:
     %spritemapEntry(1, $1DC, $DD, 0, 0, 2, 0, $120)
 
 
+;;; $A565: Extended spritemap - Kraid foot - initial ;;;
 ExtendedSpritemap_KraidFoot_Initial:
     dw $0002                                                             ;A7A565;
     dw $0008,$0028
@@ -2863,6 +2959,8 @@ ExtendedSpritemap_KraidFoot_Initial:
     dw Spritemap_KraidFoot_5                                             ;A7A573;
     dw Hitbox_KraidFoot                                                  ;A7A575;
 
+
+;;; $A577: Spritemaps - Kraid foot ;;;
 Spritemap_KraidFoot_5:
     dw $0008                                                             ;A7A577;
     %spritemapEntry(1, $20, $1C, 0, 0, 2, 0, $15A)
@@ -2889,6 +2987,8 @@ Spritemap_KraidFoot_6:
     %spritemapEntry(1, $1F0, $FC, 0, 0, 2, 0, $1D6)
     %spritemapEntry(1, $1E0, $FC, 0, 0, 2, 0, $1D4)
 
+
+;;; $A5DF: Spritemap - Kraid lint - initial ;;;
 Spritemap_KraidLint_Initial:
     dw $0005                                                             ;A7A5DF;
     %spritemapEntry(0, $00, $08, 0, 0, 1, 0, $1C2)
@@ -2897,6 +2997,8 @@ Spritemap_KraidLint_Initial:
     %spritemapEntry(1, $1F0, $F8, 0, 0, 1, 0, $1A0)
     %spritemapEntry(1, $00, $08, 0, 0, 1, 0, $1A9)
 
+
+;;; $A5FA: Unused. Spritemaps - Kraid lint ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Spritemap_KraidLint_A7A5FA:
     dw $0004                                                             ;A7A5FA;
@@ -2910,6 +3012,8 @@ UNUSED_Spritemap_KraidLint_A7A610:
     %spritemapEntry(1, $1F8, $F8, 0, 0, 1, 0, $1A9)
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $A617: Spritemaps - Kraid fingernail ;;;
 Spritemap_KraidNail_0:
     dw $0002                                                             ;A7A617;
     %spritemapEntry(1, $43F4, $F8, 0, 0, 2, 0, $12A)
@@ -2958,6 +3062,8 @@ Spritemap_KraidNail_7:
     %spritemapEntry(0, $1FF, $03, 1, 0, 2, 0, $13E)
     %spritemapEntry(0, $1FF, $FB, 0, 0, 2, 0, $13E)
 
+
+;;; $A69F: Spritemaps - Kraid arm - dying / preparing to lunge ;;;
 Spritemap_KraidArm_Dying_PreparingToLunge_0:
     dw $000C                                                             ;A7A69F;
     %spritemapEntry(1, $43C1, $D8, 0, 0, 3, 1, $126)
@@ -2988,7 +3094,7 @@ Spritemap_KraidArm_Dying_PreparingToLunge_1:
     %spritemapEntry(1, $43D4, $F8, 0, 0, 3, 1, $100)
 
 
-
+;;; $A716: Kraid's room background ;;;
 Tiles_KraidRoomBackground:
     db $3F,$FF,$4C,$F3,$5F,$E0,$CB,$F0,$B9,$C0,$8F,$F0,$B6,$C9,$B1,$CE   ;A7A716;
     db $00,$FF,$3F,$C0,$39,$C6,$3C,$C3,$76,$89,$71,$8E,$7F,$80,$7F,$80   ;A7A726;
@@ -3023,6 +3129,8 @@ Tiles_KraidRoomBackground:
     db $9D,$03,$F5,$0B,$B9,$47,$D3,$2F,$A7,$DF,$0F,$FF,$1F,$F9,$FF,$EF   ;A7A8F6;
     db $6E,$91,$8E,$71,$FE,$01,$FC,$03,$F8,$07,$F0,$0F,$E6,$19,$10,$EF   ;A7A906;
 
+
+;;; $A916: Kraid constants ;;;
 KraidLint_InitialFunctionTimers:
   .top:
     dw $0120                                                             ;A7A916;
@@ -3056,12 +3164,18 @@ KraidLint:
   .XSpeed:
     dw $0003                                                             ;A7A928;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $A92A: Unused. REP #$30 ;;;
 UNUSED_REP30_A7A92A:
     REP #$30                                                             ;A7A92A;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $A92C: Check if Kraid has died ;;;
 CheckIfKraidHasDied:
+;; Returns:
+;;     A: 0 if Kraid is alive, 1 if Kraid is dead
     PHX                                                                  ;A7A92C;
     LDX.W $079F                                                          ;A7A92D;
     LDA.L $7ED828,X                                                      ;A7A930;
@@ -3071,14 +3185,16 @@ CheckIfKraidHasDied:
     LDA.W #$0001                                                         ;A7A93A;
     RTS                                                                  ;A7A93D;
 
-
   .returnAlive:
     PLX                                                                  ;A7A93E;
     LDA.W #$0000                                                         ;A7A93F;
     RTS                                                                  ;A7A942;
 
 
+;;; $A943: Set enemy properties to dead ;;;
 SetEnemyPropertiesToDead:
+; Set enemy as intangible, flagged for deletion, invisible,
+; not processed off-screen, not processing instructions and non-solid hitbox
     LDX.W $0E54                                                          ;A7A943;
     LDA.W $0F86,X                                                        ;A7A946;
     ORA.W #$0700                                                         ;A7A949;
@@ -3089,7 +3205,10 @@ SetEnemyPropertiesToDead:
     RTS                                                                  ;A7A958;
 
 
+;;; $A959: Initialisation AI - enemy $E2BF (Kraid) ;;;
 InitAI_Kraid:
+; Note that BG1 tiles base address = ([$5D] & Fh) * 1000h, whereas this routine is using ([$5D] & Fh) * 100h,
+; i.e. this routine only works because BG1 tiles base address = $0000
     SEP #$20                                                             ;A7A959;
     LDA.B #$A7                                                           ;A7A95B;
     STA.W $0606                                                          ;A7A95D;
@@ -3103,7 +3222,6 @@ InitAI_Kraid:
     JSR.W CheckIfKraidHasDied                                            ;A7A973;
     BNE .dead                                                            ;A7A976;
     JMP.W .alive                                                         ;A7A978;
-
 
   .dead:
     LDX.W #$00C0                                                         ;A7A97B;
@@ -3152,7 +3270,6 @@ InitAI_Kraid:
     LDA.W #Function_Kraid_FadeInRegularBG_ClearBG2TilemapTopHalf         ;A7A9D5;
     STA.W $0FA8                                                          ;A7A9D8;
     RTL                                                                  ;A7A9DB;
-
 
   .alive:
     SEP #$20                                                             ;A7A9DC;
@@ -3244,7 +3361,10 @@ InitAI_Kraid:
     dw $0CA9,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;A7AAB6;
 
 
+;;; $AAC6: Set up Kraid graphics with the tile priority cleared ;;;
 SetupKraidGFXWithTheTilePriorityCleared:
+; $7E:2000..27FF = BG2 tilemap - Kraid top half
+; $7E:2800..2DFF = BG2 tilemap - Kraid bottom half
     SEP #$20                                                             ;A7AAC6;
     LDA.B #Background_Brinstar_1A_Kraid_Upper                            ;A7AAC8;
     STA.L $000047                                                        ;A7AACA;
@@ -3295,6 +3415,7 @@ SetupKraidGFXWithTheTilePriorityCleared:
     RTS                                                                  ;A7AB42;
 
 
+;;; $AB43: Initialisation AI - enemy $E2FF (Kraid arm) ;;;
 InitAI_KraidArm:
     JSR.W CheckIfKraidHasDied                                            ;A7AB43;
     BNE .dead                                                            ;A7AB46;
@@ -3309,12 +3430,12 @@ InitAI_KraidArm:
     STZ.W $0FEA                                                          ;A7AB60;
     RTL                                                                  ;A7AB63;
 
-
   .dead:
     JSR.W SetEnemyPropertiesToDead                                       ;A7AB64;
     RTL                                                                  ;A7AB67;
 
 
+;;; $AB68: Initialisation AI - enemy $E33F (Kraid top lint) ;;;
 InitAI_KraidLintTop:
     JSR.W CheckIfKraidHasDied                                            ;A7AB68;
     BNE .dead                                                            ;A7AB6B;
@@ -3334,12 +3455,12 @@ InitAI_KraidLintTop:
     STA.W $102C                                                          ;A7AB94;
     RTL                                                                  ;A7AB97;
 
-
   .dead:
     JSR.W SetEnemyPropertiesToDead                                       ;A7AB98;
     RTL                                                                  ;A7AB9B;
 
 
+;;; $AB9C: Initialisation AI - enemy $E37F (Kraid middle lint) ;;;
 InitAI_KraidLintMiddle:
     JSR.W CheckIfKraidHasDied                                            ;A7AB9C;
     BNE .dead                                                            ;A7AB9F;
@@ -3357,12 +3478,12 @@ InitAI_KraidLintMiddle:
     STA.W $106C                                                          ;A7ABC2;
     RTL                                                                  ;A7ABC5;
 
-
   .dead:
     JSR.W SetEnemyPropertiesToDead                                       ;A7ABC6;
     RTL                                                                  ;A7ABC9;
 
 
+;;; $ABCA: Initialisation AI - enemy $E3BF (Kraid bottom lint) ;;;
 InitAI_KraidLintBottom:
     JSR.W CheckIfKraidHasDied                                            ;A7ABCA;
     BNE .dead                                                            ;A7ABCD;
@@ -3380,12 +3501,12 @@ InitAI_KraidLintBottom:
     STA.W $10AC                                                          ;A7ABF0;
     RTL                                                                  ;A7ABF3;
 
-
   .dead:
     JSR.W SetEnemyPropertiesToDead                                       ;A7ABF4;
     RTL                                                                  ;A7ABF7;
 
 
+;;; $ABF8: Initialisation AI - enemy $E3FF (Kraid foot) ;;;
 InitAI_KraidFoot:
     JSR.W CheckIfKraidHasDied                                            ;A7ABF8;
     BNE .dead                                                            ;A7ABFB;
@@ -3401,12 +3522,12 @@ InitAI_KraidFoot:
     STA.L $7E7940                                                        ;A7AC18;
     RTL                                                                  ;A7AC1C;
 
-
   .dead:
     JSR.W SetEnemyPropertiesToDead                                       ;A7AC1D;
     RTL                                                                  ;A7AC20;
 
 
+;;; $AC21: Main AI - enemy $E2BF (Kraid) ;;;
 MainAI_Kraid:
     JSR.W KraidsMouth_vs_Projectile_CollisionHandling                    ;A7AC21;
     JSR.W KraidPaletteHandling                                           ;A7AC24;
@@ -3427,6 +3548,7 @@ MainAI_Kraid:
     JMP.W ($0FA8)                                                        ;A7AC4A;
 
 
+;;; $AC4D: Kraid function - Kraid gets big - break ceiling into platforms ;;;
 Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
     LDA.W $05B6                                                          ;A7AC4D;
     AND.W #$0007                                                         ;A7AC50;
@@ -3461,8 +3583,8 @@ Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
     STA.B $12                                                            ;A7AC97;
     JMP.W ($0012)                                                        ;A7AC99;
 
-
   .manualReturn:
+; Manual return point for PLM spawning functions
     LDX.W $0FB2                                                          ;A7AC9C;
     INX                                                                  ;A7AC9F;
     INX                                                                  ;A7ACA0;
@@ -3477,7 +3599,6 @@ Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
 
   .return:
     RTL                                                                  ;A7ACB2;
-
 
   .XPositions:
 ; Falling rocks X positions
@@ -3501,13 +3622,11 @@ Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
     dw PLMEntries_crumbleKraidCeilingBlockIntoBackground1                ;A7ACDD;
     JMP.W .manualReturn                                                  ;A7ACDF;
 
-
   .spawnPLM1:
     JSL.L Spawn_Hardcoded_PLM                                            ;A7ACE2;
     db $03,$12                                                           ;A7ACE6;
     dw PLMEntries_crumbleKraidCeilingBlockIntoBackground2                ;A7ACE8;
     JMP.W .manualReturn                                                  ;A7ACEA;
-
 
   .spawnPLM2:
     JSL.L Spawn_Hardcoded_PLM                                            ;A7ACED;
@@ -3515,13 +3634,11 @@ Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
     dw PLMEntries_crumbleKraidCeilingBlockIntoBackground3                ;A7ACF3;
     JMP.W .manualReturn                                                  ;A7ACF5;
 
-
   .spawnPLM3:
     JSL.L Spawn_Hardcoded_PLM                                            ;A7ACF8;
     db $05,$12                                                           ;A7ACFC;
     dw PLMEntries_crumbleKraidCeilingBlockIntoBackground2                ;A7ACFE;
     JMP.W .manualReturn                                                  ;A7AD00;
-
 
   .spawnPLM4:
     JSL.L Spawn_Hardcoded_PLM                                            ;A7AD03;
@@ -3529,13 +3646,11 @@ Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
     dw PLMEntries_crumbleKraidCeilingBlockIntoBackground3                ;A7AD09;
     JMP.W .manualReturn                                                  ;A7AD0B;
 
-
   .spawnPLM5:
     JSL.L Spawn_Hardcoded_PLM                                            ;A7AD0E;
     db $0A,$12                                                           ;A7AD12;
     dw PLMEntries_crumbleKraidCeilingBlockIntoBackground3                ;A7AD14;
     JMP.W .manualReturn                                                  ;A7AD16;
-
 
   .spawnPLM6:
     JSL.L Spawn_Hardcoded_PLM                                            ;A7AD19;
@@ -3543,13 +3658,11 @@ Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
     dw PLMEntries_crumbleKraidCeilingBlockIntoBackground2                ;A7AD1F;
     JMP.W .manualReturn                                                  ;A7AD21;
 
-
   .spawnPLM7:
     JSL.L Spawn_Hardcoded_PLM                                            ;A7AD24;
     db $0C,$12                                                           ;A7AD28;
     dw PLMEntries_crumbleKraidCeilingBlockIntoBackground3                ;A7AD2A;
     JMP.W .manualReturn                                                  ;A7AD2C;
-
 
   .spawnPLM8:
     JSL.L Spawn_Hardcoded_PLM                                            ;A7AD2F;
@@ -3558,6 +3671,7 @@ Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
     JMP.W .manualReturn                                                  ;A7AD37;
 
 
+;;; $AD3A: Kraid function - Kraid gets big - set BG2 tilemap priority bits ;;;
 Function_Kraid_KraidGetsBig_SetBG2TilemapPriorityBits:
     LDX.W #$0000                                                         ;A7AD3A;
 
@@ -3577,6 +3691,7 @@ Function_Kraid_KraidGetsBig_SetBG2TilemapPriorityBits:
     JMP.W UpdateBG2TilemapTopHalf                                        ;A7AD5E;
 
 
+;;; $AD61: Kraid function - Kraid gets big - finish updating BG2 tilemap ;;;
 Function_Kraid_KraidGetsBig_FinishUpdatingBG2Tilemap:
     LDA.W #Function_Kraid_KraidGetsBig_DrawRoomBackground                ;A7AD61;
     STA.W $0FA8                                                          ;A7AD64;
@@ -3595,12 +3710,17 @@ Function_Kraid_KraidGetsBig_FinishUpdatingBG2Tilemap:
     JMP.W UpdateBG2TilemapBottomHalf                                     ;A7AD8B;
 
 
+;;; $AD8E: Kraid function - Kraid gets big - draw room background ;;;
 Function_Kraid_KraidGetsBig_DrawRoomBackground:
+; Note that BG1 tiles base address = ([$5D] & Fh) * 1000h, whereas this routine is using ([$5D] & Fh) * 100h,
+; i.e. this routine only works because BG1 tiles base address = $0000
     LDA.W #Function_Kraid_KraidGetsBig_FadeInRoomBackground              ;A7AD8E;
     STA.W $0FA8                                                          ;A7AD91;
     STZ.W $0FB0                                                          ;A7AD94;
     STZ.W $0FB2                                                          ;A7AD97; fallthrough to DrawKraidsRoomBackground
 
+
+;;; $AD9A: Draw Kraid's room background ;;;
 DrawKraidsRoomBackground:
     LDX.W #$00C0                                                         ;A7AD9A;
     LDY.W #$0000                                                         ;A7AD9D;
@@ -3638,16 +3758,20 @@ DrawKraidsRoomBackground:
     RTL                                                                  ;A7ADE0;
 
 
+;;; $ADE1: Set up Kraid gets big - thinking ;;;
 SetupKraidGetsBig_Thinking:
     LDA.W #Function_Kraid_KraidGetsBig_Thinking                          ;A7ADE1;
     STA.W $0FA8                                                          ;A7ADE4;
     BRA SetLintYPositionsAndRandomThinkingTimer                          ;A7ADE7;
 
 
+;;; $ADE9: Set up Kraid main loop - thinking ;;;
 SetupKraidMainLoop_Thinking:
     LDA.W #Function_Kraid_MainLoop_Thinking                              ;A7ADE9;
-    STA.W $0FA8                                                          ;A7ADEC;
+    STA.W $0FA8                                                          ;A7ADEC; fallthrough to SetLintYPositionsAndRandomThinkingTimer
 
+
+;;; $ADEF: Set lint Y positions and random thinking timer ;;;
 SetLintYPositionsAndRandomThinkingTimer:
     LDA.W $0F7E                                                          ;A7ADEF;
     SEC                                                                  ;A7ADF2;
@@ -3677,12 +3801,12 @@ SetLintYPositionsAndRandomThinkingTimer:
     RTS                                                                  ;A7AE22;
 
 
+;;; $AE23: Kraid function - Kraid gets big - fade in room background ;;;
 Function_Kraid_KraidGetsBig_FadeInRoomBackground:
     REP #$30                                                             ;A7AE23;
     JSL.L Advance_GradualColorChange_ofBGPalette6                        ;A7AE25;
     BCS .reachedTargetColor                                              ;A7AE29;
     RTL                                                                  ;A7AE2B;
-
 
   .reachedTargetColor:
     JSR.W SetupKraidGetsBig_Thinking                                     ;A7AE2C;
@@ -3720,6 +3844,7 @@ Function_Kraid_KraidGetsBig_FadeInRoomBackground:
     RTL                                                                  ;A7AE8F;
 
 
+;;; $AE90: Enable Kraid lints ;;;
 EnableKraidLints:
     STA.W $0FB2,X                                                        ;A7AE90;
     LDA.W #Function_KraidNail_HorizontallyAlignEnemyToKraid              ;A7AE93;
@@ -3730,7 +3855,9 @@ EnableKraidLints:
     RTS                                                                  ;A7AEA3;
 
 
+;;; $AEA4: Kraid function - Kraid main loop - thinking ;;;
 Function_Kraid_MainLoop_Thinking:
+; This is the function for which Kraid can be shot to trigger his mouth opening
     LDA.L $7E7806                                                        ;A7AEA4;
     BEQ .return                                                          ;A7AEA8;
     DEC A                                                                ;A7AEAA;
@@ -3747,6 +3874,7 @@ Function_Kraid_MainLoop_Thinking:
     RTL                                                                  ;A7AEC3;
 
 
+;;; $AEC4: Kraid function - Kraid gets big - thinking ;;;
 Function_Kraid_KraidGetsBig_Thinking:
     LDA.L $7E7806                                                        ;A7AEC4;
     BEQ .return                                                          ;A7AEC8;
@@ -3764,6 +3892,7 @@ Function_Kraid_KraidGetsBig_Thinking:
     RTL                                                                  ;A7AEE3;
 
 
+;;; $AEE4: Kraid function - Kraid shot - Kraid's mouth is open ;;;
 Function_Kraid_KraidShot_KraidsMouthIsOpen:
     JSR.W KraidInstListHandling                                          ;A7AEE4;
     CMP.W #$FFFF                                                         ;A7AEE7;
@@ -3792,13 +3921,13 @@ Function_Kraid_KraidShot_KraidsMouthIsOpen:
   .return:
     RTL                                                                  ;A7AF28;
 
-
   .done:
     LDA.W #$0000                                                         ;A7AF29;
     STA.L $7E780A                                                        ;A7AF2C;
     BRA .return                                                          ;A7AF30;
 
 
+;;; $AF32: Kraid instruction list handling ;;;
 KraidInstListHandling:
     LDA.W $0FAC                                                          ;A7AF32;
     BEQ .return                                                          ;A7AF35;
@@ -3809,7 +3938,18 @@ KraidInstListHandling:
     RTS                                                                  ;A7AF3C;
 
 
+;;; $AF3D: Process Kraid instruction list ;;;
 ProcessKraidInstList:
+; Kraid instruction format
+; If t & 8000h = 0:
+;     tttt TTTT pppp mmmm
+;     t: Timer
+;     T: Tilemap pointer, fixed 2C0h bytes
+;     p: Kraid projectile hitbox
+;     m: Kraid's mouth projectile hitbox
+; If p & 8000h != 0:
+;     pppp
+;     p: If FFFFh, terminator, otherwise pointer to function
     LDX.W $0FAA                                                          ;A7AF3D;
     LDA.W $0000,X                                                        ;A7AF40;
     CMP.W #$FFFF                                                         ;A7AF43;
@@ -3849,12 +3989,12 @@ ProcessKraidInstList:
   .return:
     RTS                                                                  ;A7AF82;
 
-
   .ASMInstruction:
     STA.B $12                                                            ;A7AF83;
     JMP.W ($0012)                                                        ;A7AF85;
 
 
+;;; $AF88: Process next Kraid instruction ;;;
 ProcessNextKraidInstruction:
     LDA.W $0FAA                                                          ;A7AF88;
     CLC                                                                  ;A7AF8B;
@@ -3863,6 +4003,7 @@ ProcessNextKraidInstruction:
     BRA ProcessKraidInstList                                             ;A7AF92;
 
 
+;;; $AF94: Kraid instruction - queue Kraid roar sound effect ;;;
 Instruction_Kraid_PlayRoarSFX:
     PHX                                                                  ;A7AF94;
     LDA.W #$002D                                                         ;A7AF95;
@@ -3871,6 +4012,7 @@ Instruction_Kraid_PlayRoarSFX:
     BRA ProcessNextKraidInstruction                                      ;A7AF9D;
 
 
+;;; $AF9F: Kraid instruction - queue Kraid dying sound effect ;;;
 Instruction_Kraid_PlayDyingSFX:
     PHX                                                                  ;A7AF9F;
     LDA.W #$002E                                                         ;A7AFA0;
@@ -3879,7 +4021,15 @@ Instruction_Kraid_PlayDyingSFX:
     BRA ProcessNextKraidInstruction                                      ;A7AFA8;
 
 
+;;; $AFAA: Kraid's mouth / projectile collision handling ;;;
 KraidsMouth_vs_Projectile_CollisionHandling:
+; The loop over projectiles is pretty wrong
+; Just because there are n active projectiles, that doesn't mean they're in the first n slots,
+; so it is possible for Kraid to detect a collision with an early slot inactive projectile and miss a collision with a late slot active projectile
+; The initial index is one slot beyond the supposed last projectile,
+; so even if using the projectile counter made sense, this would erroneously consider an inactive projectile
+; This routine has no handling for bombs, but if all 5 projectile slots are active, this will read the first bomb slot,
+; making it technically possible to get a bomb interaction from Kraid (trigger mouth to open and kill projectile)
     REP #$30                                                             ;A7AFAA;
     PHX                                                                  ;A7AFAC;
     LDA.W $0FA8                                                          ;A7AFAD;
@@ -3887,7 +4037,6 @@ KraidsMouth_vs_Projectile_CollisionHandling:
     BMI .notDying                                                        ;A7AFB3;
     PLX                                                                  ;A7AFB5;
     RTS                                                                  ;A7AFB6;
-
 
   .notDying:
     LDA.W $0FAA                                                          ;A7AFB7;
@@ -3899,7 +4048,6 @@ KraidsMouth_vs_Projectile_CollisionHandling:
     BNE .notTerminator                                                   ;A7AFC5;
     LDY.W #$0000                                                         ;A7AFC7;
     JMP.W .noProjectiles                                                 ;A7AFCA;
-
 
   .notTerminator:
     TAX                                                                  ;A7AFCD;
@@ -3974,7 +4122,6 @@ KraidsMouth_vs_Projectile_CollisionHandling:
     BNE .collision                                                       ;A7B054;
     RTS                                                                  ;A7B056;
 
-
   .collision:
     LDA.W #$0006                                                         ;A7B057;
     STA.L $7E782A                                                        ;A7B05A;
@@ -3991,7 +4138,6 @@ KraidsMouth_vs_Projectile_CollisionHandling:
     CMP.W #$0001                                                         ;A7B078;
     BMI .dead                                                            ;A7B07B;
     RTS                                                                  ;A7B07D;
-
 
   .dead:
     LDA.W $0FA8                                                          ;A7B07E;
@@ -4030,6 +4176,7 @@ KraidsMouth_vs_Projectile_CollisionHandling:
     RTS                                                                  ;A7B0CA;
 
 
+;;; $B0CB: Spawn explosion enemy projectile ;;;
 SpawnExplosionProjectile:
     LDA.W $0B64,X                                                        ;A7B0CB;
     STA.B $12                                                            ;A7B0CE;
@@ -4050,6 +4197,7 @@ SpawnExplosionProjectile:
     RTS                                                                  ;A7B0F2;
 
 
+;;; $B0F3: Kraid body / Samus collision handling ;;;
 KraidBody_vs_Samus_CollisionHandling:
     LDA.W $0FA8                                                          ;A7B0F3;
     CMP.W #KraidDeath_Initialize                                         ;A7B0F6;
@@ -4073,7 +4221,6 @@ KraidBody_vs_Samus_CollisionHandling:
     INX                                                                  ;A7B11A;
     INX                                                                  ;A7B11B;
     BRA .loop                                                            ;A7B11C;
-
 
 +   LDA.W HitboxDefinitionTable_KraidBody_left,X                         ;A7B11E;
     CLC                                                                  ;A7B121;
@@ -4107,11 +4254,11 @@ KraidBody_vs_Samus_CollisionHandling:
   .return0:
     RTS                                                                  ;A7B15F;
 
-
   .return1:
-    RTS                                                                  ;A7B160;
+    RTS                                                                  ;A7B160; >.<
 
 
+;;; $B161: Kraid body hitbox definition table ;;;
 HitboxDefinitionTable_KraidBody:
 ;        _________ Bottom boundary offset (following entry used as top)
 ;       |      ___ Left boundary offset
@@ -4129,14 +4276,16 @@ HitboxDefinitionTable_KraidBody:
     dw $FF90,$0008
     dw $8000,$0008
 
+
+;;; $B181: Kraid body / projectile collision handling ;;;
 KraidBody_vs_Projectile_CollisionHandling:
+; See projectile loop note in KraidsMouth_vs_Projectile_CollisionHandling
     PHX                                                                  ;A7B181;
     LDA.W $0FA8                                                          ;A7B182;
     CMP.W #KraidDeath_SinkThroughFloor                                   ;A7B185;
     BMI .lessThanC537                                                    ;A7B188;
     PLX                                                                  ;A7B18A;
     RTS                                                                  ;A7B18B;
-
 
   .lessThanC537:
     STZ.W $0FB0                                                          ;A7B18C;
@@ -4223,7 +4372,6 @@ KraidBody_vs_Projectile_CollisionHandling:
   .return:
     RTS                                                                  ;A7B237;
 
-
   .body:
     LDA.W $0B64,X                                                        ;A7B238;
     CLC                                                                  ;A7B23B;
@@ -4245,7 +4393,6 @@ KraidBody_vs_Projectile_CollisionHandling:
     INY                                                                  ;A7B258;
     BRA .loopBody                                                        ;A7B259;
 
-
 +   LDA.W HitboxDefinitionTable_KraidBody_left,Y                         ;A7B25B;
     CLC                                                                  ;A7B25E;
     ADC.W $0F7A                                                          ;A7B25F;
@@ -4256,7 +4403,10 @@ KraidBody_vs_Projectile_CollisionHandling:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $B269: Unused. Handle projectile damage and sound ;;;
 UNUSED_HandleProjectileDamageAndSound:
+; This is like a cut-down or custom version of $A0:A6DE (handles beam damage, freezing, and sound) for enemy 0 (probably Kraid) specifically.
+; There's no freeze handling, bomb and power bomb vulnerabilities are swapped, and $0FB0 is a triple damage flag
     PHX                                                                  ;A7B269;
     PHY                                                                  ;A7B26A;
     TXY                                                                  ;A7B26B;
@@ -4289,7 +4439,6 @@ UNUSED_HandleProjectileDamageAndSound:
     LDA.L $B40000,X                                                      ;A7B2A4;
     BRA .determinedVulnerability                                         ;A7B2A8;
 
-
   .notBeam:
     AND.W #$0F00                                                         ;A7B2AA;
     CMP.W #$0100                                                         ;A7B2AD;
@@ -4305,14 +4454,12 @@ UNUSED_HandleProjectileDamageAndSound:
     LDA.L $B4000B,X                                                      ;A7B2BC;
     BRA .determinedVulnerability                                         ;A7B2C0;
 
-
   .missileEnd:
     CMP.W #$0300                                                         ;A7B2C2;
     BNE .notPowerBomb                                                    ;A7B2C5;
     LDX.B $14                                                            ;A7B2C7;
     LDA.L $B4000E,X                                                      ;A7B2C9;
     BRA .determinedVulnerability                                         ;A7B2CD;
-
 
   .notPowerBomb:
     CMP.W #$0500                                                         ;A7B2CF;
@@ -4371,6 +4518,7 @@ UNUSED_HandleProjectileDamageAndSound:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $B337: Kraid palette handling ;;;
 KraidPaletteHandling:
     PHX                                                                  ;A7B337;
     PHY                                                                  ;A7B338;
@@ -4379,7 +4527,6 @@ KraidPaletteHandling:
     BPL .alive                                                           ;A7B33F;
     STA.L $7E782A                                                        ;A7B341;
     BRA +                                                                ;A7B345;
-
 
   .alive:
     LDA.L $7E782A                                                        ;A7B347;
@@ -4403,7 +4550,9 @@ KraidPaletteHandling:
     RTS                                                                  ;A7B370;
 
 
+;;; $B371: Kraid hurt flash handling ;;;
 KraidHurtFlashHandling:
+; This routine is redundant/incorrect, KraidHealthBasedPaletteHandling handles the flash frames properly
     LDY.W #$0000                                                         ;A7B371;
     LDA.L $7E782A                                                        ;A7B374;
     BIT.W #$0001                                                         ;A7B378;
@@ -4425,6 +4574,7 @@ KraidHurtFlashHandling:
     RTS                                                                  ;A7B393;
 
 
+;;; $B394: Kraid health-based palette handling ;;;
 KraidHealthBasedPaletteHandling:
     LDY.W #$0000                                                         ;A7B394;
     LDA.L $7E782A                                                        ;A7B397;
@@ -4467,6 +4617,7 @@ KraidHealthBasedPaletteHandling:
     RTS                                                                  ;A7B3D2;
 
 
+;;; $B3D3: Kraid BG palette 7 ;;;
 Palette_Kraid_BG_HurtFlash:
 ; [Kraid hurt frame] is odd
     dw $7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF                   ;A7B3D3;
@@ -4516,6 +4667,8 @@ Palette_Kraid_Death:
     dw $3800,$0807,$0404,$0000,$127A,$0E17,$0DD3,$0970                   ;A7B4F3;
     dw $092D,$04CA,$0486,$0023,$0443,$3E52,$4AD5,$0000                   ;A7B503;
 
+
+;;; $B513: Kraid sprite palette 7 ;;;
 Palette_Kraid_Sprite_HurtFlash:
 ; [Kraid hurt frame] is odd
     dw $7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF,$7FFF                   ;A7B513;
@@ -4561,12 +4714,15 @@ Palette_Kraid_Sprite_8_8:
     dw $3800,$559D,$1816,$100D,$4B9F,$3F37,$36D0,$2E69                   ;A7B613;
     dw $2608,$1DA6,$1125,$08C5,$0003,$6318,$7FFF,$0000                   ;A7B623;
 
+
+;;; $B633: Instruction - NOP ;;;
 Instruction_Kraid_NOP_A7B633:
     PHX                                                                  ;A7B633;
     PLX                                                                  ;A7B634;
     RTL                                                                  ;A7B635;
 
 
+;;; $B636: Instruction - decrement Kraid Y position ;;;
 Instruction_Kraid_DecrementYPosition:
     PHX                                                                  ;A7B636;
     DEC.W $0F7E                                                          ;A7B637;
@@ -4574,6 +4730,7 @@ Instruction_Kraid_DecrementYPosition:
     RTL                                                                  ;A7B63B;
 
 
+;;; $B63C: Instruction - increment Kraid Y position, set screen shaking ;;;
 Instruction_Kraid_IncrementYPosition_SetScreenShaking:
     PHX                                                                  ;A7B63C;
     INC.W $0F7E                                                          ;A7B63D;
@@ -4585,6 +4742,7 @@ Instruction_Kraid_IncrementYPosition_SetScreenShaking:
     RTL                                                                  ;A7B64D;
 
 
+;;; $B64E: Instruction - queue quake sound effect ;;;
 Instruction_Kraid_QueueSFX76_Lib2_Max6:
     PHX                                                                  ;A7B64E;
     PHY                                                                  ;A7B64F;
@@ -4595,6 +4753,7 @@ Instruction_Kraid_QueueSFX76_Lib2_Max6:
     RTL                                                                  ;A7B659;
 
 
+;;; $B65A: Instruction - Kraid X position -= 3 ;;;
 Instruction_Kraid_XPositionMinus3:
     PHX                                                                  ;A7B65A;
     LDA.W $0F7A                                                          ;A7B65B;
@@ -4605,6 +4764,7 @@ Instruction_Kraid_XPositionMinus3:
     RTL                                                                  ;A7B666;
 
 
+;;; $B667: Instruction - Kraid X position -= 3 ;;;
 Instruction_Kraid_XPositionMinus3_duplicate:
     PHX                                                                  ;A7B667;
     LDA.W $0F7A                                                          ;A7B668;
@@ -4615,6 +4775,7 @@ Instruction_Kraid_XPositionMinus3_duplicate:
     RTL                                                                  ;A7B673;
 
 
+;;; $B674: Instruction - Kraid X position += 3 ;;;
 Instruction_Kraid_XPositionPlus3:
     PHX                                                                  ;A7B674;
     PHY                                                                  ;A7B675;
@@ -4628,6 +4789,7 @@ Instruction_Kraid_XPositionPlus3:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $B683: Unused. Instruction - move Kraid right ;;;
 UNUSED_Instruction_Kraid_MoveRight_A7B683:
     PHX                                                                  ;A7B683;
     PHY                                                                  ;A7B684;
@@ -4652,7 +4814,6 @@ UNUSED_Instruction_Kraid_MoveRight_A7B683:
     PLX                                                                  ;A7B6A9;
     RTL                                                                  ;A7B6AA;
 
-
   .collision:
     LDA.W #$0000                                                         ;A7B6AB;
     STA.W $183E                                                          ;A7B6AE;
@@ -4664,6 +4825,7 @@ UNUSED_Instruction_Kraid_MoveRight_A7B683:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $B6BF: Kraid function - Kraid shot - initialise Kraid eye glowing ;;;
 Function_Kraid_KraidShot_InitializeEyeGlowing:
     LDA.W #Function_Kraid_KraidShot_KraidsMouthIsOpen                    ;A7B6BF;
     STA.W $0FA8                                                          ;A7B6C2;
@@ -4674,6 +4836,8 @@ Function_Kraid_KraidShot_InitializeEyeGlowing:
     LDA.W InstList_Kraid_EyeGlowing_0                                    ;A7B6D1;
     STA.W $0FAC                                                          ;A7B6D4; fallthrough to Function_Kraid_KraidShot_GlowEye
 
+
+;;; $B6D7: Kraid function - Kraid shot - glow Kraid's eye ;;;
 Function_Kraid_KraidShot_GlowEye:
     PHX                                                                  ;A7B6D7;
     PHY                                                                  ;A7B6D8;
@@ -4728,6 +4892,7 @@ Function_Kraid_KraidShot_GlowEye:
     RTL                                                                  ;A7B73C;
 
 
+;;; $B73D: Kraid function - Kraid shot - unglow Kraid's eye ;;;
 Function_Kraid_KraidShot_UnglowEye:
     PHX                                                                  ;A7B73D;
     PHY                                                                  ;A7B73E;
@@ -4801,6 +4966,7 @@ Function_Kraid_KraidShot_UnglowEye:
     RTL                                                                  ;A7B7BC;
 
 
+;;; $B7BD: Main AI - enemy $E2FF (Kraid arm) ;;;
 MainAI_KraidArm:
     LDA.W $0915                                                          ;A7B7BD;
     CLC                                                                  ;A7B7C0;
@@ -4835,6 +5001,7 @@ MainAI_KraidArm:
     RTL                                                                  ;A7B800;
 
 
+;;; $B801: Main AI - enemy $E33F (Kraid top lint) ;;;
 MainAI_KraidLintTop:
     LDX.W #$0080                                                         ;A7B801;
     LDA.W #$7FFF                                                         ;A7B804;
@@ -4842,6 +5009,7 @@ MainAI_KraidLintTop:
     JMP.W MainAI_KraidLintCommon                                         ;A7B80A;
 
 
+;;; $B80D: Main AI - enemy $E37F (Kraid middle lint) ;;;
 MainAI_KraidLintMiddle:
     LDX.W #$00C0                                                         ;A7B80D;
     LDA.W #$7FFF                                                         ;A7B810;
@@ -4849,11 +5017,14 @@ MainAI_KraidLintMiddle:
     JMP.W MainAI_KraidLintCommon                                         ;A7B816;
 
 
+;;; $B819: Main AI - enemy $E3BF (Kraid bottom lint) ;;;
 MainAI_KraidLintBottom:
     LDX.W #$0100                                                         ;A7B819;
     LDA.W #$7FFF                                                         ;A7B81C;
-    STA.W $0F94,X                                                        ;A7B81F;
+    STA.W $0F94,X                                                        ;A7B81F; fallthrough to MainAI_KraidLintCommon
 
+
+;;; $B822: Kraid lint main AI ;;;
 MainAI_KraidLintCommon:
     JSR.W KraidLint_vs_Samus_CollisionHandling                           ;A7B822;
     LDA.W $0915                                                          ;A7B825;
@@ -4862,10 +5033,12 @@ MainAI_KraidLintCommon:
     STA.B $12                                                            ;A7B82C;
     JMP.W ($0FA8,X)                                                      ;A7B82E;
 
+
 RTL_A7B831:
     RTL                                                                  ;A7B831;
 
 
+;;; $B832: Kraid lint function - produce lint ;;;
 Function_KraidLint_ProduceLint:
     LDA.W $0F86,X                                                        ;A7B832;
     AND.W #$FEFF                                                         ;A7B835; >.< #$FAFF
@@ -4892,6 +5065,7 @@ Function_KraidLint_ProduceLint:
     RTL                                                                  ;A7B867;
 
 
+;;; $B868: Kraid lint function - charge lint ;;;
 Function_KraidLint_ChargeLint:
     LDY.W #$0000                                                         ;A7B868;
     LDA.W $0FB2,X                                                        ;A7B86B;
@@ -4919,6 +5093,7 @@ Function_KraidLint_ChargeLint:
     RTL                                                                  ;A7B89A;
 
 
+;;; $B89B: Kraid lint function - fire lint ;;;
 Function_KraidLint_FireLint:
     LDA.W $0F7C,X                                                        ;A7B89B;
     SEC                                                                  ;A7B89E;
@@ -4970,6 +5145,7 @@ Function_KraidLint_FireLint:
     RTL                                                                  ;A7B906;
 
 
+;;; $B907: Kraid fingernail function - wait until top lint X position >= 100h ;;;
 Function_KraidNail_WaitUntilTopLintXPosition100Plus:
     LDA.W $0FFA                                                          ;A7B907;
     CMP.W #$0100                                                         ;A7B90A;
@@ -4985,12 +5161,15 @@ Function_KraidNail_WaitUntilTopLintXPosition100Plus:
     RTL                                                                  ;A7B922;
 
 
+;;; $B923: Kraid lint function - horizontally align enemy to Kraid ;;;
 Function_KraidNail_HorizontallyAlignEnemyToKraid:
     LDA.W $0F7A                                                          ;A7B923;
     SEC                                                                  ;A7B926;
     SBC.W $0F82,X                                                        ;A7B927;
     STA.W $0F7A,X                                                        ;A7B92A; fallthrough to Function_Kraid_HandleFunctionTimer
 
+
+;;; $B92D: Kraid enemy function - handle Kraid enemy function timer ;;;
 Function_Kraid_HandleFunctionTimer:
     LDA.W $0FB2,X                                                        ;A7B92D;
     BEQ .return                                                          ;A7B930;
@@ -5003,6 +5182,7 @@ Function_Kraid_HandleFunctionTimer:
     RTL                                                                  ;A7B93E;
 
 
+;;; $B93F: Kraid foot function - start retreat ;;;
 Function_KraidFoot_StartRetreat:
     LDX.W $0E54                                                          ;A7B93F;
     LDA.W $0FB2,X                                                        ;A7B942;
@@ -5020,22 +5200,24 @@ Function_KraidFoot_StartRetreat:
     RTL                                                                  ;A7B95F;
 
 
+;;; $B960: Kraid foot function - first phase - thinking ;;;
 Function_KraidFoot_Phase1_Thinking:
     JSR.W HandleKraidPhase1                                              ;A7B960;
     BRA Function_Kraid_HandleFunctionTimer                               ;A7B963;
 
 
+;;; $B965: Kraid function - process Kraid instruction ;;;
 Function_Kraid_ProcessKraidInstruction:
     JSR.W KraidInstListHandling                                          ;A7B965;
     BRA Function_Kraid_HandleFunctionTimer                               ;A7B968;
 
 
+;;; $B96A: Kraid lint / Samus collision handling ;;;
 KraidLint_vs_Samus_CollisionHandling:
     LDA.W $0F86,X                                                        ;A7B96A;
     BIT.W #$0400                                                         ;A7B96D;
     BEQ .notIntangible                                                   ;A7B970;
     RTS                                                                  ;A7B972;
-
 
   .notIntangible:
     LDA.W $18A8                                                          ;A7B973;
@@ -5102,6 +5284,7 @@ KraidLint_vs_Samus_CollisionHandling:
     RTS                                                                  ;A7B9F5;
 
 
+;;; $B9F6: Main AI - enemy $E3FF (Kraid foot) ;;;
 MainAI_KraidFoot:
     LDA.W $0F7A                                                          ;A7B9F6;
     STA.W $10BA                                                          ;A7B9F9;
@@ -5120,7 +5303,6 @@ MainAI_KraidFoot:
     ORA.W #$0100                                                         ;A7BA17;
     BRA +                                                                ;A7BA1A;
 
-
   .offScreen:
     CPX.W $0915                                                          ;A7BA1C;
     BMI +                                                                ;A7BA1F;
@@ -5131,10 +5313,12 @@ MainAI_KraidFoot:
     JMP.W ($10E8)                                                        ;A7BA2A;
 
 
+;;; $BA2D: RTL. Kraid foot function ;;;
 RTL_A7BA2D:
     RTL                                                                  ;A7BA2D;
 
 
+;;; $BA2E: Kraid foot function - second phase - thinking ;;;
 Function_KraidFoot_Phase2_Thinking:
     LDA.L $7E7940                                                        ;A7BA2E;
     DEC A                                                                ;A7BA32;
@@ -5171,7 +5355,6 @@ Function_KraidFoot_Phase2_Thinking:
     LDA.W $0000,X                                                        ;A7BA6F;
     JSR.W SetKraidWalkingForwards                                        ;A7BA72;
     RTL                                                                  ;A7BA75;
-
 
   .backwards:
     LDA.W $0000,X                                                        ;A7BA76;
@@ -5214,6 +5397,7 @@ Function_KraidFoot_Phase2_Thinking:
     dw $00F0,$0100, $0180,$0158, $0170,$0158, $00D0,$002C, $0140,$002C   ;A7BAF9;
 
 
+;;; $BB0D: Set Kraid walking backwards ;;;
 SetKraidWalkingBackwards:
     STA.L $7E781E                                                        ;A7BB0D;
     TYA                                                                  ;A7BB11;
@@ -5227,6 +5411,7 @@ SetKraidWalkingBackwards:
     RTS                                                                  ;A7BB28;
 
 
+;;; $BB29: Set Kraid walking forwards ;;;
 SetKraidWalkingForwards:
     STA.L $7E781E                                                        ;A7BB29;
     TYA                                                                  ;A7BB2D;
@@ -5240,6 +5425,7 @@ SetKraidWalkingForwards:
     RTS                                                                  ;A7BB44;
 
 
+;;; $BB45: Kraid foot function - second phase - walking backwards ;;;
 Function_KraidFoot_Phase2_WalkingBackward:
     LDA.L $7E781E                                                        ;A7BB45;
     CMP.W $0F7A                                                          ;A7BB49;
@@ -5262,6 +5448,7 @@ Function_KraidFoot_Phase2_WalkingBackward:
     RTL                                                                  ;A7BB6D;
 
 
+;;; $BB6E: Kraid foot function - second phase setup - walk to starting spot ;;;
 Function_KraidFoot_Phase2Setup_WalkToStartingPoint:
     LDA.L $7E781E                                                        ;A7BB6E;
     CMP.W $0F7A                                                          ;A7BB72;
@@ -5288,6 +5475,7 @@ Function_KraidFoot_Phase2Setup_WalkToStartingPoint:
     RTL                                                                  ;A7BBA3;
 
 
+;;; $BBA4: Kraid foot function - second phase setup - initialise second phase ;;;
 Function_KraidFoot_Phase2Setup_InitializePhase2:
     LDA.W #$0160                                                         ;A7BBA4;
     LDY.W #$00B4                                                         ;A7BBA7;
@@ -5295,6 +5483,7 @@ Function_KraidFoot_Phase2Setup_InitializePhase2:
     RTL                                                                  ;A7BBAD;
 
 
+;;; $BBAE: Kraid foot function - second phase - walking forwards ;;;
 Function_KraidFoot_Phase2_WalkingForward:
     LDA.L $7E781E                                                        ;A7BBAE;
     CMP.W $0F7A                                                          ;A7BBB2;
@@ -5313,7 +5502,6 @@ Function_KraidFoot_Phase2_WalkingForward:
   .return:
     RTL                                                                  ;A7BBD4;
 
-
   .forwards:
     LDA.W $10D2                                                          ;A7BBD5;
     CMP.W #InstList_KraidFoot_KraidIsBig_WalkingForward_1                ;A7BBD8;
@@ -5325,6 +5513,7 @@ Function_KraidFoot_Phase2_WalkingForward:
     RTL                                                                  ;A7BBE9;
 
 
+;;; $BBEA: Kraid function - Kraid main loop - attacking with mouth open ;;;
 Function_KraidMainLoop_AttackingWithMouthOpen:
     JSR.W KraidInstListHandling                                          ;A7BBEA;
     CMP.W #$FFFF                                                         ;A7BBED;
@@ -5351,7 +5540,6 @@ Function_KraidMainLoop_AttackingWithMouthOpen:
   .return:
     RTL                                                                  ;A7BC22;
 
-
   .finishedInstructions:
     JSR.W SetupKraidMainLoop_Thinking                                    ;A7BC23;
     LDA.W #$005A                                                         ;A7BC26;
@@ -5374,19 +5562,20 @@ Function_KraidMainLoop_AttackingWithMouthOpen:
     STA.L $7E7802                                                        ;A7BC58;
     RTL                                                                  ;A7BC5C;
 
-
   .done:
     LDA.W #$0000                                                         ;A7BC5D;
     STA.L $7E780A                                                        ;A7BC60;
     RTL                                                                  ;A7BC64;
 
-
   .rockSpitXVelocities:
 ; Rock spit X velocities. Unit 1/100h px/frame
     dw $FC00,$FC40,$FB40,$FB80,$FB40,$FC00,$FB80,$FC40                   ;A7BC65;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $BC75: Unused. Lunge forward if Samus is not invincible ;;;
 UNUSED_KraidFoot_LungeForwardIfSamusIsNotInvincible_A7BC75:
+; Possibly an old Samus / Kraid foot collision reaction
     LDA.W $10D2                                                          ;A7BC75;
     CMP.W #InstList_KraidFoot_LungeForward_1                             ;A7BC78;
     BMI .return                                                          ;A7BC7B;
@@ -5410,7 +5599,6 @@ UNUSED_KraidFoot_LungeForwardIfSamusIsNotInvincible_A7BC75:
   .return:
     RTL                                                                  ;A7BCA7;
 
-
   .lunge:
     LDA.W #$0001                                                         ;A7BCA8;
     STA.W $10D4                                                          ;A7BCAB;
@@ -5419,6 +5607,7 @@ UNUSED_KraidFoot_LungeForwardIfSamusIsNotInvincible_A7BC75:
     RTL                                                                  ;A7BCB4;
 
 
+;;; $BCB5: Unused. Fire lint after [A] frames ;;;
 UNUSED_Kraid_FireLintAfterAFrames_A7BCB5:
     STA.W $0FB2,X                                                        ;A7BCB5;
     LDA.W #Function_KraidNail_HorizontallyAlignEnemyToKraid              ;A7BCB8;
@@ -5432,6 +5621,7 @@ UNUSED_Kraid_FireLintAfterAFrames_A7BCB5:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $BCCF: Enemy touch - enemy $E43F (Kraid good fingernail) ;;;
 EnemyTouch_KraidNail:
     JSL.L NormalEnemyTouchAI                                             ;A7BCCF;
     LDX.W $0E54                                                          ;A7BCD3;
@@ -5440,6 +5630,7 @@ EnemyTouch_KraidNail:
     RTL                                                                  ;A7BCDD;
 
 
+;;; $BCDE: Enemy touch - enemy $E47F (Kraid bad fingernail) ;;;
 EnemyTouch_KraidNailBad:
     JSL.L NormalEnemyTouchAI                                             ;A7BCDE;
     LDX.W $0E54                                                          ;A7BCE2;
@@ -5448,17 +5639,22 @@ EnemyTouch_KraidNailBad:
     RTL                                                                  ;A7BCEC;
 
 
+;;; $BCED: RTL ;;;
 RTL_A7BCED:
     RTL                                                                  ;A7BCED;
 
 
+;;; $BCEE: RTL ;;;
 RTL_A7BCEE:
     RTL                                                                  ;A7BCEE;
 
 
+;;; $BCEF: Initialisation AI - enemy $E43F (Kraid good fingernail) ;;;
 InitAI_KraidNail:
     LDX.W $0E54                                                          ;A7BCEF; fallthrough to InitAI_KraidNail_WithoutLoadingEnemyIndex
 
+
+;;; $BCF2: Kraid's fingernails initialisation AI ;;;
 InitAI_KraidNail_Common:
     LDA.W $0F96                                                          ;A7BCF2;
     STA.W $0F96,X                                                        ;A7BCF5;
@@ -5482,18 +5678,19 @@ InitAI_KraidNail_Common:
     RTL                                                                  ;A7BD2C;
 
 
+;;; $BD2D: Initialisation AI - enemy $E47F (Kraid bad fingernail) ;;;
 InitAI_KraidNailBad:
     LDX.W $0E54                                                          ;A7BD2D;
     BRA InitAI_KraidNail_Common                                          ;A7BD30;
 
 
+;;; $BD32: Main AI - enemy $E43F (Kraid good fingernail) ;;;
 MainAI_KraidNail:
     REP #$30                                                             ;A7BD32;
     LDA.W $0F8C                                                          ;A7BD34;
     CMP.W #$0001                                                         ;A7BD37;
     BMI .delete                                                          ;A7BD3A;
     JMP.W ($1128)                                                        ;A7BD3C;
-
 
   .delete:
     LDA.W $1106                                                          ;A7BD3F;
@@ -5502,13 +5699,13 @@ MainAI_KraidNail:
     RTL                                                                  ;A7BD48;
 
 
+;;; $BD49: Main AI - enemy $E47F (Kraid bad fingernail) ;;;
 MainAI_KraidNailBad:
     REP #$30                                                             ;A7BD49;
     LDA.W $0F8C                                                          ;A7BD4B;
     CMP.W #$0001                                                         ;A7BD4E;
     BMI .delete                                                          ;A7BD51;
     JMP.W ($1168)                                                        ;A7BD53;
-
 
   .delete:
     LDA.W $1146                                                          ;A7BD56;
@@ -5517,6 +5714,7 @@ MainAI_KraidNailBad:
     RTL                                                                  ;A7BD5F;
 
 
+;;; $BD60: Kraid fingernail function - initialise fingernail ;;;
 Function_KraidNail_Initialize:
     LDA.W $05E5                                                          ;A7BD60;
     AND.W #$0006                                                         ;A7BD63;
@@ -5531,7 +5729,6 @@ Function_KraidNail_Initialize:
     BPL .positiveYVelocity                                               ;A7BD78;
     LDA.W .upwardsVelocityPointers,Y                                     ;A7BD7A;
     BRA +                                                                ;A7BD7D;
-
 
   .positiveYVelocity:
     LDA.W .downwardsVelocityPointers,Y                                   ;A7BD7F;
@@ -5576,7 +5773,6 @@ Function_KraidNail_Initialize:
     ADC.W #$0080                                                         ;A7BDE3;
     STA.W $0F7E,X                                                        ;A7BDE6;
     RTL                                                                  ;A7BDE9;
-
 
   .horizontal:
     LDA.L $7E798E                                                        ;A7BDEA;
@@ -5647,7 +5843,9 @@ Function_KraidNail_Initialize:
     dw $0000,$FFFF,$0000,$FFFF                                           ;A7BE86;
 
 
+;;; $BE8E: Kraid fingernail function - fire fingernail ;;;
 Function_KraidNail_Fire:
+; Note the three fixed point negation operations at $BE9E, $BEE2 and $BF06 are off by 1.0 when the low word is zero
     LDA.W $0FAA,X                                                        ;A7BE8E;
     STA.B $12                                                            ;A7BE91;
     LDA.W $0FAC,X                                                        ;A7BE93;
@@ -5664,7 +5862,6 @@ Function_KraidNail_Fire:
     STA.W $0FAC,X                                                        ;A7BEAF;
     BRA .bounced                                                         ;A7BEB2;
 
-
   .loopSetup:
     LDY.W #$0000                                                         ;A7BEB4;
 
@@ -5679,7 +5876,6 @@ Function_KraidNail_Fire:
     INY                                                                  ;A7BEC5;
     INY                                                                  ;A7BEC6;
     BRA .loop                                                            ;A7BEC7;
-
 
 +   LDA.W $0F7A                                                          ;A7BEC9;
     CLC                                                                  ;A7BECC;
@@ -5731,6 +5927,8 @@ Function_KraidNail_Fire:
     dw $FFF0,$FFA0
     dw $0008,$FF80
 
+
+;;; $BF2D: Kraid foot function - first phase - prepare to lunge forward ;;;
 Function_KraidFoot_Phase1_PrepareToLungeForward:
     JSR.W HandleKraidPhase1                                              ;A7BF2D;
     LDA.W $0FD2                                                          ;A7BF30;
@@ -5753,6 +5951,7 @@ Function_KraidFoot_Phase1_PrepareToLungeForward:
     RTL                                                                  ;A7BF5C;
 
 
+;;; $BF5D: Kraid foot function - first phase - lunge forward ;;;
 Function_KraidFoot_Phase1_LungeForward:
     JSR.W HandleKraidPhase1                                              ;A7BF5D;
     LDA.W $0F7A                                                          ;A7BF60;
@@ -5773,7 +5972,6 @@ Function_KraidFoot_Phase1_LungeForward:
     STA.W $10D2                                                          ;A7BF87;
     RTL                                                                  ;A7BF8A;
 
-
   .done:
     LDA.W #Function_KraidFoot_Phase1_RetreatFromLunge                    ;A7BF8B;
     STA.L $7E7940                                                        ;A7BF8E;
@@ -5790,6 +5988,7 @@ Function_KraidFoot_Phase1_LungeForward:
     RTL                                                                  ;A7BFAA;
 
 
+;;; $BFAB: Kraid foot function - first phase - retreat from lunge ;;;
 Function_KraidFoot_Phase1_RetreatFromLunge:
     JSR.W HandleKraidPhase1                                              ;A7BFAB;
     LDA.W $0F7A                                                          ;A7BFAE;
@@ -5809,7 +6008,6 @@ Function_KraidFoot_Phase1_RetreatFromLunge:
     LDA.W #$0001                                                         ;A7BFD2;
     STA.W $0F94,X                                                        ;A7BFD5;
     RTL                                                                  ;A7BFD8;
-
 
   .done:
     LDA.W #InstList_KraidArm_Normal_0                                    ;A7BFD9;
@@ -5831,12 +6029,28 @@ Function_KraidFoot_Phase1_RetreatFromLunge:
     RTL                                                                  ;A7C004;
 
 
+;;; $C005: Handle Kraid's first phase ;;;
 HandleKraidPhase1:
+; This routine contains the cause of the Kraid quick kill.
+
+; In order to close Kraid's mouth once he's sustained enough damage,
+; this routine is setting Kraid's instruction list pointer to one of his roar instructions where his mouth is closing
+; ($96F4/$96FC/$9704/$970C) depending on what tilemap pointer he's set to have.
+
+; When Kraid is shot and his instruction list pointer is $96EA/$96EC (the magic animation frame),
+; his instruction list pointer is set to $96F4 accordingly,
+; the instruction timer being set to 40h (as specified by the previous instruction),
+; which is the cause of the animation freeze that allows Samus to quickly kill Kraid.
+
+; The 40h frame delay makes sense in the usual context of the roar instruction list,
+; as $96EC is the instruction list pointer used for keeping Kraid's mouth open during the roar sound effect.
+
+; Easiest way to fix this is to set the Kraid instruction timer to Ah unconditionally (instead of hoping it's Ah from instruction list lookup).
+; I.e. $C04C = LDA #$000A
     LDA.W $0F8C                                                          ;A7C005;
     CMP.L $7E7818                                                        ;A7C008;
     BMI .getBig                                                          ;A7C00C;
     RTS                                                                  ;A7C00E;
-
 
   .getBig:
     LDA.W #Function_Kraid_ProcessKraidInstruction                        ;A7C00F;
@@ -5894,6 +6108,7 @@ HandleKraidPhase1:
     RTS                                                                  ;A7C0A0;
 
 
+;;; $C0A1: Kraid function - Kraid gets big - release camera ;;;
 Function_Kraid_GetBig_ReleaseCamera:
     LDA.W #Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms         ;A7C0A1;
     STA.W $0FA8                                                          ;A7C0A4;
@@ -5907,7 +6122,9 @@ Function_Kraid_GetBig_ReleaseCamera:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C0BD: Unused. Crumble first section of Kraid's spike floor ;;;
 UNUSED_CrumbleFirstSectionOfKraidsSpikeFloor_A7C0BD:
+; Assuming PLMEntries_crumbleKraidSpikeBlocks used to be a PLM that only crumbled one block
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C0BD;
     db $06,$1B                                                           ;A7C0C1;
     dw PLMEntries_crumbleKraidSpikeBlocks                                ;A7C0C3;
@@ -5937,6 +6154,10 @@ UNUSED_CrumbleFirstSectionOfKraidsSpikeFloor_A7C0BD:
     dw PLMEntries_crumbleKraidSpikeBlocks                                ;A7C103;
     RTS                                                                  ;A7C105;
 
+
+;;; $C106: Unused. Crumble second section of Kraid's spike floor ;;;
+UNUSED_CrumbleFirstSectionOfKraidsSpikeFloor_A7C106:
+; Assuming PLMEntries_crumbleKraidSpikeBlocks used to be a PLM that only crumbled one block
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C106;
     db $0F,$1B                                                           ;A7C10A;
     dw PLMEntries_crumbleKraidSpikeBlocks                                ;A7C10C;
@@ -5954,6 +6175,10 @@ UNUSED_CrumbleFirstSectionOfKraidsSpikeFloor_A7C0BD:
     dw PLMEntries_crumbleKraidSpikeBlocks                                ;A7C12C;
     RTS                                                                  ;A7C12E;
 
+
+;;; $C12F: Unused. Crumble third section of Kraid's spike floor ;;;
+UNUSED_CrumbleFirstSectionOfKraidsSpikeFloor_A7C12F:
+; Assuming PLMEntries_crumbleKraidSpikeBlocks used to be a PLM that only crumbled one block
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C12F;
     db $14,$1B                                                           ;A7C133;
     dw PLMEntries_crumbleKraidSpikeBlocks                                ;A7C135;
@@ -5979,6 +6204,7 @@ UNUSED_CrumbleFirstSectionOfKraidsSpikeFloor_A7C0BD:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C168: Spawn PLM to clear the ceiling ;;;
 SpawnPLMToClearTheCeiling:
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C168;
     db $02,$12                                                           ;A7C16C;
@@ -5986,6 +6212,7 @@ SpawnPLMToClearTheCeiling:
     RTS                                                                  ;A7C170;
 
 
+;;; $C171: Spawn PLM to clear the spikes ;;;
 SpawnPLMToClearTheSpikes:
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C171;
     db $05,$1B                                                           ;A7C175;
@@ -5994,7 +6221,9 @@ SpawnPLMToClearTheSpikes:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C17A: Unused. Clear some of the spikes ;;;
 UNUSED_ClearSomeOfTheSpikeBlocks_A7C17A:
+; Assuming PLMEntries_clearKraidSpikeBlocks used to be a PLM that only crumbled one block
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C17A;
     db $0B,$1B                                                           ;A7C17E;
     dw PLMEntries_clearKraidSpikeBlocks                                  ;A7C180;
@@ -6047,6 +6276,7 @@ UNUSED_ClearSomeOfTheSpikeBlocks_A7C17A:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C1FB: Unpause hook - Kraid is dead ;;;
 UnpauseHook_KraidIsDead:
     PHP                                                                  ;A7C1FB;
     SEP #$20                                                             ;A7C1FC;
@@ -6085,7 +6315,9 @@ UnpauseHook_KraidIsDead:
     JMP.W TransferKraidTopHalfTilemapToVRAM                              ;A7C24B;
 
 
+;;; $C24E: Unpause hook - Kraid is alive ;;;
 UnpauseHook_KraidIsAlive:
+; $5D isn't being masked, so this code only works because BG1 tiles base address = $0000
     PHP                                                                  ;A7C24E;
     SEP #$20                                                             ;A7C24F;
     JSL.L SetForceBlankAndWaitForNMI                                     ;A7C251;
@@ -6104,6 +6336,8 @@ UnpauseHook_KraidIsAlive:
     LDA.B #$02                                                           ;A7C273;
     STA.W $420B                                                          ;A7C275; fallthrough to TransferKraidTopHalfTilemapToVRAM
 
+
+;;; $C278: Transfer Kraid top half tilemap to VRAM ;;;
 TransferKraidTopHalfTilemapToVRAM:
     LDA.B #$00                                                           ;A7C278;
     STA.W $2116                                                          ;A7C27A;
@@ -6123,7 +6357,13 @@ TransferKraidTopHalfTilemapToVRAM:
     RTL                                                                  ;A7C29F;
 
 
+;;; $C2A0: Unpause hook - Kraid is sinking ;;;
 UnpauseHook_KraidIsSinking:
+; $5D isn't being masked, so this code only works because BG1 tiles base address = $0000
+; Note that this routine is spending a frame on each row of Kraid it erases (worst case, 28 frames),
+; the forced blank isn't even being used to transfer the tilemap on demand... and only one transfer is being queued per frame...
+; Also note that $0330 is being loaded for no reason (guaranteed to be 0), in fact, if it wasn't guaranteed to be 0,
+; this loading procedure would end up repeating every transfer that was requested before this routine was started.
     PHP                                                                  ;A7C2A0;
     SEP #$20                                                             ;A7C2A1;
     JSL.L SetForceBlankAndWaitForNMI                                     ;A7C2A3;
@@ -6182,7 +6422,6 @@ UnpauseHook_KraidIsSinking:
     TAY                                                                  ;A7C31B;
     BRA .loop                                                            ;A7C31C;
 
-
   .return:
     PLB                                                                  ;A7C31E;
     JSL.L SetForceBlankAndWaitForNMI                                     ;A7C31F;
@@ -6190,7 +6429,9 @@ UnpauseHook_KraidIsSinking:
     RTL                                                                  ;A7C324;
 
 
+;;; $C325: Pause hook - Kraid ;;;
 PauseHook_Kraid:
+; $5D is being masked as if its a tilemap register (completely wrong), so this code only works because BG1/2 tiles base address = $0000
     PHP                                                                  ;A7C325;
     REP #$30                                                             ;A7C326;
     LDX.W $0360                                                          ;A7C328;
@@ -6218,11 +6459,11 @@ PauseHook_Kraid:
     RTL                                                                  ;A7C35F;
 
 
+;;; $C360: Kraid death - initialise death ;;;
 KraidDeath_Initialize:
     LDA.L $7E782A                                                        ;A7C360;
     BEQ .notHurtFrame                                                    ;A7C364;
     RTL                                                                  ;A7C366;
-
 
   .notHurtFrame:
     LDX.W #$00C0                                                         ;A7C367;
@@ -6283,7 +6524,10 @@ KraidDeath_Initialize:
     RTL                                                                  ;A7C3F8;
 
 
+;;; $C3F9: Kraid death - fade out background ;;;
 KraidDeath_FadeOutBackground:
+; Note that BG1 tiles base address = ([$5D] & Fh) * 1000h, whereas this routine is using ([$5D] & Fh) * 100h,
+; i.e. this routine only works because BG1 tiles base address = $0000
     JSR.W KraidInstListHandling                                          ;A7C3F9;
     JSL.L Advance_GradualColorChange_ofBGPalette6                        ;A7C3FC;
     BCC .return                                                          ;A7C400;
@@ -6330,6 +6574,7 @@ KraidDeath_FadeOutBackground:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C457: Unused. Process Kraid instruction, except there's no ASM instructions ;;;
 UNUSED_ProcessKraidInstruction_WithNoASMInstructions_A7C457:
     LDA.W $0FAC                                                          ;A7C457;
     BEQ .return                                                          ;A7C45A;
@@ -6341,7 +6586,6 @@ UNUSED_ProcessKraidInstruction_WithNoASMInstructions_A7C457:
     LDA.W #$0000                                                         ;A7C469;
     STA.W $0FAC                                                          ;A7C46C;
     RTS                                                                  ;A7C46F;
-
 
   .timer:
     STA.W $0FAC                                                          ;A7C470;
@@ -6377,6 +6621,7 @@ UNUSED_ProcessKraidInstruction_WithNoASMInstructions_A7C457:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C4A4: Kraid death - update BG2 tilemap top half ;;;
 KraidDeath_UpdateBG2TilemapTopHalf:
     JSR.W KraidInstListHandling                                          ;A7C4A4;
     LDA.W #KraidDeath_UpdateBG2TilemapBottomHalf                         ;A7C4A7;
@@ -6392,6 +6637,7 @@ KraidDeath_UpdateBG2TilemapTopHalf:
     JMP.W UpdateBG2TilemapTopHalf                                        ;A7C4C5;
 
 
+;;; $C4C8: Kraid death - update BG2 tilemap bottom half ;;;
 KraidDeath_UpdateBG2TilemapBottomHalf:
     JSR.W KraidInstListHandling                                          ;A7C4C8;
     SEP #$20                                                             ;A7C4CB;
@@ -6424,6 +6670,7 @@ KraidDeath_UpdateBG2TilemapBottomHalf:
     JMP.W UpdateBG2TilemapBottomHalf                                     ;A7C51A;
 
 
+;;; $C51D: Play sound every half second ;;;
 PlaySoundEveryHalfSecond:
     LDA.L $7E9000                                                        ;A7C51D;
     DEC A                                                                ;A7C521;
@@ -6438,6 +6685,7 @@ PlaySoundEveryHalfSecond:
     RTS                                                                  ;A7C536;
 
 
+;;; $C537: Kraid death - Kraid sinks through floor ;;;
 KraidDeath_SinkThroughFloor:
     JSR.W KraidInstListHandling                                          ;A7C537;
     JSR.W PlaySoundEveryHalfSecond                                       ;A7C53A;
@@ -6474,12 +6722,13 @@ KraidDeath_SinkThroughFloor:
     JSL.L KraidDeathItemDropRoutine                                      ;A7C597;
     JMP.W DrawKraidsRoomBackground                                       ;A7C59B;
 
-
   .return:
     RTL                                                                  ;A7C59E;
 
 
+;;; $C59F: Handle Kraid sinking ;;;
 HandleKraidSinking:
+; Note that Kraid *does* need to be cleared as he's sinking, otherwise he will wrap around from the ceiling
     LDY.W #$0000                                                         ;A7C59F;
 
   .loop:
@@ -6492,7 +6741,6 @@ HandleKraidSinking:
     ADC.W #$0006                                                         ;A7C5AE;
     TAY                                                                  ;A7C5B1;
     BRA .loop                                                            ;A7C5B2;
-
 
   .found:
     LDA.W ShrinkingKraidTable_VRAMBG2TilemapOffset,Y                     ;A7C5B4;
@@ -6524,6 +6772,8 @@ HandleKraidSinking:
   .return:
     RTS                                                                  ;A7C5E6;
 
+
+;;; $C5E7: Sinking Kraid table ;;;
 ShrinkingKraidTable:
 ;        _______________ Kraid Y position
 ;       |      _________ VRAM BG2 tilemap offset (from which to clear 20h words)
@@ -6591,6 +6841,8 @@ ShrinkingKraidTable:
     dw             RTS_A7C6A6                                            ;A7C68D;
     dw $FFFF                                                             ;A7C68F;
 
+
+;;; $C691: Crumble left platform - left ;;;
 CrumbleLeftPlatform_Left:
     LDA.W #$0070                                                         ;A7C691;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C694;
@@ -6604,6 +6856,7 @@ RTS_A7C6A6:
     RTS                                                                  ;A7C6A6;
 
 
+;;; $C6A7: Crumble right platform - middle ;;;
 CrumbleRightPlatform_Middle:
     LDA.W #$00F0                                                         ;A7C6A7;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C6AA;
@@ -6615,6 +6868,7 @@ CrumbleRightPlatform_Middle:
     RTS                                                                  ;A7C6BC;
 
 
+;;; $C6BD: Crumble right platform - left ;;;
 CrumbleRightPlatform_Left:
     LDA.W #$00E0                                                         ;A7C6BD;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C6C0;
@@ -6626,6 +6880,7 @@ CrumbleRightPlatform_Left:
     RTS                                                                  ;A7C6D2;
 
 
+;;; $C6D3: Crumble left platform - right ;;;
 CrumbleLeftPlatform_Right:
     LDA.W #$0090                                                         ;A7C6D3;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C6D6;
@@ -6637,6 +6892,7 @@ CrumbleLeftPlatform_Right:
     RTS                                                                  ;A7C6E8;
 
 
+;;; $C6E9: Crumble left platform - middle ;;;
 CrumbleLeftPlatform_Middle:
     LDA.W #$0080                                                         ;A7C6E9;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C6EC;
@@ -6648,6 +6904,7 @@ CrumbleLeftPlatform_Middle:
     RTS                                                                  ;A7C6FE;
 
 
+;;; $C6FF: Crumble right platform - right ;;;
 CrumbleRightPlatform_Right:
     LDA.W #$0100                                                         ;A7C6FF;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C702;
@@ -6659,6 +6916,7 @@ CrumbleRightPlatform_Right:
     RTS                                                                  ;A7C714;
 
 
+;;; $C715: Kraid function - fade in regular background - clear BG2 tilemap top half ;;;
 Function_Kraid_FadeInRegularBG_ClearBG2TilemapTopHalf:
     SEP #$20                                                             ;A7C715;
     LDA.B #$48                                                           ;A7C717;
@@ -6690,6 +6948,7 @@ Function_Kraid_FadeInRegularBG_ClearBG2TilemapTopHalf:
     RTL                                                                  ;A7C750;
 
 
+;;; $C751: Kraid function - fade in regular background - clear BG2 tilemap bottom half ;;;
 Function_Kraid_FadeInRegularBG_ClearBG2TilemapBottomHalf:
     LDX.W $0330                                                          ;A7C751;
     LDA.W #$0400                                                         ;A7C754;
@@ -6709,6 +6968,7 @@ Function_Kraid_FadeInRegularBG_ClearBG2TilemapBottomHalf:
     RTL                                                                  ;A7C776;
 
 
+;;; $C777: Kraid function - fade in regular background - load standard BG3 tiles 1/4 ;;;
 Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_0:
     LDA.W #UnpauseHook_KraidIsDead                                       ;A7C777;
     STA.W $0604                                                          ;A7C77A;
@@ -6730,6 +6990,7 @@ Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_0:
     RTL                                                                  ;A7C7A2;
 
 
+;;; $C7A3: Kraid function - fade in regular background - load standard BG3 tiles 2/4 ;;;
 Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_1:
     LDA.W #Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_2         ;A7C7A3;
     STA.W $0FA8                                                          ;A7C7A6;
@@ -6749,6 +7010,7 @@ Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_1:
     RTL                                                                  ;A7C7C8;
 
 
+;;; $C7C9: Kraid function - fade in regular background - load standard BG3 tiles 3/4 ;;;
 Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_2:
     LDA.W #Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_3         ;A7C7C9;
     STA.W $0FA8                                                          ;A7C7CC;
@@ -6768,6 +7030,7 @@ Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_2:
     RTL                                                                  ;A7C7EE;
 
 
+;;; $C7EF: Kraid function - fade in regular background - load standard BG3 tiles 4/4 ;;;
 Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_3:
     LDA.W #Function_Kraid_FadeInRegularBG_FadeInBGPalette6               ;A7C7EF;
     STA.W $0FA8                                                          ;A7C7F2;
@@ -6787,6 +7050,7 @@ Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_3:
     RTL                                                                  ;A7C814;
 
 
+;;; $C815: Kraid function - fade in regular background - fade in BG palette 6 ;;;
 Function_Kraid_FadeInRegularBG_FadeInBGPalette6:
     JSL.L Advance_GradualColorChange_ofBGPalette6                        ;A7C815;
     BCC .return                                                          ;A7C819;
@@ -6804,14 +7068,15 @@ Function_Kraid_FadeInRegularBG_FadeInBGPalette6:
   .return:
     RTL                                                                  ;A7C83B;
 
-
   .KraidIsDead:
     LDA.W #Function_Kraid_FadeInRegularBG_SetToDead_KraidWasDead         ;A7C83C;
     STA.W $0FA8                                                          ;A7C83F;
     RTL                                                                  ;A7C842;
 
 
+;;; $C843: Kraid function - fade in regular background - set enemy properties to dead - Kraid was alive ;;;
 Function_Kraid_FadeInRegularBG_SetToDead_KraidWasAlive:
+; Not entirely sure why this function exists
     JSR.W CheckIfKraidHasDied                                            ;A7C843;
     BEQ .setToDead                                                       ;A7C846;
     LDA.W $0911                                                          ;A7C848;
@@ -6824,7 +7089,9 @@ Function_Kraid_FadeInRegularBG_SetToDead_KraidWasAlive:
     RTL                                                                  ;A7C850;
 
 
+;;; $C851: Kraid function - fade in regular background - set enemy properties to dead - Kraid was dead ;;;
 Function_Kraid_FadeInRegularBG_SetToDead_KraidWasDead:
+; Not entirely sure why this function exists
     JSR.W CheckIfKraidHasDied                                            ;A7C851;
     BEQ .setToDead                                                       ;A7C854;
     LDA.W $0911                                                          ;A7C856;
@@ -6839,16 +7106,20 @@ Function_Kraid_FadeInRegularBG_SetToDead_KraidWasDead:
     RTL                                                                  ;A7C864;
 
 
+;;; $C865: Kraid function - restrict Samus X position to first screen ;;;
 Function_Kraid_RestrictSamusXPositionToFirstScreen:
     JSR.W RestrictSamusXPositionToFirstScreen                            ;A7C865;
     JMP.W Function_Kraid_HandleFunctionTimer                             ;A7C868;
 
 
+;;; $C86B: Kraid function - raise Kraid through floor - load tilemap top half ;;;
 Function_Kraid_RaiseThruFloor_LoadTilemapTopHalf:
     JSR.W RestrictSamusXPositionToFirstScreen                            ;A7C86B;
     LDA.W #Function_Kraid_RaiseThruFloor_LoadTilemapBottomHalf_ShakeScn  ;A7C86E;
     STA.W $0FA8                                                          ;A7C871; fallthrough to UpdateBG2TilemapTopHalf
 
+
+;;; $C874: Update BG2 tilemap top half ;;;
 UpdateBG2TilemapTopHalf:
     LDX.W $0330                                                          ;A7C874;
     LDA.W #$0800                                                         ;A7C877;
@@ -6870,6 +7141,7 @@ UpdateBG2TilemapTopHalf:
     RTL                                                                  ;A7C899;
 
 
+;;; $C89A: Kraid function - raise Kraid through floor - load tilemap bottom half and shake screen ;;;
 Function_Kraid_RaiseThruFloor_LoadTilemapBottomHalf_ShakeScn:
     JSR.W RestrictSamusXPositionToFirstScreen                            ;A7C89A;
     LDA.W #Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery10f  ;A7C89D;
@@ -6881,6 +7153,8 @@ Function_Kraid_RaiseThruFloor_LoadTilemapBottomHalf_ShakeScn:
     LDA.W #$0005                                                         ;A7C8AF;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A7C8B2; fallthrough to UpdateBG2TilemapBottomHalf
 
+
+;;; $C8B6: Update BG2 tilemap bottom half ;;;
 UpdateBG2TilemapBottomHalf:
     LDX.W $0330                                                          ;A7C8B6;
     LDA.W #$0800                                                         ;A7C8B9;
@@ -6904,6 +7178,7 @@ UpdateBG2TilemapBottomHalf:
     RTL                                                                  ;A7C8DF;
 
 
+;;; $C8E0: Kraid function - raise Kraid through floor - spawn random earthquake projectiles every 10h frames ;;;
 Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery10f:
     JSR.W RestrictSamusXPositionToFirstScreen                            ;A7C8E0;
     LDA.W $0FB2                                                          ;A7C8E3;
@@ -6916,7 +7191,6 @@ Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery10f:
     STA.W $0FB2                                                          ;A7C8F5;
     RTL                                                                  ;A7C8F8;
 
-
   .timerNotExpired:
     AND.W #$000F                                                         ;A7C8F9;
     BNE .return                                                          ;A7C8FC;
@@ -6926,6 +7200,7 @@ Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery10f:
     RTL                                                                  ;A7C901;
 
 
+;;; $C902: Kraid function - raise Kraid through floor - spawn random earthquake projectiles every 8 frames ;;;
 Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery8f:
     JSR.W RestrictSamusXPositionToFirstScreen                            ;A7C902;
     LDA.W $0FB2                                                          ;A7C905;
@@ -6938,7 +7213,6 @@ Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery8f:
     STA.W $0FB2                                                          ;A7C917;
     RTL                                                                  ;A7C91A;
 
-
   .timerNotExpired:
     AND.W #$0007                                                         ;A7C91B;
     BNE .return                                                          ;A7C91E;
@@ -6948,6 +7222,7 @@ Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery8f:
     RTL                                                                  ;A7C923;
 
 
+;;; $C924: Kraid function - raise Kraid through floor - raise Kraid ;;;
 Function_Kraid_RaiseThruFloor_RaiseKraid:
     JSR.W RestrictSamusXPositionToFirstScreen                            ;A7C924;
     LDA.W $1840                                                          ;A7C927;
@@ -6996,7 +7271,13 @@ Function_Kraid_RaiseThruFloor_RaiseKraid:
     RTL                                                                  ;A7C994;
 
 
+;;; $C995: Spawn random earthquake projectile ;;;
 SpawnRandomEarthquakeProjectile:
+; This first part is dreadful, here's my optimisation:
+; LDA $05E5 : AND #$003F : BIT #$0002 : BNE $03 : EOR #$FFFF
+; CLC : ADC $0F7A : STA $12
+; This generates a random number from:
+; 3F, 3E, -3E, -3D, 3B, 3A, -3A, -39, 37, 36, -36, -35, 33, 32, -32, -31, 2F, 2E, -2E, -2D, 2B, 2A, -2A, -29, 27, 26, -26, -25, 23, 22, -22, -21, 1F, 1E, -1E, -1D, 1B, 1A, -1A, -19, 17, 16, -16, -15, 13, 12, -12, -11, 0F, 0E, -0E, -0D, 0B, 0A, -0A, -09, 07, 06, -06, -05, 03, 02, -02, -01
     LDA.W $05B5                                                          ;A7C995;
     BIT.W #$0002                                                         ;A7C998;
     LDA.W $05E5                                                          ;A7C99B;
@@ -7039,6 +7320,7 @@ SpawnRandomEarthquakeProjectile:
     RTS                                                                  ;A7C9ED;
 
 
+;;; $C9EE: Restrict Samus X position to first screen ;;;
 RestrictSamusXPositionToFirstScreen:
     LDA.W $0AF6                                                          ;A7C9EE;
     SEC                                                                  ;A7C9F1;
@@ -7052,10 +7334,13 @@ RestrictSamusXPositionToFirstScreen:
     RTS                                                                  ;A7CA00;
 
 
+;;; $CA01: Palette - enemy $E4BF/$E4FF/$E53F/$E57F (Phantoon) ;;;
 Palette_Phantoon:
     dw $3800,$7FFF,$7EC0,$6DE0,$54E0,$0000,$0000,$0000                   ;A7CA01;
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;A7CA11;
 
+
+;;; $CA21: Palettes ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Palette_Phantoon_A7CA21:
 ; Unused. Clone of Palette_Phantoon_HealthBased_7
@@ -7085,6 +7370,7 @@ Palette_WreckedShipPoweredOn:
     dw $0000,$6318,$6318,$6318,$6318,$6318,$6318,$6318                   ;A7CB21;
     dw $6318,$6318,$6318,$6318,$6318,$6318,$7FFF,$0000                   ;A7CB31;
 
+; Health based palettes
 Palette_Phantoon_HealthBased_0:
 ; Health <= 312
     dw $000E,$25DC,$1538,$0071,$0030,$1D79,$1117,$08B4                   ;A7CB41;
@@ -7126,18 +7412,25 @@ Palette_Phantoon_HealthBased_7:
     dw $0508,$7FFF,$36B5,$19AD,$0929,$381D,$1814,$000A                   ;A7CC31;
 
 
+;;; $CC41: Instruction list - body - invulnerable ;;;
 InstList_Phantoon_Body_Invulnerable:
     dw $0001,ExtendedSpritemap_Phantoon_Body_Invulnerable                ;A7CC41;
     dw Instruction_Common_Sleep                                          ;A7CC45;
 
+
+;;; $CC47: Instruction list - body - full hitbox ;;;
 InstList_Phantoon_Body_FullHitbox:
     dw $0001,ExtendedSpritemap_Phantoon_Body_FullHitbox                  ;A7CC47;
     dw Instruction_CommonA7_Sleep                                        ;A7CC4B;
 
+
+;;; $CC4D: Instruction list - body - eye hitbox only ;;;
 InstList_Phantoon_Body_EyeHitboxOnly:
     dw $0001,ExtendedSpritemap_Phantoon_Body_EyeHitbox                   ;A7CC4D;
     dw Instruction_CommonA7_Sleep                                        ;A7CC51;
 
+
+;;; $CC53: Instruction list - eye - open ;;;
 InstList_Phantoon_Eye_Open:
     dw $000A,ExtendedSpritemap_Phantoon_Eye_Opening                      ;A7CC53;
     dw $000A,ExtendedSpritemap_Phantoon_Eye_OpeningClosing               ;A7CC57;
@@ -7148,7 +7441,9 @@ InstList_Phantoon_Eye_Open:
     dw SetupEyeOpenPhantoonState                                         ;A7CC65;
     dw Instruction_Common_Sleep                                          ;A7CC67;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $CC69: Unused. Instruction list - open (ignoring Samus) ;;;
 UNUSED_InstList_Phantoon_Eye_Open_IgnoringSamus_A7CC69:
     dw $000A,ExtendedSpritemap_Phantoon_Eye_Opening                      ;A7CC69;
     dw $000A,ExtendedSpritemap_Phantoon_Eye_OpeningClosing               ;A7CC6D;
@@ -7158,10 +7453,14 @@ UNUSED_InstList_Phantoon_Eye_Open_IgnoringSamus_A7CC69:
     dw Instruction_CommonA7_Sleep                                        ;A7CC79;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $CC7B: Instruction list - eye - closed ;;;
 InstList_Phantoon_Eye_Closed:
     dw $0001,ExtendedSpritemap_Phantoon_Eye_Closed                       ;A7CC7B;
     dw Instruction_Common_Sleep                                          ;A7CC7F;
 
+
+;;; $CC81: Instruction list - eye - close and pick new pattern ;;;
 InstList_Phantoon_Eye_Close_PickNewPattern:
     dw $0001,ExtendedSpritemap_Phantoon_Eye_Open                         ;A7CC81;
     dw $000A,ExtendedSpritemap_Phantoon_Eye_OpeningClosing               ;A7CC85;
@@ -7170,50 +7469,72 @@ InstList_Phantoon_Eye_Close_PickNewPattern:
     dw Instruction_Common_GotoY                                          ;A7CC8D;
     dw InstList_Phantoon_Eye_Closed                                      ;A7CC8F;
 
+
+;;; $CC91: Instruction list - eye - close ;;;
 InstList_Phantoon_Eye_Close:
     dw $0001,ExtendedSpritemap_Phantoon_Eye_Open                         ;A7CC91;
     dw $000A,ExtendedSpritemap_Phantoon_Eye_OpeningClosing               ;A7CC95;
     dw Instruction_Common_GotoY                                          ;A7CC99;
     dw InstList_Phantoon_Eye_Closed                                      ;A7CC9B;
 
+
+;;; $CC9D: Instruction list - eyeball - centred ;;;
 InstList_Phantoon_Eyeball_Centered:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_Centered                 ;A7CC9D;
     dw Instruction_Common_CallFunctionInY                                ;A7CCA1;
     dw PlayPhantoonMaterializationSFX                                    ;A7CCA3;
     dw Instruction_Common_Sleep                                          ;A7CCA5;
 
+
+;;; $CCA7: Instruction list - eyeball - looking up ;;;
 InstList_Phantoon_Eyeball_LookingUp:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingUp                ;A7CCA7;
     dw Instruction_Common_Sleep                                          ;A7CCAB;
 
+
+;;; $CCAD: Instruction list - eyeball - looking up-right ;;;
 InstList_Phantoon_Eyeball_LookingUpRight:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingUpRight           ;A7CCAD;
     dw Instruction_CommonA7_Sleep                                        ;A7CCB1;
 
+
+;;; $CCB3: Instruction list - eyeball - looking right ;;;
 InstList_Phantoon_Eyeball_LookingRight:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingRight             ;A7CCB3;
     dw Instruction_CommonA7_Sleep                                        ;A7CCB7;
 
+
+;;; $CCB9: Instruction list - eyeball - looking down-right ;;;
 InstList_Phantoon_Eyeball_LookingDownRight:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingDownRight         ;A7CCB9;
     dw Instruction_Common_Sleep                                          ;A7CCBD;
 
+
+;;; $CCBF: Instruction list - eyeball - looking down ;;;
 InstList_Phantoon_Eyeball_LookingDown:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingDown              ;A7CCBF;
     dw Instruction_Common_Sleep                                          ;A7CCC3;
 
+
+;;; $CCC5: Instruction list - eyeball - looking down-left ;;;
 InstList_Phantoon_Eyeball_LookingDownLeft:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingDownLeft          ;A7CCC5;
     dw Instruction_CommonA7_Sleep                                        ;A7CCC9;
 
+
+;;; $CCCB: Instruction list - eyeball - looking left ;;;
 InstList_Phantoon_Eyeball_LookingLeft:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingLeft              ;A7CCCB;
     dw Instruction_CommonA7_Sleep                                        ;A7CCCF;
 
+
+;;; $CCD1: Instruction list - eyeball - looking up-left ;;;
 InstList_Phantoon_Eyeball_LookingUpLeft:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingUpLeft            ;A7CCD1;
     dw Instruction_CommonA7_Sleep                                        ;A7CCD5;
 
+
+;;; $CCD7: Instruction list - tentacles ;;;
 InstList_Phantoon_Tentacles:
     dw $0008,ExtendedSpritemap_Phantoon_Tentacles_0                      ;A7CCD7;
     dw $0008,ExtendedSpritemap_Phantoon_Tentacles_1                      ;A7CCDB;
@@ -7222,24 +7543,30 @@ InstList_Phantoon_Tentacles:
     dw Instruction_Common_GotoY                                          ;A7CCE7;
     dw InstList_Phantoon_Tentacles                                       ;A7CCE9;
 
+
+;;; $CCEB: Instruction list - mouth - spawn flame ;;;
 InstList_Phantoon_Mouth_SpawnFlame:
     dw $0005,ExtendedSpritemap_Phantoon_Mouth_SpawningFlame_1            ;A7CCEB;
     dw $0005,ExtendedSpritemap_Phantoon_Mouth_SpawningFlame_0            ;A7CCEF;
     dw Instruction_Common_CallFunctionInY                                ;A7CCF3;
     dw SpawnCasualFlame                                                  ;A7CCF5;
 
+
+;;; $CCF7: Instruction list - mouth - initial ;;;
 InstList_Phantoon_Mouth_Initial:
     dw $0001,ExtendedSpritemap_Phantoon_Mouth_Normal                     ;A7CCF7;
     dw Instruction_CommonA7_Sleep                                        ;A7CCFB;
 
-CasualFlameTimers_pointers:
+
+;;; $CCFD: Casual flame timers ;;;
+CasualFlameTimers:
+  .pointers:
 ; List of pattern pointers
     dw CasualFlameTimers_pattern0                                        ;A7CCFD;
     dw CasualFlameTimers_pattern1                                        ;A7CCFF;
     dw CasualFlameTimers_pattern2                                        ;A7CD01;
     dw CasualFlameTimers_pattern3                                        ;A7CD03;
 
-CasualFlameTimers:
 ;        ________ Number of flames (length of pattern)
 ;       |       _ Timers. List is read backwards
 ;       |      |
@@ -7252,18 +7579,28 @@ CasualFlameTimers:
   .pattern3:
     dw $0007, $00B4,$0010,$0040,$0020,$0040,$0020,$0010,$0020            ;A7CD2F;
 
+
+;;; $CD41: Phantoon figure-8 vulnerable window timers ;;;
 Phantoon_Figure8_VulnerableWindowTimers:
     dw $003C,$001E,$000F,$001E,$003C,$001E,$000F,$003C                   ;A7CD41;
 
+
+;;; $CD51: Empty HDMA table ;;;
 EmptyHDMATable:
     db $00,$00                                                           ;A7CD51;
 
+
+;;; $CD53: Phantoon eye closed timers ;;;
 Phantoon_EyeClosedTimers:
     dw $02D0,$003C,$0168,$02D0,$0168,$003C,$0168,$02D0                   ;A7CD53;
 
+
+;;; $CD63: Flame rain Phantoon hiding timers ;;;
 Phantoon_FlameRain_HidingTimers:
     dw $003C,$0078,$001E,$003C,$001E,$003C,$001E,$001E                   ;A7CD63;
 
+
+;;; $CD73: Figure-8 Phantoon acceleration ;;;
 Phantoon_Figure8_SubAcceleration_SlowStage:
     dw $0600                                                             ;A7CD73;
 Phantoon_Figure8_Acceleration_SlowStage:
@@ -7273,6 +7610,8 @@ Phantoon_Figure8_SubAcceleration_FastStages:
 Phantoon_Figure8_Acceleration_FastStages:
     dw $0000                                                             ;A7CD79;
 
+
+;;; $CD7B: Figure-8 speed caps ;;;
 Phantoon_Figure8_SpeedCaps_Stage0Max:
     dw $0002                                                             ;A7CD7B;
 Phantoon_Figure8_SpeedCaps_Stage1Max:
@@ -7280,6 +7619,8 @@ Phantoon_Figure8_SpeedCaps_Stage1Max:
 Phantoon_Figure8_SpeedCaps_Stage2Min:
     dw $0000                                                             ;A7CD7F;
 
+
+;;; $CD81: Reverse figure-8 Phantoon acceleration ;;;
 ; Clone of Phantoon_Figure8_SubAcceleration_SlowStage
 Phantoon_ReverseFigure8_SubAcceleration_SlowStage:
     dw $0600                                                             ;A7CD81;
@@ -7290,6 +7631,8 @@ Phantoon_ReverseFigure8_SubAcceleration_FastStages:
 Phantoon_ReverseFigure8_Acceleration_FastStages:
     dw $0000                                                             ;A7CD87;
 
+
+;;; $CD89: Reverse figure-8 speed caps ;;;
 Phantoon_ReverseFigure8_SpeedCaps_Stage0Max:
     dw $FFFE                                                             ;A7CD89;
 Phantoon_ReverseFigure8_SpeedCaps_Stage1Max:
@@ -7297,11 +7640,15 @@ Phantoon_ReverseFigure8_SpeedCaps_Stage1Max:
 Phantoon_ReverseFigure8_SpeedCaps_Stage2Min:
     dw $0000                                                             ;A7CD8D;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $CD8F: Unused ;;;
 UNUSED_Phantoon_A7CD8F:
     dw $8000,$0000,$000B,$8000,$0000,$FFF5                               ;A7CD8F;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $CD9B: Wavy Phantoon constants ;;;
 WavyPhantoonConstants_Intro_amplitudeDelta:
 ; Amplitude delta - intro wavy Phantoon
     dw $0040                                                             ;A7CD9B;
@@ -7322,11 +7669,19 @@ WavyPhantoonConstants_phaseDelta:
 ; Wavy Phantoon phase delta
     dw $0008                                                             ;A7CDA3;
 
+
+;;; $CDA5: Values for $0FEA ;;;
 Phantoon_Unknown0FEAValues_A7CDA5:
 ; Unknown purpose, $0FEA is never read, written by Phantoon enemy shot
     db $06,$06,$08,$08,$06,$08,$06,$08                                   ;A7CDA5;
 
+
+;;; $CDAD: Phantoon position table for flame rain ;;;
 Phantoon_FlameRain_PositionTable:
+;        _____________________ Phantoon figure-8 movement index
+;       |      _______________ X position
+;       |     |      _________ Y position
+;       |     |     |
   .index:
     dw $0001                                                             ;A7CDAD;
   .XPosition:
@@ -7341,11 +7696,15 @@ Phantoon_FlameRain_PositionTable:
     dw $018F,$0030,$0060,$0000
     dw $01D1,$0058,$0080,$0000
 
+
+;;; $CDED: Materialisation sound effects ;;;
 Phantoon_MaterializationSFX:
 ; Sound library 2
 ; Indexed by [$7E:9032] * 2
     dw $0079,$007A,$007B                                                 ;A7CDED;
 
+
+;;; $CDF3: Initialisation AI - enemy $E4BF (Phantoon body) ;;;
 InitAI_PhantoonBody:
     LDX.W #$0FFE                                                         ;A7CDF3;
     LDA.W #$0338                                                         ;A7CDF6;
@@ -7386,11 +7745,14 @@ InitAI_PhantoonBody:
     LDA.W $0F86                                                          ;A7CE44;
     ORA.W #$0400                                                         ;A7CE47;
     STA.W $0F86                                                          ;A7CE4A;
-    JSL.L Spawn_HDMAObject                                               ;A7CE4D;
+    JSL.L Spawn_HDMAObject                                               ;A7CE4D; fallthrough to InitAI_Phantoon_Eye_Tentacles_Mouth
     db $01,$14                                                           ;A7CE51;
     dw HDMAObjectInstList_Phantoon_SemiTransparency                      ;A7CE53;
 
+
+;;; $CE55: Initialisation AI - enemy $E4FF/$E53F/$E57F (Phantoon eye / tentacles / mouth) ;;;
 InitAI_Phantoon_Eye_Tentacles_Mouth:
+; Phantoon body also executes this as part of initialisation AI, so all Phantoon parts are doing this
     LDX.W $0E54                                                          ;A7CE55;
     LDA.W #Spritemap_CommonA7_Nothing                                    ;A7CE58;
     STA.W $0F8E,X                                                        ;A7CE5B;
@@ -7413,13 +7775,14 @@ InitAI_Phantoon_Eye_Tentacles_Mouth:
     STA.W $106C                                                          ;A7CE8A;
     RTL                                                                  ;A7CE8D;
 
-
   .instListPointers:
     dw InstList_Phantoon_Body_Invulnerable                               ;A7CE8E;
     dw InstList_Phantoon_Eye_Closed                                      ;A7CE90;
     dw InstList_Phantoon_Tentacles                                       ;A7CE92;
     dw InstList_Phantoon_Mouth_Initial                                   ;A7CE94;
 
+
+;;; $CE96: HDMA object instruction list - Phantoon semi-transparency ;;;
 HDMAObjectInstList_Phantoon_SemiTransparency:
     dw Instruction_HDMAObject_HDMATableBank : db $A7                     ;A7CE96;
     dw $0001,EmptyHDMATable                                              ;A7CE99;
@@ -7429,12 +7792,14 @@ HDMAObjectInstList_Phantoon_SemiTransparency:
     dw Instruction_HDMAObject_Delete                                     ;A7CEA4;
 
 
+;;; $CEA6: Main AI - enemy $E4BF (Phantoon) ;;;
 MainAI_Phantoon:
+; Phantoon code is making a trend of returning if the current enemy index is not 0, then using indexed addressing anyway,
+; and these routines are only called for enemy 0 in the first place >_<;
     LDX.W $0E54                                                          ;A7CEA6;
     JSR.W Phantoon_BrokenNothingness                                     ;A7CEA9;
     PEA.W .manualReturn-1                                                ;A7CEAC;
     JMP.W ($0FB2,X)                                                      ;A7CEAF;
-
 
   .manualReturn:
     TXA                                                                  ;A7CEB2;
@@ -7466,6 +7831,7 @@ MainAI_Phantoon:
     RTL                                                                  ;A7CEEC;
 
 
+;;; $CEED: Play Phantoon materialisation sound effect ;;;
 PlayPhantoonMaterializationSFX:
     LDA.L $7E9032                                                        ;A7CEED;
     ASL A                                                                ;A7CEF1;
@@ -7483,7 +7849,9 @@ PlayPhantoonMaterializationSFX:
     RTS                                                                  ;A7CF0B;
 
 
+;;; $CF0C: Broken nothingness ;;;
 Phantoon_BrokenNothingness:
+; This code doesn't do anything, it tries to modify $7E:9030 and forgot the $7E bit... and $7E:9030 is never read anywhere anyway
     TXA                                                                  ;A7CF0C;
     BNE .return                                                          ;A7CF0D;
     LDA.B $8F                                                            ;A7CF0F;
@@ -7495,7 +7863,6 @@ Phantoon_BrokenNothingness:
     STA.W $9030,X                                                        ;A7CF1E;
     BRA .return                                                          ;A7CF21;
 
-
   .nonZero:
     STZ.W $9030,X                                                        ;A7CF23;
 
@@ -7503,7 +7870,13 @@ Phantoon_BrokenNothingness:
     RTS                                                                  ;A7CF26;
 
 
+;;; $CF27: Grow/shrink Phantoon wave amplitude ;;;
 GrowShrinkPhantoonWaveAmplitude:
+;; Parameters:
+;;     $12: Amplitude delta
+;;     $14: Max amplitude
+;; Returns:
+;;     Carry: Set if completed wave cycle (amplitude has decreased below 0)
     LDA.W $1070                                                          ;A7CF27;
     BNE .shrinking                                                       ;A7CF2A;
     LDA.B $14                                                            ;A7CF2C;
@@ -7522,7 +7895,6 @@ GrowShrinkPhantoonWaveAmplitude:
     STA.W $106E                                                          ;A7CF47;
     BRA .returnNotCompletedCycle                                         ;A7CF4A;
 
-
   .shrinking:
     LDA.W $106E                                                          ;A7CF4C;
     SEC                                                                  ;A7CF4F;
@@ -7533,12 +7905,12 @@ GrowShrinkPhantoonWaveAmplitude:
     SEC                                                                  ;A7CF5A;
     RTS                                                                  ;A7CF5B;
 
-
   .returnNotCompletedCycle:
     CLC                                                                  ;A7CF5C;
     RTS                                                                  ;A7CF5D;
 
 
+;;; $CF5E: Spawn casual flame ;;;
 SpawnCasualFlame:
     LDA.W #$0000                                                         ;A7CF5E;
     LDY.W #EnemyProjectile_PhantoonDestroyableFlames                     ;A7CF61;
@@ -7548,6 +7920,7 @@ SpawnCasualFlame:
     RTS                                                                  ;A7CF6F;
 
 
+;;; $CF70: Phantoon materialisation flame spiral ;;;
 PhantoonMaterializationFlameSpiral:
     LDY.W #$0007                                                         ;A7CF70;
 
@@ -7565,7 +7938,25 @@ PhantoonMaterializationFlameSpiral:
     RTS                                                                  ;A7CF8A;
 
 
+;;; $CF8B: Spawn flame rain enemy projectiles ;;;
 SpawnFlameRainProjectiles:
+;; Parameter:
+;;     A: Pattern index. Range 0..7. Decides the placement of the first flame
+
+; Uses a lookup table ($CFC2) to determine where to leave a gap.
+;
+; When called from $D7F7, the following patterns result:
+;
+; [A] | Value | Fireball pattern
+; ----+-------+-----------------
+; 0   | 5     | @@@@@@.@@
+; 1   | 7     | @@@@@@@@.
+; 2   | 0     | .@@@@@@@@
+; 3   | 7     | @@@@@@@@.
+; 4   | 5     | @@@@@@.@@
+; 5   | 3     | @@@@.@@@@
+; 6   | 1     | @@.@@@@@@
+; 7   | 3     | @@@@.@@@@
     TAY                                                                  ;A7CF8B;
     LDA.W .firstFlamePositions,Y                                         ;A7CF8C;
     AND.W #$00FF                                                         ;A7CF8F;
@@ -7596,11 +7987,12 @@ SpawnFlameRainProjectiles:
     BPL .loop                                                            ;A7CFBF;
     RTS                                                                  ;A7CFC1;
 
-
   .firstFlamePositions:
 ; Position of first flame
     db $05,$07,$00,$07,$05,$03,$01,$03                                   ;A7CFC2;
 
+
+;;; $CFCA: Handle casual flames ;;;
 HandleCasualFlames:
     DEC.W $106A,X                                                        ;A7CFCA;
     BEQ .timerExpired                                                    ;A7CFCD;
@@ -7628,7 +8020,6 @@ HandleCasualFlames:
     STA.W $106A,X                                                        ;A7CFF7;
     BRA .return                                                          ;A7CFFA;
 
-
   .positiveIndex:
     DEC.W $106C,X                                                        ;A7CFFC;
     BEQ .indexReachedZero                                                ;A7CFFF;
@@ -7645,7 +8036,6 @@ HandleCasualFlames:
     LDA.W $0002,Y                                                        ;A7D012;
     STA.W $106A,X                                                        ;A7D015;
     BRA +                                                                ;A7D018;
-
 
   .nonZeroTimer:
     LDA.W $106C,X                                                        ;A7D01A;
@@ -7670,6 +8060,7 @@ HandleCasualFlames:
     RTS                                                                  ;A7D03E;
 
 
+;;; $D03F: Set up eye open Phantoon state ;;;
 SetupEyeOpenPhantoonState:
     STZ.W $1028                                                          ;A7D03F;
     LDA.W #$0001                                                         ;A7D042;
@@ -7693,7 +8084,10 @@ SetupEyeOpenPhantoonState:
     RTS                                                                  ;A7D075;
 
 
+;;; $D076: Pick new Phantoon pattern ;;;
 PickNewPhantoonPattern:
+; When called by Function_Phantoon_HidingBeforeFigure8_PlacePhantoon, the Phantoon function set here is ignored,
+; it is only used by the call from the Phantoon eye instruction list InstList_Phantoon_Eye_Close_PickNewPattern
     LDA.W #$003C                                                         ;A7D076;
     STA.W $0FB0                                                          ;A7D079;
     JSL.L GenerateRandomNumber                                           ;A7D07C;
@@ -7721,7 +8115,6 @@ PickNewPhantoonPattern:
     STZ.W $0FEC                                                          ;A7D0B3;
     BRA .merge                                                           ;A7D0B6;
 
-
   .reversed:
     LDA.W $0FEC                                                          ;A7D0B8;
     BNE +                                                                ;A7D0BB;
@@ -7745,13 +8138,13 @@ PickNewPhantoonPattern:
     STA.W $0FB2                                                          ;A7D0E3;
     RTS                                                                  ;A7D0E6;
 
-
 +   STZ.W $0FF2                                                          ;A7D0E7;
     LDA.W #Function_Phantoon_FlameRain_InitialFlameRain                  ;A7D0EA;
     STA.W $0FB2                                                          ;A7D0ED;
     RTS                                                                  ;A7D0F0;
 
 
+;;; $D0F1: Adjust speed and move Phantoon in figure-8 ;;;
 AdjustSpeedAndMovePhantoonInFigure8:
     LDA.W $0FEC                                                          ;A7D0F1;
     BNE .reversed                                                        ;A7D0F4;
@@ -7762,7 +8155,6 @@ AdjustSpeedAndMovePhantoonInFigure8:
     JSR.W MovePhantoonInFigure8                                          ;A7D101;
     RTS                                                                  ;A7D104;
 
-
   .reversed:
     JSR.W UpdateReversedFigure8PhantoonSpeed                             ;A7D105;
     LDY.W #PhantoonMovementData                                          ;A7D108;
@@ -7772,13 +8164,13 @@ AdjustSpeedAndMovePhantoonInFigure8:
     RTS                                                                  ;A7D113;
 
 
+;;; $D114: Update figure-8 Phantoon speed ;;;
 UpdateFigure8PhantoonSpeed:
     LDA.W $0FAE                                                          ;A7D114;
     BEQ .stage0                                                          ;A7D117;
     BIT.W #$0001                                                         ;A7D119;
     BNE .stage1                                                          ;A7D11C;
     BRA .stage2                                                          ;A7D11E;
-
 
   .stage0:
     LDA.W $0FAA                                                          ;A7D120;
@@ -7799,7 +8191,6 @@ UpdateFigure8PhantoonSpeed:
   ..return:
     RTS                                                                  ;A7D145;
 
-
   .stage1:
     LDA.W $0FAA                                                          ;A7D146;
     CLC                                                                  ;A7D149;
@@ -7817,7 +8208,6 @@ UpdateFigure8PhantoonSpeed:
 
   ..return:
     RTS                                                                  ;A7D16A;
-
 
   .stage2:
     LDA.W $0FAA                                                          ;A7D16B;
@@ -7842,13 +8232,13 @@ UpdateFigure8PhantoonSpeed:
     RTS                                                                  ;A7D192;
 
 
+;;; $D193: Update reversed figure-8 Phantoon speed ;;;
 UpdateReversedFigure8PhantoonSpeed:
     LDA.W $0FAE                                                          ;A7D193;
     BEQ .stage0                                                          ;A7D196;
     BIT.W #$0001                                                         ;A7D198;
     BNE .stage1                                                          ;A7D19B;
     BRA .stage2                                                          ;A7D19D;
-
 
   .stage0:
     LDA.W $0FAA                                                          ;A7D19F;
@@ -7872,7 +8262,6 @@ UpdateReversedFigure8PhantoonSpeed:
   .stage0_return:
     RTS                                                                  ;A7D1C7;
 
-
   .stage1:
     LDA.W $0FAA                                                          ;A7D1C8;
     SEC                                                                  ;A7D1CB;
@@ -7894,7 +8283,6 @@ UpdateReversedFigure8PhantoonSpeed:
   .stage1_return:
     RTS                                                                  ;A7D1EF;
 
-
   .stage2:
     LDA.W $0FAA                                                          ;A7D1F0;
     CLC                                                                  ;A7D1F3;
@@ -7914,12 +8302,15 @@ UpdateReversedFigure8PhantoonSpeed:
     RTS                                                                  ;A7D214;
 
 
+;;; $D215: Move Phantoon in figure-8 ;;;
 MovePhantoonInFigure8:
+;; Parameters:
+;;     Y: PhantoonMovementData
+;;     $14: 216h (size of Phantoon movement data)
     LDA.W $0FAC                                                          ;A7D215;
     STA.B $16                                                            ;A7D218;
     BNE .loop                                                            ;A7D21A;
     RTS                                                                  ;A7D21C;
-
 
   .loop:
     PHY                                                                  ;A7D21D;
@@ -7964,19 +8355,21 @@ MovePhantoonInFigure8:
     BEQ .return                                                          ;A7D26C;
     BRA .loop                                                            ;A7D26E;
 
-
   .return:
     RTS                                                                  ;A7D270;
 
 
+;;; $D271: Move Phantoon in reverse figure-8 ;;;
 MovePhantoonInReverseFigure8:
+;; Parameters:
+;;     Y: PhantoonMovementData
+;;     $14: 215h (last index of Phantoon movement data)
     LDA.W $0FAC                                                          ;A7D271;
     EOR.W #$FFFF                                                         ;A7D274;
     INC A                                                                ;A7D277;
     STA.B $16                                                            ;A7D278;
     BNE .loop                                                            ;A7D27A;
     RTS                                                                  ;A7D27C;
-
 
   .loop:
     PHY                                                                  ;A7D27D;
@@ -8021,11 +8414,11 @@ MovePhantoonInReverseFigure8:
     BEQ .return                                                          ;A7D2CC;
     BRA .loop                                                            ;A7D2CE;
 
-
   .return:
     RTS                                                                  ;A7D2D0;
 
 
+;;; $D2D1: Move Phantoon in swooping pattern ;;;
 MovePhantoonInSwoopingPattern:
     LDA.W $1030                                                          ;A7D2D1;
     BMI .targetXNegative                                                 ;A7D2D4;
@@ -8038,7 +8431,6 @@ MovePhantoonInSwoopingPattern:
     STA.W $1030                                                          ;A7D2E5;
     AND.W #$7FFF                                                         ;A7D2E8;
     BRA .targetCalculated                                                ;A7D2EB;
-
 
   .targetXNegative:
     SEC                                                                  ;A7D2ED;
@@ -8061,7 +8453,6 @@ MovePhantoonInSwoopingPattern:
     ADC.W #$0020                                                         ;A7D30F;
     STA.W $102C                                                          ;A7D312;
     BRA +                                                                ;A7D315;
-
 
   .lessThanX:
     LDA.W $102C                                                          ;A7D317;
@@ -8096,7 +8487,6 @@ MovePhantoonInSwoopingPattern:
     STA.W $0F7A                                                          ;A7D357;
     BRA .checkDead                                                       ;A7D35A;
 
-
 +   CMP.W #$01C0                                                         ;A7D35C;
     BMI .checkDead                                                       ;A7D35F;
     LDA.W #$01C0                                                         ;A7D361;
@@ -8108,7 +8498,6 @@ MovePhantoonInSwoopingPattern:
     BNE .notDeathSwoop                                                   ;A7D36D;
     LDA.W #$0070                                                         ;A7D36F;
     BRA +                                                                ;A7D372;
-
 
   .notDeathSwoop:
     LDA.W $0AFA                                                          ;A7D374;
@@ -8124,7 +8513,6 @@ MovePhantoonInSwoopingPattern:
     ADC.W #$0040                                                         ;A7D389;
     STA.W $102E                                                          ;A7D38C;
     BRA +                                                                ;A7D38F;
-
 
   .lessThanY:
     LDA.W $102E                                                          ;A7D391;
@@ -8159,7 +8547,6 @@ MovePhantoonInSwoopingPattern:
     STA.W $0F7E                                                          ;A7D3D1;
     RTS                                                                  ;A7D3D4;
 
-
 +   CMP.W #$00D8                                                         ;A7D3D5;
     BMI .return                                                          ;A7D3D8;
     LDA.W #$00D8                                                         ;A7D3DA;
@@ -8169,6 +8556,7 @@ MovePhantoonInSwoopingPattern:
     RTS                                                                  ;A7D3E0;
 
 
+;;; $D3E1: Start Phantoon swooping pattern ;;;
 StartPhantoonSwoopingPattern:
     LDA.W #$0400                                                         ;A7D3E1;
     STA.W $102C                                                          ;A7D3E4;
@@ -8181,6 +8569,7 @@ StartPhantoonSwoopingPattern:
     RTS                                                                  ;A7D3F9;
 
 
+;;; $D3FA: Make Phantoon look towards Samus ;;;
 MakePhantoonLookTowardsSamus:
     JSL.L DetermineDirectionOfSamusFromEnemy                             ;A7D3FA;
     ASL A                                                                ;A7D3FE;
@@ -8190,7 +8579,6 @@ MakePhantoonLookTowardsSamus:
     LDA.W .directionPointers,Y                                           ;A7D406;
     STA.W $0FD2                                                          ;A7D409;
     RTS                                                                  ;A7D40C;
-
 
   .directionPointers:
     dw InstList_Phantoon_Eyeball_LookingUp                               ;A7D40D; Up
@@ -8204,6 +8592,8 @@ MakePhantoonLookTowardsSamus:
     dw InstList_Phantoon_Eyeball_LookingUpLeft                           ;A7D41D; Up-left
     dw InstList_Phantoon_Eyeball_LookingUp                               ;A7D41F;
 
+
+;;; $D421: Start Phantoon death sequence ;;;
 StartPhantoonDeathSequence:
     PHX                                                                  ;A7D421;
     LDA.W $0FB2,X                                                        ;A7D422;
@@ -8214,7 +8604,6 @@ StartPhantoonDeathSequence:
     LDA.W #Function_Phantoon_DeathSequence_FadingInAndOut                ;A7D42F;
     STA.W $0FB2,X                                                        ;A7D432;
     BRA +                                                                ;A7D435;
-
 
   .swooping:
     LDA.W #Function_Phantoon_Swooping_FatalDamage                        ;A7D437;
@@ -8240,7 +8629,10 @@ StartPhantoonDeathSequence:
     RTS                                                                  ;A7D463;
 
 
+;;; $D464: Advance Phantoon fade out ;;;
 AdvancePhantoonFadeOut_DenominatorInA:
+;; Parameters:
+;;     A: Palette change denominator
     PHX                                                                  ;A7D464;
     STA.B $12                                                            ;A7D465;
     LDA.W $05B6                                                          ;A7D467;
@@ -8260,7 +8652,10 @@ AdvancePhantoonFadeOut_DenominatorInA:
     RTS                                                                  ;A7D485;
 
 
+;;; $D486: Advance Phantoon fade in ;;;
 AdvancePhantoonFadeIn_DenominatorInA:
+;; Parameters:
+;;     A: Palette change denominator
     PHX                                                                  ;A7D486;
     STA.B $12                                                            ;A7D487;
     LDA.W $05B6                                                          ;A7D489;
@@ -8280,10 +8675,12 @@ AdvancePhantoonFadeIn_DenominatorInA:
     RTS                                                                  ;A7D4A7;
 
 
+;;; $D4A8: RTS ;;;
 RTS_A7D4A8:
     RTS                                                                  ;A7D4A8;
 
 
+;;; $D4A9: Phantoon function - fight intro - spawn circle of flames ;;;
 Function_Phantoon_FightIntro_SpawnCircleOfFlames:
     DEC.W $0FB0,X                                                        ;A7D4A9;
     BEQ .timerExpired                                                    ;A7D4AC;
@@ -8316,6 +8713,7 @@ Function_Phantoon_FightIntro_SpawnCircleOfFlames:
     RTS                                                                  ;A7D4ED;
 
 
+;;; $D4EE: Phantoon function - fight intro - spin circle of flames ;;;
 Function_Phantoon_FightIntro_SpinCircleOfFlames:
     DEC.W $0FB0,X                                                        ;A7D4EE;
     BEQ .timerExpired                                                    ;A7D4F1;
@@ -8333,6 +8731,7 @@ Function_Phantoon_FightIntro_SpinCircleOfFlames:
     RTS                                                                  ;A7D507;
 
 
+;;; $D508: Phantoon function - fight intro - start wavy fade in ;;;
 Function_Phantoon_FightIntro_StartWavyFadeIn:
     DEC.W $0FB0,X                                                        ;A7D508;
     BEQ .timerExpired                                                    ;A7D50B;
@@ -8363,6 +8762,7 @@ Function_Phantoon_FightIntro_StartWavyFadeIn:
     RTS                                                                  ;A7D549;
 
 
+;;; $D54A: Phantoon function - fight intro - wavy fade-in ;;;
 Function_Phantoon_FightIntro_WavyFadeIn:
     LDA.W #$000C                                                         ;A7D54A;
     JSR.W AdvancePhantoonFadeIn_DenominatorInA                           ;A7D54D;
@@ -8381,7 +8781,6 @@ Function_Phantoon_FightIntro_WavyFadeIn:
     STA.W $1070                                                          ;A7D569;
     BRA .return                                                          ;A7D56C;
 
-
   .done:
     LDA.W #Function_Phantoon_FightIntro_PickFirstPattern                 ;A7D56E;
     STA.W $0FB2,X                                                        ;A7D571;
@@ -8395,6 +8794,7 @@ Function_Phantoon_FightIntro_WavyFadeIn:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $D581: Unused ;;;
 UNUSED_Function_Phantoon_FightIntro_A7D581:
     LDX.W #$01FE                                                         ;A7D581;
     LDA.W #$0000                                                         ;A7D584;
@@ -8410,6 +8810,7 @@ UNUSED_Function_Phantoon_FightIntro_A7D581:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $D596: Phantoon function - fight intro - pick first pattern ;;;
 Function_Phantoon_FightIntro_PickFirstPattern:
     DEC.W $0FB0,X                                                        ;A7D596;
     BEQ .timerExpired                                                    ;A7D599;
@@ -8437,7 +8838,6 @@ Function_Phantoon_FightIntro_PickFirstPattern:
     STZ.W $0FA8                                                          ;A7D5CD;
     RTS                                                                  ;A7D5D0;
 
-
   .reversed:
     STZ.W $0FAC                                                          ;A7D5D1;
     STZ.W $0FAA                                                          ;A7D5D4;
@@ -8451,6 +8851,7 @@ Function_Phantoon_FightIntro_PickFirstPattern:
     RTS                                                                  ;A7D5E6;
 
 
+;;; $D5E7: Phantoon function - figure-8 - moving ;;;
 Function_Phantoon_Figure8_Moving:
     JSR.W AdjustSpeedAndMovePhantoonInFigure8                            ;A7D5E7;
     JSR.W HandleCasualFlames                                             ;A7D5EA;
@@ -8472,6 +8873,7 @@ Function_Phantoon_Figure8_Moving:
     RTS                                                                  ;A7D60C;
 
 
+;;; $D60D: Phantoon function - figure-8 - vulnerable window ;;;
 Function_Phantoon_Figure8_VulnerableWindow:
     DEC.W $0FB0,X                                                        ;A7D60D;
     BEQ .timerExpired                                                    ;A7D610;
@@ -8487,7 +8889,6 @@ Function_Phantoon_Figure8_VulnerableWindow:
     LDA.W #Function_Phantoon_Figure8_SwoopingTriggered                   ;A7D625;
     STA.W $0FB2,X                                                        ;A7D628;
     BRA .waiting                                                         ;A7D62B;
-
 
   .swoopingNotTriggered:
     LDA.W #RTS_A7D4A8                                                    ;A7D62D;
@@ -8506,12 +8907,12 @@ Function_Phantoon_Figure8_VulnerableWindow:
     STA.W $0FB6                                                          ;A7D654;
     RTS                                                                  ;A7D657;
 
-
   .waiting:
     JSR.W MakePhantoonLookTowardsSamus                                   ;A7D658;
     RTS                                                                  ;A7D65B;
 
 
+;;; $D65C: Phantoon function - figure-8 - swooping triggered ;;;
 Function_Phantoon_Figure8_SwoopingTriggered:
     JSR.W MakePhantoonLookTowardsSamus                                   ;A7D65C;
     LDA.W $1988                                                          ;A7D65F;
@@ -8525,6 +8926,7 @@ Function_Phantoon_Figure8_SwoopingTriggered:
     RTS                                                                  ;A7D677;
 
 
+;;; $D678: Phantoon function - swooping - opaque ;;;
 Function_Phantoon_Swooping_Opaque:
     JSR.W MakePhantoonLookTowardsSamus                                   ;A7D678;
     JSR.W MovePhantoonInSwoopingPattern                                  ;A7D67B;
@@ -8555,6 +8957,7 @@ Function_Phantoon_Swooping_Opaque:
     RTS                                                                  ;A7D6B8;
 
 
+;;; $D6B9: Phantoon function - swooping - fading out ;;;
 Function_Phantoon_Swooping_FadeOut:
     JSR.W MovePhantoonInSwoopingPattern                                  ;A7D6B9;
     LDA.W #$000C                                                         ;A7D6BC;
@@ -8570,6 +8973,7 @@ Function_Phantoon_Swooping_FadeOut:
     RTS                                                                  ;A7D6D3;
 
 
+;;; $D6D4: Phantoon function - hiding before figure-8 - hiding ;;;
 Function_Phantoon_HidingBeforeFigure8_Hiding:
     DEC.W $0FB0,X                                                        ;A7D6D4;
     BEQ .timerExpired                                                    ;A7D6D7;
@@ -8583,6 +8987,7 @@ Function_Phantoon_HidingBeforeFigure8_Hiding:
     RTS                                                                  ;A7D6E1;
 
 
+;;; $D6E2: Phantoon function - hiding before figure-8 - place Phantoon ;;;
 Function_Phantoon_HidingBeforeFigure8_PlacePhantoon:
     JSL.L GenerateRandomNumber                                           ;A7D6E2;
     BIT.W #$0001                                                         ;A7D6E6;
@@ -8594,7 +8999,6 @@ Function_Phantoon_HidingBeforeFigure8_PlacePhantoon:
     LDA.W #$0060                                                         ;A7D6F7;
     STA.W $0F7E                                                          ;A7D6FA;
     BRA +                                                                ;A7D6FD;
-
 
   .leftSidePattern:
     LDA.W #$018F                                                         ;A7D6FF;
@@ -8616,6 +9020,7 @@ Function_Phantoon_HidingBeforeFigure8_PlacePhantoon:
     RTS                                                                  ;A7D72C;
 
 
+;;; $D72D: Phantoon function - hiding before figure-8 - fading in ;;;
 Function_Phantoon_HidingBeforeFigure8_FadingIn:
     LDA.W #$000C                                                         ;A7D72D;
     JSR.W AdvancePhantoonFadeIn_DenominatorInA                           ;A7D730;
@@ -8628,6 +9033,7 @@ Function_Phantoon_HidingBeforeFigure8_FadingIn:
     RTS                                                                  ;A7D73E;
 
 
+;;; $D73F: Phantoon function - flame rain - show Phantoon ;;;
 Function_Phantoon_FlameRain_ShowPhantoon:
     STZ.W $0FF2                                                          ;A7D73F;
     LDA.W $1988                                                          ;A7D742;
@@ -8645,11 +9051,12 @@ Function_Phantoon_FlameRain_ShowPhantoon:
     RTS                                                                  ;A7D766;
 
 
+;;; $D767: Phantoon function - flame rain - make Phantoon vulnerable ;;;
 Function_Phantoon_FlameRain_MakePhantoonVulnerable:
     LDA.W #$0001                                                         ;A7D767;
     JSR.W AdvancePhantoonFadeIn_DenominatorInA                           ;A7D76A;
     LDA.W $0FF2                                                          ;A7D76D;
-    BEQ .return                                                          ;A7D770;
+    BEQ .waiting                                                         ;A7D770;
     LDA.W $0F86                                                          ;A7D772;
     AND.W #$FBFF                                                         ;A7D775;
     STA.W $0F86                                                          ;A7D778;
@@ -8658,10 +9065,11 @@ Function_Phantoon_FlameRain_MakePhantoonVulnerable:
     LDA.W #$005A                                                         ;A7D781;
     STA.W $0FB0                                                          ;A7D784;
 
-  .return:
+  .waiting:
     RTS                                                                  ;A7D787;
 
 
+;;; $D788: Phantoon function - flame rain - vulnerable window ;;;
 Function_Phantoon_FlameRain_VulnerableWindow:
     DEC.W $0FB0,X                                                        ;A7D788;
     BEQ .timerExpired                                                    ;A7D78B;
@@ -8676,7 +9084,6 @@ Function_Phantoon_FlameRain_VulnerableWindow:
     STA.W $0FB6                                                          ;A7D79D;
     JSR.W StartPhantoonSwoopingPattern                                   ;A7D7A0;
     RTS                                                                  ;A7D7A3;
-
 
   .endVulnerableWindow:
     LDA.W #Function_Phantoon_FlameRain_FadingOut                         ;A7D7A4;
@@ -8700,13 +9107,13 @@ Function_Phantoon_FlameRain_VulnerableWindow:
     RTS                                                                  ;A7D7D4;
 
 
+;;; $D7D5: Phantoon function - flame rain - fading out ;;;
 Function_Phantoon_FlameRain_FadingOut:
     LDA.W #$000C                                                         ;A7D7D5;
     JSR.W AdvancePhantoonFadeOut_DenominatorInA                          ;A7D7D8;
     LDA.W $0FF2                                                          ;A7D7DB;
     BNE .fadeComplete                                                    ;A7D7DE;
     RTS                                                                  ;A7D7E0;
-
 
   .fadeComplete:
     LDA.W #Function_Phantoon_FlameRain_SubsequentFlameRain               ;A7D7E1;
@@ -8720,6 +9127,7 @@ Function_Phantoon_FlameRain_FadingOut:
     RTS                                                                  ;A7D7F6;
 
 
+;;; $D7F7: Phantoon function - flame rain - subsequent flame rain ;;;
 Function_Phantoon_FlameRain_SubsequentFlameRain:
     DEC.W $0FB0,X                                                        ;A7D7F7;
     BEQ .timerExpired                                                    ;A7D7FA;
@@ -8749,6 +9157,7 @@ Function_Phantoon_FlameRain_SubsequentFlameRain:
     RTS                                                                  ;A7D829;
 
 
+;;; $D82A: Phantoon function - flame rain - initial flame rain ;;;
 Function_Phantoon_FlameRain_InitialFlameRain:
     LDA.W #$000C                                                         ;A7D82A;
     JSR.W AdvancePhantoonFadeOut_DenominatorInA                          ;A7D82D;
@@ -8769,7 +9178,6 @@ Function_Phantoon_FlameRain_InitialFlameRain:
     JSR.W SpawnFlameRainProjectiles                                      ;A7D851;
     RTS                                                                  ;A7D854;
 
-
   .pattern0:
     LDA.W #$0000                                                         ;A7D855;
     JSR.W SpawnFlameRainProjectiles                                      ;A7D858;
@@ -8778,6 +9186,7 @@ Function_Phantoon_FlameRain_InitialFlameRain:
     RTS                                                                  ;A7D85B;
 
 
+;;; $D85C: Phantoon function - enraged - fading out before rage ;;;
 Function_Phantoon_Enraged_FadingOutBeforeRage:
     LDA.W #$000C                                                         ;A7D85C;
     JSR.W AdvancePhantoonFadeOut_DenominatorInA                          ;A7D85F;
@@ -8792,6 +9201,7 @@ Function_Phantoon_Enraged_FadingOutBeforeRage:
     RTS                                                                  ;A7D873;
 
 
+;;; $D874: Phantoon function - enraged - hiding ;;;
 Function_Phantoon_Enraged_Hiding:
     DEC.W $0FB0,X                                                        ;A7D874;
     BEQ .timerExpired                                                    ;A7D877;
@@ -8810,6 +9220,7 @@ Function_Phantoon_Enraged_Hiding:
     RTS                                                                  ;A7D890;
 
 
+;;; $D891: Phantoon function - enraged - fading in ;;;
 Function_Phantoon_Enraged_FadingIn:
     LDA.W #$000C                                                         ;A7D891;
     JSR.W AdvancePhantoonFadeIn_DenominatorInA                           ;A7D894;
@@ -8825,6 +9236,7 @@ Function_Phantoon_Enraged_FadingIn:
     RTS                                                                  ;A7D8AB;
 
 
+;;; $D8AC: Phantoon function - enraged - rage ;;;
 Function_Phantoon_Enraged_Rage:
     DEC.W $0FB0,X                                                        ;A7D8AC;
     BEQ .timerExpired                                                    ;A7D8AF;
@@ -8846,7 +9258,6 @@ Function_Phantoon_Enraged_Rage:
     DEY                                                                  ;A7D8CB;
     BPL .loopEvenWave                                                    ;A7D8CC;
     BRA .merge                                                           ;A7D8CE;
-
 
   .oddWave:
     LDY.W #$000F                                                         ;A7D8D0;
@@ -8874,7 +9285,6 @@ Function_Phantoon_Enraged_Rage:
     STA.W $0FB0,X                                                        ;A7D8FC;
     RTS                                                                  ;A7D8FF;
 
-
   .doneRaging:
     LDA.W #$0001                                                         ;A7D900;
     STA.W $0FD4                                                          ;A7D903;
@@ -8888,6 +9298,7 @@ Function_Phantoon_Enraged_Rage:
     RTS                                                                  ;A7D915;
 
 
+;;; $D916: Phantoon function - enraged - fading out after rage ;;;
 Function_Phantoon_Enraged_FadingOutAfterRage:
     LDA.W #$000C                                                         ;A7D916;
     JSR.W AdvancePhantoonFadeOut_DenominatorInA                          ;A7D919;
@@ -8902,6 +9313,7 @@ Function_Phantoon_Enraged_FadingOutAfterRage:
     RTS                                                                  ;A7D92D;
 
 
+;;; $D92E: Phantoon function - swooping - fatal damage ;;;
 Function_Phantoon_Swooping_FatalDamage:
     JSR.W MakePhantoonLookTowardsSamus                                   ;A7D92E;
     JSR.W MovePhantoonInSwoopingPattern                                  ;A7D931;
@@ -8917,6 +9329,7 @@ Function_Phantoon_Swooping_FatalDamage:
     RTS                                                                  ;A7D947;
 
 
+;;; $D948: Phantoon function - death sequence - fading in and out ;;;
 Function_Phantoon_DeathSequence_FadingInAndOut:
     NOP                                                                  ;A7D948;
     LDA.W $0FEC                                                          ;A7D949;
@@ -8927,7 +9340,6 @@ Function_Phantoon_DeathSequence_FadingInAndOut:
     LDA.W $0FF2                                                          ;A7D957;
     BNE .fadeComplete                                                    ;A7D95A;
     BRA .return                                                          ;A7D95C;
-
 
   .advanceFade:
     LDA.W #$000C                                                         ;A7D95E;
@@ -8953,12 +9365,12 @@ Function_Phantoon_DeathSequence_FadingInAndOut:
     RTS                                                                  ;A7D98A;
 
 
+;;; $D98B: Phantoon function - death sequence - exploding ;;;
 Function_Phantoon_DeathSequence_Exploding:
     DEC.W $0FB0,X                                                        ;A7D98B;
     BEQ .timerExpired                                                    ;A7D98E;
     BMI .timerExpired                                                    ;A7D990;
     RTS                                                                  ;A7D992;
-
 
   .timerExpired:
     LDA.W $1032                                                          ;A7D993;
@@ -8999,7 +9411,6 @@ Function_Phantoon_DeathSequence_Exploding:
     LDA.W #$0024                                                         ;A7D9DE;
     JSL.L QueueSound_Lib2_Max6                                           ;A7D9E1;
     BRA +                                                                ;A7D9E5;
-
 
   .PhantoonExplosion:
     LDA.W #$002B                                                         ;A7D9E7;
@@ -9054,6 +9465,7 @@ Function_Phantoon_DeathSequence_Exploding:
     db $18,$18,$03,$08 ;/
 
 
+;;; $DA51: Phantoon function - death sequence - set up wavy mosaic Phantoon ;;;
 Function_Phantoon_DeathSequence_SetupWavyMosaicPhantoon:
     LDA.W WavyPhantoonConstants_phaseDelta                               ;A7DA51;
     STA.B $16                                                            ;A7DA54;
@@ -9075,6 +9487,7 @@ Function_Phantoon_DeathSequence_SetupWavyMosaicPhantoon:
     RTS                                                                  ;A7DA85;
 
 
+;;; $DA86: Phantoon function - death sequence - wavy mosaic Phantoon ;;;
 Function_Phantoon_DeathSequence_WavyMosaicPhantoon:
     LDA.W WavyPhantoonConstants_Dying_amplitudeDelta                     ;A7DA86;
     STA.B $12                                                            ;A7DA89;
@@ -9098,14 +9511,12 @@ Function_Phantoon_DeathSequence_WavyMosaicPhantoon:
     REP #$20                                                             ;A7DAB4;
     BRA .return                                                          ;A7DAB6;
 
-
   .mosaicF2:
     REP #$20                                                             ;A7DAB8;
     LDA.W #$FFFF                                                         ;A7DABA;
     STA.W $0FEC                                                          ;A7DABD;
     STZ.W $0FF2                                                          ;A7DAC0;
     BRA .return                                                          ;A7DAC3;
-
 
   .doneMosaic:
     LDA.W #$000C                                                         ;A7DAC5;
@@ -9119,6 +9530,7 @@ Function_Phantoon_DeathSequence_WavyMosaicPhantoon:
     RTS                                                                  ;A7DAD6;
 
 
+;;; $DAD7: Phantoon function - death sequence - clear graphics ;;;
 Function_Phantoon_DeathSequence_ClearGraphics:
     SEP #$20                                                             ;A7DAD7;
     STZ.B $57                                                            ;A7DAD9;
@@ -9168,6 +9580,7 @@ Function_Phantoon_DeathSequence_ClearGraphics:
     RTS                                                                  ;A7DB3C;
 
 
+;;; $DB3D: Phantoon function - death sequence - activate Wrecked Ship ;;;
 Function_Phantoon_DeathSequence_ActivateWreckedShip:
     PHX                                                                  ;A7DB3D;
     LDA.W $0FB0,X                                                        ;A7DB3E;
@@ -9175,7 +9588,6 @@ Function_Phantoon_DeathSequence_ActivateWreckedShip:
     DEC.W $0FB0,X                                                        ;A7DB43;
     PLX                                                                  ;A7DB46;
     RTS                                                                  ;A7DB47;
-
 
   .timerExpired:
     LDA.W $05B6                                                          ;A7DB48;
@@ -9212,7 +9624,10 @@ Function_Phantoon_DeathSequence_ActivateWreckedShip:
     RTS                                                                  ;A7DB99;
 
 
+;;; $DB9A: Advance Phantoon fade out ;;;
 AdvancePhantoonFadeOut:
+;; Returns:
+;;     Carry: Set if reached target colour, clear otherwise
     REP #$30                                                             ;A7DB9A;
     LDA.W $0FEE                                                          ;A7DB9C;
     INC A                                                                ;A7DB9F;
@@ -9222,7 +9637,6 @@ AdvancePhantoonFadeOut:
     STA.W $0FF0                                                          ;A7DBA8;
     SEC                                                                  ;A7DBAB;
     RTS                                                                  ;A7DBAC;
-
 
   .advance:
     LDX.W #$0000                                                         ;A7DBAD;
@@ -9248,7 +9662,10 @@ AdvancePhantoonFadeOut:
     RTS                                                                  ;A7DBD4;
 
 
+;;; $DBD5: Advance Phantoon fade in ;;;
 AdvancePhantoonFadeIn:
+;; Returns:
+;;     Carry: Set if reached target colour, clear otherwise
     REP #$30                                                             ;A7DBD5;
     LDA.W $0FEE                                                          ;A7DBD7;
     INC A                                                                ;A7DBDA;
@@ -9258,7 +9675,6 @@ AdvancePhantoonFadeIn:
     STA.W $0FF0                                                          ;A7DBE3;
     SEC                                                                  ;A7DBE6;
     RTS                                                                  ;A7DBE7;
-
 
   .advance:
     LDX.W #$0000                                                         ;A7DBE8;
@@ -9283,7 +9699,10 @@ AdvancePhantoonFadeIn:
     RTS                                                                  ;A7DC0E;
 
 
+;;; $DC0F: Get Phantoon health-based palette colour [X] / 2 ;;;
 GetPhantoonHealthBasedPaletteColor:
+;; Returns:
+;;     Y: [Palette_Phantoon_HealthBased_0 + clamp(([enemy health] - 1) / 312, 0, 7) * 20h + [X]]
     STX.B $18                                                            ;A7DC0F;
     LDX.W $0E54                                                          ;A7DC11;
     LDA.W #$09C4                                                         ;A7DC14;
@@ -9321,7 +9740,6 @@ GetPhantoonHealthBasedPaletteColor:
     LDX.B $18                                                            ;A7DC47;
     RTS                                                                  ;A7DC49;
 
-
   .palettePointers:
     dw Palette_Phantoon_HealthBased_0                                    ;A7DC4A;
     dw Palette_Phantoon_HealthBased_1                                    ;A7DC4C;
@@ -9332,7 +9750,11 @@ GetPhantoonHealthBasedPaletteColor:
     dw Palette_Phantoon_HealthBased_6                                    ;A7DC56;
     dw Palette_Phantoon_HealthBased_7                                    ;A7DC58;
 
+
+;;; $DC5A: Advance Wrecked Ship power on palette transition ;;;
 AdvanceWreckedShipPowerOnPaletteTransition:
+;; Returns:
+;;     Carry: Set if reached target colour, clear otherwise
     REP #$30                                                             ;A7DC5A;
     LDA.W $0FEE                                                          ;A7DC5C;
     INC A                                                                ;A7DC5F;
@@ -9342,7 +9764,6 @@ AdvanceWreckedShipPowerOnPaletteTransition:
     STA.W $0FF0                                                          ;A7DC68;
     SEC                                                                  ;A7DC6B;
     RTS                                                                  ;A7DC6C;
-
 
   .advance:
     LDX.W #$0000                                                         ;A7DC6D;
@@ -9368,7 +9789,12 @@ AdvanceWreckedShipPowerOnPaletteTransition:
     RTS                                                                  ;A7DC94;
 
 
+;;; $DC95: Calculate the [A]th transitional colour from [X] to [Y] ;;;
 CalculateAthTransitionalColorFromXToY:
+;; Returns:
+;;     A: Result colour
+
+; Same as $82:DAA6, except palette change denominator is $0FEE instead of $C402
     PHA                                                                  ;A7DC95;
     PHA                                                                  ;A7DC96;
     PHX                                                                  ;A7DC97;
@@ -9431,12 +9857,21 @@ CalculateAthTransitionalColorFromXToY:
     RTS                                                                  ;A7DCF0;
 
 
+;;; $DCF1: Calculate the [A]th transitional colour component from [X] to [Y] ;;;
 CalculateTheAthTransitionalColorComponentFromXToY:
+;; Returns:
+;;     If [A] = 0:
+;;         A = [X]
+;;     If [A] = [Phantoon palette change denominator] + 1:
+;;         A = [Y]
+;;     Otherwise:
+;;         A = [X] + ([Y] - [X]) / ([Phantoon palette change denominator] + 1 - [A])
+
+; Same as $82:DAA6, except palette change denominator is $0FEE instead of $C402
     CMP.W #$0000                                                         ;A7DCF1;
     BNE .notZero                                                         ;A7DCF4;
     TXA                                                                  ;A7DCF6;
     RTS                                                                  ;A7DCF7;
-
 
   .notZero:
     DEC A                                                                ;A7DCF8;
@@ -9444,7 +9879,6 @@ CalculateTheAthTransitionalColorComponentFromXToY:
     BNE +                                                                ;A7DCFC;
     TYA                                                                  ;A7DCFE;
     RTS                                                                  ;A7DCFF;
-
 
 +   PHX                                                                  ;A7DD00;
     INC A                                                                ;A7DD01;
@@ -9486,6 +9920,7 @@ CalculateTheAthTransitionalColorComponentFromXToY:
     RTS                                                                  ;A7DD3E;
 
 
+;;; $DD3F: Hurt AI - enemy $E4BF (Phantoon) ;;;
 HurtAI_Phantoon:
     PHP                                                                  ;A7DD3F;
     REP #$30                                                             ;A7DD40;
@@ -9514,7 +9949,6 @@ HurtAI_Phantoon:
     STA.W $1036                                                          ;A7DD6F;
     BRA .return                                                          ;A7DD72;
 
-
   .white:
     LDA.W $1036                                                          ;A7DD74;
     BIT.W #$FF00                                                         ;A7DD77;
@@ -9536,15 +9970,18 @@ HurtAI_Phantoon:
     RTL                                                                  ;A7DD94;
 
 
+;;; $DD95: Enemy touch - enemy $E4BF (Phantoon) ;;;
 EnemyTouch_Phantoon:
     JSL.L NormalEnemyTouchAI_NoDeathCheck_External                       ;A7DD95;
     RTL                                                                  ;A7DD99;
 
 
+;;; $DD9A: RTL. Power bomb reaction - enemy $E4BF (Phantoon) ;;;
 RTL_A7DD9A:
     RTL                                                                  ;A7DD9A;
 
 
+;;; $DD9B: Enemy shot - enemy $E4BF (Phantoon) ;;;
 EnemyShot_Phantoon:
     PHB                                                                  ;A7DD9B;
     LDA.W $0FB2                                                          ;A7DD9C;
@@ -9552,7 +9989,6 @@ EnemyShot_Phantoon:
     BMI .notDead                                                         ;A7DDA2;
     PLB                                                                  ;A7DDA4;
     RTL                                                                  ;A7DDA5;
-
 
   .notDead:
     LDX.W $0E54                                                          ;A7DDA6;
@@ -9576,7 +10012,6 @@ EnemyShot_Phantoon:
     PLB                                                                  ;A7DDD2;
     RTL                                                                  ;A7DDD3;
 
-
   .alive:
     LDA.W $0F8A,X                                                        ;A7DDD4;
     BIT.W #$0002                                                         ;A7DDD7;
@@ -9591,7 +10026,6 @@ EnemyShot_Phantoon:
     CMP.W #Function_Phantoon_Swooping_Opaque                             ;A7DDF0;
     BEQ .swooping                                                        ;A7DDF3;
     JMP.W .return1036_2                                                  ;A7DDF5;
-
 
   .swooping:
     LDA.B $12                                                            ;A7DDF8;
@@ -9609,7 +10043,6 @@ EnemyShot_Phantoon:
     BNE .overDamaged                                                     ;A7DE13;
     JMP.W .enraged                                                       ;A7DE15;
 
-
   .overDamaged:
     LDA.W $102A,X                                                        ;A7DE18;
     CLC                                                                  ;A7DE1B;
@@ -9620,7 +10053,6 @@ EnemyShot_Phantoon:
     LDA.W #$0001                                                         ;A7DE26;
     STA.W $0FB0,X                                                        ;A7DE29;
     BRA .return1036_2                                                    ;A7DE2C;
-
 
   .vulnerableWindow:
     LDA.B $12                                                            ;A7DE2E;
@@ -9637,7 +10069,6 @@ EnemyShot_Phantoon:
     CMP.W #$0200                                                         ;A7DE46;
     BNE +                                                                ;A7DE49;
     JMP.W .enraged                                                       ;A7DE4B;
-
 
 +   LDA.W $102A,X                                                        ;A7DE4E;
     CLC                                                                  ;A7DE51;
@@ -9669,13 +10100,11 @@ EnemyShot_Phantoon:
     PLB                                                                  ;A7DE90;
     RTL                                                                  ;A7DE91;
 
-
   .return1036_2:
     LDA.W #$0002                                                         ;A7DE92;
     STA.W $1036                                                          ;A7DE95;
     PLB                                                                  ;A7DE98;
     RTL                                                                  ;A7DE99;
-
 
   .nextRound:
     LDA.W #Function_Phantoon_Swooping_FadeOut                            ;A7DE9A;
@@ -9701,13 +10130,13 @@ EnemyShot_Phantoon:
     STZ.W $0FF2                                                          ;A7DED0;
     BRA .return1036_2                                                    ;A7DED3;
 
-
   .enraged:
     LDA.W #Function_Phantoon_Enraged_FadingOutBeforeRage                 ;A7DED5;
     STA.W $0FB2,X                                                        ;A7DED8;
     BRA .nextRoundOrEnraged                                              ;A7DEDB;
 
 
+;;; $DEDD: Extended spritemaps ;;;
 ExtendedSpritemap_Phantoon_Body_Invulnerable:
     dw $0001                                                             ;A7DEDD;
     dw $0000,$0000
@@ -9890,10 +10319,12 @@ UNUSED_ExtendedSpritemap_Phantoon_Mouth_SpawningFlame_A7E007:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $E011: RTL. Initialisation AI - enemy $E53F/$E57F (Phantoon) ;;;
 RTL_A7E011:
     RTL                                                                  ;A7E011;
 
 
+;;; $E012: Hitboxes ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Hitbox_Phantoon_A7E012:
     dw $0001                                                             ;A7E012;
@@ -9932,6 +10363,8 @@ Hitbox_Phantoon_2:
     dw EnemyTouch_Phantoon                                               ;A7E076;
     dw EnemyShot_Phantoon                                                ;A7E078;
 
+
+;;; $E07A: Spritemaps / extended tilemaps ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Spritemap_PhantoonFlame_A7E07A:
     dw $0002                                                             ;A7E07A;
@@ -10103,6 +10536,8 @@ ExtendedTilemap_Phantoon_Mouth_2:                                        ;A7E3B6
     dw $2346,$0004, $3D30,$3D31,$7D31,$7D30
     dw $FFFF
 
+
+;;; $E3D2: Phantoon movement data ;;;
 PhantoonMovementData:
 ; List of (signed) X/Y offset pairs, 216h total
 ; Indexed by $0FA8
@@ -10174,15 +10609,21 @@ PhantoonMovementData:
     db $01,$00, $00,$FF, $01,$FF, $00,$FF, $01,$00, $00,$FF, $01,$00, $00,$FF ;A7E7E2;
     db $01,$FF, $00,$FF, $01,$00, $00,$FF, $01,$00, $00,$FF                   ;A7E7F2;
 
+
+;;; $E7FE: Palette - enemy $E5BF (etecoon) ;;;
 Palette_Etecoon:
     dw $3800,$5F97,$56F2,$2987,$00A0,$6355,$4AB0,$3A0B                   ;A7E7FE;
     dw $31C9,$57FF,$42F7,$2610,$158C,$03FF,$0279,$0029                   ;A7E80E;
 
+
+;;; $E81E: Instruction list - look right at Samus and run left ;;;
 InstList_Etecoon_LookRightAtSamusAndRunLeft:
     dw $0005,Spritemap_Etecoon_C                                         ;A7E81E;
     dw Instruction_Common_Sleep                                          ;A7E822;
     dw $0001,Spritemap_Etecoon_D                                         ;A7E824;
 
+
+;;; $E828: Instruction list - running left ;;;
 InstList_Etecoon_RunningLeft:
     dw $0005,Spritemap_Etecoon_0                                         ;A7E828;
     dw $0005,Spritemap_Etecoon_1                                         ;A7E82C;
@@ -10191,6 +10632,8 @@ InstList_Etecoon_RunningLeft:
     dw Instruction_Common_GotoY                                          ;A7E838;
     dw InstList_Etecoon_RunningLeft                                      ;A7E83A;
 
+
+;;; $E83C: Instruction list - wall jump left ;;;
 InstList_Etecoon_WallJump_0:
     dw $0008,Spritemap_Etecoon_7                                         ;A7E83C;
 
@@ -10202,27 +10645,37 @@ InstList_Etecoon_WallJump_1:
     dw Instruction_Common_GotoY                                          ;A7E850;
     dw InstList_Etecoon_WallJump_1                                       ;A7E852;
 
+
+;;; $E854: Instruction list - hopping - facing left ;;;
 InstList_Etecoon_Hopping_FacingLeft:
     dw $0001,Spritemap_Etecoon_8                                         ;A7E854;
     dw Instruction_Common_Sleep                                          ;A7E858;
     dw $000C,Spritemap_Etecoon_9                                         ;A7E85A;
     dw $000C,Spritemap_Etecoon_A                                         ;A7E85E;
 
+
+;;; $E862: Instruction list - hit ceiling ;;;
 InstList_Etecoon_HitCeiling:
     dw $0006,Spritemap_Etecoon_B                                         ;A7E862;
     dw $000C,Spritemap_Etecoon_A                                         ;A7E866;
     dw $000C,Spritemap_Etecoon_9                                         ;A7E86A;
     dw Instruction_Common_Sleep                                          ;A7E86E;
 
+
+;;; $E870: Instruction list - wall-jump left eligible ;;;
 InstList_Etecoon_WallJumpLeftEligible:
     dw $0001,Spritemap_Etecoon_F                                         ;A7E870;
     dw Instruction_Common_Sleep                                          ;A7E874;
 
+
+;;; $E876: Instruction list - look left at Samus and run right ;;;
 InstList_Etecoon_LookLeftAtSamusAndRunRight:
     dw $0005,Spritemap_Etecoon_1E                                        ;A7E876;
     dw Instruction_CommonA7_Sleep                                        ;A7E87A;
     dw $0001,Spritemap_Etecoon_1D                                        ;A7E87C;
 
+
+;;; $E880: Instruction list - running right ;;;
 InstList_Etecoon_RunningRight:
     dw $0005,Spritemap_Etecoon_10                                        ;A7E880;
     dw $0005,Spritemap_Etecoon_11                                        ;A7E884;
@@ -10231,9 +10684,13 @@ InstList_Etecoon_RunningRight:
     dw Instruction_Common_GotoY                                          ;A7E890;
     dw InstList_Etecoon_RunningRight                                     ;A7E892;
 
+
+;;; $E894: Instruction list - wall jump right ;;;
 InstList_Etecoon_WallJumpRight:
     dw $0008,Spritemap_Etecoon_17                                        ;A7E894;
 
+
+;;; $E898: Instruction list - jumping right ;;;
 InstList_Etecoon_JumpingRight:
     dw $0003,Spritemap_Etecoon_13                                        ;A7E898;
     dw $0003,Spritemap_Etecoon_14                                        ;A7E89C;
@@ -10242,6 +10699,8 @@ InstList_Etecoon_JumpingRight:
     dw Instruction_Common_GotoY                                          ;A7E8A8;
     dw InstList_Etecoon_JumpingRight                                     ;A7E8AA;
 
+
+;;; $E8AC: Instruction list - hopping - facing right ;;;
 InstList_Etecoon_Hopping_FacingRight:
     dw $0001,Spritemap_Etecoon_18                                        ;A7E8AC;
     dw Instruction_Common_Sleep                                          ;A7E8B0;
@@ -10252,15 +10711,21 @@ InstList_Etecoon_Hopping_FacingRight:
     dw $000C,Spritemap_Etecoon_19                                        ;A7E8C2;
     dw Instruction_CommonA7_Sleep                                        ;A7E8C6;
 
+
+;;; $E8C8: Instruction list - wall-jump right eligible ;;;
 InstList_Etecoon_WallJumpRightEligible:
     dw $0001,Spritemap_Etecoon_1F                                        ;A7E8C8;
     dw Instruction_Common_Sleep                                          ;A7E8CC;
 
+
+;;; $E8CE: Instruction list - initial ;;;
 InstList_Etecoon_Initial:
     dw $0008,Spritemap_Etecoon_18                                        ;A7E8CE;
     dw Instruction_Common_GotoY                                          ;A7E8D2;
     dw InstList_Etecoon_Initial                                          ;A7E8D4;
 
+
+;;; $E8D6: Instruction list - flexing ;;;
 InstList_Etecoon_Flexing_0:
     dw Instruction_Common_TimerInY                                       ;A7E8D6;
     dw $0004                                                             ;A7E8D8;
@@ -10278,27 +10743,31 @@ InstList_Etecoon_Flexing_1:
     dw $0020,Spritemap_Etecoon_1E                                        ;A7E8FA;
     dw Instruction_Common_Sleep                                          ;A7E8FE;
 
-EtecoonConstants_initialYVelocityOfHopsAndFailedJumps:
+
+;;; $E900: Etecoon constants ;;;
+EtecoonConstants:
+  .initialYVelocityOfHopsAndFailedJumps:
 ; Initial Y velocity of hops and failed jump
     dw $FFFD,$0000                                                       ;A7E900;
 
-EtecoonConstants_initialYVelocityOfSuccessfulJump:
+  .initialYVelocityOfSuccessfulJump:
 ; Initial Y velocity of successful jump
     dw $FFFC,$0000                                                       ;A7E904;
 
-EtecoonConstants_XVelocityRight:
+  .XVelocityRight:
 ; X velocity - right
     dw $0002,$0000                                                       ;A7E908;
 
-EtecoonConstants_XVelocityLeft:
+  .XVelocityLeft:
 ; X velocity - left
     dw $FFFE,$0000                                                       ;A7E90C;
 
-EtecoonConstants_SamusXProximityThresholdAtBottomOfRoom:
+  .SamusXProximityThresholdAtBottomOfRoom:
 ; Samus X proximity threshold at bottom of room
     dw $0040                                                             ;A7E910;
 
 
+;;; $E912: Initialisation AI - enemy $E5BF (etecoon) ;;;
 InitAI_Etecoon:
     LDX.W $0E54                                                          ;A7E912;
     LDA.W $0F86,X                                                        ;A7E915;
@@ -10318,6 +10787,7 @@ InitAI_Etecoon:
     RTL                                                                  ;A7E93F;
 
 
+;;; $E940: Main AI - enemy $E5BF (etecoon) ;;;
 MainAI_Etecoon:
     LDX.W $0E54                                                          ;A7E940;
     LDA.W $0FB6,X                                                        ;A7E943;
@@ -10328,15 +10798,14 @@ MainAI_Etecoon:
     STA.W $0FB6,X                                                        ;A7E94F;
     BRA .return                                                          ;A7E952;
 
-
   .executeFunction:
     JMP.W ($0FB2,X)                                                      ;A7E954;
-
 
   .return:
     RTL                                                                  ;A7E957;
 
 
+;;; $E958: Freeze etecoon if quake active ;;;
 FreezeEtecoonIfQuakeActive:
     LDA.W $1840                                                          ;A7E958;
     BEQ .return                                                          ;A7E95B;
@@ -10353,7 +10822,10 @@ FreezeEtecoonIfQuakeActive:
     RTS                                                                  ;A7E973;
 
 
+;;; $E974: Etecoon horizontal movement ;;;
 EtecoonHorizontalMovement:
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     LDA.W $0FAC,X                                                        ;A7E974;
     STA.B $14                                                            ;A7E977;
     LDA.W $0FAE,X                                                        ;A7E979;
@@ -10362,7 +10834,10 @@ EtecoonHorizontalMovement:
     RTS                                                                  ;A7E982;
 
 
+;;; $E983: Etecoon vertical movement ;;;
 EtecoonVerticalMovement:
+;; Returns:
+;;     Carry: Set if collision, clear otherwise
     LDA.W $0FA8,X                                                        ;A7E983;
     STA.B $14                                                            ;A7E986;
     LDA.W $0FAA,X                                                        ;A7E988;
@@ -10383,11 +10858,11 @@ EtecoonVerticalMovement:
     RTS                                                                  ;A7E9AE;
 
 
+;;; $E9AF: Etecoon function - initial ;;;
 Function_Etecoon_Initial:
     LDA.W $0797                                                          ;A7E9AF;
     BEQ .notDoorTransition                                               ;A7E9B2;
     RTL                                                                  ;A7E9B4;
-
 
   .notDoorTransition:
     LDA.W $0FB0,X                                                        ;A7E9B5;
@@ -10411,7 +10886,6 @@ Function_Etecoon_Initial:
     STA.W $0FB0,X                                                        ;A7E9E2;
     RTL                                                                  ;A7E9E5;
 
-
   .positive:
     DEC.W $0FB0,X                                                        ;A7E9E6;
     BEQ .hop                                                             ;A7E9E9;
@@ -10429,6 +10903,7 @@ Function_Etecoon_Initial:
     RTL                                                                  ;A7E9FF;
 
 
+;;; $EA00: Etecoon function - start hop - bottom of room ;;;
 Function_Etecoon_StartHop_BottomOfRoom:
     DEC.W $0FB0,X                                                        ;A7EA00;
     BEQ .timerExpired                                                    ;A7EA03;
@@ -10457,11 +10932,11 @@ Function_Etecoon_StartHop_BottomOfRoom:
     RTL                                                                  ;A7EA36;
 
 
+;;; $EA37: Etecoon function - hopping - bottom of room ;;;
 Function_Etecoon_Hopping_BottomOfRoom:
     JSR.W EtecoonVerticalMovement                                        ;A7EA37;
     BCS .collision                                                       ;A7EA3A;
     RTL                                                                  ;A7EA3C;
-
 
   .collision:
     LDA.W $0FA8,X                                                        ;A7EA3D;
@@ -10473,7 +10948,6 @@ Function_Etecoon_Hopping_BottomOfRoom:
     LDA.W #InstList_Etecoon_HitCeiling                                   ;A7EA4E;
     STA.W $0F92,X                                                        ;A7EA51;
     RTL                                                                  ;A7EA54;
-
 
   .notRising:
     LDA.W #$0040                                                         ;A7EA55;
@@ -10492,7 +10966,6 @@ Function_Etecoon_Hopping_BottomOfRoom:
     STZ.W $0FB4,X                                                        ;A7EA78;
     BRA +                                                                ;A7EA7B;
 
-
   .left:
     LDA.W #InstList_Etecoon_LookLeftAtSamusAndRunRight                   ;A7EA7D;
     STA.W $0F92,X                                                        ;A7EA80;
@@ -10507,7 +10980,6 @@ Function_Etecoon_Hopping_BottomOfRoom:
     STA.W $0FB2,X                                                        ;A7EA98;
     RTL                                                                  ;A7EA9B;
 
-
   .hopMore:
     LDA.W #$000B                                                         ;A7EA9C;
     STA.W $0FB0,X                                                        ;A7EA9F;
@@ -10520,6 +10992,7 @@ Function_Etecoon_Hopping_BottomOfRoom:
     RTL                                                                  ;A7EAB4;
 
 
+;;; $EAB5: Etecoon function - look at Samus ;;;
 Function_Etecoon_LookAtSamus:
     DEC.W $0FB0,X                                                        ;A7EAB5;
     BEQ .timerExpired                                                    ;A7EAB8;
@@ -10542,7 +11015,6 @@ Function_Etecoon_LookAtSamus:
     STA.W $0FB2,X                                                        ;A7EADE;
     BRA +                                                                ;A7EAE1;
 
-
   .left:
     LDA.W EtecoonConstants_XVelocityLeft                                 ;A7EAE3;
     STA.W $0FAC,X                                                        ;A7EAE6;
@@ -10560,6 +11032,7 @@ Function_Etecoon_LookAtSamus:
     RTL                                                                  ;A7EB01;
 
 
+;;; $EB02: Etecoon function - running left ;;;
 Function_Etecoon_RunningLeft:
     JSR.W EtecoonHorizontalMovement                                      ;A7EB02;
     BCC .return                                                          ;A7EB05;
@@ -10580,6 +11053,7 @@ Function_Etecoon_RunningLeft:
     RTL                                                                  ;A7EB2B;
 
 
+;;; $EB2C: Etecoon function - running right ;;;
 Function_Etecoon_RunningRight:
     LDA.W #$0020                                                         ;A7EB2C;
     STA.B $14                                                            ;A7EB2F;
@@ -10594,12 +11068,12 @@ Function_Etecoon_RunningRight:
     STA.W $0FB2,X                                                        ;A7EB48;
     RTL                                                                  ;A7EB4B;
 
-
   .move:
     JSR.W EtecoonHorizontalMovement                                      ;A7EB4C;
     RTL                                                                  ;A7EB4F;
 
 
+;;; $EB50: Etecoon function - jumping ;;;
 Function_Etecoon_Jumping:
     JSR.W FreezeEtecoonIfQuakeActive                                     ;A7EB50;
     JSR.W EtecoonHorizontalMovement                                      ;A7EB53;
@@ -10611,7 +11085,6 @@ Function_Etecoon_Jumping:
     LDA.W #$0001                                                         ;A7EB63;
     STA.W $0FB4,X                                                        ;A7EB66;
     BRA +                                                                ;A7EB69;
-
 
   .leftEligible:
     LDA.W #InstList_Etecoon_WallJumpLeftEligible                         ;A7EB6B;
@@ -10633,7 +11106,6 @@ Function_Etecoon_Jumping:
   .returnUpper:
     RTL                                                                  ;A7EB95;
 
-
   .noWall:
     JSR.W EtecoonVerticalMovement                                        ;A7EB96;
     BCC .returnLower                                                     ;A7EB99;
@@ -10642,7 +11114,6 @@ Function_Etecoon_Jumping:
     LDA.W #InstList_Etecoon_Hopping_FacingRight                          ;A7EBA0;
     STA.W $0F92,X                                                        ;A7EBA3;
     BRA +                                                                ;A7EBA6;
-
 
   .hopLeft:
     LDA.W #InstList_Etecoon_Hopping_FacingLeft                           ;A7EBA8;
@@ -10663,6 +11134,7 @@ Function_Etecoon_Jumping:
     RTL                                                                  ;A7EBCC;
 
 
+;;; $EBCD: Etecoon function - wall jump ;;;
 Function_Etecoon_WallJump:
     JSR.W FreezeEtecoonIfQuakeActive                                     ;A7EBCD;
     DEC.W $0FB0,X                                                        ;A7EBD0;
@@ -10679,7 +11151,6 @@ Function_Etecoon_WallJump:
     LDA.W EtecoonConstants_XVelocityRight+2                              ;A7EBE8;
     STA.W $0FAE,X                                                        ;A7EBEB;
     BRA +                                                                ;A7EBEE;
-
 
   .left:
     LDA.W #InstList_Etecoon_WallJump_0                                   ;A7EBF0;
@@ -10702,6 +11173,7 @@ Function_Etecoon_WallJump:
     RTL                                                                  ;A7EC1A;
 
 
+;;; $EC1B: Etecoon function - landed from jump ;;;
 Function_Etecoon_LandedFromJump:
     DEC.W $0FB0,X                                                        ;A7EC1B;
     BEQ .timerExpired                                                    ;A7EC1E;
@@ -10724,12 +11196,13 @@ Function_Etecoon_LandedFromJump:
   .return:
     RTL                                                                  ;A7EC40;
 
-
   .pointers:
     dw RunToLeftRunUpPoint                                               ;A7EC41;
     dw RunToRightRunUpPoint                                              ;A7EC43;
     dw HopAtCenterRunUpPoint                                             ;A7EC45;
 
+
+;;; $EC47: Run to left run-up point ;;;
 RunToLeftRunUpPoint:
     TYX                                                                  ;A7EC47;
     LDA.W #Function_Etecoon_RunToLeftRunUpPoint                          ;A7EC48;
@@ -10743,6 +11216,7 @@ RunToLeftRunUpPoint:
     RTS                                                                  ;A7EC60;
 
 
+;;; $EC61: Run to right run-up point ;;;
 RunToRightRunUpPoint:
     TYX                                                                  ;A7EC61;
     LDA.W #Function_Etecoon_RunToRightRunUpPoint                         ;A7EC62;
@@ -10756,6 +11230,7 @@ RunToRightRunUpPoint:
     RTS                                                                  ;A7EC7A;
 
 
+;;; $EC7B: Hop at center run-up point ;;;
 HopAtCenterRunUpPoint:
     TYX                                                                  ;A7EC7B;
     LDA.W #Function_Etecoon_Hopping_TopOfRoom                            ;A7EC7C;
@@ -10771,6 +11246,7 @@ HopAtCenterRunUpPoint:
     RTS                                                                  ;A7EC96;
 
 
+;;; $EC97: Etecoon function - run to left run-up point ;;;
 Function_Etecoon_RunToLeftRunUpPoint:
     JSR.W EtecoonHorizontalMovement                                      ;A7EC97;
     LDA.W $0F7A,X                                                        ;A7EC9A;
@@ -10789,6 +11265,7 @@ Function_Etecoon_RunToLeftRunUpPoint:
     RTL                                                                  ;A7ECBA;
 
 
+;;; $ECBB: Etecoon function - run to right run-up point ;;;
 Function_Etecoon_RunToRightRunUpPoint:
     JSR.W EtecoonHorizontalMovement                                      ;A7ECBB;
     LDA.W $0F7A,X                                                        ;A7ECBE;
@@ -10807,6 +11284,7 @@ Function_Etecoon_RunToRightRunUpPoint:
     RTL                                                                  ;A7ECDE;
 
 
+;;; $ECDF: Etecoon function - running for successful morph tunnel jump ;;;
 Function_Etecoon_RunningForSuccessfulMorphTunnelJump:
     JSR.W EtecoonHorizontalMovement                                      ;A7ECDF;
     LDA.W $0F7A,X                                                        ;A7ECE2;
@@ -10827,6 +11305,7 @@ Function_Etecoon_RunningForSuccessfulMorphTunnelJump:
     RTL                                                                  ;A7ED08;
 
 
+;;; $ED09: Etecoon function - successful morph tunnel jump ;;;
 Function_Etecoon_SuccessfulMorphTunnelJump:
     JSR.W EtecoonHorizontalMovement                                      ;A7ED09;
     JSR.W EtecoonVerticalMovement                                        ;A7ED0C;
@@ -10844,6 +11323,7 @@ Function_Etecoon_SuccessfulMorphTunnelJump:
     RTL                                                                  ;A7ED29;
 
 
+;;; $ED2A: Etecoon function - running through morph tunnel ;;;
 Function_Etecoon_RunningThroughMorphTunnel:
     JSR.W EtecoonHorizontalMovement                                      ;A7ED2A;
     LDA.W $0F7A,X                                                        ;A7ED2D;
@@ -10864,6 +11344,7 @@ Function_Etecoon_RunningThroughMorphTunnel:
     RTL                                                                  ;A7ED53;
 
 
+;;; $ED54: Etecoon function - falling from morph tunnel ledge ;;;
 Function_Etecoon_FallingFromMorphTunnelLedge:
     JSR.W EtecoonHorizontalMovement                                      ;A7ED54;
     JSR.W EtecoonVerticalMovement                                        ;A7ED57;
@@ -10881,12 +11362,12 @@ Function_Etecoon_FallingFromMorphTunnelLedge:
     RTL                                                                  ;A7ED74;
 
 
+;;; $ED75: Etecoon function - hopping - top of room ;;;
 Function_Etecoon_Hopping_TopOfRoom:
     JSR.W FreezeEtecoonIfQuakeActive                                     ;A7ED75;
     JSR.W EtecoonVerticalMovement                                        ;A7ED78;
     BCS .collision                                                       ;A7ED7B;
     RTL                                                                  ;A7ED7D;
-
 
   .collision:
     LDA.W $0FA8,X                                                        ;A7ED7E;
@@ -10898,7 +11379,6 @@ Function_Etecoon_Hopping_TopOfRoom:
     LDA.W #InstList_Etecoon_HitCeiling                                   ;A7ED8F;
     STA.W $0F92,X                                                        ;A7ED92;
     RTL                                                                  ;A7ED95;
-
 
   .rising:
     LDA.W #$000B                                                         ;A7ED96;
@@ -10916,7 +11396,6 @@ Function_Etecoon_Hopping_TopOfRoom:
     STA.W $0FB2,X                                                        ;A7EDB3;
     BRA .return                                                          ;A7EDB6;
 
-
   .successEtecoon:
     LDA.W $0F7A,X                                                        ;A7EDB8;
     CMP.W #$0340                                                         ;A7EDBB;
@@ -10928,6 +11407,7 @@ Function_Etecoon_Hopping_TopOfRoom:
     RTL                                                                  ;A7EDC6;
 
 
+;;; $EDC7: Etecoon function - start hop - top of room ;;;
 Function_Etecoon_StartHop_TopOfRoom:
     JSR.W FreezeEtecoonIfQuakeActive                                     ;A7EDC7;
     DEC.W $0FB0,X                                                        ;A7EDCA;
@@ -10958,7 +11438,6 @@ Function_Etecoon_StartHop_TopOfRoom:
     STA.W $0FAE,X                                                        ;A7EE09;
     BRA .merge                                                           ;A7EE0C;
 
-
   .notFailedJump:
     LDA.W #Function_Etecoon_Hopping_TopOfRoom                            ;A7EE0E;
     STA.W $0FB2,X                                                        ;A7EE11;
@@ -10984,6 +11463,7 @@ Function_Etecoon_StartHop_TopOfRoom:
     RTL                                                                  ;A7EE3D;
 
 
+;;; $EE3E: Etecoon function - hop until Samus is near ;;;
 Function_Etecoon_HopUntilSamusIsNear:
     JSR.W FreezeEtecoonIfQuakeActive                                     ;A7EE3E;
     DEC.W $0FB0,X                                                        ;A7EE41;
@@ -11004,7 +11484,6 @@ Function_Etecoon_HopUntilSamusIsNear:
     LDA.W #Function_Etecoon_RunningForSuccessfulMorphTunnelJump          ;A7EE62;
     STA.W $0FB2,X                                                        ;A7EE65;
     BRA .skipSFX                                                         ;A7EE68;
-
 
   .notClose:
     LDA.W EtecoonConstants_initialYVelocityOfHopsAndFailedJumps          ;A7EE6A;
@@ -11031,6 +11510,7 @@ Function_Etecoon_HopUntilSamusIsNear:
     RTL                                                                  ;A7EE99;
 
 
+;;; $EE9A: Etecoon function - running for failed morph tunnel jump ;;;
 Function_Etecoon_RunningForFailedMorphTunnelJump:
     JSR.W EtecoonHorizontalMovement                                      ;A7EE9A;
     LDA.W $0F7A,X                                                        ;A7EE9D;
@@ -11047,6 +11527,7 @@ Function_Etecoon_RunningForFailedMorphTunnelJump:
     RTL                                                                  ;A7EEB7;
 
 
+;;; $EEB8: Etecoon function - failed tunnel jump ;;;
 Function_Etecoon_FailedTunnelJump:
     JSR.W EtecoonHorizontalMovement                                      ;A7EEB8;
     JSR.W EtecoonVerticalMovement                                        ;A7EEBB;
@@ -11070,14 +11551,17 @@ Function_Etecoon_FailedTunnelJump:
     RTL                                                                  ;A7EEEA;
 
 
+;;; $EEEB: RTL ;;;
 RTL_A7EEEB:
     RTL                                                                  ;A7EEEB;
 
 
+;;; $EEEC: RTL ;;;
 RTL_A7EEEC:
     RTL                                                                  ;A7EEEC;
 
 
+;;; $EEED: Spritemaps ;;;
 Spritemap_Etecoon_0:
     dw $0003                                                             ;A7EEED;
     %spritemapEntry(0, $1F2, $FF, 0, 0, 3, 1, $129)
@@ -11327,10 +11811,13 @@ Spritemap_Etecoon_1F:
     %spritemapEntry(0, $00, $F8, 0, 1, 3, 1, $12A)
 
 
+;;; $F225: Palettes ;;;
+; Default
 Palette_Dachora:
     dw $3800,$3F57,$2E4D,$00E2,$0060,$3AB0,$220B,$1166                   ;A7F225;
     dw $0924,$57FF,$42F7,$2610,$158C,$7C1F,$6018,$300A                   ;A7F235;
 
+; Speed boosting
 Palette_Dachora_SpeedBoosting_0:
     dw $1580,$3F57,$2E4D,$00E2,$0060,$3AB0,$220B,$1166                   ;A7F245;
     dw $0924,$57FF,$42F7,$2610,$158C,$7C1F,$6018,$300A                   ;A7F255;
@@ -11347,6 +11834,7 @@ Palette_Dachora_SpeedBoosting_3:
     dw $3800,$7F57,$6E4D,$40E2,$4060,$7AB0,$620B,$5166                   ;A7F2A5;
     dw $4924,$7FFF,$7EF7,$6610,$558C,$7C1F,$7C18,$700A                   ;A7F2B5;
 
+; Shine (both stored and shinespark)
 Palette_Dachora_Shine_0:
     dw $3800,$3F57,$2E4D,$00E2,$0060,$3AB0,$220B,$1166                   ;A7F2C5;
     dw $0924,$57FF,$42F7,$2610,$158C,$7C1F,$6018,$300A                   ;A7F2D5;
@@ -11363,6 +11851,8 @@ Palette_Dachora_Shine_3:
     dw $3800,$63BB,$5F37,$4AB3,$4A72,$6379,$5737,$52F5                   ;A7F325;
     dw $4ED4,$6FFF,$677B,$5B39,$52F7,$7E5F,$725C,$5E56                   ;A7F335;
 
+
+;;; $F345: Instruction list - running left ;;;
 InstList_Dachora_RunningLeft:
     dw $0005,Spritemap_Dachora_0                                         ;A7F345;
     dw $0005,Spritemap_Dachora_1                                         ;A7F349;
@@ -11393,6 +11883,8 @@ InstList_Dachora_RunningLeft_VeryFastAnimation:
     dw Instruction_Common_GotoY                                          ;A7F395;
     dw InstList_Dachora_RunningLeft_VeryFastAnimation                    ;A7F397;
 
+
+;;; $F399: Instruction list - idling - facing left ;;;
 InstList_Dachora_Idling_FacingLeft:
     dw $0030,Spritemap_Dachora_8                                         ;A7F399;
     dw $000A,Spritemap_Dachora_B                                         ;A7F39D;
@@ -11408,6 +11900,8 @@ InstList_Dachora_Idling_FacingLeft:
     dw Instruction_Common_GotoY                                          ;A7F3C5;
     dw InstList_Dachora_Idling_FacingLeft                                ;A7F3C7;
 
+
+;;; $F3C9: Instruction list - blinking - facing left ;;;
 InstList_Dachora_Blinking_FacingLeft:
     dw $000B,Spritemap_Dachora_8                                         ;A7F3C9;
     dw $0008,Spritemap_Dachora_9                                         ;A7F3CD;
@@ -11421,22 +11915,30 @@ InstList_Dachora_Blinking_FacingLeft:
     dw Instruction_Common_GotoY                                          ;A7F3ED;
     dw InstList_Dachora_Blinking_FacingLeft                              ;A7F3EF;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $F3F1: Unused. Instruction list - charge shinespark - facing left ;;;
 UNUSED_InstList_Dachora_ChargeShinespark_FacingLeft_A7F3F1:
     dw $0001,Spritemap_Dachora_6                                         ;A7F3F1;
     dw Instruction_Common_Sleep                                          ;A7F3F5;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $F3F7: Instruction list - echo - facing left ;;;
 InstList_Dachora_Echo_FacingLeft:
     dw $000A,Spritemap_Dachora_7                                         ;A7F3F7;
     dw Instruction_Common_GotoY                                          ;A7F3FB;
     dw InstList_Dachora_Echo_FacingLeft                                  ;A7F3FD;
 
+
+;;; $F3FF: Instruction list - falling - facing left ;;;
 InstList_Dachora_Falling_FacingLeft:
     dw $0005,Spritemap_Dachora_4                                         ;A7F3FF;
     dw Instruction_Common_GotoY                                          ;A7F403;
     dw InstList_Dachora_Falling_FacingLeft                               ;A7F405;
 
+
+;;; $F407: Instruction list - running right ;;;
 InstList_Dachora_RunningRight:
     dw $0005,Spritemap_Dachora_F                                         ;A7F407;
     dw $0005,Spritemap_Dachora_10                                        ;A7F40B;
@@ -11467,6 +11969,8 @@ InstList_Dachora_RunningRight_VeryFastAnimation:
     dw Instruction_Common_GotoY                                          ;A7F457;
     dw InstList_Dachora_RunningRight_VeryFastAnimation                   ;A7F459;
 
+
+;;; $F45B: Instruction list - idling - facing right ;;;
 InstList_Dachora_Idling_FacingRight:
     dw $0030,Spritemap_Dachora_17                                        ;A7F45B;
     dw $000A,Spritemap_Dachora_1A                                        ;A7F45F;
@@ -11482,6 +11986,8 @@ InstList_Dachora_Idling_FacingRight:
     dw Instruction_Common_GotoY                                          ;A7F487;
     dw InstList_Dachora_Idling_FacingRight                               ;A7F489;
 
+
+;;; $F48B: Instruction list - blinking - facing right ;;;
 InstList_Dachora_Blinking_FacingRight:
     dw $000B,Spritemap_Dachora_17                                        ;A7F48B;
     dw $0008,Spritemap_Dachora_18                                        ;A7F48F;
@@ -11495,20 +12001,28 @@ InstList_Dachora_Blinking_FacingRight:
     dw Instruction_Common_GotoY                                          ;A7F4AF;
     dw InstList_Dachora_Blinking_FacingRight                             ;A7F4B1;
 
+
+;;; $F4B3: Instruction list - charge shinespark - facing right ;;;
 InstList_Dachora_ChargeShinespark_FacingRight:
     dw $0001,Spritemap_Dachora_15                                        ;A7F4B3;
     dw Instruction_Common_Sleep                                          ;A7F4B7;
 
+
+;;; $F4B9: Instruction list - echo - facing right ;;;
 InstList_Dachora_Echo_FacingRight:
     dw $000A,Spritemap_Dachora_16                                        ;A7F4B9;
     dw Instruction_Common_GotoY                                          ;A7F4BD;
     dw InstList_Dachora_Echo_FacingRight                                 ;A7F4BF;
 
+
+;;; $F4C1: Instruction list - falling - facing right ;;;
 InstList_Dachora_Falling_FacingRight:
     dw $0005,Spritemap_Dachora_13                                        ;A7F4C1;
     dw Instruction_Common_GotoY                                          ;A7F4C5;
     dw InstList_Dachora_Falling_FacingRight                              ;A7F4C7;
 
+
+;;; $F4C9: Dachora constants ;;;
 DachoraConstants_SamusProximityXThreshold:
 ; Max X distance between dachora and Samus before dachora starts running
     dw $0060                                                             ;A7F4C9;
@@ -11541,6 +12055,8 @@ DachoraConstants_XAcceleration:
 ; X acceleration
     dw $0000,$1000                                                       ;A7F4D9;
 
+
+;;; $F4DD: Initialisation AI - enemy $E5FF (dachora) ;;;
 InitAI_Dachora:
     LDX.W $0E54                                                          ;A7F4DD;
     LDA.W $0F86,X                                                        ;A7F4E0;
@@ -11558,7 +12074,6 @@ InitAI_Dachora:
     STA.W $0F92,X                                                        ;A7F502;
     BRA +                                                                ;A7F505;
 
-
   .left:
     LDA.W #InstList_Dachora_Idling_FacingLeft                            ;A7F507;
     STA.W $0F92,X                                                        ;A7F50A;
@@ -11567,14 +12082,12 @@ InitAI_Dachora:
     STA.W $0FB2,X                                                        ;A7F510;
     RTL                                                                  ;A7F513;
 
-
   .echo:
     BIT.W #$0001                                                         ;A7F514;
     BEQ ..left                                                           ;A7F517;
     LDA.W #InstList_Dachora_Echo_FacingRight                             ;A7F519;
     STA.W $0F92,X                                                        ;A7F51C;
     BRA +                                                                ;A7F51F;
-
 
   ..left:
     LDA.W #InstList_Dachora_Echo_FacingLeft                              ;A7F521;
@@ -11585,16 +12098,21 @@ InitAI_Dachora:
     RTL                                                                  ;A7F52D;
 
 
+;;; $F52E: Main AI - enemy $E5FF (dachora) ;;;
 MainAI_Dachora:
     LDX.W $0E54                                                          ;A7F52E;
     JMP.W ($0FB2,X)                                                      ;A7F531;
 
 
+;;; $F534: Unused. RTL ;;;
 RTL_A7F534:
     RTL                                                                  ;A7F534;
 
 
+;;; $F535: Load dachora palette ;;;
 LoadDachoraPalette:
+;; Parameters:
+;;     Y: Palette source address
     PHP                                                                  ;A7F535;
     REP #$30                                                             ;A7F536;
     PHX                                                                  ;A7F538;
@@ -11623,7 +12141,6 @@ LoadDachoraPalette:
     PLP                                                                  ;A7F55D;
     RTS                                                                  ;A7F55E;
 
-
   .pointers:
 ; pointers to $7E
     dw $C100                                                             ;A7F55F;
@@ -11635,10 +12152,13 @@ LoadDachoraPalette:
     dw $C1C0                                                             ;A7F56B;
     dw $C1E0                                                             ;A7F56D;
 
+
+;;; $F56F: Unused. RTL ;;;
 RTL_A7F56F:
     RTL                                                                  ;A7F56F;
 
 
+;;; $F570: Dachora function - wait for Samus to be near ;;;
 Function_Dachora_WaitForSamusToBeNear:
     LDA.W #$0001                                                         ;A7F570;
     STA.B $14                                                            ;A7F573;
@@ -11658,7 +12178,6 @@ Function_Dachora_WaitForSamusToBeNear:
     STA.W $0F92,X                                                        ;A7F597;
     BRA +                                                                ;A7F59A;
 
-
   .left:
     LDA.W #InstList_Dachora_Blinking_FacingLeft                          ;A7F59C;
     STA.W $0F92,X                                                        ;A7F59F;
@@ -11676,6 +12195,7 @@ Function_Dachora_WaitForSamusToBeNear:
     RTL                                                                  ;A7F5BB;
 
 
+;;; $F5BC: Dachora function - start running ;;;
 Function_Dachora_StartRunning:
     DEC.W $0FA8,X                                                        ;A7F5BC;
     BNE .return                                                          ;A7F5BF;
@@ -11686,7 +12206,6 @@ Function_Dachora_StartRunning:
     LDA.W #Function_Dachora_RunningRight                                 ;A7F5CC;
     STA.W $0FB2,X                                                        ;A7F5CF;
     BRA +                                                                ;A7F5D2;
-
 
   .left:
     LDA.W #InstList_Dachora_RunningLeft                                  ;A7F5D4;
@@ -11703,6 +12222,7 @@ Function_Dachora_StartRunning:
     RTL                                                                  ;A7F5EC;
 
 
+;;; $F5ED: Dachora function - running left ;;;
 Function_Dachora_RunningLeft:
     JSR.W AccelerateRunningDachora                                       ;A7F5ED;
     LDA.B $14                                                            ;A7F5F0;
@@ -11719,7 +12239,6 @@ Function_Dachora_RunningLeft:
     BCS .stop                                                            ;A7F607;
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A7F609;
     BRA .noWall                                                          ;A7F60D;
-
 
   .stop:
     LDA.W #InstList_Dachora_RunningRight                                 ;A7F60F;
@@ -11740,13 +12259,13 @@ Function_Dachora_RunningLeft:
     JSR.W LoadDachoraPalette                                             ;A7F636;
     RTL                                                                  ;A7F639;
 
-
   .noWall:
     LDA.W $0F7A,X                                                        ;A7F63A;
     CMP.W #$0060                                                         ;A7F63D;
     BMI .stop                                                            ;A7F640;
     RTL                                                                  ;A7F642;
 
+; Unused branch
     LDA.W UNUSED_DachoraConstants_maxXDistanceFromSamusToStop_A7F4CB     ;A7F643; dead code
     JSL.L IsSamusWithinAPixelColumnsOfEnemy                              ;A7F646;
     TAY                                                                  ;A7F64A;
@@ -11759,13 +12278,13 @@ Function_Dachora_RunningLeft:
     BRA .merge                                                           ;A7F65C;
 
 
+;;; $F65E: Dachora function - running right ;;;
 Function_Dachora_RunningRight:
     JSR.W AccelerateRunningDachora                                       ;A7F65E;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A7F661;
     BCS .collision                                                       ;A7F665;
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A7F667;
     BRA .noWall                                                          ;A7F66B;
-
 
   .collision:
     LDA.W #$0071                                                         ;A7F66D;
@@ -11788,13 +12307,11 @@ Function_Dachora_RunningRight:
     STA.W $0F94,X                                                        ;A7F695;
     RTL                                                                  ;A7F698;
 
-
   .noWall:
     LDA.W $0F7A,X                                                        ;A7F699;
     CMP.W #$0480                                                         ;A7F69C;
     BPL +                                                                ;A7F69F;
     RTL                                                                  ;A7F6A1;
-
 
 +   LDA.W #InstList_Dachora_ChargeShinespark_FacingRight                 ;A7F6A2;
     STA.W $0F92,X                                                        ;A7F6A5;
@@ -11810,6 +12327,7 @@ Function_Dachora_RunningRight:
     JSL.L QueueSound_Lib2_Max6                                           ;A7F6C1;
     BRA .newAnimation                                                    ;A7F6C5;
 
+; Unused branch
     LDA.W #InstList_Dachora_Idling_FacingLeft                            ;A7F6C7; dead code
     STA.W $0F92,X                                                        ;A7F6CA;
     LDA.W #Function_Dachora_WaitForSamusToBeNear                         ;A7F6CD;
@@ -11817,7 +12335,10 @@ Function_Dachora_RunningRight:
     BRA .merge                                                           ;A7F6D3;
 
 
+;;; $F6D5: Accelerate running dachora ;;;
 AccelerateRunningDachora:
+;; Returns:
+;;     $14.$12: X speed
     LDA.W $0FA8,X                                                        ;A7F6D5;
     CMP.W DachoraConstants_maxXSpeed                                     ;A7F6D8;
     BMI .noPaletteChange                                                 ;A7F6DB;
@@ -11872,7 +12393,6 @@ AccelerateRunningDachora:
     STA.B $12                                                            ;A7F748;
     BRA .return                                                          ;A7F74A;
 
-
   .increaseSpeed:
     LDA.W $0FAA,X                                                        ;A7F74C;
     CLC                                                                  ;A7F74F;
@@ -11896,7 +12416,6 @@ AccelerateRunningDachora:
     STA.W $0F92,X                                                        ;A7F776;
     RTS                                                                  ;A7F779;
 
-
   .checkMaxSpeed:
     CMP.W #$0008                                                         ;A7F77A;
     BNE .return                                                          ;A7F77D;
@@ -11907,13 +12426,14 @@ AccelerateRunningDachora:
   .return:
     RTS                                                                  ;A7F786;
 
-
   .pointers:
     dw Palette_Dachora_SpeedBoosting_0                                   ;A7F787;
     dw Palette_Dachora_SpeedBoosting_1                                   ;A7F789;
     dw Palette_Dachora_SpeedBoosting_2                                   ;A7F78B;
     dw Palette_Dachora_SpeedBoosting_3                                   ;A7F78D;
 
+
+;;; $F78F: Dachora function - activate shinespark ;;;
 Function_Dachora_ActivateShinespark:
     JSR.W LoadDachoraShinePalette                                        ;A7F78F;
     DEC.W $0FA8,X                                                        ;A7F792;
@@ -11948,7 +12468,6 @@ Function_Dachora_ActivateShinespark:
     STA.W $1092,X                                                        ;A7F7E2;
     BRA +                                                                ;A7F7E5;
 
-
   .left:
     LDA.W #InstList_Dachora_Echo_FacingLeft                              ;A7F7E7;
     STA.W $0FD2,X                                                        ;A7F7EA;
@@ -11966,6 +12485,7 @@ Function_Dachora_ActivateShinespark:
     RTL                                                                  ;A7F805;
 
 
+;;; $F806: Dachora function - shinesparking ;;;
 Function_Dachora_Shinesparking:
     JSR.W LoadDachoraShinePalette                                        ;A7F806;
     JSR.W UpdateDachoraEchoPositions                                     ;A7F809;
@@ -12011,7 +12531,6 @@ Function_Dachora_Shinesparking:
     STA.W $0FB4,X                                                        ;A7F869;
     BRA +                                                                ;A7F86C;
 
-
   .right:
     LDA.W #InstList_Dachora_Falling_FacingLeft                           ;A7F86E;
     STA.W $0F92,X                                                        ;A7F871;
@@ -12033,13 +12552,13 @@ Function_Dachora_Shinesparking:
     RTL                                                                  ;A7F899;
 
 
+;;; $F89A: Update echo positions ;;;
 UpdateDachoraEchoPositions:
     LDA.W $0FE8,X                                                        ;A7F89A;
     BEQ .timerExpired                                                    ;A7F89D;
     DEC A                                                                ;A7F89F;
     STA.W $0FE8,X                                                        ;A7F8A0;
     RTS                                                                  ;A7F8A3;
-
 
   .timerExpired:
     LDA.W DachoraConstants_echoPositionUpdateInterval                    ;A7F8A4;
@@ -12054,7 +12573,6 @@ UpdateDachoraEchoPositions:
     STA.W $0FEE,X                                                        ;A7F8BE;
     RTS                                                                  ;A7F8C1;
 
-
   .echo1:
     LDA.W $102E,X                                                        ;A7F8C2;
     BNE .echo2                                                           ;A7F8C5;
@@ -12066,7 +12584,6 @@ UpdateDachoraEchoPositions:
     STA.W $102E,X                                                        ;A7F8D6;
     RTS                                                                  ;A7F8D9;
 
-
   .echo2:
     LDA.W $106E,X                                                        ;A7F8DA;
     BNE .echo3                                                           ;A7F8DD;
@@ -12077,7 +12594,6 @@ UpdateDachoraEchoPositions:
     LDA.W DachoraConstants_echoLifetime                                  ;A7F8EB;
     STA.W $106E,X                                                        ;A7F8EE;
     RTS                                                                  ;A7F8F1;
-
 
   .echo3:
     LDA.W $10AE,X                                                        ;A7F8F2;
@@ -12093,6 +12609,7 @@ UpdateDachoraEchoPositions:
     RTS                                                                  ;A7F909;
 
 
+;;; $F90A: Load dachora shine palette ;;;
 LoadDachoraShinePalette:
     LDA.W $0FB0,X                                                        ;A7F90A;
     XBA                                                                  ;A7F90D;
@@ -12113,13 +12630,14 @@ LoadDachoraShinePalette:
   .return:
     RTS                                                                  ;A7F92C;
 
-
   .pointers:
     dw Palette_Dachora_Shine_0                                           ;A7F92D;
     dw Palette_Dachora_Shine_1                                           ;A7F92F;
     dw Palette_Dachora_Shine_2                                           ;A7F931;
     dw Palette_Dachora_Shine_3                                           ;A7F933;
 
+
+;;; $F935: Dachora function - falling ;;;
 Function_Dachora_Falling:
     LDA.W $0FAA,X                                                        ;A7F935;
     CLC                                                                  ;A7F938;
@@ -12146,7 +12664,6 @@ Function_Dachora_Falling:
     STA.W $0FB2,X                                                        ;A7F96E;
     BRA +                                                                ;A7F971;
 
-
   .left:
     LDA.W #InstList_Dachora_RunningLeft                                  ;A7F973;
     STA.W $0F92,X                                                        ;A7F976;
@@ -12162,6 +12679,7 @@ Function_Dachora_Falling:
     RTL                                                                  ;A7F98B;
 
 
+;;; $F98C: Dachora function - echo ;;;
 Function_Dachora_Echo:
     LDA.W $0FAE,X                                                        ;A7F98C;
     BEQ .invisible                                                       ;A7F98F;
@@ -12175,7 +12693,6 @@ Function_Dachora_Echo:
     BNE .visible                                                         ;A7F9A1;
     BRA .invisible                                                       ;A7F9A3;
 
-
 +   LDA.W $05B6                                                          ;A7F9A5;
     BIT.W #$0001                                                         ;A7F9A8;
     BEQ .visible                                                         ;A7F9AB;
@@ -12186,7 +12703,6 @@ Function_Dachora_Echo:
     STA.W $0F86,X                                                        ;A7F9B3;
     BRA .return                                                          ;A7F9B6;
 
-
   .visible:
     LDA.W $0F86,X                                                        ;A7F9B8;
     AND.W #$FEFF                                                         ;A7F9BB;
@@ -12196,14 +12712,17 @@ Function_Dachora_Echo:
     RTL                                                                  ;A7F9C1;
 
 
+;;; $F9C2: RTL ;;;
 RTL_A7F9C2:
     RTL                                                                  ;A7F9C2;
 
 
+;;; $F9C3: RTL ;;;
 RTL_A7F9C3:
     RTL                                                                  ;A7F9C3;
 
 
+;;; $F9C4: Spritemaps ;;;
 Spritemap_Dachora_0:
     dw $0009                                                             ;A7F9C4;
     %spritemapEntry(0, $1F0, $F2, 0, 0, 3, 1, $110)
