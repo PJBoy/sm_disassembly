@@ -1,0 +1,4 @@
+/*.bin
+# To avoid custom .bin files being ignored, it's recommended to put them in a directory.
+# Otherwise, you can also list them here starting with !, for example:
+# !/Tiles_MyCustomEnemy.bin
