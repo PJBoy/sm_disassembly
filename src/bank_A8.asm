@@ -12470,6 +12470,7 @@ Spritemap_Kihunter_AcidSpitAttack_FacingRight_4:
     %spritemapEntry(0, $17, $FE, 0, 1, 2, 0, $10E)
 
 
+;;; $F180: Ki-hunter constants ;;;
 KihunterConstants:
   .XProximityToActivateSwoop:
     dw $0060                                                             ;A8F180;
@@ -12480,6 +12481,8 @@ KihunterConstants:
   .fallingWingsArcRadius:
     dw $0030                                                             ;A8F186;
 
+
+;;; $F188: Initialisation AI - enemy $EABF/$EB3F/$EBBF (ki-hunter) ;;;
 InitAI_Kihunter:
     LDX.W $0E54                                                          ;A8F188;
     LDA.W $0F86,X                                                        ;A8F18B;
@@ -12530,6 +12533,7 @@ InitAI_Kihunter:
     RTL                                                                  ;A8F213;
 
 
+;;; $F214: Initialisation AI - enemy $EAFF/$EB7F/$EBFF (ki-hunter wings) ;;;
 InitAI_KihunterWings:
     LDX.W $0E54                                                          ;A8F214;
     LDA.W $0F86,X                                                        ;A8F217;
@@ -12560,16 +12564,19 @@ InitAI_KihunterWings:
     RTL                                                                  ;A8F25B;
 
 
+;;; $F25C: Main AI - enemy $EABF/$EB3F/$EBBF (ki-hunter) ;;;
 MainAI_Kihunter:
     LDX.W $0E54                                                          ;A8F25C;
     JMP.W ($0FA8,X)                                                      ;A8F25F;
 
 
+;;; $F262: Main AI - enemy $EAFF/$EB7F/$EBFF (ki-hunter wings) ;;;
 MainAI_KihunterWings:
     LDX.W $0E54                                                          ;A8F262;
     JMP.W ($0FA8,X)                                                      ;A8F265;
 
 
+;;; $F268: Ki-hunter function - winged - idle flying ;;;
 Function_Kihunter_Winged_IdleFlying:
     LDA.L $7E7810,X                                                      ;A8F268;
     STA.B $12                                                            ;A8F26C;
@@ -12585,13 +12592,11 @@ Function_Kihunter_Winged_IdleFlying:
     LDA.W #$FFFF                                                         ;A8F289;
     BRA .changeY                                                         ;A8F28C;
 
-
   .collidedWithBlock:
     LDA.L $7E7812,X                                                      ;A8F28E;
     EOR.W #$FFFF                                                         ;A8F292;
     INC A                                                                ;A8F295;
     BRA .changeY                                                         ;A8F296;
-
 
   .idleDown:
     LDA.W #$0001                                                         ;A8F298;
@@ -12638,14 +12643,12 @@ Function_Kihunter_Winged_IdleFlying:
     BMI +                                                                ;A8F2F2;
     RTL                                                                  ;A8F2F4;
 
-
 +   LDA.W $0AFA                                                          ;A8F2F5;
     SEC                                                                  ;A8F2F8;
     SBC.W $0F7E,X                                                        ;A8F2F9;
     CMP.W #$0020                                                         ;A8F2FC;
     BPL .outsideRange                                                    ;A8F2FF;
     RTL                                                                  ;A8F301;
-
 
   .outsideRange:
     STA.B $18                                                            ;A8F302;
@@ -12667,7 +12670,6 @@ Function_Kihunter_Winged_IdleFlying:
     STA.L $7E781C,X                                                      ;A8F335;
     LDY.W #$0004                                                         ;A8F339;
     BRA +                                                                ;A8F33C;
-
 
   .rightOfSamus:
     LDA.W #$FFFE                                                         ;A8F33E;
@@ -12709,7 +12711,6 @@ Function_Kihunter_Winged_IdleFlying:
     STA.L $7E7820,X                                                      ;A8F3AB;
     RTL                                                                  ;A8F3AF;
 
-
   .instListPointers_kihunter:
     dw InstList_Kihunter_Idling_FacingLeft                               ;A8F3B0;
   .instListPointers_wings:
@@ -12717,6 +12718,8 @@ Function_Kihunter_Winged_IdleFlying:
     dw InstList_Kihunter_Idling_FacingRight                              ;A8F3B4;
     dw InstList_KihunterWings_FacingRight                                ;A8F3B6;
 
+
+;;; $F3B8: Ki-hunter function - winged - swoop ;;;
 Function_Kihunter_Winged_Swoop:
     LDA.L $7E7808,X                                                      ;A8F3B8;
     BPL .arcingRight                                                     ;A8F3BC;
@@ -12724,7 +12727,6 @@ Function_Kihunter_Winged_Swoop:
     CMP.L $7E781C,X                                                      ;A8F3C1;
     BPL .noInstListChange                                                ;A8F3C5;
     BRA +                                                                ;A8F3C7;
-
 
   .arcingRight:
     LDA.W $0FB2,X                                                        ;A8F3C9;
@@ -12770,7 +12772,6 @@ Function_Kihunter_Winged_Swoop:
     STA.W $0FA8,X                                                        ;A8F431;
     RTL                                                                  ;A8F434;
 
-
   .rightwards:
     LDA.L $7E7806,X                                                      ;A8F435;
     CLC                                                                  ;A8F439;
@@ -12792,7 +12793,6 @@ Function_Kihunter_Winged_Swoop:
     LDA.W #Function_Kihunter_Winged_IdleFlying                           ;A8F468;
     STA.W $0FA8,X                                                        ;A8F46B;
     RTL                                                                  ;A8F46E;
-
 
   .swoopContinues:
     LDA.L $7E7822,X                                                      ;A8F46F;
@@ -12822,7 +12822,6 @@ Function_Kihunter_Winged_Swoop:
     BCS .collidedVertically                                              ;A8F4B1;
     RTL                                                                  ;A8F4B3;
 
-
   .collidedHorizontally:
     LDA.L $7E7808,X                                                      ;A8F4B4;
     BPL .arcRight                                                        ;A8F4B8;
@@ -12831,7 +12830,6 @@ Function_Kihunter_Winged_Swoop:
     LDA.W #$0001                                                         ;A8F4C1;
     STA.L $7E780E,X                                                      ;A8F4C4;
     BRA .collidedVertically                                              ;A8F4C8;
-
 
   .arcRight:
     LDA.W #$0000                                                         ;A8F4CA;
@@ -12849,6 +12847,7 @@ Function_Kihunter_Winged_Swoop:
     RTL                                                                  ;A8F4EC;
 
 
+;;; $F4ED: Ki-hunter function - winged - back off ;;;
 Function_Kihunter_Winged_BackOff:
     LDA.L $7E780C,X                                                      ;A8F4ED;
     STA.B $12                                                            ;A8F4F1;
@@ -12868,13 +12867,13 @@ Function_Kihunter_Winged_BackOff:
     BMI .collidedWithBlock                                               ;A8F51C;
     RTL                                                                  ;A8F51E;
 
-
   .collidedWithBlock:
     LDA.W #Function_Kihunter_Winged_IdleFlying                           ;A8F51F;
     STA.W $0FA8,X                                                        ;A8F522;
     RTL                                                                  ;A8F525;
 
 
+;;; $F526: Instruction - set idling instruction lists facing forwards ;;;
 Instruction_Kihunter_SetIdlingInstListsFacingForwards:
     LDY.W #InstList_Kihunter_Idling_FacingLeft                           ;A8F526;
     LDA.W #InstList_KihunterWings_FacingLeft                             ;A8F529;
@@ -12902,6 +12901,7 @@ Instruction_Kihunter_SetIdlingInstListsFacingForwards:
     RTL                                                                  ;A8F559;
 
 
+;;; $F55A: Ki-hunter function - wingless - initial falling ;;;
 Function_Kihunter_Wingless_InitialFalling:
     LDA.L $7E7810,X                                                      ;A8F55A;
     STA.B $12                                                            ;A8F55E;
@@ -12912,7 +12912,6 @@ Function_Kihunter_Wingless_InitialFalling:
     LDA.W #Function_Kihunter_Wingless_PrepareToHop                       ;A8F56C;
     STA.W $0FA8,X                                                        ;A8F56F;
     RTL                                                                  ;A8F572;
-
 
   .notCollidedWithBlock:
     LDA.L $7E7810,X                                                      ;A8F573;
@@ -12925,6 +12924,7 @@ Function_Kihunter_Wingless_InitialFalling:
     RTL                                                                  ;A8F58A;
 
 
+;;; $F58B: Ki-hunter function - wingless - prepare to hop ;;;
 Function_Kihunter_Wingless_PrepareToHop:
     LDA.W #RTL_A8F5E3                                                    ;A8F58B;
     STA.W $0FA8,X                                                        ;A8F58E;
@@ -12948,7 +12948,6 @@ Function_Kihunter_Wingless_PrepareToHop:
     STA.W $0F94,X                                                        ;A8F5C5;
     RTL                                                                  ;A8F5C8;
 
-
   .rightOfSamus:
     LDA.W #$0000                                                         ;A8F5C9;
     STA.L $7E780C,X                                                      ;A8F5CC;
@@ -12959,10 +12958,12 @@ Function_Kihunter_Wingless_PrepareToHop:
     LDA.W #$0001                                                         ;A8F5DD;
     STA.W $0F94,X                                                        ;A8F5E0; fallthrough to RTL_A8F5E3
 
+
 RTL_A8F5E3:
     RTL                                                                  ;A8F5E3;
 
 
+;;; $F5E4: Instruction - enemy function = hop ;;;
 Instruction_Kihunter_SetFunctionToHop:
     PHX                                                                  ;A8F5E4;
     LDX.W $0E54                                                          ;A8F5E5;
@@ -12972,6 +12973,7 @@ Instruction_Kihunter_SetFunctionToHop:
     RTL                                                                  ;A8F5EF;
 
 
+;;; $F5F0: Ki-hunter function - wingless - hop ;;;
 Function_Kihunter_Wingless_Hop:
     LDA.L $7E7810,X                                                      ;A8F5F0;
     STA.B $12                                                            ;A8F5F4;
@@ -12995,14 +12997,12 @@ Function_Kihunter_Wingless_Hop:
     STA.L $7E7812,X                                                      ;A8F62B;
     RTL                                                                  ;A8F62F;
 
-
   .collidedHorizontally:
     LDA.L $7E780E,X                                                      ;A8F630;
     EOR.W #$FFFF                                                         ;A8F634;
     INC A                                                                ;A8F637;
     STA.L $7E780E,X                                                      ;A8F638;
     RTL                                                                  ;A8F63C;
-
 
   .collidedVertically:
     LDA.L $7E7812,X                                                      ;A8F63D;
@@ -13028,13 +13028,13 @@ Function_Kihunter_Wingless_Hop:
     STA.W $0F94,X                                                        ;A8F673;
     RTL                                                                  ;A8F676;
 
-
   .hitCeiling:
     LDA.W #$0001                                                         ;A8F677;
     STA.L $7E7812,X                                                      ;A8F67A;
     RTL                                                                  ;A8F67E;
 
 
+;;; $F67F: Instruction - enemy function = wingless - thinking ;;;
 Instruction_Kihunter_SetFunctionTo_Wingless_Thinking:
     PHX                                                                  ;A8F67F;
     LDX.W $0E54                                                          ;A8F680;
@@ -13044,6 +13044,7 @@ Instruction_Kihunter_SetFunctionTo_Wingless_Thinking:
     RTL                                                                  ;A8F68A;
 
 
+;;; $F68B: Ki-hunter function - wingless - thinking ;;;
 Function_Kihunter_Wingless_Thinking:
     LDA.L $7E781E,X                                                      ;A8F68B;
     DEC A                                                                ;A8F68F;
@@ -13069,6 +13070,7 @@ Function_Kihunter_Wingless_Thinking:
     RTL                                                                  ;A8F6B2;
 
 
+;;; $F6B3: Ki-hunter function - wingless - fire acid spit ;;;
 Function_Kihunter_Wingless_FireAcidSpit:
     LDY.W #InstList_Kihunter_AcidSpitAttack_FacingLeft                   ;A8F6B3;
     LDA.W $0F7A,X                                                        ;A8F6B6;
@@ -13086,17 +13088,25 @@ Function_Kihunter_Wingless_FireAcidSpit:
     RTL                                                                  ;A8F6D1;
 
 
+;;; $F6D2: Instruction - fire acid spit left ;;;
 Instruction_Kihunter_FireAcidSpitLeft:
     PHY                                                                  ;A8F6D2;
     LDY.W #EnemyProjectile_KiHunterAcidSpit_Left                         ;A8F6D3;
     BRA FireAcidSpit                                                     ;A8F6D6;
 
 
+;;; $F6D8: Instruction - fire acid spit right ;;;
 Instruction_Kihunter_FireAcidSpitRight:
     PHY                                                                  ;A8F6D8;
     LDY.W #EnemyProjectile_KiHunterAcidSpit_Right                        ;A8F6D9; fallthrough to FireAcidSpit
 
+
+;;; $F6DC: Fire acid spit ;;;
 FireAcidSpit:
+;; Parameters:
+;;     Y: Enemy projectile ID
+
+; Expects a pushed instruction list pointer
     LDA.W #$004C                                                         ;A8F6DC;
     JSL.L QueueSound_Lib2_Max6                                           ;A8F6DF;
     LDX.W $0E54                                                          ;A8F6E3;
@@ -13107,6 +13117,7 @@ FireAcidSpit:
     RTL                                                                  ;A8F6F2;
 
 
+;;; $F6F3: Ki-hunter wings function - attached ;;;
 Function_KihunterWings_Attached:
     LDA.W $0F3A,X                                                        ;A8F6F3;
     STA.W $0F7A,X                                                        ;A8F6F6;
@@ -13115,10 +13126,12 @@ Function_KihunterWings_Attached:
     RTL                                                                  ;A8F6FF;
 
 
+;;; $F700: RTL ;;;
 RTL_A8F700:
     RTL                                                                  ;A8F700;
 
 
+;;; $F701: Enemy shot - enemy $EABF/$EB3F/$EBBF (ki-hunter) ;;;
 EnemyShot_Kihunter:
     JSL.L NormalEnemyShotAI                                              ;A8F701;
     LDX.W $0E54                                                          ;A8F705;
@@ -13144,7 +13157,6 @@ EnemyShot_Kihunter:
     LDA.W #$0200                                                         ;A8F72D;
     STA.W $0FC6,X                                                        ;A8F730;
     RTL                                                                  ;A8F733;
-
 
   .clipWings:
     LDA.L $7E7828,X                                                      ;A8F734;
@@ -13204,6 +13216,7 @@ EnemyShot_Kihunter:
     RTL                                                                  ;A8F7CE;
 
 
+;;; $F7CF: Ki-hunter wings function - falling ;;;
 Function_KihunterWings_Falling:
     LDX.W $0E54                                                          ;A8F7CF;
     LDA.L $7E7800,X                                                      ;A8F7D2;
@@ -13211,6 +13224,7 @@ Function_KihunterWings_Falling:
     JMP.W ($0012)                                                        ;A8F7D8;
 
 
+;;; $F7DB: Ki-hunter wings falling function - drifting left ;;;
 Function_KihunterWings_Falling_DriftingLeft:
     LDX.W $0E54                                                          ;A8F7DB;
     LDA.W $0FAA,X                                                        ;A8F7DE;
@@ -13254,7 +13268,6 @@ Function_KihunterWings_Falling_DriftingLeft:
     JSR.W SetupFallingKihunterWingsDriftingRight                         ;A8F83D;
     RTL                                                                  ;A8F840;
 
-
 +   LDA.W $0FAA,X                                                        ;A8F841;
     SEC                                                                  ;A8F844;
     SBC.W #$0180                                                         ;A8F845;
@@ -13266,6 +13279,7 @@ Function_KihunterWings_Falling_DriftingLeft:
     RTL                                                                  ;A8F850;
 
 
+;;; $F851: Determine falling ki-hunter wings left arc centre offsets ;;;
 DetermineFallingKihunterWingsLeftArcCenterOffsets:
     LDX.W $0E54                                                          ;A8F851;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F854;
@@ -13285,6 +13299,7 @@ DetermineFallingKihunterWingsLeftArcCenterOffsets:
     RTS                                                                  ;A8F87E;
 
 
+;;; $F87F: Determine falling ki-hunter wings right arc centre offsets ;;;
 DetermineFallingKihunterWingsRightArcCenterOffsets:
     LDX.W $0E54                                                          ;A8F87F;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F882;
@@ -13304,6 +13319,7 @@ DetermineFallingKihunterWingsRightArcCenterOffsets:
     RTS                                                                  ;A8F8AC;
 
 
+;;; $F8AD: Ki-hunter wings falling function - drifting right ;;;
 Function_KihunterWings_Falling_DriftingRight:
     LDX.W $0E54                                                          ;A8F8AD;
     LDA.W $0FAA,X                                                        ;A8F8B0;
@@ -13352,7 +13368,6 @@ Function_KihunterWings_Falling_DriftingRight:
     JSR.W SetupFallingKihunterWingsDriftingLeft                          ;A8F91A;
     RTL                                                                  ;A8F91D;
 
-
 +   LDA.W $0FAA,X                                                        ;A8F91E;
     SEC                                                                  ;A8F921;
     SBC.W #$0180                                                         ;A8F922;
@@ -13362,7 +13377,6 @@ Function_KihunterWings_Falling_DriftingRight:
   .return:
     STA.W $0FAA,X                                                        ;A8F92A;
     RTL                                                                  ;A8F92D;
-
 
   .collidedVertically:
     LDA.W $0F86,X                                                        ;A8F92E;
@@ -13375,6 +13389,7 @@ Function_KihunterWings_Falling_DriftingRight:
     BRA .return                                                          ;A8F945;
 
 
+;;; $F947: Set up falling ki-hunter wings drifting left ;;;
 SetupFallingKihunterWingsDriftingLeft:
     LDA.W #Function_KihunterWings_Falling_DriftingLeft                   ;A8F947;
     STA.L $7E7800,X                                                      ;A8F94A;
@@ -13389,6 +13404,7 @@ SetupFallingKihunterWingsDriftingLeft:
     RTS                                                                  ;A8F969;
 
 
+;;; $F96A: Set up falling ki-hunter wings drifting right ;;;
 SetupFallingKihunterWingsDriftingRight:
     LDA.W #Function_KihunterWings_Falling_DriftingRight                  ;A8F96A;
     STA.L $7E7800,X                                                      ;A8F96D;
@@ -13403,6 +13419,7 @@ SetupFallingKihunterWingsDriftingRight:
     RTS                                                                  ;A8F98C;
 
 
+;;; $F98D: Determine falling ki-hunter wings speed table index reset value ;;;
 DetermineFallingKihunterWingsSpeedTableIndexResetValue:
     LDX.W $0E54                                                          ;A8F98D;
     LDA.W #$0000                                                         ;A8F990;
