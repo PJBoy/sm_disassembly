@@ -2,9 +2,12 @@
 org $AD8000
 
 
+;;; $8000: Tiles - enemy $DDFF/$DDBF (Crocomire) ;;;
 Tiles_Crocomire:
 incbin "../data/Tiles_Crocomire.bin" ; $2600 bytes
 
+
+;;; $A600: Tiles - Crocomire skeleton ;;;
 Tiles_CrocomireSkeleton_0:
 incbin "../data/Tiles_CrocomireSkeleton_0.bin" ; $200 bytes
 
@@ -23,15 +26,23 @@ incbin "../data/Tiles_CrocomireSkeleton_4.bin" ; $200 bytes
 Tiles_CrocomireSkeleton_5:
 incbin "../data/Tiles_CrocomireSkeleton_5.bin" ; $200 bytes
 
+
+;;; $B200: Tiles - Bomb Torizo's crumbling chozo ;;;
 Tiles_BombTorizosCrumblingChozo:
 incbin "../data/Tiles_BombTorizosCrumblingChozo.bin" ; $400 bytes
 
+
+;;; $B600: Tiles - enemy $D0BF/$D07F (gunship) ;;;
 Tiles_Ship:
 incbin "../data/Tiles_Ship.bin" ; $1000 bytes
 
+
+;;; $C600: Tiles - enemy $F353/$F393/$F3D3/$F413/$F453/$F493/$F653/$F693/$F6D3/$F713/$F753/$F793/$F4D3/$F513/$F553/$F593/$F5D3/$F613 (space pirates) ;;;
 Tiles_SpacePirate:
 incbin "../data/Tiles_SpacePirate.bin" ; $1800 bytes
 
+
+;;; $DE00: Calculate Mother Brain rainbow beam HDMA tables ;;;
 CalculateMotherBrainRainbowBeamHDMATables:
     LDA.L $7E8027                                                        ;ADDE00;
     AND.W #$00FF                                                         ;ADDE04;
@@ -74,10 +85,26 @@ CalculateMotherBrainRainbowBeamHDMATables:
 
 
 RTS_ADDE5E:
+; RTS for when beam is aimed left
     RTS                                                                  ;ADDE5E;
 
 
 CalculateMotherBrainRainbowBeamHDMATables_pointers:
+; $DE5E: (straddles left axis)
+;     Left edge bottom-left quadrant, right edge top-left quadrant
+
+; $DE7F: (straddles right axis)
+;     Left edge top-right quadrant, right edge bottom-right quadrant
+
+; $DF6E: (above X axis)
+;     Left edge top-right quadrant, right edge top-right quadrant
+;     Left edge top-left quadrant, right edge top-right quadrant
+;     Left edge top-left quadrant, right edge top-left quadrant
+
+; $E1A6: (below X axis)
+;     Left edge bottom-right quadrant, right edge bottom-right quadrant
+;     Left edge bottom-right quadrant, right edge bottom-left quadrant
+;     Left edge bottom-left quadrant, right edge bottom-left quadrant
     dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownwards       ;ADDE5F;
     dw CalculateMotherBrainRainbowBeamHDMATable_AimedRight               ;ADDE61;
     dw $0000                                                             ;ADDE63;
@@ -95,6 +122,8 @@ CalculateMotherBrainRainbowBeamHDMATables_pointers:
     dw $0000                                                             ;ADDE7B;
     dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownwards       ;ADDE7D;
 
+
+;;; $DE7F: Calculate Mother Brain rainbow beam HDMA tables - beam is aimed right ;;;
 CalculateMotherBrainRainbowBeamHDMATable_AimedRight:
     LDA.L $7E8038                                                        ;ADDE7F;
     STA.B $16                                                            ;ADDE83;
@@ -122,7 +151,13 @@ CalculateMotherBrainRainbowBeamHDMATable_AimedRight:
     RTS                                                                  ;ADDECD;
 
 
+;;; $DECE: Calculate Mother Brain rainbow beam HDMA data table - beam is aimed right ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight:
+;; Parameters:
+;;     $16: Right edge origin X position ([$7E:8038])
+;;     $18: Left edge origin X position ([$7E:803C])
+
+; Recall that SM gradients are dx/dy
     PHB                                                                  ;ADDECE;
     PEA.W $7E7E                                                          ;ADDECF;
     PLB                                                                  ;ADDED2;
@@ -205,7 +240,6 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight:
     PLB                                                                  ;ADDF5C;
     RTS                                                                  ;ADDF5D;
 
-
   ..done:
     LDA.W #$00FF                                                         ;ADDF5E;
 
@@ -220,6 +254,7 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight:
     RTS                                                                  ;ADDF6D;
 
 
+;;; $DF6E: Calculate Mother Brain rainbow beam HDMA tables - beam is aimed upwards ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpwards:
     LDA.L $7E8038                                                        ;ADDF6E;
     STA.B $16                                                            ;ADDF72;
@@ -267,7 +302,6 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpwards:
     STA.L $7E9C0C                                                        ;ADDFE2;
     RTS                                                                  ;ADDFE6;
 
-
   .greaterThanEqualTo80:
     SEC                                                                  ;ADDFE7;
     SBC.W #$007F                                                         ;ADDFE8;
@@ -292,14 +326,20 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpwards:
     STA.L $7E9C0F                                                        ;ADE01F;
     RTS                                                                  ;ADE023;
 
-
   .pointers:
-    dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpRight         ;ADE024;
+    dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpRight         ;ADE024; Left edge quadrant:
     dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedUp              ;ADE026;
-    dw $0000                                                             ;ADE028;
+    dw $0000                                                             ;ADE028; Right edge quadrant:
     dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpLeft          ;ADE02A;
 
+
+;;; $E02C: Calculate Mother Brain rainbow beam HDMA data table - beam is aimed upwards - beam is aimed up-right ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpRight:
+;; Parameters:
+;;     $16: Left edge origin X position ([$7E:8038])
+;;     $18: Right edge origin X position ([$7E:803C])
+
+; Recall that SM gradients are dx/dy
     PHB                                                                  ;ADE02C;
     PEA.W $7E7E                                                          ;ADE02D;
     PLB                                                                  ;ADE030;
@@ -366,7 +406,13 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpRight:
     RTS                                                                  ;ADE0A5;
 
 
+;;; $E0A6: Calculate Mother Brain rainbow beam HDMA data table - beam is aimed upwards - beam is aimed up ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedUp:
+;; Parameters:
+;;     $16: Left edge origin X position ([$7E:8038])
+;;     $18: Right edge origin X position ([$7E:803C])
+
+; Recall that SM gradients are dx/dy
     PHB                                                                  ;ADE0A6;
     PEA.W $7E7E                                                          ;ADE0A7;
     PLB                                                                  ;ADE0AA;
@@ -435,7 +481,13 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUp:
     RTS                                                                  ;ADE123;
 
 
+;;; $E124: Calculate Mother Brain rainbow beam HDMA data table - beam is aimed upwards - beam is aimed up-left ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpLeft:
+;; Parameters:
+;;     $16: Left edge origin X position ([$7E:8038])
+;;     $18: Right edge origin X position ([$7E:803C])
+
+; Recall that SM gradients are dx/dy
     PHB                                                                  ;ADE124;
     PEA.W $7E7E                                                          ;ADE125;
     PLB                                                                  ;ADE128;
@@ -506,6 +558,7 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpLeft:
     RTS                                                                  ;ADE1A5;
 
 
+;;; $E1A6: Calculate Mother Brain rainbow beam HDMA tables - beam is aimed downwards ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownwards:
     LDA.L $7E8038                                                        ;ADE1A6;
     STA.B $16                                                            ;ADE1AA;
@@ -544,14 +597,20 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownwards:
     STA.L $7E9C0C                                                        ;ADE209;
     RTS                                                                  ;ADE20D;
 
-
   .pointers:
-    dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownRight       ;ADE20E;
+    dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownRight       ;ADE20E; Left edge quadrant:
     dw $0000                                                             ;ADE210;
-    dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedDown            ;ADE212;
+    dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedDown            ;ADE212; Right edge quadrant:
     dw CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownLeft        ;ADE214;
 
+
+;;; $E216: Calculate Mother Brain rainbow beam HDMA data table - beam is aimed downwards - beam is aimed down-right ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownRight:
+;; Parameters:
+;;     $16: Right edge origin X position ([$7E:8038])
+;;     $18: Left edge origin X position ([$7E:803C])
+
+; Recall that SM gradients are dx/dy
     PHB                                                                  ;ADE216;
     PEA.W $7E7E                                                          ;ADE217;
     PLB                                                                  ;ADE21A;
@@ -621,7 +680,13 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownRight:
     RTS                                                                  ;ADE292;
 
 
+;;; $E293: Calculate Mother Brain rainbow beam HDMA data table - beam is aimed downwards - beam is aimed down ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedDown:
+;; Parameters:
+;;     $16: Right edge origin X position ([$7E:8038])
+;;     $18: Left edge origin X position ([$7E:803C])
+
+; Recall that SM gradients are dx/dy
     PHB                                                                  ;ADE293;
     PEA.W $7E7E                                                          ;ADE294;
     PLB                                                                  ;ADE297;
@@ -693,7 +758,13 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDown:
     RTS                                                                  ;ADE313;
 
 
+;;; $E314: Calculate Mother Brain rainbow beam HDMA data table - beam is aimed downwards - beam is aimed down-left ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownLeft:
+;; Parameters:
+;;     $16: Right edge origin X position ([$7E:8038])
+;;     $18: Left edge origin X position ([$7E:803C])
+
+; Recall that SM gradients are dx/dy
     PHB                                                                  ;ADE314;
     PEA.W $7E7E                                                          ;ADE315;
     PLB                                                                  ;ADE318;
@@ -766,6 +837,7 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownLeft:
     RTS                                                                  ;ADE395;
 
 
+;;; $E396: Seal Mother Brain's wall, function = fake death - descent ;;;
 SealMotherBrainsWallFunction_FakeDeath_Descent:
     LDA.W #$00F8                                                         ;ADE396;
     STA.B $12                                                            ;ADE399;
@@ -792,12 +864,15 @@ SealMotherBrainsWallFunction_FakeDeath_Descent:
     RTL                                                                  ;ADE3D4;
 
 
+;;; $E3D5: Mother Brain health-based palette handling ;;;
 MotherBrainHealthBasedPaletteHandling:
+; BG palette 4: Mother Brain body
+; Sprite palette 1: Mother Brain brain
+; Sprite palette 3: Mother Brain's back leg
     LDA.L $7E783E                                                        ;ADE3D5;
     CMP.W #$0002                                                         ;ADE3D9;
     BCS .recovered                                                       ;ADE3DC;
     RTL                                                                  ;ADE3DE;
-
 
   .recovered:
     PHB                                                                  ;ADE3DF;
@@ -840,6 +915,8 @@ MotherBrainHealthBasedPaletteHandling:
     RTL                                                                  ;ADE433;
 
 
+;;; $E434: Mother Brain body rainbow beam palettes ;;;
+; Indexed by [$7E:7842]
 MotherBrainBodyRainbowBeamPalette_Pointers:
     dw MotherBrainBodyRainbowBeamPalette_0                               ;ADE434;
     dw MotherBrainBodyRainbowBeamPalette_1                               ;ADE436;
@@ -855,6 +932,8 @@ MotherBrainPhase2DeathBeforeGreyPalette_Pointers:
     dw MotherBrainBodyRainbowBeamPalette_9                               ;ADE446;
     dw $0000                                                             ;ADE448;
 
+; Line 0: colours 1..Fh of sprite palette 1 and BG1/2 palette 4
+; Line 1: colours 1..Fh of sprite palette 3
 MotherBrainBodyRainbowBeamPalette_0:
     dw $047F,$0479,$0033,$002D,$3A3B,$2DB7,$1D33,$0C8E                   ;ADE44A;
     dw $25BF,$1D5B,$14F7,$0CB2,$086E,$56BF,$000A,$0450                   ;ADE45A;
@@ -891,6 +970,7 @@ MotherBrainBodyRainbowBeamPalette_5:
     dw $0C88,$0C65,$0C62,$2969,$2127,$1CE5,$14A2,$1D2B                   ;ADE596;
     dw $1909,$18C7,$14A4,$1082,$35AB,$0C60                               ;ADE5A6;
 
+; Also her second phase death palette before turning grey
 MotherBrainBodyRainbowBeamPalette_6:
     dw $2C75,$2C6F,$2829,$2823,$6231,$55AD,$4929,$3884                   ;ADE5B2;
     dw $4DB5,$4551,$40ED,$38A8,$3064,$7EB5,$2800,$184B                   ;ADE5C2;
@@ -915,6 +995,8 @@ MotherBrainBodyRainbowBeamPalette_9:
     dw $0C4D,$0C2A,$0C27,$292E,$20EC,$18AA,$1047,$1CF0                   ;ADE686;
     dw $18AE,$148C,$1069,$1047,$3570,$0C05                               ;ADE696;
 
+
+;;; $E6A2: Mother Brain health-based palettes - brain/body ;;;
 MotherBrainHealthBasedPalettes_BrainBody:
     dw MotherBrainHealthBasedPalettes_BrainBody_0                        ;ADE6A2;
     dw MotherBrainHealthBasedPalettes_BrainBody_1                        ;ADE6A4;
@@ -922,26 +1004,29 @@ MotherBrainHealthBasedPalettes_BrainBody:
     dw MotherBrainHealthBasedPalettes_BrainBody_3                        ;ADE6A8;
     dw UNUSED_MotherBrainHealthBasedPalettes_BrainBody_4_ADE724          ;ADE6AA;
 
+; Colours 1..Fh of sprite palette 1 and BG1/2 palette 4
 MotherBrainHealthBasedPalettes_BrainBody_0:
-    dw $269F,$0159,$004C,$0004,$5739,$4273,$2DAD,$14C6                   ;ADE6AC;
+    dw $269F,$0159,$004C,$0004,$5739,$4273,$2DAD,$14C6                   ;ADE6AC; Health >= 9000
     dw $367F,$29F9,$2173,$150C,$0C86,$7FFF,$0000                         ;ADE6BC;
 
 MotherBrainHealthBasedPalettes_BrainBody_1:
-    dw $225F,$0139,$002D,$0005,$4EF9,$3E33,$298E,$10A7                   ;ADE6CA;
+    dw $225F,$0139,$002D,$0005,$4EF9,$3E33,$298E,$10A7                   ;ADE6CA; Health >= 5400
     dw $323F,$25D9,$1D53,$10ED,$0867,$77BF,$0002                         ;ADE6DA;
 
 MotherBrainHealthBasedPalettes_BrainBody_2:
-    dw $1E1F,$011A,$002F,$0009,$429A,$31F5,$2150,$108B                   ;ADE6E8;
+    dw $1E1F,$011A,$002F,$0009,$429A,$31F5,$2150,$108B                   ;ADE6E8; Health >= 1800
     dw $29FF,$219A,$1915,$10CF,$086B,$631F,$0006                         ;ADE6F8;
 
 MotherBrainHealthBasedPalettes_BrainBody_3:
-    dw $159F,$00DB,$0033,$000E,$31FB,$2577,$18F4,$0C70                   ;ADE706;
+    dw $159F,$00DB,$0033,$000E,$31FB,$2577,$18F4,$0C70                   ;ADE706; Health >= 0
     dw $1D7F,$193B,$10D7,$0C93,$0450,$4A5F,$000C                         ;ADE716;
 
 UNUSED_MotherBrainHealthBasedPalettes_BrainBody_4_ADE724:
-    dw $159F,$00DB,$0033,$000E,$31FB,$2577,$18F4,$0C70                   ;ADE724;
+    dw $159F,$00DB,$0033,$000E,$31FB,$2577,$18F4,$0C70                   ;ADE724; Unused
     dw $1D7F,$193B,$10D7,$0C93,$0450,$4A5F,$000C                         ;ADE734;
 
+
+;;; $E742: Mother Brain health-based palettes - back leg ;;;
 MotherBrainHealthBasedPalettes_BackLeg:
     dw MotherBrainHealthBasedPalettes_BackLeg_0                          ;ADE742;
     dw MotherBrainHealthBasedPalettes_BackLeg_1                          ;ADE744;
@@ -949,26 +1034,29 @@ MotherBrainHealthBasedPalettes_BackLeg:
     dw MotherBrainHealthBasedPalettes_BackLeg_3                          ;ADE748;
     dw UNUSED_MotherBrainHealthBasedPalettes_BackLeg_4_ADE7C4            ;ADE74A;
 
+; Colours 1..Fh of sprite palette 3
 MotherBrainHealthBasedPalettes_BackLeg_0:
-    dw $0000,$0000,$0000,$0024,$29AD,$214A,$14E7,$0C63                   ;ADE74C;
+    dw $0000,$0000,$0000,$0024,$29AD,$214A,$14E7,$0C63                   ;ADE74C; Health >= 9000
     dw $0000,$0000,$0000,$0000,$0000,$29AD,$0000                         ;ADE75C;
 
 MotherBrainHealthBasedPalettes_BackLeg_1:
-    dw $0004,$0004,$0004,$0007,$216F,$1D0C,$10CA,$0846                   ;ADE76A;
+    dw $0004,$0004,$0004,$0007,$216F,$1D0C,$10CA,$0846                   ;ADE76A; Health >= 5400
     dw $0004,$0004,$0004,$0004,$0004,$216F,$0004                         ;ADE77A;
 
 MotherBrainHealthBasedPalettes_BackLeg_2:
-    dw $0008,$0008,$0008,$000B,$1D31,$14EF,$0CAD,$084A                   ;ADE788;
+    dw $0008,$0008,$0008,$000B,$1D31,$14EF,$0CAD,$084A                   ;ADE788; Health >= 1800
     dw $0008,$0008,$0008,$0008,$0008,$1D31,$0008                         ;ADE798;
 
 MotherBrainHealthBasedPalettes_BackLeg_3:
-    dw $000E,$000E,$000E,$0010,$14F5,$10B3,$0872,$0430                   ;ADE7A6;
+    dw $000E,$000E,$000E,$0010,$14F5,$10B3,$0872,$0430                   ;ADE7A6; Health >= 0
     dw $000E,$000E,$000E,$000E,$000E,$14F5,$000E                         ;ADE7B6;
 
 UNUSED_MotherBrainHealthBasedPalettes_BackLeg_4_ADE7C4:
-    dw $000E,$000E,$000E,$0010,$14F5,$10B3,$0872,$0430                   ;ADE7C4;
+    dw $000E,$000E,$000E,$0010,$14F5,$10B3,$0872,$0430                   ;ADE7C4; Unused
     dw $000E,$000E,$000E,$000E,$000E,$14F5,$000E                         ;ADE7D4;
 
+
+;;; $E7E2: Shitroid colours - health-based palette - shell ;;;
 BabyMetroidHealthBasedPalette_Shell:
     dw UNUSED_BabyMetroidHealthBasedPalette_Shell_0_ADE7F2               ;ADE7E2;
     dw BabyMetroidHealthBasedPalette_Shell_1                             ;ADE7E4;
@@ -979,38 +1067,41 @@ BabyMetroidHealthBasedPalette_Shell:
     dw BabyMetroidHealthBasedPalette_Shell_6                             ;ADE7EE;
     dw BabyMetroidHealthBasedPalette_Shell_7                             ;ADE7F0;
 
+; Colours 1..4, Ah..Eh of sprite palette 7
 UNUSED_BabyMetroidHealthBasedPalette_Shell_0_ADE7F2:
-    dw $57B8,$0B11,$1646,$00E3,$4F9F,$3ED8,$2E12,$08CD                   ;ADE7F2;
+    dw $57B8,$0B11,$1646,$00E3,$4F9F,$3ED8,$2E12,$08CD                   ;ADE7F2; Unused
     dw $7FFF                                                             ;ADE802;
 
 BabyMetroidHealthBasedPalette_Shell_1:
-    dw $4FB8,$0B12,$1227,$00E4,$4B7E,$3AB7,$29F1,$08CD                   ;ADE804;
+    dw $4FB8,$0B12,$1227,$00E4,$4B7E,$3AB7,$29F1,$08CD                   ;ADE804; Health >= 8C0h
     dw $7BFF                                                             ;ADE814;
 
 BabyMetroidHealthBasedPalette_Shell_2:
-    dw $47B9,$0AF2,$1228,$00E4,$473C,$3A96,$29F1,$08AC                   ;ADE816;
+    dw $47B9,$0AF2,$1228,$00E4,$473C,$3A96,$29F1,$08AC                   ;ADE816; Health >= 780h
     dw $73FF                                                             ;ADE826;
 
 BabyMetroidHealthBasedPalette_Shell_3:
-    dw $3FB9,$0AF3,$0E09,$00E5,$431B,$3675,$25D0,$08AC                   ;ADE828;
+    dw $3FB9,$0AF3,$0E09,$00E5,$431B,$3675,$25D0,$08AC                   ;ADE828; Health >= 640h
     dw $6FFF                                                             ;ADE838;
 
 BabyMetroidHealthBasedPalette_Shell_4:
-    dw $3399,$06F3,$0E09,$00E5,$42FA,$3254,$25AF,$04AB                   ;ADE83A;
+    dw $3399,$06F3,$0E09,$00E5,$42FA,$3254,$25AF,$04AB                   ;ADE83A; Health >= 500h
     dw $67DE                                                             ;ADE84A;
 
 BabyMetroidHealthBasedPalette_Shell_5:
-    dw $2B99,$06F4,$09EA,$00E6,$3ED9,$2E33,$218E,$04AB                   ;ADE84C;
+    dw $2B99,$06F4,$09EA,$00E6,$3ED9,$2E33,$218E,$04AB                   ;ADE84C; Health >= 3C0h
     dw $63DE                                                             ;ADE85C;
 
 BabyMetroidHealthBasedPalette_Shell_6:
-    dw $239A,$06D4,$09EB,$00E6,$3A97,$2E12,$218E,$048A                   ;ADE85E;
+    dw $239A,$06D4,$09EB,$00E6,$3A97,$2E12,$218E,$048A                   ;ADE85E; Health >= 280h
     dw $5BDE                                                             ;ADE86E;
 
 BabyMetroidHealthBasedPalette_Shell_7:
-    dw $1B9A,$06D5,$05CC,$00E7,$3676,$29F1,$1D6D,$048A                   ;ADE870;
+    dw $1B9A,$06D5,$05CC,$00E7,$3676,$29F1,$1D6D,$048A                   ;ADE870; Health < 280h
     dw $57DE                                                             ;ADE880;
 
+
+;;; $E882: Shitroid colours - health-based palette - innards ;;;
 BabyMetroidHealthBasedPalette_Innards:
     dw UNUSED_BabyMetroidHealthBasedPalette_Innards_0_ADE892             ;ADE882;
     dw BabyMetroidHealthBasedPalette_Innards_1                           ;ADE884;
@@ -1021,31 +1112,35 @@ BabyMetroidHealthBasedPalette_Innards:
     dw BabyMetroidHealthBasedPalette_Innards_6                           ;ADE88E;
     dw BabyMetroidHealthBasedPalette_Innards_7                           ;ADE890;
 
+; Colours 5..9 of sprite palette 7
 UNUSED_BabyMetroidHealthBasedPalette_Innards_0_ADE892:
-    dw $72FF,$2CDF,$24B9,$1CAF,$18A9                                     ;ADE892;
+    dw $72FF,$2CDF,$24B9,$1CAF,$18A9                                     ;ADE892; Unused
 
 BabyMetroidHealthBasedPalette_Innards_1:
-    dw $6EBD,$2CDD,$28B7,$20AE,$18A8                                     ;ADE89C;
+    dw $6EBD,$2CDD,$28B7,$20AE,$18A8                                     ;ADE89C; Health >= 8C0h
 
 BabyMetroidHealthBasedPalette_Innards_2:
-    dw $6A9B,$30BB,$2896,$208D,$1488                                     ;ADE8A6;
+    dw $6A9B,$30BB,$2896,$208D,$1488                                     ;ADE8A6; Health >= 780h
 
 BabyMetroidHealthBasedPalette_Innards_3:
-    dw $6659,$30B9,$2C94,$248C,$1487                                     ;ADE8B0;
+    dw $6659,$30B9,$2C94,$248C,$1487                                     ;ADE8B0; Health >= 640h
 
 BabyMetroidHealthBasedPalette_Innards_4:
-    dw $6636,$3496,$2C92,$288B,$1066                                     ;ADE8BA;
+    dw $6636,$3496,$2C92,$288B,$1066                                     ;ADE8BA; Health >= 500h
 
 BabyMetroidHealthBasedPalette_Innards_5:
-    dw $61F4,$3494,$3090,$2C8A,$1065                                     ;ADE8C4;
+    dw $61F4,$3494,$3090,$2C8A,$1065                                     ;ADE8C4; Health >= 3C0h
 
 BabyMetroidHealthBasedPalette_Innards_6:
-    dw $5DD2,$3872,$306F,$2C69,$0C45                                     ;ADE8CE;
+    dw $5DD2,$3872,$306F,$2C69,$0C45                                     ;ADE8CE; Health >= 280h
 
 BabyMetroidHealthBasedPalette_Innards_7:
-    dw $5990,$3870,$346D,$3068,$0C44                                     ;ADE8D8;
+    dw $5990,$3870,$346D,$3068,$0C44                                     ;ADE8D8; Health < 280h
 
+
+;;; $E8E2: Shitroid fading to black colours ;;;
 BabyMetroidFadingToBlackPalettes:
+; Indexed by [enemy $7E:781A] * 2
     dw UNUSED_BabyMetroidFadingToBlackPalettes_0_ADE8F0                  ;ADE8E2;
     dw BabyMetroidFadingToBlackPalettes_1                                ;ADE8E4;
     dw BabyMetroidFadingToBlackPalettes_2                                ;ADE8E6;
@@ -1054,8 +1149,9 @@ BabyMetroidFadingToBlackPalettes:
     dw BabyMetroidFadingToBlackPalettes_5                                ;ADE8EC;
     dw BabyMetroidFadingToBlackPalettes_6                                ;ADE8EE;
 
+; Colours 1..Eh of sprite palette 7
 UNUSED_BabyMetroidFadingToBlackPalettes_0_ADE8F0:
-    dw $1716,$0252,$018A,$00C6,$494D,$304D,$2C4B,$2846                   ;ADE8F0;
+    dw $1716,$0252,$018A,$00C6,$494D,$304D,$2C4B,$2846                   ;ADE8F0; Unused
     dw $0823,$2E12,$218E,$192B,$0068,$4B39                               ;ADE900;
 
 BabyMetroidFadingToBlackPalettes_1:
@@ -1082,14 +1178,18 @@ BabyMetroidFadingToBlackPalettes_6:
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;ADE998;
     dw $0000,$0000,$0000,$0000,$0000,$0000                               ;ADE9A8;
 
+
+;;; $E9B4: Fade Mother Brain palette to black ;;;
 FadeMotherBrainPaletteToBlack:
+; BG palette 4: Mother Brain body
+; Sprite palette 1: Mother Brain brain
+; Sprite palette 3: Mother Brain's back leg
     ASL A                                                                ;ADE9B4;
     TAX                                                                  ;ADE9B5;
     LDA.L .pointers,X                                                    ;ADE9B6;
     BNE .notZero                                                         ;ADE9BA;
     SEC                                                                  ;ADE9BC;
     RTL                                                                  ;ADE9BD;
-
 
   .notZero:
     PHB                                                                  ;ADE9BE;
@@ -1112,8 +1212,8 @@ FadeMotherBrainPaletteToBlack:
     CLC                                                                  ;ADE9E6;
     RTL                                                                  ;ADE9E7;
 
-
   .pointers:
+; Indexed by [$7E:802E] * 2
     dw .pallete0                                                         ;ADE9E8;
     dw .pallete1                                                         ;ADE9EA;
     dw .pallete2                                                         ;ADE9EC;
@@ -1132,6 +1232,8 @@ FadeMotherBrainPaletteToBlack:
     dw .palleteF                                                         ;ADEA06;
     dw $0000                                                             ;ADEA08;
 
+; Line 0: colours 1..Eh of sprite palette 1 and BG1/2 palette 4
+; Line 1: colours 1..Eh of sprite palette 3
   .pallete0:
     dw $159F,$00DB,$0033,$000E,$31FB,$2577,$18F4,$0C70                   ;ADEA0A;
     dw $1D7F,$193B,$10D7,$0C93,$0450,$4A5F,$000E,$000E                   ;ADEA1A;
@@ -1228,6 +1330,10 @@ FadeMotherBrainPaletteToBlack:
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;ADED72;
     dw $0000,$0000,$0000,$0000                                           ;ADED82;
 
+
+;;; $ED8A: Mother Brain colours - transition to/from grey ;;;
+; Only sprite palette 1 colours 1..3 is used for the fake death grey transitions
+; Indexed by [$7E:802E] * 2
 MotherBrainPalettes_TransitionToGrey:
     dw MotherBrainPalettes_TransitionToFromGrey_0                        ;ADED8A;
     dw MotherBrainPalettes_TransitionToFromGrey_1                        ;ADED8C;
@@ -1250,6 +1356,8 @@ MotherBrainPalettes_TransitionFromGrey:
     dw MotherBrainPalettes_TransitionToFromGrey_0                        ;ADEDAA;
     dw $0000                                                             ;ADEDAC;
 
+; Line 0: colours 1..Dh of sprite palette 1 and BG1/2 palette 4
+; Line 1: colours 4..8, Eh of sprite palette 3 (colour Eh is not written due to a bug)
 MotherBrainPalettes_TransitionToFromGrey_0:
     dw $269F,$0159,$004C,$0004,$5739,$4273,$2DAD,$14C6                   ;ADEDAE;
     dw $367F,$29F9,$2173,$150C,$0C86,$0024,$29AD,$214A                   ;ADEDBE;
@@ -1290,6 +1398,8 @@ MotherBrainPalettes_TransitionToFromGrey_7:
     dw $4F38,$42B4,$3631,$29CD,$1949,$0022,$14E7,$10A5                   ;ADEEC8;
     dw $0C84,$0842,$14E7                                                 ;ADEED8;
 
+
+;;; $EEDE: Transition Mother Brain palette to grey - fake death ;;;
 TransitionMotherBrainPaletteToGrey_FakeDeath:
     PHX                                                                  ;ADEEDE;
     ASL A                                                                ;ADEEDF;
@@ -1301,6 +1411,7 @@ TransitionMotherBrainPaletteToGrey_FakeDeath:
     RTL                                                                  ;ADEEE9;
 
 
+;;; $EEEA: Transition Mother Brain palette from grey - fake death ;;;
 TransitionMotherBrainPaletteFromGrey_FakeDeath:
     PHX                                                                  ;ADEEEA;
     ASL A                                                                ;ADEEEB;
@@ -1312,7 +1423,10 @@ TransitionMotherBrainPaletteFromGrey_FakeDeath:
     RTL                                                                  ;ADEEF5;
 
 
+;;; $EEF6: Transition Mother Brain palette to/from grey - fake death ;;;
 TransitionMotherBrainPaletteToFromGrey_FakeDeath:
+; Sprite palette 1: Mother Brain brain
+; Expects a pushed X
     PHY                                                                  ;ADEEF6;
     PHB                                                                  ;ADEEF7;
     PEA.W $AD00                                                          ;ADEEF8;
@@ -1329,14 +1443,17 @@ TransitionMotherBrainPaletteToFromGrey_FakeDeath:
     RTL                                                                  ;ADEF0C;
 
 
+;;; $EF0D: Transition Mother Brain palette from grey - drained by Shitroid ;;;
 TransitionMotherBrainPaletteFromGrey_DrainedByBabyMetroid:
+; BG palette 4: Mother Brain body
+; Sprite palette 1: Mother Brain brain
+; Sprite palette 3: Mother Brain's back leg
     ASL A                                                                ;ADEF0D;
     TAX                                                                  ;ADEF0E;
     LDA.L MotherBrainPalettes_TransitionFromGrey,X                       ;ADEF0F;
     BNE .notZero                                                         ;ADEF13;
     SEC                                                                  ;ADEF15;
     RTL                                                                  ;ADEF16;
-
 
   .notZero:
     PHB                                                                  ;ADEF17;
@@ -1363,14 +1480,17 @@ TransitionMotherBrainPaletteFromGrey_DrainedByBabyMetroid:
     RTL                                                                  ;ADEF49;
 
 
+;;; $EF4A: Transition Mother Brain palette to grey - drained by Shitroid ;;;
 TransitionMotherBrainPaletteToGrey_DrainedByBabyMetroid:
+; BG palette 4: Mother Brain body
+; Sprite palette 1: Mother Brain brain
+; Sprite palette 3: Mother Brain's back leg
     ASL A                                                                ;ADEF4A;
     TAX                                                                  ;ADEF4B;
     LDA.L .pointers,X                                                    ;ADEF4C;
     BNE .notZero                                                         ;ADEF50;
     SEC                                                                  ;ADEF52;
     RTL                                                                  ;ADEF53;
-
 
   .notZero:
     PHB                                                                  ;ADEF54;
@@ -1396,8 +1516,8 @@ TransitionMotherBrainPaletteToGrey_DrainedByBabyMetroid:
     CLC                                                                  ;ADEF85;
     RTL                                                                  ;ADEF86;
 
-
   .pointers:
+; Indexed by [$7E:802E] * 2
     dw .palette0                                                         ;ADEF87;
     dw .palette1                                                         ;ADEF89;
     dw .palette2                                                         ;ADEF8B;
@@ -1408,6 +1528,8 @@ TransitionMotherBrainPaletteToGrey_DrainedByBabyMetroid:
     dw .palette7                                                         ;ADEF95;
     dw $0000                                                             ;ADEF97;
 
+; Line 0: colours 1..Fh of sprite palette 1 and BG1/2 palette 4
+; Line 1: colours 4..8, Eh of sprite palette 3 (colour Eh is not written due to a bug)
   .palette0:
     dw $2C75,$2C6F,$2829,$2823,$6231,$55AD,$4929,$3884                   ;ADEF99;
     dw $4DB5,$4551,$40ED,$38A8,$3064,$7EB5,$2800,$1422                   ;ADEFA9;
@@ -1448,14 +1570,16 @@ TransitionMotherBrainPaletteToGrey_DrainedByBabyMetroid:
     dw $4F38,$42B4,$3631,$29CD,$1949,$7FFF,$0000,$0022                   ;ADF0CF;
     dw $14E7,$10A5,$0C84,$0842,$14E7                                     ;ADF0DF;
 
+
+;;; $F0E9: Transition Mother Brain palette to grey - real death ;;;
 TransitionMotherBrainPaletteToGrey_RealDeath:
+; Sprite palette 7: Mother Brain brain whilst/after body explodes
     ASL A                                                                ;ADF0E9;
     TAX                                                                  ;ADF0EA;
     LDA.L .pointers,X                                                    ;ADF0EB;
     BNE .notZero                                                         ;ADF0EF;
     SEC                                                                  ;ADF0F1;
     RTL                                                                  ;ADF0F2;
-
 
   .notZero:
     PHB                                                                  ;ADF0F3;
@@ -1470,8 +1594,8 @@ TransitionMotherBrainPaletteToGrey_RealDeath:
     CLC                                                                  ;ADF105;
     RTL                                                                  ;ADF106;
 
-
   .pointers:
+; Indexed by [$7E:802E] * 2
     dw .palette0                                                         ;ADF107;
     dw .palette1                                                         ;ADF109;
     dw .palette2                                                         ;ADF10B;
@@ -1482,6 +1606,7 @@ TransitionMotherBrainPaletteToGrey_RealDeath:
     dw .palette7                                                         ;ADF115;
     dw $0000                                                             ;ADF117;
 
+; Colours 1..Fh of sprite palette 7
   .palette0:
     dw $159F,$00DB,$0033,$000E,$31FB,$2577,$18F4,$0C70                   ;ADF119;
     dw $1D7F,$193B,$10D7,$0C93,$0450,$4A5F,$000C                         ;ADF129;
@@ -1514,7 +1639,11 @@ TransitionMotherBrainPaletteToGrey_RealDeath:
     dw $4F38,$3A52,$218B,$0CA5,$5739,$4273,$2DAD,$14C6                   ;ADF1EB;
     dw $4F38,$42B4,$3631,$29CD,$1949,$7FFF,$0000                         ;ADF1FB;
 
+
+;;; $F209: Turn off lights for Shitroid death sequence ;;;
 FadeOutBackgroundForBabyMetroidDeathSequence:
+; BG palette 3: Room background
+; BG palette 5: Room level graphics
     PHB                                                                  ;ADF209;
     PEA.W $AD00                                                          ;ADF20A;
     PLB                                                                  ;ADF20D;
@@ -1534,19 +1663,22 @@ FadeOutBackgroundForBabyMetroidDeathSequence:
     PLB                                                                  ;ADF22D;
     RTL                                                                  ;ADF22E;
 
-
   .justZeroes:
+; Colours 1..Eh of BG1/2 palette 3/5
     dw $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000                   ;ADF22F;
     dw $0000,$0000,$0000,$0000,$0000,$0000                               ;ADF23F;
 
+
+;;; $F24B: Transition lights back on for Mother Brain phase 3 ;;;
 FadeInBackgroundForMotherBrainPhase3:
+; BG palette 3: Room background
+; BG palette 5: Room level graphics
     ASL A                                                                ;ADF24B;
     TAX                                                                  ;ADF24C;
     LDA.L .pointers,X                                                    ;ADF24D;
     BNE .notZero                                                         ;ADF251;
     SEC                                                                  ;ADF253;
     RTL                                                                  ;ADF254;
-
 
   .notZero:
     PHB                                                                  ;ADF255;
@@ -1564,7 +1696,6 @@ FadeInBackgroundForMotherBrainPhase3:
     CLC                                                                  ;ADF271;
     RTL                                                                  ;ADF272;
 
-
   .pointers:
     dw .palette6                                                         ;ADF273;
     dw .palette5                                                         ;ADF275;
@@ -1575,6 +1706,8 @@ FadeInBackgroundForMotherBrainPhase3:
     dw .palette0                                                         ;ADF27F;
     dw $0000                                                             ;ADF281;
 
+; Line 0: colours 1..Eh of BG1/2 palette 3
+; Line 1: colours 1..Eh of BG1/2 palette 5
   .palette0:
     dw $72B2,$71C7,$4463,$4A16,$3991,$2D2C,$1CA7,$20E5                   ;ADF283;
     dw $18A4,$1083,$0841,$0000,$0000,$02DF,$6318,$6318                   ;ADF293;
@@ -1617,6 +1750,8 @@ FadeInBackgroundForMotherBrainPhase3:
     dw $0000,$0842,$0842,$0421,$0000,$0003,$0002,$0C00                   ;ADF3F3;
     dw $0800,$0000,$0024,$1084                                           ;ADF403;
 
+
+;;; $F40B: Enable earthquake type [A] for 20 frames ;;;
 EnableEarthquakeTypeInAFor20Frames:
     STA.W $183E                                                          ;ADF40B;
     LDA.W #$0014                                                         ;ADF40E;
@@ -1626,6 +1761,7 @@ EnableEarthquakeTypeInAFor20Frames:
     RTL                                                                  ;ADF41B;
 
 
+;;; $F41C: Handle Mother Brain body flickering ;;;
 HandleMotherBrainBodyFlickering:
     LDA.W $0FA4                                                          ;ADF41C;
     LSR A                                                                ;ADF41F;
@@ -1637,7 +1773,6 @@ HandleMotherBrainBodyFlickering:
     AND.W #$FEFF                                                         ;ADF42C;
     STA.W $0F86                                                          ;ADF42F;
     RTL                                                                  ;ADF432;
-
 
   .invisible:
     LDA.B $69                                                            ;ADF433;
