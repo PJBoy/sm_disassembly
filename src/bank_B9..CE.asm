@@ -3,12 +3,18 @@ org $B98000
 
 
 check bankcross off
+
+;;; $B9:8000: CRE tiles (compressed) ;;;
 CRE_Tiles_Compressed:
 incbin "../data/CRE_Tiles_Compressed.bin" ; $209D bytes
 
+
+;;; $B9:A09D: CRE tile table (compressed) ;;;
 CRE_TileTable_Compressed:
 incbin "../data/CRE_TileTable_Compressed.bin" ; $597 bytes
 
+
+;;; $B9:A634: Backgrounds (compressed) ;;;
 Background_Norfair_9_A_SmallPatternBrownPurple_Bright:
 incbin "../data/Background_Norfair_9_A_SmallPatternBrownPurple_Bright.bin" ; $E0 bytes
 
@@ -219,6 +225,8 @@ incbin "../data/Background_Tourian_15_Statues.bin" ; $164 bytes
 Background_Blank:
 incbin "../data/Background_Blank.bin" ; $9 bytes
 
+
+;;; $C629: Tiles (compressed) ;;;
 Tiles_0_1_UpperCrateria:
 incbin "../data/Tiles_0_1_UpperCrateria.bin" ; $32E8 bytes
 
@@ -267,6 +275,8 @@ incbin "../data/Tiles_11_12_CeresElevator.bin" ; $2B7E bytes
 Tiles_13_14_CeresRidley:
 incbin "../data/Tiles_13_14_CeresRidley.bin" ; $294D bytes
 
+
+;;; $C629: Tile tables (compressed) ;;;
 TileTables_0_1_UpperCrateria:
 incbin "../data/TileTables_0_1_UpperCrateria.bin" ; $7F8 bytes
 
@@ -309,6 +319,8 @@ incbin "../data/TileTables_15_16_17_18_19_UtilityRoom_Statues.bin" ; $4E3 bytes
 TileTables_F_10_11_12_13_14_Ceres:
 incbin "../data/TileTables_F_10_11_12_13_14_Ceres.bin" ; $61E bytes
 
+
+;;; $C2:AD7C: Palettes (compressed) ;;;
 Palettes_0_UpperCrateria:
 incbin "../data/Palettes_0_UpperCrateria.bin" ; $E1 bytes
 
@@ -384,6 +396,8 @@ incbin "../data/Palettes_F_11_13_BlueCeres.bin" ; $DF bytes
 Palettes_10_12_14_WhiteCeres:
 incbin "../data/Palettes_10_12_14_WhiteCeres.bin" ; $D8 bytes
 
+
+;;; $C2:C2BB: Level data (compressed) ;;;
 LevelData_LandingSite:
 incbin "../data/LevelData_LandingSite.bin" ; $142D bytes
 
@@ -1141,7 +1155,9 @@ incbin "../data/LevelData_MissileRefill_LeftSideDoor.bin" ; $30D bytes
 
 LevelData_DebugRoom:
 incbin "../data/LevelData_DebugRoom.bin" ; $3F0 bytes
+
 check bankcross on
+
 
 Freespace_BankCE_B22E:                                                   ;CEB22E;
 ; $4DD2 bytes
