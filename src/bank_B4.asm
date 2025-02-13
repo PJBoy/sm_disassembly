@@ -2,6 +2,7 @@
 org $B48000
 
 
+;;; $8000: Enemy sets ;;;
 EnemySets_Draygon_1_MotherBrain_2:
     dw $FFFF                                                             ;B48000;
     db "SF1_10 "                                                         ;B48002;
@@ -1995,7 +1996,11 @@ EnemySets_Debug:
     dw $FFFF                                                             ;B492C3;
     db $00                                                               ;B492C5;
 
+
+;;; $92C6: Debug handler - [debug index] = 7: enemy debugger - enemy spawn data editor ;;;
 DebugHandler_7_EnemyDebugger_EnemySpawnDataEditor:
+;; Returns:
+;;     A: Non-zero to skip processing frame
     JSR.W Debug_HandleCursorMovement                                     ;B492C6;
     JSR.W Debug_HandleDigitModification                                  ;B492C9;
     LDA.W #$0800                                                         ;B492CC;
@@ -2028,7 +2033,6 @@ DebugHandler_7_EnemyDebugger_EnemySpawnDataEditor:
     LDA.W #$0030                                                         ;B49314;
     BRA .draw                                                            ;B49317;
 
-
   .nonZeroName:
     TAX                                                                  ;B49319;
     LDA.L $B4000C,X                                                      ;B4931A;
@@ -2044,7 +2048,6 @@ DebugHandler_7_EnemyDebugger_EnemySpawnDataEditor:
     STZ.W $185C                                                          ;B49330;
     LDA.W #$0001                                                         ;B49333;
     RTS                                                                  ;B49336;
-
 
   .checkSelect:
     LDA.B $91                                                            ;B49337;
@@ -2075,7 +2078,16 @@ DebugHandler_7_EnemyDebugger_EnemySpawnDataEditor:
     RTS                                                                  ;B4936C;
 
 
+;;; $936D: Draw debug enemy spawn values ;;;
 Draw_Debug_Enemy_Spawn_Values:
+; When drawn with the text, result looks like:
+;     PosX: [X position]
+;     PosY: [Y position]
+;     Pose: [initialisation parameter]
+;     Swt1: [properties]
+;     Swt2: [extra properties]
+;     Opt0: [parameter 1]
+;     Opt1: [parameter 2]
     LDX.W $1846                                                          ;B4936D;
     LDA.L $7E7020,X                                                      ;B49370;
     STA.W $0E24                                                          ;B49374;
@@ -2135,6 +2147,7 @@ Draw_Debug_Enemy_Spawn_Values:
     RTS                                                                  ;B4941C;
 
 
+;;; $941D: Debug. Draw enemy set name ;;;
 Debug_Draw_Enemy_Set_Name:
     PHX                                                                  ;B4941D;
     LDA.W #$0A00                                                         ;B4941E;
@@ -2202,7 +2215,13 @@ Debug_Draw_Enemy_Set_Name:
     RTS                                                                  ;B494B7;
 
 
+;;; $94B8: Debug handler - [debug index] = 8: enemy debugger - respawn enemy ;;;
 DebugHandler_8_EnemyDebugger_RespawnEnemy:
+;; Returns:
+;;     A: Non-zero to skip processing frame
+
+; Uses part of the enemy spawn data (recorded by $A0:88D0) as enemy population data for one enemy
+; As the following RAM is garbage (the debug enemy name), respawning a multi-part enemy will crash
     PHB                                                                  ;B494B8;
     PEA.W $7E7E                                                          ;B494B9;
     PLB                                                                  ;B494BC;
@@ -2219,7 +2238,10 @@ DebugHandler_8_EnemyDebugger_RespawnEnemy:
     RTS                                                                  ;B494D4;
 
 
+;;; $94D5: Debug handler - [debug index] = 9: enemy debugger - enemy spawner ;;;
 DebugHandler_9_EnemyDebugger_EnemySpawner:
+;; Returns:
+;;     A: Non-zero to skip processing frame
     LDA.W $07D1                                                          ;B494D5;
     TAX                                                                  ;B494D8;
     STA.W $0E26                                                          ;B494D9;
@@ -2268,7 +2290,6 @@ DebugHandler_9_EnemyDebugger_EnemySpawner:
     STA.W $0E26                                                          ;B49547;
     BRA .loop                                                            ;B4954A;
 
-
   .endLoop:
     LDA.W #$0A00                                                         ;B4954C;
     STA.B $26                                                            ;B4954F;
@@ -2282,14 +2303,12 @@ DebugHandler_9_EnemyDebugger_EnemySpawner:
     LDA.W #$0030                                                         ;B49564;
     BRA .resolvedName                                                    ;B49567;
 
-
   .hasSpawnID:
     TAX                                                                  ;B49569;
     LDA.L $A0003E,X                                                      ;B4956A;
     BNE +                                                                ;B4956E;
     LDA.W #$0030                                                         ;B49570;
     BRA .resolvedName                                                    ;B49573;
-
 
 +   TAX                                                                  ;B49575;
     LDA.L $B4000C,X                                                      ;B49576;
@@ -2339,14 +2358,12 @@ DebugHandler_9_EnemyDebugger_EnemySpawner:
     LDA.W #$0001                                                         ;B495D9;
     RTS                                                                  ;B495DC;
 
-
   .checkL:
     LDA.B $91                                                            ;B495DD;
     BIT.W #$0020                                                         ;B495DF;
     BNE .checkB                                                          ;B495E2;
     LDA.W #$0001                                                         ;B495E4;
     RTS                                                                  ;B495E7;
-
 
   .checkB:
     LDX.W $1866                                                          ;B495E8;
@@ -2361,7 +2378,6 @@ DebugHandler_9_EnemyDebugger_EnemySpawner:
     STZ.W $185C                                                          ;B49600;
     LDA.W #$0001                                                         ;B49603;
     RTS                                                                  ;B49606;
-
 
 +   LDY.W $1846                                                          ;B49607;
     LDA.W $0F7A,Y                                                        ;B4960A;
@@ -2392,6 +2408,7 @@ DebugHandler_9_EnemyDebugger_EnemySpawner:
     RTS                                                                  ;B49645;
 
 
+;;; $9646: Debug. Handle cursor movement ;;;
 Debug_HandleCursorMovement:
     LDA.B $91                                                            ;B49646;
     BIT.W #$0100                                                         ;B49648;
@@ -2406,7 +2423,6 @@ Debug_HandleCursorMovement:
 +   STA.W $1860                                                          ;B4965C;
     BRA .return                                                          ;B4965F;
 
-
   .noRight:
     BIT.W #$0200                                                         ;B49661;
     BEQ .noLeft                                                          ;B49664;
@@ -2420,7 +2436,6 @@ Debug_HandleCursorMovement:
 +   STA.W $1860                                                          ;B49675;
     BRA .return                                                          ;B49678;
 
-
   .noLeft:
     BIT.W #$0400                                                         ;B4967A;
     BEQ .noDown                                                          ;B4967D;
@@ -2433,7 +2448,6 @@ Debug_HandleCursorMovement:
 
 +   STA.W $1862                                                          ;B4968E;
     BRA .return                                                          ;B49691;
-
 
   .noDown:
     BIT.W #$0800                                                         ;B49693;
@@ -2452,6 +2466,7 @@ Debug_HandleCursorMovement:
     RTS                                                                  ;B496AA;
 
 
+;;; $96AB: Debug. Handle digit modification ;;;
 Debug_HandleDigitModification:
     LDX.W $1846                                                          ;B496AB;
     LDA.L $7E7020,X                                                      ;B496AE;
@@ -2488,7 +2503,6 @@ Debug_HandleDigitModification:
     ADC.W .data,X                                                        ;B496F7;
     STA.W $0012,Y                                                        ;B496FA;
     BRA +                                                                ;B496FD;
-
 
   .notNewlyPressedX:
     BIT.W #$8000                                                         ;B496FF;
@@ -2527,18 +2541,22 @@ Debug_HandleDigitModification:
     STA.L $7E702C,X                                                      ;B4974B;
     RTS                                                                  ;B4974F;
 
-
   .data:
     dw $1000,$0100,$0010,$0001                                           ;B49750;
 
+
+;;; $9758: Debug handler - [debug index] = 10h: enemy debugger - enemy allocation viewer ;;;
 DebugHandler_10_EnemyDebugger_EnemyAllocationViewer:
+;; Returns:
+;;     A: Non-zero to skip processing frame
+
+; Shows the palette index of each enemy and total number of VRAM rows required for all enemies
     LDA.B $91                                                            ;B49758;
     BIT.W #$2000                                                         ;B4975A;
     BEQ .notNewlyPressedSelect                                           ;B4975D;
     STZ.W $185C                                                          ;B4975F;
     LDA.W #$0000                                                         ;B49762;
     RTS                                                                  ;B49765;
-
 
   .notNewlyPressedSelect:
     LDA.W $07D1                                                          ;B49766;
@@ -2597,7 +2615,6 @@ DebugHandler_10_EnemyDebugger_EnemyAllocationViewer:
     STA.W $0E26                                                          ;B497EB;
     BRA .loop                                                            ;B497EE;
 
-
   .terminated:
     LDA.W $0E2C                                                          ;B497F0;
     STA.W $0E24                                                          ;B497F3;
@@ -2610,7 +2627,10 @@ DebugHandler_10_EnemyDebugger_EnemyAllocationViewer:
     RTS                                                                  ;B49808;
 
 
+;;; $9809: Debug handler ;;;
 DebugHandler:
+;; Returns:
+;;     A: Non-zero to skip processing frame
     PHB                                                                  ;B49809;
     SEP #$20                                                             ;B4980A;
     LDA.B #$B4                                                           ;B4980C;
@@ -2624,7 +2644,6 @@ DebugHandler:
     JSR.W (.pointers,X)                                                  ;B4981A;
     PLB                                                                  ;B4981D;
     RTL                                                                  ;B4981E;
-
 
   .pointers:
     dw DebugHandler_0_Default                                            ;B4981F;
@@ -2645,7 +2664,11 @@ DebugHandler:
     dw DebugHandler_F_EnemyDebugger_RAMViewer_5                          ;B4983D;
     dw DebugHandler_10_EnemyDebugger_EnemyAllocationViewer               ;B4983F;
 
+
+;;; $9841: Debug handler - [debug index] = 4: sprite tiles viewer - 1st half ;;;
 DebugHandler_4_SpriteTilesViewer_FirstHalf:
+;; Returns:
+;;     A: Non-zero to skip processing frame
     LDA.W #$0A00                                                         ;B49841;
     STA.B $26                                                            ;B49844;
     LDA.W #$0080                                                         ;B49846;
@@ -2660,13 +2683,13 @@ DebugHandler_4_SpriteTilesViewer_FirstHalf:
     LDA.W #$0001                                                         ;B4985F;
     RTS                                                                  ;B49862;
 
-
   .resetIndex:
     STZ.W $185C                                                          ;B49863;
     LDA.W #$0001                                                         ;B49866;
     RTS                                                                  ;B49869;
 
 
+;;; $986A: Debug handler - [debug index] = 3: sprite tiles viewer - 2nd half ;;;
 DebugHandler_3_SpriteTilesViewer_SecondHalf:
     LDA.W $05C5                                                          ;B4986A;
     BIT.W #$0080                                                         ;B4986D;
@@ -2678,13 +2701,11 @@ DebugHandler_3_SpriteTilesViewer_SecondHalf:
     STA.W $185A                                                          ;B4987D;
     BRA .merge                                                           ;B49880;
 
-
 +   CMP.W #$0200                                                         ;B49882;
     BNE +                                                                ;B49885;
     LDA.W #$0400                                                         ;B49887;
     STA.W $185A                                                          ;B4988A;
     BRA .merge                                                           ;B4988D;
-
 
 +   CMP.W #$0400                                                         ;B4988F;
     BNE +                                                                ;B49892;
@@ -2692,18 +2713,15 @@ DebugHandler_3_SpriteTilesViewer_SecondHalf:
     STA.W $185A                                                          ;B49897;
     BRA .merge                                                           ;B4989A;
 
-
 +   CMP.W #$0600                                                         ;B4989C;
     BNE +                                                                ;B4989F;
     LDA.W #$0E00                                                         ;B498A1;
     STA.W $185A                                                          ;B498A4;
     BRA .merge                                                           ;B498A7;
 
-
 +   LDA.W #$0000                                                         ;B498A9;
     STA.W $185A                                                          ;B498AC;
     BRA .merge                                                           ;B498AF;
-
 
   .noChange:
     LDA.W $185A                                                          ;B498B1;
@@ -2722,14 +2740,18 @@ DebugHandler_3_SpriteTilesViewer_SecondHalf:
     LDA.W #$0001                                                         ;B498CF;
     RTS                                                                  ;B498D2;
 
-
   .incIndex:
     INC.W $185C                                                          ;B498D3;
     LDA.W #$0001                                                         ;B498D6;
     RTS                                                                  ;B498D9;
 
 
+;;; $98DA: Debug handler - [debug index] = 1: palette viewer - sprite palettes ;;;
 DebugHandler_1_PaletteViewer_SpritePalettes:
+;; Returns:
+;;     A: Non-zero to skip processing frame
+
+; Note that this routine overwrites the sprite palettes with the BG palettes when switching over to the next debug index
     LDA.W #$0000                                                         ;B498DA;
     STA.B $26                                                            ;B498DD;
     LDA.W #$0060                                                         ;B498DF;
@@ -2751,7 +2773,6 @@ DebugHandler_1_PaletteViewer_SpritePalettes:
     LDA.W #$0001                                                         ;B4990B;
     RTS                                                                  ;B4990E;
 
-
   .setupLoop:
     LDX.W #$00FE                                                         ;B4990F;
 
@@ -2766,6 +2787,7 @@ DebugHandler_1_PaletteViewer_SpritePalettes:
     RTS                                                                  ;B49924;
 
 
+;;; $9925: Debug handler - [debug index] = 2: palette viewer - BG palettes ;;;
 DebugHandler_2_PaletteViewer_BGPalettes:
     LDA.W #$0000                                                         ;B49925;
     STA.B $26                                                            ;B49928;
@@ -2788,14 +2810,16 @@ DebugHandler_2_PaletteViewer_BGPalettes:
     LDA.W #$0001                                                         ;B49956;
     RTS                                                                  ;B49959;
 
-
   .resetIndex:
     STZ.W $185C                                                          ;B4995A;
     LDA.W #$0001                                                         ;B4995D;
     RTS                                                                  ;B49960;
 
 
+;;; $9961: Debug handler - [debug index] = 0: default ;;;
 DebugHandler_0_Default:
+;; Returns:
+;;     A: Non-zero to skip processing frame
     LDA.B $91                                                            ;B49961;
     BIT.W #$1000                                                         ;B49963;
     BEQ .checkL                                                          ;B49966;
@@ -2831,7 +2855,6 @@ DebugHandler_0_Default:
     LDA.W #$0000                                                         ;B499A9;
     RTS                                                                  ;B499AC;
 
-
   .A:
     LDY.W #$0001                                                         ;B499AD;
     LDA.W $0E12                                                          ;B499B0;
@@ -2844,13 +2867,11 @@ DebugHandler_0_Default:
     LDA.W #$0000                                                         ;B499BC;
     RTS                                                                  ;B499BF;
 
-
   .Select:
     LDA.W #$0010                                                         ;B499C0;
     STA.W $185C                                                          ;B499C3;
     LDA.W #$0000                                                         ;B499C6;
     RTS                                                                  ;B499C9;
-
 
   .SelectLX:
     INC.W $185C                                                          ;B499CA;
@@ -2858,7 +2879,6 @@ DebugHandler_0_Default:
     INC.W $185C                                                          ;B499D0;
     LDA.W #$0001                                                         ;B499D3;
     RTS                                                                  ;B499D6;
-
 
   .R:
     INC.W $185C                                                          ;B499D7;
@@ -2868,7 +2888,6 @@ DebugHandler_0_Default:
     INC.W $185C                                                          ;B499E3;
     LDA.W #$0000                                                         ;B499E6;
     RTS                                                                  ;B499E9;
-
 
   .SelectLA:
     SEP #$20                                                             ;B499EA;
@@ -2893,7 +2912,10 @@ DebugHandler_0_Default:
     RTS                                                                  ;B49A1C;
 
 
+;;; $9A1D: Debug handler - [debug index] = 5: enemy debugger - initialise ;;;
 DebugHandler_5_EnemyDebugger_Initialize:
+;; Returns:
+;;     A: Non-zero to skip processing frame
     SEP #$20                                                             ;B49A1D;
     LDA.B #$80                                                           ;B49A1F;
     STA.W $2100                                                          ;B49A21;
@@ -2919,14 +2941,16 @@ DebugHandler_5_EnemyDebugger_Initialize:
     RTS                                                                  ;B49A58;
 
 
+;;; $9A59: Debug handler - [debug index] = 6: enemy debugger - enemy mover ;;;
 DebugHandler_6_EnemyDebugger_EnemyMover:
+;; Returns:
+;;     A: Non-zero to skip processing frame
     LDA.B $91                                                            ;B49A59;
     BIT.W #$0010                                                         ;B49A5B;
     BEQ .checkSelect                                                     ;B49A5E;
     INC.W $185C                                                          ;B49A60;
     LDA.W #$0000                                                         ;B49A63;
     RTS                                                                  ;B49A66;
-
 
   .checkSelect:
     LDA.B $91                                                            ;B49A67;
@@ -2944,7 +2968,6 @@ DebugHandler_6_EnemyDebugger_EnemyMover:
 
 +   STA.W $1846                                                          ;B49A84;
     BRA .checkA                                                          ;B49A87;
-
 
   .pressingB:
     LDA.W $1846                                                          ;B49A89;
@@ -2974,7 +2997,6 @@ DebugHandler_6_EnemyDebugger_EnemyMover:
     BEQ .moveWithDpad                                                    ;B49ABA;
     JSL.L Debug_MoveEnemyWithDpad_4PixelsPerFrame                        ;B49ABC;
     BRA +                                                                ;B49AC0;
-
 
   .moveWithDpad:
     JSL.L Debug_MoveEnemyWithDpad_QuarterPixelPerFrame                   ;B49AC2;
@@ -3073,7 +3095,6 @@ DebugHandler_6_EnemyDebugger_EnemyMover:
     LDA.W #$0030                                                         ;B49BB9;
     BRA .draw                                                            ;B49BBC;
 
-
   .debugName:
     TAX                                                                  ;B49BBE;
     LDA.L $B4000C,X                                                      ;B49BBF;
@@ -3088,14 +3109,22 @@ DebugHandler_6_EnemyDebugger_EnemyMover:
     RTS                                                                  ;B49BD4;
 
 
+;;; $9BD5: Debug handler - [debug index] = Ah: enemy debugger - RAM viewer - page 0 ;;;
 DebugHandler_A_EnemyDebugger_RAMViewer_0:
+;; Returns:
+;;     A: Non-zero to skip processing frame
+
+; When drawn with the text, result looks like:
+;     TK_UPTM: [frame counter]
+;     TK_Stat: [AI handler]
+;     TK_Num : [ID]
+;     TK_Bank: [bank]
     LDA.B $91                                                            ;B49BD5;
     BIT.W #$0010                                                         ;B49BD7;
     BEQ +                                                                ;B49BDA;
     INC.W $185C                                                          ;B49BDC;
     LDA.W #$0000                                                         ;B49BDF;
     RTS                                                                  ;B49BE2;
-
 
 +   LDA.W #$00B0                                                         ;B49BE3;
     STA.B $14                                                            ;B49BE6;
@@ -3141,14 +3170,22 @@ DebugHandler_A_EnemyDebugger_RAMViewer_0:
     RTS                                                                  ;B49C5C;
 
 
+;;; $9C5D: Debug handler - [debug index] = Bh: enemy debugger - RAM viewer - page 1 ;;;
 DebugHandler_B_EnemyDebugger_RAMViewer_1:
+;; Returns:
+;;     A: Non-zero to skip processing frame
+
+; When drawn with the text, result looks like:
+;     Switch : [properties]
+;     Switch2: [extra properties]
+;     ColorPa: [palette index]
+;     CharaOf: [VRAM tiles index]
     LDA.B $91                                                            ;B49C5D;
     BIT.W #$0010                                                         ;B49C5F;
     BEQ +                                                                ;B49C62;
     INC.W $185C                                                          ;B49C64;
     LDA.W #$0000                                                         ;B49C67;
     RTS                                                                  ;B49C6A;
-
 
 +   LDA.W #$00B0                                                         ;B49C6B;
     STA.B $14                                                            ;B49C6E;
@@ -3194,14 +3231,22 @@ DebugHandler_B_EnemyDebugger_RAMViewer_1:
     RTS                                                                  ;B49CE4;
 
 
+;;; $9CE5: Debug handler - [debug index] = Ch: enemy debugger - RAM viewer - page 2 ;;;
 DebugHandler_C_EnemyDebugger_RAMViewer_2:
+;; Returns:
+;;     A: Non-zero to skip processing frame
+
+; When drawn with the text, result looks like:
+;     PoseAdr: [instruction list pointer]
+;     WaitTim: [instruction timer]
+;     LpCnt  : [timer]
+;     Patern : [spritemap pointer]
     LDA.B $91                                                            ;B49CE5;
     BIT.W #$0010                                                         ;B49CE7;
     BEQ +                                                                ;B49CEA;
     INC.W $185C                                                          ;B49CEC;
     LDA.W #$0000                                                         ;B49CEF;
     RTS                                                                  ;B49CF2;
-
 
 +   LDA.W #$00B0                                                         ;B49CF3;
     STA.B $14                                                            ;B49CF6;
@@ -3247,14 +3292,22 @@ DebugHandler_C_EnemyDebugger_RAMViewer_2:
     RTS                                                                  ;B49D6C;
 
 
+;;; $9D6D: Debug handler - [debug index] = Dh: enemy debugger - RAM viewer - page 3 ;;;
 DebugHandler_D_EnemyDebugger_RAMViewer_3:
+;; Returns:
+;;     A: Non-zero to skip processing frame
+
+; When drawn with the text, result looks like:
+;     FlashCo: [flash timer]
+;     IceCoun: [frozen timer]
+;     HitCoun: [invincibility timer]
+;     PlplCou: [shake timer]
     LDA.B $91                                                            ;B49D6D;
     BIT.W #$0010                                                         ;B49D6F;
     BEQ +                                                                ;B49D72;
     INC.W $185C                                                          ;B49D74;
     LDA.W #$0000                                                         ;B49D77;
     RTS                                                                  ;B49D7A;
-
 
 +   LDA.W #$00B0                                                         ;B49D7B;
     STA.B $14                                                            ;B49D7E;
@@ -3300,14 +3353,22 @@ DebugHandler_D_EnemyDebugger_RAMViewer_3:
     RTS                                                                  ;B49DF4;
 
 
+;;; $9DF5: Debug handler - [debug index] = Eh: enemy debugger - RAM viewer - page 4 ;;;
 DebugHandler_E_EnemyDebugger_RAMViewer_4:
+;; Returns:
+;;     A: Non-zero to skip processing frame
+
+; When drawn with the text, result looks like:
+;     Pwork0 : [$0FA8]
+;     Pwork1 : [$0FAA]
+;     Pwork2 : [$0FAC]
+;     Pwork3 : [$0FAE]
     LDA.B $91                                                            ;B49DF5;
     BIT.W #$0010                                                         ;B49DF7;
     BEQ +                                                                ;B49DFA;
     INC.W $185C                                                          ;B49DFC;
     LDA.W #$0000                                                         ;B49DFF;
     RTS                                                                  ;B49E02;
-
 
 +   LDA.W #$00B0                                                         ;B49E03;
     STA.B $14                                                            ;B49E06;
@@ -3353,14 +3414,22 @@ DebugHandler_E_EnemyDebugger_RAMViewer_4:
     RTS                                                                  ;B49E7C;
 
 
+;;; $9E7D: Debug handler - [debug index] = Fh: enemy debugger - RAM viewer - page 5 ;;;
 DebugHandler_F_EnemyDebugger_RAMViewer_5:
+;; Returns:
+;;     A: Non-zero to skip processing frame
+
+; When drawn with the text, result looks like:
+;     Pwork4 : [$0FB0]
+;     Pwork5 : [$0FB2]
+;     InitOP0: [$0FB4]
+;     InitOP1: [$0FB6]
     LDA.B $91                                                            ;B49E7D;
     BIT.W #$0010                                                         ;B49E7F;
     BEQ +                                                                ;B49E82;
     INC.W $185C                                                          ;B49E84;
     LDA.W #$0000                                                         ;B49E87;
     RTS                                                                  ;B49E8A;
-
 
 +   LDA.W #$00B0                                                         ;B49E8B;
     STA.B $14                                                            ;B49E8E;
@@ -3406,7 +3475,10 @@ DebugHandler_F_EnemyDebugger_RAMViewer_5:
     RTS                                                                  ;B49F04;
 
 
+;;; $9F05: Debug. Move enemy with d-pad 1/4 px/frame ;;;
 Debug_MoveEnemyWithDpad_QuarterPixelPerFrame:
+;; Parameters:
+;;     X: Debug enemy index
     LDA.W $05B6                                                          ;B49F05;
     AND.W #$0003                                                         ;B49F08;
     BNE .return                                                          ;B49F0B;
@@ -3415,7 +3487,6 @@ Debug_MoveEnemyWithDpad_QuarterPixelPerFrame:
     BEQ .notPressingLeft                                                 ;B49F12;
     DEC.W $0F7A,X                                                        ;B49F14;
     BRA .checkUp                                                         ;B49F17;
-
 
   .notPressingLeft:
     BIT.W #$0100                                                         ;B49F19;
@@ -3429,7 +3500,6 @@ Debug_MoveEnemyWithDpad_QuarterPixelPerFrame:
     DEC.W $0F7E,X                                                        ;B49F28;
     BRA .return                                                          ;B49F2B;
 
-
   .notPressingUp:
     BIT.W #$0400                                                         ;B49F2D;
     BEQ .return                                                          ;B49F30;
@@ -3439,6 +3509,7 @@ Debug_MoveEnemyWithDpad_QuarterPixelPerFrame:
     RTL                                                                  ;B49F35;
 
 
+;;; $9F36: Debug. Move enemy with d-pad 4 px/frame ;;;
 Debug_MoveEnemyWithDpad_4PixelsPerFrame:
     LDA.B $8D                                                            ;B49F36;
     BIT.W #$0200                                                         ;B49F38;
@@ -3448,7 +3519,6 @@ Debug_MoveEnemyWithDpad_4PixelsPerFrame:
     SBC.W #$0004                                                         ;B49F41;
     STA.W $0F7A,X                                                        ;B49F44;
     BRA .checkUp                                                         ;B49F47;
-
 
   .notPressingLeft:
     BIT.W #$0100                                                         ;B49F49;
@@ -3468,7 +3538,6 @@ Debug_MoveEnemyWithDpad_4PixelsPerFrame:
     STA.W $0F7E,X                                                        ;B49F66;
     BRA .return                                                          ;B49F69;
 
-
   .notPressingUp:
     BIT.W #$0400                                                         ;B49F6B;
     BEQ .return                                                          ;B49F6E;
@@ -3482,7 +3551,12 @@ Debug_MoveEnemyWithDpad_4PixelsPerFrame:
     RTL                                                                  ;B49F7D;
 
 
+;;; $9F7E: Draw 4 digit hex value ;;;
 Draw4DigitHexValue:
+;; Parameters:
+;;     $0E20: X position
+;;     $0E22: Y position
+;;     $0E24: Hex value
     LDA.W $0E20                                                          ;B49F7E;
     CLC                                                                  ;B49F81;
     ADC.W #$0000                                                         ;B49F82;
@@ -3556,7 +3630,36 @@ Draw4DigitHexValue:
     RTS                                                                  ;B4A01C;
 
 
+;;; $A01D: Add debug spritemap to OAM ;;;
 Add_Debug_Spritemap_to_OAM:
+;; Parameters:
+;;     A:   Index into $A201 table
+;;     $12: Y position of spritemap centre
+;;     $14: X position of spritemap centre
+;;     $26: Palette bits of sprite. If zero, spritemap entry palette is used
+
+; Spritemap format is roughly:
+;     nnnn         ; Number of entries (2 bytes)
+;     xxxx yy attt ; Entry 0 (5 bytes)
+;     ...          ; Entry 1...
+; Where:
+;     n = number of entries
+;     x = X offset of sprite from centre
+;     y = Y offset of sprite from centre
+;     a = attributes
+;     t = tile number
+
+; More specifically, a spritemap entry is:
+;     00000s0xxxxxxxxx yyyyyyyy YXppPPPttttttttt
+; Where:
+;     s = size bit <-- This is different to the regular spritemap format
+;     x = X offset of sprite from centre
+;     y = Y offset of sprite from centre
+;     Y = Y flip
+;     X = X flip
+;     P = palette
+;     p = priority (relative to background)
+;     t = tile number
     PHP                                                                  ;B4A01D;
     SEP #$20                                                             ;B4A01E;
     PHB                                                                  ;B4A020;
@@ -3629,14 +3732,12 @@ Add_Debug_Spritemap_to_OAM:
     BCC .store                                                           ;B4A097;
     BRA .F0                                                              ;B4A099;
 
-
 +   CLC                                                                  ;B4A09B;
     ADC.B $12                                                            ;B4A09C;
     BCS .checkMax                                                        ;B4A09E;
     CMP.B #$F0                                                           ;B4A0A0;
     BCS .store                                                           ;B4A0A2;
     BRA .F0                                                              ;B4A0A4;
-
 
   .checkMax:
     CMP.B #$F0                                                           ;B4A0A6;
@@ -3659,7 +3760,6 @@ Add_Debug_Spritemap_to_OAM:
     ORA.B $26                                                            ;B4A0BD;
     BRA .next                                                            ;B4A0BF;
 
-
   .useSpritemapEntryPalette:
     LDA.W $0000,Y                                                        ;B4A0C1;
 
@@ -3675,7 +3775,6 @@ Add_Debug_Spritemap_to_OAM:
     BEQ .return                                                          ;B4A0D2;
     JMP.W .loop                                                          ;B4A0D4;
 
-
   .return:
     STX.W $0590                                                          ;B4A0D7;
     SEP #$20                                                             ;B4A0DA;
@@ -3683,7 +3782,6 @@ Add_Debug_Spritemap_to_OAM:
     REP #$20                                                             ;B4A0DD;
     PLP                                                                  ;B4A0DF;
     RTL                                                                  ;B4A0E0;
-
 
   .size:
 ; OAM size bits
@@ -3712,6 +3810,8 @@ Add_Debug_Spritemap_to_OAM:
     dw $001C,$001C,$001C,$001C,$001C,$001C,$001C,$001C                   ;B4A1E1;
     dw $001E,$001E,$001E,$001E,$001E,$001E,$001E,$001E                   ;B4A1F1;
 
+
+;;; $A201: Debug spritemap addresses ;;;
 Debug_Spritemap_Addresses:
     dw DebugSpritemaps_0_PaletteViewer_LeftHalf                          ;B4A201;
     dw DebugSpritemaps_1_PaletteViewer_RightHalf                         ;B4A203;
@@ -3861,6 +3961,8 @@ Debug_Spritemap_Addresses:
     dw DebugSpritemaps_91_EnemyNames_HATCHI3                             ;B4A323;
     dw DebugSpritemaps_92_EnemyNames_ROBO2                               ;B4A325;
 
+
+;;; $A327..BC25: Debug spritemaps ;;;
 DebugSpritemaps_0_PaletteViewer_LeftHalf:
     dw $0040                                                             ;B4A327;
     %spritemapEntry(0, $18, $18, 0, 0, 3, 7, $177)
@@ -4653,6 +4755,8 @@ DebugSpritemaps_2F_EnemySpawnDataEditorText:
     %spritemapEntry(0, $1F0, $F8, 0, 0, 3, 0, $F2)
     %spritemapEntry(0, $1E8, $F8, 0, 0, 3, 0, $EE)
 
+
+;;; $B00E: Enemy names ;;;
 DebugSpritemaps_31_EnemyNames_ATOMIC:
     dw $0006                                                             ;B4B00E;
     %spritemapEntry(0, $08, $E0, 0, 0, 3, 0, $B2)
@@ -5296,6 +5400,8 @@ DebugSpritemaps_1C_TextCursor:
     dw $0001                                                             ;B4B886;
     %spritemapEntry(0, $00, $00, 0, 0, 3, 0, $3E)
 
+
+;;; $B88D: Enemy names ;;;
 DebugSpritemaps_30_EnemyNames_NoDebug:
     dw $0008                                                             ;B4B88D;
     %spritemapEntry(0, $18, $E0, 0, 0, 3, 0, $CD)
@@ -5472,6 +5578,8 @@ DebugSpritemaps_8E_EnemyNames_BATTA3ts:
     %spritemapEntry(0, $1E8, $E0, 0, 0, 3, 0, $B0)
     %spritemapEntry(0, $1E0, $E0, 0, 0, 3, 0, $B1)
 
+
+;;; $BB2D: Area names ;;;
 DebugSpritemaps_14_AreaNames_SF_Crateria:
     dw $0003                                                             ;B4BB2D;
     %spritemapEntry(0, $1E8, $F8, 0, 0, 3, 0, $B5)
@@ -5520,6 +5628,8 @@ DebugSpritemaps_1B_AreaNames_TT_Debug:
     %spritemapEntry(0, $1E0, $F8, 0, 0, 3, 0, $C5)
     %spritemapEntry(0, $1F8, $F8, 0, 0, 3, 0, $FD)
 
+
+;;; $BBB5: Enemy names ;;;
 DebugSpritemaps_8F_EnemyNames_FUNE:
     dw $0004                                                             ;B4BBB5;
     %spritemapEntry(0, $1F8, $E0, 0, 0, 3, 0, $B4)
@@ -5554,7 +5664,15 @@ DebugSpritemaps_92_EnemyNames_ROBO2:
     %spritemapEntry(0, $1E0, $E0, 0, 0, 3, 0, $C3)
 
 
+;;; $BC26: Create sprite object ;;;
 Create_Sprite_Object:
+;; Parameters:
+;;     $12: X position
+;;     $14: Y position
+;;     $16: Sprite object ID. See "Sprite objects.asm"
+;;     $18: Base tile number and palette bits
+;; Returns:
+;;     $12: Index of created sprite object if successful
     PHX                                                                  ;B4BC26;
     PHY                                                                  ;B4BC27;
     PHP                                                                  ;B4BC28;
@@ -5572,7 +5690,6 @@ Create_Sprite_Object:
     DEX                                                                  ;B4BC3B;
     BPL .loop                                                            ;B4BC3C;
     BRA .return                                                          ;B4BC3E;
-
 
   .found:
     LDA.W #$0000                                                         ;B4BC40;
@@ -5606,6 +5723,7 @@ Create_Sprite_Object:
     RTL                                                                  ;B4BC81;
 
 
+;;; $BC82: Handle sprite objects ;;;
 HandleSpriteObjects:
     PHX                                                                  ;B4BC82;
     PHY                                                                  ;B4BC83;
@@ -5654,12 +5772,10 @@ HandleSpriteObjects:
     BPL .loop                                                            ;B4BCDF;
     BRA .return                                                          ;B4BCE1;
 
-
   .ASMInstruction:
     STA.B $12                                                            ;B4BCE3;
     PEA.W .next-1                                                        ;B4BCE5;
     JMP.W ($0012)                                                        ;B4BCE8;
-
 
   .return:
     PLB                                                                  ;B4BCEB;
@@ -5669,6 +5785,7 @@ HandleSpriteObjects:
     RTL                                                                  ;B4BCEF;
 
 
+;;; $BCF0: Sprite object instruction - go back 4 bytes ;;;
 Instruction_SpriteObject_GoBack4Bytes:
     LDX.W $1844                                                          ;B4BCF0;
     LDA.L $7EEF78,X                                                      ;B4BCF3;
@@ -5682,6 +5799,7 @@ Instruction_SpriteObject_GoBack4Bytes:
     RTS                                                                  ;B4BD06;
 
 
+;;; $BD07: Sprite object instruction - delete ;;;
 Instruction_SpriteObject_Delete:
     LDX.W $1844                                                          ;B4BD07;
     LDA.W #$0000                                                         ;B4BD0A;
@@ -5689,6 +5807,7 @@ Instruction_SpriteObject_Delete:
     RTS                                                                  ;B4BD11;
 
 
+;;; $BD12: Sprite object instruction - go to parameter ;;;
 Instruction_SpriteObject_GotoParameter:
     LDX.W $1844                                                          ;B4BD12;
     LDA.L $7EEF78,X                                                      ;B4BD15;
@@ -5703,6 +5822,7 @@ Instruction_SpriteObject_GotoParameter:
     RTS                                                                  ;B4BD31;
 
 
+;;; $BD32: Draw sprite objects ;;;
 DrawSpriteObjects:
     PHX                                                                  ;B4BD32;
     PHY                                                                  ;B4BD33;
@@ -5758,7 +5878,10 @@ DrawSpriteObjects:
     RTL                                                                  ;B4BD96;
 
 
+;;; $BD97: Clear sprite objects ;;;
 ClearSpriteObjects:
+; BUG: Doesn't clear $7E:EF78 due to wrong branch instruction,
+; causes a crash during door transition if 32 sprite objects are created
     LDX.W #$03FE                                                         ;B4BD97;
     LDA.W #$0000                                                         ;B4BD9A;
 
@@ -5770,9 +5893,12 @@ ClearSpriteObjects:
     RTL                                                                  ;B4BDA5;
 
 
+;;; $BDA6: Empty draw instruction ;;;
 SpriteObject_DrawInst_Empty:
     dw $0000                                                             ;B4BDA6;
 
+
+;;; $BDA8: Sprite objects ;;;
 SpriteObject_DrawInst_Pointers:
     dw UNUSED_InstList_SpriteObject_0_BeamCharge_B4BE5A                  ;B4BDA8;
     dw UNUSED_InstList_SpriteObject_1_MBElbowChargeParticles_B4BE6C      ;B4BDAA;
@@ -5837,6 +5963,8 @@ SpriteObject_DrawInst_Pointers:
     dw InstList_SpriteObject_3C_EvirFacingRight                          ;B4BE20;
     dw InstList_SpriteObject_3D_DraygonFoamingAtTheMouth                 ;B4BE22;
 
+
+;;; $BE24: Instruction list - sprite object 3Dh (Draygon foaming at the mouth) ;;;
 InstList_SpriteObject_3D_DraygonFoamingAtTheMouth:
     dw $0006,SpriteObjectSpritemaps_3D_DraygonFoamingAtTheMouth_0        ;B4BE24;
     dw $0006,SpriteObjectSpritemaps_3D_DraygonFoamingAtTheMouth_1        ;B4BE28;
@@ -5848,651 +5976,771 @@ InstList_SpriteObject_3D_DraygonFoamingAtTheMouth:
     dw $0009,SpriteObjectSpritemaps_3D_DraygonFoamingAtTheMouth_7        ;B4BE40;
     dw Instruction_SpriteObject_Delete                                   ;B4BE44;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $BE46: Unused. Instruction list ;;;
 UNUSED_InstList_SpriteObject_B4BE46:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_B4DD3C        ;B4BE46;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_B4DD43        ;B4BE4A;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_B4DD4A        ;B4BE4E;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_B4DD3C                        ;B4BE46;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_B4DD43                        ;B4BE4A;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_B4DD4A                        ;B4BE4E;
     dw Instruction_SpriteObject_Delete                                   ;B4BE52;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $BE54: Instruction list - sprite object 2Fh (unused) ;;;
 UNUSED_InstList_SpriteObject_2F_B4BE54:
-    dw $0001,UNUSED_SpriteObjectSpritemaps_2F_B4D594        ;B4BE54;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_2F_B4D594                     ;B4BE54;
     dw Instruction_SpriteObject_GoBack4Bytes                             ;B4BE58;
 
+
+;;; $BE5A: Instruction list - sprite object 0 (unused. Beam charge) ;;;
 UNUSED_InstList_SpriteObject_0_BeamCharge_B4BE5A:
-    dw $0003,UNUSED_SpriteObjectSpritemaps_0_BeamCharge_0_B4CAC9        ;B4BE5A;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_0_BeamCharge_1_B4CAD0        ;B4BE5E;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_0_BeamCharge_2_B4CAD7        ;B4BE62;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_0_BeamCharge_3_B4CADE        ;B4BE66;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_0_BeamCharge_0_B4CAC9         ;B4BE5A;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_0_BeamCharge_1_B4CAD0         ;B4BE5E;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_0_BeamCharge_2_B4CAD7         ;B4BE62;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_0_BeamCharge_3_B4CADE         ;B4BE66;
     dw Instruction_SpriteObject_Delete                                   ;B4BE6A;
 
+
+;;; $BE6C: Instruction list - sprite object 1 (unused. Mother Brain elbow charge particles) ;;;
 UNUSED_InstList_SpriteObject_1_MBElbowChargeParticles_B4BE6C:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_0_B4CAF4        ;B4BE6C;
-    dw $0004,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_1_B4CB05        ;B4BE70;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_2_B4CB16        ;B4BE74;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_3_B4CB27        ;B4BE78;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_4_B4CB38        ;B4BE7C;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_5_B4CB49        ;B4BE80;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_0_B4CAF4    ;B4BE6C;
+    dw $0004,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_1_B4CB05    ;B4BE70;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_2_B4CB16    ;B4BE74;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_3_B4CB27    ;B4BE78;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_4_B4CB38    ;B4BE7C;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_1_MBElbowParticle_5_B4CB49    ;B4BE80;
     dw Instruction_SpriteObject_Delete                                   ;B4BE84;
 
+
+;;; $BE86: Instruction list - sprite object 2 (unused. Mother Brain elbow charge energy) ;;;
 UNSUED_InstList_SpriteObject_2_MBElbowChargeEnergy_B4BE86:
-    dw $0004,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_0_B4CB5A        ;B4BE86;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_1_B4CB6B        ;B4BE8A;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_2_B4CB7C        ;B4BE8E;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_3_B4CB8D        ;B4BE92;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_4_B4CB9E        ;B4BE96;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_5_B4CBAF        ;B4BE9A;
-    dw $000C,SpriteObjectSpritemaps_3_SmallExplosion_0        ;B4BE9E;
+    dw $0004,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_0_B4CB5A      ;B4BE86;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_1_B4CB6B      ;B4BE8A;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_2_B4CB7C      ;B4BE8E;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_3_B4CB8D      ;B4BE92;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_4_B4CB9E      ;B4BE96;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_5_B4CBAF      ;B4BE9A;
+    dw $000C,SpriteObjectSpritemaps_3_SmallExplosion_0                   ;B4BE9E;
     dw Instruction_SpriteObject_Delete                                   ;B4BEA2;
 
+
+;;; $BEA4: Instruction list - sprite object 3 (small explosion) ;;;
 InstList_SpriteObject_3_SmallExplosion:
-    dw $0004,SpriteObjectSpritemaps_3_SmallExplosion_0        ;B4BEA4;
-    dw $0006,SpriteObjectSpritemaps_3_SmallExplosion_1        ;B4BEA8;
-    dw $0005,SpriteObjectSpritemaps_3_SmallExplosion_2        ;B4BEAC;
-    dw $0005,SpriteObjectSpritemaps_3_SmallExplosion_3        ;B4BEB0;
-    dw $0005,SpriteObjectSpritemaps_3_SmallExplosion_4        ;B4BEB4;
-    dw $0006,SpriteObjectSpritemaps_3_SmallExplosion_5        ;B4BEB8;
+    dw $0004,SpriteObjectSpritemaps_3_SmallExplosion_0                   ;B4BEA4;
+    dw $0006,SpriteObjectSpritemaps_3_SmallExplosion_1                   ;B4BEA8;
+    dw $0005,SpriteObjectSpritemaps_3_SmallExplosion_2                   ;B4BEAC;
+    dw $0005,SpriteObjectSpritemaps_3_SmallExplosion_3                   ;B4BEB0;
+    dw $0005,SpriteObjectSpritemaps_3_SmallExplosion_4                   ;B4BEB4;
+    dw $0006,SpriteObjectSpritemaps_3_SmallExplosion_5                   ;B4BEB8;
     dw Instruction_SpriteObject_Delete                                   ;B4BEBC;
 
+
+;;; $BEBE: Instruction list - sprite object 4 (unused. Bomb explosion) ;;;
 UNUSED_InstList_SpriteObject_4_BombExplosion_B4BEBE:
-    dw $0003,UNSUED_SpriteObjectSpritemaps_4_BombExplosion_0_B4CC35        ;B4BEBE;
-    dw $0003,UNSUED_SpriteObjectSpritemaps_4_BombExplosion_1_B4CC4B        ;B4BEC2;
-    dw $0004,UNSUED_SpriteObjectSpritemaps_4_BombExplosion_2_B4CC61        ;B4BEC6;
-    dw $0004,UNSUED_SpriteObjectSpritemaps_4_BombExplosion_3_B4CC77        ;B4BECA;
-    dw $0004,UNSUED_SpriteObjectSpritemaps_4_BombExplosion_4_B4CC8D        ;B4BECE;
+    dw $0003,UNSUED_SpriteObjectSpritemaps_4_BombExplosion_0_B4CC35      ;B4BEBE;
+    dw $0003,UNSUED_SpriteObjectSpritemaps_4_BombExplosion_1_B4CC4B      ;B4BEC2;
+    dw $0004,UNSUED_SpriteObjectSpritemaps_4_BombExplosion_2_B4CC61      ;B4BEC6;
+    dw $0004,UNSUED_SpriteObjectSpritemaps_4_BombExplosion_3_B4CC77      ;B4BECA;
+    dw $0004,UNSUED_SpriteObjectSpritemaps_4_BombExplosion_4_B4CC8D      ;B4BECE;
     dw Instruction_SpriteObject_Delete                                   ;B4BED2;
 
+
+;;; $BED4: Instruction list - sprite object 5 (unused. Beam trail) ;;;
 UNUSED_InstList_SpriteObject_5_BeamTrail_B4BED4:
-    dw $0008,UNSUED_SpriteObjectSpritemaps_5_BeamTrail_0_B4CCB9        ;B4BED4;
-    dw $0008,UNSUED_SpriteObjectSpritemaps_5_BeamTrail_1_B4CCC0        ;B4BED8;
-    dw $0008,UNSUED_SpriteObjectSpritemaps_5_BeamTrail_2_B4CCC7        ;B4BEDC;
-    dw $0008,UNSUED_SpriteObjectSpritemaps_5_BeamTrail_3_B4CCCE        ;B4BEE0;
-    dw $0018,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_3_B4CB8D        ;B4BEE4;
+    dw $0008,UNSUED_SpriteObjectSpritemaps_5_BeamTrail_0_B4CCB9          ;B4BED4;
+    dw $0008,UNSUED_SpriteObjectSpritemaps_5_BeamTrail_1_B4CCC0          ;B4BED8;
+    dw $0008,UNSUED_SpriteObjectSpritemaps_5_BeamTrail_2_B4CCC7          ;B4BEDC;
+    dw $0008,UNSUED_SpriteObjectSpritemaps_5_BeamTrail_3_B4CCCE          ;B4BEE0;
+    dw $0018,UNUSED_SpriteObjectSpritemaps_2_MBElbowEnergy_3_B4CB8D      ;B4BEE4;
     dw Instruction_SpriteObject_Delete                                   ;B4BEE8;
 
+
+;;; $BEEA: Instruction list - sprite object 6 (dud shot) ;;;
 InstList_SpriteObject_6_DudShot:
-    dw $0004,SpriteObjectSpritemaps_6_DudShot_0        ;B4BEEA;
-    dw $0004,SpriteObjectSpritemaps_6_DudShot_1        ;B4BEEE;
-    dw $0004,SpriteObjectSpritemaps_6_DudShot_2        ;B4BEF2;
-    dw $0004,SpriteObjectSpritemaps_6_DudShot_3        ;B4BEF6;
-    dw $0004,SpriteObjectSpritemaps_6_DudShot_4        ;B4BEFA;
-    dw $0004,SpriteObjectSpritemaps_6_DudShot_5        ;B4BEFE;
+    dw $0004,SpriteObjectSpritemaps_6_DudShot_0                          ;B4BEEA;
+    dw $0004,SpriteObjectSpritemaps_6_DudShot_1                          ;B4BEEE;
+    dw $0004,SpriteObjectSpritemaps_6_DudShot_2                          ;B4BEF2;
+    dw $0004,SpriteObjectSpritemaps_6_DudShot_3                          ;B4BEF6;
+    dw $0004,SpriteObjectSpritemaps_6_DudShot_4                          ;B4BEFA;
+    dw $0004,SpriteObjectSpritemaps_6_DudShot_5                          ;B4BEFE;
     dw Instruction_SpriteObject_Delete                                   ;B4BF02;
 
+
+;;; $BF04: Instruction list - sprite object 7 (unused. Power bomb) ;;;
 UNUSED_InstList_SpriteObject_7_PowerBomb_B4BF04:
-    dw $0005,UNSUED_SpriteObjectSpritemaps_7_PowerBomb_0_B4CCD5        ;B4BF04;
-    dw $0005,UNSUED_SpriteObjectSpritemaps_7_PowerBomb_1_B4CCDC        ;B4BF08;
-    dw $0005,UNSUED_SpriteObjectSpritemaps_7_PowerBomb_2_B4CCE3        ;B4BF0C;
+    dw $0005,UNSUED_SpriteObjectSpritemaps_7_PowerBomb_0_B4CCD5          ;B4BF04;
+    dw $0005,UNSUED_SpriteObjectSpritemaps_7_PowerBomb_1_B4CCDC          ;B4BF08;
+    dw $0005,UNSUED_SpriteObjectSpritemaps_7_PowerBomb_2_B4CCE3          ;B4BF0C;
     dw Instruction_SpriteObject_Delete                                   ;B4BF10;
 
+
+;;; $BF12: Instruction list - sprite object 8 (unused. Elevator pad) ;;;
 UNUSED_InstList_SpriteObject_8_ElevatorPad_B4BF12:
-    dw $0001,UNSUED_SpriteObjectSpritemaps_8_1C_ElevatorPad_0_B4CD57        ;B4BF12;
-    dw $0001,UNSUED_SpriteObjectSpritemaps_8_1C_ElevatorPad_1_B4CD6D        ;B4BF16;
+    dw $0001,UNSUED_SpriteObjectSpritemaps_8_1C_ElevatorPad_0_B4CD57     ;B4BF12;
+    dw $0001,UNSUED_SpriteObjectSpritemaps_8_1C_ElevatorPad_1_B4CD6D     ;B4BF16;
     dw Instruction_SpriteObject_Delete                                   ;B4BF1A;
 
+
+;;; $BF1C: Instruction list - sprite object 9 (small dust cloud) ;;;
 InstList_SpriteObject_9_SmallDudShot:
-    dw $0005,SpriteObjectSpritemaps_A_PirateLandingDustCloud_0        ;B4BF1C;
-    dw $0005,SpriteObjectSpritemaps_9_SmallDustCloud_0        ;B4BF20;
-    dw $0005,SpriteObjectSpritemaps_9_SmallDustCloud_1        ;B4BF24;
-    dw $0005,SpriteObjectSpritemaps_9_SmallDustCloud_2        ;B4BF28;
-    dw $0005,SpriteObjectSpritemaps_9_SmallDustCloud_3        ;B4BF2C;
+    dw $0005,SpriteObjectSpritemaps_A_PirateLandingDustCloud_0           ;B4BF1C;
+    dw $0005,SpriteObjectSpritemaps_9_SmallDustCloud_0                   ;B4BF20;
+    dw $0005,SpriteObjectSpritemaps_9_SmallDustCloud_1                   ;B4BF24;
+    dw $0005,SpriteObjectSpritemaps_9_SmallDustCloud_2                   ;B4BF28;
+    dw $0005,SpriteObjectSpritemaps_9_SmallDustCloud_3                   ;B4BF2C;
     dw Instruction_SpriteObject_Delete                                   ;B4BF30;
 
+
+;;; $BF32: Instruction list - sprite object Ah (ninja space pirate landing dust cloud) ;;;
 InstList_SpriteObject_A_SpacePirateLandingDustCloud:
-    dw $0003,SpriteObjectSpritemaps_A_PirateLandingDustCloud_0        ;B4BF32;
-    dw $0003,SpriteObjectSpritemaps_A_PirateLandingDustCloud_1        ;B4BF36;
-    dw $0003,SpriteObjectSpritemaps_A_PirateLandingDustCloud_2        ;B4BF3A;
-    dw $0003,SpriteObjectSpritemaps_A_PirateLandingDustCloud_3        ;B4BF3E;
+    dw $0003,SpriteObjectSpritemaps_A_PirateLandingDustCloud_0           ;B4BF32;
+    dw $0003,SpriteObjectSpritemaps_A_PirateLandingDustCloud_1           ;B4BF36;
+    dw $0003,SpriteObjectSpritemaps_A_PirateLandingDustCloud_2           ;B4BF3A;
+    dw $0003,SpriteObjectSpritemaps_A_PirateLandingDustCloud_3           ;B4BF3E;
     dw Instruction_SpriteObject_Delete                                   ;B4BF42;
 
+
+;;; $BF44: Instruction list - sprite object Bh (unused. Eye door sweat drop) ;;;
 UNUSED_InstList_SpriteObject_B_EyeDoorSweatDrop_B4BF44:
-    dw $0005,UNSUED_SpriteObjectSpritemaps_B_EyeDoorSweatDrop_0_B4CDD1        ;B4BF44;
-    dw $0005,UNSUED_SpriteObjectSpritemaps_B_EyeDoorSweatDrop_1_B4CDD8        ;B4BF48;
-    dw $0005,UNSUED_SpriteObjectSpritemaps_B_EyeDoorSweatDrop_2_B4CDDF        ;B4BF4C;
-    dw $0005,UNSUED_SpriteObjectSpritemaps_B_EyeDoorSweatDrop_3_B4CDE6        ;B4BF50;
+    dw $0005,UNSUED_SpriteObjectSpritemaps_B_EyeDoorSweatDrop_0_B4CDD1   ;B4BF44;
+    dw $0005,UNSUED_SpriteObjectSpritemaps_B_EyeDoorSweatDrop_1_B4CDD8   ;B4BF48;
+    dw $0005,UNSUED_SpriteObjectSpritemaps_B_EyeDoorSweatDrop_2_B4CDDF   ;B4BF4C;
+    dw $0005,UNSUED_SpriteObjectSpritemaps_B_EyeDoorSweatDrop_3_B4CDE6   ;B4BF50;
     dw Instruction_SpriteObject_Delete                                   ;B4BF54;
 
+
+;;; $BF56: Instruction list - sprite object Ch (smoke) ;;;
 InstList_SpriteObject_C_Smoke:
-    dw $0008,SpriteObjectSpritemaps_C_Smoke_0        ;B4BF56;
-    dw $0008,SpriteObjectSpritemaps_C_Smoke_1        ;B4BF5A;
-    dw $0008,SpriteObjectSpritemaps_C_Smoke_2        ;B4BF5E;
-    dw $0008,SpriteObjectSpritemaps_C_Smoke_3        ;B4BF62;
+    dw $0008,SpriteObjectSpritemaps_C_Smoke_0                            ;B4BF56;
+    dw $0008,SpriteObjectSpritemaps_C_Smoke_1                            ;B4BF5A;
+    dw $0008,SpriteObjectSpritemaps_C_Smoke_2                            ;B4BF5E;
+    dw $0008,SpriteObjectSpritemaps_C_Smoke_3                            ;B4BF62;
     dw Instruction_SpriteObject_Delete                                   ;B4BF66;
 
+
+;;; $BF68: Instruction list - sprite object 1Ch (unused. Elevator pad) ;;;
 UNUSED_InstList_SpriteObject_1C_ElevatorPad_B4BF68:
-    dw $0001,UNSUED_SpriteObjectSpritemaps_8_1C_ElevatorPad_0_B4CD57        ;B4BF68;
-    dw $0001,UNSUED_SpriteObjectSpritemaps_8_1C_ElevatorPad_1_B4CD6D        ;B4BF6C;
+    dw $0001,UNSUED_SpriteObjectSpritemaps_8_1C_ElevatorPad_0_B4CD57     ;B4BF68;
+    dw $0001,UNSUED_SpriteObjectSpritemaps_8_1C_ElevatorPad_1_B4CD6D     ;B4BF6C;
     dw Instruction_SpriteObject_GotoParameter                            ;B4BF70;
     dw UNUSED_InstList_SpriteObject_1C_ElevatorPad_B4BF68                ;B4BF72;
 
+
+;;; $BF74: Instruction list - sprite object 1Dh (big explosion) ;;;
 InstList_SpriteObject_1D_BigExplosion:
-    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_0        ;B4BF74;
-    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_1        ;B4BF78;
-    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_2        ;B4BF7C;
-    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_3        ;B4BF80;
-    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_4        ;B4BF84;
-    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_5        ;B4BF88;
+    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_0                    ;B4BF74;
+    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_1                    ;B4BF78;
+    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_2                    ;B4BF7C;
+    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_3                    ;B4BF80;
+    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_4                    ;B4BF84;
+    dw $0005,SpriteObjectSpritemaps_1D_BigExplosion_5                    ;B4BF88;
     dw Instruction_SpriteObject_Delete                                   ;B4BF8C;
 
+
+;;; $BF8E: Instruction list - sprite object Dh (unused. Small health drop) ;;;
 UNUSED_InstList_SpriteObject_D_SmallEnergyDrop_B4BF8E:
-    dw $0008,UNUSED_SpriteObjectSpritemaps_D_SmallEnergyDrop_0_B4CE1E        ;B4BF8E;
-    dw $0008,UNUSED_SpriteObjectSpritemaps_D_SmallEnergyDrop_1_B4CE25        ;B4BF92;
-    dw $0008,UNUSED_SpriteObjectSpritemaps_D_SmallEnergyDrop_2_B4CE2C        ;B4BF96;
-    dw $0008,UNUSED_SpriteObjectSpritemaps_D_SmallEnergyDrop_3_B4CE33        ;B4BF9A;
+    dw $0008,UNUSED_SpriteObjectSpritemaps_D_SmallEnergyDrop_0_B4CE1E    ;B4BF8E;
+    dw $0008,UNUSED_SpriteObjectSpritemaps_D_SmallEnergyDrop_1_B4CE25    ;B4BF92;
+    dw $0008,UNUSED_SpriteObjectSpritemaps_D_SmallEnergyDrop_2_B4CE2C    ;B4BF96;
+    dw $0008,UNUSED_SpriteObjectSpritemaps_D_SmallEnergyDrop_3_B4CE33    ;B4BF9A;
     dw Instruction_SpriteObject_Delete                                   ;B4BF9E;
 
+
+;;; $BFA0: Instruction list - sprite object Eh (unused. Big health drop) ;;;
 UNUSED_InstList_SpriteObject_E_BigEnergyDrop_B4BFA0:
-    dw $0008,UNUSED_SpriteObjectSpritemaps_E_BigEnergyDrop_0_B4CE3A        ;B4BFA0;
-    dw $0008,UNUSED_SpriteObjectSpritemaps_E_BigEnergyDrop_1_B4CE50        ;B4BFA4;
-    dw $0008,UNUSED_SpriteObjectSpritemaps_E_BigEnergyDrop_2_B4CE66        ;B4BFA8;
-    dw $0008,UNUSED_SpriteObjectSpritemaps_E_BigEnergyDrop_3_B4CE7C        ;B4BFAC;
+    dw $0008,UNUSED_SpriteObjectSpritemaps_E_BigEnergyDrop_0_B4CE3A      ;B4BFA0;
+    dw $0008,UNUSED_SpriteObjectSpritemaps_E_BigEnergyDrop_1_B4CE50      ;B4BFA4;
+    dw $0008,UNUSED_SpriteObjectSpritemaps_E_BigEnergyDrop_2_B4CE66      ;B4BFA8;
+    dw $0008,UNUSED_SpriteObjectSpritemaps_E_BigEnergyDrop_3_B4CE7C      ;B4BFAC;
     dw Instruction_SpriteObject_Delete                                   ;B4BFB0;
 
+
+;;; $BFB2: Instruction list - sprite object Fh (unused. Bomb) ;;;
 UNUSED_InstList_SpriteObject_F_Bomb_B4BFB2:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_F_Bomb_0_B4CE83        ;B4BFB2;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_F_Bomb_1_B4CE8A        ;B4BFB6;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_F_Bomb_2_B4CE91        ;B4BFBA;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_F_Bomb_3_B4CE98        ;B4BFBE;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_F_Bomb_0_B4CE83               ;B4BFB2;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_F_Bomb_1_B4CE8A               ;B4BFB6;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_F_Bomb_2_B4CE91               ;B4BFBA;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_F_Bomb_3_B4CE98               ;B4BFBE;
     dw Instruction_SpriteObject_Delete                                   ;B4BFC2;
 
+
+;;; $BFC4: Instruction list - sprite object 10h (unused. Weird small health drop) ;;;
 UNUSED_InstList_SpriteObject_10_WeirdSmallEnergyDrop_B4BFC4:
-    dw $0010,UNUSED_SpriteObjectSpritemaps_10_SmallEnergyDrop_0_B4CF87        ;B4BFC4;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_10_SmallEnergyDrop_1_B4CF8E        ;B4BFC8;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_10_SmallEnergyDrop_2_B4CF95        ;B4BFCC;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_10_SmallEnergyDrop_0_B4CF87   ;B4BFC4;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_10_SmallEnergyDrop_1_B4CF8E   ;B4BFC8;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_10_SmallEnergyDrop_2_B4CF95   ;B4BFCC;
     dw Instruction_SpriteObject_Delete                                   ;B4BFD0;
 
+
+;;; $BFD2: Instruction list - sprite object 11h (unused. Rock particles) ;;;
 UNUSED_InstList_SpriteObject_11_RockParticles_B4BFD2:
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_0_B4C6D8        ;B4BFD2;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_1_B4C6EE        ;B4BFD6;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_2_B4C704        ;B4BFDA;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_3_B4C71A        ;B4BFDE;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_4_B4C730        ;B4BFE2;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_5_B4C746        ;B4BFE6;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_6_B4C75C        ;B4BFEA;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_7_B4C772        ;B4BFEE;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_8_B4C788        ;B4BFF2;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_9_B4C79E        ;B4BFF6;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_A_B4C7B4        ;B4BFFA;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_B_B4C7CA        ;B4BFFE;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_C_B4C7E0        ;B4C002;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_D_B4C7F6        ;B4C006;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_E_B4C80C        ;B4C00A;
-    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_F_B4C822        ;B4C00E;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_0_B4C6D8     ;B4BFD2;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_1_B4C6EE     ;B4BFD6;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_2_B4C704     ;B4BFDA;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_3_B4C71A     ;B4BFDE;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_4_B4C730     ;B4BFE2;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_5_B4C746     ;B4BFE6;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_6_B4C75C     ;B4BFEA;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_7_B4C772     ;B4BFEE;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_8_B4C788     ;B4BFF2;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_9_B4C79E     ;B4BFF6;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_A_B4C7B4     ;B4BFFA;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_B_B4C7CA     ;B4BFFE;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_C_B4C7E0     ;B4C002;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_D_B4C7F6     ;B4C006;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_E_B4C80C     ;B4C00A;
+    dw $0002,UNUSED_SpriteObjectSpritemaps_11_RockParticles_F_B4C822     ;B4C00E;
     dw Instruction_SpriteObject_Delete                                   ;B4C012;
 
+
+;;; $C014: Instruction list - sprite object 12h (short big dust cloud) ;;;
 InstList_SpriteObject_12_ShortBigDustCloud:
-    dw $0002,SpriteObjectSpritemaps_12_15_BigDustCloud_0        ;B4C014;
-    dw $0002,SpriteObjectSpritemaps_12_15_BigDustCloud_1        ;B4C018;
-    dw $0002,SpriteObjectSpritemaps_12_15_BigDustCloud_2        ;B4C01C;
-    dw $0002,SpriteObjectSpritemaps_12_15_BigDustCloud_3        ;B4C020;
+    dw $0002,SpriteObjectSpritemaps_12_15_BigDustCloud_0                 ;B4C014;
+    dw $0002,SpriteObjectSpritemaps_12_15_BigDustCloud_1                 ;B4C018;
+    dw $0002,SpriteObjectSpritemaps_12_15_BigDustCloud_2                 ;B4C01C;
+    dw $0002,SpriteObjectSpritemaps_12_15_BigDustCloud_3                 ;B4C020;
     dw Instruction_SpriteObject_Delete                                   ;B4C024;
 
+
+;;; $C026: Instruction list - sprite object 13h (unused. Short big dust cloud with weird short beam) ;;;
 UNUSED_InstList_SpriteObject_13_ShortBigDustCloudBeam_B4C026:
-    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_4        ;B4C026;
-    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_5        ;B4C02A;
-    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_6        ;B4C02E;
-    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_7        ;B4C032;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC        ;B4C036;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3        ;B4C03A;
+    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_4              ;B4C026;
+    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_5              ;B4C02A;
+    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_6              ;B4C02E;
+    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_7              ;B4C032;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC ;B4C036;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3 ;B4C03A;
     dw Instruction_SpriteObject_Delete                                   ;B4C03E;
 
+
+;;; $C040: Instruction list - sprite object 14h (unused. Short big dust cloud with weird medium beam) ;;;
 UNUSED_InstList_SpriteObject_14_ShortBigDustCloudBeam_B4C040:
-    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_4        ;B4C040;
-    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_5        ;B4C044;
-    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_6        ;B4C048;
-    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_7        ;B4C04C;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC        ;B4C050;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3        ;B4C054;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_14_16_DustCloud_Beam_B4C8BA        ;B4C058;
+    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_4              ;B4C040;
+    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_5              ;B4C044;
+    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_6              ;B4C048;
+    dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_7              ;B4C04C;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC ;B4C050;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3 ;B4C054;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_14_16_DustCloud_Beam_B4C8BA   ;B4C058;
     dw Instruction_SpriteObject_Delete                                   ;B4C05C;
 
+
+;;; $C05E: Instruction list - sprite object 15h (big dust cloud) ;;;
 InstList_SpriteObject_15_BigDustCloud:
-    dw $0005,SpriteObjectSpritemaps_12_15_BigDustCloud_0        ;B4C05E;
-    dw $0005,SpriteObjectSpritemaps_12_15_BigDustCloud_1        ;B4C062;
-    dw $0005,SpriteObjectSpritemaps_12_15_BigDustCloud_2        ;B4C066;
-    dw $0005,SpriteObjectSpritemaps_12_15_BigDustCloud_3        ;B4C06A;
-    dw $0005,SpriteObjectSpritemaps_13_14_15_BigDustCloud_4        ;B4C06E;
-    dw $0005,SpriteObjectSpritemaps_13_14_15_BigDustCloud_5        ;B4C072;
-    dw $0005,SpriteObjectSpritemaps_13_14_15_BigDustCloud_6        ;B4C076;
-    dw $0005,SpriteObjectSpritemaps_13_14_15_BigDustCloud_7        ;B4C07A;
+    dw $0005,SpriteObjectSpritemaps_12_15_BigDustCloud_0                 ;B4C05E;
+    dw $0005,SpriteObjectSpritemaps_12_15_BigDustCloud_1                 ;B4C062;
+    dw $0005,SpriteObjectSpritemaps_12_15_BigDustCloud_2                 ;B4C066;
+    dw $0005,SpriteObjectSpritemaps_12_15_BigDustCloud_3                 ;B4C06A;
+    dw $0005,SpriteObjectSpritemaps_13_14_15_BigDustCloud_4              ;B4C06E;
+    dw $0005,SpriteObjectSpritemaps_13_14_15_BigDustCloud_5              ;B4C072;
+    dw $0005,SpriteObjectSpritemaps_13_14_15_BigDustCloud_6              ;B4C076;
+    dw $0005,SpriteObjectSpritemaps_13_14_15_BigDustCloud_7              ;B4C07A;
     dw Instruction_SpriteObject_Delete                                   ;B4C07E;
 
+
+;;; $C080: Instruction list - sprite object 16h (unused. Weird long beam) ;;;
 UNUSED_InstList_SpriteObject_16_WeirdLongBeam_B4C080:
-    dw $0001,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC        ;B4C080;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3        ;B4C084;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_14_16_DustCloud_Beam_B4C8BA        ;B4C088;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_DustCloud_Beam_B4C8C6        ;B4C08C;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_DustCloud_Beam_B4C8D2        ;B4C090;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_DustCloud_Beam_B4C8E2        ;B4C094;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C098;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C09C;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0A0;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0A4;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0A8;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0AC;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0B0;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0B4;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0B8;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0BC;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0C0;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0C4;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0C8;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0CC;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0D0;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0D4;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0D8;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0DC;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0E0;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0E4;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0E8;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0EC;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0F0;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C0F4;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0F8;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC ;B4C080;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3 ;B4C084;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_14_16_DustCloud_Beam_B4C8BA   ;B4C088;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_DustCloud_Beam_B4C8C6      ;B4C08C;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_DustCloud_Beam_B4C8D2      ;B4C090;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_DustCloud_Beam_B4C8E2      ;B4C094;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C098;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C09C;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0A0;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0A4;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0A8;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0AC;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0B0;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0B4;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0B8;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0BC;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0C0;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0C4;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0C8;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0CC;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0D0;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0D4;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0D8;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0DC;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0E0;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0E4;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0E8;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0EC;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0F0;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C0F4;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0F8;
     dw Instruction_SpriteObject_Delete                                   ;B4C0FC;
 
+
+;;; $C0FE: Instruction list - sprite object 17h (unused. Weird long flickering beam) ;;;
 UNUSED_InstList_SpriteObject_17_WeirdLongFlickerBeam_B4C0FE:
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C0FE;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A        ;B4C102;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4        ;B4C106;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C0FE;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C90A   ;B4C102;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_16_17_DustCloud_Beam_B4C8F4   ;B4C106;
     dw Instruction_SpriteObject_Delete                                   ;B4C10A;
 
+
+;;; $C10C: Instruction list - sprite object 18h (short Draygon breath bubbles) ;;;
 InstList_SpriteObject_18_ShortDraygonBreathBubbles:
-    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_0        ;B4C10C;
-    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_1        ;B4C110;
-    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_2        ;B4C114;
-    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_3        ;B4C118;
-    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_4        ;B4C11C;
-    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_5        ;B4C120;
-    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_6        ;B4C124;
-    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_7        ;B4C128;
-    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_8        ;B4C12C;
+    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_0       ;B4C10C;
+    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_1       ;B4C110;
+    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_2       ;B4C114;
+    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_3       ;B4C118;
+    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_4       ;B4C11C;
+    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_5       ;B4C120;
+    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_6       ;B4C124;
+    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_7       ;B4C128;
+    dw $0003,SpriteObjectSpritemaps_18_ShortDraygonBreathBubbles_8       ;B4C12C;
     dw Instruction_SpriteObject_Delete                                   ;B4C130;
 
+
+;;; $C132: Instruction list - sprite object 19h (unused. Save station electricity) ;;;
 UNSUED_InstList_SpriteObject_19_SaveStationElectricity:
-    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_0_B4C9A0        ;B4C132;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_1_B4C9B6        ;B4C136;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_2_B4C9CC        ;B4C13A;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_3_B4C9E2        ;B4C13E;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_4_B4C9F8        ;B4C142;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_5_B4CA0E        ;B4C146;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_6_B4CA24        ;B4C14A;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_7_B4CA3A        ;B4C14E;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_0_B4C9A0  ;B4C132;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_1_B4C9B6  ;B4C136;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_2_B4C9CC  ;B4C13A;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_3_B4C9E2  ;B4C13E;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_4_B4C9F8  ;B4C142;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_5_B4CA0E  ;B4C146;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_6_B4CA24  ;B4C14A;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_19_SaveStationElect_7_B4CA3A  ;B4C14E;
     dw Instruction_SpriteObject_Delete                                   ;B4C152;
 
+
+;;; $C154: Instruction list - sprite object 1Ah (unused. Expanding vertical gate) ;;;
 UNUSED_InstList_SpriteObject_1A_ExpandingVerticalGate_B4C154:
-    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_0_B4CA50        ;B4C154;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_1_B4CA5C        ;B4C158;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_2_B4CA63        ;B4C15C;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_3_B4CA6F        ;B4C160;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_4_B4CA7B        ;B4C164;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_5_B4CA8C        ;B4C168;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_6_B4CA9D        ;B4C16C;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_7_B4CAB3        ;B4C170;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_0_B4CA50   ;B4C154;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_1_B4CA5C   ;B4C158;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_2_B4CA63   ;B4C15C;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_3_B4CA6F   ;B4C160;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_4_B4CA7B   ;B4C164;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_5_B4CA8C   ;B4C168;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_6_B4CA9D   ;B4C16C;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_7_B4CAB3   ;B4C170;
     dw Instruction_SpriteObject_Delete                                   ;B4C174;
 
+
+;;; $C176: Instruction list - sprite object 1Bh (unused. Contracting vertical gate) ;;;
 UNUSED_InstList_SpriteObject_1B_ContractingVerticalGate:
-    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_7_B4CAB3        ;B4C176;
-    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_6_B4CA9D        ;B4C17A;
-    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_5_B4CA8C        ;B4C17E;
-    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_4_B4CA7B        ;B4C182;
-    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_3_B4CA6F        ;B4C186;
-    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_2_B4CA63        ;B4C18A;
-    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_1_B4CA5C        ;B4C18E;
-    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_0_B4CA50        ;B4C192;
+    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_7_B4CAB3   ;B4C176;
+    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_6_B4CA9D   ;B4C17A;
+    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_5_B4CA8C   ;B4C17E;
+    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_4_B4CA7B   ;B4C182;
+    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_3_B4CA6F   ;B4C186;
+    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_2_B4CA63   ;B4C18A;
+    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_1_B4CA5C   ;B4C18E;
+    dw $0004,UNUSED_SpriteObjectSpritemaps_1A_1B_VerticalGate_0_B4CA50   ;B4C192;
     dw Instruction_SpriteObject_Delete                                   ;B4C196;
 
+
+;;; $C198: Instruction list - sprite object 1Eh (unused) ;;;
 UNUSED_InstList_SpriteObject_1E_B4C198:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_1E_0_B4C630        ;B4C198;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_1E_1_B4C637        ;B4C19C;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_1E_0_B4C630        ;B4C1A0;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_1E_2_B4C63E        ;B4C1A4;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_1E_0_B4C630                   ;B4C198;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_1E_1_B4C637                   ;B4C19C;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_1E_0_B4C630                   ;B4C1A0;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_1E_2_B4C63E                   ;B4C1A4;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C1A8;
     dw UNUSED_InstList_SpriteObject_1E_B4C198                            ;B4C1AA;
 
+
+;;; $C1AC: Instruction list - sprite object 1Fh (unused) ;;;
 UNUSED_InstList_SpriteObject_1F_B4C1AC:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_1F_0_B4C645        ;B4C1AC;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_1F_1_B4C645        ;B4C1B0;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_1F_0_B4C645        ;B4C1B4;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_1F_2_B4C653        ;B4C1B8;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_1F_0_B4C645                   ;B4C1AC;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_1F_1_B4C645                   ;B4C1B0;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_1F_0_B4C645                   ;B4C1B4;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_1F_2_B4C653                   ;B4C1B8;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C1BC;
     dw UNUSED_InstList_SpriteObject_1F_B4C1AC                            ;B4C1BE;
 
+
+;;; $C1C0: Instruction list - sprite object 20h (unused) ;;;
 UNUSED_InstList_SpriteObject_20_B4C1C0:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_20_0_B4C65A        ;B4C1C0;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_20_1_B4C661        ;B4C1C4;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_20_0_B4C65A        ;B4C1C8;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_20_2_B4C668        ;B4C1CC;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_20_0_B4C65A                   ;B4C1C0;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_20_1_B4C661                   ;B4C1C4;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_20_0_B4C65A                   ;B4C1C8;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_20_2_B4C668                   ;B4C1CC;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C1D0;
     dw UNUSED_InstList_SpriteObject_20_B4C1C0                            ;B4C1D2;
 
+
+;;; $C1D4: Instruction list - sprite object 21h (unused) ;;;
 UNUSED_InstList_SpriteObject_21_B4C1D4:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_21_0_B4C66F        ;B4C1D4;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_21_1_B4C676        ;B4C1D8;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_21_0_B4C66F        ;B4C1DC;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_21_2_B4C67D        ;B4C1E0;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_21_0_B4C66F                   ;B4C1D4;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_21_1_B4C676                   ;B4C1D8;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_21_0_B4C66F                   ;B4C1DC;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_21_2_B4C67D                   ;B4C1E0;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C1E4;
     dw UNUSED_InstList_SpriteObject_21_B4C1D4                            ;B4C1E6;
 
+
+;;; $C1E8: Instruction list - sprite object 22h (unused) ;;;
 UNUSED_InstList_SpriteObject_22_B4C1E8:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_22_0_B4C684        ;B4C1E8;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_22_1_B4C68B        ;B4C1EC;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_22_0_B4C684        ;B4C1F0;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_22_2_B4C692        ;B4C1F4;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_22_0_B4C684                   ;B4C1E8;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_22_1_B4C68B                   ;B4C1EC;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_22_0_B4C684                   ;B4C1F0;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_22_2_B4C692                   ;B4C1F4;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C1F8;
     dw UNUSED_InstList_SpriteObject_22_B4C1E8                            ;B4C1FA;
 
+
+;;; $C1FC: Instruction list - sprite object 23h (unused) ;;;
 UNUSED_InstList_SpriteObject_23_B4C1FC:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_23_0_B4C699        ;B4C1FC;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_23_1_B4C6A0        ;B4C200;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_23_0_B4C699        ;B4C204;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_23_2_B4C6A7        ;B4C208;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_23_0_B4C699                   ;B4C1FC;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_23_1_B4C6A0                   ;B4C200;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_23_0_B4C699                   ;B4C204;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_23_2_B4C6A7                   ;B4C208;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C20C;
     dw UNUSED_InstList_SpriteObject_23_B4C1FC                            ;B4C20E;
 
+
+;;; $C210: Instruction list - sprite object 24h (unused) ;;;
 UNUSED_InstList_SpriteObject_24_B4C210:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_24_0_B4C6AE        ;B4C210;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_24_1_B4C6B5        ;B4C214;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_24_0_B4C6AE        ;B4C218;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_24_2_B4C6BC        ;B4C21C;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_24_0_B4C6AE                   ;B4C210;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_24_1_B4C6B5                   ;B4C214;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_24_0_B4C6AE                   ;B4C218;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_24_2_B4C6BC                   ;B4C21C;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C220;
     dw UNUSED_InstList_SpriteObject_24_B4C210                            ;B4C222;
 
+
+;;; $C224: Instruction list - sprite object 25h (unused) ;;;
 UNUSED_InstList_SpriteObject_25_B4C224:
-    dw $0005,UNUSED_SpriteObjectSpritemaps_25_0_B4C6C3        ;B4C224;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_25_1_B4C6CA        ;B4C228;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_25_0_B4C6C3        ;B4C22C;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_25_2_B4C6D1        ;B4C230;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_25_0_B4C6C3                   ;B4C224;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_25_1_B4C6CA                   ;B4C228;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_25_0_B4C6C3                   ;B4C22C;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_25_2_B4C6D1                   ;B4C230;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C234;
     dw UNUSED_InstList_SpriteObject_25_B4C224                            ;B4C236;
 
+
+;;; $C238: Instruction list - sprite object 26h (unused) ;;;
 UNUSED_InstList_SpriteObject_26_B4C238:
-    dw $000A,UNUSED_SpriteObjectSpritemaps_26_0_B4D08B        ;B4C238;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_26_0_B4D08B        ;B4C23C;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_26_1_B4D0BA        ;B4C240;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_26_2_B4D0E9        ;B4C244;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_26_3_B4D118        ;B4C248;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_26_4_B4D147        ;B4C24C;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_26_5_B4D176        ;B4C250;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_26_0_B4D08B                   ;B4C238;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_26_0_B4D08B                   ;B4C23C;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_26_1_B4D0BA                   ;B4C240;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_26_2_B4D0E9                   ;B4C244;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_26_3_B4D118                   ;B4C248;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_26_4_B4D147                   ;B4C24C;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_26_5_B4D176                   ;B4C250;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C254;
     dw UNUSED_InstList_SpriteObject_26_B4C238                            ;B4C256;
 
+
+;;; $C258: Instruction list - sprite object 27h (unused) ;;;
 UNUSED_InstList_SpriteObject_27_B4C258:
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_0_B4D1D4        ;B4C258;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_1_B4D1EF        ;B4C25C;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_2_B4D20A        ;B4C260;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_3_B4D225        ;B4C264;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_0_B4D1D4        ;B4C268;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_1_B4D1EF        ;B4C26C;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_2_B4D20A        ;B4C270;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_3_B4D225        ;B4C274;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_0_B4D1D4        ;B4C278;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_1_B4D1EF        ;B4C27C;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_2_B4D20A        ;B4C280;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_3_B4D225        ;B4C284;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_0_B4D1D4        ;B4C288;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_1_B4D1EF        ;B4C28C;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_2_B4D20A        ;B4C290;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_27_3_B4D225        ;B4C294;
-    dw $0030,UNUSED_SpriteObjectSpritemaps_27_4_B4D245        ;B4C298;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_0_B4D1D4                   ;B4C258;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_1_B4D1EF                   ;B4C25C;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_2_B4D20A                   ;B4C260;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_3_B4D225                   ;B4C264;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_0_B4D1D4                   ;B4C268;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_1_B4D1EF                   ;B4C26C;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_2_B4D20A                   ;B4C270;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_3_B4D225                   ;B4C274;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_0_B4D1D4                   ;B4C278;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_1_B4D1EF                   ;B4C27C;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_2_B4D20A                   ;B4C280;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_3_B4D225                   ;B4C284;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_0_B4D1D4                   ;B4C288;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_1_B4D1EF                   ;B4C28C;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_2_B4D20A                   ;B4C290;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_27_3_B4D225                   ;B4C294;
+    dw $0030,UNUSED_SpriteObjectSpritemaps_27_4_B4D245                   ;B4C298;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C29C;
     dw UNUSED_InstList_SpriteObject_27_B4C258                            ;B4C29E;
 
+
+;;; $C2A0: Instruction list - sprite object 28h (unused) ;;;
 UNUSED_InstList_SpriteObject_28_B4C2A0:
-    dw $000A,UNUSED_SpriteObjectSpritemaps_28_0_B4D2B3        ;B4C2A0;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_28_1_B4D2E2        ;B4C2A4;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_28_2_B4D311        ;B4C2A8;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_28_3_B4D340        ;B4C2AC;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_28_4_B4D36F        ;B4C2B0;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_28_5_B4D39E        ;B4C2B4;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_28_0_B4D2B3                   ;B4C2A0;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_28_1_B4D2E2                   ;B4C2A4;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_28_2_B4D311                   ;B4C2A8;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_28_3_B4D340                   ;B4C2AC;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_28_4_B4D36F                   ;B4C2B0;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_28_5_B4D39E                   ;B4C2B4;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C2B8;
     dw UNUSED_InstList_SpriteObject_28_B4C2A0                            ;B4C2BA;
 
+
+;;; $C2BC: Instruction list - sprite object 29h (unused) ;;;
 UNUSED_InstList_SpriteObject_29_B4C2BC:
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_0_B4D3FC        ;B4C2BC;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_1_B4D417        ;B4C2C0;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_2_B4D432        ;B4C2C4;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_3_B4D44D        ;B4C2C8;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_0_B4D3FC        ;B4C2CC;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_1_B4D417        ;B4C2D0;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_2_B4D432        ;B4C2D4;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_3_B4D44D        ;B4C2D8;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_0_B4D3FC        ;B4C2DC;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_1_B4D417        ;B4C2E0;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_2_B4D432        ;B4C2E4;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_3_B4D44D        ;B4C2E8;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_0_B4D3FC        ;B4C2EC;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_1_B4D417        ;B4C2F0;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_2_B4D432        ;B4C2F4;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_29_3_B4D44D        ;B4C2F8;
-    dw $0030,UNUSED_SpriteObjectSpritemaps_29_4_B4D46D        ;B4C2FC;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_0_B4D3FC                   ;B4C2BC;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_1_B4D417                   ;B4C2C0;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_2_B4D432                   ;B4C2C4;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_3_B4D44D                   ;B4C2C8;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_0_B4D3FC                   ;B4C2CC;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_1_B4D417                   ;B4C2D0;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_2_B4D432                   ;B4C2D4;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_3_B4D44D                   ;B4C2D8;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_0_B4D3FC                   ;B4C2DC;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_1_B4D417                   ;B4C2E0;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_2_B4D432                   ;B4C2E4;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_3_B4D44D                   ;B4C2E8;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_0_B4D3FC                   ;B4C2EC;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_1_B4D417                   ;B4C2F0;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_2_B4D432                   ;B4C2F4;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_29_3_B4D44D                   ;B4C2F8;
+    dw $0030,UNUSED_SpriteObjectSpritemaps_29_4_B4D46D                   ;B4C2FC;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C300;
     dw UNUSED_InstList_SpriteObject_29_B4C2BC                            ;B4C302;
 
+
+;;; $C304: Instruction list - sprite object 2Ah (unused) ;;;
 UNUSED_InstList_SpriteObject_2A_B4C304:
-    dw $0001,UNUSED_SpriteObjectSpritemaps_2A_B4D2AC        ;B4C304;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_2A_B4D2AC                     ;B4C304;
     dw Instruction_SpriteObject_GoBack4Bytes                             ;B4C308;
 
+
+;;; $C30A: Instruction list - sprite object 2Bh (fire arc body) ;;;
 InstList_SpriteObject_2B_PuromiBody:
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_0        ;B4C30A;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_1        ;B4C30E;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_4        ;B4C312;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_2        ;B4C316;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_3        ;B4C31A;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_5        ;B4C31E;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_0        ;B4C322;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_1        ;B4C326;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_6        ;B4C32A;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_2        ;B4C32E;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_3        ;B4C332;
-    dw $0003,SpriteObjectSpritemaps_2B_Puromi_7        ;B4C336;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_0                          ;B4C30A;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_1                          ;B4C30E;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_4                          ;B4C312;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_2                          ;B4C316;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_3                          ;B4C31A;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_5                          ;B4C31E;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_0                          ;B4C322;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_1                          ;B4C326;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_6                          ;B4C32A;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_2                          ;B4C32E;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_3                          ;B4C332;
+    dw $0003,SpriteObjectSpritemaps_2B_Puromi_7                          ;B4C336;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C33A;
     dw InstList_SpriteObject_2B_PuromiBody                               ;B4C33C;
 
+
+;;; $C33E: Instruction list - sprite object 2Ch (fire arc right explosion) ;;;
 InstList_SpriteObject_2C_PuromiRightExplosion:
-    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_0        ;B4C33E;
-    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_1        ;B4C342;
-    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_2        ;B4C346;
-    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_3        ;B4C34A;
-    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_4        ;B4C34E;
-    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_5        ;B4C352;
-    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_6        ;B4C356;
+    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_0            ;B4C33E;
+    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_1            ;B4C342;
+    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_2            ;B4C346;
+    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_3            ;B4C34A;
+    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_4            ;B4C34E;
+    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_5            ;B4C352;
+    dw $0002,SpriteObjectSpritemaps_2C_PuromiRightExplosion_6            ;B4C356;
     dw Instruction_SpriteObject_Delete                                   ;B4C35A;
 
+
+;;; $C35C: Instruction list - sprite object 2Dh (fire arc left explosion) ;;;
 InstList_SpriteObject_2D_PuromiLeftExplosion:
-    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_0        ;B4C35C;
-    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_1        ;B4C360;
-    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_2        ;B4C364;
-    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_3        ;B4C368;
-    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_4        ;B4C36C;
-    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_5        ;B4C370;
-    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_6        ;B4C374;
+    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_0             ;B4C35C;
+    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_1             ;B4C360;
+    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_2             ;B4C364;
+    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_3             ;B4C368;
+    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_4             ;B4C36C;
+    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_5             ;B4C370;
+    dw $0002,SpriteObjectSpritemaps_2D_PuromiLeftExplosion_6             ;B4C374;
     dw Instruction_SpriteObject_Delete                                   ;B4C378;
 
+
+;;; $C37A: Instruction list - sprite object 2Eh (fire arc splash) ;;;
 InstList_SpriteObject_2E_PuromiSplash:
-    dw $0002,SpriteObjectSpritemaps_2E_PuromiSplash_0        ;B4C37A;
-    dw $0002,SpriteObjectSpritemaps_2E_PuromiSplash_0        ;B4C37E;
-    dw $0002,SpriteObjectSpritemaps_2E_PuromiSplash_1        ;B4C382;
-    dw $0002,SpriteObjectSpritemaps_2E_PuromiSplash_2        ;B4C386;
-    dw $0002,SpriteObjectSpritemaps_2E_PuromiSplash_4        ;B4C38A;
+    dw $0002,SpriteObjectSpritemaps_2E_PuromiSplash_0                    ;B4C37A;
+    dw $0002,SpriteObjectSpritemaps_2E_PuromiSplash_0                    ;B4C37E;
+    dw $0002,SpriteObjectSpritemaps_2E_PuromiSplash_1                    ;B4C382;
+    dw $0002,SpriteObjectSpritemaps_2E_PuromiSplash_2                    ;B4C386;
+    dw $0002,SpriteObjectSpritemaps_2E_PuromiSplash_4                    ;B4C38A;
     dw Instruction_SpriteObject_Delete                                   ;B4C38E;
 
+
+;;; $C390: Instruction list - sprite object 30h (falling spark trail) ;;;
 InstList_SpriteObject_30_FallingSparkTrail:
-    dw $0003,SpriteObjectSpritemaps_30_FallingSparkTrail_0        ;B4C390;
-    dw $0003,SpriteObjectSpritemaps_30_FallingSparkTrail_1        ;B4C394;
-    dw $0003,SpriteObjectSpritemaps_30_FallingSparkTrail_2        ;B4C398;
-    dw $0003,SpriteObjectSpritemaps_30_FallingSparkTrail_3        ;B4C39C;
+    dw $0003,SpriteObjectSpritemaps_30_FallingSparkTrail_0               ;B4C390;
+    dw $0003,SpriteObjectSpritemaps_30_FallingSparkTrail_1               ;B4C394;
+    dw $0003,SpriteObjectSpritemaps_30_FallingSparkTrail_2               ;B4C398;
+    dw $0003,SpriteObjectSpritemaps_30_FallingSparkTrail_3               ;B4C39C;
     dw Instruction_SpriteObject_Delete                                   ;B4C3A0;
 
+
+;;; $C3A2: Instruction list - sprite object 31h (unused. Metroid insides) ;;;
 UNSUED_InstList_SpriteObject_31_MetroidInsides_B4C3A2:
-    dw $0010,UNUSED_SpriteObjectSpritemaps_31_MetroidInsides_0_B4D653        ;B4C3A2;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_31_MetroidInsides_1_B4D67D        ;B4C3A6;
-    dw $0006,UNUSED_SpriteObjectSpritemaps_31_MetroidInsides_2_B4D69D        ;B4C3AA;
-    dw $000A,UNUSED_SpriteObjectSpritemaps_31_MetroidInsides_3_B4D6C7        ;B4C3AE;
-    dw $0010,UNUSED_SpriteObjectSpritemaps_31_MetroidInsides_1_B4D67D        ;B4C3B2;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_31_MetroidInsides_0_B4D653    ;B4C3A2;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_31_MetroidInsides_1_B4D67D    ;B4C3A6;
+    dw $0006,UNUSED_SpriteObjectSpritemaps_31_MetroidInsides_2_B4D69D    ;B4C3AA;
+    dw $000A,UNUSED_SpriteObjectSpritemaps_31_MetroidInsides_3_B4D6C7    ;B4C3AE;
+    dw $0010,UNUSED_SpriteObjectSpritemaps_31_MetroidInsides_1_B4D67D    ;B4C3B2;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C3B6;
     dw UNSUED_InstList_SpriteObject_31_MetroidInsides_B4C3A2             ;B4C3B8;
 
-InstList_SpriteObject_32_MetroidElectricity:
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_0        ;B4C3BA;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_1        ;B4C3BE;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_2        ;B4C3C2;
-    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_0        ;B4C3C6;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_2        ;B4C3CA;
-    dw $0004,SpriteObject_DrawInst_Empty        ;B4C3CE;
-    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_3        ;B4C3D2;
-    dw $0005,SpriteObjectSpritemaps_32_33_MetroidElectricity_4        ;B4C3D6;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_5        ;B4C3DA;
-    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_4        ;B4C3DE;
-    dw $0004,SpriteObject_DrawInst_Empty        ;B4C3E2;
-    dw $0002,SpriteObjectSpritemaps_32_MetroidElectricity_C        ;B4C3E6;
-    dw $0003,SpriteObjectSpritemaps_32_MetroidElectricity_D        ;B4C3EA;
-    dw $0004,SpriteObjectSpritemaps_32_MetroidElectricity_E        ;B4C3EE;
-    dw $0007,SpriteObject_DrawInst_Empty        ;B4C3F2;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_9        ;B4C3F6;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_A        ;B4C3FA;
-    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_B        ;B4C3FE;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_A        ;B4C402;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_B        ;B4C406;
-    dw $0004,SpriteObject_DrawInst_Empty        ;B4C40A;
-    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_F        ;B4C40E;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_10        ;B4C412;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_11        ;B4C416;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_F        ;B4C41A;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C41E;
-    dw $0004,SpriteObjectSpritemaps_32_MetroidElectricity_12        ;B4C422;
-    dw $0003,SpriteObjectSpritemaps_32_MetroidElectricity_13        ;B4C426;
-    dw $0003,SpriteObjectSpritemaps_32_MetroidElectricity_14        ;B4C42A;
-    dw $0002,SpriteObjectSpritemaps_32_MetroidElectricity_13        ;B4C42E;
-    dw $0007,SpriteObject_DrawInst_Empty        ;B4C432;
 
+;;; $C3BA: Instruction list - sprite object 32h (metroid electricity) ;;;
+InstList_SpriteObject_32_MetroidElectricity:
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_0           ;B4C3BA;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_1           ;B4C3BE;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_2           ;B4C3C2;
+    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_0           ;B4C3C6;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_2           ;B4C3CA;
+    dw $0004,SpriteObject_DrawInst_Empty                                 ;B4C3CE;
+    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_3           ;B4C3D2;
+    dw $0005,SpriteObjectSpritemaps_32_33_MetroidElectricity_4           ;B4C3D6;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_5           ;B4C3DA;
+    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_4           ;B4C3DE;
+    dw $0004,SpriteObject_DrawInst_Empty                                 ;B4C3E2;
+    dw $0002,SpriteObjectSpritemaps_32_MetroidElectricity_C              ;B4C3E6;
+    dw $0003,SpriteObjectSpritemaps_32_MetroidElectricity_D              ;B4C3EA;
+    dw $0004,SpriteObjectSpritemaps_32_MetroidElectricity_E              ;B4C3EE;
+    dw $0007,SpriteObject_DrawInst_Empty                                 ;B4C3F2;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_9           ;B4C3F6;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_A           ;B4C3FA;
+    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_B           ;B4C3FE;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_A           ;B4C402;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_B           ;B4C406;
+    dw $0004,SpriteObject_DrawInst_Empty                                 ;B4C40A;
+    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_F           ;B4C40E;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_10          ;B4C412;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_11          ;B4C416;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_F           ;B4C41A;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C41E;
+    dw $0004,SpriteObjectSpritemaps_32_MetroidElectricity_12             ;B4C422;
+    dw $0003,SpriteObjectSpritemaps_32_MetroidElectricity_13             ;B4C426;
+    dw $0003,SpriteObjectSpritemaps_32_MetroidElectricity_14             ;B4C42A;
+    dw $0002,SpriteObjectSpritemaps_32_MetroidElectricity_13             ;B4C42E;
+    dw $0007,SpriteObject_DrawInst_Empty                                 ;B4C432;
+
+
+;;; $C436: Instruction list - sprite object 33h (unused) ;;;
 UNUSED_InstList_SpriteObject_33_B4C436:
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_6        ;B4C436;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_7        ;B4C43A;
-    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_8        ;B4C43E;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_6        ;B4C442;
-    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_8        ;B4C446;
-    dw $0003,SpriteObject_DrawInst_Empty        ;B4C44A;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_15        ;B4C44E;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_16        ;B4C452;
-    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_17        ;B4C456;
-    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_15        ;B4C45A;
-    dw $0003,SpriteObject_DrawInst_Empty        ;B4C45E;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_6        ;B4C462;
-    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_8        ;B4C466;
-    dw $0020,SpriteObject_DrawInst_Empty        ;B4C46A;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_0        ;B4C46E;
-    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_1        ;B4C472;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_2        ;B4C476;
-    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_0        ;B4C47A;
-    dw $0004,SpriteObject_DrawInst_Empty        ;B4C47E;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_F        ;B4C482;
-    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_10        ;B4C486;
-    dw $0005,SpriteObjectSpritemaps_32_33_MetroidElectricity_11        ;B4C48A;
-    dw $0004,SpriteObject_DrawInst_Empty        ;B4C48E;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_9        ;B4C492;
-    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_A        ;B4C496;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_B        ;B4C49A;
-    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_9        ;B4C49E;
-    dw $0006,SpriteObject_DrawInst_Empty        ;B4C4A2;
-    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_3        ;B4C4A6;
-    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_4        ;B4C4AA;
-    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_5        ;B4C4AE;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_6           ;B4C436;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_7           ;B4C43A;
+    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_8           ;B4C43E;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_6           ;B4C442;
+    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_8           ;B4C446;
+    dw $0003,SpriteObject_DrawInst_Empty                                 ;B4C44A;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_15          ;B4C44E;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_16          ;B4C452;
+    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_17          ;B4C456;
+    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_15          ;B4C45A;
+    dw $0003,SpriteObject_DrawInst_Empty                                 ;B4C45E;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_6           ;B4C462;
+    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_8           ;B4C466;
+    dw $0020,SpriteObject_DrawInst_Empty                                 ;B4C46A;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_0           ;B4C46E;
+    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_1           ;B4C472;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_2           ;B4C476;
+    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_0           ;B4C47A;
+    dw $0004,SpriteObject_DrawInst_Empty                                 ;B4C47E;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_F           ;B4C482;
+    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_10          ;B4C486;
+    dw $0005,SpriteObjectSpritemaps_32_33_MetroidElectricity_11          ;B4C48A;
+    dw $0004,SpriteObject_DrawInst_Empty                                 ;B4C48E;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_9           ;B4C492;
+    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_A           ;B4C496;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_B           ;B4C49A;
+    dw $0001,SpriteObjectSpritemaps_32_33_MetroidElectricity_9           ;B4C49E;
+    dw $0006,SpriteObject_DrawInst_Empty                                 ;B4C4A2;
+    dw $0003,SpriteObjectSpritemaps_32_33_MetroidElectricity_3           ;B4C4A6;
+    dw $0004,SpriteObjectSpritemaps_32_33_MetroidElectricity_4           ;B4C4AA;
+    dw $0002,SpriteObjectSpritemaps_32_33_MetroidElectricity_5           ;B4C4AE;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C4B2;
     dw UNUSED_InstList_SpriteObject_33_B4C436                            ;B4C4B4;
 
-InstList_SpriteObject_34_MetroidShell:
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C4B6;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C4BA;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C4BE;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C4C2;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C4C6;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C4CA;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C4CE;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C4D2;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C4D6;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C4DA;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C4DE;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C4E2;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C4E6;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C4EA;
-    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1        ;B4C4EE;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C4F2;
-    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1        ;B4C4F6;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C4FA;
-    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1        ;B4C4FE;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C502;
-    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1        ;B4C506;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C50A;
-    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1        ;B4C50E;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C512;
-    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1        ;B4C516;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C51A;
-    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1        ;B4C51E;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C522;
-    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1        ;B4C526;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C52A;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C52E;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C532;
 
+;;; $C4B6: Instruction list - sprite object 34h (metroid shell) ;;;
+InstList_SpriteObject_34_MetroidShell:
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C4B6;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C4BA;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C4BE;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C4C2;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C4C6;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C4CA;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C4CE;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C4D2;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C4D6;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C4DA;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C4DE;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C4E2;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C4E6;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C4EA;
+    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1                 ;B4C4EE;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C4F2;
+    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1                 ;B4C4F6;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C4FA;
+    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1                 ;B4C4FE;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C502;
+    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1                 ;B4C506;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C50A;
+    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1                 ;B4C50E;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C512;
+    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1                 ;B4C516;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C51A;
+    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1                 ;B4C51E;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C522;
+    dw $0001,SpriteObjectSpritemaps_34_36_MetroidShell_1                 ;B4C526;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C52A;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C52E;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C532;
+
+
+;;; $C536: Instruction list - sprite object 35h (unused) ;;;
 UNUSED_InstList_SpriteObject_35_B4C536:
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C536;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C53A;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C53E;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C542;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C546;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C54A;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C54E;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C552;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C556;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C55A;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C55E;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C562;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2        ;B4C566;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C56A;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2        ;B4C56E;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C572;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2        ;B4C576;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C57A;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2        ;B4C57E;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C582;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2        ;B4C586;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C58A;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2        ;B4C58E;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C592;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2        ;B4C596;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C59A;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2        ;B4C59E;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C5A2;
-    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2        ;B4C5A6;
-    dw $0001,SpriteObject_DrawInst_Empty        ;B4C5AA;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C536;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C53A;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C53E;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C542;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C546;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C54A;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C54E;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C552;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C556;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C55A;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C55E;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C562;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2              ;B4C566;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C56A;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2              ;B4C56E;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C572;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2              ;B4C576;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C57A;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2              ;B4C57E;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C582;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2              ;B4C586;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C58A;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2              ;B4C58E;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C592;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2              ;B4C596;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C59A;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2              ;B4C59E;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C5A2;
+    dw $0001,SpriteObjectSpritemaps_34_35_36_MetroidShell_2              ;B4C5A6;
+    dw $0001,SpriteObject_DrawInst_Empty                                 ;B4C5AA;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C5AE;
     dw UNUSED_InstList_SpriteObject_35_B4C536                            ;B4C5B0;
 
+
+;;; $C5B2: Instruction list - sprite object 36h (unused) ;;;
 UNUSED_InstList_SpriteObject_36_B4C5B2:
-    dw $0010,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C5B2;
-    dw $0010,SpriteObjectSpritemaps_34_36_MetroidShell_1        ;B4C5B6;
-    dw $0010,SpriteObjectSpritemaps_34_35_36_MetroidShell_0        ;B4C5BA;
-    dw $0010,SpriteObjectSpritemaps_34_35_36_MetroidShell_2        ;B4C5BE;
+    dw $0010,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C5B2;
+    dw $0010,SpriteObjectSpritemaps_34_36_MetroidShell_1                 ;B4C5B6;
+    dw $0010,SpriteObjectSpritemaps_34_35_36_MetroidShell_0              ;B4C5BA;
+    dw $0010,SpriteObjectSpritemaps_34_35_36_MetroidShell_2              ;B4C5BE;
     dw Instruction_SpriteObject_GotoParameter                            ;B4C5C2;
     dw UNUSED_InstList_SpriteObject_36_B4C5B2                            ;B4C5C4;
 
+
+;;; $C5C6: Instruction list - sprite object 37h (enemy shot) ;;;
 InstList_SpriteObject_37_EnemyShot:
-    dw $0002,SpriteObjectSpritemaps_37_EnemyShot_0        ;B4C5C6;
-    dw $0002,SpriteObjectSpritemaps_37_EnemyShot_1        ;B4C5CA;
-    dw $0002,SpriteObjectSpritemaps_37_EnemyShot_2        ;B4C5CE;
-    dw $0002,SpriteObjectSpritemaps_37_EnemyShot_3        ;B4C5D2;
+    dw $0002,SpriteObjectSpritemaps_37_EnemyShot_0                       ;B4C5C6;
+    dw $0002,SpriteObjectSpritemaps_37_EnemyShot_1                       ;B4C5CA;
+    dw $0002,SpriteObjectSpritemaps_37_EnemyShot_2                       ;B4C5CE;
+    dw $0002,SpriteObjectSpritemaps_37_EnemyShot_3                       ;B4C5D2;
     dw Instruction_SpriteObject_Delete                                   ;B4C5D6;
 
+
+;;; $C5D8: Instruction list - sprite object 38h (yapping maw base - facing down) ;;;
 InstList_SpriteObject_38_YappingMawBaseFacingDown:
     dw $0001,SpriteObjectSpritemaps_38_YappingMawBaseFacingDown          ;B4C5D8;
     dw Instruction_SpriteObject_GoBack4Bytes                             ;B4C5DC;
 
+
+;;; $C5DE: Instruction list - sprite object 39h (yapping maw base - facing up) ;;;
 InstList_SpriteObject_39_YappingMawBaseFacingUp:
     dw $0001,SpriteObjectSpritemaps_39_YappingMawBaseFacingUp            ;B4C5DE;
     dw Instruction_SpriteObject_GoBack4Bytes                             ;B4C5E2;
 
+
+;;; $C5E4: Instruction list - sprite object 3Ah (unused) ;;;
 UNUSED_InstList_SpriteObject_3A_B4C5E4:
     dw $000A,UNUSED_SpriteObjectSpritemaps_3A_0_B4D8BD                   ;B4C5E4;
     dw $000A,UNUSED_SpriteObjectSpritemaps_3A_1_B4D905                   ;B4C5E8;
@@ -6505,6 +6753,8 @@ UNUSED_InstList_SpriteObject_3A_B4C5E4:
     dw Instruction_SpriteObject_GotoParameter                            ;B4C604;
     dw UNUSED_InstList_SpriteObject_3A_B4C5E4                            ;B4C606;
 
+
+;;; $C608: Instruction list - sprite object 3Bh (evir facing left) ;;;
 InstList_SpriteObject_3B_EvirFacingLeft:
     dw $000A,SpriteObjectSpritemaps_3B_EvirFacingLeft_0                  ;B4C608;
     dw $000A,SpriteObjectSpritemaps_3B_EvirFacingLeft_1                  ;B4C60C;
@@ -6513,6 +6763,8 @@ InstList_SpriteObject_3B_EvirFacingLeft:
     dw Instruction_SpriteObject_GotoParameter                            ;B4C618;
     dw InstList_SpriteObject_3B_EvirFacingLeft                           ;B4C61A;
 
+
+;;; $C61C: Instruction list - sprite object 3Ch (evir facing right) ;;;
 InstList_SpriteObject_3C_EvirFacingRight:
     dw $000A,SpriteObjectSpritemaps_3C_EvirFacingRight_0                 ;B4C61C;
     dw $000A,SpriteObjectSpritemaps_3C_EvirFacingRight_1                 ;B4C620;
@@ -6521,6 +6773,8 @@ InstList_SpriteObject_3C_EvirFacingRight:
     dw Instruction_SpriteObject_GotoParameter                            ;B4C62C;
     dw InstList_SpriteObject_3C_EvirFacingRight                          ;B4C62E;
 
+
+;;; $C630: Sprite object spritemaps ;;;
 UNUSED_SpriteObjectSpritemaps_1E_0_B4C630:
     dw $0001                                                             ;B4C630;
     %spritemapEntry(0, $1FC, $FC, 0, 0, 0, 0, $100)
@@ -8543,6 +8797,8 @@ SpriteObjectSpritemaps_3D_DraygonFoamingAtTheMouth_7:
     dw $0001                                                             ;B4DD82;
     %spritemapEntry(1, $1F8, $DC, 0, 0, 3, 2, $1EE)
 
+
+;;; $DD89: Enemy names ;;;
 ; Enemy name in ASCII
 ; Enemy population pointer (for debug enemy spawner)
 ; Enemy name debug spritemap index (add 30h to index Debug_Spritemap_Addresses)
@@ -9041,6 +9297,23 @@ EnemyName_RobotNoPower:
     dw DebugEnemyPopulationData_RobotNoPower                             ;B4E2EF;
     dw $0062                                                             ;B4E2F1;
 
+
+;;; $E2F3: Debug enemy population data ;;;
+;  ____________________________________ Enemy ID
+; |     _______________________________ X position
+; |    |     __________________________ Y position
+; |    |    |     _____________________ Initialisation parameter
+; |    |    |    |     ________________ Properties
+; |    |    |    |    |     ___________ Extra properties
+; |    |    |    |    |    |     ______ Parameter 1
+; |    |    |    |    |    |    |     _ Parameter 2
+; |    |    |    |    |    |    |    |
+; iiii xxxx yyyy oooo pppp gggg aaaa bbbb
+
+;  ______ Terminator
+; |     _ Number of enemy deaths needed to clear current room
+; |    |
+; FFFF nn
 DebugEnemyPopulationData_NoName:
     dw $FFFF                                                             ;B4E2F3;
     db $00                                                               ;B4E2F5;
@@ -9597,7 +9870,15 @@ DebugEnemyPopulationData_RobotNoPower:
     dw $FFFF : db $01
 
 
+;;; $EC1C: Enemy vulnerabilities ;;;
 EnemyVulnerabilities:
+; Vulnerability format:
+;     v = f000dddd
+;     If v = FFh:
+;         Freeze, no damage
+;     Else:
+;         d: Damage multiplier * 2
+;         f: Does not freeze
 ;        ____________________________________________________________________________ 0: Power
 ;       |    ________________________________________________________________________ 1: Wave
 ;       |   |    ____________________________________________________________________ 2: Ice
@@ -9911,6 +10192,7 @@ EnemyVulnerabilities_MotherBrainBody:
     db $80,$80,$80,$80,$80,$80,$80,$00,$80,$80
 
 
+;;; $F1F4: Enemy drop chances ;;;
 EnemyDropChances_Geruta:
 EnemyDropChances:
   .smallEnergy:
