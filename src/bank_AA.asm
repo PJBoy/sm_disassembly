@@ -590,13 +590,14 @@ CommonAAEnemySpeeds_QuadraticallyIncreasing:
     dw $74F9,$0011,$8B07,$FFEE
 
 
-; Orb projectile
+;;; $8687: Torizo palettes ;;;
 Palette_Torizo_OrbProjectile:
+; Orb projectile
     dw $3800,$03FF,$033B,$0216,$0113,$6B1E,$4A16,$3591                   ;AA8687; Sprite palette 3
     dw $20E9,$1580,$1580,$1580,$1580,$1580,$1580,$1580                   ;AA8697;
 
-; Bomb Torizo statue
 Palette_Torizo_BombTorizoStatue:
+; Bomb Torizo statue
     dw $3800,$02DF,$01D7,$00AC,$5A73,$41AD,$2D08,$1863                   ;AA86A7; Sprite palette 7
     dw $1486,$0145,$0145,$0145,$7FFF,$0145,$0145,$0000                   ;AA86B7;
 
@@ -636,19 +637,27 @@ Palette_Torizo_GoldenTorizo_SpritePalette2:
     dw $3800,$3719,$0214,$0003,$0000,$0295,$01D1,$014D                   ;AA87A7;
     dw $00A8,$4B40,$25E0,$00E0,$6B40,$4600,$4480,$0000                   ;AA87B7;
 
+
+;;; $87C7: Torizo hitbox - blank ;;;
 Hitboxes_Torizo_Blank:
     dw $0000                                                             ;AA87C7;
 
+
+;;; $87C9: Torizo spritemap - blank ;;;
 Spritemap_Torizo_Blank:
     dw $0001                                                             ;AA87C9;
     %spritemapEntry(0, $100, $00, 0, 1, 0, 1, $00)
 
+
+;;; $87D0: Torizo extended spritemap - blank ;;;
 ExtendedSpritemap_Torizo_Blank:
     dw $0001                                                             ;AA87D0;
     dw $0000,$0000
     dw Spritemap_Torizo_Blank                                            ;AA87D6;
     dw Hitboxes_Torizo_Blank                                             ;AA87D8;
 
+
+;;; $87DA: Torizo hitboxes ;;;
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Hitboxes_Torizo_AA87DA:
     dw $0001                                                             ;AA87DA;
@@ -1038,6 +1047,7 @@ Hitboxes_Torizo_StandUp_SitDown_FacingRight_17:
     dw EnemyShot_Torizo_Normal                                           ;AA8A94;
 
 
+;;; $8A96: Torizo spritemaps ;;;
 Spritemaps_Torizo_0:
     dw $0004                                                             ;AA8A96;
     %spritemapEntry(0, $0C, $F4, 0, 0, 2, 1, $1CB)
@@ -2682,6 +2692,8 @@ UNUSED_Spritemaps_Torizo_AAA4C6:
     %spritemapEntry(1, $1F0, $EC, 0, 1, 2, 1, $102)
     %spritemapEntry(1, $00, $EC, 0, 1, 2, 1, $100)
 
+
+;;; $A4E6: Torizo extended spritemaps ;;;
 UNUSED_ExtendedSpritemaps_Torizo_AAA4E6:
     dw $0001                                                             ;AAA4E6;
     dw $0000,$0000
@@ -4061,6 +4073,8 @@ ExtendedSpritemaps_Torizo_Jumping_Falling_FacingRight_2:
     dw Spritemaps_Torizo_57                                              ;AAB092;
     dw Hitboxes_Torizo_StandUp_SitDown_FacingRight_16                    ;AAB094;
 
+
+;;; $B096: Torizo music tracks ;;;
 TorizoMusicTracks:
   .song1:
 ; Song 1 - pre-fight music. Music track to queue when Bomb Torizo is revealed
@@ -4073,6 +4087,7 @@ TorizoMusicTracks:
     dw $0003                                                             ;AAB09A;
 
 
+;;; $B09C: Instruction - enemy function = [[Y]] ;;;
 Instruction_Torizo_FunctionInY:
     LDA.W $0000,Y                                                        ;AAB09C;
     STA.W $0FB0,X                                                        ;AAB09F;
@@ -4081,6 +4096,7 @@ Instruction_Torizo_FunctionInY:
     RTL                                                                  ;AAB0A4;
 
 
+;;; $B0A5: Blank tiles ;;;
 Tiles_Blank:
     db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB0A5;
     db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB0B5;
@@ -4088,6 +4104,7 @@ Tiles_Blank:
     db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB0D5;
 
 
+;;; $B0E5: Instruction list - special callable - blow up Bomb Torizo's gut ;;;
 InstList_Torizo_SpecialCallable_BlowUpBombTorizosGut:
 ; "special" because the usual link instruction isn't being used for returning
     dw Instruction_Torizo_FunctionInY                                    ;AAB0E5;
@@ -4109,6 +4126,7 @@ InstList_Torizo_SpecialCallable_BlowUpBombTorizosGut:
     dw Instruction_Torizo_GotoGutExplosionLinkInstruction                ;AAB11B;
 
 
+;;; $B11D: Instruction - mark Bomb Torizo gut blown up and spawn 6 Bomb Torizo low-health continuous drool enemy projectiles ;;;
 Instruction_Torizo_MarkBTGutBlownUp_Spawn6BTDroolProjectiles:
     LDA.W $0FB6,X                                                        ;AAB11D;
     ORA.W #$8000                                                         ;AAB120;
@@ -4132,6 +4150,7 @@ Instruction_Torizo_MarkBTGutBlownUp_Spawn6BTDroolProjectiles:
     RTL                                                                  ;AAB154;
 
 
+;;; $B155: Instruction list - callable - blow up Bomb Torizo's face ;;;
 InstList_Torizo_Callable_BlowUpBombTorizosFace:
     dw Instruction_Torizo_FunctionInY                                    ;AAB155;
     dw RTS_AAC6AB                                                        ;AAB157;
@@ -4162,6 +4181,8 @@ InstList_Torizo_Callable_BlowUpBombTorizosFace:
     dw Instruction_Torizo_ClearAnimationLock                             ;AAB1BA;
     dw Instruction_Torizo_Return                                         ;AAB1BC;
 
+
+;;; $B1BE: Instruction - mark Bomb Torizo face blown up ;;;
 Instruction_Torizo_MarkBombTorizoFaceBlownUp:
     LDA.W $0FB6,X                                                        ;AAB1BE;
     ORA.W #$4000                                                         ;AAB1C1;
@@ -4169,6 +4190,7 @@ Instruction_Torizo_MarkBombTorizoFaceBlownUp:
     RTL                                                                  ;AAB1C7;
 
 
+;;; $B1C8: Instruction list - torizo death sequence ;;;
 InstList_Torizo_DeathSequence_0:
     dw Instruction_Torizo_FunctionInY                                    ;AAB1C8;
     dw RTS_AAC6AB                                                        ;AAB1CA;
@@ -4209,6 +4231,8 @@ InstList_Torizo_DeathSequence_2:
     dw Instruction_Torizo_SetBossBit_QueueElevatorMusic_SpawnDrops       ;AAB220;
     dw Instruction_Common_DeleteEnemy                                    ;AAB222;
 
+
+;;; $B224: Instruction - set enemy as visible ;;;
 Instruction_Torizo_SetAsVisible:
     LDA.W $0F86,X                                                        ;AAB224;
     AND.W #$FEFF                                                         ;AAB227;
@@ -4216,6 +4240,7 @@ Instruction_Torizo_SetAsVisible:
     RTL                                                                  ;AAB22D;
 
 
+;;; $B22E: Instruction - set enemy as invisible ;;;
 Instruction_Torizo_SetAsInvisible:
     LDA.W $0F86,X                                                        ;AAB22E;
     ORA.W #$0100                                                         ;AAB231;
@@ -4223,7 +4248,9 @@ Instruction_Torizo_SetAsInvisible:
     RTL                                                                  ;AAB237;
 
 
+;;; $B238: Instruction - set up palette transition to black ;;;
 Instruction_Torizo_SetupPaletteTransitionToBlack:
+; Target sprite palettes 1/2 = 0
     PHX                                                                  ;AAB238;
     LDX.W #$001E                                                         ;AAB239;
     LDA.W #$0000                                                         ;AAB23C;
@@ -4238,6 +4265,7 @@ Instruction_Torizo_SetupPaletteTransitionToBlack:
     RTL                                                                  ;AAB24C;
 
 
+;;; $B24D: Instruction - set boss bit, queue elevator music, spawn item drops ;;;
 Instruction_Torizo_SetBossBit_QueueElevatorMusic_SpawnDrops:
     LDA.W #$0004                                                         ;AAB24D;
     JSL.L SetBossBitsInAForCurrentArea                                   ;AAB250;
@@ -4251,7 +4279,6 @@ Instruction_Torizo_SetBossBit_QueueElevatorMusic_SpawnDrops:
     JSL.L BombTorizoDeathItemDropRoutine                                 ;AAB263;
     BRA .return                                                          ;AAB267;
 
-
   .notCrateria:
     JSL.L GoldenTorizoDeathItemDropRoutine                               ;AAB269;
 
@@ -4262,12 +4289,14 @@ Instruction_Torizo_SetBossBit_QueueElevatorMusic_SpawnDrops:
     RTL                                                                  ;AAB270;
 
 
+;;; $B271: Instruction - advance gradual colour change ;;;
 Instruction_Torizo_AdvanceGradualColorChange:
     LDA.W #$0600                                                         ;AAB271;
     JSL.L Advance_GradualColorChange_ofPalettesInA_Denominator_C         ;AAB274;
     RTL                                                                  ;AAB278;
 
 
+;;; $B279: Torizo tiles ;;;
 ; Torizo eyes opening / blinking
 ; Bomb Torizo gut blown up
 ; Bomb Torizo face blown up
@@ -4400,6 +4429,8 @@ Tiles_Torizo_AAB779:
     db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB859;
     db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB869;
 
+
+;;; $B879: Instruction list - Bomb Torizo - initial ;;;
 InstList_Torizo_BombTorizo_Initial_0:
     dw Instruction_Torizo_SetSteppedLeftWithRightFootState               ;AAB879;
     dw Instruction_Torizo_SetAnimationLock                               ;AAB87B;
@@ -4467,11 +4498,13 @@ InstList_Torizo_BombTorizo_Initial_2:
     dw InstList_Torizo_FacingLeft_Walking_LeftLegMoving                  ;AAB94B;
 
 
+;;; $B94D: Instruction - set up palette transition to normal torizo ;;;
 Instruction_Torizo_SetupPaletteTransitionToNormalTorizo:
     JSR.W LoadNormalTorizoTargetPalettes                                 ;AAB94D;
     RTL                                                                  ;AAB950;
 
 
+;;; $B951: Instruction - start fight music and Bomb Torizo belly palette FX ;;;
 Instruction_Torizo_StartFightMusic_BombTorizoBellyPaletteFX:
     LDA.W TorizoMusicTracks_song0                                        ;AAB951;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;AAB954;
@@ -4482,12 +4515,15 @@ Instruction_Torizo_StartFightMusic_BombTorizoBellyPaletteFX:
     RTL                                                                  ;AAB961;
 
 
+;;; $B962: Instruction list - turning left ;;;
 InstList_Torizo_FacingLeft_TurningLeft:
     dw Instruction_Torizo_FunctionInY                                    ;AAB962;
     dw Function_Torizo_SimpleMovement                                    ;AAB964;
     dw Instruction_Torizo_SetTorizoTurningAroundFlag                     ;AAB966;
     dw $0018,ExtendedSpritemaps_Torizo_FacingScreen_Turning_Dodging      ;AAB968;
 
+
+;;; $B96C: Instruction list - walking left - right leg moving ;;;
 InstList_Torizo_FacingLeft_Walking_RightLegMoving:
     dw Instruction_Torizo_SetSteppedLeftWithLeftFootState                ;AAB96C;
     dw Instruction_Torizo_FunctionInY                                    ;AAB96E;
@@ -4517,6 +4553,8 @@ InstList_Torizo_FacingLeft_Walking_RightLegMoving:
     dw $0006,ExtendedSpritemaps_Torizo_WalkingLeft_RightLegMoving_4      ;AAB9AC;
     dw Instruction_Torizo_BombTorizoWalkingMovement_Normal_IndexInY,$000A ;AAB9B2;
 
+
+;;; $B9B6: Instruction list - walking left - left leg moving ;;;
 InstList_Torizo_FacingLeft_Walking_LeftLegMoving:
     dw Instruction_Torizo_SetSteppedLeftWithRightFootState               ;AAB9B6;
     dw Instruction_Torizo_FunctionInY                                    ;AAB9B8;
@@ -4548,6 +4586,8 @@ InstList_Torizo_FacingLeft_Walking_LeftLegMoving:
     dw Instruction_Common_GotoY                                          ;AABA00;
     dw InstList_Torizo_FacingLeft_Walking_RightLegMoving                 ;AABA02;
 
+
+;;; $BA04: Instruction list - callable - spewing chozo orbs - facing left - right foot forward ;;;
 InstList_Torizo_FacingLeft_SpewingChozoOrbs_RightFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABA04;
     dw Function_Torizo_Movement_Attacking                                ;AABA06;
@@ -4573,6 +4613,8 @@ InstList_Torizo_FacingLeft_SpewingChozoOrbs_RightFootFwd_1:
     dw Function_Torizo_Movement_Walking                                  ;AABA42;
     dw Instruction_Torizo_Return                                         ;AABA44;
 
+
+;;; $BA46: Instruction list - callable - spewing chozo orbs - facing left - left foot forward ;;;
 InstList_Torizo_FacingLeft_SpewingChozoOrbs_LeftFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABA46;
     dw Function_Torizo_Movement_Attacking                                ;AABA48;
@@ -4598,6 +4640,8 @@ InstList_Torizo_FacingLeft_SpewingChozoOrbs_LeftFootFwd_1:
     dw Function_Torizo_Movement_Walking                                  ;AABA84;
     dw Instruction_Torizo_Return                                         ;AABA86;
 
+
+;;; $BA88: Instruction list - callable - sonic booms - facing left - right foot forward ;;;
 InstList_Torizo_FacingLeft_SonicBooms_RightFootForward_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABA88;
     dw Function_Torizo_Movement_Attacking                                ;AABA8A;
@@ -4632,6 +4676,8 @@ InstList_Torizo_FacingLeft_SonicBooms_RightFootForward_1:
     dw Function_Torizo_Movement_Walking                                  ;AABAEE;
     dw Instruction_Torizo_Return                                         ;AABAF0;
 
+
+;;; $BAF2: Instruction list - callable - sonic booms - facing left - left foot forward ;;;
 InstList_Torizo_FacingLeft_SonicBooms_LeftFootForward_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABAF2;
     dw Function_Torizo_Movement_Attacking                                ;AABAF4;
@@ -4666,6 +4712,8 @@ InstList_Torizo_FacingLeft_SonicBooms_LeftFootForward_1:
     dw Function_Torizo_Movement_Walking                                  ;AABB58;
     dw Instruction_Torizo_Return                                         ;AABB5A;
 
+
+;;; $BB5C: Instruction list - callable - explosive swipe - facing left - right foot forward ;;;
 InstList_Torizo_FacingLeft_ExplosiveSwipe_RightFootForward:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABB5C;
     dw Function_Torizo_Movement_Attacking                                ;AABB5E;
@@ -4703,6 +4751,8 @@ InstList_Torizo_FacingLeft_ExplosiveSwipe_RightFootForward:
     dw Function_Torizo_Movement_Walking                                  ;AABBDA;
     dw Instruction_Torizo_Return                                         ;AABBDC;
 
+
+;;; $BBDE: Instruction list - callable - explosive swipe - facing left - left foot forward ;;;
 InstList_Torizo_FacingLeft_ExplosiveSwipe_LeftFootForward:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABBDE;
     dw Function_Torizo_Movement_Attacking                                ;AABBE0;
@@ -4740,6 +4790,8 @@ InstList_Torizo_FacingLeft_ExplosiveSwipe_LeftFootForward:
     dw Function_Torizo_Movement_Walking                                  ;AABC5C;
     dw Instruction_Torizo_Return                                         ;AABC5E;
 
+
+;;; $BC60: Instruction list - jumping forwards - facing left ;;;
 InstList_Torizo_FacingLeft_JumpingForwards_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABC60;
     dw Function_Torizo_Movement_Jumping_Falling                          ;AABC62;
@@ -4753,6 +4805,8 @@ InstList_Torizo_FacingLeft_JumpingForwards_1:
     dw Instruction_Torizo_GotoY_IfRising                                 ;AABC74;
     dw InstList_Torizo_FacingLeft_JumpingForwards_1                      ;AABC76;
 
+
+;;; $BC78: Instruction list - falling - facing left ;;;
 InstList_Torizo_FacingLeft_Falling_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABC78;
     dw Function_Torizo_Movement_Jumping_Falling                          ;AABC7A;
@@ -4773,6 +4827,8 @@ InstList_Torizo_FacingLeft_Falling_2:
     dw Instruction_Common_GotoY                                          ;AABC92;
     dw InstList_Torizo_FacingLeft_Walking_LeftLegMoving                  ;AABC94;
 
+
+;;; $BC96: Instruction list - jumping backwards - facing left - landing left foot forward ;;;
 InstList_Torizo_FacingLeft_JumpingBackward_LandLeftFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABC96;
     dw Function_Torizo_Movement_Jumping_Falling                          ;AABC98;
@@ -4809,6 +4865,8 @@ InstList_Torizo_FacingLeft_JumpingBackward_LandLeftFootFwd_4:
     dw Instruction_Common_GotoY                                          ;AABCCE;
     dw InstList_Torizo_FacingLeft_Walking_RightLegMoving                 ;AABCD0;
 
+
+;;; $BCD2: Instruction list - jumping backwards - facing left - landing right foot forward ;;;
 InstList_Torizo_FacingLeft_JumpingBackward_RightFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABCD2;
     dw Function_Torizo_Movement_Jumping_Falling                          ;AABCD4;
@@ -4845,12 +4903,16 @@ InstList_Torizo_FacingLeft_JumpingBackward_RightFootFwd_4:
     dw Instruction_Common_GotoY                                          ;AABD0A;
     dw InstList_Torizo_FacingLeft_Walking_LeftLegMoving                  ;AABD0C;
 
+
+;;; $BD0E: Instruction list - faceless - turning left ;;;
 InstList_Torizo_FacingLeft_Faceless_TurningLeft:
     dw Instruction_Torizo_FunctionInY                                    ;AABD0E;
     dw Function_Torizo_SimpleMovement                                    ;AABD10;
     dw Instruction_Torizo_SetTorizoTurningAroundFlag                     ;AABD12;
     dw $0008,ExtendedSpritemaps_Torizo_FacingScreen_Turning_Dodging      ;AABD14;
 
+
+;;; $BD18: Instruction list - faceless - walking left - right leg moving ;;;
 InstList_Torizo_FacingLeft_Faceless_Walking_RightLegMoving:
     dw Instruction_Torizo_SetSteppedLeftWithLeftFootState                ;AABD18;
     dw Instruction_Torizo_FunctionInY                                    ;AABD1A;
@@ -4872,6 +4934,8 @@ InstList_Torizo_FacingLeft_Faceless_Walking_RightLegMoving:
     dw $0005,ExtendedSpritemaps_Torizo_WalkingLeft_RightLegMoving_4      ;AABD48;
     dw Instruction_Torizo_BTWalkingMovement_Faceless_IndexInY,$000A      ;AABD4E;
 
+
+;;; $BD52: Instruction list - faceless - walking left - left leg moving ;;;
 InstList_Torizo_FacingLeft_Faceless_Walking_LeftLegMoving:
     dw Instruction_Torizo_SetSteppedLeftWithRightFootState               ;AABD52;
     dw Instruction_Torizo_FunctionInY                                    ;AABD54;
@@ -4895,7 +4959,9 @@ InstList_Torizo_FacingLeft_Faceless_Walking_LeftLegMoving:
     dw Instruction_Common_GotoY                                          ;AABD8C;
     dw InstList_Torizo_FacingLeft_Faceless_Walking_RightLegMoving        ;AABD8E;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $BD90: Unused. Instruction list - stand up - facing right ;;;
 UNUSED_InstList_Torizo_FacingRight_StandUp_AABD90:
     dw Instruction_Torizo_SetSteppedRightWithLeftFootState               ;AABD90;
     dw $0001                                                             ;AABD92;
@@ -4922,12 +4988,16 @@ UNUSED_InstList_Torizo_FacingRight_StandUp_AABD90:
     dw InstList_Torizo_FacingRight_Walking_RightLegMoving                ;AABDD6;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $BDD8: Instruction list - turning right ;;;
 InstList_Torizo_FacingRight_TurningRight:
     dw Instruction_Torizo_FunctionInY                                    ;AABDD8;
     dw Function_Torizo_SimpleMovement                                    ;AABDDA;
     dw Instruction_Torizo_SetTorizoTurningAroundFlag                     ;AABDDC;
     dw $0018,ExtendedSpritemaps_Torizo_FacingScreen_Turning_Dodging      ;AABDDE;
 
+
+;;; $BDE2: Instruction list - walking right - left leg moving ;;;
 InstList_Torizo_FacingRight_Walking_LeftLegMoving:
     dw Instruction_Torizo_SetSteppedRightWithRightFootState              ;AABDE2;
     dw Instruction_Torizo_FunctionInY                                    ;AABDE4;
@@ -4959,6 +5029,8 @@ InstList_Torizo_FacingRight_Walking_LeftLegMoving:
     dw InstList_Torizo_FacingRight_JumpBackward_LandRightFootFwd_0       ;AABE2A;
     dw Instruction_Torizo_BombTorizoWalkingMovement_Normal_IndexInY,$001E ;AABE2C;
 
+
+;;; $BE30: Instruction list - walking right - right leg moving ;;;
 InstList_Torizo_FacingRight_Walking_RightLegMoving:
     dw Instruction_Torizo_SetSteppedRightWithLeftFootState               ;AABE30;
     dw Instruction_Torizo_FunctionInY                                    ;AABE32;
@@ -4990,6 +5062,8 @@ InstList_Torizo_FacingRight_Walking_RightLegMoving:
     dw Instruction_Common_GotoY                                          ;AABE7A;
     dw InstList_Torizo_FacingRight_Walking_LeftLegMoving                 ;AABE7C;
 
+
+;;; $BE7E: Instruction list - callable - spewing chozo orbs - facing right - left foot forward ;;;
 InstList_Torizo_FacingRight_SpewingChozoOrbs_LeftFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABE7E;
     dw Function_Torizo_Movement_Attacking                                ;AABE80;
@@ -5015,6 +5089,8 @@ InstList_Torizo_FacingRight_SpewingChozoOrbs_LeftFootFwd_1:
     dw Function_Torizo_Movement_Walking                                  ;AABEBC;
     dw Instruction_Torizo_Return                                         ;AABEBE;
 
+
+;;; $BEC0: Instruction list - callable - spewing chozo orbs - facing right - right foot forward ;;;
 InstList_Torizo_FacingRight_SpewingChozoOrbs_RightFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABEC0;
     dw Function_Torizo_Movement_Attacking                                ;AABEC2;
@@ -5040,6 +5116,8 @@ InstList_Torizo_FacingRight_SpewingChozoOrbs_RightFootFwd_1:
     dw Function_Torizo_Movement_Walking                                  ;AABEFE;
     dw Instruction_Torizo_Return                                         ;AABF00;
 
+
+;;; $BF02: Instruction list - callable - sonic booms - facing right - left foot forward ;;;
 InstList_Torizo_FacingRight_SonicBooms_LeftFootForward_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABF02;
     dw Function_Torizo_Movement_Attacking                                ;AABF04;
@@ -5074,6 +5152,8 @@ InstList_Torizo_FacingRight_SonicBooms_LeftFootForward_1:
     dw Function_Torizo_Movement_Walking                                  ;AABF68;
     dw Instruction_Torizo_Return                                         ;AABF6A;
 
+
+;;; $BF6C: Instruction list - callable - sonic booms - facing right - right foot forward ;;;
 InstList_Torizo_FacingRight_SonicBooms_RightFootForward_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABF6C;
     dw Function_Torizo_Movement_Attacking                                ;AABF6E;
@@ -5108,6 +5188,8 @@ InstList_Torizo_FacingRight_SonicBooms_RightFootForward_1:
     dw Function_Torizo_Movement_Walking                                  ;AABFD2;
     dw Instruction_Torizo_Return                                         ;AABFD4;
 
+
+;;; $BFD6: Instruction list - callable - explosive swipe - facing right - left foot forward ;;;
 InstList_Torizo_FacingRight_ExplosiveSwipe_LeftFootForward:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AABFD6;
     dw Function_Torizo_Movement_Attacking                                ;AABFD8;
@@ -5145,6 +5227,8 @@ InstList_Torizo_FacingRight_ExplosiveSwipe_LeftFootForward:
     dw Function_Torizo_Movement_Walking                                  ;AAC054;
     dw Instruction_Torizo_Return                                         ;AAC056;
 
+
+;;; $C058: Instruction list - callable - explosive swipe - facing right - right foot forward ;;;
 InstList_Torizo_FacingRight_ExplosiveSwipe_RightFootForward:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AAC058;
     dw Function_Torizo_Movement_Attacking                                ;AAC05A;
@@ -5182,6 +5266,8 @@ InstList_Torizo_FacingRight_ExplosiveSwipe_RightFootForward:
     dw Function_Torizo_Movement_Walking                                  ;AAC0D6;
     dw Instruction_Torizo_Return                                         ;AAC0D8;
 
+
+;;; $C0DA: Instruction list - jumping forwards - facing right ;;;
 InstList_Torizo_FacingRight_JumpingForwards_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AAC0DA;
     dw Function_Torizo_Movement_Jumping_Falling                          ;AAC0DC;
@@ -5195,6 +5281,8 @@ InstList_Torizo_FacingRight_JumpingForwards_1:
     dw Instruction_Torizo_GotoY_IfRising                                 ;AAC0EE;
     dw InstList_Torizo_FacingRight_JumpingForwards_1                     ;AAC0F0;
 
+
+;;; $C0F2: Instruction list - falling - facing right ;;;
 InstList_Torizo_FacingRight_Falling_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AAC0F2;
     dw Function_Torizo_Movement_Jumping_Falling                          ;AAC0F4;
@@ -5215,6 +5303,8 @@ InstList_Torizo_FacingRight_Falling_2:
     dw Instruction_Common_GotoY                                          ;AAC10C;
     dw InstList_Torizo_FacingRight_Walking_RightLegMoving                ;AAC10E;
 
+
+;;; $C110: Instruction list - jumping backwards - facing right - landing right foot forward ;;;
 InstList_Torizo_FacingRight_JumpBackward_LandRightFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AAC110;
     dw Function_Torizo_Movement_Jumping_Falling                          ;AAC112;
@@ -5251,6 +5341,8 @@ InstList_Torizo_FacingRight_JumpBackward_LandRightFootFwd_4:
     dw Instruction_Common_GotoY                                          ;AAC148;
     dw InstList_Torizo_FacingRight_Walking_LeftLegMoving                 ;AAC14A;
 
+
+;;; $C14C: Instruction list - jumping backwards - facing right - landing left foot forward ;;;
 InstList_Torizo_FacingRight_JumpBackwards_LandLeftFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AAC14C;
     dw Function_Torizo_Movement_Jumping_Falling                          ;AAC14E;
@@ -5287,12 +5379,16 @@ InstList_Torizo_FacingRight_JumpBackwards_LandLeftFootFwd_4:
     dw Instruction_Common_GotoY                                          ;AAC184;
     dw InstList_Torizo_FacingRight_Walking_RightLegMoving                ;AAC186;
 
+
+;;; $C188: Instruction list - faceless - turning right ;;;
 InstList_Torizo_FacingRight_Faceless_TurningRight:
     dw Instruction_Torizo_FunctionInY                                    ;AAC188;
     dw Function_Torizo_SimpleMovement                                    ;AAC18A;
     dw Instruction_Torizo_SetTorizoTurningAroundFlag                     ;AAC18C;
     dw $0008,ExtendedSpritemaps_Torizo_FacingScreen_Turning_Dodging      ;AAC18E;
 
+
+;;; $C192: Instruction list - faceless - walking right - left leg moving ;;;
 InstList_Torizo_FacingRight_Faceless_Walking_LeftLegMoving:
     dw Instruction_Torizo_SetSteppedRightWithRightFootState              ;AAC192;
     dw Instruction_Torizo_FunctionInY                                    ;AAC194;
@@ -5314,6 +5410,8 @@ InstList_Torizo_FacingRight_Faceless_Walking_LeftLegMoving:
     dw $0005,ExtendedSpritemaps_Torizo_WalkingRight_LeftLegMoving_4      ;AAC1C2;
     dw Instruction_Torizo_BTWalkingMovement_Faceless_IndexInY,$001E      ;AAC1C8;
 
+
+;;; $C1CC: Instruction list - faceless - walking right - right leg moving ;;;
 InstList_Torizo_FacingRight_Faceless_Walking_RightLegMoving:
     dw Instruction_Torizo_SetSteppedRightWithLeftFootState               ;AAC1CC;
     dw Instruction_Torizo_FunctionInY                                    ;AAC1CE;
@@ -5337,12 +5435,13 @@ InstList_Torizo_FacingRight_Faceless_Walking_RightLegMoving:
     dw Instruction_Common_GotoY                                          ;AAC206;
     dw InstList_Torizo_FacingRight_Faceless_Walking_LeftLegMoving        ;AAC208;
 
+
+;;; $C20A: Make torizo jump forwards ;;;
 MakeTorizoJumpForwards:
     LDA.W $0FB4,X                                                        ;AAC20A;
     BMI .facingRight                                                     ;AAC20D;
     LDA.W #$FE00                                                         ;AAC20F;
     BRA +                                                                ;AAC212;
-
 
   .facingRight:
     LDA.W #$0200                                                         ;AAC214;
@@ -5357,12 +5456,12 @@ MakeTorizoJumpForwards:
     RTS                                                                  ;AAC22C;
 
 
+;;; $C22D: Make torizo jump backwards ;;;
 MakeTorizoJumpBackwards:
     LDA.W $0FB4,X                                                        ;AAC22D;
     BMI .facingRight                                                     ;AAC230;
     LDA.W #$0300                                                         ;AAC232;
     BRA +                                                                ;AAC235;
-
 
   .facingRight:
     LDA.W #$FD00                                                         ;AAC237;
@@ -5377,6 +5476,7 @@ MakeTorizoJumpBackwards:
     RTS                                                                  ;AAC24F;
 
 
+;;; $C250: Load initial Bomb Torizo palettes ;;;
 LoadInitialBombTorizoPalettes:
     PHX                                                                  ;AAC250;
     LDX.W #$001E                                                         ;AAC251;
@@ -5393,6 +5493,7 @@ LoadInitialBombTorizoPalettes:
     RTS                                                                  ;AAC267;
 
 
+;;; $C268: Load normal torizo target palettes ;;;
 LoadNormalTorizoTargetPalettes:
     PHX                                                                  ;AAC268;
     LDX.W #$001E                                                         ;AAC269;
@@ -5409,6 +5510,7 @@ LoadNormalTorizoTargetPalettes:
     RTS                                                                  ;AAC27F;
 
 
+;;; $C280: Load initial Golden Torizo palettes ;;;
 LoadInitialGoldenTorizoPalettes:
     PHX                                                                  ;AAC280;
     LDX.W #$001E                                                         ;AAC281;
@@ -5425,6 +5527,7 @@ LoadInitialGoldenTorizoPalettes:
     RTS                                                                  ;AAC297;
 
 
+;;; $C298: Load Golden Torizo palettes ;;;
 LoadGoldenTorizoPalettes:
     PHX                                                                  ;AAC298;
     LDX.W #$001E                                                         ;AAC299;
@@ -5441,6 +5544,7 @@ LoadGoldenTorizoPalettes:
     RTS                                                                  ;AAC2AF;
 
 
+;;; $C2B0: Load normal torizo palettes ;;;
 LoadNormalTorizoPalettes:
     PHX                                                                  ;AAC2B0;
     LDX.W #$001E                                                         ;AAC2B1;
@@ -5457,22 +5561,26 @@ LoadNormalTorizoPalettes:
     RTS                                                                  ;AAC2C7;
 
 
+;;; $C2C8: RTL. Instruction - NOP ;;;
 RTL_AAC2C8:
     RTL                                                                  ;AAC2C8;
 
 
+;;; $C2C9: Instruction - set animation lock ;;;
 Instruction_Torizo_SetAnimationLock:
     LDA.W #$7777                                                         ;AAC2C9;
     STA.L $7E7808,X                                                      ;AAC2CC;
     RTL                                                                  ;AAC2D0;
 
 
+;;; $C2D1: Instruction - clear animation lock ;;;
 Instruction_Torizo_ClearAnimationLock:
     LDA.W #$0000                                                         ;AAC2D1;
     STA.L $7E7808,X                                                      ;AAC2D4;
     RTL                                                                  ;AAC2D8;
 
 
+;;; $C2D9: Instruction - go to [[Y]] if face blown up, else go to [[Y] + 2] if Golden Torizo ;;;
 Instruction_Torizo_GotoY_IfFaceBlownUp_ElseGotoY2_IfGolden:
     BIT.W $0FB6,X                                                        ;AAC2D9;
     BVS .faceBlownUp                                                     ;AAC2DC;
@@ -5484,13 +5592,13 @@ Instruction_Torizo_GotoY_IfFaceBlownUp_ElseGotoY2_IfGolden:
     INY                                                                  ;AAC2E6;
     RTL                                                                  ;AAC2E7;
 
-
   .faceBlownUp:
     LDA.W $0000,Y                                                        ;AAC2E8;
     TAY                                                                  ;AAC2EB;
     RTL                                                                  ;AAC2EC;
 
 
+;;; $C2ED: Instruction - enemy link instruction = [[Y]] ;;;
 Instruction_Torizo_LinkInstructionInY:
     LDA.W $0000,Y                                                        ;AAC2ED;
     STA.L $7E7800,X                                                      ;AAC2F0;
@@ -5499,18 +5607,21 @@ Instruction_Torizo_LinkInstructionInY:
     RTL                                                                  ;AAC2F6;
 
 
+;;; $C2F7: Instruction - return ;;;
 Instruction_Torizo_Return:
     LDA.L $7E7800,X                                                      ;AAC2F7;
     TAY                                                                  ;AAC2FB;
     RTL                                                                  ;AAC2FC;
 
 
+;;; $C2FD: Instruction - go to [enemy gut explosion link instruction] ;;;
 Instruction_Torizo_GotoGutExplosionLinkInstruction:
     LDA.L $7E7802,X                                                      ;AAC2FD;
     TAY                                                                  ;AAC301;
     RTL                                                                  ;AAC302;
 
 
+;;; $C303: Instruction - spawn 5 Bomb Torizo low-health explosions with parameter [[Y]] and sleep for 28h i-frames ;;;
 Instruction_Torizo_Spawn5LowHealthExplosion_SleepFor28Frames:
     PHY                                                                  ;AAC303;
     LDA.W $0000,Y                                                        ;AAC304;
@@ -5539,6 +5650,7 @@ Instruction_Torizo_Spawn5LowHealthExplosion_SleepFor28Frames:
     RTL                                                                  ;AAC32E;
 
 
+;;; $C32F: Instruction - spawn torizo death explosion and sleep for 1 i-frame ;;;
 Instruction_Torizo_SpawnTorizoDeathExplosion_SleepFor1IFrame:
     PHY                                                                  ;AAC32F;
     LDY.W #EnemyProjectile_BombTorizoDeathExplosion                      ;AAC330;
@@ -5554,6 +5666,7 @@ Instruction_Torizo_SpawnTorizoDeathExplosion_SleepFor1IFrame:
     RTL                                                                  ;AAC349;
 
 
+;;; $C34A: Instruction - spawn torizo landing dust clouds ;;;
 Instruction_Torizo_SpawnTorizoLandingDustClouds:
     PHY                                                                  ;AAC34A;
     LDY.W #EnemyProjectile_TorizoLandingDustCloud_RightFoot              ;AAC34B;
@@ -5564,6 +5677,7 @@ Instruction_Torizo_SpawnTorizoLandingDustClouds:
     RTL                                                                  ;AAC35A;
 
 
+;;; $C35B: Instruction - spawn low-health initial drool if health is low ;;;
 Instruction_Torizo_SpawnLowHealthInitialDroolIfHealthIsLow:
     LDA.W $0F8C,X                                                        ;AAC35B;
     CMP.W #$015E                                                         ;AAC35E;
@@ -5577,6 +5691,7 @@ Instruction_Torizo_SpawnLowHealthInitialDroolIfHealthIsLow:
     RTL                                                                  ;AAC36C;
 
 
+;;; $C36D: Instruction - set torizo turning around flag ;;;
 Instruction_Torizo_SetTorizoTurningAroundFlag:
     LDA.W $0FB4,X                                                        ;AAC36D;
     ORA.W #$4000                                                         ;AAC370;
@@ -5584,6 +5699,7 @@ Instruction_Torizo_SetTorizoTurningAroundFlag:
     RTL                                                                  ;AAC376;
 
 
+;;; $C377: Instruction - set stepped left with left foot state ;;;
 Instruction_Torizo_SetSteppedLeftWithLeftFootState:
     LDA.W $0FB4,X                                                        ;AAC377;
     AND.W #$1FFF                                                         ;AAC37A;
@@ -5594,6 +5710,7 @@ Instruction_Torizo_SetSteppedLeftWithLeftFootState:
     RTL                                                                  ;AAC389;
 
 
+;;; $C38A: Instruction - set stepped right with right foot state ;;;
 Instruction_Torizo_SetSteppedRightWithRightFootState:
     LDA.W $0FB4,X                                                        ;AAC38A;
     AND.W #$1FFF                                                         ;AAC38D;
@@ -5605,6 +5722,7 @@ Instruction_Torizo_SetSteppedRightWithRightFootState:
     RTL                                                                  ;AAC39F;
 
 
+;;; $C3A0: Instruction - set stepped left with right foot state ;;;
 Instruction_Torizo_SetSteppedLeftWithRightFootState:
     LDA.W $0FB4,X                                                        ;AAC3A0;
     AND.W #$1FFF                                                         ;AAC3A3;
@@ -5616,6 +5734,7 @@ Instruction_Torizo_SetSteppedLeftWithRightFootState:
     RTL                                                                  ;AAC3B5;
 
 
+;;; $C3B6: Instruction - set stepped right with left foot state ;;;
 Instruction_Torizo_SetSteppedRightWithLeftFootState:
     LDA.W $0FB4,X                                                        ;AAC3B6;
     AND.W #$1FFF                                                         ;AAC3B9;
@@ -5627,6 +5746,7 @@ Instruction_Torizo_SetSteppedRightWithLeftFootState:
     RTL                                                                  ;AAC3CB;
 
 
+;;; $C3CC: Instruction - standing up movement - index [[Y]] ;;;
 Instruction_Torizo_StandingUpMovement_IndexInY:
     PHY                                                                  ;AAC3CC;
     LDA.W $0000,Y                                                        ;AAC3CD;
@@ -5647,7 +5767,6 @@ Instruction_Torizo_StandingUpMovement_IndexInY:
     INY                                                                  ;AAC3EC;
     RTL                                                                  ;AAC3ED;
 
-
   .XVelocities:
     dw $FFF7,$FFFA,$FFF9,$0005,$FFF0,$FFF9, $0000,$0000                  ;AAC3EE; 0..Ah: Facing left
     dw $0009,$0006,$0007,$FFFB,$0010,$0007, $0000,$0000                  ;AAC3FE; 10h..1Ah: Facing right
@@ -5655,6 +5774,8 @@ Instruction_Torizo_StandingUpMovement_IndexInY:
   .YVelocities:
     dw $0000,$FFFA,$FFFA,$FFF9,$0000,$0000, $0000,$0000                  ;AAC40E;
 
+
+;;; $C41E: Instruction - sitting down movement - index [[Y]] ;;;
 Instruction_Torizo_SittingDownMovement_IndexInY:
     PHY                                                                  ;AAC41E;
     LDA.W $0000,Y                                                        ;AAC41F;
@@ -5675,7 +5796,6 @@ Instruction_Torizo_SittingDownMovement_IndexInY:
     INY                                                                  ;AAC43E;
     RTL                                                                  ;AAC43F;
 
-
   .negatedXVelocities:
     dw $FFF7,$FFFA,$FFF9,$0005,$FFF0,$FFF9, $0000,$0000                  ;AAC440; 0..Ah: Facing left
     dw $0009,$0006,$0007,$FFFB,$0010,$0007, $0000,$0000                  ;AAC450; 10h..1Ah: Facing right
@@ -5683,6 +5803,8 @@ Instruction_Torizo_SittingDownMovement_IndexInY:
   .negatedYVelocities:
     dw $0000,$FFFA,$FFFA,$FFF9,$0000,$0000, $0000,$0000                  ;AAC460;
 
+
+;;; $C470: Instruction - Bomb Torizo walking movement - normal - index [[Y]] ;;;
 Instruction_Torizo_BombTorizoWalkingMovement_Normal_IndexInY:
     PHY                                                                  ;AAC470;
     STZ.B $12                                                            ;AAC471;
@@ -5701,11 +5823,9 @@ Instruction_Torizo_BombTorizoWalkingMovement_Normal_IndexInY:
     LDY.W #InstList_Torizo_FacingRight_TurningRight                      ;AAC492;
     RTL                                                                  ;AAC495;
 
-
   .turningLeft:
     LDY.W #InstList_Torizo_FacingLeft_TurningLeft                        ;AAC496;
     RTL                                                                  ;AAC499;
-
 
   .noCollision:
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;AAC49A;
@@ -5718,7 +5838,6 @@ Instruction_Torizo_BombTorizoWalkingMovement_Normal_IndexInY:
     INY                                                                  ;AAC4AB;
     RTL                                                                  ;AAC4AC;
 
-
   .facingAway:
     LDA.L $7E7806,X                                                      ;AAC4AD;
     BNE .return                                                          ;AAC4B1;
@@ -5730,11 +5849,12 @@ Instruction_Torizo_BombTorizoWalkingMovement_Normal_IndexInY:
     INY                                                                  ;AAC4BB;
     RTL                                                                  ;AAC4BC;
 
-
   .velocities:
     dw $FFFB,$0000,$FFFB,$FFED,$FFF0,$FFF9,$0000,$FFF9,$FFEF,$FFEE       ;AAC4BD; 0..12h: Moving left
     dw $0005,$0000,$0005,$0013,$0010,$0007,$0000,$0007,$0011,$0012       ;AAC4CD; 14h..26h: Moving right
 
+
+;;; $C4E5: Instruction - Bomb Torizo walking movement - faceless - index [[Y]] ;;;
 Instruction_Torizo_BTWalkingMovement_Faceless_IndexInY:
     PHY                                                                  ;AAC4E5;
     STZ.B $12                                                            ;AAC4E6;
@@ -5753,11 +5873,9 @@ Instruction_Torizo_BTWalkingMovement_Faceless_IndexInY:
     LDY.W #InstList_Torizo_FacingRight_Faceless_TurningRight             ;AAC507;
     RTL                                                                  ;AAC50A;
 
-
   .turningLeft:
     LDY.W #InstList_Torizo_FacingLeft_Faceless_TurningLeft               ;AAC50B;
     RTL                                                                  ;AAC50E;
-
 
   .noCollision:
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;AAC50F;
@@ -5770,7 +5888,6 @@ Instruction_Torizo_BTWalkingMovement_Faceless_IndexInY:
     INY                                                                  ;AAC520;
     RTL                                                                  ;AAC521;
 
-
   .facingAway:
     LDA.L $7E7806,X                                                      ;AAC522;
     BNE .return                                                          ;AAC526;
@@ -5782,12 +5899,13 @@ Instruction_Torizo_BTWalkingMovement_Faceless_IndexInY:
     INY                                                                  ;AAC530;
     RTL                                                                  ;AAC531;
 
-
   .velocities:
     dw $FFFB,$0000,$FFFB,$FFED,$FFF0,$FFF9,$0000,$FFF9                   ;AAC532;
     dw $FFEF,$FFEE,$0005,$0000,$0005,$0013,$0010,$0007                   ;AAC542;
     dw $0000,$0007,$0011,$0012                                           ;AAC552;
 
+
+;;; $C55A: Instruction - go to [[Y]] if rising ;;;
 Instruction_Torizo_GotoY_IfRising:
     LDA.W $0FAA,X                                                        ;AAC55A;
     BMI .rising                                                          ;AAC55D;
@@ -5795,13 +5913,13 @@ Instruction_Torizo_GotoY_IfRising:
     INY                                                                  ;AAC560;
     RTL                                                                  ;AAC561;
 
-
   .rising:
     LDA.W $0000,Y                                                        ;AAC562;
     TAY                                                                  ;AAC565;
     RTL                                                                  ;AAC566;
 
 
+;;; $C567: Instruction - call [[Y]] if Samus is less than 38h pixels in front of torizo ;;;
 Instruction_Torizo_CallYIfSamusIsLessThan38PixelsInFront:
     LDA.W #$0038                                                         ;AAC567;
     JSL.L CheckIfXDistanceBetweenEnemyAndSamusIsAtLeastA                 ;AAC56A;
@@ -5811,7 +5929,6 @@ Instruction_Torizo_CallYIfSamusIsLessThan38PixelsInFront:
     INY                                                                  ;AAC570;
     INY                                                                  ;AAC571;
     RTL                                                                  ;AAC572;
-
 
   .near:
     LDA.W $0AF6                                                          ;AAC573;
@@ -5828,6 +5945,7 @@ Instruction_Torizo_CallYIfSamusIsLessThan38PixelsInFront:
     RTL                                                                  ;AAC58A;
 
 
+;;; $C58B: Instruction - go to [[Y]] and jump backwards if Samus is less 20h pixels in front of Bomb Torizo ;;;
 Instruction_Torizo_GotoYAndJumpBackwardsIfLessThan20Pixels:
     LDA.W #$0020                                                         ;AAC58B;
     JSL.L CheckIfXDistanceBetweenEnemyAndSamusIsAtLeastA                 ;AAC58E;
@@ -5839,13 +5957,13 @@ Instruction_Torizo_GotoYAndJumpBackwardsIfLessThan20Pixels:
     TAY                                                                  ;AAC59F;
     RTL                                                                  ;AAC5A0;
 
-
   .return:
     INY                                                                  ;AAC5A1;
     INY                                                                  ;AAC5A2;
     RTL                                                                  ;AAC5A3;
 
 
+;;; $C5A4: Instruction - call [[Y]] or [[Y] + 2] for Bomb Torizo attack ;;;
 Instruction_Torizo_CallY_OrY2_ForBombTorizoAttack:
     TYA                                                                  ;AAC5A4;
     INC A                                                                ;AAC5A5;
@@ -5866,7 +5984,6 @@ Instruction_Torizo_CallY_OrY2_ForBombTorizoAttack:
     LDA.W $0000,Y                                                        ;AAC5C1;
     BRA .return                                                          ;AAC5C4;
 
-
   .sonicBooms:
     LDA.W $0002,Y                                                        ;AAC5C6;
 
@@ -5875,6 +5992,7 @@ Instruction_Torizo_CallY_OrY2_ForBombTorizoAttack:
     RTL                                                                  ;AAC5CA;
 
 
+;;; $C5CB: Instruction - spawn Bomb Torizo's chozo orbs ;;;
 Instruction_Torizo_SpawnBombTorizosChozoOrbs:
     PHY                                                                  ;AAC5CB;
     LDY.W #EnemyProjectile_BombTorizoChozoOrbs                           ;AAC5CC;
@@ -5887,6 +6005,7 @@ Instruction_Torizo_SpawnBombTorizosChozoOrbs:
     RTL                                                                  ;AAC5E2;
 
 
+;;; $C5E3: Instruction - spawn Bomb Torizo sonic boom with parameter [[Y]] ;;;
 Instruction_Torizo_SpawnBombTorizoSonicBoomWithParameterY:
     PHY                                                                  ;AAC5E3;
     LDA.W $0000,Y                                                        ;AAC5E4;
@@ -5898,6 +6017,7 @@ Instruction_Torizo_SpawnBombTorizoSonicBoomWithParameterY:
     RTL                                                                  ;AAC5F1;
 
 
+;;; $C5F2: Instruction - spawn Golden Torizo sonic boom with parameter [[Y]] ;;;
 Instruction_Torizo_SpawnGoldenTorizoSonicBoomWithParameterY:
     PHY                                                                  ;AAC5F2;
     LDA.W $0000,Y                                                        ;AAC5F3;
@@ -5909,6 +6029,7 @@ Instruction_Torizo_SpawnGoldenTorizoSonicBoomWithParameterY:
     RTL                                                                  ;AAC600;
 
 
+;;; $C601: Instruction - spawn Bomb Torizo explosive swipe with parameter [[Y]] ;;;
 Instruction_Torizo_SpawnBombTorizoExplosiveSwipeWithParamY:
     PHY                                                                  ;AAC601;
     LDA.W $0000,Y                                                        ;AAC602;
@@ -5920,23 +6041,25 @@ Instruction_Torizo_SpawnBombTorizoExplosiveSwipeWithParamY:
     RTL                                                                  ;AAC60F;
 
 
+;;; $C610: Instruction - queue shot torizo sound effect ;;;
 Instruction_Torizo_PlayShotTorizoSFX:
     LDA.W #$0027                                                         ;AAC610;
     JSL.L QueueSound_Lib2_Max6                                           ;AAC613;
     RTL                                                                  ;AAC617;
 
 
+;;; $C618: Instruction - queue torizo footsteps sound effect ;;;
 Instruction_Torizo_PlayTorizoFootstepsSFX:
     LDA.W #$004B                                                         ;AAC618;
     JSL.L QueueSound_Lib2_Max6                                           ;AAC61B;
     RTL                                                                  ;AAC61F;
 
 
+;;; $C620: Handle low-health initial drool ;;;
 HandleLowHealthInitialDrool:
     LDA.W $079F                                                          ;AAC620;
     BEQ .crateria                                                        ;AAC623;
     JMP.W .returnNotCrateria                                             ;AAC625; >.<
-
 
   .crateria:
     LDA.W $05E5                                                          ;AAC628;
@@ -5952,11 +6075,11 @@ HandleLowHealthInitialDrool:
   .return:
     RTS                                                                  ;AAC641;
 
-
   .returnNotCrateria:
     RTS                                                                  ;AAC642; >.<
 
 
+;;; $C643: Handle falling ;;;
 HandleFalling:
     STZ.B $12                                                            ;AAC643;
     STZ.B $14                                                            ;AAC645;
@@ -5972,7 +6095,6 @@ HandleFalling:
     ADC.W #$0028                                                         ;AAC65A;
     STA.W $0FAA,X                                                        ;AAC65D;
     RTS                                                                  ;AAC660;
-
 
   .collision:
     LDA.W $0FAA,X                                                        ;AAC661;
@@ -5990,6 +6112,7 @@ HandleFalling:
     RTS                                                                  ;AAC67D;
 
 
+;;; $C67E: Hurt AI - enemy $EEFF/$EF3F (Bomb Torizo) ;;;
 HurtAI_BombTorizo:
     LDX.W $0E54                                                          ;AAC67E;
     JSR.W HandleLowHealthInitialDrool                                    ;AAC681;
@@ -5998,7 +6121,6 @@ HurtAI_BombTorizo:
     BCS .flash                                                           ;AAC688;
     JSR.W LoadNormalTorizoPalettes                                       ;AAC68A;
     BRA .return                                                          ;AAC68D;
-
 
   .flash:
     PHX                                                                  ;AAC68F;
@@ -6017,17 +6139,20 @@ HurtAI_BombTorizo:
     RTL                                                                  ;AAC6A3;
 
 
+;;; $C6A4: Main AI - enemy $EEFF/$EF3F (Bomb Torizo) ;;;
 MainAI_BombTorizo:
     LDX.W $0E54                                                          ;AAC6A4;
     JSR.W ($0FB0,X)                                                      ;AAC6A7;
     RTL                                                                  ;AAC6AA;
 
 
+;;; $C6AB: RTS ;;;
 RTS_AAC6AB:
     RTS                                                                  ;AAC6AB;
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $C6AC: Unused ;;;
 UNUSED_Torizo_AAC6AC:
     JSR.W HandleFalling                                                  ;AAC6AC;
     LDA.W #$0600                                                         ;AAC6AF;
@@ -6041,12 +6166,18 @@ UNUSED_Torizo_AAC6AC:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $C6BF: Torizo function - simple movement ;;;
 Function_Torizo_SimpleMovement:
+; Used for
+;     Bomb Torizo after statue finishes crumbling and before walking starts
+;     Golden Torizo when falling from ceiling
+;     Turning
     JSR.W HandleLowHealthInitialDrool                                    ;AAC6BF;
     JSR.W HandleFalling                                                  ;AAC6C2;
     RTS                                                                  ;AAC6C5;
 
 
+;;; $C6C6: Torizo function - wake enemy when Bomb Torizo chozo finishes crumbling ;;;
 Function_Torizo_WakeWhenBombTorizoChozoFinishesCrumbling:
     LDA.W $0F86,X                                                        ;AAC6C6;
     ORA.W #$0400                                                         ;AAC6C9;
@@ -6073,12 +6204,12 @@ Function_Torizo_WakeWhenBombTorizoChozoFinishesCrumbling:
     STA.W $0F94,X                                                        ;AAC6F9;
     RTS                                                                  ;AAC6FC;
 
-
   .return:
     PLX                                                                  ;AAC6FD;
     RTS                                                                  ;AAC6FE;
 
 
+;;; $C6FF: Torizo function - normal movement ;;;
 Function_Torizo_NormalMovement:
     JSR.W HandleLowHealthInitialDrool                                    ;AAC6FF;
     BIT.W $0FB6,X                                                        ;AAC702;
@@ -6094,7 +6225,6 @@ Function_Torizo_NormalMovement:
     STA.W $0F94,X                                                        ;AAC71F;
     RTS                                                                  ;AAC722;
 
-
   .notLowHealth:
     BIT.W $0FB6,X                                                        ;AAC723;
     BVS .noChange                                                        ;AAC726;
@@ -6106,7 +6236,6 @@ Function_Torizo_NormalMovement:
     LDA.W #InstList_Torizo_FacingRight_Faceless_TurningRight             ;AAC735;
     BRA +                                                                ;AAC738;
 
-
   .facingRight:
     LDA.W #InstList_Torizo_FacingLeft_Faceless_TurningLeft               ;AAC73A;
 
@@ -6117,17 +6246,16 @@ Function_Torizo_NormalMovement:
     STA.W $0F94,X                                                        ;AAC74A;
     RTS                                                                  ;AAC74D;
 
-
   .noChange:
     JSR.W ($0FB2,X)                                                      ;AAC74E;
     RTS                                                                  ;AAC751;
 
 
+;;; $C752: Torizo movement function - walking ;;;
 Function_Torizo_Movement_Walking:
     BIT.W $0FB6,X                                                        ;AAC752;
     BVC .notFaceless                                                     ;AAC755;
     JMP.W .faceless                                                      ;AAC757;
-
 
   .notFaceless:
     LDA.L $7E7806,X                                                      ;AAC75A;
@@ -6142,7 +6270,6 @@ Function_Torizo_Movement_Walking:
     LDA.W #InstList_Torizo_FacingRight_TurningRight                      ;AAC773;
     BRA +                                                                ;AAC776;
 
-
   .facingRight:
     LDA.W #InstList_Torizo_FacingLeft_TurningLeft                        ;AAC778;
 
@@ -6150,7 +6277,6 @@ Function_Torizo_Movement_Walking:
     LDA.W #$0001                                                         ;AAC77E;
     STA.W $0F94,X                                                        ;AAC781;
     RTS                                                                  ;AAC784;
-
 
   .notTurning:
     STZ.B $12                                                            ;AAC785;
@@ -6172,7 +6298,6 @@ Function_Torizo_Movement_Walking:
     LDA.W #InstList_Torizo_FacingLeft_Falling_0                          ;AAC7A6;
     BRA +                                                                ;AAC7A9;
 
-
   ..facingRight:
     LDA.W #InstList_Torizo_FacingRight_Falling_0                         ;AAC7AB;
 
@@ -6185,7 +6310,6 @@ Function_Torizo_Movement_Walking:
 
   .returnUpper:
     RTS                                                                  ;AAC7C0;
-
 
   .faceless:
     LDA.L $7E7806,X                                                      ;AAC7C1;
@@ -6200,7 +6324,6 @@ Function_Torizo_Movement_Walking:
     LDA.W #InstList_Torizo_FacingRight_Faceless_TurningRight             ;AAC7DA;
     BRA +                                                                ;AAC7DD;
 
-
   ..facingRight:
     LDA.W #InstList_Torizo_FacingLeft_Faceless_TurningLeft               ;AAC7DF;
 
@@ -6208,7 +6331,6 @@ Function_Torizo_Movement_Walking:
     LDA.W #$0001                                                         ;AAC7E5;
     STA.W $0F94,X                                                        ;AAC7E8;
     RTS                                                                  ;AAC7EB;
-
 
   .facelessNotTurning:
     STZ.B $12                                                            ;AAC7EC;
@@ -6230,7 +6352,6 @@ Function_Torizo_Movement_Walking:
     LDA.W #InstList_Torizo_FacingLeft_Falling_0                          ;AAC80D;
     BRA +                                                                ;AAC810;
 
-
   ..facingRight:
     LDA.W #InstList_Torizo_FacingRight_Falling_0                         ;AAC812;
 
@@ -6245,11 +6366,13 @@ Function_Torizo_Movement_Walking:
     RTS                                                                  ;AAC827;
 
 
+;;; $C828: Torizo movement function - attacking ;;;
 Function_Torizo_Movement_Attacking:
     JSR.W HandleFalling                                                  ;AAC828;
     RTS                                                                  ;AAC82B;
 
 
+;;; $C82C: Torizo movement function - jumping/falling ;;;
 Function_Torizo_Movement_Jumping_Falling:
     STZ.B $12                                                            ;AAC82C;
     STZ.B $14                                                            ;AAC82E;
@@ -6275,7 +6398,6 @@ Function_Torizo_Movement_Jumping_Falling:
     STA.W $0FAA,X                                                        ;AAC85B;
     RTS                                                                  ;AAC85E;
 
-
   .collision:
     LDA.L $7E7800,X                                                      ;AAC85F;
     STA.W $0F92,X                                                        ;AAC863;
@@ -6290,7 +6412,10 @@ Function_Torizo_Movement_Jumping_Falling:
     RTS                                                                  ;AAC87E;
 
 
+;;; $C87F: Initialisation AI - enemy $EEFF/$EF3F/$EF7F/$EFBF (torizos) ;;;
 InitAI_Torizo:
+; .GTCode is the GT code
+; The torizo orb enemies ($EF3F/$EFBF) are never spawned, they're only used for drop chances (see torizo chozo orb shot instruction list $86:AB68)
     LDA.W #$0004                                                         ;AAC87F;
     JSL.L CheckIfBossBitsForCurrentAreaMatchAnyBitsInA                   ;AAC882;
     BCC .notDead                                                         ;AAC886;
@@ -6299,7 +6424,6 @@ InitAI_Torizo:
     ORA.W #$0200                                                         ;AAC88E;
     STA.W $0F86,X                                                        ;AAC891;
     RTL                                                                  ;AAC894;
-
 
   .notDead:
     LDY.W $079F                                                          ;AAC895;
@@ -6320,7 +6444,7 @@ InitAI_Torizo:
     STA.W $0F94,X                                                        ;AAC8C2;
     STZ.W $0F90,X                                                        ;AAC8C5;
     STZ.W $0F96,X                                                        ;AAC8C8;
-    LDA.W #RTS_AAC95E                                                    ;AAC8CB;
+    LDA.W #.return2                                                      ;AAC8CB;
     STA.W $0FB2,X                                                        ;AAC8CE;
     LDA.W TorizoInitial_instListPointer,Y                                ;AAC8D1;
     STA.W $0F92,X                                                        ;AAC8D4;
@@ -6348,7 +6472,6 @@ InitAI_Torizo:
     JSR.W LoadInitialBombTorizoPalettes                                  ;AAC90C;
     JSL.L Spawn_BombTorizoHaze                                           ;AAC90F;
     RTL                                                                  ;AAC913;
-
 
   .GTCode:
     JSR.W LoadInitialGoldenTorizoPalettes                                ;AAC914;
@@ -6380,8 +6503,7 @@ InitAI_Torizo:
   .return:
     RTL                                                                  ;AAC95D;
 
-
-RTS_AAC95E:
+  .return2:
     RTS                                                                  ;AAC95E;
 
 
@@ -6392,37 +6514,34 @@ TorizoInitial:
   .XPosition:
     dw $00DB,$01A8                                                       ;AAC95F;
 
-%anchor($AAC963)
   .YPosition:
     dw $00B3,$0090                                                       ;AAC963;
 
-%anchor($AAC967)
   .instListPointer:
     dw InstList_Torizo_BombTorizo_Initial_0                              ;AAC967; Crateria
     dw InstList_GoldenTorizo_Initial_0                                   ;AAC969; Norfair
 
-%anchor($AAC96B)
   .properties:
     dw $2800,$2800                                                       ;AAC96B;
 
-%anchor($AAC96F)
   .XRadius:
     dw $0012,$0012                                                       ;AAC96F;
 
-%anchor($AAC973)
   .YRadius:
     dw $0030,$0029                                                       ;AAC973;
 
+
+;;; $C977: Enemy touch - enemy $EEFF/$EF3F/$EF7F/$EFBF (torizos) ;;;
 EnemyTouch_Torizo:
     JSL.L NormalEnemyTouchAI_NoDeathCheck_External                       ;AAC977;
     RTL                                                                  ;AAC97B;
 
 
+;;; $C97C: Enemy shot - torizo - normal ;;;
 EnemyShot_Torizo_Normal:
     LDA.W $079F                                                          ;AAC97C;
     BEQ .crateria                                                        ;AAC97F;
     JMP.W ShotReaction_GoldenTorizo_Normal                               ;AAC981;
-
 
   .crateria:
     LDX.W $0E54                                                          ;AAC984;
@@ -6450,20 +6569,22 @@ EnemyShot_Torizo_Normal:
     RTL                                                                  ;AAC9C0;
 
 
+;;; $C9C1: RTL ;;;
 RTL_AAC9C1:
     RTL                                                                  ;AAC9C1;
 
 
+;;; $C9C2: Enemy shot - torizo - stand up / sit down ;;;
 EnemyShot_Torizo_StandUp_SitDown:
     LDA.W $079F                                                          ;AAC9C2;
     BEQ .return                                                          ;AAC9C5;
     JMP.W ShotReaction_GoldenTorizo_StandUp_SitDown                      ;AAC9C7;
 
-
   .return:
     RTL                                                                  ;AAC9CA;
 
 
+;;; $C9CB: Instruction list - Golden Torizo - initial ;;;
 InstList_GoldenTorizo_Initial_0:
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAC9CB;
     dw $0600 : dl Tiles_GoldenTorizoEgg : dw $6D00                       ;AAC9CD;
@@ -6546,6 +6667,8 @@ InstList_GoldenTorizo_Initial_3:
     dw Instruction_Common_GotoY                                          ;AACACA;
     dw InstList_GoldenTorizo_WalkingLeft_LeftLegMoving                   ;AACACC;
 
+
+;;; $CACE: Instruction - go to [[Y]] if not hit ground ;;;
 Instruction_Torizo_GotoY_IfNotHitGround:
     LDA.W $0F7E,X                                                        ;AACACE;
     CMP.W #$0177                                                         ;AACAD1;
@@ -6554,18 +6677,19 @@ Instruction_Torizo_GotoY_IfNotHitGround:
     TAY                                                                  ;AACAD9;
     RTL                                                                  ;AACADA;
 
-
   .notHitGround:
     INY                                                                  ;AACADB;
     INY                                                                  ;AACADC;
     RTL                                                                  ;AACADD;
 
 
+;;; $CADE: Instruction - load Golden Torizo palettes ;;;
 Instruction_Torizo_LoadGoldenTorizoPalettes:
     JSR.W LoadGoldenTorizoPalettes                                       ;AACADE;
     RTL                                                                  ;AACAE1;
 
 
+;;; $CAE2: Instruction - start fight music and Golden Torizo belly palette FX ;;;
 Inst_Torizo_StartFightMusic_GoldenTorizoBellyPaletteFX:
     LDA.W #$0005                                                         ;AACAE2;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;AACAE5;
@@ -6580,6 +6704,7 @@ Inst_Torizo_StartFightMusic_GoldenTorizoBellyPaletteFX:
     RTL                                                                  ;AACAFE;
 
 
+;;; $CAFF: Instruction list - callable - Golden Torizo - spewing chozo orbs - facing left - right foot forward ;;;
 InstList_GoldenTorizo_SpewChozoOrbs_FaceLeft_RightFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AACAFF;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AACB01;
@@ -6605,6 +6730,8 @@ InstList_GoldenTorizo_SpewChozoOrbs_FaceLeft_RightFootFwd_1:
     dw Function_GoldenTorizo_Movement_Walking                            ;AACB3D;
     dw Instruction_Torizo_Return                                         ;AACB3F;
 
+
+;;; $CB41: Instruction list - callable - Golden Torizo - spewing chozo orbs - facing left - left foot forward ;;;
 InstList_GoldenTorizo_SpewChozoOrbs_FacingLeft_LeftFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AACB41;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AACB43;
@@ -6630,6 +6757,8 @@ InstList_GoldenTorizo_SpewChozoOrbs_FacingLeft_LeftFootFwd_1:
     dw Function_GoldenTorizo_Movement_Walking                            ;AACB7F;
     dw Instruction_Torizo_Return                                         ;AACB81;
 
+
+;;; $CB83: Instruction list - callable - Golden Torizo - sonic booms - facing left - right foot forward ;;;
 InstList_GoldenTorizo_SonicBooms_FacingLeft_RightFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AACB83;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AACB85;
@@ -6664,6 +6793,8 @@ InstList_GoldenTorizo_SonicBooms_FacingLeft_RightFootFwd_1:
     dw Function_GoldenTorizo_Movement_Walking                            ;AACBE9;
     dw Instruction_Torizo_Return                                         ;AACBEB;
 
+
+;;; $CBED: Instruction list - callable - Golden Torizo - sonic booms - facing left - left foot forward ;;;
 InstList_GoldenTorizo_SonicBooms_FacingLeft_LeftFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AACBED;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AACBEF;
@@ -6698,6 +6829,8 @@ InstList_GoldenTorizo_SonicBooms_FacingLeft_LeftFootFwd_1:
     dw Function_GoldenTorizo_Movement_Walking                            ;AACC53;
     dw Instruction_Torizo_Return                                         ;AACC55;
 
+
+;;; $CC57: Instruction list - callable - Golden Torizo - spewing chozo orbs - facing right - left foot forward ;;;
 InstList_GoldenTorizo_SpewChozoOrb_FacingLeft_LeftFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AACC57;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AACC59;
@@ -6723,6 +6856,8 @@ InstList_GoldenTorizo_SpewChozoOrb_FacingLeft_LeftFootFwd_1:
     dw Function_GoldenTorizo_Movement_Walking                            ;AACC95;
     dw Instruction_Torizo_Return                                         ;AACC97;
 
+
+;;; $CC99: Instruction list - callable - Golden Torizo - spewing chozo orbs - facing right - right foot forward ;;;
 InstList_GoldenTorizo_SpewChozoOrb_FacingLeft_RightFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AACC99;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AACC9B;
@@ -6748,6 +6883,8 @@ InstList_GoldenTorizo_SpewChozoOrb_FacingLeft_RightFootFwd_1:
     dw Function_GoldenTorizo_Movement_Walking                            ;AACCD7;
     dw Instruction_Torizo_Return                                         ;AACCD9;
 
+
+;;; $CCDB: Instruction list - callable - Golden Torizo - sonic booms - facing right - left foot forward ;;;
 InstList_GoldenTorizo_SonicBooms_FacingRight_LeftFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AACCDB;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AACCDD;
@@ -6782,6 +6919,8 @@ InstList_GoldenTorizo_SonicBooms_FacingRight_LeftFootFwd_1:
     dw Function_GoldenTorizo_Movement_Walking                            ;AACD41;
     dw Instruction_Torizo_Return                                         ;AACD43;
 
+
+;;; $CD45: Instruction list - callable - Golden Torizo - sonic booms - facing right - right foot forward ;;;
 InstList_GoldenTorizo_SonicBooms_FacingRight_RightFootFwd_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AACD45;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AACD47;
@@ -6816,6 +6955,8 @@ InstList_GoldenTorizo_SonicBooms_FacingRight_RightFootFwd_1:
     dw Function_GoldenTorizo_Movement_Walking                            ;AACDAB;
     dw Instruction_Torizo_Return                                         ;AACDAD;
 
+
+;;; $CDAF: Instruction list - Golden Torizo - landed from backwards jump - facing left - left foot forward ;;;
 InstList_GT_LandedFromBackwardsJump_FacingLeft_LeftFootFwd:
     dw Instruction_GoldenTorizo_CallY_OrY2_ForAttack                     ;AACDAF;
     dw InstList_GoldenTorizo_SpewChozoOrbs_FacingLeft_LeftFootFwd_0      ;AACDB1;
@@ -6823,6 +6964,8 @@ InstList_GT_LandedFromBackwardsJump_FacingLeft_LeftFootFwd:
     dw Instruction_Common_GotoY                                          ;AACDB5;
     dw InstList_GoldenTorizo_WalkingLeft_RightLegMoving                  ;AACDB7;
 
+
+;;; $CDB9: Instruction list - Golden Torizo - landed from backwards jump - facing left - right foot forward ;;;
 InstList_GT_LandedFromBackwardsJump_FacingLeft_RightFootFwd:
     dw Instruction_GoldenTorizo_CallY_OrY2_ForAttack                     ;AACDB9;
     dw InstList_GoldenTorizo_SpewChozoOrbs_FaceLeft_RightFootFwd_0       ;AACDBB;
@@ -6830,6 +6973,8 @@ InstList_GT_LandedFromBackwardsJump_FacingLeft_RightFootFwd:
     dw Instruction_Common_GotoY                                          ;AACDBF;
     dw InstList_GoldenTorizo_WalkingLeft_LeftLegMoving                   ;AACDC1;
 
+
+;;; $CDC3: Instruction list - Golden Torizo - landed from backwards jump - facing right - right foot forward ;;;
 InstList_GT_LandedFromBackwardsJump_FacingRight_RightFootFwd:
     dw Instruction_GoldenTorizo_CallY_OrY2_ForAttack                     ;AACDC3;
     dw InstList_GoldenTorizo_SpewChozoOrb_FacingLeft_RightFootFwd_0      ;AACDC5;
@@ -6837,6 +6982,8 @@ InstList_GT_LandedFromBackwardsJump_FacingRight_RightFootFwd:
     dw Instruction_Common_GotoY                                          ;AACDC9;
     dw InstList_GoldenTorizo_WalkingRight_LeftLegMoving                  ;AACDCB;
 
+
+;;; $CDCD: Instruction list - Golden Torizo - landed from backwards jump - facing right - left foot forward ;;;
 InstList_GT_LandedFromBackwardsJump_FacingRight_LeftFootFwd:
     dw Instruction_GoldenTorizo_CallY_OrY2_ForAttack                     ;AACDCD;
     dw InstList_GoldenTorizo_SpewChozoOrb_FacingLeft_LeftFootFwd_0       ;AACDCF;
@@ -6844,6 +6991,8 @@ InstList_GT_LandedFromBackwardsJump_FacingRight_LeftFootFwd:
     dw Instruction_Common_GotoY                                          ;AACDD3;
     dw InstList_GoldenTorizo_WalkingRight_RightLegMoving                 ;AACDD5;
 
+
+;;; $CDD7: Instruction - clear torizo caught super missile flag ;;;
 Instruction_GoldenTorizo_ClearCaughtSuperMissileFlag:
     LDA.W $0FB6,X                                                        ;AACDD7;
     AND.W #$EFFF                                                         ;AACDDA;
@@ -6851,6 +7000,7 @@ Instruction_GoldenTorizo_ClearCaughtSuperMissileFlag:
     RTL                                                                  ;AACDE0;
 
 
+;;; $CDE1: Instruction list - caught super missile - facing left - left leg forward ;;;
 InstList_GoldenTorizo_CaughtSuper_FacingLeft_LeftLegFwd:
     dw Instruction_Torizo_QueueSonicBoomSFX                              ;AACDE1;
     dw Instruction_Torizo_FunctionInY                                    ;AACDE3;
@@ -6881,6 +7031,8 @@ InstList_GoldenTorizo_CaughtSuper_FacingLeft_LeftLegFwd:
     dw Instruction_Common_GotoY                                          ;AACE3F;
     dw InstList_GoldenTorizo_WalkingLeft_RightLegMoving                  ;AACE41;
 
+
+;;; $CE43: Instruction list - caught super missile - facing left - right leg forward ;;;
 InstList_GoldenTorizo_CaughtSuper_FacingLeft_RightLegFwd:
     dw Instruction_Torizo_QueueSonicBoomSFX                              ;AACE43;
     dw Instruction_Torizo_FunctionInY                                    ;AACE45;
@@ -6911,6 +7063,8 @@ InstList_GoldenTorizo_CaughtSuper_FacingLeft_RightLegFwd:
     dw Instruction_Common_GotoY                                          ;AACEA1;
     dw InstList_GoldenTorizo_WalkingLeft_LeftLegMoving                   ;AACEA3;
 
+
+;;; $CEA5: Instruction list - caught super missile - facing right - right leg forward ;;;
 InstList_GoldenTorizo_CaughtSuper_FacingRight_RightLegFwd:
     dw Instruction_Torizo_QueueSonicBoomSFX                              ;AACEA5;
     dw Instruction_Torizo_FunctionInY                                    ;AACEA7;
@@ -6939,6 +7093,8 @@ InstList_GoldenTorizo_CaughtSuper_FacingRight_RightLegFwd:
     dw Instruction_Common_GotoY                                          ;AACEFB;
     dw InstList_GoldenTorizo_WalkingRight_LeftLegMoving                  ;AACEFD;
 
+
+;;; $CEFF: Instruction list - caught super missile - facing right - left leg forward ;;;
 InstList_GoldenTorizo_CaughtSuper_FacingRight_LeftLegFwd:
     dw Instruction_Torizo_QueueSonicBoomSFX                              ;AACEFF;
     dw Instruction_Torizo_FunctionInY                                    ;AACF01;
@@ -6967,6 +7123,8 @@ InstList_GoldenTorizo_CaughtSuper_FacingRight_LeftLegFwd:
     dw Instruction_Common_GotoY                                          ;AACF55;
     dw InstList_GoldenTorizo_WalkingRight_RightLegMoving                 ;AACF57;
 
+
+;;; $CF59: Instruction list - sit down attack - facing left ;;;
 InstList_GoldenTorizo_SitDownAttack_FacingLeft:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AACF59;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AACF5B;
@@ -6999,6 +7157,8 @@ InstList_GoldenTorizo_SitDownAttack_FacingLeft:
     dw Instruction_Common_GotoY                                          ;AACFC1;
     dw InstList_GoldenTorizo_WalkingLeft_LeftLegMoving                   ;AACFC3;
 
+
+;;; $CFC5: Instruction list - sit down attack - facing right ;;;
 InstList_GoldenTorizo_SitDownAttack_FacingRight:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AACFC5;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AACFC7;
@@ -7031,6 +7191,8 @@ InstList_GoldenTorizo_SitDownAttack_FacingRight:
     dw Instruction_Common_GotoY                                          ;AAD02D;
     dw InstList_GoldenTorizo_WalkingRight_RightLegMoving                 ;AAD02F;
 
+
+;;; $D031: Instruction list - callable - release Golden Torizo eggs ;;;
 InstList_GoldenTorizo_ReleaseGoldenTorizoEggs_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AAD031;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AAD033;
@@ -7085,6 +7247,8 @@ InstList_GoldenTorizo_ReleaseGoldenTorizoEggs_2:
     dw Function_GoldenTorizo_Movement_Walking                            ;AAD0E5;
     dw Instruction_Torizo_Return                                         ;AAD0E7;
 
+
+;;; $D0E9: Instruction - spawn Golden Torizo egg ;;;
 Instruction_GoldenTorizo_SpawnGoldenTorizoEgg:
     PHY                                                                  ;AAD0E9;
     LDY.W #EnemyProjectile_GoldenTorizoEgg                               ;AAD0EA;
@@ -7093,6 +7257,7 @@ Instruction_GoldenTorizo_SpawnGoldenTorizoEgg:
     RTL                                                                  ;AAD0F2;
 
 
+;;; $D0F3: Instruction - go to [[Y]] if Golden Torizo egg is active ;;;
 Instruction_GoldenTorizo_EyeBeamAttack_0:
     PHX                                                                  ;AAD0F3;
     LDX.W #$0022                                                         ;AAD0F4;
@@ -7109,7 +7274,6 @@ Instruction_GoldenTorizo_EyeBeamAttack_0:
     INY                                                                  ;AAD105;
     RTL                                                                  ;AAD106;
 
-
   .gotoY:
     PLX                                                                  ;AAD107;
     LDA.W $0000,Y                                                        ;AAD108;
@@ -7117,6 +7281,7 @@ Instruction_GoldenTorizo_EyeBeamAttack_0:
     RTL                                                                  ;AAD10C;
 
 
+;;; $D10D: Instruction list - callable - Golden Torizo eye beam attack ;;;
 InstList_GoldenTorizo_EyeBeamAttack_0:
     dw Instruction_Torizo_FunctionInY                                    ;AAD10D;
     dw Function_GoldenTorizo_SimpleMovement                              ;AAD10F;
@@ -7157,6 +7322,8 @@ InstList_GoldenTorizo_EyeBeamAttack_2:
     dw Function_GoldenTorizo_NormalMovement                              ;AAD177;
     dw Instruction_Torizo_Return                                         ;AAD179;
 
+
+;;; $D17B: Instruction - disable eye beam explosions ;;;
 Instruction_GoldenTorizo_DisableEyeBeamExplosions:
     LDA.L $7E780C,X                                                      ;AAD17B;
     AND.W #$7FFF                                                         ;AAD17F;
@@ -7164,6 +7331,7 @@ Instruction_GoldenTorizo_DisableEyeBeamExplosions:
     RTL                                                                  ;AAD186;
 
 
+;;; $D187: Instruction - enable eye beam explosions ;;;
 Instruction_GoldenTorizo_EnableEyeBeamExplosions:
     LDA.L $7E780C,X                                                      ;AAD187;
     ORA.W #$8000                                                         ;AAD18B;
@@ -7171,6 +7339,7 @@ Instruction_GoldenTorizo_EnableEyeBeamExplosions:
     RTL                                                                  ;AAD192;
 
 
+;;; $D193: Instruction list - callable - stunned ;;;
 InstList_Torizo_Stunned_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AAD193;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AAD195;
@@ -7201,6 +7370,7 @@ InstList_Torizo_Stunned_1:
     dw Instruction_Torizo_Return                                         ;AAD1E5;
 
 
+;;; $D1E7: Instruction - unmark Golden Torizo stunned ;;;
 Instruction_GoldenTorizo_UnmarkStunned:
     LDA.W $0FB6,X                                                        ;AAD1E7;
     AND.W #$DFFF                                                         ;AAD1EA;
@@ -7208,6 +7378,7 @@ Instruction_GoldenTorizo_UnmarkStunned:
     RTL                                                                  ;AAD1F0;
 
 
+;;; $D1F1: Instruction list - Golden Torizo - dodge - turning left ;;;
 InstList_GoldenTorizo_Dodge_TurningLeft:
     dw Instruction_Torizo_FunctionInY                                    ;AAD1F1;
     dw Function_Torizo_SimpleMovement                                    ;AAD1F3;
@@ -7218,12 +7389,16 @@ InstList_GoldenTorizo_Dodge_TurningLeft:
     dw Instruction_Common_GotoY                                          ;AAD1FF;
     dw InstList_GoldenTorizo_WalkingLeft_RightLegMoving                  ;AAD201;
 
+
+;;; $D203: Instruction list - Golden Torizo - turning left ;;;
 InstList_GoldenTorizo_TurningLeft:
     dw Instruction_Torizo_FunctionInY                                    ;AAD203;
     dw Function_Torizo_SimpleMovement                                    ;AAD205;
     dw Instruction_Torizo_SetTorizoTurningAroundFlag                     ;AAD207;
     dw $0008,ExtendedSpritemaps_Torizo_FacingScreen_Turning_Dodging      ;AAD209;
 
+
+;;; $D20D: Instruction list - Golden Torizo - walking left - right leg moving ;;;
 InstList_GoldenTorizo_WalkingLeft_RightLegMoving:
     dw Instruction_Torizo_SetSteppedLeftWithLeftFootState                ;AAD20D;
     dw Instruction_Torizo_FunctionInY                                    ;AAD20F;
@@ -7254,6 +7429,8 @@ InstList_GoldenTorizo_WalkingLeft_RightLegMoving:
     dw $0004,ExtendedSpritemaps_Torizo_WalkingLeft_RightLegMoving_4      ;AAD24F;
     dw Instruction_GoldenTorizo_WalkingMovement_IndexInY,$000A           ;AAD255;
 
+
+;;; $D259: Instruction list - Golden Torizo - walking left - left leg moving ;;;
 InstList_GoldenTorizo_WalkingLeft_LeftLegMoving:
     dw Instruction_Torizo_SetSteppedLeftWithRightFootState               ;AAD259;
     dw Instruction_Torizo_FunctionInY                                    ;AAD25B;
@@ -7288,6 +7465,8 @@ InstList_GoldenTorizo_WalkingLeft_LeftLegMoving:
     dw Instruction_Common_GotoY                                          ;AAD2A9;
     dw InstList_GoldenTorizo_WalkingLeft_RightLegMoving                  ;AAD2AB;
 
+
+;;; $D2AD: Instruction list - Golden Torizo - dodge - turning right ;;;
 InstList_GoldenTorizo_Dodge_TurningRight:
     dw Instruction_Torizo_FunctionInY                                    ;AAD2AD;
     dw Function_Torizo_SimpleMovement                                    ;AAD2AF;
@@ -7298,12 +7477,16 @@ InstList_GoldenTorizo_Dodge_TurningRight:
     dw Instruction_Common_GotoY                                          ;AAD2BB;
     dw InstList_GoldenTorizo_WalkingRight_LeftLegMoving                  ;AAD2BD;
 
+
+;;; $D2BF: Instruction list - Golden Torizo - turning right ;;;
 InstList_GoldenTorizo_TurningRight:
     dw Instruction_Torizo_FunctionInY                                    ;AAD2BF;
     dw Function_Torizo_SimpleMovement                                    ;AAD2C1;
     dw Instruction_Torizo_SetTorizoTurningAroundFlag                     ;AAD2C3;
     dw $0008,ExtendedSpritemaps_Torizo_FacingScreen_Turning_Dodging      ;AAD2C5;
 
+
+;;; $D2C9: Instruction list - Golden Torizo - walking right - left leg moving ;;;
 InstList_GoldenTorizo_WalkingRight_LeftLegMoving:
     dw Instruction_Torizo_SetSteppedRightWithRightFootState              ;AAD2C9;
     dw Instruction_Torizo_FunctionInY                                    ;AAD2CB;
@@ -7334,6 +7517,8 @@ InstList_GoldenTorizo_WalkingRight_LeftLegMoving:
     dw $0004,ExtendedSpritemaps_Torizo_WalkingRight_LeftLegMoving_4      ;AAD30B;
     dw Instruction_GoldenTorizo_WalkingMovement_IndexInY,$001E           ;AAD311;
 
+
+;;; $D315: Instruction list - Golden Torizo - walking right - right leg moving ;;;
 InstList_GoldenTorizo_WalkingRight_RightLegMoving:
     dw Instruction_Torizo_SetSteppedRightWithLeftFootState               ;AAD315;
     dw Instruction_Torizo_FunctionInY                                    ;AAD317;
@@ -7368,6 +7553,8 @@ InstList_GoldenTorizo_WalkingRight_RightLegMoving:
     dw Instruction_Common_GotoY                                          ;AAD365;
     dw InstList_GoldenTorizo_WalkingRight_LeftLegMoving                  ;AAD367;
 
+
+;;; $D369: Main AI - enemy $EF7F/$EFBF (Gold Torizo) ;;;
 MainAI_GoldenTorizo:
     LDX.W $0E54                                                          ;AAD369;
     LDA.W $0A1C                                                          ;AAD36C;
@@ -7379,7 +7566,6 @@ MainAI_GoldenTorizo:
     STA.L $7E780E,X                                                      ;AAD37C;
     BRA .executeFunction                                                 ;AAD380;
 
-
   .spaceJump:
     LDA.L $7E780E,X                                                      ;AAD382;
     INC A                                                                ;AAD386;
@@ -7390,25 +7576,33 @@ MainAI_GoldenTorizo:
     RTL                                                                  ;AAD38E;
 
 
+;;; $D38F: Instruction - queue Golden Torizo egg released sound effect ;;;
 Instruction_GoldenTorizo_QueueEggReleasedSFX:
     LDA.W #$0034                                                         ;AAD38F;
     JSL.L QueueSound_Lib2_Max6                                           ;AAD392;
     RTL                                                                  ;AAD396;
 
 
+;;; $D397: Instruction - queue laser sound effect ;;;
 Instruction_GoldenTorizo_QueueLaserSFX:
     LDA.W #$0067                                                         ;AAD397;
     JSL.L QueueSound_Lib2_Max6                                           ;AAD39A;
     RTL                                                                  ;AAD39E;
 
 
+;;; $D39F: Instruction - queue torizo sonic boom sound effect ;;;
 Instruction_Torizo_QueueSonicBoomSFX:
     LDA.W #$0048                                                         ;AAD39F;
     JSL.L QueueSound_Lib2_Max6                                           ;AAD3A2;
     RTL                                                                  ;AAD3A6;
 
 
+;;; $D3A7: Check if torizo is facing Samus ;;;
 CheckIfTorizoIsFacingSamus:
+;; Returns:
+;;     Negative: Set if torizo is facing away from Samus, clear otherwise
+
+; Facing right: [$0FB4] & 8000h != 0
     LDA.W $0F7A,X                                                        ;AAD3A7;
     SEC                                                                  ;AAD3AA;
     SBC.W $0AF6                                                          ;AAD3AB;
@@ -7416,12 +7610,14 @@ CheckIfTorizoIsFacingSamus:
     RTS                                                                  ;AAD3B1;
 
 
+;;; $D3B2: Golden Torizo health-based palette handling ;;;
 Goto_GoldenTorizoHealthBasedPaletteHandling:
     LDA.W $0F8C,X                                                        ;AAD3B2;
     JSL.L GoldenTorizo_HealthBasedPalette_Handling                       ;AAD3B5;
     RTS                                                                  ;AAD3B9;
 
 
+;;; $D3BA: Hurt AI - enemy $EF7F/$EFBF (Golden Torizo) ;;;
 HurtAI_GoldenTorizo:
     LDX.W $0E54                                                          ;AAD3BA;
     JSR.W HandleLowHealthInitialDrool                                    ;AAD3BD;
@@ -7430,7 +7626,6 @@ HurtAI_GoldenTorizo:
     BCS .flash                                                           ;AAD3C4;
     JSR.W Goto_GoldenTorizoHealthBasedPaletteHandling                    ;AAD3C6;
     BRA .return                                                          ;AAD3C9;
-
 
   .flash:
     PHX                                                                  ;AAD3CB;
@@ -7449,6 +7644,7 @@ HurtAI_GoldenTorizo:
     RTL                                                                  ;AAD3DF;
 
 
+;;; $D3E0: Instruction - spawn Golden Torizo super missile ;;;
 Instruction_GoldenTorizo_SpawnSuperMissile:
     PHY                                                                  ;AAD3E0;
     LDY.W #EnemyProjectile_GoldenTorizoSuperMissile                      ;AAD3E1;
@@ -7457,7 +7653,9 @@ Instruction_GoldenTorizo_SpawnSuperMissile:
     RTL                                                                  ;AAD3E9;
 
 
+;;; $D3EA: Instruction - go to [[Y]] if Samus is a medium distance behind torizo and morphed ;;;
 Instruction_GoldenTorizo_GotoY_IfSamusIsMorphedBehindTorizo:
+; Pose checklist is missing 41h (facing left - morph ball - no springball - on ground) >_<;
     JSR.W CheckIfTorizoIsFacingSamus                                     ;AAD3EA;
     BPL .noGo                                                            ;AAD3ED;
     LDA.W #$0004                                                         ;AAD3EF;
@@ -7489,13 +7687,13 @@ Instruction_GoldenTorizo_GotoY_IfSamusIsMorphedBehindTorizo:
     TAY                                                                  ;AAD431;
     RTL                                                                  ;AAD432;
 
-
   .noGo:
     INY                                                                  ;AAD433;
     INY                                                                  ;AAD434;
     RTL                                                                  ;AAD435;
 
 
+;;; $D436: Instruction - spawn Golden Torizo eye beam ;;;
 Instruction_GoldenTorizo_SpawnEyeBeam:
     PHY                                                                  ;AAD436;
     LDA.W $0000,Y                                                        ;AAD437;
@@ -7507,6 +7705,7 @@ Instruction_GoldenTorizo_SpawnEyeBeam:
     RTL                                                                  ;AAD444;
 
 
+;;; $D445: Instruction - call [[Y]] with 25% chance if Samus is a medium distance in front of torizo ;;;
 Instruction_GT_CallY_25Chance_IfSamusMorphedInFrontOfTorizo:
     JSR.W CheckIfTorizoIsFacingSamus                                     ;AAD445;
     BMI .noGo                                                            ;AAD448;
@@ -7527,13 +7726,13 @@ Instruction_GT_CallY_25Chance_IfSamusMorphedInFrontOfTorizo:
     TAY                                                                  ;AAD46F;
     RTL                                                                  ;AAD470;
 
-
   .noGo:
     INY                                                                  ;AAD471;
     INY                                                                  ;AAD472;
     RTL                                                                  ;AAD473;
 
 
+;;; $D474: Instruction - call [[Y]] with 25% chance if health <= 1928 ;;;
 Instruction_GoldenTorizo_CallY_25Chance_IfHealthLessThan789:
     LDA.W #$0788                                                         ;AAD474;
     CMP.W $0F8C,X                                                        ;AAD477;
@@ -7551,13 +7750,13 @@ Instruction_GoldenTorizo_CallY_25Chance_IfHealthLessThan789:
     TAY                                                                  ;AAD496;
     RTL                                                                  ;AAD497;
 
-
   .noGo:
     INY                                                                  ;AAD498;
     INY                                                                  ;AAD499;
     RTL                                                                  ;AAD49A;
 
 
+;;; $D49B: Instruction - call [[Y]] if health >= 10800 and stunned ;;;
 Instruction_GoldenTorizo_CallY_IfStunHealthGreaterThan2A31:
     LDA.W #$2A30                                                         ;AAD49B;
     CMP.W $0F8C,X                                                        ;AAD49E;
@@ -7573,14 +7772,17 @@ Instruction_GoldenTorizo_CallY_IfStunHealthGreaterThan2A31:
     TAY                                                                  ;AAD4B5;
     RTL                                                                  ;AAD4B6;
 
-
   .noGo:
     INY                                                                  ;AAD4B7;
     INY                                                                  ;AAD4B8;
     RTL                                                                  ;AAD4B9;
 
 
+;;; $D4BA: Instruction - go to [[Y]] and jump forwards if Samus is at least 70h pixels in front of Golden Torizo ;;;
 Instruction_GoldenTorizo_GotoY_JumpForwards_IfAtLeast70Pixel:
+; Jump at Samus if at least 7 blocks away and:
+;     She's been space jumping for over 6 seconds
+;     Or the player is pressing left or right with a 75% chance
     LDA.W #$0070                                                         ;AAD4BA;
     JSL.L CheckIfXDistanceBetweenEnemyAndSamusIsAtLeastA                 ;AAD4BD;
     BCC .noGo                                                            ;AAD4C1;
@@ -7604,13 +7806,13 @@ Instruction_GoldenTorizo_GotoY_JumpForwards_IfAtLeast70Pixel:
     TAY                                                                  ;AAD4EE;
     RTL                                                                  ;AAD4EF;
 
-
   .noGo:
     INY                                                                  ;AAD4F0;
     INY                                                                  ;AAD4F1;
     RTL                                                                  ;AAD4F2;
 
 
+;;; $D4F3: Instruction - spawn Golden Torizo's chozo orbs ;;;
 Instruction_GoldenTorizo_SpawnChozoOrbs:
     PHY                                                                  ;AAD4F3;
     LDY.W #EnemyProjectile_GoldenTorizoChozoOrbs                         ;AAD4F4;
@@ -7619,6 +7821,7 @@ Instruction_GoldenTorizo_SpawnChozoOrbs:
     RTL                                                                  ;AAD4FC;
 
 
+;;; $D4FD: Instruction - go to [[Y]] and jump backwards if Samus is less than 20h pixels in front of Golden Torizo ;;;
 Instruction_GoldenTorizo_GotoY_JumpBack_IfLessThan20Pixels:
     LDA.L $7E7812,X                                                      ;AAD4FD;
     CMP.W #$0008                                                         ;AAD501;
@@ -7637,13 +7840,13 @@ Instruction_GoldenTorizo_GotoY_JumpBack_IfLessThan20Pixels:
     TAY                                                                  ;AAD521;
     RTL                                                                  ;AAD522;
 
-
   .noGo:
     INY                                                                  ;AAD523;
     INY                                                                  ;AAD524;
     RTL                                                                  ;AAD525;
 
 
+;;; $D526: Instruction - call [[Y]] or [[Y] + 2] for Golden Torizo attack ;;;
 Instruction_GoldenTorizo_CallY_OrY2_ForAttack:
     TYA                                                                  ;AAD526;
     INC A                                                                ;AAD527;
@@ -7664,7 +7867,6 @@ Instruction_GoldenTorizo_CallY_OrY2_ForAttack:
     LDA.W $0000,Y                                                        ;AAD543;
     BRA .return                                                          ;AAD546;
 
-
   .sonicBooms:
     LDA.W $0002,Y                                                        ;AAD548;
 
@@ -7673,6 +7875,7 @@ Instruction_GoldenTorizo_CallY_OrY2_ForAttack:
     RTL                                                                  ;AAD54C;
 
 
+;;; $D54D: Instruction - Golden Torizo walking movement - index [[Y]] ;;;
 Instruction_GoldenTorizo_WalkingMovement_IndexInY:
     PHY                                                                  ;AAD54D;
     STZ.B $12                                                            ;AAD54E;
@@ -7691,11 +7894,9 @@ Instruction_GoldenTorizo_WalkingMovement_IndexInY:
     LDY.W #InstList_GoldenTorizo_TurningRight                            ;AAD56F;
     RTL                                                                  ;AAD572;
 
-
   .facingRight:
     LDY.W #InstList_GoldenTorizo_TurningLeft                             ;AAD573;
     RTL                                                                  ;AAD576;
-
 
   .noCollision:
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;AAD577;
@@ -7708,7 +7909,6 @@ Instruction_GoldenTorizo_WalkingMovement_IndexInY:
     INY                                                                  ;AAD588;
     RTL                                                                  ;AAD589;
 
-
   .facingAway:
     LDA.L $7E7806,X                                                      ;AAD58A;
     BNE .return                                                          ;AAD58E;
@@ -7720,12 +7920,13 @@ Instruction_GoldenTorizo_WalkingMovement_IndexInY:
     INY                                                                  ;AAD598;
     RTL                                                                  ;AAD599;
 
-
   .velocities:
     dw $FFFB,$0000,$FFFB,$FFED,$FFF0,$FFF9,$0000,$FFF9                   ;AAD59A;
     dw $FFEF,$FFEE,$0005,$0000,$0005,$0013,$0010,$0007                   ;AAD5AA;
     dw $0000,$0007,$0011,$0012                                           ;AAD5BA;
 
+
+;;; $D5C2: Torizo function - Golden Torizo - wake enemy if Samus is below and right of target position ;;;
 Function_GoldenTorizo_WakeIfSamusIsBelowAndRightOfTargetPos:
     LDA.W #$0140                                                         ;AAD5C2;
     CMP.W $0AFA                                                          ;AAD5C5;
@@ -7742,23 +7943,29 @@ Function_GoldenTorizo_WakeIfSamusIsBelowAndRightOfTargetPos:
     RTS                                                                  ;AAD5DE;
 
 
+;;; $D5DF: Torizo function - Golden Torizo - simple movement ;;;
 Function_GoldenTorizo_SimpleMovement:
+; Clone of Function_Torizo_SimpleMovement
     JSR.W HandleLowHealthInitialDrool                                    ;AAD5DF;
     JSR.W HandleFalling                                                  ;AAD5E2;
     RTS                                                                  ;AAD5E5;
 
 
+;;; $D5E6: Torizo function - Golden Torizo - normal movement ;;;
 Function_GoldenTorizo_NormalMovement:
     JSR.W HandleLowHealthInitialDrool                                    ;AAD5E6;
     JSR.W ($0FB2,X)                                                      ;AAD5E9;
     RTS                                                                  ;AAD5EC;
 
 
+;;; $D5ED: Torizo movement function - Golden Torizo - attacking ;;;
 Function_GoldenTorizo_Movement_Attacking:
+; Clone of Function_Torizo_Movement_Attacking
     JSR.W HandleFalling                                                  ;AAD5ED;
     RTS                                                                  ;AAD5F0;
 
 
+;;; $D5F1: Torizo movement function - Golden Torizo - walking ;;;
 Function_GoldenTorizo_Movement_Walking:
     LDA.L $7E7806,X                                                      ;AAD5F1;
     BEQ .notTurning                                                      ;AAD5F5;
@@ -7772,7 +7979,6 @@ Function_GoldenTorizo_Movement_Walking:
     LDA.W #InstList_GoldenTorizo_TurningRight                            ;AAD60A;
     BRA +                                                                ;AAD60D;
 
-
   .facingRight:
     LDA.W #InstList_GoldenTorizo_TurningLeft                             ;AAD60F;
 
@@ -7780,7 +7986,6 @@ Function_GoldenTorizo_Movement_Walking:
     LDA.W #$0001                                                         ;AAD615;
     STA.W $0F94,X                                                        ;AAD618;
     RTS                                                                  ;AAD61B;
-
 
   .notTurning:
     STZ.B $12                                                            ;AAD61C;
@@ -7802,7 +8007,6 @@ Function_GoldenTorizo_Movement_Walking:
     LDA.W #InstList_Torizo_FacingLeft_Falling_0                          ;AAD63D;
     BRA +                                                                ;AAD640;
 
-
   ..facingRight:
     LDA.W #InstList_Torizo_FacingRight_Falling_0                         ;AAD642;
 
@@ -7817,6 +8021,7 @@ Function_GoldenTorizo_Movement_Walking:
     RTS                                                                  ;AAD657;
 
 
+;;; $D658: Golden Torizo shot reaction - stand up / sit down ;;;
 ShotReaction_GoldenTorizo_StandUp_SitDown:
     LDX.W $0E54                                                          ;AAD658;
     LDA.W $0F9C,X                                                        ;AAD65B;
@@ -7828,6 +8033,7 @@ ShotReaction_GoldenTorizo_StandUp_SitDown:
     RTL                                                                  ;AAD666;
 
 
+;;; $D667: Golden Torizo shot reaction - normal ;;;
 ShotReaction_GoldenTorizo_Normal:
     LDX.W $0E54                                                          ;AAD667;
     LDA.W $0F9C,X                                                        ;AAD66A;
@@ -7836,14 +8042,11 @@ ShotReaction_GoldenTorizo_Normal:
     BEQ .gotoFlashOrAnimLock                                             ;AAD673;
     JMP.W ShotReaction_GoldenTorizo_Damaged                              ;AAD675;
 
-
   .gotoFlashOrAnimLock:
     JMP.W .flashOrAnimLock                                               ;AAD678; >.<
 
-
   .return:
     RTL                                                                  ;AAD67B;
-
 
   .flashOrAnimLock:
     LDA.W $0FB6,X                                                        ;AAD67C;
@@ -7865,6 +8068,8 @@ ShotReaction_GoldenTorizo_Normal:
     ORA.W #$2000                                                         ;AAD6A0;
     STA.W $0FB6,X                                                        ;AAD6A3; fallthrough to ShotReaction_GoldenTorizo_Damaged
 
+
+;;; $D6A6: Golden Torizo shot reaction - damaged ;;;
 ShotReaction_GoldenTorizo_Damaged:
     JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;AAD6A6;
     LDX.W $0E54                                                          ;AAD6AA;
@@ -7885,6 +8090,7 @@ ShotReaction_GoldenTorizo_Damaged:
     RTL                                                                  ;AAD6D0;
 
 
+;;; $D6D1: Golden Torizo shot reaction - normal - missile ;;;
 ShotReaction_GoldenTorizo_Normal_Missile:
     LDA.W $0C04,Y                                                        ;AAD6D1;
     AND.W #$FFEF                                                         ;AAD6D4;
@@ -7898,7 +8104,6 @@ ShotReaction_GoldenTorizo_Normal_Missile:
     LDA.W #InstList_GoldenTorizo_Dodge_TurningLeft                       ;AAD6EB;
     BRA +                                                                ;AAD6EE;
 
-
   .keepRight:
     LDA.W #InstList_GoldenTorizo_Dodge_TurningRight                      ;AAD6F0;
 
@@ -7906,11 +8111,11 @@ ShotReaction_GoldenTorizo_Normal_Missile:
     RTL                                                                  ;AAD6F6;
 
 
+;;; $D6F7: Golden Torizo shot reaction - normal - super missile ;;;
 ShotReaction_GoldenTorizo_Normal_SuperMissile:
     JSR.W CheckIfTorizoIsFacingSamus                                     ;AAD6F7;
     BPL .facingSamus                                                     ;AAD6FA;
     JMP.W ShotReaction_GoldenTorizo_Damaged                              ;AAD6FC;
-
 
   .facingSamus:
     LDA.W $0FB6,X                                                        ;AAD6FF;
@@ -7931,18 +8136,15 @@ ShotReaction_GoldenTorizo_Normal_SuperMissile:
     LDA.W #InstList_GoldenTorizo_CaughtSuper_FacingLeft_LeftLegFwd       ;AAD72A;
     BRA +                                                                ;AAD72D;
 
-
   .facingRight:
     LDA.W #InstList_GoldenTorizo_CaughtSuper_FacingRight_RightLegFwd     ;AAD72F;
     BRA +                                                                ;AAD732;
-
 
   .backgroundLegForward:
     BIT.W $0FB4,X                                                        ;AAD734;
     BMI ..facingRight                                                    ;AAD737;
     LDA.W #InstList_GoldenTorizo_CaughtSuper_FacingLeft_RightLegFwd      ;AAD739;
     BRA +                                                                ;AAD73C;
-
 
   ..facingRight:
     LDA.W #InstList_GoldenTorizo_CaughtSuper_FacingRight_LeftLegFwd      ;AAD73E;
@@ -7951,6 +8153,7 @@ ShotReaction_GoldenTorizo_Normal_SuperMissile:
     RTL                                                                  ;AAD744;
 
 
+;;; $D745: Tourian entrance statue palettes ;;;
 Palettes_TourianStatue_Ridley:
 ; Initial. (Sprite palette 1)
     dw $3800,$57FF,$2BFF,$1F3C,$0278,$01B0,$010B,$0087                   ;AAD745;
@@ -7966,6 +8169,8 @@ Palettes_TourianStatue_BaseDecoration:
     dw $3800,$27F9,$2375,$1AD2,$164E,$11AB,$0D27,$0484                   ;AAD785;
     dw $0000,$7F5F,$7C1F,$5816,$300C,$5294,$39CE,$2108                   ;AAD795;
 
+
+;;; $D7A5: Instruction list - Tourian entrance statue - Ridley ;;;
 InstList_TourianStatue_Ridley_0:
     dw Instruction_Common_DeleteEnemy                                    ;AAD7A5;
 
@@ -7974,6 +8179,8 @@ InstList_TourianStatue_Ridley_1:
     dw Instruction_Common_GotoY                                          ;AAD7AB;
     dw InstList_TourianStatue_Ridley_1                                   ;AAD7AD;
 
+
+;;; $D7AF: Instruction list - Tourian entrance statue - Phantoon ;;;
 InstList_TourianStatue_Phantoon_0:
     dw Instruction_Common_DeleteEnemy                                    ;AAD7AF;
 
@@ -7982,6 +8189,8 @@ InstList_TourianStatue_Phantoon_1:
     dw Instruction_Common_GotoY                                          ;AAD7B5;
     dw InstList_TourianStatue_Phantoon_1                                 ;AAD7B7;
 
+
+;;; $D7B9: Instruction list - Tourian entrance statue - base decoration ;;;
 InstList_TourianStatue_BaseDecoration_0:
     dw Instruction_Common_DeleteEnemy                                    ;AAD7B9;
     dw $0100,UNUSED_Spritemaps_TourianStatue_BaseDecoration_AAD816       ;AAD7BB;
@@ -7991,11 +8200,17 @@ InstList_TourianStatue_BaseDecoration_1:
     dw Instruction_Common_GotoY                                          ;AAD7C3;
     dw InstList_TourianStatue_BaseDecoration_1                           ;AAD7C5;
 
+
+;;; $D7C7: RTL. Main AI - enemy $EFFF (Tourian entrance statue) ;;;
 MainAI_TourianStatue:
     RTL                                                                  ;AAD7C7;
 
 
+;;; $D7C8: Initialisation AI - enemy $EFFF (Tourian entrance statue) ;;;
 InitAI_TourianStatue:
+; All the instruction lists this enemy use lead with a delete instruction
+; I would have to guess that this statue was originally implemented with enemies and then later moved to enemy projectiles
+; The remnant instruction lists and spritemaps are leftover, see $86:B85A / $8D:916D for the real deal
     LDX.W $0E54                                                          ;AAD7C8;
     STZ.W $0F96,X                                                        ;AAD7CB;
     LDA.W #$0001                                                         ;AAD7CE;
@@ -8026,12 +8241,13 @@ InitAI_TourianStatue:
     BPL .loopPalettes                                                    ;AAD80D;
     RTL                                                                  ;AAD80F;
 
-
   .pointers:
     dw InstList_TourianStatue_BaseDecoration_0                           ;AAD810;
     dw InstList_TourianStatue_Ridley_0                                   ;AAD812;
     dw InstList_TourianStatue_Phantoon_0                                 ;AAD814;
 
+
+;;; $D816: Unused. Spritemaps - Tourian entrance statue ;;;
 UNUSED_Spritemaps_TourianStatue_BaseDecoration_AAD816:
     dw $0007                                                             ;AAD816;
     %spritemapEntry(1, $4228, $F8, 0, 0, 1, 7, $19C)
@@ -8091,11 +8307,13 @@ UNUSED_Spritemaps_TourianStatue_Phantoon_AAD8B0:
     %spritemapEntry(1, $43F0, $DC, 0, 0, 2, 2, $149)
 
 
+;;; $D911: Palette - enemy $F07F (Shaktool) ;;;
 Palette_Shaktool:
     dw $3800,$5755,$4A4F,$1CE4,$0C60,$56B2,$3E0D,$2D68                   ;AAD911;
     dw $2526,$03FF,$02F7,$0210,$0108,$001F,$0018,$000E                   ;AAD921;
 
 
+;;; $D931: Unused. Instruction - lower enemy 1px away from enemy projectile ;;;
 UNUSED_Instruction_Shaktool_Lower1PixelAwayFromProj_AAD931:
     PHY                                                                  ;AAD931;
     LDY.W $0FB0,X                                                        ;AAD932;
@@ -8105,6 +8323,7 @@ UNUSED_Instruction_Shaktool_Lower1PixelAwayFromProj_AAD931:
     JMP.W MoveShaktoolPiece1Pixel                                        ;AAD93C;
 
 
+;;; $D93F: Unused. Instruction - raise enemy 1px towards enemy projectile ;;;
 UNUSED_Instruction_Shaktool_Raise1PixelTowardsProj_AAD93F:
     PHY                                                                  ;AAD93F;
     LDY.W $0FB0,X                                                        ;AAD940;
@@ -8113,16 +8332,22 @@ UNUSED_Instruction_Shaktool_Raise1PixelTowardsProj_AAD93F:
     JMP.W MoveShaktoolPiece1Pixel                                        ;AAD947;
 
 
+;;; $D94A: Instruction - lower enemy 1px ;;;
 Instruction_Shaktool_Lower1Pixel:
     LDA.W $0FA9,X                                                        ;AAD94A;
     EOR.W #$0080                                                         ;AAD94D;
     JMP.W MoveShaktoolPiece1Pixel                                        ;AAD950;
 
 
+;;; $D953: Instruction - raise enemy 1px ;;;
 Instruction_Shaktool_Raise1Pixel:
-    LDA.W $0FA9,X                                                        ;AAD953;
+    LDA.W $0FA9,X                                                        ;AAD953; fallthrough to MoveShaktoolPiece1Pixel
 
+
+;;; $D956: Move Shaktool piece 1px ;;;
 MoveShaktoolPiece1Pixel:
+;; Parameters:
+;;     A: Angle
     PHX                                                                  ;AAD956;
     PHY                                                                  ;AAD957;
     TXY                                                                  ;AAD958;
@@ -8162,7 +8387,9 @@ MoveShaktoolPiece1Pixel:
     RTL                                                                  ;AAD99E;
 
 
+;;; $D99F: RTL. Instruction - NOP (disabled - spawn Shaktool attack enemy projectiles) ;;;
 RTL_AAD99F:
+; This is RTL'd out, but the instruction list that calls this instruction is never used due to RTS_AADAE4 being RTS'd out anyway
     RTL                                                                  ;AAD99F;
 
     PHY                                                                  ;AAD9A0; dead code
@@ -8178,6 +8405,7 @@ RTL_AAD99F:
     RTL                                                                  ;AAD9B9;
 
 
+;;; $D9BA: Instruction - reset Shaktool functions ;;;
 Instruction_Shaktool_ResetShaktoolFunctions:
     PHY                                                                  ;AAD9BA;
     LDY.W $0FB0,X                                                        ;AAD9BB;
@@ -8199,35 +8427,47 @@ Instruction_Shaktool_ResetShaktoolFunctions:
     RTL                                                                  ;AAD9E9;
 
 
+;;; $D9EA: Unused. Instruction list - Shaktool saw hand - attack - primary piece ;;;
 UNUSED_InstList_Shaktool_SawHand_Attack_PrimaryPiece_AAD9EA:
     dw Instruction_Common_WaitYFrames,$0240                              ;AAD9EA;
     dw Instruction_Common_GotoY                                          ;AAD9EE;
     dw InstList_Shaktool_SawHand_PrimaryPiece                            ;AAD9F0;
 
+
+;;; $D9F2: Unused. Instruction list - Shaktool saw hand - attack - final piece ;;;
 UNUSED_InstList_Shaktool_SawHand_Attack_FinalPiece_AAD9F2:
     dw Instruction_Common_WaitYFrames,$0240                              ;AAD9F2;
     dw Instruction_Shaktool_ResetShaktoolFunctions                       ;AAD9F6;
     dw Instruction_Common_GotoY                                          ;AAD9F8;
     dw InstList_Shaktool_SawHand_FinalPiece                              ;AAD9FA;
 
+
+;;; $D9FC: Instruction list - Shaktool saw hand - head bob - primary piece ;;;
 InstList_Shaktool_SawHand_HeadBob_PrimaryPiece:
     dw Instruction_Common_WaitYFrames,$0014                              ;AAD9FC;
     dw Instruction_Common_GotoY                                          ;AADA00;
     dw InstList_Shaktool_SawHand_PrimaryPiece                            ;AADA02;
 
+
+;;; $DA04: Instruction list - Shaktool saw hand - head bob - final piece ;;;
 InstList_Shaktool_SawHand_HeadBob_FinalPiece:
     dw Instruction_Common_WaitYFrames,$0014                              ;AADA04;
     dw Instruction_Shaktool_ResetShaktoolFunctions                       ;AADA08;
     dw Instruction_Common_GotoY                                          ;AADA0A;
     dw InstList_Shaktool_SawHand_FinalPiece                              ;AADA0C;
 
+
+;;; $DA0E: Instruction list - Shaktool saw hand - primary piece ;;;
 InstList_Shaktool_SawHand_PrimaryPiece:
+; Also used for the final piece before the first collision
     dw $000A,Spritemaps_Shaktool_SawHand_PrimaryPiece_0                  ;AADA0E;
     dw $000A,Spritemaps_Shaktool_SawHand_PrimaryPiece_1                  ;AADA12;
     dw $000A,Spritemaps_Shaktool_SawHand_PrimaryPiece_2                  ;AADA16;
     dw Instruction_Common_GotoY                                          ;AADA1A;
     dw InstList_Shaktool_SawHand_PrimaryPiece                            ;AADA1C;
 
+
+;;; $DA1E: Instruction list - Shaktool saw hand - final piece ;;;
 InstList_Shaktool_SawHand_FinalPiece:
     dw $0003,Spritemaps_Shaktool_SawHand_FinalPiece_0                    ;AADA1E;
     dw $0003,Spritemaps_Shaktool_SawHand_FinalPiece_1                    ;AADA22;
@@ -8235,6 +8475,8 @@ InstList_Shaktool_SawHand_FinalPiece:
     dw Instruction_Common_GotoY                                          ;AADA2A;
     dw InstList_Shaktool_SawHand_FinalPiece                              ;AADA2C;
 
+
+;;; $DA2E: Unused. Instruction list - Shaktool arm piece - attack - back ;;;
 UNUSED_InstList_Shaktool_ArmPiece_Attack_Back_AADA2E:
     dw Instruction_Common_WaitYFrames,$00C0                              ;AADA2E;
     dw UNUSED_Instruction_Shaktool_Lower1PixelAwayFromProj_AAD931        ;AADA32;
@@ -8244,6 +8486,8 @@ UNUSED_InstList_Shaktool_ArmPiece_Attack_Back_AADA2E:
     dw Instruction_Common_GotoY                                          ;AADA3E;
     dw InstList_Shaktool_ArmPiece_Normal                                 ;AADA40;
 
+
+;;; $DA42: Unused. Instruction list - Shaktool arm piece - attack - front ;;;
 UNUSED_InstList_Shaktool_ArmPiece_Attack_Front_AADA42:
     dw Instruction_Common_WaitYFrames,$0100                              ;AADA42;
     dw UNUSED_Instruction_Shaktool_Lower1PixelAwayFromProj_AAD931        ;AADA46;
@@ -8253,6 +8497,8 @@ UNUSED_InstList_Shaktool_ArmPiece_Attack_Front_AADA42:
     dw Instruction_Common_GotoY                                          ;AADA52;
     dw InstList_Shaktool_ArmPiece_Normal                                 ;AADA54;
 
+
+;;; $DA56: Instruction list - Shaktool arm piece - head bob - back ;;;
 InstList_Shaktool_ArmPiece_HeadBob_Back:
     dw Instruction_Shaktool_Lower1Pixel                                  ;AADA56;
     dw Instruction_Common_WaitYFrames,$0014                              ;AADA58;
@@ -8260,6 +8506,8 @@ InstList_Shaktool_ArmPiece_HeadBob_Back:
     dw Instruction_Common_GotoY                                          ;AADA5E;
     dw InstList_Shaktool_ArmPiece_Normal                                 ;AADA60;
 
+
+;;; $DA62: Instruction list - Shaktool arm piece - head bob - front ;;;
 InstList_Shaktool_ArmPiece_HeadBob_Front:
     dw Instruction_Common_WaitYFrames,$0004                              ;AADA62;
     dw Instruction_Shaktool_Lower1Pixel                                  ;AADA66;
@@ -8267,11 +8515,15 @@ InstList_Shaktool_ArmPiece_HeadBob_Front:
     dw Instruction_Shaktool_Raise1Pixel                                  ;AADA6C;
     dw Instruction_Common_WaitYFrames,$0004                              ;AADA6E;
 
+
+;;; $DA72: Instruction list - Shaktool arm piece - normal ;;;
 InstList_Shaktool_ArmPiece_Normal:
     dw $0077,Spritemaps_Shaktool_ArmPiece                                ;AADA72;
     dw Instruction_Common_GotoY                                          ;AADA76;
     dw InstList_Shaktool_ArmPiece_Normal                                 ;AADA78;
 
+
+;;; $DA7A: Unused. Instruction list - Shaktool head - attack ;;;
 UNUSED_InstList_Shaktool_Head_Attack_AADA7A:
     dw Instruction_Common_WaitYFrames,$0080                              ;AADA7A;
     dw UNUSED_Instruction_Shaktool_Lower1PixelAwayFromProj_AAD931        ;AADA7E;
@@ -8281,6 +8533,8 @@ UNUSED_InstList_Shaktool_Head_Attack_AADA7A:
     dw Instruction_Common_WaitYFrames,$0140                              ;AADA88;
     dw Instruction_Common_WaitYFrames,$0001                              ;AADA8C;
 
+
+;;; $DA90: Instruction list - Shaktool head - head bob ;;;
 InstList_Shaktool_Head_HeadBob:
     dw Instruction_Common_WaitYFrames,$0008                              ;AADA90;
     dw Instruction_Shaktool_Lower1Pixel                                  ;AADA94;
@@ -8289,47 +8543,67 @@ InstList_Shaktool_Head_HeadBob:
     dw Instruction_Common_WaitYFrames,$0008                              ;AADA9C;
     dw Instruction_Common_WaitYFrames,$0001                              ;AADAA0;
 
+
+;;; $DAA4: Instruction list - Shaktool head - aiming left ;;;
 InstList_Shaktool_Head_AimingLeft:
+; Useless observation: the graphical instruction delay is increasing by one for each of these instruction lists ^^;
     dw $0774,Spritemaps_Shaktool_Head_0                                  ;AADAA4;
     dw Instruction_Common_GotoY                                          ;AADAA8;
     dw InstList_Shaktool_Head_AimingLeft                                 ;AADAAA;
 
+
+;;; $DAAC: Instruction list - Shaktool head - aiming up-left ;;;
 InstList_Shaktool_Head_AimingUpLeft:
     dw $0775,Spritemaps_Shaktool_Head_1                                  ;AADAAC;
     dw Instruction_Common_GotoY                                          ;AADAB0;
     dw InstList_Shaktool_Head_AimingUpLeft                               ;AADAB2;
 
+
+;;; $DAB4: Instruction list - Shaktool head - aiming up ;;;
 InstList_Shaktool_Head_AimingUp:
     dw $0776,Spritemaps_Shaktool_Head_2                                  ;AADAB4;
     dw Instruction_Common_GotoY                                          ;AADAB8;
     dw InstList_Shaktool_Head_AimingUp                                   ;AADABA;
 
+
+;;; $DABC: Instruction list - Shaktool head - aiming up-right ;;;
 InstList_Shaktool_Head_AimingUpRight:
     dw $0777,Spritemaps_Shaktool_Head_3                                  ;AADABC;
     dw Instruction_Common_GotoY                                          ;AADAC0;
     dw InstList_Shaktool_Head_AimingUpRight                              ;AADAC2;
 
+
+;;; $DAC4: Instruction list - Shaktool head - aiming right ;;;
 InstList_Shaktool_Head_AimingRight:
     dw $0778,Spritemaps_Shaktool_Head_4                                  ;AADAC4;
     dw Instruction_Common_GotoY                                          ;AADAC8;
     dw InstList_Shaktool_Head_AimingRight                                ;AADACA;
 
+
+;;; $DACC: Instruction list - Shaktool head - aiming down-right ;;;
 InstList_Shaktool_Head_AimingDownRight:
     dw $0779,Spritemaps_Shaktool_Head_5                                  ;AADACC;
     dw Instruction_Common_GotoY                                          ;AADAD0;
     dw InstList_Shaktool_Head_AimingDownRight                            ;AADAD2;
 
+
+;;; $DAD4: Instruction list - Shaktool head - aiming down ;;;
 InstList_Shaktool_Head_AimingDown:
     dw $077A,Spritemaps_Shaktool_Head_6                                  ;AADAD4;
     dw Instruction_Common_GotoY                                          ;AADAD8;
     dw InstList_Shaktool_Head_AimingDown                                 ;AADADA;
 
+
+;;; $DADC: Instruction list - Shaktool head - aiming down-left ;;;
 InstList_Shaktool_Head_AimingDownLeft:
     dw $077B,Spritemaps_Shaktool_Head_7                                  ;AADADC;
     dw Instruction_Common_GotoY                                          ;AADAE0;
     dw InstList_Shaktool_Head_AimingDownLeft                             ;AADAE2;
 
+
+;;; $DAE4: RTS. Maybe make Shaktool attack ;;;
 RTS_AADAE4:
+; RTS'd out
     RTS                                                                  ;AADAE4;
 
     JSL.L GenerateRandomNumber                                           ;AADAE5; dead code
@@ -8356,6 +8630,7 @@ RTS_AADAE4:
     RTS                                                                  ;AADB0D;
 
 
+;;; $DB0E: Shaktool pieces movement options = [A] ;;;
 ShaktoolPiecesMovementOptionsInA:
     LDY.W $0FB0,X                                                        ;AADB0E;
     STA.W $0FB4,Y                                                        ;AADB11;
@@ -8368,6 +8643,7 @@ ShaktoolPiecesMovementOptionsInA:
     RTS                                                                  ;AADB26;
 
 
+;;; $DB27: Shaktool pieces facing angle = [A] ;;;
 ShaktoolPiecesFacingAngleInA:
     LDY.W $0FB0,X                                                        ;AADB27;
     STA.W $0FA8,Y                                                        ;AADB2A;
@@ -8380,6 +8656,7 @@ ShaktoolPiecesFacingAngleInA:
     RTS                                                                  ;AADB3F;
 
 
+;;; $DB40: Shaktool pieces neighbour angle = [A] ;;;
 ShaktoolPiecesNeighborAngleInA:
     LDY.W $0FB0,X                                                        ;AADB40;
     STA.W $0FAA,Y                                                        ;AADB43;
@@ -8392,6 +8669,7 @@ ShaktoolPiecesNeighborAngleInA:
     RTS                                                                  ;AADB58;
 
 
+;;; $DB59: Flip Shaktool ;;;
 FlipShaktool:
     LDY.W $0FB0,X                                                        ;AADB59;
     LDA.W $106E,Y                                                        ;AADB5C;
@@ -8459,6 +8737,7 @@ FlipShaktool:
     RTS                                                                  ;AADC06;
 
 
+;;; $DC07: Set Shaktool piece neighbour angle delta due to block collision ;;;
 SetSHaktoolPieceNeighborAngleDeltaDueToBlockCollision:
     LDA.W #$0000                                                         ;AADC07;
     SEC                                                                  ;AADC0A;
@@ -8468,7 +8747,6 @@ SetSHaktoolPieceNeighborAngleDeltaDueToBlockCollision:
     CLC                                                                  ;AADC13;
     ADC.W $0FA8,X                                                        ;AADC14;
     BRA +                                                                ;AADC17;
-
 
   .antiClockwise:
     SBC.W $0FA8,X                                                        ;AADC19;
@@ -8483,6 +8761,7 @@ SetSHaktoolPieceNeighborAngleDeltaDueToBlockCollision:
     RTS                                                                  ;AADC29;
 
 
+;;; $DC2A: Position Shaktool piece relative to previous piece ;;;
 PositionShaktoolPieceRelativeToPreviousPiece:
     LDA.W $0FAB,X                                                        ;AADC2A;
     AND.W #$00FF                                                         ;AADC2D;
@@ -8519,6 +8798,7 @@ PositionShaktoolPieceRelativeToPreviousPiece:
     RTS                                                                  ;AADC6E;
 
 
+;;; $DC6F: Set Shaktool pieces neighbour angle and angle delta for curling ;;;
 SetShaktoolPiecesNeighborAngleAndAngleDeltaForCurling:
     LDA.W $0FA8,X                                                        ;AADC6F;
     JSR.W ShaktoolPiecesNeighborAngleInA                                 ;AADC72;
@@ -8540,20 +8820,24 @@ SetShaktoolPiecesNeighborAngleAndAngleDeltaForCurling:
     RTS                                                                  ;AADCA2;
 
 
+;;; $DCA3: Main AI / hurt AI - enemy $F07F (Shaktool) ;;;
 MainAI_HurtAI_Shaktool:
     LDX.W $0E54                                                          ;AADCA3;
     JSR.W ($0FB2,X)                                                      ;AADCA6;
     RTL                                                                  ;AADCA9;
 
 
+;;; $DCAA: RTS ;;;
 RTS_AADCAA:
     RTS                                                                  ;AADCAA;
 
 
+;;; $DCAB: RTS. Shaktool function - primary piece ;;;
 RTS_AADCAB:
     RTS                                                                  ;AADCAB;
 
 
+;;; $DCAC: Shaktool function - arm piece. Set position and handle curling ;;;
 Function_Shaktool_ArmPiece_SetPosition_HandleCurling:
     JSR.W PositionShaktoolPieceRelativeToPreviousPiece                   ;AADCAC;
     BIT.W $0FB4,X                                                        ;AADCAF;
@@ -8564,7 +8848,6 @@ Function_Shaktool_ArmPiece_SetPosition_HandleCurling:
     STA.W $0FA8,X                                                        ;AADCBB;
     LDA.W #$0100                                                         ;AADCBE;
     BRA +                                                                ;AADCC1;
-
 
   .notFullyCurled:
     LDA.W $0FAC,X                                                        ;AADCC3;
@@ -8581,6 +8864,7 @@ Function_Shaktool_ArmPiece_SetPosition_HandleCurling:
     RTS                                                                  ;AADCD6;
 
 
+;;; $DCD7: Shaktool function - head ;;;
 Function_Shaktool_Head:
     JSR.W Function_Shaktool_ArmPiece_SetPosition_HandleCurling           ;AADCD7;
     LDA.W $0FAA,X                                                        ;AADCDA;
@@ -8614,7 +8898,6 @@ Function_Shaktool_Head:
     STA.W $0F94,X                                                        ;AADD11;
     RTS                                                                  ;AADD14;
 
-
   .pointers:
     dw InstList_Shaktool_Head_AimingUp                                   ;AADD15;
     dw InstList_Shaktool_Head_AimingUpRight                              ;AADD17;
@@ -8625,6 +8908,8 @@ Function_Shaktool_Head:
     dw InstList_Shaktool_Head_AimingLeft                                 ;AADD21;
     dw InstList_Shaktool_Head_AimingUpLeft                               ;AADD23;
 
+
+;;; $DD25: Shaktool function - final piece ;;;
 Function_Shaktool_FinalPiece:
     LDA.W $0F7E,X                                                        ;AADD25;
     PHA                                                                  ;AADD28;
@@ -8669,7 +8954,6 @@ Function_Shaktool_FinalPiece:
     STA.W $0FA8,X                                                        ;AADD7B;
     RTS                                                                  ;AADD7E;
 
-
   .notFullyCurled:
     LDA.W $0FAA,X                                                        ;AADD7F;
     EOR.W $0FA8,X                                                        ;AADD82;
@@ -8700,7 +8984,6 @@ Function_Shaktool_FinalPiece:
     JSR.W RTS_AADAE4                                                     ;AADDC0;
     RTS                                                                  ;AADDC3;
 
-
   .collision:
     LDA.W $0FB4,X                                                        ;AADDC4;
     BIT.W #$2000                                                         ;AADDC7;
@@ -8714,7 +8997,6 @@ Function_Shaktool_FinalPiece:
     AND.W #$8FFF                                                         ;AADDD6;
     JSR.W ShaktoolPiecesMovementOptionsInA                               ;AADDD9;
     BRA +                                                                ;AADDDC;
-
 
   .curling:
     PLA                                                                  ;AADDDE;
@@ -8743,7 +9025,6 @@ Function_Shaktool_FinalPiece:
     ADC.W #$4000                                                         ;AADE14;
     BRA +                                                                ;AADE17;
 
-
   .antiClockwise:
     SEC                                                                  ;AADE19;
     SBC.W #$4000                                                         ;AADE1A;
@@ -8769,7 +9050,10 @@ Function_Shaktool_FinalPiece:
     RTS                                                                  ;AADE42;
 
 
+;;; $DE43: Initialisation AI - enemy $F07F (Shaktool) ;;;
 InitAI_Shaktool:
+; Parameter 2 is used for piece index (multiple of 2). Range 0..Ch
+; Index identifies pieces starting from the initial rightmost piece and increasing to the initial leftmost piece
     LDX.W $0E54                                                          ;AADE43;
     LDA.W #$0001                                                         ;AADE46;
     STA.W $0F94,X                                                        ;AADE49;
@@ -8805,15 +9089,16 @@ InitAI_Shaktool:
     RTL                                                                  ;AADE94;
 
 
+;;; $DE95: Shaktool piece data ;;;
 ShaktoolPieceData:
-;                        _______________________________________ Initially right saw hand (primary piece)
-;                       |      _________________________________ Initially rightmost arm piece
-;                       |     |      ___________________________ Initially center right arm piece
-;                       |     |     |      _____________________ Head
-;                       |     |     |     |      _______________ Initially center left arm piece
-;                       |     |     |     |     |      _________ Initially leftmost arm piece
-;                       |     |     |     |     |     |      ___ Initially left saw hand (final piece)
-;                       |     |     |     |     |     |     |
+;        _______________________________________ Initially right saw hand (primary piece)
+;       |      _________________________________ Initially rightmost arm piece
+;       |     |      ___________________________ Initially center right arm piece
+;       |     |     |      _____________________ Head
+;       |     |     |     |      _______________ Initially center left arm piece
+;       |     |     |     |     |      _________ Initially leftmost arm piece
+;       |     |     |     |     |     |      ___ Initially left saw hand (final piece)
+;       |     |     |     |     |     |     |
   .properties:
     dw $2800,$2C00,$2C00,$2C00,$2C00,$2C00,$2800                         ;AADE95;
   .RAMOffset:
@@ -8883,12 +9168,17 @@ endif ; !FEATURE_KEEP_UNREFERENCED
     dw UNUSED_InstList_Shaktool_ArmPiece_Attack_Back_AADA2E              ;AADF2B; Initially leftmost arm piece
     dw UNUSED_InstList_Shaktool_SawHand_Attack_FinalPiece_AAD9F2         ;AADF2D; Initially left saw hand (final piece)
 
+
+;;; $DF2F: Enemy touch - enemy $F07F (Shaktool) ;;;
 EnemyTouch_Shaktool:
     JSL.L NormalEnemyTouchAI                                             ;AADF2F;
     RTL                                                                  ;AADF33;
 
 
+;;; $DF34: Enemy shot - enemy $F07F (Shaktool) ;;;
 EnemyShot_Shaktool:
+; Bug: when an enemy dies and goes through its death animation, its enemy RAM is cleared,
+; so the LDY always loads 0, meaning this only works out if Shaktool is the first enemy in the room
     JSL.L NormalEnemyShotAI                                              ;AADF34;
     LDX.W $0E54                                                          ;AADF38;
     LDA.W $0F8C,X                                                        ;AADF3B;
@@ -8907,6 +9197,7 @@ EnemyShot_Shaktool:
     RTL                                                                  ;AADF5B;
 
 
+;;; $DF5C: Spritemaps - Shaktool ;;;
 Spritemaps_Shaktool_SawHand_FinalPiece_0:
     dw $0001                                                             ;AADF5C;
     %spritemapEntry(1, $1F8, $F8, 0, 0, 2, 0, $100)
@@ -8991,6 +9282,8 @@ Spritemaps_Shaktool_SawHand_PrimaryPiece_2:
     dw $0001                                                             ;AAE036;
     %spritemapEntry(1, $1F8, $F8, 0, 1, 2, 0, $104)
 
+
+;;; $E03D: Sine/cosine tables ;;;
 SineCosineTables_negativeCosine:
     dw $F401,$F401,$F404,$F409,$F40F,$F418,$F422,$F42E                   ;AAE03D;
     dw $F43C,$F44B,$F45D,$F470,$F485,$F49C,$F4B4,$F4CE                   ;AAE04D;
@@ -9041,13 +9334,15 @@ SineCosineTables_negativeCosine_duplicate:
     dw $FB69,$FBAF,$FBF6,$FC3D,$FC85,$FCCD,$FD16,$FD5F                   ;AAE29D;
     dw $FDA9,$FDF3,$FE3E,$FE88,$FED3,$FF1E,$FF6A,$FFB5                   ;AAE2AD;
 
+
+;;; $E2BD: n00b tube cracks palettes ;;;
+; Wow, three copies of the same palette
 Palette_NoobTubeCrack_Initial:
 ; Sprite palette 7
     dw $3800,$7F9C,$7F17,$6E72,$59EE,$456A,$3528,$28E6                   ;AAE2BD;
     dw $777F,$66FB,$5676,$45F2,$358D,$2509,$1484,$0400                   ;AAE2CD;
 
 Palette_NoobTubeCrack_SpritePalette1:
-
     dw $3800,$7F9C,$7F17,$6E72,$59EE,$456A,$3528,$28E6                   ;AAE2DD;
     dw $777F,$66FB,$5676,$45F2,$358D,$2509,$1484,$0400                   ;AAE2ED;
 
@@ -9055,6 +9350,8 @@ Palette_NoobTubeCrack_SpritePalette2:
     dw $3800,$7F9C,$7F17,$6E72,$59EE,$456A,$3528,$28E6                   ;AAE2FD;
     dw $777F,$66FB,$5676,$45F2,$358D,$2509,$1484,$0400                   ;AAE30D;
 
+
+;;; $E31D: Chozo statue palettes ;;;
 Palette_Chozo_WreckedShip_SpritePalette1:
     dw $3800,$633F,$4A9F,$2DDF,$6739,$4E73,$318C,$18C6                   ;AAE31D;
     dw $27FF,$1AF7,$0DCE,$00C6,$3FFF,$2B39,$7FFF,$0000                   ;AAE32D;
@@ -9071,12 +9368,16 @@ Palette_Chozo_LowerNorfair_SpritePalette2:
     dw $3800,$633F,$4A9F,$2DDF,$2295,$118D,$08E8,$0085                   ;AAE37D;
     dw $27FF,$1AF7,$0DCE,$00C6,$3FFF,$2B39,$5294,$0001                   ;AAE38D;
 
+
+;;; $E39D: Instruction list - chozo statue - Lower Norfair - initial ;;;
 InstList_Chozo_LowerNorfair_Initial:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AAE39D;
     dw Function_Chozo_LowerNorfair                                       ;AAE39F;
     dw $0001,Spritemaps_Chozo_13                                         ;AAE3A1;
     dw Instruction_Common_Sleep                                          ;AAE3A5;
 
+
+;;; $E3A7: Instruction list - chozo statue - Lower Norfair - activated ;;;
 InstList_Chozo_LowerNorfair_Activated_0:
     dw Instruction_Common_SetEnemy0FB2ToRTS                              ;AAE3A7;
     dw Instruction_Chozo_Movement_IndexInY,$0020                         ;AAE3A9;
@@ -9118,6 +9419,8 @@ InstList_Chozo_LowerNorfair_Activated_1:
     dw Instruction_Chozo_SetLoweredAcidPosition                          ;AAE425;
     dw Instruction_Common_Sleep                                          ;AAE427;
 
+
+;;; $E429: Instruction - start lowering acid ;;;
 Instruction_Chozo_StartLoweringAcid:
     LDA.W #$0020                                                         ;AAE429;
     STA.W $1980                                                          ;AAE42C;
@@ -9126,18 +9429,21 @@ Instruction_Chozo_StartLoweringAcid:
     RTL                                                                  ;AAE435;
 
 
+;;; $E436: Instruction - set lowered acid position ;;;
 Instruction_Chozo_SetLoweredAcidPosition:
     LDA.W #$02D2                                                         ;AAE436;
     STA.W $1978                                                          ;AAE439;
     RTL                                                                  ;AAE43C;
 
 
+;;; $E43D: Instruction - unlock Samus ;;;
 Instruction_Chozo_UnlockSamus:
     LDA.W #$0001                                                         ;AAE43D;
     JSL.L Run_Samus_Command                                              ;AAE440;
     RTL                                                                  ;AAE444;
 
 
+;;; $E445: Chozo statue function - Lower Norfair ;;;
 Function_Chozo_LowerNorfair:
     LDA.W $0FB4,X                                                        ;AAE445;
     BEQ .return                                                          ;AAE448;
@@ -9150,12 +9456,15 @@ Function_Chozo_LowerNorfair:
     RTS                                                                  ;AAE456;
 
 
+;;; $E457: Instruction list - chozo statue - Wrecked Ship - initial ;;;
 InstList_Chozo_WreckedShip_Initial:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AAE457;
     dw Function_Chozo_WreckedShip                                        ;AAE459;
     dw $0001,Spritemaps_Chozo_0                                          ;AAE45B;
     dw Instruction_Common_Sleep                                          ;AAE45F;
 
+
+;;; $E461: Instruction list - chozo statue - Wrecked Ship - activated ;;;
 InstList_Chozo_WreckedShip_Activated_0:
     dw Instruction_Common_SetEnemy0FB2ToRTS                              ;AAE461;
     dw Instruction_Chozo_Movement_IndexInY,$0000                         ;AAE463;
@@ -9240,18 +9549,22 @@ InstList_Chozo_WreckedShip_Activated_2:
     dw Instruction_Chozo_ReleaseSamus_BlockSlopeAccess                   ;AAE57B;
     dw Instruction_Common_Sleep                                          ;AAE57D;
 
+
+;;; $E57F: Instruction - queue chozo grabs Samus sound effect ;;;
 Instruction_Chozo_PlayChozoGrabsSamusSFX:
     LDA.W #$001C                                                         ;AAE57F;
     JSL.L QueueSound_Lib2_Max6                                           ;AAE582;
     RTL                                                                  ;AAE586;
 
 
+;;; $E587: Instruction - queue chozo footsteps sound effect ;;;
 Instruction_Chozo_PlayChozoFootstepsSFX:
     LDA.W #$004B                                                         ;AAE587;
     JSL.L QueueSound_Lib2_Max6                                           ;AAE58A;
     RTL                                                                  ;AAE58E;
 
 
+;;; $E58F: Instruction - spawn chozo spike clearing footstep enemy projectile with X offset [[Y]] ;;;
 Instruction_Chozo_SpawnChozoSpikeClearingFootstepProjectile:
     PHX                                                                  ;AAE58F;
     PHY                                                                  ;AAE590;
@@ -9293,6 +9606,7 @@ Instruction_Chozo_SpawnChozoSpikeClearingFootstepProjectile:
     RTL                                                                  ;AAE5D7;
 
 
+;;; $E5D8: Instruction - chozo statue movement - index [[Y]] ;;;
 Instruction_Chozo_Movement_IndexInY:
     LDA.W $0000,Y                                                        ;AAE5D8;
     STA.W $0FAC,X                                                        ;AAE5DB;
@@ -9340,7 +9654,6 @@ Instruction_Chozo_Movement_IndexInY:
     INY                                                                  ;AAE62E;
     RTL                                                                  ;AAE62F;
 
-
   .XVelocity:
 ; Enemy X velocity. Unit 1/100h px/frame. Absolute value used for Y velocity
     dw $0000,$0000,$0000,$0000,$FE00,$FD00,$F200,$F800                   ;AAE630; 0..1Eh: Wrecked Ship. Only 0..16h used
@@ -9362,6 +9675,8 @@ Instruction_Chozo_Movement_IndexInY:
     dw $FFE0,$FFE7,$FFE9,$FFE9,$FFE9,$FFE8,$FFE7,$FFE8                   ;AAE6D0; 20h..3Eh: Lower Norfair. Only 0..6h used
     dw $FFE9,$FFE8,$FFE7,$FFE8,$FFE9,$FFE9,$FFE9,$FFE9                   ;AAE6E0;
 
+
+;;; $E6F0: Instruction - release Samus and block slope access ;;;
 Instruction_Chozo_ReleaseSamus_BlockSlopeAccess:
     LDA.W #$0001                                                         ;AAE6F0;
     JSL.L Run_Samus_Command                                              ;AAE6F3;
@@ -9377,6 +9692,7 @@ Instruction_Chozo_ReleaseSamus_BlockSlopeAccess:
     RTL                                                                  ;AAE715;
 
 
+;;; $E716: Initialisation AI - enemy $F0BF (n00b tube cracks) ;;;
 InitAI_NoobTubeCrack:
     LDX.W #$003E                                                         ;AAE716;
 
@@ -9389,6 +9705,7 @@ InitAI_NoobTubeCrack:
     RTL                                                                  ;AAE724;
 
 
+;;; $E725: Initialisation AI - enemy $F0FF (chozo statue) ;;;
 InitAI_Chozo:
     LDX.W $0E54                                                          ;AAE725;
     LDA.W $0F86,X                                                        ;AAE728;
@@ -9428,7 +9745,6 @@ InitAI_Chozo:
     dw PLMEntries_BlockSlopeAccessForWreckedShipChozo                    ;AAE781;
     RTL                                                                  ;AAE783;
 
-
   .lowerNorfair:
     LDX.W #$001E                                                         ;AAE784;
 
@@ -9445,21 +9761,25 @@ InitAI_Chozo:
     dw PLMEntries_LowerNorfairChozoHand                                  ;AAE79F;
     RTL                                                                  ;AAE7A1;
 
-
   .instListPointers:
+; Enemy instruction list pointers
     dw InstList_Chozo_WreckedShip_Initial                                ;AAE7A2;
     dw InstList_Chozo_LowerNorfair_Initial                               ;AAE7A4;
 
+
+;;; $E7A6: RTS ;;;
 RTS_AAE7A6:
     RTS                                                                  ;AAE7A6;
 
 
+;;; $E7A7: Main AI - enemy $F0FF (chozo statue) ;;;
 MainAI_Chozo:
     LDX.W $0E54                                                          ;AAE7A7;
     JSR.W ($0FB2,X)                                                      ;AAE7AA;
     RTL                                                                  ;AAE7AD;
 
 
+;;; $E7AE: Chozo statue function - Wrecked Ship ;;;
 Function_Chozo_WreckedShip:
     PHX                                                                  ;AAE7AE;
     LDX.W $079F                                                          ;AAE7AF;
@@ -9482,18 +9802,22 @@ Function_Chozo_WreckedShip:
     RTS                                                                  ;AAE7D9;
 
 
+;;; $E7DA: RTS ;;;
 RTS_AAE7DA:
     RTS                                                                  ;AAE7DA;
 
 
+;;; $E7DB: RTL. Enemy touch - enemy $F0FF (chozo statue) ;;;
 RTL_AAE7DB:
     RTL                                                                  ;AAE7DB;
 
 
+;;; $E7DC: RTL. Enemy shot - enemy $F0FF (chozo statue) ;;;
 RTL_AAE7DC:
     RTL                                                                  ;AAE7DC;
 
 
+;;; $E7DD: Chozo statue spritemaps ;;;
 Spritemaps_Chozo_0:
     dw $0012                                                             ;AAE7DD;
     %spritemapEntry(0, $1FA, $DF, 0, 0, 2, 1, $17D)
