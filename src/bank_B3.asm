@@ -590,10 +590,13 @@ CommonB3EnemySpeeds_QuadraticallyIncreasing:
     dw $74F9,$0011,$8B07,$FFEE
 
 
+;;; $8687: Palette - enemy $F153 (unused spinning turtle eye) ;;;
 UNUSED_Palette_SpinningTurtleEye_B38687:
     dw $3800,$4FE9,$4266,$3D85,$20A3,$52FC,$41F7,$30D2                   ;B38687;
     dw $240E,$325F,$31DB,$3156,$30D2,$302C,$7FBD,$0C05                   ;B38697;
 
+
+;;; $86A7: Instruction list - initial ;;;
 UNUSED_InstList_SpinningTurtleEye_Initial_B386A7:
     dw $000A,UNUSED_Spritemaps_SpinningTurtleEye_0_B38714                ;B386A7;
     dw $000A,UNUSED_Spritemaps_SpinningTurtleEye_1_B3871B                ;B386AB;
@@ -606,7 +609,9 @@ UNUSED_InstList_SpinningTurtleEye_Initial_B386A7:
     dw Instruction_Common_GotoY                                          ;B386C7;
     dw UNUSED_InstList_SpinningTurtleEye_Initial_B386A7                  ;B386C9;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $86CB: Unused. Instruction list ;;;
 UNUSED_InstList_SpinningTurtleEye_B386CB:
     dw $0008,UNUSED_Spritemaps_SpinningTurtleEye_8_B3874C                ;B386CB;
     dw $0008,UNUSED_Spritemaps_SpinningTurtleEye_9_B38753                ;B386CF;
@@ -614,6 +619,8 @@ UNUSED_InstList_SpinningTurtleEye_B386CB:
     dw Instruction_Common_GotoY                                          ;B386D7;
     dw UNUSED_InstList_SpinningTurtleEye_B386CB                          ;B386D9;
 
+
+;;; $86DB: Unused. Instruction list ;;;
 UNUSED_InstList_SpinningTurtleEye_B386DB:
     dw $0008,UNUSED_Spritemaps_SpinningTurtleEye_B_B38761                ;B386DB;
     dw $0008,UNUSED_Spritemaps_SpinningTurtleEye_C_B38768                ;B386DF;
@@ -621,6 +628,8 @@ UNUSED_InstList_SpinningTurtleEye_B386DB:
     dw Instruction_Common_GotoY                                          ;B386E7;
     dw UNUSED_InstList_SpinningTurtleEye_B386DB                          ;B386E9;
 
+
+;;; $86EB: Unused. Instruction list ;;;
 UNUSED_InstList_SpinningTurtleEye_B386EB:
     dw $0008,UNUSED_Spritemaps_SpinningTurtleEye_E_B38776                ;B386EB;
     dw $0008,UNUSED_Spritemaps_SpinningTurtleEye_F_B3877D                ;B386EF;
@@ -629,6 +638,8 @@ UNUSED_InstList_SpinningTurtleEye_B386EB:
     dw UNUSED_InstList_SpinningTurtleEye_B386EB                          ;B386F9;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $86FB: Initialisation AI - enemy $F153 (unused spinning turtle eye) ;;;
 UNUSED_InitAI_SpinningTurtleEye_B386FB:
     LDX.W $0E54                                                          ;B386FB;
     LDA.W $0F86,X                                                        ;B386FE;
@@ -639,19 +650,23 @@ UNUSED_InitAI_SpinningTurtleEye_B386FB:
     RTL                                                                  ;B3870D;
 
 
+;;; $870E: Main AI - enemy $F153 (unused spinning turtle eye) ;;;
 UNUSED_MainAI_SpinningTurtleEye_B3870E:
     LDX.W $0E54                                                          ;B3870E;
     RTL                                                                  ;B38711;
 
 
+;;; $8712: RTL ;;;
 RTL_B38712:
     RTL                                                                  ;B38712;
 
 
+;;; $8713: RTL ;;;
 RTL_B38713:
     RTL                                                                  ;B38713;
 
 
+;;; $8714: Unused spinning turtle eye spritemaps ;;;
 UNUSED_Spritemaps_SpinningTurtleEye_0_B38714:
     dw $0001                                                             ;B38714;
     %spritemapEntry(0, $1F8, $F8, 0, 0, 3, 1, $100)
@@ -723,10 +738,13 @@ UNUSED_Spritemaps_SpinningTurtleEye_10_B38784:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $878B: Palette - enemy $F193 (zeb) ;;;
 Palette_Zeb:
     dw $3800,$021D,$0015,$0008,$0003,$00BD,$0013,$000E                   ;B3878B;
     dw $000B,$7F5A,$7EC0,$6DE0,$54E0,$03E0,$02A0,$0140                   ;B3879B;
 
+
+;;; $87AB: Instruction list - facing left - rising ;;;
 InstList_Zeb_FacingLeft_Rising:
     dw $0002,Spritemaps_Zeb_0                                            ;B387AB;
     dw $0002,Spritemaps_Zeb_1                                            ;B387AF;
@@ -739,6 +757,8 @@ InstList_Zeb_FacingLeft_Rising:
     dw Instruction_Common_GotoY                                          ;B387CB;
     dw InstList_Zeb_FacingLeft_Rising                                    ;B387CD;
 
+
+;;; $87CF: Instruction list - facing left - shooting ;;;
 InstList_Zeb_FacingLeft_Shooting:
     dw $0001,Spritemaps_Zeb_0                                            ;B387CF;
     dw $0001,Spritemaps_Zeb_1                                            ;B387D3;
@@ -749,6 +769,8 @@ InstList_Zeb_FacingLeft_Shooting:
     dw Instruction_Common_GotoY                                          ;B387E7;
     dw InstList_Zeb_FacingLeft_Shooting                                  ;B387E9;
 
+
+;;; $87EB: Instruction list - facing right - rising ;;;
 InstList_Zeb_FacingRight_Rising:
     dw $0002,Spritemaps_Zeb_5                                            ;B387EB;
     dw $0002,Spritemaps_Zeb_6                                            ;B387EF;
@@ -761,6 +783,8 @@ InstList_Zeb_FacingRight_Rising:
     dw Instruction_Common_GotoY                                          ;B3880B;
     dw InstList_Zeb_FacingRight_Rising                                   ;B3880D;
 
+
+;;; $880F: Instruction list - facing right - shooting ;;;
 InstList_Zeb_FacingRight_Shooting:
     dw $0001,Spritemaps_Zeb_5                                            ;B3880F;
     dw $0001,Spritemaps_Zeb_6                                            ;B38813;
@@ -771,18 +795,24 @@ InstList_Zeb_FacingRight_Shooting:
     dw Instruction_Common_GotoY                                          ;B38827;
     dw InstList_Zeb_FacingRight_Shooting                                 ;B38829;
 
+
+;;; $882B: Instruction list pointers - zeb ;;;
 InstListPointers_Zeb:
     dw InstList_Zeb_FacingLeft_Rising                                    ;B3882B;
     dw InstList_Zeb_FacingLeft_Shooting                                  ;B3882D;
     dw InstList_Zeb_FacingRight_Rising                                   ;B3882F;
     dw InstList_Zeb_FacingRight_Shooting                                 ;B38831;
 
+
+;;; $8833: Instruction list pointers - zebbo ;;;
 InstListPointers_Zebbo:
     dw InstList_Zebbo_FacingLeft_Rising                                  ;B38833;
     dw InstList_Zebbo_FacingLeft_Shooting                                ;B38835;
     dw InstList_Zebbo_FacingRight_Rising                                 ;B38837;
     dw InstList_Zebbo_FacingRight_Shooting                               ;B38839;
 
+
+;;; $883B: Initialisation AI - enemy $F193/$F1D3 (zeb / zebbo) ;;;
 InitAI_Zeb_Zebbo:
     LDX.W $0E54                                                          ;B3883B;
     LDA.W $0F7A,X                                                        ;B3883E;
@@ -810,11 +840,13 @@ InitAI_Zeb_Zebbo:
     RTL                                                                  ;B38879;
 
 
+;;; $887A: Main AI - enemy $F193/$F1D3 (zeb / zebbo) ;;;
 MainAI_Zeb_Zebbo:
     LDX.W $0E54                                                          ;B3887A;
     JMP.W ($0FB2,X)                                                      ;B3887D;
 
 
+;;; $8880: Zeb/zebbo function - wait until on screen ;;;
 Function_Zeb_Zebbo_WaitUntilOnScreen:
     LDX.W $0E54                                                          ;B38880;
     JSL.L CheckIfEnemyCenterIsOnScreen                                   ;B38883;
@@ -826,6 +858,7 @@ Function_Zeb_Zebbo_WaitUntilOnScreen:
     RTL                                                                  ;B3888F;
 
 
+;;; $8890: Zeb/zebbo function - wait for Samus to get near ;;;
 Function_Zeb_Zebbo_WaitForSamusToGetNear:
     JSL.L Get_SamusY_minus_EnemyY                                        ;B38890;
     BPL .return                                                          ;B38894;
@@ -849,7 +882,6 @@ Function_Zeb_Zebbo_WaitForSamusToGetNear:
   .return:
     RTL                                                                  ;B388B9;
 
-
   .close:
     LDA.W #Function_Zeb_Zebbo_Rising                                     ;B388BA;
     STA.W $0FB2,X                                                        ;B388BD;
@@ -863,7 +895,6 @@ Function_Zeb_Zebbo_WaitForSamusToGetNear:
     LDA.W #$0002                                                         ;B388D4;
     BRA +                                                                ;B388D7;
 
-
   .left:
     LDA.W #$0000                                                         ;B388D9;
 
@@ -872,6 +903,7 @@ Function_Zeb_Zebbo_WaitForSamusToGetNear:
     RTL                                                                  ;B388E2;
 
 
+;;; $88E3: Zeb/zebbo function - rising ;;;
 Function_Zeb_Zebbo_Rising:
     LDA.W #$FFFF                                                         ;B388E3;
     CLC                                                                  ;B388E6;
@@ -888,7 +920,6 @@ Function_Zeb_Zebbo_Rising:
     BCC .targetHeight                                                    ;B38905;
     BRA .return                                                          ;B38907;
 
-
   .targetHeight:
     LDA.W $0FB0,X                                                        ;B38909;
     ORA.W #$0001                                                         ;B3890C;
@@ -901,6 +932,7 @@ Function_Zeb_Zebbo_Rising:
     RTL                                                                  ;B3891B;
 
 
+;;; $891C: Zeb/zebbo function - shooting ;;;
 Function_Zeb_Zebbo_Shooting:
     BIT.W $0FA8,X                                                        ;B3891C;
     BPL .right                                                           ;B3891F;
@@ -912,7 +944,6 @@ Function_Zeb_Zebbo_Shooting:
     SBC.W #$0002                                                         ;B3892E;
     STA.W $0F7A,X                                                        ;B38931;
     BRA .checkOnScreen                                                   ;B38934;
-
 
   .right:
     LDA.W #$0000                                                         ;B38936;
@@ -927,7 +958,6 @@ Function_Zeb_Zebbo_Shooting:
     JSL.L CheckIfEnemyIsHorizontallyOffScreen                            ;B38949;
     BCS .respawn                                                         ;B3894D;
     RTL                                                                  ;B3894F;
-
 
   .respawn:
     LDA.W $0FAA,X                                                        ;B38950;
@@ -948,11 +978,11 @@ Function_Zeb_Zebbo_Shooting:
     RTL                                                                  ;B3897D;
 
 
+;;; $897E: Zeb/zebbo function - spawn delay ;;;
 Function_Zeb_Zebbo_SpawnDelay:
     DEC.W $0FAE,X                                                        ;B3897E;
     BEQ .doneWaiting                                                     ;B38981;
     RTL                                                                  ;B38983;
-
 
   .doneWaiting:
     LDA.W #Function_Zeb_Zebbo_WaitForSamusToGetNear                      ;B38984;
@@ -960,6 +990,7 @@ Function_Zeb_Zebbo_SpawnDelay:
     RTL                                                                  ;B3898A;
 
 
+;;; $898B: Set zeb/zebbo instruction list ;;;
 Set_Zeb_Zebbo_InstList:
     LDX.W $0E54                                                          ;B3898B;
     LDA.W $0FB0,X                                                        ;B3898E;
@@ -973,7 +1004,6 @@ Set_Zeb_Zebbo_InstList:
     LDA.W InstListPointers_Zeb,Y                                         ;B389A2;
     BRA +                                                                ;B389A5;
 
-
   .zebbo:
     LDA.W InstListPointers_Zebbo,Y                                       ;B389A7;
 
@@ -986,6 +1016,7 @@ Set_Zeb_Zebbo_InstList:
     RTS                                                                  ;B389B6;
 
 
+;;; $89B7: Spritemaps ;;;
 Spritemaps_Zeb_0:
     dw $0001                                                             ;B389B7;
     %spritemapEntry(1, $1F8, $F8, 0, 0, 2, 0, $100)
@@ -1027,10 +1058,13 @@ Spritemaps_Zeb_9:
     %spritemapEntry(1, $1F8, $F8, 0, 1, 2, 0, $108)
 
 
+;;; $89FD: Palette - enemy $F1D3 (zebbo) ;;;
 Palette_Zebbo:
     dw $3800,$3F95,$2E8B,$0120,$0060,$3AEE,$2249,$11A4                   ;B389FD;
     dw $0962,$39BB,$30F5,$2C6E,$2827,$7F93,$6ECE,$6229                   ;B38A0D;
 
+
+;;; $8A1D: Instruction list - facing left - rising ;;;
 InstList_Zebbo_FacingLeft_Rising:
     dw $0002,Spritemaps_Zebbo_3                                          ;B38A1D;
     dw $0001,Spritemaps_Zebbo_4                                          ;B38A21;
@@ -1039,6 +1073,8 @@ InstList_Zebbo_FacingLeft_Rising:
     dw Instruction_Common_GotoY                                          ;B38A2D;
     dw InstList_Zebbo_FacingLeft_Rising                                  ;B38A2F;
 
+
+;;; $8A31: Instruction list - facing left - shooting ;;;
 InstList_Zebbo_FacingLeft_Shooting:
     dw $0003,Spritemaps_Zebbo_0                                          ;B38A31;
     dw $0003,Spritemaps_Zebbo_1                                          ;B38A35;
@@ -1047,6 +1083,8 @@ InstList_Zebbo_FacingLeft_Shooting:
     dw Instruction_Common_GotoY                                          ;B38A41;
     dw InstList_Zebbo_FacingLeft_Shooting                                ;B38A43;
 
+
+;;; $8A45: Instruction list - facing right - rising ;;;
 InstList_Zebbo_FacingRight_Rising:
     dw $0002,Spritemaps_Zebbo_9                                          ;B38A45;
     dw $0001,Spritemaps_Zebbo_A                                          ;B38A49;
@@ -1055,6 +1093,8 @@ InstList_Zebbo_FacingRight_Rising:
     dw Instruction_Common_GotoY                                          ;B38A55;
     dw InstList_Zebbo_FacingRight_Rising                                 ;B38A57;
 
+
+;;; $8A59: Instruction list - facing right - shooting ;;;
 InstList_Zebbo_FacingRight_Shooting:
     dw $0003,Spritemaps_Zebbo_6                                          ;B38A59;
     dw $0003,Spritemaps_Zebbo_7                                          ;B38A5D;
@@ -1063,6 +1103,8 @@ InstList_Zebbo_FacingRight_Shooting:
     dw Instruction_Common_GotoY                                          ;B38A69;
     dw InstList_Zebbo_FacingRight_Shooting                               ;B38A6B;
 
+
+;;; $8A6D: Spritemaps ;;;
 Spritemaps_Zebbo_0:
     dw $0001                                                             ;B38A6D;
     %spritemapEntry(1, $1F8, $F8, 0, 0, 2, 0, $100)
@@ -1112,10 +1154,13 @@ Spritemaps_Zebbo_B:
     %spritemapEntry(1, $1F8, $F8, 0, 1, 2, 0, $10A)
 
 
+;;; $8AC1: Palette - enemy $F213 (gamet) ;;;
 Palette_Gamet:
     dw $3800,$021D,$0015,$0008,$0003,$015F,$0076,$0050                   ;B38AC1;
     dw $000B,$7FFF,$56E0,$3180,$18C0,$43FF,$42DC,$4176                   ;B38AD1;
 
+
+;;; $8AE1: Instruction list - facing left - rising ;;;
 InstList_Gamet_FacingLeft_Rising:
     dw $0002,Spritemaps_Gamet_0                                          ;B38AE1;
     dw $0002,Spritemaps_Gamet_1                                          ;B38AE5;
@@ -1128,6 +1173,8 @@ InstList_Gamet_FacingLeft_Rising:
     dw Instruction_Common_GotoY                                          ;B38B01;
     dw InstList_Gamet_FacingLeft_Rising                                  ;B38B03;
 
+
+;;; $8B05: Instruction list - facing left - shooting ;;;
 InstList_Gamet_FacingLeft_Shooting:
     dw $0001,Spritemaps_Gamet_0                                          ;B38B05;
     dw $0001,Spritemaps_Gamet_1                                          ;B38B09;
@@ -1138,6 +1185,8 @@ InstList_Gamet_FacingLeft_Shooting:
     dw Instruction_Common_GotoY                                          ;B38B1D;
     dw InstList_Gamet_FacingLeft_Shooting                                ;B38B1F;
 
+
+;;; $8B21: Instruction list - facing right - rising ;;;
 InstList_Gamet_FacingRight_Rising:
     dw $0002,Spritemaps_Gamet_5                                          ;B38B21;
     dw $0002,Spritemaps_Gamet_6                                          ;B38B25;
@@ -1150,6 +1199,8 @@ InstList_Gamet_FacingRight_Rising:
     dw Instruction_Common_GotoY                                          ;B38B41;
     dw InstList_Gamet_FacingRight_Rising                                 ;B38B43;
 
+
+;;; $8B45: Instruction list - facing right - shooting ;;;
 InstList_Gamet_FacingRight_Shooting:
     dw $0001,Spritemaps_Gamet_5                                          ;B38B45;
     dw $0001,Spritemaps_Gamet_6                                          ;B38B49;
@@ -1160,6 +1211,8 @@ InstList_Gamet_FacingRight_Shooting:
     dw Instruction_Common_GotoY                                          ;B38B5D;
     dw InstList_Gamet_FacingRight_Shooting                               ;B38B5F;
 
+
+;;; $8B61: Initialisation AI - enemy $F213 (gamet) ;;;
 InitAI_Gamet:
     LDX.W $0E54                                                          ;B38B61;
     LDA.W $0F7A,X                                                        ;B38B64;
@@ -1186,6 +1239,7 @@ InitAI_Gamet:
     RTL                                                                  ;B38B9D;
 
 
+;;; $8B9E: Main AI - enemy $F213 (gamet) ;;;
 MainAI_Gamet:
     LDX.W $0E54                                                          ;B38B9E;
     JSR.W ($0FA8,X)                                                      ;B38BA1;
@@ -1193,6 +1247,7 @@ MainAI_Gamet:
     RTL                                                                  ;B38BA7;
 
 
+;;; $8BA8: Reset enemy if off-screen ;;;
 ResetEnemyIfOffScreen:
     LDX.W $0E54                                                          ;B38BA8;
     JSL.L CheckIfEnemyCenterIsOnScreen                                   ;B38BAB;
@@ -1211,6 +1266,7 @@ ResetEnemyIfOffScreen:
     RTS                                                                  ;B38BCC;
 
 
+;;; $8BCD: Gamet function - wait until everyone's ready ;;;
 Function_Gamet_WaitUntilAllReady:
     LDX.W $0E54                                                          ;B38BCD;
     LDA.W $0FB6,X                                                        ;B38BD0;
@@ -1235,6 +1291,7 @@ Function_Gamet_WaitUntilAllReady:
     RTS                                                                  ;B38BFE;
 
 
+;;; $8BFF: Gamet function - wait for Samus to get near ;;;
 Function_Gamet_WaitForSamusToGetNear:
     LDX.W $0E54                                                          ;B38BFF;
     LDA.W $0FB6,X                                                        ;B38C02;
@@ -1258,7 +1315,6 @@ Function_Gamet_WaitForSamusToGetNear:
     STA.W $1092,X                                                        ;B38C37;
     BRA .setupFormation                                                  ;B38C3A;
 
-
   .facingRight:
     LDA.W #InstList_Gamet_FacingRight_Rising                             ;B38C3C;
     STA.W $0F92,X                                                        ;B38C3F;
@@ -1274,6 +1330,7 @@ Function_Gamet_WaitForSamusToGetNear:
     RTS                                                                  ;B38C51;
 
 
+;;; $8C52: Set up Gamet formation ;;;
 SetupGametFormation:
     LDA.W #Function_Gamet_Rising                                         ;B38C52;
     STA.W $0FA8,X                                                        ;B38C55;
@@ -1304,6 +1361,7 @@ SetupGametFormation:
     RTS                                                                  ;B38CA5;
 
 
+;;; $8CA6: Gamet function - rising ;;;
 Function_Gamet_Rising:
     LDX.W $0E54                                                          ;B38CA6;
     LDA.W $0F86,X                                                        ;B38CA9;
@@ -1337,7 +1395,6 @@ Function_Gamet_Rising:
     STA.W $0F92,X                                                        ;B38CF3;
     BRA .return                                                          ;B38CF6;
 
-
   .facingRight:
     LDA.W #InstList_Gamet_FacingRight_Rising                             ;B38CF8;
     STA.W $0F92,X                                                        ;B38CFB;
@@ -1346,6 +1403,7 @@ Function_Gamet_Rising:
     RTS                                                                  ;B38CFE;
 
 
+;;; $8CFF: Gamet function - move to formation - center ;;;
 Function_Gamet_MoveToFormation_Center:
     LDX.W $0E54                                                          ;B38CFF;
     INC.W $0FAC,X                                                        ;B38D02;
@@ -1354,6 +1412,7 @@ Function_Gamet_MoveToFormation_Center:
     RTS                                                                  ;B38D0B;
 
 
+;;; $8D0C: Gamet function - move to formation - upper middle ;;;
 Function_Gamet_MoveToFormation_UpperMiddle:
     LDX.W $0E54                                                          ;B38D0C;
     INC.W $0FAC,X                                                        ;B38D0F;
@@ -1386,6 +1445,7 @@ Function_Gamet_MoveToFormation_UpperMiddle:
     RTS                                                                  ;B38D4D;
 
 
+;;; $8D4E: Gamet function - move to formation - top ;;;
 Function_Gamet_MoveToFormation_Top:
     LDX.W $0E54                                                          ;B38D4E;
     INC.W $0FAC,X                                                        ;B38D51;
@@ -1418,6 +1478,7 @@ Function_Gamet_MoveToFormation_Top:
     RTS                                                                  ;B38D8F;
 
 
+;;; $8D90: Gamet function - move to formation - lower middle ;;;
 Function_Gamet_MoveToFormation_LowerMiddle:
     LDX.W $0E54                                                          ;B38D90;
     INC.W $0FAC,X                                                        ;B38D93;
@@ -1450,6 +1511,7 @@ Function_Gamet_MoveToFormation_LowerMiddle:
     RTS                                                                  ;B38DD1;
 
 
+;;; $8DD2: Gamet function - move to formation - bottom ;;;
 Function_Gamet_MoveToFormation_Bottom:
     LDX.W $0E54                                                          ;B38DD2;
     INC.W $0FAC,X                                                        ;B38DD5;
@@ -1482,6 +1544,7 @@ Function_Gamet_MoveToFormation_Bottom:
     RTS                                                                  ;B38E13;
 
 
+;;; $8E14: Gamet function - shooting left ;;;
 Function_Gamet_ShootingLeft:
     LDX.W $0E54                                                          ;B38E14;
     LDA.W $0FAA,X                                                        ;B38E17;
@@ -1500,6 +1563,7 @@ Function_Gamet_ShootingLeft:
     RTS                                                                  ;B38E34;
 
 
+;;; $8E35: Gamet function - shooting right ;;;
 Function_Gamet_ShootingRight:
     LDX.W $0E54                                                          ;B38E35;
     LDA.W $0FAA,X                                                        ;B38E38;
@@ -1519,12 +1583,14 @@ Function_Gamet_ShootingRight:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $8E56: Unused. RTS ;;;
 UNUSED_LoadEnemyIndex_B38E56:
     LDX.W $0E54                                                          ;B38E56;
     RTS                                                                  ;B38E59;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $8E5A: Gamet function - shoot delay ;;;
 Function_Gamet_ShootDelay:
     LDX.W $0E54                                                          ;B38E5A;
     INC.W $0FAC,X                                                        ;B38E5D;
@@ -1550,14 +1616,17 @@ Function_Gamet_ShootDelay:
     RTS                                                                  ;B38E93;
 
 
+;;; $8E94: RTL ;;;
 RTL_B38E94:
     RTL                                                                  ;B38E94;
 
 
+;;; $8E95: RTL ;;;
 RTL_B38E95:
     RTL                                                                  ;B38E95;
 
 
+;;; $8E96: Spritemaps ;;;
 Spritemaps_Gamet_0:
     dw $0001                                                             ;B38E96;
     %spritemapEntry(1, $1F8, $F8, 0, 0, 2, 0, $100)
@@ -1599,10 +1668,13 @@ Spritemaps_Gamet_9:
     %spritemapEntry(1, $1F8, $F8, 0, 1, 2, 0, $108)
 
 
+;;; $8EDC: Palette - enemy $F253 (geega) ;;;
 Palette_Geega:
     dw $3800,$57FF,$42F7,$158C,$00A5,$4F5A,$36B5,$2610                   ;B38EDC;
     dw $1DCE,$3FE0,$2EE0,$2200,$1100,$7E5B,$552F,$2887                   ;B38EEC;
 
+
+;;; $8EFC: Instruction list - facing left - rising ;;;
 InstList_Geega_FacingLeft_Rising:
     dw $0004,Spritemaps_Geega_0                                          ;B38EFC;
     dw $0004,Spritemaps_Geega_1                                          ;B38F00;
@@ -1611,6 +1683,8 @@ InstList_Geega_FacingLeft_Rising:
     dw Instruction_Common_GotoY                                          ;B38F0C;
     dw InstList_Geega_FacingLeft_Rising                                  ;B38F0E;
 
+
+;;; $8F10: Instruction list - facing left - shooting ;;;
 InstList_Geega_FacingLeft_Shooting:
     dw $0001,Spritemaps_Geega_3                                          ;B38F10;
     dw $0001,Spritemaps_Geega_4                                          ;B38F14;
@@ -1619,6 +1693,8 @@ InstList_Geega_FacingLeft_Shooting:
     dw Instruction_Common_GotoY                                          ;B38F20;
     dw InstList_Geega_FacingLeft_Shooting                                ;B38F22;
 
+
+;;; $8F24: Instruction list - facing right - rising ;;;
 InstList_Geega_FacingRight_Rising:
     dw $0004,Spritemaps_Geega_6                                          ;B38F24;
     dw $0004,Spritemaps_Geega_7                                          ;B38F28;
@@ -1627,6 +1703,8 @@ InstList_Geega_FacingRight_Rising:
     dw Instruction_Common_GotoY                                          ;B38F34;
     dw InstList_Geega_FacingRight_Rising                                 ;B38F36;
 
+
+;;; $8F38: Instruction list - facing right - shooting ;;;
 InstList_Geega_FacingRight_Shooting:
     dw $0001,Spritemaps_Geega_9                                          ;B38F38;
     dw $0001,Spritemaps_Geega_A                                          ;B38F3C;
@@ -1635,6 +1713,8 @@ InstList_Geega_FacingRight_Shooting:
     dw Instruction_Common_GotoY                                          ;B38F48;
     dw InstList_Geega_FacingRight_Shooting                               ;B38F4A;
 
+
+;;; $8F4C: Initialisation AI - enemy $F253 (geega) ;;;
 InitAI_Geega:
     LDX.W $0E54                                                          ;B38F4C;
     LDA.W $0F7A,X                                                        ;B38F4F;
@@ -1673,12 +1753,14 @@ InitAI_Geega:
     RTL                                                                  ;B38FAD;
 
 
+;;; $8FAE: Main AI - enemy $F253 (geega) ;;;
 MainAI_Geega:
     LDX.W $0E54                                                          ;B38FAE;
     JSR.W ($0FA8,X)                                                      ;B38FB1;
     RTL                                                                  ;B38FB4;
 
 
+;;; $8FB5: Geega function - wait for Samus to get near ;;;
 Function_Geega_WaitForSamusToGetNear:
     LDX.W $0E54                                                          ;B38FB5;
     LDA.W $0FB4,X                                                        ;B38FB8;
@@ -1688,7 +1770,6 @@ Function_Geega_WaitForSamusToGetNear:
     CMP.W #$00C0                                                         ;B38FC3;
     BPL .return                                                          ;B38FC6;
     BRA +                                                                ;B38FC8;
-
 
   .leftwards:
     JSL.L Get_SamusX_minus_EnemyX                                        ;B38FCA;
@@ -1711,13 +1792,13 @@ Function_Geega_WaitForSamusToGetNear:
     RTS                                                                  ;B38FF4;
 
 
+;;; $8FF5: Geega function - shoot delay ;;;
 Function_Geega_ShootDelay:
     LDA.L $7E8000,X                                                      ;B38FF5;
     DEC A                                                                ;B38FF9;
     STA.L $7E8000,X                                                      ;B38FFA;
     BEQ .timerExpired                                                    ;B38FFE;
     RTS                                                                  ;B39000;
-
 
   .timerExpired:
     LDA.W #$0001                                                         ;B39001;
@@ -1738,6 +1819,7 @@ Function_Geega_ShootDelay:
     RTS                                                                  ;B39027;
 
 
+;;; $9028: Geega function - shooting left ;;;
 Function_Geega_ShootingLeft:
     LDX.W $0E54                                                          ;B39028;
     JSR.W MoveGeegaLeft                                                  ;B3902B;
@@ -1757,7 +1839,6 @@ Function_Geega_ShootingLeft:
     ORA.W #$0100                                                         ;B39058;
     STA.W $0F86,X                                                        ;B3905B;
     BRA .return                                                          ;B3905E;
-
 
   .onScreen:
     LDA.L $7E780C,X                                                      ;B39060;
@@ -1787,6 +1868,7 @@ Function_Geega_ShootingLeft:
     RTS                                                                  ;B390A0;
 
 
+;;; $90A1: Move geega left ;;;
 MoveGeegaLeft:
     LDA.W $0F7C,X                                                        ;B390A1;
     CLC                                                                  ;B390A4;
@@ -1802,6 +1884,7 @@ MoveGeegaLeft:
     RTS                                                                  ;B390BC;
 
 
+;;; $90BD: Geega function - shooting right ;;;
 Function_Geega_ShootingRight:
     LDX.W $0E54                                                          ;B390BD;
     JSR.W MoveGeegaRight                                                 ;B390C0;
@@ -1821,7 +1904,6 @@ Function_Geega_ShootingRight:
     ORA.W #$0100                                                         ;B390ED;
     STA.W $0F86,X                                                        ;B390F0;
     BRA .return                                                          ;B390F3;
-
 
   .onScreen:
     LDA.L $7E780C,X                                                      ;B390F5;
@@ -1853,6 +1935,7 @@ Function_Geega_ShootingRight:
     RTS                                                                  ;B39139;
 
 
+;;; $913A: Move geega right ;;;
 MoveGeegaRight:
     LDA.W $0FAA,X                                                        ;B3913A;
     TAY                                                                  ;B3913D;
@@ -1870,6 +1953,7 @@ MoveGeegaRight:
     RTS                                                                  ;B39159;
 
 
+;;; $915A: Geega function - dipping left ;;;
 Function_Geega_DippingLeft:
     LDX.W $0E54                                                          ;B3915A;
     JSL.L CheckIfEnemyCenterIsOnScreen                                   ;B3915D;
@@ -1894,7 +1978,6 @@ Function_Geega_DippingLeft:
     STA.W $0F86,X                                                        ;B39199;
     JMP.W .return                                                        ;B3919C;
 
-
   .onScreen:
     JSR.W MoveGeegaLeft                                                  ;B3919F;
     LDA.W $0FB2,X                                                        ;B391A2;
@@ -1915,7 +1998,6 @@ Function_Geega_DippingLeft:
     STA.W $0F92,X                                                        ;B391CF;
     BRA .return                                                          ;B391D2;
 
-
   .moveDown:
     JSR.W MoveGeegaDown                                                  ;B391D4;
 
@@ -1923,6 +2005,7 @@ Function_Geega_DippingLeft:
     RTS                                                                  ;B391D7;
 
 
+;;; $91D8: Geega function - dipping right ;;;
 Function_Geega_DippingRight:
     LDX.W $0E54                                                          ;B391D8;
     JSL.L CheckIfEnemyCenterIsOnScreen                                   ;B391DB;
@@ -1947,7 +2030,6 @@ Function_Geega_DippingRight:
     STA.W $0F86,X                                                        ;B39217;
     JMP.W .return                                                        ;B3921A;
 
-
   .onScreen:
     JSR.W MoveGeegaRight                                                 ;B3921D;
     LDA.W $0FB2,X                                                        ;B39220;
@@ -1968,7 +2050,6 @@ Function_Geega_DippingRight:
     STA.W $0FA8,X                                                        ;B3924D;
     BRA .return                                                          ;B39250;
 
-
   .moveDown:
     JSR.W MoveGeegaDown                                                  ;B39252;
 
@@ -1976,6 +2057,7 @@ Function_Geega_DippingRight:
     RTS                                                                  ;B39255;
 
 
+;;; $9256: Move geega up ;;;
 MoveGeegaUp:
     INC.W $0FB0,X                                                        ;B39256;
     LDA.W $0FB0,X                                                        ;B39259;
@@ -1997,6 +2079,7 @@ MoveGeegaUp:
     RTS                                                                  ;B39279;
 
 
+;;; $927A: Move geega down ;;;
 MoveGeegaDown:
     DEC.W $0FB0,X                                                        ;B3927A;
     BPL +                                                                ;B3927D;
@@ -2004,7 +2087,6 @@ MoveGeegaDown:
     STA.W $0FB0,X                                                        ;B39282;
     STA.W $0FB2,X                                                        ;B39285;
     BRA .return                                                          ;B39288;
-
 
 +   LDA.W $0FB0,X                                                        ;B3928A;
     ASL A                                                                ;B3928D;
@@ -2027,14 +2109,17 @@ MoveGeegaDown:
     RTS                                                                  ;B392AA;
 
 
+;;; $92AB: RTL ;;;
 RTL_B392AB:
     RTL                                                                  ;B392AB;
 
 
+;;; $92AC: RTL ;;;
 RTL_B392AC:
     RTL                                                                  ;B392AC;
 
 
+;;; $92AD: Spritemaps ;;;
 Spritemaps_Geega_0:
     dw $0001                                                             ;B392AD;
     %spritemapEntry(1, $43F8, $F8, 0, 0, 2, 0, $100)
@@ -2085,6 +2170,7 @@ Spritemaps_Geega_B:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9301: Unused. Spritemap pointers ;;;
 UNUSED_SpritemapPointers_Geega_B39301:
     dw Spritemaps_Geega_0                                                ;B39301;
     dw Spritemaps_Geega_1                                                ;B39303;
@@ -2100,64 +2186,90 @@ UNUSED_SpritemapPointers_Geega_B39301:
     dw Spritemaps_Geega_B                                                ;B39317;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $9319: Palette - enemy $F293 (Botwoon) ;;;
 Palette_Botwoon:
     dw $0000,$27E9,$1A66,$1585,$0CA3,$3F9C,$2E97,$1D72                   ;B39319;
     dw $108E,$0A5F,$09DB,$0956,$08D2,$082C,$7FBD,$0C05                   ;B39329;
 
+
+;;; $9339: Unused. Instruction list - mouth closed - aiming up (facing left) ;;;
 InstList_Botwoon_MouthClosed_AimingUp_FacingLeft:
     dw Instruction_Botwoon_EnemyRadius_8x10                              ;B39339;
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority2_AimingUp_FacingLeft ;B3933B;
     dw Instruction_Common_Sleep                                          ;B3933F;
 
+
+;;; $9341: Instruction list - mouth closed - aiming up-left ;;;
 InstList_Botwoon_MouthClosed_AimingUpLeft:
     dw Instruction_Botwoon_EnemyRadius_CxC                               ;B39341;
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority2_AimingUpLeft       ;B39343;
     dw Instruction_Common_Sleep                                          ;B39347;
 
+
+;;; $9349: Instruction list - mouth closed - aiming left ;;;
 InstList_Botwoon_MouthClosed_AimingLeft:
     dw Instruction_Botwoon_EnemyRadius_10x8                              ;B39349;
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority2_AimingLeft         ;B3934B;
     dw Instruction_Common_Sleep                                          ;B3934F;
 
+
+;;; $9351: Instruction list - mouth closed - aiming down-left ;;;
 InstList_Botwoon_MouthClosed_AimingDownLeft:
     dw Instruction_Botwoon_EnemyRadius_CxC_duplicate                     ;B39351;
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority2_AimingDownLeft     ;B39353;
     dw Instruction_Common_Sleep                                          ;B39357;
 
+
+;;; $9359: Unused. Instruction list - mouth closed - aiming down (facing left) ;;;
 UNSUED_InstList_Botwoon_MouthClosed_AimDown_FaceLeft_B39359:
     dw Instruction_Botwoon_EnemyRadius_8x10_duplicate                    ;B39359;
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority2_AimDown_FacingLeft ;B3935B;
     dw Instruction_Common_Sleep                                          ;B3935F;
 
+
+;;; $9361: Instruction list - mouth closed - aiming down (facing right) ;;;
 InstList_Botwoon_MouthClosed_AimingDown_FacingRight:
     dw Instruction_Botwoon_EnemyRadius_8x10_duplicate_again              ;B39361;
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority2_AimDown_FacingRight ;B39363;
     dw Instruction_Common_Sleep                                          ;B39367;
 
+
+;;; $9369: Instruction list - mouth closed - aiming down-right ;;;
 InstList_Botwoon_MouthClosed_AimingDownRight:
     dw Instruction_Botwoon_EnemyRadius_CxC_duplicate_again               ;B39369;
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority2_AimingDownRight    ;B3936B;
     dw Instruction_Common_Sleep                                          ;B3936F;
 
+
+;;; $9371: Instruction list - mouth closed - aiming right ;;;
 InstList_Botwoon_MouthClosed_AimingRight:
     dw Instruction_Botwoon_EnemyRadius_10x8_duplicate                    ;B39371;
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority2_AimingRight        ;B39373;
     dw Instruction_Common_Sleep                                          ;B39377;
 
+
+;;; $9379: Instruction list - mouth closed - aiming up-right ;;;
 InstList_Botwoon_MouthClosed_AimingUpRight:
     dw Instruction_Botwoon_EnemyRadius_CxC_duplicate_again2              ;B39379;
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority2_AimingUpRight      ;B3937B;
     dw Instruction_Common_Sleep                                          ;B3937F;
 
+
+;;; $9381: Instruction list - mouth closed - aiming up (facing right) ;;;
 InstList_Botwoon_MouthClosed_AimingUp_FacingRight:
     dw Instruction_Botwoon_EnemyRadius_8x10_duplicate_again2             ;B39381;
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority2_AimUp_FacingRight  ;B39383;
     dw Instruction_Common_Sleep                                          ;B39387;
 
+
+;;; $9389: Instruction list - hide ;;;
 InstList_Botwoon_Hide:
     dw $0001,Spritemap_Common_Nothing                                    ;B39389;
     dw Instruction_Common_Sleep                                          ;B3938D;
 
+
+;;; $938F: Unused. Instruction list - spit - aiming up (facing left) ;;;
 UNSUED_InstList_Botwoon_Spit_AimingUp_FacingLeft:
     dw $0020,Spritemaps_Botwoon_MouthClosed_Priority2_AimingUp_FacingLeft ;B3938F;
     dw Instruction_Botwoon_EnemyRadius_8x10                              ;B39393;
@@ -2166,6 +2278,8 @@ UNSUED_InstList_Botwoon_Spit_AimingUp_FacingLeft:
     dw $0010,Spritemaps_Botwoon_MouthOpen_Priority2_AimingUp_FacingLeft  ;B39399;
     dw Instruction_Common_Sleep                                          ;B3939D;
 
+
+;;; $939F: Instruction list - spit - aiming up-left ;;;
 InstList_Botwoon_Spit_AimingUpLeft:
     dw $0020,Spritemaps_Botwoon_MouthClosed_Priority2_AimingUpLeft       ;B3939F;
     dw Instruction_Botwoon_EnemyRadius_CxC                               ;B393A3;
@@ -2174,6 +2288,8 @@ InstList_Botwoon_Spit_AimingUpLeft:
     dw $0010,Spritemaps_Botwoon_MouthOpen_Priority2_AimingUpLeft         ;B393A9;
     dw Instruction_Common_Sleep                                          ;B393AD;
 
+
+;;; $93AF: Instruction list - spit - aiming left ;;;
 InstList_Botwoon_Spit_AimingLeft:
     dw $0020,Spritemaps_Botwoon_MouthClosed_Priority2_AimingLeft         ;B393AF;
     dw Instruction_Botwoon_EnemyRadius_10x8                              ;B393B3;
@@ -2182,6 +2298,8 @@ InstList_Botwoon_Spit_AimingLeft:
     dw $0019,Spritemaps_Botwoon_MouthOpen_Priority2_AimingLeft           ;B393B9;
     dw Instruction_Common_Sleep                                          ;B393BD;
 
+
+;;; $93BF: Instruction list - spit - aiming down-left ;;;
 InstList_Botwoon_Spit_AimingDownLeft:
     dw $0020,Spritemaps_Botwoon_MouthClosed_Priority2_AimingDownLeft     ;B393BF;
     dw Instruction_Botwoon_EnemyRadius_CxC_duplicate                     ;B393C3;
@@ -2190,7 +2308,9 @@ InstList_Botwoon_Spit_AimingDownLeft:
     dw $0010,Spritemaps_Botwoon_MouthOpen_Priority2_AimingDownLeft       ;B393C9;
     dw Instruction_Common_Sleep                                          ;B393CD;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $93CF: Unused. Instruction list - spit - aiming down (facing left) ;;;
 UNUSED_InstList_Botwoon_Spit_AimingDown_FacingLeft_B393CF:
     dw $0020,Spritemaps_Botwoon_MouthClosed_Priority2_AimDown_FacingLeft ;B393CF;
     dw Instruction_Botwoon_EnemyRadius_8x10_duplicate                    ;B393D3;
@@ -2200,6 +2320,8 @@ UNUSED_InstList_Botwoon_Spit_AimingDown_FacingLeft_B393CF:
     dw Instruction_Common_Sleep                                          ;B393DD;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $93DF: Instruction list - spit - aiming down (facing right) ;;;
 InstList_Botwoon_Spit_AimingDown_FacingRight:
     dw $0020,Spritemaps_Botwoon_MouthClosed_Priority2_AimDown_FacingRight ;B393DF;
     dw Instruction_Botwoon_EnemyRadius_8x10_duplicate_again              ;B393E3;
@@ -2208,6 +2330,8 @@ InstList_Botwoon_Spit_AimingDown_FacingRight:
     dw $0010,Spritemaps_Botwoon_MouthOpen_Priority2_AimDown_FacingRight  ;B393E9;
     dw Instruction_Common_Sleep                                          ;B393ED;
 
+
+;;; $93EF: Instruction list - spit - aiming down-right ;;;
 InstList_Botwoon_Spit_AimingDownRight:
     dw $0020,Spritemaps_Botwoon_MouthClosed_Priority2_AimingDownRight    ;B393EF;
     dw Instruction_Botwoon_EnemyRadius_CxC_duplicate_again               ;B393F3;
@@ -2216,6 +2340,8 @@ InstList_Botwoon_Spit_AimingDownRight:
     dw $0010,Spritemaps_Botwoon_MouthOpen_Priority2_AimingDownRight      ;B393F9;
     dw Instruction_Common_Sleep                                          ;B393FD;
 
+
+;;; $93FF: Instruction list - spit - aiming right ;;;
 InstList_Botwoon_Spit_AimingRight:
     dw $0020,Spritemaps_Botwoon_MouthClosed_Priority2_AimingRight        ;B393FF;
     dw Instruction_Botwoon_EnemyRadius_10x8_duplicate                    ;B39403;
@@ -2224,6 +2350,8 @@ InstList_Botwoon_Spit_AimingRight:
     dw $0010,Spritemaps_Botwoon_MouthOpen_Priority2_AimingRight          ;B39409;
     dw Instruction_Common_Sleep                                          ;B3940D;
 
+
+;;; $940F: Instruction list - spit - aiming up-right ;;;
 InstList_Botwoon_Spit_AimingUpRight:
     dw $0020,Spritemaps_Botwoon_MouthClosed_Priority2_AimingUpRight      ;B3940F;
     dw Instruction_Botwoon_EnemyRadius_CxC_duplicate_again2              ;B39413;
@@ -2232,6 +2360,8 @@ InstList_Botwoon_Spit_AimingUpRight:
     dw $0010,Spritemaps_Botwoon_MouthOpen_Priority2_AimingUpRight        ;B39419;
     dw Instruction_Common_Sleep                                          ;B3941D;
 
+
+;;; $941F: Instruction list - spit - aiming up (facing right) ;;;
 InstList_Botwoon_Spit_AimingUp_FacingRight:
     dw $0020,Spritemaps_Botwoon_MouthClosed_Priority2_AimUp_FacingRight  ;B3941F;
     dw Instruction_Botwoon_EnemyRadius_8x10_duplicate_again2             ;B39423;
@@ -2240,50 +2370,72 @@ InstList_Botwoon_Spit_AimingUp_FacingRight:
     dw $0010,Spritemaps_Botwoon_MouthOpen_Priority2_AimingUp_FacingRight ;B39429;
     dw Instruction_Common_Sleep                                          ;B3942D;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $942F: Unused. Instruction list - hidden - aiming up (facing left) ;;;
 UNUSED_InstList_Botwoon_Hidden_AimingUp_FacingLeft_B3942F:
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority0_AimingUp_FacingLeft ;B3942F;
     dw Instruction_Common_Sleep                                          ;B39433;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $9435: Instruction list - hidden - aiming up-left ;;;
 InstList_Botwoon_Hidden_AimingUpLeft:
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority0_AimingUpLeft       ;B39435;
     dw Instruction_Common_Sleep                                          ;B39439;
 
+
+;;; $943B: Instruction list - hidden - aiming left ;;;
 InstList_Botwoon_Hidden_AimingLeft:
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority0_AimingLeft         ;B3943B;
     dw Instruction_Common_Sleep                                          ;B3943F;
 
+
+;;; $9441: Instruction list - hidden - aiming down-left ;;;
 InstList_Botwoon_Hidden_AimingDownLeft:
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority0_AimingDownLeft     ;B39441;
     dw Instruction_Common_Sleep                                          ;B39445;
 
+
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9447: Unused. Instruction list - hidden - aiming down (facing left) ;;;
 UNUSED_InstList_Botwoon_Hidden_AimingDown_FacingLeft_B39447:
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority0_AimDown_FacingLeft ;B39447;
     dw Instruction_Common_Sleep                                          ;B3944B;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $944D: Instruction list - hidden - aiming down (facing right) ;;;
 InstList_Botwoon_Hidden_AimingDown_FacingRight:
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority0_AimDown_FacingRight ;B3944D;
     dw Instruction_Common_Sleep                                          ;B39451;
 
+
+;;; $9453: Instruction list - hidden - aiming down-right ;;;
 InstList_Botwoon_Hidden_AimingDownRight:
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority0_AimingDownRight    ;B39453;
     dw Instruction_Common_Sleep                                          ;B39457;
 
+
+;;; $9459: Instruction list - hidden - aiming right ;;;
 InstList_Botwoon_Hidden_AimingRight:
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority0_AimingRight        ;B39459;
     dw Instruction_Common_Sleep                                          ;B3945D;
 
+
+;;; $945F: Instruction list - hidden - aiming up-right ;;;
 InstList_Botwoon_Hidden_AimingUpRight:
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority0_AimingUpRight      ;B3945F;
     dw Instruction_Common_Sleep                                          ;B39463;
 
+
+;;; $9465: Instruction list - hidden - aiming up (facing right) ;;;
 InstList_Botwoon_Hidden_AimingUp_FacingRight:
     dw $0001,Spritemaps_Botwoon_MouthClosed_Priority0_AimUp_FacingRight  ;B39465;
     dw Instruction_Common_Sleep                                          ;B39469;
 
+
+;;; $946B: Botwoon instruction list pointers ;;;
 InstListPointers_Botwoon:
     dw InstList_Botwoon_MouthClosed_AimingUp_FacingRight                 ;B3946B;
     dw InstList_Botwoon_MouthClosed_AimingUpRight                        ;B3946D;
@@ -2312,13 +2464,14 @@ InstListPointers_Botwoon_spit:
     dw InstList_Botwoon_Spit_AimingLeft                                  ;B39497;
     dw InstList_Botwoon_Spit_AimingUpLeft                                ;B39499;
 
+
+;;; $949B: Botwoon hole hitboxes ;;;
 BotwoonHoleHitboxes:
 ;        _____________________ Left boundary
 ;       |      _______________ Right boundary
 ;       |     |      _________ Top boundary
 ;       |     |     |      ___ Bottom boundary
 ;       |     |     |     |
-
   .leftBoundary:
     dw $003C                                                             ;B3949B;
   .rightBoundary:
@@ -2331,6 +2484,8 @@ BotwoonHoleHitboxes:
     dw $009C,$00A4,$005C,$0064 ; Top
     dw $00DC,$00E4,$008C,$0094 ; Right
 
+
+;;; $94BB: Botwoon speed table ;;;
 BotwoonSpeedTable:
 ; Indexed by $7E:803E. Used for both Botwoon movement and spit projectile movement
 
@@ -2344,6 +2499,8 @@ BotwoonSpeedTable:
     dw $0003,$0010 ; 25% <= health < 50%
     dw $0004,$000C ; Health < 25%
 
+
+;;; $94C7: Instruction - enemy radius = 8 x 10h ;;;
 Instruction_Botwoon_EnemyRadius_8x10:
     LDX.W $0E54                                                          ;B394C7;
     LDA.W #$0008                                                         ;B394CA;
@@ -2353,6 +2510,7 @@ Instruction_Botwoon_EnemyRadius_8x10:
     RTL                                                                  ;B394D6;
 
 
+;;; $94D7: Instruction - enemy radius = Ch x Ch ;;;
 Instruction_Botwoon_EnemyRadius_CxC:
     LDX.W $0E54                                                          ;B394D7;
     LDA.W #$000C                                                         ;B394DA;
@@ -2362,6 +2520,7 @@ Instruction_Botwoon_EnemyRadius_CxC:
     RTL                                                                  ;B394E6;
 
 
+;;; $94E7: Instruction - enemy radius = 10h x 8 ;;;
 Instruction_Botwoon_EnemyRadius_10x8:
     LDX.W $0E54                                                          ;B394E7;
     LDA.W #$0010                                                         ;B394EA;
@@ -2371,6 +2530,7 @@ Instruction_Botwoon_EnemyRadius_10x8:
     RTL                                                                  ;B394F6;
 
 
+;;; $94F7: Instruction - enemy radius = Ch x Ch ;;;
 Instruction_Botwoon_EnemyRadius_CxC_duplicate:
     LDX.W $0E54                                                          ;B394F7;
     LDA.W #$000C                                                         ;B394FA;
@@ -2380,6 +2540,7 @@ Instruction_Botwoon_EnemyRadius_CxC_duplicate:
     RTL                                                                  ;B39506;
 
 
+;;; $9507: Instruction - enemy radius = 8 x 10h ;;;
 Instruction_Botwoon_EnemyRadius_8x10_duplicate:
     LDX.W $0E54                                                          ;B39507;
     LDA.W #$0008                                                         ;B3950A;
@@ -2389,6 +2550,7 @@ Instruction_Botwoon_EnemyRadius_8x10_duplicate:
     RTL                                                                  ;B39516;
 
 
+;;; $9517: Instruction - enemy radius = 8 x 10h ;;;
 Instruction_Botwoon_EnemyRadius_8x10_duplicate_again:
     LDX.W $0E54                                                          ;B39517;
     LDA.W #$0008                                                         ;B3951A;
@@ -2398,6 +2560,7 @@ Instruction_Botwoon_EnemyRadius_8x10_duplicate_again:
     RTL                                                                  ;B39526;
 
 
+;;; $9527: Instruction - enemy radius = Ch x Ch ;;;
 Instruction_Botwoon_EnemyRadius_CxC_duplicate_again:
     LDX.W $0E54                                                          ;B39527;
     LDA.W #$000C                                                         ;B3952A;
@@ -2407,6 +2570,7 @@ Instruction_Botwoon_EnemyRadius_CxC_duplicate_again:
     RTL                                                                  ;B39536;
 
 
+;;; $9537: Instruction - enemy radius = 10h x 8 ;;;
 Instruction_Botwoon_EnemyRadius_10x8_duplicate:
     LDX.W $0E54                                                          ;B39537;
     LDA.W #$0010                                                         ;B3953A;
@@ -2416,6 +2580,7 @@ Instruction_Botwoon_EnemyRadius_10x8_duplicate:
     RTL                                                                  ;B39546;
 
 
+;;; $9547: Instruction - enemy radius = Ch x Ch ;;;
 Instruction_Botwoon_EnemyRadius_CxC_duplicate_again2:
     LDX.W $0E54                                                          ;B39547;
     LDA.W #$000C                                                         ;B3954A;
@@ -2425,6 +2590,7 @@ Instruction_Botwoon_EnemyRadius_CxC_duplicate_again2:
     RTL                                                                  ;B39556;
 
 
+;;; $9557: Instruction - enemy radius = 8 x 10h ;;;
 Instruction_Botwoon_EnemyRadius_8x10_duplicate_again2:
     LDX.W $0E54                                                          ;B39557;
     LDA.W #$0008                                                         ;B3955A;
@@ -2434,6 +2600,7 @@ Instruction_Botwoon_EnemyRadius_8x10_duplicate_again2:
     RTL                                                                  ;B39566;
 
 
+;;; $9567: Instruction - set Botwoon spitting flag ;;;
 Instruction_Botwoon_SetSpittingFlag:
     LDX.W $0E54                                                          ;B39567;
     LDA.W #$0001                                                         ;B3956A;
@@ -2441,22 +2608,26 @@ Instruction_Botwoon_SetSpittingFlag:
     RTL                                                                  ;B39571;
 
 
+;;; $9572: Instruction - queue Botwoon spit sound effect ;;;
 Instruction_Botwoon_QueueSpitSFX:
     LDA.W #$007C                                                         ;B39572;
     JSL.L QueueSound_Lib2_Max6                                           ;B39575;
     RTL                                                                  ;B39579;
 
 
+;;; $957A: RTL ;;;
 RTL_B3957A:
     RTL                                                                  ;B3957A;
 
 
+;;; $957B: Queue small explosion sound effect ;;;
 QueueSmallExplosionSFX:
     LDA.W #$0024                                                         ;B3957B;
     JSL.L QueueSound_Lib2_Max6                                           ;B3957E;
     RTL                                                                  ;B39582;
 
 
+;;; $9583: Initialisation AI - enemy $F293 (Botwoon) ;;;
 InitAI_Botwoon:
     LDA.L $7ED82C                                                        ;B39583;
     AND.W #$0002                                                         ;B39587;
@@ -2473,7 +2644,6 @@ InitAI_Botwoon:
     ORA.W #$0200                                                         ;B395A7;
     STA.W $0F86,X                                                        ;B395AA;
     JMP.W .return                                                        ;B395AD;
-
 
   .notDead:
     LDX.W $0E54                                                          ;B395B0;
@@ -2542,6 +2712,7 @@ InitAI_Botwoon:
     RTL                                                                  ;B39667;
 
 
+;;; $9668: Main AI - enemy $F293 (Botwoon) ;;;
 MainAI_Botwoon:
     LDX.W $0E54                                                          ;B39668;
     JSR.W BotwoonDeathCheck                                              ;B3966B;
@@ -2551,9 +2722,12 @@ MainAI_Botwoon:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $9675:  ;;;
 UNUSED_Data_B39675:
     dw $FFFF,$00FF,$01FF                                                 ;B39675;
 
+
+;;; $967B: Unused ;;;
 UNUSED_SpeedTable_Random_B3967B:
     LDA.L $7E803E,X                                                      ;B3967B;
     ASL A                                                                ;B3967F;
@@ -2570,6 +2744,7 @@ UNUSED_SpeedTable_Random_B3967B:
     RTS                                                                  ;B39695;
 
 
+;;; $9696: Unused ;;;
 UNUSED_Botwoon_MaybeSpitting_B39396:
     LDX.W $0E54                                                          ;B39696;
     LDA.L $7E801E,X                                                      ;B39699;
@@ -2591,6 +2766,7 @@ UNUSED_Botwoon_MaybeSpitting_B39396:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $96C6: Botwoon death check ;;;
 BotwoonDeathCheck:
     LDX.W $0E54                                                          ;B396C6;
     LDA.L $7E801E,X                                                      ;B396C9;
@@ -2611,6 +2787,7 @@ BotwoonDeathCheck:
     RTS                                                                  ;B396F4;
 
 
+;;; $96F5: Set Botwoon as intangible ;;;
 SetBotwoonAsIntangible:
     LDA.W $0F86                                                          ;B396F5;
     ORA.W #$0400                                                         ;B396F8;
@@ -2619,6 +2796,7 @@ SetBotwoonAsIntangible:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $96FF: Unused. Set Botwoon body enemy projectiles as intangible ;;;
 UNUSED_SetBotwoonBodyProjectilesAsIntangible_B396FF:
     LDY.W #$0022                                                         ;B396FF;
 
@@ -2637,6 +2815,7 @@ UNUSED_SetBotwoonBodyProjectilesAsIntangible_B396FF:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $971B: Botwoon health-based palettes ;;;
 BotwoonHealthBasedPalettes:
     dw $0000,$27E9,$1A66,$1585,$0CA3,$3F9C,$2E97,$1D72                   ;B3971B;
     dw $108E,$0A5F,$09DB,$0956,$08D2,$082C,$7FBD,$0C05                   ;B3972B;
@@ -2655,10 +2834,14 @@ BotwoonHealthBasedPalettes:
     dw $0000,$1FF8,$0F15,$0E51,$056B,$299E,$211B,$1879                   ;B397FB;
     dw $1417,$193F,$18FC,$18B7,$1874,$182F,$47FF,$000B                   ;B3980B;
 
+
+;;; $981B: Botwoon health thresholds for palette change ;;;
 BotwoonHealthThresholdsForPaletteChange:
 ;       3000, 2625, 2250, 1875, 1500, 1125,  750,  375
     dw $0BB8,$0A41,$08CA,$0753,$05DC,$0465,$02EE,$0177                   ;B3981B;
 
+
+;;; $982B: Botwoon health-based palette handling ;;;
 BotwoonHealthBasedPaletteHandling:
     LDX.W $0E54                                                          ;B3982B;
     LDA.L $7E881E,X                                                      ;B3982E;
@@ -2699,6 +2882,7 @@ BotwoonHealthBasedPaletteHandling:
     RTS                                                                  ;B39877;
 
 
+;;; $9878: Botwoon function - initial ;;;
 Function_Botwoon_Initial:
     LDX.W $0E54                                                          ;B39878;
     LDA.L $7E8000,X                                                      ;B3987B;
@@ -2712,6 +2896,7 @@ Function_Botwoon_Initial:
     RTS                                                                  ;B3988C;
 
 
+;;; $988D: Botwoon leave hole action jump table ;;;
 BotwoonLeaveHoleAction_JumpTable:
     dw SetupBotwoonMovingAround                                          ;B3988D;
     dw SetupBotwoonMovingAround                                          ;B3988F;
@@ -2722,6 +2907,8 @@ BotwoonLeaveHoleAction_JumpTable:
     dw SetupBotwoonSpitting                                              ;B39899;
     dw SetupBotwoonSpitting                                              ;B3989B;
 
+
+;;; $989D: Botwoon function - go through hole ;;;
 Function_Botwoon_GoThroughHole:
     LDX.W $0E54                                                          ;B3989D;
     LDA.L $7E8038,X                                                      ;B398A0;
@@ -2745,7 +2932,6 @@ Function_Botwoon_GoThroughHole:
     LDX.B $12                                                            ;B398D1;
     JMP.W (BotwoonLeaveHoleAction_JumpTable,X)                           ;B398D3;
 
-
   .moveAround:
     JSR.W ($0FB0,X)                                                      ;B398D6;
     JSR.W UpdateBotwoonPositionHistory                                   ;B398D9;
@@ -2757,6 +2943,7 @@ Function_Botwoon_GoThroughHole:
     RTS                                                                  ;B398EB;
 
 
+;;; $98EC: Set up Botwoon moving around ;;;
 SetupBotwoonMovingAround:
     LDX.W $0E54                                                          ;B398EC;
     LDA.W #Function_Botwoon_MovingAround                                 ;B398EF;
@@ -2773,6 +2960,7 @@ SetupBotwoonMovingAround:
     RTS                                                                  ;B39912;
 
 
+;;; $9913: Set up Botwoon spitting ;;;
 SetupBotwoonSpitting:
     LDX.W $0E54                                                          ;B39913;
     LDA.W #Function_Botwoon_Spitting                                     ;B39916;
@@ -2787,6 +2975,7 @@ SetupBotwoonSpitting:
     RTS                                                                  ;B39932;
 
 
+;;; $9933: Choose Botwoon movement path ;;;
 ChooseBotwoonMovementPath:
     JSR.W SetBotwoonSpeed                                                ;B39933;
     STZ.B $12                                                            ;B39936;
@@ -2810,6 +2999,7 @@ ChooseBotwoonMovementPath:
     RTS                                                                  ;B3995C;
 
 
+;;; $995D: Set Botwoon speed ;;;
 SetBotwoonSpeed:
     LDA.L $7E8026,X                                                      ;B3995D;
     BNE .return                                                          ;B39961;
@@ -2824,12 +3014,10 @@ SetBotwoonSpeed:
     BPL .halfHealth                                                      ;B3997B;
     BRA .quarterHealth                                                   ;B3997D;
 
-
   .halfHealth:
     LDA.W #$0001                                                         ;B3997F;
     STA.L $7E803E,X                                                      ;B39982;
     BRA .merge                                                           ;B39986;
-
 
   .quarterHealth:
     LDA.W #$0002                                                         ;B39988;
@@ -2849,6 +3037,7 @@ SetBotwoonSpeed:
     RTS                                                                  ;B399A3;
 
 
+;;; $99A4: Botwoon function - moving around ;;;
 Function_Botwoon_MovingAround:
     LDX.W $0E54                                                          ;B399A4;
     LDA.L $7E8038,X                                                      ;B399A7;
@@ -2856,7 +3045,6 @@ Function_Botwoon_MovingAround:
     LDA.W #$0000                                                         ;B399AD;
     STA.L $7E8038,X                                                      ;B399B0;
     JMP.W +                                                              ;B399B4; >.<
-
 
   .notGoingThroughHole:
     JSR.W ($0FB0,X)                                                      ;B399B7;
@@ -2866,7 +3054,6 @@ Function_Botwoon_MovingAround:
     JSR.W SetBotwoonInstListTableIndices                                 ;B399C3;
     JSR.W UpdateBotwoonPositionHistoryIndex                              ;B399C6;
     RTS                                                                  ;B399C9;
-
 
 +   LDA.W #Function_Botwoon_GoThroughHole                                ;B399CA;
     STA.W $0FAE,X                                                        ;B399CD;
@@ -2881,6 +3068,7 @@ Function_Botwoon_MovingAround:
     RTS                                                                  ;B399E3;
 
 
+;;; $99E4: Botwoon function - spitting ;;;
 Function_Botwoon_Spitting:
     LDX.W $0E54                                                          ;B399E4;
     LDA.L $7E8002,X                                                      ;B399E7;
@@ -2889,13 +3077,11 @@ Function_Botwoon_Spitting:
     STA.L $7E8038,X                                                      ;B399F0;
     JMP.W +                                                              ;B399F4; >.<
 
-
   .timerNotExpired:
     LDA.W #$0000                                                         ;B399F7;
     STA.L $7E801C,X                                                      ;B399FA;
     JSR.W ($0FB2,X)                                                      ;B399FE;
     RTS                                                                  ;B39A01;
-
 
 +   LDA.W #Function_Botwoon_MovingAround                                 ;B39A02;
     STA.W $0FAE,X                                                        ;B39A05;
@@ -2916,7 +3102,6 @@ Function_Botwoon_Spitting:
     STA.L $7E802C,X                                                      ;B39A35;
     BRA .merge                                                           ;B39A39;
 
-
   .deathFlagSet:
     LDA.W #$0000                                                         ;B39A3B;
     STA.L $7E8816,X                                                      ;B39A3E;
@@ -2926,6 +3111,7 @@ Function_Botwoon_Spitting:
     RTS                                                                  ;B39A45;
 
 
+;;; $9A46: Botwoon function - death sequence - pre-death delay ;;;
 Function_Botwoon_DeathSequence_PreDeathDelay:
     LDX.W $0E54                                                          ;B39A46;
     LDA.L $7E8004,X                                                      ;B39A49;
@@ -2940,6 +3126,7 @@ Function_Botwoon_DeathSequence_PreDeathDelay:
     RTS                                                                  ;B39A5D;
 
 
+;;; $9A5E: Botwoon function - death sequence - falling to ground ;;;
 Function_Botwoon_DeathSequence_FallingToGround:
     LDX.W $0E54                                                          ;B39A5E;
     LDA.L $7E8010,X                                                      ;B39A61;
@@ -2980,7 +3167,6 @@ Function_Botwoon_DeathSequence_FallingToGround:
     STA.W $0F86,X                                                        ;B39AB8;
     BRA .return                                                          ;B39ABB;
 
-
   .lessThanC8:
     LDA.L $7E8010,X                                                      ;B39ABD;
     CLC                                                                  ;B39AC1;
@@ -2991,6 +3177,7 @@ Function_Botwoon_DeathSequence_FallingToGround:
     RTS                                                                  ;B39AC9;
 
 
+;;; $9ACA: Botwoon function - death sequence - wait for body to fall to ground ;;;
 Function_Botwoon_DeathSequence_WaitForBodyToFallToGround:
     LDX.W $0E54                                                          ;B39ACA;
     LDA.L $7E883E,X                                                      ;B39ACD;
@@ -3003,6 +3190,7 @@ Function_Botwoon_DeathSequence_WaitForBodyToFallToGround:
     RTS                                                                  ;B39ADC;
 
 
+;;; $9ADD: Spawn Botwoon item drops and start crumbling wall ;;;
 SpawnBotwoonItemDrops_StartCrumblingWall:
     JSL.L Spawn_Hardcoded_PLM                                            ;B39ADD;
     db $0F,$04                                                           ;B39AE1;
@@ -3015,6 +3203,7 @@ SpawnBotwoonItemDrops_StartCrumblingWall:
     RTS                                                                  ;B39AF8;
 
 
+;;; $9AF9: Botwoon function - death sequence - crumbling wall ;;;
 Function_Botwoon_DeathSequence_CrumblingWall:
     LDA.L $7E8006,X                                                      ;B39AF9;
     CMP.W #$00C0                                                         ;B39AFD;
@@ -3022,7 +3211,6 @@ Function_Botwoon_DeathSequence_CrumblingWall:
     CMP.W #$0040                                                         ;B39B02;
     BPL .wall                                                            ;B39B05;
     JMP.W .return                                                        ;B39B07;
-
 
   .end:
     LDA.W $0F86,X                                                        ;B39B0A;
@@ -3033,7 +3221,6 @@ Function_Botwoon_DeathSequence_CrumblingWall:
     LDA.W #$0003                                                         ;B39B1A;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;B39B1D;
     RTS                                                                  ;B39B21;
-
 
   .wall:
     LDA.L $7E8008,X                                                      ;B39B22;
@@ -3099,6 +3286,7 @@ Function_Botwoon_DeathSequence_CrumblingWall:
     RTS                                                                  ;B39BB6;
 
 
+;;; $9BB7: Botwoon movement function - move directly toward target hole ;;;
 Function_Botwoon_Movement_DirectlyTowardTargetHole:
     LDX.W $0E54                                                          ;B39BB7;
     JSR.W CalculateXYOffsetsToTargetHole                                 ;B39BBA;
@@ -3121,7 +3309,6 @@ Function_Botwoon_Movement_DirectlyTowardTargetHole:
     STA.L $7E8038,X                                                      ;B39BED;
     JMP.W .return                                                        ;B39BF1;
 
-
   .move:
     JSR.W MoveBotwoonAccordingToSpeedAndAngleToTargetHole                ;B39BF4;
 
@@ -3129,7 +3316,11 @@ Function_Botwoon_Movement_DirectlyTowardTargetHole:
     RTS                                                                  ;B39BF7;
 
 
+;;; $9BF8: Calculate X/Y offsets to target hole ;;;
 CalculateXYOffsetsToTargetHole:
+;; Returns:
+;;     $12: X offset
+;;     $14: Y offset
     LDA.L $7E802E,X                                                      ;B39BF8;
     TAY                                                                  ;B39BFC;
     LDA.W BotwoonHoleHitboxes_leftBoundary,Y                             ;B39BFD;
@@ -3144,12 +3335,10 @@ CalculateXYOffsetsToTargetHole:
     BMI .XClampLow                                                       ;B39C12;
     BRA .merge                                                           ;B39C14;
 
-
   .XClampHigh:
     LDA.W #$00FF                                                         ;B39C16;
     STA.B $12                                                            ;B39C19;
     BRA .merge                                                           ;B39C1B;
-
 
   .XClampLow:
     LDA.W #$FF01                                                         ;B39C1D;
@@ -3168,12 +3357,10 @@ CalculateXYOffsetsToTargetHole:
     BMI .YClampLow                                                       ;B39C37;
     BRA .return                                                          ;B39C39;
 
-
   .YClampHigh:
     LDA.W #$00FF                                                         ;B39C3B;
     STA.B $14                                                            ;B39C3E;
     BRA .return                                                          ;B39C40;
-
 
   .YClampLow:
     LDA.W #$FF01                                                         ;B39C42;
@@ -3183,6 +3370,7 @@ CalculateXYOffsetsToTargetHole:
     RTS                                                                  ;B39C47;
 
 
+;;; $9C48: Move Botwoon according to speed and angle to target hole ;;;
 MoveBotwoonAccordingToSpeedAndAngleToTargetHole:
     LDX.W $0E54                                                          ;B39C48;
     LDA.L $7E8034,X                                                      ;B39C4B;
@@ -3204,6 +3392,7 @@ MoveBotwoonAccordingToSpeedAndAngleToTargetHole:
     RTS                                                                  ;B39C7A;
 
 
+;;; $9C7B: Update Botwoon position history ;;;
 UpdateBotwoonPositionHistory:
     LDY.W $0E54                                                          ;B39C7B;
     LDX.W $0FAA,Y                                                        ;B39C7E;
@@ -3214,6 +3403,7 @@ UpdateBotwoonPositionHistory:
     RTS                                                                  ;B39C8F;
 
 
+;;; $9C90: Update Botwoon body projectile positions ;;;
 UpdateBotwonBodyProjectilePositions:
     LDX.W $0E54                                                          ;B39C90;
     LDA.W $0FAA,X                                                        ;B39C93;
@@ -3246,7 +3436,6 @@ UpdateBotwonBodyProjectilePositions:
     STA.L $7EF380,X                                                      ;B39CD3;
     PLX                                                                  ;B39CD7;
     BRA +                                                                ;B39CD8;
-
 
   .notHidden:
     LDA.W $1BD7,Y                                                        ;B39CDA;
@@ -3288,11 +3477,11 @@ UpdateBotwonBodyProjectilePositions:
     BMI .return                                                          ;B39D36;
     JMP.W .loop                                                          ;B39D38;
 
-
   .return:
     RTS                                                                  ;B39D3B;
 
 
+;;; $9D3C: Update Botwoon position history index ;;;
 UpdateBotwoonPositionHistoryIndex:
     LDX.W $0E54                                                          ;B39D3C;
     LDA.W $0FAA,X                                                        ;B39D3F;
@@ -3303,6 +3492,7 @@ UpdateBotwoonPositionHistoryIndex:
     RTS                                                                  ;B39D4C;
 
 
+;;; $9D4D: Set Botwoon body instruction list table indices ;;;
 SetBotwoonInstListTableIndices:
     LDX.W $0E54                                                          ;B39D4D;
     LDA.W #$0018                                                         ;B39D50;
@@ -3340,7 +3530,6 @@ SetBotwoonInstListTableIndices:
     STA.B $14                                                            ;B39D8D;
     BRA .merge                                                           ;B39D8F;
 
-
   .first:
     LDX.W $0E54                                                          ;B39D91;
     LDA.W $0F7A,X                                                        ;B39D94;
@@ -3368,11 +3557,11 @@ SetBotwoonInstListTableIndices:
     BMI .return                                                          ;B39DBA;
     JMP.W .loop                                                          ;B39DBC;
 
-
   .return:
     RTS                                                                  ;B39DBF;
 
 
+;;; $9DC0: Botwoon head function - moving around ;;;
 Function_Botwoon_Head_MovingAround:
     LDX.W $0E54                                                          ;B39DC0;
     LDA.W $0F7A,X                                                        ;B39DC3;
@@ -3391,7 +3580,6 @@ Function_Botwoon_Head_MovingAround:
     BNE .nonZero                                                         ;B39DE3;
     JMP.W .noHeadUpdate                                                  ;B39DE5;
 
-
   .nonZero:
     LDA.L $7E8026,X                                                      ;B39DE8;
     BEQ .notHidden                                                       ;B39DEC;
@@ -3405,7 +3593,6 @@ Function_Botwoon_Head_MovingAround:
     ADC.W #$0100                                                         ;B39E00;
     STA.B $16                                                            ;B39E03;
     BRA +                                                                ;B39E05;
-
 
   .notHidden:
     LDA.W #$0002                                                         ;B39E07;
@@ -3451,9 +3638,12 @@ Function_Botwoon_Head_MovingAround:
     RTS                                                                  ;B39E76;
 
 
+;;; $9E77: Botwoon spit speeds ;;;
 BotwoonSpitSpeeds:
     dw $0002,$0003,$0004                                                 ;B39E77;
 
+
+;;; $9E7D: Botwoon head function - spitting - set angle and show ;;;
 Function_Botwoon_Head_Spitting_SetAngleAndShow:
     LDX.W $0E54                                                          ;B39E7D;
     LDA.W #$0002                                                         ;B39E80;
@@ -3498,12 +3688,12 @@ Function_Botwoon_Head_Spitting_SetAngleAndShow:
     JMP.W ($0FB2,X)                                                      ;B39EDD;
 
 
+;;; $9EE0: Botwoon head function - spitting - spawn 5 spit projectiles ;;;
 Function_Botwoon_Head_Spitting_Spawn5SpitProjectiles:
     LDX.W $0E54                                                          ;B39EE0;
     LDA.L $7E8834,X                                                      ;B39EE3;
     BNE .spitting                                                        ;B39EE7;
     RTS                                                                  ;B39EE9;
-
 
   .spitting:
     LDA.L $7E803A,X                                                      ;B39EEA;
@@ -3537,6 +3727,7 @@ Function_Botwoon_Head_Spitting_Spawn5SpitProjectiles:
     RTS                                                                  ;B39F33;
 
 
+;;; $9F34: Botwoon head function - spitting - spawn 3 spit projectiles ;;;
 Function_Botwoon_Head_Spitting_Spawn3SpitProjectiles:
     LDX.W $0E54                                                          ;B39F34;
     LDA.L $7E803A,X                                                      ;B39F37;
@@ -3568,6 +3759,7 @@ Function_Botwoon_Head_Spitting_Spawn3SpitProjectiles:
     RTS                                                                  ;B39F79;
 
 
+;;; $9F7A: Botwoon head function - spitting - cooldown ;;;
 Function_Botwoon_Head_Spitting_Cooldown:
     LDA.L $7E8002,X                                                      ;B39F7A;
     DEC A                                                                ;B39F7E;
@@ -3582,11 +3774,11 @@ Function_Botwoon_Head_Spitting_Cooldown:
     RTS                                                                  ;B39F92;
 
 
+;;; $9F93: Botwoon / hole collision detection ;;;
 Botwoon_vs_Hole_CollisionDetection:
     LDA.L $7E802A,X                                                      ;B39F93;
     BEQ .collisionNotDisabled                                            ;B39F97;
     JMP.W .return                                                        ;B39F99;
-
 
   .collisionNotDisabled:
     LDA.W #$0018                                                         ;B39F9C;
@@ -3619,7 +3811,6 @@ Botwoon_vs_Hole_CollisionDetection:
     STA.L $7E800C,X                                                      ;B39FE4;
     BRA .return                                                          ;B39FE8;
 
-
   .notInHole:
     LDA.W #$0000                                                         ;B39FEA;
     STA.L $7E802A,X                                                      ;B39FED;
@@ -3630,11 +3821,11 @@ Botwoon_vs_Hole_CollisionDetection:
     BMI .return                                                          ;B39FF9;
     JMP.W .loop                                                          ;B39FFB;
 
-
   .return:
     RTS                                                                  ;B39FFE;
 
 
+;;; $9FFF: Enemy touch - enemy $F293 (Botwoon) ;;;
 EnemyTouch_Botwoon:
     JSL.L CommonB3_NormalTouchAI_NoDeathCheck                            ;B39FFF;
     LDX.W $0E54                                                          ;B3A003;
@@ -3648,6 +3839,7 @@ EnemyTouch_Botwoon:
     RTL                                                                  ;B3A015;
 
 
+;;; $A016: Enemy shot - enemy $F293 (Botwoon) ;;;
 EnemyShot_Botwoon:
     LDX.W $0E54                                                          ;B3A016;
     LDA.W $0F8C,X                                                        ;B3A019;
@@ -3669,6 +3861,7 @@ EnemyShot_Botwoon:
     RTL                                                                  ;B3A040;
 
 
+;;; $A041: Power bomb reaction - enemy $F293 (Botwoon) ;;;
 PowerBombReaction_Botwoon:
     JSL.L CommonB3_NormalEnemyPowerBombAI_NoDeathCheck                   ;B3A041;
     LDX.W $0E54                                                          ;B3A045;
@@ -3682,6 +3875,7 @@ PowerBombReaction_Botwoon:
     RTL                                                                  ;B3A057;
 
 
+;;; $A058: Botwoon movement data ;;;
 BotwoonMovementData_Terminator:
 ; This would be used as a terminator if the Visible_LeftToBottom path was traversed backwards
     db $80,$00                                                           ;B3A058;
@@ -4793,6 +4987,8 @@ BotwoonMovementData_Hidden_TopToFromRight:
 BotwoonMovementData_Hidden_TopToFromRight_End:
     db $80,$00                                                           ;B3E14E;
 
+
+;;; $E150: Botwoon movement table ;;;
 BotwoonMovementTable:
 ;      ________________ Movement data pointer
 ;        ______________ Direction. 0 = forwards, FFFFh = backwards
@@ -4863,7 +5059,10 @@ BotwoonMovementTable:
     dw BotwoonMovementData_Hidden_TopToFromRight_End                     ;B3E248;
     dw $FFFF,$0010,$0000                                                 ;B3E24A;
 
+
+;;; $E250: Botwoon movement function - start moving Botwoon according to movement data ;;;
 Function_Botwoon_Movement_StartMovingAccordingToMovementData:
+; Note the fixed point negation operation at $E2EB is off by 1.0 when the low word is zero
     LDX.W $0E54                                                          ;B3E250;
     LDA.W #Function_Botwoon_Movement_MoveAccordingToMovementData         ;B3E253;
     STA.W $0FB0,X                                                        ;B3E256;
@@ -4883,8 +5082,10 @@ Function_Botwoon_Movement_StartMovingAccordingToMovementData:
     LDA.L $7E8804,X                                                      ;B3E280;
     SEC                                                                  ;B3E284;
     SBC.W #$0004                                                         ;B3E285;
-    STA.L $7E8804,X                                                      ;B3E288;
+    STA.L $7E8804,X                                                      ;B3E288; fallthrough to Function_Botwoon_Movement_MoveAccordingToMovementData
 
+
+;;; $E28C: Botwoon movement function - move Botwoon according to movement data ;;;
 Function_Botwoon_Movement_MoveAccordingToMovementData:
     LDX.W $0E54                                                          ;B3E28C;
     STZ.B $12                                                            ;B3E28F;
@@ -4945,7 +5146,6 @@ Function_Botwoon_Movement_MoveAccordingToMovementData:
     STA.W $0F7E,X                                                        ;B3E30A;
     RTS                                                                  ;B3E30D;
 
-
   .end:
     LDA.W #$0000                                                         ;B3E30E;
     STA.L $7E8802,X                                                      ;B3E311;
@@ -4954,6 +5154,7 @@ Function_Botwoon_Movement_MoveAccordingToMovementData:
     RTS                                                                  ;B3E31C;
 
 
+;;; $E31D: Spritemaps - Botwoon ;;;
 Spritemaps_Botwoon_MouthClosed_Priority2_AimingUp_FacingLeft:
     dw $0002                                                             ;B3E31D;
     %spritemapEntry(1, $1F8, $F7, 0, 0, 2, 0, $122)
@@ -5165,10 +5366,13 @@ UNUSED_Spritemaps_Botwoon_MouthOpen_Prio0_UpFaceRight_B3E519:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+;;; $E525: Palette - enemy $F2D3 (escape etecoon) ;;;
 Palette_EtecoonEscape:
     dw $3800,$5F97,$56F2,$2987,$00A0,$6355,$4AB0,$3A0B                   ;B3E525;
     dw $31C9,$57FF,$42F7,$2610,$158C,$03FF,$0279,$0029                   ;B3E535;
 
+
+;;; $E545: Instruction - go to [[Y]] if [acid Y position] < CEh ;;;
 Instruction_EtecoonEscape_GotoY_IfAcidPositionLessThanCE:
     LDA.W $1962                                                          ;B3E545;
     CMP.W #$00CE                                                         ;B3E548;
@@ -5177,17 +5381,18 @@ Instruction_EtecoonEscape_GotoY_IfAcidPositionLessThanCE:
     TAY                                                                  ;B3E550;
     RTL                                                                  ;B3E551;
 
-
   .greaterThanCE:
     INY                                                                  ;B3E552;
     INY                                                                  ;B3E553;
     RTL                                                                  ;B3E554;
 
 
+;;; $E555: RTS ;;;
 RTS_B3E555:
     RTS                                                                  ;B3E555;
 
 
+;;; $E556: Instruction list - running left - low tide ;;;
 InstList_EtecoonEscape_RunningLeft_LowTide_0:
     dw Instruction_EtecoonEscape_GotoY_IfAcidPositionLessThanCE          ;B3E556;
     dw InstList_EtecoonEscape_RunningLeft_HighTide                       ;B3E558;
@@ -5200,6 +5405,8 @@ InstList_EtecoonEscape_RunningLeft_LowTide_1:
     dw Instruction_Common_GotoY                                          ;B3E56A;
     dw InstList_EtecoonEscape_RunningLeft_LowTide_1                      ;B3E56C;
 
+
+;;; $E56E: Instruction list - running left - high tide ;;;
 InstList_EtecoonEscape_RunningLeft_HighTide:
     dw $0003,Spritemaps_EtecoonEscape_0                                  ;B3E56E;
     dw $0003,Spritemaps_EtecoonEscape_1                                  ;B3E572;
@@ -5208,6 +5415,8 @@ InstList_EtecoonEscape_RunningLeft_HighTide:
     dw Instruction_Common_GotoY                                          ;B3E57E;
     dw InstList_EtecoonEscape_RunningLeft_HighTide                       ;B3E580;
 
+
+;;; $E582: Instruction list - running right - low tide ;;;
 InstList_EtecoonEscape_RunningRight_LowTide_0:
     dw Instruction_EtecoonEscape_GotoY_IfAcidPositionLessThanCE          ;B3E582;
     dw InstList_EtecoonEscape_RunningRight_HighTide                      ;B3E584;
@@ -5220,6 +5429,8 @@ InstList_EtecoonEscape_RunningRight_LowTide_1:
     dw Instruction_Common_GotoY                                          ;B3E596;
     dw InstList_EtecoonEscape_RunningRight_LowTide_1                     ;B3E598;
 
+
+;;; $E59A: Instruction list - running right - high tide ;;;
 InstList_EtecoonEscape_RunningRight_HighTide:
     dw $0003,Spritemaps_EtecoonEscape_3                                  ;B3E59A;
     dw $0003,Spritemaps_EtecoonEscape_4                                  ;B3E59E;
@@ -5228,6 +5439,8 @@ InstList_EtecoonEscape_RunningRight_HighTide:
     dw Instruction_Common_GotoY                                          ;B3E5AA;
     dw InstList_EtecoonEscape_RunningRight_HighTide                      ;B3E5AC;
 
+
+;;; $E5AE: Instruction list - running for escape ;;;
 InstList_EtecoonEscape_RunningForEscape_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;B3E5AE;
     dw Function_EtecoonEscape_RunningForEscape                           ;B3E5B0;
@@ -5240,6 +5453,8 @@ InstList_EtecoonEscape_RunningForEscape_1:
     dw Instruction_Common_GotoY                                          ;B3E5C2;
     dw InstList_EtecoonEscape_RunningForEscape_1                         ;B3E5C4;
 
+
+;;; $E5C6: Instruction list - stationary ;;;
 InstList_EtecoonEscape_Stationary:
     dw $0040,Spritemaps_EtecoonEscape_E                                  ;B3E5C6;
     dw $0008,Spritemaps_EtecoonEscape_F                                  ;B3E5CA;
@@ -5248,6 +5463,8 @@ InstList_EtecoonEscape_Stationary:
     dw Instruction_Common_GotoY                                          ;B3E5D6;
     dw InstList_EtecoonEscape_Stationary                                 ;B3E5D8;
 
+
+;;; $E5DA: Instruction list - express gratitude then escape ;;;
 InstList_EtecoonEscape_ExpressGratitudeThenEscape_0:
     dw Instruction_Common_SetEnemy0FB2ToRTS                              ;B3E5DA;
     dw Instruction_Common_TimerInY,$0008                                 ;B3E5DC;
@@ -5268,6 +5485,8 @@ InstList_EtecoonEscape_ExpressGratitudeThenEscape_1:
     dw Instruction_Common_GotoY                                          ;B3E60C;
     dw InstList_EtecoonEscape_RunningForEscape_0                         ;B3E60E;
 
+
+;;; $E610: Instruction - enemy X position += [[Y]] ;;;
 Instruction_EtecoonEscape_XPositionPlusY:
     LDA.W $0F7A,X                                                        ;B3E610;
     CLC                                                                  ;B3E613;
@@ -5279,10 +5498,13 @@ Instruction_EtecoonEscape_XPositionPlusY:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+;;; $E61D: Unused. Instruction list ;;;
 UNUSED_InstList_EtecoonEscape_B3E61D:
     dw $0001,Spritemaps_EtecoonEscape_6                                  ;B3E61D;
     dw Instruction_Common_Sleep                                          ;B3E621;
 
+
+;;; $E623: Unused. Instruction list ;;;
 UNUSED_InstList_EtecoonEscape_B3E623:
     dw $000C,Spritemaps_EtecoonEscape_7                                  ;B3E623;
     dw $000C,Spritemaps_EtecoonEscape_8                                  ;B3E627;
@@ -5291,10 +5513,14 @@ UNUSED_InstList_EtecoonEscape_B3E623:
     dw $000C,Spritemaps_EtecoonEscape_7                                  ;B3E633;
     dw Instruction_Common_Sleep                                          ;B3E637;
 
+
+;;; $E639: Unused. Instruction list ;;;
 UNUSED_InstList_EtecoonEscape_B3E639:
     dw $0001,Spritemaps_EtecoonEscape_A                                  ;B3E639;
     dw Instruction_Common_Sleep                                          ;B3E63D;
 
+
+;;; $E63F: Unused. Instruction list ;;;
 UNUSED_InstList_EtecoonEscape_B3E63F:
     dw $000C,Spritemaps_EtecoonEscape_B                                  ;B3E63F;
     dw $000C,Spritemaps_EtecoonEscape_C                                  ;B3E643;
@@ -5304,12 +5530,15 @@ UNUSED_InstList_EtecoonEscape_B3E63F:
     dw Instruction_Common_Sleep                                          ;B3E653;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
+
+;;; $E655: Main AI - enemy $F2D3 (escape etecoon) ;;;
 MainAI_EtecoonEscape:
     LDX.W $0E54                                                          ;B3E655;
     JSR.W ($0FB2,X)                                                      ;B3E658;
     RTL                                                                  ;B3E65B;
 
 
+;;; $E65C: Escape etecoon function - running for escape ;;;
 Function_EtecoonEscape_RunningForEscape:
     LDA.W $0F7C,X                                                        ;B3E65C;
     CLC                                                                  ;B3E65F;
@@ -5321,6 +5550,7 @@ Function_EtecoonEscape_RunningForEscape:
     RTS                                                                  ;B3E66F;
 
 
+;;; $E670: Escape etecoon function - stationary (waiting to express gratitude) ;;;
 Function_EtecoonEscape_StationaryWaitingToExpressGratitude:
     LDA.W #$000F                                                         ;B3E670;
     JSL.L CheckIfEvent_inA_HasHappened                                   ;B3E673;
@@ -5332,6 +5562,7 @@ Function_EtecoonEscape_StationaryWaitingToExpressGratitude:
     RTS                                                                  ;B3E67F;
 
 
+;;; $E680: Escape etecoon function - running around aimlessly ;;;
 Function_EtecoonEscape_RunningAroundAimlessly:
     STZ.B $12                                                            ;B3E680;
     STZ.B $14                                                            ;B3E682;
@@ -5352,7 +5583,6 @@ Function_EtecoonEscape_RunningAroundAimlessly:
     LDA.W #InstList_EtecoonEscape_RunningLeft_LowTide_0                  ;B3E6A5;
     BRA +                                                                ;B3E6A8;
 
-
   .greaterThan0:
     LDA.W #InstList_EtecoonEscape_RunningRight_LowTide_0                 ;B3E6AA;
 
@@ -5371,6 +5601,7 @@ Function_EtecoonEscape_RunningAroundAimlessly:
     RTS                                                                  ;B3E6CA;
 
 
+;;; $E6CB: Initialisation AI - enemy $F2D3 (escape etecoon) ;;;
 InitAI_EtecoonEscape:
     LDX.W $0E54                                                          ;B3E6CB;
     LDA.W #$000F                                                         ;B3E6CE;
@@ -5380,7 +5611,6 @@ InitAI_EtecoonEscape:
     ORA.W #$0200                                                         ;B3E6DA;
     STA.W $0F86,X                                                        ;B3E6DD;
     RTL                                                                  ;B3E6E0;
-
 
   .notEscaped:
     LDA.W $0F86,X                                                        ;B3E6E1;
@@ -5403,9 +5633,8 @@ InitAI_EtecoonEscape:
     STA.W $0FA8,X                                                        ;B3E714;
     RTL                                                                  ;B3E717;
 
-
-  .XPosition:
 ; Indexed by [enemy parameter 1]
+  .XPosition:
     dw $0080,$00A0,$00E8                                                 ;B3E718;
 
   .YPosition:
@@ -5424,6 +5653,8 @@ InitAI_EtecoonEscape:
   .XVelocity:
     dw $FE00,$0280,$0000                                                 ;B3E730;
 
+
+;;; $E736: Escape etecoon spritemaps ;;;
 Spritemaps_EtecoonEscape_0:
     dw $0003                                                             ;B3E736;
     %spritemapEntry(0, $1F2, $FF, 0, 0, 3, 1, $129)
@@ -5577,10 +5808,13 @@ Spritemaps_EtecoonEscape_11:
     %spritemapEntry(0, $1F8, $F7, 0, 0, 3, 1, $120)
 
 
+;;; $E944: Palette - enemy $F313 (escape dachora) ;;;
 Palette_DachoraEscape:
     dw $3800,$3F57,$2E4D,$00E2,$0060,$3AB0,$220B,$1166                   ;B3E944;
     dw $0924,$57FF,$42F7,$2610,$158C,$7C1F,$6018,$300A                   ;B3E954;
 
+
+;;; $E964: Instruction list - running around aimlessly - low tide ;;;
 InstList_DachoraEscape_RunningAroundAimlessly_LowTide_0:
     dw Instruction_Common_TimerInY,$0005                                 ;B3E964;
 
@@ -5627,6 +5861,9 @@ InstList_DachoraEscape_RunningAroundAimlessly_LowTide_2:
     dw Instruction_Common_GotoY                                          ;B3E9CC;
     dw InstList_DachoraEscape_RunningAroundAimlessly_LowTide_0           ;B3E9CE;
 
+
+;;; $E9D0: Instruction list - running around aimlessly - high tide ;;;
+; Parts of this instruction list are jumped to from the low tide instruction list
 InstList_DachoraEscape_RunningAroundAimlessly_HighTide_0:
     dw Instruction_Common_TimerInY,$0005                                 ;B3E9D0;
 
@@ -5673,6 +5910,9 @@ InstList_DachoraEscape_RunningAroundAimlessly_HighTide_4:
     dw Instruction_Common_GotoY                                          ;B3EA30;
     dw InstList_DachoraEscape_RunningAroundAimlessly_HighTide_0          ;B3EA32;
 
+
+;;; $EA34: Instruction list - running for escape ;;;
+; TODO: separate out this first instruction
 InstList_DachoraEscape_RunningForEscape_0:
     dw $001E,Spritemaps_DachoraEscape_0                                  ;B3EA34;
 
@@ -5718,6 +5958,8 @@ InstList_DachoraEscape_RunningForEscape_2:
     dw Instruction_Common_GotoY                                          ;B3EAA4;
     dw InstList_DachoraEscape_RunningForEscape_2                         ;B3EAA6;
 
+
+;;; $EAA8: Instruction - go to [[Y]] if [acid Y position] < CEh ;;;
 InstList_DachoraEscape_GotoY_IfAcidLessThanCE:
     LDA.W $1962                                                          ;B3EAA8;
     CMP.W #$00CE                                                         ;B3EAAB;
@@ -5726,13 +5968,13 @@ InstList_DachoraEscape_GotoY_IfAcidLessThanCE:
     TAY                                                                  ;B3EAB3;
     RTL                                                                  ;B3EAB4;
 
-
   .greaterThanCE:
     INY                                                                  ;B3EAB5;
     INY                                                                  ;B3EAB6;
     RTL                                                                  ;B3EAB7;
 
 
+;;; $EAB8: Instruction - go to [[Y]] if critters escaped ;;;
 InstList_DachoraEscape_GotoY_IfCrittersEscaped:
     LDA.W #$000F                                                         ;B3EAB8;
     JSL.L CheckIfEvent_inA_HasHappened                                   ;B3EABB;
@@ -5741,13 +5983,13 @@ InstList_DachoraEscape_GotoY_IfCrittersEscaped:
     TAY                                                                  ;B3EAC4;
     RTL                                                                  ;B3EAC5;
 
-
   .notEscaped:
     INY                                                                  ;B3EAC6;
     INY                                                                  ;B3EAC7;
     RTL                                                                  ;B3EAC8;
 
 
+;;; $EAC9: Instruction - enemy X position -= 6 ;;;
 Instruction_DachoraEscape_XPositionMinus6:
     LDX.W $0E54                                                          ;B3EAC9;
     LDA.W $0F7A,X                                                        ;B3EACC;
@@ -5757,6 +5999,7 @@ Instruction_DachoraEscape_XPositionMinus6:
     RTL                                                                  ;B3EAD6;
 
 
+;;; $EAD7: Instruction - enemy X position += 6 ;;;
 Instruction_DachoraEscape_XPositionPlus6:
     LDX.W $0E54                                                          ;B3EAD7;
     LDA.W $0F7A,X                                                        ;B3EADA;
@@ -5766,6 +6009,7 @@ Instruction_DachoraEscape_XPositionPlus6:
     RTL                                                                  ;B3EAE4;
 
 
+;;; $EAE5: Initialisation AI - enemy $F313 (escape dachora) ;;;
 InitAI_DachoraEscape:
     LDX.W $0E54                                                          ;B3EAE5;
     LDA.W #$000F                                                         ;B3EAE8;
@@ -5775,7 +6019,6 @@ InitAI_DachoraEscape:
     ORA.W #$0200                                                         ;B3EAF4;
     STA.W $0F86,X                                                        ;B3EAF7;
     RTL                                                                  ;B3EAFA;
-
 
   .notEscaped:
     LDA.W $0F86,X                                                        ;B3EAFB;
@@ -5791,10 +6034,12 @@ InitAI_DachoraEscape:
     RTL                                                                  ;B3EB19;
 
 
+;;; $EB1A: RTL. Main AI - enemy $F313 (escape dachora) ;;;
 RTL_B3EB1A:
     RTL                                                                  ;B3EB1A;
 
 
+;;; $EB1B: Escape dachora spritemaps ;;;
 Spritemaps_DachoraEscape_0:
     dw $0009                                                             ;B3EB1B;
     %spritemapEntry(0, $1F0, $F2, 0, 0, 3, 1, $110)
