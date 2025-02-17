@@ -182,7 +182,7 @@ struct OAM
   .low: skip $200 ; $0370
   .high: skip $20 ; $0570
   .stack: skip 2 ; $0590
-struct
+endstruct
 
 struct MessageBoxAnim $05A2
   .YRadius: skip 2 ; $05A2
