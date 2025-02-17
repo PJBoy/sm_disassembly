@@ -154,7 +154,7 @@ endstruct
 
 struct Transfers $D0 ; $D0..02CF
   .VRAMWriteSize: skip 2 ; $D0
-  .VRAMWriteSrc: skip 2 ; $D2
+  .VRAMWriteSrc: skip 3 ; $D2
   .VRAMWriteDest: skip 2 ; $D5
 skip $1FA ; VRAM write table entries
   .mode7Control: skip 1 ; $02D0
