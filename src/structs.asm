@@ -192,6 +192,7 @@ struct ExpandContract $05A2
   .srcBottom: skip 2 ; $05AA
 endstruct
 
+org $05A6
 CrocomireMeltingSrcYOffset: skip 2 ; $05A6
 
 struct MapScroll $05AC
@@ -239,6 +240,7 @@ struct Input $05D9
   .timedHeldPrev: skip 2 ; $05E3
 endstruct
 
+org $05E5
 RandomNumberSeed: skip 2 ; $05E5
 Bitmask: skip 2 ; $05E7
 Multiplier16bitA: skip 2 ; $05E9
@@ -265,6 +267,7 @@ struct EarthquakeSFX $0607
   .timer: skip 2 ; $0609
 endstruct
 
+org $060B
 RemainingEnemySpritemapEntries: ; $060B
 LoopCounterEnemyDeath: ; $060B
 BotwoonSpitAngleParam: ; $060B
@@ -306,7 +309,7 @@ struct APU $0617
   .soundQueueLib1: skip $10 ; $0656
   .soundQueueLib2: skip $10 ; $0666
   .soundQueueLib3: skip $10 ; $0676
-  .soundHandlerDowntime: skip $2 ; $0686
+  .soundHandlerDowntime: skip 2 ; $0686
 endstruct
 
 struct CrocomireMelting $0688
@@ -323,6 +326,7 @@ struct CrocomireMelting $0688
   .YOffsets: skip $80 ; $069C
 endstruct
 
+org $071C
 BlockFramesTimer: skip 1 ;071C
 
 struct SamusTiles $071D
@@ -389,6 +393,92 @@ struct PauseMenu $0727
   .SamusPositionIndicatorAnimFrame: skip 2 ; $0776
   .SamusPositionIndicatorAnimTimer: skip 2 ; $0778
   .SamusPositionIndicatorAnimLoopCount: skip 2 ; $077A
+endstruct
+
+struct Gameplay $077C
+  .HUDItemTilemapPaletteBits: skip 2 ; $077C
+skip 5 ; $077C..82
+  .mode7Flag: skip 2 ; $0783
+  .unusedMode7RotationAngle: skip 2 ; $0785
+  .neverRead0787: skip 2 ; $0787
+  .CurrentAreaMapCollectedFlag: skip 2 ; $0789
+  .loadStationIndex: skip 2 ; $078B
+  .doorPointer: skip 2 ; $078D
+  .doorBTS: skip 2 ; $078F
+  .doorDirection: skip 2 ; $0791
+  .elevatorDoorProperties: skip 2 ; $0793
+  .doorTransitionFlagElevatorsZebetites: skip 2 ; $0795
+  .doorTransitionFlagEnemiesPause: skip 2 ; $0797
+  .elevatorDirection: skip 2 ; $0799
+  .roomPointer: skip 2 ; $079B
+  .roomIndex: skip 2 ; $079D
+  .areaIndex: skip 2 ; $079F
+  .roomMapX: skip 2 ; $07A1
+  .roomMapY: skip 2 ; $07A3
+  .roomWidthBlocks: skip 2 ; $07A5
+  .roomHeightBlocks: skip 2 ; $07A7
+  .roomWidthScrolls: skip 2 ; $07A9
+  .roomHeightScrolls: skip 2 ; $07AB
+  .upScroller: skip 2 ; $07AD
+  .downScroller: skip 2 ; $07AF
+  .previousCREBitset: skip 2 ; $07B1
+  .CREBitset: skip 2 ; $07B3
+  .doorListPointer: skip 2 ; $07B5
+  .eventPointer: skip 2 ; $07B7
+  .levelDataSize: skip 2 ; $07B9
+  .roomStatePointer: skip 2 ; $07BB
+  .levelDataPointer: skip 3 ; $07BD
+  .tilesetTileTablePointer: skip 3 ; $07C0
+  .tilesetTilesPointer: skip 3 ; $07C3
+  .tilesetPalettePointer: skip 3 ; $07C6
+  .roomMusicTrackIndex: skip 2 ; $07C9
+  .roomMusicDataIndex: skip 2 ; $07CB
+  .FXPointer: skip 2 ; $07CD
+  .enemyPopulationPointer: skip 2 ; $07CF
+  .enemySetPointer: skip 2 ; $07D1
+  .unused07D3: skip 12 ; $07D3..DE
+  .roomMainASMPointer: skip 2 ; $07DF
+  .roomMainASMVar1: skip 2 ; $07E1
+  .roomMainASMVar2: skip 2 ; $07E3
+  .roomMainASMVar3: skip 2 ; $07E5
+  .roomMainASMVar4: skip 2 ; $07E7
+  .scrollingSkyFinishedHook: skip 2 ; $07E9
+  .CeresMode7HDMATables: skip 2 ; $07EB
+  .unused07ED: skip 6 ; $07ED..F2
+  .musicDataIndex: skip 2 ; $07F3
+  .musicTrackIndex: skip 2 ; $07F5
+  .mapTilesExplored: skip 2 ; $07F7..08F6
+  .layer1XBlock: skip 2 ; $08F7
+  .layer1YBlock: skip 2 ; $08F9
+  .layer2XBlock: skip 2 ; $08FB
+  .layer2YBlock: skip 2 ; $08FD
+  .previousLayer1XBlock: skip 2 ; $08FF
+  .previousLayer1YBlock: skip 2 ; $0901
+  .previousLayer2XBlock: skip 2 ; $0903
+  .previousLayer2YBlock: skip 2 ; $0905
+  .BG1XBlock: skip 2 ; $0907
+  .BG1XBlock: skip 2 ; $0909
+  .BG2XBlock: skip 2 ; $090B
+  .BG2XBlock: skip 2 ; $090D
+  .layer1XSubPosition: skip 2 ; $090F
+  .layer1XPosition: skip 2 ; $0911
+  .layer1YSubPosition: skip 2 ; $0913
+  .layer1YPosition: skip 2 ; $0915
+  .layer2XPosition: skip 2 ; $0917
+  .layer2YPosition: skip 2 ; $0919
+  .layer2ScrollY: skip 1 ; $091C
+  .layer2ScrollY: skip 1 ; $091B
+  .BG1XOffset: skip 2 ; $091D
+  .BG1YOffset: skip 2 ; $091F
+  .BG2XOffset: skip 2 ; $0921
+  .BG2YOffset: skip 2 ; $0923
+  .doorTransitionFrameCounter: skip 2 ; $0925
+  .doorDestinationXPosition: skip 2 ; $0927
+  .doorDestinationYPosition: skip 2 ; $0929
+  .SamusSubSpeedDuringDoorTransition: skip 2 ; $092B
+  .SamusSpeedDuringDoorTransition: skip 2 ; $092D
+  .downwardsElevatorDelayTimer: skip 2 ; $092F
+; to be continued
 endstruct
 
 
