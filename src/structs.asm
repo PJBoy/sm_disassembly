@@ -1564,3 +1564,200 @@ struct Demo $1F53
   .scene: skip 2 ; $1F57
   .numberOfSets: skip 2 ; $1F59
 endstruct
+
+
+
+struct FadingPalettes $7E2000
+  .fadingPalettes: skip $200 ; $7E2000..21FF
+  .initial: skip $200 ; $7E2200..23FF
+  .red: skip $200 ; $7E2400..25FF
+  .green: skip $200 ; $7E2600..27FF
+  .blue: skip $200 ; $7E2800..29FF
+  .deltaRed: skip $200 ; $7E2A00..2BFF
+  .deltaGreen: skip $200 ; $7E2C00..2DFF
+  .deltaBlue: skip $200 ; $7E2E00..2FFF
+endstruct
+
+struct CorpseRottingGFX $7E2000
+  .Torizo: skip 0 ; $7E2000..2EFF
+  .Sidehopper0: skip $320 ; $7E2000..231F
+  .Sidehopper2: skip $320 ; $7E2320..263F
+  .Skree0: skip $100 ; $7E2640..273F
+  .Skree2: skip $100 ; $7E2740..283F
+  .Skree4: skip $100 ; $7E2840..293F
+  .Zoomer0: skip $C0 ; $7E2940..29FF
+  .Zoomer2: skip $C0 ; $7E2A00..2ABF
+  .Zoomer4: skip $C0 ; $7E2AC0..2B7F
+  .Ripper0: skip $C0 ; $7E2B80..2C3F
+  .Ripper2: skip $C0 ; $7E2C40..2CFF
+endstruct
+
+org $7E2000
+RoomTiles: ; $7E2000..9FFF
+GreyCloudsDuringZebesExplosionTilemap: ; $7E2000..5FFF
+EnemyBG2Tilemap: ; $7E2000..2FFF
+
+struct CinematicBGTilemap $3000
+  .topMarginInitialJapanText: skip $100 ; $7E3000..FF
+  .EnglishTextRegion: skip 2 ; $7E3100..35FF
+  .JapanTextRegion: skip 2 ; $7E3600..FF
+  .bottomMargin: skip 2 ; $7E3700..FF
+endstruct
+
+org $7E3000
+GameOptionsMenuTilemap: ; $7E3000..37FF
+PauseMenuMapTilemap: ; $7E3000..37FF
+
+MessageBoxBG3YScrollHDMADataTable: ; $7E3000..31DF
+skip $1D8
+DummySamusWireframeTilemap: ; $7E31D8..33E7
+skip $28
+MessageBoxTilemap: skip $180 ; $7E3200..337F
+MessageBoxBG3YScrollIndirectHDMATable: ; $7E3380..86
+
+org $7E3300
+BackupOfPalettesDuringMenu: ; $7E3300..34FF
+skip $EA
+BackupOfHDMAChannelsDuringMessageBoxes: skip 1 ; $7E33EA
+BackupOfBG3TilemapBaseAddrSizeDuringMessageBoxes: skip 1 ; $7E33EB
+skip $14
+LowerHalfOfPauseMenuMapBG2Tilemap: ; $7E3400..37FF
+skip $100
+BackupOfRegularIORegistersDuringGameOverMenu: ; $7E3500
+skip $100
+MenuTilemap: ; $7E3600..3DFF
+skip $200
+CinematicBGTilemap: ; $7E3800..3FFF
+RoomSelectMapBG1Tilemap: ; $7E3800..3FFF
+EquipmentScreenBG1Tilemap: ; $7E3800..3FFF
+DebugGameOverMenuTilemap: ; $7E3800..3FFF
+ClearedMessageBoxBG3Tilemap:  ; $7E3800..3EFF
+skip $800
+
+struct XrayTilemaps $7E4000
+  .BG2: skip $1000 ; $7E4000..4FFF
+  .backupBG2: skip $1000 ; $7E5000..5FFF
+  .backupBG1: skip $1000 ; $7E6000..6FFF
+endstruct
+
+BG2Tilemap: ; $7E4000..4FFF
+CrocomireMeltingBG2Tiles: ; $7E4000..4FFF
+ClearingFXTilemap: ; $7E4000..4EFF
+DecompressionBufferForKraidTopHalfBG2Tilemap: ; $7E4000..47FF
+BG2RoomSelectMapTilemap: ; $7E4000..47FF
+IntroBG3JapanTextTiles: ; $7E4000..45FF
+skip $100
+BackupOfVRAMDuringMessageBoxes: ; $7E4100..47FF
+skip $E00
+CopyOfVRAMDuringPauseMenuKraidRoom: ; $7E5000..53FF
+skip $1000
+BigZebesDuringZebesExplosionTilemap: ; $7E6000..9FFF
+
+struct PostCreditsSuperMetroidIcon $7E6000
+  .tiles: skip $2000 ; $7E6000..7FFF
+  .tilemap: skip $800 ; $7E8000..87FF
+endstruct
+
+org $7E7000
+EnemyTileData: ; $7E7000..97FF
+
+struct EnemySpawnData $7E7000
+  .unused7000: skip 2 ; $7E7000
+  .neverRead7002: skip 2 ; $7E7002
+skip 2
+  .VRAMTilesIndex: skip 2 ; $7E7006
+  .paletteIndex: skip 2 ; $7E7008
+  .graphicalXOffset: skip 2 ; $7E7010
+  .graphicalYOffset: skip 2 ; $7E7012
+skip 8
+  .ID: skip 2 ; $7E701E
+  .XPosition: skip 2 ; $7E7020
+  .YPosition: skip 2 ; $7E7022
+  .initParam: skip 2 ; $7E7024
+  .properties: skip 2 ; $7E7026
+  .extraProperties: skip 2 ; $7E7028
+  .param1: skip 2 ; $7E702A
+  .param2: skip 2 ; $7E702C
+  .name: skip 12 ; $7E702E..39
+endstruct
+
+; insert Extra Enemy RAM here ($7800, $8000, $8800)
+
+org $7E9000
+MotherBrainCorpseRottingGFX: ; $7E9000..953F
+BotwoonPositionHistory: ; $7E9000..93FF
+
+struct CrocomireDeathSequence $7E9000
+  .preBridgeBlockDustCloudSpawnedFlag: skip 2 ; $7E9000
+  .bridgePart1CrumbledFlag: skip 2 ; $7E9002
+skip 2
+  .bridgePart2CrumbledFlag: skip 2 ; $7E9006
+skip 2
+  .neverRead900A: skip 2 ; $7E900A
+skip 10
+  .crumblingBridgeIndex: skip 2 ; $7E9016
+  .acidDamageSmokeTimer: skip 2 ; $7E9018
+endstruct
+
+org $7E9000
+WavyPhantoonBG2XScrollIndirectHDMATable: ; $7E9000..19
+EyeBeamWindow1IndirectHDMATable: ; $7E9000..0A
+KraidDeathSequenceQuakeSoundTimer: ; $7E9000
+DisableSporeSpawnSporeGeneration: skip 2 ; $7E9000
+DraygonSwoopYPositions: ; $7E9002..97FF
+
+org $7E9032
+PhantoonMaterializationSFXIndex: ; $7E9032
+
+org $7E9080
+EyeBeamAngularWidthDelta: ; $7E9080
+EyeBeamAngularSubWidthDelta: ; $7E9082
+skip 14
+EyeBeamColorIndex: ; $7E9090
+skip $70
+EyeBeamWindow1HDMADataTable: ; $7E9100..92FF
+WavyPhantoonBG2XScrollHDMADataTable: ; $7E9100..FF
+skip $600
+MotherBrainCorpseRottingRotTable: ; $7E9700..BF
+skip $DC
+EenmyProjectileAngles: ; $7E97DC..FF
+
+org $7E9800
+XrayWindow2HDMADataTable: ; $7E9800..99FF
+SuitPickupWindow1HDMADataTable: ; $7E9800..99FF
+WavySamusBG3XScrollHDMADataTable: ; $7E9800..FF
+TitleScreenGradientColorMathSubScreenBackdropColorHDMATable: ; $7E9800..41
+skip $400
+ExpandingContractingEffectBG2YScrollIndirectHDMADataTable: ; $7E9C00..9DBF
+FXType22BG3YScrollHDMATable: ; $7E9C00..2B
+MotherBrainRainbowBeamWindow1IndirectHDMATable: ; $7E9C00..0D
+LavaAcidBG3YScrollHDMADataTable: ; $7E9C00..03
+AboveSurfaceWaterBG3XScrollHDMADataEntry: ; $7E9C00
+skip 4
+WaterBG3XScrollHDMADataTable: ; $7E9C04..23
+skip $42
+LavaAcidBG2YScrollHDMADataTable: ; $7E9C46..65
+skip 2
+WaterBG2XScrollHDMADataTable: ; $7E9C48..67
+
+
+
+
+
+;XXXXXXXXXXXXXXXXXXXXXXXXX: skip 2 ; $1F5
+;  .XXXXXXXXXXXXXXXXXXXXXXXXX: skip 2 ; $7E900
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
