@@ -1354,4 +1354,213 @@ struct EnemyProjectiles $198D
   .collidedProjectileType: skip $24 ; $1BFB..1C1E
 endstruct
 
+org $198D
+Mode7TransformationAngle: skip 2 ; $198D
+Mode7TransformationZoomLevel: skip 2 ; $198F
 
+struct CinematicBG1 $1991
+  .XSubPosition: skip 2 ; $1991
+  .XPosition: skip 2 ; $1993
+  .YSubPosition: skip 2 ; $1995
+  .YPosition: skip 2 ; $1997
+  .XSubSpeed: skip 2 ; $1999
+  .XSpeed: skip 2 ; $199B
+  .YSubSpeed: skip 2 ; $199D
+  .YSpeed: skip 2 ; $199F
+endstruct
+
+struct Mode7Object $19A1
+  .instListPointers: skip 4 ; $19A1..A4
+  .preInstructions: skip 4 ; $19A5..A8
+  .instructionTimers: skip 4 ; $19A9..AC
+  .timers: skip 4 ; $19AD..B0
+  .index: skip 2 ; $19B1
+  .neverRead19B3: skip 2 ; $19B3
+endstruct
+
+struct CinematicBGObject $19B5
+  .indirectInstructionPointers: skip 8 ; $19B5..BC
+  .index: skip 2 ; $19BD
+skip 14
+  .instListPointers: skip 8 ; $19CD..D4
+  .preInstructions: skip 8 ; $19D5..DC
+  .instructionTimers: skip 8 ; $19DD..E4
+  .timers: skip 8 ; $19E5..EC
+skip 4
+  .enable: skip 2 ; $19F1
+  .tilemapUpdateFlag: skip 2 ; $19F3
+  .VRAMAddr: skip 2 ; $19F5
+endstruct
+
+struct TextGlowObject $19F7
+  .indirectInstructionPointers: skip $10 ; $19F7..1A06
+  .timers: skip $10 ; $1A07..16
+  .XPositions: skip $10 ; $1A17..26
+  .YPositions: skip $10 ; $1A27..36
+  .paletteIndices: skip $10 ; $1A37..46
+  .index: skip 8 ; $1A47
+endstruct
+
+struct CreditsObject $19F7
+  .instListPointer: skip 2 ; $19F7
+  .instructionTimer: skip 2 ; $19F9
+  .timer: skip 2 ; $19FB
+  .preInstruction: skip 2 ; $19FD
+  .enable: skip 2 ; $19FF
+  .CinematicBGTilemapRowIndex: skip 2 ; $1A01
+  .lastCreditsUpdateYPosition: skip 2 ; $1A03
+  .shootingStarsEnable: skip 2 ; $1A05
+endstruct
+
+org $1A49
+CinematicFunctionTimer: skip 2 ; $1A49
+IntroCrossFadeTimer: skip 0 ; $1A4B
+CeresExplosion2OffsetIndex: skip 0 ; $1A4B
+ZebesExplosionAfterglowTimer: skip 0 ; $1A4B
+EndingShipXVelocity: skip 0 ; $1A4B
+PostCreditsSamusBeamVRAMTransferIndex: skip 2 ; $1A4B
+IntroBabyMetroidXVelocity: skip 0 ; $1A4D
+IntroBabyMetroidIdleTimer: skip 0 ; $1A4D
+EndingShipShakeIndex: skip 0 ; $1A4D
+EndingShipXSubVelocity: skip 0 ; $1A4D
+PostCreditsStarsFadeTimer: skip 0 ; $1A4D
+PostCreditsSMIconVRAMTransferIndex: skip 2 ; $1A4D
+IntroBabyMetroidYVelocity: skip 0 ; $1A4F
+PostCreditsSamusFadeTimer: skip 2 ; $1A4F
+CinematicFrameCounter: skip 2 ; $1A51
+SkipToTitleScreenIndex: skip 2 ; $1A53
+skip 2
+IntroSamusDisplayFlag: skip 2 ; $1A57
+
+struct CinematicSpriteObject $1A59
+  .index: skip 2 ; $1A59
+  .spritemapPointers: skip $20 ; $1A5D..7C
+  .XPositions: skip $20 ; $1A7D..9C
+  .YPositions: skip $20 ; $1A9D..BC
+  .paletteIndices: skip $20 ; $1ABD..DC
+  .XSubPosition: skip $20 ; $1ADD..FC
+  .YSubPosition: skip $20 ; $1AFD..1C
+  .instListPointers: skip $20 ; $1B1B..3C
+  .preInstructions: skip $20 ; $1B3D..5C
+  .instructionTimers: skip $20 ; $1B5D..7C
+  .timers: skip $20 ; $1B7D..9C
+  .initParam: skip 2 ; $1B9D
+  .frameCounter: skip 2 ; $1B9F
+  .introTextClickFlag: skip 2 ; $1BA1
+  .introJapanTextTimer: skip 2 ; $1BA3
+endstruct
+
+struct Menu $198D
+  .selectionMissileAnimTimer: skip 2 ; $198D
+  .fileCopyArrowPaletteTimer: skip 2 ; $198F
+  .slotAHelmetAnimationTimer: skip 2 ; $1991
+  .slotBHelmetAnimationTimer: skip 2 ; $1995
+  .slotCHelmetAnimationTimer: skip 2 ; $1993
+  .selectionMissileAnimFrame: skip 2 ; $1997
+  .neverRead1999: skip 2 ; $1999
+  .slotAHelmetAnimationFrame: skip 2 ; $199B
+  .slotBHelmetAnimationFrame: skip 2 ; $199D
+  .slotCHelmetAnimationFrame: skip 2 ; $199F
+  .selectionMissileXPosition: skip 2 ; $19A1
+  .neverRead19A3: skip 2 ; $19A3
+  .slotAHelmetXPosition: skip 2 ; $19A5
+  .slotBHelmetXPosition: skip 2 ; $19A7
+  .slotCHelmetXPosition: skip 2 ; $19A9
+  .selectionMissileYPosition: skip 2 ; $19AB
+  .neverRead19AD: skip 2 ; $19AD
+  .slotAHelmetYPosition: skip 2 ; $19AF
+  .slotBHelmetYPosition: skip 2 ; $19B1
+  .slotCHelmetYPosition: skip 2 ; $19B3
+  .fileCopyClearMenuSelection: skip 2 ; $19B5
+  .fileCopySrcFileClearSlot: skip 2 ; $19B7
+  .fileCopyDestSlot: skip 2 ; $19B9
+endstruct
+
+struct GameOptionsMenuObject $1A8F
+  .index: skip 2 ; $1A8F
+skip 2
+  .initParam: skip 2 ; $1A93
+  .spritemapPointers: skip $10 ; $1A9D..AC
+  .XPositions: skip $10 ; $1AAD..BC
+  .YPositions: skip $10 ; $1ABD..CC
+  .paletteIndices: skip $10 ; $1ACD..DC
+  .neverRead1ADD: skip $10 ; $1ADD..EC
+  .neverRead1AED: skip $10 ; $1AED..FC
+  .instListPointers: skip $10 ; $1AFD..1B0C
+  .preInstructions: skip $10 ; $1B0D..1C
+  .instructionTimers: skip $10 ; $1B1D..2C
+  .timers: skip $10 ; $1B2D..3C
+  .controllerBindings: skip $10 ; $1B3D..4C
+endstruct
+
+org $1C1F
+MessageBoxIndex: skip 2 ; $1C1F
+skip 2 ; Unused
+
+struct PLM $1C23
+  .flag: skip 2 ; $1C23
+  .drawTilemapIndex: skip 2 ; $1C25
+  .index: skip 2 ; $1C27
+  .XBlock: skip 2 ; $1C29
+  .YBlock: skip 2 ; $1C2B
+  .itemGFXIndex: skip 2 ; $1C2D
+  .itemGFXPointers: skip 8 ; $1C2F..36
+  .IDs: skip $50 ; $1C37..86
+  .blockIndices: skip $50 ; $1C87..D6
+  .preInstructions: skip $50 ; $1CD7..1D26
+  .instListPointers: skip $50 ; $1D27..76
+  .timers: skip $50 ; $1D77..C6
+  .roomArgs: skip $50 ; $1DC7..1E16
+  .vars: skip $50 ; $1E17..66
+endstruct
+
+struct CustomDrawInst $1E67
+  .numberOfBlocks: skip 2 ; $1E67
+  .PLMBlock: skip 2 ; $1E69
+  .terminator: skip 2 ; $1E6B
+endstruct
+
+org $1E6D
+TourianStatueFinishedProcessing: skip 2 ; $1E6D
+TourianStatueAnimationState: skip 2 ; $1E6F
+SamusInQuicksand: skip 2 ; $1E71
+InsideBlockReactionSamusPoint: skip 2 ; $1E73
+SaveStationLockoutFlag: skip 2 ; $1E75
+CurrentSlopeBTS: skip 2 ; $1E77
+
+struct PaletteFXObject $1E79
+  .enable: skip 2 ; $1E79
+  .index: skip 2 ; $1E7B
+  .IDs: skip $10 ; $1E7D..8C
+  .colorIndices: skip $10 ; $1E8D..9C
+  .vars: skip $10 ; $1E9D..AC
+  .preInstructions: skip $10 ; $1EAD..BC
+  .instListPointers: skip $10 ; $1EBD..CC
+  .instructionTimers: skip $10 ; $1ECD..DC
+  .timers: skip $10 ; $1EDD..EC
+  .SamusInHeatIndex: skip 2 ; $1EED
+  .previousSamusInHeatIndex: skip 2 ; $1EEF
+endstruct
+
+struct AnimatedTilesObject $1EF1
+  .enable: skip 2 ; $1EF1
+  .index: skip 2 ; $1EF3
+  .IDs: skip 12 ; $1EF5..1F00
+  .timers: skip 12 ; $1F01..0C
+  .instListPointers: skip 12 ; $1F0D..18
+  .instructionTimers: skip 12 ; $1F19..24
+  .srcAddr: skip 12 ; $1F25..30
+  .sizes: skip 12 ; $1F31..3C
+  .VRAMAddr: skip 12 ; $1F3D..48
+  .instruction: skip 2 ; $1F49
+endstruct
+
+org $1F51
+CinematicFunction: skip 2 ; $1F51
+
+struct Demo $1F53
+  .timer: skip 2 ; $1F53
+  .set: skip 2 ; $1F55
+  .scene: skip 2 ; $1F57
+  .numberOfSets: skip 2 ; $1F59
+endstruct
