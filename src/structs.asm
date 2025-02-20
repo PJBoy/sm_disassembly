@@ -1720,7 +1720,7 @@ WavyPhantoonBG2XScrollHDMADataTable: ; $7E9100..FF
 skip $600
 MotherBrainCorpseRottingRotTable: ; $7E9700..BF
 skip $DC
-EenmyProjectileAngles: ; $7E97DC..FF
+EnemyProjectileAngles: ; $7E97DC..FF
 
 org $7E9800
 XrayWindow2HDMADataTable: ; $7E9800..99FF
@@ -1740,12 +1740,64 @@ LavaAcidBG2YScrollHDMADataTable: ; $7E9C46..65
 skip 2
 WaterBG2XScrollHDMADataTable: ; $7E9C48..67
 
+org $7E9D00
+MotherBrainRainbowBeamWindow1HDMADataTable: ; $7E9D00..??
+HazeColorMathSubscreenBackdropColorHDMADataTable: ; $7E9D00..0F
+skip $100
+ExpandingSquareTransitionWindow1LeftIndirectHDMATable: ; $7E9E00..0B
+ExpandingContractingEffectBG2YScrollIndirectHDMATable: ; $7E9E00..07
+TourianStatueBG2YScroll: skip 2 ; $7E9E00
+FXType22BG3XScrollIndirectHDMATable: ; $7E9E02..??
 
+struct ExpandingSquare $7E9E10
+  .transitionWindow1RightIndirectHDMATable: skip $10 ; $7E9E10..1B
+  .topBottomMarginRightPosition: skip 2 ; $7E9E20
+  .topBottomMarginLeftPosition: skip 2 ; $7E9E22
+skip 14
+  .leftSubPosition: skip 2 ; $7E9E30
+  .leftPosition: skip 2 ; $7E9E32
+  .rightSubPosition: skip 2 ; $7E9E34
+  .rightPosition: skip 2 ; $7E9E36
+  .topSubPosition: skip 2 ; $7E9E38
+  .topPosition: skip 2 ; $7E9E3A
+  .bottomSubPosition: skip 2 ; $7E9E3C
+  .bottomSubPosition: skip 2 ; $7E9E3E
+  .leftPositionSubVelocity: skip 2 ; $7E9E40
+  .leftPositionVelocity: skip 2 ; $7E9E42
+  .rightSubVelocity: skip 2 ; $7E9E44
+  .rightVelocity: skip 2 ; $7E9E46
+  .topSubVelocity: skip 2 ; $7E9E48
+  .topVelocity: skip 2 ; $7E9E4A
+  .bottomSubVelocity: skip 2 ; $7E9E4C
+  .bottomVelocity: skip 2 ; $7E9E4E
+  .timer: skip 2 ; $7E9E50
+endstruct
+
+org $7E9E80
+FXType22BG3XScrollHDMADataTable: ; $7E9E80..??
+skip $80
+ScrollingSkyBG2XScrollIndirectHDMATable: skip 2 ; $7E9F00..7F
+FXType22BG1XScrollIndirectHDMADataTable
+
+struct TileTable $7EA000
+  .topLeft: skip 2 ; $7EA000
+  .topRight: skip 2 ; $7EA002
+  .bottomLeft: skip 2 ; $7EA004
+  .bottomRight: skip 2 ; $7EA006
+endstruct
+
+org $7EA000
+DecompressedCRE: ; $7EA000..A7FF
+EndingFont3Tiles: ; $7EA000..AFFF
+skip $800
+DecompressedSCE: ; $7EA800..BFFF
+
+org $7EC000
 
 
 
 ;XXXXXXXXXXXXXXXXXXXXXXXXX: skip 2 ; $1F5
-;  .XXXXXXXXXXXXXXXXXXXXXXXXX: skip 2 ; $7E900
+;  .XXXXXXXXXXXXXXXXXXXXXXXXX: skip 2 ; $7EA00
 
 
 
