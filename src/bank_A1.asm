@@ -1379,11 +1379,11 @@ EnemyPopulations_Kraid:
     dw $0100,$0218,$0000,$0D00,$0004,$0000,$0000                         ;A19EB7;
     dw EnemyHeaders_KraidArm                                             ;A19EC5;
     dw $00E8,$01E8,$0000,$2800,$0004,$0000,$0001                         ;A19EC7;
-    dw EnemyHeaders_LintTop                                              ;A19ED5;
+    dw EnemyHeaders_KraidLintTop                                         ;A19ED5;
     dw $00C8,$0210,$0000,$A800,$0000,$0000,$0000                         ;A19ED7;
-    dw EnemyHeaders_LintMiddle                                           ;A19EE5;
+    dw EnemyHeaders_KraidLintMiddle                                      ;A19EE5;
     dw $00B0,$0250,$0000,$A800,$0000,$0000,$0001                         ;A19EE7;
-    dw EnemyHeaders_LintBottom                                           ;A19EF5;
+    dw EnemyHeaders_KraidLintBottom                                      ;A19EF5;
     dw $00B2,$0288,$0000,$A800,$0000,$0000,$0002                         ;A19EF7;
     dw EnemyHeaders_KraidFoot                                            ;A19F05;
     dw $0100,$0278,$0000,$2C00,$0004,$0000,$0003                         ;A19F07;

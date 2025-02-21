@@ -12480,7 +12480,7 @@ EnemyHeaders_KraidArm:
     dw EnemyVulnerabilities_KraidArm_KraidFoot                           ;A0E33B;
     dw $0000                                                             ;A0E33D;
 
-EnemyHeaders_LintTop:
+EnemyHeaders_KraidLintTop:
     dw $1E00                                                             ;A0E33F;
     dw Palette_Kraid                                                     ;A0E341;
     dw $03E8,$000A,$0018,$0008                                           ;A0E343;
@@ -12506,7 +12506,7 @@ EnemyHeaders_LintTop:
     dw EnemyVulnerabilities_Kraid_LintTop_LintMiddle_LintBottom          ;A0E37B;
     dw $0000                                                             ;A0E37D;
 
-EnemyHeaders_LintMiddle:
+EnemyHeaders_KraidLintMiddle:
     dw $1E00                                                             ;A0E37F;
     dw Palette_Kraid                                                     ;A0E381;
     dw $03E8,$000A,$0018,$0008                                           ;A0E383;
@@ -12532,7 +12532,7 @@ EnemyHeaders_LintMiddle:
     dw EnemyVulnerabilities_Kraid_LintTop_LintMiddle_LintBottom          ;A0E3BB;
     dw $0000                                                             ;A0E3BD;
 
-EnemyHeaders_LintBottom:
+EnemyHeaders_KraidLintBottom:
     dw $1E00                                                             ;A0E3BF;
     dw Palette_Kraid                                                     ;A0E3C1;
     dw $03E8,$000A,$0018,$0008                                           ;A0E3C3;

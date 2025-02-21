@@ -1,4 +1,9 @@
 
+; https://patrickjohnston.org/ASM/Lists/Super%20Metroid/RAM%20map.asm
+
+
+; WRAM $0000..1FFF
+
 struct DP $00
   .temp00: skip 1 ; $00
   .temp01: skip 1 ; $01
@@ -1566,6 +1571,7 @@ struct Demo $1F53
 endstruct
 
 
+; $7E0000..FFFF
 
 struct FadingPalettes $7E2000
   .fadingPalettes: skip $200 ; $7E2000..21FF
@@ -1681,7 +1687,7 @@ skip 8
   .name: skip 12 ; $7E702E..39
 endstruct
 
-; insert Extra Enemy RAM here ($7800, $8000, $8800)
+; see "ENEMY RAM" section below for extra enemy RAM ($7800, $8000, $8800)
 
 org $7E9000
 MotherBrainCorpseRottingGFX: ; $7E9000..953F
@@ -1702,8 +1708,8 @@ endstruct
 org $7E9000
 WavyPhantoonBG2XScrollIndirectHDMATable: ; $7E9000..19
 EyeBeamWindow1IndirectHDMATable: ; $7E9000..0A
-KraidDeathSequenceQuakeSoundTimer: ; $7E9000
-DisableSporeSpawnSporeGeneration: skip 2 ; $7E9000
+KraidDeathSequenceQuakeSoundTimer: skip 2 ; $7E9000
+DisableSporeSpawnSporeGeneration: ; $7E9000
 DraygonSwoopYPositions: ; $7E9002..97FF
 
 org $7E9032
@@ -2084,6 +2090,7 @@ skip $24
 endstruct
 
 
+; $7F0000..FFFF
 
 org $7F0000
 SizeOfLevelData: skip 2 ; $7F0000
@@ -2119,3 +2126,641 @@ skip $800
 ConcentricWidePartOfZebesExplosionTilemap: skip $800 ; $7FE800..EFFF
 EclipseOfZebesDuringExplosionTilemap: skip $800 ; $7FF000..F7FF
 EndingBlankTilemap: skip $800 ; $7FF800..FFFF
+
+
+; https://github.com/pjboy/lua/blob/master/enemy%20data.txt
+; ENEMY RAM 
+org $808000
+
+struct Boyon $7E7800
+ .initialBounceSpeedTableIndex: skip 2 ; $7E7800
+ .bounceMovementIndex: skip 2 ; $7E7802
+ .bounceDisableFlag: skip 2 ; $7E7804
+ .speedMultiplierMirror: skip 2 ; $7E7806
+ .idleDisableFlag: skip 2 ; $7E7808
+ .bounceSpeedCalculatedFlag: skip 2 ; $7E780A
+endstruct
+
+struct MamaTurtle $7E7800
+  .functionTimer: skip 2 ; $7E7800
+  .XSubAcceleration: skip 2 ; $7E7802
+  .XAcceleration: skip 2 ; $7E7804
+  .XSubVelocity: skip 2 ; $7E7806
+  .YVelocity: skip 2 ; $7E7808
+skip 4
+  .YSubVelocity: skip 2 ; $7E780E
+endstruct
+
+struct BabyTurtle $7E7808
+  .YVelocity skip 2 ; $7E7808
+  .notCarryingSamusReactionTimer skip 2 ; $7E780A
+endstruct
+
+struct Puyo $7E7800
+  .hopType: skip 2 ; $7E7800
+  .hoppingAnimationFlag: skip 2 ; $7E7802
+  .direction: skip 2 ; $7E7804
+  .fallingFlag: skip 2 ; $7E7806
+  .invertDirectionFlag: skip 2 ; $7E7808
+  .InvertedDirection: skip 2 ; $7E780A
+  .initialYSpeedTableIndex_3_4: skip 2 ; $7E780C
+  .initialYSpeedTableIndex_1_2: skip 2 ; $7E780E
+endstruct
+
+struct Cacatac $7E7800
+  .MinimumXPosition: skip 2 ; $7E7800
+  .MaximumXPosition: skip 2 ; $7E7802
+endstruct
+
+struct Owtch $7E7800
+  .undergroundTimer: skip 2 ; $7E7800
+  .MinimumXPosition: skip 2 ; $7E7802
+  .MaximumXPosition: skip 2 ; $7E7804
+endstruct
+
+struct Squeept $7E7800
+  .animationFinishedFlag: skip 2 ; $7E7800
+  .instList: skip 2 ; $7E7802
+endstruct
+
+struct Geruta $7E7800
+  .instList: skip 2 ; $7E7800
+  .finishedSwoopStartAnimationFlag: skip 2 ; $7E7802
+  .flamesYOffset: skip 2 ; $7E7804
+endstruct
+
+struct Holtz $7E7800
+  .instList: skip 2 ; $7E7800
+  .animationFinishedFlag: skip 2 ; $7E7802
+  .flamesVisibleFlag: skip 2 ; $7E7804
+endstruct
+
+struct Oum $7E7800
+  .newInstListIndex: skip 2 ; $7E7800
+  .instListIndex: skip 2 ; $7E7802
+  .animationFinishedFlag: skip 2 ; $7E7804
+  .attackAllowingRotationFlag: skip 2 ; $7E7806
+  .touchingSamusFlag: skip 2 ; $7E7808
+  .directionToSamus: skip 2 ; $7E780A
+  .previousXPosition: skip 2 ; $7E780C
+skip 2
+  .previousYPosition: skip 2 ; $7E7810
+skip 4
+  .stopFlag: skip 2 ; $7E7816
+endstruct
+
+struct Choot $7E7800
+  .SpawnXPosition: skip 2 ; $7E7800
+  .SpawnYPosition: skip 2 ; $7E7802
+  .initialFallingXPosition: skip 2 ; $7E7804
+  .initialFallingYPosition: skip 2 ; $7E7806
+  .fallingXOrigin: skip 2 ; $7E7808
+  .fallingYOrigin: skip 2 ; $7E780A
+  .initialYSpeedTableIndex: skip 2 ; $7E780C
+  .jumpDelayTimer: skip 2 ; $7E780E
+endstruct
+
+struct Draygon $7E7800
+  .newInstListIndex: skip 2 ; $7E7800
+  .instListIndex: skip 2 ; $7E7802
+  .animationFinishedFlag: skip 2 ; $7E7804
+endstruct
+
+struct ShutterGrowing $7E7800
+  .YSpeed: skip 2 ; $7E7800
+  .YSubSpeed: skip 2 ; $7E7802
+skip $FFC
+  .previousYPosition: skip 2 ; $7E8800
+endstruct
+
+struct ShutterShootable $7E7800
+  .YSpeedTableIndex: skip 2 ; $7E7800
+  .primaryDirection: skip 2 ; $7E7802
+  .movedUpRestTimerParam: skip 2 ; $7E7804
+  .movedDownRestTimeParam: skip 2 ; $7E7806
+  .triggerMode: skip 2 ; $7E7808
+  .YDistance: skip 2 ; $7E780A
+  .XProximity: skip 0 ; $7E780C
+  .waitTime: skip 2 ; $7E780C
+  .initialFunctionIndex: skip 2 ; $7E780E
+  .movedUpRestTime: skip 2 ; $7E7810
+  .movedDownRestTime: skip 2 ; $7E7812
+  .movingSamusFlag: skip 2 ; $7E7814
+skip 2
+  .shotActivatedFlag: skip 2 ; $7E7818
+skip 2
+  .previousYPosition: skip 2 ; $7E781C
+  .minimumYPosition: skip 2 ; $7E781E
+  .maximumYPosition: skip 2 ; $7E7820
+skip $7DE
+  .reactionDirection: skip 2 ; $7E8000
+endstruct
+
+struct ShutterHorizShootable $7E7800
+  .YSpeedTableIndex: skip 2 ; $7E7800
+  .primaryDirection: skip 2 ; $7E7802
+  .movedLeftRestTimerParam: skip 2 ; $7E7804
+  .movedRightRestTimeParam: skip 2 ; $7E7806
+  .triggerMode: skip 2 ; $7E7808
+  .YDistance: skip 2 ; $7E780A
+  .XProximity: skip 0 ; $7E780C
+  .waitTime: skip 2 ; $7E780C
+  .initialFunctionIndex: skip 2 ; $7E780E
+  .movedLeftRestTime: skip 2 ; $7E7810
+  .movedRightRestTime: skip 2 ; $7E7812
+skip 4
+  .shotActivatedFlag: skip 2 ; $7E7818
+  .previousXPosition: skip 2 ; $7E781A
+skip 6
+  .minimumXPosition: skip 2 ; $7E7822
+  .maximumXPosition: skip 2 ; $7E7824
+  .movingSamusFlag: skip 2 ; $7E7826
+skip $7D8
+  .reactionDirection: skip 2 ; $7E8000
+endstruct
+
+struct ShutterDestroyable $7E7800
+  .YSpeedTableIndex: skip 2 ; $7E7800
+  .primaryDirection: skip 2 ; $7E7802
+  .movedUpRestTimerParam: skip 2 ; $7E7804
+  .movedDownRestTimeParam: skip 2 ; $7E7806
+  .triggerMode: skip 2 ; $7E7808
+  .YDistance: skip 2 ; $7E780A
+  .XProximity: skip 0 ; $7E780C
+  .waitTime: skip 2 ; $7E780C
+  .initialFunctionIndex: skip 2 ; $7E780E
+  .movedUpRestTime: skip 2 ; $7E7810
+  .movedDownRestTime: skip 2 ; $7E7812
+  .movingSamusFlag: skip 2 ; $7E7814
+skip 2
+  .shotActivatedFlag: skip 2 ; $7E7818
+skip 2
+  .previousYPosition: skip 2 ; $7E781C
+  .minimumYPosition: skip 2 ; $7E781E
+  .maximumYPosition: skip 2 ; $7E7820
+skip $7DE
+  .reactionDirection: skip 2 ; $7E8000
+endstruct
+
+struct Kamer $7E7800
+  .YSpeedTableIndex: skip 2 ; $7E7800
+  .primaryDirection: skip 2 ; $7E7802
+  .movedUpRestTimerParam: skip 2 ; $7E7804
+  .movedDownRestTimeParam: skip 2 ; $7E7806
+  .triggerMode: skip 2 ; $7E7808
+  .YDistance: skip 2 ; $7E780A
+  .XProximity: skip 0 ; $7E780C
+  .waitTime: skip 2 ; $7E780C
+  .initialFunctionIndex: skip 2 ; $7E780E
+  .movedUpRestTime: skip 2 ; $7E7810
+  .movedDownRestTime: skip 2 ; $7E7812
+  .movingSamusFlag: skip 2 ; $7E7814
+skip 2
+  .shotActivatedFlag: skip 2 ; $7E7818
+skip 2
+  .previousYPosition: skip 2 ; $7E781C
+  .minimumYPosition: skip 2 ; $7E781E
+  .maximumYPosition: skip 2 ; $7E7820
+skip $7DE
+  .reactionDirection: skip 2 ; $7E8000
+endstruct
+
+struct Fireflea $7E7800
+  .minimumYPosition: skip 2 ; $7E7800
+  .maximumYPosition: skip 2 ; $7E7802
+  .SpeedTableIndex: skip 2 ; $7E7804
+endstruct
+
+struct Skulltera $7E7800
+  .radius: skip 2 ; $7E7800
+  .turnFinishedFlag: skip 2 ; $7E7802
+  .angleDelta: skip 2 ; $7E7804
+  .previousYOffset: skip 2 ; $7E7806
+  .YOffset: skip 2 ; $7E7808
+endstruct
+
+struct Sciser $7E7802
+  .fallingYSubVelocity: skip 2 ; $7E7802
+  .fallingYVelocity: skip 2 ; $7E7804
+  .nonFallingFunction: skip 2 ; $7E7806
+  .consecutiveTurnCounter: skip 2 ; $7E7808
+endstruct
+
+struct Zero $7E7802
+  .fallingYSubVelocity: skip 2 ; $7E7802
+  .fallingYVelocity: skip 2 ; $7E7804
+  .nonFallingFunction: skip 2 ; $7E7806
+  .consecutiveTurnCounter: skip 2 ; $7E7808
+endstruct
+
+struct Tripper $7E7800
+  .YMovementFunctionIndex: skip 2 ; $7E7800
+  .previousPosition: skip 2 ; $7E7802
+  .XMovementFunctionIndex: skip 2 ; $7E7804
+  .verticallyMovingFlag: skip 2 ; $7E7806
+  .verticallyStillFlag: skip 2 ; $7E7808
+  .maximumYSpeedTableIndex: skip 2 ; $7E780A
+  .previousYMovementFunctionIndex: skip 2 ; $7E780C
+skip $30
+  .suspensorPlatformFlag: skip 2 ; $7E783E
+endstruct
+
+struct Sbug $7E7800
+  .movingForwardXSubSpeed: skip 2 ; $7E7800
+  .movingForwardXSpeed: skip 2 ; $7E7802
+  .movingForwardYSubSpeed: skip 2 ; $7E7804
+  .movingForwardYSpeed: skip 2 ; $7E7806
+  .movingLeftXSubVelocity: skip 2 ; $7E7808
+  .movingLeftXVelocity: skip 2 ; $7E780A
+  .movingLeftYSubVelocity: skip 2 ; $7E780C
+  .movingLeftYVelocity: skip 2 ; $7E780E
+  .movingRightXSubVelocity: skip 2 ; $7E7810
+  .movingRightXVelocity: skip 2 ; $7E7812
+  .movingRightYSubVelocity: skip 2 ; $7E7814
+  .movingRightYVelocity: skip 2 ; $7E7816
+  .customXSubVelocity: skip 2 ; $7E7818
+  .customXVelocity: skip 2 ; $7E781A
+  .customYSubVelocity: skip 2 ; $7E781C
+  .customYVelocity: skip 2 ; $7E781E
+skip $7E0
+  .movingForwardInstListIndex: skip 2 ; $7E8000
+  .movingLeftInstListIndex: skip 2 ; $7E8002
+  .movingRightInstListIndex: skip 2 ; $7E8004
+  .customInstListIndex: skip 2 ; $7E8006
+  .newInstList: skip 2 ; $7E8008
+  .instList: skip 2 ; $7E800A
+endstruct
+
+struct Mochtroid $7E7802
+  .movingForwardXSpeed: skip 2 ; $7E7802
+skip $7FC
+  .damageTimer: skip 2 ; $7E8000
+endstruct
+
+struct Sidehopper $7E7800
+  .instList: skip 2 ; $7E7800
+  .smallHopInitialYSpeedTableIndex: skip 2 ; $7E7802
+  .bigHopInitialYSpeedTableIndex: skip 2 ; $7E7804
+  .fallingFlag: skip 2 ; $7E7806
+  .readyToHopFlag: skip 2 ; $7E7808
+  .hopTableIndex: skip 2 ; $7E780A
+  .variantIndex: skip 2 ; $7E780C
+endstruct
+
+struct Dessgeega $7E7800
+  .instList: skip 2 ; $7E7800
+  .smallHopInitialYSpeedTableIndex: skip 2 ; $7E7802
+  .bigHopInitialYSpeedTableIndex: skip 2 ; $7E7804
+  .fallingFlag: skip 2 ; $7E7806
+  .readyToHopFlag: skip 2 ; $7E7808
+  .hopTableIndex: skip 2 ; $7E780A
+  .variantIndex: skip 2 ; $7E780C
+endstruct
+
+struct SidehopperLarge $7E7800
+  .instList: skip 2 ; $7E7800
+  .smallHopInitialYSpeedTableIndex: skip 2 ; $7E7802
+  .bigHopInitialYSpeedTableIndex: skip 2 ; $7E7804
+  .fallingFlag: skip 2 ; $7E7806
+  .readyToHopFlag: skip 2 ; $7E7808
+  .hopTableIndex: skip 2 ; $7E780A
+  .variantIndex: skip 2 ; $7E780C
+endstruct
+
+struct SidehopperTourian $7E7800
+  .instList: skip 2 ; $7E7800
+  .smallHopInitialYSpeedTableIndex: skip 2 ; $7E7802
+  .bigHopInitialYSpeedTableIndex: skip 2 ; $7E7804
+  .fallingFlag: skip 2 ; $7E7806
+  .readyToHopFlag: skip 2 ; $7E7808
+  .hopTableIndex: skip 2 ; $7E780A
+  .variantIndex: skip 2 ; $7E780C
+endstruct
+
+struct DessgeegaLarge $7E7800
+  .instList: skip 2 ; $7E7800
+  .smallHopInitialYSpeedTableIndex: skip 2 ; $7E7802
+  .bigHopInitialYSpeedTableIndex: skip 2 ; $7E7804
+  .fallingFlag: skip 2 ; $7E7806
+  .readyToHopFlag: skip 2 ; $7E7808
+  .hopTableIndex: skip 2 ; $7E780A
+  .variantIndex: skip 2 ; $7E780C
+endstruct
+
+struct Zoa $7E7800
+  .XSpeedTableIndex: skip 2 ; $7E7800
+endstruct
+
+struct Viola $7E7802
+  .fallingYSubVelocity: skip 2 ; $7E7802
+  .fallingYVelocity: skip 2 ; $7E7804
+  .nonFallingFunction: skip 2 ; $7E7806
+  .consecutiveTurnCounter: skip 2 ; $7E7808
+endstruct
+
+struct Bang $7E7800
+  .movementDelayTimer: skip 2 ; $7E7800
+  .angle: skip 2 ; $7E7802
+  .angleToSamus: skip 2 ; $7E7804
+skip 8
+  .movingLeftFlag: skip 2 ; $7E780E
+  .movingUpFlag: skip 2 ; $7E7810
+  .acceleration: skip 2 ; $7E7812
+  .speed: skip 2 ; $7E7814
+  .maxSpeed: skip 2 ; $7E7816
+  .accelerationIntervalTimer: skip 2 ; $7E7818
+  .accelerationIntervalTimerResetValue: skip 2 ; $7E781A
+  .decelerationIntervalTimerResetValue: skip 2 ; $7E781C
+skip $7E2
+  .newInstListIndex: skip 2 ; $7E8000
+  .instListIndex: skip 2 ; $7E8002
+  .finishedGrowingFlag: skip 2 ; $7E8004
+endstruct
+
+struct Yard $7E7800
+  .airborneYSubVelocity: skip 2 ; $7E7800
+  .airborneYVelocity: skip 2 ; $7E7802
+  .airborneXSubVelocity: skip 2 ; $7E7804
+  .airborneXVelocity: skip 2 ; $7E7806
+  .turnTransitionDisableCounter: skip 2 ; $7E7808
+  .turnTransitionDisableFlag: skip 2 ; $7E780A
+  .idleCrawlingSpeedTableIndex: skip 2 ; $7E780C
+  .direction: skip 2 ; $7E780E
+  .behavior: skip 2 ; $7E7810
+endstruct
+
+struct HZoomer $7E7802
+  .fallingYSubVelocity: skip 2 ; $7E7802
+  .fallingYVelocity: skip 2 ; $7E7804
+  .nonFallingFunction: skip 2 ; $7E7806
+  .consecutiveTurnCounter: skip 2 ; $7E7808
+endstruct
+
+struct Zeela $7E7802
+  .fallingYSubVelocity: skip 2 ; $7E7802
+  .fallingYVelocity: skip 2 ; $7E7804
+  .nonFallingFunction: skip 2 ; $7E7806
+  .consecutiveTurnCounter: skip 2 ; $7E7808
+endstruct
+
+struct Sova $7E7802
+  .fallingYSubVelocity: skip 2 ; $7E7802
+  .fallingYVelocity: skip 2 ; $7E7804
+  .nonFallingFunction: skip 2 ; $7E7806
+  .consecutiveTurnCounter: skip 2 ; $7E7808
+endstruct
+
+struct Zoomer $7E7802
+  .fallingYSubVelocity: skip 2 ; $7E7802
+  .fallingYVelocity: skip 2 ; $7E7804
+  .nonFallingFunction: skip 2 ; $7E7806
+  .consecutiveTurnCounter: skip 2 ; $7E7808
+endstruct
+
+struct MZoomer $7E7802
+  .fallingYSubVelocity: skip 2 ; $7E7802
+  .fallingYVelocity: skip 2 ; $7E7804
+  .nonFallingFunction: skip 2 ; $7E7806
+  .consecutiveTurnCounter: skip 2 ; $7E7808
+endstruct
+
+struct Metroid $7E7800
+  .electricitySpriteObjectIndex: skip 2 ; $7E7800
+  .shellSpriteObjectIndex: skip 2 ; $7E7802
+  .SamusSubEnergy: skip 2 ; $7E7804
+endstruct
+
+struct Crocomire $7E783E
+  .meltingHDMAObjectIndex: skip 2 ; $7E783E
+; see also "CrocomireDeathSequence"
+endstruct
+
+struct DraygonBody $7E7800
+  .leftSideResetXPosition: skip 2 ; $7E7800
+  .resetYPosition: skip 2 ; $7E7802
+  .rightSideResetXPosition: skip 2 ; $7E7804
+  .goopCounter: skip 2 ; $7E7806
+  .spiralXRadius: skip 2 ; $7E780A
+  .spiralXPosition: skip 2 ; $7E780C
+  .spiralYPosition: skip 2 ; $7E780E
+  .spiralAngle: skip 2 ; $7E7810
+  .spiralXSubRadius: skip 2 ; $7E7812
+  .spiralYSubPosition: skip 2 ; $7E7814
+  .spiralAngleDelta: skip 2 ; $7E7816
+  .tailWhipTimer: skip 2 ; $7E7818
+  .goopYOscillationAngle: skip 2 ; $7E781A
+  .healthBasedPaletteTableIndex: skip 2 ; $7E781C
+  .swoopYAcceleration: skip 2 ; $7E781E
+skip $7E2
+  .facingDirection: skip 2 ; $7E8000
+skip 10
+  .fightIntroDanceIndex: skip 2 ; $7E880C
+skip $2E
+  .bodyGraphicsXDisplacement: skip 2 ; $7E883C
+  .bodyGraphicsYDisplacement: skip 2 ; $7E883E
+endstruct
+
+struct SporeSpawn $7E7808
+  .stalkXOrigin: skip 2 ; $7E7808
+  .stalkYOrigin: skip 2 ; $7E780A
+skip 8
+  .angle: skip 2 ; $7E7814
+  .maxXRadius: skip 2 ; $7E7816
+  .angleDelta: skip 2 ; $7E7818
+skip $7E6
+  .stalkSegment2XPosition: skip 2 ; $7E8000
+  .stalkSegment1XPosition: skip 2 ; $7E8002
+  .stalkSegment0XPosition: skip 2 ; $7E8004
+  .stalkSegment2YPosition: skip 2 ; $7E8006
+  .stalkSegment1YPosition: skip 2 ; $7E8008
+  .stalkSegment0YPosition: skip 2 ; $7E800A
+skip 6
+  .deathDriftXSpeed: skip 2 ; $7E8012
+  .deathDriftYSpeed: skip 2 ; $7E8014
+skip 8
+  .damagedFlag: skip 2 ; $7E801E
+skip $7E0
+  .previousHealth: skip 2 ; $7E8800
+  .deathDriftAngle: skip 2 ; $7E8806
+skip $7F8
+  .sporeGenerationFlag: skip 2 ; $7E9000
+endstruct
+
+struct Boulder $7E7800
+  .XProximity: skip 2 ; $7E7800
+  .minimumDistanceFromGround: skip 2 ; $7E7802
+  .previousEnemyYSubPosition: skip 2 ; $7E7804
+  .previousEnemyYPosition: skip 2 ; $7E7806
+  .spawnXPosition: skip 2 ; $7E7808
+  .fallingTargetYPosition: skip 2 ; $7E780A
+  .YProximity: skip 2 ; $7E780C
+  .type: skip 2 ; $7E780E
+endstruct
+
+struct KzanTop $7E7800
+  .fallWaitTimer: skip 2 ; $7E7800
+  .previousYPosition: skip 2 ; $7E7802
+  .fallingYSpeedTableIndex: skip 2 ; $7E7804
+  .riseWaitTimer: skip 2 ; $7E7806
+endstruct
+
+struct Puromi $7E7800
+  .projectileIndex0: skip 2 ; $7E7800
+  .projectileIndex1: skip 2 ; $7E7802
+  .projectileIndex2: skip 2 ; $7E7804
+  .projectileIndex3: skip 2 ; $7E7806
+  .projectileIndex4: skip 2 ; $7E7808
+skip 6
+  .projectile0ExplosionReason: skip 2 ; $7E7810
+  .projectile1ExplosionReason: skip 2 ; $7E7812
+  .projectile2ExplosionReason: skip 2 ; $7E7814
+  .projectile3ExplosionReason: skip 2 ; $7E7816
+  .projectile4ExplosionReason: skip 2 ; $7E7818
+skip 6
+  .spriteObjectIndex0: skip 2 ; $7E7820
+  .spriteObjectIndex1: skip 2 ; $7E7822
+  .spriteObjectIndex2: skip 2 ; $7E7824
+  .spriteObjectIndex3: skip 2 ; $7E7826
+skip 8
+  .spriteObject0ExplosionReason: skip 2 ; $7E7830
+  .spriteObject1ExplosionReason: skip 2 ; $7E7832
+  .spriteObject2ExplosionReason: skip 2 ; $7E7834
+  .spriteObject3ExplosionReason: skip 2 ; $7E7836
+skip $7CA
+  .subAngle: skip 2 ; $7E8000
+  .angle: skip 2 ; $7E8002
+  .startAngle: skip 2 ; $7E8006
+  .subAngleDelta: skip 2 ; $7E8008
+  .angleDelta: skip 2 ; $7E800A
+  .arcOriginXPosition: skip 2 ; $7E800C
+  .arcOriginYPosition: skip 2 ; $7E800E
+  .bodyPartSpawnXPosition: skip 2 ; $7E8010
+  .bodyPartSpawnYPosition: skip 2 ; $7E8012
+  .bodyIndex: skip 2 ; $7E8014
+  .angleBetweenBodyPartsTimes2: skip 2 ; $7E8016
+  .angleBetweenBodyParts: skip 2 ; $7E8018
+skip 2
+  .finishAngle: skip 2 ; $7E801C
+  .fallingExplosionAngle: skip 2 ; $7E801E
+  .risingExplosionAngle: skip 2 ; $7E8020
+skip 4
+  .headExplosionReason: skip 2 ; $7E8026
+  .graphicsIndices: skip 2 ; $7E8028
+endstruct
+
+struct MiniKraid $7E7800
+  .spitXVelocity: skip 2 ; $7E7800
+  .spitYVelocity: skip 2 ; $7E7802
+  .spitXOffset: skip 2 ; $7E7804
+  .topSpikeTimer: skip 2 ; $7E7806
+  .middleSpikeTimer: skip 2 ; $7E7808
+  .bottomSpikeTimer: skip 2 ; $7E780A
+  .spikeIndex: skip 2 ; $7E780C
+  .spikeTimerIndex: skip 2 ; $7E780E
+endstruct
+
+struct RidleyCeres $7E7800
+; TODO
+endstruct
+
+struct Ridley $7E7800
+; TODO
+endstruct
+
+struct Kraid $7E7800
+  .nextFunction: skip 2 ; $7E7800
+skip 4
+  .thinkingTimer: skip 2 ; $7E7806
+  .minimumSamusEjectionYPosition: skip 2 ; $7E7808
+  .mouthReopenFlags: skip 1 ; $7E780A
+  .mouthReopenCounter: skip 1 ; $7E780B
+  .maxHealth_1_8: skip 2 ; $7E780C
+  .maxHealth_2_8: skip 2 ; $7E780E
+  .maxHealth_3_8: skip 2 ; $7E7810
+  .maxHealth_4_8: skip 2 ; $7E7812
+  .maxHealth_5_8: skip 2 ; $7E7814
+  .maxHealth_6_8: skip 2 ; $7E7816
+  .maxHealth_7_8: skip 2 ; $7E7818
+  .maxHealth_8_8: skip 2 ; $7E781A
+skip 2
+  .targetXPosition: skip 2 ; $7E781E
+  .maxHealth_1_4: skip 2 ; $7E7820
+  .maxHealth_2_4: skip 2 ; $7E7822
+  .maxHealth_3_4: skip 2 ; $7E7824
+  .maxHealth_4_4: skip 2 ; $7E7826
+skip 2
+  .hurtFrame: skip 2 ; $7E782A
+  .hurtFrameTimer: skip 2 ; $7E782C
+endstruct
+
+struct KraidTopLint $7E7800
+  .nextFunction: skip 2 ; $7E7800
+endstruct
+
+struct KraidMiddleLint $7E7800
+  .nextFunction: skip 2 ; $7E7800
+endstruct
+
+struct KraidBottomLint $7E7800
+  .nextFunction: skip 2 ; $7E7800
+endstruct
+
+struct KraidFoot $7E7800
+  .nextFunction: skip 0 ; $7E7800
+  .thinkingTimer: skip 2 ; $7E7800
+endstruct
+
+struct KraidNail $7E7800
+  .nextFunction: skip 0 ; $7E7800
+skip 12
+  .orientation: skip 2 ; $7E7800
+endstruct
+
+struct KraidNailBad $7E7800
+  .nextFunction: skip 0 ; $7E7800
+skip 12
+  .orientation: skip 2 ; $7E7800
+endstruct
+
+struct Evir $7E7800
+  .movementDirection: skip 2 ; $7E7800
+  .instList: skip 2 ; $7E7802
+  .newInstList: skip 2 ; $7E7804
+  .downSubVelocity: skip 2 ; $7E7806
+  .downVelocity: skip 2 ; $7E7808
+  .upSubVelocity: skip 2 ; $7E780A
+  .upVelocity: skip 2 ; $7E780C
+endstruct
+
+struct EvirProjectile $7E7802
+  .instList: skip 2 ; $7E7802
+  .newInstList: skip 2 ; $7E7804
+skip 8
+  .XVelocity: skip 2 ; $7E780E
+  .XSubVelocity: skip 2 ; $7E7810
+  .YVelocity: skip 2 ; $7E7812
+  .YSubVelocity: skip 2 ; $7E7814
+  .movingFlag: skip 2 ; $7E7816
+  .regenerationFlag: skip 2 ; $7E7818
+endstruct
+
+struct Coven $7E7800
+  .hoverCenterYPosition: skip 2 ; $7E7800
+  .YSubVelocity: skip 2 ; $7E7802
+  .YVelocity: skip 2 ; $7E7804
+skip 4
+  .previousSamusXMovementDirection: skip 2 ; $7E780A
+  .previousSamusXPosition: skip 2 ; $7E780C
+  .zoneLeftPosition: skip 2 ; $7E780E
+  .zoneRightPosition: skip 2 ; $7E7810
+  .previousSamusYMovementDirection: skip 2 ; $7E7812
+  .previousSamusYPosition: skip 2 ; $7E7814
+  .zoneTopPosition: skip 2 ; $7E7816
+  .zoneBottomPosition: skip 2 ; $7E7818
+  .lockOnTimer: skip 2 ; $7E781A
+  .directedMovementTimer: skip 2 ; $7E781C
+endstruct
+
+
+
+
