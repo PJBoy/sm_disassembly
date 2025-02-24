@@ -4113,13 +4113,13 @@ InstList_Torizo_SpecialCallable_BlowUpBombTorizosGut:
     dw Instruction_Torizo_Spawn5LowHealthExplosion_SleepFor28Frames,$0000 ;AAB0EB;
     dw Instruction_Torizo_MarkBTGutBlownUp_Spawn6BTDroolProjectiles      ;AAB0EF;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB0F1;
-    dw $0040 : dl Tiles_Torizo_AAB479 : dw $7300                         ;AAB0F3;
+    dw $0040 : dl Tiles_Torizo+$200 : dw $7300                           ;AAB0F3;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB0FA;
-    dw $0040 : dl Tiles_Torizo_AAB679 : dw $7400                         ;AAB0FC;
+    dw $0040 : dl Tiles_Torizo+$400 : dw $7400                           ;AAB0FC;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB103;
-    dw $0020 : dl Tiles_Torizo_AAB4B9 : dw $7E70                         ;AAB105;
+    dw $0020 : dl Tiles_Torizo+$240 : dw $7E70                           ;AAB105;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB10C;
-    dw $0020 : dl Tiles_Torizo_AAB6B9 : dw $7F70                         ;AAB10E;
+    dw $0020 : dl Tiles_Torizo+$440 : dw $7F70                           ;AAB10E;
     dw Instruction_Torizo_FunctionInY                                    ;AAB115;
     dw Function_Torizo_NormalMovement                                    ;AAB117;
     dw Instruction_Torizo_ClearAnimationLock                             ;AAB119;
@@ -4158,9 +4158,9 @@ InstList_Torizo_Callable_BlowUpBombTorizosFace:
     dw Instruction_Torizo_Spawn5LowHealthExplosion_SleepFor28Frames,$0006 ;AAB15B;
     dw Instruction_Torizo_MarkBombTorizoFaceBlownUp                      ;AAB15F;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB161;
-    dw $0020 : dl Tiles_Torizo_AAB4D9 : dw $7E50                         ;AAB163;
+    dw $0020 : dl Tiles_Torizo+$260 : dw $7E50                           ;AAB163;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB16A;
-    dw $0020 : dl Tiles_Torizo_AAB6D9 : dw $7F50                         ;AAB16C;
+    dw $0020 : dl Tiles_Torizo+$460 : dw $7F50                         ;AAB16C;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB173;
     dw $0040 : dl Tiles_Blank : dw $7C80                                 ;AAB175;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB17C;
@@ -4297,137 +4297,12 @@ Instruction_Torizo_AdvanceGradualColorChange:
 
 
 ;;; $B279: Torizo tiles ;;;
+Tiles_Torizo:
 ; Torizo eyes opening / blinking
 ; Bomb Torizo gut blown up
 ; Bomb Torizo face blown up
 ; Golden Torizo releasing eggs
-Tiles_Torizo:
-    db $34,$2C,$4D,$7D,$5F,$7F,$1E,$7F,$9C,$FF,$B9,$FE,$BB,$FD,$7B,$BE   ;AAB279;
-    db $7F,$00,$3A,$00,$DB,$00,$D7,$00,$37,$00,$EE,$00,$AF,$00,$ED,$00   ;AAB289;
-    db $B7,$B7,$FF,$FF,$D5,$F5,$6A,$BA,$FE,$5E,$DA,$BA,$94,$74,$38,$F8   ;AAB299;
-    db $78,$10,$11,$01,$EB,$01,$D6,$02,$76,$06,$B6,$02,$7E,$04,$EC,$08   ;AAB2A9;
-
-Tiles_Torizo_AAB2B9:
-    db $34,$2C,$4D,$7D,$5F,$7F,$1E,$7F,$9C,$FF,$B9,$FF,$BB,$FE,$7C,$BE   ;AAB2B9;
-    db $7F,$00,$3A,$00,$DB,$00,$D7,$00,$36,$00,$EC,$00,$AD,$01,$EB,$03   ;AAB2C9;
-    db $B7,$B7,$FF,$FF,$F5,$F5,$6A,$FA,$BE,$FE,$DA,$3A,$34,$74,$78,$F8   ;AAB2D9;
-    db $78,$10,$11,$01,$CB,$01,$96,$02,$56,$66,$F6,$E2,$DE,$C4,$AC,$88   ;AAB2E9;
-
-Tiles_Torizo_AAB2F9:
-    db $34,$2C,$4D,$7D,$5F,$7F,$1E,$7F,$9D,$FF,$BB,$FE,$BC,$FE,$7D,$BE   ;AAB2F9;
-    db $7F,$00,$3A,$00,$DB,$00,$D7,$00,$36,$01,$ED,$03,$AB,$03,$EB,$03   ;AAB309;
-    db $B7,$B7,$FF,$FF,$F5,$F5,$EA,$FA,$3E,$FE,$5A,$3A,$54,$34,$B8,$78   ;AAB319;
-    db $78,$10,$11,$01,$CB,$01,$16,$02,$D6,$E6,$F6,$E2,$FE,$E4,$EC,$C8   ;AAB329;
-
-Tiles_Torizo_AAB339:
-    db $34,$2C,$4D,$7D,$5D,$7F,$1A,$7F,$94,$FE,$BC,$F6,$BD,$F6,$76,$BF   ;AAB339;
-    db $7F,$00,$3B,$00,$DE,$01,$D5,$03,$3B,$07,$EB,$07,$AB,$07,$E9,$03   ;AAB349;
-    db $B7,$B7,$7F,$FF,$F5,$F5,$32,$FA,$5E,$3E,$5A,$3A,$D4,$34,$28,$F8   ;AAB359;
-    db $78,$10,$D1,$01,$3B,$E1,$DE,$F2,$EE,$F6,$EE,$F2,$EE,$F4,$DC,$E8   ;AAB369;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB379;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB389;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB399;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB3A9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB3B9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB3C9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB3D9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB3E9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB3F9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB409;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB419;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB429;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB439;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB449;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB459;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB469;
-
-Tiles_Torizo_AAB479:
-    db $FD,$FD,$FA,$FB,$F7,$FF,$FF,$F7,$F7,$FF,$DF,$FF,$3F,$7F,$2F,$7F   ;AAB479;
-    db $7A,$01,$04,$03,$E4,$FF,$F0,$FF,$20,$39,$00,$78,$00,$70,$00,$58   ;AAB489;
-    db $E9,$F9,$5A,$F8,$FE,$FA,$73,$FF,$EF,$7F,$FF,$FF,$7F,$FF,$CF,$FF   ;AAB499;
-    db $7F,$E1,$75,$D0,$2F,$F0,$1E,$F0,$3C,$E8,$10,$F8,$03,$FB,$07,$BB   ;AAB4A9;
-
-Tiles_Torizo_AAB4B9:
-    db $C7,$C6,$EB,$EA,$2A,$23,$96,$9F,$AB,$9F,$B3,$BF,$1F,$2F,$5B,$37   ;AAB4B9;
-    db $7B,$00,$37,$00,$D5,$08,$61,$0C,$41,$3C,$C0,$1C,$C0,$3F,$80,$7F   ;AAB4C9;
-
-Tiles_Torizo_AAB4D9:
-    db $4F,$4F,$43,$46,$6F,$2F,$5B,$4C,$5F,$5B,$4F,$4A,$3B,$1F,$0F,$0F   ;AAB4D9;
-    db $B6,$00,$F7,$08,$F0,$00,$B7,$00,$BE,$00,$F3,$00,$F4,$00,$FD,$00   ;AAB4E9;
-
-Tiles_Torizo_AAB4F9:
-    db $8D,$FD,$FA,$FB,$FF,$FF,$FD,$FE,$F3,$FC,$E5,$FB,$7F,$7E,$7B,$7C   ;AAB4F9;
-    db $FA,$01,$64,$03,$1C,$1F,$F8,$FF,$00,$1F,$00,$3F,$00,$1F,$10,$1F   ;AAB509;
-    db $E9,$F9,$5A,$F8,$FE,$FA,$B3,$7F,$4F,$FF,$BF,$FF,$BF,$7E,$CF,$7D   ;AAB519;
-    db $7F,$E1,$75,$D0,$2F,$F0,$1E,$F0,$1C,$E8,$10,$F8,$02,$FA,$05,$F9   ;AAB529;
-
-Tiles_Torizo_AAB539:
-    db $8D,$FD,$FA,$FB,$FF,$FF,$FD,$FE,$FB,$FC,$FC,$FF,$7F,$7F,$3E,$3F   ;AAB539;
-    db $FA,$01,$64,$03,$1C,$1F,$F8,$FF,$00,$1F,$60,$6F,$38,$3F,$1C,$1F   ;AAB549;
-    db $E9,$F9,$5A,$F8,$FC,$FA,$B3,$7F,$4F,$FF,$BF,$FF,$7F,$BE,$EF,$7D   ;AAB559;
-    db $7F,$E1,$75,$D0,$2F,$F0,$1E,$F0,$1C,$E8,$10,$F8,$02,$FA,$05,$F9   ;AAB569;
-
-Tiles_Torizo_AAB579:
-    db $8D,$FD,$FA,$FB,$FF,$FF,$FD,$FE,$FB,$FC,$FE,$FF,$7F,$7F,$3F,$3F   ;AAB579;
-    db $FA,$01,$64,$03,$1C,$1F,$F8,$FF,$08,$1F,$7C,$7F,$3E,$3F,$2F,$2F   ;AAB589;
-    db $E9,$F9,$4A,$F8,$FC,$FA,$73,$FF,$4F,$FF,$BF,$FF,$5F,$BE,$AE,$FD   ;AAB599;
-    db $7F,$E1,$75,$C0,$2F,$F0,$1E,$F0,$1C,$E8,$10,$F8,$02,$FA,$05,$F8   ;AAB5A9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB5B9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB5C9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB5D9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB5E9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB5F9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB609;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB619;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB629;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB639;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB649;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB659;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB669;
-
-Tiles_Torizo_AAB679:
-    db $7F,$2F,$2B,$3F,$3F,$3F,$07,$2F,$0D,$07,$01,$03,$03,$01,$00,$00   ;AAB679;
-    db $00,$58,$00,$3E,$00,$2A,$04,$2F,$00,$0B,$00,$03,$00,$02,$00,$00   ;AAB689;
-    db $FE,$FE,$FF,$FF,$FF,$FF,$EF,$FF,$FF,$EF,$DF,$FF,$7F,$DF,$FF,$FF   ;AAB699;
-    db $0F,$1A,$0E,$12,$0D,$11,$83,$FB,$03,$FB,$0B,$FB,$1B,$EB,$17,$17   ;AAB6A9;
-
-Tiles_Torizo_AAB6B9:
-    db $97,$9F,$13,$AF,$5B,$D7,$FB,$EF,$09,$0F,$44,$47,$2B,$E7,$0A,$E8   ;AAB6B9;
-    db $60,$1F,$40,$3F,$20,$1F,$40,$1F,$70,$0F,$F8,$07,$30,$0D,$1D,$02   ;AAB6C9;
-
-Tiles_Torizo_AAB6D9:
-    db $47,$47,$65,$66,$3F,$BF,$DF,$7F,$17,$D7,$6F,$2F,$5F,$7F,$AF,$B7   ;AAB6D9;
-    db $B9,$00,$9F,$00,$C1,$00,$30,$00,$EE,$00,$92,$00,$B7,$00,$D6,$00   ;AAB6E9;
-
-Tiles_Torizo_AAB6F9:
-    db $3D,$3E,$1F,$1F,$1F,$1F,$0F,$0F,$07,$07,$03,$03,$01,$01,$01,$01   ;AAB6F9;
-    db $18,$1F,$1C,$1F,$0C,$0F,$06,$07,$03,$03,$00,$00,$00,$00,$01,$01   ;AAB709;
-    db $DE,$FE,$DF,$3F,$6F,$BF,$2F,$FF,$DF,$EF,$9F,$FF,$FF,$FF,$FF,$FF   ;AAB719;
-    db $0F,$FA,$0E,$F2,$0D,$F1,$03,$FB,$03,$FB,$0B,$FB,$1B,$6B,$17,$17   ;AAB729;
-
-Tiles_Torizo_AAB739:
-    db $1F,$1F,$0F,$0F,$07,$07,$07,$07,$03,$03,$01,$01,$01,$01,$01,$01   ;AAB739;
-    db $0E,$0F,$07,$07,$03,$03,$03,$03,$01,$01,$01,$01,$00,$00,$01,$01   ;AAB749;
-    db $DE,$FE,$BF,$DF,$EF,$FF,$CF,$FF,$DF,$EF,$FF,$FF,$FF,$FF,$FF,$FF   ;AAB759;
-    db $0F,$FA,$0E,$F2,$4D,$B1,$83,$FB,$C3,$FB,$AB,$DB,$BB,$8B,$17,$17   ;AAB769;
-
-Tiles_Torizo_AAB779:
-    db $1F,$1F,$0F,$0F,$07,$07,$03,$03,$03,$03,$01,$01,$01,$01,$01,$01   ;AAB779;
-    db $0F,$0F,$07,$07,$03,$03,$01,$01,$01,$01,$00,$00,$00,$00,$01,$01   ;AAB789;
-    db $DE,$FE,$FF,$DF,$EF,$FF,$EF,$FF,$FF,$EF,$FF,$FF,$FF,$FF,$FF,$FF   ;AAB799;
-    db $8F,$FA,$CE,$F2,$CD,$F1,$C3,$FB,$C3,$FB,$CB,$FB,$BB,$CB,$17,$17   ;AAB7A9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB7B9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB7C9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB7D9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB7E9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB7F9;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB809;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB819;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB829;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB839;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB849;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB859;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;AAB869;
+incbin "../data/Tiles_Torizo.bin"
 
 
 ;;; $B879: Instruction list - Bomb Torizo - initial ;;;
@@ -4445,13 +4320,13 @@ InstList_Torizo_BombTorizo_Initial_0:
     dw $0040 : dl Tiles_Torizo : dw $7D80                                ;AAB891;
     dw $0020,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AAB896;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB89C;
-    dw $0040 : dl Tiles_Torizo_AAB2B9 : dw $7D80                         ;AAB89E;
+    dw $0040 : dl Tiles_Torizo+$40 : dw $7D80                            ;AAB89E;
     dw $0010,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AAB8A3;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB8A9;
-    dw $0040 : dl Tiles_Torizo_AAB2F9 : dw $7D80                         ;AAB8AB;
+    dw $0040 : dl Tiles_Torizo+$80 : dw $7D80                            ;AAB8AB;
     dw $0008,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AAB8B0;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB8B6;
-    dw $0040 : dl Tiles_Torizo_AAB339 : dw $7D80                         ;AAB8B8;
+    dw $0040 : dl Tiles_Torizo+$C0 : dw $7D80                            ;AAB8B8;
     dw $0020,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AAB8BD;
     dw Instruction_Common_TimerInY,$0002                                 ;AAB8C3;
 
@@ -4461,13 +4336,13 @@ InstList_Torizo_BombTorizo_Initial_1:
     dw $0040 : dl Tiles_Torizo : dw $7D80                                ;AAB8CD;
     dw $0004,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AAB8D6;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB8D8;
-    dw $0040 : dl Tiles_Torizo_AAB2B9 : dw $7D80                         ;AAB8DA;
+    dw $0040 : dl Tiles_Torizo+$40 : dw $7D80                            ;AAB8DA;
     dw $0004,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AAB8E3;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB8E5;
-    dw $0040 : dl Tiles_Torizo_AAB2F9 : dw $7D80                         ;AAB8E7;
+    dw $0040 : dl Tiles_Torizo+$80 : dw $7D80                            ;AAB8E7;
     dw $0004,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AAB8F0;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB8F2;
-    dw $0040 : dl Tiles_Torizo_AAB339 : dw $7D80                         ;AAB8F4;
+    dw $0040 : dl Tiles_Torizo+$C0 : dw $7D80                            ;AAB8F4;
     dw Instruction_Common_DecrementTimer_GotoYIfNonZero_duplicate        ;AAB8FB;
     dw InstList_Torizo_BombTorizo_Initial_1                              ;AAB8FD;
     dw $0030,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AAB8FF;
@@ -6615,13 +6490,13 @@ InstList_GoldenTorizo_Initial_1:
     dw $0040 : dl Tiles_Torizo : dw $7D80                                ;AACA12;
     dw $0020,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AACA17;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AACA1D;
-    dw $0040 : dl Tiles_Torizo_AAB2B9 : dw $7D80                         ;AACA1F;
+    dw $0040 : dl Tiles_Torizo+$40 : dw $7D80                            ;AACA1F;
     dw $0010,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AACA24;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AACA2A;
-    dw $0040 : dl Tiles_Torizo_AAB2F9 : dw $7D80                         ;AACA2C;
+    dw $0040 : dl Tiles_Torizo+$80 : dw $7D80                            ;AACA2C;
     dw $0008,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AACA31;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AACA37;
-    dw $0040 : dl Tiles_Torizo_AAB339 : dw $7D80                         ;AACA39;
+    dw $0040 : dl Tiles_Torizo+$C0 : dw $7D80                            ;AACA39;
     dw $0020,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AACA3E;
     dw Instruction_Common_TimerInY,$0002                                 ;AACA44;
 
@@ -6631,13 +6506,13 @@ InstList_GoldenTorizo_Initial_2:
     dw $0040 : dl Tiles_Torizo : dw $7D80                                ;AACA4E;
     dw $0004,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AACA53;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AACA59;
-    dw $0040 : dl Tiles_Torizo_AAB2B9 : dw $7D80                         ;AACA5B;
+    dw $0040 : dl Tiles_Torizo+$40 : dw $7D80                            ;AACA5B;
     dw $0004,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AACA60;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AACA66;
-    dw $0040 : dl Tiles_Torizo_AAB2F9 : dw $7D80                         ;AACA68;
+    dw $0040 : dl Tiles_Torizo+$80 : dw $7D80                            ;AACA68;
     dw $0004,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AACA6D;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AACA73;
-    dw $0040 : dl Tiles_Torizo_AAB339 : dw $7D80                         ;AACA75;
+    dw $0040 : dl Tiles_Torizo+$C0 : dw $7D80                            ;AACA75;
     dw Instruction_Common_DecrementTimer_GotoYIfNonZero_duplicate        ;AACA7C;
     dw InstList_GoldenTorizo_Initial_2                                   ;AACA7E;
     dw $0020,ExtendedSpritemaps_Torizo_StandUp_SitDown_FacingLeft_0      ;AACA80;
@@ -7197,19 +7072,19 @@ InstList_GoldenTorizo_ReleaseGoldenTorizoEggs_0:
     dw Instruction_Common_Enemy0FB2_InY                                  ;AAD031;
     dw Function_GoldenTorizo_Movement_Attacking                          ;AAD033;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD035;
-    dw $0040 : dl Tiles_Torizo_AAB4F9 : dw $7300                         ;AAD037;
+    dw $0040 : dl Tiles_Torizo+$280 : dw $7300                           ;AAD037;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD03E;
-    dw $0040 : dl Tiles_Torizo_AAB6F9 : dw $7400                         ;AAD040;
+    dw $0040 : dl Tiles_Torizo+$480 : dw $7400                           ;AAD040;
     dw Instruction_Common_WaitYFrames,$0008                              ;AAD047;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD04B;
-    dw $0040 : dl Tiles_Torizo_AAB539 : dw $7300                         ;AAD04D;
+    dw $0040 : dl Tiles_Torizo+$2C0 : dw $7300                           ;AAD04D;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD054;
-    dw $0040 : dl Tiles_Torizo_AAB739 : dw $7400                         ;AAD056;
+    dw $0040 : dl Tiles_Torizo+$4C0 : dw $7400                           ;AAD056;
     dw Instruction_Common_WaitYFrames,$0008                              ;AAD05D;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD061;
-    dw $0040 : dl Tiles_Torizo_AAB579 : dw $7300                         ;AAD063;
+    dw $0040 : dl Tiles_Torizo+$300 : dw $7300                           ;AAD063;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD06A;
-    dw $0040 : dl Tiles_Torizo_AAB779 : dw $7400                         ;AAD06C;
+    dw $0040 : dl Tiles_Torizo+$500 : dw $7400                           ;AAD06C;
     dw Instruction_Common_WaitYFrames,$0010                              ;AAD073;
     dw Instruction_Common_TimerInY,$0006                                 ;AAD077;
 
@@ -7225,19 +7100,19 @@ InstList_GoldenTorizo_ReleaseGoldenTorizoEggs_2:
     dw Instruction_GoldenTorizo_EyeBeamAttack_0                          ;AAD08B;
     dw InstList_GoldenTorizo_ReleaseGoldenTorizoEggs_2                   ;AAD08D;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD08F;
-    dw $0040 : dl Tiles_Torizo_AAB579 : dw $7300                         ;AAD091;
+    dw $0040 : dl Tiles_Torizo+$300 : dw $7300                           ;AAD091;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD098;
-    dw $0040 : dl Tiles_Torizo_AAB779 : dw $7400                         ;AAD09A;
+    dw $0040 : dl Tiles_Torizo+$500 : dw $7400                           ;AAD09A;
     dw Instruction_Common_WaitYFrames,$0008                              ;AAD0A1;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD0A5;
-    dw $0040 : dl Tiles_Torizo_AAB539 : dw $7300                         ;AAD0A7;
+    dw $0040 : dl Tiles_Torizo+$2C0 : dw $7300                           ;AAD0A7;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD0AE;
-    dw $0040 : dl Tiles_Torizo_AAB739 : dw $7400                         ;AAD0B0;
+    dw $0040 : dl Tiles_Torizo+$4C0 : dw $7400                         ;AAD0B0;
     dw Instruction_Common_WaitYFrames,$0008                              ;AAD0B7;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD0BB;
-    dw $0040 : dl Tiles_Torizo_AAB4F9 : dw $7300                         ;AAD0BD;
+    dw $0040 : dl Tiles_Torizo+$280 : dw $7300                           ;AAD0BD;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD0C4;
-    dw $0040 : dl Tiles_Torizo_AAB6F9 : dw $7400                         ;AAD0C6;
+    dw $0040 : dl Tiles_Torizo+$480 : dw $7400                           ;AAD0C6;
     dw Instruction_Common_WaitYFrames,$0008                              ;AAD0CD;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD0D1;
     dw $0040 : dl Tiles_BombTorizo_GoldenTorizo+$600 : dw $7300          ;AAD0D3;
@@ -7305,13 +7180,13 @@ InstList_GoldenTorizo_EyeBeamAttack_2:
     dw $0040 : dl Tiles_Torizo : dw $7D80                                ;AAD139;
     dw Instruction_Common_WaitYFrames,$0003                              ;AAD140;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD144;
-    dw $0040 : dl Tiles_Torizo_AAB2B9 : dw $7D80                         ;AAD146;
+    dw $0040 : dl Tiles_Torizo+$40 : dw $7D80                            ;AAD146;
     dw Instruction_Common_WaitYFrames,$0003                              ;AAD14D;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD151;
-    dw $0040 : dl Tiles_Torizo_AAB2F9 : dw $7D80                         ;AAD153;
+    dw $0040 : dl Tiles_Torizo+$80 : dw $7D80                            ;AAD153;
     dw Instruction_Common_WaitYFrames,$0003                              ;AAD15A;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD15E;
-    dw $0040 : dl Tiles_Torizo_AAB339 : dw $7D80                         ;AAD160;
+    dw $0040 : dl Tiles_Torizo+$C0 : dw $7D80                            ;AAD160;
     dw Instruction_Common_DecrementTimer_GotoYIfNonZero_duplicate        ;AAD167;
     dw InstList_GoldenTorizo_EyeBeamAttack_2                             ;AAD169;
     dw Instruction_GoldenTorizo_EnableEyeBeamExplosions                  ;AAD16B;
@@ -7353,13 +7228,13 @@ InstList_Torizo_Stunned_1:
     dw $0040 : dl Tiles_Torizo : dw $7D80                                ;AAD1A7;
     dw Instruction_Common_WaitYFrames,$0003                              ;AAD1AE;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD1B2;
-    dw $0040 : dl Tiles_Torizo_AAB2B9 : dw $7D80                         ;AAD1B4;
+    dw $0040 : dl Tiles_Torizo+$40 : dw $7D80                            ;AAD1B4;
     dw Instruction_Common_WaitYFrames,$0003                              ;AAD1BB;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD1BF;
-    dw $0040 : dl Tiles_Torizo_AAB2F9 : dw $7D80                         ;AAD1C1;
+    dw $0040 : dl Tiles_Torizo+$80 : dw $7D80                            ;AAD1C1;
     dw Instruction_Common_WaitYFrames,$0003                              ;AAD1C8;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD1CC;
-    dw $0040 : dl Tiles_Torizo_AAB339 : dw $7D80                         ;AAD1CE;
+    dw $0040 : dl Tiles_Torizo+$C0 : dw $7D80                            ;AAD1CE;
     dw Instruction_Common_DecrementTimer_GotoYIfNonZero_duplicate        ;AAD1D5;
     dw InstList_Torizo_Stunned_1                                         ;AAD1D7;
     dw Instruction_Common_WaitYFrames,$0010                              ;AAD1D9;

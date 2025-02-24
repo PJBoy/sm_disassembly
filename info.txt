@@ -1,0 +1,16 @@
+
+This project relies heavily on documentation from P.JBoy's website: https://patrickjohnston.org/bank/index.html
+If you're here to read, rather than edit, you're better off viewing from the website (it has more comments)
+Many of the comments found in this disassembly are copied (with permission) from PJ's bank logs, RAM map, and other documents; often verbatim.
+
+
+Assembly style:
+Labels appear on their own lines
+Assembler directives are not indented
+Code/data that is written to the ROM is indented using 4 spaces
+Sublabels are indented using 2 spaces
+Anonymous labels are not indented, and appear inline with code
+Hardware registers are not labeled, at least not unless we create better labels than traditional ones
+
+
+The address column on the right will be removed once all labels are accounted for

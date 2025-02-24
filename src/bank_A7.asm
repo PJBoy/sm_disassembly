@@ -3096,38 +3096,7 @@ Spritemap_KraidArm_Dying_PreparingToLunge_1:
 
 ;;; $A716: Kraid's room background ;;;
 Tiles_KraidRoomBackground:
-    db $3F,$FF,$4C,$F3,$5F,$E0,$CB,$F0,$B9,$C0,$8F,$F0,$B6,$C9,$B1,$CE   ;A7A716;
-    db $00,$FF,$3F,$C0,$39,$C6,$3C,$C3,$76,$89,$71,$8E,$7F,$80,$7F,$80   ;A7A726;
-    db $FF,$FF,$3F,$FF,$8F,$7F,$4E,$BF,$E7,$1F,$EF,$1F,$CF,$3F,$1F,$FF   ;A7A736;
-    db $03,$FC,$FB,$04,$FF,$00,$FF,$00,$FE,$01,$FD,$02,$F3,$0C,$E8,$17   ;A7A746;
-    db $07,$FF,$8F,$FF,$FE,$FF,$FE,$FF,$FF,$FF,$FF,$FF,$F6,$FF,$C3,$FF   ;A7A756;
-    db $FE,$01,$FE,$01,$FD,$02,$FD,$02,$FF,$00,$BB,$44,$0F,$F0,$3F,$C0   ;A7A766;
-    db $FF,$F9,$07,$FE,$13,$EF,$29,$D7,$BD,$C3,$D5,$EB,$E1,$FF,$61,$FF   ;A7A776;
-    db $06,$F9,$F9,$06,$FC,$03,$FE,$01,$7E,$81,$BE,$41,$DE,$21,$DE,$21   ;A7A786;
-    db $8D,$F2,$0B,$F4,$E0,$FF,$0F,$FF,$E7,$1F,$5B,$A7,$B4,$4B,$FC,$03   ;A7A796;
-    db $7F,$80,$7F,$80,$1F,$E0,$F0,$0F,$FE,$01,$FF,$00,$FF,$00,$CF,$30   ;A7A7A6;
-    db $3E,$FF,$3E,$FD,$7F,$F8,$FB,$F4,$F9,$F6,$EF,$F0,$E5,$FA,$E3,$FC   ;A7A7B6;
-    db $D1,$2E,$E3,$1C,$C7,$38,$CF,$30,$4E,$B1,$3E,$C1,$9F,$60,$DF,$20   ;A7A7C6;
-    db $E1,$1F,$EC,$13,$7A,$85,$9E,$01,$99,$06,$FF,$00,$FE,$01,$F8,$87   ;A7A7D6;
-    db $FF,$00,$FF,$00,$9F,$60,$6F,$D0,$67,$98,$07,$F8,$8F,$70,$FF,$00   ;A7A7E6;
-    db $E1,$FF,$A3,$FF,$FC,$FF,$70,$FF,$60,$FF,$66,$F9,$43,$FC,$4F,$F0   ;A7A7F6;
-    db $DE,$21,$FC,$03,$E3,$1C,$EF,$10,$FF,$00,$DF,$20,$FF,$00,$FD,$02   ;A7A806;
-    db $4E,$81,$CE,$01,$F8,$07,$B4,$4B,$B1,$4F,$23,$DF,$02,$FF,$0F,$FF   ;A7A816;
-    db $B7,$68,$B7,$48,$CF,$30,$FF,$00,$FE,$01,$FD,$02,$FD,$02,$F1,$0E   ;A7A826;
-    db $66,$F9,$71,$FE,$70,$FF,$FC,$FF,$87,$FF,$03,$FF,$1D,$C3,$3E,$C1   ;A7A836;
-    db $FF,$00,$EF,$10,$CF,$30,$CB,$34,$FF,$00,$FF,$00,$EF,$10,$CF,$30   ;A7A846;
-    db $EC,$13,$68,$97,$41,$BF,$03,$FF,$8F,$FF,$FE,$FF,$F8,$FF,$F1,$FE   ;A7A856;
-    db $FF,$00,$FF,$00,$FF,$00,$FE,$01,$F7,$08,$FF,$00,$FF,$00,$FF,$00   ;A7A866;
-    db $CF,$F0,$EF,$F0,$E3,$FC,$E2,$FD,$F1,$FE,$02,$FF,$EA,$17,$9D,$03   ;A7A876;
-    db $FC,$03,$9E,$61,$1F,$E0,$1F,$E0,$8F,$70,$FD,$02,$FD,$02,$FE,$41   ;A7A886;
-    db $3F,$FF,$FF,$FF,$C7,$F9,$9F,$E0,$9F,$E0,$8E,$F1,$C3,$FF,$FF,$7F   ;A7A896;
-    db $C1,$3E,$01,$FE,$3E,$C1,$7F,$80,$77,$88,$7F,$80,$3C,$C3,$80,$7F   ;A7A8A6;
-    db $74,$8B,$B9,$C7,$C1,$FF,$FB,$FF,$FF,$FF,$9F,$FF,$FE,$FF,$3C,$FF   ;A7A8B6;
-    db $FF,$00,$FF,$00,$FF,$00,$E7,$18,$27,$D8,$6F,$90,$0F,$F0,$DF,$20   ;A7A8C6;
-    db $F3,$FC,$F2,$FD,$79,$FE,$F9,$FF,$F8,$FF,$FC,$FF,$3F,$FF,$0F,$FD   ;A7A8D6;
-    db $DF,$20,$DF,$20,$C7,$38,$07,$F8,$C7,$38,$E3,$1C,$F8,$07,$F2,$0D   ;A7A8E6;
-    db $9D,$03,$F5,$0B,$B9,$47,$D3,$2F,$A7,$DF,$0F,$FF,$1F,$F9,$FF,$EF   ;A7A8F6;
-    db $6E,$91,$8E,$71,$FE,$01,$FC,$03,$F8,$07,$F0,$0F,$E6,$19,$10,$EF   ;A7A906;
+incbin "../data/Tiles_KraidRoomBackground.bin"
 
 
 ;;; $A916: Kraid constants ;;;

@@ -3218,7 +3218,8 @@ skip $7D9052
   .tailFlingTrigger: skip 2 ; $7E2004
 skip 4
   .tailHalfRevolutions: skip 2 ; $7E200A
-  .tailExtensionSpeed: skip 2 ; $7E2010
+skip 4
+  .tailMovementTimer: skip 2 ; $7E2010
   .tailExtensionSpeed: skip 2 ; $7E2012
   .tailAngularSpeed: skip 2 ; $7E2014
   .tailMinimumAngle: skip 2 ; $7E2016

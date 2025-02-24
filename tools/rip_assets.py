@@ -747,13 +747,20 @@ def dump_rom(rom_data, output_path):
 #    dump(0xA1_8000, 0x8000, "bank_a1.bin") # Enemy population
 #    dump(0xA2_8000, 0x8000, "bank_a2.bin") # Enemy AI - inc. gunship & shutters
 #    dump(0xA3_8000, 0x8000, "bank_a3.bin") # Enemy AI - inc. elevator & metroid
+
 #    dump(0xA4_8000, 0x8000, "bank_a4.bin") # Enemy AI - Crocomire
+    dump(0xA4_A07D, 0x0C00, "Tiles_Crocomire_Melting1.bin")
+    dump(0xA4_AC7D, 0x0C00, "Tiles_Crocomire_Melting2.bin")
+
 #    dump(0xA5_8000, 0x8000, "bank_a5.bin") # Enemy AI - Draygon & Spore Spawn
 #    dump(0xA6_8000, 0x8000, "bank_a6.bin") # Enemy AI - inc. Ridley & zebetites
 #    dump(0xA7_8000, 0x8000, "bank_a7.bin") # Enemy AI - inc. Kraid & Phantoon
+    dump(0xA7_A716, 0x0200, "Tiles_KraidRoomBackground.bin")
+
 #    dump(0xA8_8000, 0x8000, "bank_a8.bin") # Enemy AI - inc. ki-hunter
 #    dump(0xA9_8000, 0x8000, "bank_a9.bin") # Enemy AI - Mother Brain, Shitroid & dead monsters
 #    dump(0xAA_8000, 0x8000, "bank_aa.bin") # Enemy AI - inc. Torizo & Tourian statue
+    dump(0xAA_B279, 0x0600, "Tiles_Torizo.bin")
 
 #    dump(0xAB_8000, 0x8000, "bank_ab.bin") # Enemy graphics - inc. Kraid
     dump(0xAB_8000, 0x1000, "Tiles_MiniKraid.bin")
