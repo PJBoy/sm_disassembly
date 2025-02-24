@@ -11,17 +11,17 @@ struct DP $00
   .temp03: skip 1 ; $03
   .temp04: skip 1 ; $04
   .temp05: skip 1 ; $05
-  .temp06: skip 1 ; $06
-  .temp07: skip 1 ; $07
+  .temp06: skip 2 ; $06
+;  .temp07: skip 1 ; $07
   .temp08: skip 1 ; $08
-  .temp09: skip 1 ; $09
-  .temp0A: skip 1 ; $0A
+  .temp09: skip 2 ; $09
+;  .temp0A: skip 1 ; $0A
   .temp0B: skip 1 ; $0B
-  .temp0C: skip 1 ; $0C
-  .temp0D: skip 1 ; $0D
+  .temp0C: skip 2 ; $0C
+;  .temp0D: skip 1 ; $0D
   .unused0E: skip 1 ; $0E
-  .temp0F: skip 1 ; $0F
-  .temp10: skip 1 ; $10
+  .temp0F: skip 2 ; $0F
+;  .temp10: skip 1 ; $10
   .unused11: skip 1 ; $11
   .temp12: skip 1 ; $12
   .temp13: skip 1 ; $13
@@ -37,12 +37,12 @@ struct DP $00
   .temp1D: skip 1 ; $1D
   .temp1E: skip 1 ; $1E
   .temp1F: skip 1 ; $1F
-  .temp20: skip 1 ; $20
-  .temp21: skip 1 ; $21
-  .temp22: skip 1 ; $22
-  .temp23: skip 1 ; $23
-  .temp24: skip 1 ; $24
-  .temp25: skip 1 ; $25
+  .temp20: skip 2 ; $20
+;  .temp21: skip 1 ; $21
+  .temp22: skip 2 ; $22
+;  .temp23: skip 1 ; $23
+  .temp24: skip 2 ; $24
+;  .temp25: skip 1 ; $25
   .temp26: skip 1 ; $26
   .temp27: skip 1 ; $27
   .temp28: skip 1 ; $28
@@ -55,10 +55,10 @@ struct DP $00
   .temp2F: skip 1 ; $2F
   .temp30: skip 1 ; $30
   .temp31: skip 1 ; $31
-  .temp32: skip 1 ; $32
-  .temp33: skip 1 ; $33
-  .temp34: skip 1 ; $34
-  .temp35: skip 1 ; $35
+  .temp32: skip 2 ; $32
+;  .temp33: skip 1 ; $33
+  .temp34: skip 2 ; $34
+;  .temp35: skip 1 ; $35
   .blocksToUpdate: skip 3 ; $36
   .unused39: skip 3 ; $39..3B
   .SamusTilesDefinition: skip 1 ; $3C
@@ -3127,12 +3127,214 @@ skip $7DE84E
   .spikeTimerIndex: skip 2 ; $7E780E
 endstruct
 
-struct RidleyCeres $7E7800
-; TODO
+struct RidleyCeres $0FAA
+  .XSpeed: skip 2 ; $0FAA
+  .YSpeed: skip 2 ; $0FAC
+skip $7D9052
+print pc
+  .liftoffFlag: skip 2 ; $7E2000
+  .tailFlingSyncFlag: skip 2 ; $7E2002
+  .tailFlingTrigger: skip 2 ; $7E2004
+skip 6
+  .unknown200C: skip 2 ; $7E200C
+  .YAcceleration: skip 2 ; $7E200E
+skip 14
+  .tailSwingDelay: skip 2 ; $7E201E
+skip $57E0
+  .counter: skip 0 ; $7E7800
+  .timer: skip 2 ; $7E7800
+  .status: skip 2 ; $7E7802
+  .activeFlag: skip 2 ; $7E7804
+  .BabyMetroidInstList: skip 2 ; $7E7806
+  .unknownCounter7808: skip 2 ; $7E7808
+  .ribsAnimationIndex: skip 2 ; $7E780A
+  .ribsAnimationTimer: skip 2 ; $7E780C
+  .wingFlapAnimationFrame: skip 2 ; $7E780E
+  .unknown7810: skip 2 ; $7E7810
+  .unknown7812: skip 2 ; $7E7812
+skip 2
+  .USwoopSpeed: skip 2 ; $7E7816
+  .paletteIndex: skip 2 ; $7E7818
+  .hitCounter: skip 2 ; $7E781A
+  .maxTailSpeedCounter: skip 2 ; $7E781C
+  .roarSFXFlag: skip 2 ; $7E781E
+  .facingDirection: skip 2 ; $7E7820
+skip 2
+  .speedup: skip 2 ; $7E7824
+skip 2
+  .XDisplacementWhileHoldingSamus: skip 2 ; $7E7828
+  .YDisplacementWhileHoldingSamus: skip 2 ; $7E782A
+skip 2
+  .targetXPositionWhileHOldingSamus: skip 2 ; $7E782E
+  .targetYPositionWhileHOldingSamus: skip 2 ; $7E7830
+skip 4
+  .holdingInClawsFlag: skip 2 ; $7E7836
+  .contactDamage: skip 2 ; $7E7838
+  .index: skip 2 ; $7E783A
+  .grabCooldownTimer: skip 2 ; $7E783C
+skip $7C2
+  .topBoundary: skip 2 ; $7E8000
+  .bottomBoundary: skip 2 ; $7E8002
+  .leftBoundary: skip 2 ; $7E8004
+  .rightBoundary: skip 2 ; $7E8006
+  .relatedToHurtAI: skip 2 ; $7E8008
+skip 2
+  .tailBounceCounter: skip 2 ; $7E800C
+  .deathExplosionTimer: skip 2 ; $7E800E
+  .deathExplosionCounter: skip 2 ; $7E8010
+skip 14
+  .tablePointer: skip 2 ; $7E8020
+skip 2
+  .getawayCompletedFlag: skip 2 ; $7E8024
+  .getawayFlightDataIndex: skip 2 ; $7E8026
+  .getawayXVelocity: skip 2 ; $7E8028
+  .getawayYVelocity: skip 2 ; $7E802A
+  .BabyMetroidAnimationIndex: skip 2 ; $7E802C
+  .wingANimationIndex: skip 2 ; $7E802E
+  .paletteTableIndex: skip 2 ; $7E8030
+  .unused7E8032: skip 2 ; $7E8032
+  .typewriterTileToBeWrittenToTilemap: skip 2 ; $7E8034
+skip 2
+  .typewriterVRAMTilemapAddr: skip 2 ; $7E8038
+  .typewriterInstructionTimer: skip 2 ; $7E803A
+  .typewriterInstructionTimerResetValue: skip 2 ; $7E803C
+  .typewriterStrokeTimer: skip 2 ; $7E803E
+skip $7C0
+  .BabyMetroidFunction: skip 2 ; $7E8800
+skip 2
+  .BabyMetroidXPosition: skip 2 ; $7E8804
+skip 2
+  .BabyMetroidYPosition: skip 2 ; $7E8808
+  .neverRead880A: skip 2 ; $7E880A
+  .BabyMetroidCrySFXFlag: skip 2 ; $7E880C
 endstruct
 
-struct Ridley $7E7800
-; TODO
+struct Ridley $0FAA
+  .XSpeed: skip 2 ; $0FAA
+  .YSpeed: skip 2 ; $0FAC
+skip $7D9052
+  .tailAIIndex: skip 2 ; $7E2000
+  .tailRotationSpeed: skip 2 ; $7E2002
+  .tailFlingTrigger: skip 2 ; $7E2004
+skip 4
+  .tailHalfRevolutions: skip 2 ; $7E200A
+  .tailExtensionSpeed: skip 2 ; $7E2010
+  .tailExtensionSpeed: skip 2 ; $7E2012
+  .tailAngularSpeed: skip 2 ; $7E2014
+  .tailMinimumAngle: skip 2 ; $7E2016
+  .tailMaximumAngle: skip 2 ; $7E2018
+  .optionalClockwiseTarget: skip 2 ; $7E201A
+  .optionalCounterClockwiseTarget: skip 2 ; $7E201C
+  .movementThreshold: skip 2 ; $7E201E
+  .tail1MovingRotatingFlag: skip 2 ; $7E2020
+  .tail1RotationDelayTimer: skip 2 ; $7E2022
+  .tail1RotationDirection: skip 2 ; $7E2024
+  .tail1DistanceToRidley: skip 2 ; $7E2026
+  .tail1TargetDistanceToRidley: skip 2 ; $7E2028
+  .tail1Angle: skip 2 ; $7E202A
+  .tail1XPosition: skip 2 ; $7E202C
+  .tail1YPosition: skip 2 ; $7E202E
+  .tail1XDistanceFromRidley: skip 2 ; $7E2030
+  .tail1YDistanceFromRidley: skip 2 ; $7E2032
+  .tail2MovingRotatingFlag: skip 2 ; $7E2034
+  .tail2RotationDelayTimer: skip 2 ; $7E2036
+  .tail2RotationDirection: skip 2 ; $7E2038
+  .tail2DistanceToRidley: skip 2 ; $7E203A
+  .tail2TargetDistanceToRidley: skip 2 ; $7E203C
+  .tail2Angle: skip 2 ; $7E203E
+  .tail2XPosition: skip 2 ; $7E2040
+  .tail2YPosition: skip 2 ; $7E2042
+  .tail2XDistanceFromTail1: skip 2 ; $7E2044
+  .tail2YDistanceFromTail1: skip 2 ; $7E2046
+  .tail3MovingRotatingFlag: skip 2 ; $7E2048
+  .tail3RotationDelayTimer: skip 2 ; $7E204A
+  .tail3RotationDirection: skip 2 ; $7E204C
+  .tail3DistanceToRidley: skip 2 ; $7E204E
+  .tail3TargetDistanceToRidley: skip 2 ; $7E2050
+  .tail3Angle: skip 2 ; $7E2052
+  .tail3XPosition: skip 2 ; $7E2054
+  .tail3YPosition: skip 2 ; $7E2056
+  .tail3XDistanceFromTail2: skip 2 ; $7E2058
+  .tail3YDistanceFromTail2: skip 2 ; $7E205A
+  .tail4MovingRotatingFlag: skip 2 ; $7E205C
+  .tail4RotationDelayTimer: skip 2 ; $7E205E
+  .tail4RotationDirection: skip 2 ; $7E2060
+  .tail4DistanceToRidley: skip 2 ; $7E2062
+  .tail4TargetDistanceToRidley: skip 2 ; $7E2064
+  .tail4Angle: skip 2 ; $7E2066
+  .tail4XPosition: skip 2 ; $7E2068
+  .tail4YPosition: skip 2 ; $7E206A
+  .tail4XDistanceFromTail3: skip 2 ; $7E206C
+  .tail4YDistanceFromTail3: skip 2 ; $7E206E
+  .tail5MovingRotatingFlag: skip 2 ; $7E2070
+  .tail5RotationDelayTimer: skip 2 ; $7E2072
+  .tail5RotationDirection: skip 2 ; $7E2074
+  .tail5DistanceToRidley: skip 2 ; $7E2076
+  .tail5TargetDistanceToRidley: skip 2 ; $7E2078
+  .tail5Angle: skip 2 ; $7E207A
+  .tail5XPosition: skip 2 ; $7E207C
+  .tail5YPosition: skip 2 ; $7E207E
+  .tail5XDistanceFromTail4: skip 2 ; $7E2080
+  .tail5YDistanceFromTail4: skip 2 ; $7E2082
+  .tail6MovingRotatingFlag: skip 2 ; $7E2084
+  .tail6RotationDelayTimer: skip 2 ; $7E2086
+  .tail6RotationDirection: skip 2 ; $7E2088
+  .tail6DistanceToRidley: skip 2 ; $7E208A
+  .tail6TargetDistanceToRidley: skip 2 ; $7E208C
+  .tail6Angle: skip 2 ; $7E208E
+  .tail6XPosition: skip 2 ; $7E2090
+  .tail6YPosition: skip 2 ; $7E2092
+  .tail6XDistanceFromTail5: skip 2 ; $7E2094
+  .tail6YDistanceFromTail5: skip 2 ; $7E2096
+  .tailTipMovingRotatingFlag: skip 2 ; $7E2098
+  .tailTipRotationDelayTimer: skip 2 ; $7E209A
+  .tailTipRotationDirection: skip 2 ; $7E209C
+  .tailTipDistanceToRidley: skip 2 ; $7E209E
+  .tailTipTargetDistanceToRidley: skip 2 ; $7E20A0
+  .tailTipAngle: skip 2 ; $7E20A2
+  .tailTipXPosition: skip 2 ; $7E20A4
+  .tailTipYPosition: skip 2 ; $7E20A6
+  .tailTipXDistanceFromTail6: skip 2 ; $7E20A8
+  .tailTipYDistanceFromTail6: skip 2 ; $7E20AA
+skip $5754
+  .timer: skip 2 ; $7E7800
+  .status: skip 2 ; $7E7802
+  .activeFlag: skip 2 ; $7E7804
+skip 4
+  .ribsAnimationIndex: skip 2 ; $7E780A
+  .ribsAnimationTimer: skip 2 ; $7E780C
+  .wingFlapFrame: skip 2 ; $7E780E
+  .wingFlapSpeed: skip 2 ; $7E7810
+  .wingFlapCounter: skip 2 ; $7E7812
+  .currentAngleOfMotion: skip 2 ; $7E7814
+  .USwoopSpeed: skip 2 ; $7E7816
+  .wingTailPalette: skip 2 ; $7E7818
+skip 2
+  .maxTailSpeedCounter: skip 2 ; $7E781C
+  .roarSFXFlag: skip 2 ; $7E781E
+  .facingDirection: skip 2 ; $7E7820
+skip 2
+  .speed: skip 2 ; $7E7824
+skip 8
+  .targetXLocationWhenHoldingSamus: skip 2 ; $7E782E
+  .targetYLocationWhenHoldingSamus: skip 2 ; $7E7830
+  .fireballXComponentOfSpeed: skip 2 ; $7E7832
+  .fireballYComponentOfSpeed: skip 2 ; $7E7834
+  .holdingSamusFlag: skip 2 ; $7E7836
+  .tailTipDamage: skip 2 ; $7E7838
+  .YDisplacementTableIndex: skip 2 ; $7E783A
+  .grabCooldownTimer: skip 2 ; $7E783C
+  .collisionDirection: skip 2 ; $7E783E
+skip $7C0
+  .topBoundary: skip 2 ; $7E8000
+  .bottomBoundary: skip 2 ; $7E8002
+  .leftBoundary: skip 2 ; $7E8004
+  .rightBoundary: skip 2 ; $7E8006
+  .unknown8008: skip 2 ; $7E8008
+  .finalGrabAttemptCounter: skip 2 ; $7E800A
+  .tailBounceCounter: skip 2 ; $7E800C
+  .deathExplosionTimer: skip 2 ; $7E800E
+  .deathExplosionIndex: skip 2 ; $7E8010
 endstruct
 
 struct RidleyExplosion $0FAA
@@ -3867,39 +4069,7 @@ skip $100C
   .rotEntryFinishedHook: skip 2 ; $7E8836
 endstruct
 
-struct CorpseZoomer $0FA8
-  .function: skip 2 ; $0FA8
-  .preRotDelayTimer: skip 2 ; $0FAA
-skip $7DF878
-  .rotTablePointer: skip 2 ; $7E8824
-  .VRAMTransfersPointer: skip 2 ; $7E8826
-  .rotEntryCopyFunction: skip 2 ; $7E8828
-  .rotEntryMoveFunction: skip 2 ; $7E882A
-  .tileDataRowOffsetsPointer: skip 2 ; $7E882C
-  .spriteHeight: skip 2 ; $7E882E
-  .spriteHeightMinus1: skip 2 ; $7E8830
-  .spriteHeightMinus2: skip 2 ; $7E8832
-  .interTileDataOffset: skip 2 ; $7E8834
-  .rotEntryFinishedHook: skip 2 ; $7E8836
-endstruct
-
-struct CorpseRipper $0FA8
-  .function: skip 2 ; $0FA8
-  .preRotDelayTimer: skip 2 ; $0FAA
-skip $7DF878
-  .rotTablePointer: skip 2 ; $7E8824
-  .VRAMTransfersPointer: skip 2 ; $7E8826
-  .rotEntryCopyFunction: skip 2 ; $7E8828
-  .rotEntryMoveFunction: skip 2 ; $7E882A
-  .tileDataRowOffsetsPointer: skip 2 ; $7E882C
-  .spriteHeight: skip 2 ; $7E882E
-  .spriteHeightMinus1: skip 2 ; $7E8830
-  .spriteHeightMinus2: skip 2 ; $7E8832
-  .interTileDataOffset: skip 2 ; $7E8834
-  .rotEntryFinishedHook: skip 2 ; $7E8836
-endstruct
-
-struct CorpseSkree $0FA8
+struct Corpse $0FA8
   .function: skip 2 ; $0FA8
   .preRotDelayTimer: skip 2 ; $0FAA
 skip $7DF878
