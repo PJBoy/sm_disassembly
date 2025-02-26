@@ -2163,7 +2163,7 @@ struct MamaTurtle $0FA8
 skip 6
   .XVelocity: skip 2 ; $0FB0
   .asleepFlag: skip 2 ; $0FB2
-skip $7DE84E
+skip $7DE84C
   .functionTimer: skip 2 ; $7E7800
   .XSubAcceleration: skip 2 ; $7E7802
   .XAcceleration: skip 2 ; $7E7804
@@ -2196,7 +2196,7 @@ skip $7DE84C
   .direction: skip 2 ; $7E7804
   .fallingFlag: skip 2 ; $7E7806
   .invertDirectionFlag: skip 2 ; $7E7808
-  .InvertedDirection: skip 2 ; $7E780A
+  .invertedDirection: skip 2 ; $7E780A
   .initialYSpeedTableIndex_3_4: skip 2 ; $7E780C
   .initialYSpeedTableIndex_1_2: skip 2 ; $7E780E
 endstruct
@@ -2209,8 +2209,8 @@ struct Cacatac $0FA8
   .direction: skip 2 ; $0FB0
   .function: skip 2 ; $0FB2
 skip $7DE84C
-  .MinimumXPosition: skip 2 ; $7E7800
-  .MaximumXPosition: skip 2 ; $7E7802
+  .minimumXPosition: skip 2 ; $7E7800
+  .maximumXPosition: skip 2 ; $7E7802
 endstruct
 
 struct Owtch $0FA8
@@ -2222,8 +2222,8 @@ struct Owtch $0FA8
   .sinkYOffset: skip 2 ; $0FB2
 skip $7DE84C
   .undergroundTimer: skip 2 ; $7E7800
-  .MinimumXPosition: skip 2 ; $7E7802
-  .MaximumXPosition: skip 2 ; $7E7804
+  .minimumXPosition: skip 2 ; $7E7802
+  .maximumXPosition: skip 2 ; $7E7804
 endstruct
 
 struct ShipTop $0FA8
@@ -3131,7 +3131,6 @@ struct RidleyCeres $0FAA
   .XSpeed: skip 2 ; $0FAA
   .YSpeed: skip 2 ; $0FAC
 skip $7D9052
-print pc
   .liftoffFlag: skip 2 ; $7E2000
   .tailFlingSyncFlag: skip 2 ; $7E2002
   .tailFlingTrigger: skip 2 ; $7E2004

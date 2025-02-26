@@ -612,7 +612,7 @@ InstList_Boyon_Idle_1:
 ;;; $86BF: Instruction list - bouncing ;;;
 InstList_Boyon_Bouncing_0:
     dw Instruction_Common_EnableOffScreenProcessing                      ;A286BF;
-    dw Instruction_Boyon_88C6                                            ;A286C1;
+    dw Instruction_Boyon_StartBounce                                     ;A286C1;
 
 InstList_Boyon_Bouncing_1:
     dw $0005,Spritemap_Boyon_Bouncing_0                                  ;A286C3;
@@ -654,22 +654,22 @@ InitAI_Boyon:
     STA.W $0F8E,X                                                        ;A28722;
     JSR.W SetBoyonInstList                                               ;A28725;
     LDA.W #$0001                                                         ;A28728;
-    STA.L $7E7802,X                                                      ;A2872B;
+    STA.L Boyon.bounceMovementIndex,X                                    ;A2872B;
     LDA.W $0FB4,X                                                        ;A2872F;
     AND.W #$00FF                                                         ;A28732;
     ASL A                                                                ;A28735;
     TAY                                                                  ;A28736;
     LDA.W BoyonData_speedMultipliers,Y                                   ;A28737;
-    STA.W $0FA8,X                                                        ;A2873A;
+    STA.W Boyon.speedMultiplier,X                                        ;A2873A;
     LDA.W $0FB5,X                                                        ;A2873D;
     AND.W #$00FF                                                         ;A28740;
     ASL A                                                                ;A28743;
     TAY                                                                  ;A28744;
     LDA.W BoyonData_jumpHeights,Y                                        ;A28745;
-    STA.W $0FAC,X                                                        ;A28748;
-    STZ.W $0FAE,X                                                        ;A2874B;
-    STZ.W $0FB0,X                                                        ;A2874E;
-    STZ.W $0FB2,X                                                        ;A28751;
+    STA.W Boyon.jumpHeight,X                                             ;A28748;
+    STZ.W Boyon.distanceAccumulator,X                                    ;A2874B;
+    STZ.W Boyon.speedTableIndex,X                                        ;A2874E;
+    STZ.W Boyon.bouncingIndex,X                                          ;A28751;
     RTL                                                                  ;A28754;
 
 
@@ -678,7 +678,7 @@ CalculateInitialBounceSpeed:
     PHP                                                                  ;A28755;
 
   .loop:
-    LDY.W $0FB0,X                                                        ;A28756;
+    LDY.W Boyon.speedTableIndex,X                                        ;A28756;
     SEP #$20                                                             ;A28759;
     LDA.W BoyonData_speedTable,Y                                         ;A2875B;
     CPY.W #$0017                                                         ;A2875E;
@@ -686,25 +686,25 @@ CalculateInitialBounceSpeed:
     LDA.B #$FF                                                           ;A28763;
 
 +   STA.W $4202                                                          ;A28765;
-    LDA.W $0FA8,X                                                        ;A28768;
+    LDA.W Boyon.speedMultiplier,X                                        ;A28768;
     STA.W $4203                                                          ;A2876B;
     NOP                                                                  ;A2876E;
     NOP                                                                  ;A2876F;
     NOP                                                                  ;A28770;
     REP #$20                                                             ;A28771;
     LDA.W $4216                                                          ;A28773;
-    STA.W $0FAA,X                                                        ;A28776;
+    STA.W Boyon.speed,X                                                  ;A28776;
     CLC                                                                  ;A28779;
-    ADC.W $0FAE,X                                                        ;A2877A;
-    STA.W $0FAE,X                                                        ;A2877D;
-    INC.W $0FB0,X                                                        ;A28780;
-    CMP.W $0FAC,X                                                        ;A28783;
+    ADC.W Boyon.distanceAccumulator,X                                    ;A2877A;
+    STA.W Boyon.distanceAccumulator,X                                    ;A2877D;
+    INC.W Boyon.speedTableIndex,X                                        ;A28780;
+    CMP.W Boyon.jumpHeight,X                                             ;A28783;
     BMI .loop                                                            ;A28786;
-    LDA.W $0FB0,X                                                        ;A28788;
-    STA.L $7E7800,X                                                      ;A2878B;
+    LDA.W Boyon.speedTableIndex,X                                        ;A28788;
+    STA.L Boyon.initialBounceSpeedTableIndex,X                           ;A2878B;
     LDA.W #$0001                                                         ;A2878F;
-    STA.L $7E7804,X                                                      ;A28792;
-    STA.L $7E7808,X                                                      ;A28796;
+    STA.L Boyon.bounceDisableFlag,X                                      ;A28792;
+    STA.L Boyon.idleDisableFlag,X                                        ;A28796;
     PLP                                                                  ;A2879A;
     RTS                                                                  ;A2879B;
 
@@ -712,42 +712,42 @@ CalculateInitialBounceSpeed:
 ;;; $879C: Main AI - enemy $CEBF (boyon) ;;;
 MainAI_Boyon:
     LDX.W $0E54                                                          ;A2879C;
-    LDA.L $7E780A,X                                                      ;A2879F;
+    LDA.L Boyon.bounceSpeedCalculatedFlag,X                              ;A2879F;
     BNE .notJumping                                                      ;A287A3;
     JSR.W CalculateInitialBounceSpeed                                    ;A287A5;
     LDA.W #$0001                                                         ;A287A8;
-    STA.L $7E780A,X                                                      ;A287AB;
+    STA.L Boyon.bounceSpeedCalculatedFlag,X                              ;A287AB;
     RTL                                                                  ;A287AF;
 
   .notJumping:
-    LDA.W $0FA8,X                                                        ;A287B0;
-    STA.L $7E7806,X                                                      ;A287B3;
+    LDA.W Boyon.speedMultiplier,X                                        ;A287B0;
+    STA.L Boyon.speedMultiplierMirror,X                                  ;A287B3;
     JSR.W CheckIfSamusIsInProximity                                      ;A287B7;
     BNE .SamusInProximity                                                ;A287BA;
-    LDA.L $7E7804,X                                                      ;A287BC;
+    LDA.L Boyon.bounceDisableFlag,X                                      ;A287BC;
     BEQ .bouncing                                                        ;A287C0;
-    LDA.L $7E7808,X                                                      ;A287C2;
+    LDA.L Boyon.idleDisableFlag,X                                        ;A287C2;
     BNE .return                                                          ;A287C6;
     LDA.W #$0001                                                         ;A287C8;
-    STA.L $7E7808,X                                                      ;A287CB;
+    STA.L Boyon.idleDisableFlag,X                                        ;A287CB;
     JSR.W SetBoyonInstList                                               ;A287CF;
     BRA .return                                                          ;A287D2;
 
   .SamusInProximity:
     LDA.W #$0000                                                         ;A287D4;
-    STA.L $7E7804,X                                                      ;A287D7;
-    STA.L $7E7808,X                                                      ;A287DB;
-    LDA.W $0FB2,X                                                        ;A287DF;
+    STA.L Boyon.bounceDisableFlag,X                                      ;A287D7;
+    STA.L Boyon.idleDisableFlag,X                                        ;A287DB;
+    LDA.W Boyon.bouncingIndex,X                                          ;A287DF;
     BNE .bouncing                                                        ;A287E2;
     LDA.W #$0001                                                         ;A287E4;
-    STA.W $0FB2,X                                                        ;A287E7;
+    STA.W Boyon.bouncingIndex,X                                          ;A287E7;
     JSR.W SetBoyonBouncingInstList                                       ;A287EA;
 
   .bouncing:
     LDX.W $0E54                                                          ;A287ED;
-    LDA.L $7E7806,X                                                      ;A287F0;
-    STA.W $0FA8,X                                                        ;A287F4;
-    LDA.L $7E7802,X                                                      ;A287F7;
+    LDA.L Boyon.speedMultiplierMirror,X                                  ;A287F0;
+    STA.W Boyon.speedMultiplier,X                                        ;A287F4;
+    LDA.L Boyon.bounceMovementIndex,X                                    ;A287F7;
     ASL A                                                                ;A287FB;
     TAX                                                                  ;A287FC;
     JSR.W (BoyonData_bounceFunctionPointers,X)                           ;A287FD;
@@ -759,8 +759,8 @@ MainAI_Boyon:
 ;;; $8801: Boyon bounce movement - falling ;;;
 Function_Boyon_Falling:
     LDX.W $0E54                                                          ;A28801;
-    INC.W $0FB0,X                                                        ;A28804;
-    LDY.W $0FB0,X                                                        ;A28807;
+    INC.W Boyon.speedTableIndex,X                                        ;A28804;
+    LDY.W Boyon.speedTableIndex,X                                        ;A28807;
     SEP #$20                                                             ;A2880A;
     LDA.W BoyonData_speedTable,Y                                         ;A2880C;
     CPY.W #$0017                                                         ;A2880F;
@@ -769,27 +769,27 @@ Function_Boyon_Falling:
 
   .lessThan17:
     STA.W $4202                                                          ;A28816;
-    LDA.W $0FA8,X                                                        ;A28819;
+    LDA.W Boyon.speedMultiplier,X                                        ;A28819;
     STA.W $4203                                                          ;A2881C;
     NOP                                                                  ;A2881F;
     NOP                                                                  ;A28820;
     NOP                                                                  ;A28821;
     REP #$20                                                             ;A28822;
     LDA.W $4216                                                          ;A28824;
-    STA.W $0FAA,X                                                        ;A28827;
+    STA.W Boyon.speed,X                                                  ;A28827;
     XBA                                                                  ;A2882A;
     AND.W #$00FF                                                         ;A2882B;
     CLC                                                                  ;A2882E;
     ADC.W $0F7E,X                                                        ;A2882F;
     STA.W $0F7E,X                                                        ;A28832;
-    LDA.W $0FB0,X                                                        ;A28835;
-    CMP.L $7E7800,X                                                      ;A28838;
+    LDA.W Boyon.speedTableIndex,X                                        ;A28835;
+    CMP.L Boyon.initialBounceSpeedTableIndex,X                           ;A28838;
     BMI .return                                                          ;A2883C;
     LDA.W #$0001                                                         ;A2883E;
-    STA.L $7E7802,X                                                      ;A28841;
+    STA.L Boyon.bounceMovementIndex,X                                    ;A28841;
     LDA.W #$0001                                                         ;A28845;
-    STA.L $7E7804,X                                                      ;A28848;
-    STZ.W $0FB2,X                                                        ;A2884C;
+    STA.L Boyon.bounceDisableFlag,X                                      ;A28848;
+    STZ.W Boyon.bouncingIndex,X                                          ;A2884C;
 
   .return:
     RTS                                                                  ;A2884F;
@@ -798,7 +798,7 @@ Function_Boyon_Falling:
 ;;; $8850: Boyon bounce movement - rising ;;;
 Function_Boyon_Rising:
     LDX.W $0E54                                                          ;A28850;
-    LDY.W $0FB0,X                                                        ;A28853;
+    LDY.W Boyon.speedTableIndex,X                                        ;A28853;
     SEP #$20                                                             ;A28856;
     LDA.W BoyonData_speedTable,Y                                         ;A28858;
     CPY.W #$0017                                                         ;A2885B;
@@ -807,14 +807,14 @@ Function_Boyon_Rising:
 
   .lessThan17:
     STA.W $4202                                                          ;A28862;
-    LDA.W $0FA8,X                                                        ;A28865;
+    LDA.W Boyon.speedMultiplier,X                                        ;A28865;
     STA.W $4203                                                          ;A28868;
     NOP                                                                  ;A2886B;
     NOP                                                                  ;A2886C;
     NOP                                                                  ;A2886D;
     REP #$20                                                             ;A2886E;
     LDA.W $4216                                                          ;A28870;
-    STA.W $0FAA,X                                                        ;A28873;
+    STA.W Boyon.speed,X                                                  ;A28873;
     XBA                                                                  ;A28876;
     AND.W #$00FF                                                         ;A28877;
     EOR.W #$FFFF                                                         ;A2887A;
@@ -822,13 +822,13 @@ Function_Boyon_Rising:
     CLC                                                                  ;A2887E;
     ADC.W $0F7E,X                                                        ;A2887F;
     STA.W $0F7E,X                                                        ;A28882;
-    DEC.W $0FB0,X                                                        ;A28885;
+    DEC.W Boyon.speedTableIndex,X                                        ;A28885;
     BMI .doneJumping                                                     ;A28888;
     BRA .return                                                          ;A2888A;
 
   .doneJumping:
     LDA.W #$0000                                                         ;A2888C;
-    STA.L $7E7802,X                                                      ;A2888F;
+    STA.L Boyon.bounceMovementIndex,X                                    ;A2888F;
 
   .return:
     RTS                                                                  ;A28893;
@@ -872,10 +872,10 @@ RTL_A288C5:
 
 
 ;;; $88C6: Instruction - start bounce ;;;
-Instruction_Boyon_88C6:
+Instruction_Boyon_StartBounce:
     LDX.W $0E54                                                          ;A288C6;
     LDA.W #$0000                                                         ;A288C9;
-    STA.L $7E7804,X                                                      ;A288CC;
+    STA.L Boyon.bounceDisableFlag,X                                      ;A288CC;
     LDA.W #$000E                                                         ;A288D0;
     JSL.L QueueSound_Lib2_Max6                                           ;A288D3;
     RTL                                                                  ;A288D7;
@@ -994,8 +994,8 @@ Instruction_Stoke_SpawnProjectileWithDirectionInY:
 Instruction_Stoke_SetMovingLeft:
     LDX.W $0E54                                                          ;A28990;
     LDA.W #Function_Stoke_MovingLeft                                     ;A28993;
-    STA.W $0FB2,X                                                        ;A28996;
-    STZ.W $0FB0,X                                                        ;A28999;
+    STA.W Stoke.function,X                                               ;A28996;
+    STZ.W Stoke.direction,X                                              ;A28999;
     RTL                                                                  ;A2899C;
 
 
@@ -1003,9 +1003,9 @@ Instruction_Stoke_SetMovingLeft:
 Instruction_Stoke_SetMovingRight:
     LDX.W $0E54                                                          ;A2899D;
     LDA.W #Function_Stoke_MovingRight                                    ;A289A0;
-    STA.W $0FB2,X                                                        ;A289A3;
+    STA.W Stoke.function,X                                               ;A289A3;
     LDA.W #$0001                                                         ;A289A6;
-    STA.W $0FB0,X                                                        ;A289A9;
+    STA.W Stoke.direction,X                                              ;A289A9;
     RTL                                                                  ;A289AC;
 
 
@@ -1020,22 +1020,22 @@ InitAI_Stoke:
     ASL A                                                                ;A289BB;
     TAY                                                                  ;A289BC;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing,Y                         ;A289BD;
-    STA.W $0FAA,X                                                        ;A289C0;
+    STA.W Stoke.rightVelocity,X                                          ;A289C0;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+2,Y                       ;A289C3;
-    STA.W $0FA8,X                                                        ;A289C6;
+    STA.W Stoke.rightSubVelocity,X                                       ;A289C6;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+4,Y                       ;A289C9;
-    STA.W $0FAE,X                                                        ;A289CC;
+    STA.W Stoke.leftVelocity,X                                           ;A289CC;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+6,Y                       ;A289CF;
-    STA.W $0FAC,X                                                        ;A289D2;
+    STA.W Stoke.leftSubVelocity,X                                        ;A289D2;
     JSR.W SetStokeMovingLeftInstList                                     ;A289D5;
     LDA.W #Function_Stoke_MovingLeft                                     ;A289D8;
-    STA.W $0FB2,X                                                        ;A289DB;
+    STA.W Stoke.function,X                                               ;A289DB;
     LDA.W $0FB4,X                                                        ;A289DE;
-    STA.W $0FB0,X                                                        ;A289E1;
+    STA.W Stoke.direction,X                                              ;A289E1;
     BEQ .return                                                          ;A289E4;
     JSR.W SetStokeMovingRightInstList                                    ;A289E6;
     LDA.W #Function_Stoke_MovingRight                                    ;A289E9;
-    STA.W $0FB2,X                                                        ;A289EC;
+    STA.W Stoke.function,X                                               ;A289EC;
 
   .return:
     RTL                                                                  ;A289EF;
@@ -1044,7 +1044,7 @@ InitAI_Stoke:
 ;;; $89F0: Main AI - enemy $CEFF (mini-Crocomire) ;;;
 MainAI_Stoke:
     LDX.W $0E54                                                          ;A289F0;
-    JSR.W ($0FB2,X)                                                      ;A289F3;
+    JSR.W (Stoke.function,X)                                             ;A289F3;
     RTL                                                                  ;A289F6;
 
 
@@ -1095,9 +1095,9 @@ SetStokeAttackingRightInstList:
 ;;; $8A43: Mini-Crocomire function - moving left ;;;
 Function_Stoke_MovingLeft:
     LDX.W $0E54                                                          ;A28A43;
-    LDA.W $0FAE,X                                                        ;A28A46;
+    LDA.W Stoke.leftVelocity,X                                           ;A28A46;
     STA.B $14                                                            ;A28A49;
-    LDA.W $0FAC,X                                                        ;A28A4B;
+    LDA.W Stoke.leftSubVelocity,X                                        ;A28A4B;
     STA.B $12                                                            ;A28A4E;
     JSR.W StokeMovement                                                  ;A28A50;
     JSR.W DecideWhetherToAttack                                          ;A28A53;
@@ -1111,9 +1111,9 @@ Function_Stoke_MovingLeft:
 ;;; $8A5C: Mini-Crocomire function - moving right ;;;
 Function_Stoke_MovingRight:
     LDX.W $0E54                                                          ;A28A5C;
-    LDA.W $0FAA,X                                                        ;A28A5F;
+    LDA.W Stoke.rightVelocity,X                                          ;A28A5F;
     STA.B $14                                                            ;A28A62;
-    LDA.W $0FA8,X                                                        ;A28A64;
+    LDA.W Stoke.rightSubVelocity,X                                       ;A28A64;
     STA.B $12                                                            ;A28A67;
     JSR.W StokeMovement                                                  ;A28A69;
     JSR.W DecideWhetherToAttack                                          ;A28A6C;
@@ -1155,7 +1155,7 @@ StokeMovement:
 TurnStokeAround:
     LDX.W $0E54                                                          ;A28A95;
     JSR.W SetStokeMovingLeftInstList                                     ;A28A98;
-    LDA.W $0FB0,X                                                        ;A28A9B;
+    LDA.W Stoke.direction,X                                              ;A28A9B;
     EOR.W #$0001                                                         ;A28A9E;
     BEQ .return                                                          ;A28AA1;
     JSR.W SetStokeMovingRightInstList                                    ;A28AA3;
@@ -1177,7 +1177,7 @@ DecideWhetherToAttack:
     CMP.W #$0002                                                         ;A28AB8;
     BPL .returnNoAttack                                                  ;A28ABB;
     LDA.W #RTS_A28A75                                                    ;A28ABD;
-    STA.W $0FB2,X                                                        ;A28AC0;
+    STA.W Stoke.function,X                                               ;A28AC0;
     SEC                                                                  ;A28AC3;
     BRA .return                                                          ;A28AC4;
 
@@ -1522,9 +1522,9 @@ InitAI_MamaTurtle:
     LDA.W #InstList_MamaTurtle_Asleep                                    ;A28D8A;
     STA.W $0F92,X                                                        ;A28D8D;
     LDA.W #Function_MamaTurtle_Initial                                   ;A28D90;
-    STA.W $0FA8,X                                                        ;A28D93;
+    STA.W MamaTurtle.function,X                                          ;A28D93;
     LDA.W MamaTurtleConstants_asleepFlag                                 ;A28D96;
-    STA.W $0FB2,X                                                        ;A28D99;
+    STA.W MamaTurtle.asleepFlag,X                                        ;A28D99;
     RTL                                                                  ;A28D9C;
 
 
@@ -1532,19 +1532,19 @@ InitAI_MamaTurtle:
 InitAI_BabyTurtle:
     LDX.W $0E54                                                          ;A28D9D;
     LDA.W $0F7A,X                                                        ;A28DA0;
-    STA.W $0FAC,X                                                        ;A28DA3;
+    STA.W BabyTurtle.spawnXPosition,X                                    ;A28DA3;
     LDA.W $0F7E,X                                                        ;A28DA6;
     SEC                                                                  ;A28DA9;
     SBC.W $0F84,X                                                        ;A28DAA;
-    STA.W $0FAE,X                                                        ;A28DAD;
+    STA.W BabyTurtle.spawnTopBoundary,X                                  ;A28DAD;
     LDA.W #Function_BabyTurtle_Crawling_NotCarryingSamus                 ;A28DB0;
-    STA.W $0FA8,X                                                        ;A28DB3;
+    STA.W MamaTurtle.function,X                                          ;A28DB3;
     LDA.W #$0001                                                         ;A28DB6;
     STA.W $0F94,X                                                        ;A28DB9;
     STZ.W $0F90,X                                                        ;A28DBC;
     LDY.W #InstList_BabyTurtle_CrawlingLeft                              ;A28DBF;
     LDA.W $0FB4,X                                                        ;A28DC2;
-    STA.W $0FB0,X                                                        ;A28DC5;
+    STA.W MamaTurtle.XVelocity,X                                         ;A28DC5;
     BMI .keepPointer                                                     ;A28DC8;
     LDY.W #InstList_BabyTurtle_CrawlingRight                             ;A28DCA;
 
@@ -1557,7 +1557,7 @@ InitAI_BabyTurtle:
 ;;; $8DD2: Main AI - enemy $CF3F (tatori) ;;;
 MainAI_MamaTurtle:
     LDX.W $0E54                                                          ;A28DD2;
-    JMP.W ($0FA8,X)                                                      ;A28DD5;
+    JMP.W (MamaTurtle.function,X)                                        ;A28DD5;
 
 
 ;;; $8DD8: Tatori function - initial ;;;
@@ -1578,7 +1578,7 @@ Function_MamaTurtle_Initial:
     STA.W $106A,X                                                        ;A28DFD;
     STA.W $10AA,X                                                        ;A28E00;
     LDA.W #Function_MamaTurtle_Asleep                                    ;A28E03;
-    STA.W $0FA8,X                                                        ;A28E06; fallthrough to RTL_A28E09
+    STA.W MamaTurtle.function,X                                          ;A28E06; fallthrough to RTL_A28E09
 
 
 RTL_A28E09:
@@ -1587,10 +1587,10 @@ RTL_A28E09:
 
 ;;; $8E0A: Tatori function - asleep ;;;
 Function_MamaTurtle_Asleep:
-    LDA.W $0FB2,X                                                        ;A28E0A;
+    LDA.W MamaTurtle.asleepFlag,X                                        ;A28E0A;
     BNE .asleep                                                          ;A28E0D;
     LDA.W #Function_MamaTurtle_LeaveShell                                ;A28E0F;
-    STA.W $0FA8,X                                                        ;A28E12;
+    STA.W MamaTurtle.function,X                                          ;A28E12;
     LDA.W $0F86,X                                                        ;A28E15;
     AND.W #$FBFF                                                         ;A28E18;
     STA.W $0F86,X                                                        ;A28E1B;
@@ -1704,7 +1704,7 @@ Function_MamaTurtle_LeaveShell:
     LDA.W MamaTurtleConstants_unknown                                    ;A28F32;
     STA.W $0006,X                                                        ;A28F35;
     LDA.W #RTL_A28E09                                                    ;A28F38;
-    STA.W $0FA8,X                                                        ;A28F3B;
+    STA.W MamaTurtle.function,X                                          ;A28F3B;
 
   .return:
     RTL                                                                  ;A28F3E;
@@ -1725,7 +1725,7 @@ Function_MamaTurtle_EnterShell:
     LDA.W #$0001                                                         ;A28F52;
     STA.W $0F94,X                                                        ;A28F55;
     LDA.W #RTL_A28E09                                                    ;A28F58;
-    STA.W $0FA8,X                                                        ;A28F5B;
+    STA.W MamaTurtle.function,X                                          ;A28F5B;
     RTL                                                                  ;A28F5E;
 
 
@@ -1737,13 +1737,13 @@ HandleSamusLandingOnHoveringTatori:
     AND.W #$FFFF                                                         ;A28F65;
     BEQ .return                                                          ;A28F68;
     LDA.W #Function_MamaTurtle_RisingToPeak                              ;A28F6A;
-    STA.W $0FA8,X                                                        ;A28F6D;
+    STA.W MamaTurtle.function,X                                          ;A28F6D;
     LDA.W $0B56                                                          ;A28F70;
     SEC                                                                  ;A28F73;
-    SBC.L $7E7806,X                                                      ;A28F74;
+    SBC.L MamaTurtle.XSubVelocity,X                                      ;A28F74;
     STA.W $0B56                                                          ;A28F78;
     LDA.W $0B58                                                          ;A28F7B;
-    SBC.W $0FB0,X                                                        ;A28F7E;
+    SBC.W MamaTurtle.XVelocity,X                                         ;A28F7E;
     CMP.W #$FFF0                                                         ;A28F81;
     BPL +                                                                ;A28F84;
     LDA.W #$FFF0                                                         ;A28F86;
@@ -1773,9 +1773,9 @@ Function_MamaTurtle_RiseToHover:
     STA.W $0B5C                                                          ;A28FAF;
 
   .notTouchingSamusFromBelow:
-    LDA.L $7E7800,X                                                      ;A28FB2;
+    LDA.L MamaTurtle.functionTimer,X                                     ;A28FB2;
     DEC A                                                                ;A28FB6;
-    STA.L $7E7800,X                                                      ;A28FB7;
+    STA.L MamaTurtle.functionTimer,X                                     ;A28FB7;
     BNE .return                                                          ;A28FBB;
     LDY.W #$0000                                                         ;A28FBD;
     LDA.W $0F7A,X                                                        ;A28FC0;
@@ -1785,14 +1785,14 @@ Function_MamaTurtle_RiseToHover:
     LDY.W #$0004                                                         ;A28FC9;
 
 +   LDA.W MamaTurtleConstants_HoveringXAcceleration_subAcceleration,Y    ;A28FCC;
-    STA.L $7E7802,X                                                      ;A28FCF;
+    STA.L MamaTurtle.XSubAcceleration,X                                  ;A28FCF;
     LDA.W MamaTurtleConstants_HoveringXAcceleration_acceleration,Y       ;A28FD3;
-    STA.L $7E7804,X                                                      ;A28FD6;
+    STA.L MamaTurtle.XAcceleration,X                                     ;A28FD6;
     LDA.W #$0000                                                         ;A28FDA;
-    STA.W $0FB0,X                                                        ;A28FDD;
-    STA.L $7E7806,X                                                      ;A28FE0;
+    STA.W MamaTurtle.XVelocity,X                                         ;A28FDD;
+    STA.L MamaTurtle.XSubVelocity,X                                      ;A28FE0;
     LDA.W #Function_MamaTurtle_Hovering                                  ;A28FE4;
-    STA.W $0FA8,X                                                        ;A28FE7;
+    STA.W MamaTurtle.function,X                                          ;A28FE7;
 
   .return:
     RTL                                                                  ;A28FEA;
@@ -1803,19 +1803,19 @@ Function_MamaTurtle_Hovering:
 ; Looks like buggy fixed point negations at .hitWall
 ; The dev must have thought that INC affected the carry flag
     JSR.W MamaTurtle_vs_Samus_CollisionDetection                         ;A28FEB;
-    LDA.W $0FB0,X                                                        ;A28FEE;
+    LDA.W MamaTurtle.XVelocity,X                                         ;A28FEE;
     STA.B $14                                                            ;A28FF1;
-    LDA.L $7E7806,X                                                      ;A28FF3;
+    LDA.L MamaTurtle.XSubVelocity,X                                      ;A28FF3;
     STA.B $12                                                            ;A28FF7;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A28FF9;
     BCS .hitWall                                                         ;A28FFD;
     JSR.W HandleSamusLandingOnHoveringTatori                             ;A28FFF;
-    LDA.L $7E7806,X                                                      ;A29002;
+    LDA.L MamaTurtle.XSubVelocity,X                                      ;A29002;
     CLC                                                                  ;A29006;
-    ADC.L $7E7802,X                                                      ;A29007;
-    STA.L $7E7806,X                                                      ;A2900B;
-    LDA.W $0FB0,X                                                        ;A2900F;
-    ADC.L $7E7804,X                                                      ;A29012;
+    ADC.L MamaTurtle.XSubAcceleration,X                                  ;A29007;
+    STA.L MamaTurtle.XSubVelocity,X                                      ;A2900B;
+    LDA.W MamaTurtle.XVelocity,X                                         ;A2900F;
+    ADC.L MamaTurtle.XAcceleration,X                                     ;A29012;
     PHA                                                                  ;A29016;
     BPL +                                                                ;A29017;
     EOR.W #$FFFF                                                         ;A29019;
@@ -1825,7 +1825,7 @@ Function_MamaTurtle_Hovering:
     BMI .pullA                                                           ;A29020;
     PLA                                                                  ;A29022;
     LDY.W MamaTurtleConstants_maxHoveringXSpeed                          ;A29023;
-    LDA.W $0FB0,X                                                        ;A29026;
+    LDA.W MamaTurtle.XVelocity,X                                         ;A29026;
     BIT.W #$8000                                                         ;A29029;
     BEQ +                                                                ;A2902C;
     LDA.W MamaTurtleConstants_maxHoveringXSpeed                          ;A2902E;
@@ -1837,27 +1837,27 @@ Function_MamaTurtle_Hovering:
 
   .pullA:
     PLA                                                                  ;A29037;
-    STA.W $0FB0,X                                                        ;A29038;
+    STA.W MamaTurtle.XVelocity,X                                         ;A29038;
     RTL                                                                  ;A2903B;
 
   .hitWall:
-    LDA.L $7E7806,X                                                      ;A2903C;
+    LDA.L MamaTurtle.XSubVelocity,X                                      ;A2903C;
     EOR.W #$FFFF                                                         ;A29040;
     INC A                                                                ;A29043;
-    STA.L $7E7806,X                                                      ;A29044;
-    LDA.W $0FB0,X                                                        ;A29048;
+    STA.L MamaTurtle.XSubVelocity,X                                      ;A29044;
+    LDA.W MamaTurtle.XVelocity,X                                         ;A29048;
     ADC.W #$0000                                                         ;A2904B;
     EOR.W #$FFFF                                                         ;A2904E;
     INC A                                                                ;A29051;
-    STA.W $0FB0,X                                                        ;A29052;
-    LDA.L $7E7802,X                                                      ;A29055;
+    STA.W MamaTurtle.XVelocity,X                                         ;A29052;
+    LDA.L MamaTurtle.XSubAcceleration,X                                  ;A29055;
     EOR.W #$FFFF                                                         ;A29059;
     INC A                                                                ;A2905C;
-    STA.L $7E7802,X                                                      ;A2905D;
-    LDA.L $7E7804,X                                                      ;A29061;
+    STA.L MamaTurtle.XSubAcceleration,X                                  ;A2905D;
+    LDA.L MamaTurtle.XAcceleration,X                                     ;A29061;
     ADC.W #$0000                                                         ;A29065;
     EOR.W #$FFFF                                                         ;A29068;
-    STA.L $7E7804,X                                                      ;A2906B;
+    STA.L MamaTurtle.XAcceleration,X                                     ;A2906B;
     LDA.W #$0000                                                         ;A2906F;
     STA.W $183E                                                          ;A29072;
     LDA.W #$0010                                                         ;A29075;
@@ -1889,14 +1889,14 @@ Function_MamaTurtle_RisingToPeak:
     RTL                                                                  ;A290AD;
 
 +   LDA.W MamaTurtleConstants_hoveringAtPeakPosition                     ;A290AE;
-    STA.L $7E7800,X                                                      ;A290B1;
+    STA.L MamaTurtle.functionTimer,X                                     ;A290B1;
     LDA.W #Function_MamaTurtle_HoveringAtPeak                            ;A290B5;
 
   .merge:
-    STA.W $0FA8,X                                                        ;A290B8;
+    STA.W MamaTurtle.function,X                                          ;A290B8;
     LDA.W #$0000                                                         ;A290BB;
-    STA.L $7E780E,X                                                      ;A290BE;
-    STA.L $7E7808,X                                                      ;A290C2;
+    STA.L MamaTurtle.YSubVelocity,X                                      ;A290BE;
+    STA.L MamaTurtle.YVelocity,X                                         ;A290C2;
     RTL                                                                  ;A290C6;
 
   .notTouchingSamus:
@@ -1907,12 +1907,12 @@ Function_MamaTurtle_RisingToPeak:
 ;;; $90CC: Tatori function - hovering at peak ;;;
 Function_MamaTurtle_HoveringAtPeak:
     JSR.W MamaTurtle_vs_Samus_CollisionDetection                         ;A290CC;
-    LDA.L $7E7800,X                                                      ;A290CF;
+    LDA.L MamaTurtle.functionTimer,X                                     ;A290CF;
     DEC A                                                                ;A290D3;
-    STA.L $7E7800,X                                                      ;A290D4;
+    STA.L MamaTurtle.functionTimer,X                                     ;A290D4;
     BNE .return                                                          ;A290D8;
     LDA.W #Function_MamaTurtle_Falling                                   ;A290DA;
-    STA.W $0FA8,X                                                        ;A290DD;
+    STA.W MamaTurtle.function,X                                          ;A290DD;
 
   .return:
     RTL                                                                  ;A290E0;
@@ -1921,25 +1921,25 @@ Function_MamaTurtle_HoveringAtPeak:
 ;;; $90E1: Tatori function - falling ;;;
 Function_MamaTurtle_Falling:
     JSR.W MamaTurtle_vs_Samus_CollisionDetection                         ;A290E1;
-    LDA.L $7E7808                                                        ;A290E4;
+    LDA.L MamaTurtle.YVelocity                                           ;A290E4;
     CMP.W MamaTurtleConstants_maxFallingYSpeed                           ;A290E8;
     BPL .maxVelocity                                                     ;A290EB;
-    LDA.L $7E780E,X                                                      ;A290ED;
+    LDA.L MamaTurtle.YSubVelocity,X                                      ;A290ED;
     CLC                                                                  ;A290F1;
     ADC.W #$2000                                                         ;A290F2;
-    STA.L $7E780E,X                                                      ;A290F5;
-    LDA.L $7E7808,X                                                      ;A290F9;
+    STA.L MamaTurtle.YSubVelocity,X                                      ;A290F5;
+    LDA.L MamaTurtle.YVelocity,X                                         ;A290F9;
     ADC.W #$0000                                                         ;A290FD;
-    STA.L $7E7808,X                                                      ;A29100;
+    STA.L MamaTurtle.YVelocity,X                                         ;A29100;
 
   .maxVelocity:
     STZ.B $12                                                            ;A29104;
-    LDA.L $7E7808,X                                                      ;A29106;
+    LDA.L MamaTurtle.YVelocity,X                                         ;A29106;
     STA.B $14                                                            ;A2910A;
     JSL.L MoveEnemyDownBy_14_12                                          ;A2910C;
     BCC .return                                                          ;A29110;
     LDY.W #InstList_MamaTurtle_FacingLeft_LeaveShell                     ;A29112;
-    LDA.W $0FB0,X                                                        ;A29115;
+    LDA.W MamaTurtle.XVelocity,X                                         ;A29115;
     BMI .keepLeft                                                        ;A29118;
     LDY.W #InstList_MamaTurtle_FacingRight_LeaveShell                    ;A2911A;
 
@@ -1949,7 +1949,7 @@ Function_MamaTurtle_Falling:
     LDA.W #$0001                                                         ;A29121;
     STA.W $0F94,X                                                        ;A29124;
     LDA.W #RTL_A28E09                                                    ;A29127;
-    STA.W $0FA8,X                                                        ;A2912A;
+    STA.W MamaTurtle.function,X                                          ;A2912A;
 
   .return:
     RTL                                                                  ;A2912D;
@@ -1958,12 +1958,12 @@ Function_MamaTurtle_Falling:
 ;;; $912E: Main AI - enemy $CF7F (mini-tatori) ;;;
 MainAI_BabyTurtle:
     LDX.W $0E54                                                          ;A2912E;
-    LDA.W $0FAA,X                                                        ;A29131;
+    LDA.W BabyTurtle.turtleIndex,X                                       ;A29131;
     TAX                                                                  ;A29134;
     LDA.W #$0000                                                         ;A29135;
     STA.L $7E780C,X                                                      ;A29138;
     LDX.W $0E54                                                          ;A2913C;
-    JMP.W ($0FA8,X)                                                      ;A2913F;
+    JMP.W (BabyTurtle.function,X)                                        ;A2913F;
 
 
 ;;; $9142: Mini-tatori function - crawling - not carrying Samus ;;;
@@ -1972,11 +1972,11 @@ Function_BabyTurtle_Crawling_NotCarryingSamus:
     AND.W #$FFFF                                                         ;A29146;
     BEQ .return                                                          ;A29149;
     LDA.W #Function_BabyTurtle_Hiding_CarryingSamus                      ;A2914B;
-    STA.W $0FA8,X                                                        ;A2914E;
+    STA.W BabyTurtle.function,X                                          ;A2914E;
     LDA.W #$0004                                                         ;A29151;
-    STA.L $7E780A,X                                                      ;A29154;
+    STA.L BabyTurtle.notCarryingSamusReactionTimer,X                     ;A29154;
     LDY.W #InstList_BabyTurtle_FacingLeft_Hiding                         ;A29158;
-    LDA.W $0FB0,X                                                        ;A2915B;
+    LDA.W BabyTurtle.XVelocity,X                                         ;A2915B;
     BMI .keepLeft                                                        ;A2915E;
     LDY.W #InstList_BabyTurtle_FacingRight_Hiding                        ;A29160;
 
@@ -1996,20 +1996,20 @@ Function_BabyTurtle_Hiding_CarryingSamus:
     AND.W #$FFFF                                                         ;A29172;
     BEQ .notTouchingSamus                                                ;A29175;
     LDA.W #$0004                                                         ;A29177;
-    STA.L $7E780A,X                                                      ;A2917A;
+    STA.L BabyTurtle.notCarryingSamusReactionTimer,X                     ;A2917A;
 
   .return:
     RTL                                                                  ;A2917E;
 
   .notTouchingSamus:
-    LDA.L $7E780A,X                                                      ;A2917F;
+    LDA.L BabyTurtle.notCarryingSamusReactionTimer,X                     ;A2917F;
     DEC A                                                                ;A29183;
-    STA.L $7E780A,X                                                      ;A29184;
+    STA.L BabyTurtle.notCarryingSamusReactionTimer,X                     ;A29184;
     BNE .return                                                          ;A29188;
     LDA.W #Function_BabyTurtle_Hiding_NotCarryingSamus                   ;A2918A;
-    STA.W $0FA8,X                                                        ;A2918D;
+    STA.W BabyTurtle.function,X                                          ;A2918D;
     LDA.W #$003C                                                         ;A29190;
-    STA.L $7E7800,X                                                      ;A29193;
+    STA.L MamaTurtle.functionTimer,X                                     ;A29193;
     RTL                                                                  ;A29197;
 
 
@@ -2019,13 +2019,13 @@ Function_BabyTurtle_Hiding_NotCarryingSamus:
     AND.W #$FFFF                                                         ;A2919C;
     BEQ .notTouchingSamus                                                ;A2919F;
     LDA.W #Function_BabyTurtle_Spinning_Unstoppable                      ;A291A1;
-    STA.W $0FA8,X                                                        ;A291A4;
+    STA.W BabyTurtle.function,X                                          ;A291A4;
     LDA.W #InstList_BabyTurtle_Spinning                                  ;A291A7;
     STA.W $0F92,X                                                        ;A291AA;
     LDA.W #$0001                                                         ;A291AD;
     STA.W $0F94,X                                                        ;A291B0;
     LDA.W #$0001                                                         ;A291B3;
-    STA.L $7E7808,X                                                      ;A291B6;
+    STA.L BabyTurtle.YVelocity,X                                         ;A291B6;
     LDA.W $0A1E                                                          ;A291BA;
     AND.W #$000F                                                         ;A291BD;
     LDY.W BabyTurtleConstants_maxSpinningLeftVelocity                    ;A291C0;
@@ -2035,19 +2035,19 @@ Function_BabyTurtle_Hiding_NotCarryingSamus:
 
   .keepLeft:
     TYA                                                                  ;A291CB;
-    STA.W $0FB0,X                                                        ;A291CC;
+    STA.W BabyTurtle.XVelocity,X                                         ;A291CC;
     RTL                                                                  ;A291CF;
 
   .notTouchingSamus:
-    LDA.L $7E7800,X                                                      ;A291D0;
+    LDA.L MamaTurtle.functionTimer,X                                     ;A291D0;
     DEC A                                                                ;A291D4;
-    STA.L $7E7800,X                                                      ;A291D5;
+    STA.L MamaTurtle.functionTimer,X                                     ;A291D5;
     BEQ .timerExpired                                                    ;A291D9;
     RTL                                                                  ;A291DB;
 
   .timerExpired:
     LDY.W #InstList_BabyTurtle_CrawlingLeft                              ;A291DC;
-    LDA.W $0FB0,X                                                        ;A291DF;
+    LDA.W BabyTurtle.XVelocity,X                                         ;A291DF;
     BMI ..keepLeft                                                       ;A291E2;
     LDY.W #InstList_BabyTurtle_CrawlingRight                             ;A291E4;
 
@@ -2057,28 +2057,28 @@ Function_BabyTurtle_Hiding_NotCarryingSamus:
     LDA.W #$0001                                                         ;A291EB;
     STA.W $0F94,X                                                        ;A291EE;
     LDA.W #Function_BabyTurtle_Crawling_NotCarryingSamus                 ;A291F1;
-    STA.W $0FA8,X                                                        ;A291F4;
+    STA.W BabyTurtle.function,X                                          ;A291F4;
     RTL                                                                  ;A291F7;
 
 
 ;;; $91F8: Mini-tatori function - spinning - unstoppable ;;;
 Function_BabyTurtle_Spinning_Unstoppable:
     STZ.B $12                                                            ;A291F8;
-    LDA.W $0FB0,X                                                        ;A291FA;
+    LDA.W BabyTurtle.XVelocity,X                                         ;A291FA;
     STA.B $14                                                            ;A291FD;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A291FF;
     BCS .collidedWithWall                                                ;A29203;
     STZ.B $12                                                            ;A29205;
-    LDA.L $7E7808,X                                                      ;A29207;
+    LDA.L BabyTurtle.YVelocity,X                                         ;A29207;
     STA.B $14                                                            ;A2920B;
     JSL.L MoveEnemyDownBy_14_12                                          ;A2920D;
     RTL                                                                  ;A29211;
 
   .collidedWithWall:
-    LDA.W $0FB0,X                                                        ;A29212;
+    LDA.W BabyTurtle.XVelocity,X                                         ;A29212;
     EOR.W #$FFFF                                                         ;A29215;
     INC A                                                                ;A29218;
-    STA.W $0FB0,X                                                        ;A29219;
+    STA.W BabyTurtle.XVelocity,X                                         ;A29219;
     RTL                                                                  ;A2921C;
 
 
@@ -2087,7 +2087,7 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_A2921D:
 ; Clone of Function_BabyTurtle_Hiding_NotCarryingSamus_timerExpired. Possibly an RTL'd out section of the above function
     LDY.W #InstList_BabyTurtle_CrawlingLeft                              ;A2921D;
-    LDA.W $0FB0,X                                                        ;A29220;
+    LDA.W BabyTurtle.XVelocity,X                                         ;A29220;
     BMI .keepLeft                                                        ;A29223;
     LDY.W #InstList_BabyTurtle_CrawlingRight                             ;A29225;
 
@@ -2097,7 +2097,7 @@ UNUSED_A2921D:
     LDA.W #$0001                                                         ;A2922C;
     STA.W $0F94,X                                                        ;A2922F;
     LDA.W #Function_BabyTurtle_Crawling_NotCarryingSamus                 ;A29232;
-    STA.W $0FA8,X                                                        ;A29235;
+    STA.W BabyTurtle.function,X                                          ;A29235;
     RTL                                                                  ;A29238;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
@@ -2108,7 +2108,7 @@ Function_BabyTurtle_Spinning_Stoppable:
     AND.W #$FFFF                                                         ;A2923D;
     BEQ Function_BabyTurtle_Spinning_Unstoppable                         ;A29240;
     LDY.W #InstList_BabyTurtle_CrawlingLeft                              ;A29242;
-    LDA.W $0FB0,X                                                        ;A29245;
+    LDA.W BabyTurtle.XVelocity,X                                         ;A29245;
     BMI .keepLeft                                                        ;A29248;
     LDY.W #InstList_BabyTurtle_CrawlingRight                             ;A2924A;
 
@@ -2118,7 +2118,7 @@ Function_BabyTurtle_Spinning_Stoppable:
     LDA.W #$0001                                                         ;A29251;
     STA.W $0F94,X                                                        ;A29254;
     LDA.W #Function_BabyTurtle_Crawling_NotCarryingSamus                 ;A29257;
-    STA.W $0FA8,X                                                        ;A2925A;
+    STA.W BabyTurtle.function,X                                          ;A2925A;
     RTL                                                                  ;A2925D;
 
 
@@ -2127,7 +2127,7 @@ Function_BabyTurtle_Crawling_CarryingSamus:
     LDX.W $0E54                                                          ;A2925E;
     LDA.W $0F84,X                                                        ;A29261;
     PHA                                                                  ;A29264;
-    LDA.W $0FAA,X                                                        ;A29265;
+    LDA.W BabyTurtle.turtleIndex,X                                       ;A29265;
     TAX                                                                  ;A29268;
     PLA                                                                  ;A29269;
     STA.L $7E780C,X                                                      ;A2926A;
@@ -2136,7 +2136,7 @@ Function_BabyTurtle_Crawling_CarryingSamus:
     AND.W #$FFFF                                                         ;A29275;
     BNE .return                                                          ;A29278;
     LDA.W #Function_BabyTurtle_Crawling_NotCarryingSamus                 ;A2927A;
-    STA.W $0FA8,X                                                        ;A2927D;
+    STA.W BabyTurtle.function,X                                          ;A2927D;
 
   .return:
     RTL                                                                  ;A29280;
@@ -2151,9 +2151,9 @@ EnemyTouch_MamaTurtle:
     BNE .return                                                          ;A2928A;
     JSL.L CommonA2_NormalEnemyTouchAI                                    ;A2928C;
     LDA.W #Function_MamaTurtle_Falling                                   ;A29290;
-    STA.W $0FA8,X                                                        ;A29293;
+    STA.W MamaTurtle.function,X                                          ;A29293;
     LDA.W #$0002                                                         ;A29296;
-    STA.L $7E7808,X                                                      ;A29299;
+    STA.L MamaTurtle.YVelocity,X                                         ;A29299;
 
   .return:
     RTL                                                                  ;A2929D;
@@ -2167,12 +2167,12 @@ RTL_A2929E:
 ;;; $929F: Enemy touch - enemy $CF7F (mini-tatori) ;;;
 EnemyTouch_BabyTurtle:
     LDX.W $0E54                                                          ;A2929F;
-    LDA.W $0FA8,X                                                        ;A292A2;
+    LDA.W BabyTurtle.function,X                                          ;A292A2;
     CMP.W #Function_BabyTurtle_Crawling_CarryingSamus                    ;A292A5;
     BNE +                                                                ;A292A8;
     RTL                                                                  ;A292AA;
 
-+   LDA.W $0FB0,X                                                        ;A292AB;
++   LDA.W BabyTurtle.XVelocity,X                                         ;A292AB;
     BMI .negative                                                        ;A292AE;
     LDA.W #InstList_BabyTurtle_CrawlingLeft                              ;A292B0;
     STA.W $0F92,X                                                        ;A292B3;
@@ -2184,7 +2184,7 @@ EnemyTouch_BabyTurtle:
     STA.W $0F92,X                                                        ;A292BE;
     LDA.W #$0001                                                         ;A292C1;
 
-+   STA.W $0FB0,X                                                        ;A292C4;
++   STA.W BabyTurtle.XVelocity,X                                         ;A292C4;
     LDA.W #$0001                                                         ;A292C7;
     STA.W $0F94,X                                                        ;A292CA;
     LDA.W $0F7A,X                                                        ;A292CD;
@@ -2204,9 +2204,9 @@ EnemyTouch_BabyTurtle:
 
 +   STA.W $0F7A,X                                                        ;A292EB;
     LDA.W #Function_BabyTurtle_Crawling_NotCarryingSamus                 ;A292EE;
-    STA.W $0FA8,X                                                        ;A292F1;
+    STA.W BabyTurtle.function,X                                          ;A292F1;
     STZ.B $12                                                            ;A292F4;
-    LDA.W $0FB0,X                                                        ;A292F6;
+    LDA.W BabyTurtle.XVelocity,X                                         ;A292F6;
     STA.B $14                                                            ;A292F9;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A292FB; fallthrough to AwakenTurtle
 
@@ -2214,11 +2214,11 @@ EnemyTouch_BabyTurtle:
 ;;; $92FF: Awaken tatori ;;;
 AwakenTurtle:
     LDX.W $0E54                                                          ;A292FF;
-    LDA.W $0FAA,X                                                        ;A29302;
+    LDA.W BabyTurtle.turtleIndex,X                                       ;A29302;
     TAX                                                                  ;A29305;
-    LDA.W $0FB2,X                                                        ;A29306;
+    LDA.W MamaTurtle.asleepFlag,X                                        ;A29306;
     BEQ .return                                                          ;A29309;
-    DEC.W $0FB2,X                                                        ;A2930B;
+    DEC.W MamaTurtle.asleepFlag,X                                        ;A2930B;
 
   .return:
     RTL                                                                  ;A2930E;
@@ -2296,7 +2296,7 @@ Instruction_BabyTurtle_Crawl:
     JSL.L CheckIfEnemyIsTouchingSamusFromBelow                           ;A2938B;
     AND.W #$FFFF                                                         ;A2938F;
     BEQ .notTouchingSamusFromBelow                                       ;A29392;
-    LDA.W $0FB0,X                                                        ;A29394;
+    LDA.W BabyTurtle.XVelocity,X                                         ;A29394;
     CLC                                                                  ;A29397;
     ADC.W $0B58                                                          ;A29398;
     STA.W $0B58                                                          ;A2939B;
@@ -2306,20 +2306,20 @@ Instruction_BabyTurtle_Crawl:
   .notTouchingSamusFromBelow:
     LDA.W $0F7E,X                                                        ;A293A3;
     STA.B $32                                                            ;A293A6;
-    LDA.W $0FAE,X                                                        ;A293A8;
+    LDA.W BabyTurtle.spawnTopBoundary,X                                  ;A293A8;
     STA.W $0F7E,X                                                        ;A293AB;
     STZ.B $12                                                            ;A293AE;
-    LDA.W $0FB0,X                                                        ;A293B0;
+    LDA.W BabyTurtle.XVelocity,X                                         ;A293B0;
     STA.B $14                                                            ;A293B3;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A293B5;
-    LDA.W $0FAA,X                                                        ;A293B9;
+    LDA.W BabyTurtle.turtleIndex,X                                       ;A293B9;
     TAX                                                                  ;A293BC;
-    LDA.W $0FA8,X                                                        ;A293BD;
+    LDA.W BabyTurtle.function,X                                          ;A293BD;
     CMP.W #Function_MamaTurtle_Asleep                                    ;A293C0;
     BNE .return                                                          ;A293C3;
     LDX.W $0E54                                                          ;A293C5;
     PHX                                                                  ;A293C8;
-    LDA.W $0FAA,X                                                        ;A293C9;
+    LDA.W BabyTurtle.turtleIndex,X                                       ;A293C9;
     TAX                                                                  ;A293CC;
     LDA.W $0F7A,X                                                        ;A293CD;
     PLX                                                                  ;A293D0;
@@ -2371,7 +2371,7 @@ Instruction_BabyTurtle_Crawl:
 Instruction_BabyTurtle_LoopOrTurnAroundIfMovedTooFar:
     PHX                                                                  ;A29412;
     LDX.W $0E54                                                          ;A29413;
-    LDA.W $0FAC,X                                                        ;A29416;
+    LDA.W BabyTurtle.spawnXPosition,X                                    ;A29416;
     SEC                                                                  ;A29419;
     SBC.W $0F7A,X                                                        ;A2941A;
     PHP                                                                  ;A2941D;
@@ -2389,11 +2389,11 @@ Instruction_BabyTurtle_LoopOrTurnAroundIfMovedTooFar:
   .rightOfSpawn:
     LDA.W #$FFFF                                                         ;A29431;
 
-+   STA.W $0FB0,X                                                        ;A29434;
++   STA.W BabyTurtle.XVelocity,X                                         ;A29434;
 
   .merge:
     LDY.W #InstList_BabyTurtle_CrawlingRight                             ;A29437;
-    LDA.W $0FB0,X                                                        ;A2943A;
+    LDA.W BabyTurtle.XVelocity,X                                         ;A2943A;
     BPL .return                                                          ;A2943D;
     LDY.W #InstList_BabyTurtle_CrawlingLeft                              ;A2943F;
 
@@ -2410,7 +2410,7 @@ Instruction_BabyTurtle_LoopOrTurnAroundIfMovedTooFar:
 Instruction_MamaTurtle_EnterShell:
     LDX.W $0E54                                                          ;A29447;
     LDA.W #Function_MamaTurtle_EnterShell                                ;A2944A;
-    STA.W $0FA8,X                                                        ;A2944D;
+    STA.W MamaTurtle.function,X                                          ;A2944D;
     RTL                                                                  ;A29450;
 
 
@@ -2418,9 +2418,9 @@ Instruction_MamaTurtle_EnterShell:
 Instruction_MamaTurtle_RiseToHoverRightwards:
     LDX.W $0E54                                                          ;A29451;
     LDA.W #Function_MamaTurtle_RiseToHover                               ;A29454;
-    STA.W $0FA8,X                                                        ;A29457;
+    STA.W MamaTurtle.function,X                                          ;A29457;
     LDA.W #$FFFF                                                         ;A2945A;
-    STA.W $0FB0,X                                                        ;A2945D;
+    STA.W MamaTurtle.XVelocity,X                                         ;A2945D;
     LDA.W #$0010                                                         ;A29460;
     STA.L $7E7800,X                                                      ;A29463;
     LDY.W #InstList_MamaTurtle_Spinning                                  ;A29467;
@@ -2431,11 +2431,11 @@ Instruction_MamaTurtle_RiseToHoverRightwards:
 Instruction_MamaTurtle_RiseToHoverLeftwards:
     LDX.W $0E54                                                          ;A2946B;
     LDA.W #Function_MamaTurtle_RiseToHover                               ;A2946E;
-    STA.W $0FA8,X                                                        ;A29471;
+    STA.W MamaTurtle.function,X                                          ;A29471;
     LDA.W #$0001                                                         ;A29474;
     STA.W $0FB0,X                                                        ;A29477;
     LDA.W #$0010                                                         ;A2947A;
-    STA.L $7E7800,X                                                      ;A2947D;
+    STA.L MamaTurtle.functionTimer,X                                     ;A2947D;
     LDY.W #InstList_MamaTurtle_Spinning                                  ;A29481;
     RTL                                                                  ;A29484;
 
@@ -2468,7 +2468,7 @@ Instruction_BabyTurtle_LeftShell:
     AND.W #$FFFF                                                         ;A294A8;
     BEQ .notTouchingSamusFromBelow                                       ;A294AB;
     LDA.W #Function_BabyTurtle_Crawling_CarryingSamus                    ;A294AD;
-    STA.W $0FA8,X                                                        ;A294B0;
+    STA.W BabyTurtle.function,X                                          ;A294B0;
 
   .chooseDirection:
     LDY.W #InstList_BabyTurtle_CrawlingLeft                              ;A294B3;
@@ -2481,7 +2481,7 @@ Instruction_BabyTurtle_LeftShell:
 
   .notTouchingSamusFromBelow:
     LDA.W #Function_BabyTurtle_Crawling_NotCarryingSamus                 ;A294BF;
-    STA.W $0FA8,X                                                        ;A294C2;
+    STA.W BabyTurtle.function,X                                          ;A294C2;
     BRA .chooseDirection                                                 ;A294C5;
 
 
@@ -2489,7 +2489,7 @@ Instruction_BabyTurtle_LeftShell:
 Instruction_BabyTurtle_Set_Spinning_Stoppable:
     LDX.W $0E54                                                          ;A294C7;
     LDA.W #Function_BabyTurtle_Spinning_Stoppable                        ;A294CA;
-    STA.W $0FA8,X                                                        ;A294CD;
+    STA.W BabyTurtle.function,X                                          ;A294CD;
     RTL                                                                  ;A294D0;
 
 
@@ -2960,13 +2960,13 @@ InitAI_Puyo:
     LDA.W #InstList_Puyo_GroundedDropping_Fast                           ;A29A4B;
     JSR.W SetPuyoInstList                                                ;A29A4E;
     LDA.W #$0000                                                         ;A29A51;
-    STA.L $7E7800,X                                                      ;A29A54;
+    STA.L Puyo.hopType,X                                                 ;A29A54;
     LDA.W #Function_Puyo_Grounded                                        ;A29A58;
-    STA.W $0FAE,X                                                        ;A29A5B;
+    STA.W Puyo.function,X                                                ;A29A5B;
     LDA.W $0FB4,X                                                        ;A29A5E;
-    STA.W $0FAC,X                                                        ;A29A61;
+    STA.W Puyo.hopCooldownTimer,X                                        ;A29A61;
     LDA.W #$0000                                                         ;A29A64;
-    STA.L $7E7808,X                                                      ;A29A67;
+    STA.L Puyo.invertDirectionFlag,X                                     ;A29A67;
     RTL                                                                  ;A29A6B;
 
 
@@ -2988,17 +2988,17 @@ RTS_A29A7C:
 ;;; $9A7D: Main AI - enemy $CFBF (puyo) ;;;
 MainAI_Puyo:
     LDX.W $0E54                                                          ;A29A7D;
-    JSR.W ($0FAE,X)                                                      ;A29A80;
+    JSR.W (Puyo.function,X)                                              ;A29A80;
     RTL                                                                  ;A29A83;
 
 
 ;;; $9A84: Initiate hop ;;;
 InitiateHop:
-    LDA.L $7E7800,X                                                      ;A29A84;
+    LDA.L Puyo.hopType,X                                                 ;A29A84;
     CMP.W #$0003                                                         ;A29A88;
     BPL .hop                                                             ;A29A8B;
     JSR.W Puyo_CheckIfSamusIsInProximity                                 ;A29A8D;
-    LDA.L $7E7800,X                                                      ;A29A90;
+    LDA.L Puyo.hopType,X                                                 ;A29A90;
 
   .hop:
     JSR.W ChooseHopType                                                  ;A29A94;
@@ -3011,7 +3011,7 @@ Puyo_CheckIfSamusIsInProximity:
     LDX.W $0E54                                                          ;A29A9B;
     LDA.W $0FB6,X                                                        ;A29A9E;
     JSL.L IsSamusWithinAPixelColumnsOfEnemy                              ;A29AA1;
-    STA.L $7E7800,X                                                      ;A29AA5;
+    STA.L Puyo.hopType,X                                                 ;A29AA5;
     RTS                                                                  ;A29AA9;
 
 
@@ -3019,23 +3019,23 @@ Puyo_CheckIfSamusIsInProximity:
 ChooseHopType:
     LDX.W $0E54                                                          ;A29AAA;
     LDA.W #$0001                                                         ;A29AAD;
-    STA.L $7E7804,X                                                      ;A29AB0;
+    STA.L Puyo.direction,X                                               ;A29AB0;
     JSL.L Get_SamusX_minus_EnemyX                                        ;A29AB4;
     BMI .checkInverted                                                   ;A29AB8;
     LDA.W #$0000                                                         ;A29ABA;
-    STA.L $7E7804,X                                                      ;A29ABD;
+    STA.L Puyo.direction,X                                               ;A29ABD;
 
   .checkInverted:
-    LDA.L $7E7808,X                                                      ;A29AC1;
+    LDA.L Puyo.invertDirectionFlag,X                                     ;A29AC1;
     BEQ .notInverted                                                     ;A29AC5;
-    LDA.L $7E780A,X                                                      ;A29AC7;
-    STA.L $7E7804,X                                                      ;A29ACB;
+    LDA.L Puyo.invertedDirection,X                                       ;A29AC7;
+    STA.L Puyo.direction,X                                               ;A29ACB;
 
   .notInverted:
     LDA.W #$0000                                                         ;A29ACF;
-    STA.L $7E7808,X                                                      ;A29AD2;
+    STA.L Puyo.invertDirectionFlag,X                                     ;A29AD2;
     JSR.W GetRandomNumber0_7                                             ;A29AD6;
-    LDA.L $7E7800,X                                                      ;A29AD9;
+    LDA.L Puyo.hopType,X                                                 ;A29AD9;
     CMP.W #$0003                                                         ;A29ADD;
     BPL .greaterThan2                                                    ;A29AE0;
     CMP.W #$0000                                                         ;A29AE2;
@@ -3054,10 +3054,10 @@ ChooseHopType:
     ASL A                                                                ;A29AF8;
     ASL A                                                                ;A29AF9;
     ASL A                                                                ;A29AFA;
-    STA.W $0FB2,X                                                        ;A29AFB;
+    STA.W Puyo.hopTableIndex,X                                           ;A29AFB;
     TAY                                                                  ;A29AFE;
     LDA.W PuyoHopTable_airborneFunction,Y                                ;A29AFF;
-    STA.W $0FB0,X                                                        ;A29B02;
+    STA.W Puyo.airborneFunction,X                                        ;A29B02;
     RTS                                                                  ;A29B05;
 
 
@@ -3077,7 +3077,7 @@ GetRandomNumber0_7:
 Puyo_CalculateInitialHopSpeed:
 ; Calculates how long it will take for enemy to fall [PuyoHopTable_jumpHeight + [enemy hop table index]] pixels
     LDX.W $0E54                                                          ;A29B1A;
-    LDY.W $0FB2,X                                                        ;A29B1D;
+    LDY.W Puyo.hopTableIndex,X                                           ;A29B1D;
     STZ.B $16                                                            ;A29B20;
     STZ.B $18                                                            ;A29B22;
 
@@ -3096,35 +3096,35 @@ Puyo_CalculateInitialHopSpeed:
     CLC                                                                  ;A29B36;
     ADC.W CommonEnemySpeeds_QuadraticallyIncreasing+1,Y                  ;A29B37;
     STA.B $18                                                            ;A29B3A;
-    LDY.W $0FB2,X                                                        ;A29B3C;
+    LDY.W Puyo.hopTableIndex,X                                           ;A29B3C;
     LDA.W PuyoHopTable_jumpHeight,Y                                      ;A29B3F;
     XBA                                                                  ;A29B42;
     CMP.B $18                                                            ;A29B43;
     BPL .loop                                                            ;A29B45;
     LDA.B $16                                                            ;A29B47;
-    STA.W $0FAA,X                                                        ;A29B49;
+    STA.W Puyo.YSpeedTableIndex,X                                        ;A29B49;
     LDA.W #$0000                                                         ;A29B4C;
-    STA.L $7E7806,X                                                      ;A29B4F;
+    STA.L Puyo.fallingFlag,X                                             ;A29B4F;
     LDA.B $16                                                            ;A29B53;
     LSR A                                                                ;A29B55;
-    STA.L $7E780E,X                                                      ;A29B56;
+    STA.L Puyo.initialYSpeedTableIndex_1_2,X                             ;A29B56;
     LSR A                                                                ;A29B5A;
     CLC                                                                  ;A29B5B;
-    ADC.L $7E780E,X                                                      ;A29B5C;
-    STA.L $7E780C,X                                                      ;A29B60;
+    ADC.L Puyo.initialYSpeedTableIndex_1_2,X                             ;A29B5C;
+    STA.L Puyo.initialYSpeedTableIndex_3_4,X                             ;A29B60;
     RTS                                                                  ;A29B64;
 
 
 ;;; $9B65: Puyo function - grounded ;;;
 Function_Puyo_Grounded:
-    DEC.W $0FAC,X                                                        ;A29B65;
+    DEC.W Puyo.hopCooldownTimer,X                                        ;A29B65;
     BPL .return                                                          ;A29B68;
     LDA.W #Function_Puyo_Airborne                                        ;A29B6A;
-    STA.W $0FAE,X                                                        ;A29B6D;
+    STA.W Puyo.function,X                                                ;A29B6D;
     LDA.W $0FB4,X                                                        ;A29B70;
-    STA.W $0FAC,X                                                        ;A29B73;
+    STA.W Puyo.hopCooldownTimer,X                                        ;A29B73;
     LDA.W #$0001                                                         ;A29B76;
-    STA.L $7E7802,X                                                      ;A29B79;
+    STA.L Puyo.hoppingAnimationFlag,X                                    ;A29B79;
     JSR.W InitiateHop                                                    ;A29B7D;
 
   .return:
@@ -3134,14 +3134,14 @@ Function_Puyo_Grounded:
 ;;; $9B81: Puyo function - airborne ;;;
 Function_Puyo_Airborne:
     LDX.W $0E54                                                          ;A29B81;
-    JSR.W ($0FB0,X)                                                      ;A29B84;
+    JSR.W (Puyo.airborneFunction,X)                                      ;A29B84;
     RTS                                                                  ;A29B87;
 
 
 ;;; $9B88: Puyo movement ;;;
 PuyoMovement:
     LDX.W $0E54                                                          ;A29B88;
-    LDA.W $0FAA,X                                                        ;A29B8B;
+    LDA.W Puyo.YSpeedTableIndex,X                                        ;A29B8B;
     CMP.W #$4000                                                         ;A29B8E;
     BMI +                                                                ;A29B91;
     LDA.W #$4000                                                         ;A29B93;
@@ -3152,7 +3152,7 @@ PuyoMovement:
     ASL A                                                                ;A29B9B;
     ASL A                                                                ;A29B9C;
     TAY                                                                  ;A29B9D;
-    LDA.L $7E7806,X                                                      ;A29B9E;
+    LDA.L Puyo.fallingFlag,X                                             ;A29B9E;
     BEQ .notFalling                                                      ;A29BA2;
     DEY                                                                  ;A29BA4;
     DEY                                                                  ;A29BA5;
@@ -3167,61 +3167,61 @@ PuyoMovement:
     CLC                                                                  ;A29BB2;
     JSL.L MoveEnemyDownBy_14_12                                          ;A29BB3;
     BCC .noCollision                                                     ;A29BB7;
-    LDA.L $7E7806,X                                                      ;A29BB9;
+    LDA.L Puyo.fallingFlag,X                                             ;A29BB9;
     BNE .falling                                                         ;A29BBD;
     LDA.B $01                                                            ;A29BBF;
-    STA.L $7E7808,X                                                      ;A29BC1;
-    LDA.L $7E7804,X                                                      ;A29BC5;
+    STA.L Puyo.invertDirectionFlag,X                                     ;A29BC1;
+    LDA.L Puyo.direction,X                                               ;A29BC5;
     EOR.W #$0001                                                         ;A29BC9;
-    STA.L $7E780A,X                                                      ;A29BCC;
+    STA.L Puyo.invertedDirection,X                                       ;A29BCC;
     LDA.W #$0004                                                         ;A29BD0;
-    STA.L $7E7800,X                                                      ;A29BD3;
+    STA.L Puyo.hopType,X                                                 ;A29BD3;
     LDA.W #Function_Puyo_Airborne_Dropping                               ;A29BD7;
-    STA.W $0FB0,X                                                        ;A29BDA;
+    STA.W Puyo.airborneFunction,X                                        ;A29BDA;
     LDA.W #$0000                                                         ;A29BDD;
-    STA.L $7E7802,X                                                      ;A29BE0;
+    STA.L Puyo.hoppingAnimationFlag,X                                    ;A29BE0;
     BRA .gotoReturn                                                      ;A29BE4;
 
   .falling:
     LDA.W #Function_Puyo_Grounded                                        ;A29BE6;
-    STA.W $0FAE,X                                                        ;A29BE9;
+    STA.W Puyo.function,X                                                ;A29BE9;
     LDA.W #$0000                                                         ;A29BEC;
-    STA.L $7E7802,X                                                      ;A29BEF;
+    STA.L Puyo.hoppingAnimationFlag,X                                    ;A29BEF;
 
   .gotoReturn:
     BRA .return                                                          ;A29BF3; >.<
 
   .noCollision:
-    LDY.W $0FB2,X                                                        ;A29BF5;
-    LDA.L $7E7806,X                                                      ;A29BF8;
+    LDY.W Puyo.hopTableIndex,X                                           ;A29BF5;
+    LDA.L Puyo.fallingFlag,X                                             ;A29BF8;
     BNE ..falling                                                        ;A29BFC;
     JSR.W SetRisingInstList                                              ;A29BFE;
-    LDA.W $0FAA,X                                                        ;A29C01;
+    LDA.W Puyo.YSpeedTableIndex,X                                        ;A29C01;
     SEC                                                                  ;A29C04;
     SBC.W PuyoHopTable_YSpeedTableIndexDelta,Y                           ;A29C05;
-    STA.W $0FAA,X                                                        ;A29C08;
+    STA.W Puyo.YSpeedTableIndex,X                                        ;A29C08;
     BRA +                                                                ;A29C0B;
 
   ..falling:
     JSR.W SetFallingInstList                                             ;A29C0D;
-    LDA.W $0FAA,X                                                        ;A29C10;
+    LDA.W Puyo.YSpeedTableIndex,X                                        ;A29C10;
     CLC                                                                  ;A29C13;
     ADC.W PuyoHopTable_YSpeedTableIndexDelta,Y                           ;A29C14;
-    STA.W $0FAA,X                                                        ;A29C17;
+    STA.W Puyo.YSpeedTableIndex,X                                        ;A29C17;
 
 +   BPL .positiveIndex                                                   ;A29C1A;
     LDA.W #$0001                                                         ;A29C1C;
-    STA.L $7E7806,X                                                      ;A29C1F;
-    STZ.W $0FAA,X                                                        ;A29C23;
+    STA.L Puyo.fallingFlag,X                                             ;A29C1F;
+    STZ.W Puyo.YSpeedTableIndex,X                                        ;A29C23;
 
   .positiveIndex:
-    LDY.W $0FB2,X                                                        ;A29C26;
+    LDY.W Puyo.hopTableIndex,X                                           ;A29C26;
     LDA.W PuyoHopTable_XSpeed,Y                                          ;A29C29;
     AND.W #$FF00                                                         ;A29C2C;
     XBA                                                                  ;A29C2F;
     STA.B $14                                                            ;A29C30;
     STZ.B $12                                                            ;A29C32;
-    LDA.L $7E7804,X                                                      ;A29C34;
+    LDA.L Puyo.direction,X                                               ;A29C34;
     BEQ .moveRight                                                       ;A29C38;
     LDA.B $14                                                            ;A29C3A;
     EOR.W #$FFFF                                                         ;A29C3C;
@@ -3232,16 +3232,16 @@ PuyoMovement:
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A29C42;
     BCC .return                                                          ;A29C46;
     LDA.W #$0001                                                         ;A29C48;
-    STA.L $7E7808,X                                                      ;A29C4B;
-    LDA.L $7E7804,X                                                      ;A29C4F;
+    STA.L Puyo.invertDirectionFlag,X                                     ;A29C4B;
+    LDA.L Puyo.direction,X                                               ;A29C4F;
     EOR.W #$0001                                                         ;A29C53;
-    STA.L $7E780A,X                                                      ;A29C56;
+    STA.L Puyo.invertedDirection,X                                       ;A29C56;
     LDA.W #$0000                                                         ;A29C5A;
-    STA.L $7E7802,X                                                      ;A29C5D;
+    STA.L Puyo.hoppingAnimationFlag,X                                    ;A29C5D;
     LDA.W #$0004                                                         ;A29C61;
-    STA.L $7E7800,X                                                      ;A29C64;
+    STA.L Puyo.hopType,X                                                 ;A29C64;
     LDA.W #Function_Puyo_Airborne_Dropping                               ;A29C68;
-    STA.W $0FB0,X                                                        ;A29C6B;
+    STA.W Puyo.airborneFunction,X                                        ;A29C6B;
     BRA .return                                                          ;A29C6E; >.<
 
   .return:
@@ -3251,12 +3251,12 @@ PuyoMovement:
 ;;; $9C71: Set rising instruction list ;;;
 SetRisingInstList:
     LDX.W $0E54                                                          ;A29C71;
-    LDA.L $7E7804,X                                                      ;A29C74;
+    LDA.L Puyo.direction,X                                               ;A29C74;
     BNE .left                                                            ;A29C78;
-    LDA.W $0FAA,X                                                        ;A29C7A;
-    CMP.L $7E780C,X                                                      ;A29C7D;
+    LDA.W Puyo.YSpeedTableIndex,X                                        ;A29C7A;
+    CMP.L Puyo.initialYSpeedTableIndex_3_4,X                             ;A29C7D;
     BPL .rightFrame0                                                     ;A29C81;
-    CMP.L $7E780E,X                                                      ;A29C83;
+    CMP.L Puyo.initialYSpeedTableIndex_1_2,X                             ;A29C83;
     BPL .rightFrame1                                                     ;A29C87;
     BRA .rightFrame2                                                     ;A29C89;
 
@@ -3273,10 +3273,10 @@ SetRisingInstList:
     BRA .return                                                          ;A29C98;
 
   .left:
-    LDA.W $0FAA,X                                                        ;A29C9A;
-    CMP.L $7E780C,X                                                      ;A29C9D;
+    LDA.W Puyo.YSpeedTableIndex,X                                        ;A29C9A;
+    CMP.L Puyo.initialYSpeedTableIndex_3_4,X                             ;A29C9D;
     BPL .leftFrame0                                                      ;A29CA1;
-    CMP.L $7E780E,X                                                      ;A29CA3;
+    CMP.L Puyo.initialYSpeedTableIndex_1_2,X                             ;A29CA3;
     BPL .leftFrame1                                                      ;A29CA7;
     BRA .leftFrame2                                                      ;A29CA9;
 
@@ -3300,12 +3300,12 @@ SetRisingInstList:
 ;;; $9CBE: Set falling instruction list ;;;
 SetFallingInstList:
     LDX.W $0E54                                                          ;A29CBE;
-    LDA.L $7E7804,X                                                      ;A29CC1;
+    LDA.L Puyo.direction,X                                               ;A29CC1;
     BNE .left                                                            ;A29CC5;
-    LDA.W $0FAA,X                                                        ;A29CC7;
-    CMP.L $7E780E,X                                                      ;A29CCA;
+    LDA.W Puyo.YSpeedTableIndex,X                                        ;A29CC7;
+    CMP.L Puyo.initialYSpeedTableIndex_1_2,X                             ;A29CCA;
     BMI .rightFrame2                                                     ;A29CCE;
-    CMP.L $7E780C,X                                                      ;A29CD0;
+    CMP.L Puyo.initialYSpeedTableIndex_3_4,X                             ;A29CD0;
     BMI .rightFrame3                                                     ;A29CD4;
     BRA .rightFrame4                                                     ;A29CD6;
 
@@ -3322,10 +3322,10 @@ SetFallingInstList:
     BRA .return                                                          ;A29CE5;
 
   .left:
-    LDA.W $0FAA,X                                                        ;A29CE7;
-    CMP.L $7E780E,X                                                      ;A29CEA;
+    LDA.W Puyo.YSpeedTableIndex,X                                        ;A29CE7;
+    CMP.L Puyo.initialYSpeedTableIndex_1_2,X                             ;A29CEA;
     BMI .leftFrame2                                                      ;A29CEE;
-    CMP.L $7E780C,X                                                      ;A29CF0;
+    CMP.L Puyo.initialYSpeedTableIndex_3_4,X                             ;A29CF0;
     BMI .leftFrame3                                                      ;A29CF4;
     BRA .leftFrame4                                                      ;A29CF6;
 
@@ -3350,14 +3350,14 @@ SetFallingInstList:
 Function_Puyo_Airborne_Normal_ShortHop:
     LDX.W $0E54                                                          ;A29D0B;
     JSR.W PuyoMovement                                                   ;A29D0E;
-    LDA.L $7E7808,X                                                      ;A29D11;
+    LDA.L Puyo.invertDirectionFlag,X                                     ;A29D11;
     BNE .inverted                                                        ;A29D15;
-    LDA.L $7E7802,X                                                      ;A29D17;
+    LDA.L Puyo.hoppingAnimationFlag,X                                    ;A29D17;
     BNE .return                                                          ;A29D1B;
 
   .inverted:
     LDA.W #$0000                                                         ;A29D1D;
-    STA.L $7E7802,X                                                      ;A29D20;
+    STA.L Puyo.hoppingAnimationFlag,X                                    ;A29D20;
     LDA.W #InstList_Puyo_GroundedDropping_Slow                           ;A29D24;
     JSR.W SetPuyoInstList                                                ;A29D27;
 
@@ -3369,14 +3369,14 @@ Function_Puyo_Airborne_Normal_ShortHop:
 Function_Puyo_Airborne_Normal_BigHop:
     LDX.W $0E54                                                          ;A29D2B;
     JSR.W PuyoMovement                                                   ;A29D2E;
-    LDA.L $7E7808,X                                                      ;A29D31;
+    LDA.L Puyo.invertDirectionFlag,X                                     ;A29D31;
     BNE .inverted                                                        ;A29D35;
-    LDA.L $7E7802,X                                                      ;A29D37;
+    LDA.L Puyo.hoppingAnimationFlag,X                                    ;A29D37;
     BNE .return                                                          ;A29D3B;
 
   .inverted:
     LDA.W #$0000                                                         ;A29D3D;
-    STA.L $7E7802,X                                                      ;A29D40;
+    STA.L Puyo.hoppingAnimationFlag,X                                    ;A29D40;
     LDA.W #InstList_Puyo_GroundedDropping_Medium                         ;A29D44;
     JSR.W SetPuyoInstList                                                ;A29D47;
 
@@ -3388,14 +3388,14 @@ Function_Puyo_Airborne_Normal_BigHop:
 Function_Puyo_Airborne_Normal_LongHop:
     LDX.W $0E54                                                          ;A29D4B;
     JSR.W PuyoMovement                                                   ;A29D4E;
-    LDA.L $7E7808,X                                                      ;A29D51;
+    LDA.L Puyo.invertDirectionFlag,X                                     ;A29D51;
     BNE .inverted                                                        ;A29D55;
-    LDA.L $7E7802,X                                                      ;A29D57;
+    LDA.L Puyo.hoppingAnimationFlag,X                                    ;A29D57;
     BNE .return                                                          ;A29D5B;
 
   .inverted:
     LDA.W #$0000                                                         ;A29D5D;
-    STA.L $7E7802,X                                                      ;A29D60;
+    STA.L Puyo.hoppingAnimationFlag,X                                    ;A29D60;
     LDA.W #InstList_Puyo_GroundedDropping_Fast                           ;A29D64;
     JSR.W SetPuyoInstList                                                ;A29D67;
 
@@ -3407,18 +3407,18 @@ Function_Puyo_Airborne_Normal_LongHop:
 Function_Puyo_Airborne_GiantHop:
     LDX.W $0E54                                                          ;A29D6B;
     JSR.W PuyoMovement                                                   ;A29D6E;
-    LDA.L $7E7808,X                                                      ;A29D71;
+    LDA.L Puyo.invertDirectionFlag,X                                     ;A29D71;
     BNE .inverted                                                        ;A29D75;
-    LDA.L $7E7802,X                                                      ;A29D77;
+    LDA.L Puyo.hoppingAnimationFlag,X                                    ;A29D77;
     BNE .return                                                          ;A29D7B;
     LDA.W #$0000                                                         ;A29D7D;
-    STA.L $7E7800,X                                                      ;A29D80;
+    STA.L Puyo.hopType,X                                                 ;A29D80;
     LDA.W #Function_Puyo_Grounded                                        ;A29D84;
-    STA.W $0FAE,X                                                        ;A29D87;
+    STA.W Puyo.function,X                                                ;A29D87;
 
   .inverted:
     LDA.W #$0000                                                         ;A29D8A;
-    STA.L $7E7802,X                                                      ;A29D8D;
+    STA.L Puyo.hoppingAnimationFlag,X                                    ;A29D8D;
     LDA.W #InstList_Puyo_GroundedDropping_Slow                           ;A29D91;
     JSR.W SetPuyoInstList                                                ;A29D94;
 
@@ -3429,7 +3429,7 @@ Function_Puyo_Airborne_GiantHop:
 ;;; $9D98: Puyo airborne function - dropping ;;;
 Function_Puyo_Airborne_Dropping:
     LDX.W $0E54                                                          ;A29D98;
-    LDY.W $0FB2,X                                                        ;A29D9B;
+    LDY.W Puyo.hopTableIndex,X                                           ;A29D9B;
     LDA.W PuyoHopTable_YSpeedTableIndexDelta,Y                           ;A29D9E;
     AND.W #$FF00                                                         ;A29DA1;
     XBA                                                                  ;A29DA4;
@@ -3445,9 +3445,9 @@ Function_Puyo_Airborne_Dropping:
     AND.W #$0001                                                         ;A29DBB;
     CLC                                                                  ;A29DBE;
     ADC.W #$0005                                                         ;A29DBF;
-    STA.L $7E7800,X                                                      ;A29DC2;
+    STA.L Puyo.hopType,X                                                 ;A29DC2;
     LDA.W #Function_Puyo_Grounded                                        ;A29DC6;
-    STA.W $0FAE,X                                                        ;A29DC9;
+    STA.W Puyo.function,X                                                ;A29DC9;
 
   .return:
     RTS                                                                  ;A29DCC;
@@ -3457,14 +3457,14 @@ Function_Puyo_Airborne_Dropping:
 Function_Puyo_Airborne_Dropped:
     LDX.W $0E54                                                          ;A29DCD;
     JSR.W PuyoMovement                                                   ;A29DD0;
-    LDA.L $7E7802,X                                                      ;A29DD3;
+    LDA.L Puyo.hoppingAnimationFlag,X                                    ;A29DD3;
     BNE .return                                                          ;A29DD7;
     LDA.W #$0000                                                         ;A29DD9;
-    STA.L $7E7802,X                                                      ;A29DDC;
+    STA.L Puyo.hoppingAnimationFlag,X                                    ;A29DDC;
     LDA.W #$0003                                                         ;A29DE0;
-    STA.L $7E7800,X                                                      ;A29DE3;
+    STA.L Puyo.hopType,X                                                 ;A29DE3;
     LDA.W #Function_Puyo_Grounded                                        ;A29DE7;
-    STA.W $0FAE,X                                                        ;A29DEA;
+    STA.W Puyo.function,X                                                ;A29DEA;
     LDA.W #InstList_Puyo_GroundedDropping_Slow                           ;A29DED;
     JSR.W SetPuyoInstList                                                ;A29DF0;
 
@@ -3639,11 +3639,11 @@ InitAI_Cacatac:
 
 +   LDA.W $0FB4,X                                                        ;A29F61;
     AND.W #$00FF                                                         ;A29F64;
-    STA.W $0FB0,X                                                        ;A29F67;
+    STA.W Cacatac.direction,X                                            ;A29F67;
     ASL A                                                                ;A29F6A;
     TAY                                                                  ;A29F6B;
     LDA.W CacatacFunctionPointers,Y                                      ;A29F6C;
-    STA.W $0FB2,X                                                        ;A29F6F;
+    STA.W Cacatac.function,X                                             ;A29F6F;
     LDA.W $0FB6,X                                                        ;A29F72;
     AND.W #$00FF                                                         ;A29F75;
     ASL A                                                                ;A29F78;
@@ -3651,11 +3651,11 @@ InitAI_Cacatac:
     LDA.W $0F7A,X                                                        ;A29F7A;
     CLC                                                                  ;A29F7D;
     ADC.W CacatacMaxTravelDistances,Y                                    ;A29F7E;
-    STA.L $7E7802,X                                                      ;A29F81;
+    STA.L Cacatac.maximumXPosition,X                                     ;A29F81;
     LDA.W $0F7A,X                                                        ;A29F85;
     SEC                                                                  ;A29F88;
     SBC.W CacatacMaxTravelDistances,Y                                    ;A29F89;
-    STA.L $7E7800,X                                                      ;A29F8C;
+    STA.L Cacatac.minimumXPosition,X                                     ;A29F8C;
     LDA.W $0FB7,X                                                        ;A29F90;
     AND.W #$00FF                                                         ;A29F93;
     ASL A                                                                ;A29F96;
@@ -3663,20 +3663,20 @@ InitAI_Cacatac:
     ASL A                                                                ;A29F98;
     TAY                                                                  ;A29F99;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing,Y                         ;A29F9A;
-    STA.W $0FAA,X                                                        ;A29F9D;
+    STA.W Cacatac.rightVelocity,X                                        ;A29F9D;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+2,Y                       ;A29FA0;
-    STA.W $0FA8,X                                                        ;A29FA3;
+    STA.W Cacatac.rightSubVelocity,X                                     ;A29FA3;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+4,Y                       ;A29FA6;
-    STA.W $0FAE,X                                                        ;A29FA9;
+    STA.W Cacatac.leftVelocity,X                                         ;A29FA9;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+6,Y                       ;A29FAC;
-    STA.W $0FAC,X                                                        ;A29FAF;
+    STA.W Cacatac.leftSubVelocity,X                                      ;A29FAF;
     RTL                                                                  ;A29FB2;
 
 
 ;;; $9FB3: Main AI - enemy $CFFF (cacatac) ;;;
 MainAI_Cacatac:
     LDX.W $0E54                                                          ;A29FB3;
-    JSR.W ($0FB2,X)                                                      ;A29FB6;
+    JSR.W (Cacatac.function,X)                                           ;A29FB6;
     RTL                                                                  ;A29FB9;
 
 
@@ -3685,21 +3685,21 @@ Function_Cacatac_MovingLeft:
     LDX.W $0E54                                                          ;A29FBA;
     LDA.W $0F7C,X                                                        ;A29FBD;
     CLC                                                                  ;A29FC0;
-    ADC.W $0FAC,X                                                        ;A29FC1;
+    ADC.W Cacatac.leftSubVelocity,X                                      ;A29FC1;
     BCC +                                                                ;A29FC4;
     INC.W $0F7A,X                                                        ;A29FC6;
 
 +   STA.W $0F7C,X                                                        ;A29FC9;
     LDA.W $0F7A,X                                                        ;A29FCC;
     CLC                                                                  ;A29FCF;
-    ADC.W $0FAE,X                                                        ;A29FD0;
+    ADC.W Cacatac.leftVelocity,X                                         ;A29FD0;
     STA.W $0F7A,X                                                        ;A29FD3;
-    CMP.L $7E7800,X                                                      ;A29FD6;
+    CMP.L Cacatac.minimumXPosition,X                                     ;A29FD6;
     BPL .attack                                                          ;A29FDA;
     LDA.W #Function_Cacatac_MovingRight                                  ;A29FDC;
-    STA.W $0FB2,X                                                        ;A29FDF;
+    STA.W Cacatac.function,X                                             ;A29FDF;
     LDA.W #$0001                                                         ;A29FE2;
-    STA.W $0FB0,X                                                        ;A29FE5;
+    STA.W Cacatac.direction,X                                            ;A29FE5;
 
   .attack:
     JSR.W MaybeMakeCacatacAttack                                         ;A29FE8;
@@ -3711,20 +3711,20 @@ Function_Cacatac_MovingRight:
     LDX.W $0E54                                                          ;A29FEC;
     LDA.W $0F7C,X                                                        ;A29FEF;
     CLC                                                                  ;A29FF2;
-    ADC.W $0FA8,X                                                        ;A29FF3;
+    ADC.W Cacatac.rightSubVelocity,X                                     ;A29FF3;
     BCC +                                                                ;A29FF6;
     INC.W $0F7A,X                                                        ;A29FF8;
 
 +   STA.W $0F7C,X                                                        ;A29FFB;
     LDA.W $0F7A,X                                                        ;A29FFE;
     CLC                                                                  ;A2A001;
-    ADC.W $0FAA,X                                                        ;A2A002;
+    ADC.W Cacatac.rightVelocity,X                                        ;A2A002;
     STA.W $0F7A,X                                                        ;A2A005;
-    CMP.L $7E7802,X                                                      ;A2A008;
+    CMP.L Cacatac.maximumXPosition,X                                     ;A2A008;
     BMI .attack                                                          ;A2A00C;
     LDA.W #Function_Cacatac_MovingLeft                                   ;A2A00E;
-    STA.W $0FB2,X                                                        ;A2A011;
-    STZ.W $0FB0,X                                                        ;A2A014;
+    STA.W Cacatac.function,X                                             ;A2A011;
+    STZ.W Cacatac.direction,X                                            ;A2A014;
 
   .attack:
     JSR.W MaybeMakeCacatacAttack                                         ;A2A017;
@@ -3747,7 +3747,7 @@ MaybeMakeCacatacAttack:
     CMP.W #$0003                                                         ;A2A02D;
     BPL .return                                                          ;A2A030;
     LDA.W #RTS_A2A01B                                                    ;A2A032;
-    STA.W $0FB2,X                                                        ;A2A035;
+    STA.W Cacatac.function,X                                             ;A2A035;
     LDA.W $0FB5,X                                                        ;A2A038;
     AND.W #$00FF                                                         ;A2A03B;
     BEQ .keepUpsideUp                                                    ;A2A03E;
@@ -3808,11 +3808,11 @@ SetCacatacInstList_UpsideDown_Attacking:
 ;;; $A095: Instruction - function = moving left/right ;;;
 Instruction_Cacatac_SetFunction_MovingLeftRight:
     LDA.W #Function_Cacatac_MovingLeft                                   ;A2A095;
-    STA.W $0FB2,X                                                        ;A2A098;
-    LDA.W $0FB0,X                                                        ;A2A09B;
+    STA.W Cacatac.function,X                                             ;A2A098;
+    LDA.W Cacatac.direction,X                                            ;A2A09B;
     BEQ .return                                                          ;A2A09E;
     LDA.W #Function_Cacatac_MovingRight                                  ;A2A0A0;
-    STA.W $0FB2,X                                                        ;A2A0A3;
+    STA.W Cacatac.function,X                                             ;A2A0A3;
 
   .return:
     RTL                                                                  ;A2A0A6;
@@ -4100,7 +4100,7 @@ InitAI_Owtch:
     STA.W $0F8E,X                                                        ;A2A3FF;
     LDA.W $0FB4,X                                                        ;A2A402;
     AND.W #$00FF                                                         ;A2A405;
-    STA.W $0FB0,X                                                        ;A2A408;
+    STA.W Owtch.direction,X                                              ;A2A408;
     AND.W #$0001                                                         ;A2A40B;
     ASL A                                                                ;A2A40E;
     TAX                                                                  ;A2A40F;
@@ -4113,13 +4113,13 @@ InitAI_Owtch:
     ASL A                                                                ;A2A41E;
     TAY                                                                  ;A2A41F;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing,Y                         ;A2A420;
-    STA.W $0FAA,X                                                        ;A2A423;
+    STA.W Owtch.rightVelocity,X                                          ;A2A423;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+2,Y                       ;A2A426;
-    STA.W $0FA8,X                                                        ;A2A429;
+    STA.W Owtch.rightSubVelocity,X                                       ;A2A429;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+4,Y                       ;A2A42C;
-    STA.W $0FAE,X                                                        ;A2A42F;
+    STA.W Owtch.leftVelocity,X                                           ;A2A42F;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+6,Y                       ;A2A432;
-    STA.W $0FAC,X                                                        ;A2A435;
+    STA.W Cacatac.leftSubVelocity,X                                      ;A2A435;
     LDA.W $0FB7,X                                                        ;A2A438;
     AND.W #$00FF                                                         ;A2A43B;
     ASL A                                                                ;A2A43E;
@@ -4127,23 +4127,23 @@ InitAI_Owtch:
     LDA.W $0F7A,X                                                        ;A2A440;
     CLC                                                                  ;A2A443;
     ADC.W OwtchConstants_XDistanceRanges,Y                               ;A2A444;
-    STA.L $7E7804,X                                                      ;A2A447;
+    STA.L Owtch.maximumXPosition,X                                       ;A2A447;
     LDA.W $0F7A,X                                                        ;A2A44B;
     SEC                                                                  ;A2A44E;
     SBC.W OwtchConstants_XDistanceRanges,Y                               ;A2A44F;
-    STA.L $7E7802,X                                                      ;A2A452;
+    STA.L Owtch.minimumXPosition,X                                       ;A2A452;
     LDA.W $0FB5,X                                                        ;A2A456;
     AND.W #$00FF                                                         ;A2A459;
     ASL A                                                                ;A2A45C;
     TAY                                                                  ;A2A45D;
     LDA.W OwtchConstants_undergroundTimers,Y                             ;A2A45E;
-    STA.L $7E7800,X                                                      ;A2A461;
-    STZ.W $0FB2,X                                                        ;A2A465;
-    LDA.W $0FB0,X                                                        ;A2A468;
+    STA.L Owtch.undergroundTimer,X                                       ;A2A461;
+    STZ.W Owtch.sinkYOffset,X                                            ;A2A465;
+    LDA.W Owtch.direction,X                                              ;A2A468;
     CMP.W #$0002                                                         ;A2A46B;
     BNE .return                                                          ;A2A46E;
     LDA.W #$0010                                                         ;A2A470;
-    STA.W $0FB2,X                                                        ;A2A473;
+    STA.W Owtch.sinkYOffset,X                                            ;A2A473;
     CLC                                                                  ;A2A476;
     ADC.W $0F7E,X                                                        ;A2A477;
     STA.W $0F7E,X                                                        ;A2A47A;
@@ -4155,7 +4155,7 @@ InitAI_Owtch:
 ;;; $A47E: Main AI - enemy $D03F (owtch) ;;;
 MainAI_Owtch:
     LDX.W $0E54                                                          ;A2A47E;
-    LDA.W $0FB0,X                                                        ;A2A481;
+    LDA.W Owtch.direction,X                                              ;A2A481;
     ASL A                                                                ;A2A484;
     TAX                                                                  ;A2A485;
     JSR.W (OwtchConstants_functionPointers,X)                            ;A2A486;
@@ -4192,18 +4192,18 @@ Function_Owtch_0_MovingLeft:
     LDX.W $0E54                                                          ;A2A4B0;
     LDA.W $0F7C,X                                                        ;A2A4B3;
     CLC                                                                  ;A2A4B6;
-    ADC.W $0FAC,X                                                        ;A2A4B7;
+    ADC.W Owtch.leftSubVelocity,X                                        ;A2A4B7;
     BCC +                                                                ;A2A4BA;
     INC.W $0F7A,X                                                        ;A2A4BC;
 
 +   STA.W $0F7C,X                                                        ;A2A4BF;
     LDA.W $0F7A,X                                                        ;A2A4C2;
     CLC                                                                  ;A2A4C5;
-    ADC.W $0FAE,X                                                        ;A2A4C6;
+    ADC.W Owtch.leftVelocity,X                                           ;A2A4C6;
     STA.W $0F7A,X                                                        ;A2A4C9;
-    CMP.L $7E7802,X                                                      ;A2A4CC;
+    CMP.L Owtch.minimumXPosition,X                                       ;A2A4CC;
     BPL +                                                                ;A2A4D0;
-    DEC.W $0FB0,X                                                        ;A2A4D2;
+    DEC.W Owtch.direction,X                                              ;A2A4D2;
 
 +   JSR.W MaybeMakeOwtchSink                                             ;A2A4D5;
     RTS                                                                  ;A2A4D8;
@@ -4214,18 +4214,18 @@ Function_Owtch_1_MovingRight:
     LDX.W $0E54                                                          ;A2A4D9;
     LDA.W $0F7C,X                                                        ;A2A4DC;
     CLC                                                                  ;A2A4DF;
-    ADC.W $0FA8,X                                                        ;A2A4E0;
+    ADC.W Owtch.rightSubVelocity,X                                       ;A2A4E0;
     BCC +                                                                ;A2A4E3;
     INC.W $0F7A,X                                                        ;A2A4E5;
 
 +   STA.W $0F7C,X                                                        ;A2A4E8;
     LDA.W $0F7A,X                                                        ;A2A4EB;
     CLC                                                                  ;A2A4EE;
-    ADC.W $0FAA,X                                                        ;A2A4EF;
+    ADC.W Owtch.rightVelocity,X                                          ;A2A4EF;
     STA.W $0F7A,X                                                        ;A2A4F2;
-    CMP.L $7E7804,X                                                      ;A2A4F5;
+    CMP.L Owtch.maximumXPosition,X                                       ;A2A4F5;
     BMI +                                                                ;A2A4F9;
-    STZ.W $0FB0,X                                                        ;A2A4FB;
+    STZ.W Owtch.direction,X                                              ;A2A4FB;
 
 +   JSR.W MaybeMakeOwtchSink                                             ;A2A4FE;
     RTS                                                                  ;A2A501;
@@ -4234,12 +4234,12 @@ Function_Owtch_1_MovingRight:
 ;;; $A502: Owtch function index 2 - underground ;;;
 Function_Owtch_2_Underground:
     LDX.W $0E54                                                          ;A2A502;
-    LDA.L $7E7800,X                                                      ;A2A505;
+    LDA.L Owtch.undergroundTimer,X                                       ;A2A505;
     DEC A                                                                ;A2A509;
-    STA.L $7E7800,X                                                      ;A2A50A;
+    STA.L Owtch.undergroundTimer,X                                       ;A2A50A;
     BNE .return                                                          ;A2A50E;
     LDA.W #$0004                                                         ;A2A510;
-    STA.W $0FB0,X                                                        ;A2A513;
+    STA.W Owtch.direction,X                                              ;A2A513;
 
   .return:
     RTS                                                                  ;A2A516;
@@ -4249,18 +4249,18 @@ Function_Owtch_2_Underground:
 Function_Owtch_3_Sinking:
     LDX.W $0E54                                                          ;A2A517;
     INC.W $0F7E,X                                                        ;A2A51A;
-    INC.W $0FB2,X                                                        ;A2A51D;
-    LDA.W $0FB2,X                                                        ;A2A520;
+    INC.W Owtch.sinkYOffset,X                                            ;A2A51D;
+    LDA.W Owtch.sinkYOffset,X                                            ;A2A520;
     CMP.W #$0010                                                         ;A2A523;
     BMI .return                                                          ;A2A526;
     LDA.W #$0002                                                         ;A2A528;
-    STA.W $0FB0,X                                                        ;A2A52B;
+    STA.W Owtch.direction,X                                              ;A2A52B;
     LDA.W $0FB5,X                                                        ;A2A52E;
     AND.W #$00FF                                                         ;A2A531;
     ASL A                                                                ;A2A534;
     TAY                                                                  ;A2A535;
     LDA.W OwtchConstants_undergroundTimers,Y                             ;A2A536;
-    STA.L $7E7800,X                                                      ;A2A539;
+    STA.L Owtch.undergroundTimer,X                                       ;A2A539;
 
   .return:
     RTS                                                                  ;A2A53D;
@@ -4270,11 +4270,11 @@ Function_Owtch_3_Sinking:
 Function_Owtch_4_Rising:
     LDX.W $0E54                                                          ;A2A53E;
     DEC.W $0F7E,X                                                        ;A2A541;
-    DEC.W $0FB2,X                                                        ;A2A544;
+    DEC.W Owtch.sinkYOffset,X                                            ;A2A544;
     BNE .return                                                          ;A2A547;
     LDA.W $05E6                                                          ;A2A549;
     AND.W #$0001                                                         ;A2A54C;
-    STA.W $0FB0,X                                                        ;A2A54F;
+    STA.W Owtch.direction,X                                              ;A2A54F;
 
   .return:
     RTS                                                                  ;A2A552;
@@ -4290,7 +4290,7 @@ MaybeMakeOwtchSink:
     CMP.W #$0006                                                         ;A2A561;
     BPL .return                                                          ;A2A564;
     LDA.W #$0003                                                         ;A2A566;
-    STA.W $0FB0,X                                                        ;A2A569;
+    STA.W Owtch.direction,X                                              ;A2A569;
 
   .return:
     RTS                                                                  ;A2A56C;
@@ -4298,14 +4298,14 @@ MaybeMakeOwtchSink:
 
 ;;; $A56D: Instruction - enemy function index = 0 ;;;
 Instruction_Owtch_0:
-    STZ.W $0FB0,X                                                        ;A2A56D;
+    STZ.W Owtch.direction,X                                              ;A2A56D;
     RTL                                                                  ;A2A570;
 
 
 ;;; $A571: Instruction - enemy function index = 1 ;;;
 Instruction_Owtch_1:
     LDA.W #$0001                                                         ;A2A571;
-    STA.W $0FB0,X                                                        ;A2A574;
+    STA.W Owtch.direction,X                                              ;A2A574;
     RTL                                                                  ;A2A577;
 
 
@@ -4317,7 +4317,7 @@ RTL_A2A578:
 ;;; $A579: Enemy shot - enemy $D03F (owtch) ;;;
 EnemyShot_Owtch:
     LDX.W $0E54                                                          ;A2A579;
-    LDA.W $0FB0,X                                                        ;A2A57C;
+    LDA.W Owtch.direction,X                                              ;A2A57C;
     CMP.W #$0001                                                         ;A2A57F;
     BPL .return                                                          ;A2A582;
     JSL.L CommonA2_NormalEnemyShotAI                                     ;A2A584;
@@ -4430,7 +4430,7 @@ InitAI_ShipTop:
     SBC.W #$0011                                                         ;A2A67A;
     STA.W $0F7E,X                                                        ;A2A67D;
     LDA.W #Function_Ship_LandingOnZebes_Descending                       ;A2A680;
-    STA.W $0FB2,X                                                        ;A2A683;
+    STA.W ShipTop.function,X                                             ;A2A683;
     BRA .merge                                                           ;A2A686;
 
   .notLandingOnZebes:
@@ -4438,9 +4438,9 @@ InitAI_ShipTop:
     SEC                                                                  ;A2A68B;
     SBC.W #$0019                                                         ;A2A68C;
     STA.W $0F7E,X                                                        ;A2A68F;
-    STA.W $0FB0,X                                                        ;A2A692;
+    STA.W ShipTop.brakesTimer,X                                          ;A2A692;
     LDA.W #Function_Ship_Idle_HandleLettingSamusEnter                    ;A2A695;
-    STA.W $0FB2,X                                                        ;A2A698;
+    STA.W ShipTop.function,X                                             ;A2A698;
     BRA .merge                                                           ;A2A69B;
 
   .demoTransition:
@@ -4452,18 +4452,18 @@ InitAI_ShipTop:
     SEC                                                                  ;A2A6AB;
     SBC.W #$0019                                                         ;A2A6AC;
     STA.W $0F7E,X                                                        ;A2A6AF;
-    STA.W $0FB0,X                                                        ;A2A6B2;
+    STA.W ShipTop.brakesTimer,X                                          ;A2A6B2;
     LDA.W #Function_Ship_SamusExiting_WaitForEntrancePadToOpen           ;A2A6B5;
-    STA.W $0FB2,X                                                        ;A2A6B8;
+    STA.W ShipTop.function,X                                             ;A2A6B8;
     LDA.W #$0090                                                         ;A2A6BB;
-    STA.W $0FA8                                                          ;A2A6BE;
+    STA.W ShipTop.functionTimer                                          ;A2A6BE;
 
   .merge:
     LDY.W #PaletteFXObjects_GunshipGlow                                  ;A2A6C1;
     JSL.L Spawn_PaletteFXObject                                          ;A2A6C4;
     LDA.W #$0001                                                         ;A2A6C8;
-    STA.W $0FAE,X                                                        ;A2A6CB;
-    STZ.W $0FAC                                                          ;A2A6CE;
+    STA.W ShipTop.hoverTimer,X                                           ;A2A6CB;
+    STZ.W ShipTop.hoverIndex                                             ;A2A6CE;
     RTL                                                                  ;A2A6D1;
 
 
@@ -4509,7 +4509,7 @@ InitAI_ShipBottomEntrance:
     ADC.W #$000F                                                         ;A2A724;
     STA.W $0F7E,X                                                        ;A2A727;
     LDA.W #$0047                                                         ;A2A72A;
-    STA.W $0FAE,X                                                        ;A2A72D;
+    STA.W ShipBottomEntrance.hoverSFXTimer,X                             ;A2A72D;
     BRA .merge                                                           ;A2A730;
 
   .entrancePad:
@@ -4528,7 +4528,7 @@ InitAI_ShipBottomEntrance:
 
   .merge:
     LDA.W #RTL_A2A7D7                                                    ;A2A752;
-    STA.W $0FB2,X                                                        ;A2A755;
+    STA.W ShipBottomEntrance.YVelocity,X                                 ;A2A755;
     RTL                                                                  ;A2A758;
 
 
@@ -4546,7 +4546,7 @@ MainAI_ShipTop:
     STA.W $0FEE,X                                                        ;A2A76D;
 
   .noSFX:
-    LDA.W $0FB2,X                                                        ;A2A770;
+    LDA.W ShipTop.function,X                                             ;A2A770;
     CMP.W #Function_Ship_LandingOnZebes_WaitForShipEntranceToOpen        ;A2A773;
     BMI .function                                                        ;A2A776;
     CMP.W #Function_Ship_Liftoff_FireUpEngines_SpawnDustClouds           ;A2A778;
@@ -4554,7 +4554,7 @@ MainAI_ShipTop:
     JSR.W ProcessShipHover                                               ;A2A77D;
 
   .function:
-    JMP.W ($0FB2,X)                                                      ;A2A780;
+    JMP.W (ShipTop.function,X)                                           ;A2A780;
 
 
 ;;; $A783: RTL ;;;
@@ -4564,17 +4564,17 @@ RTL_A2A783:
 
 ;;; $A784: Process gunship hover ;;;
 ProcessShipHover:
-    DEC.W $0FAE,X                                                        ;A2A784;
+    DEC.W ShipTop.hoverTimer,X                                           ;A2A784;
     BEQ .timerExpired                                                    ;A2A787;
     BPL .return                                                          ;A2A789;
 
   .timerExpired:
-    LDA.W $0FAC,X                                                        ;A2A78B;
+    LDA.W ShipTop.hoverIndex,X                                           ;A2A78B;
     ASL A                                                                ;A2A78E;
     TAY                                                                  ;A2A78F;
     LDA.W .timer,Y                                                       ;A2A790;
     AND.W #$00FF                                                         ;A2A793;
-    STA.W $0FAE,X                                                        ;A2A796;
+    STA.W ShipTop.hoverTimer,X                                           ;A2A796;
     LDA.W .YVelocity,Y                                                   ;A2A799;
     AND.W #$00FF                                                         ;A2A79C;
     BIT.W #$0080                                                         ;A2A79F;
@@ -4594,10 +4594,10 @@ ProcessShipHover:
     CLC                                                                  ;A2A7BE;
     ADC.B $12                                                            ;A2A7BF;
     STA.W $0FFE,X                                                        ;A2A7C1;
-    LDA.W $0FAC,X                                                        ;A2A7C4;
+    LDA.W ShipTop.hoverIndex,X                                           ;A2A7C4;
     INC A                                                                ;A2A7C7;
     AND.W #$0003                                                         ;A2A7C8;
-    STA.W $0FAC,X                                                        ;A2A7CB;
+    STA.W ShipTop.hoverIndex,X                                           ;A2A7CB;
 
   .return:
     RTS                                                                  ;A2A7CE;
@@ -4642,7 +4642,7 @@ UNUSED_Function_Ship_RiseToYPosition80_Descend:
     CMP.W #$0080                                                         ;A2A800;
     BPL .return                                                          ;A2A803;
     LDA.W #Function_Ship_LandingOnZebes_Descending                       ;A2A805;
-    STA.W $0FB2,X                                                        ;A2A808;
+    STA.W ShipTop.function,X                                             ;A2A808;
 
   .return:
     RTL                                                                  ;A2A80B;
@@ -4724,8 +4724,8 @@ Function_Ship_LandingOnZebes_Descending:
     DEC A                                                                ;A2A8C2;
     STA.W $0FFE,X                                                        ;A2A8C3;
     LDA.W #Function_Ship_LandingOnZebes_ApplyBrakes                      ;A2A8C6;
-    STA.W $0FB2,X                                                        ;A2A8C9;
-    STZ.W $0FB0,X                                                        ;A2A8CC;
+    STA.W ShipTop.function,X                                             ;A2A8C9;
+    STZ.W ShipTop.brakesTimer,X                                          ;A2A8CC;
 
   .return:
     RTL                                                                  ;A2A8CF;
@@ -4735,7 +4735,7 @@ Function_Ship_LandingOnZebes_Descending:
 Function_Ship_LandingOnZebes_ApplyBrakes:
 ; The increment at $A921 is kinda random,
 ; causes a slight visual discrepancy when entering the ship immediately after landing
-    LDA.W $0FB0,X                                                        ;A2A8D0;
+    LDA.W ShipTop.brakesTimer,X                                          ;A2A8D0;
     ASL A                                                                ;A2A8D3;
     TAY                                                                  ;A2A8D4;
     LDA.W $0AFA                                                          ;A2A8D5;
@@ -4754,18 +4754,18 @@ Function_Ship_LandingOnZebes_ApplyBrakes:
     CLC                                                                  ;A2A8F6;
     ADC.W ShipBrakesMovementData,Y                                       ;A2A8F7;
     STA.W $0F7E,X                                                        ;A2A8FA;
-    LDA.W $0FB0,X                                                        ;A2A8FD;
+    LDA.W ShipTop.brakesTimer,X                                          ;A2A8FD;
     INC A                                                                ;A2A900;
-    STA.W $0FB0,X                                                        ;A2A901;
+    STA.W ShipTop.brakesTimer,X                                          ;A2A901;
     CMP.W #$0011                                                         ;A2A904;
     BMI .return                                                          ;A2A907;
     LDA.W #Function_Ship_LandingOnZebes_WaitForShipEntranceToOpen        ;A2A909;
-    STA.W $0FB2,X                                                        ;A2A90C;
+    STA.W ShipTop.function,X                                             ;A2A90C;
     LDA.W $0F7E,X                                                        ;A2A90F;
-    STA.W $0FB0,X                                                        ;A2A912;
+    STA.W ShipTop.brakesTimer,X                                          ;A2A912;
     LDA.W #$0001                                                         ;A2A915;
-    STA.W $0FAE,X                                                        ;A2A918;
-    STZ.W $0FAC                                                          ;A2A91B;
+    STA.W ShipTop.hoverTimer,X                                           ;A2A918;
+    STZ.W ShipTop.hoverIndex                                             ;A2A91B;
     LDA.W $0F7A,X                                                        ;A2A91E;
     INC A                                                                ;A2A921;
     STA.W $0AF6                                                          ;A2A922;
@@ -4775,7 +4775,7 @@ Function_Ship_LandingOnZebes_ApplyBrakes:
     LDA.W #InstList_ShipEntrancePad_Opening_0                            ;A2A92E;
     STA.W $1012,X                                                        ;A2A931;
     LDA.W #$0090                                                         ;A2A934;
-    STA.W $0FA8                                                          ;A2A937;
+    STA.W ShipTop.functionTimer                                          ;A2A937;
     LDA.W #$0014                                                         ;A2A93A;
     JSL.L QueueSound_Lib3_Max6                                           ;A2A93D;
 
@@ -4785,13 +4785,13 @@ Function_Ship_LandingOnZebes_ApplyBrakes:
 
 ;;; $A942: Gunship function - landing on Zebes - wait for gunship entrance to open ;;;
 Function_Ship_LandingOnZebes_WaitForShipEntranceToOpen:
-    DEC.W $0FA8                                                          ;A2A942;
+    DEC.W ShipTop.functionTimer                                          ;A2A942;
     BEQ .timerExpired                                                    ;A2A945;
     BPL .return                                                          ;A2A947;
 
   .timerExpired:
     LDA.W #Function_Ship_LandingOnZebes_EjectSamus                       ;A2A949;
-    STA.W $0FB2,X                                                        ;A2A94C;
+    STA.W ShipTop.function,X                                             ;A2A94C;
 
   .return:
     RTL                                                                  ;A2A94F;
@@ -4799,7 +4799,7 @@ Function_Ship_LandingOnZebes_WaitForShipEntranceToOpen:
 
 ;;; $A950: Gunship function - landing on Zebes - eject Samus ;;;
 Function_Ship_LandingOnZebes_EjectSamus:
-    LDA.W $0FB0,X                                                        ;A2A950;
+    LDA.W ShipTop.fixedYPosition,X                                       ;A2A950;
     SEC                                                                  ;A2A953;
     SBC.W #$001E                                                         ;A2A954;
     STA.B $12                                                            ;A2A957;
@@ -4810,13 +4810,13 @@ Function_Ship_LandingOnZebes_EjectSamus:
     CMP.B $12                                                            ;A2A963;
     BPL .return                                                          ;A2A965;
     LDA.W #Function_Ship_LandOnZebes_WaitForShipEntranceToClose_UnlockSamus ;A2A967;
-    STA.W $0FB2,X                                                        ;A2A96A;
+    STA.W ShipTop.function,X                                             ;A2A96A;
     LDA.W #$0001                                                         ;A2A96D;
     STA.W $1014,X                                                        ;A2A970;
     LDA.W #InstList_ShipEntrancePad_Closing                              ;A2A973;
     STA.W $1012,X                                                        ;A2A976;
     LDA.W #$0090                                                         ;A2A979;
-    STA.W $0FA8                                                          ;A2A97C;
+    STA.W ShipTop.functionTimer                                          ;A2A97C;
     LDA.W #$0015                                                         ;A2A97F;
     JSL.L QueueSound_Lib3_Max6                                           ;A2A982;
 
@@ -4826,13 +4826,13 @@ Function_Ship_LandingOnZebes_EjectSamus:
 
 ;;; $A987: Gunship function - landing on Zebes - wait for gunship entrance to close, then unlock Samus and save ;;;
 Function_Ship_LandOnZebes_WaitForShipEntranceToClose_UnlockSamus:
-    DEC.W $0FA8                                                          ;A2A987;
+    DEC.W ShipTop.functionTimer                                          ;A2A987;
     BEQ .timerExpired                                                    ;A2A98A;
     BPL .return                                                          ;A2A98C;
 
   .timerExpired:
     LDA.W #Function_Ship_Idle_HandleLettingSamusEnter                    ;A2A98E;
-    STA.W $0FB2,X                                                        ;A2A991;
+    STA.W ShipTop.function,X                                             ;A2A991;
     LDA.W #SamusCurrentStateHandler_Normal                               ;A2A994;
     STA.W $0A42                                                          ;A2A997;
     LDA.W #SamusNewStateHandler_Normal                                   ;A2A99A;
@@ -4888,7 +4888,7 @@ Function_Ship_Idle_HandleLettingSamusEnter:
 
   .enterShip:
     LDA.W #Function_Ship_SamusEntering_WaitForEntrancePadToOpen          ;A2AA09;
-    STA.W $0FB2,X                                                        ;A2AA0C;
+    STA.W ShipTop.function,X                                             ;A2AA0C;
     LDA.W $0AF6                                                          ;A2AA0F;
     CMP.W #$0480                                                         ;A2AA12;
     BEQ .skipMovingSamus                                                 ;A2AA15;
@@ -4909,7 +4909,7 @@ Function_Ship_Idle_HandleLettingSamusEnter:
     LDA.W #InstList_ShipEntrancePad_Opening_0                            ;A2AA3B;
     STA.W $1012,X                                                        ;A2AA3E;
     LDA.W #$0090                                                         ;A2AA41;
-    STA.W $0FA8                                                          ;A2AA44;
+    STA.W ShipTop.functionTimer                                          ;A2AA44;
     LDA.W #$0014                                                         ;A2AA47;
     JSL.L QueueSound_Lib3_Max6                                           ;A2AA4A;
     RTL                                                                  ;A2AA4E;
@@ -4917,13 +4917,13 @@ Function_Ship_Idle_HandleLettingSamusEnter:
 
 ;;; $AA4F: Gunship function - Samus entering - wait for entrance pad to open ;;;
 Function_Ship_SamusEntering_WaitForEntrancePadToOpen:
-    DEC.W $0FA8                                                          ;A2AA4F;
+    DEC.W ShipTop.functionTimer                                          ;A2AA4F;
     BEQ .timerExpired                                                    ;A2AA52;
     BPL .return                                                          ;A2AA54;
 
   .timerExpired:
     LDA.W #Function_Ship_SamusEntering_LowerSamus                        ;A2AA56;
-    STA.W $0FB2,X                                                        ;A2AA59;
+    STA.W ShipTop.function,X                                             ;A2AA59;
 
   .return:
     RTL                                                                  ;A2AA5C;
@@ -4931,7 +4931,7 @@ Function_Ship_SamusEntering_WaitForEntrancePadToOpen:
 
 ;;; $AA5D: Gunship function - Samus entering - lower Samus ;;;
 Function_Ship_SamusEntering_LowerSamus:
-    LDA.W $0FB0,X                                                        ;A2AA5D;
+    LDA.W ShipTop.fixedYPosition,X                                       ;A2AA5D;
     CLC                                                                  ;A2AA60;
     ADC.W #$0012                                                         ;A2AA61;
     STA.B $12                                                            ;A2AA64;
@@ -4942,13 +4942,13 @@ Function_Ship_SamusEntering_LowerSamus:
     CMP.B $12                                                            ;A2AA70;
     BMI .return                                                          ;A2AA72;
     LDA.W #Function_Ship_SamusEntering_WaitForEntrancePadToClose         ;A2AA74;
-    STA.W $0FB2,X                                                        ;A2AA77;
+    STA.W ShipTop.function,X                                             ;A2AA77;
     LDA.W #$0001                                                         ;A2AA7A;
     STA.W $1014,X                                                        ;A2AA7D;
     LDA.W #InstList_ShipEntrancePad_Closing                              ;A2AA80;
     STA.W $1012,X                                                        ;A2AA83;
     LDA.W #$0090                                                         ;A2AA86;
-    STA.W $0FA8                                                          ;A2AA89;
+    STA.W ShipTop.functionTimer                                          ;A2AA89;
     LDA.W #$0015                                                         ;A2AA8C;
     JSL.L QueueSound_Lib3_Max6                                           ;A2AA8F;
 
@@ -4958,13 +4958,13 @@ Function_Ship_SamusEntering_LowerSamus:
 
 ;;; $AA94: Gunship function - Samus entering - wait for entrance pad to close ;;;
 Function_Ship_SamusEntering_WaitForEntrancePadToClose:
-    DEC.W $0FA8                                                          ;A2AA94;
+    DEC.W ShipTop.functionTimer                                          ;A2AA94;
     BEQ .timerExpired                                                    ;A2AA97;
     BPL .return                                                          ;A2AA99;
 
   .timerExpired:
     LDA.W #Function_Ship_SamusEntered_LiftoffOrRestoreSamusEnergyAmmo    ;A2AA9B;
-    STA.W $0FB2,X                                                        ;A2AA9E;
+    STA.W ShipTop.function,X                                             ;A2AA9E;
 
   .return:
     RTL                                                                  ;A2AAA1;
@@ -5008,7 +5008,7 @@ Function_Ship_SamusEntered_LiftoffOrRestoreSamusEnergyAmmo:
 
   .liftoff:
     LDA.W #Function_Ship_Liftoff_LoadDustCloudTiles                      ;A2AAF8;
-    STA.W $0FB2,X                                                        ;A2AAFB;
+    STA.W ShipTop.function,X                                             ;A2AAFB;
     STZ.W $0FF2,X                                                        ;A2AAFE;
     STZ.W $0FF0,X                                                        ;A2AB01;
     STZ.W $0DEC                                                          ;A2AB04;
@@ -5021,7 +5021,7 @@ Function_Ship_SamusEntered_LiftoffOrRestoreSamusEnergyAmmo:
 
   .continue:
     LDA.W #Function_Ship_SamusEntered_HandleSaveConfirmation             ;A2AB18;
-    STA.W $0FB2,X                                                        ;A2AB1B;
+    STA.W ShipTop.function,X                                             ;A2AB1B;
 
   .return:
     RTL                                                                  ;A2AB1E;
@@ -5042,13 +5042,13 @@ Function_Ship_SamusEntered_HandleSaveConfirmation:
 
   .selectedNo:
     LDA.W #Function_Ship_SamusExiting_WaitForEntrancePadToOpen           ;A2AB40;
-    STA.W $0FB2,X                                                        ;A2AB43;
+    STA.W ShipTop.function,X                                             ;A2AB43;
     LDA.W #$0001                                                         ;A2AB46;
     STA.W $1014,X                                                        ;A2AB49;
     LDA.W #InstList_ShipEntrancePad_Opening_0                            ;A2AB4C;
     STA.W $1012,X                                                        ;A2AB4F;
     LDA.W #$0090                                                         ;A2AB52;
-    STA.W $0FA8                                                          ;A2AB55;
+    STA.W ShipTop.functionTimer                                          ;A2AB55;
     LDA.W #$0014                                                         ;A2AB58;
     JSL.L QueueSound_Lib3_Max6                                           ;A2AB5B;
     RTL                                                                  ;A2AB5F;
@@ -5057,13 +5057,13 @@ Function_Ship_SamusEntered_HandleSaveConfirmation:
 ;;; $AB60: Gunship function - Samus exiting - wait for entrance pad to open ;;;
 Function_Ship_SamusExiting_WaitForEntrancePadToOpen:
 ; Set by initialisation AI if demo set 0 is playing
-    DEC.W $0FA8                                                          ;A2AB60;
+    DEC.W ShipTop.functionTimer                                          ;A2AB60;
     BEQ .timerExpired                                                    ;A2AB63;
     BPL .return                                                          ;A2AB65;
 
   .timerExpired:
     LDA.W #Function_Ship_SamusExiting_RaiseSamus                         ;A2AB67;
-    STA.W $0FB2,X                                                        ;A2AB6A;
+    STA.W ShipTop.function,X                                             ;A2AB6A;
 
   .return:
     RTL                                                                  ;A2AB6D;
@@ -5071,7 +5071,7 @@ Function_Ship_SamusExiting_WaitForEntrancePadToOpen:
 
 ;;; $AB6E: Gunship function - Samus exiting - raise Samus ;;;
 Function_Ship_SamusExiting_RaiseSamus:
-    LDA.W $0FB0,X                                                        ;A2AB6E;
+    LDA.W ShipTop.fixedYPosition,X                                       ;A2AB6E;
     SEC                                                                  ;A2AB71;
     SBC.W #$001E                                                         ;A2AB72;
     STA.B $12                                                            ;A2AB75;
@@ -5082,13 +5082,13 @@ Function_Ship_SamusExiting_RaiseSamus:
     CMP.B $12                                                            ;A2AB81;
     BPL .return                                                          ;A2AB83;
     LDA.W #Function_Ship_SamusExiting_WaitForEntrancePadToClose          ;A2AB85;
-    STA.W $0FB2,X                                                        ;A2AB88;
+    STA.W ShipTop.function,X                                             ;A2AB88;
     LDA.W #$0001                                                         ;A2AB8B;
     STA.W $1014,X                                                        ;A2AB8E;
     LDA.W #InstList_ShipEntrancePad_Closing                              ;A2AB91;
     STA.W $1012,X                                                        ;A2AB94;
     LDA.W #$0090                                                         ;A2AB97;
-    STA.W $0FA8                                                          ;A2AB9A;
+    STA.W ShipTop.functionTimer                                          ;A2AB9A;
     LDA.W #$0015                                                         ;A2AB9D;
     JSL.L QueueSound_Lib3_Max6                                           ;A2ABA0;
 
@@ -5098,13 +5098,13 @@ Function_Ship_SamusExiting_RaiseSamus:
 
 ;;; $ABA5: Gunship function - Samus exiting - wait for entrance pad to close, then unlock Samus ;;;
 Function_Ship_SamusExiting_WaitForEntrancePadToClose:
-    DEC.W $0FA8                                                          ;A2ABA5;
+    DEC.W ShipTop.functionTimer                                          ;A2ABA5;
     BEQ .timerExpired                                                    ;A2ABA8;
     BPL .return                                                          ;A2ABAA;
 
   .timerExpired:
     LDA.W #Function_Ship_Idle_HandleLettingSamusEnter                    ;A2ABAC;
-    STA.W $0FB2,X                                                        ;A2ABAF;
+    STA.W ShipTop.function,X                                             ;A2ABAF;
     LDA.W $0998                                                          ;A2ABB2;
     CMP.W #$0028                                                         ;A2ABB5;
     BPL .return                                                          ;A2ABB8;
@@ -5148,7 +5148,7 @@ Function_Ship_Liftoff_LoadDustCloudTiles:
     CMP.W #$000A                                                         ;A2ABF8;
     BMI .return                                                          ;A2ABFB;
     LDA.W #Function_Ship_Liftoff_FireUpEngines_SpawnDustClouds           ;A2ABFD;
-    STA.W $0FB2,X                                                        ;A2AC00;
+    STA.W ShipTop.function,X                                             ;A2AC00;
     STZ.W $0DEC                                                          ;A2AC03;
 
   .return:
@@ -5221,8 +5221,8 @@ Function_Ship_Liftoff_FireUpEngines_SpawnDustClouds:
     CMP.W #$0080                                                         ;A2AC86;
     BMI .spawnDustClouds                                                 ;A2AC89;
     LDA.W #Function_Ship_Liftoff_SteadyRise                              ;A2AC8B;
-    STA.W $0FB2,X                                                        ;A2AC8E;
-    STZ.W $0FA8                                                          ;A2AC91;
+    STA.W ShipTop.function,X                                             ;A2AC8E;
+    STZ.W ShipTop.functionTimer                                          ;A2AC91;
     RTL                                                                  ;A2AC94;
 
   .spawnDustClouds:
@@ -5271,7 +5271,7 @@ Function_Ship_Liftoff_SteadyRise:
     CMP.W #$0380                                                         ;A2ACFC;
     BPL .return                                                          ;A2ACFF;
     LDA.W #Function_Ship_Liftoff_Accelerating_SetGameState               ;A2AD01;
-    STA.W $0FB2,X                                                        ;A2AD04;
+    STA.W ShipTop.function,X                                             ;A2AD04;
     LDA.W #$0200                                                         ;A2AD07;
     STA.W $0FF2,X                                                        ;A2AD0A;
 
@@ -5286,7 +5286,7 @@ Function_Ship_Liftoff_Accelerating_SetGameState:
     CMP.W #$0100                                                         ;A2AD15;
     BPL .return                                                          ;A2AD18;
     LDA.W #Function_Ship_Liftoff_Accelerating                            ;A2AD1A;
-    STA.W $0FB2,X                                                        ;A2AD1D;
+    STA.W ShipTop.function,X                                             ;A2AD1D;
     LDA.W #$0026                                                         ;A2AD20;
     STA.W $0998                                                          ;A2AD23;
     STZ.W $0723                                                          ;A2AD26;
