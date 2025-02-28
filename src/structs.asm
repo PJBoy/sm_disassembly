@@ -2228,6 +2228,7 @@ endstruct
 
 struct ShipTop $0FA8
   .functionTimer: skip 2 ; $0FA8
+skip 2
   .hoverIndex: skip 2 ; $0FAC
   .hoverTimer: skip 2 ; $0FAE
   .fixedYPosition: skip 0 ; $0FB0
@@ -2241,25 +2242,7 @@ struct ShipBottomEntrance $0FAE
   .YVelocity: skip 2 ; $0FB2
 endstruct
 
-struct Mellow $0FA8
-  .retreatTimer: skip 2 ; $0FA8
-  .XVelocity: skip 2 ; $0FAA
-  .YVelocity: skip 2 ; $0FAC
-  .targetYPosition: skip 2 ; $0FAE
-  .angle: skip 2 ; $0FB0
-  .function: skip 2 ; $0FB2
-endstruct
-
-struct Mella $0FA8
-  .retreatTimer: skip 2 ; $0FA8
-  .XVelocity: skip 2 ; $0FAA
-  .YVelocity: skip 2 ; $0FAC
-  .targetYPosition: skip 2 ; $0FAE
-  .angle: skip 2 ; $0FB0
-  .function: skip 2 ; $0FB2
-endstruct
-
-struct Menu $0FA8
+struct Flies $0FA8
   .retreatTimer: skip 2 ; $0FA8
   .XVelocity: skip 2 ; $0FAA
   .YVelocity: skip 2 ; $0FAC
@@ -2293,16 +2276,16 @@ endstruct
 struct Rio $0FA8
   .backupSwoopXVelocity: skip 2 ; $0FA8
   .function: skip 2 ; $0FAA
-  .XVelocity: skip 2 ; $0FAC
-  .YVelocity: skip 2 ; $0FAE
+  .YVelocity: skip 2 ; $0FAC
+  .XVelocity: skip 2 ; $0FAE
   .animationFinishedFlag: skip 2 ; $0FB0
   .instList: skip 2 ; $0FB2
 endstruct
 
-struct Squeept $0FA8
+struct Squeept $0FAC
   .YVelocity: skip 2 ; $0FAC
-  .SpawnXPosition: skip 2 ; $0FAE
-  .SpawnYPosition: skip 2 ; $0FB0
+  .spawnXPosition: skip 2 ; $0FAE
+  .spawnYPosition: skip 2 ; $0FB0
   .function: skip 2 ; $0FB2
 skip $7DE84C
   .animationFinishedFlag: skip 2 ; $7E7800
@@ -2361,8 +2344,8 @@ struct Choot $0FA8
   .fallingPatternPointer: skip 2 ; $0FB0
   .fallingPatternYDistance: skip 2 ; $0FB2
 skip $7DE84C
-  .SpawnXPosition: skip 2 ; $7E7800
-  .SpawnYPosition: skip 2 ; $7E7802
+  .spawnXPosition: skip 2 ; $7E7800
+  .spawnYPosition: skip 2 ; $7E7802
   .initialFallingXPosition: skip 2 ; $7E7804
   .initialFallingYPosition: skip 2 ; $7E7806
   .fallingXOrigin: skip 2 ; $7E7808
@@ -2371,18 +2354,9 @@ skip $7DE84C
   .jumpDelayTimer: skip 2 ; $7E780E
 endstruct
 
-struct Gripper $0FA8
+struct GRipper $0FA8
   .minimumXPosition: skip 2 ; $0FA8
   .maximumXPosition: skip 2 ; $0FAA
-  .XSubVelocity: skip 2 ; $0FAC
-  .XVelocity: skip 2 ; $0FAE
-  .XSpeedTableIndex: skip 2 ; $0FB0
-endstruct
-
-struct Ripper2 $0FAC
-  .XSubVelocity: skip 2 ; $0FAC
-  .XVelocity: skip 2 ; $0FAE
-  .XSpeedTableIndex: skip 2 ; $0FB0
 endstruct
 
 struct Ripper $0FAC
@@ -2391,9 +2365,7 @@ struct Ripper $0FAC
   .XSpeedTableIndex: skip 2 ; $0FB0
 endstruct
 
-
-
-struct Draygon $0FAE
+struct Dragon $0FAE
   .functionTimer: skip 0 ; $0FAE
   .attackCounter: skip 2 ; $0FAE
 skip 2
@@ -2418,7 +2390,7 @@ skip $FFC
   .previousYPosition: skip 2 ; $7E8800
 endstruct
 
-struct ShutterShootable $0FA8
+struct Shutters $0FA8
   .function: skip 2 ; $0FA8
   .functionTimer: skip 2 ; $0FAA
   .downSubVelocity: skip 2 ; $0FAC
@@ -2432,8 +2404,7 @@ skip $7DE84C
   .movedDownRestTimeParam: skip 2 ; $7E7806
   .triggerMode: skip 2 ; $7E7808
   .YDistance: skip 2 ; $7E780A
-  .XProximity: skip 0 ; $7E780C
-  .waitTime: skip 2 ; $7E780C
+  .XProximityWaitTime: skip 2 ; $7E780C
   .initialFunctionIndex: skip 2 ; $7E780E
   .movedUpRestTime: skip 2 ; $7E7810
   .movedDownRestTime: skip 2 ; $7E7812
@@ -2462,8 +2433,7 @@ skip $7DE84C
   .movedRightRestTimeParam: skip 2 ; $7E7806
   .triggerMode: skip 2 ; $7E7808
   .YDistance: skip 2 ; $7E780A
-  .XProximity: skip 0 ; $7E780C
-  .waitTime: skip 2 ; $7E780C
+  .XProximityWaitTime: skip 2 ; $7E780C
   .initialFunctionIndex: skip 2 ; $7E780E
   .movedLeftRestTime: skip 2 ; $7E7810
   .movedRightRestTime: skip 2 ; $7E7812
@@ -2475,66 +2445,6 @@ skip 6
   .maximumXPosition: skip 2 ; $7E7824
   .movingSamusFlag: skip 2 ; $7E7826
 skip $7D8
-  .reactionDirection: skip 2 ; $7E8000
-endstruct
-
-struct ShutterDestroyable $0FA8
-  .function: skip 2 ; $0FA8
-  .functionTimer: skip 2 ; $0FAA
-  .downSubVelocity: skip 2 ; $0FAC
-  .downVelocity: skip 2 ; $0FAE
-  .upSubVelocity: skip 2 ; $0FB0
-  .upVelocity: skip 2 ; $0FB2
-skip $7DE84C
-  .YSpeedTableIndex: skip 2 ; $7E7800
-  .primaryDirection: skip 2 ; $7E7802
-  .movedUpRestTimerParam: skip 2 ; $7E7804
-  .movedDownRestTimeParam: skip 2 ; $7E7806
-  .triggerMode: skip 2 ; $7E7808
-  .YDistance: skip 2 ; $7E780A
-  .XProximity: skip 0 ; $7E780C
-  .waitTime: skip 2 ; $7E780C
-  .initialFunctionIndex: skip 2 ; $7E780E
-  .movedUpRestTime: skip 2 ; $7E7810
-  .movedDownRestTime: skip 2 ; $7E7812
-  .movingSamusFlag: skip 2 ; $7E7814
-skip 2
-  .shotActivatedFlag: skip 2 ; $7E7818
-skip 2
-  .previousYPosition: skip 2 ; $7E781C
-  .minimumYPosition: skip 2 ; $7E781E
-  .maximumYPosition: skip 2 ; $7E7820
-skip $7DE
-  .reactionDirection: skip 2 ; $7E8000
-endstruct
-
-struct Kamer $7E7800
-  .function: skip 2 ; $0FA8
-  .functionTimer: skip 2 ; $0FAA
-  .downSubVelocity: skip 2 ; $0FAC
-  .downVelocity: skip 2 ; $0FAE
-  .upSubVelocity: skip 2 ; $0FB0
-  .upVelocity: skip 2 ; $0FB2
-skip $7DE84C
-  .YSpeedTableIndex: skip 2 ; $7E7800
-  .primaryDirection: skip 2 ; $7E7802
-  .movedUpRestTimerParam: skip 2 ; $7E7804
-  .movedDownRestTimeParam: skip 2 ; $7E7806
-  .triggerMode: skip 2 ; $7E7808
-  .YDistance: skip 2 ; $7E780A
-  .XProximity: skip 0 ; $7E780C
-  .waitTime: skip 2 ; $7E780C
-  .initialFunctionIndex: skip 2 ; $7E780E
-  .movedUpRestTime: skip 2 ; $7E7810
-  .movedDownRestTime: skip 2 ; $7E7812
-  .movingSamusFlag: skip 2 ; $7E7814
-skip 2
-  .shotActivatedFlag: skip 2 ; $7E7818
-skip 2
-  .previousYPosition: skip 2 ; $7E781C
-  .minimumYPosition: skip 2 ; $7E781E
-  .maximumYPosition: skip 2 ; $7E7820
-skip $7DE
   .reactionDirection: skip 2 ; $7E8000
 endstruct
 
