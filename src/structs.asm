@@ -2697,7 +2697,7 @@ struct CrocomireTongue $0FA8
   .XOffsetFromCrocomire: skip 2 ; $0FA8
 endstruct
 
-struct DraygonBody $7E7800
+struct DraygonBody $0FA8
   .function: skip 2 ; $0FA8
   .functionTimer: skip 0 ; $0FAA
   .swoopYPositionIndex: skip 2 ; $0FAA
