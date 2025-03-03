@@ -2469,14 +2469,14 @@ endstruct
 struct Fireflea $0FA8
   .subAngleDelta: skip 2 ; $0FA8
   .angleDelta: skip 2 ; $0FAA
-  .Radius: skip 2 ; $0FAC
-  .Angle: skip 2 ; $0FAE
+  .radius: skip 2 ; $0FAC
+  .angle: skip 2 ; $0FAE
   .XCenter: skip 2 ; $0FB0
   .YCenter: skip 2 ; $0FB2
 skip $7DE84C
   .minimumYPosition: skip 2 ; $7E7800
   .maximumYPosition: skip 2 ; $7E7802
-  .SpeedTableIndex: skip 2 ; $7E7804
+  .speedTableIndex: skip 2 ; $7E7804
 endstruct
 
 struct Skulltera $0FA8
@@ -2498,7 +2498,7 @@ struct Elevator $0FA8
   .targetYPosition: skip 2 ; $0FA8
 endstruct
 
-struct Sciser $0FA8
+struct Crawler $0FA8
   .XVelocity: skip 2 ; $0FA8
   .YVelocity: skip 2 ; $0FAA
 skip 6
@@ -2510,19 +2510,7 @@ skip $7DE84E
   .consecutiveTurnCounter: skip 2 ; $7E7808
 endstruct
 
-struct Zero $7E7802
-  .XVelocity: skip 2 ; $0FA8
-  .YVelocity: skip 2 ; $0FAA
-skip 6
-  .function: skip 2 ; $0FB2
-skip $7DE84E
-  .fallingYSubVelocity: skip 2 ; $7E7802
-  .fallingYVelocity: skip 2 ; $7E7804
-  .nonFallingFunction: skip 2 ; $7E7806
-  .consecutiveTurnCounter: skip 2 ; $7E7808
-endstruct
-
-struct Tripper $0FA8
+struct Platform $0FA8
   .targetYPosition: skip 2 ; $0FA8
   .rightSubVelocity: skip 2 ; $0FAA
   .rightVelocity: skip 2 ; $0FAC
@@ -2541,26 +2529,7 @@ skip $30
   .suspensorPlatformFlag: skip 2 ; $7E783E
 endstruct
 
-struct Kamer2 $0FA8
-  .targetYPosition: skip 2 ; $0FA8
-  .rightSubVelocity: skip 2 ; $0FAA
-  .rightVelocity: skip 2 ; $0FAC
-  .leftSubVelocity: skip 2 ; $0FAE
-  .leftVelocity: skip 2 ; $0FB0
-  .YSpeedTableIndex: skip 2 ; $0FB2
-skip $7DE84C
-  .YMovementFunctionIndex: skip 2 ; $7E7800
-  .previousPosition: skip 2 ; $7E7802
-  .XMovementFunctionIndex: skip 2 ; $7E7804
-  .verticallyMovingFlag: skip 2 ; $7E7806
-  .verticallyStillFlag: skip 2 ; $7E7808
-  .maximumYSpeedTableIndex: skip 2 ; $7E780A
-  .previousYMovementFunctionIndex: skip 2 ; $7E780C
-skip $30
-  .suspensorPlatformFlag: skip 2 ; $7E783E
-endstruct
-
-struct Sbug $7E7800
+struct Sbug $0FA8
   .straightMovementTimer: skip 2 ; $0FA8
   .function: skip 2 ; $0FAA
   .customAngle: skip 2 ; $0FAC
@@ -2605,67 +2574,7 @@ skip $7FC
   .damageTimer: skip 2 ; $7E8000
 endstruct
 
-struct Sidehopper $0FAA
-  .function: skip 2 ; $0FAA
-  .YSpeedTableIndex: skip 2 ; $0FAC
-  .XVelocity: skip 2 ; $0FAE
-  .XSpeedTableIndexDelta: skip 2 ; $0FB0
-skip $7DE84E
-  .instList: skip 2 ; $7E7800
-  .smallHopInitialYSpeedTableIndex: skip 2 ; $7E7802
-  .bigHopInitialYSpeedTableIndex: skip 2 ; $7E7804
-  .fallingFlag: skip 2 ; $7E7806
-  .readyToHopFlag: skip 2 ; $7E7808
-  .hopTableIndex: skip 2 ; $7E780A
-  .variantIndex: skip 2 ; $7E780C
-endstruct
-
-struct Dessgeega $0FAA
-  .function: skip 2 ; $0FAA
-  .YSpeedTableIndex: skip 2 ; $0FAC
-  .XVelocity: skip 2 ; $0FAE
-  .XSpeedTableIndexDelta: skip 2 ; $0FB0
-skip $7DE84E
-  .instList: skip 2 ; $7E7800
-  .smallHopInitialYSpeedTableIndex: skip 2 ; $7E7802
-  .bigHopInitialYSpeedTableIndex: skip 2 ; $7E7804
-  .fallingFlag: skip 2 ; $7E7806
-  .readyToHopFlag: skip 2 ; $7E7808
-  .hopTableIndex: skip 2 ; $7E780A
-  .variantIndex: skip 2 ; $7E780C
-endstruct
-
-struct SidehopperLarge $0FAA
-  .function: skip 2 ; $0FAA
-  .YSpeedTableIndex: skip 2 ; $0FAC
-  .XVelocity: skip 2 ; $0FAE
-  .XSpeedTableIndexDelta: skip 2 ; $0FB0
-skip $7DE84E
-  .instList: skip 2 ; $7E7800
-  .smallHopInitialYSpeedTableIndex: skip 2 ; $7E7802
-  .bigHopInitialYSpeedTableIndex: skip 2 ; $7E7804
-  .fallingFlag: skip 2 ; $7E7806
-  .readyToHopFlag: skip 2 ; $7E7808
-  .hopTableIndex: skip 2 ; $7E780A
-  .variantIndex: skip 2 ; $7E780C
-endstruct
-
-struct SidehopperTourian $0FAA
-  .function: skip 2 ; $0FAA
-  .YSpeedTableIndex: skip 2 ; $0FAC
-  .XVelocity: skip 2 ; $0FAE
-  .XSpeedTableIndexDelta: skip 2 ; $0FB0
-skip $7DE84E
-  .instList: skip 2 ; $7E7800
-  .smallHopInitialYSpeedTableIndex: skip 2 ; $7E7802
-  .bigHopInitialYSpeedTableIndex: skip 2 ; $7E7804
-  .fallingFlag: skip 2 ; $7E7806
-  .readyToHopFlag: skip 2 ; $7E7808
-  .hopTableIndex: skip 2 ; $7E780A
-  .variantIndex: skip 2 ; $7E780C
-endstruct
-
-struct DessgeegaLarge $0FAA
+struct Hopper $0FAA
   .function: skip 2 ; $0FAA
   .YSpeedTableIndex: skip 2 ; $0FAC
   .XVelocity: skip 2 ; $0FAE
@@ -2689,18 +2598,6 @@ skip 2
   .function: skip 2 ; $0FB4
 skip $7DE84A
   .XSpeedTableIndex: skip 2 ; $7E7800
-endstruct
-
-struct Viola $0FA8
-  .XVelocity: skip 2 ; $0FA8
-  .YVelocity: skip 2 ; $0FAA
-skip 6
-  .function: skip 2 ; $0FB2
-skip $7DE84E
-  .fallingYSubVelocity: skip 2 ; $7E7802
-  .fallingYVelocity: skip 2 ; $7E7804
-  .nonFallingFunction: skip 2 ; $7E7806
-  .consecutiveTurnCounter: skip 2 ; $7E7808
 endstruct
 
 struct Bang $0FAA
@@ -2758,66 +2655,6 @@ endstruct
 
 struct Reflect $0FB6
   .reflectionAxis: skip 2 ; $0FB6
-endstruct
-
-struct HZoomer $0FA8
-  .XVelocity: skip 2 ; $0FA8
-  .YVelocity: skip 2 ; $0FAA
-skip 6
-  .function: skip 2 ; $0FB2
-skip $7DE84E
-  .fallingYSubVelocity: skip 2 ; $7E7802
-  .fallingYVelocity: skip 2 ; $7E7804
-  .nonFallingFunction: skip 2 ; $7E7806
-  .consecutiveTurnCounter: skip 2 ; $7E7808
-endstruct
-
-struct Zeela $0FA8
-  .XVelocity: skip 2 ; $0FA8
-  .YVelocity: skip 2 ; $0FAA
-skip 6
-  .function: skip 2 ; $0FB2
-skip $7DE84E
-  .fallingYSubVelocity: skip 2 ; $7E7802
-  .fallingYVelocity: skip 2 ; $7E7804
-  .nonFallingFunction: skip 2 ; $7E7806
-  .consecutiveTurnCounter: skip 2 ; $7E7808
-endstruct
-
-struct Sova $0FA8
-  .XVelocity: skip 2 ; $0FA8
-  .YVelocity: skip 2 ; $0FAA
-skip 6
-  .function: skip 2 ; $0FB2
-skip $7DE84E
-  .fallingYSubVelocity: skip 2 ; $7E7802
-  .fallingYVelocity: skip 2 ; $7E7804
-  .nonFallingFunction: skip 2 ; $7E7806
-  .consecutiveTurnCounter: skip 2 ; $7E7808
-endstruct
-
-struct Zoomer $0FA8
-  .XVelocity: skip 2 ; $0FA8
-  .YVelocity: skip 2 ; $0FAA
-skip 6
-  .function: skip 2 ; $0FB2
-skip $7DE84E
-  .fallingYSubVelocity: skip 2 ; $7E7802
-  .fallingYVelocity: skip 2 ; $7E7804
-  .nonFallingFunction: skip 2 ; $7E7806
-  .consecutiveTurnCounter: skip 2 ; $7E7808
-endstruct
-
-struct MZoomer $0FA8
-  .XVelocity: skip 2 ; $0FA8
-  .YVelocity: skip 2 ; $0FAA
-skip 6
-  .function: skip 2 ; $0FB2
-skip $7DE84E
-  .fallingYSubVelocity: skip 2 ; $7E7802
-  .fallingYVelocity: skip 2 ; $7E7804
-  .nonFallingFunction: skip 2 ; $7E7806
-  .consecutiveTurnCounter: skip 2 ; $7E7808
 endstruct
 
 struct Metroid $0FA8
