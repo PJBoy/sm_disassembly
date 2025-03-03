@@ -3122,7 +3122,7 @@ MainAI_Crocomire_DeathSequence_40_BehindWall_Rumbling:
     BPL .loopSpritePalette                                               ;A49879;
     JMP.W NextCrocomireDeathSequenceIndex                                ;A4987B;
 
-+   LDX.W Crocomire.runbleIndex                                          ;A4987E;
++   LDX.W Crocomire.rumbleIndex                                          ;A4987E;
     LDA.W Crocomire.rumblingYOffset                                      ;A49881;
     CMP.W .targetYOffset,X                                               ;A49884;
     BEQ .equal                                                           ;A49887;

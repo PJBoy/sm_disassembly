@@ -2709,6 +2709,7 @@ skip $7DE84E
   .resetYPosition: skip 2 ; $7E7802
   .rightSideResetXPosition: skip 2 ; $7E7804
   .goopCounter: skip 2 ; $7E7806
+skip 2
   .spiralXRadius: skip 2 ; $7E780A
   .spiralXPosition: skip 2 ; $7E780C
   .spiralYPosition: skip 2 ; $7E780E
@@ -2720,9 +2721,9 @@ skip $7DE84E
   .goopYOscillationAngle: skip 2 ; $7E781A
   .healthBasedPaletteTableIndex: skip 2 ; $7E781C
   .swoopYAcceleration: skip 2 ; $7E781E
-skip $7E2
+skip $7E0
   .facingDirection: skip 2 ; $7E8000
-skip 10
+skip $80A
   .fightIntroDanceIndex: skip 2 ; $7E880C
 skip $2E
   .bodyGraphicsXDisplacement: skip 2 ; $7E883C
@@ -2761,6 +2762,7 @@ skip 8
   .damagedFlag: skip 2 ; $7E801E
 skip $7E0
   .previousHealth: skip 2 ; $7E8800
+skip 4
   .deathDriftAngle: skip 2 ; $7E8806
 skip $7F8
   .sporeGenerationFlag: skip 2 ; $7E9000
