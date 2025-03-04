@@ -3486,7 +3486,7 @@ InitAI_KraidFoot:
     LDA.W #$0001                                                         ;A7AC09;
     STA.W $10D4                                                          ;A7AC0C;
     LDA.W #RTL_A7BA2D                                                    ;A7AC0F;
-    STA.W $10E8                                                          ;A7AC12;
+    STA.W KraidPart.function+$140                                                          ;A7AC12;
     LDA.W #$0000                                                         ;A7AC15;
     STA.L $7E7940                                                        ;A7AC18;
     RTL                                                                  ;A7AC1C;
@@ -3805,7 +3805,7 @@ Function_Kraid_KraidGetsBig_FadeInRoomBackground:
     LDA.W #$0120                                                         ;A7AE76;
     STA.L $7E781E                                                        ;A7AE79;
     LDA.W #Function_KraidFoot_Phase2Setup_WalkToStartingPoint            ;A7AE7D;
-    STA.W $10E8                                                          ;A7AE80;
+    STA.W KraidPart.function+$140                                                          ;A7AE80;
     LDA.W #$0001                                                         ;A7AE83;
     STA.W $10D4                                                          ;A7AE86;
     LDA.W #InstList_KraidFoot_KraidIsBig_WalkingBackwards_0              ;A7AE89;
@@ -3817,9 +3817,9 @@ Function_Kraid_KraidGetsBig_FadeInRoomBackground:
 EnableKraidLints:
     STA.W $0FB2,X                                                        ;A7AE90;
     LDA.W #Function_KraidNail_HorizontallyAlignEnemyToKraid              ;A7AE93;
-    STA.W $0FA8,X                                                        ;A7AE96;
+    STA.W KraidNail.function,X                                                        ;A7AE96;
     LDA.W #Function_KraidLint_ProduceLint                                ;A7AE99;
-    STA.L $7E7800,X                                                      ;A7AE9C;
+    STA.L KraidPart.nextFunction,X                                                      ;A7AE9C;
     STZ.W $0FAA,X                                                        ;A7AEA0;
     RTS                                                                  ;A7AEA3;
 
@@ -5000,7 +5000,7 @@ MainAI_KraidLintCommon:
     CLC                                                                  ;A7B828;
     ADC.W #$00E0                                                         ;A7B829;
     STA.B $12                                                            ;A7B82C;
-    JMP.W ($0FA8,X)                                                      ;A7B82E;
+    JMP.W (KraidPart.function,X)                                                      ;A7B82E;
 
 
 RTL_A7B831:
@@ -5026,7 +5026,7 @@ Function_KraidLint_ProduceLint:
     CMP.W #$0020                                                         ;A7B856;
     BMI .return                                                          ;A7B859;
     LDA.W #Function_KraidLint_ChargeLint                                 ;A7B85B;
-    STA.W $0FA8,X                                                        ;A7B85E;
+    STA.W KraidPart.function,X                                                        ;A7B85E;
     LDA.W #$001E                                                         ;A7B861;
     STA.W $0FB2,X                                                        ;A7B864;
 
@@ -5054,7 +5054,7 @@ Function_KraidLint_ChargeLint:
     DEC.W $0FB2,X                                                        ;A7B888;
     BNE .return                                                          ;A7B88B;
     LDA.W #Function_KraidLint_FireLint                                   ;A7B88D;
-    STA.W $0FA8,X                                                        ;A7B890;
+    STA.W KraidPart.function,X                                                        ;A7B890;
     LDA.W #$001F                                                         ;A7B893;
     JSL.L QueueSound_Lib3_Max6                                           ;A7B896;
 
@@ -5086,7 +5086,7 @@ Function_KraidLint_FireLint:
     ORA.W #$0100                                                         ;A7B8C6;
     STA.W $0F86,X                                                        ;A7B8C9;
     LDA.W #Function_KraidNail_HorizontallyAlignEnemyToKraid              ;A7B8CC;
-    STA.W $0FA8,X                                                        ;A7B8CF;
+    STA.W KraidNail.function,X                                                        ;A7B8CF;
     LDA.W #$012C                                                         ;A7B8D2;
     STA.W $0FB2,X                                                        ;A7B8D5;
     LDA.W #Function_KraidLint_ProduceLint                                ;A7B8D8;
@@ -5120,7 +5120,7 @@ Function_KraidNail_WaitUntilTopLintXPosition100Plus:
     CMP.W #$0100                                                         ;A7B90A;
     BMI .return                                                          ;A7B90D;
     LDA.L $7E7800,X                                                      ;A7B90F;
-    STA.W $0FA8,X                                                        ;A7B913;
+    STA.W KraidPart.function,X                                                        ;A7B913;
     LDA.W $0F86,X                                                        ;A7B916;
     AND.W #$FEFF                                                         ;A7B919; >.< #$FAFF
     AND.W #$FBFF                                                         ;A7B91C;
@@ -5154,12 +5154,12 @@ Function_Kraid_HandleFunctionTimer:
 ;;; $B93F: Kraid foot function - start retreat ;;;
 Function_KraidFoot_StartRetreat:
     LDX.W $0E54                                                          ;A7B93F;
-    LDA.W $0FB2,X                                                        ;A7B942;
+    LDA.W KraidPart.functionTimer,X                                                        ;A7B942;
     BEQ .return                                                          ;A7B945;
-    DEC.W $0FB2,X                                                        ;A7B947;
+    DEC.W KraidPart.functionTimer,X                                                        ;A7B947;
     BNE .return                                                          ;A7B94A;
-    LDA.L $7E7800,X                                                      ;A7B94C;
-    STA.W $0FA8,X                                                        ;A7B950;
+    LDA.L KraidPart.nextFunction,X                                                      ;A7B94C;
+    STA.W KraidPart.function,X                                                        ;A7B950;
     LDA.W #InstList_KraidFoot_KraidIsBig_WalkingBackwards_0              ;A7B953;
     STA.W $0F92,X                                                        ;A7B956;
     LDA.W #$0001                                                         ;A7B959;
@@ -5279,7 +5279,7 @@ MainAI_KraidFoot:
 
 +   STA.W $10C6                                                          ;A7BA24;
     LDX.W $0E54                                                          ;A7BA27;
-    JMP.W ($10E8)                                                        ;A7BA2A;
+    JMP.W (KraidPart.function+$140)                                                        ;A7BA2A;
 
 
 ;;; $BA2D: RTL. Kraid foot function ;;;
@@ -5372,7 +5372,7 @@ SetKraidWalkingBackwards:
     TYA                                                                  ;A7BB11;
     STA.L $7E7940                                                        ;A7BB12;
     LDA.W #Function_KraidFoot_Phase2_WalkingBackward                     ;A7BB16;
-    STA.W $10E8                                                          ;A7BB19;
+    STA.W KraidPart.function+$140                                                          ;A7BB19;
     LDA.W #$0001                                                         ;A7BB1C;
     STA.W $10D4                                                          ;A7BB1F;
     LDA.W #InstList_KraidFoot_KraidIsBig_WalkingBackwards_0              ;A7BB22;
@@ -5386,7 +5386,7 @@ SetKraidWalkingForwards:
     TYA                                                                  ;A7BB2D;
     STA.L $7E7940                                                        ;A7BB2E;
     LDA.W #Function_KraidFoot_Phase2_WalkingForward                      ;A7BB32;
-    STA.W $10E8                                                          ;A7BB35;
+    STA.W KraidPart.function+$140                                                          ;A7BB35;
     LDA.W #$0001                                                         ;A7BB38;
     STA.W $10D4                                                          ;A7BB3B;
     LDA.W #InstList_KraidFoot_KraidIsBig_WalkingForward_0                ;A7BB3E;
@@ -5407,7 +5407,7 @@ Function_KraidFoot_Phase2_WalkingBackward:
     CMP.W #InstList_KraidFoot_KraidIsBig_WalkingBackwards_1              ;A7BB56;
     BMI .return                                                          ;A7BB59;
     LDA.W #Function_KraidFoot_Phase2_Thinking                            ;A7BB5B;
-    STA.W $10E8                                                          ;A7BB5E;
+    STA.W KraidPart.function+$140                                                          ;A7BB5E;
     LDA.W #$0001                                                         ;A7BB61;
     STA.W $10D4                                                          ;A7BB64;
     LDA.W #InstList_KraidFoot_KraidIsBig_Neutral                         ;A7BB67;
@@ -5430,7 +5430,7 @@ Function_KraidFoot_Phase2Setup_WalkToStartingPoint:
     CMP.W #InstList_KraidFoot_KraidIsBig_WalkingBackwards_1              ;A7BB7F;
     BMI .return                                                          ;A7BB82;
     LDA.W #Function_Kraid_HandleFunctionTimer                            ;A7BB84;
-    STA.W $10E8                                                          ;A7BB87;
+    STA.W KraidPart.function+$140                                                          ;A7BB87;
     LDA.W #$00B4                                                         ;A7BB8A;
     STA.W $10F2                                                          ;A7BB8D;
     LDA.W #Function_KraidFoot_Phase2Setup_InitializePhase2               ;A7BB90;
@@ -5462,7 +5462,7 @@ Function_KraidFoot_Phase2_WalkingForward:
     CMP.W #InstList_KraidFoot_KraidIsBig_WalkingForward_1                ;A7BBBD;
     BNE .return                                                          ;A7BBC0;
     LDA.W #Function_KraidFoot_Phase2_Thinking                            ;A7BBC2;
-    STA.W $10E8                                                          ;A7BBC5;
+    STA.W KraidPart.function+$140                                                          ;A7BBC5;
     LDA.W #$0001                                                         ;A7BBC8;
     STA.W $10D4                                                          ;A7BBCB;
     LDA.W #InstList_KraidFoot_KraidIsBig_Neutral                         ;A7BBCE;
@@ -5551,7 +5551,7 @@ UNUSED_KraidFoot_LungeForwardIfSamusIsNotInvincible_A7BC75:
     LDA.W $18A8                                                          ;A7BC7D;
     BEQ .lunge                                                           ;A7BC80;
     LDA.W #Function_KraidFoot_Phase2_WalkingBackward                     ;A7BC82;
-    STA.W $10E8                                                          ;A7BC85;
+    STA.W KraidPart.function+$140                                                          ;A7BC85;
     LDA.W $0911                                                          ;A7BC88;
     CLC                                                                  ;A7BC8B;
     ADC.W #$0120                                                         ;A7BC8C;
@@ -5580,7 +5580,7 @@ UNUSED_KraidFoot_LungeForwardIfSamusIsNotInvincible_A7BC75:
 UNUSED_Kraid_FireLintAfterAFrames_A7BCB5:
     STA.W $0FB2,X                                                        ;A7BCB5;
     LDA.W #Function_KraidNail_HorizontallyAlignEnemyToKraid              ;A7BCB8;
-    STA.W $0FA8,X                                                        ;A7BCBB;
+    STA.W KraidNail.function,X                                                        ;A7BCBB;
     LDA.W #Function_KraidLint_FireLint                                   ;A7BCBE;
     STA.L $7E7800,X                                                      ;A7BCC1;
     LDA.W $0F86,X                                                        ;A7BCC5;
@@ -5722,7 +5722,7 @@ Function_KraidNail_Initialize:
     LDA.W #InstList_KraidNail                                            ;A7BDB3;
     STA.W $0F92,X                                                        ;A7BDB6;
     LDA.W #Function_KraidNail_Fire                                       ;A7BDB9;
-    STA.W $0FA8,X                                                        ;A7BDBC;
+    STA.W KraidNail.function,X                                                        ;A7BDBC;
     LDA.W $05E5                                                          ;A7BDBF;
     BIT.W #$0001                                                         ;A7BDC2;
     BNE .horizontal                                                      ;A7BDC5;
@@ -5767,7 +5767,7 @@ Function_KraidNail_Initialize:
     LDA.W #$0000                                                         ;A7BE21;
     STA.W $0FB0,X                                                        ;A7BE24;
     LDA.W #Function_KraidNail_WaitUntilTopLintXPosition100Plus           ;A7BE27;
-    STA.W $0FA8,X                                                        ;A7BE2A;
+    STA.W KraidNail.function,X                                                        ;A7BE2A;
     LDA.W #Function_KraidNail_Fire                                       ;A7BE2D;
     STA.L $7E7800,X                                                      ;A7BE30;
     LDA.W $0F86,X                                                        ;A7BE34;
@@ -5912,7 +5912,7 @@ Function_KraidFoot_Phase1_PrepareToLungeForward:
     LDA.W #InstList_KraidFoot_LungeForward_0                             ;A7BF4A;
     STA.W $10D2                                                          ;A7BF4D;
     LDA.W #Function_KraidFoot_Phase1_LungeForward                        ;A7BF50;
-    STA.W $10E8                                                          ;A7BF53;
+    STA.W KraidPart.function+$140                                                          ;A7BF53;
     LDA.W #$0000                                                         ;A7BF56;
     STA.W $10F2                                                          ;A7BF59;
 
@@ -5945,7 +5945,7 @@ Function_KraidFoot_Phase1_LungeForward:
     LDA.W #Function_KraidFoot_Phase1_RetreatFromLunge                    ;A7BF8B;
     STA.L $7E7940                                                        ;A7BF8E;
     LDA.W #Function_KraidFoot_StartRetreat                               ;A7BF92;
-    STA.W $10E8                                                          ;A7BF95;
+    STA.W KraidPart.function+$140                                                          ;A7BF95;
     LDA.W #$0001                                                         ;A7BF98;
     STA.W $10F2                                                          ;A7BF9B;
     LDA.W #$0001                                                         ;A7BF9E;
@@ -5988,7 +5988,7 @@ Function_KraidFoot_Phase1_RetreatFromLunge:
     LDA.W #InstList_KraidFoot_KraidIsBig_Neutral                         ;A7BFEB;
     STA.W $10D2                                                          ;A7BFEE;
     LDA.W #Function_KraidFoot_Phase1_Thinking                            ;A7BFF1;
-    STA.W $10E8                                                          ;A7BFF4;
+    STA.W KraidPart.function+$140                                                          ;A7BFF4;
     LDA.W #$012C                                                         ;A7BFF7;
     STA.W $10F2                                                          ;A7BFFA;
     LDA.W #Function_KraidFoot_Phase1_PrepareToLungeForward               ;A7BFFD;
@@ -6057,7 +6057,7 @@ HandleKraidPhase1:
     LDA.W #$0001                                                         ;A7C064;
     STA.W $10D4                                                          ;A7C067;
     LDA.W #RTL_A7BA2D                                                    ;A7C06A;
-    STA.W $10E8                                                          ;A7C06D;
+    STA.W KraidPart.function+$140                                                          ;A7C06D;
     LDA.W #InstList_KraidArm_Normal_0                                    ;A7C070;
     STA.W $0FD2                                                          ;A7C073;
     LDA.W #$0001                                                         ;A7C076;
@@ -6635,7 +6635,7 @@ KraidDeath_UpdateBG2TilemapBottomHalf:
     LDA.W #$0001                                                         ;A7C50E;
     STA.W $10D4                                                          ;A7C511;
     LDA.W #RTL_A7BA2D                                                    ;A7C514;
-    STA.W $10E8                                                          ;A7C517;
+    STA.W KraidPart.function+$140                                                          ;A7C517;
     JMP.W UpdateBG2TilemapBottomHalf                                     ;A7C51A;
 
 
@@ -7223,7 +7223,7 @@ Function_Kraid_RaiseThruFloor_RaiseKraid:
     LDA.W #$00B0                                                         ;A7C966;
     STA.W $0F7A                                                          ;A7C969;
     LDA.W #Function_KraidFoot_Phase1_Thinking                            ;A7C96C;
-    STA.W $10E8                                                          ;A7C96F;
+    STA.W KraidPart.function+$140                                                          ;A7C96F;
     LDA.W #$012C                                                         ;A7C972;
     STA.W $10F2                                                          ;A7C975;
     LDA.W #Function_KraidFoot_Phase1_PrepareToLungeForward               ;A7C978;

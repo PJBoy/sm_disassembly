@@ -3151,7 +3151,7 @@ skip 2
   .hurtFrameTimer: skip 2 ; $7E782C
 endstruct
 
-struct KraidTopLint $0FA8
+struct KraidPart $0FA8
   .function: skip 2 ; $0FA8
   .spawningXSpeed: skip 2 ; $0FAA
   .XAdditionalSpawningVelocity: skip 2 ; $0FAC
@@ -3159,35 +3159,6 @@ skip 4
   .functionTimer: skip 2 ; $0FB2
 skip $7DE84C
   .nextFunction: skip 2 ; $7E7800
-endstruct
-
-struct KraidMiddleLint $0FA8
-  .function: skip 2 ; $0FA8
-  .spawningXSpeed: skip 2 ; $0FAA
-  .XAdditionalSpawningVelocity: skip 2 ; $0FAC
-skip 4
-  .functionTimer: skip 2 ; $0FB2
-skip $7DE84C
-  .nextFunction: skip 2 ; $7E7800
-endstruct
-
-struct KraidBottomLint $7E7800
-  .function: skip 2 ; $0FA8
-  .spawningXSpeed: skip 2 ; $0FAA
-  .XAdditionalSpawningVelocity: skip 2 ; $0FAC
-skip 4
-  .functionTimer: skip 2 ; $0FB2
-skip $7DE84C
-  .nextFunction: skip 2 ; $7E7800
-endstruct
-
-struct KraidFoot $0FA8
-  .function: skip 2 ; $0FA8
-skip 8
-  .functionTimer: skip 2 ; $0FB2
-skip $7DE84C
-  .nextFunction: skip 0 ; $7E7800
-  .thinkingTimer: skip 2 ; $7E7800
 endstruct
 
 struct KraidNail $0FA8
@@ -3200,20 +3171,7 @@ struct KraidNail $0FA8
 skip $7DE84C
   .nextFunction: skip 0 ; $7E7800
 skip 12
-  .orientation: skip 2 ; $7E7800
-endstruct
-
-struct KraidNailBad $0FA8
-  .function: skip 2 ; $0FA8
-  .XSubVelocity: skip 2 ; $0FAA
-  .XVelocity: skip 2 ; $0FAC
-  .YSubVelocity: skip 2 ; $0FAE
-  .YVelocity: skip 2 ; $0FB0
-  .functionTimer: skip 2 ; $0FB2
-skip $7DE84C
-  .nextFunction: skip 0 ; $7E7800
-skip 12
-  .orientation: skip 2 ; $7E7800
+  .orientation: skip 2 ; $7E780E
 endstruct
 
 struct PhantoonBody $0FA8
