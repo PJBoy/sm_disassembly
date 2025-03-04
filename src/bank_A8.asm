@@ -737,10 +737,10 @@ Instruction_Evir_AdvanceRegenerationXOffset:
 Instruction_Evir_FinishRegeneration:
     LDX.W $0E54                                                          ;A887CB;
     LDA.W #$0000                                                         ;A887CE;
-    STA.L $7E7818,X                                                      ;A887D1;
-    STA.L $7E7816,X                                                      ;A887D5;
+    STA.L Evir.regenerationFlag,X                                        ;A887D1;
+    STA.L Evir.movingFlag,X                                              ;A887D5;
     LDA.W #Function_EvirProjectile_Idle                                  ;A887D9;
-    STA.W $0FAC,X                                                        ;A887DC;
+    STA.W Evir.function,X                                                ;A887DC;
     RTL                                                                  ;A887DF;
 
 
@@ -757,17 +757,17 @@ InitAI_Evir:
     ASL A                                                                ;A887F3;
     TAY                                                                  ;A887F4;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing,Y                         ;A887F5;
-    STA.L $7E7808,X                                                      ;A887F8;
+    STA.L Evir.downVelocity,X                                            ;A887F8;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+2,Y                       ;A887FC;
-    STA.L $7E7806,X                                                      ;A887FF;
+    STA.L Evir.downSubVelocity,X                                         ;A887FF;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+4,Y                       ;A88803;
-    STA.L $7E780C,X                                                      ;A88806;
+    STA.L Evir.upVelocity,X                                              ;A88806;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+6,Y                       ;A8880A;
-    STA.L $7E780A,X                                                      ;A8880D;
+    STA.L Evir.upSubVelocity,X                                           ;A8880D;
     LDA.W $0FB7,Y                                                        ;A88811;
     AND.W #$00FF                                                         ;A88814;
     LSR A                                                                ;A88817;
-    STA.W $0FB0,X                                                        ;A88818;
+    STA.W Evir.movementTimer,X                                           ;A88818;
     BRA +                                                                ;A8881B;
 
   .nonZeroParam1:
@@ -776,10 +776,10 @@ InitAI_Evir:
     STA.W $0F9A,X                                                        ;A88823;
 
 +   LDA.W #$0000                                                         ;A88826;
-    STA.L $7E7800,X                                                      ;A88829;
-    STA.L $7E7802,X                                                      ;A8882D;
+    STA.L Evir.movementDirection,X                                       ;A88829;
+    STA.L Evir.instList,X                                                ;A8882D;
     LDA.W #Function_Evir_HandleBodyArms                                  ;A88831;
-    STA.W $0FAC,X                                                        ;A88834;
+    STA.W Evir.function,X                                                ;A88834;
     RTL                                                                  ;A88837;
 
 
@@ -789,19 +789,19 @@ SetEvirFacingDirection:
     JSL.L Get_SamusX_minus_EnemyX                                        ;A8883B;
     BPL .SamusToTheRight                                                 ;A8883F;
     LDA.W #$0000                                                         ;A88841;
-    STA.W $0FAA,X                                                        ;A88844;
+    STA.W Evir.facingDirection,X                                         ;A88844;
     BRA +                                                                ;A88847;
 
   .SamusToTheRight:
     LDA.W #$0001                                                         ;A88849;
-    STA.W $0FAA,X                                                        ;A8884C;
+    STA.W Evir.facingDirection,X                                         ;A8884C;
 
 +   LDA.W #InstList_Evir_Body_FacingLeft                                 ;A8884F;
-    STA.L $7E7804,X                                                      ;A88852;
-    LDA.W $0FAA,X                                                        ;A88856;
+    STA.L Evir.newInstList,X                                             ;A88852;
+    LDA.W Evir.facingDirection,X                                         ;A88856;
     BEQ .keepLeft                                                        ;A88859;
     LDA.W #InstList_Evir_Body_FacingRight                                ;A8885B;
-    STA.L $7E7804,X                                                      ;A8885E;
+    STA.L Evir.newInstList,X                                             ;A8885E;
 
   .keepLeft:
     JSR.W SetEvirInstList                                                ;A88862;
@@ -812,7 +812,7 @@ SetEvirFacingDirection:
 HandleEvirArms:
     LDX.W $0E54                                                          ;A88866;
     LDA.W $0F6A,X                                                        ;A88869;
-    STA.W $0FAA,X                                                        ;A8886C;
+    STA.W Evir.facingDirection,X                                         ;A8886C;
     BNE .facingRight                                                     ;A8886F;
     LDA.W $0F3A,X                                                        ;A88871;
     SEC                                                                  ;A88874;
@@ -823,7 +823,7 @@ HandleEvirArms:
     ADC.W #$000A                                                         ;A8887F;
     STA.W $0F7E,X                                                        ;A88882;
     LDA.W #InstList_Evir_Arms_FacingLeft                                 ;A88885;
-    STA.L $7E7804,X                                                      ;A88888;
+    STA.L Evir.newInstList,X                                             ;A88888;
     JSR.W SetEvirInstList                                                ;A8888C;
     BRA .return                                                          ;A8888F;
 
@@ -837,7 +837,7 @@ HandleEvirArms:
     ADC.W #$000A                                                         ;A8889F;
     STA.W $0F7E,X                                                        ;A888A2;
     LDA.W #InstList_Evir_Arms_FacingRight                                ;A888A5;
-    STA.L $7E7804,X                                                      ;A888A8;
+    STA.L Evir.newInstList,X                                             ;A888A8;
     JSR.W SetEvirInstList                                                ;A888AC;
 
   .return:
@@ -848,7 +848,7 @@ HandleEvirArms:
 InitAI_EvirProjectile:
     LDX.W $0E54                                                          ;A888B0;
     LDA.W #InstList_Evir_Projectile_Normal                               ;A888B3;
-    STA.L $7E7804,X                                                      ;A888B6;
+    STA.L Evir.newInstList,X                                             ;A888B6;
     JSR.W SetEvirInstList                                                ;A888BA;
     LDA.W $0F16,X                                                        ;A888BD;
     STA.W $0F96,X                                                        ;A888C0;
@@ -856,12 +856,12 @@ InitAI_EvirProjectile:
     STA.W $0F98,X                                                        ;A888C6;
     JSR.W ResetEvirProjectilePosition                                    ;A888C9;
     LDA.W #$0000                                                         ;A888CC;
-    STA.L $7E7802,X                                                      ;A888CF;
-    STA.L $7E7818,X                                                      ;A888D3;
-    STA.L $7E7816,X                                                      ;A888D7;
+    STA.L Evir.instList,X                                                ;A888CF;
+    STA.L Evir.regenerationFlag,X                                        ;A888D3;
+    STA.L Evir.movingFlag,X                                              ;A888D7;
     STA.W $0FB2,X                                                        ;A888DB;
     LDA.W #Function_EvirProjectile_Idle                                  ;A888DE;
-    STA.W $0FAC,X                                                        ;A888E1;
+    STA.W Evir.function,X                                                ;A888E1;
     RTL                                                                  ;A888E4;
 
 
@@ -869,7 +869,7 @@ InitAI_EvirProjectile:
 ResetEvirProjectilePosition:
     LDX.W $0E54                                                          ;A888E5;
     LDA.W $0F2A,X                                                        ;A888E8;
-    STA.W $0FAA,X                                                        ;A888EB;
+    STA.W Evir.facingDirection,X                                         ;A888EB;
     BNE .notUp                                                           ;A888EE;
     LDA.W $0EFA,X                                                        ;A888F0;
     SEC                                                                  ;A888F3;
@@ -898,7 +898,7 @@ ResetEvirProjectilePosition:
 ;;; $891B: Main AI - enemy $E63F (evir) ;;;
 MainAI_Evir:
     LDX.W $0E54                                                          ;A8891B;
-    JSR.W ($0FAC,X)                                                      ;A8891E;
+    JSR.W (Evir.function,X)                                              ;A8891E;
     RTL                                                                  ;A88921;
 
 
@@ -925,15 +925,15 @@ HandleEvirBody:
     JSR.W SetEvirFacingDirection                                         ;A8893C;
 
   .directionChosen:
-    LDA.L $7E7800,X                                                      ;A8893F;
+    LDA.L Evir.movementDirection,X                                       ;A8893F;
     BNE .sinking                                                         ;A88943;
     LDA.W $0F7E,X                                                        ;A88945;
     CLC                                                                  ;A88948;
-    ADC.L $7E780C,X                                                      ;A88949;
+    ADC.L Evir.upVelocity,X                                              ;A88949;
     STA.W $0F7E,X                                                        ;A8894D;
     LDA.W $0F80,X                                                        ;A88950;
     CLC                                                                  ;A88953;
-    ADC.L $7E780A,X                                                      ;A88954;
+    ADC.L Evir.upSubVelocity,X                                           ;A88954;
     BCC .storeYSubPosition                                               ;A88958;
     INC.W $0F7E,X                                                        ;A8895A;
 
@@ -944,25 +944,25 @@ HandleEvirBody:
   .sinking:
     LDA.W $0F7E,X                                                        ;A88962;
     CLC                                                                  ;A88965;
-    ADC.L $7E7808,X                                                      ;A88966;
+    ADC.L Evir.downVelocity,X                                            ;A88966;
     STA.W $0F7E,X                                                        ;A8896A;
     LDA.W $0F80,X                                                        ;A8896D;
     CLC                                                                  ;A88970;
-    ADC.L $7E7806,X                                                      ;A88971;
+    ADC.L Evir.downSubVelocity,X                                         ;A88971;
     BCC ..storeYSubPosition                                              ;A88975;
     INC.W $0F7E,X                                                        ;A88977;
 
   ..storeYSubPosition:
     STA.W $0F80,X                                                        ;A8897A;
 
-+   DEC.W $0FB0,X                                                        ;A8897D;
++   DEC.W Evir.movementTimer,X                                           ;A8897D;
     BPL .return                                                          ;A88980;
     LDA.W $0FB7,X                                                        ;A88982;
     AND.W #$00FF                                                         ;A88985;
-    STA.W $0FB0,X                                                        ;A88988;
-    LDA.L $7E7800,X                                                      ;A8898B;
+    STA.W Evir.movementTimer,X                                           ;A88988;
+    LDA.L Evir.movementDirection,X                                       ;A8898B;
     EOR.W #$0001                                                         ;A8898F;
-    STA.L $7E7800,X                                                      ;A88992;
+    STA.L Evir.movementDirection,X                                       ;A88992;
 
   .return:
     RTS                                                                  ;A88996;
@@ -980,19 +980,19 @@ MainAI_EvirProjectile:
     LDX.W $0E54                                                          ;A8899E;
     LDA.W $0F9E,X                                                        ;A889A1;
     BNE .merge                                                           ;A889A4;
-    LDA.L $7E7816,X                                                      ;A889A6;
+    LDA.L Evir.movingFlag,X                                              ;A889A6;
     BEQ .angleInitialized                                                ;A889AA;
-    LDA.W $0FAA,X                                                        ;A889AC; >_<
+    LDA.W Evir.facingDirection,X                                         ;A889AC; >_<
     LDA.W #InstList_Evir_Projectile_Normal                               ;A889AF;
-    STA.L $7E7804,X                                                      ;A889B2;
+    STA.L Evir.newInstList,X                                             ;A889B2;
     JSR.W SetEvirInstList                                                ;A889B6;
     BRA .merge                                                           ;A889B9;
 
   .angleInitialized:
-    LDA.L $7E7818,X                                                      ;A889BB;
+    LDA.L Evir.regenerationFlag,X                                        ;A889BB;
     BEQ .doneSpawning                                                    ;A889BF;
     LDA.W #InstList_Evir_Projectile_Regenerating_0                       ;A889C1;
-    STA.L $7E7804,X                                                      ;A889C4;
+    STA.L Evir.newInstList,X                                             ;A889C4;
     JSR.W SetEvirInstList                                                ;A889C8;
     BRA .merge                                                           ;A889CB;
 
@@ -1000,7 +1000,7 @@ MainAI_EvirProjectile:
     JSR.W ShootEvirProjectileAtSamus                                     ;A889CD;
 
   .merge:
-    JSR.W ($0FAC,X)                                                      ;A889D0;
+    JSR.W (Evir.function,X)                                              ;A889D0;
     RTL                                                                  ;A889D3;
 
 
@@ -1023,21 +1023,21 @@ ShootEvirProjectileAtSamus:
     INC A                                                                ;A889F9;
     STA.B $16                                                            ;A889FA;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;A889FC;
-    STA.L $7E780E,X                                                      ;A88A00;
+    STA.L Evir.XVelocity,X                                               ;A88A00;
     LDA.W $0E38                                                          ;A88A04;
-    STA.L $7E7810,X                                                      ;A88A07;
+    STA.L Evir.XSubVelocity,X                                            ;A88A07;
     LDA.B $16                                                            ;A88A0B;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A88A0D;
-    STA.L $7E7812,X                                                      ;A88A11;
+    STA.L Evir.YVelocity,X                                               ;A88A11;
     LDA.W $0E38                                                          ;A88A15;
-    STA.L $7E7814,X                                                      ;A88A18;
+    STA.L Evir.YSubVelocity,X                                            ;A88A18;
     LDA.W #InstList_Evir_Projectile_Normal                               ;A88A1C;
-    STA.L $7E7804,X                                                      ;A88A1F;
+    STA.L Evir.newInstList,X                                             ;A88A1F;
     JSR.W SetEvirInstList                                                ;A88A23;
     LDA.W #$0001                                                         ;A88A26;
-    STA.L $7E7816,X                                                      ;A88A29;
+    STA.L Evir.movingFlag,X                                              ;A88A29;
     LDA.W #Function_EvirProjectile_Moving                                ;A88A2D;
-    STA.W $0FAC,X                                                        ;A88A30;
+    STA.W Evir.function,X                                                ;A88A30;
 
   .return:
     RTS                                                                  ;A88A33;
@@ -1056,22 +1056,22 @@ Function_EvirProjectile_Moving:
     JSR.W StartEvirProjectileRegeneratingIfFarOffScreen                  ;A88A3E;
     LDA.W $0F7A,X                                                        ;A88A41;
     CLC                                                                  ;A88A44;
-    ADC.L $7E780E,X                                                      ;A88A45;
+    ADC.L Evir.XVelocity,X                                               ;A88A45;
     STA.W $0F7A,X                                                        ;A88A49;
     LDA.W $0F7C,X                                                        ;A88A4C;
     CLC                                                                  ;A88A4F;
-    ADC.L $7E7810,X                                                      ;A88A50;
+    ADC.L Evir.XSubVelocity,X                                            ;A88A50;
     BCC +                                                                ;A88A54;
     INC.W $0F7A,X                                                        ;A88A56;
 
 +   STA.W $0F7C,X                                                        ;A88A59;
     LDA.W $0F7E,X                                                        ;A88A5C;
     CLC                                                                  ;A88A5F;
-    ADC.L $7E7812,X                                                      ;A88A60;
+    ADC.L Evir.YVelocity,X                                               ;A88A60;
     STA.W $0F7E,X                                                        ;A88A64;
     LDA.W $0F80,X                                                        ;A88A67;
     CLC                                                                  ;A88A6A;
-    ADC.L $7E7814,X                                                      ;A88A6B;
+    ADC.L Evir.YSubVelocity,X                                            ;A88A6B;
     BCC +                                                                ;A88A6F;
     INC.W $0F7E,X                                                        ;A88A71;
 
@@ -1084,16 +1084,16 @@ Function_EvirProjectile_Regenerating:
     LDX.W $0E54                                                          ;A88A78;
     LDA.W $0F1E,X                                                        ;A88A7B;
     BNE .return                                                          ;A88A7E;
-    LDA.L $7E7818,X                                                      ;A88A80;
+    LDA.L Evir.regenerationFlag,X                                        ;A88A80;
     BNE .notRegenerating                                                 ;A88A84;
     LDA.W #InstList_Evir_Projectile_Normal                               ;A88A86;
-    STA.L $7E7804,X                                                      ;A88A89;
+    STA.L Evir.newInstList,X                                             ;A88A89;
     JSR.W SetEvirInstList                                                ;A88A8D;
     LDA.W #$0000                                                         ;A88A90;
-    STA.L $7E7818,X                                                      ;A88A93;
-    STA.L $7E7816,X                                                      ;A88A97;
+    STA.L Evir.regenerationFlag,X                                        ;A88A93;
+    STA.L Evir.movingFlag,X                                              ;A88A97;
     LDA.W #Function_EvirProjectile_Idle                                  ;A88A9B;
-    STA.W $0FAC,X                                                        ;A88A9E;
+    STA.W Evir.function,X                                                ;A88A9E;
     BRA .return                                                          ;A88AA1;
 
   .notRegenerating:
@@ -1116,15 +1116,15 @@ StartEvirProjectileRegeneratingIfFarOffScreen:
     LDA.W $0F1E,X                                                        ;A88ABD;
     BNE .return                                                          ;A88AC0;
     LDA.W #$0000                                                         ;A88AC2;
-    STA.L $7E7816,X                                                      ;A88AC5;
+    STA.L Evir.movingFlag,X                                              ;A88AC5;
     LDA.W #$0001                                                         ;A88AC9;
-    STA.L $7E7818,X                                                      ;A88ACC;
+    STA.L Evir.regenerationFlag,X                                        ;A88ACC;
     LDA.W #Function_EvirProjectile_Regenerating                          ;A88AD0;
-    STA.W $0FAC,X                                                        ;A88AD3;
+    STA.W Evir.function,X                                                ;A88AD3;
     LDA.W #$0001                                                         ;A88AD6;
-    STA.L $7E7818,X                                                      ;A88AD9;
+    STA.L Evir.regenerationFlag,X                                        ;A88AD9;
     LDA.W #InstList_Evir_Projectile_Regenerating_0                       ;A88ADD;
-    STA.L $7E7804,X                                                      ;A88AE0;
+    STA.L Evir.newInstList,X                                             ;A88AE0;
     JSR.W SetEvirInstList                                                ;A88AE4;
 
   .return:
@@ -1134,11 +1134,11 @@ StartEvirProjectileRegeneratingIfFarOffScreen:
 ;;; $8AE8: Set evir instruction list ;;;
 SetEvirInstList:
     LDX.W $0E54                                                          ;A88AE8;
-    LDA.L $7E7804,X                                                      ;A88AEB;
-    CMP.L $7E7802,X                                                      ;A88AEF;
+    LDA.L Evir.newInstList,X                                             ;A88AEB;
+    CMP.L Evir.instList,X                                                ;A88AEF;
     BEQ .return                                                          ;A88AF3;
     STA.W $0F92,X                                                        ;A88AF5;
-    STA.L $7E7802,X                                                      ;A88AF8;
+    STA.L Evir.instList,X                                                ;A88AF8;
     LDA.W #$0001                                                         ;A88AFC;
     STA.W $0F94,X                                                        ;A88AFF;
     STZ.W $0F90,X                                                        ;A88B02;
@@ -1625,7 +1625,7 @@ InitAI_Eye:
     LDA.W $0FB6,X                                                        ;A89073;
     BMI .mountPart                                                       ;A89076;
     LDA.W #Function_Eye_WaitForSamusToGetNear                            ;A89078;
-    STA.W $0FB2,X                                                        ;A8907B;
+    STA.W Eye.function,X                                                 ;A8907B;
     LDA.W $0FB4,X                                                        ;A8907E;
     BIT.W #$0001                                                         ;A89081;
     BEQ .facingRight                                                     ;A89084;
@@ -1651,7 +1651,7 @@ InitAI_Eye:
     ADC.W .YOffsets,Y                                                    ;A890A9;
     STA.W $0F7E,X                                                        ;A890AC;
     LDA.W #RTL_A891DC                                                    ;A890AF;
-    STA.W $0FB2,X                                                        ;A890B2;
+    STA.W Eye.function,X                                                 ;A890B2;
     LDA.W .instListPointers,Y                                            ;A890B5;
     STA.W $0F92,X                                                        ;A890B8;
     LDX.W #$01FE                                                         ;A890BB;
@@ -1685,7 +1685,7 @@ MainAI_Eye:
     LDA.W $09A4                                                          ;A890E5;
     BIT.W #$0004                                                         ;A890E8;
     BEQ .return                                                          ;A890EB;
-    JMP.W ($0FB2,X)                                                      ;A890ED;
+    JMP.W (Eye.function,X)                                               ;A890ED;
 
   .return:
     RTL                                                                  ;A890F0;
@@ -1702,7 +1702,7 @@ Function_Eye_WaitForSamusToGetNear:
     TAY                                                                  ;A89102;
     BEQ .return                                                          ;A89103;
     LDA.W #$0020                                                         ;A89105;
-    STA.W $0FB0,X                                                        ;A89108;
+    STA.W Eye.functionTimer,X                                            ;A89108;
     LDA.W #$0001                                                         ;A8910B;
     STA.W $0F94,X                                                        ;A8910E;
     LDA.W $0FB4,X                                                        ;A89111;
@@ -1717,7 +1717,7 @@ Function_Eye_WaitForSamusToGetNear:
     STA.W $0F92,X                                                        ;A89124;
 
 +   LDA.W #Function_Eye_Activating                                       ;A89127;
-    STA.W $0FB2,X                                                        ;A8912A;
+    STA.W Eye.function,X                                                 ;A8912A;
 
   .return:
     RTL                                                                  ;A8912D;
@@ -1725,7 +1725,7 @@ Function_Eye_WaitForSamusToGetNear:
 
 ;;; $912E: Morph ball eye function - activating ;;;
 Function_Eye_Activating:
-    DEC.W $0FB0,X                                                        ;A8912E;
+    DEC.W Eye.functionTimer,X                                            ;A8912E;
     BEQ .timerExpired                                                    ;A89131;
     BPL .return                                                          ;A89133;
 
@@ -1734,7 +1734,7 @@ Function_Eye_Activating:
     JSL.L QueueSound_Lib2_Max6                                           ;A89138;
     JSL.L Spawn_MorphBallEyeBeam_HDMAObject                              ;A8913C;
     LDA.W #Function_Eye_Active                                           ;A89140;
-    STA.W $0FB2,X                                                        ;A89143;
+    STA.W Eye.function,X                                                 ;A89143;
     LDA.W $0AF6                                                          ;A89146;
     SEC                                                                  ;A89149;
     SBC.W $0F7A,X                                                        ;A8914A;
@@ -1744,7 +1744,7 @@ Function_Eye_Activating:
     SBC.W $0F7E,X                                                        ;A89153;
     STA.B $14                                                            ;A89156;
     JSL.L CalculateAngleOf_12_14_Offset                                  ;A89158;
-    STA.W $0FAE,X                                                        ;A8915C;
+    STA.W Eye.angle,X                                                    ;A8915C;
 
   .return:
     RTL                                                                  ;A8915F;
@@ -1764,9 +1764,9 @@ Function_Eye_Active:
   .notInProximity:
     LDA.W #$0071                                                         ;A89174;
     JSL.L QueueSound_Lib2_Max6                                           ;A89177;
-    STZ.W $0FAC,X                                                        ;A8917B;
+    STZ.W Eye.activatedFlag,X                                            ;A8917B;
     LDA.W #$0020                                                         ;A8917E;
-    STA.W $0FB0,X                                                        ;A89181;
+    STA.W Eye.functionTimer,X                                            ;A89181;
     LDA.W $0FB4,X                                                        ;A89184;
     BIT.W #$0001                                                         ;A89187;
     BEQ .zeroParam                                                       ;A8918A;
@@ -1779,7 +1779,7 @@ Function_Eye_Active:
     STA.W $0F92,X                                                        ;A89197;
 
 +   LDA.W #Function_Eye_Deactivating                                     ;A8919A;
-    STA.W $0FB2,X                                                        ;A8919D;
+    STA.W Eye.function,X                                                 ;A8919D;
     BRA .merge                                                           ;A891A0;
 
   .inProximity:
@@ -1792,7 +1792,7 @@ Function_Eye_Active:
     SBC.W $0F7E,X                                                        ;A891AF;
     STA.B $14                                                            ;A891B2;
     JSL.L CalculateAngleOf_12_14_Offset                                  ;A891B4;
-    STA.W $0FAE,X                                                        ;A891B8;
+    STA.W Eye.angle,X                                                    ;A891B8;
     AND.W #$00F0                                                         ;A891BB;
     LSR A                                                                ;A891BE;
     LSR A                                                                ;A891BF;
@@ -1808,13 +1808,13 @@ Function_Eye_Active:
 
 ;;; $91CE: Morph ball eye function - deactivating ;;;
 Function_Eye_Deactivating:
-    DEC.W $0FB0,X                                                        ;A891CE;
+    DEC.W Eye.functionTimer,X                                            ;A891CE;
     BEQ .timerExpired                                                    ;A891D1;
     BPL .return                                                          ;A891D3;
 
   .timerExpired:
     LDA.W #Function_Eye_WaitForSamusToGetNear                            ;A891D5;
-    STA.W $0FB2,X                                                        ;A891D8;
+    STA.W Eye.function,X                                                 ;A891D8;
 
   .return:
     RTL                                                                  ;A891DB;
@@ -2285,18 +2285,18 @@ Instruction_Fune_SpawnFireball_FacingRight:
 ;;; $9695: Instruction - finish activity ;;;
 Instruction_FuneNamihe_FinishActivity:
     LDX.W $0E54                                                          ;A89695;
-    LDA.W $0FA8,X                                                        ;A89698;
+    LDA.W FuneNamihe.instListPointersPointer,X                           ;A89698;
     INC A                                                                ;A8969B;
     INC A                                                                ;A8969C;
     INC A                                                                ;A8969D;
     INC A                                                                ;A8969E;
-    STA.W $0FA8,X                                                        ;A8969F;
+    STA.W FuneNamihe.instListPointersPointer,X                           ;A8969F;
     LDA.W #Function_Fune_WaitForTimer                                    ;A896A2;
-    STA.W $0FAA,X                                                        ;A896A5;
-    LDA.W $0FAE,X                                                        ;A896A8;
+    STA.W FuneNamihe.function,X                                          ;A896A5;
+    LDA.W FuneNamihe.variantIndex,X                                      ;A896A8;
     BEQ .return                                                          ;A896AB;
     LDA.W #Function_Namihe_WaitForSamusToGetNear                         ;A896AD;
-    STA.W $0FAA,X                                                        ;A896B0;
+    STA.W FuneNamihe.function,X                                          ;A896B0;
 
   .return:
     RTL                                                                  ;A896B3;
@@ -2306,18 +2306,18 @@ Instruction_FuneNamihe_FinishActivity:
 Instruction_FuneNamihe_FinishActivity_duplicate:
 ; Clone of Instruction_FuneNamihe_FinishActivity
     LDX.W $0E54                                                          ;A896B4;
-    LDA.W $0FA8,X                                                        ;A896B7;
+    LDA.W FuneNamihe.instListPointersPointer,X                           ;A896B7;
     INC A                                                                ;A896BA;
     INC A                                                                ;A896BB;
     INC A                                                                ;A896BC;
     INC A                                                                ;A896BD;
-    STA.W $0FA8,X                                                        ;A896BE;
+    STA.W FuneNamihe.instListPointersPointer,X                           ;A896BE;
     LDA.W #Function_Fune_WaitForTimer                                    ;A896C1;
-    STA.W $0FAA,X                                                        ;A896C4;
-    LDA.W $0FAE,X                                                        ;A896C7;
+    STA.W FuneNamihe.function,X                                          ;A896C4;
+    LDA.W FuneNamihe.variantIndex,X                                      ;A896C7;
     BEQ .return                                                          ;A896CA;
     LDA.W #Function_Namihe_WaitForSamusToGetNear                         ;A896CC;
-    STA.W $0FAA,X                                                        ;A896CF;
+    STA.W FuneNamihe.function,X                                          ;A896CF;
 
   .return:
     RTL                                                                  ;A896D2;
@@ -2339,61 +2339,61 @@ InstListPointers_Fune_Namihe:
 InitAI_Fune_Namihe:
     LDX.W $0E54                                                          ;A896E3;
     LDA.W #InstListPointers_Fune_Namihe+$4                               ;A896E6;
-    STA.W $0FA8,X                                                        ;A896E9;
+    STA.W FuneNamihe.instListPointersPointer,X                           ;A896E9;
     LDA.W #Function_Fune_WaitForTimer                                    ;A896EC;
-    STA.W $0FAA,X                                                        ;A896EF;
+    STA.W FuneNamihe.function,X                                          ;A896EF;
     LDA.W $0FB4,X                                                        ;A896F2;
     AND.W #$000F                                                         ;A896F5;
-    STA.W $0FAE,X                                                        ;A896F8;
+    STA.W FuneNamihe.variantIndex,X                                      ;A896F8;
     BEQ .speciesDetermined                                               ;A896FB;
     LDA.W #InstListPointers_Fune_Namihe+$C                               ;A896FD;
-    STA.W $0FA8,X                                                        ;A89700;
+    STA.W FuneNamihe.instListPointersPointer,X                           ;A89700;
     LDA.W #Function_Namihe_WaitForSamusToGetNear                         ;A89703;
-    STA.W $0FAA,X                                                        ;A89706;
+    STA.W FuneNamihe.function,X                                          ;A89706;
 
   .speciesDetermined:
     LDA.W $0FB4,X                                                        ;A89709;
     AND.W #$00F0                                                         ;A8970C;
     BEQ .directionDetermined                                             ;A8970F;
-    INC.W $0FA8,X                                                        ;A89711;
-    INC.W $0FA8,X                                                        ;A89714;
+    INC.W FuneNamihe.instListPointersPointer,X                           ;A89711;
+    INC.W FuneNamihe.instListPointersPointer,X                           ;A89714;
 
   .directionDetermined:
     JSR.W SetFuneNamiheInstList                                          ;A89717;
     LDA.W $0FB7,X                                                        ;A8971A;
     AND.W #$00FF                                                         ;A8971D;
-    STA.W $0FAC,X                                                        ;A89720;
+    STA.W FuneNamihe.YProximity,X                                        ;A89720;
     LDA.W $0FB5,X                                                        ;A89723;
     AND.W #$00FF                                                         ;A89726;
-    STA.W $0FB2,X                                                        ;A89729;
-    STZ.W $0FB0,X                                                        ;A8972C;
+    STA.W FuneNamihe.cooldownTime,X                                      ;A89729;
+    STZ.W FuneNamihe.cooldownTimer,X                                     ;A8972C;
     RTL                                                                  ;A8972F;
 
 
 ;;; $9730: Main AI - enemy $E6FF/$E73F (fune / namihe) ;;;
 MainAI_Fune_Namihe:
     LDX.W $0E54                                                          ;A89730;
-    JSR.W ($0FAA,X)                                                      ;A89733;
+    JSR.W (FuneNamihe.function,X)                                        ;A89733;
     RTL                                                                  ;A89736;
 
 
 ;;; $9737: Fune / namihe function - wait for timer (fune) ;;;
 Function_Fune_WaitForTimer:
     LDX.W $0E54                                                          ;A89737;
-    INC.W $0FB0,X                                                        ;A8973A;
-    LDA.W $0FB0,X                                                        ;A8973D;
-    CMP.W $0FB2,X                                                        ;A89740;
+    INC.W FuneNamihe.cooldownTimer,X                                     ;A8973A;
+    LDA.W FuneNamihe.cooldownTimer,X                                     ;A8973D;
+    CMP.W FuneNamihe.cooldownTime,X                                      ;A89740;
     BMI .return                                                          ;A89743;
-    LDA.W $0FA8,X                                                        ;A89745;
+    LDA.W FuneNamihe.instListPointersPointer,X                           ;A89745;
     DEC A                                                                ;A89748;
     DEC A                                                                ;A89749;
     DEC A                                                                ;A8974A;
     DEC A                                                                ;A8974B;
-    STA.W $0FA8,X                                                        ;A8974C;
+    STA.W FuneNamihe.instListPointersPointer,X                           ;A8974C;
     JSR.W SetFuneNamiheInstList                                          ;A8974F;
     LDA.W #RTS_A8978E                                                    ;A89752;
-    STA.W $0FAA,X                                                        ;A89755;
-    STZ.W $0FB0,X                                                        ;A89758;
+    STA.W FuneNamihe.function,X                                          ;A89755;
+    STZ.W FuneNamihe.cooldownTimer,X                                     ;A89758;
 
   .return:
     RTS                                                                  ;A8975B;
@@ -2402,25 +2402,25 @@ Function_Fune_WaitForTimer:
 ;;; $975C: Fune / namihe function - wait for Samus to get near (namihe) ;;;
 Function_Namihe_WaitForSamusToGetNear:
     LDX.W $0E54                                                          ;A8975C;
-    LDA.W $0FA8,X                                                        ;A8975F;
+    LDA.W FuneNamihe.instListPointersPointer,X                           ;A8975F;
     STA.L $7E7800,X                                                      ;A89762;
     JSR.W Namihe_CheckIfSamusIsInProximity                               ;A89766;
     BEQ .notInProximity                                                  ;A89769;
     LDA.L $7E7800,X                                                      ;A8976B;
-    STA.W $0FA8,X                                                        ;A8976F;
+    STA.W FuneNamihe.instListPointersPointer,X                           ;A8976F;
     DEC A                                                                ;A89772;
     DEC A                                                                ;A89773;
     DEC A                                                                ;A89774;
     DEC A                                                                ;A89775;
     STA.L $7E7800,X                                                      ;A89776;
-    STA.W $0FA8,X                                                        ;A8977A;
+    STA.W FuneNamihe.instListPointersPointer,X                           ;A8977A;
     JSR.W SetFuneNamiheInstList                                          ;A8977D;
     LDA.W #RTS_A8978F                                                    ;A89780;
-    STA.W $0FAA,X                                                        ;A89783;
+    STA.W FuneNamihe.function,X                                          ;A89783;
 
   .notInProximity:
     LDA.L $7E7800,X                                                      ;A89786;
-    STA.W $0FA8,X                                                        ;A8978A;
+    STA.W FuneNamihe.instListPointersPointer,X                           ;A8978A;
     RTS                                                                  ;A8978D;
 
 
@@ -2439,7 +2439,7 @@ Namihe_CheckIfSamusIsInProximity:
 ;; Returns:
 ;;     Zero: Clear if Samus is in proximity, set otherwise
     LDX.W $0E54                                                          ;A89790;
-    LDA.W $0FAC,X                                                        ;A89793;
+    LDA.W FuneNamihe.YProximity,X                                        ;A89793;
     JSL.L IsSamusWithingAPixelRowsOfEnemy                                ;A89796;
     RTS                                                                  ;A8979A;
 
@@ -2450,7 +2450,7 @@ SetFuneNamiheInstList:
     LDA.W #$0001                                                         ;A8979E;
     STA.W $0F94,X                                                        ;A897A1;
     STZ.W $0F90,X                                                        ;A897A4;
-    LDA.W $0FA8,X                                                        ;A897A7;
+    LDA.W FuneNamihe.instListPointersPointer,X                           ;A897A7;
     TAY                                                                  ;A897AA;
     LDA.W $0000,Y                                                        ;A897AB;
     STA.W $0F92,X                                                        ;A897AE;
@@ -2663,7 +2663,7 @@ CovenConstants:
 ; X/Y offsets from Samus position to materialise when Samus has been moving a given direction
   ..X:
     dw $FFC0                                                             ;A89AA8;
-  ..Y:                                                                    ;A89AAA;
+  ..Y:                                                                   ;A89AAA;
     dw       $FFC0 ; 0: Up-left
     dw $0000,$FFC0 ; 4: Up
     dw $0040,$0000 ; 8: Up-right

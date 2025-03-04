@@ -3248,7 +3248,8 @@ struct Evir $0FAA
   .function: skip 2 ; $0FAC
 skip 2
   .movementTimer: skip 2 ; $0FB0
-skip $7DE84E
+  .regenerationXOffset: skip 2 ; $0FB2
+skip $7DE84C
   .movementDirection: skip 2 ; $7E7800
   .instList: skip 2 ; $7E7802
   .newInstList: skip 2 ; $7E7804
@@ -3256,17 +3257,6 @@ skip $7DE84E
   .downVelocity: skip 2 ; $7E7808
   .upSubVelocity: skip 2 ; $7E780A
   .upVelocity: skip 2 ; $7E780C
-endstruct
-
-struct EvirProjectile $0FAA
-  .facingDirection: skip 2 ; $0FAA
-  .function: skip 2 ; $0FAC
-skip 4
-  .regenerationXOffset: skip 2 ; $0FB2
-skip $7DE84E
-  .instList: skip 2 ; $7E7802
-  .newInstList: skip 2 ; $7E7804
-skip 8
   .XVelocity: skip 2 ; $7E780E
   .XSubVelocity: skip 2 ; $7E7810
   .YVelocity: skip 2 ; $7E7812
@@ -3282,16 +3272,7 @@ struct Eye $0FAC
   .function: skip 2 ; $0FB2
 endstruct
 
-struct Fune $0FA8
-  .instListPointersPointer: skip 2 ; $0FA8
-  .function: skip 2 ; $0FAA
-  .YProximity: skip 2 ; $0FAC
-  .variantIndex: skip 2 ; $0FAE
-  .cooldownTimer: skip 2 ; $0FB0
-  .cooldownTime: skip 2 ; $0FB2
-endstruct
-
-struct Namihe $0FA8
+struct FuneNamihe $0FA8
   .instListPointersPointer: skip 2 ; $0FA8
   .function: skip 2 ; $0FAA
   .YProximity: skip 2 ; $0FAC
