@@ -2694,11 +2694,11 @@ InitAI_Coven:
     LDA.W #InstList_Coven                                                ;A89B03;
     STA.W $0F92,X                                                        ;A89B06;
     LDA.W #Function_Coven_Dematerialized_Asleep                          ;A89B09;
-    STA.W $0FA8,X                                                        ;A89B0C;
+    STA.W Coven.function,X                                               ;A89B0C;
     LDA.W CovenConstants_SleepTimer                                      ;A89B0F;
     CLC                                                                  ;A89B12;
     ADC.W #$00A0                                                         ;A89B13;
-    STA.W $0FAA,X                                                        ;A89B16;
+    STA.W Coven.functionTimer,X                                          ;A89B16;
     LDX.W $0E54                                                          ;A89B19;
     LDA.W $0F96,X                                                        ;A89B1C;
     XBA                                                                  ;A89B1F;
@@ -2725,7 +2725,7 @@ InitAI_Coven:
 ;;; $9B3C: Main AI - enemy $E77F (coven) ;;;
 MainAI_Coven:
     LDX.W $0E54                                                          ;A89B3C;
-    JMP.W ($0FA8,X)                                                      ;A89B3F;
+    JMP.W (Coven.function,X)                                             ;A89B3F;
 
 
 ;;; $9B42: Coven function - materialising - fade to white ;;;
@@ -2768,7 +2768,7 @@ Function_Coven_Materialize_FadeToWhite:
     BMI .return                                                          ;A89B80;
     LDX.W $0E54                                                          ;A89B82;
     LDA.W #Function_Coven_Materialize_FadeFromWhite                      ;A89B85;
-    STA.W $0FA8,X                                                        ;A89B88;
+    STA.W Coven.function,X                                               ;A89B88;
     LDA.W $0F96,X                                                        ;A89B8B;
     XBA                                                                  ;A89B8E;
     ASL A                                                                ;A89B8F;
@@ -2802,42 +2802,42 @@ Function_Coven_Materialize_FadeFromWhite:
     LDX.W $0E54                                                          ;A89BB1;
     JSR.W HandleFadeInTimerAndIndex                                      ;A89BB4;
     PLA                                                                  ;A89BB7;
-    ORA.W $0FAA,X                                                        ;A89BB8;
+    ORA.W Coven.functionTimer,X                                          ;A89BB8;
     BNE .return                                                          ;A89BBB;
     LDA.W $0F86,X                                                        ;A89BBD;
     AND.W #$FBFF                                                         ;A89BC0; >.< #$FAFF
     AND.W #$FEFF                                                         ;A89BC3;
     STA.W $0F86,X                                                        ;A89BC6;
     LDA.W #Function_Coven_Materialized                                   ;A89BC9;
-    STA.W $0FA8,X                                                        ;A89BCC;
+    STA.W Coven.function,X                                               ;A89BCC;
     LDA.W $0F7E,X                                                        ;A89BCF;
-    STA.L $7E7800,X                                                      ;A89BD2;
+    STA.L Coven.hoverCenterYPosition,X                                   ;A89BD2;
     LDA.W #$0001                                                         ;A89BD6;
-    STA.W $0FAA,X                                                        ;A89BD9;
+    STA.W Coven.functionTimer,X                                          ;A89BD9;
     LDA.W #$0002                                                         ;A89BDC;
-    STA.W $0FAC,X                                                        ;A89BDF;
+    STA.W Coven.paletteTransitionDelayIndex,X                            ;A89BDF;
     LDA.W #$0000                                                         ;A89BE2;
-    STA.L $7E7802,X                                                      ;A89BE5;
+    STA.L Coven.YSubVelocity,X                                           ;A89BE5;
     LDA.W CovenConstants_InitialHoveringYVelocity                        ;A89BE9;
-    STA.L $7E7804,X                                                      ;A89BEC;
+    STA.L Coven.YVelocity,X                                              ;A89BEC;
     LDA.W CovenConstants_MaterializeTimer                                ;A89BF0;
-    STA.W $0FAA,X                                                        ;A89BF3;
+    STA.W Coven.functionTimer,X                                          ;A89BF3;
     LDA.W #$0004                                                         ;A89BF6;
-    STA.L $7E780A,X                                                      ;A89BF9;
+    STA.L Coven.previousSamusXMovementDirection,X                        ;A89BF9;
     LDA.W $0AF6                                                          ;A89BFD;
-    STA.L $7E780C,X                                                      ;A89C00;
-    STA.L $7E780E,X                                                      ;A89C04;
-    STA.L $7E7810,X                                                      ;A89C08;
+    STA.L Coven.previousSamusXPosition,X                                 ;A89C00;
+    STA.L Coven.zoneLeftPosition,X                                       ;A89C04;
+    STA.L Coven.zoneRightPosition,X                                      ;A89C08;
     LDA.W #$000C                                                         ;A89C0C;
-    STA.L $7E7812,X                                                      ;A89C0F;
+    STA.L Coven.previousSamusYMovementDirection,X                        ;A89C0F;
     LDA.W $0AFA,X                                                        ;A89C13;
-    STA.L $7E7814,X                                                      ;A89C16;
-    STA.L $7E7816,X                                                      ;A89C1A;
-    STA.L $7E7818,X                                                      ;A89C1E;
+    STA.L Coven.previousSamusYPosition,X                                 ;A89C16;
+    STA.L Coven.zoneTopPosition,X                                        ;A89C1A;
+    STA.L Coven.zoneBottomPosition,X                                     ;A89C1E;
     LDA.W CovenConstants_SamusStationaryFramesThreshold                  ;A89C22;
-    STA.L $7E781A,X                                                      ;A89C25;
+    STA.L Coven.lockOnTimer,X                                            ;A89C25;
     LDA.W CovenConstants_SamusMovementCounterThreshold                   ;A89C29;
-    STA.L $7E781C,X                                                      ;A89C2C;
+    STA.L Coven.directedMovementTimer,X                                  ;A89C2C;
 
   .return:
     RTL                                                                  ;A89C30;
@@ -2845,20 +2845,20 @@ Function_Coven_Materialize_FadeFromWhite:
 
 ;;; $9C31: Process coven palette transition delay ;;;
 HandleFadeInTimerAndIndex:
-    LDA.W $0FAA,X                                                        ;A89C31;
+    LDA.W Coven.functionTimer,X                                          ;A89C31;
     BEQ .timerExpired                                                    ;A89C34;
     DEC A                                                                ;A89C36;
-    STA.W $0FAA,X                                                        ;A89C37;
+    STA.W Coven.functionTimer,X                                          ;A89C37;
     BNE .return                                                          ;A89C3A;
-    LDA.W $0FAC,X                                                        ;A89C3C;
+    LDA.W Coven.paletteTransitionDelayIndex,X                            ;A89C3C;
     TAY                                                                  ;A89C3F;
     LDA.W CovenPaletteTransitionDelayTable,Y                             ;A89C40;
     BMI .terminator                                                      ;A89C43;
-    STA.W $0FAA,X                                                        ;A89C45;
+    STA.W Coven.functionTimer,X                                          ;A89C45;
     TYA                                                                  ;A89C48;
     INC A                                                                ;A89C49;
     INC A                                                                ;A89C4A;
-    STA.W $0FAC,X                                                        ;A89C4B;
+    STA.W Coven.paletteTransitionDelayIndex,X                            ;A89C4B;
     TYA                                                                  ;A89C4E;
     BIT.W #$0002                                                         ;A89C4F;
     BEQ .timerExpired                                                    ;A89C52;
@@ -2874,8 +2874,8 @@ HandleFadeInTimerAndIndex:
 
   .terminator:
     LDA.W #$0000                                                         ;A89C5F;
-    STA.W $0FAA,X                                                        ;A89C62;
-    STA.W $0FAC,X                                                        ;A89C65;
+    STA.W Coven.functionTimer,X                                          ;A89C62;
+    STA.W Coven.paletteTransitionDelayIndex,X                            ;A89C65;
     RTS                                                                  ;A89C68;
 
 
@@ -2886,12 +2886,12 @@ Function_Coven_Dematerializing:
     BNE .return                                                          ;A89C6F;
     LDX.W $0E54                                                          ;A89C71;
     LDA.W #Function_Coven_Dematerialized_Asleep                          ;A89C74;
-    STA.W $0FA8,X                                                        ;A89C77;
+    STA.W Coven.function,X                                               ;A89C77;
     LDA.W $0F86,X                                                        ;A89C7A;
     ORA.W #$0100                                                         ;A89C7D;
     STA.W $0F86,X                                                        ;A89C80;
     LDA.W CovenConstants_SleepTimer                                      ;A89C83;
-    STA.W $0FAA,X                                                        ;A89C86;
+    STA.W Coven.functionTimer,X                                          ;A89C86;
 
   .return:
     RTL                                                                  ;A89C89;
@@ -2901,38 +2901,38 @@ Function_Coven_Dematerializing:
 Function_Coven_Materialized:
     LDA.W $0F80,X                                                        ;A89C8A;
     CLC                                                                  ;A89C8D;
-    ADC.L $7E7802,X                                                      ;A89C8E;
+    ADC.L Coven.YSubVelocity,X                                           ;A89C8E;
     STA.W $0F80,X                                                        ;A89C92;
     LDA.W $0F7E,X                                                        ;A89C95;
-    ADC.L $7E7804,X                                                      ;A89C98;
+    ADC.L Coven.YVelocity,X                                              ;A89C98;
     STA.W $0F7E,X                                                        ;A89C9C;
     LDA.W $0F7E,X                                                        ;A89C9F;
-    CMP.L $7E7800,X                                                      ;A89CA2;
+    CMP.L Coven.hoverCenterYPosition,X                                   ;A89CA2;
     BMI .subvelocity                                                     ;A89CA6;
-    LDA.L $7E7802,X                                                      ;A89CA8;
+    LDA.L Coven.YSubVelocity,X                                           ;A89CA8;
     SEC                                                                  ;A89CAC;
     SBC.W CovenConstants_HoveringYAccelerationDeceleration               ;A89CAD;
-    STA.L $7E7802,X                                                      ;A89CB0;
-    LDA.L $7E7804,X                                                      ;A89CB4;
+    STA.L Coven.YSubVelocity,X                                           ;A89CB0;
+    LDA.L Coven.YVelocity,X                                              ;A89CB4;
     SBC.W #$0000                                                         ;A89CB8;
-    STA.L $7E7804,X                                                      ;A89CBB;
+    STA.L Coven.YVelocity,X                                              ;A89CBB;
     BRA +                                                                ;A89CBF;
 
   .subvelocity:
-    LDA.L $7E7802,X                                                      ;A89CC1;
+    LDA.L Coven.YSubVelocity,X                                           ;A89CC1;
     CLC                                                                  ;A89CC5;
     ADC.W CovenConstants_HoveringYAccelerationDeceleration               ;A89CC6;
-    STA.L $7E7802,X                                                      ;A89CC9;
-    LDA.L $7E7804,X                                                      ;A89CCD;
+    STA.L Coven.YSubVelocity,X                                           ;A89CC9;
+    LDA.L Coven.YVelocity,X                                              ;A89CCD;
     ADC.W #$0000                                                         ;A89CD1;
-    STA.L $7E7804,X                                                      ;A89CD4;
+    STA.L Coven.YVelocity,X                                              ;A89CD4;
 
-+   LDA.W $0FAA,X                                                        ;A89CD8;
++   LDA.W Coven.functionTimer,X                                          ;A89CD8;
     DEC A                                                                ;A89CDB;
-    STA.W $0FAA,X                                                        ;A89CDC;
+    STA.W Coven.functionTimer,X                                          ;A89CDC;
     BNE .return                                                          ;A89CDF;
     LDA.W #Function_Coven_Dematerializing                                ;A89CE1;
-    STA.W $0FA8,X                                                        ;A89CE4;
+    STA.W Coven.function,X                                               ;A89CE4;
     LDA.W $0F86,X                                                        ;A89CE7;
     ORA.W #$0400                                                         ;A89CEA;
     STA.W $0F86,X                                                        ;A89CED;
@@ -2963,19 +2963,19 @@ Function_Coven_Materialized:
 
 ;;; $9D13: Coven function - dematerialised - asleep ;;;
 Function_Coven_Dematerialized_Asleep:
-    LDA.W $0FAA,X                                                        ;A89D13;
+    LDA.W Coven.functionTimer,X                                          ;A89D13;
     BEQ .timerExpired                                                    ;A89D16;
     DEC A                                                                ;A89D18;
-    STA.W $0FAA,X                                                        ;A89D19;
+    STA.W Coven.functionTimer,X                                          ;A89D19;
     BNE .return                                                          ;A89D1C;
 
   .timerExpired:
     LDA.W #$0001                                                         ;A89D1E;
-    STA.W $0FAA,X                                                        ;A89D21;
+    STA.W Coven.functionTimer,X                                          ;A89D21;
     LDA.W #$0002                                                         ;A89D24;
-    STA.W $0FAC,X                                                        ;A89D27;
+    STA.W Coven.paletteTransitionDelayIndex,X                            ;A89D27;
     LDA.W #Function_Coven_Dematerialized_Awake                           ;A89D2A;
-    STA.W $0FA8,X                                                        ;A89D2D;
+    STA.W Coven.function,X                                               ;A89D2D;
 
   .return:
     RTL                                                                  ;A89D30;
@@ -3003,34 +3003,34 @@ Function_Coven_Dematerialized_Awake:
 ; Materialise if Samus has moved at most 1px/frame for 40h frames (tracked by the "lock-on timer" and "zone" variables)
 ; or has moved more than 1px/frame in the same direction 10h times (tracked by the "directed movement timer" and "previous Samus" variables)
     LDA.W $0AF6                                                          ;A89D36;
-    CMP.L $7E780E,X                                                      ;A89D39;
+    CMP.L Coven.zoneLeftPosition,X                                       ;A89D39;
     BMI .breakLockOn                                                     ;A89D3D;
-    CMP.L $7E7810,X                                                      ;A89D3F;
+    CMP.L Coven.zoneRightPosition,X                                      ;A89D3F;
     BPL .breakLockOn                                                     ;A89D43;
     LDA.W $0AFA,X                                                        ;A89D45;
-    CMP.L $7E7816,X                                                      ;A89D48;
+    CMP.L Coven.zoneTopPosition,X                                        ;A89D48;
     BMI .breakLockOn                                                     ;A89D4C;
-    CMP.L $7E7818,X                                                      ;A89D4E;
+    CMP.L Coven.zoneBottomPosition,X                                     ;A89D4E;
     BPL .breakLockOn                                                     ;A89D52;
-    LDA.L $7E781A,X                                                      ;A89D54;
+    LDA.L Coven.lockOnTimer,X                                            ;A89D54;
     DEC A                                                                ;A89D58;
-    STA.L $7E781A,X                                                      ;A89D59;
+    STA.L Coven.lockOnTimer,X                                            ;A89D59;
     BEQ +                                                                ;A89D5D;
     JMP.W .updateZone                                                    ;A89D5F;
 
 +   LDA.W #$0004                                                         ;A89D62;
-    STA.L $7E780A,X                                                      ;A89D65;
+    STA.L Coven.previousSamusXMovementDirection,X                        ;A89D65;
     LDA.W #$000C                                                         ;A89D69;
-    STA.L $7E7812,X                                                      ;A89D6C;
+    STA.L Coven.previousSamusYMovementDirection,X                        ;A89D6C;
     BRA .materialize                                                     ;A89D70;
 
   .breakLockOn:
     LDA.W CovenConstants_SamusStationaryFramesThreshold                  ;A89D72;
-    STA.L $7E781A,X                                                      ;A89D75;
+    STA.L Coven.lockOnTimer,X                                            ;A89D75;
     LDY.W #$0000                                                         ;A89D79;
     LDA.W $0AF6                                                          ;A89D7C;
     SEC                                                                  ;A89D7F;
-    SBC.L $7E780C,X                                                      ;A89D80;
+    SBC.L Coven.previousSamusXPosition,X                                 ;A89D80;
     BMI .checkXMovementDirection                                         ;A89D84;
     BEQ .noXMovement                                                     ;A89D86;
     LDY.W #$0008                                                         ;A89D88;
@@ -3041,24 +3041,24 @@ Function_Coven_Dematerialized_Awake:
 
   .checkXMovementDirection:
     TYA                                                                  ;A89D90;
-    CMP.L $7E780A,X                                                      ;A89D91;
+    CMP.L Coven.previousSamusXMovementDirection,X                        ;A89D91;
     BEQ .checkYMovement                                                  ;A89D95;
     TYA                                                                  ;A89D97;
-    STA.L $7E780A,X                                                      ;A89D98;
+    STA.L Coven.previousSamusXMovementDirection,X                        ;A89D98;
     LDA.W CovenConstants_SamusMovementCounterThreshold                   ;A89D9C;
-    STA.L $7E781C,X                                                      ;A89D9F;
+    STA.L Coven.directedMovementTimer,X                                  ;A89D9F;
     BRA .updateZone                                                      ;A89DA3;
 
   .materialize:
     LDA.W #Function_Coven_Materialize_FadeToWhite                        ;A89DA5;
-    STA.W $0FA8,X                                                        ;A89DA8;
+    STA.W Coven.function,X                                               ;A89DA8;
     LDA.W CovenConstants_SamusStationaryFramesThreshold                  ;A89DAB;
-    STA.L $7E781A,X                                                      ;A89DAE;
+    STA.L Coven.lockOnTimer,X                                            ;A89DAE;
     LDA.W CovenConstants_SamusMovementCounterThreshold                   ;A89DB2;
-    STA.L $7E781C,X                                                      ;A89DB5;
-    LDA.L $7E780A,X                                                      ;A89DB9;
+    STA.L Coven.directedMovementTimer,X                                  ;A89DB5;
+    LDA.L Coven.previousSamusXMovementDirection,X                        ;A89DB9;
     CLC                                                                  ;A89DBD;
-    ADC.L $7E7812,X                                                      ;A89DBE;
+    ADC.L Coven.previousSamusYMovementDirection,X                        ;A89DBE;
     TAY                                                                  ;A89DC2;
     LDA.W $0AF6,X                                                        ;A89DC3;
     CLC                                                                  ;A89DC6;
@@ -3074,7 +3074,7 @@ Function_Coven_Dematerialized_Awake:
     LDY.W #$0000                                                         ;A89DD8;
     LDA.W $0AFA                                                          ;A89DDB;
     SEC                                                                  ;A89DDE;
-    SBC.L $7E7814,X                                                      ;A89DDF;
+    SBC.L Coven.previousSamusYPosition,X                                 ;A89DDF;
     BMI .checkYMovementDirection                                         ;A89DE3;
     BEQ .noYMovement                                                     ;A89DE5;
     LDY.W #$0018                                                         ;A89DE7;
@@ -3085,39 +3085,39 @@ Function_Coven_Dematerialized_Awake:
 
   .checkYMovementDirection:
     TYA                                                                  ;A89DEF;
-    CMP.L $7E7812,X                                                      ;A89DF0;
+    CMP.L Coven.previousSamusYMovementDirection,X                        ;A89DF0;
     BEQ .matchingYMovementDirection                                      ;A89DF4;
     TYA                                                                  ;A89DF6;
-    STA.L $7E7812,X                                                      ;A89DF7;
+    STA.L Coven.previousSamusYMovementDirection,X                        ;A89DF7;
     LDA.W CovenConstants_SamusMovementCounterThreshold                   ;A89DFB;
-    STA.L $7E781C,X                                                      ;A89DFE;
+    STA.L Coven.directedMovementTimer,X                                  ;A89DFE;
     BRA .updateZone                                                      ;A89E02;
 
   .matchingYMovementDirection:
-    LDA.L $7E781C,X                                                      ;A89E04;
+    LDA.L Coven.directedMovementTimer,X                                  ;A89E04;
     DEC A                                                                ;A89E08;
-    STA.L $7E781C,X                                                      ;A89E09;
+    STA.L Coven.directedMovementTimer,X                                  ;A89E09;
     BEQ .materialize                                                     ;A89E0D;
 
   .updateZone:
     LDA.W $0AF6                                                          ;A89E0F;
-    STA.L $7E780C,X                                                      ;A89E12;
+    STA.L Coven.previousSamusXPosition,X                                 ;A89E12;
     SEC                                                                  ;A89E16;
     SBC.W CovenStationaryZoneXRadius                                     ;A89E17;
-    STA.L $7E780E,X                                                      ;A89E1A;
+    STA.L Coven.zoneLeftPosition,X                                       ;A89E1A;
     LDA.W $0AF6                                                          ;A89E1E;
     CLC                                                                  ;A89E21;
     ADC.W CovenStationaryZoneXRadius                                     ;A89E22;
-    STA.L $7E7810,X                                                      ;A89E25;
+    STA.L Coven.zoneRightPosition,X                                      ;A89E25;
     LDA.W $0AFA                                                          ;A89E29;
-    STA.L $7E7814,X                                                      ;A89E2C;
+    STA.L Coven.previousSamusYPosition,X                                 ;A89E2C;
     SEC                                                                  ;A89E30;
     SBC.W CovenStationaryZoneYRadius                                     ;A89E31;
-    STA.L $7E7816,X                                                      ;A89E34;
+    STA.L Coven.zoneTopPosition,X                                        ;A89E34;
     LDA.W $0AFA                                                          ;A89E38;
     CLC                                                                  ;A89E3B;
     ADC.W CovenStationaryZoneYRadius                                     ;A89E3C;
-    STA.L $7E7818,X                                                      ;A89E3F;
+    STA.L Coven.zoneBottomPosition,X                                     ;A89E3F;
     RTL                                                                  ;A89E43;
 
 
