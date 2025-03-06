@@ -3305,7 +3305,7 @@ endstruct
 struct YappingMaw $0FA8
   .function: skip 2 ; $0FA8
   .angle: skip 2 ; $0FAA
-  .SubAngle: skip 2 ; $0FAC
+  .subAngle: skip 2 ; $0FAC
   .angularSpeedTableIndex: skip 2 ; $0FAE
 skip 2
   .proximity: skip 2 ; $0FB2
@@ -3360,8 +3360,8 @@ endstruct
 struct Kago $0FA8
   .function: skip 2 ; $0FA8
   .fastAnimationFlag: skip 2 ; $0FAA
-skip $7DE85A
-  .hitCounter: skip 2 ; $7E7800
+skip $7DE85C
+  .hitCounter: skip 2 ; $7E7808
 endstruct
 
 struct Magdollite $0FAA
@@ -3445,8 +3445,8 @@ skip 2
   .accelerationIntervalTimerResetValue: skip 2 ; $7E780A
   .decelerationIntervalTimerResetValue: skip 2 ; $7E780C
   .shotReactionDisableTimer: skip 2 ; $7E780E
-skip $7F0
-  .previousHealth: skip 2 ; $7E8000
+skip $FF0
+  .previousHealth: skip 2 ; $7E8800
 endstruct
 
 struct Alcoon $0FA8
@@ -3468,7 +3468,7 @@ struct Atomic $0FA8
   .XMovementFunction: skip 2 ; $0FA8
   .YMovementFunction: skip 2 ; $0FAA
 skip $7DE854
-  .SubSpeed: skip 2 ; $7E7800
+  .subSpeed: skip 2 ; $7E7800
   .speed: skip 2 ; $7E7802
   .negativeSubSpeed: skip 2 ; $7E7804
   .negativeSpeed: skip 2 ; $7E7806
@@ -3507,8 +3507,8 @@ skip 2
   .YVelocity: skip 2 ; $7E7812
   .idleZoneTopPosition: skip 2 ; $7E7814
   .idleZoneBottomPosition: skip 2 ; $7E7816
-  .SpawnXPosition: skip 2 ; $7E7818
-  .SpawnYPosition: skip 2 ; $7E781A
+  .spawnXPosition: skip 2 ; $7E7818
+  .spawnYPosition: skip 2 ; $7E781A
   .swipTriggerAngle: skip 2 ; $7E781C
   .thinkingTimer: skip 2 ; $7E781E
   .swoopSwipeFlag: skip 2 ; $7E7820
