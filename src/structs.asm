@@ -3509,7 +3509,7 @@ skip 2
   .idleZoneBottomPosition: skip 2 ; $7E7816
   .spawnXPosition: skip 2 ; $7E7818
   .spawnYPosition: skip 2 ; $7E781A
-  .swipTriggerAngle: skip 2 ; $7E781C
+  .swipeTriggerAngle: skip 2 ; $7E781C
   .thinkingTimer: skip 2 ; $7E781E
   .swoopSwipeFlag: skip 2 ; $7E7820
   .arcXRadius: skip 2 ; $7E7822

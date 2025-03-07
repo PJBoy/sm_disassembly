@@ -12487,45 +12487,45 @@ InitAI_Kihunter:
     ORA.W #$2000                                                         ;A8F18E;
     STA.W $0F86,X                                                        ;A8F191;
     LDA.W #$0000                                                         ;A8F194;
-    STA.L $7E7828,X                                                      ;A8F197;
+    STA.L Kihunter.winglessFlag,X                                        ;A8F197;
     LDA.W #$0001                                                         ;A8F19B;
     STA.W $0F94,X                                                        ;A8F19E;
     STZ.W $0F90,X                                                        ;A8F1A1;
     LDA.W #InstList_Kihunter_Idling_FacingLeft                           ;A8F1A4;
     STA.W $0F92,X                                                        ;A8F1A7;
     LDA.W #$0000                                                         ;A8F1AA;
-    STA.W $0FB2,X                                                        ;A8F1AD;
+    STA.W Kihunter.arcAngle,X                                            ;A8F1AD;
     LDA.W #Function_Kihunter_Winged_IdleFlying                           ;A8F1B0;
-    STA.W Kihunter.function,X                                                        ;A8F1B3;
+    STA.W Kihunter.function,X                                            ;A8F1B3;
     LDA.W #$0000                                                         ;A8F1B6;
-    STA.L $7E7810,X                                                      ;A8F1B9;
+    STA.L Kihunter.YSubVelocity,X                                        ;A8F1B9;
     LDA.W #$0001                                                         ;A8F1BD;
-    STA.L $7E7812,X                                                      ;A8F1C0;
+    STA.L Kihunter.YVelocity,X                                           ;A8F1C0;
     LDA.W #$0000                                                         ;A8F1C4;
-    STA.L $7E780C,X                                                      ;A8F1C7;
+    STA.L Kihunter.XSubVelocity,X                                        ;A8F1C7;
     LDA.W #$FFFF                                                         ;A8F1CB;
-    STA.L $7E780E,X                                                      ;A8F1CE;
+    STA.L Kihunter.XVelocity,X                                           ;A8F1CE;
     LDA.W $0F7E,X                                                        ;A8F1D2;
     SEC                                                                  ;A8F1D5;
     SBC.W #$0010                                                         ;A8F1D6;
-    STA.L $7E7814,X                                                      ;A8F1D9;
+    STA.L Kihunter.idleZoneTopPosition,X                                 ;A8F1D9;
     CLC                                                                  ;A8F1DD;
     ADC.W #$0020                                                         ;A8F1DE;
-    STA.L $7E7816,X                                                      ;A8F1E1;
+    STA.L Kihunter.idleZoneBottomPosition,X                              ;A8F1E1;
     LDA.W $0F7A,X                                                        ;A8F1E5;
-    STA.L $7E7818,X                                                      ;A8F1E8;
+    STA.L Kihunter.spawnXPosition,X                                      ;A8F1E8;
     LDA.W $0F7E,X                                                        ;A8F1EC;
-    STA.L $7E781A,X                                                      ;A8F1EF;
+    STA.L Kihunter.spawnYPosition,X                                      ;A8F1EF;
     LDA.W $0FB4,X                                                        ;A8F1F3;
     BPL .return                                                          ;A8F1F6;
     LDA.W #$0001                                                         ;A8F1F8;
-    STA.L $7E7828,X                                                      ;A8F1FB;
+    STA.L Kihunter.winglessFlag,X                                        ;A8F1FB;
     LDA.W #Function_Kihunter_Wingless_InitialFalling                     ;A8F1FF;
-    STA.W Kihunter.function,X                                                        ;A8F202;
+    STA.W Kihunter.function,X                                            ;A8F202;
     LDA.W #$0000                                                         ;A8F205;
-    STA.L $7E7810,X                                                      ;A8F208;
+    STA.L Kihunter.YSubVelocity,X                                        ;A8F208;
     LDA.W #$0001                                                         ;A8F20C;
-    STA.L $7E7812,X                                                      ;A8F20F;
+    STA.L Kihunter.YVelocity,X                                           ;A8F20F;
 
   .return:
     RTL                                                                  ;A8F213;
@@ -12547,7 +12547,7 @@ InitAI_KihunterWings:
     LDA.W $0F3A,X                                                        ;A8F235;
     STA.W $0F7A,X                                                        ;A8F238;
     LDA.W #Function_KihunterWings_Attached                               ;A8F23B;
-    STA.W KihunterWings.function,X                                                        ;A8F23E;
+    STA.W KihunterWings.function,X                                       ;A8F23E;
     LDA.W $0F56,X                                                        ;A8F241;
     STA.W $0F96,X                                                        ;A8F244;
     LDA.W $0F58,X                                                        ;A8F247;
@@ -12565,33 +12565,33 @@ InitAI_KihunterWings:
 ;;; $F25C: Main AI - enemy $EABF/$EB3F/$EBBF (ki-hunter) ;;;
 MainAI_Kihunter:
     LDX.W $0E54                                                          ;A8F25C;
-    JMP.W (Kihunter.function,X)                                                      ;A8F25F;
+    JMP.W (Kihunter.function,X)                                          ;A8F25F;
 
 
 ;;; $F262: Main AI - enemy $EAFF/$EB7F/$EBFF (ki-hunter wings) ;;;
 MainAI_KihunterWings:
     LDX.W $0E54                                                          ;A8F262;
-    JMP.W ($0FA8,X)                                                      ;A8F265;
+    JMP.W (KihunterWings.function,X)                                     ;A8F265;
 
 
 ;;; $F268: Ki-hunter function - winged - idle flying ;;;
 Function_Kihunter_Winged_IdleFlying:
-    LDA.L $7E7810,X                                                      ;A8F268;
+    LDA.L Kihunter.YSubVelocity,X                                        ;A8F268;
     STA.B $12                                                            ;A8F26C;
-    LDA.L $7E7812,X                                                      ;A8F26E;
+    LDA.L Kihunter.YVelocity,X                                           ;A8F26E;
     STA.B $14                                                            ;A8F272;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8F274;
     BCS .collidedWithBlock                                               ;A8F278;
     LDA.W $0F7E,X                                                        ;A8F27A;
-    CMP.L $7E7814,X                                                      ;A8F27D;
+    CMP.L Kihunter.idleZoneTopPosition,X                                 ;A8F27D;
     BMI .idleDown                                                        ;A8F281;
-    CMP.L $7E7816,X                                                      ;A8F283;
+    CMP.L Kihunter.idleZoneBottomPosition,X                              ;A8F283;
     BMI .noChangeY                                                       ;A8F287;
     LDA.W #$FFFF                                                         ;A8F289;
     BRA .changeY                                                         ;A8F28C;
 
   .collidedWithBlock:
-    LDA.L $7E7812,X                                                      ;A8F28E;
+    LDA.L Kihunter.YVelocity,X                                           ;A8F28E;
     EOR.W #$FFFF                                                         ;A8F292;
     INC A                                                                ;A8F295;
     BRA .changeY                                                         ;A8F296;
@@ -12600,20 +12600,20 @@ Function_Kihunter_Winged_IdleFlying:
     LDA.W #$0001                                                         ;A8F298;
 
   .changeY:
-    STA.L $7E7812,X                                                      ;A8F29B;
+    STA.L Kihunter.YVelocity,X                                           ;A8F29B;
 
   .noChangeY:
-    LDA.L $7E780C,X                                                      ;A8F29F;
+    LDA.L Kihunter.XSubVelocity,X                                        ;A8F29F;
     STA.B $12                                                            ;A8F2A3;
-    LDA.L $7E780E,X                                                      ;A8F2A5;
+    LDA.L Kihunter.XVelocity,X                                           ;A8F2A5;
     STA.B $14                                                            ;A8F2A9;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8F2AB;
     BCC .noCollision                                                     ;A8F2AF;
     LDY.W #$0000                                                         ;A8F2B1;
-    LDA.L $7E780E,X                                                      ;A8F2B4;
+    LDA.L Kihunter.XVelocity,X                                           ;A8F2B4;
     EOR.W #$FFFF                                                         ;A8F2B8;
     INC A                                                                ;A8F2BB;
-    STA.L $7E780E,X                                                      ;A8F2BC;
+    STA.L Kihunter.XVelocity,X                                           ;A8F2BC;
     BMI .movingLeft                                                      ;A8F2C0;
     LDY.W #$0004                                                         ;A8F2C2;
 
@@ -12653,37 +12653,37 @@ Function_Kihunter_Winged_IdleFlying:
     LDA.B $12                                                            ;A8F304;
     BMI .rightOfSamus                                                    ;A8F306;
     LDA.W #$0002                                                         ;A8F308;
-    STA.L $7E7800,X                                                      ;A8F30B;
+    STA.L Kihunter.arcAngularVelocityCap,X                               ;A8F30B;
     LDA.W #$0000                                                         ;A8F30F;
-    STA.L $7E7804,X                                                      ;A8F312;
-    STA.L $7E7806,X                                                      ;A8F316;
-    STA.L $7E7808,X                                                      ;A8F31A;
+    STA.L Kihunter.arcAngularVelocity,X                                  ;A8F312;
+    STA.L Kihunter.arcAngularSubVelocity,X                               ;A8F316;
+    STA.L Kihunter.arcAngularAcceleration,X                              ;A8F31A;
     LDA.W #$2000                                                         ;A8F31E;
-    STA.L $7E780A,X                                                      ;A8F321;
+    STA.L Kihunter.arcAngularSubAcceleration,X                           ;A8F321;
     LDA.W #$0080                                                         ;A8F325;
-    STA.W $0FB2,X                                                        ;A8F328;
+    STA.W Kihunter.arcAngle,X                                            ;A8F328;
     LDA.W #$0001                                                         ;A8F32B;
-    STA.L $7E780E,X                                                      ;A8F32E;
+    STA.L Kihunter.XVelocity,X                                           ;A8F32E;
     LDA.W #$0090                                                         ;A8F332;
-    STA.L $7E781C,X                                                      ;A8F335;
+    STA.L Kihunter.swipeTriggerAngle,X                                   ;A8F335;
     LDY.W #$0004                                                         ;A8F339;
     BRA +                                                                ;A8F33C;
 
   .rightOfSamus:
     LDA.W #$FFFE                                                         ;A8F33E;
-    STA.L $7E7800,X                                                      ;A8F341;
+    STA.L Kihunter.arcAngularVelocityCap,X                               ;A8F341;
     LDA.W #$0000                                                         ;A8F345;
-    STA.L $7E7804,X                                                      ;A8F348;
-    STA.L $7E7806,X                                                      ;A8F34C;
+    STA.L Kihunter.arcAngularVelocity,X                                  ;A8F348;
+    STA.L Kihunter.arcAngularSubVelocity,X                               ;A8F34C;
     LDA.W #$FFFF                                                         ;A8F350;
-    STA.L $7E7808,X                                                      ;A8F353;
-    STA.L $7E780E,X                                                      ;A8F357;
+    STA.L Kihunter.arcAngularAcceleration,X                              ;A8F353;
+    STA.L Kihunter.XVelocity,X                                           ;A8F357;
     LDA.W #$E000                                                         ;A8F35B;
-    STA.L $7E780A,X                                                      ;A8F35E;
+    STA.L Kihunter.arcAngularSubAcceleration,X                           ;A8F35E;
     LDA.W #$00FF                                                         ;A8F362;
-    STA.W $0FB2,X                                                        ;A8F365;
+    STA.W Kihunter.arcAngle,X                                            ;A8F365;
     LDA.W #$00F0                                                         ;A8F368;
-    STA.L $7E781C,X                                                      ;A8F36B;
+    STA.L Kihunter.swipeTriggerAngle,X                                   ;A8F36B;
     LDY.W #$0000                                                         ;A8F36F;
 
 +   LDA.W .instListPointers_kihunter,Y                                   ;A8F372;
@@ -12696,17 +12696,17 @@ Function_Kihunter_Winged_IdleFlying:
     LDA.W $0F7A,X                                                        ;A8F387;
     CLC                                                                  ;A8F38A;
     ADC.B $12                                                            ;A8F38B;
-    STA.W $0FAA,X                                                        ;A8F38D;
+    STA.W Kihunter.arcCenterXPosition,X                                  ;A8F38D;
     LDA.W $0F7E,X                                                        ;A8F390;
-    STA.W $0FAC,X                                                        ;A8F393;
+    STA.W Kihunter.arcCenterYPosition,X                                  ;A8F393;
     LDA.W #Function_Kihunter_Winged_Swoop                                ;A8F396;
-    STA.W Kihunter.function,X                                                        ;A8F399;
+    STA.W Kihunter.function,X                                            ;A8F399;
     LDA.B $18                                                            ;A8F39C;
-    STA.L $7E7824,X                                                      ;A8F39E;
+    STA.L Kihunter.arcYRadius,X                                          ;A8F39E;
     LDA.B $14                                                            ;A8F3A2;
-    STA.L $7E7822,X                                                      ;A8F3A4;
+    STA.L Kihunter.arcXRadius,X                                          ;A8F3A4;
     LDA.W #$0000                                                         ;A8F3A8;
-    STA.L $7E7820,X                                                      ;A8F3AB;
+    STA.L Kihunter.swoopSwipeFlag,X                                      ;A8F3AB;
     RTL                                                                  ;A8F3AF;
 
   .instListPointers_kihunter:
@@ -12719,24 +12719,24 @@ Function_Kihunter_Winged_IdleFlying:
 
 ;;; $F3B8: Ki-hunter function - winged - swoop ;;;
 Function_Kihunter_Winged_Swoop:
-    LDA.L $7E7808,X                                                      ;A8F3B8;
+    LDA.L Kihunter.arcAngularAcceleration,X                              ;A8F3B8;
     BPL .arcingRight                                                     ;A8F3BC;
-    LDA.W $0FB2,X                                                        ;A8F3BE;
-    CMP.L $7E781C,X                                                      ;A8F3C1;
+    LDA.W Kihunter.arcAngle,X                                            ;A8F3BE;
+    CMP.L Kihunter.swipeTriggerAngle,X                                   ;A8F3C1;
     BPL .noInstListChange                                                ;A8F3C5;
     BRA +                                                                ;A8F3C7;
 
   .arcingRight:
-    LDA.W $0FB2,X                                                        ;A8F3C9;
-    CMP.L $7E781C,X                                                      ;A8F3CC;
+    LDA.W Kihunter.arcAngle,X                                            ;A8F3C9;
+    CMP.L Kihunter.swipeTriggerAngle,X                                   ;A8F3CC;
     BMI .noInstListChange                                                ;A8F3D0;
 
-+   LDA.L $7E7820,X                                                      ;A8F3D2;
++   LDA.L Kihunter.swoopSwipeFlag,X                                      ;A8F3D2;
     BNE .noInstListChange                                                ;A8F3D6;
     LDA.W #$0001                                                         ;A8F3D8;
-    STA.L $7E7820,X                                                      ;A8F3DB;
+    STA.L Kihunter.swoopSwipeFlag,X                                      ;A8F3DB;
     LDY.W #InstList_Kihunter_Swiping_FacingRight                         ;A8F3DF;
-    LDA.L $7E7808,X                                                      ;A8F3E2;
+    LDA.L Kihunter.arcAngularAcceleration,X                              ;A8F3E2;
     BPL .keepRight                                                       ;A8F3E6;
     LDY.W #InstList_Kihunter_Swiping_FacingLeft                          ;A8F3E8;
 
@@ -12747,58 +12747,58 @@ Function_Kihunter_Winged_Swoop:
     STA.W $0F94,X                                                        ;A8F3F2;
 
   .noInstListChange:
-    LDA.L $7E7808,X                                                      ;A8F3F5;
+    LDA.L Kihunter.arcAngularAcceleration,X                              ;A8F3F5;
     BPL .rightwards                                                      ;A8F3F9;
-    LDA.L $7E7806,X                                                      ;A8F3FB;
+    LDA.L Kihunter.arcAngularSubVelocity,X                               ;A8F3FB;
     CLC                                                                  ;A8F3FF;
-    ADC.L $7E780A,X                                                      ;A8F400;
-    STA.L $7E7806,X                                                      ;A8F404;
-    LDA.L $7E7804,X                                                      ;A8F408;
-    ADC.L $7E7808,X                                                      ;A8F40C;
-    CMP.L $7E7800,X                                                      ;A8F410;
+    ADC.L Kihunter.arcAngularSubAcceleration,X                           ;A8F400;
+    STA.L Kihunter.arcAngularSubVelocity,X                               ;A8F404;
+    LDA.L Kihunter.arcAngularVelocity,X                                  ;A8F408;
+    ADC.L Kihunter.arcAngularAcceleration,X                              ;A8F40C;
+    CMP.L Kihunter.arcAngularVelocityCap,X                               ;A8F410;
     BPL +                                                                ;A8F414;
-    LDA.L $7E7800,X                                                      ;A8F416;
+    LDA.L Kihunter.arcAngularVelocityCap,X                               ;A8F416;
 
-+   STA.L $7E7804,X                                                      ;A8F41A;
-    LDA.W $0FB2,X                                                        ;A8F41E;
++   STA.L Kihunter.arcAngularVelocity,X                                  ;A8F41A;
+    LDA.W Kihunter.arcAngle,X                                            ;A8F41E;
     CLC                                                                  ;A8F421;
-    ADC.L $7E7804,X                                                      ;A8F422;
-    STA.W $0FB2,X                                                        ;A8F426;
+    ADC.L Kihunter.arcAngularVelocity,X                                  ;A8F422;
+    STA.W Kihunter.arcAngle,X                                            ;A8F426;
     CMP.W #$0080                                                         ;A8F429;
     BPL .swoopContinues                                                  ;A8F42C;
     LDA.W #Function_Kihunter_Winged_IdleFlying                           ;A8F42E;
-    STA.W Kihunter.function,X                                                        ;A8F431;
+    STA.W Kihunter.function,X                                            ;A8F431;
     RTL                                                                  ;A8F434;
 
   .rightwards:
-    LDA.L $7E7806,X                                                      ;A8F435;
+    LDA.L Kihunter.arcAngularSubVelocity,X                               ;A8F435;
     CLC                                                                  ;A8F439;
-    ADC.L $7E780A,X                                                      ;A8F43A;
-    STA.L $7E7806,X                                                      ;A8F43E;
-    LDA.L $7E7804,X                                                      ;A8F442;
-    ADC.L $7E7808,X                                                      ;A8F446;
-    CMP.L $7E7800,X                                                      ;A8F44A;
+    ADC.L Kihunter.arcAngularSubAcceleration,X                           ;A8F43A;
+    STA.L Kihunter.arcAngularSubVelocity,X                               ;A8F43E;
+    LDA.L Kihunter.arcAngularVelocity,X                                  ;A8F442;
+    ADC.L Kihunter.arcAngularAcceleration,X                              ;A8F446;
+    CMP.L Kihunter.arcAngularVelocityCap,X                               ;A8F44A;
     BMI +                                                                ;A8F44E;
-    LDA.L $7E7800,X                                                      ;A8F450;
+    LDA.L Kihunter.arcAngularVelocityCap,X                               ;A8F450;
 
-+   STA.L $7E7804,X                                                      ;A8F454;
-    LDA.W $0FB2,X                                                        ;A8F458;
++   STA.L Kihunter.arcAngularVelocity,X                                  ;A8F454;
+    LDA.W Kihunter.arcAngle,X                                            ;A8F458;
     CLC                                                                  ;A8F45B;
-    ADC.L $7E7804,X                                                      ;A8F45C;
-    STA.W $0FB2,X                                                        ;A8F460;
+    ADC.L Kihunter.arcAngularVelocity,X                                  ;A8F45C;
+    STA.W Kihunter.arcAngle,X                                            ;A8F460;
     CMP.W #$0100                                                         ;A8F463;
     BMI .swoopContinues                                                  ;A8F466;
     LDA.W #Function_Kihunter_Winged_IdleFlying                           ;A8F468;
-    STA.W Kihunter.function,X                                                        ;A8F46B;
+    STA.W Kihunter.function,X                                            ;A8F46B;
     RTL                                                                  ;A8F46E;
 
   .swoopContinues:
-    LDA.L $7E7822,X                                                      ;A8F46F;
+    LDA.L Kihunter.arcXRadius,X                                          ;A8F46F;
     STA.W $0E32                                                          ;A8F473;
-    LDA.W $0FB2,X                                                        ;A8F476;
+    LDA.W Kihunter.arcAngle,X                                            ;A8F476;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;A8F479;
     CLC                                                                  ;A8F47D;
-    ADC.W $0FAA,X                                                        ;A8F47E;
+    ADC.W Kihunter.arcCenterXPosition,X                                  ;A8F47E;
     SEC                                                                  ;A8F481;
     SBC.W $0F7A,X                                                        ;A8F482;
     STA.B $14                                                            ;A8F485;
@@ -12806,12 +12806,12 @@ Function_Kihunter_Winged_Swoop:
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8F489;
     BCS .collidedHorizontally                                            ;A8F48D;
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A8F48F;
-    LDA.L $7E7824,X                                                      ;A8F493;
+    LDA.L Kihunter.arcYRadius,X                                          ;A8F493;
     STA.W $0E32                                                          ;A8F497;
-    LDA.W $0FB2,X                                                        ;A8F49A;
+    LDA.W Kihunter.arcAngle,X                                            ;A8F49A;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A8F49D;
     CLC                                                                  ;A8F4A1;
-    ADC.W $0FAC,X                                                        ;A8F4A2;
+    ADC.W Kihunter.arcCenterYPosition,X                                  ;A8F4A2;
     SEC                                                                  ;A8F4A5;
     SBC.W $0F7E,X                                                        ;A8F4A6;
     STA.B $14                                                            ;A8F4A9;
@@ -12821,53 +12821,53 @@ Function_Kihunter_Winged_Swoop:
     RTL                                                                  ;A8F4B3;
 
   .collidedHorizontally:
-    LDA.L $7E7808,X                                                      ;A8F4B4;
+    LDA.L Kihunter.arcAngularAcceleration,X                              ;A8F4B4;
     BPL .arcRight                                                        ;A8F4B8;
     LDA.W #$0000                                                         ;A8F4BA;
-    STA.L $7E780C,X                                                      ;A8F4BD;
+    STA.L Kihunter.XSubVelocity,X                                        ;A8F4BD;
     LDA.W #$0001                                                         ;A8F4C1;
-    STA.L $7E780E,X                                                      ;A8F4C4;
+    STA.L Kihunter.XVelocity,X                                           ;A8F4C4;
     BRA .collidedVertically                                              ;A8F4C8;
 
   .arcRight:
     LDA.W #$0000                                                         ;A8F4CA;
-    STA.L $7E780C,X                                                      ;A8F4CD;
+    STA.L Kihunter.XSubVelocity,X                                        ;A8F4CD;
     LDA.W #$FFFF                                                         ;A8F4D1;
-    STA.L $7E780E,X                                                      ;A8F4D4;
+    STA.L Kihunter.XVelocity,X                                           ;A8F4D4;
 
   .collidedVertically:
     LDA.W #Function_Kihunter_Winged_BackOff                              ;A8F4D8;
-    STA.W Kihunter.function,X                                                        ;A8F4DB;
+    STA.W Kihunter.function,X                                            ;A8F4DB;
     LDA.W #$0000                                                         ;A8F4DE;
-    STA.L $7E7810,X                                                      ;A8F4E1;
+    STA.L Kihunter.YSubVelocity,X                                        ;A8F4E1;
     LDA.W #$FFFF                                                         ;A8F4E5;
-    STA.L $7E7812,X                                                      ;A8F4E8;
+    STA.L Kihunter.YVelocity,X                                           ;A8F4E8;
     RTL                                                                  ;A8F4EC;
 
 
 ;;; $F4ED: Ki-hunter function - winged - back off ;;;
 Function_Kihunter_Winged_BackOff:
-    LDA.L $7E780C,X                                                      ;A8F4ED;
+    LDA.L Kihunter.XSubVelocity,X                                        ;A8F4ED;
     STA.B $12                                                            ;A8F4F1;
-    LDA.L $7E780E,X                                                      ;A8F4F3;
+    LDA.L Kihunter.XVelocity,X                                           ;A8F4F3;
     STA.B $14                                                            ;A8F4F7;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8F4F9;
     BCS .collidedWithBlock                                               ;A8F4FD;
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A8F4FF;
-    LDA.L $7E7810,X                                                      ;A8F503;
+    LDA.L Kihunter.YSubVelocity,X                                        ;A8F503;
     STA.B $12                                                            ;A8F507;
-    LDA.L $7E7812,X                                                      ;A8F509;
+    LDA.L Kihunter.YVelocity,X                                           ;A8F509;
     STA.B $14                                                            ;A8F50D;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8F50F;
     BCS .collidedWithBlock                                               ;A8F513;
     LDA.W $0F7E,X                                                        ;A8F515;
-    CMP.L $7E781A,X                                                      ;A8F518;
+    CMP.L Kihunter.spawnYPosition,X                                      ;A8F518;
     BMI .collidedWithBlock                                               ;A8F51C;
     RTL                                                                  ;A8F51E;
 
   .collidedWithBlock:
     LDA.W #Function_Kihunter_Winged_IdleFlying                           ;A8F51F;
-    STA.W Kihunter.function,X                                                        ;A8F522;
+    STA.W Kihunter.function,X                                            ;A8F522;
     RTL                                                                  ;A8F525;
 
 
@@ -12876,7 +12876,7 @@ Instruction_Kihunter_SetIdlingInstListsFacingForwards:
     LDY.W #InstList_Kihunter_Idling_FacingLeft                           ;A8F526;
     LDA.W #InstList_KihunterWings_FacingLeft                             ;A8F529;
     STA.B $12                                                            ;A8F52C;
-    LDA.L $7E780E,X                                                      ;A8F52E;
+    LDA.L Kihunter.XVelocity,X                                           ;A8F52E;
     BMI .keepLeft                                                        ;A8F532;
     LDY.W #InstList_Kihunter_Idling_FacingRight                          ;A8F534;
     LDA.W #InstList_KihunterWings_FacingRight                            ;A8F537;
@@ -12901,45 +12901,45 @@ Instruction_Kihunter_SetIdlingInstListsFacingForwards:
 
 ;;; $F55A: Ki-hunter function - wingless - initial falling ;;;
 Function_Kihunter_Wingless_InitialFalling:
-    LDA.L $7E7810,X                                                      ;A8F55A;
+    LDA.L Kihunter.YSubVelocity,X                                        ;A8F55A;
     STA.B $12                                                            ;A8F55E;
-    LDA.L $7E7812,X                                                      ;A8F560;
+    LDA.L Kihunter.YVelocity,X                                           ;A8F560;
     STA.B $14                                                            ;A8F564;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8F566;
     BCC .notCollidedWithBlock                                            ;A8F56A;
     LDA.W #Function_Kihunter_Wingless_PrepareToHop                       ;A8F56C;
-    STA.W Kihunter.function,X                                                        ;A8F56F;
+    STA.W Kihunter.function,X                                            ;A8F56F;
     RTL                                                                  ;A8F572;
 
   .notCollidedWithBlock:
-    LDA.L $7E7810,X                                                      ;A8F573;
+    LDA.L Kihunter.YSubVelocity,X                                        ;A8F573;
     CLC                                                                  ;A8F577;
     ADC.W KihunterConstants_fallingAcceleration_hop                      ;A8F578;
-    STA.L $7E7810,X                                                      ;A8F57B;
-    LDA.L $7E7812,X                                                      ;A8F57F;
+    STA.L Kihunter.YSubVelocity,X                                        ;A8F57B;
+    LDA.L Kihunter.YVelocity,X                                           ;A8F57F;
     ADC.W KihunterConstants_fallingAcceleration_wingsClipped             ;A8F583;
-    STA.L $7E7812,X                                                      ;A8F586;
+    STA.L Kihunter.YVelocity,X                                           ;A8F586;
     RTL                                                                  ;A8F58A;
 
 
 ;;; $F58B: Ki-hunter function - wingless - prepare to hop ;;;
 Function_Kihunter_Wingless_PrepareToHop:
     LDA.W #RTL_A8F5E3                                                    ;A8F58B;
-    STA.W Kihunter.function,X                                                        ;A8F58E;
+    STA.W Kihunter.function,X                                            ;A8F58E;
     LDA.W #$0000                                                         ;A8F591;
-    STA.L $7E7810,X                                                      ;A8F594;
+    STA.L Kihunter.YSubVelocity,X                                        ;A8F594;
     LDA.W $05E5                                                          ;A8F598;
     AND.W #$0001                                                         ;A8F59B;
     CLC                                                                  ;A8F59E;
     ADC.W #$FFF8                                                         ;A8F59F;
-    STA.L $7E7812,X                                                      ;A8F5A2;
+    STA.L Kihunter.YVelocity,X                                           ;A8F5A2;
     LDA.W $0F7A,X                                                        ;A8F5A6;
     CMP.W $0AF6                                                          ;A8F5A9;
     BPL .rightOfSamus                                                    ;A8F5AC;
     LDA.W #$0000                                                         ;A8F5AE;
-    STA.L $7E780C,X                                                      ;A8F5B1;
+    STA.L Kihunter.XSubVelocity,X                                        ;A8F5B1;
     LDA.W #$0002                                                         ;A8F5B5;
-    STA.L $7E780E,X                                                      ;A8F5B8;
+    STA.L Kihunter.XVelocity,X                                           ;A8F5B8;
     LDA.W #InstList_Kihunter_Hop_FacingRight                             ;A8F5BC;
     STA.W $0F92,X                                                        ;A8F5BF;
     LDA.W #$0001                                                         ;A8F5C2;
@@ -12948,9 +12948,9 @@ Function_Kihunter_Wingless_PrepareToHop:
 
   .rightOfSamus:
     LDA.W #$0000                                                         ;A8F5C9;
-    STA.L $7E780C,X                                                      ;A8F5CC;
+    STA.L Kihunter.XSubVelocity,X                                        ;A8F5CC;
     LDA.W #$FFFE                                                         ;A8F5D0;
-    STA.L $7E780E,X                                                      ;A8F5D3;
+    STA.L Kihunter.XVelocity,X                                           ;A8F5D3;
     LDA.W #InstList_Kihunter_Hop_FacingLeft                              ;A8F5D7;
     STA.W $0F92,X                                                        ;A8F5DA;
     LDA.W #$0001                                                         ;A8F5DD;
@@ -12966,53 +12966,53 @@ Instruction_Kihunter_SetFunctionToHop:
     PHX                                                                  ;A8F5E4;
     LDX.W $0E54                                                          ;A8F5E5;
     LDA.W #Function_Kihunter_Wingless_Hop                                ;A8F5E8;
-    STA.W Kihunter.function,X                                                        ;A8F5EB;
+    STA.W Kihunter.function,X                                            ;A8F5EB;
     PLX                                                                  ;A8F5EE;
     RTL                                                                  ;A8F5EF;
 
 
 ;;; $F5F0: Ki-hunter function - wingless - hop ;;;
 Function_Kihunter_Wingless_Hop:
-    LDA.L $7E7810,X                                                      ;A8F5F0;
+    LDA.L Kihunter.YSubVelocity,X                                        ;A8F5F0;
     STA.B $12                                                            ;A8F5F4;
-    LDA.L $7E7812,X                                                      ;A8F5F6;
+    LDA.L Kihunter.YVelocity,X                                           ;A8F5F6;
     STA.B $14                                                            ;A8F5FA;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8F5FC;
     BCS .collidedVertically                                              ;A8F600;
-    LDA.L $7E780C,X                                                      ;A8F602;
+    LDA.L Kihunter.XSubVelocity,X                                        ;A8F602;
     STA.B $12                                                            ;A8F606;
-    LDA.L $7E780E,X                                                      ;A8F608;
+    LDA.L Kihunter.XVelocity,X                                           ;A8F608;
     STA.B $14                                                            ;A8F60C;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8F60E;
     BCS .collidedHorizontally                                            ;A8F612;
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A8F614;
-    LDA.L $7E7810,X                                                      ;A8F618;
+    LDA.L Kihunter.YSubVelocity,X                                        ;A8F618;
     CLC                                                                  ;A8F61C;
     ADC.W KihunterConstants_fallingAcceleration_hop                      ;A8F61D;
-    STA.L $7E7810,X                                                      ;A8F620;
-    LDA.L $7E7812,X                                                      ;A8F624;
+    STA.L Kihunter.YSubVelocity,X                                        ;A8F620;
+    LDA.L Kihunter.YVelocity,X                                           ;A8F624;
     ADC.W KihunterConstants_fallingAcceleration_wingsClipped             ;A8F628;
-    STA.L $7E7812,X                                                      ;A8F62B;
+    STA.L Kihunter.YVelocity,X                                           ;A8F62B;
     RTL                                                                  ;A8F62F;
 
   .collidedHorizontally:
-    LDA.L $7E780E,X                                                      ;A8F630;
+    LDA.L Kihunter.XVelocity,X                                           ;A8F630;
     EOR.W #$FFFF                                                         ;A8F634;
     INC A                                                                ;A8F637;
-    STA.L $7E780E,X                                                      ;A8F638;
+    STA.L Kihunter.XVelocity,X                                           ;A8F638;
     RTL                                                                  ;A8F63C;
 
   .collidedVertically:
-    LDA.L $7E7812,X                                                      ;A8F63D;
+    LDA.L Kihunter.YVelocity,X                                           ;A8F63D;
     BMI .hitCeiling                                                      ;A8F641;
     LDA.W #$0000                                                         ;A8F643;
-    STA.L $7E7810,X                                                      ;A8F646;
+    STA.L Kihunter.YSubVelocity,X                                        ;A8F646;
     LDA.W #$FFFC                                                         ;A8F64A;
-    STA.L $7E7812,X                                                      ;A8F64D;
+    STA.L Kihunter.YVelocity,X                                           ;A8F64D;
     LDA.W #RTL_A8F5E3                                                    ;A8F651;
-    STA.W Kihunter.function,X                                                        ;A8F654;
+    STA.W Kihunter.function,X                                            ;A8F654;
     LDA.W #$000C                                                         ;A8F657;
-    STA.L $7E781E,X                                                      ;A8F65A;
+    STA.L Kihunter.thinkingTimer,X                                       ;A8F65A;
     LDY.W #InstList_Kihunter_LandedFromHop_FacingLeft                    ;A8F65E;
     LDA.W $0F92,X                                                        ;A8F661;
     CMP.W #InstList_Kihunter_Hop_FacingRight                             ;A8F664;
@@ -13028,7 +13028,7 @@ Function_Kihunter_Wingless_Hop:
 
   .hitCeiling:
     LDA.W #$0001                                                         ;A8F677;
-    STA.L $7E7812,X                                                      ;A8F67A;
+    STA.L Kihunter.YVelocity,X                                           ;A8F67A;
     RTL                                                                  ;A8F67E;
 
 
@@ -13037,16 +13037,16 @@ Instruction_Kihunter_SetFunctionTo_Wingless_Thinking:
     PHX                                                                  ;A8F67F;
     LDX.W $0E54                                                          ;A8F680;
     LDA.W #Function_Kihunter_Wingless_Thinking                           ;A8F683;
-    STA.W Kihunter.function,X                                                        ;A8F686;
+    STA.W Kihunter.function,X                                            ;A8F686;
     PLX                                                                  ;A8F689;
     RTL                                                                  ;A8F68A;
 
 
 ;;; $F68B: Ki-hunter function - wingless - thinking ;;;
 Function_Kihunter_Wingless_Thinking:
-    LDA.L $7E781E,X                                                      ;A8F68B;
+    LDA.L Kihunter.thinkingTimer,X                                       ;A8F68B;
     DEC A                                                                ;A8F68F;
-    STA.L $7E781E,X                                                      ;A8F690;
+    STA.L Kihunter.thinkingTimer,X                                       ;A8F690;
     BNE .return                                                          ;A8F694;
     LDY.W #Function_Kihunter_Wingless_PrepareToHop                       ;A8F696;
     LDA.W $0F7A,X                                                        ;A8F699;
@@ -13062,7 +13062,7 @@ Function_Kihunter_Wingless_Thinking:
 
   .keepHop:
     TYA                                                                  ;A8F6AE;
-    STA.W Kihunter.function,X                                                        ;A8F6AF;
+    STA.W Kihunter.function,X                                            ;A8F6AF;
 
   .return:
     RTL                                                                  ;A8F6B2;
@@ -13082,7 +13082,7 @@ Function_Kihunter_Wingless_FireAcidSpit:
     LDA.W #$0001                                                         ;A8F6C5;
     STA.W $0F94,X                                                        ;A8F6C8;
     LDA.W #RTL_A8F5E3                                                    ;A8F6CB;
-    STA.W Kihunter.function,X                                                        ;A8F6CE;
+    STA.W Kihunter.function,X                                            ;A8F6CE;
     RTL                                                                  ;A8F6D1;
 
 
@@ -13110,7 +13110,7 @@ FireAcidSpit:
     LDX.W $0E54                                                          ;A8F6E3;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8F6E6;
     LDA.W #$0018                                                         ;A8F6EA;
-    STA.L $7E781E,X                                                      ;A8F6ED;
+    STA.L Kihunter.thinkingTimer,X                                       ;A8F6ED;
     PLY                                                                  ;A8F6F1;
     RTL                                                                  ;A8F6F2;
 
@@ -13156,16 +13156,16 @@ EnemyShot_Kihunter:
     RTL                                                                  ;A8F733;
 
   .clipWings:
-    LDA.L $7E7828,X                                                      ;A8F734;
+    LDA.L Kihunter.winglessFlag,X                                        ;A8F734;
     BNE .returnUpper                                                     ;A8F738;
     LDA.W #$0001                                                         ;A8F73A;
-    STA.L $7E7828,X                                                      ;A8F73D;
+    STA.L Kihunter.winglessFlag,X                                        ;A8F73D;
     LDA.W #Function_Kihunter_Wingless_InitialFalling                     ;A8F741;
-    STA.W $0FA8,X                                                        ;A8F744;
+    STA.W Kihunter.function,X                                            ;A8F744;
     LDA.W #$0000                                                         ;A8F747;
-    STA.L $7E7810,X                                                      ;A8F74A;
+    STA.L Kihunter.YSubVelocity,X                                        ;A8F74A;
     LDA.W #$0001                                                         ;A8F74E;
-    STA.L $7E7812,X                                                      ;A8F751;
+    STA.L Kihunter.YVelocity,X                                           ;A8F751;
     PHX                                                                  ;A8F755;
     TXA                                                                  ;A8F756;
     CLC                                                                  ;A8F757;
@@ -13176,26 +13176,26 @@ EnemyShot_Kihunter:
     CMP.W #Function_KihunterWings_Falling                                ;A8F762;
     BEQ .returnLower                                                     ;A8F765;
     LDA.W $0F7E,X                                                        ;A8F767;
-    STA.L $7E780E,X                                                      ;A8F76A;
+    STA.L Kihunter.XVelocity,X                                           ;A8F76A;
     LDA.W $0F7A,X                                                        ;A8F76E;
-    STA.L $7E7810,X                                                      ;A8F771;
+    STA.L Kihunter.YSubVelocity,X                                        ;A8F771;
     JSR.W DetermineFallingKihunterWingsSpeedTableIndexResetValue         ;A8F775;
     JSR.W DetermineFallingKihunterWingsLeftArcCenterOffsets              ;A8F778;
     JSR.W DetermineFallingKihunterWingsRightArcCenterOffsets             ;A8F77B;
     LDA.W #$E000                                                         ;A8F77E;
-    STA.W $0FB2,X                                                        ;A8F781;
+    STA.W KihunterWings.arcAngle,X                                       ;A8F781;
     LDA.W #Function_KihunterWings_Falling                                ;A8F784;
-    STA.W KihunterWings.function,X                                                        ;A8F787;
+    STA.W KihunterWings.function,X                                       ;A8F787;
     LDA.W #Function_KihunterWings_Falling_DriftingLeft                   ;A8F78A;
-    STA.L $7E7800,X                                                      ;A8F78D;
-    LDA.L $7E780E,X                                                      ;A8F791;
+    STA.L KihunterWings.fallingFunction,X                                ;A8F78D;
+    LDA.L Kihunter.XVelocity,X                                           ;A8F791;
     SEC                                                                  ;A8F795;
-    SBC.L $7E7816,X                                                      ;A8F796;
-    STA.L $7E780C,X                                                      ;A8F79A;
+    SBC.L Kihunter.idleZoneBottomPosition,X                              ;A8F796;
+    STA.L Kihunter.XSubVelocity,X                                        ;A8F79A;
     LDA.W $0F7A,X                                                        ;A8F79E;
-    STA.L $7E780A,X                                                      ;A8F7A1;
-    LDA.L $7E7814,X                                                      ;A8F7A5;
-    STA.W $0FAA,X                                                        ;A8F7A9;
+    STA.L Kihunter.arcAngularSubAcceleration,X                           ;A8F7A1;
+    LDA.L KihunterWings.speedTableResetValue,X                           ;A8F7A5;
+    STA.W KihunterWings.speedTableIndex,X                                ;A8F7A9;
     LDA.W #InstList_KihunterWings_Falling                                ;A8F7AC;
     STA.W $0F92,X                                                        ;A8F7AF;
     LDA.W #Spritemap_CommonA8_Nothing                                    ;A8F7B2;
@@ -13216,7 +13216,7 @@ EnemyShot_Kihunter:
 ;;; $F7CF: Ki-hunter wings function - falling ;;;
 Function_KihunterWings_Falling:
     LDX.W $0E54                                                          ;A8F7CF;
-    LDA.L $7E7800,X                                                      ;A8F7D2;
+    LDA.L KihunterWings.fallingFunction,X                                ;A8F7D2;
     STA.B $12                                                            ;A8F7D6;
     JMP.W ($0012)                                                        ;A8F7D8;
 
@@ -13224,55 +13224,55 @@ Function_KihunterWings_Falling:
 ;;; $F7DB: Ki-hunter wings falling function - drifting left ;;;
 Function_KihunterWings_Falling_DriftingLeft:
     LDX.W $0E54                                                          ;A8F7DB;
-    LDA.W $0FAA,X                                                        ;A8F7DE;
+    LDA.W KihunterWings.speedTableIndex,X                                ;A8F7DE;
     AND.W #$FF00                                                         ;A8F7E1;
     XBA                                                                  ;A8F7E4;
     ASL A                                                                ;A8F7E5;
     ASL A                                                                ;A8F7E6;
     ASL A                                                                ;A8F7E7;
     TAY                                                                  ;A8F7E8;
-    LDA.W $0FB2,X                                                        ;A8F7E9;
+    LDA.W KihunterWings.arcAngle,X                                       ;A8F7E9;
     CLC                                                                  ;A8F7EC;
     ADC.W CommonEnemySpeeds_QuadraticallyIncreasing+5,Y                  ;A8F7ED;
-    STA.W $0FB2,X                                                        ;A8F7F0;
+    STA.W KihunterWings.arcAngle,X                                       ;A8F7F0;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F7F3;
     AND.W #$00FF                                                         ;A8F7F6;
     STA.W $0E32                                                          ;A8F7F9;
-    LDA.W $0FB2,X                                                        ;A8F7FC;
+    LDA.W KihunterWings.arcAngle,X                                       ;A8F7FC;
     XBA                                                                  ;A8F7FF;
     AND.W #$00FF                                                         ;A8F800;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A8F803;
     SEC                                                                  ;A8F807;
-    SBC.L $7E7808,X                                                      ;A8F808;
+    SBC.L KihunterWings.leftArcCenterYOffset,X                           ;A8F808;
     CLC                                                                  ;A8F80C;
-    ADC.L $7E780C,X                                                      ;A8F80D;
+    ADC.L KihunterWings.arcStartYPosition,X                              ;A8F80D;
     STA.W $0F7E,X                                                        ;A8F811;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F814;
     AND.W #$00FF                                                         ;A8F817;
     STA.W $0E32                                                          ;A8F81A;
-    LDA.W $0FB2,X                                                        ;A8F81D;
+    LDA.W KihunterWings.arcAngle,X                                       ;A8F81D;
     XBA                                                                  ;A8F820;
     AND.W #$00FF                                                         ;A8F821;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;A8F824;
     SEC                                                                  ;A8F828;
-    SBC.L $7E7806,X                                                      ;A8F829;
+    SBC.L KihunterWings.leftArcCenterXOffset,X                           ;A8F829;
     CLC                                                                  ;A8F82D;
-    ADC.L $7E780A,X                                                      ;A8F82E;
+    ADC.L KihunterWings.arcStartXPosition,X                              ;A8F82E;
     STA.W $0F7A,X                                                        ;A8F832;
-    LDA.W $0FB2,X                                                        ;A8F835;
+    LDA.W KihunterWings.arcAngle,X                                       ;A8F835;
     CMP.W #$C000                                                         ;A8F838;
     BPL +                                                                ;A8F83B;
     JSR.W SetupFallingKihunterWingsDriftingRight                         ;A8F83D;
     RTL                                                                  ;A8F840;
 
-+   LDA.W $0FAA,X                                                        ;A8F841;
++   LDA.W KihunterWings.speedTableIndex,X                                ;A8F841;
     SEC                                                                  ;A8F844;
     SBC.W #$0180                                                         ;A8F845;
     BPL .return                                                          ;A8F848;
     LDA.W #$0100                                                         ;A8F84A;
 
   .return:
-    STA.W $0FAA,X                                                        ;A8F84D;
+    STA.W KihunterWings.speedTableIndex,X                                ;A8F84D;
     RTL                                                                  ;A8F850;
 
 
@@ -13285,14 +13285,14 @@ DetermineFallingKihunterWingsLeftArcCenterOffsets:
     LDA.W #$E000                                                         ;A8F85D;
     XBA                                                                  ;A8F860;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;A8F861;
-    STA.L $7E7806,X                                                      ;A8F865;
+    STA.L KihunterWings.leftArcCenterXOffset,X                           ;A8F865;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F869;
     AND.W #$00FF                                                         ;A8F86C;
     STA.W $0E32                                                          ;A8F86F;
     LDA.W #$E000                                                         ;A8F872;
     XBA                                                                  ;A8F875;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A8F876;
-    STA.L $7E7808,X                                                      ;A8F87A;
+    STA.L KihunterWings.leftArcCenterYOffset,X                           ;A8F87A;
     RTS                                                                  ;A8F87E;
 
 
@@ -13305,42 +13305,42 @@ DetermineFallingKihunterWingsRightArcCenterOffsets:
     LDA.W #$A000                                                         ;A8F88B;
     XBA                                                                  ;A8F88E;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;A8F88F;
-    STA.L $7E7802,X                                                      ;A8F893;
+    STA.L KihunterWings.rightArcCenterXOffset,X                          ;A8F893;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F897;
     AND.W #$00FF                                                         ;A8F89A;
     STA.W $0E32                                                          ;A8F89D;
     LDA.W #$A000                                                         ;A8F8A0;
     XBA                                                                  ;A8F8A3;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A8F8A4;
-    STA.L $7E7804,X                                                      ;A8F8A8;
+    STA.L KihunterWings.rightArcCenterYOffset,X                          ;A8F8A8;
     RTS                                                                  ;A8F8AC;
 
 
 ;;; $F8AD: Ki-hunter wings falling function - drifting right ;;;
 Function_KihunterWings_Falling_DriftingRight:
     LDX.W $0E54                                                          ;A8F8AD;
-    LDA.W $0FAA,X                                                        ;A8F8B0;
+    LDA.W KihunterWings.speedTableIndex,X                                ;A8F8B0;
     AND.W #$FF00                                                         ;A8F8B3;
     XBA                                                                  ;A8F8B6;
     ASL A                                                                ;A8F8B7;
     ASL A                                                                ;A8F8B8;
     ASL A                                                                ;A8F8B9;
     TAY                                                                  ;A8F8BA;
-    LDA.W $0FB2,X                                                        ;A8F8BB;
+    LDA.W KihunterWings.arcAngle,X                                       ;A8F8BB;
     CLC                                                                  ;A8F8BE;
     ADC.W CommonEnemySpeeds_QuadraticallyIncreasing+1,Y                  ;A8F8BF;
-    STA.W $0FB2,X                                                        ;A8F8C2;
+    STA.W KihunterWings.arcAngle,X                                       ;A8F8C2;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F8C5;
     AND.W #$00FF                                                         ;A8F8C8;
     STA.W $0E32                                                          ;A8F8CB;
-    LDA.W $0FB2,X                                                        ;A8F8CE;
+    LDA.W KihunterWings.arcAngle,X                                       ;A8F8CE;
     XBA                                                                  ;A8F8D1;
     AND.W #$00FF                                                         ;A8F8D2;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A8F8D5;
     SEC                                                                  ;A8F8D9;
-    SBC.L $7E7804,X                                                      ;A8F8DA;
+    SBC.L KihunterWings.rightArcCenterYOffset,X                          ;A8F8DA;
     CLC                                                                  ;A8F8DE;
-    ADC.L $7E780C,X                                                      ;A8F8DF;
+    ADC.L KihunterWings.arcStartYPosition,X                              ;A8F8DF;
     SEC                                                                  ;A8F8E3;
     SBC.W $0F7E,X                                                        ;A8F8E4;
     STA.B $14                                                            ;A8F8E7;
@@ -13350,38 +13350,38 @@ Function_KihunterWings_Falling_DriftingRight:
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F8F1;
     AND.W #$00FF                                                         ;A8F8F4;
     STA.W $0E32                                                          ;A8F8F7;
-    LDA.W $0FB2,X                                                        ;A8F8FA;
+    LDA.W KihunterWings.arcAngle,X                                       ;A8F8FA;
     XBA                                                                  ;A8F8FD;
     AND.W #$00FF                                                         ;A8F8FE;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;A8F901;
     SEC                                                                  ;A8F905;
-    SBC.L $7E7802,X                                                      ;A8F906;
+    SBC.L KihunterWings.rightArcCenterXOffset,X                          ;A8F906;
     CLC                                                                  ;A8F90A;
-    ADC.L $7E780A,X                                                      ;A8F90B;
+    ADC.L KihunterWings.arcStartXPosition,X                              ;A8F90B;
     STA.W $0F7A,X                                                        ;A8F90F;
-    LDA.W $0FB2,X                                                        ;A8F912;
+    LDA.W KihunterWings.arcAngle,X                                       ;A8F912;
     CMP.W #$C000                                                         ;A8F915;
     BMI +                                                                ;A8F918;
     JSR.W SetupFallingKihunterWingsDriftingLeft                          ;A8F91A;
     RTL                                                                  ;A8F91D;
 
-+   LDA.W $0FAA,X                                                        ;A8F91E;
++   LDA.W KihunterWings.speedTableIndex,X                                ;A8F91E;
     SEC                                                                  ;A8F921;
     SBC.W #$0180                                                         ;A8F922;
     BPL .return                                                          ;A8F925;
     LDA.W #$0100                                                         ;A8F927;
 
   .return:
-    STA.W $0FAA,X                                                        ;A8F92A;
+    STA.W KihunterWings.speedTableIndex,X                                ;A8F92A;
     RTL                                                                  ;A8F92D;
 
   .collidedVertically:
     LDA.W $0F86,X                                                        ;A8F92E;
     ORA.W #$0200                                                         ;A8F931;
     STA.W $0F86,X                                                        ;A8F934;
-    LDA.L $7E7810,X                                                      ;A8F937;
+    LDA.L KihunterWings.fallStartYPosition,X                             ;A8F937;
     STA.W $0F7A,X                                                        ;A8F93B;
-    LDA.L $7E780E,X                                                      ;A8F93E;
+    LDA.L KihunterWings.fallStartXPosition,X                             ;A8F93E;
     STA.W $0F7E,X                                                        ;A8F942;
     BRA .return                                                          ;A8F945;
 
@@ -13389,30 +13389,30 @@ Function_KihunterWings_Falling_DriftingRight:
 ;;; $F947: Set up falling ki-hunter wings drifting left ;;;
 SetupFallingKihunterWingsDriftingLeft:
     LDA.W #Function_KihunterWings_Falling_DriftingLeft                   ;A8F947;
-    STA.L $7E7800,X                                                      ;A8F94A;
-    LDA.L $7E7814,X                                                      ;A8F94E;
-    STA.W $0FAA,X                                                        ;A8F952;
+    STA.L KihunterWings.fallingFunction,X                                ;A8F94A;
+    LDA.L KihunterWings.speedTableResetValue,X                           ;A8F94E;
+    STA.W KihunterWings.speedTableIndex,X                                ;A8F952;
     LDA.W #$E000                                                         ;A8F955;
-    STA.W $0FB2,X                                                        ;A8F958;
+    STA.W KihunterWings.arcAngle,X                                       ;A8F958;
     LDA.W $0F7A,X                                                        ;A8F95B;
-    STA.L $7E780A,X                                                      ;A8F95E;
+    STA.L KihunterWings.arcStartXPosition,X                              ;A8F95E;
     LDA.W $0F7E,X                                                        ;A8F962;
-    STA.L $7E780C,X                                                      ;A8F965;
+    STA.L KihunterWings.arcStartYPosition,X                              ;A8F965;
     RTS                                                                  ;A8F969;
 
 
 ;;; $F96A: Set up falling ki-hunter wings drifting right ;;;
 SetupFallingKihunterWingsDriftingRight:
     LDA.W #Function_KihunterWings_Falling_DriftingRight                  ;A8F96A;
-    STA.L $7E7800,X                                                      ;A8F96D;
-    LDA.L $7E7814,X                                                      ;A8F971;
-    STA.W $0FAA,X                                                        ;A8F975;
+    STA.L KihunterWings.fallingFunction,X                                ;A8F96D;
+    LDA.L KihunterWings.speedTableResetValue,X                           ;A8F971;
+    STA.W KihunterWings.speedTableIndex,X                                ;A8F975;
     LDA.W #$A000                                                         ;A8F978;
-    STA.W $0FB2,X                                                        ;A8F97B;
+    STA.W KihunterWings.arcAngle,X                                       ;A8F97B;
     LDA.W $0F7A,X                                                        ;A8F97E;
-    STA.L $7E780A,X                                                      ;A8F981;
+    STA.L KihunterWings.arcStartXPosition,X                              ;A8F981;
     LDA.W $0F7E,X                                                        ;A8F985;
-    STA.L $7E780C,X                                                      ;A8F988;
+    STA.L KihunterWings.arcStartYPosition,X                              ;A8F988;
     RTS                                                                  ;A8F98C;
 
 
@@ -13420,24 +13420,24 @@ SetupFallingKihunterWingsDriftingRight:
 DetermineFallingKihunterWingsSpeedTableIndexResetValue:
     LDX.W $0E54                                                          ;A8F98D;
     LDA.W #$0000                                                         ;A8F990;
-    STA.L $7E7814,X                                                      ;A8F993;
-    STA.W $0FAA,X                                                        ;A8F997;
+    STA.L KihunterWings.speedTableResetValue,X                           ;A8F993;
+    STA.W KihunterWings.speedTableIndex,X                                ;A8F997;
 
   .loop:
-    LDA.L $7E7814,X                                                      ;A8F99A;
+    LDA.L KihunterWings.speedTableResetValue,X                           ;A8F99A;
     CLC                                                                  ;A8F99E;
     ADC.W #$0180                                                         ;A8F99F;
-    STA.L $7E7814,X                                                      ;A8F9A2;
+    STA.L KihunterWings.speedTableResetValue,X                           ;A8F9A2;
     AND.W #$FF00                                                         ;A8F9A6;
     XBA                                                                  ;A8F9A9;
     ASL A                                                                ;A8F9AA;
     ASL A                                                                ;A8F9AB;
     ASL A                                                                ;A8F9AC;
     TAY                                                                  ;A8F9AD;
-    LDA.W $0FAE,X                                                        ;A8F9AE;
+    LDA.W KihunterWings.angleAccumulator,X                               ;A8F9AE;
     CLC                                                                  ;A8F9B1;
     ADC.W CommonEnemySpeeds_QuadraticallyIncreasing+1,Y                  ;A8F9B2;
-    STA.W $0FAE,X                                                        ;A8F9B5;
+    STA.W KihunterWings.angleAccumulator,X                               ;A8F9B5;
     CMP.W #$2000                                                         ;A8F9B8;
     BMI .loop                                                            ;A8F9BB;
     RTS                                                                  ;A8F9BD;
