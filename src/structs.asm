@@ -3540,14 +3540,14 @@ skip 2
 endstruct
 
 struct MotherBrainBody $0FA8
-  .bodyFunction: skip 2 ; $0FA8
+  .function: skip 2 ; $0FA8
 skip 2
   .ZebetitesPaletteAnimationIndex: skip 2 ; $0FAC
   .brainPaletteCounter: skip 1 ; $0FAE
   .brainPaletteTimer: skip 1 ; $0FAF
   .brainPaletteTimerResetValue: skip 1 ; $0FB0
   .brainPaletteSet: skip 1 ; $0FB1
-  .bodyFunctionTimer: skip 0 ; $0FB2
+  .functionTimer: skip 0 ; $0FB2
   .bodyTargetXPosition: skip 2 ; $0FB2
   .attackCooldown: skip 0 ; $0FB4
   .rainbowBeamExplosionIndex: skip 0 ; $0FB4
@@ -3556,7 +3556,8 @@ skip 2
   .customSamusYVelocity: skip 2 ; $0FB6
 skip $30
   .brainFunction: skip 2 ; $0FE8
-  .bodySubFunction: skip 0 ; $0FF0
+skip 6
+  .subFunction: skip 0 ; $0FF0
   .deathExplosionIntervalTimer: skip 2 ; $0FF0
   .bodySubFunctionTimer: skip 0 ; $0FF2
   .deathExplosionIndex: skip 0 ; $0FF2
@@ -3572,8 +3573,8 @@ skip 2
   .walkCounter: skip 2 ; $7E780E
 skip 2
   .HDMAObjectIndex: skip 2 ; $7E7812
-  .bodyXPosition: skip 2 ; $7E7814
-  .bodyYPosition: skip 2 ; $7E7816
+  .XPosition: skip 2 ; $7E7814
+  .YPosition: skip 2 ; $7E7816
   .neckPalleteIndex: skip 2 ; $7E7818
   .brainPalleteIndex: skip 2 ; $7E781A
   .roomPaletteInstListPointer: skip 2 ; $7E781C
@@ -3589,10 +3590,10 @@ skip 2
   .onionRingsTargetAngle: skip 2 ; $7E7834
 skip 4
   .deleteTurretsRinkasFlag: skip 2 ; $7E783A
-  .rinkaCounter: skip 2 ; $7E783C
+  .RinkaCounter: skip 2 ; $7E783C
   .phase2CorpseState: skip 2 ; $7E783E
   .brainMainShakeTimer: skip 2 ; $7E7840
-  .bodyRainbowBeamPaletteAnimationIndex: skip 2 ; $7E7842
+  .rainbowBeamPaletteAnimationIndex: skip 2 ; $7E7842
   .enableUnpauseHookFlag: skip 2 ; $7E7844
 skip 4
   .bombCounter: skip 2 ; $7E784A
@@ -3602,11 +3603,11 @@ skip 4
   .painfulWalkingFunctionTimer: skip 2 ; $7E7852
   .BabyMetroidEnemyIndex: skip 2 ; $7E7854
 skip 10
-  .EnableBrainPaletteHandlingFlag: skip 2 ; $7E7860
-  .EnableHealthBasedPaletteHandlingFlag: skip 2 ; $7E7862
+  .enableBrainPaletteHandlingFlag: skip 2 ; $7E7860
+  .enableHealthBasedPaletteHandlingFlag: skip 2 ; $7E7862
   .enableDroolGenerationFlag: skip 2 ; $7E7864
-  .droolProjectileParam: skip 2 ; $7E7868
-  .smallPurpleBreathGenerationEnabledFlag: skip 2 ; $7E7866
+  .droolProjectileParam: skip 2 ; $7E7866
+  .smallPurpleBreathGenerationEnabledFlag: skip 2 ; $7E7868
   .smallPurpleBreathActiveFlag: skip 2 ; $7E786A
   .SamusRainbowPaletteFunction: skip 2 ; $7E786C
 skip 2
@@ -3681,7 +3682,7 @@ struct BabyMetroidCutscene $0FA8
   .XVelocity: skip 2 ; $0FAA
   .YVelocity: skip 2 ; $0FAC
   .paletteFrameTimer: skip 1 ; $0FAE
-  .paletteHandlerTimer: skip 1 ; $0FAE
+  .paletteHandlerTimer: skip 1 ; $0FAF
   .paletteHandlerDelay: skip 2 ; $0FB0
   .functionTimer: skip 2 ; $0FB2
 skip $7DE854

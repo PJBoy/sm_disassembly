@@ -6579,13 +6579,13 @@ DecrementRinkaCounter:
     LDA.W $0F86,X                                                        ;A2B885;
     AND.W #$0100                                                         ;A2B888;
     BNE .return                                                          ;A2B88B;
-    LDA.L $7E783C                                                        ;A2B88D;
+    LDA.L MotherBrainBody.RinkaCounter                                                        ;A2B88D;
     DEC A                                                                ;A2B891;
     BPL .storeRinkaCounter                                               ;A2B892;
     LDA.W #$0000                                                         ;A2B894;
 
   .storeRinkaCounter:
-    STA.L $7E783C                                                        ;A2B897;
+    STA.L MotherBrainBody.RinkaCounter                                                        ;A2B897;
 
   .return:
     RTS                                                                  ;A2B89B;
@@ -6767,7 +6767,7 @@ ContactReaction_Rinka_Common:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $B9A2: Unused. Instruction - go to [[Y]] if [rinka counter] >= 3 ;;;
 UNUSED_Instruction_Rinka_GotoYIfCounterGreaterThan2_A2B9A2:
-    LDA.L $7E783C                                                        ;A2B9A2;
+    LDA.L MotherBrainBody.RinkaCounter                                                        ;A2B9A2;
     CMP.W #$0003                                                         ;A2B9A6;
     BPL .gotoY                                                           ;A2B9A9;
     INY                                                                  ;A2B9AB;
@@ -6804,9 +6804,9 @@ Instruction_Rinka_FireRinka:
     STA.W $0F86,X                                                        ;A2B9CD;
     LDA.W #Function_Rinka_Fire                                           ;A2B9D0;
     STA.W Rinka.function,X                                               ;A2B9D3;
-    LDA.L $7E783C                                                        ;A2B9D6;
+    LDA.L MotherBrainBody.RinkaCounter                                                        ;A2B9D6;
     INC A                                                                ;A2B9DA;
-    STA.L $7E783C                                                        ;A2B9DB;
+    STA.L MotherBrainBody.RinkaCounter                                                        ;A2B9DB;
     RTL                                                                  ;A2B9DF;
 
 
