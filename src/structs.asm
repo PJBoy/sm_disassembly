@@ -3964,10 +3964,10 @@ skip 2
   .wallJumpArcCenterXPosition: skip 2 ; $0FAE
   .wallJumpArcCenterYPosition: skip 2 ; $0FB0
   .wallJumpArcAngle: skip 2 ; $0FB2
-skip $7DE84C
-  .wallJumpArcRightTargetAngle: skip 2 ; $7E7800
-  .wallJumpArcLeftTargetAngle: skip 2 ; $7E7802
-  .wallJumpArcAngleDelta: skip 2 ; $7E7804
+skip $7DF04C
+  .wallJumpArcRightTargetAngle: skip 2 ; $7E8000
+  .wallJumpArcLeftTargetAngle: skip 2 ; $7E8002
+  .wallJumpArcAngleDelta: skip 2 ; $7E8004
 endstruct
 
 struct PirateNinja $0FA8
@@ -3978,6 +3978,7 @@ skip 4
   .rightPostXPosition: skip 2 ; $0FB2
 skip $7DE84C
   .speed: skip 2 ; $7E7800
+skip 14
   .spawnYPosition: skip 2 ; $7E7810
 endstruct
 

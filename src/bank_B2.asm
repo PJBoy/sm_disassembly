@@ -9226,11 +9226,11 @@ Inst_PirateWall_MoveYPixelsDown_ChangeDirOnCollision_Left:
     PLX                                                                  ;B2EE54;
     PLY                                                                  ;B2EE55;
     BCC .noCOllision                                                     ;B2EE56;
-    LDA.W $0FAC,X                                                        ;B2EE58;
+    LDA.W PirateWall.direction,X                                         ;B2EE58;
     EOR.W #$0001                                                         ;B2EE5B;
-    STA.W $0FAC,X                                                        ;B2EE5E;
+    STA.W PirateWall.direction,X                                         ;B2EE5E;
     LDY.W #InstList_PirateWall_MovingDownLeftWall_0                      ;B2EE61;
-    LDA.W $0FAC,X                                                        ;B2EE64;
+    LDA.W PirateWall.direction,X                                         ;B2EE64;
     BEQ .return                                                          ;B2EE67;
     LDY.W #InstList_PirateWall_MovingUpLeftWall_0                        ;B2EE69;
 
@@ -9259,11 +9259,11 @@ Inst_PirateWall_MoveYPixelsDown_ChangeDirOnCollision_Right:
     PLX                                                                  ;B2EE86;
     PLY                                                                  ;B2EE87;
     BCC .noCollision                                                     ;B2EE88;
-    LDA.W $0FAC,X                                                        ;B2EE8A;
+    LDA.W PirateWall.direction,X                                         ;B2EE8A;
     EOR.W #$0001                                                         ;B2EE8D;
-    STA.W $0FAC,X                                                        ;B2EE90;
+    STA.W PirateWall.direction,X                                         ;B2EE90;
     LDY.W #InstList_PirateWall_MovingDownRightWall_0                     ;B2EE93;
-    LDA.W $0FAC,X                                                        ;B2EE96;
+    LDA.W PirateWall.direction,X                                         ;B2EE96;
     BEQ .return                                                          ;B2EE99;
     LDY.W #InstList_PirateWall_MovingUpRightWall_0                       ;B2EE9B;
 
@@ -9285,7 +9285,7 @@ Instruction_PirateWall_RandomlyChooseADirection_LeftWall:
     LDX.W $0E54                                                          ;B2EEA8;
     JSL.L GenerateRandomNumber                                           ;B2EEAB;
     AND.W #$0001                                                         ;B2EEAF;
-    STA.W $0FAC,X                                                        ;B2EEB2;
+    STA.W PirateWall.direction,X                                         ;B2EEB2;
     BEQ .return                                                          ;B2EEB5;
     LDY.W #InstList_PirateWall_MovingUpLeftWall_0                        ;B2EEB7;
 
@@ -9301,7 +9301,7 @@ Instruction_PirateWall_RandomlyChooseADirection_RightWall:
     LDX.W $0E54                                                          ;B2EEC0;
     JSL.L GenerateRandomNumber                                           ;B2EEC3;
     AND.W #$0001                                                         ;B2EEC7;
-    STA.W $0FAC,X                                                        ;B2EECA;
+    STA.W PirateWall.direction,X                                         ;B2EECA;
     BEQ .return                                                          ;B2EECD;
     LDY.W #InstList_PirateWall_MovingUpRightWall_0                       ;B2EECF;
 
@@ -9323,11 +9323,11 @@ Instruction_PirateWall_PrepareWallJumpToRight:
     LSR A                                                                ;B2EEE6;
     CLC                                                                  ;B2EEE7;
     ADC.W $0F7A,X                                                        ;B2EEE8;
-    STA.W $0FAE,X                                                        ;B2EEEB;
+    STA.W PirateWall.wallJumpArcCenterXPosition,X                        ;B2EEEB;
     LDA.W $0F7E,X                                                        ;B2EEEE;
-    STA.W $0FB0,X                                                        ;B2EEF1;
+    STA.W PirateWall.wallJumpArcCenterYPosition,X                        ;B2EEF1;
     LDA.W #$0040                                                         ;B2EEF4;
-    STA.W $0FB2,X                                                        ;B2EEF7;
+    STA.W PirateWall.wallJumpArcAngle,X                                  ;B2EEF7;
     PLY                                                                  ;B2EEFA;
     PLX                                                                  ;B2EEFB;
     RTL                                                                  ;B2EEFC;
@@ -9348,11 +9348,11 @@ Instruction_PirateWall_PrepareWallJumpToLeft:
     LDA.W $0F7A,X                                                        ;B2EF12;
     SEC                                                                  ;B2EF15;
     SBC.B $12                                                            ;B2EF16;
-    STA.W $0FAE,X                                                        ;B2EF18;
+    STA.W PirateWall.wallJumpArcCenterXPosition,X                        ;B2EF18;
     LDA.W $0F7E,X                                                        ;B2EF1B;
-    STA.W $0FB0,X                                                        ;B2EF1E;
+    STA.W PirateWall.wallJumpArcCenterYPosition,X                        ;B2EF1E;
     LDA.W #$00C0                                                         ;B2EF21;
-    STA.W $0FB2,X                                                        ;B2EF24;
+    STA.W PirateWall.wallJumpArcAngle,X                                  ;B2EF24;
     PLY                                                                  ;B2EF27;
     PLX                                                                  ;B2EF28;
     RTL                                                                  ;B2EF29;
@@ -9412,7 +9412,7 @@ Instruction_PirateWall_FunctionInY:
     PHX                                                                  ;B2EF84;
     LDX.W $0E54                                                          ;B2EF85;
     LDA.W $0000,Y                                                        ;B2EF88;
-    STA.W $0FA8,X                                                        ;B2EF8B;
+    STA.W PirateWall.function,X                                          ;B2EF8B;
     PLX                                                                  ;B2EF8E;
     PLY                                                                  ;B2EF8F;
     INY                                                                  ;B2EF90;
@@ -9444,26 +9444,26 @@ InitAI_PirateWall:
     TYA                                                                  ;B2EFB0;
     STA.W $0F92,X                                                        ;B2EFB1;
     LDA.W #$00BE                                                         ;B2EFB4;
-    STA.L $7E8000,X                                                      ;B2EFB7;
+    STA.L PirateWall.wallJumpArcRightTargetAngle,X                       ;B2EFB7;
     LDA.W #$0042                                                         ;B2EFBB;
-    STA.L $7E8002,X                                                      ;B2EFBE;
+    STA.L PirateWall.wallJumpArcLeftTargetAngle,X                        ;B2EFBE;
     LDA.W #$0002                                                         ;B2EFC2;
-    STA.L $7E8004,X                                                      ;B2EFC5;
+    STA.L PirateWall.wallJumpArcAngleDelta,X                             ;B2EFC5;
     LDA.W $0FB4,X                                                        ;B2EFC9;
     BIT.W #$8000                                                         ;B2EFCC;
     BNE .notFastJump                                                     ;B2EFCF;
-    LDA.L $7E8000,X                                                      ;B2EFD1;
+    LDA.L PirateWall.wallJumpArcRightTargetAngle,X                       ;B2EFD1;
     CLC                                                                  ;B2EFD5;
     ADC.W #$0002                                                         ;B2EFD6;
-    STA.L $7E8000,X                                                      ;B2EFD9;
-    LDA.L $7E8002,X                                                      ;B2EFDD;
+    STA.L PirateWall.wallJumpArcRightTargetAngle,X                       ;B2EFD9;
+    LDA.L PirateWall.wallJumpArcLeftTargetAngle,X                        ;B2EFDD;
     SEC                                                                  ;B2EFE1;
     SBC.W #$0002                                                         ;B2EFE2;
-    STA.L $7E8002,X                                                      ;B2EFE5;
-    LDA.L $7E8004,X                                                      ;B2EFE9;
+    STA.L PirateWall.wallJumpArcLeftTargetAngle,X                        ;B2EFE5;
+    LDA.L PirateWall.wallJumpArcAngleDelta,X                             ;B2EFE9;
     CLC                                                                  ;B2EFED;
     ADC.W #$0002                                                         ;B2EFEE;
-    STA.L $7E8004,X                                                      ;B2EFF1;
+    STA.L PirateWall.wallJumpArcAngleDelta,X                             ;B2EFF1;
 
   .notFastJump:
     LDY.W #Function_PirateWall_ClimbingLeftWall                          ;B2EFF5;
@@ -9473,7 +9473,7 @@ InitAI_PirateWall:
     LDY.W #Function_PirateWall_ClimbingRightWall                         ;B2F000;
 
 +   TYA                                                                  ;B2F003;
-    STA.W $0FA8,X                                                        ;B2F004;
+    STA.W PirateWall.function,X                                          ;B2F004;
     LDA.W $0F7A,X                                                        ;B2F007;
     AND.W #$000F                                                         ;B2F00A;
     CMP.W #$000B                                                         ;B2F00D;
@@ -9498,7 +9498,7 @@ InitAI_PirateWall:
 ;;; $F02D: Main AI - enemy $F353/$F393/$F3D3/$F413/$F453/$F493 (wall space pirates) ;;;
 MainAI_PirateWall:
     LDX.W $0E54                                                          ;B2F02D;
-    JSR.W ($0FA8,X)                                                      ;B2F030;
+    JSR.W (PirateWall.function,X)                                        ;B2F030;
     RTL                                                                  ;B2F033;
 
 
@@ -9534,28 +9534,28 @@ Function_PirateWall_WallJumpingRight:
     LDA.W $0FB6,X                                                        ;B2F053;
     LSR A                                                                ;B2F056;
     STA.W $0E32                                                          ;B2F057;
-    LDA.W $0FB2,X                                                        ;B2F05A;
+    LDA.W PirateWall.wallJumpArcAngle,X                                  ;B2F05A;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;B2F05D;
     CLC                                                                  ;B2F061;
-    ADC.W $0FAE,X                                                        ;B2F062;
+    ADC.W PirateWall.wallJumpArcCenterXPosition,X                        ;B2F062;
     STA.W $0F7A,X                                                        ;B2F065;
     LDA.W $0FB6,X                                                        ;B2F068;
     LSR A                                                                ;B2F06B;
     LSR A                                                                ;B2F06C;
     STA.W $0E32                                                          ;B2F06D;
-    LDA.W $0FB2,X                                                        ;B2F070;
+    LDA.W PirateWall.wallJumpArcAngle,X                                  ;B2F070;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;B2F073;
     EOR.W #$FFFF                                                         ;B2F077;
     INC A                                                                ;B2F07A;
     CLC                                                                  ;B2F07B;
-    ADC.W $0FB0,X                                                        ;B2F07C;
+    ADC.W PirateWall.wallJumpArcCenterYPosition,X                        ;B2F07C;
     STA.W $0F7E,X                                                        ;B2F07F;
-    LDA.W $0FB2,X                                                        ;B2F082;
+    LDA.W PirateWall.wallJumpArcAngle,X                                  ;B2F082;
     SEC                                                                  ;B2F085;
-    SBC.L $7E8004,X                                                      ;B2F086;
+    SBC.L PirateWall.wallJumpArcAngleDelta,X                             ;B2F086;
     AND.W #$00FF                                                         ;B2F08A;
-    STA.W $0FB2,X                                                        ;B2F08D;
-    CMP.L $7E8000,X                                                      ;B2F090;
+    STA.W PirateWall.wallJumpArcAngle,X                                  ;B2F08D;
+    CMP.L PirateWall.wallJumpArcRightTargetAngle,X                       ;B2F090;
     BNE .return                                                          ;B2F094;
     LDA.W #InstList_PirateWall_LandingOnRightWall                        ;B2F096;
     STA.W $0F92,X                                                        ;B2F099;
@@ -9614,28 +9614,28 @@ Function_PirateWall_WallJumpingLeft:
     LDA.W $0FB6,X                                                        ;B2F0E7;
     LSR A                                                                ;B2F0EA;
     STA.W $0E32                                                          ;B2F0EB;
-    LDA.W $0FB2,X                                                        ;B2F0EE;
+    LDA.W PirateWall.wallJumpArcAngle,X                                  ;B2F0EE;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;B2F0F1;
     CLC                                                                  ;B2F0F5;
-    ADC.W $0FAE,X                                                        ;B2F0F6;
+    ADC.W PirateWall.wallJumpArcCenterXPosition,X                        ;B2F0F6;
     STA.W $0F7A,X                                                        ;B2F0F9;
     LDA.W $0FB6,X                                                        ;B2F0FC;
     LSR A                                                                ;B2F0FF;
     LSR A                                                                ;B2F100;
     STA.W $0E32                                                          ;B2F101;
-    LDA.W $0FB2,X                                                        ;B2F104;
+    LDA.W PirateWall.wallJumpArcAngle,X                                  ;B2F104;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;B2F107;
     EOR.W #$FFFF                                                         ;B2F10B;
     INC A                                                                ;B2F10E;
     CLC                                                                  ;B2F10F;
-    ADC.W $0FB0,X                                                        ;B2F110;
+    ADC.W PirateWall.wallJumpArcCenterYPosition,X                        ;B2F110;
     STA.W $0F7E,X                                                        ;B2F113;
-    LDA.W $0FB2,X                                                        ;B2F116;
+    LDA.W PirateWall.wallJumpArcAngle,X                                  ;B2F116;
     CLC                                                                  ;B2F119;
-    ADC.L $7E8004,X                                                      ;B2F11A;
+    ADC.L PirateWall.wallJumpArcAngleDelta,X                             ;B2F11A;
     AND.W #$00FF                                                         ;B2F11E;
-    STA.W $0FB2,X                                                        ;B2F121;
-    CMP.L $7E8002,X                                                      ;B2F124;
+    STA.W PirateWall.wallJumpArcAngle,X                                  ;B2F121;
+    CMP.L PirateWall.wallJumpArcLeftTargetAngle,X                        ;B2F124;
     BNE .return                                                          ;B2F128;
     LDA.W #InstList_PirateWall_LandedOnLeftWall                          ;B2F12A;
     STA.W $0F92,X                                                        ;B2F12D;
@@ -10210,7 +10210,7 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 ;;; $F5D6: Instruction - enemy speed = 0 ;;;
 Instruction_PirateNinja_ResetSpeed:
     LDA.W #$0000                                                         ;B2F5D6;
-    STA.L $7E7800,X                                                      ;B2F5D9;
+    STA.L PirateNinja.speed,X                                            ;B2F5D9;
     RTL                                                                  ;B2F5DD;
 
 
@@ -10231,28 +10231,28 @@ InitAI_PirateNinja:
     BIT.W #$0001                                                         ;B2F5F9;
     BEQ .zeroParam1again                                                 ;B2F5FC;
     LDA.W $0F7A,X                                                        ;B2F5FE;
-    STA.W $0FB0,X                                                        ;B2F601;
+    STA.W PirateNinja.leftPostXPosition,X                                ;B2F601;
     CLC                                                                  ;B2F604;
     ADC.W $0FB6,X                                                        ;B2F605;
-    STA.W $0FB2,X                                                        ;B2F608;
+    STA.W PirateNinja.rightPostXPosition,X                               ;B2F608;
     BRA +                                                                ;B2F60B;
 
   .zeroParam1again:
     LDA.W $0F7A,X                                                        ;B2F60D;
-    STA.W $0FB2,X                                                        ;B2F610;
+    STA.W PirateNinja.rightPostXPosition,X                               ;B2F610;
     SEC                                                                  ;B2F613;
     SBC.W $0FB6,X                                                        ;B2F614;
-    STA.W $0FB0,X                                                        ;B2F617;
+    STA.W PirateNinja.leftPostXPosition,X                                ;B2F617;
 
-+   LDA.W $0FB2,X                                                        ;B2F61A;
++   LDA.W PirateNinja.rightPostXPosition,X                               ;B2F61A;
     SEC                                                                  ;B2F61D;
-    SBC.W $0FB0,X                                                        ;B2F61E;
+    SBC.W PirateNinja.leftPostXPosition,X                                ;B2F61E;
     LSR A                                                                ;B2F621;
     STA.B $14                                                            ;B2F622;
     CLC                                                                  ;B2F624;
-    ADC.W $0FB0,X                                                        ;B2F625;
-    STA.W $0FAE,X                                                        ;B2F628;
-    LDA.W $0FAE,X                                                        ;B2F62B; >_<
+    ADC.W PirateNinja.leftPostXPosition,X                                ;B2F625;
+    STA.W PirateNinja.postsMidpointXPosition,X                           ;B2F628;
+    LDA.W PirateNinja.postsMidpointXPosition,X                           ;B2F62B; >_<
     STZ.B $12                                                            ;B2F62E;
     STZ.B $16                                                            ;B2F630;
     LDA.B $14                                                            ;B2F632;
@@ -10277,25 +10277,25 @@ InitAI_PirateNinja:
     XBA                                                                  ;B2F655;
     STA.B $18                                                            ;B2F656;
     CLC                                                                  ;B2F658;
-    ADC.W $0FAE,X                                                        ;B2F659;
-    STA.W $0FB2,X                                                        ;B2F65C;
-    LDA.W $0FAE,X                                                        ;B2F65F;
+    ADC.W PirateNinja.postsMidpointXPosition,X                           ;B2F659;
+    STA.W PirateNinja.rightPostXPosition,X                               ;B2F65C;
+    LDA.W PirateNinja.postsMidpointXPosition,X                           ;B2F65F;
     SEC                                                                  ;B2F662;
     SBC.B $18                                                            ;B2F663;
-    STA.W $0FB0,X                                                        ;B2F665;
-    LDY.W $0FB0,X                                                        ;B2F668;
+    STA.W PirateNinja.leftPostXPosition,X                                ;B2F665;
+    LDY.W PirateNinja.leftPostXPosition,X                                ;B2F668;
     LDA.W $0FB4,X                                                        ;B2F66B;
     BIT.W #$0001                                                         ;B2F66E;
     BNE .zeroParam1again2                                                ;B2F671;
-    LDY.W $0FB2,X                                                        ;B2F673;
+    LDY.W PirateNinja.rightPostXPosition,X                               ;B2F673;
 
   .zeroParam1again2:
     TYA                                                                  ;B2F676;
     STA.W $0F7A,X                                                        ;B2F677;
     LDA.W #RTS_B2804B                                                    ;B2F67A;
-    STA.W $0FA8,X                                                        ;B2F67D;
+    STA.W PirateNinja.function,X                                         ;B2F67D;
     LDA.W $0F7E,X                                                        ;B2F680;
-    STA.L $7E7810,X                                                      ;B2F683;
+    STA.L PirateNinja.spawnYPosition,X                                   ;B2F683;
     LDY.W #$0000                                                         ;B2F687;
     LDX.W #$0000                                                         ;B2F68A;
     LDA.W #$000F                                                         ;B2F68D;
@@ -10316,7 +10316,7 @@ InitAI_PirateNinja:
 ;;; $F6A2: Main AI - enemy $F4D3/$F513/$F553/$F593/$F5D3/$F613 (ninja space pirates) ;;;
 MainAI_PirateNinja:
     LDX.W $0E54                                                          ;B2F6A2;
-    JSR.W ($0FA8,X)                                                      ;B2F6A5;
+    JSR.W (PirateNinja.function,X)                                       ;B2F6A5;
     RTL                                                                  ;B2F6A8;
 
 
@@ -10375,7 +10375,7 @@ PirateNinja_ProjectileClawAttackTrigger:
     AND.W #$003F                                                         ;B2F6FA;
     BNE .return                                                          ;B2F6FD;
     LDA.W $0F7A,X                                                        ;B2F6FF;
-    CMP.W $0FB0,X                                                        ;B2F702;
+    CMP.W PirateNinja.leftPostXPosition,X                                ;B2F702;
     BEQ .reachedLeftPost                                                 ;B2F705;
     LDA.W $0F7A,X                                                        ;B2F707;
     SEC                                                                  ;B2F70A;
@@ -10468,7 +10468,7 @@ PirateNinja_SpinJumpTrigger:
 ;;     A: 1 if spin jump triggered, 0 otherwise
     PHX                                                                  ;B2F78D;
     LDX.W $0E54                                                          ;B2F78E;
-    LDA.W $0FAE,X                                                        ;B2F791;
+    LDA.W PirateNinja.postsMidpointXPosition,X                           ;B2F791;
     SEC                                                                  ;B2F794;
     SBC.W $0AF6                                                          ;B2F795;
     BPL +                                                                ;B2F798;
@@ -10480,7 +10480,7 @@ PirateNinja_SpinJumpTrigger:
     BPL .returnNoSpinJump                                                ;B2F7A2;
     LDY.W #InstList_PirateNinja_SpinJumpLeft_0                           ;B2F7A4;
     LDA.W $0F7A,X                                                        ;B2F7A7;
-    CMP.W $0FB0,X                                                        ;B2F7AA;
+    CMP.W PirateNinja.leftPostXPosition,X                                ;B2F7AA;
     BNE .keepLeft                                                        ;B2F7AD;
     LDY.W #InstList_PirateNinja_SpinJumpRight_0                          ;B2F7AF;
 
@@ -10551,7 +10551,7 @@ PirateNinja_StandingKickTrigger:
 
 ;;; $F817: Ninja space pirate function - spin jump left - rising ;;;
 Function_PirateNinja_SpinJumpleft_Rising:
-    LDA.L $7E7800,X                                                      ;B2F817;
+    LDA.L PirateNinja.speed,X                                            ;B2F817;
     AND.W #$FF00                                                         ;B2F81B;
     XBA                                                                  ;B2F81E;
     STA.B $12                                                            ;B2F81F;
@@ -10561,24 +10561,24 @@ Function_PirateNinja_SpinJumpleft_Rising:
     STA.W $0F7A,X                                                        ;B2F827;
     DEC.W $0F7E,X                                                        ;B2F82A;
     DEC.W $0F7E,X                                                        ;B2F82D;
-    LDA.L $7E7800,X                                                      ;B2F830;
+    LDA.L PirateNinja.speed,X                                            ;B2F830;
     CLC                                                                  ;B2F834;
     ADC.W #$0020                                                         ;B2F835;
-    STA.L $7E7800,X                                                      ;B2F838;
+    STA.L PirateNinja.speed,X                                            ;B2F838;
     LDA.W $0F7A,X                                                        ;B2F83C;
-    CMP.W $0FAE,X                                                        ;B2F83F;
+    CMP.W PirateNinja.postsMidpointXPosition,X                           ;B2F83F;
     BMI .falling                                                         ;B2F842;
     RTS                                                                  ;B2F844;
 
   .falling:
     LDA.W #Function_PirateNinja_SpinJumpLeft_Falling                     ;B2F845;
-    STA.W $0FA8,X                                                        ;B2F848;
+    STA.W PirateNinja.function,X                                         ;B2F848;
     RTS                                                                  ;B2F84B;
 
 
 ;;; $F84C: Ninja space pirate function - spin jump left - falling ;;;
 Function_PirateNinja_SpinJumpLeft_Falling:
-    LDA.L $7E7800,X                                                      ;B2F84C;
+    LDA.L PirateNinja.speed,X                                            ;B2F84C;
     AND.W #$FF00                                                         ;B2F850;
     XBA                                                                  ;B2F853;
     STA.B $12                                                            ;B2F854;
@@ -10588,21 +10588,21 @@ Function_PirateNinja_SpinJumpLeft_Falling:
     STA.W $0F7A,X                                                        ;B2F85C;
     INC.W $0F7E,X                                                        ;B2F85F;
     INC.W $0F7E,X                                                        ;B2F862;
-    LDA.L $7E7800,X                                                      ;B2F865;
+    LDA.L PirateNinja.speed,X                                            ;B2F865;
     SEC                                                                  ;B2F869;
     SBC.W #$0020                                                         ;B2F86A;
-    STA.L $7E7800,X                                                      ;B2F86D;
+    STA.L PirateNinja.speed,X                                            ;B2F86D;
     BEQ .landing                                                         ;B2F871;
     RTS                                                                  ;B2F873;
 
   .landing:
     LDA.W #RTS_B2804B                                                    ;B2F874;
-    STA.W $0FA8,X                                                        ;B2F877;
+    STA.W PirateNinja.function,X                                         ;B2F877;
     LDA.W #InstList_PirateNinja_Land_FacingLeft_0                        ;B2F87A;
     STA.W $0F92,X                                                        ;B2F87D;
     LDA.W #$0001                                                         ;B2F880;
     STA.W $0F94,X                                                        ;B2F883;
-    LDA.W $0FB0,X                                                        ;B2F886;
+    LDA.W PirateNinja.leftPostXPosition,X                                ;B2F886;
     STA.W $0F7A,X                                                        ;B2F889;
     JSR.W PirateNinja_SpawnLandingDustCloud                              ;B2F88C;
     RTS                                                                  ;B2F88F;
@@ -10610,7 +10610,7 @@ Function_PirateNinja_SpinJumpLeft_Falling:
 
 ;;; $F890: Ninja space pirate function - spin jump right - rising ;;;
 Function_PirateNinja_SpinJumpRight_Rising:
-    LDA.L $7E7800,X                                                      ;B2F890;
+    LDA.L PirateNinja.speed,X                                            ;B2F890;
     AND.W #$FF00                                                         ;B2F894;
     XBA                                                                  ;B2F897;
     STA.B $12                                                            ;B2F898;
@@ -10620,24 +10620,24 @@ Function_PirateNinja_SpinJumpRight_Rising:
     STA.W $0F7A,X                                                        ;B2F8A0;
     DEC.W $0F7E,X                                                        ;B2F8A3;
     DEC.W $0F7E,X                                                        ;B2F8A6;
-    LDA.L $7E7800,X                                                      ;B2F8A9;
+    LDA.L PirateNinja.speed,X                                            ;B2F8A9;
     CLC                                                                  ;B2F8AD;
     ADC.W #$0020                                                         ;B2F8AE;
-    STA.L $7E7800,X                                                      ;B2F8B1;
+    STA.L PirateNinja.speed,X                                            ;B2F8B1;
     LDA.W $0F7A,X                                                        ;B2F8B5;
-    CMP.W $0FAE,X                                                        ;B2F8B8;
+    CMP.W PirateNinja.postsMidpointXPosition,X                           ;B2F8B8;
     BPL .falling                                                         ;B2F8BB;
     RTS                                                                  ;B2F8BD;
 
   .falling:
     LDA.W #Function_PirateNinja_SpinJumpRight_Falling                    ;B2F8BE;
-    STA.W $0FA8,X                                                        ;B2F8C1;
+    STA.W PirateNinja.function,X                                         ;B2F8C1;
     RTS                                                                  ;B2F8C4;
 
 
 ;;; $F8C5: Ninja space pirate function - spin jump right - falling ;;;
 Function_PirateNinja_SpinJumpRight_Falling:
-    LDA.L $7E7800,X                                                      ;B2F8C5;
+    LDA.L PirateNinja.speed,X                                            ;B2F8C5;
     AND.W #$FF00                                                         ;B2F8C9;
     XBA                                                                  ;B2F8CC;
     STA.B $12                                                            ;B2F8CD;
@@ -10647,21 +10647,21 @@ Function_PirateNinja_SpinJumpRight_Falling:
     STA.W $0F7A,X                                                        ;B2F8D5;
     INC.W $0F7E,X                                                        ;B2F8D8;
     INC.W $0F7E,X                                                        ;B2F8DB;
-    LDA.L $7E7800,X                                                      ;B2F8DE;
+    LDA.L PirateNinja.speed,X                                            ;B2F8DE;
     SEC                                                                  ;B2F8E2;
     SBC.W #$0020                                                         ;B2F8E3;
-    STA.L $7E7800,X                                                      ;B2F8E6;
+    STA.L PirateNinja.speed,X                                            ;B2F8E6;
     BEQ .landing                                                         ;B2F8EA;
     RTS                                                                  ;B2F8EC;
 
   .landing:
     LDA.W #RTS_B2804B                                                    ;B2F8ED;
-    STA.W $0FA8,X                                                        ;B2F8F0;
+    STA.W PirateNinja.function,X                                         ;B2F8F0;
     LDA.W #InstList_PirateNinja_Land_FacingRight_0                       ;B2F8F3;
     STA.W $0F92,X                                                        ;B2F8F6;
     LDA.W #$0001                                                         ;B2F8F9;
     STA.W $0F94,X                                                        ;B2F8FC;
-    LDA.W $0FB2,X                                                        ;B2F8FF;
+    LDA.W PirateNinja.rightPostXPosition,X                               ;B2F8FF;
     STA.W $0F7A,X                                                        ;B2F902;
     JSR.W PirateNinja_SpawnLandingDustCloud                              ;B2F905;
     RTS                                                                  ;B2F908;
@@ -10682,7 +10682,7 @@ Function_PirateNinja_ReadingToDivekick:
 ;;; $F917: Ninja space pirate divekick trigger ;;;
 PirateNinja_DivekickTrigger:
     LDX.W $0E54                                                          ;B2F917;
-    LDA.W $0FAE,X                                                        ;B2F91A;
+    LDA.W PirateNinja.postsMidpointXPosition,X                           ;B2F91A;
     SEC                                                                  ;B2F91D;
     SBC.W $0AF6                                                          ;B2F91E;
     BPL +                                                                ;B2F921;
@@ -10700,7 +10700,7 @@ PirateNinja_DivekickTrigger:
     STA.B $12                                                            ;B2F936;
     LDY.W #$0000                                                         ;B2F938;
     LDA.W $0F7A,X                                                        ;B2F93B;
-    CMP.W $0FB0,X                                                        ;B2F93E;
+    CMP.W PirateNinja.leftPostXPosition,X                                ;B2F93E;
     BNE .keepLeft                                                        ;B2F941;
     LDY.W #$0004                                                         ;B2F943;
 
@@ -10736,13 +10736,13 @@ Instruction_PirateNinja_SetLeftDivekickJumpInitialYSpeed:
     PHX                                                                  ;B2F969;
     PHY                                                                  ;B2F96A;
     LDA.W #$0600                                                         ;B2F96B;
-    STA.L $7E7800,X                                                      ;B2F96E;
-    LDA.W $0FB2,X                                                        ;B2F972;
+    STA.L PirateNinja.speed,X                                            ;B2F96E;
+    LDA.W PirateNinja.rightPostXPosition,X                               ;B2F972;
     SEC                                                                  ;B2F975;
-    SBC.W $0FAE,X                                                        ;B2F976;
+    SBC.W PirateNinja.postsMidpointXPosition,X                           ;B2F976;
     LSR A                                                                ;B2F979;
     CLC                                                                  ;B2F97A;
-    ADC.W $0FAE,X                                                        ;B2F97B;
+    ADC.W PirateNinja.postsMidpointXPosition,X                           ;B2F97B;
     STA.L $7E7806,X                                                      ;B2F97E;
     PLY                                                                  ;B2F982;
     PLX                                                                  ;B2F983;
@@ -10751,7 +10751,7 @@ Instruction_PirateNinja_SetLeftDivekickJumpInitialYSpeed:
 
 ;;; $F985: Ninja space pirate function - divekick left - jump ;;;
 Instruction_PirateNinja_DivekickLeft_Jump:
-    LDA.L $7E7800,X                                                      ;B2F985;
+    LDA.L PirateNinja.speed,X                                            ;B2F985;
     AND.W #$FF00                                                         ;B2F989;
     XBA                                                                  ;B2F98C;
     STA.B $12                                                            ;B2F98D;
@@ -10759,22 +10759,22 @@ Instruction_PirateNinja_DivekickLeft_Jump:
     SEC                                                                  ;B2F992;
     SBC.B $12                                                            ;B2F993;
     STA.W $0F7E,X                                                        ;B2F995;
-    LDA.L $7E7800,X                                                      ;B2F998;
+    LDA.L PirateNinja.speed,X                                            ;B2F998;
     SEC                                                                  ;B2F99C;
     SBC.W #$0040                                                         ;B2F99D;
-    STA.L $7E7800,X                                                      ;B2F9A0;
+    STA.L PirateNinja.speed,X                                            ;B2F9A0;
     BMI .negativeSpeed                                                   ;B2F9A4;
     RTS                                                                  ;B2F9A6;
 
   .negativeSpeed:
     LDA.W #Instruction_PirateNinja_DivekickLeft_Divekick                 ;B2F9A7;
-    STA.W $0FA8,X                                                        ;B2F9AA;
+    STA.W PirateNinja.function,X                                         ;B2F9AA;
     LDA.W #InstList_PirateNinja_DivekickLeft_Divekick                    ;B2F9AD;
     STA.W $0F92,X                                                        ;B2F9B0;
     LDA.W #$0001                                                         ;B2F9B3;
     STA.W $0F94,X                                                        ;B2F9B6;
     LDA.W #$0600                                                         ;B2F9B9;
-    STA.L $7E7800,X                                                      ;B2F9BC;
+    STA.L PirateNinja.speed,X                                            ;B2F9BC;
     RTS                                                                  ;B2F9C0;
 
 
@@ -10784,19 +10784,19 @@ Instruction_PirateNinja_DivekickLeft_Divekick:
     SEC                                                                  ;B2F9C4;
     SBC.W #$0005                                                         ;B2F9C5;
     STA.W $0F7A,X                                                        ;B2F9C8;
-    LDA.L $7E7800,X                                                      ;B2F9CB;
+    LDA.L PirateNinja.speed,X                                            ;B2F9CB;
     AND.W #$FF00                                                         ;B2F9CF;
     XBA                                                                  ;B2F9D2;
     STA.B $14                                                            ;B2F9D3;
-    LDA.L $7E7800,X                                                      ;B2F9D5;
+    LDA.L PirateNinja.speed,X                                            ;B2F9D5;
     AND.W #$00FF                                                         ;B2F9D9;
     STA.B $12                                                            ;B2F9DC;
     JSL.L MoveEnemyDownBy_14_12                                          ;B2F9DE;
     BCS .collision                                                       ;B2F9E2;
-    LDA.L $7E7800,X                                                      ;B2F9E4;
+    LDA.L PirateNinja.speed,X                                            ;B2F9E4;
     SEC                                                                  ;B2F9E8;
     SBC.W #$0040                                                         ;B2F9E9;
-    STA.L $7E7800,X                                                      ;B2F9EC;
+    STA.L PirateNinja.speed,X                                            ;B2F9EC;
     BMI .collision                                                       ;B2F9F0;
     BIT.W #$FF00                                                         ;B2F9F2;
     BEQ .collision                                                       ;B2F9F5;
@@ -10804,12 +10804,12 @@ Instruction_PirateNinja_DivekickLeft_Divekick:
 
   .collision:
     LDA.W #Instruction_PirateNinja_DivekickLeft_WalkToLeftPost           ;B2F9F8;
-    STA.W $0FA8,X                                                        ;B2F9FB;
+    STA.W PirateNinja.function,X                                         ;B2F9FB;
     LDA.W #InstList_PirateNinja_DivekickLeft_WalkToLeftPost_0            ;B2F9FE;
     STA.W $0F92,X                                                        ;B2FA01;
     LDA.W #$0001                                                         ;B2FA04;
     STA.W $0F94,X                                                        ;B2FA07;
-    LDA.L $7E7810,X                                                      ;B2FA0A;
+    LDA.L PirateNinja.spawnYPosition,X                                   ;B2FA0A;
     STA.W $0F7E,X                                                        ;B2FA0E;
     JSR.W PirateNinja_SpawnLandingDustCloud                              ;B2FA11;
     RTS                                                                  ;B2FA14;
@@ -10821,16 +10821,16 @@ Instruction_PirateNinja_DivekickLeft_WalkToLeftPost:
     CLC                                                                  ;B2FA18;
     ADC.W #$FFFE                                                         ;B2FA19;
     STA.W $0F7A,X                                                        ;B2FA1C;
-    CMP.W $0FB0,X                                                        ;B2FA1F;
+    CMP.W PirateNinja.leftPostXPosition,X                                ;B2FA1F;
     BPL .return                                                          ;B2FA22;
-    LDA.W $0FB0,X                                                        ;B2FA24;
+    LDA.W PirateNinja.leftPostXPosition,X                                ;B2FA24;
     STA.W $0F7A,X                                                        ;B2FA27;
     LDA.W #InstList_PirateNinja_Land_FacingLeft_0                        ;B2FA2A;
     STA.W $0F92,X                                                        ;B2FA2D;
     LDA.W #$0001                                                         ;B2FA30;
     STA.W $0F94,X                                                        ;B2FA33;
     LDA.W #RTS_B2804B                                                    ;B2FA36;
-    STA.W $0FA8,X                                                        ;B2FA39;
+    STA.W PirateNinja.function,X                                         ;B2FA39;
 
   .return:
     RTS                                                                  ;B2FA3C;
@@ -10841,13 +10841,13 @@ Instruction_PirateNinja_SetRightDivekickJumpInitialYSpeed:
     PHX                                                                  ;B2FA3D;
     PHY                                                                  ;B2FA3E;
     LDA.W #$0600                                                         ;B2FA3F;
-    STA.L $7E7800,X                                                      ;B2FA42;
-    LDA.W $0FAE,X                                                        ;B2FA46;
+    STA.L PirateNinja.speed,X                                            ;B2FA42;
+    LDA.W PirateNinja.postsMidpointXPosition,X                           ;B2FA46;
     SEC                                                                  ;B2FA49;
-    SBC.W $0FB0,X                                                        ;B2FA4A;
+    SBC.W PirateNinja.leftPostXPosition,X                                ;B2FA4A;
     LSR A                                                                ;B2FA4D;
     CLC                                                                  ;B2FA4E;
-    ADC.W $0FB0,X                                                        ;B2FA4F;
+    ADC.W PirateNinja.leftPostXPosition,X                                ;B2FA4F;
     STA.L $7E7806,X                                                      ;B2FA52;
     PLY                                                                  ;B2FA56;
     PLX                                                                  ;B2FA57;
@@ -10856,7 +10856,7 @@ Instruction_PirateNinja_SetRightDivekickJumpInitialYSpeed:
 
 ;;; $FA59: Ninja space pirate function - divekick right - jump ;;;
 Instruction_PirateNinja_DivekickRight_Jump:
-    LDA.L $7E7800,X                                                      ;B2FA59;
+    LDA.L PirateNinja.speed,X                                            ;B2FA59;
     AND.W #$FF00                                                         ;B2FA5D;
     XBA                                                                  ;B2FA60;
     STA.B $12                                                            ;B2FA61;
@@ -10864,22 +10864,22 @@ Instruction_PirateNinja_DivekickRight_Jump:
     SEC                                                                  ;B2FA66;
     SBC.B $12                                                            ;B2FA67;
     STA.W $0F7E,X                                                        ;B2FA69;
-    LDA.L $7E7800,X                                                      ;B2FA6C;
+    LDA.L PirateNinja.speed,X                                            ;B2FA6C;
     SEC                                                                  ;B2FA70;
     SBC.W #$0040                                                         ;B2FA71;
-    STA.L $7E7800,X                                                      ;B2FA74;
+    STA.L PirateNinja.speed,X                                            ;B2FA74;
     BMI .negativeSpeed                                                   ;B2FA78;
     RTS                                                                  ;B2FA7A;
 
   .negativeSpeed:
     LDA.W #Instruction_PirateNinja_DivekickRight_Divekick                ;B2FA7B;
-    STA.W $0FA8,X                                                        ;B2FA7E;
+    STA.W PirateNinja.function,X                                         ;B2FA7E;
     LDA.W #InstList_PirateNinja_DivekickRight_Divekick                   ;B2FA81;
     STA.W $0F92,X                                                        ;B2FA84;
     LDA.W #$0001                                                         ;B2FA87;
     STA.W $0F94,X                                                        ;B2FA8A;
     LDA.W #$0600                                                         ;B2FA8D;
-    STA.L $7E7800,X                                                      ;B2FA90;
+    STA.L PirateNinja.speed,X                                            ;B2FA90;
     RTS                                                                  ;B2FA94;
 
 
@@ -10889,19 +10889,19 @@ Instruction_PirateNinja_DivekickRight_Divekick:
     CLC                                                                  ;B2FA98;
     ADC.W #$0005                                                         ;B2FA99;
     STA.W $0F7A,X                                                        ;B2FA9C;
-    LDA.L $7E7800,X                                                      ;B2FA9F;
+    LDA.L PirateNinja.speed,X                                            ;B2FA9F;
     AND.W #$FF00                                                         ;B2FAA3;
     XBA                                                                  ;B2FAA6;
     STA.B $14                                                            ;B2FAA7;
-    LDA.L $7E7800,X                                                      ;B2FAA9;
+    LDA.L PirateNinja.speed,X                                            ;B2FAA9;
     AND.W #$00FF                                                         ;B2FAAD;
     STA.B $12                                                            ;B2FAB0;
     JSL.L MoveEnemyDownBy_14_12                                          ;B2FAB2;
     BCS .landing                                                         ;B2FAB6;
-    LDA.L $7E7800,X                                                      ;B2FAB8;
+    LDA.L PirateNinja.speed,X                                            ;B2FAB8;
     SEC                                                                  ;B2FABC;
     SBC.W #$0040                                                         ;B2FABD;
-    STA.L $7E7800,X                                                      ;B2FAC0;
+    STA.L PirateNinja.speed,X                                            ;B2FAC0;
     BMI .landing                                                         ;B2FAC4;
     BIT.W #$FF00                                                         ;B2FAC6;
     BEQ .landing                                                         ;B2FAC9;
@@ -10909,12 +10909,12 @@ Instruction_PirateNinja_DivekickRight_Divekick:
 
   .landing:
     LDA.W #Instruction_PirateNinja_DivekickRight_WalkToRightPost         ;B2FACC;
-    STA.W $0FA8,X                                                        ;B2FACF;
+    STA.W PirateNinja.function,X                                         ;B2FACF;
     LDA.W #InstList_PirateNinja_DivekickRight_WalkToRightPost_0          ;B2FAD2;
     STA.W $0F92,X                                                        ;B2FAD5;
     LDA.W #$0001                                                         ;B2FAD8;
     STA.W $0F94,X                                                        ;B2FADB;
-    LDA.L $7E7810,X                                                      ;B2FADE;
+    LDA.L PirateNinja.spawnYPosition,X                                   ;B2FADE;
     STA.W $0F7E,X                                                        ;B2FAE2;
     JSR.W PirateNinja_SpawnLandingDustCloud                              ;B2FAE5;
     RTS                                                                  ;B2FAE8;
@@ -10926,16 +10926,16 @@ Instruction_PirateNinja_DivekickRight_WalkToRightPost:
     CLC                                                                  ;B2FAEC;
     ADC.W #$0002                                                         ;B2FAED;
     STA.W $0F7A,X                                                        ;B2FAF0;
-    CMP.W $0FB2,X                                                        ;B2FAF3;
+    CMP.W PirateNinja.rightPostXPosition,X                               ;B2FAF3;
     BMI .return                                                          ;B2FAF6;
-    LDA.W $0FB2,X                                                        ;B2FAF8;
+    LDA.W PirateNinja.rightPostXPosition,X                               ;B2FAF8;
     STA.W $0F7A,X                                                        ;B2FAFB;
     LDA.W #InstList_PirateNinja_Land_FacingRight_0                       ;B2FAFE;
     STA.W $0F92,X                                                        ;B2FB01;
     LDA.W #$0001                                                         ;B2FB04;
     STA.W $0F94,X                                                        ;B2FB07;
     LDA.W #RTS_B2804B                                                    ;B2FB0A;
-    STA.W $0FA8,X                                                        ;B2FB0D;
+    STA.W PirateNinja.function,X                                         ;B2FB0D;
 
   .return:
     RTS                                                                  ;B2FB10;
@@ -11146,7 +11146,7 @@ Instruction_PirateWalking_FunctionInY:
     PHX                                                                  ;B2FCB9;
     LDX.W $0E54                                                          ;B2FCBA;
     LDA.W $0000,Y                                                        ;B2FCBD;
-    STA.W $0FA8,X                                                        ;B2FCC0;
+    STA.W PirateWalking.function,X                                       ;B2FCC0;
     PLX                                                                  ;B2FCC3;
     PLY                                                                  ;B2FCC4;
     INY                                                                  ;B2FCC5;
@@ -11203,22 +11203,22 @@ InitAI_PirateWalking:
     TYA                                                                  ;B2FD13;
     STA.W $0F92,X                                                        ;B2FD14;
     LDA.W #RTS_B2804B                                                    ;B2FD17;
-    STA.W $0FA8,X                                                        ;B2FD1A;
+    STA.W PirateWalking.function,X                                       ;B2FD1A;
     LDA.W $0F7A,X                                                        ;B2FD1D;
     CLC                                                                  ;B2FD20;
     ADC.W $0FB6,X                                                        ;B2FD21;
-    STA.W $0FB2,X                                                        ;B2FD24;
+    STA.W PirateWalking.rightPostXPosition,X                             ;B2FD24;
     LDA.W $0F7A,X                                                        ;B2FD27;
     SEC                                                                  ;B2FD2A;
     SBC.W $0FB6,X                                                        ;B2FD2B;
-    STA.W $0FB0,X                                                        ;B2FD2E;
+    STA.W PirateWalking.leftPostXPosition,X                              ;B2FD2E;
     RTL                                                                  ;B2FD31;
 
 
 ;;; $FD32: Main AI - enemy $F653/$F693/$F6D3/$F713/$F753/$F793 (walking space pirates) ;;;
 MainAI_PirateWalking:
     LDX.W $0E54                                                          ;B2FD32;
-    JSR.W ($0FA8,X)                                                      ;B2FD35;
+    JSR.W (PirateWalking.function,X)                                     ;B2FD35;
     LDA.W $0FB4,X                                                        ;B2FD38;
     BIT.W #$8000                                                         ;B2FD3B;
     BEQ .return                                                          ;B2FD3E;
@@ -11255,7 +11255,7 @@ Function_PirateWalking_WalkingLeft:
     JSL.L MoveEnemyDownBy_14_12                                          ;B2FD71;
     BCC .return                                                          ;B2FD75;
     LDA.W $0F7A,X                                                        ;B2FD77;
-    STA.L $7E7800,X                                                      ;B2FD7A;
+    STA.L PirateWalking.backupXPosition,X                                ;B2FD7A;
     CLC                                                                  ;B2FD7E;
     ADC.W #$FFEF                                                         ;B2FD7F;
     STA.W $0F7A,X                                                        ;B2FD82;
@@ -11264,7 +11264,7 @@ Function_PirateWalking_WalkingLeft:
     STZ.B $12                                                            ;B2FD8A;
     JSL.L MoveEnemyDownBy_14_12                                          ;B2FD8C;
     PHP                                                                  ;B2FD90;
-    LDA.L $7E7800,X                                                      ;B2FD91;
+    LDA.L PirateWalking.backupXPosition,X                                ;B2FD91;
     STA.W $0F7A,X                                                        ;B2FD95;
     PLP                                                                  ;B2FD98;
     BCC .collision                                                       ;B2FD99;
@@ -11280,7 +11280,7 @@ Function_PirateWalking_WalkingLeft:
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;B2FDB3;
     BCS .collision                                                       ;B2FDB7;
     LDA.W $0F7A,X                                                        ;B2FDB9;
-    CMP.W $0FB0,X                                                        ;B2FDBC;
+    CMP.W PirateWalking.leftPostXPosition,X                              ;B2FDBC;
     BPL .return                                                          ;B2FDBF;
 
   .collision:
@@ -11320,7 +11320,7 @@ Function_PirateWalking_WalkingRight:
     JSL.L MoveEnemyDownBy_14_12                                          ;B2FDFB;
     BCC .return                                                          ;B2FDFF;
     LDA.W $0F7A,X                                                        ;B2FE01;
-    STA.L $7E7800,X                                                      ;B2FE04;
+    STA.L PirateWalking.backupXPosition,X                                ;B2FE04;
     CLC                                                                  ;B2FE08;
     ADC.W #$0010                                                         ;B2FE09;
     STA.W $0F7A,X                                                        ;B2FE0C;
@@ -11329,7 +11329,7 @@ Function_PirateWalking_WalkingRight:
     STZ.B $12                                                            ;B2FE14;
     JSL.L MoveEnemyDownBy_14_12                                          ;B2FE16;
     PHP                                                                  ;B2FE1A;
-    LDA.L $7E7800,X                                                      ;B2FE1B;
+    LDA.L PirateWalking.backupXPosition,X                                ;B2FE1B;
     STA.W $0F7A,X                                                        ;B2FE1F;
     PLP                                                                  ;B2FE22;
     BCC .collision                                                       ;B2FE23;
@@ -11340,7 +11340,7 @@ Function_PirateWalking_WalkingRight:
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;B2FE2F;
     BCS .collision                                                       ;B2FE33;
     LDA.W $0F7A,X                                                        ;B2FE35;
-    CMP.W $0FB2,X                                                        ;B2FE38;
+    CMP.W PirateWalking.rightPostXPosition,X                             ;B2FE38;
     BMI .return                                                          ;B2FE3B;
 
   .collision:
