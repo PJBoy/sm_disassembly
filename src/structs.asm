@@ -3737,8 +3737,9 @@ endstruct
 struct CorpseSidehopper $0FA8
   .function: skip 2 ; $0FA8
   .preRotDelayTimer: skip 2 ; $0FAA
-  .functionTimer: skip 2 ; $0FAC
-skip $7DE85E
+skip 6
+  .functionTimer: skip 2 ; $0FB2
+skip $7DE858
   .hopIndex: skip 2 ; $7E780C
   .drainedPaletteTimer: skip 2 ; $7E780E
   .drainedPaletteIndex: skip 2 ; $7E7810

@@ -51,28 +51,28 @@ CalculateMotherBrainRainbowBeamHDMATables:
     LDA.L $7E8022                                                        ;ADDE0A;
     SEC                                                                  ;ADDE0E;
     SBC.B $12                                                            ;ADDE0F;
-    STA.L $7E8034                                                        ;ADDE11;
+    STA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADDE11;
     LDA.L $7E8022                                                        ;ADDE15;
     CLC                                                                  ;ADDE19;
     ADC.B $12                                                            ;ADDE1A;
-    STA.L $7E8036                                                        ;ADDE1C;
+    STA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADDE1C;
     LDA.W $0FB9                                                          ;ADDE20;
     CLC                                                                  ;ADDE23;
     ADC.W #$0E00                                                         ;ADDE24;
     AND.W #$FF00                                                         ;ADDE27;
-    STA.L $7E8038                                                        ;ADDE2A;
-    STA.L $7E803C                                                        ;ADDE2E;
+    STA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition                                                        ;ADDE2A;
+    STA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition                                                        ;ADDE2E;
     LDA.W $0FBE                                                          ;ADDE32;
     CLC                                                                  ;ADDE35;
     ADC.W #$0005                                                         ;ADDE36;
-    STA.L $7E803A                                                        ;ADDE39;
-    STA.L $7E803E                                                        ;ADDE3D;
-    LDA.L $7E8034                                                        ;ADDE41;
+    STA.L MotherBrainBody.rainbowBeamOriginYPosition                                                        ;ADDE39;
+    STA.L MotherBrainBody.rainbowBeamOriginYPositionDuplicate                                                        ;ADDE3D;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADDE41;
     AND.W #$00C0                                                         ;ADDE45;
     ASL A                                                                ;ADDE48;
     ASL A                                                                ;ADDE49;
     STA.B $12                                                            ;ADDE4A;
-    LDA.L $7E8036                                                        ;ADDE4C;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADDE4C;
     AND.W #$00C0                                                         ;ADDE50;
     ORA.B $12                                                            ;ADDE53;
     ASL A                                                                ;ADDE55;
@@ -125,9 +125,9 @@ CalculateMotherBrainRainbowBeamHDMATables_pointers:
 
 ;;; $DE7F: Calculate Mother Brain rainbow beam HDMA tables - beam is aimed right ;;;
 CalculateMotherBrainRainbowBeamHDMATable_AimedRight:
-    LDA.L $7E8038                                                        ;ADDE7F;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition                                                        ;ADDE7F;
     STA.B $16                                                            ;ADDE83;
-    LDA.L $7E803C                                                        ;ADDE85;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition                                                        ;ADDE85;
     STA.B $18                                                            ;ADDE89;
     JSR.W CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight        ;ADDE8B;
     LDA.W #$0010                                                         ;ADDE8E;
@@ -256,15 +256,15 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight:
 
 ;;; $DF6E: Calculate Mother Brain rainbow beam HDMA tables - beam is aimed upwards ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpwards:
-    LDA.L $7E8038                                                        ;ADDF6E;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition                                                        ;ADDF6E;
     STA.B $16                                                            ;ADDF72;
-    LDA.L $7E803C                                                        ;ADDF74;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition                                                        ;ADDF74;
     STA.B $18                                                            ;ADDF78;
     SEP #$20                                                             ;ADDF7A;
-    LDA.L $7E8034                                                        ;ADDF7C;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADDF7C;
     ASL A                                                                ;ADDF80;
     ROL.B $12                                                            ;ADDF81;
-    LDA.L $7E8036                                                        ;ADDF83;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADDF83;
     ASL A                                                                ;ADDF87;
     ROL.B $12                                                            ;ADDF88;
     LDA.B $12                                                            ;ADDF8A;
@@ -281,7 +281,7 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpwards:
     STA.L $7E9C03                                                        ;ADDFA7;
     LDA.W #$9D02                                                         ;ADDFAB;
     STA.L $7E9C04                                                        ;ADDFAE;
-    LDA.L $7E803A                                                        ;ADDFB2;
+    LDA.L MotherBrainBody.rainbowBeamOriginYPosition                                                        ;ADDFB2;
     SEC                                                                  ;ADDFB6;
     SBC.W #$0020                                                         ;ADDFB7;
     CMP.W #$0080                                                         ;ADDFBA;
@@ -560,15 +560,15 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpLeft:
 
 ;;; $E1A6: Calculate Mother Brain rainbow beam HDMA tables - beam is aimed downwards ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownwards:
-    LDA.L $7E8038                                                        ;ADE1A6;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition                                                        ;ADE1A6;
     STA.B $16                                                            ;ADE1AA;
-    LDA.L $7E803C                                                        ;ADE1AC;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition                                                        ;ADE1AC;
     STA.B $18                                                            ;ADE1B0;
     SEP #$20                                                             ;ADE1B2;
-    LDA.L $7E8034                                                        ;ADE1B4;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADE1B4;
     ASL A                                                                ;ADE1B8;
     ROL.B $12                                                            ;ADE1B9;
-    LDA.L $7E8036                                                        ;ADE1BB;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADE1BB;
     ASL A                                                                ;ADE1BF;
     ROL.B $12                                                            ;ADE1C0;
     LDA.B $12                                                            ;ADE1C2;
