@@ -4090,7 +4090,7 @@ TorizoMusicTracks:
 ;;; $B09C: Instruction - enemy function = [[Y]] ;;;
 Instruction_Torizo_FunctionInY:
     LDA.W $0000,Y                                                        ;AAB09C;
-    STA.W $0FB0,X                                                        ;AAB09F;
+    STA.W Torizo.function,X                                              ;AAB09F;
     INY                                                                  ;AAB0A2;
     INY                                                                  ;AAB0A3;
     RTL                                                                  ;AAB0A4;
@@ -4128,9 +4128,9 @@ InstList_Torizo_SpecialCallable_BlowUpBombTorizosGut:
 
 ;;; $B11D: Instruction - mark Bomb Torizo gut blown up and spawn 6 Bomb Torizo low-health continuous drool enemy projectiles ;;;
 Instruction_Torizo_MarkBTGutBlownUp_Spawn6BTDroolProjectiles:
-    LDA.W $0FB6,X                                                        ;AAB11D;
+    LDA.W Torizo.behavioralProperties,X                                  ;AAB11D;
     ORA.W #$8000                                                         ;AAB120;
-    STA.W $0FB6,X                                                        ;AAB123;
+    STA.W Torizo.behavioralProperties,X                                  ;AAB123;
     PHX                                                                  ;AAB126;
     PHY                                                                  ;AAB127;
     LDY.W #EnemyProjectile_BombTorizoContinuousDrool                     ;AAB128;
@@ -4160,7 +4160,7 @@ InstList_Torizo_Callable_BlowUpBombTorizosFace:
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB161;
     dw $0020 : dl Tiles_Torizo+$260 : dw $7E50                           ;AAB163;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB16A;
-    dw $0020 : dl Tiles_Torizo+$460 : dw $7F50                         ;AAB16C;
+    dw $0020 : dl Tiles_Torizo+$460 : dw $7F50                           ;AAB16C;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB173;
     dw $0040 : dl Tiles_Blank : dw $7C80                                 ;AAB175;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAB17C;
@@ -4184,9 +4184,9 @@ InstList_Torizo_Callable_BlowUpBombTorizosFace:
 
 ;;; $B1BE: Instruction - mark Bomb Torizo face blown up ;;;
 Instruction_Torizo_MarkBombTorizoFaceBlownUp:
-    LDA.W $0FB6,X                                                        ;AAB1BE;
+    LDA.W Torizo.behavioralProperties,X                                  ;AAB1BE;
     ORA.W #$4000                                                         ;AAB1C1;
-    STA.W $0FB6,X                                                        ;AAB1C4;
+    STA.W Torizo.behavioralProperties,X                                  ;AAB1C4;
     RTL                                                                  ;AAB1C7;
 
 
@@ -5313,7 +5313,7 @@ InstList_Torizo_FacingRight_Faceless_Walking_RightLegMoving:
 
 ;;; $C20A: Make torizo jump forwards ;;;
 MakeTorizoJumpForwards:
-    LDA.W $0FB4,X                                                        ;AAC20A;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC20A;
     BMI .facingRight                                                     ;AAC20D;
     LDA.W #$FE00                                                         ;AAC20F;
     BRA +                                                                ;AAC212;
@@ -5321,11 +5321,11 @@ MakeTorizoJumpForwards:
   .facingRight:
     LDA.W #$0200                                                         ;AAC214;
 
-+   STA.W $0FA8,X                                                        ;AAC217;
++   STA.W Torizo.XVelocity,X                                             ;AAC217;
     LDA.W #$FA40                                                         ;AAC21A;
-    STA.W $0FAA,X                                                        ;AAC21D;
+    STA.W Torizo.YVelocity,X                                             ;AAC21D;
     LDA.W #$0028                                                         ;AAC220;
-    STA.W $0FAC,X                                                        ;AAC223;
+    STA.W Torizo.YAcceleration,X                                         ;AAC223;
     LDA.W #$0001                                                         ;AAC226;
     STA.W $0F94,X                                                        ;AAC229;
     RTS                                                                  ;AAC22C;
@@ -5333,7 +5333,7 @@ MakeTorizoJumpForwards:
 
 ;;; $C22D: Make torizo jump backwards ;;;
 MakeTorizoJumpBackwards:
-    LDA.W $0FB4,X                                                        ;AAC22D;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC22D;
     BMI .facingRight                                                     ;AAC230;
     LDA.W #$0300                                                         ;AAC232;
     BRA +                                                                ;AAC235;
@@ -5341,11 +5341,11 @@ MakeTorizoJumpBackwards:
   .facingRight:
     LDA.W #$FD00                                                         ;AAC237;
 
-+   STA.W $0FA8,X                                                        ;AAC23A;
++   STA.W Torizo.XVelocity,X                                             ;AAC23A;
     LDA.W #$FB80                                                         ;AAC23D;
-    STA.W $0FAA,X                                                        ;AAC240;
+    STA.W Torizo.YVelocity,X                                             ;AAC240;
     LDA.W #$0028                                                         ;AAC243;
-    STA.W $0FAC,X                                                        ;AAC246;
+    STA.W Torizo.YAcceleration,X                                         ;AAC246;
     LDA.W #$0001                                                         ;AAC249;
     STA.W $0F94,X                                                        ;AAC24C;
     RTS                                                                  ;AAC24F;
@@ -5444,20 +5444,20 @@ RTL_AAC2C8:
 ;;; $C2C9: Instruction - set animation lock ;;;
 Instruction_Torizo_SetAnimationLock:
     LDA.W #$7777                                                         ;AAC2C9;
-    STA.L $7E7808,X                                                      ;AAC2CC;
+    STA.L Torizo.animationLockFlag,X                                     ;AAC2CC;
     RTL                                                                  ;AAC2D0;
 
 
 ;;; $C2D1: Instruction - clear animation lock ;;;
 Instruction_Torizo_ClearAnimationLock:
     LDA.W #$0000                                                         ;AAC2D1;
-    STA.L $7E7808,X                                                      ;AAC2D4;
+    STA.L Torizo.animationLockFlag,X                                     ;AAC2D4;
     RTL                                                                  ;AAC2D8;
 
 
 ;;; $C2D9: Instruction - go to [[Y]] if face blown up, else go to [[Y] + 2] if Golden Torizo ;;;
 Instruction_Torizo_GotoY_IfFaceBlownUp_ElseGotoY2_IfGolden:
-    BIT.W $0FB6,X                                                        ;AAC2D9;
+    BIT.W Torizo.behavioralProperties,X                                  ;AAC2D9;
     BVS .faceBlownUp                                                     ;AAC2DC;
     INY                                                                  ;AAC2DE;
     INY                                                                  ;AAC2DF;
@@ -5476,7 +5476,7 @@ Instruction_Torizo_GotoY_IfFaceBlownUp_ElseGotoY2_IfGolden:
 ;;; $C2ED: Instruction - enemy link instruction = [[Y]] ;;;
 Instruction_Torizo_LinkInstructionInY:
     LDA.W $0000,Y                                                        ;AAC2ED;
-    STA.L $7E7800,X                                                      ;AAC2F0;
+    STA.L Torizo.linkInstruction,X                                       ;AAC2F0;
     INY                                                                  ;AAC2F4;
     INY                                                                  ;AAC2F5;
     RTL                                                                  ;AAC2F6;
@@ -5484,14 +5484,14 @@ Instruction_Torizo_LinkInstructionInY:
 
 ;;; $C2F7: Instruction - return ;;;
 Instruction_Torizo_Return:
-    LDA.L $7E7800,X                                                      ;AAC2F7;
+    LDA.L Torizo.linkInstruction,X                                       ;AAC2F7;
     TAY                                                                  ;AAC2FB;
     RTL                                                                  ;AAC2FC;
 
 
 ;;; $C2FD: Instruction - go to [enemy gut explosion link instruction] ;;;
 Instruction_Torizo_GotoGutExplosionLinkInstruction:
-    LDA.L $7E7802,X                                                      ;AAC2FD;
+    LDA.L Torizo.gutExplosionLinkInstruction,X                           ;AAC2FD;
     TAY                                                                  ;AAC301;
     RTL                                                                  ;AAC302;
 
@@ -5568,56 +5568,56 @@ Instruction_Torizo_SpawnLowHealthInitialDroolIfHealthIsLow:
 
 ;;; $C36D: Instruction - set torizo turning around flag ;;;
 Instruction_Torizo_SetTorizoTurningAroundFlag:
-    LDA.W $0FB4,X                                                        ;AAC36D;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC36D;
     ORA.W #$4000                                                         ;AAC370;
-    STA.W $0FB4,X                                                        ;AAC373;
+    STA.W Torizo.graphicalProperties,X                                   ;AAC373;
     RTL                                                                  ;AAC376;
 
 
 ;;; $C377: Instruction - set stepped left with left foot state ;;;
 Instruction_Torizo_SetSteppedLeftWithLeftFootState:
-    LDA.W $0FB4,X                                                        ;AAC377;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC377;
     AND.W #$1FFF                                                         ;AAC37A;
-    STA.W $0FB4,X                                                        ;AAC37D;
-    LDA.L $7E7812,X                                                      ;AAC380;
+    STA.W Torizo.graphicalProperties,X                                   ;AAC37D;
+    LDA.L Torizo.stepCounter,X                                           ;AAC380;
     INC A                                                                ;AAC384;
-    STA.L $7E7812,X                                                      ;AAC385;
+    STA.L Torizo.stepCounter,X                                           ;AAC385;
     RTL                                                                  ;AAC389;
 
 
 ;;; $C38A: Instruction - set stepped right with right foot state ;;;
 Instruction_Torizo_SetSteppedRightWithRightFootState:
-    LDA.W $0FB4,X                                                        ;AAC38A;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC38A;
     AND.W #$1FFF                                                         ;AAC38D;
     ORA.W #$8000                                                         ;AAC390;
-    STA.W $0FB4,X                                                        ;AAC393;
-    LDA.L $7E7812,X                                                      ;AAC396;
+    STA.W Torizo.graphicalProperties,X                                   ;AAC393;
+    LDA.L Torizo.stepCounter,X                                           ;AAC396;
     INC A                                                                ;AAC39A;
-    STA.L $7E7812,X                                                      ;AAC39B;
+    STA.L Torizo.stepCounter,X                                           ;AAC39B;
     RTL                                                                  ;AAC39F;
 
 
 ;;; $C3A0: Instruction - set stepped left with right foot state ;;;
 Instruction_Torizo_SetSteppedLeftWithRightFootState:
-    LDA.W $0FB4,X                                                        ;AAC3A0;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC3A0;
     AND.W #$1FFF                                                         ;AAC3A3;
     ORA.W #$2000                                                         ;AAC3A6;
-    STA.W $0FB4,X                                                        ;AAC3A9;
-    LDA.L $7E7812,X                                                      ;AAC3AC;
+    STA.W Torizo.graphicalProperties,X                                   ;AAC3A9;
+    LDA.L Torizo.stepCounter,X                                           ;AAC3AC;
     INC A                                                                ;AAC3B0;
-    STA.L $7E7812,X                                                      ;AAC3B1;
+    STA.L Torizo.stepCounter,X                                           ;AAC3B1;
     RTL                                                                  ;AAC3B5;
 
 
 ;;; $C3B6: Instruction - set stepped right with left foot state ;;;
 Instruction_Torizo_SetSteppedRightWithLeftFootState:
-    LDA.W $0FB4,X                                                        ;AAC3B6;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC3B6;
     AND.W #$1FFF                                                         ;AAC3B9;
     ORA.W #$A000                                                         ;AAC3BC;
-    STA.W $0FB4,X                                                        ;AAC3BF;
-    LDA.L $7E7812,X                                                      ;AAC3C2;
+    STA.W Torizo.graphicalProperties,X                                   ;AAC3BF;
+    LDA.L Torizo.stepCounter,X                                           ;AAC3C2;
     INC A                                                                ;AAC3C6;
-    STA.L $7E7812,X                                                      ;AAC3C7;
+    STA.L Torizo.stepCounter,X                                           ;AAC3C7;
     RTL                                                                  ;AAC3CB;
 
 
@@ -5687,13 +5687,13 @@ Instruction_Torizo_BombTorizoWalkingMovement_Normal_IndexInY:
     TAY                                                                  ;AAC476;
     LDA.W .velocities,Y                                                  ;AAC477;
     STA.B $14                                                            ;AAC47A;
-    STA.W $0FA8,X                                                        ;AAC47C;
+    STA.W Torizo.XVelocity,X                                             ;AAC47C;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;AAC47F;
     PLY                                                                  ;AAC483;
     BCC .noCollision                                                     ;AAC484;
     LDA.W #$0000                                                         ;AAC486;
-    STA.L $7E7806,X                                                      ;AAC489;
-    LDA.W $0FB4,X                                                        ;AAC48D;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAC489;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC48D;
     BMI .turningLeft                                                     ;AAC490;
     LDY.W #InstList_Torizo_FacingRight_TurningRight                      ;AAC492;
     RTL                                                                  ;AAC495;
@@ -5707,17 +5707,17 @@ Instruction_Torizo_BombTorizoWalkingMovement_Normal_IndexInY:
     LDA.W $0AF6                                                          ;AAC49E;
     SEC                                                                  ;AAC4A1;
     SBC.W $0F7A,X                                                        ;AAC4A2;
-    EOR.W $0FB4,X                                                        ;AAC4A5;
+    EOR.W Torizo.graphicalProperties,X                                   ;AAC4A5;
     BPL .facingAway                                                      ;AAC4A8;
     INY                                                                  ;AAC4AA;
     INY                                                                  ;AAC4AB;
     RTL                                                                  ;AAC4AC;
 
   .facingAway:
-    LDA.L $7E7806,X                                                      ;AAC4AD;
+    LDA.L Torizo.turnAroundTimer,X                                       ;AAC4AD;
     BNE .return                                                          ;AAC4B1;
     LDA.W #$0048                                                         ;AAC4B3;
-    STA.L $7E7806,X                                                      ;AAC4B6;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAC4B6;
 
   .return:
     INY                                                                  ;AAC4BA;
@@ -5737,13 +5737,13 @@ Instruction_Torizo_BTWalkingMovement_Faceless_IndexInY:
     TAY                                                                  ;AAC4EB;
     LDA.W .velocities,Y                                                  ;AAC4EC;
     STA.B $14                                                            ;AAC4EF;
-    STA.W $0FA8,X                                                        ;AAC4F1;
+    STA.W Torizo.XVelocity,X                                             ;AAC4F1;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;AAC4F4;
     PLY                                                                  ;AAC4F8;
     BCC .noCollision                                                     ;AAC4F9;
     LDA.W #$0000                                                         ;AAC4FB;
-    STA.L $7E7806,X                                                      ;AAC4FE;
-    LDA.W $0FB4,X                                                        ;AAC502;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAC4FE;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC502;
     BMI .turningLeft                                                     ;AAC505;
     LDY.W #InstList_Torizo_FacingRight_Faceless_TurningRight             ;AAC507;
     RTL                                                                  ;AAC50A;
@@ -5757,17 +5757,17 @@ Instruction_Torizo_BTWalkingMovement_Faceless_IndexInY:
     LDA.W $0AF6                                                          ;AAC513;
     SEC                                                                  ;AAC516;
     SBC.W $0F7A,X                                                        ;AAC517;
-    EOR.W $0FB4,X                                                        ;AAC51A;
+    EOR.W Torizo.graphicalProperties,X                                   ;AAC51A;
     BPL .facingAway                                                      ;AAC51D;
     INY                                                                  ;AAC51F;
     INY                                                                  ;AAC520;
     RTL                                                                  ;AAC521;
 
   .facingAway:
-    LDA.L $7E7806,X                                                      ;AAC522;
+    LDA.L Torizo.turnAroundTimer,X                                       ;AAC522;
     BNE .return                                                          ;AAC526;
     LDA.W #$0048                                                         ;AAC528;
-    STA.L $7E7806,X                                                      ;AAC52B;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAC52B;
 
   .return:
     INY                                                                  ;AAC52F;
@@ -5782,7 +5782,7 @@ Instruction_Torizo_BTWalkingMovement_Faceless_IndexInY:
 
 ;;; $C55A: Instruction - go to [[Y]] if rising ;;;
 Instruction_Torizo_GotoY_IfRising:
-    LDA.W $0FAA,X                                                        ;AAC55A;
+    LDA.W Torizo.YVelocity,X                                             ;AAC55A;
     BMI .rising                                                          ;AAC55D;
     INY                                                                  ;AAC55F;
     INY                                                                  ;AAC560;
@@ -5809,12 +5809,12 @@ Instruction_Torizo_CallYIfSamusIsLessThan38PixelsInFront:
     LDA.W $0AF6                                                          ;AAC573;
     SEC                                                                  ;AAC576;
     SBC.W $0F7A,X                                                        ;AAC577;
-    EOR.W $0FB4,X                                                        ;AAC57A;
+    EOR.W Torizo.graphicalProperties,X                                   ;AAC57A;
     BPL .return                                                          ;AAC57D;
     TYA                                                                  ;AAC57F;
     INC A                                                                ;AAC580;
     INC A                                                                ;AAC581;
-    STA.L $7E7800,X                                                      ;AAC582;
+    STA.L Torizo.linkInstruction,X                                       ;AAC582;
     LDA.W $0000,Y                                                        ;AAC586;
     TAY                                                                  ;AAC589;
     RTL                                                                  ;AAC58A;
@@ -5845,7 +5845,7 @@ Instruction_Torizo_CallY_OrY2_ForBombTorizoAttack:
     INC A                                                                ;AAC5A6;
     INC A                                                                ;AAC5A7;
     INC A                                                                ;AAC5A8;
-    STA.L $7E7800,X                                                      ;AAC5A9;
+    STA.L Torizo.linkInstruction,X                                       ;AAC5A9;
     LDA.W $09C6                                                          ;AAC5AD;
     CMP.W #$0005                                                         ;AAC5B0;
     BCC .spewOrbs                                                        ;AAC5B3;
@@ -5958,21 +5958,21 @@ HandleLowHealthInitialDrool:
 HandleFalling:
     STZ.B $12                                                            ;AAC643;
     STZ.B $14                                                            ;AAC645;
-    LDA.W $0FAA,X                                                        ;AAC647;
+    LDA.W Torizo.YVelocity,X                                             ;AAC647;
     BPL +                                                                ;AAC64A;
     DEC.B $14                                                            ;AAC64C;
 
 +   STA.B $13                                                            ;AAC64E;
     JSL.L MoveEnemyDownBy_14_12                                          ;AAC650;
     BCS .collision                                                       ;AAC654;
-    LDA.W $0FAA,X                                                        ;AAC656;
+    LDA.W Torizo.YVelocity,X                                             ;AAC656;
     CLC                                                                  ;AAC659;
     ADC.W #$0028                                                         ;AAC65A;
-    STA.W $0FAA,X                                                        ;AAC65D;
+    STA.W Torizo.YVelocity,X                                             ;AAC65D;
     RTS                                                                  ;AAC660;
 
   .collision:
-    LDA.W $0FAA,X                                                        ;AAC661;
+    LDA.W Torizo.YVelocity,X                                             ;AAC661;
     BMI .return                                                          ;AAC664;
     CMP.W #$0100                                                         ;AAC666;
     BEQ .return                                                          ;AAC669;
@@ -5981,7 +5981,7 @@ HandleFalling:
     LDA.W #$0020                                                         ;AAC671;
     STA.W $1840                                                          ;AAC674;
     LDA.W #$0100                                                         ;AAC677;
-    STA.W $0FAA,X                                                        ;AAC67A;
+    STA.W Torizo.YVelocity,X                                             ;AAC67A;
 
   .return:
     RTS                                                                  ;AAC67D;
@@ -6017,7 +6017,7 @@ HurtAI_BombTorizo:
 ;;; $C6A4: Main AI - enemy $EEFF/$EF3F (Bomb Torizo) ;;;
 MainAI_BombTorizo:
     LDX.W $0E54                                                          ;AAC6A4;
-    JSR.W ($0FB0,X)                                                      ;AAC6A7;
+    JSR.W (Torizo.function,X)                                            ;AAC6A7;
     RTL                                                                  ;AAC6AA;
 
 
@@ -6034,7 +6034,7 @@ UNUSED_Torizo_AAC6AC:
     JSL.L Advance_GradualColorChange_ofPalettesInA_Denominator_C         ;AAC6B2;
     BCS .return                                                          ;AAC6B6;
     LDA.W #RTS_AAC6AB                                                    ;AAC6B8;
-    STA.W $0FB0,X                                                        ;AAC6BB;
+    STA.W Torizo.function,X                                              ;AAC6BB;
 
   .return:
     RTS                                                                  ;AAC6BE;
@@ -6087,13 +6087,13 @@ Function_Torizo_WakeWhenBombTorizoChozoFinishesCrumbling:
 ;;; $C6FF: Torizo function - normal movement ;;;
 Function_Torizo_NormalMovement:
     JSR.W HandleLowHealthInitialDrool                                    ;AAC6FF;
-    BIT.W $0FB6,X                                                        ;AAC702;
+    BIT.W Torizo.behavioralProperties,X                                  ;AAC702;
     BMI .notLowHealth                                                    ;AAC705;
     LDA.W $0F8C,X                                                        ;AAC707;
     CMP.W #$015E                                                         ;AAC70A;
     BCS .notLowHealth                                                    ;AAC70D;
     LDA.W $0F92,X                                                        ;AAC70F;
-    STA.L $7E7802,X                                                      ;AAC712;
+    STA.L Torizo.gutExplosionLinkInstruction,X                           ;AAC712;
     LDA.W #InstList_Torizo_SpecialCallable_BlowUpBombTorizosGut          ;AAC716;
     STA.W $0F92,X                                                        ;AAC719;
     LDA.W #$0001                                                         ;AAC71C;
@@ -6101,12 +6101,12 @@ Function_Torizo_NormalMovement:
     RTS                                                                  ;AAC722;
 
   .notLowHealth:
-    BIT.W $0FB6,X                                                        ;AAC723;
+    BIT.W Torizo.behavioralProperties,X                                  ;AAC723;
     BVS .noChange                                                        ;AAC726;
     LDA.W $0F8C,X                                                        ;AAC728;
     CMP.W #$0064                                                         ;AAC72B;
     BCS .noChange                                                        ;AAC72E;
-    LDA.W $0FB4,X                                                        ;AAC730;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC730;
     BMI .facingRight                                                     ;AAC733;
     LDA.W #InstList_Torizo_FacingRight_Faceless_TurningRight             ;AAC735;
     BRA +                                                                ;AAC738;
@@ -6114,7 +6114,7 @@ Function_Torizo_NormalMovement:
   .facingRight:
     LDA.W #InstList_Torizo_FacingLeft_Faceless_TurningLeft               ;AAC73A;
 
-+   STA.L $7E7800,X                                                      ;AAC73D;
++   STA.L Torizo.linkInstruction,X                                       ;AAC73D;
     LDA.W #InstList_Torizo_Callable_BlowUpBombTorizosFace                ;AAC741;
     STA.W $0F92,X                                                        ;AAC744;
     LDA.W #$0001                                                         ;AAC747;
@@ -6122,25 +6122,25 @@ Function_Torizo_NormalMovement:
     RTS                                                                  ;AAC74D;
 
   .noChange:
-    JSR.W ($0FB2,X)                                                      ;AAC74E;
+    JSR.W (Torizo.movementFunction,X)                                    ;AAC74E;
     RTS                                                                  ;AAC751;
 
 
 ;;; $C752: Torizo movement function - walking ;;;
 Function_Torizo_Movement_Walking:
-    BIT.W $0FB6,X                                                        ;AAC752;
+    BIT.W Torizo.behavioralProperties,X                                  ;AAC752;
     BVC .notFaceless                                                     ;AAC755;
     JMP.W .faceless                                                      ;AAC757;
 
   .notFaceless:
-    LDA.L $7E7806,X                                                      ;AAC75A;
+    LDA.L Torizo.turnAroundTimer,X                                       ;AAC75A;
     BEQ .notTurning                                                      ;AAC75E;
     DEC A                                                                ;AAC760;
-    STA.L $7E7806,X                                                      ;AAC761;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAC761;
     BNE .notTurning                                                      ;AAC765;
     LDA.W #$0000                                                         ;AAC767;
-    STA.L $7E7806,X                                                      ;AAC76A;
-    LDA.W $0FB4,X                                                        ;AAC76E;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAC76A;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC76E;
     BMI .facingRight                                                     ;AAC771;
     LDA.W #InstList_Torizo_FacingRight_TurningRight                      ;AAC773;
     BRA +                                                                ;AAC776;
@@ -6155,7 +6155,7 @@ Function_Torizo_Movement_Walking:
 
   .notTurning:
     STZ.B $12                                                            ;AAC785;
-    LDA.W $0FA8,X                                                        ;AAC787;
+    LDA.W Torizo.XVelocity,X                                             ;AAC787;
     BPL +                                                                ;AAC78A;
     EOR.W #$FFFF                                                         ;AAC78C;
     INC A                                                                ;AAC78F;
@@ -6168,7 +6168,7 @@ Function_Torizo_Movement_Walking:
 +   STA.B $14                                                            ;AAC799;
     JSL.L MoveEnemyDownBy_14_12                                          ;AAC79B;
     BCS .returnUpper                                                     ;AAC79F;
-    LDA.W $0FB4,X                                                        ;AAC7A1;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC7A1;
     BMI ..facingRight                                                    ;AAC7A4;
     LDA.W #InstList_Torizo_FacingLeft_Falling_0                          ;AAC7A6;
     BRA +                                                                ;AAC7A9;
@@ -6180,21 +6180,21 @@ Function_Torizo_Movement_Walking:
     LDA.W #$0001                                                         ;AAC7B1;
     STA.W $0F94,X                                                        ;AAC7B4;
     LDA.W #$0100                                                         ;AAC7B7;
-    STA.W $0FAA,X                                                        ;AAC7BA;
-    STZ.W $0FA8,X                                                        ;AAC7BD;
+    STA.W Torizo.YVelocity,X                                             ;AAC7BA;
+    STZ.W Torizo.XVelocity,X                                             ;AAC7BD;
 
   .returnUpper:
     RTS                                                                  ;AAC7C0;
 
   .faceless:
-    LDA.L $7E7806,X                                                      ;AAC7C1;
+    LDA.L Torizo.turnAroundTimer,X                                       ;AAC7C1;
     BEQ .facelessNotTurning                                              ;AAC7C5;
     DEC A                                                                ;AAC7C7;
-    STA.L $7E7806,X                                                      ;AAC7C8;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAC7C8;
     BNE .facelessNotTurning                                              ;AAC7CC;
     LDA.W #$0000                                                         ;AAC7CE;
-    STA.L $7E7806,X                                                      ;AAC7D1;
-    LDA.W $0FB4,X                                                        ;AAC7D5;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAC7D1;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC7D5;
     BMI ..facingRight                                                    ;AAC7D8;
     LDA.W #InstList_Torizo_FacingRight_Faceless_TurningRight             ;AAC7DA;
     BRA +                                                                ;AAC7DD;
@@ -6209,7 +6209,7 @@ Function_Torizo_Movement_Walking:
 
   .facelessNotTurning:
     STZ.B $12                                                            ;AAC7EC;
-    LDA.W $0FA8,X                                                        ;AAC7EE;
+    LDA.W Torizo.XVelocity,X                                             ;AAC7EE;
     BPL +                                                                ;AAC7F1;
     EOR.W #$FFFF                                                         ;AAC7F3;
     INC A                                                                ;AAC7F6;
@@ -6222,7 +6222,7 @@ Function_Torizo_Movement_Walking:
 +   STA.B $14                                                            ;AAC800;
     JSL.L MoveEnemyDownBy_14_12                                          ;AAC802;
     BCS .returnLower                                                     ;AAC806;
-    LDA.W $0FB4,X                                                        ;AAC808;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAC808;
     BMI ..facingRight                                                    ;AAC80B;
     LDA.W #InstList_Torizo_FacingLeft_Falling_0                          ;AAC80D;
     BRA +                                                                ;AAC810;
@@ -6234,8 +6234,8 @@ Function_Torizo_Movement_Walking:
     LDA.W #$0001                                                         ;AAC818;
     STA.W $0F94,X                                                        ;AAC81B;
     LDA.W #$0100                                                         ;AAC81E;
-    STA.W $0FAA,X                                                        ;AAC821;
-    STZ.W $0FA8,X                                                        ;AAC824;
+    STA.W Torizo.YVelocity,X                                             ;AAC821;
+    STZ.W Torizo.XVelocity,X                                             ;AAC824;
 
   .returnLower:
     RTS                                                                  ;AAC827;
@@ -6251,7 +6251,7 @@ Function_Torizo_Movement_Attacking:
 Function_Torizo_Movement_Jumping_Falling:
     STZ.B $12                                                            ;AAC82C;
     STZ.B $14                                                            ;AAC82E;
-    LDA.W $0FA8,X                                                        ;AAC830;
+    LDA.W Torizo.XVelocity,X                                             ;AAC830;
     BPL +                                                                ;AAC833;
     DEC.B $14                                                            ;AAC835;
 
@@ -6260,26 +6260,26 @@ Function_Torizo_Movement_Jumping_Falling:
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;AAC83D;
     STZ.B $12                                                            ;AAC841;
     STZ.B $14                                                            ;AAC843;
-    LDA.W $0FAA,X                                                        ;AAC845;
+    LDA.W Torizo.YVelocity,X                                             ;AAC845;
     BPL +                                                                ;AAC848;
     DEC.B $14                                                            ;AAC84A;
 
 +   STA.B $13                                                            ;AAC84C;
     JSL.L MoveEnemyDownBy_14_12                                          ;AAC84E;
     BCS .collision                                                       ;AAC852;
-    LDA.W $0FAA,X                                                        ;AAC854;
+    LDA.W Torizo.YVelocity,X                                             ;AAC854;
     CLC                                                                  ;AAC857;
-    ADC.W $0FAC,X                                                        ;AAC858;
-    STA.W $0FAA,X                                                        ;AAC85B;
+    ADC.W Torizo.YAcceleration,X                                         ;AAC858;
+    STA.W Torizo.YVelocity,X                                             ;AAC85B;
     RTS                                                                  ;AAC85E;
 
   .collision:
-    LDA.L $7E7800,X                                                      ;AAC85F;
+    LDA.L Torizo.linkInstruction,X                                       ;AAC85F;
     STA.W $0F92,X                                                        ;AAC863;
     LDA.W #$0001                                                         ;AAC866;
     STA.W $0F94,X                                                        ;AAC869;
     LDA.W #$0100                                                         ;AAC86C;
-    STA.W $0FAA,X                                                        ;AAC86F;
+    STA.W Torizo.YVelocity,X                                             ;AAC86F;
     LDA.W #$0004                                                         ;AAC872;
     STA.W $183E                                                          ;AAC875;
     LDA.W #$0020                                                         ;AAC878;
@@ -6314,13 +6314,13 @@ InitAI_Torizo:
     LDA.W TorizoInitial_YRadius,Y                                        ;AAC8B3;
     STA.W $0F84,X                                                        ;AAC8B6;
     LDA.W #Function_Torizo_SimpleMovement                                ;AAC8B9;
-    STA.W $0FB0,X                                                        ;AAC8BC;
+    STA.W Torizo.function,X                                              ;AAC8BC;
     LDA.W #$0001                                                         ;AAC8BF;
     STA.W $0F94,X                                                        ;AAC8C2;
     STZ.W $0F90,X                                                        ;AAC8C5;
     STZ.W $0F96,X                                                        ;AAC8C8;
     LDA.W #.return2                                                      ;AAC8CB;
-    STA.W $0FB2,X                                                        ;AAC8CE;
+    STA.W Torizo.movementFunction,X                                      ;AAC8CE;
     LDA.W TorizoInitial_instListPointer,Y                                ;AAC8D1;
     STA.W $0F92,X                                                        ;AAC8D4;
     LDA.W #ExtendedSpritemap_Torizo_Blank                                ;AAC8D7;
@@ -6329,9 +6329,9 @@ InitAI_Torizo:
     STA.W $0F7A,X                                                        ;AAC8E0;
     LDA.W TorizoInitial_YPosition,Y                                      ;AAC8E3;
     STA.W $0F7E,X                                                        ;AAC8E6;
-    STZ.W $0FA8,X                                                        ;AAC8E9;
+    STZ.W Torizo.XVelocity,X                                             ;AAC8E9;
     LDA.W #$0100                                                         ;AAC8EC;
-    STA.W $0FAA,X                                                        ;AAC8EF;
+    STA.W Torizo.YVelocity,X                                             ;AAC8EF;
     LDX.W #$001E                                                         ;AAC8F2;
 
   .loopTargetPalettes:
@@ -6421,21 +6421,21 @@ EnemyShot_Torizo_Normal:
   .crateria:
     LDX.W $0E54                                                          ;AAC984;
     LDA.W $0F9C,X                                                        ;AAC987;
-    ORA.L $7E7808,X                                                      ;AAC98A;
+    ORA.L Torizo.animationLockFlag,X                                     ;AAC98A;
     BNE .return                                                          ;AAC98E;
     JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;AAC990;
     LDX.W $0E54                                                          ;AAC994;
     LDA.W $0F8C,X                                                        ;AAC997;
     BNE .return                                                          ;AAC99A;
     LDA.W #RTS_AAC6AB                                                    ;AAC99C;
-    STA.W $0FB0,X                                                        ;AAC99F;
+    STA.W Torizo.function,X                                              ;AAC99F;
     LDA.W #InstList_Torizo_DeathSequence_0                               ;AAC9A2;
     STA.W $0F92,X                                                        ;AAC9A5;
     LDA.W #$0001                                                         ;AAC9A8;
     STA.W $0F94,X                                                        ;AAC9AB;
-    LDA.W $0FB6,X                                                        ;AAC9AE;
+    LDA.W Torizo.behavioralProperties,X                                  ;AAC9AE;
     ORA.W #$C000                                                         ;AAC9B1;
-    STA.W $0FB6,X                                                        ;AAC9B4;
+    STA.W Torizo.behavioralProperties,X                                  ;AAC9B4;
     LDA.W $0F86,X                                                        ;AAC9B7;
     ORA.W #$0400                                                         ;AAC9BA;
     STA.W $0F86,X                                                        ;AAC9BD;
@@ -6869,9 +6869,9 @@ InstList_GT_LandedFromBackwardsJump_FacingRight_LeftFootFwd:
 
 ;;; $CDD7: Instruction - clear torizo caught super missile flag ;;;
 Instruction_GoldenTorizo_ClearCaughtSuperMissileFlag:
-    LDA.W $0FB6,X                                                        ;AACDD7;
+    LDA.W Torizo.behavioralProperties,X                                  ;AACDD7;
     AND.W #$EFFF                                                         ;AACDDA;
-    STA.W $0FB6,X                                                        ;AACDDD;
+    STA.W Torizo.behavioralProperties,X                                  ;AACDDD;
     RTL                                                                  ;AACDE0;
 
 
@@ -7107,7 +7107,7 @@ InstList_GoldenTorizo_ReleaseGoldenTorizoEggs_2:
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD0A5;
     dw $0040 : dl Tiles_Torizo+$2C0 : dw $7300                           ;AAD0A7;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD0AE;
-    dw $0040 : dl Tiles_Torizo+$4C0 : dw $7400                         ;AAD0B0;
+    dw $0040 : dl Tiles_Torizo+$4C0 : dw $7400                           ;AAD0B0;
     dw Instruction_Common_WaitYFrames,$0008                              ;AAD0B7;
     dw Instruction_Common_TransferYBytesInYToVRAM                        ;AAD0BB;
     dw $0040 : dl Tiles_Torizo+$280 : dw $7300                           ;AAD0BD;
@@ -7247,9 +7247,9 @@ InstList_Torizo_Stunned_1:
 
 ;;; $D1E7: Instruction - unmark Golden Torizo stunned ;;;
 Instruction_GoldenTorizo_UnmarkStunned:
-    LDA.W $0FB6,X                                                        ;AAD1E7;
+    LDA.W Torizo.behavioralProperties,X                                  ;AAD1E7;
     AND.W #$DFFF                                                         ;AAD1EA;
-    STA.W $0FB6,X                                                        ;AAD1ED;
+    STA.W Torizo.behavioralProperties,X                                  ;AAD1ED;
     RTL                                                                  ;AAD1F0;
 
 
@@ -7438,16 +7438,16 @@ MainAI_GoldenTorizo:
     CMP.W #$001C                                                         ;AAD374;
     BEQ .spaceJump                                                       ;AAD377;
     LDA.W #$0000                                                         ;AAD379;
-    STA.L $7E780E,X                                                      ;AAD37C;
+    STA.L Torizo.spaceJumpCounter,X                                      ;AAD37C;
     BRA .executeFunction                                                 ;AAD380;
 
   .spaceJump:
-    LDA.L $7E780E,X                                                      ;AAD382;
+    LDA.L Torizo.spaceJumpCounter,X                                      ;AAD382;
     INC A                                                                ;AAD386;
-    STA.L $7E780E,X                                                      ;AAD387;
+    STA.L Torizo.spaceJumpCounter,X                                      ;AAD387;
 
   .executeFunction:
-    JSR.W ($0FB0,X)                                                      ;AAD38B;
+    JSR.W (Torizo.function,X)                                            ;AAD38B;
     RTL                                                                  ;AAD38E;
 
 
@@ -7477,11 +7477,11 @@ CheckIfTorizoIsFacingSamus:
 ;; Returns:
 ;;     Negative: Set if torizo is facing away from Samus, clear otherwise
 
-; Facing right: [$0FB4] & 8000h != 0
+; Facing right: [Torizo.graphicalProperties] & 8000h != 0
     LDA.W $0F7A,X                                                        ;AAD3A7;
     SEC                                                                  ;AAD3AA;
     SBC.W $0AF6                                                          ;AAD3AB;
-    EOR.W $0FB4,X                                                        ;AAD3AE;
+    EOR.W Torizo.graphicalProperties,X                                   ;AAD3AE;
     RTS                                                                  ;AAD3B1;
 
 
@@ -7557,7 +7557,7 @@ Instruction_GoldenTorizo_GotoY_IfSamusIsMorphedBehindTorizo:
 
   .gotoY:
     LDA.W #$0000                                                         ;AAD427;
-    STA.L $7E7812,X                                                      ;AAD42A;
+    STA.L Torizo.stepCounter,X                                           ;AAD42A;
     LDA.W $0000,Y                                                        ;AAD42E;
     TAY                                                                  ;AAD431;
     RTL                                                                  ;AAD432;
@@ -7596,7 +7596,7 @@ Instruction_GT_CallY_25Chance_IfSamusMorphedInFrontOfTorizo:
     TYA                                                                  ;AAD465;
     INC A                                                                ;AAD466;
     INC A                                                                ;AAD467;
-    STA.L $7E7800,X                                                      ;AAD468;
+    STA.L Torizo.linkInstruction,X                                       ;AAD468;
     LDA.W $0000,Y                                                        ;AAD46C;
     TAY                                                                  ;AAD46F;
     RTL                                                                  ;AAD470;
@@ -7616,11 +7616,11 @@ Instruction_GoldenTorizo_CallY_25Chance_IfHealthLessThan789:
     AND.W #$0102                                                         ;AAD480;
     BNE .noGo                                                            ;AAD483;
     LDA.W #$0000                                                         ;AAD485;
-    STA.L $7E7812,X                                                      ;AAD488;
+    STA.L Torizo.stepCounter,X                                           ;AAD488;
     TYA                                                                  ;AAD48C;
     INC A                                                                ;AAD48D;
     INC A                                                                ;AAD48E;
-    STA.L $7E7800,X                                                      ;AAD48F;
+    STA.L Torizo.linkInstruction,X                                       ;AAD48F;
     LDA.W $0000,Y                                                        ;AAD493;
     TAY                                                                  ;AAD496;
     RTL                                                                  ;AAD497;
@@ -7636,13 +7636,13 @@ Instruction_GoldenTorizo_CallY_IfStunHealthGreaterThan2A31:
     LDA.W #$2A30                                                         ;AAD49B;
     CMP.W $0F8C,X                                                        ;AAD49E;
     BCS .noGo                                                            ;AAD4A1;
-    LDA.W $0FB6,X                                                        ;AAD4A3;
+    LDA.W Torizo.behavioralProperties,X                                  ;AAD4A3;
     BIT.W #$2000                                                         ;AAD4A6;
     BEQ .noGo                                                            ;AAD4A9;
     TYA                                                                  ;AAD4AB;
     INC A                                                                ;AAD4AC;
     INC A                                                                ;AAD4AD;
-    STA.L $7E7800,X                                                      ;AAD4AE;
+    STA.L Torizo.linkInstruction,X                                       ;AAD4AE;
     LDA.W $0000,Y                                                        ;AAD4B2;
     TAY                                                                  ;AAD4B5;
     RTL                                                                  ;AAD4B6;
@@ -7664,7 +7664,7 @@ Instruction_GoldenTorizo_GotoY_JumpForwards_IfAtLeast70Pixel:
     JSR.W CheckIfTorizoIsFacingSamus                                     ;AAD4C3;
     BMI .noGo                                                            ;AAD4C6;
     LDA.W #$0168                                                         ;AAD4C8;
-    CMP.L $7E780E,X                                                      ;AAD4CB;
+    CMP.L Torizo.spaceJumpCounter,X                                      ;AAD4CB;
     BCC .jump                                                            ;AAD4CF;
     LDA.B $8B                                                            ;AAD4D1;
     AND.W #$0300                                                         ;AAD4D3;
@@ -7675,7 +7675,7 @@ Instruction_GoldenTorizo_GotoY_JumpForwards_IfAtLeast70Pixel:
 
   .jump:
     LDA.W #$0000                                                         ;AAD4E1;
-    STA.L $7E7812,X                                                      ;AAD4E4;
+    STA.L Torizo.stepCounter,X                                           ;AAD4E4;
     JSR.W MakeTorizoJumpForwards                                         ;AAD4E8;
     LDA.W $0000,Y                                                        ;AAD4EB;
     TAY                                                                  ;AAD4EE;
@@ -7698,7 +7698,7 @@ Instruction_GoldenTorizo_SpawnChozoOrbs:
 
 ;;; $D4FD: Instruction - go to [[Y]] and jump backwards if Samus is less than 20h pixels in front of Golden Torizo ;;;
 Instruction_GoldenTorizo_GotoY_JumpBack_IfLessThan20Pixels:
-    LDA.L $7E7812,X                                                      ;AAD4FD;
+    LDA.L Torizo.stepCounter,X                                           ;AAD4FD;
     CMP.W #$0008                                                         ;AAD501;
     BCS .jump                                                            ;AAD504;
     LDA.W #$0020                                                         ;AAD506;
@@ -7709,7 +7709,7 @@ Instruction_GoldenTorizo_GotoY_JumpBack_IfLessThan20Pixels:
 
   .jump:
     LDA.W #$0000                                                         ;AAD514;
-    STA.L $7E7812,X                                                      ;AAD517;
+    STA.L Torizo.stepCounter,X                                           ;AAD517;
     JSR.W MakeTorizoJumpBackwards                                        ;AAD51B;
     LDA.W $0000,Y                                                        ;AAD51E;
     TAY                                                                  ;AAD521;
@@ -7728,7 +7728,7 @@ Instruction_GoldenTorizo_CallY_OrY2_ForAttack:
     INC A                                                                ;AAD528;
     INC A                                                                ;AAD529;
     INC A                                                                ;AAD52A;
-    STA.L $7E7800,X                                                      ;AAD52B;
+    STA.L Torizo.linkInstruction,X                                       ;AAD52B;
     LDA.W $09C6                                                          ;AAD52F;
     CMP.W #$0020                                                         ;AAD532;
     BCC .spewOrbs                                                        ;AAD535;
@@ -7758,13 +7758,13 @@ Instruction_GoldenTorizo_WalkingMovement_IndexInY:
     TAY                                                                  ;AAD553;
     LDA.W .velocities,Y                                                  ;AAD554;
     STA.B $14                                                            ;AAD557;
-    STA.W $0FA8,X                                                        ;AAD559;
+    STA.W Torizo.XVelocity,X                                             ;AAD559;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;AAD55C;
     PLY                                                                  ;AAD560;
     BCC .noCollision                                                     ;AAD561;
     LDA.W #$0000                                                         ;AAD563;
-    STA.L $7E7806,X                                                      ;AAD566;
-    LDA.W $0FB4,X                                                        ;AAD56A;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAD566;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAD56A;
     BMI .facingRight                                                     ;AAD56D;
     LDY.W #InstList_GoldenTorizo_TurningRight                            ;AAD56F;
     RTL                                                                  ;AAD572;
@@ -7778,17 +7778,17 @@ Instruction_GoldenTorizo_WalkingMovement_IndexInY:
     LDA.W $0AF6                                                          ;AAD57B;
     SEC                                                                  ;AAD57E;
     SBC.W $0F7A,X                                                        ;AAD57F;
-    EOR.W $0FB4,X                                                        ;AAD582;
+    EOR.W Torizo.graphicalProperties,X                                   ;AAD582;
     BPL .facingAway                                                      ;AAD585;
     INY                                                                  ;AAD587;
     INY                                                                  ;AAD588;
     RTL                                                                  ;AAD589;
 
   .facingAway:
-    LDA.L $7E7806,X                                                      ;AAD58A;
+    LDA.L Torizo.turnAroundTimer,X                                       ;AAD58A;
     BNE .return                                                          ;AAD58E;
     LDA.W #$0010                                                         ;AAD590;
-    STA.L $7E7806,X                                                      ;AAD593;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAD593;
 
   .return:
     INY                                                                  ;AAD597;
@@ -7829,7 +7829,7 @@ Function_GoldenTorizo_SimpleMovement:
 ;;; $D5E6: Torizo function - Golden Torizo - normal movement ;;;
 Function_GoldenTorizo_NormalMovement:
     JSR.W HandleLowHealthInitialDrool                                    ;AAD5E6;
-    JSR.W ($0FB2,X)                                                      ;AAD5E9;
+    JSR.W (Torizo.movementFunction,X)                                    ;AAD5E9;
     RTS                                                                  ;AAD5EC;
 
 
@@ -7842,14 +7842,14 @@ Function_GoldenTorizo_Movement_Attacking:
 
 ;;; $D5F1: Torizo movement function - Golden Torizo - walking ;;;
 Function_GoldenTorizo_Movement_Walking:
-    LDA.L $7E7806,X                                                      ;AAD5F1;
+    LDA.L Torizo.turnAroundTimer,X                                       ;AAD5F1;
     BEQ .notTurning                                                      ;AAD5F5;
     DEC A                                                                ;AAD5F7;
-    STA.L $7E7806,X                                                      ;AAD5F8;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAD5F8;
     BNE .notTurning                                                      ;AAD5FC;
     LDA.W #$0000                                                         ;AAD5FE;
-    STA.L $7E7806,X                                                      ;AAD601;
-    LDA.W $0FB4,X                                                        ;AAD605;
+    STA.L Torizo.turnAroundTimer,X                                       ;AAD601;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAD605;
     BMI .facingRight                                                     ;AAD608;
     LDA.W #InstList_GoldenTorizo_TurningRight                            ;AAD60A;
     BRA +                                                                ;AAD60D;
@@ -7864,7 +7864,7 @@ Function_GoldenTorizo_Movement_Walking:
 
   .notTurning:
     STZ.B $12                                                            ;AAD61C;
-    LDA.W $0FA8,X                                                        ;AAD61E;
+    LDA.W Torizo.XVelocity,X                                             ;AAD61E;
     BPL +                                                                ;AAD621;
     EOR.W #$FFFF                                                         ;AAD623;
     INC A                                                                ;AAD626;
@@ -7877,7 +7877,7 @@ Function_GoldenTorizo_Movement_Walking:
 +   STA.B $14                                                            ;AAD630;
     JSL.L MoveEnemyDownBy_14_12                                          ;AAD632;
     BCS .return                                                          ;AAD636;
-    LDA.W $0FB4,X                                                        ;AAD638;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAD638;
     BMI ..facingRight                                                    ;AAD63B;
     LDA.W #InstList_Torizo_FacingLeft_Falling_0                          ;AAD63D;
     BRA +                                                                ;AAD640;
@@ -7889,8 +7889,8 @@ Function_GoldenTorizo_Movement_Walking:
     LDA.W #$0001                                                         ;AAD648;
     STA.W $0F94,X                                                        ;AAD64B;
     LDA.W #$0100                                                         ;AAD64E;
-    STA.W $0FAA,X                                                        ;AAD651;
-    STZ.W $0FA8,X                                                        ;AAD654;
+    STA.W Torizo.YVelocity,X                                             ;AAD651;
+    STZ.W Torizo.XVelocity,X                                             ;AAD654;
 
   .return:
     RTS                                                                  ;AAD657;
@@ -7901,7 +7901,7 @@ ShotReaction_GoldenTorizo_StandUp_SitDown:
     LDX.W $0E54                                                          ;AAD658;
     LDA.W $0F9C,X                                                        ;AAD65B;
     BNE .return                                                          ;AAD65E;
-    LDA.L $7E7808,X                                                      ;AAD660;
+    LDA.L Torizo.animationLockFlag,X                                     ;AAD660;
     BEQ ShotReaction_GoldenTorizo_Damaged                                ;AAD664;
 
   .return:
@@ -7913,7 +7913,7 @@ ShotReaction_GoldenTorizo_Normal:
     LDX.W $0E54                                                          ;AAD667;
     LDA.W $0F9C,X                                                        ;AAD66A;
     BNE .return                                                          ;AAD66D;
-    LDA.L $7E7808,X                                                      ;AAD66F;
+    LDA.L Torizo.animationLockFlag,X                                     ;AAD66F;
     BEQ .gotoFlashOrAnimLock                                             ;AAD673;
     JMP.W ShotReaction_GoldenTorizo_Damaged                              ;AAD675;
 
@@ -7924,7 +7924,7 @@ ShotReaction_GoldenTorizo_Normal:
     RTL                                                                  ;AAD67B;
 
   .flashOrAnimLock:
-    LDA.W $0FB6,X                                                        ;AAD67C;
+    LDA.W Torizo.behavioralProperties,X                                  ;AAD67C;
     BIT.W #$1000                                                         ;AAD67F;
     BNE .stun                                                            ;AAD682;
     LDA.W $18A6                                                          ;AAD684;
@@ -7939,9 +7939,9 @@ ShotReaction_GoldenTorizo_Normal:
     BEQ ShotReaction_GoldenTorizo_Normal_SuperMissile                    ;AAD69B;
 
   .stun:
-    LDA.W $0FB6,X                                                        ;AAD69D;
+    LDA.W Torizo.behavioralProperties,X                                  ;AAD69D;
     ORA.W #$2000                                                         ;AAD6A0;
-    STA.W $0FB6,X                                                        ;AAD6A3; fallthrough to ShotReaction_GoldenTorizo_Damaged
+    STA.W Torizo.behavioralProperties,X                                  ;AAD6A3; fallthrough to ShotReaction_GoldenTorizo_Damaged
 
 
 ;;; $D6A6: Golden Torizo shot reaction - damaged ;;;
@@ -7954,9 +7954,9 @@ ShotReaction_GoldenTorizo_Damaged:
     STA.W $0F92,X                                                        ;AAD6B5;
     LDA.W #$0001                                                         ;AAD6B8;
     STA.W $0F94,X                                                        ;AAD6BB;
-    LDA.W $0FB6,X                                                        ;AAD6BE;
+    LDA.W Torizo.behavioralProperties,X                                  ;AAD6BE;
     ORA.W #$C000                                                         ;AAD6C1;
-    STA.W $0FB6,X                                                        ;AAD6C4;
+    STA.W Torizo.behavioralProperties,X                                  ;AAD6C4;
     LDA.W $0F86,X                                                        ;AAD6C7;
     ORA.W #$0400                                                         ;AAD6CA;
     STA.W $0F86,X                                                        ;AAD6CD;
@@ -7971,10 +7971,10 @@ ShotReaction_GoldenTorizo_Normal_Missile:
     AND.W #$FFEF                                                         ;AAD6D4;
     STA.W $0C04,Y                                                        ;AAD6D7;
     LDA.W #RTS_AAC6AB                                                    ;AAD6DA;
-    STA.W $0FB0,X                                                        ;AAD6DD;
+    STA.W Torizo.function,X                                              ;AAD6DD;
     LDA.W #$0001                                                         ;AAD6E0;
     STA.W $0F94,X                                                        ;AAD6E3;
-    BIT.W $0FB4,X                                                        ;AAD6E6;
+    BIT.W Torizo.graphicalProperties,X                                   ;AAD6E6;
     BMI .keepRight                                                       ;AAD6E9;
     LDA.W #InstList_GoldenTorizo_Dodge_TurningLeft                       ;AAD6EB;
     BRA +                                                                ;AAD6EE;
@@ -7993,20 +7993,20 @@ ShotReaction_GoldenTorizo_Normal_SuperMissile:
     JMP.W ShotReaction_GoldenTorizo_Damaged                              ;AAD6FC;
 
   .facingSamus:
-    LDA.W $0FB6,X                                                        ;AAD6FF;
+    LDA.W Torizo.behavioralProperties,X                                  ;AAD6FF;
     ORA.W #$1000                                                         ;AAD702;
-    STA.W $0FB6,X                                                        ;AAD705;
+    STA.W Torizo.behavioralProperties,X                                  ;AAD705;
     LDA.W #RTS_AAC6AB                                                    ;AAD708;
-    STA.W $0FB0,X                                                        ;AAD70B;
+    STA.W Torizo.function,X                                              ;AAD70B;
     LDA.W $0C04,Y                                                        ;AAD70E;
     ORA.W #$0010                                                         ;AAD711;
     STA.W $0C04,Y                                                        ;AAD714;
     LDA.W #$0001                                                         ;AAD717;
     STA.W $0F94,X                                                        ;AAD71A;
-    LDA.W $0FB4,X                                                        ;AAD71D;
+    LDA.W Torizo.graphicalProperties,X                                   ;AAD71D;
     BIT.W #$2000                                                         ;AAD720;
     BNE .backgroundLegForward                                            ;AAD723;
-    BIT.W $0FB4,X                                                        ;AAD725;
+    BIT.W Torizo.graphicalProperties,X                                   ;AAD725;
     BMI .facingRight                                                     ;AAD728;
     LDA.W #InstList_GoldenTorizo_CaughtSuper_FacingLeft_LeftLegFwd       ;AAD72A;
     BRA +                                                                ;AAD72D;
@@ -8016,7 +8016,7 @@ ShotReaction_GoldenTorizo_Normal_SuperMissile:
     BRA +                                                                ;AAD732;
 
   .backgroundLegForward:
-    BIT.W $0FB4,X                                                        ;AAD734;
+    BIT.W Torizo.graphicalProperties,X                                   ;AAD734;
     BMI ..facingRight                                                    ;AAD737;
     LDA.W #InstList_GoldenTorizo_CaughtSuper_FacingLeft_RightLegFwd      ;AAD739;
     BRA +                                                                ;AAD73C;
@@ -8191,7 +8191,7 @@ Palette_Shaktool:
 ;;; $D931: Unused. Instruction - lower enemy 1px away from enemy projectile ;;;
 UNUSED_Instruction_Shaktool_Lower1PixelAwayFromProj_AAD931:
     PHY                                                                  ;AAD931;
-    LDY.W $0FB0,X                                                        ;AAD932;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AAD932;
     LDA.W $106E,Y                                                        ;AAD935;
     EOR.W #$0080                                                         ;AAD938;
     PLY                                                                  ;AAD93B;
@@ -8201,7 +8201,7 @@ UNUSED_Instruction_Shaktool_Lower1PixelAwayFromProj_AAD931:
 ;;; $D93F: Unused. Instruction - raise enemy 1px towards enemy projectile ;;;
 UNUSED_Instruction_Shaktool_Raise1PixelTowardsProj_AAD93F:
     PHY                                                                  ;AAD93F;
-    LDY.W $0FB0,X                                                        ;AAD940;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AAD940;
     LDA.W $106E,Y                                                        ;AAD943;
     PLY                                                                  ;AAD946;
     JMP.W MoveShaktoolPiece1Pixel                                        ;AAD947;
@@ -8283,9 +8283,9 @@ RTL_AAD99F:
 ;;; $D9BA: Instruction - reset Shaktool functions ;;;
 Instruction_Shaktool_ResetShaktoolFunctions:
     PHY                                                                  ;AAD9BA;
-    LDY.W $0FB0,X                                                        ;AAD9BB;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AAD9BB;
     LDA.W ShaktoolPieceData_functionPointer                              ;AAD9BE;
-    STA.W $0FB2,Y                                                        ;AAD9C1;
+    STA.W Shaktool.function,Y                                            ;AAD9C1;
     LDA.W ShaktoolPieceData_functionPointer_rightArm                     ;AAD9C4;
     STA.W $0FF2,Y                                                        ;AAD9C7;
     LDA.W ShaktoolPieceData_functionPointer_centerRightArm               ;AAD9CA;
@@ -8488,7 +8488,7 @@ RTS_AADAE4:
 
   .loop:
     LDA.W #RTS_AADCAA                                                    ;AADAF1;
-    STA.W $0FB2,X                                                        ;AADAF4;
+    STA.W Shaktool.function,X                                            ;AADAF4;
     LDA.W ShaktoolPieceData_unusedAttackInstListPointer,Y                ;AADAF7;
     STA.W $0F92,X                                                        ;AADAFA;
     LDA.W #$0001                                                         ;AADAFD;
@@ -8507,8 +8507,8 @@ RTS_AADAE4:
 
 ;;; $DB0E: Shaktool pieces movement options = [A] ;;;
 ShaktoolPiecesMovementOptionsInA:
-    LDY.W $0FB0,X                                                        ;AADB0E;
-    STA.W $0FB4,Y                                                        ;AADB11;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AADB0E;
+    STA.W Shaktool.movementOptions,Y                                     ;AADB11;
     STA.W $0FF4,Y                                                        ;AADB14;
     STA.W $1034,Y                                                        ;AADB17;
     STA.W $1074,Y                                                        ;AADB1A;
@@ -8520,8 +8520,8 @@ ShaktoolPiecesMovementOptionsInA:
 
 ;;; $DB27: Shaktool pieces facing angle = [A] ;;;
 ShaktoolPiecesFacingAngleInA:
-    LDY.W $0FB0,X                                                        ;AADB27;
-    STA.W $0FA8,Y                                                        ;AADB2A;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AADB27;
+    STA.W Shaktool.facingAngle,Y                                         ;AADB2A;
     STA.W $0FE8,Y                                                        ;AADB2D;
     STA.W $1028,Y                                                        ;AADB30;
     STA.W $1068,Y                                                        ;AADB33;
@@ -8533,8 +8533,8 @@ ShaktoolPiecesFacingAngleInA:
 
 ;;; $DB40: Shaktool pieces neighbour angle = [A] ;;;
 ShaktoolPiecesNeighborAngleInA:
-    LDY.W $0FB0,X                                                        ;AADB40;
-    STA.W $0FAA,Y                                                        ;AADB43;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AADB40;
+    STA.W Shaktool.neighborAngle,Y                                       ;AADB43;
     STA.W $0FEA,Y                                                        ;AADB46;
     STA.W $102A,Y                                                        ;AADB49;
     STA.W $106A,Y                                                        ;AADB4C;
@@ -8546,7 +8546,7 @@ ShaktoolPiecesNeighborAngleInA:
 
 ;;; $DB59: Flip Shaktool ;;;
 FlipShaktool:
-    LDY.W $0FB0,X                                                        ;AADB59;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AADB59;
     LDA.W $106E,Y                                                        ;AADB5C;
     EOR.W #$8000                                                         ;AADB5F;
     STA.W $106E,Y                                                        ;AADB62;
@@ -8613,26 +8613,26 @@ FlipShaktool:
 
 
 ;;; $DC07: Set Shaktool piece neighbour angle delta due to block collision ;;;
-SetSHaktoolPieceNeighborAngleDeltaDueToBlockCollision:
+SetShaktoolPieceNeighborAngleDeltaDueToBlockCollision:
     LDA.W #$0000                                                         ;AADC07;
     SEC                                                                  ;AADC0A;
-    BIT.W $0FB4,X                                                        ;AADC0B;
+    BIT.W Shaktool.movementOptions,X                                     ;AADC0B;
     BMI .antiClockwise                                                   ;AADC0E;
-    SBC.W $0FAA,X                                                        ;AADC10;
+    SBC.W Shaktool.neighborAngle,X                                       ;AADC10;
     CLC                                                                  ;AADC13;
-    ADC.W $0FA8,X                                                        ;AADC14;
+    ADC.W Shaktool.facingAngle,X                                         ;AADC14;
     BRA +                                                                ;AADC17;
 
   .antiClockwise:
-    SBC.W $0FA8,X                                                        ;AADC19;
+    SBC.W Shaktool.facingAngle,X                                         ;AADC19;
     CLC                                                                  ;AADC1C;
-    ADC.W $0FAA,X                                                        ;AADC1D;
+    ADC.W Shaktool.neighborAngle,X                                       ;AADC1D;
 
 +   XBA                                                                  ;AADC20;
     AND.W #$00FF                                                         ;AADC21;
     ASL A                                                                ;AADC24;
     ASL A                                                                ;AADC25;
-    STA.W $0FAC,X                                                        ;AADC26;
+    STA.W Shaktool.neighborAngleDelta,X                                  ;AADC26;
     RTS                                                                  ;AADC29;
 
 
@@ -8675,11 +8675,11 @@ PositionShaktoolPieceRelativeToPreviousPiece:
 
 ;;; $DC6F: Set Shaktool pieces neighbour angle and angle delta for curling ;;;
 SetShaktoolPiecesNeighborAngleAndAngleDeltaForCurling:
-    LDA.W $0FA8,X                                                        ;AADC6F;
+    LDA.W Shaktool.facingAngle,X                                         ;AADC6F;
     JSR.W ShaktoolPiecesNeighborAngleInA                                 ;AADC72;
-    LDY.W $0FB0,X                                                        ;AADC75;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AADC75;
     LDA.W ShaktoolPieceData_initialCurlingNeighborAngleDelta             ;AADC78;
-    STA.W $0FAC,Y                                                        ;AADC7B;
+    STA.W Shaktool.neighborAngleDelta,Y                                  ;AADC7B;
     LDA.W ShaktoolPieceData_initialCurlingNeighborAngleDelta_rightArm    ;AADC7E;
     STA.W $0FEC,Y                                                        ;AADC81;
     LDA.W ShaktoolPieceData_initialCurlingNeighborAngleDelta_centerRightArm ;AADC84;
@@ -8698,7 +8698,7 @@ SetShaktoolPiecesNeighborAngleAndAngleDeltaForCurling:
 ;;; $DCA3: Main AI / hurt AI - enemy $F07F (Shaktool) ;;;
 MainAI_HurtAI_Shaktool:
     LDX.W $0E54                                                          ;AADCA3;
-    JSR.W ($0FB2,X)                                                      ;AADCA6;
+    JSR.W (Shaktool.function,X)                                          ;AADCA6;
     RTL                                                                  ;AADCA9;
 
 
@@ -8715,34 +8715,34 @@ RTS_AADCAB:
 ;;; $DCAC: Shaktool function - arm piece. Set position and handle curling ;;;
 Function_Shaktool_ArmPiece_SetPosition_HandleCurling:
     JSR.W PositionShaktoolPieceRelativeToPreviousPiece                   ;AADCAC;
-    BIT.W $0FB4,X                                                        ;AADCAF;
+    BIT.W Shaktool.movementOptions,X                                     ;AADCAF;
     BVC .notFullyCurled                                                  ;AADCB2;
     LDA.W #$0100                                                         ;AADCB4;
     CLC                                                                  ;AADCB7;
-    ADC.W $0FA8,X                                                        ;AADCB8;
-    STA.W $0FA8,X                                                        ;AADCBB;
+    ADC.W Shaktool.facingAngle,X                                         ;AADCB8;
+    STA.W Shaktool.facingAngle,X                                         ;AADCBB;
     LDA.W #$0100                                                         ;AADCBE;
     BRA +                                                                ;AADCC1;
 
   .notFullyCurled:
-    LDA.W $0FAC,X                                                        ;AADCC3;
+    LDA.W Shaktool.neighborAngleDelta,X                                  ;AADCC3;
 
-+   BIT.W $0FB4,X                                                        ;AADCC6;
++   BIT.W Shaktool.movementOptions,X                                     ;AADCC6;
     BPL .clockwise                                                       ;AADCC9;
     EOR.W #$FFFF                                                         ;AADCCB;
     INC A                                                                ;AADCCE;
 
   .clockwise:
     CLC                                                                  ;AADCCF;
-    ADC.W $0FAA,X                                                        ;AADCD0;
-    STA.W $0FAA,X                                                        ;AADCD3;
+    ADC.W Shaktool.neighborAngle,X                                       ;AADCD0;
+    STA.W Shaktool.neighborAngle,X                                       ;AADCD3;
     RTS                                                                  ;AADCD6;
 
 
 ;;; $DCD7: Shaktool function - head ;;;
 Function_Shaktool_Head:
     JSR.W Function_Shaktool_ArmPiece_SetPosition_HandleCurling           ;AADCD7;
-    LDA.W $0FAA,X                                                        ;AADCDA;
+    LDA.W Shaktool.neighborAngle,X                                       ;AADCDA;
     EOR.W #$8000                                                         ;AADCDD;
     STA.B $12                                                            ;AADCE0;
     LDA.W $0FEA,X                                                        ;AADCE2;
@@ -8751,7 +8751,7 @@ Function_Shaktool_Head:
     LSR A                                                                ;AADCE8;
     CLC                                                                  ;AADCE9;
     ADC.B $12                                                            ;AADCEA;
-    BIT.W $0FAE,X                                                        ;AADCEC;
+    BIT.W Shaktool.headDirection,X                                       ;AADCEC;
     BPL +                                                                ;AADCEF;
     EOR.W #$8000                                                         ;AADCF1;
 
@@ -8760,7 +8760,7 @@ Function_Shaktool_Head:
     ADC.W #$0008                                                         ;AADCF6;
     AND.W #$00E0                                                         ;AADCF9;
     SEP #$20                                                             ;AADCFC;
-    STA.W $0FAE,X                                                        ;AADCFE;
+    STA.W Shaktool.headDirection,X                                       ;AADCFE;
     REP #$20                                                             ;AADD01;
     LSR A                                                                ;AADD03;
     LSR A                                                                ;AADD04;
@@ -8821,37 +8821,37 @@ Function_Shaktool_FinalPiece:
     STA.W $0F7E,X                                                        ;AADD6A;
     PLA                                                                  ;AADD6D;
     PLA                                                                  ;AADD6E;
-    BIT.W $0FB4,X                                                        ;AADD6F;
+    BIT.W Shaktool.movementOptions,X                                     ;AADD6F;
     BVC .notFullyCurled                                                  ;AADD72;
     LDA.W #$0100                                                         ;AADD74;
     CLC                                                                  ;AADD77;
-    ADC.W $0FA8,X                                                        ;AADD78;
-    STA.W $0FA8,X                                                        ;AADD7B;
+    ADC.W Shaktool.facingAngle,X                                         ;AADD78;
+    STA.W Shaktool.facingAngle,X                                         ;AADD7B;
     RTS                                                                  ;AADD7E;
 
   .notFullyCurled:
-    LDA.W $0FAA,X                                                        ;AADD7F;
-    EOR.W $0FA8,X                                                        ;AADD82;
+    LDA.W Shaktool.neighborAngle,X                                       ;AADD7F;
+    EOR.W Shaktool.facingAngle,X                                         ;AADD82;
     AND.W #$FF00                                                         ;AADD85;
     BNE +                                                                ;AADD88;
     JSR.W SetShaktoolPiecesNeighborAngleAndAngleDeltaForCurling          ;AADD8A;
     LDA.W #$7800                                                         ;AADD8D;
-    STA.W $0FAE,X                                                        ;AADD90;
-    LDA.W $0FB4,X                                                        ;AADD93;
+    STA.W Shaktool.finalPieceAngleCurled,X                               ;AADD90;
+    LDA.W Shaktool.movementOptions,X                                     ;AADD93;
     AND.W #$DFFF                                                         ;AADD96;
     JSR.W ShaktoolPiecesMovementOptionsInA                               ;AADD99;
-    LDA.W $0FAE,X                                                        ;AADD9C;
+    LDA.W Shaktool.finalPieceAngleCurled,X                               ;AADD9C;
     AND.W #$FF00                                                         ;AADD9F;
-    STA.W $0FAE,X                                                        ;AADDA2;
+    STA.W Shaktool.finalPieceAngleCurled,X                               ;AADDA2;
 
-+   LDA.W $0FAC,X                                                        ;AADDA5;
++   LDA.W Shaktool.neighborAngleDelta,X                                  ;AADDA5;
     CLC                                                                  ;AADDA8;
-    ADC.W $0FAE,X                                                        ;AADDA9;
-    STA.W $0FAE,X                                                        ;AADDAC;
+    ADC.W Shaktool.finalPieceAngleCurled,X                               ;AADDA9;
+    STA.W Shaktool.finalPieceAngleCurled,X                               ;AADDAC;
     CMP.W #$F000                                                         ;AADDAF;
     BCC .return                                                          ;AADDB2;
-    LDY.W $0FB0,X                                                        ;AADDB4;
-    LDA.W $0FB4,X                                                        ;AADDB7;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AADDB4;
+    LDA.W Shaktool.movementOptions,X                                     ;AADDB7;
     ORA.W #$4000                                                         ;AADDBA;
     JSR.W ShaktoolPiecesMovementOptionsInA                               ;AADDBD;
 
@@ -8860,14 +8860,14 @@ Function_Shaktool_FinalPiece:
     RTS                                                                  ;AADDC3;
 
   .collision:
-    LDA.W $0FB4,X                                                        ;AADDC4;
+    LDA.W Shaktool.movementOptions,X                                     ;AADDC4;
     BIT.W #$2000                                                         ;AADDC7;
     BEQ .curling                                                         ;AADDCA;
     PLA                                                                  ;AADDCC;
     PLA                                                                  ;AADDCD;
     PLA                                                                  ;AADDCE;
     PLA                                                                  ;AADDCF;
-    LDA.W $0FB4,X                                                        ;AADDD0;
+    LDA.W Shaktool.movementOptions,X                                     ;AADDD0;
     EOR.W #$8000                                                         ;AADDD3;
     AND.W #$8FFF                                                         ;AADDD6;
     JSR.W ShaktoolPiecesMovementOptionsInA                               ;AADDD9;
@@ -8882,19 +8882,19 @@ Function_Shaktool_FinalPiece:
     STA.W $0F7E,X                                                        ;AADDE5;
     JSR.W FlipShaktool                                                   ;AADDE8;
     LDX.W $0E54                                                          ;AADDEB;
-    LDA.W $0FB4,X                                                        ;AADDEE;
+    LDA.W Shaktool.movementOptions,X                                     ;AADDEE;
     ORA.W #$2000                                                         ;AADDF1;
     JSR.W ShaktoolPiecesMovementOptionsInA                               ;AADDF4;
-    LDA.W $0FB4,X                                                        ;AADDF7;
+    LDA.W Shaktool.movementOptions,X                                     ;AADDF7;
     AND.W #$BFFF                                                         ;AADDFA;
     JSR.W ShaktoolPiecesMovementOptionsInA                               ;AADDFD;
 
-+   STZ.W $0FAE,X                                                        ;AADE00;
-    LDY.W $0FB0,X                                                        ;AADE03;
++   STZ.W Shaktool.finalPieceAngleCurled,X                               ;AADE00;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AADE03;
     JSL.L CalculateAngleOfEnemyYFromEnemyX                               ;AADE06;
     XBA                                                                  ;AADE0A;
     AND.W #$FF00                                                         ;AADE0B;
-    BIT.W $0FB4,X                                                        ;AADE0E;
+    BIT.W Shaktool.movementOptions,X                                     ;AADE0E;
     BMI .antiClockwise                                                   ;AADE11;
     CLC                                                                  ;AADE13;
     ADC.W #$4000                                                         ;AADE14;
@@ -8908,9 +8908,9 @@ Function_Shaktool_FinalPiece:
     LDY.W #$000C                                                         ;AADE20;
 
   .loop:
-    JSR.W SetSHaktoolPieceNeighborAngleDeltaDueToBlockCollision          ;AADE23;
+    JSR.W SetShaktoolPieceNeighborAngleDeltaDueToBlockCollision          ;AADE23;
     LDA.W #RTS_AADCAA                                                    ;AADE26;
-    STA.W $0FB2,X                                                        ;AADE29;
+    STA.W Shaktool.function,X                                            ;AADE29;
     LDA.W ShaktoolPieceData_headBobInstListPointer,Y                     ;AADE2C;
     STA.W $0F92,X                                                        ;AADE2F;
     LDA.W #$0001                                                         ;AADE32;
@@ -8934,8 +8934,8 @@ InitAI_Shaktool:
     STA.W $0F94,X                                                        ;AADE49;
     STZ.W $0F90,X                                                        ;AADE4C;
     LDA.W #$0000                                                         ;AADE4F;
-    STA.W $0FA8,X                                                        ;AADE52;
-    STA.W $0FAE,X                                                        ;AADE55;
+    STA.W Shaktool.facingAngle,X                                         ;AADE52;
+    STA.W Shaktool.headDirection,X                                       ;AADE55;
     LDY.W $0FB6,X                                                        ;AADE58;
     LDA.W $0F86,X                                                        ;AADE5B;
     ORA.W ShaktoolPieceData_properties,Y                                 ;AADE5E;
@@ -8943,15 +8943,15 @@ InitAI_Shaktool:
     TXA                                                                  ;AADE64;
     SEC                                                                  ;AADE65;
     SBC.W ShaktoolPieceData_RAMOffset,Y                                  ;AADE66;
-    STA.W $0FB0,X                                                        ;AADE69;
+    STA.W Shaktool.primaryPieceEnemyIndex,X                              ;AADE69;
     LDA.W ShaktoolPieceData_functionPointer,Y                            ;AADE6C;
-    STA.W $0FB2,X                                                        ;AADE6F;
+    STA.W Shaktool.function,X                                            ;AADE6F;
     LDA.W ShaktoolPieceData_initialCurlingNeighborAngleDelta,Y           ;AADE72;
     SEC                                                                  ;AADE75;
     SBC.W ShaktoolPieceData_zero,Y                                       ;AADE76;
-    STA.W $0FAC,X                                                        ;AADE79;
+    STA.W Shaktool.neighborAngleDelta,X                                  ;AADE79;
     LDA.W ShaktoolPieceData_initialNeighborAngle,Y                       ;AADE7C;
-    STA.W $0FAA,X                                                        ;AADE7F;
+    STA.W Shaktool.neighborAngle,X                                       ;AADE7F;
     LDA.W ShaktoolPieceData_initialInstListPointer,Y                     ;AADE82;
     STA.W $0F92,X                                                        ;AADE85;
     LDA.W ShaktoolPieceData_layerControl,Y                               ;AADE88;
@@ -9058,7 +9058,7 @@ EnemyShot_Shaktool:
     LDX.W $0E54                                                          ;AADF38;
     LDA.W $0F8C,X                                                        ;AADF3B;
     BNE .return                                                          ;AADF3E;
-    LDY.W $0FB0,X                                                        ;AADF40;
+    LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AADF40;
     LDA.W #$0200                                                         ;AADF43;
     STA.W $0F86,Y                                                        ;AADF46;
     STA.W $0FC6,Y                                                        ;AADF49;
@@ -9320,7 +9320,7 @@ Instruction_Chozo_UnlockSamus:
 
 ;;; $E445: Chozo statue function - Lower Norfair ;;;
 Function_Chozo_LowerNorfair:
-    LDA.W $0FB4,X                                                        ;AAE445;
+    LDA.W Chozo.activationFlag,X                                         ;AAE445;
     BEQ .return                                                          ;AAE448;
     LDA.W #InstList_Chozo_LowerNorfair_Activated_0                       ;AAE44A;
     STA.W $0F92,X                                                        ;AAE44D;
@@ -9484,11 +9484,11 @@ Instruction_Chozo_SpawnChozoSpikeClearingFootstepProjectile:
 ;;; $E5D8: Instruction - chozo statue movement - index [[Y]] ;;;
 Instruction_Chozo_Movement_IndexInY:
     LDA.W $0000,Y                                                        ;AAE5D8;
-    STA.W $0FAC,X                                                        ;AAE5DB;
+    STA.W Chozo.movementIndex,X                                          ;AAE5DB;
     PHY                                                                  ;AAE5DE;
     STZ.B $12                                                            ;AAE5DF;
     STZ.B $14                                                            ;AAE5E1;
-    LDY.W $0FAC,X                                                        ;AAE5E3;
+    LDY.W Chozo.movementIndex,X                                          ;AAE5E3;
     LDA.W .XVelocity,Y                                                   ;AAE5E6;
     BPL +                                                                ;AAE5E9;
     DEC.B $14                                                            ;AAE5EB;
@@ -9500,7 +9500,7 @@ Instruction_Chozo_Movement_IndexInY:
   .goingNowhere:
     STZ.B $12                                                            ;AAE5F5;
     STZ.B $14                                                            ;AAE5F7;
-    LDY.W $0FAC,X                                                        ;AAE5F9;
+    LDY.W Chozo.movementIndex,X                                          ;AAE5F9;
     LDA.W .XVelocity,Y                                                   ;AAE5FC;
     BPL +                                                                ;AAE5FF;
     EOR.W #$FFFF                                                         ;AAE601;
@@ -9515,7 +9515,7 @@ Instruction_Chozo_Movement_IndexInY:
 
   .move:
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;AAE611;
-    LDY.W $0FAC,X                                                        ;AAE615;
+    LDY.W Chozo.movementIndex,X                                          ;AAE615;
     LDA.W $0F7A,X                                                        ;AAE618;
     CLC                                                                  ;AAE61B;
     ADC.W .XOffsets,Y                                                    ;AAE61C;
@@ -9592,9 +9592,9 @@ InitAI_Chozo:
     STA.W $0F94,X                                                        ;AAE73A;
     STZ.W $0F90,X                                                        ;AAE73D;
     LDA.W #RTS_AAE7A6                                                    ;AAE740;
-    STA.W $0FB2,X                                                        ;AAE743;
+    STA.W Chozo.function,X                                               ;AAE743;
     LDA.W #$0000                                                         ;AAE746;
-    STA.W $0FB4,X                                                        ;AAE749;
+    STA.W Chozo.activationFlag,X                                         ;AAE749;
     STZ.W $0F96,X                                                        ;AAE74C;
     STZ.W $0F9A                                                          ;AAE74F;
     LDY.W $0FB6,X                                                        ;AAE752;
@@ -9650,7 +9650,7 @@ RTS_AAE7A6:
 ;;; $E7A7: Main AI - enemy $F0FF (chozo statue) ;;;
 MainAI_Chozo:
     LDX.W $0E54                                                          ;AAE7A7;
-    JSR.W ($0FB2,X)                                                      ;AAE7AA;
+    JSR.W (Chozo.function,X)                                             ;AAE7AA;
     RTL                                                                  ;AAE7AD;
 
 
@@ -9662,7 +9662,7 @@ Function_Chozo_WreckedShip:
     PLX                                                                  ;AAE7B6;
     AND.W #$0001                                                         ;AAE7B7;
     BEQ .return                                                          ;AAE7BA;
-    LDA.W $0FB4,X                                                        ;AAE7BC;
+    LDA.W Chozo.activationFlag,X                                         ;AAE7BC;
     BEQ .return                                                          ;AAE7BF;
     LDA.W #InstList_Chozo_WreckedShip_Activated_0                        ;AAE7C1;
     STA.W $0F92,X                                                        ;AAE7C4;

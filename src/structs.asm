@@ -3793,7 +3793,7 @@ skip 2
   .crySFXTimer: skip 2 ; $7E780A
 endstruct
 
-struct BombTorizo $0FA8
+struct Torizo $0FA8
   .XVelocity: skip 2 ; $0FA8
   .YVelocity: skip 2 ; $0FAA
   .YAcceleration: skip 2 ; $0FAC
@@ -3808,24 +3808,6 @@ skip $7DE848
 skip 2
   .turnAroundTimer: skip 2 ; $7E7806
   .animationLockFlag: skip 2 ; $7E7808
-skip 2
-  .stepCounter: skip 2 ; $7E7812
-endstruct
-
-struct GoldenTorizo $0FA8
-  .XVelocity: skip 2 ; $0FA8
-  .YVelocity: skip 2 ; $0FAA
-  .YAcceleration: skip 2 ; $0FAC
-skip 2
-  .function: skip 2 ; $0FB0
-  .movementFunction: skip 2 ; $0FB2
-  .graphicalProperties: skip 2 ; $0FB4
-  .behavioralProperties: skip 2 ; $0FB6
-skip $7DE848
-  .linkInstruction: skip 2 ; $7E7800
-skip 4
-  .turnAroundTimer: skip 2 ; $7E7806
-  .animationLockFlag: skip 2 ; $7E7808
 skip 4
   .spaceJumpCounter: skip 2 ; $7E780E
 skip 2
@@ -3837,14 +3819,14 @@ struct Shaktool $0FA8
   .neighborAngle: skip 2 ; $0FAA
   .neighborAngleDelta: skip 2 ; $0FAC
   .headDirection: skip 0 ; $0FAE
-  .finalPieceAngleCurled: skip 2 ; $0FAE
-  .flipFlag: skip 2 ; $0FAF
+  .finalPieceAngleCurled: skip 1 ; $0FAE
+  .flipFlag: skip 1 ; $0FAF
   .primaryPieceEnemyIndex: skip 2 ; $0FB0
   .function: skip 2 ; $0FB2
   .movementOptions: skip 2 ; $0FB4
 endstruct
 
-struct ChozoStatue $0FAC
+struct Chozo $0FAC
   .movementIndex: skip 2 ; $0FAC
 skip 4
   .function: skip 2 ; $0FB2
