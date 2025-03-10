@@ -622,14 +622,14 @@ InitAI_MotherBrainBody:
     LDA.W #$000F                                                         ;A986C6;
     JSL.L WriteAColorsFromYToTargetColorIndexX                           ;A986C9;
     LDA.W #$0000                                                         ;A986CD;
-    STA.L MotherBrainBody.form                                                        ;A986D0;
-    STA.L MotherBrainBody.enableUnpauseHookFlag                                                        ;A986D4;
+    STA.L MotherBrainBody.form                                           ;A986D0;
+    STA.L MotherBrainBody.enableUnpauseHookFlag                          ;A986D4;
     LDA.W #$0002                                                         ;A986D8;
-    STA.L MotherBrainBody.hitboxesEnabled                                                        ;A986DB;
+    STA.L MotherBrainBody.hitboxesEnabled                                ;A986DB;
     LDA.W #Function_MotherBrain_SetupBrainToBeDrawn                      ;A986DF;
-    STA.W MotherBrainBody.brainFunction                                                          ;A986E2;
+    STA.W MotherBrainBody.brainFunction                                  ;A986E2;
     LDA.W #Function_MotherBrain_FirstPhase                               ;A986E5;
-    STA.W MotherBrainBody.function                                                          ;A986E8;
+    STA.W MotherBrainBody.function                                       ;A986E8;
     LDA.W #$0001                                                         ;A986EB;
     JSL.L Load_FX_Entry                                                  ;A986EE;
     LDA.W #$0000                                                         ;A986F2;
@@ -660,8 +660,8 @@ InitAI_MotherBrainHead:
     STA.W $0FC6                                                          ;A98723;
     LDA.W #$0200                                                         ;A98726;
     STA.W $0FD6                                                          ;A98729;
-    STA.L MotherBrainBody.neckPalleteIndex                                                        ;A9872C;
-    STA.L MotherBrainBody.brainPalleteIndex                                                        ;A98730;
+    STA.L MotherBrainBody.neckPalleteIndex                               ;A9872C;
+    STA.L MotherBrainBody.brainPalleteIndex                              ;A98730;
     LDA.W #InstList_MotherBrainHead_Initial                              ;A98734;
     JSR.W SetMotherBrainHeadInstList                                     ;A98737;
     JSR.W SetupMotherBrainHeadNormalPalette                              ;A9873A;
@@ -672,13 +672,13 @@ InitAI_MotherBrainHead:
 MainAI_HurtAI_MotherBrainBody:
     JSR.W MotherBrainPalette_HandleRoomPalette                           ;A9873E;
     PEA.W .manualReturn-1                                                ;A98741;
-    JMP.W (MotherBrainBody.function)                                                        ;A98744;
+    JMP.W (MotherBrainBody.function)                                     ;A98744;
 
   .manualReturn:
     JSR.W HandleMotherBrainsPalette                                      ;A98747;
     JSR.W MotherBrain_vs_Samus_CollisionDetection                        ;A9874A;
     JSR.W ProcessMotherBrainInvincibilityPalette                         ;A9874D;
-    LDA.L MotherBrainBody.enableUnpauseHookFlag                                                        ;A98750;
+    LDA.L MotherBrainBody.enableUnpauseHookFlag                          ;A98750;
     BEQ .return                                                          ;A98754;
     LDA.W #UnpauseHook_MotherBrainBody>>8&$FF00                          ;A98756;
     STA.W $0605                                                          ;A98759;
@@ -691,7 +691,7 @@ MainAI_HurtAI_MotherBrainBody:
 
 ;;; $8763: Unpause hook - Mother Brain body ;;;
 UnpauseHook_MotherBrainBody:
-    LDA.L MotherBrainBody.rainbowBeamSFXIsPlayingFlag                                                        ;A98763;
+    LDA.L MotherBrainBody.rainbowBeamSFXIsPlayingFlag                    ;A98763;
     BEQ .noRainbowSFX                                                    ;A98767;
     LDA.W #$0040                                                         ;A98769;
     JSL.L QueueSound_Lib1_Max6                                           ;A9876C;
@@ -737,7 +737,7 @@ MainAI_HurtAI_MotherBrainHead:
     LDA.W $0FC6                                                          ;A98797;
     AND.W #$0100                                                         ;A9879A;
     BEQ RTL_A98786                                                       ;A9879D;
-    JMP.W (MotherBrainBody.brainFunction)                                                        ;A9879F;
+    JMP.W (MotherBrainBody.brainFunction)                                ;A9879F;
 
 
 ;;; $87A2: Mother Brain brain function - set up brain and neck to be drawn ;;;
@@ -747,11 +747,11 @@ Function_MotherBrain_SetupBrainAndNeckToBeDrawn:
     JSR.W HandleMotherBrainsNeck                                         ;A987A7;
 
   .timeIsFrozen:
-    LDA.L MotherBrainBody.neckSegment4XPosition                                                        ;A987AA;
+    LDA.L MotherBrainBody.neckSegment4XPosition                          ;A987AA;
     STA.W $0FBA                                                          ;A987AE;
     LDA.W #$FFEB                                                         ;A987B1;
     CLC                                                                  ;A987B4;
-    ADC.L MotherBrainBody.neckSegment4YPosition                                                        ;A987B5;
+    ADC.L MotherBrainBody.neckSegment4YPosition                          ;A987B5;
     STA.W $0FBE                                                          ;A987B9;
     LDA.W #EnemyGraphicsDrawnHook_MotherBrain_DrawBrainAndNeck>>8&$FF00  ;A987BC;
     STA.W $178D                                                          ;A987BF;
@@ -788,15 +788,15 @@ Function_MotherBrain_FirstPhase:
     JSL.L CheckIfEvent_inA_HasHappened                                   ;A987E4;
     BCC .runCollisionDetection                                           ;A987E8;
     LDA.W $1840                                                          ;A987EA;
-    STA.L MotherBrainBody.brainMainShakeTimer                                                        ;A987ED;
+    STA.L MotherBrainBody.brainMainShakeTimer                            ;A987ED;
     LDA.W $0AF6                                                          ;A987F1;
     CMP.W #$00EC                                                         ;A987F4;
     BPL .runCollisionDetection                                           ;A987F7;
     LDA.W $0FCC                                                          ;A987F9;
     BNE .runCollisionDetection                                           ;A987FC;
     LDA.W #$0001                                                         ;A987FE;
-    STA.L MotherBrainBody.deleteTurretsRinkasFlag                                                        ;A98801;
-    STA.L MotherBrainBody.form                                                        ;A98805;
+    STA.L MotherBrainBody.deleteTurretsRinkasFlag                        ;A98801;
+    STA.L MotherBrainBody.form                                           ;A98805;
     JSL.L DisableMinimap_MarkBossRoomTilesExplored                       ;A98809;
     LDA.W #$0006                                                         ;A9880D;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A98810;
@@ -811,14 +811,14 @@ Function_MotherBrain_FirstPhase:
 ;;; $881D: Mother Brain body function - fake death - descent - initial pause ;;;
 Function_MotherBrainBody_FakeDeath_Descent_InitialPause:
     LDA.W #Function_MBBody_FakeDeath_Descent_LockSamus_SetScrollRegion   ;A9881D;
-    STA.W MotherBrainBody.function                                                          ;A98820;
+    STA.W MotherBrainBody.function                                       ;A98820;
     LDA.W #$0040                                                         ;A98823;
-    STA.W MotherBrainBody.functionTimer                                                          ;A98826; fallthrough to Function_MBBody_FakeDeath_Descent_LockSamus_SetScrollRegion
+    STA.W MotherBrainBody.functionTimer                                  ;A98826; fallthrough to Function_MBBody_FakeDeath_Descent_LockSamus_SetScrollRegion
 
 
 ;;; $8829: Mother Brain body function - fake death - descent - lock Samus and set scroll region ;;;
 Function_MBBody_FakeDeath_Descent_LockSamus_SetScrollRegion:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A98829;
+    DEC.W MotherBrainBody.functionTimer                                  ;A98829;
     BMI .timerExpired                                                    ;A9882C;
     RTS                                                                  ;A9882E;
 
@@ -829,51 +829,51 @@ Function_MBBody_FakeDeath_Descent_LockSamus_SetScrollRegion:
     AND.W #$00FF                                                         ;A9883A;
     STA.L $7ECD20                                                        ;A9883D;
     LDA.W #Function_MotherBrainBody_FakeDeath_Descent_QueueMusic         ;A98841;
-    STA.W MotherBrainBody.function                                                          ;A98844;
+    STA.W MotherBrainBody.function                                       ;A98844;
     LDA.W #$0020                                                         ;A98847;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9884A; fallthrough to Function_MotherBrainBody_FakeDeath_Descent_QueueMusic
+    STA.W MotherBrainBody.functionTimer                                  ;A9884A; fallthrough to Function_MotherBrainBody_FakeDeath_Descent_QueueMusic
 
 
 ;;; $884D: Mother Brain body function - fake death - descent - queue Mother Brain music ;;;
 Function_MotherBrainBody_FakeDeath_Descent_QueueMusic:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9884D;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9884D;
     BPL Function_MBBody_FakeDeath_Descent_BeginScnFlashing_LowerAcid_return ;A98850;
     LDA.W #$0000                                                         ;A98852;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A98855;
     LDA.W #$FF21                                                         ;A98859;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A9885C;
     LDA.W #Function_MotherBrainBody_FakeDeath_Descent_UnlockSamus        ;A98860;
-    STA.W MotherBrainBody.function                                                          ;A98863;
+    STA.W MotherBrainBody.function                                       ;A98863;
     LDA.W #$000C                                                         ;A98866;
-    STA.W MotherBrainBody.functionTimer                                                          ;A98869; fallthrough to Function_MotherBrainBody_FakeDeath_Descent_UnlockSamus
+    STA.W MotherBrainBody.functionTimer                                  ;A98869; fallthrough to Function_MotherBrainBody_FakeDeath_Descent_UnlockSamus
 
 
 ;;; $886C: Mother Brain body function - fake death - descent - unlock Samus ;;;
 Function_MotherBrainBody_FakeDeath_Descent_UnlockSamus:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9886C;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9886C;
     BPL Function_MBBody_FakeDeath_Descent_BeginScnFlashing_LowerAcid_return ;A9886F;
     LDA.W #$0001                                                         ;A98871;
     JSL.L Run_Samus_Command                                              ;A98874;
     LDA.W #Function_MBBody_FakeDeath_Descent_BeginScnFlashing_LowerAcid  ;A98878;
-    STA.W MotherBrainBody.function                                                          ;A9887B;
+    STA.W MotherBrainBody.function                                       ;A9887B;
     LDA.W #$0008                                                         ;A9887E;
-    STA.W MotherBrainBody.functionTimer                                                          ;A98881; fallthrough to Function_MBBody_FakeDeath_Descent_BeginScnFlashing_LowerAcid
+    STA.W MotherBrainBody.functionTimer                                  ;A98881; fallthrough to Function_MBBody_FakeDeath_Descent_BeginScnFlashing_LowerAcid
 
 
 ;;; $8884: Mother Brain body function - fake death - descent - begin screen flashing and lower acid ;;;
 Function_MBBody_FakeDeath_Descent_BeginScnFlashing_LowerAcid:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A98884;
+    DEC.W MotherBrainBody.functionTimer                                  ;A98884;
     BPL .return                                                          ;A98887;
     JSR.W MotherBrainPalette_BeginScreenFlashing                         ;A98889;
     LDA.W #$0002                                                         ;A9888C;
     JSL.L Load_FX_Entry                                                  ;A9888F;
     LDA.W #Function_MotherBrainBody_SpawnTubesFallingWhenLessThan4Proj   ;A98893;
-    STA.W MotherBrainBody.subFunction                                                          ;A98896;
+    STA.W MotherBrainBody.subFunction                                    ;A98896;
     LDA.W #Function_MBBody_FakeDeath_Descent_TransitionMBPaletteToGrey   ;A98899;
-    STA.W MotherBrainBody.function                                                          ;A9889C;
-    STZ.W MotherBrainBody.functionTimer                                                          ;A9889F;
+    STA.W MotherBrainBody.function                                       ;A9889C;
+    STZ.W MotherBrainBody.functionTimer                                  ;A9889F;
     LDA.W #$0000                                                         ;A988A2;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A988A5;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A988A5;
     JSL.L Spawn_Hardcoded_PLM                                            ;A988A9;
     db $0E,$02                                                           ;A988AD;
     dw PLMEntries_clearCeilingBlockInMotherBrainsRoom                    ;A988AF;
@@ -883,24 +883,24 @@ Function_MBBody_FakeDeath_Descent_BeginScnFlashing_LowerAcid:
 
 
 Function_MBBody_FakeDeath_Descent_TransitionMBPaletteToGrey:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A988B2;
+    DEC.W MotherBrainBody.functionTimer                                  ;A988B2;
     BPL Function_MBBody_FakeDeath_Descent_CollapseTubes                  ;A988B5;
     LDA.W #$0008                                                         ;A988B7;
-    STA.W MotherBrainBody.functionTimer                                                          ;A988BA;
-    LDA.L MotherBrainBody.greyTransitionCounter                                                        ;A988BD;
+    STA.W MotherBrainBody.functionTimer                                  ;A988BA;
+    LDA.L MotherBrainBody.greyTransitionCounter                          ;A988BD;
     INC A                                                                ;A988C1;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A988C2;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A988C2;
     DEC A                                                                ;A988C6;
     JSL.L TransitionMotherBrainPaletteToGrey_FakeDeath                   ;A988C7;
     BCC Function_MBBody_FakeDeath_Descent_CollapseTubes                  ;A988CB;
     LDA.W #Function_MBBody_FakeDeath_Descent_CollapseTubes               ;A988CD;
-    STA.W MotherBrainBody.function                                                          ;A988D0; fallthrough to Function_MBBody_FakeDeath_Descent_CollapseTubes
+    STA.W MotherBrainBody.function                                       ;A988D0; fallthrough to Function_MBBody_FakeDeath_Descent_CollapseTubes
 
 
 ;;; $88D3: Mother Brain body function - fake death - descent - collapse tubes ;;;
 Function_MBBody_FakeDeath_Descent_CollapseTubes:
     PEA.W .manualReturn-1                                                ;A988D3;
-    JMP.W (MotherBrainBody.subFunction)                                                        ;A988D6;
+    JMP.W (MotherBrainBody.subFunction)                                  ;A988D6;
 
   .manualReturn:
     JSR.W HandleFakeDeathExplosions                                      ;A988D9;
@@ -909,21 +909,21 @@ Function_MBBody_FakeDeath_Descent_CollapseTubes:
 
 ;;; $88DD: Handle fake death explosions ;;;
 HandleFakeDeathExplosions:
-    LDA.L MotherBrainBody.fakeDeathExplosionTimer                                                        ;A988DD;
+    LDA.L MotherBrainBody.fakeDeathExplosionTimer                        ;A988DD;
     DEC A                                                                ;A988E1;
     BMI .timerExpired                                                    ;A988E2;
-    STA.L MotherBrainBody.fakeDeathExplosionTimer                                                        ;A988E4;
+    STA.L MotherBrainBody.fakeDeathExplosionTimer                        ;A988E4;
     RTS                                                                  ;A988E8;
 
   .timerExpired:
     LDA.W #$0008                                                         ;A988E9;
-    STA.L MotherBrainBody.fakeDeathExplosionTimer                                                        ;A988EC;
-    LDA.L MotherBrainBody.fakeDeathExplosionIndex                                                        ;A988F0;
+    STA.L MotherBrainBody.fakeDeathExplosionTimer                        ;A988EC;
+    LDA.L MotherBrainBody.fakeDeathExplosionIndex                        ;A988F0;
     DEC A                                                                ;A988F4;
     BPL +                                                                ;A988F5;
     LDA.W #$0007                                                         ;A988F7;
 
-+   STA.L MotherBrainBody.fakeDeathExplosionIndex                                                        ;A988FA;
++   STA.L MotherBrainBody.fakeDeathExplosionIndex                        ;A988FA;
     ASL A                                                                ;A988FE;
     ASL A                                                                ;A988FF;
     TAX                                                                  ;A98900;
@@ -980,7 +980,7 @@ Function_MotherBrainBody_SpawnTubesFallingWhenLessThan4Proj:
     LDX.W #EnemyPopulations_MotherBrainFallingTubes_BottomLeft           ;A98960;
     JSL.L SpawnEnemy                                                     ;A98963;
     LDA.W #Function_MotherBrainBody_ClearBottomLeftTube                  ;A98967;
-    STA.W MotherBrainBody.subFunction                                                          ;A9896A;
+    STA.W MotherBrainBody.subFunction                                    ;A9896A;
     RTS                                                                  ;A9896D;
 
 
@@ -990,15 +990,15 @@ Function_MotherBrainBody_ClearBottomLeftTube:
     db $05,$09                                                           ;A98972;
     dw PLMEntries_clearMotherBrainsBottomLeftTube                        ;A98974;
     LDA.W #Function_MotherBrainBody_SpawnTopRightTubeFallingProjectile   ;A98976;
-    STA.W MotherBrainBody.subFunction                                                          ;A98979;
+    STA.W MotherBrainBody.subFunction                                    ;A98979;
     LDA.W #$0020                                                         ;A9897C;
-    STA.W MotherBrainBody.bodySubFunctionTimer                                                          ;A9897F;
+    STA.W MotherBrainBody.bodySubFunctionTimer                           ;A9897F;
     RTS                                                                  ;A98982;
 
 
 ;;; $8983: Mother brain body subfunction - spawn top-right tube falling enemy projectile ;;;
 Function_MotherBrainBody_SpawnTopRightTubeFallingProjectile:
-    DEC.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98983;
+    DEC.W MotherBrainBody.bodySubFunctionTimer                           ;A98983;
     BPL .return                                                          ;A98986;
     LDA.W #$0098                                                         ;A98988;
     STA.B $12                                                            ;A9898B;
@@ -1007,7 +1007,7 @@ Function_MotherBrainBody_SpawnTopRightTubeFallingProjectile:
     LDY.W #EnemyProjectile_MotherBrainTubeFalling_TopRight               ;A98992;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A98995;
     LDA.W #Function_MotherBrainBody_ClearCeilingBlockColumn9             ;A98999;
-    STA.W MotherBrainBody.subFunction                                                          ;A9899C;
+    STA.W MotherBrainBody.subFunction                                    ;A9899C;
 
   .return:
     RTS                                                                  ;A9899F;
@@ -1019,15 +1019,15 @@ Function_MotherBrainBody_ClearCeilingBlockColumn9:
     db $09,$02                                                           ;A989A4;
     dw PLMEntries_clearCeilingBlockInMotherBrainsRoom                    ;A989A6;
     LDA.W #Function_MotherBrainBody_SpawnTopLeftTubeFallingProjectile    ;A989A8;
-    STA.W MotherBrainBody.subFunction                                                          ;A989AB;
+    STA.W MotherBrainBody.subFunction                                    ;A989AB;
     LDA.W #$0020                                                         ;A989AE;
-    STA.W MotherBrainBody.bodySubFunctionTimer                                                          ;A989B1;
+    STA.W MotherBrainBody.bodySubFunctionTimer                           ;A989B1;
     RTS                                                                  ;A989B4;
 
 
 ;;; $89B5: Mother brain body subfunction - spawn top-left tube falling enemy projectile ;;;
 Function_MotherBrainBody_SpawnTopLeftTubeFallingProjectile:
-    DEC.W MotherBrainBody.bodySubFunctionTimer                                                          ;A989B5;
+    DEC.W MotherBrainBody.bodySubFunctionTimer                           ;A989B5;
     BPL .return                                                          ;A989B8;
     LDA.W #$0068                                                         ;A989BA;
     STA.B $12                                                            ;A989BD;
@@ -1036,7 +1036,7 @@ Function_MotherBrainBody_SpawnTopLeftTubeFallingProjectile:
     LDY.W #EnemyProjectile_MotherBrainTubeFalling_TopLeft                ;A989C4;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A989C7;
     LDA.W #Function_MotherBrainBody_ClearCeilingBlockColumn6             ;A989CB;
-    STA.W MotherBrainBody.subFunction                                                          ;A989CE;
+    STA.W MotherBrainBody.subFunction                                    ;A989CE;
 
   .return:
     RTS                                                                  ;A989D1;
@@ -1048,20 +1048,20 @@ Function_MotherBrainBody_ClearCeilingBlockColumn6:
     db $06,$02                                                           ;A989D6;
     dw PLMEntries_clearCeilingBlockInMotherBrainsRoom                    ;A989D8;
     LDA.W #Function_MotherBrainBody_SpawnTubesFalling1                   ;A989DA;
-    STA.W MotherBrainBody.subFunction                                                          ;A989DD;
+    STA.W MotherBrainBody.subFunction                                    ;A989DD;
     LDA.W #$0020                                                         ;A989E0;
-    STA.W MotherBrainBody.bodySubFunctionTimer                                                          ;A989E3;
+    STA.W MotherBrainBody.bodySubFunctionTimer                           ;A989E3;
     RTS                                                                  ;A989E6;
 
 
 ;;; $89E7: Mother brain body subfunction - spawn tubes falling enemy 1 ;;;
 Function_MotherBrainBody_SpawnTubesFalling1:
-    DEC.W MotherBrainBody.bodySubFunctionTimer                                                          ;A989E7;
+    DEC.W MotherBrainBody.bodySubFunctionTimer                           ;A989E7;
     BPL .return                                                          ;A989EA;
     LDX.W #EnemyPopulations_MotherBrainFallingTubes_BottomRight          ;A989EC;
     JSL.L SpawnEnemy                                                     ;A989EF;
     LDA.W #Function_MotherBrainBody_ClearBottomRightTube                 ;A989F3;
-    STA.W MotherBrainBody.subFunction                                                          ;A989F6;
+    STA.W MotherBrainBody.subFunction                                    ;A989F6;
 
   .return:
     RTS                                                                  ;A989F9;
@@ -1073,20 +1073,20 @@ Function_MotherBrainBody_ClearBottomRightTube:
     db $0A,$09                                                           ;A989FE;
     dw PLMEntries_clearMotherBrainsBottomRightTube                       ;A98A00;
     LDA.W #Function_MotherBrainBody_SpawnTubesFalling2                   ;A98A02;
-    STA.W MotherBrainBody.subFunction                                                          ;A98A05;
+    STA.W MotherBrainBody.subFunction                                    ;A98A05;
     LDA.W #$0020                                                         ;A98A08;
-    STA.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98A0B;
+    STA.W MotherBrainBody.bodySubFunctionTimer                           ;A98A0B;
     RTS                                                                  ;A98A0E;
 
 
 ;;; $8A0F: Mother brain body subfunction - spawn tubes falling enemy 2 ;;;
 Function_MotherBrainBody_SpawnTubesFalling2:
-    DEC.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98A0F;
+    DEC.W MotherBrainBody.bodySubFunctionTimer                           ;A98A0F;
     BPL .return                                                          ;A98A12;
     LDX.W #EnemyPopulations_MotherBrainFallingTubes_BottomMiddleLeft     ;A98A14;
     JSL.L SpawnEnemy                                                     ;A98A17;
     LDA.W #Function_MotherBrainBody_ClearBottomMiddleLeftTube            ;A98A1B;
-    STA.W MotherBrainBody.subFunction                                                          ;A98A1E;
+    STA.W MotherBrainBody.subFunction                                    ;A98A1E;
 
   .return:
     RTS                                                                  ;A98A21;
@@ -1098,15 +1098,15 @@ Function_MotherBrainBody_ClearBottomMiddleLeftTube:
     db $06,$0A                                                           ;A98A26;
     dw PLMEntries_clearMotherBrainsBottomMiddleSideTube                  ;A98A28;
     LDA.W #Function_MotherBrainBody_SpawnTopMiddleLeftTubeFallingProj    ;A98A2A;
-    STA.W MotherBrainBody.subFunction                                                          ;A98A2D;
+    STA.W MotherBrainBody.subFunction                                    ;A98A2D;
     LDA.W #$0020                                                         ;A98A30;
-    STA.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98A33;
+    STA.W MotherBrainBody.bodySubFunctionTimer                           ;A98A33;
     RTS                                                                  ;A98A36;
 
 
 ;;; $8A37: Mother brain body subfunction - spawn top-middle-left tube falling enemy projectile ;;;
 Function_MotherBrainBody_SpawnTopMiddleLeftTubeFallingProj:
-    DEC.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98A37;
+    DEC.W MotherBrainBody.bodySubFunctionTimer                           ;A98A37;
     BPL .return                                                          ;A98A3A;
     LDA.W #$0078                                                         ;A98A3C;
     STA.B $12                                                            ;A98A3F;
@@ -1115,7 +1115,7 @@ Function_MotherBrainBody_SpawnTopMiddleLeftTubeFallingProj:
     LDY.W #EnemyProjectile_MotherBrainTubeFalling_TopMiddleLeft          ;A98A46;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A98A49;
     LDA.W #Function_MotherBrainBody_ClearCeilingTubeColumn7              ;A98A4D;
-    STA.W MotherBrainBody.subFunction                                                          ;A98A50;
+    STA.W MotherBrainBody.subFunction                                    ;A98A50;
 
   .return:
     RTS                                                                  ;A98A53;
@@ -1127,15 +1127,15 @@ Function_MotherBrainBody_ClearCeilingTubeColumn7:
     db $07,$02                                                           ;A98A58;
     dw PLMEntries_clearCeilingTubeInMotherBrainsRoom                     ;A98A5A;
     LDA.W #Function_MotherBrainBody_SpawnTopMiddleRightTubeFallingProj   ;A98A5C;
-    STA.W MotherBrainBody.subFunction                                                          ;A98A5F;
+    STA.W MotherBrainBody.subFunction                                    ;A98A5F;
     LDA.W #$0020                                                         ;A98A62;
-    STA.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98A65;
+    STA.W MotherBrainBody.bodySubFunctionTimer                           ;A98A65;
     RTS                                                                  ;A98A68;
 
 
 ;;; $8A69: Mother brain body subfunction - spawn top-middle-right tube falling enemy projectile ;;;
 Function_MotherBrainBody_SpawnTopMiddleRightTubeFallingProj:
-    DEC.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98A69;
+    DEC.W MotherBrainBody.bodySubFunctionTimer                           ;A98A69;
     BPL .return                                                          ;A98A6C;
     LDA.W #$0088                                                         ;A98A6E;
     STA.B $12                                                            ;A98A71;
@@ -1144,7 +1144,7 @@ Function_MotherBrainBody_SpawnTopMiddleRightTubeFallingProj:
     LDY.W #EnemyProjectile_MotherBrainTubeFalling_TopMiddleRight         ;A98A78;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A98A7B;
     LDA.W #Function_MotherBrainBody_ClearCeilingTubeColumn8              ;A98A7F;
-    STA.W MotherBrainBody.subFunction                                                          ;A98A82;
+    STA.W MotherBrainBody.subFunction                                    ;A98A82;
 
   .return:
     RTS                                                                  ;A98A85;
@@ -1156,20 +1156,20 @@ Function_MotherBrainBody_ClearCeilingTubeColumn8:
     db $08,$02                                                           ;A98A8A;
     dw PLMEntries_clearCeilingTubeInMotherBrainsRoom                     ;A98A8C;
     LDA.W #Function_MotherBrainBody_SpawnTubesFalling3                   ;A98A8E;
-    STA.W MotherBrainBody.subFunction                                                          ;A98A91;
+    STA.W MotherBrainBody.subFunction                                    ;A98A91;
     LDA.W #$0020                                                         ;A98A94;
-    STA.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98A97;
+    STA.W MotherBrainBody.bodySubFunctionTimer                           ;A98A97;
     RTS                                                                  ;A98A9A;
 
 
 ;;; $8A9B: Mother brain body subfunction - spawn tubes falling enemy 3 ;;;
 Function_MotherBrainBody_SpawnTubesFalling3:
-    DEC.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98A9B;
+    DEC.W MotherBrainBody.bodySubFunctionTimer                           ;A98A9B;
     BPL .return                                                          ;A98A9E;
     LDX.W #EnemyPopulations_MotherBrainFallingTubes_BottomMiddleRight    ;A98AA0;
     JSL.L SpawnEnemy                                                     ;A98AA3;
     LDA.W #Function_MotherBrainBody_ClearBottomMiddleRightTube           ;A98AA7;
-    STA.W MotherBrainBody.subFunction                                                          ;A98AAA;
+    STA.W MotherBrainBody.subFunction                                    ;A98AAA;
 
   .return:
     RTS                                                                  ;A98AAD;
@@ -1181,20 +1181,20 @@ Function_MotherBrainBody_ClearBottomMiddleRightTube:
     db $09,$0A                                                           ;A98AB2;
     dw PLMEntries_clearMotherBrainsBottomMiddleSideTube                  ;A98AB4;
     LDA.W #Function_MotherBrainBody_SpawnTubesFalling4                   ;A98AB6;
-    STA.W MotherBrainBody.subFunction                                                          ;A98AB9;
+    STA.W MotherBrainBody.subFunction                                    ;A98AB9;
     LDA.W #$0002                                                         ;A98ABC;
-    STA.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98ABF;
+    STA.W MotherBrainBody.bodySubFunctionTimer                           ;A98ABF;
     RTS                                                                  ;A98AC2;
 
 
 ;;; $8AC3: Mother brain body subfunction - spawn tubes falling enemy 4 ;;;
 Function_MotherBrainBody_SpawnTubesFalling4:
-    DEC.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98AC3;
+    DEC.W MotherBrainBody.bodySubFunctionTimer                           ;A98AC3;
     BPL .return                                                          ;A98AC6;
     LDX.W #EnemyPopulations_MotherBrainFallingTubes_MainTube             ;A98AC8;
     JSL.L SpawnEnemy                                                     ;A98ACB;
     LDA.W #Function_MotherBrainBody_ClearBottomMiddleTubes               ;A98ACF;
-    STA.W MotherBrainBody.subFunction                                                          ;A98AD2;
+    STA.W MotherBrainBody.subFunction                                    ;A98AD2;
 
   .return:
     RTS                                                                  ;A98AD5;
@@ -1206,7 +1206,7 @@ Function_MotherBrainBody_ClearBottomMiddleTubes:
     db $07,$07                                                           ;A98ADA;
     dw PLMEntries_clearMotherBrainsBottomMiddleTubes                     ;A98ADC;
     LDA.W #.return                                                       ;A98ADE;
-    STA.W MotherBrainBody.subFunction                                                          ;A98AE1;
+    STA.W MotherBrainBody.subFunction                                    ;A98AE1;
 
   .return:
     RTS                                                                  ;A98AE4;
@@ -1263,18 +1263,18 @@ EnemyPopulations_MotherBrainFallingTubes_MainTube:
 ;;; $8B35: Initialisation AI - enemy $ECFF (Mother Brain tubes falling) ;;;
 InitAI_MotherBrainTubes:
     LDX.W $0E54                                                          ;A98B35;
-    LDY.W MotherBrainTubes.tubeType,X                                                        ;A98B38;
+    LDY.W MotherBrainTubes.tubeType,X                                    ;A98B38;
     LDA.W .XRadius,Y                                                     ;A98B3B;
     STA.W $0F82,X                                                        ;A98B3E;
     LDA.W .YRadius,Y                                                     ;A98B41;
     STA.W $0F84,X                                                        ;A98B44;
     LDA.W .YPositionThreshold,Y                                          ;A98B47;
-    STA.W MotherBrainTubes.YPositionThreshold,X                                                        ;A98B4A;
-    STZ.W MotherBrainTubes.smokeTimer,X                                                        ;A98B4D;
-    STZ.W MotherBrainTubes.smokeCounter,X                                                        ;A98B50;
-    STZ.W MotherBrainTubes.YVelocity,X                                                        ;A98B53;
+    STA.W MotherBrainTubes.YPositionThreshold,X                          ;A98B4A;
+    STZ.W MotherBrainTubes.smokeTimer,X                                  ;A98B4D;
+    STZ.W MotherBrainTubes.smokeCounter,X                                ;A98B50;
+    STZ.W MotherBrainTubes.YVelocity,X                                   ;A98B53;
     LDA.W .functionPointer,Y                                             ;A98B56;
-    STA.W MotherBrainTubes.function,X                                                        ;A98B59;
+    STA.W MotherBrainTubes.function,X                                    ;A98B59;
     RTL                                                                  ;A98B5C;
 
   .XRadius:
@@ -1296,24 +1296,24 @@ InitAI_MotherBrainTubes:
 
 ;;; $8B85: Main AI - enemy $ECFF (Mother Brain tubes falling) ;;;
 MainAI_MotherBrainTubes:
-    JMP.W (MotherBrainTubes.function,X)                                                      ;A98B85;
+    JMP.W (MotherBrainTubes.function,X)                                  ;A98B85;
 
 
 ;;; $8B88: Mother Brain tubes falling function - non-main tube ;;;
 Function_MotherBrainTubes_NonMainTube:
-    LDA.W MotherBrainTubes.YVelocity,X                                                        ;A98B88;
+    LDA.W MotherBrainTubes.YVelocity,X                                   ;A98B88;
     CLC                                                                  ;A98B8B;
     ADC.W #$0006                                                         ;A98B8C;
-    STA.W MotherBrainTubes.YVelocity,X                                                        ;A98B8F;
+    STA.W MotherBrainTubes.YVelocity,X                                   ;A98B8F;
     JSR.W AddADividedBy100ToEnemyYPosition                               ;A98B92;
     LDA.W $0F7E,X                                                        ;A98B95;
-    CMP.W MotherBrainTubes.YPositionThreshold,X                                                        ;A98B98;
+    CMP.W MotherBrainTubes.YPositionThreshold,X                          ;A98B98;
     BPL ExplodeMotherBrainTubes                                          ;A98B9B; fallthrough to HandleFallingTubeSmoke
 
 
 ;;; $8B9D: Handle falling tube smoke ;;;
 HandleFallingTubeSmoke:
-    DEC.W MotherBrainTubes.smokeTimer,X                                                        ;A98B9D;
+    DEC.W MotherBrainTubes.smokeTimer,X                                  ;A98B9D;
     BPL .return                                                          ;A98BA0;
     JSR.W SpawnFallingTubeSmoke                                          ;A98BA2;
 
@@ -1340,18 +1340,18 @@ ExplodeMotherBrainTubes:
 
 ;;; $8BCB: Mother Brain tubes falling function - main tube - waiting to fall ;;;
 Function_MotherBrainTubes_MainTube_WaitingToFall:
-    DEC.W MotherBrainTubes.fallDelayTimer,X                                                        ;A98BCB;
+    DEC.W MotherBrainTubes.fallDelayTimer,X                              ;A98BCB;
     BPL HandleFallingTubeSmoke_return                                    ;A98BCE;
     LDA.W #Function_MotherBrainTubes_MainTube_Falling                    ;A98BD0;
-    STA.W MotherBrainTubes.function,X                                                        ;A98BD3; fallthrough to Function_MotherBrainTubes_MainTube_Falling
+    STA.W MotherBrainTubes.function,X                                    ;A98BD3; fallthrough to Function_MotherBrainTubes_MainTube_Falling
 
 
 ;;; $8BD6: Mother Brain tubes falling function - main tube - falling ;;;
 Function_MotherBrainTubes_MainTube_Falling:
-    LDA.W MotherBrainTubes.YVelocity,X                                                        ;A98BD6;
+    LDA.W MotherBrainTubes.YVelocity,X                                   ;A98BD6;
     CLC                                                                  ;A98BD9;
     ADC.W #$0006                                                         ;A98BDA;
-    STA.W MotherBrainTubes.YVelocity,X                                                        ;A98BDD;
+    STA.W MotherBrainTubes.YVelocity,X                                   ;A98BDD;
     JSR.W AddADividedBy100ToEnemyYPosition                               ;A98BE0;
     PHA                                                                  ;A98BE3;
     CMP.W #$00F4                                                         ;A98BE4;
@@ -1375,7 +1375,7 @@ Function_MotherBrainTubes_MainTube_Falling:
     JSL.L EnableEarthquakeTypeInAFor20Frames                             ;A98C08;
     STZ.W $18B4                                                          ;A98C0C;
     STZ.W $18B6                                                          ;A98C0F;
-    STZ.W MotherBrainBody.ZebetitesPaletteAnimationIndex,X                                                        ;A98C12;
+    STZ.W MotherBrainBody.ZebetitesPaletteAnimationIndex,X               ;A98C12;
     LDA.W #$00C4                                                         ;A98C15;
     STA.W $0FBE                                                          ;A98C18;
     LDA.W #$003B                                                         ;A98C1B;
@@ -1384,7 +1384,7 @@ Function_MotherBrainTubes_MainTube_Falling:
     STA.W $0F7E                                                          ;A98C24;
     JSR.W SetupMotherBrainsNeckForFakeDeathAscent                        ;A98C27;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_Rows2_3  ;A98C2A;
-    STA.W MotherBrainBody.function                                                          ;A98C2D;
+    STA.W MotherBrainBody.function                                       ;A98C2D;
     LDX.W $0E54                                                          ;A98C30;
     JMP.W ExplodeMotherBrainTubes                                        ;A98C33;
 
@@ -1392,11 +1392,11 @@ Function_MotherBrainTubes_MainTube_Falling:
 ;;; $8C36: Spawn falling tube smoke ;;;
 SpawnFallingTubeSmoke:
     LDA.W #$0008                                                         ;A98C36;
-    STA.W MotherBrainTubes.smokeTimer,X                                                        ;A98C39;
-    LDA.W MotherBrainTubes.smokeCounter,X                                                        ;A98C3C;
+    STA.W MotherBrainTubes.smokeTimer,X                                  ;A98C39;
+    LDA.W MotherBrainTubes.smokeCounter,X                                ;A98C3C;
     INC A                                                                ;A98C3F;
     AND.W #$0003                                                         ;A98C40;
-    STA.W MotherBrainTubes.smokeCounter,X                                                        ;A98C43;
+    STA.W MotherBrainTubes.smokeCounter,X                                ;A98C43;
     ASL A                                                                ;A98C46;
     TAY                                                                  ;A98C47;
     LDA.W .data,Y                                                        ;A98C48;
@@ -1453,7 +1453,7 @@ Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_Rows2_3:
     db $02,$03                                                           ;A98C93;
     dw PLMEntries_motherBrainsBackgroundRow3                             ;A98C95;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_Rows4_5  ;A98C97;
-    STA.W MotherBrainBody.function                                                          ;A98C9A;
+    STA.W MotherBrainBody.function                                       ;A98C9A;
     RTS                                                                  ;A98C9D;
 
 
@@ -1466,7 +1466,7 @@ Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_Rows4_5:
     db $02,$05                                                           ;A98CAA;
     dw PLMEntries_motherBrainsBackgroundRow5                             ;A98CAC;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_Rows6_7  ;A98CAE;
-    STA.W MotherBrainBody.function                                                          ;A98CB1;
+    STA.W MotherBrainBody.function                                       ;A98CB1;
     RTS                                                                  ;A98CB4;
 
 
@@ -1479,7 +1479,7 @@ Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_Rows6_7:
     db $02,$07                                                           ;A98CC1;
     dw PLMEntries_motherBrainsBackgroundRow7                             ;A98CC3;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_Rows8_9  ;A98CC5;
-    STA.W MotherBrainBody.function                                                          ;A98CC8;
+    STA.W MotherBrainBody.function                                       ;A98CC8;
     RTS                                                                  ;A98CCB;
 
 
@@ -1492,7 +1492,7 @@ Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_Rows8_9:
     db $02,$09                                                           ;A98CD8;
     dw PLMEntries_motherBrainsBackgroundRow9                             ;A98CDA;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_RowsA_B  ;A98CDC;
-    STA.W MotherBrainBody.function                                                          ;A98CDF;
+    STA.W MotherBrainBody.function                                       ;A98CDF;
     RTS                                                                  ;A98CE2;
 
 
@@ -1505,7 +1505,7 @@ Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_RowsA_B:
     db $02,$0B                                                           ;A98CEF;
     dw PLMEntries_motherBrainsBackgroundRowB                             ;A98CF1;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_RowsC_D  ;A98CF3;
-    STA.W MotherBrainBody.function                                                          ;A98CF6;
+    STA.W MotherBrainBody.function                                       ;A98CF6;
     RTS                                                                  ;A98CF9;
 
 
@@ -1518,7 +1518,7 @@ Function_MotherBrainBody_FakeDeath_Ascent_DrawRoomBG_RowsC_D:
     db $02,$0D                                                           ;A98D06;
     dw PLMEntries_motherBrainsBackgroundRowD                             ;A98D08;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_SetupMBPhase2GFX    ;A98D0A;
-    STA.W MotherBrainBody.function                                                          ;A98D0D;
+    STA.W MotherBrainBody.function                                       ;A98D0D;
     RTS                                                                  ;A98D10;
 
 
@@ -1538,10 +1538,10 @@ Function_MotherBrainBody_FakeDeath_Ascent_SetupMBPhase2GFX:
     LDA.W #$000F                                                         ;A98D31;
     JSL.L WriteAColorsFromYtoColorIndexX                                 ;A98D34;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_SetupMBPhase2Brain  ;A98D38;
-    STA.W MotherBrainBody.function                                                          ;A98D3B;
+    STA.W MotherBrainBody.function                                       ;A98D3B;
     LDA.W #$0001                                                         ;A98D3E;
     STA.W $0E1E                                                          ;A98D41;
-    STA.L MotherBrainBody.enableUnpauseHookFlag                                                        ;A98D44;
+    STA.L MotherBrainBody.enableUnpauseHookFlag                          ;A98D44;
     RTS                                                                  ;A98D48;
 
 
@@ -1550,7 +1550,7 @@ Function_MotherBrainBody_FakeDeath_Ascent_SetupMBPhase2Brain:
     LDA.W #$0034                                                         ;A98D49;
     STA.W $1982                                                          ;A98D4C;
     LDA.W #Function_MotherBrain_SetupBrainAndNeckToBeDrawn               ;A98D4F;
-    STA.W MotherBrainBody.brainFunction                                                          ;A98D52;
+    STA.W MotherBrainBody.brainFunction                                  ;A98D52;
     LDA.W $0F86                                                          ;A98D55;
     AND.W #$FBFF                                                         ;A98D58;
     STA.W $0F86                                                          ;A98D5B;
@@ -1560,42 +1560,42 @@ Function_MotherBrainBody_FakeDeath_Ascent_SetupMBPhase2Brain:
     LDA.W #$4650                                                         ;A98D67;
     STA.W $0FCC                                                          ;A98D6A;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_PauseForSuspense    ;A98D6D;
-    STA.W MotherBrainBody.function                                                          ;A98D70;
+    STA.W MotherBrainBody.function                                       ;A98D70;
     LDA.W #$0080                                                         ;A98D73;
-    STA.W MotherBrainBody.functionTimer                                                          ;A98D76; fallthrough to Function_MotherBrainBody_FakeDeath_Ascent_PauseForSuspense
+    STA.W MotherBrainBody.functionTimer                                  ;A98D76; fallthrough to Function_MotherBrainBody_FakeDeath_Ascent_PauseForSuspense
 
 
 ;;; $8D79: Mother Brain body function - fake death - ascent - pause for suspense ;;;
 Function_MotherBrainBody_FakeDeath_Ascent_PauseForSuspense:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A98D79;
+    DEC.W MotherBrainBody.functionTimer                                  ;A98D79;
     BMI .timerExpired                                                    ;A98D7C;
     RTS                                                                  ;A98D7E;
 
   .timerExpired:
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_PrepareMBForRising  ;A98D7F;
-    STA.W MotherBrainBody.function                                                          ;A98D82;
+    STA.W MotherBrainBody.function                                       ;A98D82;
     LDA.W #$0020                                                         ;A98D85;
-    STA.W MotherBrainBody.functionTimer                                                          ;A98D88; fallthrough to Function_MotherBrainBody_FakeDeath_Ascent_PrepareMBForRising
+    STA.W MotherBrainBody.functionTimer                                  ;A98D88; fallthrough to Function_MotherBrainBody_FakeDeath_Ascent_PrepareMBForRising
 
 
 ;;; $8D8B: Mother Brain body function - fake death - ascent - prepare Mother Brain for rising ;;;
 Function_MotherBrainBody_FakeDeath_Ascent_PrepareMBForRising:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A98D8B;
+    DEC.W MotherBrainBody.functionTimer                                  ;A98D8B;
     BMI .timerExpired                                                    ;A98D8E;
     RTS                                                                  ;A98D90;
 
   .timerExpired:
     JSL.L Spawn_MotherBrainRising_HDMAObject                             ;A98D91;
-    STA.L MotherBrainBody.HDMAObjectIndex                                                        ;A98D95;
+    STA.L MotherBrainBody.HDMAObjectIndex                                ;A98D95;
     LDA.W $0FC6                                                          ;A98D99;
     ORA.W #$0100                                                         ;A98D9C;
     STA.W $0FC6                                                          ;A98D9F;
     LDA.W #InstList_MotherBrainHead_Initial                              ;A98DA2;
     JSR.W SetMotherBrainHeadInstList                                     ;A98DA5;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_LoadMBLegTiles      ;A98DA8;
-    STA.W MotherBrainBody.function                                                          ;A98DAB;
+    STA.W MotherBrainBody.function                                       ;A98DAB;
     LDA.W #$0100                                                         ;A98DAE;
-    STA.W MotherBrainBody.functionTimer                                                          ;A98DB1; fallthrough to Function_MotherBrainBody_FakeDeath_Ascent_LoadMBLegTiles
+    STA.W MotherBrainBody.functionTimer                                  ;A98DB1; fallthrough to Function_MotherBrainBody_FakeDeath_Ascent_LoadMBLegTiles
 
 
 ;;; $8DB4: Mother Brain body function - fake death - ascent - load Mother Brain's legs tiles ;;;
@@ -1607,12 +1607,12 @@ Function_MotherBrainBody_FakeDeath_Ascent_LoadMBLegTiles:
 
   .finishedLoading:
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_ContinuePausing     ;A98DBD;
-    STA.W MotherBrainBody.function                                                          ;A98DC0; fallthrough to Function_MotherBrainBody_FakeDeath_Ascent_ContinuePausing
+    STA.W MotherBrainBody.function                                       ;A98DC0; fallthrough to Function_MotherBrainBody_FakeDeath_Ascent_ContinuePausing
 
 
 ;;; $8DC3: Mother Brain body function - fake death - ascent - continue pausing for suspense ;;;
 Function_MotherBrainBody_FakeDeath_Ascent_ContinuePausing:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A98DC3;
+    DEC.W MotherBrainBody.functionTimer                                  ;A98DC3;
     BPL .return                                                          ;A98DC6;
     LDA.W #$003B                                                         ;A98DC8;
     STA.W $0F7A                                                          ;A98DCB;
@@ -1623,9 +1623,9 @@ Function_MotherBrainBody_FakeDeath_Ascent_ContinuePausing:
     LDA.W #$FF27                                                         ;A98DD9;
     STA.B $B7                                                            ;A98DDC;
     LDA.W #$0007                                                         ;A98DDE;
-    STA.L MotherBrainBody.hitboxesEnabled                                                        ;A98DE1;
+    STA.L MotherBrainBody.hitboxesEnabled                                ;A98DE1;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_StartMusic_Quake    ;A98DE5;
-    STA.W MotherBrainBody.function                                                          ;A98DE8;
+    STA.W MotherBrainBody.function                                       ;A98DE8;
 
   .return:
     RTS                                                                  ;A98DEB;
@@ -1655,15 +1655,15 @@ Function_MotherBrainBody_FakeDeath_Ascent_StartMusic_Quake:
     LDA.W #$0100                                                         ;A98E24;
     STA.W $1840                                                          ;A98E27;
     LDA.W #$0050                                                         ;A98E2A;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A98E2D;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A98E2D;
     LDA.W #$0001                                                         ;A98E31;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A98E34;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A98E34;
     LDA.W #$0008                                                         ;A98E38;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A98E3B;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A98E3B;
     LDA.W #$0006                                                         ;A98E3F;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A98E42;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A98E42;
     LDA.W #Function_MotherBrainBody_FakeDeath_Ascent_RaiseMotherBrain    ;A98E46;
-    STA.W MotherBrainBody.function                                                          ;A98E49;
+    STA.W MotherBrainBody.function                                       ;A98E49;
     RTS                                                                  ;A98E4C;
 
 
@@ -1690,18 +1690,18 @@ Function_MotherBrainBody_FakeDeath_Ascent_RaiseMotherBrain:
     LDA.W #$00BC                                                         ;A98E78;
     STA.W $0F7E                                                          ;A98E7B;
     STZ.W $1840                                                          ;A98E7E;
-    LDA.L MotherBrainBody.HDMAObjectIndex                                                        ;A98E81;
+    LDA.L MotherBrainBody.HDMAObjectIndex                                ;A98E81;
     TAX                                                                  ;A98E85;
     STZ.W $18B4,X                                                        ;A98E86;
     LDA.W #InstList_MotherBrainBody_StandingUpAfterCrouching_Slow        ;A98E89;
     JSR.W SetMotherBrainBodyInstList                                     ;A98E8C;
     LDA.W #Function_MBBody_FakeDeath_Ascent_WaitForMBUncrouch            ;A98E8F;
-    STA.W MotherBrainBody.function                                                          ;A98E92; fallthrough to Function_MotherBrainBody_FakeDeath_Ascent_WaitForMBUncrouch
+    STA.W MotherBrainBody.function                                       ;A98E92; fallthrough to Function_MotherBrainBody_FakeDeath_Ascent_WaitForMBUncrouch
 
 
 ;;; $8E95: Mother Brain body function - fake death - ascent - wait until Mother Brain has finished uncrouching ;;;
 Function_MBBody_FakeDeath_Ascent_WaitForMBUncrouch:
-    LDA.L MotherBrainBody.pose                                                        ;A98E95;
+    LDA.L MotherBrainBody.pose                                           ;A98E95;
     BEQ Function_MBBody_FakeDeath_Ascent_WaitForMBUncrouch_standing      ;A98E99;
 
   .return:
@@ -1710,40 +1710,40 @@ Function_MBBody_FakeDeath_Ascent_WaitForMBUncrouch:
 
 ;;; $8EAA: Mother Brain body function - fake death - ascent - transition Mother Brain from grey and lower her head ;;;
 Function_MBBody_FakeDeath_Ascent_WaitForMBUncrouch_standing:
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A98E9C;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A98E9C;
     LDA.W #Function_MBBody_FakeDeath_Ascent_TransitionFromGreyLowerHead  ;A98EA0;
-    STA.W MotherBrainBody.function                                                          ;A98EA3;
-    STZ.W MotherBrainBody.functionTimer                                                          ;A98EA6;
+    STA.W MotherBrainBody.function                                       ;A98EA3;
+    STZ.W MotherBrainBody.functionTimer                                  ;A98EA6;
     RTS                                                                  ;A98EA9;
 
 
 ;;; $8EAA: Mother Brain body function - fake death - ascent - transition Mother Brain from grey and lower her head ;;;
 Function_MBBody_FakeDeath_Ascent_TransitionFromGreyLowerHead:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A98EAA;
+    DEC.W MotherBrainBody.functionTimer                                  ;A98EAA;
     BPL .return                                                          ;A98EAD;
     LDA.W #$0004                                                         ;A98EAF;
-    STA.W MotherBrainBody.functionTimer                                                          ;A98EB2;
-    LDA.L MotherBrainBody.greyTransitionCounter                                                        ;A98EB5;
+    STA.W MotherBrainBody.functionTimer                                  ;A98EB2;
+    LDA.L MotherBrainBody.greyTransitionCounter                          ;A98EB5;
     INC A                                                                ;A98EB9;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A98EBA;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A98EBA;
     DEC A                                                                ;A98EBE;
     JSL.L TransitionMotherBrainPaletteFromGrey_FakeDeath                 ;A98EBF;
     BCC .return                                                          ;A98EC3;
     LDA.W #$0001                                                         ;A98EC5;
-    STA.L MotherBrainBody.enableBrainPaletteHandlingFlag                                                        ;A98EC8;
+    STA.L MotherBrainBody.enableBrainPaletteHandlingFlag                 ;A98EC8;
     INC A                                                                ;A98ECC;
-    STA.L MotherBrainBody.form                                                        ;A98ECD;
+    STA.L MotherBrainBody.form                                           ;A98ECD;
     DEC A                                                                ;A98ED1;
-    STA.L MotherBrainBody.enableDroolGenerationFlag                                                        ;A98ED2;
+    STA.L MotherBrainBody.enableDroolGenerationFlag                      ;A98ED2;
     LDA.W #$0006                                                         ;A98ED6;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A98ED9;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A98EDD;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A98ED9;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A98EDD;
     LDA.W #$0500                                                         ;A98EE1;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A98EE4;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A98EE4;
     LDA.W #Function_MotherBrainBody_Phase2_Stretching_ShakeHeadMenacing  ;A98EE8;
-    STA.W MotherBrainBody.function                                                          ;A98EEB;
+    STA.W MotherBrainBody.function                                       ;A98EEB;
     LDA.W #$0017                                                         ;A98EEE;
-    STA.W MotherBrainBody.functionTimer                                                          ;A98EF1;
+    STA.W MotherBrainBody.functionTimer                                  ;A98EF1;
 
   .return:
     RTS                                                                  ;A98EF4;
@@ -1751,7 +1751,7 @@ Function_MBBody_FakeDeath_Ascent_TransitionFromGreyLowerHead:
 
 ;;; $8EF5: Mother Brain body function - second phase - stretching - shake head menacingly ;;;
 Function_MotherBrainBody_Phase2_Stretching_ShakeHeadMenacing:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A98EF5;
+    DEC.W MotherBrainBody.functionTimer                                  ;A98EF5;
     BMI .timerExpired                                                    ;A98EF8;
     RTS                                                                  ;A98EFA;
 
@@ -1759,35 +1759,35 @@ Function_MotherBrainBody_Phase2_Stretching_ShakeHeadMenacing:
     LDA.W #InstList_MotherBrainHead_Stretching_Phase2_0                  ;A98EFB;
     JSR.W SetMotherBrainHeadInstList                                     ;A98EFE;
     LDA.W #Function_MotherBrainBody_Phase2_Stretching_BringHeadBackUp    ;A98F01;
-    STA.W MotherBrainBody.function                                                          ;A98F04;
+    STA.W MotherBrainBody.function                                       ;A98F04;
     LDA.W #$0040                                                         ;A98F07;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A98F0A;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A98F0A;
     LDA.W #$0100                                                         ;A98F0E;
-    STA.W MotherBrainBody.functionTimer                                                          ;A98F11; fallthrough to Function_MotherBrainBody_Phase2_Stretching_BringHeadBackUp
+    STA.W MotherBrainBody.functionTimer                                  ;A98F11; fallthrough to Function_MotherBrainBody_Phase2_Stretching_BringHeadBackUp
 
 
 ;;; $8F14: Mother Brain body function - second phase - stretching - bring head back up ;;;
 Function_MotherBrainBody_Phase2_Stretching_BringHeadBackUp:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A98F14;
+    DEC.W MotherBrainBody.functionTimer                                  ;A98F14;
     BPL Function_MotherBrainBody_Phase2_Stretching_FinishStretching_return ;A98F17;
     LDA.W #$0002                                                         ;A98F19;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A98F1C;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A98F1C;
     LDA.W #$0004                                                         ;A98F20;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A98F23;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A98F23;
     LDA.W #Function_MotherBrainBody_Phase2_Stretching_FinishStretching   ;A98F27;
-    STA.W MotherBrainBody.function                                                          ;A98F2A;
+    STA.W MotherBrainBody.function                                       ;A98F2A;
     LDA.W #$0040                                                         ;A98F2D;
-    STA.W MotherBrainBody.functionTimer                                                          ;A98F30; fallthrough to Function_MotherBrainBody_Phase2_Stretching_FinishStretching
+    STA.W MotherBrainBody.functionTimer                                  ;A98F30; fallthrough to Function_MotherBrainBody_Phase2_Stretching_FinishStretching
 
 
 ;;; $8F33: Mother Brain body function - second phase - stretching - finish stretching ;;;
 Function_MotherBrainBody_Phase2_Stretching_FinishStretching:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A98F33;
+    DEC.W MotherBrainBody.functionTimer                                  ;A98F33;
     BPL .return                                                          ;A98F36;
     LDA.W #$0001                                                         ;A98F38;
-    STA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag                                                        ;A98F3B;
+    STA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag         ;A98F3B;
     LDA.W #Function_MotherBrainBody_Phase2_Thinking                      ;A98F3F;
-    STA.W MotherBrainBody.function                                                          ;A98F42;
+    STA.W MotherBrainBody.function                                       ;A98F42;
 
   .return:
     RTS                                                                  ;A98F45;
@@ -1795,13 +1795,13 @@ Function_MotherBrainBody_Phase2_Stretching_FinishStretching:
 
 ;;; $8F46: Spawn dust clouds for Mother Brain's ascent ;;;
 SpawnDustCloudsForMotherBrainsAscent:
-    DEC.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98F46;
+    DEC.W MotherBrainBody.bodySubFunctionTimer                           ;A98F46;
     BPL .timerNotExpired                                                 ;A98F49;
     LDA.W #$0007                                                         ;A98F4B;
-    STA.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98F4E;
+    STA.W MotherBrainBody.bodySubFunctionTimer                           ;A98F4E;
 
   .timerNotExpired:
-    LDA.W MotherBrainBody.bodySubFunctionTimer                                                          ;A98F51;
+    LDA.W MotherBrainBody.bodySubFunctionTimer                           ;A98F51;
     ASL A                                                                ;A98F54;
     TAX                                                                  ;A98F55;
     LDA.W .XPositions,X                                                  ;A98F56;
@@ -1953,25 +1953,25 @@ MotherBrainFightSpriteTileTransferEntries:
 ;;; $903F: Set up Mother Brain's neck for fake death ascent ;;;
 SetupMotherBrainsNeckForFakeDeathAscent:
     LDA.W #$0002                                                         ;A9903F;
-    STA.L MotherBrainBody.neckSegment0Distance                                                        ;A99042;
+    STA.L MotherBrainBody.neckSegment0Distance                           ;A99042;
     LDA.W #$000A                                                         ;A99046;
-    STA.L MotherBrainBody.neckSegment1Distance                                                        ;A99049;
-    STA.L MotherBrainBody.neckSegment3Distance                                                        ;A9904D;
+    STA.L MotherBrainBody.neckSegment1Distance                           ;A99049;
+    STA.L MotherBrainBody.neckSegment3Distance                           ;A9904D;
     LDA.W #$0014                                                         ;A99051;
-    STA.L MotherBrainBody.neckSegment2Distance                                                        ;A99054;
-    STA.L MotherBrainBody.neckSegment4Distance                                                        ;A99058;
+    STA.L MotherBrainBody.neckSegment2Distance                           ;A99054;
+    STA.L MotherBrainBody.neckSegment4Distance                           ;A99058;
     LDA.W #$4800                                                         ;A9905C;
-    STA.L MotherBrainBody.lowerNeckAngle                                                        ;A9905F;
+    STA.L MotherBrainBody.lowerNeckAngle                                 ;A9905F;
     LDA.W #$5000                                                         ;A99063;
-    STA.L MotherBrainBody.upperNeckAngle                                                        ;A99066;
+    STA.L MotherBrainBody.upperNeckAngle                                 ;A99066;
     LDA.W #$0100                                                         ;A9906A;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9906D;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9906D;
     RTS                                                                  ;A99071;
 
 
 ;;; $9072: Handle Mother Brain's neck - lower ;;;
 HandleMotherBrainsNeck_Lower:
-    LDA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A99072;
+    LDA.L MotherBrainBody.lowerNeckMovementIndex                         ;A99072;
     TAX                                                                  ;A99076;
     JMP.W (.pointers,X)                                                  ;A99077;
 
@@ -1990,16 +1990,16 @@ RTS_A99084:
 
 ;;; $9085: Handle Mother Brain's neck - lower - movement index = 2: bob down ;;;
 HandleMotherBrainsNeck_Lower_2_BobDown:
-    LDA.L MotherBrainBody.lowerNeckAngle                                                        ;A99085;
+    LDA.L MotherBrainBody.lowerNeckAngle                                 ;A99085;
     SEC                                                                  ;A99089;
-    SBC.L MotherBrainBody.neckAngleDelta                                                        ;A9908A;
+    SBC.L MotherBrainBody.neckAngleDelta                                 ;A9908A;
     CMP.W #$2800                                                         ;A9908E;
     BCS +                                                                ;A99091;
     LDA.W #$0004                                                         ;A99093;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A99096;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A99096;
     LDA.W #$2800                                                         ;A9909A;
 
-+   STA.L MotherBrainBody.lowerNeckAngle                                                        ;A9909D;
++   STA.L MotherBrainBody.lowerNeckAngle                                 ;A9909D;
     RTS                                                                  ;A990A1;
 
 
@@ -2008,57 +2008,57 @@ HandleMotherBrainsNeck_Lower_4_BobUp:
     LDA.W $0FBE                                                          ;A990A2;
     CMP.W #$003C                                                         ;A990A5;
     BMI .bobDown                                                         ;A990A8;
-    LDA.L MotherBrainBody.lowerNeckAngle                                                        ;A990AA;
+    LDA.L MotherBrainBody.lowerNeckAngle                                 ;A990AA;
     CLC                                                                  ;A990AE;
-    ADC.L MotherBrainBody.neckAngleDelta                                                        ;A990AF;
+    ADC.L MotherBrainBody.neckAngleDelta                                 ;A990AF;
     CMP.W #$9000                                                         ;A990B3;
     BCC +                                                                ;A990B6;
     LDA.W #$0002                                                         ;A990B8;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A990BB;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A990BB;
     LDA.W #$9000                                                         ;A990BF;
 
-+   STA.L MotherBrainBody.lowerNeckAngle                                                        ;A990C2;
++   STA.L MotherBrainBody.lowerNeckAngle                                 ;A990C2;
     RTS                                                                  ;A990C6;
 
   .bobDown:
     LDA.W #$0002                                                         ;A990C7;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A990CA;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A990CA;
     RTS                                                                  ;A990CE;
 
 
 ;;; $90CF: Handle Mother Brain's neck - lower - movement index = 6: lower ;;;
 HandleMotherBrainsNeck_Lower_6_Lower:
-    LDA.L MotherBrainBody.lowerNeckAngle                                                        ;A990CF;
+    LDA.L MotherBrainBody.lowerNeckAngle                                 ;A990CF;
     SEC                                                                  ;A990D3;
-    SBC.L MotherBrainBody.neckAngleDelta                                                        ;A990D4;
+    SBC.L MotherBrainBody.neckAngleDelta                                 ;A990D4;
     CMP.W #$3000                                                         ;A990D8;
     BCS +                                                                ;A990DB;
     LDA.W #$0000                                                         ;A990DD;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A990E0;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A990E0;
     LDA.W #$3000                                                         ;A990E4;
 
-+   STA.L MotherBrainBody.lowerNeckAngle                                                        ;A990E7;
++   STA.L MotherBrainBody.lowerNeckAngle                                 ;A990E7;
     RTS                                                                  ;A990EB;
 
 
 ;;; $90EC: Handle Mother Brain's neck - lower - movement index = 8: raise ;;;
 HandleMotherBrainsNeck_Lower_8_Raise:
-    LDA.L MotherBrainBody.lowerNeckAngle                                                        ;A990EC;
+    LDA.L MotherBrainBody.lowerNeckAngle                                 ;A990EC;
     CLC                                                                  ;A990F0;
-    ADC.L MotherBrainBody.neckAngleDelta                                                        ;A990F1;
+    ADC.L MotherBrainBody.neckAngleDelta                                 ;A990F1;
     CMP.W #$9000                                                         ;A990F5;
     BCC +                                                                ;A990F8;
     LDA.W #$0000                                                         ;A990FA;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A990FD;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A990FD;
     LDA.W #$9000                                                         ;A99101;
 
-+   STA.L MotherBrainBody.lowerNeckAngle                                                        ;A99104;
++   STA.L MotherBrainBody.lowerNeckAngle                                 ;A99104;
     RTS                                                                  ;A99108;
 
 
 ;;; $9109: Handle Mother Brain's neck - upper ;;;
 HandleMotherBrainsNeck_Upper:
-    LDA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A99109;
+    LDA.L MotherBrainBody.upperNeckMovementIndex                         ;A99109;
     TAX                                                                  ;A9910D;
     JMP.W (.pointers,X)                                                  ;A9910E;
 
@@ -2083,73 +2083,73 @@ HandleMotherBrainsNeck_Upper_3_BobDown:
     CMP.W $0AFA                                                          ;A99123;
     BMI +                                                                ;A99126;
     LDA.W #$0004                                                         ;A99128;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9912B;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9912F;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9912B;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9912F;
     RTS                                                                  ;A99133;
 
-+   LDA.L MotherBrainBody.upperNeckAngle                                                        ;A99134;
++   LDA.L MotherBrainBody.upperNeckAngle                                 ;A99134;
     SEC                                                                  ;A99138;
-    SBC.L MotherBrainBody.neckAngleDelta                                                        ;A99139;
+    SBC.L MotherBrainBody.neckAngleDelta                                 ;A99139;
     CMP.W #$2000                                                         ;A9913D;
     BCS +                                                                ;A99140;
     LDA.W #$0004                                                         ;A99142;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A99145;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A99145;
     LDA.W #$2000                                                         ;A99149;
 
-+   STA.L MotherBrainBody.upperNeckAngle                                                        ;A9914C;
++   STA.L MotherBrainBody.upperNeckAngle                                 ;A9914C;
     RTS                                                                  ;A99150;
 
 
 ;;; $9151: Handle Mother Brain's neck - upper - movement index = 4: bob up ;;;
 HandleMotherBrainsNeck_Upper_4_BobUp:
-    LDA.L MotherBrainBody.lowerNeckAngle                                                        ;A99151;
+    LDA.L MotherBrainBody.lowerNeckAngle                                 ;A99151;
     CLC                                                                  ;A99155;
     ADC.W #$0800                                                         ;A99156;
     STA.B $12                                                            ;A99159;
-    LDA.L MotherBrainBody.upperNeckAngle                                                        ;A9915B;
+    LDA.L MotherBrainBody.upperNeckAngle                                 ;A9915B;
     CLC                                                                  ;A9915F;
-    ADC.L MotherBrainBody.neckAngleDelta                                                        ;A99160;
+    ADC.L MotherBrainBody.neckAngleDelta                                 ;A99160;
     CMP.B $12                                                            ;A99164;
     BCC +                                                                ;A99166;
     LDA.W #$0002                                                         ;A99168;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9916B;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9916B;
     LDA.B $12                                                            ;A9916F;
 
-+   STA.L MotherBrainBody.upperNeckAngle                                                        ;A99171;
++   STA.L MotherBrainBody.upperNeckAngle                                 ;A99171;
     RTS                                                                  ;A99175;
 
 
 ;;; $9176: Handle Mother Brain's neck - upper - movement index = 6: lower ;;;
 HandleMotherBrainsNeck_Upper_6_Lower:
-    LDA.L MotherBrainBody.upperNeckAngle                                                        ;A99176;
+    LDA.L MotherBrainBody.upperNeckAngle                                 ;A99176;
     SEC                                                                  ;A9917A;
-    SBC.L MotherBrainBody.neckAngleDelta                                                        ;A9917B;
+    SBC.L MotherBrainBody.neckAngleDelta                                 ;A9917B;
     CMP.W #$2000                                                         ;A9917F;
     BCS +                                                                ;A99182;
     LDA.W #$0000                                                         ;A99184;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A99187;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A99187;
     LDA.W #$2000                                                         ;A9918B;
 
-+   STA.L MotherBrainBody.upperNeckAngle                                                        ;A9918E;
++   STA.L MotherBrainBody.upperNeckAngle                                 ;A9918E;
     RTS                                                                  ;A99192;
 
 
 ;;; $9193: Handle Mother Brain's neck - upper - movement index = 8: raise ;;;
 HandleMotherBrainsNeck_Upper_8_Raise:
-    LDA.L MotherBrainBody.lowerNeckAngle                                                        ;A99193;
+    LDA.L MotherBrainBody.lowerNeckAngle                                 ;A99193;
     CLC                                                                  ;A99197;
     ADC.W #$0800                                                         ;A99198;
     STA.B $12                                                            ;A9919B;
-    LDA.L MotherBrainBody.upperNeckAngle                                                        ;A9919D;
+    LDA.L MotherBrainBody.upperNeckAngle                                 ;A9919D;
     CLC                                                                  ;A991A1;
-    ADC.L MotherBrainBody.neckAngleDelta                                                        ;A991A2;
+    ADC.L MotherBrainBody.neckAngleDelta                                 ;A991A2;
     CMP.B $12                                                            ;A991A6;
     BCC +                                                                ;A991A8;
     LDA.W #$0000                                                         ;A991AA;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A991AD;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A991AD;
     LDA.B $12                                                            ;A991B1;
 
-+   STA.L MotherBrainBody.upperNeckAngle                                                        ;A991B3;
++   STA.L MotherBrainBody.upperNeckAngle                                 ;A991B3;
     RTS                                                                  ;A991B7;
 
 
@@ -2159,85 +2159,85 @@ HandleMotherBrainsNeck:
     LDA.W #$FFB0                                                         ;A991B8;
     CLC                                                                  ;A991BB;
     ADC.W $0F7A                                                          ;A991BC;
-    STA.L MotherBrainBody.XPosition                                                        ;A991BF;
+    STA.L MotherBrainBody.XPosition                                      ;A991BF;
     LDA.W #$002E                                                         ;A991C3;
     CLC                                                                  ;A991C6;
     ADC.W $0F7E                                                          ;A991C7;
-    STA.L MotherBrainBody.YPosition                                                        ;A991CA;
-    LDA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A991CE;
+    STA.L MotherBrainBody.YPosition                                      ;A991CA;
+    LDA.L MotherBrainBody.enableNeckMovementFlag                         ;A991CE;
     BEQ .neckMovementDisabled                                            ;A991D2;
     JSR.W HandleMotherBrainsNeck_Lower                                   ;A991D4;
     JSR.W HandleMotherBrainsNeck_Upper                                   ;A991D7;
 
   .neckMovementDisabled:
-    LDA.L MotherBrainBody.lowerNeckAngle+1                                                        ;A991DA;
+    LDA.L MotherBrainBody.lowerNeckAngle+1                               ;A991DA;
     AND.W #$00FF                                                         ;A991DE;
     STA.B $12                                                            ;A991E1;
-    LDA.L MotherBrainBody.neckSegment0Distance                                                        ;A991E3;
+    LDA.L MotherBrainBody.neckSegment0Distance                           ;A991E3;
     JSL.L GetSineMathInA_A9C460                                          ;A991E7;
     CLC                                                                  ;A991EB;
-    ADC.L MotherBrainBody.XPosition                                                        ;A991EC;
+    ADC.L MotherBrainBody.XPosition                                      ;A991EC;
     CLC                                                                  ;A991F0;
     ADC.W #$0070                                                         ;A991F1;
-    STA.L MotherBrainBody.neckSegment0XPosition                                                        ;A991F4;
-    LDA.L MotherBrainBody.neckSegment0Distance                                                        ;A991F8;
+    STA.L MotherBrainBody.neckSegment0XPosition                          ;A991F4;
+    LDA.L MotherBrainBody.neckSegment0Distance                           ;A991F8;
     JSL.L GetCosineMathInA_A9C465                                        ;A991FC;
     CLC                                                                  ;A99200;
-    ADC.L MotherBrainBody.YPosition                                                        ;A99201;
+    ADC.L MotherBrainBody.YPosition                                      ;A99201;
     CLC                                                                  ;A99205;
     ADC.W #$FFA0                                                         ;A99206;
-    STA.L MotherBrainBody.neckSegment0YPosition                                                        ;A99209;
-    LDA.L MotherBrainBody.neckSegment1Distance                                                        ;A9920D;
+    STA.L MotherBrainBody.neckSegment0YPosition                          ;A99209;
+    LDA.L MotherBrainBody.neckSegment1Distance                           ;A9920D;
     JSL.L GetSineMathInA_A9C460                                          ;A99211;
     CLC                                                                  ;A99215;
-    ADC.L MotherBrainBody.XPosition                                                        ;A99216;
+    ADC.L MotherBrainBody.XPosition                                      ;A99216;
     CLC                                                                  ;A9921A;
     ADC.W #$0070                                                         ;A9921B;
-    STA.L MotherBrainBody.neckSegment1XPosition                                                        ;A9921E;
-    LDA.L MotherBrainBody.neckSegment1Distance                                                        ;A99222;
+    STA.L MotherBrainBody.neckSegment1XPosition                          ;A9921E;
+    LDA.L MotherBrainBody.neckSegment1Distance                           ;A99222;
     JSL.L GetCosineMathInA_A9C465                                        ;A99226;
     CLC                                                                  ;A9922A;
-    ADC.L MotherBrainBody.YPosition                                                        ;A9922B;
+    ADC.L MotherBrainBody.YPosition                                      ;A9922B;
     CLC                                                                  ;A9922F;
     ADC.W #$FFA0                                                         ;A99230;
-    STA.L MotherBrainBody.neckSegment1YPosition                                                        ;A99233;
-    LDA.L MotherBrainBody.neckSegment2Distance                                                        ;A99237;
+    STA.L MotherBrainBody.neckSegment1YPosition                          ;A99233;
+    LDA.L MotherBrainBody.neckSegment2Distance                           ;A99237;
     JSL.L GetSineMathInA_A9C460                                          ;A9923B;
     CLC                                                                  ;A9923F;
-    ADC.L MotherBrainBody.XPosition                                                        ;A99240;
+    ADC.L MotherBrainBody.XPosition                                      ;A99240;
     CLC                                                                  ;A99244;
     ADC.W #$0070                                                         ;A99245;
-    STA.L MotherBrainBody.neckSegment2XPosition                                                        ;A99248;
-    LDA.L MotherBrainBody.neckSegment2Distance                                                        ;A9924C;
+    STA.L MotherBrainBody.neckSegment2XPosition                          ;A99248;
+    LDA.L MotherBrainBody.neckSegment2Distance                           ;A9924C;
     JSL.L GetCosineMathInA_A9C465                                        ;A99250;
     CLC                                                                  ;A99254;
-    ADC.L MotherBrainBody.YPosition                                                        ;A99255;
+    ADC.L MotherBrainBody.YPosition                                      ;A99255;
     CLC                                                                  ;A99259;
     ADC.W #$FFA0                                                         ;A9925A;
-    STA.L MotherBrainBody.neckSegment2YPosition                                                        ;A9925D;
-    LDA.L MotherBrainBody.upperNeckAngle+1                                                        ;A99261;
+    STA.L MotherBrainBody.neckSegment2YPosition                          ;A9925D;
+    LDA.L MotherBrainBody.upperNeckAngle+1                               ;A99261;
     AND.W #$00FF                                                         ;A99265;
     STA.B $12                                                            ;A99268;
-    LDA.L MotherBrainBody.neckSegment3Distance                                                        ;A9926A;
+    LDA.L MotherBrainBody.neckSegment3Distance                           ;A9926A;
     JSL.L GetSineMathInA_A9C460                                          ;A9926E;
     CLC                                                                  ;A99272;
-    ADC.L MotherBrainBody.neckSegment2XPosition                                                        ;A99273;
-    STA.L MotherBrainBody.neckSegment3XPosition                                                        ;A99277;
-    LDA.L MotherBrainBody.neckSegment3Distance                                                        ;A9927B;
+    ADC.L MotherBrainBody.neckSegment2XPosition                          ;A99273;
+    STA.L MotherBrainBody.neckSegment3XPosition                          ;A99277;
+    LDA.L MotherBrainBody.neckSegment3Distance                           ;A9927B;
     JSL.L GetCosineMathInA_A9C465                                        ;A9927F;
     CLC                                                                  ;A99283;
-    ADC.L MotherBrainBody.neckSegment2YPosition                                                        ;A99284;
-    STA.L MotherBrainBody.neckSegment3YPosition                                                        ;A99288;
-    LDA.L MotherBrainBody.neckSegment4Distance                                                        ;A9928C;
+    ADC.L MotherBrainBody.neckSegment2YPosition                          ;A99284;
+    STA.L MotherBrainBody.neckSegment3YPosition                          ;A99288;
+    LDA.L MotherBrainBody.neckSegment4Distance                           ;A9928C;
     JSL.L GetSineMathInA_A9C460                                          ;A99290;
     CLC                                                                  ;A99294;
-    ADC.L MotherBrainBody.neckSegment2XPosition                                                        ;A99295;
-    STA.L MotherBrainBody.neckSegment4XPosition                                                        ;A99299;
-    LDA.L MotherBrainBody.neckSegment4Distance                                                        ;A9929D;
+    ADC.L MotherBrainBody.neckSegment2XPosition                          ;A99295;
+    STA.L MotherBrainBody.neckSegment4XPosition                          ;A99299;
+    LDA.L MotherBrainBody.neckSegment4Distance                           ;A9929D;
     JSL.L GetCosineMathInA_A9C465                                        ;A992A1;
     CLC                                                                  ;A992A5;
-    ADC.L MotherBrainBody.neckSegment2YPosition                                                        ;A992A6;
-    STA.L MotherBrainBody.neckSegment4YPosition                                                        ;A992AA;
+    ADC.L MotherBrainBody.neckSegment2YPosition                          ;A992A6;
+    STA.L MotherBrainBody.neckSegment4YPosition                          ;A992AA;
     RTS                                                                  ;A992AE;
 
 
@@ -2245,7 +2245,7 @@ HandleMotherBrainsNeck:
 GetMotherBrainHeadSpritemapPointerInY:
     LDA.W $0A78                                                          ;A992AF;
     BNE .timeFrozen                                                      ;A992B2;
-    LDA.L MotherBrainBody.brainInstListPointer                                                        ;A992B4;
+    LDA.L MotherBrainBody.brainInstListPointer                           ;A992B4;
     BMI .processInstList                                                 ;A992B8;
 
   .noDraw:
@@ -2253,7 +2253,7 @@ GetMotherBrainHeadSpritemapPointerInY:
     RTS                                                                  ;A992BB;
 
   .timeFrozen:
-    LDA.L MotherBrainBody.brainInstListPointer                                                        ;A992BC;
+    LDA.L MotherBrainBody.brainInstListPointer                           ;A992BC;
     BPL .noDraw                                                          ;A992C0;
     TAX                                                                  ;A992C2;
     LDY.W $0002,X                                                        ;A992C3;
@@ -2263,7 +2263,7 @@ GetMotherBrainHeadSpritemapPointerInY:
     TAX                                                                  ;A992C7;
     LDA.W $0000,X                                                        ;A992C8;
     BMI .ASMInstruction                                                  ;A992CB;
-    CMP.L MotherBrainBody.brainInstructionTimer                                                        ;A992CD;
+    CMP.L MotherBrainBody.brainInstructionTimer                          ;A992CD;
     BPL .tick                                                            ;A992D1;
     INX                                                                  ;A992D3;
     INX                                                                  ;A992D4;
@@ -2283,16 +2283,16 @@ GetMotherBrainHeadSpritemapPointerInY:
 
   .specialInstruction:
     LDA.W #$0001                                                         ;A992E6;
-    STA.L MotherBrainBody.brainInstructionTimer                                                        ;A992E9;
+    STA.L MotherBrainBody.brainInstructionTimer                          ;A992E9;
     TXA                                                                  ;A992ED;
-    STA.L MotherBrainBody.brainInstListPointer                                                        ;A992EE;
+    STA.L MotherBrainBody.brainInstListPointer                           ;A992EE;
     LDY.W $0002,X                                                        ;A992F2;
     RTS                                                                  ;A992F5;
 
   .tick:
-    LDA.L MotherBrainBody.brainInstructionTimer                                                        ;A992F6;
+    LDA.L MotherBrainBody.brainInstructionTimer                          ;A992F6;
     INC A                                                                ;A992FA;
-    STA.L MotherBrainBody.brainInstructionTimer                                                        ;A992FB;
+    STA.L MotherBrainBody.brainInstructionTimer                          ;A992FB;
     LDY.W $0002,X                                                        ;A992FF;
     RTS                                                                  ;A99302;
 
@@ -2305,29 +2305,29 @@ DrawMotherBrainsNeck:
     RTS                                                                  ;A9930B;
 
   .visible:
-    LDA.L MotherBrainBody.neckSegment4XPosition                                                        ;A9930C;
+    LDA.L MotherBrainBody.neckSegment4XPosition                          ;A9930C;
     STA.B $12                                                            ;A99310;
-    LDA.L MotherBrainBody.neckSegment4YPosition                                                        ;A99312;
+    LDA.L MotherBrainBody.neckSegment4YPosition                          ;A99312;
     STA.B $14                                                            ;A99316;
     JSR.W DrawMotherBrainNeckSegment                                     ;A99318;
-    LDA.L MotherBrainBody.neckSegment3XPosition                                                        ;A9931B;
+    LDA.L MotherBrainBody.neckSegment3XPosition                          ;A9931B;
     STA.B $12                                                            ;A9931F;
-    LDA.L MotherBrainBody.neckSegment3YPosition                                                        ;A99321;
+    LDA.L MotherBrainBody.neckSegment3YPosition                          ;A99321;
     STA.B $14                                                            ;A99325;
     JSR.W DrawMotherBrainNeckSegment                                     ;A99327;
-    LDA.L MotherBrainBody.neckSegment2XPosition                                                        ;A9932A;
+    LDA.L MotherBrainBody.neckSegment2XPosition                          ;A9932A;
     STA.B $12                                                            ;A9932E;
-    LDA.L MotherBrainBody.neckSegment2YPosition                                                        ;A99330;
+    LDA.L MotherBrainBody.neckSegment2YPosition                          ;A99330;
     STA.B $14                                                            ;A99334;
     JSR.W DrawMotherBrainNeckSegment                                     ;A99336;
-    LDA.L MotherBrainBody.neckSegment1XPosition                                                        ;A99339;
+    LDA.L MotherBrainBody.neckSegment1XPosition                          ;A99339;
     STA.B $12                                                            ;A9933D;
-    LDA.L MotherBrainBody.neckSegment1YPosition                                                        ;A9933F;
+    LDA.L MotherBrainBody.neckSegment1YPosition                          ;A9933F;
     STA.B $14                                                            ;A99343;
     JSR.W DrawMotherBrainNeckSegment                                     ;A99345;
-    LDA.L MotherBrainBody.neckSegment0XPosition                                                        ;A99348;
+    LDA.L MotherBrainBody.neckSegment0XPosition                          ;A99348;
     STA.B $12                                                            ;A9934C;
-    LDA.L MotherBrainBody.neckSegment0YPosition                                                        ;A9934E;
+    LDA.L MotherBrainBody.neckSegment0YPosition                          ;A9934E;
     STA.B $14                                                            ;A99352;
     JMP.W DrawMotherBrainNeckSegment                                     ;A99354;
 
@@ -2337,9 +2337,9 @@ DrawMotherBrainHead:
 ; Note that the call to GetMotherBrainHeadSpritemapPointerInY can return out of *this* routine if no spritemap is to be drawn,
 ; and is assuming that nothing gets pushed to the stack by this routine
 ; (and also assuming this routine returns by RTS)
-    LDA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag                                                        ;A99357;
+    LDA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag         ;A99357;
     BEQ .getSpritemap                                                    ;A9935B;
-    LDA.L MotherBrainBody.smallPurpleBreathActiveFlag                                                        ;A9935D;
+    LDA.L MotherBrainBody.smallPurpleBreathActiveFlag                    ;A9935D;
     BNE .getSpritemap                                                    ;A99361;
     LDA.W $05E5                                                          ;A99363;
     BMI .getSpritemap                                                    ;A99366;
@@ -2348,7 +2348,7 @@ DrawMotherBrainHead:
 
   .getSpritemap:
     JSR.W GetMotherBrainHeadSpritemapPointerInY                          ;A9936F;
-    LDA.L MotherBrainBody.brainPalleteIndex                                                        ;A99372;
+    LDA.L MotherBrainBody.brainPalleteIndex                              ;A99372;
     TAX                                                                  ;A99376;
     LDA.W $0FDC                                                          ;A99377;
     LSR A                                                                ;A9937A;
@@ -2357,10 +2357,10 @@ DrawMotherBrainHead:
 
   .evenInvincibilityTimer:
     STX.B $16                                                            ;A99380;
-    LDA.L MotherBrainBody.brainMainShakeTimer                                                        ;A99382;
+    LDA.L MotherBrainBody.brainMainShakeTimer                            ;A99382;
     BEQ .nonZeroShakeTimer                                               ;A99386;
     DEC A                                                                ;A99388;
-    STA.L MotherBrainBody.brainMainShakeTimer                                                        ;A99389;
+    STA.L MotherBrainBody.brainMainShakeTimer                            ;A99389;
     BRA +                                                                ;A9938D;
 
   .nonZeroShakeTimer:
@@ -2414,7 +2414,7 @@ DrawMotherBrainNeckSegment:
     CLC                                                                  ;A993DD;
     ADC.B $14                                                            ;A993DE;
     STA.B $14                                                            ;A993E0;
-    LDA.L MotherBrainBody.neckPalleteIndex                                                        ;A993E2;
+    LDA.L MotherBrainBody.neckPalleteIndex                               ;A993E2;
     STA.B $16                                                            ;A993E6;
     LDY.W #Spritemaps_MotherBrain_5                                      ;A993E8;
     JMP.W AddSpritemapToOAM_RoomCoordinates                              ;A993EB; >.<
@@ -2624,7 +2624,7 @@ MotherBrainFootstepEffect:
     STA.W $183E                                                          ;A9959C;
     LDA.W #$0004                                                         ;A9959F;
     STA.W $1840                                                          ;A995A2;
-    LDA.L MotherBrainBody.form                                                        ;A995A5;
+    LDA.L MotherBrainBody.form                                           ;A995A5;
     CMP.W #$0003                                                         ;A995A9;
     BNE .return                                                          ;A995AC;
     LDA.W #$0016                                                         ;A995AE;
@@ -2855,42 +2855,42 @@ Instruction_MotherBrainBody_MoveBodyDownBy2_RightBy1:
 ;;; $9700: Instruction - Mother Brain's pose = standing ;;;
 Instruction_MotherBrainBody_SetPoseToStanding:
     LDA.W #$0000                                                         ;A99700;
-    STA.L MotherBrainBody.pose                                                        ;A99703;
+    STA.L MotherBrainBody.pose                                           ;A99703;
     RTL                                                                  ;A99707;
 
 
 ;;; $9708: Instruction - Mother Brain's pose = walking ;;;
 Instruction_MotherBrainBody_SetPoseToWalking:
     LDA.W #$0001                                                         ;A99708;
-    STA.L MotherBrainBody.pose                                                        ;A9970B;
+    STA.L MotherBrainBody.pose                                           ;A9970B;
     RTL                                                                  ;A9970F;
 
 
 ;;; $9710: Instruction - Mother Brain's pose = crouched ;;;
 Instruction_MotherBrainBody_SetPoseToCrouching:
     LDA.W #$0003                                                         ;A99710;
-    STA.L MotherBrainBody.pose                                                        ;A99713;
+    STA.L MotherBrainBody.pose                                           ;A99713;
     RTL                                                                  ;A99717;
 
 
 ;;; $9718: Instruction - Mother Brain's pose = crouching transition ;;;
 Instruction_MotherBrainBody_SetPoseToCrouchingTransition:
     LDA.W #$0002                                                         ;A99718;
-    STA.L MotherBrainBody.pose                                                        ;A9971B;
+    STA.L MotherBrainBody.pose                                           ;A9971B;
     RTL                                                                  ;A9971F;
 
 
 ;;; $9720: Instruction - Mother Brain's pose = death beam mode ;;;
 Instruction_MotherBrainBody_SetPoseToDeathBeamMode:
     LDA.W #$0004                                                         ;A99720;
-    STA.L MotherBrainBody.pose                                                        ;A99723;
+    STA.L MotherBrainBody.pose                                           ;A99723;
     RTL                                                                  ;A99727;
 
 
 ;;; $9728: Instruction - Mother Brain's pose = leaning down ;;;
 Instruction_MotherBrainBody_SetPoseToLeaningDown:
     LDA.W #$0006                                                         ;A99728;
-    STA.L MotherBrainBody.pose                                                        ;A9972B;
+    STA.L MotherBrainBody.pose                                           ;A9972B;
     RTL                                                                  ;A9972F;
 
 
@@ -3323,9 +3323,9 @@ Instruction_MotherBrainBody_SpawnDeathBeamProjectile:
 
 ;;; $9B05: Instruction - increment Mother Brain death beam attack phase ;;;
 Instruction_MotherBrainBody_IncrementDeathBeamAttackPhase:
-    LDA.L MotherBrainBody.deathBeamAttackPhase                                                        ;A99B05;
+    LDA.L MotherBrainBody.deathBeamAttackPhase                           ;A99B05;
     INC A                                                                ;A99B09;
-    STA.L MotherBrainBody.deathBeamAttackPhase                                                        ;A99B0A;
+    STA.L MotherBrainBody.deathBeamAttackPhase                           ;A99B0A;
     RTL                                                                  ;A99B0E;
 
 
@@ -3339,7 +3339,7 @@ Instruction_MotherBrain_GotoX:
 ;;; $9B14: Instruction - enable Mother Brain neck movement and go to [[X]] ;;;
 Instruction_MotherBrainHead_EnableNeckMovement_GotoX:
     LDA.W #$0001                                                         ;A99B14;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A99B17;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A99B17;
     LDA.W $0000,X                                                        ;A99B1B;
     TAX                                                                  ;A99B1E;
     RTS                                                                  ;A99B1F;
@@ -3348,7 +3348,7 @@ Instruction_MotherBrainHead_EnableNeckMovement_GotoX:
 ;;; $9B20: Instruction - disable Mother Brain neck movement ;;;
 Instruction_MotherBrainHead_DisableNeckMovement:
     LDA.W #$0000                                                         ;A99B20;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A99B23;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A99B23;
     RTS                                                                  ;A99B27;
 
 
@@ -3372,24 +3372,24 @@ Instruction_MotherBrainHead_QueueSoundX_Lib3_Max6:
 
 ;;; $9B3C: Instruction - spawn Mother Brain's drool enemy projectile ;;;
 Instruction_MotherBrainHead_SpawnDroolProjectile:
-    LDA.L MotherBrainBody.enableDroolGenerationFlag                                                        ;A99B3C;
+    LDA.L MotherBrainBody.enableDroolGenerationFlag                      ;A99B3C;
     BEQ .return                                                          ;A99B40;
     PHY                                                                  ;A99B42;
-    LDA.L MotherBrainBody.droolProjectileParam                                                        ;A99B43;
+    LDA.L MotherBrainBody.droolProjectileParam                           ;A99B43;
     INC A                                                                ;A99B47;
     CMP.W #$0006                                                         ;A99B48;
     BMI +                                                                ;A99B4B;
     LDA.W #$0000                                                         ;A99B4D;
 
-+   STA.L MotherBrainBody.droolProjectileParam                                                        ;A99B50;
++   STA.L MotherBrainBody.droolProjectileParam                           ;A99B50;
     LDY.W #EnemyProjectile_MotherBrainDrool                              ;A99B54;
-    LDA.L MotherBrainBody.neckAngleDelta                                                        ;A99B57;
+    LDA.L MotherBrainBody.neckAngleDelta                                 ;A99B57;
     CMP.W #$0080                                                         ;A99B5B;
     BMI .lessThan80                                                      ;A99B5E;
     LDY.W #EnemyProjectile_MotherBrainDyingDrool                         ;A99B60;
 
   .lessThan80:
-    LDA.L MotherBrainBody.droolProjectileParam                                                        ;A99B63;
+    LDA.L MotherBrainBody.droolProjectileParam                           ;A99B63;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A99B67;
     PLY                                                                  ;A99B6B;
 
@@ -3409,7 +3409,7 @@ Instruction_MotherBrainHead_SpawnPurpleBreathBigProjectile:
 ;;; $9B77: Instruction - Mother Brain brain main shake timer = 50 ;;;
 Instruction_MotherBrainHead_SetMainShakeTimerTo50:
     LDA.W #$0032                                                         ;A99B77;
-    STA.L MotherBrainBody.brainMainShakeTimer                                                        ;A99B7A;
+    STA.L MotherBrainBody.brainMainShakeTimer                            ;A99B7A;
     RTS                                                                  ;A99B7E;
 
 
@@ -3777,7 +3777,7 @@ Instruction_MotherBrainHead_QueueBabyMetroidAttackSFX:
 Instruction_MotherBrainHead_SpawnOnionRingsProjectile:
     PHY                                                                  ;A99E29;
     LDY.W #EnemyProjectile_MotherBrainOnionRings                         ;A99E2A;
-    LDA.L MotherBrainBody.onionRingsTargetAngle                                                        ;A99E2D;
+    LDA.L MotherBrainBody.onionRingsTargetAngle                          ;A99E2D;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A99E31;
     PLY                                                                  ;A99E35;
     RTS                                                                  ;A99E36;
@@ -3787,7 +3787,7 @@ Instruction_MotherBrainHead_SpawnOnionRingsProjectile:
 Instruction_MotherBrainHead_AimOnionRingsAtBabyMetroid:
     PHX                                                                  ;A99E37;
     PHY                                                                  ;A99E38;
-    LDA.L MotherBrainBody.BabyMetroidEnemyIndex                                                        ;A99E39;
+    LDA.L MotherBrainBody.BabyMetroidEnemyIndex                          ;A99E39;
     TAX                                                                  ;A99E3D;
     LDA.W $0F7A,X                                                        ;A99E3E;
     SEC                                                                  ;A99E41;
@@ -3848,7 +3848,7 @@ AimMotherBrainOnionRings:
 
   .merge:
     REP #$20                                                             ;A99E9A;
-    STA.L MotherBrainBody.onionRingsTargetAngle                                                        ;A99E9C;
+    STA.L MotherBrainBody.onionRingsTargetAngle                          ;A99E9C;
     PLY                                                                  ;A99EA0;
     PLX                                                                  ;A99EA1;
     RTS                                                                  ;A99EA2;
@@ -3857,21 +3857,21 @@ AimMotherBrainOnionRings:
 ;;; $9EA3: Instruction - increment Mother Brain Shitroid attack counter ;;;
 Instruction_MotherBrainHead_IncBabyMetroidAttackCounter:
 ; 12 is the max due to the Instruction_MotherBrainHead_QueueBabyMetroidAttackSFX_sfx table
-    LDA.L MotherBrainBody.BabyMetroidAttackCounter                                                        ;A99EA3;
+    LDA.L MotherBrainBody.BabyMetroidAttackCounter                       ;A99EA3;
     INC A                                                                ;A99EA7;
     CMP.W #$000C                                                         ;A99EA8;
     BCC .notMax12                                                        ;A99EAB;
     LDA.W #$000C                                                         ;A99EAD;
 
   .notMax12:
-    STA.L MotherBrainBody.BabyMetroidAttackCounter                                                        ;A99EB0;
+    STA.L MotherBrainBody.BabyMetroidAttackCounter                       ;A99EB0;
     RTS                                                                  ;A99EB4;
 
 
 ;;; $9EB5: Instruction - Mother Brain Shitroid attack counter = 0 ;;;
 Instruction_MotherBrainHead_ResetBabyMetroidAttackCounter:
     LDA.W #$0000                                                         ;A99EB5;
-    STA.L MotherBrainBody.BabyMetroidAttackCounter                                                        ;A99EB8;
+    STA.L MotherBrainBody.BabyMetroidAttackCounter                       ;A99EB8;
     RTS                                                                  ;A99EBC;
 
 
@@ -3938,7 +3938,7 @@ InstList_MotherBrainHead_Attacking_Laser:
 ;;; $9F46: Instruction - spawn Mother Brain laser enemy projectile ;;;
 InstList_MotherBrainHead_SpawnLaserProjectile:
     LDA.W #$0000                                                         ;A99F46;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A99F49;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A99F49;
     PHY                                                                  ;A99F4D;
     LDA.W $0FBA                                                          ;A99F4E;
     CLC                                                                  ;A99F51;
@@ -3981,7 +3981,7 @@ Instruction_MotherBrainHead_SpawnRainbowBeamChargingProj:
 ;;; $9F8E: Instruction - set up effects for Mother Brain charging rainbow beam ;;;
 Instruction_MotherBrainHead_SetupEffectsForRainbowBeamCharge:
     LDA.W #$0000                                                         ;A99F8E;
-    STA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag                                                        ;A99F91;
+    STA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag         ;A99F91;
     JSR.W SetupMotherBrainHeadPaletteForChargingHerLaser                 ;A99F95;
     LDA.W #$007F                                                         ;A99F98;
     JSL.L QueueSound_Lib2_Max6                                           ;A99F9B;
@@ -5110,7 +5110,7 @@ Function_MBBody_Phase3_DeathSequence_MoveToBackOfRoom:
     ORA.W #$0400                                                         ;A9AEED;
     STA.W $0FC6                                                          ;A9AEF0;
     LDA.W #$0000                                                         ;A9AEF3;
-    STA.L MotherBrainBody.hitboxesEnabled                                                        ;A9AEF6;
+    STA.L MotherBrainBody.hitboxesEnabled                                 ;A9AEF6;
     LDY.W #$0006                                                         ;A9AEFA;
     LDA.W #$0028                                                         ;A9AEFD;
     JSR.W MakeMotherBrainWalkBackwards                                   ;A9AF00;
@@ -5119,18 +5119,18 @@ Function_MBBody_Phase3_DeathSequence_MoveToBackOfRoom:
 
   .arrivedAtBack:
     LDA.W #Function_MBBody_Phase3_DeathSequence_IdleWhilstExploding      ;A9AF06;
-    STA.W MotherBrainBody.function                                                          ;A9AF09;
+    STA.W MotherBrainBody.function                                       ;A9AF09;
     LDA.W #$0080                                                         ;A9AF0C;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9AF0F; fallthrough to Function_MBBody_Phase3_DeathSequence_IdleWhilstExploding
+    STA.W MotherBrainBody.functionTimer                                  ;A9AF0F; fallthrough to Function_MBBody_Phase3_DeathSequence_IdleWhilstExploding
 
 
 ;;; $AF12: Mother Brain body function - third phase - death sequence - idle whilst exploding ;;;
 Function_MBBody_Phase3_DeathSequence_IdleWhilstExploding:
     JSR.W GenerateSmokyExplosionsAroundMotherBrainBody                   ;A9AF12;
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9AF15;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9AF15;
     BPL .return                                                          ;A9AF18;
     LDA.W #Function_MBBody_Phase3_DeathSequence_StumbleToMiddleOfRoom    ;A9AF1A;
-    STA.W MotherBrainBody.function                                                          ;A9AF1D;
+    STA.W MotherBrainBody.function                                       ;A9AF1D;
 
   .return:
     RTS                                                                  ;A9AF20;
@@ -5146,29 +5146,29 @@ Function_MBBody_Phase3_DeathSequence_StumbleToMiddleOfRoom:
     LDA.W #InstList_MotherBrainHead_DyingDrool_0                         ;A9AF2F;
     JSR.W SetMotherBrainHeadInstList                                     ;A9AF32;
     LDA.W #$0006                                                         ;A9AF35;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9AF38;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9AF3C;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9AF38;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9AF3C;
     LDA.W #$0500                                                         ;A9AF40;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9AF43;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9AF43;
     LDA.W #Function_MBBody_Phase3_DeathSequence_DisableBrainEffects      ;A9AF47;
-    STA.W MotherBrainBody.function                                                          ;A9AF4A;
+    STA.W MotherBrainBody.function                                       ;A9AF4A;
     LDA.W #$0020                                                         ;A9AF4D;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9AF50;
+    STA.W MotherBrainBody.functionTimer                                  ;A9AF50;
     RTS                                                                  ;A9AF53;
 
 
 ;;; $AF54: Mother Brain body function - third phase - death sequence - disable brain effects ;;;
 Function_MBBody_Phase3_DeathSequence_DisableBrainEffects:
     JSR.W GenerateSmokyExplosionsAroundMotherBrainBody                   ;A9AF54;
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9AF57;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9AF57;
     BPL Function_MBBody_Phase3_DeathSequence_IdleWhilstExploding_return  ;A9AF5A;
     LDA.W #$0000                                                         ;A9AF5C;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9AF5F;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9AF63;
-    STA.L MotherBrainBody.enableDroolGenerationFlag                                                        ;A9AF67;
-    STA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag                                                        ;A9AF6B;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9AF5F;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9AF63;
+    STA.L MotherBrainBody.enableDroolGenerationFlag                      ;A9AF67;
+    STA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag         ;A9AF6B;
     STA.L MotherBrainBody.enableBrainPaletteHandlingFlag                                                        ;A9AF6F;
-    STA.L MotherBrainBody.enableHealthBasedPaletteHandlingFlag                                                        ;A9AF73;
+    STA.L MotherBrainBody.enableHealthBasedPaletteHandlingFlag           ;A9AF73;
     LDX.W #$001C                                                         ;A9AF77;
 
   .loopPalette:
@@ -5179,40 +5179,40 @@ Function_MBBody_Phase3_DeathSequence_DisableBrainEffects:
     BPL .loopPalette                                                     ;A9AF84;
     JSL.L MotherBrainHealthBasedPaletteHandling                          ;A9AF86;
     LDA.W #$0E00                                                         ;A9AF8A;
-    STA.L MotherBrainBody.brainPalleteIndex                                                        ;A9AF8D;
-    STZ.W MotherBrainBody.subFunction                                                          ;A9AF91;
-    STZ.W MotherBrainBody.bodySubFunctionTimer                                                          ;A9AF94;
+    STA.L MotherBrainBody.brainPalleteIndex                              ;A9AF8D;
+    STZ.W MotherBrainBody.subFunction                                    ;A9AF91;
+    STZ.W MotherBrainBody.bodySubFunctionTimer                           ;A9AF94;
     LDA.W #Function_MBBody_Phase3_DeathSequence_SetupBodyFadeOut         ;A9AF97;
-    STA.W MotherBrainBody.function                                                          ;A9AF9A; fallthrough to Function_MBBody_Phase3_DeathSequence_SetupBodyFadeOut
+    STA.W MotherBrainBody.function                                       ;A9AF9A; fallthrough to Function_MBBody_Phase3_DeathSequence_SetupBodyFadeOut
 
 
 ;;; $AF9D: Mother Brain body function - third phase - death sequence - set up body fade out ;;;
 Function_MBBody_Phase3_DeathSequence_SetupBodyFadeOut:
 ; Function timer is already negative coming into this function...
     JSR.W GenerateMixedExplosionsAroundMotherBrainBody                   ;A9AF9D;
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9AFA0;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9AFA0;
     BMI .timerExpired                                                    ;A9AFA3;
     RTS                                                                  ;A9AFA5;
 
   .timerExpired:
     LDA.W #$0000                                                         ;A9AFA6;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A9AFA9;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A9AFA9;
     LDA.W #Function_MBBody_Phase3_DeathSequence_FadeOutBody              ;A9AFAD;
-    STA.W MotherBrainBody.function                                                          ;A9AFB0;
-    STZ.W MotherBrainBody.functionTimer                                                          ;A9AFB3; fallthrough to Function_MBBody_Phase3_DeathSequence_FadeOutBody
+    STA.W MotherBrainBody.function                                       ;A9AFB0;
+    STZ.W MotherBrainBody.functionTimer                                  ;A9AFB3; fallthrough to Function_MBBody_Phase3_DeathSequence_FadeOutBody
 
 
 ;;; $AFB6: Mother Brain body function - third phase - death sequence - fade out body ;;;
 Function_MBBody_Phase3_DeathSequence_FadeOutBody:
     JSL.L HandleMotherBrainBodyFlickering                                ;A9AFB6;
     JSR.W GenerateMixedExplosionsAroundMotherBrainBody                   ;A9AFBA;
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9AFBD;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9AFBD;
     BPL .returnUpper                                                     ;A9AFC0;
     LDA.W #$0010                                                         ;A9AFC2;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9AFC5;
-    LDA.L MotherBrainBody.greyTransitionCounter                                                        ;A9AFC8;
+    STA.W MotherBrainBody.functionTimer                                  ;A9AFC5;
+    LDA.L MotherBrainBody.greyTransitionCounter                          ;A9AFC8;
     INC A                                                                ;A9AFCC;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A9AFCD;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A9AFCD;
     DEC A                                                                ;A9AFD1;
     JSL.L FadeMotherBrainPaletteToBlack                                  ;A9AFD2;
     BCS .fadedToBlack                                                    ;A9AFD6;
@@ -5244,9 +5244,9 @@ Function_MBBody_Phase3_DeathSequence_FadeOutBody:
     STA.W $0F86                                                          ;A9B000;
     STZ.W $0F88                                                          ;A9B003;
     LDA.W #Function_MBBody_Phase3_DeathSequence_FinalFewExplosions       ;A9B006;
-    STA.W MotherBrainBody.function                                                          ;A9B009;
+    STA.W MotherBrainBody.function                                       ;A9B009;
     LDA.W #$0010                                                         ;A9B00C;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B00F;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B00F;
 
   .returnLower:
     RTS                                                                  ;A9B012;
@@ -5255,10 +5255,10 @@ Function_MBBody_Phase3_DeathSequence_FadeOutBody:
 ;;; $B013: Mother Brain body function - third phase - death sequence - final few explosions ;;;
 Function_MBBody_Phase3_DeathSequence_FinalFewExplosions:
     JSR.W GenerateMixedExplosionsAroundMotherBrainBody                   ;A9B013;
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B016;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B016;
     BPL Function_MBBody_Phase3_DeathSequence_FadeOutBody_returnLower     ;A9B019;
     LDA.W #Function_MBBody_Phase3_DeathSequence_RealizeDecapitation      ;A9B01B;
-    STA.W MotherBrainBody.function                                                          ;A9B01E;
+    STA.W MotherBrainBody.function                                       ;A9B01E;
     RTS                                                                  ;A9B021;
 
 
@@ -5287,16 +5287,16 @@ GenerateExplosionsAroundMotherBrainBody:
 ;;     A: Mother Brain death explosion interval length
 ;;     $16: Explosion type set pointer
 ;;     $18: Number of simultaneous explosions
-    DEC.W MotherBrainBody.deathExplosionIntervalTimer                                                          ;A9B03E;
+    DEC.W MotherBrainBody.deathExplosionIntervalTimer                    ;A9B03E;
     BPL Function_MBBody_Phase3_DeathSequence_FadeOutBody_returnLower     ;A9B041;
-    STA.W MotherBrainBody.deathExplosionIntervalTimer                                                          ;A9B043;
-    DEC.W MotherBrainBody.deathExplosionIndex                                                          ;A9B046;
+    STA.W MotherBrainBody.deathExplosionIntervalTimer                    ;A9B043;
+    DEC.W MotherBrainBody.deathExplosionIndex                            ;A9B046;
     BPL .getIndex                                                        ;A9B049;
     LDA.W #$0006                                                         ;A9B04B;
-    STA.W MotherBrainBody.deathExplosionIndex                                                          ;A9B04E;
+    STA.W MotherBrainBody.deathExplosionIndex                            ;A9B04E;
 
   .getIndex:
-    LDA.W MotherBrainBody.deathExplosionIndex                                                          ;A9B051;
+    LDA.W MotherBrainBody.deathExplosionIndex                            ;A9B051;
     ASL A                                                                ;A9B054;
     ASL A                                                                ;A9B055;
     ASL A                                                                ;A9B056;
@@ -5370,19 +5370,19 @@ Function_MBBody_Phase3_DeathSequence_RealizeDecapitation:
     LDA.W #InstList_MotherBrainHead_Decapitated_0                        ;A9B115;
     JSR.W SetMotherBrainHeadInstList                                     ;A9B118;
     LDA.W #Function_MotherBrain_SetupBrainToBeDrawn                      ;A9B11B;
-    STA.W MotherBrainBody.brainFunction                                                          ;A9B11E;
+    STA.W MotherBrainBody.brainFunction                                  ;A9B11E;
     LDA.W #$0000                                                         ;A9B121;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B124;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B124;
     LDA.W #Function_MBBody_Phase3_DeathSequence_BrainFallsToGround       ;A9B127;
-    STA.W MotherBrainBody.function                                                          ;A9B12A; fallthrough to Function_MBBody_Phase3_DeathSequence_BrainFallsToGround
+    STA.W MotherBrainBody.function                                       ;A9B12A; fallthrough to Function_MBBody_Phase3_DeathSequence_BrainFallsToGround
 
 
 ;;; $B12D: Mother Brain body function - third phase - death sequence - brain falls to ground ;;;
 Function_MBBody_Phase3_DeathSequence_BrainFallsToGround:
-    LDA.W MotherBrainBody.functionTimer                                                          ;A9B12D;
+    LDA.W MotherBrainBody.functionTimer                                  ;A9B12D;
     CLC                                                                  ;A9B130;
     ADC.W #$0020                                                         ;A9B131;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B134;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B134;
     XBA                                                                  ;A9B137;
     AND.W #$00FF                                                         ;A9B138;
     CLC                                                                  ;A9B13B;
@@ -5392,9 +5392,9 @@ Function_MBBody_Phase3_DeathSequence_BrainFallsToGround:
     LDA.W #$0002                                                         ;A9B144;
     JSL.L EnableEarthquakeTypeInAFor20Frames                             ;A9B147;
     LDA.W #Function_MBBody_Phase3_DeathSequence_LoadCorpseTiles          ;A9B14B;
-    STA.W MotherBrainBody.function                                                          ;A9B14E;
+    STA.W MotherBrainBody.function                                       ;A9B14E;
     LDA.W #$0100                                                         ;A9B151;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B154;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B154;
     LDA.W #$00C4                                                         ;A9B157;
 
   .hitGround:
@@ -5408,9 +5408,9 @@ Function_MBBody_Phase3_DeathSequence_LoadCorpseTiles:
     JSR.W ProcessSpriteTilesTransfers                                    ;A9B161;
     BCC .return                                                          ;A9B164;
     LDA.W #Function_MBBody_Phase3_DeathSequence_SetupFadeToGrey          ;A9B166;
-    STA.W MotherBrainBody.function                                                          ;A9B169;
+    STA.W MotherBrainBody.function                                       ;A9B169;
     LDA.W #$0020                                                         ;A9B16C;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B16F;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B16F;
 
   .return:
     RTS                                                                  ;A9B172;
@@ -5418,28 +5418,28 @@ Function_MBBody_Phase3_DeathSequence_LoadCorpseTiles:
 
 ;;; $B173: Mother Brain body function - third phase - death sequence - set up fade to grey ;;;
 Function_MBBody_Phase3_DeathSequence_SetupFadeToGrey:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B173;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B173;
     BPL Function_MBBody_Phase3_DeathSequence_LoadCorpseTiles_return      ;A9B176;
     LDA.W #$0000                                                         ;A9B178;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A9B17B;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A9B17B;
     LDA.W #Function_MBBody_Phase3_DeathSequence_FadeToGrey               ;A9B17F;
-    STA.W MotherBrainBody.function                                                          ;A9B182;
-    STZ.W MotherBrainBody.functionTimer                                                          ;A9B185;
+    STA.W MotherBrainBody.function                                       ;A9B182;
+    STZ.W MotherBrainBody.functionTimer                                  ;A9B185;
     RTS                                                                  ;A9B188;
 
 
 ;;; $B189: Mother Brain body function - third phase - death sequence - fade to grey ;;;
 Function_MBBody_Phase3_DeathSequence_FadeToGrey:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B189;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B189;
     BPL .return                                                          ;A9B18C;
-    LDA.L MotherBrainBody.greyTransitionCounter                                                        ;A9B18E;
+    LDA.L MotherBrainBody.greyTransitionCounter                          ;A9B18E;
     INC A                                                                ;A9B192;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A9B193;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A9B193;
     DEC A                                                                ;A9B197;
     JSL.L TransitionMotherBrainPaletteToGrey_RealDeath                   ;A9B198;
     BCS .finishedTransition                                              ;A9B19C;
     LDA.W #$0010                                                         ;A9B19E;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B1A1;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B1A1;
 
   .return:
     RTS                                                                  ;A9B1A4;
@@ -5448,26 +5448,26 @@ Function_MBBody_Phase3_DeathSequence_FadeToGrey:
     LDA.W #InstList_MotherBrainHead_Corpse_0                             ;A9B1A5;
     JSR.W SetMotherBrainHeadInstList                                     ;A9B1A8;
     LDA.W #Function_MBBody_Phase3_DeathSequence_CorpseTipsOver           ;A9B1AB;
-    STA.W MotherBrainBody.function                                                          ;A9B1AE;
+    STA.W MotherBrainBody.function                                       ;A9B1AE;
     LDA.W #$0100                                                         ;A9B1B1;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B1B4;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B1B4;
     RTS                                                                  ;A9B1B7;
 
 
 ;;; $B1B8: Mother Brain body function - third phase - death sequence - corpse tips over ;;;
 Function_MBBody_Phase3_DeathSequence_CorpseTipsOver:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B1B8;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B1B8;
     BMI .timerExpired                                                    ;A9B1BB;
     RTS                                                                  ;A9B1BD;
 
   .timerExpired:
     LDA.W #Function_MBBody_Phase3_DeathSequence_CorpseRotsAway           ;A9B1BE;
-    STA.W MotherBrainBody.function                                                          ;A9B1C1;
+    STA.W MotherBrainBody.function                                       ;A9B1C1;
     LDA.W $0FC6                                                          ;A9B1C4;
     ORA.W #$0400                                                         ;A9B1C7;
     STA.W $0FC6                                                          ;A9B1CA;
     LDA.W #$0000                                                         ;A9B1CD;
-    STA.L MotherBrainBody.hitboxesEnabled                                                        ;A9B1D0;
+    STA.L MotherBrainBody.hitboxesEnabled                                ;A9B1D0;
     RTS                                                                  ;A9B1D4;
 
 
@@ -5477,7 +5477,7 @@ Function_MBBody_Phase3_DeathSequence_CorpseRotsAway:
     JSR.W ProcessCorpseRotting                                           ;A9B1D8;
     BCC .finishedRotting                                                 ;A9B1DB;
     LDX.W #$0040                                                         ;A9B1DD;
-    LDA.L MotherBrainBody.corpseRottingVRAMTransfersPointer,X                                                      ;A9B1E0;
+    LDA.L MotherBrainBody.corpseRottingVRAMTransfersPointer,X            ;A9B1E0;
     TAX                                                                  ;A9B1E4;
     JMP.W ProcessCorpseRottingVRAMTransfers                              ;A9B1E5;
 
@@ -5492,19 +5492,19 @@ Function_MBBody_Phase3_DeathSequence_CorpseRotsAway:
     LDA.W #$FF24                                                         ;A9B1FE;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A9B201;
     LDA.W #Function_MBBody_Phase3_DeathSequence_20FrameDelay             ;A9B205;
-    STA.W MotherBrainBody.function                                                          ;A9B208;
+    STA.W MotherBrainBody.function                                       ;A9B208;
     LDA.W #$0014                                                         ;A9B20B;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B20E; fallthrough to Function_MBBody_Phase3_DeathSequence_20FrameDelay
+    STA.W MotherBrainBody.functionTimer                                  ;A9B20E; fallthrough to Function_MBBody_Phase3_DeathSequence_20FrameDelay
 
 
 ;;; $B211: Mother Brain body function - third phase - death sequence - 20 frame delay ;;;
 Function_MBBody_Phase3_DeathSequence_20FrameDelay:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B211;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B211;
     BPL .return                                                          ;A9B214;
     STZ.W $0FBA                                                          ;A9B216;
     STZ.W $0FBE                                                          ;A9B219;
     LDA.W #Function_MBBody_Phase3_DeathSequence_LoadEscapeTimerTiles     ;A9B21C;
-    STA.W MotherBrainBody.function                                                          ;A9B21F;
+    STA.W MotherBrainBody.function                                       ;A9B21F;
 
   .return:
     RTS                                                                  ;A9B222;
@@ -5549,7 +5549,7 @@ Function_MBBody_Phase3_DeathSequence_LoadEscapeTimerTiles:
     PLB                                                                  ;A9B264;
     BCC Function_MBBody_Phase3_DeathSequence_StartEscape_return          ;A9B265;
     LDA.W #Function_MBBody_Phase3_DeathSequence_StartEscape              ;A9B267;
-    STA.W MotherBrainBody.function                                                          ;A9B26A; fallthrough to Function_MBBody_Phase3_DeathSequence_StartEscapeSequence
+    STA.W MotherBrainBody.function                                       ;A9B26A; fallthrough to Function_MBBody_Phase3_DeathSequence_StartEscapeSequence
 
 
 ;;; $B26D: Mother Brain body function - third phase - death sequence - start escape sequence ;;;
@@ -5576,17 +5576,17 @@ Function_MBBody_Phase3_DeathSequence_StartEscape:
     LDY.W #PaletteFXObjects_Tourian40_RedFlashingArkanoidBlocksRedOrbs   ;A9B2AA;
     JSL.L Spawn_PaletteFXObject                                          ;A9B2AD;
     LDA.W #$0000                                                         ;A9B2B1;
-    STA.L MotherBrainBody.enableUnpauseHookFlag                                                        ;A9B2B4;
+    STA.L MotherBrainBody.enableUnpauseHookFlag                          ;A9B2B4;
     JSL.L SetupZebesEscapeTypewriter                                     ;A9B2B8;
     LDA.W #$0020                                                         ;A9B2BC;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B2BF;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B2BF;
     LDY.W #Function_MBBody_Phase3_DeathSequence_SpawnTimeBombSetJapanText ;A9B2C2;
     LDA.W $09E2                                                          ;A9B2C5;
     BNE .keepJapanText                                                   ;A9B2C8;
     LDY.W #Function_MBBody_Phase3_DeathSequence_TypeOutZebesEscapeText   ;A9B2CA;
 
   .keepJapanText:
-    STY.W MotherBrainBody.function                                                          ;A9B2CD;
+    STY.W MotherBrainBody.function                                       ;A9B2CD;
 
   .return:
     RTS                                                                  ;A9B2D0;
@@ -5594,10 +5594,10 @@ Function_MBBody_Phase3_DeathSequence_StartEscape:
 
 ;;; $B2D1: Mother Brain body function - third phase - death sequence - spawn time bomb set Japanese text ;;;
 Function_MBBody_Phase3_DeathSequence_SpawnTimeBombSetJapanText:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B2D1;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B2D1;
     BPL Function_MBBody_Phase3_DeathSequence_TypeOutZebesEscapeText      ;A9B2D4;
     LDA.W #Function_MBBody_Phase3_DeathSequence_TypeOutZebesEscapeText   ;A9B2D6;
-    STA.W MotherBrainBody.function                                                          ;A9B2D9;
+    STA.W MotherBrainBody.function                                       ;A9B2D9;
     LDY.W #EnemyProjectile_TimeBombSetJapanText                          ;A9B2DC;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A9B2DF; fallthrough to Function_MBBody_Phase3_DeathSequence_TypeOutZebesEscapeText
 
@@ -5608,9 +5608,9 @@ Function_MBBody_Phase3_DeathSequence_TypeOutZebesEscapeText:
     JSL.L HandleTypewriterText_External                                  ;A9B2E6;
     BCC .return                                                          ;A9B2EA;
     LDA.W #Function_MBBody_Phase3_DeathSequence_DoorExploding_StartTimer ;A9B2EC;
-    STA.W MotherBrainBody.function                                                          ;A9B2EF;
+    STA.W MotherBrainBody.function                                       ;A9B2EF;
     LDA.W #$0020                                                         ;A9B2F2;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B2F5;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B2F5;
 
   .return:
     RTS                                                                  ;A9B2F8;
@@ -5619,7 +5619,7 @@ Function_MBBody_Phase3_DeathSequence_TypeOutZebesEscapeText:
 ;;; $B2F9: Mother Brain body function - third phase - death sequence - escape door is exploding, start escape timer ;;;
 Function_MBBody_Phase3_DeathSequence_DoorExploding_StartTimer:
     JSL.L GenerateEscapeDoorExplosion                                    ;A9B2F9;
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B2FD;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B2FD;
     BPL .return                                                          ;A9B300;
     LDA.W #$000F                                                         ;A9B302;
     JSL.L Run_Samus_Command                                              ;A9B305;
@@ -5629,10 +5629,10 @@ Function_MBBody_Phase3_DeathSequence_DoorExploding_StartTimer:
     LDA.W #$000E                                                         ;A9B313;
     JSL.L MarkEvent_inA                                                  ;A9B316;
     LDA.W #Function_MBBody_Phase3_DeathSequence_BlowUpEscapeDoor         ;A9B31A;
-    STA.W MotherBrainBody.function                                                          ;A9B31D;
+    STA.W MotherBrainBody.function                                       ;A9B31D;
     LDA.W #$0000                                                         ;A9B320;
-    STA.W MotherBrainBody.deathExplosionIntervalTimer                                                          ;A9B323;
-    STA.W MotherBrainBody.escapeDoorIndex                                                          ;A9B326;
+    STA.W MotherBrainBody.deathExplosionIntervalTimer                    ;A9B323;
+    STA.W MotherBrainBody.escapeDoorIndex                                ;A9B326;
 
   .return:
     RTS                                                                  ;A9B329;
@@ -5642,7 +5642,7 @@ Function_MBBody_Phase3_DeathSequence_DoorExploding_StartTimer:
 Function_MBBody_Phase3_DeathSequence_BlowUpEscapeDoor:
     JSR.W ExplodeMotherBrainEscapeDoor                                   ;A9B32A;
     LDA.W #Function_MBBody_Phase3_DeathSequence_KeepEarthquakeGoing      ;A9B32D;
-    STA.W MotherBrainBody.function                                                          ;A9B330;
+    STA.W MotherBrainBody.function                                       ;A9B330;
     JSL.L Spawn_Hardcoded_PLM                                            ;A9B333;
     db $00,$06                                                           ;A9B337;
     dw PLMEntries_motherBrainsRoomEscapeDoor                             ;A9B339;
@@ -5663,21 +5663,21 @@ Function_MBBody_Phase3_DeathSequence_KeepEarthquakeGoing:
 
 ;;; $B346: Generate escape door explosion ;;;
 GenerateEscapeDoorExplosion:
-    LDA.W MotherBrainBody.deathExplosionIntervalTimer                                                          ;A9B346;
+    LDA.W MotherBrainBody.deathExplosionIntervalTimer                    ;A9B346;
     DEC A                                                                ;A9B349;
-    STA.W MotherBrainBody.deathExplosionIntervalTimer                                                          ;A9B34A;
+    STA.W MotherBrainBody.deathExplosionIntervalTimer                    ;A9B34A;
     BPL .return                                                          ;A9B34D;
     LDA.W #$0004                                                         ;A9B34F;
-    STA.W MotherBrainBody.deathExplosionIntervalTimer                                                          ;A9B352;
-    LDA.W MotherBrainBody.escapeDoorIndex                                                          ;A9B355;
+    STA.W MotherBrainBody.deathExplosionIntervalTimer                    ;A9B352;
+    LDA.W MotherBrainBody.escapeDoorIndex                                ;A9B355;
     DEC A                                                                ;A9B358;
-    STA.W MotherBrainBody.escapeDoorIndex                                                          ;A9B359;
+    STA.W MotherBrainBody.escapeDoorIndex                                ;A9B359;
     BPL .max3                                                            ;A9B35C;
     LDA.W #$0003                                                         ;A9B35E;
-    STA.W MotherBrainBody.escapeDoorIndex                                                          ;A9B361;
+    STA.W MotherBrainBody.escapeDoorIndex                                ;A9B361;
 
   .max3:
-    LDA.W MotherBrainBody.escapeDoorIndex                                                          ;A9B364;
+    LDA.W MotherBrainBody.escapeDoorIndex                                ;A9B364;
     ASL A                                                                ;A9B367;
     ASL A                                                                ;A9B368;
     TAY                                                                  ;A9B369;
@@ -5725,7 +5725,7 @@ ExplodeMotherBrainEscapeDoor:
 
 ;;; $B3B6: Mother Brain / Samus collision detection ;;;
 MotherBrain_vs_Samus_CollisionDetection:
-    LDA.L MotherBrainBody.hitboxesEnabled                                                        ;A9B3B6;
+    LDA.L MotherBrainBody.hitboxesEnabled                                ;A9B3B6;
     STA.B $1A                                                            ;A9B3BA;
     LSR.B $1A                                                            ;A9B3BC;
     BCC .checkBrain                                                      ;A9B3BE;
@@ -5751,23 +5751,23 @@ MotherBrain_vs_Samus_CollisionDetection:
   .checkNeck:
     LSR.B $1A                                                            ;A9B3E8;
     BCC .return                                                          ;A9B3EA;
-    LDA.L MotherBrainBody.neckSegment1XPosition                                                        ;A9B3EC;
+    LDA.L MotherBrainBody.neckSegment1XPosition                          ;A9B3EC;
     STA.B $12                                                            ;A9B3F0;
-    LDA.L MotherBrainBody.neckSegment1YPosition                                                        ;A9B3F2;
+    LDA.L MotherBrainBody.neckSegment1YPosition                          ;A9B3F2;
     STA.B $14                                                            ;A9B3F6;
     LDX.W #HitboxDefinitions_MotherBrainNeck                             ;A9B3F8;
     JSR.W MotherBrainPart_vs_Samus_CollisionDetection                    ;A9B3FB;
     BCS .return                                                          ;A9B3FE;
-    LDA.L MotherBrainBody.neckSegment2XPosition                                                        ;A9B400;
+    LDA.L MotherBrainBody.neckSegment2XPosition                          ;A9B400;
     STA.B $12                                                            ;A9B404;
-    LDA.L MotherBrainBody.neckSegment2YPosition                                                        ;A9B406;
+    LDA.L MotherBrainBody.neckSegment2YPosition                          ;A9B406;
     STA.B $14                                                            ;A9B40A;
     LDX.W #HitboxDefinitions_MotherBrainNeck                             ;A9B40C;
     JSR.W MotherBrainPart_vs_Samus_CollisionDetection                    ;A9B40F;
     BCS .return                                                          ;A9B412;
-    LDA.L MotherBrainBody.neckSegment3XPosition                                                        ;A9B414;
+    LDA.L MotherBrainBody.neckSegment3XPosition                          ;A9B414;
     STA.B $12                                                            ;A9B418;
-    LDA.L MotherBrainBody.neckSegment3YPosition                                                        ;A9B41A;
+    LDA.L MotherBrainBody.neckSegment3YPosition                          ;A9B41A;
     STA.B $14                                                            ;A9B41E;
     LDX.W #HitboxDefinitions_MotherBrainNeck                             ;A9B420;
     JSR.W MotherBrainPart_vs_Samus_CollisionDetection                    ;A9B423;
@@ -5921,7 +5921,7 @@ EnemyShot_MotherBrainBody:
 ;;; $B507: Enemy shot - enemy $EC3F (Mother Brain brain) ;;;
 EnemyShot_MotherBrainHead:
 ; This code assumes that Mother Brain's glass is the first spawned PLM (index 4Eh)
-    LDA.L MotherBrainBody.form                                                        ;A9B507;
+    LDA.L MotherBrainBody.form                                           ;A9B507;
     BNE .notFirstPhase                                                   ;A9B50B;
     LDA.W $18A6                                                          ;A9B50D;
     ASL A                                                                ;A9B510;
@@ -5951,7 +5951,7 @@ EnemyShot_MotherBrainHead:
   .return:
     RTL                                                                  ;A9B545;
 
-  .projectileType:                                                         ;A9B546;
+  .projectileType:                                                       ;A9B546;
     db $00 ; Beam
     db $01 ; Missile
     db $01 ; Super missile
@@ -5963,7 +5963,7 @@ EnemyShot_MotherBrainHead:
 
   .notFirstPhase:
     JSR.W MotherBrainShotReaction_Phase2_3                               ;A9B54E;
-    LDA.L MotherBrainBody.form                                                        ;A9B551;
+    LDA.L MotherBrainBody.form                                           ;A9B551;
     CMP.W #$0001                                                         ;A9B555;
     BNE .gotoNormalShotAI                                                ;A9B558;
     JML.L CreateADudShot                                                 ;A9B55A;
@@ -5974,7 +5974,7 @@ EnemyShot_MotherBrainHead:
 
 ;;; $B562: Mother Brain second/third phase shot reaction ;;;
 MotherBrainShotReaction_Phase2_3:
-    LDA.L MotherBrainBody.form                                                        ;A9B562;
+    LDA.L MotherBrainBody.form                                           ;A9B562;
     CMP.W #$0004                                                         ;A9B566;
     BNE .notBeam                                                         ;A9B569;
     JSR.W DetermineMotherBrainShotReactionType                           ;A9B56B;
@@ -5986,7 +5986,7 @@ MotherBrainShotReaction_Phase2_3:
     JSR.W DetermineMotherBrainShotReactionType                           ;A9B576;
     DEC A                                                                ;A9B579;
     BEQ .superMissile                                                    ;A9B57A;
-    LDA.L MotherBrainBody.walkCounter                                                        ;A9B57C;
+    LDA.L MotherBrainBody.walkCounter                                    ;A9B57C;
     SEC                                                                  ;A9B580;
     SBC.W #$0100                                                         ;A9B581;
     BPL .done                                                            ;A9B584;
@@ -5995,7 +5995,7 @@ MotherBrainShotReaction_Phase2_3:
     LDA.W #$0000                                                         ;A9B586;
 
   .done:
-    STA.L MotherBrainBody.walkCounter                                                        ;A9B589;
+    STA.L MotherBrainBody.walkCounter                                    ;A9B589;
     RTS                                                                  ;A9B58D;
 
 
@@ -6012,7 +6012,7 @@ DetermineMotherBrainShotReactionType:
     AND.W #$00FF                                                         ;A9B59D;
     RTS                                                                  ;A9B5A0;
 
-  .projectileTypes:                                                        ;A9B5A1;
+  .projectileTypes:                                                      ;A9B5A1;
     db $02 ; Beam
     db $01 ; Missile
     db $01 ; Super missile
@@ -6025,17 +6025,17 @@ DetermineMotherBrainShotReactionType:
 
 ;;; $B5A9: Mother Brain third phase beam shot reaction ;;;
 MotherBrainBeamShotReaction_Phase3:
-    LDA.L MotherBrainBody.walkCounter                                                        ;A9B5A9;
+    LDA.L MotherBrainBody.walkCounter                                    ;A9B5A9;
     SEC                                                                  ;A9B5AD;
     SBC.W #$010A                                                         ;A9B5AE;
     BPL .maxCounter                                                      ;A9B5B1;
     LDA.W #Function_MotherBrainNeck_SetupHyperBeamRecoil                 ;A9B5B3;
-    STA.L MotherBrainBody.neckFunction                                                        ;A9B5B6;
+    STA.L MotherBrainBody.neckFunction                                   ;A9B5B6;
     LDA.W #$0000                                                         ;A9B5BA;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B5BD;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B5BD;
 
   .maxCounter:
-    STA.L MotherBrainBody.walkCounter                                                        ;A9B5C0;
+    STA.L MotherBrainBody.walkCounter                                    ;A9B5C0;
     RTS                                                                  ;A9B5C4;
 
 
@@ -6091,11 +6091,11 @@ Function_MotherBrainBody_Phase2_Thinking:
     LDA.W $0FCC                                                          ;A9B605;
     BNE .notDead                                                         ;A9B608;
     LDA.W #Function_MotherBrainBody_Phase2_FiringRainbowBeam_ExtendNeck  ;A9B60A;
-    STA.W MotherBrainBody.function                                                          ;A9B60D;
+    STA.W MotherBrainBody.function                                       ;A9B60D;
     JMP.W Function_MotherBrainBody_Phase2_FiringRainbowBeam_ExtendNeck   ;A9B610;
 
   .notDead:
-    LDA.L MotherBrainBody.pose                                                        ;A9B613;
+    LDA.L MotherBrainBody.pose                                           ;A9B613;
     BEQ .standing                                                        ;A9B617;
     RTS                                                                  ;A9B619;
 
@@ -6110,7 +6110,7 @@ Function_MotherBrainBody_Phase2_Thinking:
 
   .tryAttack:
     LDA.W #Function_MotherBrainBody_Phase2_TryAttack                     ;A9B62D;
-    STA.W MotherBrainBody.function                                                          ;A9B630;
+    STA.W MotherBrainBody.function                                       ;A9B630;
     RTS                                                                  ;A9B633;
 
   .lowHealth:
@@ -6122,13 +6122,13 @@ Function_MotherBrainBody_Phase2_Thinking:
 +   CMP.W #$A000                                                         ;A9B63F;
     BCS .tryAttack                                                       ;A9B642;
     LDA.W #Function_MotherBrainBody_Phase2_FiringDeathBeam               ;A9B644;
-    STA.W MotherBrainBody.function                                                          ;A9B647;
+    STA.W MotherBrainBody.function                                       ;A9B647;
     RTS                                                                  ;A9B64A;
 
 
 ;;; $B64B: Mother Brain body function - second phase - try attack ;;;
 Function_MotherBrainBody_Phase2_TryAttack:
-    LDA.L MotherBrainBody.attackPhase                                                        ;A9B64B;
+    LDA.L MotherBrainBody.attackPhase                                    ;A9B64B;
     ASL A                                                                ;A9B64F;
     TAX                                                                  ;A9B650;
     JMP.W (.pointers,X)                                                  ;A9B651;
@@ -6147,10 +6147,10 @@ TryMotherBrainAttack_Phase2_TryAttack:
 ; The call to DecideMotherBrainPhase2AttackStrategy always returns from this routine if Samus is in (almost) any in-air movement type,
 ; hence the Y proximity condition to use RNG thresholds pointer .SamusClose is (almost) never true
     LDA.W #$0040                                                         ;A9B65A;
-    STA.W MotherBrainBody.attackCooldown                                                          ;A9B65D;
-    LDA.L MotherBrainBody.attackPhase                                                        ;A9B660;
+    STA.W MotherBrainBody.attackCooldown                                 ;A9B65D;
+    LDA.L MotherBrainBody.attackPhase                                    ;A9B660;
     INC A                                                                ;A9B664;
-    STA.L MotherBrainBody.attackPhase                                                        ;A9B665;
+    STA.L MotherBrainBody.attackPhase                                    ;A9B665;
     JSR.W DecideMotherBrainPhase2AttackStrategy                          ;A9B669;
     LDX.W #.default                                                      ;A9B66C;
     LDA.W $0FBE                                                          ;A9B66F;
@@ -6196,17 +6196,17 @@ TryMotherBrainAttack_Phase2_TryAttack:
     RTS                                                                  ;A9B6B8;
 
   .bomb:
-    LDA.L MotherBrainBody.bombCounter                                                        ;A9B6B9;
+    LDA.L MotherBrainBody.bombCounter                                    ;A9B6B9;
     CMP.W #$0001                                                         ;A9B6BD;
     BPL .return                                                          ;A9B6C0;
     LDA.W #Function_MotherBrainBody_FiringBomb_DecideOnWalking           ;A9B6C2;
-    STA.W MotherBrainBody.function                                                          ;A9B6C5;
+    STA.W MotherBrainBody.function                                       ;A9B6C5;
     JMP.W Function_MotherBrainBody_FiringBomb_DecideOnWalking            ;A9B6C8;
 
 
   .laser:
     LDA.W #Function_MBBody_Phase2_FiringLaser_PositionHeadQuickly        ;A9B6CB;
-    STA.W MotherBrainBody.function                                                          ;A9B6CE;
+    STA.W MotherBrainBody.function                                       ;A9B6CE;
     JMP.W Function_MBBody_Phase2_FiringLaser_PositionHeadQuickly         ;A9B6D1;
 
 
@@ -6248,7 +6248,7 @@ DecideMotherBrainPhase2AttackStrategy:
   .callersReturn:
     PLA                                                                  ;A9B702;
     LDA.W #Function_MBBody_Phase2_FiringLaser_PositionHeadQuickly        ;A9B703;
-    STA.W MotherBrainBody.function                                                          ;A9B706;
+    STA.W MotherBrainBody.function                                       ;A9B706;
     JMP.W Function_MBBody_Phase2_FiringLaser_PositionHeadQuickly         ;A9B709;
 
   .aimAtGround:
@@ -6258,18 +6258,18 @@ DecideMotherBrainPhase2AttackStrategy:
     BPL +                                                                ;A9B715;
     RTS                                                                  ;A9B717;
 
-+   LDA.L MotherBrainBody.bombCounter                                                        ;A9B718;
++   LDA.L MotherBrainBody.bombCounter                                    ;A9B718;
     CMP.W #$0001                                                         ;A9B71C;
     BPL .return                                                          ;A9B71F;
     LDA.W #Function_MotherBrainBody_FiringBomb_DecideOnWalking           ;A9B721;
-    STA.W MotherBrainBody.function                                                          ;A9B724;
+    STA.W MotherBrainBody.function                                       ;A9B724;
     PLA                                                                  ;A9B727;
     JMP.W Function_MotherBrainBody_FiringBomb_DecideOnWalking            ;A9B728;
 
   .return:
     RTS                                                                  ;A9B72B;
 
-  .poses:                                                                  ;A9B72C;
+  .poses:                                                                ;A9B72C;
     dw $FFFF ; 0: Standing
     dw $FFEF ; 1: Running
     dw $0000 ; 2: Normal jumping
@@ -6303,11 +6303,11 @@ DecideMotherBrainPhase2AttackStrategy:
 ;;; $B764: Try Mother Brain phase 2 attack - cooldown ;;;
 TryMotherBrainPhase2Attack_Cooldown:
 ; [Mother Brain attack phase] = 1
-    DEC.W MotherBrainBody.attackCooldown                                                          ;A9B764;
+    DEC.W MotherBrainBody.attackCooldown                                 ;A9B764;
     BNE .return                                                          ;A9B767;
-    LDA.L MotherBrainBody.attackPhase                                                        ;A9B769;
+    LDA.L MotherBrainBody.attackPhase                                    ;A9B769;
     INC A                                                                ;A9B76D;
-    STA.L MotherBrainBody.attackPhase                                                        ;A9B76E;
+    STA.L MotherBrainBody.attackPhase                                    ;A9B76E;
 
   .return:
     RTS                                                                  ;A9B772;
@@ -6317,9 +6317,9 @@ TryMotherBrainPhase2Attack_Cooldown:
 TryMotherBrainPhase2Attack_EndAttack:
 ; [Mother Brain attack phase] = 2
     LDA.W #$0000                                                         ;A9B773;
-    STA.L MotherBrainBody.attackPhase                                                        ;A9B776;
+    STA.L MotherBrainBody.attackPhase                                    ;A9B776;
     LDA.W #Function_MotherBrainBody_Phase2_Thinking                      ;A9B77A;
-    STA.W MotherBrainBody.function                                                          ;A9B77D;
+    STA.W MotherBrainBody.function                                       ;A9B77D;
     RTS                                                                  ;A9B780;
 
 
@@ -6336,12 +6336,12 @@ Function_MotherBrainBody_FiringBomb_DecideOnWalking:
 +   TXA                                                                  ;A9B794;
     CMP.W $0F7A                                                          ;A9B795;
     BPL MotherBrainFiringBomb_DecideOnCrouching                          ;A9B798;
-    STA.W MotherBrainBody.bodyTargetXPosition                                                          ;A9B79A;
+    STA.W MotherBrainBody.bodyTargetXPosition                            ;A9B79A;
     LDY.W #$0006                                                         ;A9B79D;
     JSR.W MakeMotherBrainWalkBackwards                                   ;A9B7A0;
     BCS MotherBrainFiringBomb_DecideOnCrouching                          ;A9B7A3;
     LDA.W #Function_MotherBrainBody_FiringBomb_WalkingBackwards          ;A9B7A5;
-    STA.W MotherBrainBody.function                                                          ;A9B7A8;
+    STA.W MotherBrainBody.function                                       ;A9B7A8;
 
   .return:
     RTS                                                                  ;A9B7AB;
@@ -6350,7 +6350,7 @@ Function_MotherBrainBody_FiringBomb_DecideOnWalking:
 ;;; $B7AC: Mother Brain body function - firing bomb - walking backwards ;;;
 Function_MotherBrainBody_FiringBomb_WalkingBackwards:
     LDY.W #$0006                                                         ;A9B7AC;
-    LDA.W MotherBrainBody.bodyTargetXPosition                                                          ;A9B7AF;
+    LDA.W MotherBrainBody.bodyTargetXPosition                            ;A9B7AF;
     JSR.W MakeMotherBrainWalkBackwards                                   ;A9B7B2;
     BCC Function_MotherBrainBody_FiringBomb_DecideOnWalking_return       ;A9B7B5; fallthrough to MotherBrainFiringBomb_DecideOnCrouching
 
@@ -6361,7 +6361,7 @@ MotherBrainFiringBomb_DecideOnCrouching:
     CMP.W #$8000                                                         ;A9B7BB;
     BCC MotherBrainFiringBomb_FireBomb                                   ;A9B7BE;
     LDA.W #Function_MotherBrainBody_FiringBomb_Crouch                    ;A9B7C0;
-    STA.W MotherBrainBody.function                                                          ;A9B7C3; fallthrough to Function_MotherBrainBody_FiringBomb_Crouch
+    STA.W MotherBrainBody.function                                       ;A9B7C3; fallthrough to Function_MotherBrainBody_FiringBomb_Crouch
 
 
 ;;; $B7C6: Mother Brain body function - firing bomb - crouch ;;;
@@ -6373,7 +6373,7 @@ Function_MotherBrainBody_FiringBomb_Crouch:
 ;;; $B7CB: Mother Brain firing bomb - fire bomb ;;;
 MotherBrainFiringBomb_FireBomb:
     LDY.W #InstList_MotherBrainHead_Attacking_Bomb_Phase2                ;A9B7CB;
-    LDA.L MotherBrainBody.phase2CorpseState                                                        ;A9B7CE;
+    LDA.L MotherBrainBody.phase2CorpseState                              ;A9B7CE;
     BEQ .notCorpse                                                       ;A9B7D2;
     LDY.W #InstList_MotherBrainHead_Attacking_Bomb_Phase3                ;A9B7D4;
 
@@ -6381,20 +6381,20 @@ MotherBrainFiringBomb_FireBomb:
     TYA                                                                  ;A9B7D7;
     JSR.W SetMotherBrainHeadInstList                                     ;A9B7D8;
     LDA.W #Function_MotherBrainBody_FiringBomb_FiredBomb                 ;A9B7DB;
-    STA.W MotherBrainBody.function                                                          ;A9B7DE;
+    STA.W MotherBrainBody.function                                       ;A9B7DE;
     LDA.W #$002C                                                         ;A9B7E1;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B7E4;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B7E4;
     RTS                                                                  ;A9B7E7;
 
 
 ;;; $B7E8: Mother Brain body function - firing bomb - fired bomb ;;;
 Function_MotherBrainBody_FiringBomb_FiredBomb:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B7E8;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B7E8;
     BPL MotherBrainFiringBomb_FinishFiringBomb_return                    ;A9B7EB;
     JSR.W MakeMotherBrainStandUp                                         ;A9B7ED;
     BCS MotherBrainFiringBomb_FinishFiringBomb                           ;A9B7F0;
     LDA.W #Function_MotherBrainBody_FiringBomb_StandUp                   ;A9B7F2;
-    STA.W MotherBrainBody.function                                                          ;A9B7F5; fallthrough to Function_MotherBrainBody_FiringBomb_StandUp
+    STA.W MotherBrainBody.function                                       ;A9B7F5; fallthrough to Function_MotherBrainBody_FiringBomb_StandUp
 
 
 ;;; $B7F8: Mother Brain body function - firing bomb - stand up ;;;
@@ -6406,13 +6406,13 @@ Function_MotherBrainBody_FiringBomb_StandUp:
 ;;; $B7FD: Mother Brain firing bomb - finish firing bomb ;;;
 MotherBrainFiringBomb_FinishFiringBomb:
     LDY.W #Function_MotherBrainBody_Phase2_Thinking                      ;A9B7FD;
-    LDA.L MotherBrainBody.phase2CorpseState                                                        ;A9B800;
+    LDA.L MotherBrainBody.phase2CorpseState                              ;A9B800;
     BEQ .notCorpse                                                       ;A9B804;
     LDY.W #Function_MotherBrainBody_Phase2_KillBabyMetroid_Attack        ;A9B806;
 
   .notCorpse:
     TYA                                                                  ;A9B809;
-    STA.W MotherBrainBody.function                                                          ;A9B80A;
+    STA.W MotherBrainBody.function                                       ;A9B80A;
 
   .return:
     RTS                                                                  ;A9B80D;
@@ -6427,58 +6427,58 @@ Function_MBBody_Phase2_FiringLaser_PositionHeadQuickly:
     LDX.W #$0006                                                         ;A9B819;
 
 +   TXA                                                                  ;A9B81C;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9B81D;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9B821;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9B81D;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9B821;
     LDA.W #$0200                                                         ;A9B825;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9B828;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9B828;
     LDA.W #Function_MBBody_Phase2_FiringLaser_PositionHeadSlowlyAndFire  ;A9B82C;
-    STA.W MotherBrainBody.function                                                          ;A9B82F;
+    STA.W MotherBrainBody.function                                       ;A9B82F;
     LDA.W #$0004                                                         ;A9B832;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B835;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B835;
     RTS                                                                  ;A9B838;
 
 
 ;;; $B839: Mother Brain body function - second phase - firing laser - position head slowly and fire ;;;
 Function_MBBody_Phase2_FiringLaser_PositionHeadSlowlyAndFire:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B839;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B839;
     BMI .timerExpired                                                    ;A9B83C;
     RTS                                                                  ;A9B83E;
 
   .timerExpired:
     LDY.W #$0100                                                         ;A9B83F;
-    LDA.L MotherBrainBody.neckAngleDelta                                                        ;A9B842;
+    LDA.L MotherBrainBody.neckAngleDelta                                 ;A9B842;
     BPL +                                                                ;A9B846;
     LDY.W #$FF00                                                         ;A9B848;
 
 +   TYA                                                                  ;A9B84B;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9B84C;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9B84C;
     LDA.W #InstList_MotherBrainHead_Attacking_Laser                      ;A9B850;
     JSR.W SetMotherBrainHeadInstList                                     ;A9B853;
     LDA.W #Function_MotherBrainBody_Phase2_FiringLaser_FinishAttack      ;A9B856;
-    STA.W MotherBrainBody.function                                                          ;A9B859;
+    STA.W MotherBrainBody.function                                       ;A9B859;
     LDA.W #$0010                                                         ;A9B85C;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B85F;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B85F;
     RTS                                                                  ;A9B862;
 
 
 ;;; $B863: Mother Brain body function - second phase - firing laser - finish attack ;;;
 Function_MotherBrainBody_Phase2_FiringLaser_FinishAttack:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B863;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B863;
     BMI .timerExpired                                                    ;A9B866;
     RTS                                                                  ;A9B868;
 
   .timerExpired:
     LDA.W #$0004                                                         ;A9B869;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9B86C;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9B870;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9B86C;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9B870;
     LDA.W #Function_MotherBrainBody_Phase2_Thinking                      ;A9B874;
-    STA.W MotherBrainBody.function                                                          ;A9B877;
+    STA.W MotherBrainBody.function                                       ;A9B877;
     JMP.W Function_MotherBrainBody_Phase2_Thinking                       ;A9B87A;
 
 
 ;;; $B87D: Mother Brain body function - second phase - firing death beam ;;;
 Function_MotherBrainBody_Phase2_FiringDeathBeam:
-    LDA.L MotherBrainBody.deathBeamAttackPhase                                                        ;A9B87D;
+    LDA.L MotherBrainBody.deathBeamAttackPhase                           ;A9B87D;
     ASL A                                                                ;A9B881;
     TAX                                                                  ;A9B882;
     JSR.W (.pointers,X)                                                  ;A9B883;
@@ -6499,12 +6499,12 @@ MotherBrainPhase2_FiringDeathBeam_BackUp:
     JSR.W MakeMotherBrainWalkBackwards                                   ;A9B895;
     BCC .return                                                          ;A9B898;
     LDA.W #$0008                                                         ;A9B89A;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9B89D;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9B89D;
     LDA.W #$0006                                                         ;A9B8A1;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9B8A4;
-    LDA.L MotherBrainBody.deathBeamAttackPhase                                                        ;A9B8A8;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9B8A4;
+    LDA.L MotherBrainBody.deathBeamAttackPhase                           ;A9B8A8;
     INC A                                                                ;A9B8AC;
-    STA.L MotherBrainBody.deathBeamAttackPhase                                                        ;A9B8AD;
+    STA.L MotherBrainBody.deathBeamAttackPhase                           ;A9B8AD;
 
   .return:
     RTS                                                                  ;A9B8B1;
@@ -6513,13 +6513,13 @@ MotherBrainPhase2_FiringDeathBeam_BackUp:
 ;;; $B8B2: Mother Brain second phase - firing death beam - wait for any active bombs ;;;
 MotherBrainPhase2_FiringDeathBeam_WaitForAnyActiveBombs:
 ; [Mother Brain death beam attack phase] = 1
-    LDA.L MotherBrainBody.bombCounter                                                        ;A9B8B2;
+    LDA.L MotherBrainBody.bombCounter                                    ;A9B8B2;
     BNE .return                                                          ;A9B8B6;
     LDA.W #InstList_MotherBrainBody_DeathBeamMode                        ;A9B8B8;
     JSR.W SetMotherBrainBodyInstList                                     ;A9B8BB;
-    LDA.L MotherBrainBody.deathBeamAttackPhase                                                        ;A9B8BE;
+    LDA.L MotherBrainBody.deathBeamAttackPhase                           ;A9B8BE;
     INC A                                                                ;A9B8C2;
-    STA.L MotherBrainBody.deathBeamAttackPhase                                                        ;A9B8C3;
+    STA.L MotherBrainBody.deathBeamAttackPhase                           ;A9B8C3;
 
   .return:
     RTS                                                                  ;A9B8C7;
@@ -6537,13 +6537,13 @@ MotherBrainPhase2_FiringDeathBeam_Finish:
     LDA.W #InstList_MotherBrainHead_Neutral_Phase2_0                     ;A9B8C9;
     JSR.W SetMotherBrainHeadInstList                                     ;A9B8CC;
     LDA.W #$0002                                                         ;A9B8CF;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9B8D2;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9B8D2;
     LDA.W #$0004                                                         ;A9B8D6;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9B8D9;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9B8D9;
     LDA.W #$0000                                                         ;A9B8DD;
-    STA.L MotherBrainBody.deathBeamAttackPhase                                                        ;A9B8E0;
+    STA.L MotherBrainBody.deathBeamAttackPhase                           ;A9B8E0;
     LDA.W #Function_MotherBrainBody_Phase2_Thinking                      ;A9B8E4;
-    STA.W MotherBrainBody.function                                                          ;A9B8E7;
+    STA.W MotherBrainBody.function                                       ;A9B8E7;
     RTS                                                                  ;A9B8EA;
 
 
@@ -6552,17 +6552,17 @@ Function_MotherBrainBody_Phase2_FiringRainbowBeam_ExtendNeck:
     LDA.W #InstList_MotherBrainHead_Neutral_Phase2_0                     ;A9B8EB;
     JSR.W SetMotherBrainHeadInstList                                     ;A9B8EE;
     LDA.W #$0040                                                         ;A9B8F1;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9B8F4;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9B8F4;
     LDA.W #$0001                                                         ;A9B8F8;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A9B8FB;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A9B8FB;
     LDA.W #$0002                                                         ;A9B8FF;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9B902;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9B902;
     LDA.W #$0004                                                         ;A9B906;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9B909;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9B909;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_StartCharging        ;A9B90D;
-    STA.W MotherBrainBody.function                                                          ;A9B910;
+    STA.W MotherBrainBody.function                                       ;A9B910;
     LDA.W #$0100                                                         ;A9B913;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B916;
+    STA.W MotherBrainBody.functionTimer                                  ;A9B916;
 
   .return:
     RTS                                                                  ;A9B919;
@@ -6570,12 +6570,12 @@ Function_MotherBrainBody_Phase2_FiringRainbowBeam_ExtendNeck:
 
 ;;; $B91A: Mother Brain body function - second phase - firing rainbow beam - start charging rainbow beam ;;;
 Function_MBBody_Phase2_FiringRainbowBeam_StartCharging:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B91A;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B91A;
     BPL Function_MotherBrainBody_Phase2_FiringRainbowBeam_ExtendNeck_return ;A9B91D;
     LDA.W #InstList_MotherBrainHead_ChargingRainbowBeam_0                ;A9B91F;
     JSR.W SetMotherBrainHeadInstList                                     ;A9B922;
     LDA.W #Function_MotherBrainBody_Phase2_FiringRainbowBeam_RetractNeck ;A9B925;
-    STA.W MotherBrainBody.function                                                          ;A9B928; fallthrough to Function_MotherBrainBody_Phase2_FiringRainbowBeam_RetractNeck
+    STA.W MotherBrainBody.function                                       ;A9B928; fallthrough to Function_MotherBrainBody_Phase2_FiringRainbowBeam_RetractNeck
 
 
 ;;; $B92B: Mother Brain body function - second phase - firing rainbow beam - retract neck ;;;
@@ -6584,19 +6584,19 @@ Function_MotherBrainBody_Phase2_FiringRainbowBeam_RetractNeck:
     JSR.W MakeMBWalkBackwardsReallySlowTowardsXPositionInA_RetractHead   ;A9B92E;
     BCC Function_MotherBrainBody_Phase2_FiringRainbowBeam_ExtendNeck_return ;A9B931;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_WaitForBeamToCharge  ;A9B933;
-    STA.W MotherBrainBody.function                                                          ;A9B936;
+    STA.W MotherBrainBody.function                                       ;A9B936;
     LDA.W #$0100                                                         ;A9B939;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B93C; fallthrough to Function_MBBody_Phase2_FiringRainbowBeam_WaitForBeamToCharge
+    STA.W MotherBrainBody.functionTimer                                  ;A9B93C; fallthrough to Function_MBBody_Phase2_FiringRainbowBeam_WaitForBeamToCharge
 
 
 ;;; $B93F: Mother Brain body function - second phase - firing rainbow beam - wait for beam to charge ;;;
 Function_MBBody_Phase2_FiringRainbowBeam_WaitForBeamToCharge:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B93F;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B93F;
     BPL Function_MotherBrainBody_Phase2_FiringRainbowBeam_ExtendNeck_return ;A9B942;
     LDA.W #$0071                                                         ;A9B944;
     JSL.L QueueSound_Lib2_Max6                                           ;A9B947;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_ExtendNeckDown       ;A9B94B;
-    STA.W MotherBrainBody.function                                                          ;A9B94E; fallthrough to Function_MBBody_Phase2_FiringRainbowBeam_ExtendNeckDown
+    STA.W MotherBrainBody.function                                       ;A9B94E; fallthrough to Function_MBBody_Phase2_FiringRainbowBeam_ExtendNeckDown
 
 
 ;;; $B951: Mother Brain body function - second phase - firing rainbow beam - extend neck down ;;;
@@ -6604,14 +6604,14 @@ Function_MBBody_Phase2_FiringRainbowBeam_ExtendNeckDown:
     LDA.W #$0008                                                         ;A9B951;
     STA.W $0CCC                                                          ;A9B954;
     LDA.W #$0006                                                         ;A9B957;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9B95A;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9B95E;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9B95A;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9B95E;
     LDA.W #$0500                                                         ;A9B962;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9B965;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9B965;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_StartFiringRainbowBeam ;A9B969;
-    STA.W MotherBrainBody.function                                                          ;A9B96C;
+    STA.W MotherBrainBody.function                                       ;A9B96C;
     LDA.W #$0010                                                         ;A9B96F;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9B972; fallthough to Function_MBBody_Phase2_FiringRainbowBeam_StartFiringRainbowBeam
+    STA.W MotherBrainBody.functionTimer                                  ;A9B972; fallthough to Function_MBBody_Phase2_FiringRainbowBeam_StartFiringRainbowBeam
 
 
 ;;; $B975: Mother Brain body function - second phase - firing rainbow beam - start firing rainbow beam ;;;
@@ -6619,7 +6619,7 @@ Function_MBBody_Phase2_FiringRainbowBeam_StartFiringRainbowBeam:
     JSR.W AimMotherBrainRainbowBeam_IncreaseWidth                        ;A9B975;
     LDA.W $0CEE                                                          ;A9B978;
     BNE .return                                                          ;A9B97B;
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9B97D;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9B97D;
     BMI .timerExpired                                                    ;A9B980;
 
   .return:
@@ -6633,19 +6633,19 @@ Function_MBBody_Phase2_FiringRainbowBeam_StartFiringRainbowBeam:
     LDA.W #InstList_MotherBrainHead_FiringRainbowBeam                    ;A9B98E;
     JSR.W SetMotherBrainHeadInstList                                     ;A9B991;
     LDA.W #$0200                                                         ;A9B994;
-    STA.L MotherBrainBody.rainbowBeamAngularWidth                                                        ;A9B997;
+    STA.L MotherBrainBody.rainbowBeamAngularWidth                        ;A9B997;
     JSL.L Spawn_MotherBrainRainbowBeam_HDMAObject                        ;A9B99B;
-    STA.L MotherBrainBody.HDMAObjectIndex                                                        ;A9B99F;
+    STA.L MotherBrainBody.HDMAObjectIndex                                ;A9B99F;
     LDA.W #$0040                                                         ;A9B9A3;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9B9A6;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9B9A6;
     LDA.W #$0001                                                         ;A9B9AA;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A9B9AD;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A9B9AD;
     LDA.W #$0002                                                         ;A9B9B1;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9B9B4;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9B9B4;
     LDA.W #$0004                                                         ;A9B9B8;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9B9BB;
-    STZ.W MotherBrainBody.rainbowBeamExplosionIndex                                                          ;A9B9BF;
-    STZ.W MotherBrainBody.rainbowBeamExplosionTimer                                                          ;A9B9C2;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9B9BB;
+    STZ.W MotherBrainBody.rainbowBeamExplosionIndex                      ;A9B9BF;
+    STZ.W MotherBrainBody.rainbowBeamExplosionTimer                      ;A9B9C2;
     LDA.W #$0005                                                         ;A9B9C5;
     LDY.W $09C2                                                          ;A9B9C8;
     CPY.W #$02BC                                                         ;A9B9CB;
@@ -6655,9 +6655,9 @@ Function_MBBody_Phase2_FiringRainbowBeam_StartFiringRainbowBeam:
   .greaterThan2BC:
     JSL.L Run_Samus_Command                                              ;A9B9D3;
     LDA.W #$0006                                                         ;A9B9D7;
-    STA.L MotherBrainBody.numberOfTimesToQueueRainbowBeamSFX                                                        ;A9B9DA;
+    STA.L MotherBrainBody.numberOfTimesToQueueRainbowBeamSFX             ;A9B9DA;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_MoveSamusTowardWall  ;A9B9DE;
-    STA.W MotherBrainBody.function                                                          ;A9B9E1;
+    STA.W MotherBrainBody.function                                       ;A9B9E1;
     RTS                                                                  ;A9B9E4;
 
 
@@ -6670,8 +6670,8 @@ Function_MBBody_Phase2_FiringRainbowBeam_MoveSamusTowardWall:
     JSR.W MoveSamusTowardsWallDueToRainbowBeam                           ;A9B9F1;
     BCC .return                                                          ;A9B9F4;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_1FrameDelay          ;A9B9F6;
-    STA.W MotherBrainBody.function                                                          ;A9B9F9;
-    STZ.W MotherBrainBody.functionTimer                                                          ;A9B9FC;
+    STA.W MotherBrainBody.function                                       ;A9B9F9;
+    STZ.W MotherBrainBody.functionTimer                                  ;A9B9FC;
 
   .return:
     RTS                                                                  ;A9B9FF;
@@ -6684,14 +6684,14 @@ Function_MBBody_Phase2_FiringRainbowBeam_1FrameDelay:
     JSR.W AimMotherBrainRainbowBeam_IncreaseWidth                        ;A9BA06;
     JSR.W HandleMotherBrainRainbowBeamExplosions                         ;A9BA09;
     JSR.W MoveSamusTowardsWallDueToRainbowBeam                           ;A9BA0C;
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9BA0F;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9BA0F;
     BPL .return                                                          ;A9BA12;
     LDA.W #$0008                                                         ;A9BA14;
     STA.W $183E                                                          ;A9BA17;
     LDA.W #$0008                                                         ;A9BA1A;
     STA.W $1840                                                          ;A9BA1D;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_StartDrainingSamus   ;A9BA20;
-    STA.W MotherBrainBody.function                                                          ;A9BA23;
+    STA.W MotherBrainBody.function                                       ;A9BA23;
 
   .return:
     RTS                                                                  ;A9BA26;
@@ -6700,9 +6700,9 @@ Function_MBBody_Phase2_FiringRainbowBeam_1FrameDelay:
 ;;; $BA27: Mother Brain body function - second phase - firing rainbow beam - start draining Samus ;;;
 Function_MBBody_Phase2_FiringRainbowBeam_StartDrainingSamus:
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_DrainingSamus        ;A9BA27;
-    STA.W MotherBrainBody.function                                                          ;A9BA2A;
+    STA.W MotherBrainBody.function                                       ;A9BA2A;
     LDA.W #$012B                                                         ;A9BA2D;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9BA30;
+    STA.W MotherBrainBody.functionTimer                                  ;A9BA30;
     STA.W $1840                                                          ;A9BA33;
     LDA.W #$0008                                                         ;A9BA36;
     STA.W $183E                                                          ;A9BA39; fallthough to Function_MBBody_Phase2_FiringRainbowBeam_DrainingSamus
@@ -6717,10 +6717,10 @@ Function_MBBody_Phase2_FiringRainbowBeam_DrainingSamus:
     JSL.L DamageSamusDueToRainbowBeam                                    ;A9BA48;
     JSR.W DecrementAmmoDueToRainbowBeam                                  ;A9BA4C;
     JSR.W MoveSamusTowardsMiddleOfWall                                   ;A9BA4F;
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9BA52;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9BA52;
     BPL Function_MBBody_Phase2_FiringRainbowBeam_FinishFiring_return     ;A9BA55;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_FinishFiring         ;A9BA57;
-    STA.W MotherBrainBody.function                                                          ;A9BA5A;
+    STA.W MotherBrainBody.function                                       ;A9BA5A;
     RTS                                                                  ;A9BA5D;
 
 
@@ -6730,18 +6730,18 @@ Function_MBBody_Phase2_FiringRainbowBeam_FinishFiring:
     JSR.W HandleMotherBrainBodyRainbowBeamPalette                        ;A9BA61;
     JSR.W AimMotherBrainRainbowBeam                                      ;A9BA64;
     JSR.W HandleMotherBrainRainbowBeamExplosions                         ;A9BA67;
-    LDA.L MotherBrainBody.rainbowBeamAngularWidth                                                        ;A9BA6A;
+    LDA.L MotherBrainBody.rainbowBeamAngularWidth                        ;A9BA6A;
     SEC                                                                  ;A9BA6E;
     SBC.W #$0180                                                         ;A9BA6F;
-    STA.L MotherBrainBody.rainbowBeamAngularWidth                                                        ;A9BA72;
+    STA.L MotherBrainBody.rainbowBeamAngularWidth                        ;A9BA72;
     CMP.W #$0200                                                         ;A9BA76;
     BPL .return                                                          ;A9BA79;
     LDA.W #$0200                                                         ;A9BA7B;
-    STA.L MotherBrainBody.rainbowBeamAngularWidth                                                        ;A9BA7E;
+    STA.L MotherBrainBody.rainbowBeamAngularWidth                        ;A9BA7E;
     LDA.W #$FF00                                                         ;A9BA82;
-    STA.W MotherBrainBody.customSamusXVelocity                                                          ;A9BA85;
-    STZ.W MotherBrainBody.customSamusYVelocity                                                          ;A9BA88;
-    LDA.L MotherBrainBody.HDMAObjectIndex                                                        ;A9BA8B;
+    STA.W MotherBrainBody.customSamusXVelocity                           ;A9BA85;
+    STZ.W MotherBrainBody.customSamusYVelocity                           ;A9BA88;
+    LDA.L MotherBrainBody.HDMAObjectIndex                                ;A9BA8B;
     TAX                                                                  ;A9BA8F;
     STZ.W $18B4,X                                                        ;A9BA90;
     STZ.W $1840                                                          ;A9BA93;
@@ -6752,13 +6752,13 @@ Function_MBBody_Phase2_FiringRainbowBeam_FinishFiring:
     LDA.W #$0002                                                         ;A9BAA2;
     JSL.L QueueSound_Lib1_Max6                                           ;A9BAA5;
     LDA.W #$0000                                                         ;A9BAA9;
-    STA.L MotherBrainBody.rainbowBeamSFXIsPlayingFlag                                                        ;A9BAAC;
+    STA.L MotherBrainBody.rainbowBeamSFXIsPlayingFlag                    ;A9BAAC;
     LDA.W #$0001                                                         ;A9BAB0;
     JSL.L Run_Samus_Command                                              ;A9BAB3;
     LDA.W #$0008                                                         ;A9BAB7;
     STA.W $0CCC                                                          ;A9BABA;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_LetSamusFall         ;A9BABD;
-    STA.W MotherBrainBody.function                                                          ;A9BAC0;
+    STA.W MotherBrainBody.function                                       ;A9BAC0;
 
   .return:
     RTS                                                                  ;A9BAC3;
@@ -6769,7 +6769,7 @@ Function_MBBody_Phase2_FiringRainbowBeam_LetSamusFall:
     LDA.W #$0000                                                         ;A9BAC4;
     JSL.L DrainedSamusController                                         ;A9BAC7;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_WaitForSamusToLand   ;A9BACB;
-    STA.W MotherBrainBody.function                                                          ;A9BACE; fallthrough to Function_MBBody_Phase2_FiringRainbowBeam_WaitForSamusToLand
+    STA.W MotherBrainBody.function                                       ;A9BACE; fallthrough to Function_MBBody_Phase2_FiringRainbowBeam_WaitForSamusToLand
 
 
 ;;; $BAD1: Mother Brain body function - second phase - firing rainbow beam - wait for Samus to hit ground ;;;
@@ -6777,7 +6777,7 @@ Function_MBBody_Phase2_FiringRainbowBeam_WaitForSamusToLand:
     JSR.W MoveSamusForFallingAfterRainbowBeam                            ;A9BAD1;
     BCC .return                                                          ;A9BAD4;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_LowerHead            ;A9BAD6;
-    STA.W MotherBrainBody.function                                                          ;A9BAD9;
+    STA.W MotherBrainBody.function                                       ;A9BAD9;
 
   .return:
     RTS                                                                  ;A9BADC;
@@ -6786,17 +6786,17 @@ Function_MBBody_Phase2_FiringRainbowBeam_WaitForSamusToLand:
 ;;; $BADD: Mother Brain body function - second phase - firing rainbow beam - lower head ;;;
 Function_MBBody_Phase2_FiringRainbowBeam_LowerHead:
     LDA.W #$0040                                                         ;A9BADD;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9BAE0;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9BAE0;
     LDA.W #$0001                                                         ;A9BAE4;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A9BAE7;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A9BAE7;
     LDA.W #$0002                                                         ;A9BAEB;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9BAEE;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9BAEE;
     LDA.W #$0004                                                         ;A9BAF2;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9BAF5;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9BAF5;
     LDA.W #Function_MBBody_Phase2_FiringRainbowBeam_DecideNextAction     ;A9BAF9;
-    STA.W MotherBrainBody.function                                                          ;A9BAFC;
+    STA.W MotherBrainBody.function                                       ;A9BAFC;
     LDA.W #$0080                                                         ;A9BAFF;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9BB02;
+    STA.W MotherBrainBody.functionTimer                                  ;A9BB02;
 
   .return:
     RTS                                                                  ;A9BB05;
@@ -6804,13 +6804,13 @@ Function_MBBody_Phase2_FiringRainbowBeam_LowerHead:
 
 ;;; $BB06: Mother Brain body function - second phase - firing rainbow beam - decide next action ;;;
 Function_MBBody_Phase2_FiringRainbowBeam_DecideNextAction:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9BB06;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9BB06;
     BPL Function_MBBody_Phase2_FiringRainbowBeam_LowerHead_return        ;A9BB09;
     LDA.W $09C2                                                          ;A9BB0B;
     CMP.W #$0190                                                         ;A9BB0E;
     BMI .lessThan190                                                     ;A9BB11;
     LDA.W #Function_MotherBrainBody_Phase2_FiringRainbowBeam_ExtendNeck  ;A9BB13;
-    STA.W MotherBrainBody.function                                                          ;A9BB16;
+    STA.W MotherBrainBody.function                                       ;A9BB16;
     RTS                                                                  ;A9BB19;
 
   .lessThan190:
@@ -6820,20 +6820,20 @@ Function_MBBody_Phase2_FiringRainbowBeam_DecideNextAction:
     ADC.W #$0010                                                         ;A9BB21;
     JSR.W MakeMotherBrainWalkForwards                                    ;A9BB24;
     LDA.W #Function_MBBody_Phase2_FinishSamusOff_GetSamusToLowEnergy     ;A9BB27;
-    STA.W MotherBrainBody.function                                                          ;A9BB2A;
+    STA.W MotherBrainBody.function                                       ;A9BB2A;
     RTS                                                                  ;A9BB2D;
 
 
 ;;; $BB2E: Play Mother Brain rainbow beam sound effect ;;;
 PlayMotherBrainRainbowBeamSFX:
-    LDA.L MotherBrainBody.numberOfTimesToQueueRainbowBeamSFX                                                        ;A9BB2E;
+    LDA.L MotherBrainBody.numberOfTimesToQueueRainbowBeamSFX             ;A9BB2E;
     BMI .return                                                          ;A9BB32;
     DEC A                                                                ;A9BB34;
-    STA.L MotherBrainBody.numberOfTimesToQueueRainbowBeamSFX                                                        ;A9BB35;
+    STA.L MotherBrainBody.numberOfTimesToQueueRainbowBeamSFX             ;A9BB35;
     LDA.W #$0040                                                         ;A9BB39;
     JSL.L QueueSound_Lib1_Max6                                           ;A9BB3C;
     LDA.W #$0001                                                         ;A9BB40;
-    STA.L MotherBrainBody.rainbowBeamSFXIsPlayingFlag                                                        ;A9BB43;
+    STA.L MotherBrainBody.rainbowBeamSFXIsPlayingFlag                    ;A9BB43;
 
   .return:
     RTS                                                                  ;A9BB47;
@@ -6850,26 +6850,26 @@ MakeMBWalkBackwardsReallySlowTowardsXPositionInA_RetractHead:
 ;;; $BB51: Retract Mother Brain's head ;;;
 RetractMotherBrainsHead:
     LDA.W #$0050                                                         ;A9BB51;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9BB54;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9BB54;
     LDA.W #$0001                                                         ;A9BB58;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A9BB5B;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A9BB5B;
     LDA.W #$0008                                                         ;A9BB5F;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9BB62;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9BB62;
     LDA.W #$0006                                                         ;A9BB66;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9BB69;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9BB69;
     RTS                                                                  ;A9BB6D;
 
 
 ;;; $BB6E: Aim Mother Brain rainbow beam and increase width ;;;
 AimMotherBrainRainbowBeam_IncreaseWidth:
-    LDA.L MotherBrainBody.rainbowBeamAngularWidth                                                        ;A9BB6E;
+    LDA.L MotherBrainBody.rainbowBeamAngularWidth                        ;A9BB6E;
     CLC                                                                  ;A9BB72;
     ADC.W #$0180                                                         ;A9BB73;
     CMP.W #$0C00                                                         ;A9BB76;
     BMI +                                                                ;A9BB79;
     LDA.W #$0C00                                                         ;A9BB7B;
 
-+   STA.L MotherBrainBody.rainbowBeamAngularWidth                                                        ;A9BB7E; fallthrough to AimMotherBrainRainbowBeam
++   STA.L MotherBrainBody.rainbowBeamAngularWidth                        ;A9BB7E; fallthrough to AimMotherBrainRainbowBeam
 
 
 ;;; $BB82: Aim Mother Brain rainbow beam ;;;
@@ -6892,7 +6892,7 @@ AimMotherBrainRainbowBeam:
     EOR.W #$FFFF                                                         ;A9BBA4;
     INC A                                                                ;A9BBA7;
     AND.W #$00FF                                                         ;A9BBA8;
-    STA.L MotherBrainBody.rainbowBeamAngle                                                        ;A9BBAB;
+    STA.L MotherBrainBody.rainbowBeamAngle                               ;A9BBAB;
     RTS                                                                  ;A9BBAF;
 
 
@@ -6911,7 +6911,7 @@ MoveSamusTowardsWallDueToRainbowBeam:
     LDA.W #$1000                                                         ;A9BBB5;
     JSR.W MoveSamusHorizontallyTowardsWall                               ;A9BBB8;
     BCS .return                                                          ;A9BBBB;
-    LDA.L MotherBrainBody.rainbowBeamAngle                                                        ;A9BBBD;
+    LDA.L MotherBrainBody.rainbowBeamAngle                               ;A9BBBD;
     STA.B $12                                                            ;A9BBC1;
     LDA.W #$1000                                                         ;A9BBC3;
     JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A9BBC6;
@@ -6939,18 +6939,18 @@ MoveSamusTowardsMiddleOfWall:
 MoveSamusForFallingAfterRainbowBeam:
 ;; Returns:
 ;;     Carry: Set if reached floor (not in Y position range 30h..BFh), clear otherwise
-    LDA.W MotherBrainBody.customSamusXVelocity                                                          ;A9BBE1;
+    LDA.W MotherBrainBody.customSamusXVelocity                           ;A9BBE1;
     CLC                                                                  ;A9BBE4;
     ADC.W #$0002                                                         ;A9BBE5;
     BMI +                                                                ;A9BBE8;
     LDA.W #$0000                                                         ;A9BBEA;
 
-+   STA.W MotherBrainBody.customSamusXVelocity                                                          ;A9BBED;
++   STA.W MotherBrainBody.customSamusXVelocity                           ;A9BBED;
     JSR.W MoveSamusHorizontallyTowardsWall                               ;A9BBF0;
-    LDA.W MotherBrainBody.customSamusYVelocity                                                          ;A9BBF3;
+    LDA.W MotherBrainBody.customSamusYVelocity                           ;A9BBF3;
     CLC                                                                  ;A9BBF6;
     ADC.W #$0018                                                         ;A9BBF7;
-    STA.W MotherBrainBody.customSamusYVelocity                                                          ;A9BBFA; fallthrough to MoveSamusVerticallyTowardsCeilingFloor
+    STA.W MotherBrainBody.customSamusYVelocity                           ;A9BBFA; fallthrough to MoveSamusVerticallyTowardsCeilingFloor
 
 
 ;;; $BBFD: Move Samus vertically towards ceiling/floor ;;;
@@ -7031,15 +7031,15 @@ MoveSamusHorizontallyTowardsWall:
 
 ;;; $BC76: Handle Mother Brain rainbow beam explosions ;;;
 HandleMotherBrainRainbowBeamExplosions:
-    DEC.W MotherBrainBody.rainbowBeamExplosionTimer                                                          ;A9BC76;
+    DEC.W MotherBrainBody.rainbowBeamExplosionTimer                      ;A9BC76;
     BMI .timerExpired                                                    ;A9BC79;
     RTS                                                                  ;A9BC7B;
 
   .timerExpired:
     LDA.W #$0008                                                         ;A9BC7C;
-    STA.W MotherBrainBody.rainbowBeamExplosionTimer                                                          ;A9BC7F;
-    INC.W MotherBrainBody.rainbowBeamExplosionIndex                                                          ;A9BC82;
-    LDA.W MotherBrainBody.rainbowBeamExplosionIndex                                                          ;A9BC85;
+    STA.W MotherBrainBody.rainbowBeamExplosionTimer                      ;A9BC7F;
+    INC.W MotherBrainBody.rainbowBeamExplosionIndex                      ;A9BC82;
+    LDA.W MotherBrainBody.rainbowBeamExplosionIndex                      ;A9BC85;
     AND.W #$0007                                                         ;A9BC88;
     ASL A                                                                ;A9BC8B;
     TAX                                                                  ;A9BC8C;
@@ -7063,7 +7063,7 @@ HandleMotherBrainRainbowBeamExplosions:
 ;;; $BCC6: Mother Brain body rainbow beam palette animation index = 0 ;;;
 ResetMotherBrainBodyRainbowBeamPaletteAnimationIndex:
     LDA.W #$0000                                                         ;A9BCC6;
-    STA.L MotherBrainBody.rainbowBeamPaletteAnimationIndex                                                        ;A9BCC9;
+    STA.L MotherBrainBody.rainbowBeamPaletteAnimationIndex               ;A9BCC9;
     RTS                                                                  ;A9BCCD;
 
 
@@ -7100,7 +7100,7 @@ HandleMotherBrainBodyRainbowBeamPalette:
     RTS                                                                  ;A9BD05;
 
   .loadIndex:
-    LDA.L MotherBrainBody.rainbowBeamPaletteAnimationIndex                                                        ;A9BD06;
+    LDA.L MotherBrainBody.rainbowBeamPaletteAnimationIndex               ;A9BD06;
 
   .restart:
     TAX                                                                  ;A9BD0A;
@@ -7109,7 +7109,7 @@ HandleMotherBrainBodyRainbowBeamPalette:
     INX                                                                  ;A9BD11;
     INX                                                                  ;A9BD12;
     TXA                                                                  ;A9BD13;
-    STA.L MotherBrainBody.rainbowBeamPaletteAnimationIndex                                                        ;A9BD14;
+    STA.L MotherBrainBody.rainbowBeamPaletteAnimationIndex               ;A9BD14;
     LDA.L MotherBrainBodyRainbowBeamPalette_Pointers-2,X                 ;A9BD18;
     TAY                                                                  ;A9BD1C; fallthrough to WriteMotherBrainPalette
 
@@ -7177,7 +7177,7 @@ Function_MBBody_Phase2_FinishSamusOff_GetSamusToLowEnergy:
 
   .done:
     LDA.W #Function_MotherBrainBody_Phase2_FinishSamusOff_StandUp        ;A9BD91;
-    STA.W MotherBrainBody.function                                                          ;A9BD94;
+    STA.W MotherBrainBody.function                                       ;A9BD94;
 
   .return:
     RTS                                                                  ;A9BD97;
@@ -7188,32 +7188,32 @@ Function_MotherBrainBody_Phase2_FinishSamusOff_StandUp:
     JSR.W MakeMotherBrainStandUp                                         ;A9BD98;
     BCC Function_MBBody_Phase2_FinishSamusOff_LoadBabyMetroid_return     ;A9BD9B;
     LDA.W #Function_MBBody_Phase2_FinishSamusOff_AdmireJobWellDone       ;A9BD9D;
-    STA.W MotherBrainBody.function                                                          ;A9BDA0;
+    STA.W MotherBrainBody.function                                       ;A9BDA0;
     LDA.W #$0010                                                         ;A9BDA3;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9BDA6; fallthrough to Function_MBBody_Phase2_FinishSamusOff_AdmireJobWellDone
+    STA.W MotherBrainBody.functionTimer                                  ;A9BDA6; fallthrough to Function_MBBody_Phase2_FinishSamusOff_AdmireJobWellDone
 
 
 ;;; $BDA9: Mother Brain body function - second phase - finish Samus off - admire job well done ;;;
 Function_MBBody_Phase2_FinishSamusOff_AdmireJobWellDone:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9BDA9;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9BDA9;
     BPL Function_MBBody_Phase2_FinishSamusOff_LoadBabyMetroid_return     ;A9BDAC;
     LDA.W #InstList_MotherBrainHead_Stretching_Phase2_0                  ;A9BDAE;
     JSR.W SetMotherBrainHeadInstList                                     ;A9BDB1;
     LDA.W #Function_MBBody_Phase2_FinishSamusOff_ChargeFinalRainbowBeam  ;A9BDB4;
-    STA.W MotherBrainBody.function                                                          ;A9BDB7;
+    STA.W MotherBrainBody.function                                       ;A9BDB7;
     LDA.W #$0100                                                         ;A9BDBA;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9BDBD;
+    STA.W MotherBrainBody.functionTimer                                  ;A9BDBD;
     RTS                                                                  ;A9BDC0;
 
 
 ;;; $BDC1: Mother Brain body function - second phase - finish Samus off - charge final rainbow beam ;;;
 Function_MBBody_Phase2_FinishSamusOff_ChargeFinalRainbowBeam:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9BDC1;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9BDC1;
     BPL Function_MBBody_Phase2_FinishSamusOff_LoadBabyMetroid_return     ;A9BDC4;
     LDA.W #InstList_MotherBrainHead_ChargingRainbowBeam_0                ;A9BDC6;
     JSR.W SetMotherBrainHeadInstList                                     ;A9BDC9;
     LDA.W #Function_MBBody_Phase2_FinishSamusOff_LoadBabyMetroid         ;A9BDCC;
-    STA.W MotherBrainBody.function                                                          ;A9BDCF; fallthough to Function_MBBody_Phase2_FinishSamusOff_LoadBabyMetroid
+    STA.W MotherBrainBody.function                                       ;A9BDCF; fallthough to Function_MBBody_Phase2_FinishSamusOff_LoadBabyMetroid
 
 
 ;;; $BDD2: Mother Brain body function - second phase - finish Samus off - charge final rainbow beam / load Shitroid ;;;
@@ -7224,9 +7224,9 @@ Function_MBBody_Phase2_FinishSamusOff_LoadBabyMetroid:
     JSR.W RetractMotherBrainsHead                                        ;A9BDDA;
     JSR.W SpawnBabyMetroidCutscene                                       ;A9BDDD;
     LDA.W #Function_MBBody_Phase2_FinishSamusOff_FireFinalRainbowBeam    ;A9BDE0;
-    STA.W MotherBrainBody.function                                                          ;A9BDE3;
+    STA.W MotherBrainBody.function                                       ;A9BDE3;
     LDA.W #$0100                                                         ;A9BDE6;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9BDE9;
+    STA.W MotherBrainBody.functionTimer                                  ;A9BDE9;
 
   .return:
     RTS                                                                  ;A9BDEC;
@@ -7234,20 +7234,20 @@ Function_MBBody_Phase2_FinishSamusOff_LoadBabyMetroid:
 
 ;;; $BDED: Mother Brain body function - second phase - finish Samus off - fire final rainbow beam ;;;
 Function_MBBody_Phase2_FinishSamusOff_FireFinalRainbowBeam:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9BDED;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9BDED;
     BPL Function_MBBody_Phase2_FinishSamusOff_LoadBabyMetroid_return     ;A9BDF0;
     JSR.W ResetMotherBrainBodyRainbowBeamPaletteAnimationIndex           ;A9BDF2;
     LDA.W #InstList_MotherBrainHead_FiringRainbowBeam                    ;A9BDF5;
     JSR.W SetMotherBrainHeadInstList                                     ;A9BDF8;
     LDA.W #$0006                                                         ;A9BDFB;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9BDFE;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9BE02;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9BDFE;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9BE02;
     LDA.W #$0500                                                         ;A9BE06;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9BE09;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9BE09;
     LDA.W #$0071                                                         ;A9BE0D;
     JSL.L QueueSound_Lib2_Max6                                           ;A9BE10;
     LDA.W #.return                                                       ;A9BE14;
-    STA.W MotherBrainBody.function                                                          ;A9BE17;
+    STA.W MotherBrainBody.function                                       ;A9BE17;
 
   .return:
     RTS                                                                  ;A9BE1A;
@@ -7258,7 +7258,7 @@ SpawnBabyMetroidCutscene:
     LDX.W #PopulationData_BabyMetroidCutscene                            ;A9BE1B;
     JSL.L SpawnEnemy                                                     ;A9BE1E;
     TXA                                                                  ;A9BE22;
-    STA.L MotherBrainBody.BabyMetroidEnemyIndex                                                        ;A9BE23;
+    STA.L MotherBrainBody.BabyMetroidEnemyIndex                          ;A9BE23;
     RTS                                                                  ;A9BE27;
 
 
@@ -7288,37 +7288,37 @@ PopulationData_BabyMetroidCutscene:
 ;;; $BE38: Mother Brain body function - drained by Shitroid - taken aback by Shitroid ;;;
 Function_MotherBrainBody_DrainedByBabyMetroid_TakenAback:
     LDA.W #$0003                                                         ;A9BE38;
-    STA.L MotherBrainBody.form                                                        ;A9BE3B;
+    STA.L MotherBrainBody.form                                           ;A9BE3B;
     LDA.W #$0008                                                         ;A9BE3F;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9BE42;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9BE46;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9BE42;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9BE46;
     LDA.W #$0700                                                         ;A9BE4A;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9BE4D;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9BE4D;
     LDA.W #Function_MotherBrainBody_DrainedByBabyMetroid_RegainBalance   ;A9BE51;
-    STA.W MotherBrainBody.function                                                          ;A9BE54;
+    STA.W MotherBrainBody.function                                       ;A9BE54;
     LDA.W #$0030                                                         ;A9BE57;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9BE5A; fallthrough to Function_MotherBrainBody_DrainedByBabyMetroid_RegainBalance
+    STA.W MotherBrainBody.functionTimer                                  ;A9BE5A; fallthrough to Function_MotherBrainBody_DrainedByBabyMetroid_RegainBalance
 
 
 ;;; $BE5D: Mother Brain body function - drained by Shitroid - regain balance ;;;
 Function_MotherBrainBody_DrainedByBabyMetroid_RegainBalance:
     JSR.W HandleMotherBrainBodyRainbowBeamPalette                        ;A9BE5D;
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9BE60;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9BE60;
     BPL .return                                                          ;A9BE63;
     LDA.W #Function_MBBody_DrainedByBabyMetroid_FiringRainbowBeam        ;A9BE65;
-    STA.W MotherBrainBody.function                                                          ;A9BE68;
+    STA.W MotherBrainBody.function                                       ;A9BE68;
     LDA.W #Function_MotherBrainBody_PainfulWalking_WalkForwards          ;A9BE6B;
-    STA.L MotherBrainBody.painfulWalkingFunction                                                        ;A9BE6E;
+    STA.L MotherBrainBody.painfulWalkingFunction                         ;A9BE6E;
     LDA.W #$0000                                                         ;A9BE72;
-    STA.L MotherBrainBody.painfulWalkingStage                                                        ;A9BE75;
+    STA.L MotherBrainBody.painfulWalkingStage                            ;A9BE75;
     LDA.W #$0002                                                         ;A9BE79;
-    STA.L MotherBrainBody.painfulWalkingAnimationDelay                                                        ;A9BE7C;
+    STA.L MotherBrainBody.painfulWalkingAnimationDelay                   ;A9BE7C;
     LDA.W #$0001                                                         ;A9BE80;
-    LDA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A9BE83;
+    LDA.L MotherBrainBody.enableNeckMovementFlag                         ;A9BE83;
     LDA.W #$0002                                                         ;A9BE87;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9BE8A;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9BE8A;
     LDA.W #$0004                                                         ;A9BE8E;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9BE91;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9BE91;
 
   .return:
     RTS                                                                  ;A9BE95;
@@ -7326,37 +7326,37 @@ Function_MotherBrainBody_DrainedByBabyMetroid_RegainBalance:
 
 ;;; $BE96: Mother Brain body function - drained by Shitroid - firing rainbow beam ;;;
 Function_MBBody_DrainedByBabyMetroid_FiringRainbowBeam:
-    LDA.L MotherBrainBody.brainMainShakeTimer                                                        ;A9BE96;
+    LDA.L MotherBrainBody.brainMainShakeTimer                            ;A9BE96;
     BNE +                                                                ;A9BE9A;
     LDA.W #$0032                                                         ;A9BE9C;
-    STA.L MotherBrainBody.brainMainShakeTimer                                                        ;A9BE9F;
+    STA.L MotherBrainBody.brainMainShakeTimer                            ;A9BE9F;
 
 +   JSR.W HandleMotherBrainBodyRainbowBeamPalette                        ;A9BEA3;
-    LDA.L MotherBrainBody.painfulWalkingFunction                                                        ;A9BEA6;
+    LDA.L MotherBrainBody.painfulWalkingFunction                         ;A9BEA6;
     STA.B $12                                                            ;A9BEAA;
     PEA.W .manualReturn-1                                                ;A9BEAC;
     JMP.W ($0012)                                                        ;A9BEAF;
 
   .manualReturn:
-    LDA.L MotherBrainBody.painfulWalkingStage                                                        ;A9BEB2;
+    LDA.L MotherBrainBody.painfulWalkingStage                            ;A9BEB2;
     ASL A                                                                ;A9BEB6;
     TAY                                                                  ;A9BEB7;
     LDA.W .walkingAnimationDelays,Y                                      ;A9BEB8;
     AND.W #$00FF                                                         ;A9BEBB;
-    STA.L MotherBrainBody.painfulWalkingAnimationDelay                                                        ;A9BEBE;
+    STA.L MotherBrainBody.painfulWalkingAnimationDelay                   ;A9BEBE;
     LDA.W .neckAngleDeltas,Y                                             ;A9BEC2;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9BEC5;
-    LDA.L MotherBrainBody.painfulWalkingStage                                                        ;A9BEC9;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9BEC5;
+    LDA.L MotherBrainBody.painfulWalkingStage                            ;A9BEC9;
     CMP.W #$0006                                                         ;A9BECD;
     BNE .return                                                          ;A9BED0;
     LDA.W #$0000                                                         ;A9BED2;
-    STA.L MotherBrainBody.rainbowBeamSFXIsPlayingFlag                                                        ;A9BED5;
-    STA.L MotherBrainBody.enableBrainPaletteHandlingFlag                                                        ;A9BED9;
+    STA.L MotherBrainBody.rainbowBeamSFXIsPlayingFlag                    ;A9BED5;
+    STA.L MotherBrainBody.enableBrainPaletteHandlingFlag                 ;A9BED9;
     JSR.W WriteMotherBrainPhase2DeathPalette                             ;A9BEDD;
     LDA.W #$0002                                                         ;A9BEE0;
     JSL.L QueueSound_Lib1_Max6                                           ;A9BEE3;
     LDA.W #Function_MBBody_DrainedByBabyMetroid_RainbowBeamHasRunOut     ;A9BEE7;
-    STA.W MotherBrainBody.function                                                          ;A9BEEA;
+    STA.W MotherBrainBody.function                                       ;A9BEEA;
 
   .return:
     RTS                                                                  ;A9BEED;
@@ -7370,24 +7370,24 @@ Function_MBBody_DrainedByBabyMetroid_FiringRainbowBeam:
 
 ;;; $BF0E: Mother Brain body function - drained by Shitroid - rainbow beam has run out ;;;
 Function_MBBody_DrainedByBabyMetroid_RainbowBeamHasRunOut:
-    LDA.L MotherBrainBody.painfulWalkingFunction                                                        ;A9BF0E;
+    LDA.L MotherBrainBody.painfulWalkingFunction                         ;A9BF0E;
     STA.B $12                                                            ;A9BF12;
     PEA.W .manualReturn-1                                                ;A9BF14;
     JMP.W ($0012)                                                        ;A9BF17;
 
   .manualReturn:
-    LDA.L MotherBrainBody.painfulWalkingStage                                                        ;A9BF1A;
+    LDA.L MotherBrainBody.painfulWalkingStage                            ;A9BF1A;
     CMP.W #$0008                                                         ;A9BF1E;
     BMI Function_MBBody_DrainedByBabyMetroid_GoIntoLowPowerMode_return   ;A9BF21;
     LDA.W #$0040                                                         ;A9BF23;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9BF26;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9BF26;
     LDA.W #$0008                                                         ;A9BF2A;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9BF2D;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9BF31;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9BF2D;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9BF31;
     LDA.W #InstList_MotherBrainHead_DyingDrool_0                         ;A9BF35;
     JSR.W SetMotherBrainHeadInstList                                     ;A9BF38;
     LDA.W #Function_MBBody_DrainedByBabyMetroid_MoveToBackOfRoom         ;A9BF3B;
-    STA.W MotherBrainBody.function                                                          ;A9BF3E; fallthrough to Function_MBBody_DrainedByBabyMetroid_MoveToBackOfRoom
+    STA.W MotherBrainBody.function                                       ;A9BF3E; fallthrough to Function_MBBody_DrainedByBabyMetroid_MoveToBackOfRoom
 
 
 ;;; $BF41: Mother Brain body function - drained by Shitroid - move to back of room ;;;
@@ -7396,25 +7396,25 @@ Function_MBBody_DrainedByBabyMetroid_MoveToBackOfRoom:
     JSR.W MakeMotherBrainWalkBackwards                                   ;A9BF44;
     BCC Function_MBBody_DrainedByBabyMetroid_GoIntoLowPowerMode_return   ;A9BF47;
     LDA.W #Function_MBBody_DrainedByBabyMetroid_GoIntoLowPowerMode       ;A9BF49;
-    STA.W MotherBrainBody.function                                                          ;A9BF4C;
+    STA.W MotherBrainBody.function                                       ;A9BF4C;
     LDA.W #$0000                                                         ;A9BF4F;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9BF52; fallthrough to Function_MBBody_DrainedByBabyMetroid_GoIntoLowPowerMode
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9BF52; fallthrough to Function_MBBody_DrainedByBabyMetroid_GoIntoLowPowerMode
 
 
 ;;; $BF56: Mother Brain body function - drained by Shitroid - go into low power mode ;;;
 Function_MBBody_DrainedByBabyMetroid_GoIntoLowPowerMode:
-    LDA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9BF56;
-    ORA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9BF5A;
+    LDA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9BF56;
+    ORA.L MotherBrainBody.upperNeckMovementIndex                         ;A9BF5A;
     BNE .return                                                          ;A9BF5E;
-    STA.L MotherBrainBody.enableDroolGenerationFlag                                                        ;A9BF60;
-    LDA.L MotherBrainBody.pose                                                        ;A9BF64;
+    STA.L MotherBrainBody.enableDroolGenerationFlag                      ;A9BF60;
+    LDA.L MotherBrainBody.pose                                           ;A9BF64;
     BNE .return                                                          ;A9BF68;
     LDA.W #InstList_MotherBrainBody_Crouch_Fast                          ;A9BF6A;
     JSR.W SetMotherBrainBodyInstList                                     ;A9BF6D;
     LDA.W #Function_MBBody_DrainedByBabyMetroid_PrepareTransitionToGrey  ;A9BF70;
-    STA.W MotherBrainBody.function                                                          ;A9BF73;
+    STA.W MotherBrainBody.function                                       ;A9BF73;
     LDA.W #$0040                                                         ;A9BF76;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9BF79;
+    STA.W MotherBrainBody.functionTimer                                  ;A9BF79;
 
   .return:
     RTS                                                                  ;A9BF7C;
@@ -7422,50 +7422,50 @@ Function_MBBody_DrainedByBabyMetroid_GoIntoLowPowerMode:
 
 ;;; $BF7D: Mother Brain body function - drained by Shitroid - prepare transition to grey ;;;
 Function_MBBody_DrainedByBabyMetroid_PrepareTransitionToGrey:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9BF7D;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9BF7D;
     BPL Function_MBBody_DrainedByBabyMetroid_GoIntoLowPowerMode_return   ;A9BF80;
     LDA.W #$0000                                                         ;A9BF82;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A9BF85;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A9BF85;
     LDA.W #Function_MBBody_DrainedByBabyMetroid_TransitionToGrey         ;A9BF89;
-    STA.W MotherBrainBody.function                                                          ;A9BF8C;
+    STA.W MotherBrainBody.function                                       ;A9BF8C;
     LDA.W #$0010                                                         ;A9BF8F;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9BF92; fallthrough to Function_MBBody_DrainedByBabyMetroid_TransitionToGrey
+    STA.W MotherBrainBody.functionTimer                                  ;A9BF92; fallthrough to Function_MBBody_DrainedByBabyMetroid_TransitionToGrey
 
 
 ;;; $BF95: Mother Brain body function - drained by Shitroid - transition to grey ;;;
 Function_MBBody_DrainedByBabyMetroid_TransitionToGrey:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9BF95;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9BF95;
     BPL Function_MBBody_DrainedByBabyMetroid_GoIntoLowPowerMode_return   ;A9BF98;
     LDA.W #$0010                                                         ;A9BF9A;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9BF9D;
-    LDA.L MotherBrainBody.greyTransitionCounter                                                        ;A9BFA0;
+    STA.W MotherBrainBody.functionTimer                                  ;A9BF9D;
+    LDA.L MotherBrainBody.greyTransitionCounter                          ;A9BFA0;
     INC A                                                                ;A9BFA4;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A9BFA5;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A9BFA5;
     DEC A                                                                ;A9BFA9;
     JSL.L TransitionMotherBrainPaletteToGrey_DrainedByBabyMetroid        ;A9BFAA;
     BCC Function_MBBody_DrainedByBabyMetroid_GoIntoLowPowerMode_return   ;A9BFAE;
     LDA.W #$8CA0                                                         ;A9BFB0; 36,000 HP
     STA.W $0FCC                                                          ;A9BFB3;
     LDA.W #$0001                                                         ;A9BFB6;
-    STA.L MotherBrainBody.phase2CorpseState                                                        ;A9BFB9;
+    STA.L MotherBrainBody.phase2CorpseState                              ;A9BFB9;
     DEC A                                                                ;A9BFBD;
-    STA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag                                                        ;A9BFBE;
+    STA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag         ;A9BFBE;
     LDA.W #$0002                                                         ;A9BFC2;
-    STA.L MotherBrainBody.form                                                        ;A9BFC5;
+    STA.L MotherBrainBody.form                                           ;A9BFC5;
     LDA.W #Function_MotherBrainBody_Phase2_ReviveSelf_InanimateGrey      ;A9BFC9;
-    STA.W MotherBrainBody.function                                                          ;A9BFCC;
+    STA.W MotherBrainBody.function                                       ;A9BFCC;
     RTS                                                                  ;A9BFCF;
 
 
 ;;; $BFD0: Mother Brain painful walking function - walk forwards  ;;;
 Function_MotherBrainBody_PainfulWalking_WalkForwards:
-    LDA.L MotherBrainBody.painfulWalkingAnimationDelay                                                        ;A9BFD0;
+    LDA.L MotherBrainBody.painfulWalkingAnimationDelay                   ;A9BFD0;
     TAY                                                                  ;A9BFD4;
     LDA.W #$0048                                                         ;A9BFD5;
     JSR.W MakeMotherBrainWalkForwards                                    ;A9BFD8;
     BCC .return                                                          ;A9BFDB;
     LDA.W #Function_MotherBrainBody_PainfulWalking_WalkingForwards       ;A9BFDD;
-    STA.L MotherBrainBody.painfulWalkingFunction                                                        ;A9BFE0;
+    STA.L MotherBrainBody.painfulWalkingFunction                         ;A9BFE0;
     JSR.W SetMotherBrainPainfulWalkingFunctionTimer                      ;A9BFE4;
 
   .return:
@@ -7474,15 +7474,15 @@ Function_MotherBrainBody_PainfulWalking_WalkForwards:
 
 ;;; $BFE8: Mother Brain painful walking function - walking forwards ;;;
 Function_MotherBrainBody_PainfulWalking_WalkingForwards:
-    LDA.L MotherBrainBody.painfulWalkingFunctionTimer                                                        ;A9BFE8;
+    LDA.L MotherBrainBody.painfulWalkingFunctionTimer                    ;A9BFE8;
     DEC A                                                                ;A9BFEC;
-    STA.L MotherBrainBody.painfulWalkingFunctionTimer                                                        ;A9BFED;
+    STA.L MotherBrainBody.painfulWalkingFunctionTimer                    ;A9BFED;
     BNE .return                                                          ;A9BFF1;
-    LDA.L MotherBrainBody.painfulWalkingStage                                                        ;A9BFF3;
+    LDA.L MotherBrainBody.painfulWalkingStage                            ;A9BFF3;
     INC A                                                                ;A9BFF7;
-    STA.L MotherBrainBody.painfulWalkingStage                                                        ;A9BFF8;
+    STA.L MotherBrainBody.painfulWalkingStage                            ;A9BFF8;
     LDA.W #Function_MotherBrainBody_PainfulWalking_WalkBackwards         ;A9BFFC;
-    STA.L MotherBrainBody.painfulWalkingFunction                                                        ;A9BFFF;
+    STA.L MotherBrainBody.painfulWalkingFunction                         ;A9BFFF;
 
   .return:
     RTS                                                                  ;A9C003;
@@ -7490,13 +7490,13 @@ Function_MotherBrainBody_PainfulWalking_WalkingForwards:
 
 ;;; $C004: Mother Brain painful walking function - walk backwards ;;;
 Function_MotherBrainBody_PainfulWalking_WalkBackwards:
-    LDA.L MotherBrainBody.painfulWalkingAnimationDelay                                                        ;A9C004;
+    LDA.L MotherBrainBody.painfulWalkingAnimationDelay                   ;A9C004;
     TAY                                                                  ;A9C008;
     LDA.W #$0028                                                         ;A9C009;
     JSR.W MakeMotherBrainWalkBackwards                                   ;A9C00C;
     BCC .return                                                          ;A9C00F;
     LDA.W #Function_MotherBrainBody_PainfulWalking_WalkingBackwards      ;A9C011;
-    STA.L MotherBrainBody.painfulWalkingFunction                                                        ;A9C014;
+    STA.L MotherBrainBody.painfulWalkingFunction                         ;A9C014;
     JSR.W SetMotherBrainPainfulWalkingFunctionTimer                      ;A9C018;
 
   .return:
@@ -7505,15 +7505,15 @@ Function_MotherBrainBody_PainfulWalking_WalkBackwards:
 
 ;;; $C01C: Mother Brain painful walking function - walking backwards ;;;
 Function_MotherBrainBody_PainfulWalking_WalkingBackwards:
-    LDA.L MotherBrainBody.painfulWalkingFunctionTimer                                                        ;A9C01C;
+    LDA.L MotherBrainBody.painfulWalkingFunctionTimer                    ;A9C01C;
     DEC A                                                                ;A9C020;
-    STA.L MotherBrainBody.painfulWalkingFunctionTimer                                                        ;A9C021;
+    STA.L MotherBrainBody.painfulWalkingFunctionTimer                    ;A9C021;
     BNE .return                                                          ;A9C025;
-    LDA.L MotherBrainBody.painfulWalkingStage                                                        ;A9C027;
+    LDA.L MotherBrainBody.painfulWalkingStage                            ;A9C027;
     INC A                                                                ;A9C02B;
-    STA.L MotherBrainBody.painfulWalkingStage                                                        ;A9C02C;
+    STA.L MotherBrainBody.painfulWalkingStage                            ;A9C02C;
     LDA.W #Function_MotherBrainBody_PainfulWalking_WalkForwards          ;A9C030;
-    STA.L MotherBrainBody.painfulWalkingFunction                                                        ;A9C033;
+    STA.L MotherBrainBody.painfulWalkingFunction                         ;A9C033;
 
   .return:
     RTS                                                                  ;A9C037;
@@ -7521,12 +7521,12 @@ Function_MotherBrainBody_PainfulWalking_WalkingBackwards:
 
 ;;; $C038: Set Mother Brain painful walking function timer ;;;
 SetMotherBrainPainfulWalkingFunctionTimer:
-    LDA.L MotherBrainBody.painfulWalkingStage                                                        ;A9C038;
+    LDA.L MotherBrainBody.painfulWalkingStage                            ;A9C038;
     ASL A                                                                ;A9C03C;
     TAY                                                                  ;A9C03D;
     LDA.W .timers,Y                                                      ;A9C03E;
     AND.W #$00FF                                                         ;A9C041;
-    STA.L MotherBrainBody.painfulWalkingFunctionTimer                                                        ;A9C044;
+    STA.L MotherBrainBody.painfulWalkingFunctionTimer                    ;A9C044;
     RTS                                                                  ;A9C048;
 
   .timers:
@@ -7536,9 +7536,9 @@ SetMotherBrainPainfulWalkingFunctionTimer:
 ;;; $C059: Mother Brain body function - second phase - revive self - inanimate grey ;;;
 Function_MotherBrainBody_Phase2_ReviveSelf_InanimateGrey:
     LDA.W #Function_MotherBrainBody_Phase2_ReviveSelf_ShowSignsOfLife    ;A9C059;
-    STA.W MotherBrainBody.function                                                          ;A9C05C;
+    STA.W MotherBrainBody.function                                       ;A9C05C;
     LDA.W #$0300                                                         ;A9C05F;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9C062;
+    STA.W MotherBrainBody.functionTimer                                  ;A9C062;
 
   .return:
     RTS                                                                  ;A9C065;
@@ -7546,41 +7546,41 @@ Function_MotherBrainBody_Phase2_ReviveSelf_InanimateGrey:
 
 ;;; $C066: Mother Brain body function - second phase - revive self - show signs of life ;;;
 Function_MotherBrainBody_Phase2_ReviveSelf_ShowSignsOfLife:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9C066;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9C066;
     BPL Function_MotherBrainBody_Phase2_ReviveSelf_InanimateGrey_return  ;A9C069;
     LDA.W #$0001                                                         ;A9C06B;
-    STA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag                                                        ;A9C06E;
-    STA.L MotherBrainBody.enableDroolGenerationFlag                                                        ;A9C072;
+    STA.L MotherBrainBody.smallPurpleBreathGenerationEnabledFlag         ;A9C06E;
+    STA.L MotherBrainBody.enableDroolGenerationFlag                      ;A9C072;
     LDA.W #Function_MBBody_Phase2_ReviveSelf_PrepareTransitionToGrey     ;A9C076;
-    STA.W MotherBrainBody.function                                                          ;A9C079;
+    STA.W MotherBrainBody.function                                       ;A9C079;
     LDA.W #$00E0                                                         ;A9C07C;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9C07F; fallthrough to Function_MBBody_Phase2_ReviveSelf_PrepareTransitionToGrey
+    STA.W MotherBrainBody.functionTimer                                  ;A9C07F; fallthrough to Function_MBBody_Phase2_ReviveSelf_PrepareTransitionToGrey
 
 
 ;;; $C082: Mother Brain body function - second phase - revive self - prepare transition from grey ;;;
 Function_MBBody_Phase2_ReviveSelf_PrepareTransitionToGrey:
     LDA.W #Function_MBBody_Phase2_ReviveSelf_TransitionFromGrey          ;A9C082;
-    STA.W MotherBrainBody.function                                                          ;A9C085;
+    STA.W MotherBrainBody.function                                       ;A9C085;
     LDA.W #$0000                                                         ;A9C088;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A9C08B; fallthrough to Function_MBBody_Phase2_ReviveSelf_TransitionFromGrey
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A9C08B; fallthrough to Function_MBBody_Phase2_ReviveSelf_TransitionFromGrey
 
 
 ;;; $C08F: Mother Brain body function - second phase - revive self - transition from grey ;;;
 Function_MBBody_Phase2_ReviveSelf_TransitionFromGrey:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9C08F;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9C08F;
     BPL Function_MotherBrainBody_Phase2_ReviveSelf_InanimateGrey_return  ;A9C092;
     LDA.W #$0010                                                         ;A9C094;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9C097;
-    LDA.L MotherBrainBody.greyTransitionCounter                                                        ;A9C09A;
+    STA.W MotherBrainBody.functionTimer                                  ;A9C097;
+    LDA.L MotherBrainBody.greyTransitionCounter                          ;A9C09A;
     INC A                                                                ;A9C09E;
-    STA.L MotherBrainBody.greyTransitionCounter                                                        ;A9C09F;
+    STA.L MotherBrainBody.greyTransitionCounter                          ;A9C09F;
     DEC A                                                                ;A9C0A3;
     JSL.L TransitionMotherBrainPaletteFromGrey_DrainedByBabyMetroid      ;A9C0A4;
     BCC Function_MotherBrainBody_Phase2_ReviveSelf_InanimateGrey_return  ;A9C0A8;
     LDA.W #Function_MotherBrainBody_Phase2_ReviveSelf_WakeUp             ;A9C0AA;
-    STA.W MotherBrainBody.function                                                          ;A9C0AD;
+    STA.W MotherBrainBody.function                                       ;A9C0AD;
     LDA.W #$0001                                                         ;A9C0B0;
-    STA.L MotherBrainBody.enableBrainPaletteHandlingFlag                                                        ;A9C0B3;
+    STA.L MotherBrainBody.enableBrainPaletteHandlingFlag                 ;A9C0B3;
     JSR.W SetupMotherBrainHeadNormalPalette                              ;A9C0B7; fallthrough to Function_MotherBrainBody_Phase2_ReviveSelf_WakeUp
 
 
@@ -7589,44 +7589,44 @@ Function_MotherBrainBody_Phase2_ReviveSelf_WakeUp:
     JSR.W MakeMotherBrainStandUp                                         ;A9C0BA;
     BCC Function_MotherBrainBody_Phase2_ReviveSelf_InanimateGrey_return  ;A9C0BD;
     LDA.W #$0006                                                         ;A9C0BF;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9C0C2;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9C0C6;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9C0C2;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9C0C6;
     LDA.W #$0500                                                         ;A9C0CA;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9C0CD;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9C0CD;
     LDA.W #$0001                                                         ;A9C0D1;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A9C0D4;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A9C0D4;
     LDA.W #Function_MotherBrainBody_Phase2_ReviveSelf_WakeUpStretch      ;A9C0D8;
-    STA.W MotherBrainBody.function                                                          ;A9C0DB;
+    STA.W MotherBrainBody.function                                       ;A9C0DB;
     LDA.W #$0010                                                         ;A9C0DE;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9C0E1; fallthrough to Function_MotherBrainBody_Phase2_ReviveSelf_WakeUpStretch
+    STA.W MotherBrainBody.functionTimer                                  ;A9C0E1; fallthrough to Function_MotherBrainBody_Phase2_ReviveSelf_WakeUpStretch
 
 
 ;;; $C0E4: Mother Brain body function - second phase - revive self - wake-up stretch ;;;
 Function_MotherBrainBody_Phase2_ReviveSelf_WakeUpStretch:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9C0E4;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9C0E4;
     BPL Function_MBBody_Phase2_ReviveSelf_WalkUpToBabyMetroid_return     ;A9C0E7;
     LDA.W #InstList_MotherBrainHead_Stretching_Phase3_0                  ;A9C0E9;
     JSR.W SetMotherBrainHeadInstList                                     ;A9C0EC;
     LDA.W #Function_MBBody_Phase2_ReviveSelf_WalkUpToBabyMetroid         ;A9C0EF;
-    STA.W MotherBrainBody.function                                                          ;A9C0F2;
+    STA.W MotherBrainBody.function                                       ;A9C0F2;
     LDA.W #$0080                                                         ;A9C0F5;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9C0F8; fallthrough to Function_MBBody_Phase2_ReviveSelf_WalkUpToBabyMetroid
+    STA.W MotherBrainBody.functionTimer                                  ;A9C0F8; fallthrough to Function_MBBody_Phase2_ReviveSelf_WalkUpToBabyMetroid
 
 
 ;;; $C0FB: Mother Brain body function - second phase - revive self - walk up to Shitroid ;;;
 Function_MBBody_Phase2_ReviveSelf_WalkUpToBabyMetroid:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9C0FB;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9C0FB;
     BPL .return                                                          ;A9C0FE;
     LDY.W #$0004                                                         ;A9C100;
     LDA.W #$0050                                                         ;A9C103;
     JSR.W MakeMotherBrainWalkForwards                                    ;A9C106;
     BCC .return                                                          ;A9C109;
     LDA.W #Func_MBBody_Phase2_ReviveSelf_PrepareNeckForBabyMetroidDeath  ;A9C10B;
-    STA.W MotherBrainBody.function                                                          ;A9C10E;
+    STA.W MotherBrainBody.function                                       ;A9C10E;
     LDA.W #$0002                                                         ;A9C111;
-    STA.L MotherBrainBody.phase2CorpseState                                                        ;A9C114;
+    STA.L MotherBrainBody.phase2CorpseState                              ;A9C114;
     DEC A                                                                ;A9C118;
-    STA.L MotherBrainBody.enableHealthBasedPaletteHandlingFlag                                                        ;A9C119;
+    STA.L MotherBrainBody.enableHealthBasedPaletteHandlingFlag           ;A9C119;
 
   .return:
     RTS                                                                  ;A9C11D;
@@ -7635,17 +7635,17 @@ Function_MBBody_Phase2_ReviveSelf_WalkUpToBabyMetroid:
 ;;; $C11E: Mother Brain body function - second phase - revive self - prepare neck for Shitroid murder ;;;
 Func_MBBody_Phase2_ReviveSelf_PrepareNeckForBabyMetroidDeath:
     LDA.W #$0000                                                         ;A9C11E;
-    STA.L MotherBrainBody.BabyMetroidAttackCounter                                                        ;A9C121;
+    STA.L MotherBrainBody.BabyMetroidAttackCounter                       ;A9C121;
     LDA.W #$0001                                                         ;A9C125;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A9C128;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A9C128;
     LDA.W #$0002                                                         ;A9C12C;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9C12F;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9C12F;
     LDA.W #$0004                                                         ;A9C133;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9C136;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9C136;
     LDA.W #$0040                                                         ;A9C13A;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9C13D;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9C13D;
     LDA.W #Func_MBBody_Phase2_ReviveSelf_FinishPrepForBabyMetroidDeath   ;A9C141;
-    STA.W MotherBrainBody.function                                                          ;A9C144; fallthrough to Func_MBBody_Phase2_ReviveSelf_FinishPrepForBabyMetroidDeath
+    STA.W MotherBrainBody.function                                       ;A9C144; fallthrough to Func_MBBody_Phase2_ReviveSelf_FinishPrepForBabyMetroidDeath
 
 
 ;;; $C147: Mother Brain body function - second phase - revive self - finish preparing for Shitroid murder ;;;
@@ -7656,7 +7656,7 @@ Func_MBBody_Phase2_ReviveSelf_FinishPrepForBabyMetroidDeath:
 
   .standing:
     LDA.W #Function_MotherBrainBody_Phase2_KillBabyMetroid_Attack        ;A9C14D;
-    STA.W MotherBrainBody.function                                                          ;A9C150;
+    STA.W MotherBrainBody.function                                       ;A9C150;
     LDY.W #$000A                                                         ;A9C153;
     LDA.W #$0050                                                         ;A9C156;
     JSR.W MakeMotherBrainWalkForwards                                    ;A9C159; fallthrough to Function_MotherBrainBody_Phase2_KillBabyMetroid_Attack
@@ -7670,7 +7670,7 @@ Function_MotherBrainBody_Phase2_KillBabyMetroid_Attack:
     RTS                                                                  ;A9C164;
 
 +   LDY.W #InstList_MotherBrainHead_AttackingSamus_4OnionRings_Phase3    ;A9C165;
-    LDA.L MotherBrainBody.BabyMetroidEnemyIndex                                                        ;A9C168;
+    LDA.L MotherBrainBody.BabyMetroidEnemyIndex                          ;A9C168;
     BEQ .zeroIndex                                                       ;A9C16C;
     LDY.W #InstList_MotherBrainHead_Attacking_BabyMetroid                ;A9C16E;
 
@@ -7678,9 +7678,9 @@ Function_MotherBrainBody_Phase2_KillBabyMetroid_Attack:
     TYA                                                                  ;A9C171;
     JSR.W SetMotherBrainHeadInstList                                     ;A9C172;
     LDA.W #Function_MBBody_Phase2_KillBabyMetroid_AttackCooldown         ;A9C175;
-    STA.W MotherBrainBody.function                                                          ;A9C178;
+    STA.W MotherBrainBody.function                                       ;A9C178;
     LDA.W #$0040                                                         ;A9C17B;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9C17E;
+    STA.W MotherBrainBody.functionTimer                                  ;A9C17E;
 
   .return:
     RTS                                                                  ;A9C181;
@@ -7688,10 +7688,10 @@ Function_MotherBrainBody_Phase2_KillBabyMetroid_Attack:
 
 ;;; $C182: Mother Brain body function - second phase - murder Shitroid - Shitroid attack cooldown ;;;
 Function_MBBody_Phase2_KillBabyMetroid_AttackCooldown:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9C182;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9C182;
     BPL Function_MotherBrainBody_Phase2_KillBabyMetroid_Attack_return    ;A9C185;
     LDA.W #Function_MotherBrainBody_Phase2_KillBabyMetroid_Attack        ;A9C187;
-    STA.W MotherBrainBody.function                                                          ;A9C18A; fallthrough to RTS_A9C18D
+    STA.W MotherBrainBody.function                                       ;A9C18A; fallthrough to RTS_A9C18D
 
 
 RTS_A9C18D:
@@ -7712,7 +7712,7 @@ Function_MBBody_Phase2_ExecuteFinalBabyMetroidAttack:
     LDA.W #InstList_MotherBrainHead_Attacking_BabyMetroid                ;A9C19A;
     JSR.W SetMotherBrainHeadInstList                                     ;A9C19D;
     LDA.W #.return                                                       ;A9C1A0;
-    STA.W MotherBrainBody.function                                                          ;A9C1A3;
+    STA.W MotherBrainBody.function                                       ;A9C1A3;
 
   .return:
     RTS                                                                  ;A9C1A6;
@@ -7720,7 +7720,7 @@ Function_MBBody_Phase2_ExecuteFinalBabyMetroidAttack:
 
 ;;; $C1A7: Maybe make Mother Brain stand up or lean down ;;;
 MaybeMakeMotherBrainStandUpOrLeanDown:
-    LDA.L MotherBrainBody.pose                                                        ;A9C1A7;
+    LDA.L MotherBrainBody.pose                                           ;A9C1A7;
     BEQ .standing                                                        ;A9C1AB;
     CMP.W #$0006                                                         ;A9C1AD;
     BNE .return                                                          ;A9C1B0;
@@ -7744,11 +7744,11 @@ MaybeMakeMotherBrainStandUpOrLeanDown:
 ;;; $C1CF: Mother Brain body function - third phase - recover from cutscene - make some distance ;;;
 Function_MBBody_Phase3_RecoverFromCutscene_MakeSomeDistance:
     LDA.W #$0004                                                         ;A9C1CF;
-    STA.L MotherBrainBody.form                                                        ;A9C1D2;
+    STA.L MotherBrainBody.form                                           ;A9C1D2;
     LDA.W #Function_MBBody_Phase3_RecoverFromCutscene_SetupForFighting   ;A9C1D6;
-    STA.W MotherBrainBody.function                                                          ;A9C1D9;
+    STA.W MotherBrainBody.function                                       ;A9C1D9;
     LDA.W #$0020                                                         ;A9C1DC;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9C1DF;
+    STA.W MotherBrainBody.functionTimer                                  ;A9C1DF;
     LDA.W $0F7A                                                          ;A9C1E2;
     SEC                                                                  ;A9C1E5;
     SBC.W #$000E                                                         ;A9C1E6;
@@ -7761,14 +7761,14 @@ Function_MBBody_Phase3_RecoverFromCutscene_MakeSomeDistance:
 
 ;;; $C1F0: Mother Brain body function - third phase - recover from cutscene - set up for fighting ;;;
 Function_MBBody_Phase3_RecoverFromCutscene_SetupForFighting:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9C1F0;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9C1F0;
     BPL Function_MBBody_Phase3_RecoverFromCutscene_MakeSomeDistance_return ;A9C1F3;
     LDA.W #Function_MBBody_Phase3_Fighting_Main                          ;A9C1F5;
-    STA.W MotherBrainBody.function                                                          ;A9C1F8;
+    STA.W MotherBrainBody.function                                       ;A9C1F8;
     LDA.W #Function_MotherBrainNeck_Normal                               ;A9C1FB;
-    STA.L MotherBrainBody.neckFunction                                                        ;A9C1FE;
+    STA.L MotherBrainBody.neckFunction                                   ;A9C1FE;
     LDA.W #Function_MotherBrainBody_Walking_TryToInchForward             ;A9C202;
-    STA.L MotherBrainBody.walkingFunction                                                        ;A9C205; fallthrough to Function_MBBody_Phase3_Fighting_Main
+    STA.L MotherBrainBody.walkingFunction                                ;A9C205; fallthrough to Function_MBBody_Phase3_Fighting_Main
 
 
 ;;; $C209: Mother Brain body function - third phase - fighting - main ;;;
@@ -7776,7 +7776,7 @@ Function_MBBody_Phase3_Fighting_Main:
     LDA.W $0FCC                                                          ;A9C209;
     BNE .notDead                                                         ;A9C20C;
     LDA.W #Function_MBBody_Phase3_DeathSequence_MoveToBackOfRoom         ;A9C20E;
-    STA.W MotherBrainBody.function                                                          ;A9C211;
+    STA.W MotherBrainBody.function                                       ;A9C211;
 
   .return:
     RTS                                                                  ;A9C214;
@@ -7784,9 +7784,9 @@ Function_MBBody_Phase3_Fighting_Main:
   .notDead:
     JSR.W MotherBrainPhase3NeckHandler                                   ;A9C215;
     JSR.W MotherBrainPhase3WalkingHandler                                ;A9C218;
-    LDA.L MotherBrainBody.pose                                                        ;A9C21B;
+    LDA.L MotherBrainBody.pose                                           ;A9C21B;
     BNE Function_MBBody_Phase3_Fighting_Main_return                      ;A9C21F;
-    LDA.L MotherBrainBody.disableAttacks                                                        ;A9C221;
+    LDA.L MotherBrainBody.disableAttacks                                 ;A9C221;
     BNE Function_MBBody_Phase3_Fighting_Main_return                      ;A9C225;
     LDA.W $05E5                                                          ;A9C227;
     BPL Function_MBBody_Phase3_Fighting_Main_return                      ;A9C22A;
@@ -7801,55 +7801,55 @@ Function_MBBody_Phase3_Fighting_Main:
     TYA                                                                  ;A9C23D;
     JSR.W SetMotherBrainHeadInstList                                     ;A9C23E;
     LDA.W #Function_MBBody_Phase3_Fighting_AttackCooldown                ;A9C241;
-    STA.W MotherBrainBody.function                                                          ;A9C244;
+    STA.W MotherBrainBody.function                                       ;A9C244;
     LDA.W #$0040                                                         ;A9C247;
-    STA.W MotherBrainBody.functionTimer                                                          ;A9C24A;
+    STA.W MotherBrainBody.functionTimer                                  ;A9C24A;
     RTS                                                                  ;A9C24D;
 
 
 ;;; $C24E: Mother Brain body function - third phase - fighting - attack cooldown ;;;
 Function_MBBody_Phase3_Fighting_AttackCooldown:
-    DEC.W MotherBrainBody.functionTimer                                                          ;A9C24E;
+    DEC.W MotherBrainBody.functionTimer                                  ;A9C24E;
     BPL Function_MBBody_Phase3_Fighting_Main_return                      ;A9C251;
     LDA.W #Function_MBBody_Phase3_Fighting_Main                          ;A9C253;
-    STA.W MotherBrainBody.function                                                          ;A9C256;
+    STA.W MotherBrainBody.function                                       ;A9C256;
     RTS                                                                  ;A9C259;
 
 
 ;;; $C25A: Mother Brain third phase walking handler ;;;
 MotherBrainPhase3WalkingHandler:
-    LDA.L MotherBrainBody.pose                                                        ;A9C25A;
+    LDA.L MotherBrainBody.pose                                           ;A9C25A;
     BEQ .standing                                                        ;A9C25E;
     RTS                                                                  ;A9C260;
 
   .standing:
-    LDA.L MotherBrainBody.walkingFunction                                                        ;A9C261;
+    LDA.L MotherBrainBody.walkingFunction                                ;A9C261;
     STA.B $12                                                            ;A9C265;
     JMP.W ($0012)                                                        ;A9C267;
 
 
 ;;; $C26A: Mother Brain walking function - try to inch forward ;;;
 Function_MotherBrainBody_Walking_TryToInchForward:
-    LDA.L MotherBrainBody.walkCounter                                                        ;A9C26A;
+    LDA.L MotherBrainBody.walkCounter                                    ;A9C26A;
     BEQ .walkLeft                                                        ;A9C26E;
     CLC                                                                  ;A9C270;
     ADC.W #$0020                                                         ;A9C271;
-    STA.L MotherBrainBody.walkCounter                                                        ;A9C274;
+    STA.L MotherBrainBody.walkCounter                                    ;A9C274;
     CMP.W #$0100                                                         ;A9C278;
     BCC .return                                                          ;A9C27B;
     LDA.W $0F7A                                                          ;A9C27D;
     INC A                                                                ;A9C280;
-    STA.L MotherBrainBody.targetXPosition                                                        ;A9C281;
+    STA.L MotherBrainBody.targetXPosition                                ;A9C281;
     LDA.W $05E5                                                          ;A9C285;
     AND.W #$0002                                                         ;A9C288;
     CLC                                                                  ;A9C28B;
     ADC.W #$0004                                                         ;A9C28C;
     TAY                                                                  ;A9C28F;
-    LDA.L MotherBrainBody.targetXPosition                                                        ;A9C290;
+    LDA.L MotherBrainBody.targetXPosition                                ;A9C290;
     JSR.W MakeMotherBrainWalkForwards                                    ;A9C294;
     BCC .return                                                          ;A9C297;
     LDA.W #$0080                                                         ;A9C299;
-    STA.L MotherBrainBody.walkCounter                                                        ;A9C29C;
+    STA.L MotherBrainBody.walkCounter                                    ;A9C29C;
 
   .return:
     RTS                                                                  ;A9C2A0;
@@ -7858,23 +7858,23 @@ Function_MotherBrainBody_Walking_TryToInchForward:
     LDA.W $0F7A                                                          ;A9C2A1;
     SEC                                                                  ;A9C2A4;
     SBC.W #$000E                                                         ;A9C2A5;
-    STA.L MotherBrainBody.targetXPosition                                                        ;A9C2A8;
+    STA.L MotherBrainBody.targetXPosition                                ;A9C2A8;
     LDA.W #Function_MotherBrainBody_Walking_RetreatQuickly               ;A9C2AC;
-    STA.L MotherBrainBody.walkingFunction                                                        ;A9C2AF; fallthrough to Function_MotherBrainBody_Walking_RetreatQuickly
+    STA.L MotherBrainBody.walkingFunction                                ;A9C2AF; fallthrough to Function_MotherBrainBody_Walking_RetreatQuickly
 
 
 ;;; $C2B3: Mother Brain walking function - retreat quickly ;;;
 Function_MotherBrainBody_Walking_RetreatQuickly:
-    LDA.L MotherBrainBody.targetXPosition                                                        ;A9C2B3;
+    LDA.L MotherBrainBody.targetXPosition                                ;A9C2B3;
     LDY.W #$0002                                                         ;A9C2B7;
     JSR.W MakeMotherBrainWalkBackwards                                   ;A9C2BA;
     BCC .return                                                          ;A9C2BD;
     LDA.W $0F7A                                                          ;A9C2BF;
     SEC                                                                  ;A9C2C2;
     SBC.W #$000E                                                         ;A9C2C3;
-    STA.L MotherBrainBody.targetXPosition                                                        ;A9C2C6;
+    STA.L MotherBrainBody.targetXPosition                                ;A9C2C6;
     LDA.W #Function_MotherBrainBody_Walking_RetreatSlowly                ;A9C2CA;
-    STA.L MotherBrainBody.walkingFunction                                                        ;A9C2CD;
+    STA.L MotherBrainBody.walkingFunction                                ;A9C2CD;
 
   .return:
     RTS                                                                  ;A9C2D1;
@@ -7882,7 +7882,7 @@ Function_MotherBrainBody_Walking_RetreatQuickly:
 
 ;;; $C2D2: Mother Brain walking function - retreat slowly ;;;
 Function_MotherBrainBody_Walking_RetreatSlowly:
-    LDA.L MotherBrainBody.targetXPosition                                                        ;A9C2D2;
+    LDA.L MotherBrainBody.targetXPosition                                ;A9C2D2;
     LDY.W #$0004                                                         ;A9C2D6;
     JSR.W MakeMotherBrainWalkBackwards                                   ;A9C2D9;
     BCS .reachedTargetX                                                  ;A9C2DC;
@@ -7899,9 +7899,9 @@ UNUSED_Function_MotherBrainBody_Walking_Crouch_A9C2E5:
     JSR.W MakeMotherBrainCrouch                                          ;A9C2E5;
     BCC .return                                                          ;A9C2E8;
     LDA.W #UNUSED_Function_MotherBrainBody_Walking_Crouching_A9C2F9      ;A9C2EA;
-    STA.L MotherBrainBody.walkingFunction                                                        ;A9C2ED;
+    STA.L MotherBrainBody.walkingFunction                                ;A9C2ED;
     LDA.W #$0040                                                         ;A9C2F1;
-    STA.L MotherBrainBody.crouchTimer                                                        ;A9C2F4;
+    STA.L MotherBrainBody.crouchTimer                                    ;A9C2F4;
 
   .return:
     RTS                                                                  ;A9C2F8;
@@ -7909,12 +7909,12 @@ UNUSED_Function_MotherBrainBody_Walking_Crouch_A9C2E5:
 
 ;;; $C2F9: Unused. Mother Brain walking function - crouching ;;;
 UNUSED_Function_MotherBrainBody_Walking_Crouching_A9C2F9:
-    LDA.L MotherBrainBody.crouchTimer                                                        ;A9C2F9;
+    LDA.L MotherBrainBody.crouchTimer                                    ;A9C2F9;
     DEC A                                                                ;A9C2FD;
-    STA.L MotherBrainBody.crouchTimer                                                        ;A9C2FE;
+    STA.L MotherBrainBody.crouchTimer                                    ;A9C2FE;
     BPL UNUSED_Function_MotherBrainBody_Walking_Crouch_A9C2E5_return     ;A9C302;
     LDA.W #UNUSED_Function_MotherBrainBody_Walking_StandUp_A9C30B        ;A9C304;
-    STA.L MotherBrainBody.walkingFunction                                                        ;A9C307; fallthrough to UNUSED_Function_MotherBrainBody_Walking_StandUp_A9C30B
+    STA.L MotherBrainBody.walkingFunction                                ;A9C307; fallthrough to UNUSED_Function_MotherBrainBody_Walking_StandUp_A9C30B
 
 
 ;;; $C30B: Unused. Mother Brain walking function - stand up ;;;
@@ -7927,18 +7927,18 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 ;;; $C313: Set Mother Brain walking function to try to inch forward ;;;
 SetMotherBrainWalkingFunctionToTryToInchForward:
-    STA.L MotherBrainBody.walkCounter                                                        ;A9C313;
+    STA.L MotherBrainBody.walkCounter                                    ;A9C313;
     LDA.W #Function_MotherBrainBody_Walking_TryToInchForward             ;A9C317;
-    STA.L MotherBrainBody.walkingFunction                                                        ;A9C31A;
+    STA.L MotherBrainBody.walkingFunction                                ;A9C31A;
     LDA.W $0F7A                                                          ;A9C31E;
     INC A                                                                ;A9C321;
-    STA.L MotherBrainBody.targetXPosition                                                        ;A9C322;
+    STA.L MotherBrainBody.targetXPosition                                ;A9C322;
     RTS                                                                  ;A9C326;
 
 
 ;;; $C327: Mother Brain third phase neck handler ;;;
 MotherBrainPhase3NeckHandler:
-    LDA.L MotherBrainBody.neckFunction                                                        ;A9C327;
+    LDA.L MotherBrainBody.neckFunction                                   ;A9C327;
     STA.B $12                                                            ;A9C32B;
     JMP.W ($0012)                                                        ;A9C32D;
 
@@ -7946,15 +7946,15 @@ MotherBrainPhase3NeckHandler:
 ;;; $C330: Mother Brain neck function - normal ;;;
 Function_MotherBrainNeck_Normal:
     LDA.W #$0001                                                         ;A9C330;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9C333; >_<
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9C333; >_<
     LDA.W #$0080                                                         ;A9C337;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9C33A;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9C33A;
     LDA.W #$0002                                                         ;A9C33E;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9C341;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9C341;
     LDA.W #$0004                                                         ;A9C345;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9C348;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9C348;
     LDA.W #.return                                                       ;A9C34C;
-    STA.L MotherBrainBody.neckFunction                                                        ;A9C34F;
+    STA.L MotherBrainBody.neckFunction                                   ;A9C34F;
 
   .return:
     RTS                                                                  ;A9C353;
@@ -7963,31 +7963,31 @@ Function_MotherBrainNeck_Normal:
 ;;; $C354: Mother Brain neck function - set up recoil recovery ;;;
 Function_MotherBrainNeck_SetupRecoilRecovery:
     LDA.W #$0001                                                         ;A9C354;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A9C357;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A9C357;
     LDA.W #$0500                                                         ;A9C35B;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9C35E;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9C35E;
     LDA.W #$0006                                                         ;A9C362;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9C365;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9C369;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9C365;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9C369;
     LDA.W #Function_MotherBrainNeck_RecoilRecovery                       ;A9C36D;
-    STA.L MotherBrainBody.neckFunction                                                        ;A9C370;
+    STA.L MotherBrainBody.neckFunction                                   ;A9C370;
     LDA.W #$0010                                                         ;A9C374;
-    STA.L MotherBrainBody.neckFunctionTimer                                                        ;A9C377; fallthrough to Function_MotherBrainNeck_RecoilRecovery
+    STA.L MotherBrainBody.neckFunctionTimer                              ;A9C377; fallthrough to Function_MotherBrainNeck_RecoilRecovery
 
 
 ;;; $C37B: Mother Brain neck function - recoil recovery ;;;
 Function_MotherBrainNeck_RecoilRecovery:
-    LDA.L MotherBrainBody.neckFunctionTimer                                                        ;A9C37B;
+    LDA.L MotherBrainBody.neckFunctionTimer                              ;A9C37B;
     DEC A                                                                ;A9C37F;
     BMI .timerExpired                                                    ;A9C380;
-    STA.L MotherBrainBody.neckFunctionTimer                                                        ;A9C382;
+    STA.L MotherBrainBody.neckFunctionTimer                              ;A9C382;
     RTS                                                                  ;A9C386;
 
   .timerExpired:
     LDA.W #InstList_MotherBrainHead_AttackingSamus_4OnionRings_Phase3    ;A9C387;
     JSR.W SetMotherBrainHeadInstList                                     ;A9C38A;
     LDA.W #Function_MotherBrainNeck_Normal                               ;A9C38D;
-    STA.L MotherBrainBody.neckFunction                                                        ;A9C390;
+    STA.L MotherBrainBody.neckFunction                                   ;A9C390;
     RTS                                                                  ;A9C394;
 
 
@@ -7995,45 +7995,45 @@ Function_MotherBrainNeck_RecoilRecovery:
 Function_MotherBrainNeck_SetupHyperBeamRecoil:
 ; Set by shot reaction if far enough left
     LDA.W #$0001                                                         ;A9C395;
-    STA.L MotherBrainBody.enableNeckMovementFlag                                                        ;A9C398;
-    STA.L MotherBrainBody.disableAttacks                                                        ;A9C39C;
+    STA.L MotherBrainBody.enableNeckMovementFlag                         ;A9C398;
+    STA.L MotherBrainBody.disableAttacks                                 ;A9C39C;
     LDA.W #InstList_MotherBrainHead_HyperBeamRecoil_0                    ;A9C3A0;
     JSR.W SetMotherBrainHeadInstList                                     ;A9C3A3;
     LDA.W #$0032                                                         ;A9C3A6;
-    STA.L MotherBrainBody.brainMainShakeTimer                                                        ;A9C3A9;
+    STA.L MotherBrainBody.brainMainShakeTimer                            ;A9C3A9;
     LDA.W #$0900                                                         ;A9C3AD;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9C3B0;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9C3B0;
     LDA.W #$0008                                                         ;A9C3B4;
-    STA.L MotherBrainBody.lowerNeckMovementIndex                                                        ;A9C3B7;
-    STA.L MotherBrainBody.upperNeckMovementIndex                                                        ;A9C3BB;
+    STA.L MotherBrainBody.lowerNeckMovementIndex                         ;A9C3B7;
+    STA.L MotherBrainBody.upperNeckMovementIndex                         ;A9C3BB;
     LDA.W #Function_MotherBrainNeck_HyperBeamRecoil                      ;A9C3BF;
-    STA.L MotherBrainBody.neckFunction                                                        ;A9C3C2;
+    STA.L MotherBrainBody.neckFunction                                   ;A9C3C2;
     LDA.W #$000B                                                         ;A9C3C6;
-    STA.L MotherBrainBody.neckFunctionTimer                                                        ;A9C3C9; fallthrough to Function_MotherBrainNeck_HyperBeamRecoil
+    STA.L MotherBrainBody.neckFunctionTimer                              ;A9C3C9; fallthrough to Function_MotherBrainNeck_HyperBeamRecoil
 
 
 ;;; $C3CD: Mother Brain neck function - hyper beam recoil ;;;
 Function_MotherBrainNeck_HyperBeamRecoil:
-    LDA.L MotherBrainBody.neckFunctionTimer                                                        ;A9C3CD;
+    LDA.L MotherBrainBody.neckFunctionTimer                              ;A9C3CD;
     DEC A                                                                ;A9C3D1;
     BMI .timerExpired                                                    ;A9C3D2;
-    STA.L MotherBrainBody.neckFunctionTimer                                                        ;A9C3D4;
+    STA.L MotherBrainBody.neckFunctionTimer                              ;A9C3D4;
     RTS                                                                  ;A9C3D8;
 
   .timerExpired:
     LDA.W #$0080                                                         ;A9C3D9;
-    STA.L MotherBrainBody.neckAngleDelta                                                        ;A9C3DC;
+    STA.L MotherBrainBody.neckAngleDelta                                 ;A9C3DC;
     LDA.W #$0000                                                         ;A9C3E0;
-    STA.L MotherBrainBody.disableAttacks                                                        ;A9C3E3;
+    STA.L MotherBrainBody.disableAttacks                                 ;A9C3E3;
     LDA.W #Function_MotherBrainNeck_SetupRecoilRecovery                  ;A9C3E7;
-    STA.L MotherBrainBody.neckFunction                                                        ;A9C3EA;
+    STA.L MotherBrainBody.neckFunction                                   ;A9C3EA;
     RTS                                                                  ;A9C3EE;
 
 
 ;;; $C3EF: Move enemy according to enemy velocity ;;;
 MoveEnemyAccordingToVelocity:
     LDX.W $0E54                                                          ;A9C3EF;
-    LDA.W BabyMetroid.XVelocity,X                                                        ;A9C3F2;
+    LDA.W BabyMetroid.XVelocity,X                                        ;A9C3F2;
     SEP #$20                                                             ;A9C3F5;
     CLC                                                                  ;A9C3F7;
     ADC.W $0F7D,X                                                        ;A9C3F8;
@@ -8046,7 +8046,7 @@ MoveEnemyAccordingToVelocity:
 
 +   ADC.W $0F7A,X                                                        ;A9C409;
     STA.W $0F7A,X                                                        ;A9C40C;
-    LDA.W BabyMetroid.YVelocity,X                                                        ;A9C40F;
+    LDA.W BabyMetroid.YVelocity,X                                        ;A9C40F;
     SEP #$20                                                             ;A9C412;
     CLC                                                                  ;A9C414;
     ADC.W $0F81,X                                                        ;A9C415;
@@ -8082,9 +8082,9 @@ SetMotherBrainHeadUnusedInstList:
 
 ;;; $C447: Set Mother Brain brain instruction list ;;;
 SetMotherBrainHeadInstList:
-    STA.L MotherBrainBody.brainInstListPointer                                                        ;A9C447;
+    STA.L MotherBrainBody.brainInstListPointer                           ;A9C447;
     LDA.W #$0001                                                         ;A9C44B;
-    STA.L MotherBrainBody.brainInstructionTimer                                                        ;A9C44E;
+    STA.L MotherBrainBody.brainInstructionTimer                          ;A9C44E;
     RTS                                                                  ;A9C452;
 
 
@@ -8342,7 +8342,7 @@ ProcessSpriteTilesTransfers:
 
 ; This routine is being used to spread large VRAM transfers over multiple frames (as 1C0h or 200h byte chunks),
 ; but it could just as easily be called for doing small animations
-    LDA.L MotherBrainBody.spriteTilesTransferEntryPointer                                                        ;A9C5BE;
+    LDA.L MotherBrainBody.spriteTilesTransferEntryPointer                ;A9C5BE;
     BNE +                                                                ;A9C5C2;
     TXA                                                                  ;A9C5C4;
 
@@ -8363,14 +8363,14 @@ ProcessSpriteTilesTransfers:
     STA.W $0330                                                          ;A9C5E8;
     TXA                                                                  ;A9C5EB;
     ADC.W #$0007                                                         ;A9C5EC;
-    STA.L MotherBrainBody.spriteTilesTransferEntryPointer                                                        ;A9C5EF;
+    STA.L MotherBrainBody.spriteTilesTransferEntryPointer                ;A9C5EF;
     TAX                                                                  ;A9C5F3;
     LDA.W $0000,X                                                        ;A9C5F4;
     BEQ +                                                                ;A9C5F7;
     CLC                                                                  ;A9C5F9;
     RTS                                                                  ;A9C5FA;
 
-+   STA.L MotherBrainBody.spriteTilesTransferEntryPointer                                                        ;A9C5FB;
++   STA.L MotherBrainBody.spriteTilesTransferEntryPointer                ;A9C5FB;
     SEC                                                                  ;A9C5FF;
     RTS                                                                  ;A9C600;
 
@@ -8384,7 +8384,7 @@ MakeMotherBrainWalkForwards:
 ;;     Carry: Set if reached target, clear otherwise
     CMP.W $0F7A                                                          ;A9C601;
     BMI .returnReachedTarget                                             ;A9C604;
-    LDA.L MotherBrainBody.pose                                                        ;A9C606;
+    LDA.L MotherBrainBody.pose                                           ;A9C606;
     BNE .returnNotReached                                                ;A9C60A;
     LDA.W $0F7A                                                          ;A9C60C;
     CMP.W #$0080                                                         ;A9C60F;
@@ -8415,7 +8415,7 @@ UNUSED_MakeMotherBrainWalkBackwards_A9C62A:
 ; Allows her to go back further than MakeMotherBrainWalkBackwards does
     CMP.W $0F7A                                                          ;A9C62A;
     BPL .returnCarrySet                                                  ;A9C62D;
-    LDA.L MotherBrainBody.pose                                                        ;A9C62F;
+    LDA.L MotherBrainBody.pose                                           ;A9C62F;
     BNE .returnCarryClear                                                ;A9C633;
     LDA.W $0F7A                                                          ;A9C635;
     CMP.W #$0010                                                         ;A9C638;
@@ -8442,7 +8442,7 @@ MakeMotherBrainWalkBackwards:
 ;;     Carry: Set if reached target, clear otherwise
     CMP.W $0F7A                                                          ;A9C647;
     BPL .returnTargetReached                                             ;A9C64A;
-    LDA.L MotherBrainBody.pose                                                        ;A9C64C;
+    LDA.L MotherBrainBody.pose                                           ;A9C64C;
     BNE .returnNotReached                                                ;A9C650;
     LDA.W $0F7A                                                          ;A9C652;
     CMP.W #$0030                                                         ;A9C655;
@@ -8471,7 +8471,7 @@ MakeMotherBrainWalkBackwards:
 MakeMotherBrainStandUp:
 ;; Returns:
 ;;     Carry: Set if standing, clear otherwise
-    LDA.L MotherBrainBody.pose                                                        ;A9C670;
+    LDA.L MotherBrainBody.pose                                           ;A9C670;
     BEQ .returnStanding                                                  ;A9C674;
     LDY.W #InstList_MotherBrainBody_StandingUpAfterCrouching_Fast        ;A9C676;
     CMP.W #$0003                                                         ;A9C679;
@@ -8497,7 +8497,7 @@ MakeMotherBrainStandUp:
 MakeMotherBrainCrouch:
 ;; Returns:
 ;;     Carry: Set if crouched, clear otherwise
-    LDA.L MotherBrainBody.pose                                                        ;A9C68E;
+    LDA.L MotherBrainBody.pose                                           ;A9C68E;
     BEQ .crouchSlow                                                      ;A9C692;
     CMP.W #$0003                                                         ;A9C694;
     BNE .notCrouched                                                     ;A9C697;
@@ -8519,7 +8519,7 @@ MakeMotherBrainCrouch:
 MakeMotherBrainLeanDown:
 ;; Returns:
 ;;     Carry: Set if leaning down, clear otherwise
-    LDA.L MotherBrainBody.pose                                                        ;A9C6A3;
+    LDA.L MotherBrainBody.pose                                           ;A9C6A3;
     BEQ .leanDown                                                        ;A9C6A7;
     CMP.W #$0006                                                         ;A9C6A9;
     BNE .notLeaningDown                                                  ;A9C6AC;
@@ -8537,22 +8537,22 @@ MakeMotherBrainLeanDown:
 
 ;;; $C6B8: Handle Mother Brain walking ;;;
 HandleMotherBrainWalking:
-    LDA.L MotherBrainBody.pose                                                        ;A9C6B8;
+    LDA.L MotherBrainBody.pose                                           ;A9C6B8;
     BEQ .standing                                                        ;A9C6BC;
     RTS                                                                  ;A9C6BE;
 
   .standing:
-    LDA.L MotherBrainBody.walkCounter                                                        ;A9C6BF;
+    LDA.L MotherBrainBody.walkCounter                                    ;A9C6BF;
     BEQ .walkBackwards                                                   ;A9C6C3;
     CLC                                                                  ;A9C6C5;
     ADC.W #$0006                                                         ;A9C6C6;
-    STA.L MotherBrainBody.walkCounter                                                        ;A9C6C9;
+    STA.L MotherBrainBody.walkCounter                                    ;A9C6C9;
     CMP.W #$0100                                                         ;A9C6CD;
     BCC .maybeWalkForwardsIfFarLeft                                      ;A9C6D0;
 
   .walkForwards:
     LDA.W #$0080                                                         ;A9C6D2;
-    STA.L MotherBrainBody.walkCounter                                                        ;A9C6D5;
+    STA.L MotherBrainBody.walkCounter                                    ;A9C6D5;
     LDA.W $0F7A                                                          ;A9C6D9;
     CMP.W #$0080                                                         ;A9C6DC;
     BPL .return                                                          ;A9C6DF;
@@ -8561,7 +8561,7 @@ HandleMotherBrainWalking:
 
   .walkBackwards:
     LDA.W #$0001                                                         ;A9C6E7;
-    STA.L MotherBrainBody.walkCounter                                                        ;A9C6EA;
+    STA.L MotherBrainBody.walkCounter                                    ;A9C6EA;
     LDA.W $0F7A                                                          ;A9C6EE;
     CMP.W #$0030                                                         ;A9C6F1;
     BMI .maybeWalkForwards                                               ;A9C6F4;
@@ -8595,26 +8595,26 @@ InitAI_BabyMetroidCutscene:
     STA.W $0F92,X                                                        ;A9C725;
     LDA.W #$0001                                                         ;A9C728;
     STA.W $0F94,X                                                        ;A9C72B;
-    STA.L BabyMetroidCutscene.crySFXFlag,X                                                      ;A9C72E;
+    STA.L BabyMetroidCutscene.crySFXFlag,X                               ;A9C72E;
     STZ.W $0F90,X                                                        ;A9C732;
     LDA.W #$000A                                                         ;A9C735;
-    STA.W BabyMetroidCutscene.paletteHandlerDelay,X                                                        ;A9C738;
+    STA.W BabyMetroidCutscene.paletteHandlerDelay,X                      ;A9C738;
     LDA.W #$00A0                                                         ;A9C73B;
     STA.W $0F98,X                                                        ;A9C73E;
     LDA.W #$0140                                                         ;A9C741;
     STA.W $0F7A,X                                                        ;A9C744;
     LDA.W #$0060                                                         ;A9C747;
     STA.W $0F7E,X                                                        ;A9C74A;
-    STZ.W BabyMetroidCutscene.XVelocity,X                                                        ;A9C74D;
-    STZ.W BabyMetroidCutscene.YVelocity,X                                                        ;A9C750;
+    STZ.W BabyMetroidCutscene.XVelocity,X                                ;A9C74D;
+    STZ.W BabyMetroidCutscene.YVelocity,X                                ;A9C750;
     LDA.W #$0000                                                         ;A9C753;
-    STA.L BabyMetroidCutscene.healthBasedPaletteFlag,X                                                      ;A9C756;
+    STA.L BabyMetroidCutscene.healthBasedPaletteFlag,X                   ;A9C756;
     LDA.W #Function_BabyMetroidCutscene_DashOntoScreen                   ;A9C75A;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C75D;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C75D;
     LDA.W #$00F8                                                         ;A9C760;
-    STA.W BabyMetroidCutscene.functionTimer,X                                                        ;A9C763;
+    STA.W BabyMetroidCutscene.functionTimer,X                            ;A9C763;
     LDA.W #HandleBabyMetroidCutscenePalette_Normal                       ;A9C766;
-    STA.L BabyMetroidCutscene.paletteFunction,X                                                      ;A9C769;
+    STA.L BabyMetroidCutscene.paletteFunction,X                          ;A9C769;
     LDY.W #Palette_MotherBrain_BabyMetroid+2                             ;A9C76D;
     LDX.W #$01E2                                                         ;A9C770;
     LDA.W #$000F                                                         ;A9C773;
@@ -8625,12 +8625,12 @@ InitAI_BabyMetroidCutscene:
 MainAI_BabyMetroidCutscene:
     LDX.W $0E54                                                          ;A9C779;
     STZ.W $0FA2,X                                                        ;A9C77C;
-    JSR.W (BabyMetroidCutscene.function,X)                                                      ;A9C77F;
+    JSR.W (BabyMetroidCutscene.function,X)                               ;A9C77F;
     JSL.L MoveEnemyAccordingToVelocity                                   ;A9C782;
     JSR.W HandleBabyMetroidFlashing                                      ;A9C786;
     JSR.W HandleBabyMetroidHealthBasedPalette                            ;A9C789;
     LDX.W $0E54                                                          ;A9C78C;
-    LDA.L BabyMetroidCutscene.paletteFunction,X                                                      ;A9C78F;
+    LDA.L BabyMetroidCutscene.paletteFunction,X                          ;A9C78F;
     STA.B $12                                                            ;A9C793;
     PEA.W .manualReturn-1                                                ;A9C795;
     JMP.W ($0012)                                                        ;A9C798;
@@ -8642,10 +8642,10 @@ MainAI_BabyMetroidCutscene:
 ;;; $C79C: Handle Shitroid flashing ;;;
 HandleBabyMetroidFlashing:
     LDY.W #$0E00                                                         ;A9C79C;
-    LDA.L BabyMetroidCutscene.flashTimer,X                                                      ;A9C79F;
+    LDA.L BabyMetroidCutscene.flashTimer,X                               ;A9C79F;
     BEQ .return                                                          ;A9C7A3;
     DEC A                                                                ;A9C7A5;
-    STA.L BabyMetroidCutscene.flashTimer,X                                                      ;A9C7A6;
+    STA.L BabyMetroidCutscene.flashTimer,X                               ;A9C7A6;
     AND.W #$0002                                                         ;A9C7AA;
     BEQ .return                                                          ;A9C7AD;
     LDY.W #$0000                                                         ;A9C7AF;
@@ -8658,10 +8658,10 @@ HandleBabyMetroidFlashing:
 
 ;;; $C7B7: Handle playing Shitroid cry ;;;
 HandlePlayingBabyMetroidCutsceneCrySFX:
-    LDA.L MotherBrainBody.playBabyMetroidCryFlag                                                        ;A9C7B7;
+    LDA.L MotherBrainBody.playBabyMetroidCryFlag                         ;A9C7B7;
     BEQ .return                                                          ;A9C7BB;
     LDA.W #$0000                                                         ;A9C7BD;
-    STA.L MotherBrainBody.playBabyMetroidCryFlag                                                        ;A9C7C0;
+    STA.L MotherBrainBody.playBabyMetroidCryFlag                         ;A9C7C0;
     LDA.W #$0072                                                         ;A9C7C4;
     JSL.L QueueSound_Lib2_Max6                                           ;A9C7C7;
 
@@ -8671,19 +8671,19 @@ HandlePlayingBabyMetroidCutsceneCrySFX:
 
 ;;; $C7CC: Shitroid function - dash onto screen ;;;
 Function_BabyMetroidCutscene_DashOntoScreen:
-    DEC.W BabyMetroidCutscene.functionTimer,X                                                        ;A9C7CC;
+    DEC.W BabyMetroidCutscene.functionTimer,X                            ;A9C7CC;
     BMI .timerExpired                                                    ;A9C7CF;
     RTS                                                                  ;A9C7D1;
 
   .timerExpired:
     LDA.W #$D800                                                         ;A9C7D2;
-    STA.L BabyMetroidCutscene.angle,X                                                      ;A9C7D5;
+    STA.L BabyMetroidCutscene.angle,X                                    ;A9C7D5;
     LDA.W #$0A00                                                         ;A9C7D9;
-    STA.L BabyMetroidCutscene.speed,X                                                      ;A9C7DC;
+    STA.L BabyMetroidCutscene.speed,X                                    ;A9C7DC;
     LDA.W #Function_BabyMetroidCutscene_CurveTowardMotherBrainHead       ;A9C7E0;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C7E3;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C7E3;
     LDA.W #$000A                                                         ;A9C7E6;
-    STA.W BabyMetroidCutscene.functionTimer,X                                                        ;A9C7E9; fallthrough to Function_BabyMetroidCutscene_CurveTowardMotherBrainHead
+    STA.W BabyMetroidCutscene.functionTimer,X                            ;A9C7E9; fallthrough to Function_BabyMetroidCutscene_CurveTowardMotherBrainHead
 
 
 ;;; $C7EC: Shitroid function - curve towards Mother Brain brain ;;;
@@ -8695,15 +8695,15 @@ Function_BabyMetroidCutscene_CurveTowardMotherBrainHead:
     LDA.W #$0A00                                                         ;A9C7F6;
     STA.B $16                                                            ;A9C7F9;
     JSR.W UpdateBabyMetroidCutsceneSpeedAndAngle                         ;A9C7FB;
-    DEC.W BabyMetroidCutscene.functionTimer,X                                                        ;A9C7FE;
+    DEC.W BabyMetroidCutscene.functionTimer,X                            ;A9C7FE;
     BMI .timerExpired                                                    ;A9C801;
     RTS                                                                  ;A9C803;
 
   .timerExpired:
     LDA.W #Function_BabyMetroidCutscene_GetRightUpInMotherBrainsFace     ;A9C804;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C807;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C807;
     LDA.W #$0009                                                         ;A9C80A;
-    STA.W BabyMetroidCutscene.functionTimer,X                                                        ;A9C80D;
+    STA.W BabyMetroidCutscene.functionTimer,X                            ;A9C80D;
     RTS                                                                  ;A9C810;
 
 
@@ -8725,14 +8725,14 @@ Function_BabyMetroidCutscene_GetRightUpInMotherBrainsFace:
     STA.B $18                                                            ;A9C832;
     JSL.L CheckForEnemyCollisionWithRectangle                            ;A9C834;
     BCC .timerExpired                                                    ;A9C838;
-    DEC.W BabyMetroidCutscene.functionTimer,X                                                        ;A9C83A;
+    DEC.W BabyMetroidCutscene.functionTimer,X                            ;A9C83A;
     BMI .timerExpired                                                    ;A9C83D;
     RTS                                                                  ;A9C83F;
 
   .timerExpired:
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C840; >.<
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C840; >.<
     LDA.W #Function_BabyMetroidCutscene_LatchOntoMotherBrain             ;A9C843;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C846;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C846;
     LDA.W #$0001                                                         ;A9C849;
     JSL.L DrainedSamusController                                         ;A9C84C;
     RTS                                                                  ;A9C850;
@@ -8754,7 +8754,7 @@ Function_BabyMetroidCutscene_LatchOntoMotherBrain:
     JSL.L CheckForEnemyCollisionWithRectangle                            ;A9C86C;
     BCS .return                                                          ;A9C870;
     LDA.W #Function_BabyMetroidCutscene_SetMotherBrainToStumbleBack      ;A9C872;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C875;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C875;
 
   .return:
     RTS                                                                  ;A9C878;
@@ -8767,7 +8767,7 @@ Function_BabyMetroidCutscene_SetMotherBrainToStumbleBack:
     DEC A                                                                ;A9C87F;
     JSR.W MakeMotherBrainWalkBackwards                                   ;A9C880;
     LDA.W #Function_BabyMetroidCutscene_ActivateRainbowBeamAndMBBody     ;A9C883;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C886; fallthrough to Function_BabyMetroidCutscene_ActivateRainbowBeamAndMBBody
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C886; fallthrough to Function_BabyMetroidCutscene_ActivateRainbowBeamAndMBBody
 
 
 ;;; $C889: Shitroid function - activate rainbow beam and Mother Brain body ;;;
@@ -8786,8 +8786,8 @@ Function_BabyMetroidCutscene_ActivateRainbowBeamAndMBBody:
     RTS                                                                  ;A9C8A3;
 
   .reachedTarget:
-    STZ.W BabyMetroidCutscene.XVelocity,X                                                        ;A9C8A4;
-    STZ.W BabyMetroidCutscene.YVelocity,X                                                        ;A9C8A7;
+    STZ.W BabyMetroidCutscene.XVelocity,X                                ;A9C8A4;
+    STZ.W BabyMetroidCutscene.YVelocity,X                                ;A9C8A7;
     LDA.W $0FBA                                                          ;A9C8AA;
     STA.W $0F7A,X                                                        ;A9C8AD;
     LDA.W $0FBE                                                          ;A9C8B0;
@@ -8797,15 +8797,15 @@ Function_BabyMetroidCutscene_ActivateRainbowBeamAndMBBody:
     LDA.W #InstList_BabyMetroid_DrainingMotherBrain                      ;A9C8BA;
     JSL.L SetEnemyInstList                                               ;A9C8BD;
     LDA.W #Function_BabyMetroidCutscene_WaitForMBToTurnToCorpse          ;A9C8C1;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C8C4;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C8C4;
     LDA.W #$0001                                                         ;A9C8C7;
-    STA.W BabyMetroidCutscene.paletteHandlerDelay,X                                                        ;A9C8CA;
+    STA.W BabyMetroidCutscene.paletteHandlerDelay,X                      ;A9C8CA;
     LDA.W #Function_MotherBrainBody_DrainedByBabyMetroid_TakenAback      ;A9C8CD;
-    STA.W MotherBrainBody.function                                                          ;A9C8D0;
+    STA.W MotherBrainBody.function                                       ;A9C8D0;
     LDA.W #$0040                                                         ;A9C8D3;
     JSL.L QueueSound_Lib1_Max6                                           ;A9C8D6;
     LDA.W #$0001                                                         ;A9C8DA;
-    STA.L MotherBrainBody.rainbowBeamSFXIsPlayingFlag                                                        ;A9C8DD;
+    STA.L MotherBrainBody.rainbowBeamSFXIsPlayingFlag                    ;A9C8DD;
     RTS                                                                  ;A9C8E1;
 
 
@@ -8824,15 +8824,15 @@ Function_BabyMetroidCutscene_WaitForMBToTurnToCorpse:
     CLC                                                                  ;A9C8FA;
     ADC.W #$FFE8                                                         ;A9C8FB;
     STA.W $0F7E,X                                                        ;A9C8FE;
-    LDA.L MotherBrainBody.phase2CorpseState                                                        ;A9C901;
+    LDA.L MotherBrainBody.phase2CorpseState                              ;A9C901;
     BNE .turnedToCorpse                                                  ;A9C905;
     RTS                                                                  ;A9C907;
 
   .turnedToCorpse:
     LDA.W #Function_BabyMetroidCutscene_StopDraining                     ;A9C908;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C90B;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C90B;
     LDA.W #$0040                                                         ;A9C90E;
-    STA.W BabyMetroidCutscene.functionTimer,X                                                        ;A9C911;
+    STA.W BabyMetroidCutscene.functionTimer,X                            ;A9C911;
     RTS                                                                  ;A9C914;
 
 
@@ -8844,7 +8844,7 @@ Function_BabyMetroidCutscene_StopDraining:
     CLC                                                                  ;A9C91E;
     ADC.W #$FFE8                                                         ;A9C91F;
     STA.W $0F7E,X                                                        ;A9C922;
-    DEC.W BabyMetroidCutscene.functionTimer,X                                                        ;A9C925;
+    DEC.W BabyMetroidCutscene.functionTimer,X                            ;A9C925;
     BMI .timerExpired                                                    ;A9C928;
     RTS                                                                  ;A9C92A;
 
@@ -8852,23 +8852,23 @@ Function_BabyMetroidCutscene_StopDraining:
     LDA.W #InstList_BabyMetroid_Initial                                  ;A9C92B;
     JSL.L SetEnemyInstList                                               ;A9C92E;
     LDA.W #$000A                                                         ;A9C932;
-    STA.W BabyMetroidCutscene.paletteHandlerDelay,X                                                        ;A9C935;
+    STA.W BabyMetroidCutscene.paletteHandlerDelay,X                      ;A9C935;
     LDA.W #Function_BabyMetroidCutscene_LetGo_SpawnDustClouds            ;A9C938;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C93B;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C93B;
     LDA.W #$0020                                                         ;A9C93E;
-    STA.W BabyMetroidCutscene.functionTimer,X                                                        ;A9C941;
-    STZ.W BabyMetroidCutscene.XVelocity,X                                                        ;A9C944;
-    STZ.W BabyMetroidCutscene.YVelocity,X                                                        ;A9C947;
+    STA.W BabyMetroidCutscene.functionTimer,X                            ;A9C941;
+    STZ.W BabyMetroidCutscene.XVelocity,X                                ;A9C944;
+    STZ.W BabyMetroidCutscene.YVelocity,X                                ;A9C947;
     RTS                                                                  ;A9C94A;
 
 
 ;;; $C94B: Shitroid function - let go and spawn dust clouds ;;;
 Function_BabyMetroidCutscene_LetGo_SpawnDustClouds:
-    DEC.W BabyMetroidCutscene.functionTimer,X                                                        ;A9C94B;
+    DEC.W BabyMetroidCutscene.functionTimer,X                            ;A9C94B;
     BPL Function_BabyMetroidCutscene_MoveToTheCeiling                    ;A9C94E;
     JSR.W SpawnThreeDustCloudsOnMotherBrainHead                          ;A9C950;
     LDA.W #Function_BabyMetroidCutscene_MoveToTheCeiling                 ;A9C953;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C956; fallthrough to Function_BabyMetroidCutscene_MoveToTheCeiling
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C956; fallthrough to Function_BabyMetroidCutscene_MoveToTheCeiling
 
 
 ;;; $C959: Shitroid function - move up to ceiling ;;;
@@ -8890,9 +8890,9 @@ Function_BabyMetroidCutscene_MoveToTheCeiling:
     LDA.W #$0004                                                         ;A9C977;
     JSL.L DrainedSamusController                                         ;A9C97A;
     LDA.W #Function_BabyMetroidCutscene_MoveToSamus                      ;A9C97E;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9C981;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9C981;
     LDA.W #BabyMetroidCutscene_MovementTable_CeilingToSamus              ;A9C984;
-    STA.L BabyMetroidCutscene.movementTablePointer,X                                                      ;A9C987;
+    STA.L BabyMetroidCutscene.movementTablePointer,X                     ;A9C987;
     RTS                                                                  ;A9C98B;
 
 
@@ -8930,9 +8930,9 @@ SpawnDustCloudAtMotherBrainHeadPosition_OffsetByA_14:
 Function_BabyMetroidCutscene_MoveToSamus:
 ; Is this used for the sidehopper attack too?! Note the enemy index being 80h instead of C0h
     LDA.W #$0000                                                         ;A9C9C3;
-    STA.L BabyMetroidCutscene.crySFXFlag,X                                                      ;A9C9C6;
+    STA.L BabyMetroidCutscene.crySFXFlag,X                               ;A9C9C6;
     INC A                                                                ;A9C9CA;
-    STA.L BabyMetroidCutscene.healthBasedPaletteFlag,X                                                      ;A9C9CB;
+    STA.L BabyMetroidCutscene.healthBasedPaletteFlag,X                   ;A9C9CB;
     LDA.W $05E5                                                          ;A9C9CF;
     AND.W #$0FFF                                                         ;A9C9D2;
     CMP.W #$0FA0                                                         ;A9C9D5;
@@ -8941,7 +8941,7 @@ Function_BabyMetroidCutscene_MoveToSamus:
     JSL.L QueueSound_Lib2_Max6                                           ;A9C9DD;
 
   .skipSFX:
-    LDA.L BabyMetroidCutscene.movementTablePointer,X                                                      ;A9C9E1;
+    LDA.L BabyMetroidCutscene.movementTablePointer,X                     ;A9C9E1;
     TAY                                                                  ;A9C9E5;
     LDA.W $0000,Y                                                        ;A9C9E6;
     STA.B $12                                                            ;A9C9E9;
@@ -8964,16 +8964,16 @@ Function_BabyMetroidCutscene_MoveToSamus:
     BCS .return                                                          ;A9CA0C;
     LDA.W $0008,Y                                                        ;A9CA0E;
     BMI .function                                                        ;A9CA11;
-    LDA.L BabyMetroidCutscene.movementTablePointer,X                                                      ;A9CA13;
+    LDA.L BabyMetroidCutscene.movementTablePointer,X                     ;A9CA13;
     CLC                                                                  ;A9CA17;
     ADC.W #$0008                                                         ;A9CA18;
-    STA.L BabyMetroidCutscene.movementTablePointer,X                                                      ;A9CA1B;
+    STA.L BabyMetroidCutscene.movementTablePointer,X                     ;A9CA1B;
 
   .return:
     RTS                                                                  ;A9CA1F;
 
   .function:
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CA20;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CA20;
     RTS                                                                  ;A9CA23;
 
 
@@ -9019,7 +9019,7 @@ Function_BabyMetroidCutscene_LatchOntoSamus:
 ;;; $CA7A: Shitroid function - heal Samus up to full health ;;;
 Function_BabyMetroidCutscene_HealSamusUpToFullEnergy:
     LDA.W #$0000                                                         ;A9CA7A;
-    STA.L BabyMetroidCutscene.crySFXFlag,X                                                      ;A9CA7D;
+    STA.L BabyMetroidCutscene.crySFXFlag,X                               ;A9CA7D;
     JSR.W HandlePlayingBabyMetroidCutsceneCrySFX                         ;A9CA81;
     LDA.W $0FA4,X                                                        ;A9CA84;
     AND.W #$0006                                                         ;A9CA87;
@@ -9039,9 +9039,9 @@ Function_BabyMetroidCutscene_HealSamusUpToFullEnergy:
     LDA.W $09D4                                                          ;A9CAA9;
     STA.W $09D6                                                          ;A9CAAC;
     LDA.W #Function_BabyMetroidCutscene_IdleUntilRunOutOfHealth          ;A9CAAF;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CAB2;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CAB2;
     LDA.W #.return                                                       ;A9CAB5;
-    STA.L BabyMetroidCutscene.paletteFunction,X                                                      ;A9CAB8;
+    STA.L BabyMetroidCutscene.paletteFunction,X                          ;A9CAB8;
 
   .return:
     RTS                                                                  ;A9CABC;
@@ -9050,7 +9050,7 @@ Function_BabyMetroidCutscene_HealSamusUpToFullEnergy:
 ;;; $CABD: Shitroid function - idle until run out of health ;;;
 Function_BabyMetroidCutscene_IdleUntilRunOutOfHealth:
     JSR.W HandlePlayingBabyMetroidCutsceneCrySFX                         ;A9CABD;
-    LDA.L BabyMetroidCutscene.flashTimer,X                                                      ;A9CAC0;
+    LDA.L BabyMetroidCutscene.flashTimer,X                               ;A9CAC0;
     BEQ .checkHealth                                                     ;A9CAC4;
     AND.W #$0006                                                         ;A9CAC6;
     TAY                                                                  ;A9CAC9;
@@ -9076,16 +9076,16 @@ Function_BabyMetroidCutscene_IdleUntilRunOutOfHealth:
     LDA.W #$0140                                                         ;A9CAEA;
     STA.W $0F8C,X                                                        ;A9CAED;
     LDA.W #Function_BabyMetroidCutscene_ReleaseSamus                     ;A9CAF0;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CAF3;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CAF3;
     LDA.W #$000A                                                         ;A9CAF6;
-    STA.W BabyMetroidCutscene.paletteHandlerDelay,X                                                        ;A9CAF9;
-    STZ.W BabyMetroidCutscene.paletteFrameTimer,X                                                        ;A9CAFC;
+    STA.W BabyMetroidCutscene.paletteHandlerDelay,X                      ;A9CAF9;
+    STZ.W BabyMetroidCutscene.paletteFrameTimer,X                        ;A9CAFC;
     LDA.W #HandleBabyMetroidCutscenePalette_LowHealth                    ;A9CAFF;
-    STA.L BabyMetroidCutscene.paletteFunction,X                                                      ;A9CB02;
+    STA.L BabyMetroidCutscene.paletteFunction,X                          ;A9CB02;
     LDA.W #$0001                                                         ;A9CB06;
-    STA.L BabyMetroidCutscene.crySFXFlag,X                                                      ;A9CB09;
+    STA.L BabyMetroidCutscene.crySFXFlag,X                               ;A9CB09;
     DEC A                                                                ;A9CB0D;
-    STA.L BabyMetroidCutscene.healthBasedPaletteFlag,X                                                      ;A9CB0E;
+    STA.L BabyMetroidCutscene.healthBasedPaletteFlag,X                   ;A9CB0E;
     RTS                                                                  ;A9CB12;
 
 
@@ -9096,9 +9096,9 @@ Function_BabyMetroidCutscene_ReleaseSamus:
     LDA.W #$0001                                                         ;A9CB1A;
     STA.L $7E7856                                                        ;A9CB1D;
     LDA.W #Function_BabyMetroidCutscene_StaredownMotherBrain             ;A9CB21;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CB24;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CB24;
     LDA.W #Function_MBBody_Phase2_PrepareForFinalBabyMetroidAttack       ;A9CB27;
-    STA.W MotherBrainBody.function                                                          ;A9CB2A; fallthrough to Function_BabyMetroidCutscene_StaredownMotherBrain
+    STA.W MotherBrainBody.function                                       ;A9CB2A; fallthrough to Function_BabyMetroidCutscene_StaredownMotherBrain
 
 
 ;;; $CB2D: Shitroid function - stare down Mother Brain ;;;
@@ -9120,7 +9120,7 @@ Function_BabyMetroidCutscene_StaredownMotherBrain:
 
   .collision:
     LDA.W #Function_BabyMetroidCutscene_FlyOffScreen                     ;A9CB4F;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CB52;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CB52;
     RTS                                                                  ;A9CB55;
 
 
@@ -9141,7 +9141,7 @@ Function_BabyMetroidCutscene_FlyOffScreen:
 
   .collision:
     LDA.W #Function_BabyMetroidCutscene_MoveToFinalChargeStartPosition   ;A9CB74;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CB77;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CB77;
     RTS                                                                  ;A9CB7A;
 
 
@@ -9166,9 +9166,9 @@ Function_BabyMetroidCutscene_MoveToFinalChargeStartPosition:
     LDA.W #$0000                                                         ;A9CB9F;
     STA.L $7E7856                                                        ;A9CBA2;
     LDA.W #Function_MBBody_Phase2_ExecuteFinalBabyMetroidAttack          ;A9CBA6;
-    STA.W MotherBrainBody.function                                                          ;A9CBA9;
+    STA.W MotherBrainBody.function                                       ;A9CBA9;
     LDA.W #Function_BabyMetroidCutscene_InitiateFinalCharge              ;A9CBAC;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CBAF;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CBAF;
     RTS                                                                  ;A9CBB2;
 
 
@@ -9189,7 +9189,7 @@ Function_BabyMetroidCutscene_InitiateFinalCharge:
 
   .collision:
     LDA.W #Function_BabyMetroidCutscene_FinalCharge                      ;A9CBD1;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CBD4;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CBD4;
     RTS                                                                  ;A9CBD7;
 
 
@@ -9209,7 +9209,7 @@ Function_BabyMetroidCutscene_FinalCharge:
 
   .zeroHealth:
     LDA.W #Function_BabyMetroidCutscene_PrepareForHyperBeam_return       ;A9CBF2;
-    STA.L BabyMetroidCutscene.paletteFunction,X                                                      ;A9CBF5;
+    STA.L BabyMetroidCutscene.paletteFunction,X                          ;A9CBF5;
     LDA.W #$10A0                                                         ;A9CBF9;
     STA.W $0F98,X                                                        ;A9CBFC;
     LDA.W #$0019                                                         ;A9CBFF;
@@ -9217,61 +9217,61 @@ Function_BabyMetroidCutscene_FinalCharge:
     JSL.L FadeOutBackgroundForBabyMetroidDeathSequence                   ;A9CC06;
     LDA.W #InstList_BabyMetroid_TookFatalBlow                            ;A9CC0A;
     JSL.L SetEnemyInstList                                               ;A9CC0D;
-    STZ.W BabyMetroidCutscene.XVelocity,X                                                        ;A9CC11;
-    STZ.W BabyMetroidCutscene.YVelocity,X                                                        ;A9CC14;
+    STZ.W BabyMetroidCutscene.XVelocity,X                                ;A9CC11;
+    STZ.W BabyMetroidCutscene.YVelocity,X                                ;A9CC14;
     LDA.W #RTS_A9C18D                                                    ;A9CC17;
-    STA.W MotherBrainBody.function                                                          ;A9CC1A;
+    STA.W MotherBrainBody.function                                       ;A9CC1A;
     LDA.W #$0000                                                         ;A9CC1D;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A9CC20;
     LDA.W #Function_BabyMetroidCutscene_TakeFinalBlow                    ;A9CC24;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CC27;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CC27;
     LDA.W #$0010                                                         ;A9CC2A;
-    STA.W BabyMetroidCutscene.functionTimer,X                                                        ;A9CC2D;
+    STA.W BabyMetroidCutscene.functionTimer,X                            ;A9CC2D;
     LDA.W $0F7A,X                                                        ;A9CC30;
-    STA.L BabyMetroidCutscene.shakingOriginXPosition,X                                                      ;A9CC33;
+    STA.L BabyMetroidCutscene.shakingOriginXPosition,X                   ;A9CC33;
     LDA.W $0F7E,X                                                        ;A9CC37;
-    STA.L BabyMetroidCutscene.shakingOriginYPosition,X                                                      ;A9CC3A; fallthrough to Function_BabyMetroidCutscene_TakeFinalBlow
+    STA.L BabyMetroidCutscene.shakingOriginYPosition,X                   ;A9CC3A; fallthrough to Function_BabyMetroidCutscene_TakeFinalBlow
 
 
 ;;; $CC3E: Shitroid function - Shitroid takes fatal blow ;;;
 Function_BabyMetroidCutscene_TakeFinalBlow:
     JSR.W ShakeBabyMetroidCutscene                                       ;A9CC3E;
-    DEC.W BabyMetroidCutscene.functionTimer,X                                                        ;A9CC41;
+    DEC.W BabyMetroidCutscene.functionTimer,X                            ;A9CC41;
     BPL Function_BabyMetroidCutscene_PrepareForHyperBeam_return          ;A9CC44;
-    LDA.L BabyMetroidCutscene.shakingOriginXPosition,X                                                      ;A9CC46;
+    LDA.L BabyMetroidCutscene.shakingOriginXPosition,X                   ;A9CC46;
     STA.W $0F7A,X                                                        ;A9CC4A;
-    LDA.L BabyMetroidCutscene.shakingOriginYPosition,X                                                      ;A9CC4D;
+    LDA.L BabyMetroidCutscene.shakingOriginYPosition,X                   ;A9CC4D;
     STA.W $0F7E,X                                                        ;A9CC51;
     LDA.W #Function_BabyMetroidCutscene_PlaySamusTheme                   ;A9CC54;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CC57;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CC57;
     LDA.W #$0038                                                         ;A9CC5A;
-    STA.W BabyMetroidCutscene.functionTimer,X                                                        ;A9CC5D; fallthrough to Function_BabyMetroidCutscene_PlaySamusTheme
+    STA.W BabyMetroidCutscene.functionTimer,X                            ;A9CC5D; fallthrough to Function_BabyMetroidCutscene_PlaySamusTheme
 
 
 ;;; $CC60: Shitroid function - play Samus theme ;;;
 Function_BabyMetroidCutscene_PlaySamusTheme:
-    DEC.W BabyMetroidCutscene.functionTimer,X                                                        ;A9CC60;
+    DEC.W BabyMetroidCutscene.functionTimer,X                            ;A9CC60;
     BPL Function_BabyMetroidCutscene_PrepareForHyperBeam_return          ;A9CC63;
     LDA.W #$FF48                                                         ;A9CC65;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A9CC68;
     LDA.W #$0005                                                         ;A9CC6C;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A9CC6F;
     LDA.W #Function_BabyMetroidCutscene_PrepareForHyperBeam              ;A9CC73;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CC76;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CC76;
     LDA.W #$000C                                                         ;A9CC79;
-    STA.W BabyMetroidCutscene.functionTimer,X                                                        ;A9CC7C; fallthrough to Function_BabyMetroidCutscene_PrepareForHyperBeam
+    STA.W BabyMetroidCutscene.functionTimer,X                            ;A9CC7C; fallthrough to Function_BabyMetroidCutscene_PrepareForHyperBeam
 
 
 ;;; $CC7F: Shitroid function - prepare Samus for hyper beam acquisition ;;;
 Function_BabyMetroidCutscene_PrepareForHyperBeam:
-    DEC.W BabyMetroidCutscene.functionTimer,X                                                        ;A9CC7F;
+    DEC.W BabyMetroidCutscene.functionTimer,X                            ;A9CC7F;
     BPL .return                                                          ;A9CC82;
     LDA.W #$0019                                                         ;A9CC84;
     JSL.L Run_Samus_Command                                              ;A9CC87;
     LDA.W #SamusRainbowPaletteFunction_ActivateRainbowWhenEnemyIsLow     ;A9CC8B;
-    STA.L MotherBrainBody.SamusRainbowPaletteFunction                                                        ;A9CC8E;
+    STA.L MotherBrainBody.SamusRainbowPaletteFunction                    ;A9CC8E;
     LDA.W #Function_BabyMetroidCutscene_DeathSequence                    ;A9CC92;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CC95;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CC95;
 
   .return:
     RTS                                                                  ;A9CC98;
@@ -9291,9 +9291,9 @@ Function_BabyMetroidCutscene_DeathSequence:
     ORA.W #$0100                                                         ;A9CCAD;
     STA.W $0F86,X                                                        ;A9CCB0;
     LDA.W #Function_BabyMetroidCutscene_UnloadTiles                      ;A9CCB3;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CCB6;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CCB6;
     LDA.W #$0080                                                         ;A9CCB9;
-    STA.W BabyMetroidCutscene.functionTimer,X                                                        ;A9CCBC;
+    STA.W BabyMetroidCutscene.functionTimer,X                            ;A9CCBC;
 
   .return:
     RTS                                                                  ;A9CCBF;
@@ -9302,7 +9302,7 @@ Function_BabyMetroidCutscene_DeathSequence:
 ;;; $CCC0: Shitroid function - unload Shitroid tiles ;;;
 Function_BabyMetroidCutscene_UnloadTiles:
     JSR.W HandleSamusRainbowPaletteAnimation                             ;A9CCC0;
-    DEC.W BabyMetroidCutscene.functionTimer,X                                                        ;A9CCC3;
+    DEC.W BabyMetroidCutscene.functionTimer,X                            ;A9CCC3;
     BPL Function_BabyMetroidCutscene_DeathSequence_return                ;A9CCC6;
     PHX                                                                  ;A9CCC8;
     LDX.W #MotherBrainFightSpriteTileTransferEntries_attacks             ;A9CCC9;
@@ -9310,33 +9310,33 @@ Function_BabyMetroidCutscene_UnloadTiles:
     PLX                                                                  ;A9CCCF;
     BCC Function_BabyMetroidCutscene_DeathSequence_return                ;A9CCD0;
     LDA.W #Function_BabyMetroidCutscene_LetSamusRainbowSomeMore          ;A9CCD2;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CCD5;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CCD5;
     LDA.W #$00B0                                                         ;A9CCD8;
-    STA.W BabyMetroidCutscene.functionTimer,X                                                        ;A9CCDB; fallthrough to Function_BabyMetroidCutscene_LetSamusRainbowSomeMore
+    STA.W BabyMetroidCutscene.functionTimer,X                            ;A9CCDB; fallthrough to Function_BabyMetroidCutscene_LetSamusRainbowSomeMore
 
 
 ;;; $CCDE: Shitroid function - let Samus rainbow some more ;;;
 Function_BabyMetroidCutscene_LetSamusRainbowSomeMore:
-    DEC.W BabyMetroidCutscene.functionTimer,X                                                        ;A9CCDE;
+    DEC.W BabyMetroidCutscene.functionTimer,X                            ;A9CCDE;
     BPL Function_BabyMetroidCutscene_DeathSequence_return                ;A9CCE1;
     LDA.W #Function_BabyMetroidCutscene_FinalCutscene                    ;A9CCE3;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CCE6;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CCE6;
     LDA.W #$0000                                                         ;A9CCE9;
-    STA.L MotherBrainBody.roomLightsTransitionCounter                                                        ;A9CCEC; fallthrough to Function_BabyMetroidCutscene_FinalCutscene
+    STA.L MotherBrainBody.roomLightsTransitionCounter                    ;A9CCEC; fallthrough to Function_BabyMetroidCutscene_FinalCutscene
 
 
 ;;; $CCF0: Shitroid function - finish cutscene ;;;
 Function_BabyMetroidCutscene_FinalCutscene:
-    LDA.L MotherBrainBody.roomLightsTransitionCounter                                                        ;A9CCF0;
+    LDA.L MotherBrainBody.roomLightsTransitionCounter                    ;A9CCF0;
     INC A                                                                ;A9CCF4;
-    STA.L MotherBrainBody.roomLightsTransitionCounter                                                        ;A9CCF5;
+    STA.L MotherBrainBody.roomLightsTransitionCounter                    ;A9CCF5;
     DEC A                                                                ;A9CCF9;
     PHX                                                                  ;A9CCFA;
     JSL.L FadeInBackgroundForMotherBrainPhase3                           ;A9CCFB;
     PLX                                                                  ;A9CCFF;
     BCC Function_BabyMetroidCutscene_DeathSequence_return                ;A9CD00;
     LDA.W #Function_MBBody_Phase3_RecoverFromCutscene_MakeSomeDistance   ;A9CD02;
-    STA.W MotherBrainBody.function                                                          ;A9CD05;
+    STA.W MotherBrainBody.function                                       ;A9CD05;
     LDA.W #$0017                                                         ;A9CD08;
     JSL.L Run_Samus_Command                                              ;A9CD0B;
     LDA.W #$0003                                                         ;A9CD0F;
@@ -9345,13 +9345,13 @@ Function_BabyMetroidCutscene_FinalCutscene:
     ORA.W #$0200                                                         ;A9CD19;
     STA.W $0F86,X                                                        ;A9CD1C;
     LDA.W #$0000                                                         ;A9CD1F;
-    STA.L MotherBrainBody.BabyMetroidEnemyIndex                                                        ;A9CD22;
+    STA.L MotherBrainBody.BabyMetroidEnemyIndex                          ;A9CD22;
     RTS                                                                  ;A9CD26;
 
 
 ;;; $CD27: Handle Samus rainbow palette animation ;;;
 HandleSamusRainbowPaletteAnimation:
-    LDA.L MotherBrainBody.SamusRainbowPaletteFunction                                                        ;A9CD27;
+    LDA.L MotherBrainBody.SamusRainbowPaletteFunction                    ;A9CD27;
     STA.B $12                                                            ;A9CD2B;
     JMP.W ($0012)                                                        ;A9CD2D;
 
@@ -9366,7 +9366,7 @@ SamusRainbowPaletteFunction_ActivateRainbowWhenEnemyIsLow:
     LDA.W #$0016                                                         ;A9CD3C;
     JSL.L Run_Samus_Command                                              ;A9CD3F;
     LDA.W #SamusRainbowPaletteFunction_GraduallySlowAnimationDown        ;A9CD43;
-    STA.L MotherBrainBody.SamusRainbowPaletteFunction                                                        ;A9CD46;
+    STA.L MotherBrainBody.SamusRainbowPaletteFunction                    ;A9CD46;
 
   .return:
     RTS                                                                  ;A9CD4A;
@@ -9375,10 +9375,10 @@ SamusRainbowPaletteFunction_ActivateRainbowWhenEnemyIsLow:
 ;;; $CD4B: Samus rainbow palette function - gradually slow animation down ;;;
 SamusRainbowPaletteFunction_GraduallySlowAnimationDown:
 ; This Samus rainbow palette animation counter thing is dumb
-    LDA.L MotherBrainBody.SamusRainbowPaletteAnimationCounter                                                        ;A9CD4B;
+    LDA.L MotherBrainBody.SamusRainbowPaletteAnimationCounter            ;A9CD4B;
     CLC                                                                  ;A9CD4F;
     ADC.W #$0300                                                         ;A9CD50;
-    STA.L MotherBrainBody.SamusRainbowPaletteAnimationCounter                                                        ;A9CD53;
+    STA.L MotherBrainBody.SamusRainbowPaletteAnimationCounter            ;A9CD53;
     BCC .return                                                          ;A9CD57;
     LDA.W $0ACE                                                          ;A9CD59;
     INC A                                                                ;A9CD5C;
@@ -9404,10 +9404,10 @@ FadeBabyMetroidCutsceneToBlack:
     PEA.W $AD00                                                          ;A9CD72;
     PLB                                                                  ;A9CD75;
     PLB                                                                  ;A9CD76;
-    LDA.L BabyMetroidCutscene.fadeToBlackPaletteTimer,X                                                      ;A9CD77;
+    LDA.L BabyMetroidCutscene.fadeToBlackPaletteTimer,X                  ;A9CD77;
     DEC A                                                                ;A9CD7B;
     BMI .advancePalette                                                  ;A9CD7C;
-    STA.L BabyMetroidCutscene.fadeToBlackPaletteTimer,X                                                      ;A9CD7E;
+    STA.L BabyMetroidCutscene.fadeToBlackPaletteTimer,X                  ;A9CD7E;
     PLB                                                                  ;A9CD82;
 
   .returnNotFaded:
@@ -9416,8 +9416,8 @@ FadeBabyMetroidCutsceneToBlack:
 
   .advancePalette:
     LDA.W #$0008                                                         ;A9CD85;
-    STA.L BabyMetroidCutscene.fadeToBlackPaletteTimer,X                                                      ;A9CD88;
-    LDA.L BabyMetroidCutscene.fadeToBlackPaletteIndex,X                                                      ;A9CD8C;
+    STA.L BabyMetroidCutscene.fadeToBlackPaletteTimer,X                  ;A9CD88;
+    LDA.L BabyMetroidCutscene.fadeToBlackPaletteIndex,X                  ;A9CD8C;
     INC A                                                                ;A9CD90;
     CMP.W #$0007                                                         ;A9CD91;
     BMI .fadeToBlack                                                     ;A9CD94;
@@ -9427,7 +9427,7 @@ FadeBabyMetroidCutsceneToBlack:
 
   .fadeToBlack:
     PHX                                                                  ;A9CD99;
-    STA.L BabyMetroidCutscene.fadeToBlackPaletteIndex,X                                                      ;A9CD9A;
+    STA.L BabyMetroidCutscene.fadeToBlackPaletteIndex,X                  ;A9CD9A;
     ASL A                                                                ;A9CD9E;
     TAX                                                                  ;A9CD9F;
     LDY.W BabyMetroidFadingToBlackPalettes,X                             ;A9CDA0;
@@ -9442,22 +9442,22 @@ FadeBabyMetroidCutsceneToBlack:
 
 ;;; $CDB1: Handle Shitroid death explosions ;;;
 HandleBabyMetroidCutsceneDeathExplosions:
-    LDA.L BabyMetroidCutscene.deathExplosionTimer,X                                                      ;A9CDB1;
+    LDA.L BabyMetroidCutscene.deathExplosionTimer,X                      ;A9CDB1;
     DEC A                                                                ;A9CDB5;
     BMI .timerExpired                                                    ;A9CDB6;
-    STA.L BabyMetroidCutscene.deathExplosionTimer,X                                                      ;A9CDB8;
+    STA.L BabyMetroidCutscene.deathExplosionTimer,X                      ;A9CDB8;
     RTS                                                                  ;A9CDBC;
 
   .timerExpired:
     LDA.W #$0004                                                         ;A9CDBD;
-    STA.L BabyMetroidCutscene.deathExplosionTimer,X                                                      ;A9CDC0;
-    LDA.L MotherBrainBody.walkCounter,X                                                      ;A9CDC4;
+    STA.L BabyMetroidCutscene.deathExplosionTimer,X                      ;A9CDC0;
+    LDA.L MotherBrainBody.walkCounter,X                                  ;A9CDC4;
     INC A                                                                ;A9CDC8;
     CMP.W #$000A                                                         ;A9CDC9;
     BMI +                                                                ;A9CDCC;
     LDA.W #$0000                                                         ;A9CDCE;
 
-+   STA.L MotherBrainBody.walkCounter,X                                                      ;A9CDD1;
++   STA.L MotherBrainBody.walkCounter,X                                  ;A9CDD1;
     ASL A                                                                ;A9CDD5;
     ASL A                                                                ;A9CDD6;
     TAY                                                                  ;A9CDD7;
@@ -9514,7 +9514,7 @@ HandleEnemyBlinking:
 
 ;;; $CE40: Accelerate Shitroid downwards ;;;
 AccelerateBabyMetroidDownwards:
-    LDA.W BabyMetroid.XVelocity,X                                                        ;A9CE40;
+    LDA.W BabyMetroid.XVelocity,X                                        ;A9CE40;
     BPL +                                                                ;A9CE43;
     EOR.W #$FFFF                                                         ;A9CE45;
     INC A                                                                ;A9CE48;
@@ -9524,22 +9524,22 @@ AccelerateBabyMetroidDownwards:
     BPL +                                                                ;A9CE4D;
     LDA.W #$0000                                                         ;A9CE4F;
 
-+   BIT.W BabyMetroid.XVelocity,X                                                        ;A9CE52;
++   BIT.W BabyMetroid.XVelocity,X                                        ;A9CE52;
     BPL +                                                                ;A9CE55;
     EOR.W #$FFFF                                                         ;A9CE57;
     INC A                                                                ;A9CE5A;
 
-+   STA.W BabyMetroid.XVelocity,X                                                        ;A9CE5B;
-    LDA.W BabyMetroid.YVelocity,X                                                        ;A9CE5E;
++   STA.W BabyMetroid.XVelocity,X                                        ;A9CE5B;
+    LDA.W BabyMetroid.YVelocity,X                                        ;A9CE5E;
     CLC                                                                  ;A9CE61;
     ADC.W #$0002                                                         ;A9CE62;
-    STA.W BabyMetroid.YVelocity,X                                                        ;A9CE65;
+    STA.W BabyMetroid.YVelocity,X                                        ;A9CE65;
     RTS                                                                  ;A9CE68;
 
 
 ;;; $CE69: Handle Shitroid health-based palette ;;;
 HandleBabyMetroidHealthBasedPalette:
-    LDA.L BabyMetroidCutscene.healthBasedPaletteFlag,X                                                      ;A9CE69;
+    LDA.L BabyMetroidCutscene.healthBasedPaletteFlag,X                   ;A9CE69;
     BEQ .return                                                          ;A9CE6D;
     LDA.W $0F8C,X                                                        ;A9CE6F;
     CMP.W #$0A00                                                         ;A9CE72;
@@ -9596,20 +9596,20 @@ HandleBabyMetroidHealthBasedPalette:
 ;;; $CEDB: Shake Shitroid ;;;
 ShakeBabyMetroidCutscene:
 ; Decrementing velocity might be setting up initial velocity for the later calls to AccelerateBabyMetroidDownwards, pretty weird stuff...
-    LDA.W BabyMetroidCutscene.YVelocity,X                                                        ;A9CEDB;
+    LDA.W BabyMetroidCutscene.YVelocity,X                                ;A9CEDB;
     CLC                                                                  ;A9CEDE;
     ADC.W #$FFFF                                                         ;A9CEDF;
-    STA.W BabyMetroidCutscene.YVelocity,X                                                        ;A9CEE2;
+    STA.W BabyMetroidCutscene.YVelocity,X                                ;A9CEE2;
     LDA.W $0FA4,X                                                        ;A9CEE5;
     AND.W #$0006                                                         ;A9CEE8;
     TAY                                                                  ;A9CEEB;
     LDA.W ShakingOffsets_X,Y                                             ;A9CEEC;
     CLC                                                                  ;A9CEEF;
-    ADC.L BabyMetroidCutscene.shakingOriginXPosition,X                                                      ;A9CEF0;
+    ADC.L BabyMetroidCutscene.shakingOriginXPosition,X                   ;A9CEF0;
     STA.W $0F7A,X                                                        ;A9CEF4;
     LDA.W ShakingOffsets_Y,Y                                             ;A9CEF7;
     CLC                                                                  ;A9CEFA;
-    ADC.L BabyMetroidCutscene.shakingOriginYPosition,X                                                      ;A9CEFB;
+    ADC.L BabyMetroidCutscene.shakingOriginYPosition,X                   ;A9CEFB;
     STA.W $0F7E,X                                                        ;A9CEFF;
     RTS                                                                  ;A9CF02;
 
@@ -9617,7 +9617,7 @@ ShakeBabyMetroidCutscene:
 ;;; $CF03: Enemy touch - enemy $ECBF (Shitroid in cutscene) ;;;
 EnemyTouch_BabyMetroidCutscene:
     LDX.W $0E54                                                          ;A9CF03;
-    LDA.W BabyMetroidCutscene.function,X                                                        ;A9CF06;
+    LDA.W BabyMetroidCutscene.function,X                                 ;A9CF06;
     CMP.W #Function_BabyMetroidCutscene_LatchOntoSamus                   ;A9CF09;
     BNE .return                                                          ;A9CF0C;
     LDA.W $0AF6                                                          ;A9CF0E;
@@ -9629,10 +9629,10 @@ EnemyTouch_BabyMetroidCutscene:
     LDA.W #$0010                                                         ;A9CF1C;
     JSR.W AccelerateBabyMetroidTowardsPoint                              ;A9CF1F;
     BCC .return                                                          ;A9CF22;
-    STZ.W BabyMetroidCutscene.XVelocity,X                                                        ;A9CF24;
-    STZ.W BabyMetroidCutscene.YVelocity,X                                                        ;A9CF27;
+    STZ.W BabyMetroidCutscene.XVelocity,X                                ;A9CF24;
+    STZ.W BabyMetroidCutscene.YVelocity,X                                ;A9CF27;
     LDA.W #Function_BabyMetroidCutscene_HealSamusUpToFullEnergy          ;A9CF2A;
-    STA.W BabyMetroidCutscene.function,X                                                        ;A9CF2D;
+    STA.W BabyMetroidCutscene.function,X                                 ;A9CF2D;
 
   .return:
     RTL                                                                  ;A9CF30;
@@ -9645,10 +9645,10 @@ UpdateBabyMetroidCutsceneSpeedAndAngle:
 ;;     $14: Target angle
 ;;     $16: Target speed
     LDA.B $16                                                            ;A9CF31;
-    CMP.L BabyMetroidCutscene.speed,X                                                      ;A9CF33;
+    CMP.L BabyMetroidCutscene.speed,X                                    ;A9CF33;
     BEQ .speedCalculated                                                 ;A9CF37;
     BPL .notReachedTargedSpeed                                           ;A9CF39;
-    LDA.L BabyMetroidCutscene.speed,X                                                      ;A9CF3B;
+    LDA.L BabyMetroidCutscene.speed,X                                    ;A9CF3B;
     SEC                                                                  ;A9CF3F;
     SBC.W #$0020                                                         ;A9CF40;
     CMP.B $16                                                            ;A9CF43;
@@ -9656,11 +9656,11 @@ UpdateBabyMetroidCutsceneSpeedAndAngle:
     LDA.B $16                                                            ;A9CF47;
 
   .setSpeed:
-    STA.L BabyMetroidCutscene.speed,X                                                      ;A9CF49;
+    STA.L BabyMetroidCutscene.speed,X                                    ;A9CF49;
     BRA .speedCalculated                                                 ;A9CF4D;
 
   .notReachedTargedSpeed:
-    LDA.L BabyMetroidCutscene.speed,X                                                      ;A9CF4F;
+    LDA.L BabyMetroidCutscene.speed,X                                    ;A9CF4F;
     CLC                                                                  ;A9CF53;
     ADC.W #$0020                                                         ;A9CF54;
     CMP.B $16                                                            ;A9CF57;
@@ -9668,20 +9668,20 @@ UpdateBabyMetroidCutsceneSpeedAndAngle:
     LDA.B $16                                                            ;A9CF5B;
 
   ..setSpeed:
-    STA.L BabyMetroidCutscene.speed,X                                                      ;A9CF5D;
+    STA.L BabyMetroidCutscene.speed,X                                    ;A9CF5D;
 
   .speedCalculated:
     LDA.B $12                                                            ;A9CF61;
     BMI .negativeAngleDelta                                              ;A9CF63;
     CLC                                                                  ;A9CF65;
-    ADC.L BabyMetroidCutscene.angle,X                                                      ;A9CF66;
+    ADC.L BabyMetroidCutscene.angle,X                                    ;A9CF66;
     CMP.B $14                                                            ;A9CF6A;
     BMI .setAngle                                                        ;A9CF6C;
     BRA .maxAngle                                                        ;A9CF6E;
 
   .negativeAngleDelta:
     CLC                                                                  ;A9CF70;
-    ADC.L BabyMetroidCutscene.angle,X                                                      ;A9CF71;
+    ADC.L BabyMetroidCutscene.angle,X                                    ;A9CF71;
     CMP.B $14                                                            ;A9CF75;
     BPL .setAngle                                                        ;A9CF77;
 
@@ -9689,18 +9689,18 @@ UpdateBabyMetroidCutsceneSpeedAndAngle:
     LDA.B $14                                                            ;A9CF79;
 
   .setAngle:
-    STA.L BabyMetroidCutscene.angle,X                                                      ;A9CF7B;
+    STA.L BabyMetroidCutscene.angle,X                                    ;A9CF7B;
     XBA                                                                  ;A9CF7F;
     AND.W #$00FF                                                         ;A9CF80;
     STA.B $12                                                            ;A9CF83;
-    LDA.L BabyMetroidCutscene.speed,X                                                      ;A9CF85;
+    LDA.L BabyMetroidCutscene.speed,X                                    ;A9CF85;
     JSL.L CalculateXVelocityFromSpeedAndAngle                            ;A9CF89;
     LDX.W $0E54                                                          ;A9CF8D;
-    STA.W BabyMetroidCutscene.XVelocity,X                                                        ;A9CF90;
-    LDA.L BabyMetroidCutscene.speed,X                                                      ;A9CF93;
+    STA.W BabyMetroidCutscene.XVelocity,X                                ;A9CF90;
+    LDA.L BabyMetroidCutscene.speed,X                                    ;A9CF93;
     JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A9CF97;
     LDX.W $0E54                                                          ;A9CF9B;
-    STA.W BabyMetroidCutscene.YVelocity,X                                                        ;A9CF9E;
+    STA.W BabyMetroidCutscene.YVelocity,X                                ;A9CF9E;
     RTS                                                                  ;A9CFA1;
 
 
@@ -9742,7 +9742,7 @@ InstList_BabyMetroid_TookFatalBlow:
 
 ;;; $CFD4: Process Mother Brain invincibility palette ;;;
 ProcessMotherBrainInvincibilityPalette:
-    LDA.L MotherBrainBody.form                                                        ;A9CFD4;
+    LDA.L MotherBrainBody.form                                           ;A9CFD4;
     CMP.W #$0004                                                         ;A9CFD8;
     BNE .return                                                          ;A9CFDB;
     LDA.W $0FDC                                                          ;A9CFDD;
@@ -9768,17 +9768,17 @@ ProcessMotherBrainInvincibilityPalette:
 MotherBrainPalette_BeginScreenFlashing:
 ; Called on end of MB first phase
     LDA.W #InstList_RoomPalette_FirstPhaseEnded                          ;A9CFFD;
-    STA.L MotherBrainBody.roomPaletteInstListPointer                                                        ;A9D000;
+    STA.L MotherBrainBody.roomPaletteInstListPointer                     ;A9D000;
     LDA.W #$0001                                                         ;A9D004;
-    STA.L MotherBrainBody.roomPaletteInstructionTimer                                                        ;A9D007;
+    STA.L MotherBrainBody.roomPaletteInstructionTimer                    ;A9D007;
     RTS                                                                  ;A9D00B;
 
 
 ;;; $D00C: End screen flashing ;;;
 MotherBrainPalette_EndScreenFlashing:
     LDA.W #$0000                                                         ;A9D00C;
-    STA.L MotherBrainBody.roomPaletteInstListPointer                                                        ;A9D00F;
-    STA.L MotherBrainBody.roomPaletteInstructionTimer                                                        ;A9D013;
+    STA.L MotherBrainBody.roomPaletteInstListPointer                     ;A9D00F;
+    STA.L MotherBrainBody.roomPaletteInstructionTimer                    ;A9D013;
     LDY.W #RoomPalettes_Phase1Ended_0                                    ;A9D017;
     BRA MotherBrainPalette_WriteRoomPalette                              ;A9D01A;
 
@@ -9853,18 +9853,18 @@ RoomPalettes_Phase1Ended_3:                                              ;A9D112
 ;;; $D142: Unused. Set invalid room palette instruction list ;;;
 UNSUED_SetInvalidRoomPaletteInstructionList_A9D142:
     LDA.W #MotherBrainPalettes_TransitionToGrey                          ;A9D142;
-    STA.L MotherBrainBody.roomPaletteInstListPointer                                                        ;A9D145;
+    STA.L MotherBrainBody.roomPaletteInstListPointer                     ;A9D145;
     LDA.W #$0001                                                         ;A9D149;
-    STA.L MotherBrainBody.roomPaletteInstructionTimer                                                        ;A9D14C;
+    STA.L MotherBrainBody.roomPaletteInstructionTimer                    ;A9D14C;
     RTS                                                                  ;A9D150;
 
 
 ;;; $D151: Unused. Set invalid room palette instruction list ;;;
 UNSUED_SetInvalidRoomPaletteInstructionList_A9D151:
     LDA.W #MotherBrainPalettes_TransitionFromGrey                        ;A9D151;
-    STA.L MotherBrainBody.roomPaletteInstListPointer                                                        ;A9D154;
+    STA.L MotherBrainBody.roomPaletteInstListPointer                     ;A9D154;
     LDA.W #$0001                                                         ;A9D158;
-    STA.L MotherBrainBody.roomPaletteInstructionTimer                                                        ;A9D15B;
+    STA.L MotherBrainBody.roomPaletteInstructionTimer                    ;A9D15B;
     RTS                                                                  ;A9D15F;
 
 
@@ -9964,12 +9964,12 @@ HandleRoomPaletteInstList:
 
 ;;; $D1E4: Handle Mother Brain's palette ;;;
 HandleMotherBrainsPalette:
-    LDA.L MotherBrainBody.enableBrainPaletteHandlingFlag                                                        ;A9D1E4;
+    LDA.L MotherBrainBody.enableBrainPaletteHandlingFlag                 ;A9D1E4;
     BEQ .disabled                                                        ;A9D1E8;
     JSR.W HandleMotherBrainHeadPalette                                   ;A9D1EA;
 
   .disabled:
-    LDA.L MotherBrainBody.enableHealthBasedPaletteHandlingFlag                                                        ;A9D1ED;
+    LDA.L MotherBrainBody.enableHealthBasedPaletteHandlingFlag           ;A9D1ED;
     BEQ .return                                                          ;A9D1F1;
     JSL.L MotherBrainHealthBasedPaletteHandling                          ;A9D1F3;
 
@@ -9982,7 +9982,7 @@ SetupMotherBrainHeadNormalPalette:
 ; Mother Brain brain palette timer reset value = Ah
 ; Mother Brain brain palette set = 0
     LDA.W #$000A                                                         ;A9D1F8;
-    STA.W MotherBrainBody.brainPaletteTimerResetValue                                                          ;A9D1FB;
+    STA.W MotherBrainBody.brainPaletteTimerResetValue                    ;A9D1FB;
     RTS                                                                  ;A9D1FE;
 
 
@@ -9991,20 +9991,20 @@ SetupMotherBrainHeadPaletteForChargingHerLaser:
 ; Mother Brain brain palette timer reset value = 2
 ; Mother Brain brain palette set = 2
     LDA.W #$0202                                                         ;A9D1FF;
-    STA.W MotherBrainBody.brainPaletteTimerResetValue                                                          ;A9D202;
+    STA.W MotherBrainBody.brainPaletteTimerResetValue                    ;A9D202;
     RTS                                                                  ;A9D205;
 
 
 ;;; $D206: Handle Mother Brain brain palette ;;;
 HandleMotherBrainHeadPalette:
-    LDA.L MotherBrainBody.form                                                        ;A9D206;
+    LDA.L MotherBrainBody.form                                           ;A9D206;
     DEC A                                                                ;A9D20A;
     BEQ .return                                                          ;A9D20B;
     SEP #$20                                                             ;A9D20D;
-    LDA.W MotherBrainBody.brainPaletteTimer                                                          ;A9D20F;
+    LDA.W MotherBrainBody.brainPaletteTimer                              ;A9D20F;
     BEQ .zero                                                            ;A9D212;
     DEC A                                                                ;A9D214;
-    STA.W MotherBrainBody.brainPaletteTimer                                                          ;A9D215;
+    STA.W MotherBrainBody.brainPaletteTimer                              ;A9D215;
 
   .return:
     REP #$20                                                             ;A9D218;
@@ -10012,22 +10012,22 @@ HandleMotherBrainHeadPalette:
 
   .zero:
     XBA                                                                  ;A9D21B;
-    LDA.W MotherBrainBody.brainPaletteSet                                                          ;A9D21C;
+    LDA.W MotherBrainBody.brainPaletteSet                                ;A9D21C;
     TAX                                                                  ;A9D21F;
     LDY.W .pointers,X                                                    ;A9D220;
     STY.B $12                                                            ;A9D223;
-    LDA.W MotherBrainBody.brainPaletteTimerResetValue                                                          ;A9D225;
-    STA.W MotherBrainBody.brainPaletteTimer                                                          ;A9D228;
-    LDA.W MotherBrainBody.brainPaletteCounter                                                          ;A9D22B;
+    LDA.W MotherBrainBody.brainPaletteTimerResetValue                    ;A9D225;
+    STA.W MotherBrainBody.brainPaletteTimer                              ;A9D228;
+    LDA.W MotherBrainBody.brainPaletteCounter                            ;A9D22B;
     BNE .zeroCounter                                                     ;A9D22E;
-    LDY.W MotherBrainBody.brainFunction                                                          ;A9D230;
+    LDY.W MotherBrainBody.brainFunction                                  ;A9D230;
     CPY.W #Function_MotherBrain_SetupBrainAndNeckToBeDrawn               ;A9D233;
     BNE .return                                                          ;A9D236;
 
   .zeroCounter:
     INC A                                                                ;A9D238;
     AND.B #$07                                                           ;A9D239;
-    STA.W MotherBrainBody.brainPaletteCounter                                                          ;A9D23B;
+    STA.W MotherBrainBody.brainPaletteCounter                            ;A9D23B;
     REP #$20                                                             ;A9D23E;
     AND.W #$00FF                                                         ;A9D240;
     ASL A                                                                ;A9D243;
@@ -10036,7 +10036,7 @@ HandleMotherBrainHeadPalette:
     ADC.B $12                                                            ;A9D246;
     TAY                                                                  ;A9D248;
     LDX.W #$0122                                                         ;A9D249;
-    LDA.L MotherBrainBody.brainPalleteIndex                                                        ;A9D24C;
+    LDA.L MotherBrainBody.brainPalleteIndex                              ;A9D24C;
     CMP.W #$0200                                                         ;A9D250;
     BEQ +                                                                ;A9D253;
     LDX.W #$01E2                                                         ;A9D255;
@@ -10120,7 +10120,7 @@ InitAI_CorpseTorizo:
     BPL .loop                                                            ;A9D319;
     PLB                                                                  ;A9D31B;
     LDA.W #Function_CorpseTorizo_WaitForSamusCollision                   ;A9D31C;
-    STA.W CorpseTorizo.function                                                          ;A9D31F;
+    STA.W CorpseTorizo.function                                          ;A9D31F;
     LDA.W $0F86                                                          ;A9D322;
     ORA.W #$A000                                                         ;A9D325;
     STA.W $0F86                                                          ;A9D328;
@@ -10131,15 +10131,15 @@ InitAI_CorpseTorizo:
     STZ.W $0F90                                                          ;A9D337;
     LDA.W #$0200                                                         ;A9D33A;
     STA.W $0F96                                                          ;A9D33D;
-    STZ.W CorpseTorizo.XVelocity                                                          ;A9D340;
+    STZ.W CorpseTorizo.XVelocity                                         ;A9D340;
     LDA.W #$0008                                                         ;A9D343;
-    STA.W CorpseTorizo.YVelocity                                                          ;A9D346;
+    STA.W CorpseTorizo.YVelocity                                         ;A9D346;
     LDA.W #$0000                                                         ;A9D349;
-    STA.L CorpseTorizo.preRotDelayTimer                                                        ;A9D34C;
+    STA.L CorpseTorizo.preRotDelayTimer                                  ;A9D34C;
     LDA.W #$000F                                                         ;A9D350;
-    STA.L CorpseTorizo.sandHeapYPixelRowToCopy                                                        ;A9D353;
+    STA.L CorpseTorizo.sandHeapYPixelRowToCopy                           ;A9D353;
     LDA.W #$0000                                                         ;A9D357;
-    STA.L CorpseTorizo.sandHeapFormationTimer                                                        ;A9D35A;
+    STA.L CorpseTorizo.sandHeapFormationTimer                            ;A9D35A;
     LDX.W #$0000                                                         ;A9D35E;
     LDY.W #CorpseRottingDefinitions_Torizo                               ;A9D361;
     JSR.W InitializeEnemyCorpseRotting                                   ;A9D364;
@@ -10157,7 +10157,7 @@ MainAI_CorpseTorizo:
     ORA.W #$0400                                                         ;A9D378;
     STA.W $0F86                                                          ;A9D37B;
     LDA.W #Function_CorpseTorizo_Rotting                                 ;A9D37E;
-    STA.W CorpseTorizo.function                                                          ;A9D381;
+    STA.W CorpseTorizo.function                                          ;A9D381;
 
   .noCollision:
     LDA.W #EnemyGraphicsDrawnHook_CorpseTorizo>>8&$FF00                  ;A9D384;
@@ -10165,7 +10165,7 @@ MainAI_CorpseTorizo:
     LDA.W #EnemyGraphicsDrawnHook_CorpseTorizo                           ;A9D38A;
     STA.W $178C                                                          ;A9D38D;
     LDX.W #$0000                                                         ;A9D390;
-    JSR.W (CorpseTorizo.function,X)                                                      ;A9D393;
+    JSR.W (CorpseTorizo.function,X)                                      ;A9D393;
     JSR.W ProcessCorpseTorizoRottingVRAMTransfers                        ;A9D396;
     RTL                                                                  ;A9D399;
 
@@ -10195,7 +10195,7 @@ Function_CorpseTorizo_WaitForSamusCollision:
 
   .collision:
     LDA.W #Function_CorpseTorizo_PreRotDelay                             ;A9D3C1;
-    STA.W CorpseTorizo.function                                                          ;A9D3C4;
+    STA.W CorpseTorizo.function                                          ;A9D3C4;
 
   .return:
     RTS                                                                  ;A9D3C7;
@@ -10203,9 +10203,9 @@ Function_CorpseTorizo_WaitForSamusCollision:
 
 ;;; $D3C8: Torizo corpse function - pre-rot delay ;;;
 Function_CorpseTorizo_PreRotDelay:
-    LDA.L CorpseTorizo.preRotDelayTimer                                                        ;A9D3C8;
+    LDA.L CorpseTorizo.preRotDelayTimer                                  ;A9D3C8;
     INC A                                                                ;A9D3CC;
-    STA.L CorpseTorizo.preRotDelayTimer                                                        ;A9D3CD;
+    STA.L CorpseTorizo.preRotDelayTimer                                  ;A9D3CD;
     CMP.W #$0010                                                         ;A9D3D1;
     BCS .done                                                            ;A9D3D4;
     RTS                                                                  ;A9D3D6;
@@ -10215,36 +10215,36 @@ Function_CorpseTorizo_PreRotDelay:
     ORA.W #$0400                                                         ;A9D3DA;
     STA.W $0F86                                                          ;A9D3DD;
     LDA.W #Function_CorpseTorizo_Rotting                                 ;A9D3E0;
-    STA.W CorpseTorizo.function                                                          ;A9D3E3; fallthrough to Function_CorpseTorizo_Rotting
+    STA.W CorpseTorizo.function                                          ;A9D3E3; fallthrough to Function_CorpseTorizo_Rotting
 
 
 ;;; $D3E6: Torizo corpse function - rotting ;;;
 Function_CorpseTorizo_Rotting:
-    LDA.L CorpseTorizo.sandHeapFormationTimer                                                        ;A9D3E6;
+    LDA.L CorpseTorizo.sandHeapFormationTimer                            ;A9D3E6;
     INC A                                                                ;A9D3EA;
-    STA.L CorpseTorizo.sandHeapFormationTimer                                                        ;A9D3EB;
+    STA.L CorpseTorizo.sandHeapFormationTimer                            ;A9D3EB;
     CMP.W #$000F                                                         ;A9D3EF;
     BCC .sandHeapFormed                                                  ;A9D3F2;
     LDA.W #$0000                                                         ;A9D3F4;
-    STA.L CorpseTorizo.sandHeapFormationTimer                                                        ;A9D3F7;
-    LDA.L CorpseTorizo.sandHeapYPixelRowToCopy                                                        ;A9D3FB;
+    STA.L CorpseTorizo.sandHeapFormationTimer                            ;A9D3F7;
+    LDA.L CorpseTorizo.sandHeapYPixelRowToCopy                           ;A9D3FB;
     BEQ .sandHeapFormed                                                  ;A9D3FF;
     JSR.W CopyLineOfSandHeapTileData                                     ;A9D401;
-    LDA.L CorpseTorizo.sandHeapYPixelRowToCopy                                                        ;A9D404;
+    LDA.L CorpseTorizo.sandHeapYPixelRowToCopy                           ;A9D404;
     DEC A                                                                ;A9D408;
-    STA.L CorpseTorizo.sandHeapYPixelRowToCopy                                                        ;A9D409;
+    STA.L CorpseTorizo.sandHeapYPixelRowToCopy                           ;A9D409;
 
   .sandHeapFormed:
-    LDA.W CorpseTorizo.YVelocity                                                          ;A9D40D;
+    LDA.W CorpseTorizo.YVelocity                                         ;A9D40D;
     CLC                                                                  ;A9D410;
     ADC.W #$0001                                                         ;A9D411;
-    STA.W CorpseTorizo.YVelocity                                                          ;A9D414;
+    STA.W CorpseTorizo.YVelocity                                         ;A9D414;
     LDX.W #$0000                                                         ;A9D417;
     JSL.L MoveEnemyAccordingToVelocity                                   ;A9D41A;
     JSR.W ProcessCorpseRotting                                           ;A9D41E;
     BCS .return                                                          ;A9D421;
     LDA.W #Function_CorpseTorizo_WaitForSamusCollision_return            ;A9D423;
-    STA.W CorpseTorizo.function                                                          ;A9D426;
+    STA.W CorpseTorizo.function                                          ;A9D426;
 
   .return:
     RTS                                                                  ;A9D429;
@@ -10264,7 +10264,7 @@ EnemyTouch_EnemyShot_CorpseTorizo:
     ORA.W #$0400                                                         ;A9D436;
     STA.W $0F86                                                          ;A9D439;
     LDA.W #Function_CorpseTorizo_Rotting                                 ;A9D43C;
-    STA.W CorpseTorizo.function                                                          ;A9D43F;
+    STA.W CorpseTorizo.function                                          ;A9D43F;
     RTL                                                                  ;A9D442;
 
 
@@ -10363,9 +10363,9 @@ CorpseTorizo_vs_Samus_CollisionDetection:
 
 ;;; $D4CF: Process torizo corpse corpse rotting VRAM transfers ;;;
 ProcessCorpseTorizoRottingVRAMTransfers:
-    LDA.L MotherBrainBody.form                                                        ;A9D4CF;
+    LDA.L MotherBrainBody.form                                           ;A9D4CF;
     INC A                                                                ;A9D4D3;
-    STA.L MotherBrainBody.form                                                        ;A9D4D4;
+    STA.L MotherBrainBody.form                                           ;A9D4D4;
     LSR A                                                                ;A9D4D8;
     BCS .odd                                                             ;A9D4D9;
     LDX.W #$0000                                                         ;A9D4DB;
@@ -10389,7 +10389,7 @@ ProcessCorpseTorizoRottingVRAMTransfers:
     TAX                                                                  ;A9D503;
     LDA.W .size0,X                                                       ;A9D504;
     BNE .loopEven                                                        ;A9D507;
-    STA.L MotherBrainBody.spriteTilesTransferEntryPointer                                                        ;A9D509;
+    STA.L MotherBrainBody.spriteTilesTransferEntryPointer                ;A9D509;
     TYA                                                                  ;A9D50D;
     STA.W $0330                                                          ;A9D50E;
     RTS                                                                  ;A9D511;
@@ -10416,7 +10416,7 @@ ProcessCorpseTorizoRottingVRAMTransfers:
     TAX                                                                  ;A9D53A;
     LDA.W .size1,X                                                       ;A9D53B;
     BNE .loopOdd                                                         ;A9D53E;
-    STA.L MotherBrainBody.spriteTilesTransferEntryPointer                                                        ;A9D540;
+    STA.L MotherBrainBody.spriteTilesTransferEntryPointer                ;A9D540;
     TYA                                                                  ;A9D544;
     STA.W $0330                                                          ;A9D545;
     RTS                                                                  ;A9D548;
@@ -10660,17 +10660,17 @@ CorpseSidehopperInit_Param1_0_InitiallyAlive:
 
   .visible:
     LDA.W #$0000                                                         ;A9D7E4;
-    STA.L CorpseSidehopper.drainedPaletteIndex,X                                                      ;A9D7E7;
+    STA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9D7E7;
     LDA.W #$0060                                                         ;A9D7EB;
-    STA.L CorpseSidehopper.XVelocity,X                                                      ;A9D7EE;
+    STA.L CorpseSidehopper.XVelocity,X                                   ;A9D7EE;
     LDA.W #$0100                                                         ;A9D7F2;
-    STA.L CorpseSidehopper.YVelocity,X                                                      ;A9D7F5;
+    STA.L CorpseSidehopper.YVelocity,X                                   ;A9D7F5;
     LDA.W #$01E8                                                         ;A9D7F9;
     STA.W $0F7A,X                                                        ;A9D7FC;
     LDA.W #$00B8                                                         ;A9D7FF;
     STA.W $0F7E,X                                                        ;A9D802;
     LDA.W #Function_CorpseSidehopper_Alive_WaitingForActivation          ;A9D805;
-    STA.W CorpseSidehopper.function,X                                                        ;A9D808;
+    STA.W CorpseSidehopper.function,X                                    ;A9D808;
     LDA.W #$0200                                                         ;A9D80B;
     STA.W $0F96,X                                                        ;A9D80E;
     LDA.W #$0015                                                         ;A9D811;
@@ -10687,9 +10687,9 @@ CorpseSidehopperInit_Param1_2_InitiallyDead:
 ; Palette 7 is loaded by Shitroid from Palette_CorpseCommon
     LDX.W $0E54                                                          ;A9D825;
     LDA.W #$FFFF                                                         ;A9D828;
-    STA.L CorpseSidehopper.drainedPaletteIndex,X                                                      ;A9D82B;
+    STA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9D82B;
     LDA.W #Function_CorpseSidehopper_Dead_WaitForSamusCollision          ;A9D82F;
-    STA.W CorpseSidehopper.function,X                                                        ;A9D832;
+    STA.W CorpseSidehopper.function,X                                    ;A9D832;
     LDA.W #$0E00                                                         ;A9D835;
     STA.W $0F96,X                                                        ;A9D838;
     LDA.W #InstList_CorpseSidehopper_Alive_Dead                          ;A9D83B;
@@ -10705,7 +10705,7 @@ InitAI_CorpseZoomer:
     LDA.W #$0E00                                                         ;A9D84C;
     STA.W $0F96,X                                                        ;A9D84F;
     LDA.W #Function_CorpseZoomer_WaitForSamusCollision                   ;A9D852;
-    STA.W Corpse.function,X                                                        ;A9D855;
+    STA.W Corpse.function,X                                              ;A9D855;
     LDY.W $0FB4,X                                                        ;A9D858;
     LDA.W .instListPointers,Y                                            ;A9D85B;
     JSL.L SetEnemyInstList                                               ;A9D85E;
@@ -10733,7 +10733,7 @@ InitAI_CorpseRipper:
     LDA.W #$0E00                                                         ;A9D879;
     STA.W $0F96,X                                                        ;A9D87C;
     LDA.W #Function_CorpseRipper_WaitForSamusCollision                   ;A9D87F;
-    STA.W Corpse.function,X                                                        ;A9D882;
+    STA.W Corpse.function,X                                              ;A9D882;
     LDY.W $0FB4,X                                                        ;A9D885;
     LDA.W .instListPointers,Y                                            ;A9D888;
     JSL.L SetEnemyInstList                                               ;A9D88B;
@@ -10759,7 +10759,7 @@ InitAI_CorpseSkree:
     LDA.W #$0E00                                                         ;A9D8A2;
     STA.W $0F96,X                                                        ;A9D8A5;
     LDA.W #Function_CorpseSkree_WaitForSamusCollision                    ;A9D8A8;
-    STA.W Corpse.function,X                                                        ;A9D8AB;
+    STA.W Corpse.function,X                                              ;A9D8AB;
     LDY.W $0FB4,X                                                        ;A9D8AE;
     LDA.W .instListPointers,Y                                            ;A9D8B1;
     JSL.L SetEnemyInstList                                               ;A9D8B4;
@@ -10784,7 +10784,7 @@ InitAI_CorpseSkree:
 ;;; $D8CC: Power bomb reaction - enemy $ED7F (sidehopper corpse) ;;;
 PowerBombReaction_CorpseSidehopper:
     LDX.W $0E54                                                          ;A9D8CC;
-    LDA.L CorpseSidehopper.drainedPaletteIndex,X                                                      ;A9D8CF;
+    LDA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9D8CF;
     CMP.W #$0008                                                         ;A9D8D3;
     BCC MainAI_HurtAI_CorpseEnemies                                      ;A9D8D6;
     JMP.W EnemyShot_CorpseSidehopper                                     ;A9D8D8;
@@ -10793,7 +10793,7 @@ PowerBombReaction_CorpseSidehopper:
 ;;; $D8DB: Main AI / hurt AI - enemy $ED7F/$EDBF/$EDFF/$EE3F/$EE7F (dead monsters) ;;;
 MainAI_HurtAI_CorpseEnemies:
     LDX.W $0E54                                                          ;A9D8DB;
-    JSR.W (Corpse.function,X)                                                      ;A9D8DE;
+    JSR.W (Corpse.function,X)                                            ;A9D8DE;
     RTL                                                                  ;A9D8E1;
 
 
@@ -10806,21 +10806,21 @@ Function_CorpseSidehopper_Alive_WaitingForActivation:
 
   .activate:
     LDA.W #Function_CorpseSidehopper_Hopping                             ;A9D8EB;
-    STA.W CorpseSidehopper.function,X                                                        ;A9D8EE; fallthrough to Function_CorpseSidehopper_Hopping
+    STA.W CorpseSidehopper.function,X                                    ;A9D8EE; fallthrough to Function_CorpseSidehopper_Hopping
 
 
 ;;; $D8F1: Sidehopper corpse function - hopping ;;;
 Function_CorpseSidehopper_Hopping:
     JSR.W CorpseSidehopperMovement                                       ;A9D8F1;
     BCC .return                                                          ;A9D8F4;
-    LDA.L CorpseSidehopper.hopIndex,X                                                      ;A9D8F6;
+    LDA.L CorpseSidehopper.hopIndex,X                                    ;A9D8F6;
     INC A                                                                ;A9D8FA;
     AND.W #$0003                                                         ;A9D8FB;
-    STA.L CorpseSidehopper.hopIndex,X                                                      ;A9D8FE;
+    STA.L CorpseSidehopper.hopIndex,X                                    ;A9D8FE;
     LDA.W #InstList_CorpseSidehopper_Alive_Hopping                       ;A9D902;
     JSL.L SetEnemyInstList                                               ;A9D905;
     LDA.W #.return                                                       ;A9D909;
-    STA.W CorpseSidehopper.function,X                                                        ;A9D90C;
+    STA.W CorpseSidehopper.function,X                                    ;A9D90C;
 
   .return:
     RTS                                                                  ;A9D90F;
@@ -10829,34 +10829,34 @@ Function_CorpseSidehopper_Hopping:
 ;;; $D910: Sidehopper corpse function - start idling ;;;
 Function_CorpseSidehopper_StartIdling:
     LDA.W #Function_CorpseSidehopper_Idling                              ;A9D910;
-    STA.W CorpseSidehopper.function,X                                                        ;A9D913;
+    STA.W CorpseSidehopper.function,X                                    ;A9D913;
     LDA.W #$0040                                                         ;A9D916;
-    STA.W CorpseSidehopper.functionTimer,X                                                        ;A9D919;
+    STA.W CorpseSidehopper.functionTimer,X                               ;A9D919;
     RTS                                                                  ;A9D91C;
 
 
 ;;; $D91D: Sidehopper corpse function - idling ;;;
 Function_CorpseSidehopper_Idling:
-    DEC.W CorpseSidehopper.functionTimer,X                                                        ;A9D91D;
+    DEC.W CorpseSidehopper.functionTimer,X                               ;A9D91D;
     BPL .return                                                          ;A9D920;
-    LDA.L CorpseSidehopper.drainedPaletteIndex,X                                                      ;A9D922;
+    LDA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9D922;
     BEQ .notDone                                                         ;A9D926;
     LDA.W #Function_CorpseSidehopper_BeingDrained                        ;A9D928;
-    STA.W CorpseSidehopper.function,X                                                        ;A9D92B;
+    STA.W CorpseSidehopper.function,X                                    ;A9D92B;
     RTS                                                                  ;A9D92E;
 
   .notDone:
     LDA.W #Function_CorpseSidehopper_Hopping                             ;A9D92F;
-    STA.W CorpseSidehopper.function,X                                                        ;A9D932;
+    STA.W CorpseSidehopper.function,X                                    ;A9D932;
     LDA.W #InstList_CorpseSidehopper_Alive_Idle                          ;A9D935;
     JSL.L SetEnemyInstList                                               ;A9D938;
-    LDA.L CorpseSidehopper.hopIndex,X                                                      ;A9D93C;
+    LDA.L CorpseSidehopper.hopIndex,X                                    ;A9D93C;
     ASL A                                                                ;A9D940;
     TAY                                                                  ;A9D941;
     LDA.W .YVelocity,Y                                                   ;A9D942;
-    STA.L CorpseSidehopper.YVelocity,X                                                      ;A9D945;
+    STA.L CorpseSidehopper.YVelocity,X                                   ;A9D945;
     LDA.W .XVelocity,Y                                                   ;A9D949;
-    STA.L CorpseSidehopper.XVelocity,X                                                      ;A9D94C;
+    STA.L CorpseSidehopper.XVelocity,X                                   ;A9D94C;
 
   .return:
     RTS                                                                  ;A9D950;
@@ -10872,18 +10872,18 @@ Function_CorpseSidehopper_Idling:
 CorpseSidehopperMovement:
 ;; Returns:
 ;;     Carry: Set if collision, clear otherwise
-    LDA.L CorpseSidehopper.XVelocity,X                                                      ;A9D961;
+    LDA.L CorpseSidehopper.XVelocity,X                                   ;A9D961;
     JSR.W CorpseSidehopperMovement_Horizontal                            ;A9D965;
     LDY.W #$0020                                                         ;A9D968;
-    LDA.L CorpseSidehopper.YVelocity,X                                                      ;A9D96B;
+    LDA.L CorpseSidehopper.YVelocity,X                                   ;A9D96B;
     BMI .rising                                                          ;A9D96F;
     LDY.W #$0080                                                         ;A9D971;
 
   .rising:
     TYA                                                                  ;A9D974;
     CLC                                                                  ;A9D975;
-    ADC.L CorpseSidehopper.YVelocity,X                                                      ;A9D976;
-    STA.L CorpseSidehopper.YVelocity,X                                                      ;A9D97A;
+    ADC.L CorpseSidehopper.YVelocity,X                                   ;A9D976;
+    STA.L CorpseSidehopper.YVelocity,X                                   ;A9D97A;
     STA.B $12                                                            ;A9D97E;
     LDA.W $0F7A,X                                                        ;A9D980;
     CMP.W #$0220                                                         ;A9D983;
@@ -10967,14 +10967,14 @@ CorpseSidehopperMovement_Horizontal:
 
 ;;; $DA08: Sidehopper corpse function - being drained ;;;
 Function_CorpseSidehopper_BeingDrained:
-    LDA.L CorpseSidehopper.drainedPaletteTimer,X                                                      ;A9DA08;
+    LDA.L CorpseSidehopper.drainedPaletteTimer,X                         ;A9DA08;
     INC A                                                                ;A9DA0C;
-    STA.L CorpseSidehopper.drainedPaletteTimer,X                                                      ;A9DA0D;
+    STA.L CorpseSidehopper.drainedPaletteTimer,X                         ;A9DA0D;
     CMP.W #$0008                                                         ;A9DA11;
     BCC .return                                                          ;A9DA14;
     LDA.W #$0000                                                         ;A9DA16;
-    STA.L CorpseSidehopper.drainedPaletteTimer,X                                                      ;A9DA19;
-    LDA.L CorpseSidehopper.drainedPaletteIndex,X                                                      ;A9DA1D;
+    STA.L CorpseSidehopper.drainedPaletteTimer,X                         ;A9DA19;
+    LDA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9DA1D;
     DEC A                                                                ;A9DA21;
     ASL A                                                                ;A9DA22;
     ASL A                                                                ;A9DA23;
@@ -10987,15 +10987,15 @@ Function_CorpseSidehopper_BeingDrained:
     LDA.W #$000F                                                         ;A9DA2E;
     JSL.L WriteAColorsFromYtoColorIndexX                                 ;A9DA31;
     LDX.W $0E54                                                          ;A9DA35;
-    LDA.L CorpseSidehopper.drainedPaletteIndex,X                                                      ;A9DA38;
+    LDA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9DA38;
     INC A                                                                ;A9DA3C;
-    STA.L CorpseSidehopper.drainedPaletteIndex,X                                                      ;A9DA3D;
+    STA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9DA3D;
     CMP.W #$0008                                                         ;A9DA41;
     BCC .return                                                          ;A9DA44;
     LDA.W #InstList_CorpseSidehopper_Alive_Corpse                        ;A9DA46;
     JSL.L SetEnemyInstList                                               ;A9DA49;
     LDA.W #Function_CorpseSidehopper_Dead_WaitForSamusCollision          ;A9DA4D;
-    STA.W CorpseSidehopper.function,X                                                        ;A9DA50;
+    STA.W CorpseSidehopper.function,X                                    ;A9DA50;
     LDA.W $0F86,X                                                        ;A9DA53;
     ORA.W #$8000                                                         ;A9DA56;
     STA.W $0F86,X                                                        ;A9DA59;
@@ -11049,7 +11049,7 @@ CorpseCommonAI_WaitForSamusCollision:
 
   .collision:
     TYA                                                                  ;A9DA8A;
-    STA.W Corpse.function,X                                                        ;A9DA8B;
+    STA.W Corpse.function,X                                              ;A9DA8B;
 
   .return:
     RTS                                                                  ;A9DA8E;
@@ -11082,12 +11082,12 @@ Function_CorpseSkree_PreRotDelay:
 CorpseCommonAI_PreRotDelay:
 ;; Parameters:
 ;;     Y: Rotting enemy function
-    INC.W Corpse.preRotDelayTimer,X                                                        ;A9DAA1;
-    LDA.W Corpse.preRotDelayTimer,X                                                        ;A9DAA4;
+    INC.W Corpse.preRotDelayTimer,X                                      ;A9DAA1;
+    LDA.W Corpse.preRotDelayTimer,X                                      ;A9DAA4;
     CMP.W #$0010                                                         ;A9DAA7;
     BCC .return                                                          ;A9DAAA;
     TYA                                                                  ;A9DAAC;
-    STA.W Corpse.function,X                                                        ;A9DAAD;
+    STA.W Corpse.function,X                                              ;A9DAAD;
     LDA.W $0F86,X                                                        ;A9DAB0;
     ORA.W #$0400                                                         ;A9DAB3;
     STA.W $0F86,X                                                        ;A9DAB6;
@@ -11103,10 +11103,10 @@ Function_CorpseSidehopper_Rotting:
     LDX.W $0E54                                                          ;A9DABD;
     BCS .process                                                         ;A9DAC0;
     LDA.W #Function_CorpseSidehopper_Dead_WaitForSamusCollision          ;A9DAC2;
-    STA.W CorpseSidehopper.function,X                                                        ;A9DAC5;
+    STA.W CorpseSidehopper.function,X                                    ;A9DAC5;
 
   .process:
-    LDA.L CorpseSidehopper.VRAMTransfersPointer,X                                                      ;A9DAC8;
+    LDA.L CorpseSidehopper.VRAMTransfersPointer,X                        ;A9DAC8;
     TAX                                                                  ;A9DACC;
     JMP.W ProcessCorpseRottingVRAMTransfers                              ;A9DACD;
 
@@ -11117,10 +11117,10 @@ Function_CorpseZoomer_Rotting:
     LDX.W $0E54                                                          ;A9DAD3;
     BCS .process                                                         ;A9DAD6;
     LDA.W #RTS_A9DA63                                                    ;A9DAD8;
-    STA.W Corpse.function,X                                                        ;A9DADB;
+    STA.W Corpse.function,X                                              ;A9DADB;
 
   .process:
-    LDA.L Corpse.VRAMTransfersPointer,X                                                      ;A9DADE;
+    LDA.L Corpse.VRAMTransfersPointer,X                                  ;A9DADE;
     TAX                                                                  ;A9DAE2;
     JMP.W ProcessCorpseRottingVRAMTransfers                              ;A9DAE3;
 
@@ -11131,10 +11131,10 @@ Function_CorpseRipper_Rotting:
     LDX.W $0E54                                                          ;A9DAE9;
     BCS .process                                                         ;A9DAEC;
     LDA.W #RTS_A9DA63                                                    ;A9DAEE;
-    STA.W Corpse.function,X                                                        ;A9DAF1;
+    STA.W Corpse.function,X                                              ;A9DAF1;
 
   .process:
-    LDA.L Corpse.VRAMTransfersPointer,X                                                      ;A9DAF4;
+    LDA.L Corpse.VRAMTransfersPointer,X                                  ;A9DAF4;
     TAX                                                                  ;A9DAF8;
     JMP.W ProcessCorpseRottingVRAMTransfers                              ;A9DAF9;
 
@@ -11145,10 +11145,10 @@ Function_CorpseSkree_Rotting:
     LDX.W $0E54                                                          ;A9DAFF;
     BCS .process                                                         ;A9DB02;
     LDA.W #RTS_A9DA63                                                    ;A9DB04;
-    STA.W Corpse.function,X                                                        ;A9DB07;
+    STA.W Corpse.function,X                                              ;A9DB07;
 
   .process:
-    LDA.L Corpse.VRAMTransfersPointer,X                                                      ;A9DB0A;
+    LDA.L Corpse.VRAMTransfersPointer,X                                  ;A9DB0A;
     TAX                                                                  ;A9DB0E;
     JMP.W ProcessCorpseRottingVRAMTransfers                              ;A9DB0F;
 
@@ -11210,23 +11210,23 @@ ProcessCorpseRotting:
     PEA.W $7E7E                                                          ;A9DB13;
     PLB                                                                  ;A9DB16;
     PLB                                                                  ;A9DB17;
-    LDA.W Corpse.spriteHeight,X                                                        ;A9DB18;
+    LDA.W Corpse.spriteHeight,X                                          ;A9DB18;
     STA.W $880A                                                          ;A9DB1B;
-    LDA.W Corpse.spriteHeightMinus1,X                                                        ;A9DB1E;
+    LDA.W Corpse.spriteHeightMinus1,X                                    ;A9DB1E;
     STA.W $880C                                                          ;A9DB21;
-    LDA.W Corpse.spriteHeightMinus2,X                                                        ;A9DB24;
+    LDA.W Corpse.spriteHeightMinus2,X                                    ;A9DB24;
     STA.W $880E                                                          ;A9DB27;
-    LDA.W Corpse.interTileDataOffset,X                                                        ;A9DB2A;
+    LDA.W Corpse.interTileDataOffset,X                                   ;A9DB2A;
     STA.W $8810                                                          ;A9DB2D;
-    LDA.W Corpse.rotEntryFinishedHook,X                                                        ;A9DB30;
+    LDA.W Corpse.rotEntryFinishedHook,X                                  ;A9DB30;
     STA.W $8812                                                          ;A9DB33;
-    LDA.W Corpse.tileDataRowOffsetsPointer,X                                                        ;A9DB36;
+    LDA.W Corpse.tileDataRowOffsetsPointer,X                             ;A9DB36;
     STA.W $8808                                                          ;A9DB39;
-    LDA.W Corpse.rotEntryCopyFunction,X                                                        ;A9DB3C;
+    LDA.W Corpse.rotEntryCopyFunction,X                                  ;A9DB3C;
     STA.W $8804                                                          ;A9DB3F;
-    LDA.W Corpse.rotEntryMoveFunction,X                                                        ;A9DB42;
+    LDA.W Corpse.rotEntryMoveFunction,X                                  ;A9DB42;
     STA.W $8806                                                          ;A9DB45;
-    LDA.W Corpse.rotTablePointer,X                                                        ;A9DB48;
+    LDA.W Corpse.rotTablePointer,X                                       ;A9DB48;
     TAX                                                                  ;A9DB4B;
     LDA.W #$0000                                                         ;A9DB4C;
 
@@ -11414,30 +11414,30 @@ InitializeEnemyCorpseRotting:
 ;;     X: Enemy index
 ;;     Y: Corpse rotting definition pointer
     LDA.W $0000,Y                                                        ;A9DC5F;
-    STA.L MotherBrainBody.corpseRottingRotTablePointer,X                                                      ;A9DC62;
+    STA.L MotherBrainBody.corpseRottingRotTablePointer,X                 ;A9DC62;
     LDA.W $0002,Y                                                        ;A9DC66;
-    STA.L MotherBrainBody.corpseRottingVRAMTransfersPointer,X                                                      ;A9DC69;
+    STA.L MotherBrainBody.corpseRottingVRAMTransfersPointer,X            ;A9DC69;
     LDA.W $0004,Y                                                        ;A9DC6D;
-    STA.L MotherBrainBody.corpseRottingRotEntryCopyFunction,X                                                      ;A9DC70;
+    STA.L MotherBrainBody.corpseRottingRotEntryCopyFunction,X            ;A9DC70;
     LDA.W $0006,Y                                                        ;A9DC74;
-    STA.L MotherBrainBody.corpseRottingRotEntryMoveFunction,X                                                      ;A9DC77;
+    STA.L MotherBrainBody.corpseRottingRotEntryMoveFunction,X            ;A9DC77;
     LDA.W $000E,Y                                                        ;A9DC7B;
-    STA.L MotherBrainBody.corpseRottingRotEntryFinishedHook,X                                                      ;A9DC7E;
+    STA.L MotherBrainBody.corpseRottingRotEntryFinishedHook,X            ;A9DC7E;
     LDA.W $000C,Y                                                        ;A9DC82;
-    STA.L MotherBrainBody.corpseRottingTileDataRowOffsetsPointer,X                                                      ;A9DC85;
+    STA.L MotherBrainBody.corpseRottingTileDataRowOffsetsPointer,X       ;A9DC85;
     PHY                                                                  ;A9DC89;
     TAY                                                                  ;A9DC8A;
     LDA.W $0002,Y                                                        ;A9DC8B;
     SEC                                                                  ;A9DC8E;
     SBC.W #$000C                                                         ;A9DC8F;
-    STA.L MotherBrainBody.corpseRottingInterTileDataOffset,X                                                      ;A9DC92;
+    STA.L MotherBrainBody.corpseRottingInterTileDataOffset,X             ;A9DC92;
     PLY                                                                  ;A9DC96;
     LDA.W $0008,Y                                                        ;A9DC97;
-    STA.L MotherBrainBody.corpseRottingSpriteHeight,X                                                      ;A9DC9A;
+    STA.L MotherBrainBody.corpseRottingSpriteHeight,X                    ;A9DC9A;
     DEC A                                                                ;A9DC9E;
-    STA.L MotherBrainBody.corpseRottingSpriteHeightMinus1,X                                                      ;A9DC9F;
+    STA.L MotherBrainBody.corpseRottingSpriteHeightMinus1,X              ;A9DC9F;
     DEC A                                                                ;A9DCA3;
-    STA.L MotherBrainBody.corpseRottingSpriteHeightMinus2,X                                                      ;A9DCA4;
+    STA.L MotherBrainBody.corpseRottingSpriteHeightMinus2,X              ;A9DCA4;
     LDX.W $0000,Y                                                        ;A9DCA8;
     LDA.W $0008,Y                                                        ;A9DCAB;
     JSR.W InitializeCorpseRottingDataTable                               ;A9DCAE;
@@ -11470,7 +11470,7 @@ ProcessCorpseRottingVRAMTransfers:
     TAX                                                                  ;A9DCDE;
     LDA.W $0000,X                                                        ;A9DCDF;
     BNE .loop                                                            ;A9DCE2;
-    STA.L MotherBrainBody.spriteTilesTransferEntryPointer                                                        ;A9DCE4;
+    STA.L MotherBrainBody.spriteTilesTransferEntryPointer                ;A9DCE4;
     TYA                                                                  ;A9DCE8;
     STA.W $0330                                                          ;A9DCE9;
     RTS                                                                  ;A9DCEC;
@@ -11525,7 +11525,7 @@ EnemyShot_CorpseSidehopper:
     LDA.W $0F86,X                                                        ;A9DD20;
     AND.W #$0400                                                         ;A9DD23;
     BNE CorpseCommonContactReaction_return                               ;A9DD26;
-    LDA.L CorpseSidehopper.drainedPaletteIndex,X                                                      ;A9DD28;
+    LDA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9DD28;
     CMP.W #$0008                                                         ;A9DD2C;
     BCC CorpseCommonContactReaction_return                               ;A9DD2F; fallthrough to CorpseSidehopperContactReaction_Rottable
 
@@ -11540,7 +11540,7 @@ CorpseCommonContactReaction:
 ;; Parameters:
 ;;     A: Rotting enemy function
     LDX.W $0E54                                                          ;A9DD34;
-    STA.W Corpse.function,X                                                        ;A9DD37;
+    STA.W Corpse.function,X                                              ;A9DD37;
     LDA.W $0F86,X                                                        ;A9DD3A;
     ORA.W #$0C00                                                         ;A9DD3D;
     STA.W $0F86,X                                                        ;A9DD40;
@@ -11552,7 +11552,7 @@ CorpseCommonContactReaction:
 ;;; $DD44: Enemy touch - enemy $ED7F (sidehopper corpse) ;;;
 EnemyTouch_CorpseSidehopper:
     LDX.W $0E54                                                          ;A9DD44;
-    LDA.L CorpseSidehopper.drainedPaletteIndex,X                                                      ;A9DD47;
+    LDA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9DD47;
     CMP.W #$0008                                                         ;A9DD4B;
     BCS CorpseSidehopperContactReaction_Rottable                         ;A9DD4E;
     LDX.W $0E54                                                          ;A9DD50;
@@ -13809,13 +13809,13 @@ InstList_CorpseSidehopper_Alive_Hopping:
 Instruction_SidehopperCorpse_EndHop:
     PHY                                                                  ;A9ECD0;
     LDY.W #Function_CorpseSidehopper_StartIdling                         ;A9ECD1;
-    LDA.L CorpseSidehopper.drainedPaletteIndex,X                                                      ;A9ECD4;
+    LDA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9ECD4;
     BEQ .setFunctionPointerInY                                           ;A9ECD8;
     LDY.W #Function_CorpseSidehopper_BeingDrained                        ;A9ECDA;
 
   .setFunctionPointerInY:
     TYA                                                                  ;A9ECDD;
-    STA.W CorpseSidehopper.function,X                                                        ;A9ECDE;
+    STA.W CorpseSidehopper.function,X                                    ;A9ECDE;
     PLY                                                                  ;A9ECE1;
     RTL                                                                  ;A9ECE2;
 
@@ -14142,12 +14142,12 @@ InitAI_BabyMetroid:
     LDA.W #Function_BabyMetroid_Disappeared                              ;A9EF7D;
 
   .notLeftDoor:
-    STA.W BabyMetroid.function,X                                                        ;A9EF80;
-    STZ.W BabyMetroid.XVelocity,X                                                        ;A9EF83;
-    STZ.W BabyMetroid.YVelocity,X                                                        ;A9EF86;
+    STA.W BabyMetroid.function,X                                         ;A9EF80;
+    STZ.W BabyMetroid.XVelocity,X                                        ;A9EF83;
+    STZ.W BabyMetroid.YVelocity,X                                        ;A9EF86;
     LDA.W #$000A                                                         ;A9EF89;
-    STA.W BabyMetroid.paletteHandlerDelay,X                                                        ;A9EF8C;
-    STZ.W BabyMetroid.contactReactionFlag,X                                                        ;A9EF8F;
+    STA.W BabyMetroid.paletteHandlerDelay,X                              ;A9EF8C;
+    STZ.W BabyMetroid.contactReactionFlag,X                              ;A9EF8F;
     LDY.W #Palette_CorpseSidehopper                                      ;A9EF92;
     LDX.W #$0120                                                         ;A9EF95;
     LDA.W #$0010                                                         ;A9EF98;
@@ -14166,7 +14166,7 @@ InitAI_BabyMetroid:
 ;;; $EFBA: Power bomb reaction - enemy $EEBF (Shitroid) ;;;
 PowerBombReaction_BabyMetroid:
     LDX.W $0E54                                                          ;A9EFBA;
-    LDA.W BabyMetroid.contactReactionFlag,X                                                        ;A9EFBD;
+    LDA.W BabyMetroid.contactReactionFlag,X                              ;A9EFBD;
     BEQ MainAI_BabyMetroid                                               ;A9EFC0;
     JSR.W SignalBabyMetroidToLeave                                       ;A9EFC2; fallthrough to MainAI_BabyMetroid
 
@@ -14176,7 +14176,7 @@ MainAI_BabyMetroid:
     LDX.W $0E54                                                          ;A9EFC5;
     LDA.W #$7FFF                                                         ;A9EFC8;
     STA.W $0F8C,X                                                        ;A9EFCB;
-    JSR.W (BabyMetroid.function,X)                                                      ;A9EFCE;
+    JSR.W (BabyMetroid.function,X)                                       ;A9EFCE;
     JSL.L MoveEnemyAccordingToVelocity                                   ;A9EFD1;
     LDA.L $7EC400                                                        ;A9EFD5;
     BNE .return                                                          ;A9EFD9;
@@ -14188,8 +14188,8 @@ MainAI_BabyMetroid:
 
 ;;; $EFDF: Shitroid function - disappeared ;;;
 Function_BabyMetroid_Disappeared:
-    STZ.W BabyMetroid.XVelocity,X                                                        ;A9EFDF;
-    STZ.W BabyMetroid.YVelocity,X                                                        ;A9EFE2;
+    STZ.W BabyMetroid.XVelocity,X                                        ;A9EFDF;
+    STZ.W BabyMetroid.YVelocity,X                                        ;A9EFE2;
     RTS                                                                  ;A9EFE5;
 
 
@@ -14214,9 +14214,9 @@ Function_BabyMetroid_WaitForCamera:
     dw PLMEntries_createBabyMetroidInvisibleWall                         ;A9F018;
     LDX.W $0E54                                                          ;A9F01A;
     LDA.W #Function_BabyMetroid_LetSidehopperLiveForABit                 ;A9F01D;
-    STA.W BabyMetroid.function,X                                                        ;A9F020;
+    STA.W BabyMetroid.function,X                                         ;A9F020;
     LDA.W #$0001                                                         ;A9F023;
-    STA.L BabyMetroid.crySFXFlag,X                                                      ;A9F026;
+    STA.L BabyMetroid.crySFXFlag,X                                       ;A9F026;
 
   .return:
     RTS                                                                  ;A9F02A;
@@ -14225,19 +14225,19 @@ Function_BabyMetroid_WaitForCamera:
 ;;; $F02B: Shitroid function - let sidehopper live for a bit ;;;
 Function_BabyMetroid_LetSidehopperLiveForABit:
     LDA.W #Function_BabyMetroid_QueueBattleMusic                         ;A9F02B;
-    STA.W BabyMetroid.function,X                                                        ;A9F02E;
+    STA.W BabyMetroid.function,X                                         ;A9F02E;
     LDA.W #$01D0                                                         ;A9F031;
-    STA.W BabyMetroid.functionTimer,X                                                        ;A9F034; fallthrough to Function_BabyMetroid_QueueBattleMusic
+    STA.W BabyMetroid.functionTimer,X                                    ;A9F034; fallthrough to Function_BabyMetroid_QueueBattleMusic
 
 
 ;;; $F037: Shitroid function - queue battle music ;;;
 Function_BabyMetroid_QueueBattleMusic:
-    DEC.W BabyMetroid.functionTimer,X                                                        ;A9F037;
+    DEC.W BabyMetroid.functionTimer,X                                    ;A9F037;
     BPL Function_BabyMetroid_RushToMiddleOfRoom_return                   ;A9F03A;
     LDA.W #$0005                                                         ;A9F03C;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A9F03F;
     LDA.W #Function_BabyMetroid_RushToMiddleOfRoom                       ;A9F043;
-    STA.W BabyMetroid.function,X                                                        ;A9F046; fallthrough to Function_BabyMetroid_RushToMiddleOfRoom
+    STA.W BabyMetroid.function,X                                         ;A9F046; fallthrough to Function_BabyMetroid_RushToMiddleOfRoom
 
 
 ;;; $F049: Shitroid function - rush to middle of room ;;;
@@ -14254,7 +14254,7 @@ Function_BabyMetroid_RushToMiddleOfRoom:
     JSL.L CheckForEnemyCollisionWithRectangle                            ;A9F060;
     BCS .return                                                          ;A9F064;
     LDA.W #Function_BabyMetroid_RushToSidehopper                         ;A9F066;
-    STA.W BabyMetroid.function,X                                                        ;A9F069;
+    STA.W BabyMetroid.function,X                                         ;A9F069;
 
   .return:
     RTS                                                                  ;A9F06C;
@@ -14277,7 +14277,7 @@ Function_BabyMetroid_RushToSidehopper:
     JSL.L CheckForEnemyCollisionWithEnemy                                ;A9F087;
     BCS .return                                                          ;A9F08B;
     LDA.W #Function_BabyMetroid_LatchOntoSidehopper                      ;A9F08D;
-    STA.W BabyMetroid.function,X                                                        ;A9F090;
+    STA.W BabyMetroid.function,X                                         ;A9F090;
 
   .return:
     RTS                                                                  ;A9F093;
@@ -14297,8 +14297,8 @@ Function_BabyMetroid_LatchOntoSidehopper:
     RTS                                                                  ;A9F0AA;
 
   .reachedTarget:
-    STZ.W BabyMetroid.XVelocity,X                                                        ;A9F0AB;
-    STZ.W BabyMetroid.YVelocity,X                                                        ;A9F0AE;
+    STZ.W BabyMetroid.XVelocity,X                                        ;A9F0AB;
+    STZ.W BabyMetroid.YVelocity,X                                        ;A9F0AE;
     LDA.W $0FBA,X                                                        ;A9F0B1;
     STA.W $0F7A,X                                                        ;A9F0B4;
     LDA.W $0FBE,X                                                        ;A9F0B7;
@@ -14311,12 +14311,12 @@ Function_BabyMetroid_LatchOntoSidehopper:
     STA.W $0F94,X                                                        ;A9F0CA;
     STZ.W $0F90,X                                                        ;A9F0CD;
     LDA.W #Function_BabyMetroid_DrainingSidehopper                       ;A9F0D0;
-    STA.W BabyMetroid.function,X                                                        ;A9F0D3;
+    STA.W BabyMetroid.function,X                                         ;A9F0D3;
     LDA.W #$0001                                                         ;A9F0D6;
-    STA.W BabyMetroid.paletteHandlerDelay,X                                                        ;A9F0D9;
-    STZ.W BabyMetroid.contactReactionFlag,X                                                        ;A9F0DC;
+    STA.W BabyMetroid.paletteHandlerDelay,X                              ;A9F0D9;
+    STZ.W BabyMetroid.contactReactionFlag,X                              ;A9F0DC;
     LDA.W #$0140                                                         ;A9F0DF;
-    STA.W BabyMetroid.functionTimer,X                                                        ;A9F0E2;
+    STA.W BabyMetroid.functionTimer,X                                    ;A9F0E2;
     RTS                                                                  ;A9F0E5;
 
 
@@ -14334,17 +14334,17 @@ Function_BabyMetroid_DrainingSidehopper:
     CLC                                                                  ;A9F0FD;
     ADC.W #$FFE0                                                         ;A9F0FE;
     STA.W $0F7E,X                                                        ;A9F101;
-    DEC.W BabyMetroid.functionTimer,X                                                        ;A9F104;
+    DEC.W BabyMetroid.functionTimer,X                                    ;A9F104;
     BNE .return                                                          ;A9F107;
     LDA.W #Function_BabyMetroid_MakeSidehopperRottable                   ;A9F109;
-    STA.W BabyMetroid.function,X                                                        ;A9F10C;
+    STA.W BabyMetroid.function,X                                         ;A9F10C;
     LDA.W #InstList_BabyMetroid_FinishDraining                           ;A9F10F;
     STA.W $0F92,X                                                        ;A9F112;
     LDA.W #$0001                                                         ;A9F115;
     STA.W $0F94,X                                                        ;A9F118;
     STZ.W $0F90,X                                                        ;A9F11B;
     LDA.W #$000A                                                         ;A9F11E;
-    STA.W BabyMetroid.paletteHandlerDelay,X                                                        ;A9F121;
+    STA.W BabyMetroid.paletteHandlerDelay,X                              ;A9F121;
 
   .return:
     RTS                                                                  ;A9F124;
@@ -14353,11 +14353,11 @@ Function_BabyMetroid_DrainingSidehopper:
 ;;; $F125: Shitroid function - make sidehopper rottable ;;;
 Function_BabyMetroid_MakeSidehopperRottable:
     LDA.W #$0001                                                         ;A9F125;
-    STA.L MotherBrainBody.painfulWalkingFunction                                                        ;A9F128;
+    STA.L MotherBrainBody.painfulWalkingFunction                         ;A9F128;
     LDA.W #Function_BabyMetroid_MoveUp_UnlockCamera                      ;A9F12C;
-    STA.W BabyMetroid.function,X                                                        ;A9F12F;
+    STA.W BabyMetroid.function,X                                         ;A9F12F;
     LDA.W #$00C0                                                         ;A9F132;
-    STA.W BabyMetroid.functionTimer,X                                                        ;A9F135; fallthrough to Function_BabyMetroid_MoveUp_UnlockCamera
+    STA.W BabyMetroid.functionTimer,X                                    ;A9F135; fallthrough to Function_BabyMetroid_MoveUp_UnlockCamera
 
 
 ;;; $F138: Shitroid function - move up and unlock camera ;;;
@@ -14368,12 +14368,12 @@ Function_BabyMetroid_MoveUp_UnlockCamera:
     STA.B $14                                                            ;A9F140;
     LDY.W #$0000                                                         ;A9F142;
     JSR.W GradduallyAccelerateTowardsPoint_1A_400                        ;A9F145;
-    DEC.W BabyMetroid.functionTimer,X                                                        ;A9F148;
+    DEC.W BabyMetroid.functionTimer,X                                    ;A9F148;
     BPL .return                                                          ;A9F14B;
     LDA.W #Function_BabyMetroid_StareDownSamus                           ;A9F14D;
-    STA.W BabyMetroid.function,X                                                        ;A9F150;
+    STA.W BabyMetroid.function,X                                         ;A9F150;
     LDA.W #$0001                                                         ;A9F153;
-    STA.W BabyMetroid.contactReactionFlag,X                                                        ;A9F156;
+    STA.W BabyMetroid.contactReactionFlag,X                              ;A9F156;
     LDA.L $7ECD20                                                        ;A9F159;
     ORA.W #$0100                                                         ;A9F15D;
     STA.L $7ECD20                                                        ;A9F160;
@@ -14409,28 +14409,28 @@ Function_BabyMetroid_StareDownSamus:
 
 +   CMP.W #$0008                                                         ;A9F18D;
     BCS .notClose                                                        ;A9F190;
-    LDA.L BabyMetroid.stareDownContactTimer,X                                                      ;A9F192;
+    LDA.L BabyMetroid.stareDownContactTimer,X                            ;A9F192;
     ADC.W #$0002                                                         ;A9F196;
     BRA +                                                                ;A9F199;
 
   .notClose:
-    LDA.L BabyMetroid.stareDownContactTimer,X                                                      ;A9F19B;
+    LDA.L BabyMetroid.stareDownContactTimer,X                            ;A9F19B;
     BEQ +                                                                ;A9F19F;
     SEC                                                                  ;A9F1A1;
     SBC.W #$0001                                                         ;A9F1A2;
     BPL +                                                                ;A9F1A5;
     LDA.W #$0000                                                         ;A9F1A7;
 
-+   STA.L BabyMetroid.stareDownContactTimer,X                                                      ;A9F1AA;
++   STA.L BabyMetroid.stareDownContactTimer,X                            ;A9F1AA;
     CMP.W #$0100                                                         ;A9F1AE;
     BCS .done                                                            ;A9F1B1;
     LDA.W $0AF6                                                          ;A9F1B3;
     CMP.W #$0200                                                         ;A9F1B6;
     BMI .done                                                            ;A9F1B9;
-    LDA.L BabyMetroid.aggroTimer,X                                                      ;A9F1BB;
+    LDA.L BabyMetroid.aggroTimer,X                                       ;A9F1BB;
     BEQ .zeroAggroTimer                                                  ;A9F1BF;
     DEC A                                                                ;A9F1C1;
-    STA.L BabyMetroid.aggroTimer,X                                                      ;A9F1C2;
+    STA.L BabyMetroid.aggroTimer,X                                       ;A9F1C2;
     LDY.W $0AFA                                                          ;A9F1C6;
     BRA .notRareChance                                                   ;A9F1C9;
 
@@ -14441,7 +14441,7 @@ Function_BabyMetroid_StareDownSamus:
     CMP.W #$0FE0                                                         ;A9F1D4;
     BCC .notRareChance                                                   ;A9F1D7;
     LDA.W #$0020                                                         ;A9F1D9;
-    STA.L BabyMetroid.aggroTimer,X                                                      ;A9F1DC;
+    STA.L BabyMetroid.aggroTimer,X                                       ;A9F1DC;
 
   .notRareChance:
     STY.B $14                                                            ;A9F1E0;
@@ -14454,7 +14454,7 @@ Function_BabyMetroid_StareDownSamus:
   .done:
     LDX.W $0E54                                                          ;A9F1F0;
     LDA.W #Function_BabyMetroid_LatchOntoSamus                           ;A9F1F3;
-    STA.W BabyMetroid.function,X                                                        ;A9F1F6;
+    STA.W BabyMetroid.function,X                                         ;A9F1F6;
     RTS                                                                  ;A9F1F9;
 
 
@@ -14476,7 +14476,7 @@ Function_BabyMetroid_StartDrainingSamus:
     LDA.W #$0012                                                         ;A9F20E;
     JSL.L Run_Samus_Command                                              ;A9F211;
     LDA.W #Function_BabyMetroid_DrainingSamus                            ;A9F215;
-    STA.W BabyMetroid.function                                                          ;A9F218; fallthrough to Function_BabyMetroid_DrainingSamus
+    STA.W BabyMetroid.function                                           ;A9F218; fallthrough to Function_BabyMetroid_DrainingSamus
 
 
 ;;; $F21B: Shitroid function - draining Samus ;;;
@@ -14516,19 +14516,19 @@ Function_BabyMetroid_DrainingSamus:
     STZ.W $0A66                                                          ;A9F266;
     STZ.W $0CD2                                                          ;A9F269;
     LDA.W #Function_BabyMetroid_StartHeelRealization                     ;A9F26C;
-    STA.W BabyMetroid.function,X                                                        ;A9F26F;
-    STZ.W BabyMetroid.XVelocity,X                                                        ;A9F272;
-    STZ.W BabyMetroid.YVelocity,X                                                        ;A9F275;
+    STA.W BabyMetroid.function,X                                         ;A9F26F;
+    STZ.W BabyMetroid.XVelocity,X                                        ;A9F272;
+    STZ.W BabyMetroid.YVelocity,X                                        ;A9F275;
     LDA.W #InstList_BabyMetroid_FinishDraining                           ;A9F278;
     JSL.L SetEnemyInstList                                               ;A9F27B;
     LDA.W #$000A                                                         ;A9F27F;
-    STA.W BabyMetroid.paletteHandlerDelay,X                                                        ;A9F282;
+    STA.W BabyMetroid.paletteHandlerDelay,X                              ;A9F282;
     LDA.W #$0013                                                         ;A9F285;
     JSL.L Run_Samus_Command                                              ;A9F288;
     LDA.W #$0000                                                         ;A9F28C;
     JSL.L DrainedSamusController                                         ;A9F28F;
     LDA.W #$0000                                                         ;A9F293;
-    STA.L BabyMetroid.crySFXFlag,X                                                      ;A9F296;
+    STA.L BabyMetroid.crySFXFlag,X                                       ;A9F296;
     LDA.W #$0007                                                         ;A9F29A;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A9F29D;
     RTS                                                                  ;A9F2A1;
@@ -14537,22 +14537,22 @@ Function_BabyMetroid_DrainingSamus:
 ;;; $F2A2: Shitroid function - start heel realisation ;;;
 Function_BabyMetroid_StartHeelRealization:
     LDA.W #Function_BabyMetroid_HeelRealization                          ;A9F2A2;
-    STA.W BabyMetroid.function,X                                                        ;A9F2A5;
+    STA.W BabyMetroid.function,X                                         ;A9F2A5;
     LDA.W #$0078                                                         ;A9F2A8;
-    STA.W BabyMetroid.functionTimer,X                                                        ;A9F2AB; fallthrough to Function_BabyMetroid_HeelRealization
+    STA.W BabyMetroid.functionTimer,X                                    ;A9F2AB; fallthrough to Function_BabyMetroid_HeelRealization
 
 
 ;;; $F2AE: Shitroid function - heel realisation ;;;
 Function_BabyMetroid_HeelRealization:
-    DEC.W BabyMetroid.functionTimer,X                                                        ;A9F2AE;
+    DEC.W BabyMetroid.functionTimer,X                                    ;A9F2AE;
     BMI .timerExpired                                                    ;A9F2B1;
     RTS                                                                  ;A9F2B3;
 
   .timerExpired:
     LDA.W #Function_BabyMetroid_BackOffGuiltily                          ;A9F2B4;
-    STA.W BabyMetroid.function,X                                                        ;A9F2B7;
+    STA.W BabyMetroid.function,X                                         ;A9F2B7;
     LDA.W #$00C0                                                         ;A9F2BA;
-    STA.W BabyMetroid.functionTimer,X                                                        ;A9F2BD; fallthrough to Function_BabyMetroid_BackOffGuiltily
+    STA.W BabyMetroid.functionTimer,X                                    ;A9F2BD; fallthrough to Function_BabyMetroid_BackOffGuiltily
 
 
 ;;; $F2C0: Shitroid function - back off guiltily ;;;
@@ -14564,7 +14564,7 @@ Function_BabyMetroid_BackOffGuiltily:
     LDX.W $0E54                                                          ;A9F2CA;
     LDY.W #$0000                                                         ;A9F2CD;
     JSR.W GradduallyAccelerateTowardsPoint_1A_400                        ;A9F2D0;
-    DEC.W BabyMetroid.functionTimer,X                                                        ;A9F2D3;
+    DEC.W BabyMetroid.functionTimer,X                                    ;A9F2D3;
     BMI .timerExpired                                                    ;A9F2D6;
     RTS                                                                  ;A9F2D8;
 
@@ -14572,9 +14572,9 @@ Function_BabyMetroid_BackOffGuiltily:
     LDA.W #$007D                                                         ;A9F2D9;
     JSL.L QueueSound_Lib2_Max6                                           ;A9F2DC;
     LDA.W #Function_BabyMetroid_GoLeftGuiltily                           ;A9F2E0;
-    STA.W BabyMetroid.function,X                                                        ;A9F2E3;
+    STA.W BabyMetroid.function,X                                         ;A9F2E3;
     LDA.W #$0058                                                         ;A9F2E6;
-    STA.W BabyMetroid.functionTimer,X                                                        ;A9F2E9;
+    STA.W BabyMetroid.functionTimer,X                                    ;A9F2E9;
     LDA.W #InstList_BabyMetroid_LatchedOn                                ;A9F2EC;
     STA.W $0F92,X                                                        ;A9F2EF;
     LDA.W #$0001                                                         ;A9F2F2;
@@ -14593,15 +14593,15 @@ Function_BabyMetroid_GoLeftGuiltily:
     LDX.W $0E54                                                          ;A9F309;
     LDY.W #$0000                                                         ;A9F30C;
     JSR.W GradduallyAccelerateTowardsPoint_1A_400                        ;A9F30F;
-    DEC.W BabyMetroid.functionTimer,X                                                        ;A9F312;
+    DEC.W BabyMetroid.functionTimer,X                                    ;A9F312;
     BMI .timerExpired                                                    ;A9F315;
     RTS                                                                  ;A9F317;
 
   .timerExpired:
     LDA.W #Function_BabyMetroid_GoRightGuiltily                          ;A9F318;
-    STA.W BabyMetroid.function,X                                                        ;A9F31B;
+    STA.W BabyMetroid.function,X                                         ;A9F31B;
     LDA.W #$0058                                                         ;A9F31E;
-    STA.W BabyMetroid.functionTimer,X                                                        ;A9F321; fallthrough to Function_BabyMetroid_GoRightGuiltily
+    STA.W BabyMetroid.functionTimer,X                                    ;A9F321; fallthrough to Function_BabyMetroid_GoRightGuiltily
 
 
 ;;; $F324: Shitroid function - go right guiltily ;;;
@@ -14615,16 +14615,16 @@ Function_BabyMetroid_GoRightGuiltily:
     LDX.W $0E54                                                          ;A9F332;
     LDY.W #$0000                                                         ;A9F335;
     JSR.W GradduallyAccelerateTowardsPoint_1A_400                        ;A9F338;
-    DEC.W BabyMetroid.functionTimer,X                                                        ;A9F33B;
+    DEC.W BabyMetroid.functionTimer,X                                    ;A9F33B;
     BMI .timerExpired                                                    ;A9F33E;
     RTS                                                                  ;A9F340;
 
   .timerExpired:
     LDX.W $0E54                                                          ;A9F341;
     LDA.W #Function_BabyMetroid_SamusRecovering                          ;A9F344;
-    STA.W BabyMetroid.function,X                                                        ;A9F347;
+    STA.W BabyMetroid.function,X                                         ;A9F347;
     LDA.W #$0100                                                         ;A9F34A;
-    STA.W BabyMetroid.functionTimer,X                                                        ;A9F34D;
+    STA.W BabyMetroid.functionTimer,X                                    ;A9F34D;
     LDA.W #InstList_BabyMetroid_Remorse                                  ;A9F350;
     STA.W $0F92,X                                                        ;A9F353;
     LDA.W #$0001                                                         ;A9F356;
@@ -14638,7 +14638,7 @@ Function_BabyMetroid_FleeRemorsefully:
     LDA.W #$0052                                                         ;A9F360;
     JSL.L QueueSound_Lib2_Max6                                           ;A9F363;
     LDA.W #Function_BabyMetroid_Fleeing                                  ;A9F367;
-    STA.W BabyMetroid.function,X                                                        ;A9F36A; fallthrough to Function_BabyMetroid_Fleeing
+    STA.W BabyMetroid.function,X                                         ;A9F36A; fallthrough to Function_BabyMetroid_Fleeing
 
 
 ;;; $F36D: Shitroid function - fleeing ;;;
@@ -14655,13 +14655,13 @@ Function_BabyMetroid_Fleeing:
     STA.B $18                                                            ;A9F385;
     JSL.L CheckForEnemyCollisionWithRectangle                            ;A9F387;
     BCS .return                                                          ;A9F38B;
-    STZ.W BabyMetroid.XVelocity,X                                                        ;A9F38D;
-    STZ.W BabyMetroid.YVelocity,X                                                        ;A9F390;
+    STZ.W BabyMetroid.XVelocity,X                                        ;A9F38D;
+    STZ.W BabyMetroid.YVelocity,X                                        ;A9F390;
     LDA.W $0F86,X                                                        ;A9F393;
     AND.W #$DEFF                                                         ;A9F396;
     STA.W $0F86,X                                                        ;A9F399;
     LDA.W #Function_BabyMetroid_Disappeared                              ;A9F39C;
-    STA.W BabyMetroid.function,X                                                        ;A9F39F;
+    STA.W BabyMetroid.function,X                                         ;A9F39F;
 
   .return:
     RTS                                                                  ;A9F3A2;
@@ -14669,7 +14669,7 @@ Function_BabyMetroid_Fleeing:
 
 ;;; $F3A3: Shitroid function - Samus recovering ;;;
 Function_BabyMetroid_SamusRecovering:
-    DEC.W BabyMetroid.functionTimer,X                                                        ;A9F3A3;
+    DEC.W BabyMetroid.functionTimer,X                                    ;A9F3A3;
     BMI .timerExpired                                                    ;A9F3A6;
     JMP.W GraduallyAccelerateTowardSamus                                 ;A9F3A8;
 
@@ -14677,9 +14677,9 @@ Function_BabyMetroid_SamusRecovering:
     LDA.W #$0002                                                         ;A9F3AB;
     JSL.L DrainedSamusController                                         ;A9F3AE;
     LDA.W #$0001                                                         ;A9F3B2;
-    STA.W BabyMetroid.contactReactionFlag,X                                                        ;A9F3B5;
+    STA.W BabyMetroid.contactReactionFlag,X                              ;A9F3B5;
     LDA.W #Function_BabyMetroid_Remorse                                  ;A9F3B8;
-    STA.W BabyMetroid.function,X                                                        ;A9F3BB; fallthrough to Function_BabyMetroid_Remorse
+    STA.W BabyMetroid.function,X                                         ;A9F3BB; fallthrough to Function_BabyMetroid_Remorse
 
 
 ;;; $F3BE: Shitroid function - remorse ;;;
@@ -14692,13 +14692,13 @@ Function_BabyMetroid_Remorse:
 ;;; $F3C4: Make Shitroid flee ;;;
 MakeBabyMetroidFlee:
     LDA.W #Function_BabyMetroid_FleeRemorsefully                         ;A9F3C4;
-    STA.W BabyMetroid.function,X                                                        ;A9F3C7;
+    STA.W BabyMetroid.function,X                                         ;A9F3C7;
     RTS                                                                  ;A9F3CA;
 
 
 ;;; $F3CB: Signal Shitroid to leave ;;;
 SignalBabyMetroidToLeave:
-    LDA.W BabyMetroid.function,X                                                        ;A9F3CB;
+    LDA.W BabyMetroid.function,X                                         ;A9F3CB;
     CMP.W #Function_BabyMetroid_Remorse                                  ;A9F3CE;
     BEQ MakeBabyMetroidFlee                                              ;A9F3D1;
     RTS                                                                  ;A9F3D3;
@@ -14719,23 +14719,23 @@ GraduallyAccelerateTowardSamus:
 
 +   CMP.W #$0002                                                         ;A9F3E1;
     BCS .notClose                                                        ;A9F3E4;
-    LDA.L BabyMetroid.stareDownContactTimer,X                                                      ;A9F3E6;
+    LDA.L BabyMetroid.stareDownContactTimer,X                            ;A9F3E6;
     ADC.W #$0002                                                         ;A9F3EA;
     BRA +                                                                ;A9F3ED;
 
   .notClose:
-    LDA.L BabyMetroid.stareDownContactTimer,X                                                      ;A9F3EF;
+    LDA.L BabyMetroid.stareDownContactTimer,X                            ;A9F3EF;
     BEQ +                                                                ;A9F3F3;
     SEC                                                                  ;A9F3F5;
     SBC.W #$0001                                                         ;A9F3F6;
     BPL +                                                                ;A9F3F9;
     LDA.W #$0000                                                         ;A9F3FB;
 
-+   STA.L BabyMetroid.stareDownContactTimer,X                                                      ;A9F3FE;
-    LDA.L BabyMetroid.aggroTimer,X                                                      ;A9F402;
++   STA.L BabyMetroid.stareDownContactTimer,X                            ;A9F3FE;
+    LDA.L BabyMetroid.aggroTimer,X                                       ;A9F402;
     BEQ .zeroAggroTimer                                                  ;A9F406;
     DEC A                                                                ;A9F408;
-    STA.L BabyMetroid.aggroTimer,X                                                      ;A9F409;
+    STA.L BabyMetroid.aggroTimer,X                                       ;A9F409;
     LDA.W $0AFA                                                          ;A9F40D;
     CLC                                                                  ;A9F410;
     ADC.W #$FFEE                                                         ;A9F411;
@@ -14749,7 +14749,7 @@ GraduallyAccelerateTowardSamus:
     CMP.W #$0FE0                                                         ;A9F420;
     BCC +                                                                ;A9F423;
     LDA.W #$0020                                                         ;A9F425;
-    STA.L BabyMetroid.aggroTimer,X                                                      ;A9F428;
+    STA.L BabyMetroid.aggroTimer,X                                       ;A9F428;
 
 +   STY.B $14                                                            ;A9F42C;
     LDA.W $0AF6                                                          ;A9F42E;
@@ -14757,7 +14757,7 @@ GraduallyAccelerateTowardSamus:
     LDX.W $0E54                                                          ;A9F433;
     LDY.W #$0008                                                         ;A9F436;
     JSR.W GradduallyAccelerateTowardsPoint_1A_400                        ;A9F439;
-    LDA.L BabyMetroid.stareDownContactTimer,X                                                      ;A9F43C;
+    LDA.L BabyMetroid.stareDownContactTimer,X                            ;A9F43C;
     CMP.W #$0400                                                         ;A9F440;
     BCS .returnReadyToFlee                                               ;A9F443;
     LDA.W $0AF6                                                          ;A9F445;
@@ -14830,7 +14830,7 @@ GradduallyAccelerateTowardsPoint:
     INC A                                                                ;A9F499;
 
 +   STA.B $16                                                            ;A9F49A;
-    LDA.W BabyMetroid.YVelocity,X                                                        ;A9F49C;
+    LDA.W BabyMetroid.YVelocity,X                                        ;A9F49C;
     BPL .movingDown                                                      ;A9F49F;
     CLC                                                                  ;A9F4A1;
     ADC.W #$0008                                                         ;A9F4A2;
@@ -14843,7 +14843,7 @@ GradduallyAccelerateTowardsPoint:
     LDA.W #$0500                                                         ;A9F4AE;
 
   .storeDownwardVelocity:
-    STA.W BabyMetroid.YVelocity,X                                                        ;A9F4B1;
+    STA.W BabyMetroid.YVelocity,X                                        ;A9F4B1;
 
   .return:
     RTS                                                                  ;A9F4B4;
@@ -14863,7 +14863,7 @@ GradduallyAccelerateTowardsPoint:
     INC A                                                                ;A9F4CA;
 
 +   STA.B $16                                                            ;A9F4CB;
-    LDA.W BabyMetroid.YVelocity,X                                                        ;A9F4CD;
+    LDA.W BabyMetroid.YVelocity,X                                        ;A9F4CD;
     BMI .movingUp                                                        ;A9F4D0;
     SEC                                                                  ;A9F4D2;
     SBC.W #$0008                                                         ;A9F4D3;
@@ -14876,7 +14876,7 @@ GradduallyAccelerateTowardsPoint:
     LDA.W #$FB00                                                         ;A9F4DF;
 
   .storeUpwardVelocity:
-    STA.W BabyMetroid.YVelocity,X                                                        ;A9F4E2;
+    STA.W BabyMetroid.YVelocity,X                                        ;A9F4E2;
     RTS                                                                  ;A9F4E5;
 
 
@@ -14916,7 +14916,7 @@ GraduallyAccelerateHorizontally:
     INC A                                                                ;A9F509;
 
 +   STA.B $16                                                            ;A9F50A;
-    LDA.W BabyMetroid.XVelocity,X                                                        ;A9F50C;
+    LDA.W BabyMetroid.XVelocity,X                                        ;A9F50C;
     BPL .movingRight                                                     ;A9F50F;
     PHA                                                                  ;A9F511;
     JSL.L CheckIfEnemyIsVagulyOnScreen                                   ;A9F512;
@@ -14936,7 +14936,7 @@ GraduallyAccelerateHorizontally:
     LDA.W #$0800                                                         ;A9F528;
 
   .storeRightwardVelocity:
-    STA.W BabyMetroid.XVelocity,X                                                        ;A9F52B;
+    STA.W BabyMetroid.XVelocity,X                                        ;A9F52B;
 
   .return:
     RTS                                                                  ;A9F52E;
@@ -14956,7 +14956,7 @@ GraduallyAccelerateHorizontally:
     INC A                                                                ;A9F544;
 
 +   STA.B $16                                                            ;A9F545;
-    LDA.W BabyMetroid.XVelocity,X                                                        ;A9F547;
+    LDA.W BabyMetroid.XVelocity,X                                        ;A9F547;
     BMI .movingLeft                                                      ;A9F54A;
     PHA                                                                  ;A9F54C;
     JSL.L CheckIfEnemyIsVagulyOnScreen                                   ;A9F54D;
@@ -14976,7 +14976,7 @@ GraduallyAccelerateHorizontally:
     LDA.W #$F800                                                         ;A9F563;
 
   .storeLeftwardVelocity:
-    STA.W BabyMetroid.XVelocity,X                                                        ;A9F566;
+    STA.W BabyMetroid.XVelocity,X                                        ;A9F566;
     RTS                                                                  ;A9F569;
 
 
@@ -15044,14 +15044,14 @@ AccelerateBabyMetroidTowardsYPosition:
     SBC.B $14                                                            ;A9F5B9;
     BEQ .reachedTarget                                                   ;A9F5BB;
     BPL .up                                                              ;A9F5BD;
-    LDA.W BabyMetroid.YVelocity,X                                                        ;A9F5BF;
+    LDA.W BabyMetroid.YVelocity,X                                        ;A9F5BF;
     CLC                                                                  ;A9F5C2;
     ADC.B $16                                                            ;A9F5C3;
     CMP.W #$0500                                                         ;A9F5C5;
     BMI +                                                                ;A9F5C8;
     LDA.W #$0500                                                         ;A9F5CA;
 
-+   STA.W BabyMetroid.YVelocity,X                                                        ;A9F5CD;
++   STA.W BabyMetroid.YVelocity,X                                        ;A9F5CD;
     AND.W #$FF00                                                         ;A9F5D0;
     XBA                                                                  ;A9F5D3;
     BPL +                                                                ;A9F5D4;
@@ -15061,7 +15061,7 @@ AccelerateBabyMetroidTowardsYPosition:
     ADC.W $0F7E,X                                                        ;A9F5DA;
     CMP.B $14                                                            ;A9F5DD;
     BMI .returnUpper                                                     ;A9F5DF;
-    STZ.W BabyMetroid.YVelocity,X                                                        ;A9F5E1;
+    STZ.W BabyMetroid.YVelocity,X                                        ;A9F5E1;
     LDA.B $14                                                            ;A9F5E4;
 
   .reachedTarget:
@@ -15071,14 +15071,14 @@ AccelerateBabyMetroidTowardsYPosition:
     RTS                                                                  ;A9F5E8;
 
   .up:
-    LDA.W BabyMetroid.YVelocity,X                                                        ;A9F5E9;
+    LDA.W BabyMetroid.YVelocity,X                                        ;A9F5E9;
     SEC                                                                  ;A9F5EC;
     SBC.B $16                                                            ;A9F5ED;
     CMP.W #$FB00                                                         ;A9F5EF;
     BPL +                                                                ;A9F5F2;
     LDA.W #$FB00                                                         ;A9F5F4;
 
-+   STA.W BabyMetroid.YVelocity,X                                                        ;A9F5F7;
++   STA.W BabyMetroid.YVelocity,X                                        ;A9F5F7;
     AND.W #$FF00                                                         ;A9F5FA;
     XBA                                                                  ;A9F5FD;
     BPL +                                                                ;A9F5FE;
@@ -15091,7 +15091,7 @@ AccelerateBabyMetroidTowardsYPosition:
     BPL .returnLower                                                     ;A9F60B;
 
   .resetVelocity:
-    STZ.W BabyMetroid.YVelocity,X                                                        ;A9F60D;
+    STZ.W BabyMetroid.YVelocity,X                                        ;A9F60D;
     LDA.B $14                                                            ;A9F610;
     INC.B $1C                                                            ;A9F612;
 
@@ -15112,14 +15112,14 @@ AccelerateBabyMetroidTowardsXPosition:
     BPL .left                                                            ;A9F61B;
     EOR.W #$FFFF                                                         ;A9F61D;
     INC A                                                                ;A9F620;
-    LDA.W BabyMetroid.XVelocity,X                                                        ;A9F621;
+    LDA.W BabyMetroid.XVelocity,X                                        ;A9F621;
     CLC                                                                  ;A9F624;
     ADC.B $16                                                            ;A9F625;
     CMP.W #$0500                                                         ;A9F627;
     BMI +                                                                ;A9F62A;
     LDA.W #$0500                                                         ;A9F62C;
 
-+   STA.W BabyMetroid.XVelocity,X                                                        ;A9F62F;
++   STA.W BabyMetroid.XVelocity,X                                        ;A9F62F;
     AND.W #$FF00                                                         ;A9F632;
     XBA                                                                  ;A9F635;
     BPL +                                                                ;A9F636;
@@ -15129,7 +15129,7 @@ AccelerateBabyMetroidTowardsXPosition:
     ADC.W $0F7A,X                                                        ;A9F63C;
     CMP.B $12                                                            ;A9F63F;
     BMI .returnUpper                                                     ;A9F641;
-    STZ.W BabyMetroid.XVelocity,X                                                        ;A9F643;
+    STZ.W BabyMetroid.XVelocity,X                                        ;A9F643;
     LDA.B $12                                                            ;A9F646;
     INC.B $1C                                                            ;A9F648;
 
@@ -15137,14 +15137,14 @@ AccelerateBabyMetroidTowardsXPosition:
     RTS                                                                  ;A9F64A;
 
   .left:
-    LDA.W BabyMetroid.XVelocity,X                                                        ;A9F64B;
+    LDA.W BabyMetroid.XVelocity,X                                        ;A9F64B;
     SEC                                                                  ;A9F64E;
     SBC.B $16                                                            ;A9F64F;
     CMP.W #$FB00                                                         ;A9F651;
     BPL +                                                                ;A9F654;
     LDA.W #$FB00                                                         ;A9F656;
 
-+   STA.W BabyMetroid.XVelocity,X                                                        ;A9F659;
++   STA.W BabyMetroid.XVelocity,X                                        ;A9F659;
     AND.W #$FF00                                                         ;A9F65C;
     XBA                                                                  ;A9F65F;
     BPL +                                                                ;A9F660;
@@ -15157,7 +15157,7 @@ AccelerateBabyMetroidTowardsXPosition:
     BPL .returnLower                                                     ;A9F66D;
 
   .resetVelocity:
-    STZ.W BabyMetroid.XVelocity,X                                                        ;A9F66F;
+    STZ.W BabyMetroid.XVelocity,X                                        ;A9F66F;
     LDA.B $12                                                            ;A9F672;
     INC.B $1C                                                            ;A9F674;
 
@@ -15200,20 +15200,20 @@ HandleBabyMetroidPalette:
 ; Also handles Shitroid cry sound effect
     LDX.W $0E54                                                          ;A9F699;
     SEP #$20                                                             ;A9F69C;
-    LDA.W BabyMetroid.paletteHandlerTimer,X                                                        ;A9F69E;
+    LDA.W BabyMetroid.paletteHandlerTimer,X                              ;A9F69E;
     BEQ .timerExpired                                                    ;A9F6A1;
     DEC A                                                                ;A9F6A3;
-    STA.W BabyMetroid.paletteHandlerTimer,X                                                        ;A9F6A4;
+    STA.W BabyMetroid.paletteHandlerTimer,X                              ;A9F6A4;
     REP #$20                                                             ;A9F6A7;
     RTS                                                                  ;A9F6A9;
 
   .timerExpired:
-    LDA.W BabyMetroid.paletteHandlerDelay,X                                                        ;A9F6AA;
-    STA.W BabyMetroid.paletteHandlerTimer,X                                                        ;A9F6AD;
-    LDA.W BabyMetroid.paletteFrameTimer,X                                                        ;A9F6B0;
+    LDA.W BabyMetroid.paletteHandlerDelay,X                              ;A9F6AA;
+    STA.W BabyMetroid.paletteHandlerTimer,X                              ;A9F6AD;
+    LDA.W BabyMetroid.paletteFrameTimer,X                                ;A9F6B0;
     INC A                                                                ;A9F6B3;
     AND.B #$07                                                           ;A9F6B4;
-    STA.W BabyMetroid.paletteFrameTimer,X                                                        ;A9F6B6;
+    STA.W BabyMetroid.paletteFrameTimer,X                                ;A9F6B6;
     REP #$20                                                             ;A9F6B9;
     AND.W #$00FF                                                         ;A9F6BB;
     JSR.W HandleBabyMetroidCrySFX                                        ;A9F6BE;
@@ -15263,17 +15263,17 @@ HandleBabyMetroidCrySFX:
   .timerExpired:
     PHA                                                                  ;A9F757;
     PHY                                                                  ;A9F758;
-    LDA.L BabyMetroid.crySFXFlag,X                                                      ;A9F759;
+    LDA.L BabyMetroid.crySFXFlag,X                                       ;A9F759;
     BEQ .return                                                          ;A9F75D;
-    LDA.L BabyMetroid.crySFXTimer,X                                                      ;A9F75F;
+    LDA.L BabyMetroid.crySFXTimer,X                                      ;A9F75F;
     INC A                                                                ;A9F763;
-    STA.L BabyMetroid.crySFXTimer,X                                                      ;A9F764;
+    STA.L BabyMetroid.crySFXTimer,X                                      ;A9F764;
     CMP.W #$0004                                                         ;A9F768;
     BCC .return                                                          ;A9F76B;
     LDA.W #$0000                                                         ;A9F76D;
-    STA.L BabyMetroid.crySFXTimer,X                                                      ;A9F770;
+    STA.L BabyMetroid.crySFXTimer,X                                      ;A9F770;
     LDA.W #$0072                                                         ;A9F774;
-    LDY.W BabyMetroid.paletteHandlerDelay,X                                                        ;A9F777;
+    LDY.W BabyMetroid.paletteHandlerDelay,X                              ;A9F777;
     CPY.W #$000A                                                         ;A9F77A;
     BCS .queueSFX                                                        ;A9F77D;
     LDA.W #$0078                                                         ;A9F77F;
@@ -15290,7 +15290,7 @@ HandleBabyMetroidCrySFX:
 ;;; $F789: Enemy touch - enemy $EEBF (Shitroid) ;;;
 EnemyTouch_BabyMetroid:
     LDX.W $0E54                                                          ;A9F789;
-    LDA.W BabyMetroid.contactReactionFlag,X                                                        ;A9F78C;
+    LDA.W BabyMetroid.contactReactionFlag,X                              ;A9F78C;
     BEQ .return                                                          ;A9F78F;
     JSR.W SignalBabyMetroidToLeave                                       ;A9F791;
     LDA.W $0A1F                                                          ;A9F794;
@@ -15302,13 +15302,13 @@ EnemyTouch_BabyMetroid:
     BPL .repelled                                                        ;A9F7A5;
 
   .notSpinJumping:
-    LDA.W BabyMetroid.function,X                                                        ;A9F7A7;
+    LDA.W BabyMetroid.function,X                                         ;A9F7A7;
     CMP.W #Function_BabyMetroid_LatchOntoSamus                           ;A9F7AA;
     BEQ .latchedOntoSamus                                                ;A9F7AD;
     CMP.W #Function_BabyMetroid_StareDownSamus                           ;A9F7AF;
     BNE .return                                                          ;A9F7B2;
     LDA.W #Function_BabyMetroid_LatchOntoSamus                           ;A9F7B4;
-    STA.W BabyMetroid.function,X                                                        ;A9F7B7;
+    STA.W BabyMetroid.function,X                                         ;A9F7B7;
 
   .return:
     RTL                                                                  ;A9F7BA;
@@ -15330,12 +15330,12 @@ EnemyTouch_BabyMetroid:
     STA.W $0F94,X                                                        ;A9F7DD;
     STZ.W $0F90,X                                                        ;A9F7E0;
     LDA.W #$0001                                                         ;A9F7E3;
-    STA.W BabyMetroid.paletteHandlerDelay,X                                                        ;A9F7E6;
-    STZ.W BabyMetroid.contactReactionFlag,X                                                        ;A9F7E9;
-    STZ.W BabyMetroid.XVelocity,X                                                        ;A9F7EC;
-    STZ.W BabyMetroid.YVelocity,X                                                        ;A9F7EF;
+    STA.W BabyMetroid.paletteHandlerDelay,X                              ;A9F7E6;
+    STZ.W BabyMetroid.contactReactionFlag,X                              ;A9F7E9;
+    STZ.W BabyMetroid.XVelocity,X                                        ;A9F7EC;
+    STZ.W BabyMetroid.YVelocity,X                                        ;A9F7EF;
     LDA.W #Function_BabyMetroid_StartDrainingSamus                       ;A9F7F2;
-    STA.W BabyMetroid.function,X                                                        ;A9F7F5;
+    STA.W BabyMetroid.function,X                                         ;A9F7F5;
     RTL                                                                  ;A9F7F8;
 
   .repelled:
@@ -15361,21 +15361,21 @@ EnemyTouch_BabyMetroid:
     JSL.L CalculateXVelocityFromSpeedAndAngle                            ;A9F824;
     LDX.W $0E54                                                          ;A9F828;
     CLC                                                                  ;A9F82B;
-    ADC.W BabyMetroid.XVelocity,X                                                        ;A9F82C;
-    STA.W BabyMetroid.XVelocity,X                                                        ;A9F82F;
+    ADC.W BabyMetroid.XVelocity,X                                        ;A9F82C;
+    STA.W BabyMetroid.XVelocity,X                                        ;A9F82F;
     PLA                                                                  ;A9F832;
     JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A9F833;
     LDX.W $0E54                                                          ;A9F837;
     CLC                                                                  ;A9F83A;
-    ADC.W BabyMetroid.YVelocity,X                                                        ;A9F83B;
-    STA.W BabyMetroid.YVelocity,X                                                        ;A9F83E;
+    ADC.W BabyMetroid.YVelocity,X                                        ;A9F83B;
+    STA.W BabyMetroid.YVelocity,X                                        ;A9F83E;
     RTL                                                                  ;A9F841;
 
 
 ;;; $F842: Enemy shot - enemy $EEBF (Shitroid) ;;;
 EnemyShot_BabyMetroid:
     LDX.W $0E54                                                          ;A9F842;
-    LDA.W BabyMetroid.contactReactionFlag,X                                                        ;A9F845;
+    LDA.W BabyMetroid.contactReactionFlag,X                              ;A9F845;
     BEQ .return                                                          ;A9F848;
     JSR.W SignalBabyMetroidToLeave                                       ;A9F84A;
     LDA.W $0B64                                                          ;A9F84D;
@@ -15410,14 +15410,14 @@ EnemyShot_BabyMetroid:
     JSL.L CalculateXVelocityFromSpeedAndAngle                            ;A9F888;
     LDX.W $0E54                                                          ;A9F88C;
     CLC                                                                  ;A9F88F;
-    ADC.W BabyMetroid.XVelocity,X                                                        ;A9F890;
-    STA.W BabyMetroid.XVelocity,X                                                        ;A9F893;
+    ADC.W BabyMetroid.XVelocity,X                                        ;A9F890;
+    STA.W BabyMetroid.XVelocity,X                                        ;A9F893;
     PLA                                                                  ;A9F896;
     JSL.L CalculateYVelocityFromSpeedAndAngle                            ;A9F897;
     LDX.W $0E54                                                          ;A9F89B;
     CLC                                                                  ;A9F89E;
-    ADC.W BabyMetroid.YVelocity,X                                                        ;A9F89F;
-    STA.W BabyMetroid.YVelocity,X                                                        ;A9F8A2;
+    ADC.W BabyMetroid.YVelocity,X                                        ;A9F89F;
+    STA.W BabyMetroid.YVelocity,X                                        ;A9F8A2;
 
   .return:
     RTL                                                                  ;A9F8A5;
