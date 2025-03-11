@@ -1880,10 +1880,12 @@ ProjectileTrail_LeftYPosition: skip $24 ; $7ED778..9B
 ProjectileTrail_RightYPosition: skip $24 ; $7ED79C..BF
 
 SRAMMirror_Equipment: skip $60 ; $7ED7C0..D81F
+SRAMMirror_Event: skip 0 ; $7ED820
 SRAMMirror_Event0: skip 1 ; $7ED820
 SRAMMirror_Event1: skip 1 ; $7ED821
 SRAMMirror_Event2: skip 1 ; $7ED822
 skip 5
+SRAMMirror_Boss: skip 0 ; $7ED828
 SRAMMirror_BossCrateria: skip 1 ; $7ED828
 SRAMMirror_BossBrinstar: skip 1 ; $7ED829
 SRAMMirror_BossNorfair: skip 1 ; $7ED82A
@@ -3839,3 +3841,32 @@ skip $7DE84C
 endstruct
 
 check bankcross on
+
+
+; SRAM $700000..2000
+
+org $700000
+SRAM_Slot0Checksum0: skip 2 ; $700000
+SRAM_Slot1Checksum0: skip 2 ; $700002
+SRAM_Slot2Checksum0: skip 2 ; $700004
+skip 2 ; Unused
+SRAM_Slot0Complement0: skip 2 ; $700008
+SRAM_Slot1Complement0: skip 2 ; $70000A
+SRAM_Slot2Complement0: skip 2 ; $70000C
+skip 2
+SRAM_Slot0: skip $065C ; $700010..066B
+SRAM_Slot1: skip $065C ; $70066C..0CC7
+SRAM_Slot2: skip $065C ; $700CC8..1323
+
+org $701FE0
+SRAM_GameCompletionFlag: skip 12 ; $701FE0..EB
+print pc
+SRAM_SaveSlotSelected: skip 2 ; $701FEC
+SRAM_SaveSlotSelectedComplement: skip 2 ; $701FEE
+SRAM_Slot0Checksum1: skip 2 ; $701FF0
+SRAM_Slot1Checksum1: skip 2 ; $701FF2
+SRAM_Slot2Checksum1: skip 2 ; $701FF4
+skip 2
+SRAM_Slot0Complement1: skip 2 ; $701FF8
+SRAM_Slot1Complement1: skip 2 ; $701FFA
+SRAM_Slot2Complement1: skip 2 ; $701FFC
