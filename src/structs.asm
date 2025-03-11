@@ -3845,18 +3845,6 @@ skip $7DE84C
   .previousInstListTableIndex: skip 2 ; $7E7802
 endstruct
 
-struct Zebbo $0FA8
-  .direction: skip 2 ; $0FA8
-  .spawnXPosition: skip 2 ; $0FAA
-  .spawnYPosition: skip 2 ; $0FAC
-  .spawnDelayTimer: skip 2 ; $0FAE
-  .instListTableIndex: skip 2 ; $0FB0
-  .function: skip 2 ; $0FB2
-skip $7DE84C
-  .targetYPosition: skip 2 ; $7E7800
-  .previousInstListTableIndex: skip 2 ; $7E7802
-endstruct
-
 struct Gamet $0FA8
   .function: skip 2 ; $0FA8
   .XSpeedTableIndex: skip 2 ; $0FAA
@@ -3885,7 +3873,7 @@ skip 4
   .dipDisableFlag: skip 2 ; $7E780C
   .spawnXPosition: skip 2 ; $7E780E
   .spawnYPosition: skip 2 ; $7E7810
-skip $7F0
+skip $7EE
   .shootDelayTimer: skip 2 ; $7E8000
 endstruct
 
@@ -3896,7 +3884,7 @@ struct Botwoon $0FA8
   .function: skip 2 ; $0FAE
   .movementFunction: skip 2 ; $0FB0
   .headFunction: skip 2 ; $0FB2
-skip $7DE84C
+skip $7DF04C
   .initTimer: skip 2 ; $7E8000
   .spitTimer: skip 2 ; $7E8002
   .preDeathCounter: skip 2 ; $7E8004
