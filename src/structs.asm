@@ -341,8 +341,8 @@ PauseMenu_MapScrollLeftArrowAnimationFrame: skip 2 ; $074D
 PauseMenu_PaletteAnimationFrame: skip 2 ; $074F
 PauseMenu_ShoulderButtonPressedHighlight: skip 2 ; $0751
 PauseMenu_ButtonLabelMode: skip 2 ; $0753
-PauseMenu_EquipmentScreenCategoryIndex: skip 2 ; $0755
-PauseMenu_EquipmentScreenItemIndex: skip 2 ; $0756
+PauseMenu_EquipmentScreenCategoryIndex: skip 1 ; $0755
+PauseMenu_EquipmentScreenItemIndex: skip 1 ; $0756
 PauseMenu_ReserveTankSoundDelayCounter: skip 2 ; $0757
 PauseMenu_UnusedAnimationMode: skip 2 ; $0759
 PauseMenu_MapScrollUpArrowAnimationMode: skip 2 ; $075B
@@ -353,14 +353,14 @@ PauseMenu_MenuMode: skip 2 ; $0763
 PauseMenu_Backup0058: skip 1 ; $0765
 PauseMenu_Backup0059: skip 1 ; $0766
 PauseMenu_Backup005A: skip 1 ; $0767
-PauseMenu_Backup005D: skip 1 ; $0768
+PauseMenu_Backup005D: skip 2 ; $0768
 PauseMenu_Backup0052: skip 1 ; $076A
 PauseMenu_Backup00B1: skip 1 ; $076B
 PauseMenu_Backup00B5: skip 1 ; $076C
 PauseMenu_Backup00B9: skip 1 ; $076D
 PauseMenu_Backup00B3: skip 1 ; $076E
 PauseMenu_Backup00B7: skip 1 ; $076F
-PauseMenu_Backup00BB: skip 1 ; $0760
+PauseMenu_Backup00BB: skip 1 ; $0770
 PauseMenu_Backup0055: skip 1 ; $0771
 PauseMenu_Backup091B: skip 1 ; $0772
 PauseMenu_Backup091C: skip 1 ; $0773
@@ -1458,6 +1458,7 @@ AnimatedTilesObject_SrcAddr: skip 12 ; $1F25..30
 AnimatedTilesObject_Sizes: skip 12 ; $1F31..3C
 AnimatedTilesObject_VRAMAddr: skip 12 ; $1F3D..48
 AnimatedTilesObject_Instruction: skip 2 ; $1F49
+skip 6
 
 CinematicFunction: skip 2 ; $1F51
 
