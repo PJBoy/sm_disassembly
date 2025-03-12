@@ -142,12 +142,12 @@ struct VRAMWrite $D0 ; $D0..02CF
 endstruct
 
 struct Mode7Transfer $2D0
-  .mode7Control: skip 1 ; $02D0
-  .mode7Src: skip 3 ; $02D1
-  .mode7Size: skip 2 ; $02D4
-  .mode7Dest: skip 2 ; $02D6
-  .mode7Inc: skip 1 ; $02D8
-  .mode7Term: skip 1 ; $02D9
+  .control: skip 1 ; $02D0
+  .src: skip 3 ; $02D1
+  .size: skip 2 ; $02D4
+  .dest: skip 2 ; $02D6
+  .inc: skip 1 ; $02D8
+  .term: skip 1 ; $02D9
 endstruct
 
 org $0330
@@ -309,7 +309,7 @@ CrocomireMelting_MaxAdjustedDestYOffset: skip 2 ; $0698
 CrocomireMelting_TilesLoadingTableIndex: skip 2 ; $069A
 CrocomireMelting_YOffsets: skip $80 ; $069C
 
-BlockFramesTimer: skip 1 ;071C
+BlockFramesTimer: skip 1 ; $071C
 SamusTiles_TopHalfFlag: skip 1 ; $071D
 SamusTiles_BottomHalfFlag: skip 1 ; $071E
 SamusTiles_TopHalfTilesDef: skip 2 ; $071F
@@ -421,7 +421,7 @@ CeresMode7HDMATables: skip 2 ; $07EB
 Unused07ED: skip 6 ; $07ED..F2
 MusicDataIndex: skip 2 ; $07F3
 MusicTrackIndex: skip 2 ; $07F5
-MapTilesExplored: skip 2 ; $07F7..08F6
+MapTilesExplored: skip $100 ; $07F7..08F6
 Layer1XBlock: skip 2 ; $08F7
 Layer1YBlock: skip 2 ; $08F9
 Layer2XBlock: skip 2 ; $08FB
@@ -460,8 +460,8 @@ XBlockOfVRAMBlocksToUpdate: skip 2 ; $0935
 VRAMTilemapScreenBaseAddr: skip 0 ; $0937
 VRAMTilemapSourceDataIndex: skip 0 ; $0937
 WrappedVRAMTilemapScreenBaseAddr: skip 2 ; $0937
-ProposedScrolledLayer1XPosition: skip 2 ; $0939
-ProposedScrolledLayer1YPosition: skip 2 ; $0939
+ProposedScrolledLayer1XPosition: skip 0 ; $0939
+ProposedScrolledLayer1YPosition: skip 0 ; $0939
 BackgroundDataLoopCounter: skip 2 ; $0939
 BackgroundBlockToUpdate: skip 2 ; $093B
 Unused093D: skip 2 ; $093D
@@ -1198,7 +1198,7 @@ SamusRightBoundaryForEnemyVsSamusCollisions: skip 2 ; $187E
 SamusLeftBoundaryForEnemyVsSamusCollisions: skip 2 ; $1880
 SamusBottomBoundaryForEnemyVsSamusCollisions: skip 2 ; $1882
 SamusTopBoundaryForEnemyVsSamusCollisions: skip 2 ; $1884
-Unused1886: skip $13 ; $1886..99
+Unused1886: skip $14 ; $1886..99
 SamusTargetXPosition: skip 2 ; $189A
 SamusTargetXSubPosition: skip 2 ; $189C
 SamusTargetYPosition: skip 2 ; $189E
@@ -1684,6 +1684,7 @@ skip $800
 DecompressedSCE: ; $7EA800..BFFF
 
 org $7EC000
+Palettes: skip 0 ; $7EC000
 Palettes_MainBackdrop: skip 2 ; $7EC000
 Palettes_BG3P0AcidHighlight: skip 2 ; $7EC002
 Palettes_BG3P0AcidBubbles: skip 2 ; $7EC004
@@ -1793,8 +1794,8 @@ skip $40
 OffScreenPowerBombExplosionWindow2LeftHDMADataTable: skip 1 ; $7EC606
 OffScreenPowerBombExplosionWindow2RightHDMADataTable: skip 1 ; $7EC607
 
-skip 2
-HUDTilemap_Row1EnergyTanks: skip 2 ; $7EC60A..17
+HUDTilemap: skip 2 ; $7EC608
+HUDTilemap_Row1EnergyTanks: skip 14 ; $7EC60A..17
 HUDTilemap_Row1AutoReserve: skip 4 ; $7EC618..1B
 HUDTilemap_Row1Missiles: skip 6 ; $7EC61C..21
 skip 2
@@ -1807,7 +1808,8 @@ skip 2
 HUDTilemap_Row1Xray: skip 4 ; $7EC636..39
 skip 2
 HUDTilemap_Row1Minimap: skip 10 ; $7EC63C..45
-skip 4
+skip 2
+HUDTilemap_Row2: skip 2 ; $7EC648
 HUDTilemap_Row2EnergyTanks: skip 14 ; $7EC64A..57
 HUDTilemap_Row2AutoReserve: skip 4 ; $7EC658..5B
 HUDTilemap_Row2Missiles: skip 6 ; $7EC65C..61
@@ -1848,9 +1850,10 @@ BG3YPosition: skip 2 ; $7ECADE
 CrocomireBG2YScrollIndirectHDMATable: skip 8 ; $7ECAE0..E7
 skip 8
 CrocomireBG2YScrollHDMADataTable: skip $210 ; $7ECAF0..CCEF
-skip $30
+skip $20
 Scrolls: skip $32 ; $7ECD20..51
 
+ExploredMapTiles: skip 0 ; $7ECD52
 ExploredMapTiles_Crateria: skip $100 ; $7ECD52..CE51
 ExploredMapTiles_Brinstar: skip $100 ; $7ECE52..CF51
 ExploredMapTiles_Norfair: skip $100 ; $7ECF52..D051
@@ -3861,7 +3864,6 @@ SRAM_Slot2: skip $065C ; $700CC8..1323
 
 org $701FE0
 SRAM_GameCompletionFlag: skip 12 ; $701FE0..EB
-print pc
 SRAM_SaveSlotSelected: skip 2 ; $701FEC
 SRAM_SaveSlotSelectedComplement: skip 2 ; $701FEE
 SRAM_Slot0Checksum1: skip 2 ; $701FF0
