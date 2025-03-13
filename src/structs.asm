@@ -457,6 +457,8 @@ PositionOfScrollBoundary: skip 0 ; $0933
 VRAMOffsetBlocksToUpdate: skip 0 ; $0933
 VRAMBlocksToUpdateXBlock0993: skip 2 ; $0933
 XBlockOfVRAMBlocksToUpdate: skip 2 ; $0935
+UpperScrollPosition: skip 0 ; $0937
+RoomHeightInPixels: skip 0 ; $0937
 VRAMTilemapScreenBaseAddr: skip 0 ; $0937
 VRAMTilemapSourceDataIndex: skip 0 ; $0937
 WrappedVRAMTilemapScreenBaseAddr: skip 2 ; $0937
@@ -510,8 +512,8 @@ BG2Row_wrappedTilemapVRAMUpdateLeftHalvesSrc: skip 2 ; $0988
 BG2Row_wrappedTilemapVRAMUpdateRighttHalvesSrc: skip 2 ; $098A
 BG2Row_updateVRAMTilemapFlag: skip 2 ; $098C
 SizeOfBG2: skip 2 ; $098E
-blocksToUpdateXBlock: skip 2 ; $0990
-blocksToUpdateYBlock: skip 2 ; $0992
+BlocksToUpdateXBlock: skip 2 ; $0990
+BlocksToUpdateYBlock: skip 2 ; $0992
 VRAMBlocksToUpdateXBlock: skip 2 ; $0994
 VRAMBlocksToUpdateYBlock: skip 2 ; $0996
 GameState: skip 2 ; $0998
@@ -574,8 +576,8 @@ BackupController1NewDemo: skip 2 ; $0A16
 NeverRead0A18: skip 2 ; $0A18
 Unused0A1A: skip 2 ; $0A1A
 Pose: skip 2 ; $0A1C
-PoseXDirection: skip 2 ; $0A1E
-MovementType: skip 2 ; $0A1F
+PoseXDirection: skip 1 ; $0A1E
+MovementType: skip 1 ; $0A1F
 PreviousPose: skip 2 ; $0A20
 PreviousPoseXDirection: skip 1 ; $0A22
 PreviousMovementType: skip 1 ; $0A23
@@ -752,13 +754,13 @@ SamusXBaseSubSpeed: skip 2 ; $0B48
 SamusXAccelerationMode: skip 2 ; $0B4A
 SamusXDecelerationMultiplier: skip 2 ; $0B4C
 Unused0B4E: skip 8 ; $0B4E..55
-ExtraSamusXSubDisplacement: skip 8 ; $0B56
-ExtraSamusXDisplacement: skip 8 ; $0B58
-ExtraSamusYSubDisplacement: skip 8 ; $0B5A
-ExtraSamusYDisplacement: skip 8 ; $0B5C
-PoseTransitionShotDirection: skip 8 ; $0B5E
-SBAAngleDelta: skip 8 ; $0B60
-SamusChargePaletteIndex: skip 8 ; $0B62
+ExtraSamusXSubDisplacement: skip 2 ; $0B56
+ExtraSamusXDisplacement: skip 2 ; $0B58
+ExtraSamusYSubDisplacement: skip 2 ; $0B5A
+ExtraSamusYDisplacement: skip 2 ; $0B5C
+PoseTransitionShotDirection: skip 2 ; $0B5E
+SBAAngleDelta: skip 2 ; $0B60
+SamusChargePaletteIndex: skip 2 ; $0B62
 
 SamusProjectile_XPositions: skip $14 ; $0B64..77
 SamusProjectile_YPositions: skip $14 ; $0B78..8B
@@ -768,7 +770,7 @@ SamusProjectile_XRadii: skip $14 ; $0BB4..C7
 SamusProjectile_YRadii: skip $14 ; $0BC8..DB
 SamusProjectile_XVelocities: skip 10 ; $0BDC..E5
 SamusProjectile_BombXVelocities: skip 10 ; $0BE6..EF
-SamusProjectile_YVelocities: skip $14 ; $0BF0..F9
+SamusProjectile_YVelocities: skip 10 ; $0BF0..F9
 SamusProjectile_BombYVelocities: skip 10 ; $0BFA..0C03
 SamusProjectile_Directions: skip 10 ; $0C04..0D
 SamusProjectile_BombDirections: skip 10 ; $0C0E..17
@@ -803,7 +805,7 @@ SamusProjectile_PowerBombExplosionRadius: skip 2 ; $0CEA
 SamusProjectile_PowerBombPreExplosionFlashRadius: skip 2 ; $0CEC
 SamusProjectile_PowerBombFlag: skip 2 ; $0CEE
 SamusProjectile_PowerBombPreExplosionRadiusSpeed: skip 2 ; $0CF0
-SamusProjectile_PreScaledPowerBombExplosionShapeDefPointer: ; $0CF2
+SamusProjectile_PreScaledPowerBombExplosionShapeDefPointer: skip 2 ; $0CF2
 
 GrappleBeam_Flags: skip 2 ; $0CF4
 GrappleBeam_PoseChangeAutoFireTimer: skip 2 ; $0CF6
@@ -1824,7 +1826,7 @@ HUDTilemap_Row2Xray: skip 4 ; $7EC676..79
 skip 2
 HUDTilemap_Row2Minimap: skip 4 ; $7EC67C..85
 HUDTilemap_SamusMinimapPosition: skip 2 ; $7EC680
-skip 6
+skip $12
 HUDTilemap_Row3EnergyCount: skip 4 ; $7EC694..97
 HUDTilemap_Row3AutoReserve: skip 4 ; $7EC698..9B
 HUDTilemap_Row3MissileCount: skip 6 ; $7EC69C..A1
@@ -1961,7 +1963,7 @@ org $7F0000
 SizeOfLevelData: skip 2 ; $7F0000
 LevelData: skip $6400 ; $7F0002..6401
 BTS: skip $3200 ; $7F6402..9601
-CustomBackground: skip $6400 ; $7E9602..FA01
+CustomBackground: skip $6400 ; $7F9602..FA01
 
 org $7F0000
 EndingShipTiles: ; $7F0000..3FFF

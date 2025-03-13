@@ -2419,21 +2419,21 @@ CheckIfMusicIsQueued:
 ;;; $8F0C: Handle music queue ;;;
 HandleMusicQueue:
 ; Decrement music timer
-; If [music timer] > 0:
+; If APU_MusicTimer > 0:
 ;     Return
-; If [music timer] = 0:
-;     Process [music entry]
+; If APU_MusicTimer = 0:
+;     Process APU_MusicEntry
 ;     Handle new music track / music data
 ;     Erase first entry from queue (advancing the start index)
 ;     Sound handler downtime = 8
 ;     If music data:
 ;         Return
-; If [music queue start index] = [music queue next index] (queue is empty):
+; If APU_MusicQueueStartIndex = APU_MusicQueueNextIndex (queue is empty):
 ;     Music timer = 0 (try again next loop)
 ; Else:
 ;     Load music entry and music timer from first entry in queue
 
-; Note that $064C (current music track) is never read anywhere, $07F5 is used instead (music track index)
+; Note that APU_CurrentMusicTrack is never read anywhere, MusicTrackIndex is used instead
     PHP                                                                  ;808F0C;
     REP #$20                                                             ;808F0D;
     DEC.W APU_MusicTimer                                                 ;808F0F;
@@ -3877,7 +3877,7 @@ Interrupt_Cmd14_VerticalDoorTransition_EndDrawing:
     LDY.W #$0000                                                         ;8097B4;
     LDX.W #$0098                                                         ;8097B7;
     STZ.W NMI_Request                                                    ;8097BA;
-    INC.W NMI_Request                                                    ;8097BD; >.<
+    INC.W NMI_Request                                                    ;8097BD;
     RTS                                                                  ;8097C0;
 
 
@@ -3955,7 +3955,7 @@ Interrupt_Cmd1A_HorizontalDoorTransition_EndDrawing:
     LDY.W #$0000                                                         ;80981D;
     LDX.W #$0098                                                         ;809820;
     STZ.W NMI_Request                                                    ;809823;
-    INC.W NMI_Request                                                    ;809826; >.<
+    INC.W NMI_Request                                                    ;809826;
     RTS                                                                  ;809829;
 
 
@@ -4888,13 +4888,13 @@ DrawTimer:
     LDY.W #Spritemap_Timer_TIME                                          ;809F6F;
     LDA.W #$0000                                                         ;809F72;
     JSR.W DrawTimerSpritemap                                             ;809F75;
-    LDA.W TimerMinutes                                                          ;809F78;
+    LDA.W TimerMinutes                                                   ;809F78;
     LDX.W #$FFE4                                                         ;809F7B;
     JSR.W DrawTwoTimerDigits                                             ;809F7E;
-    LDA.W TimerSeconds                                                          ;809F81;
+    LDA.W TimerSeconds                                                   ;809F81;
     LDX.W #$FFFC                                                         ;809F84;
     JSR.W DrawTwoTimerDigits                                             ;809F87;
-    LDA.W TimerCentiseconds                                                          ;809F8A;
+    LDA.W TimerCentiseconds                                              ;809F8A;
     LDX.W #$0014                                                         ;809F8D;
     JSR.W DrawTwoTimerDigits                                             ;809F90;
     PLB                                                                  ;809F93;
@@ -4932,18 +4932,18 @@ DrawTimerSpritemap:
 ;;     A: X position offset
 ;;     DB:Y: Spritemap pointer
     STA.B $14                                                            ;809FB3;
-    LDA.W TimerXSubPosition                                                          ;809FB5;
+    LDA.W TimerXSubPosition                                              ;809FB5;
     XBA                                                                  ;809FB8;
     AND.W #$00FF                                                         ;809FB9;
     CLC                                                                  ;809FBC;
-    ADC.B $14                                                            ;809FBD;
-    STA.B $14                                                            ;809FBF;
-    LDA.W TimerYSubPosition                                                          ;809FC1;
+    ADC.B DP_Temp14                                                      ;809FBD;
+    STA.B DP_Temp14                                                      ;809FBF;
+    LDA.W TimerYSubPosition                                              ;809FC1;
     XBA                                                                  ;809FC4;
     AND.W #$00FF                                                         ;809FC5;
-    STA.B $12                                                            ;809FC8;
+    STA.B DP_Temp12                                                      ;809FC8;
     LDA.W #$0A00                                                         ;809FCA;
-    STA.B $16                                                            ;809FCD;
+    STA.B DP_Temp16                                                      ;809FCD;
     JSL.L AddSpritemapToOAM                                              ;809FCF;
     RTS                                                                  ;809FD3;
 
@@ -5034,13 +5034,13 @@ StartGameplay:
     REP #$30                                                             ;80A07F;
     SEI                                                                  ;80A081;
     STZ.W $420B                                                          ;80A082;
-    STZ.W $07E9                                                          ;80A085;
-    STZ.W $07F3                                                          ;80A088;
-    STZ.W $07F5                                                          ;80A08B;
-    STZ.W TimerStatus                                                          ;80A08E;
+    STZ.W ScrollingSkyFinishedHook                                       ;80A085;
+    STZ.W MusicDataIndex                                                 ;80A088;
+    STZ.W MusicTrackIndex                                                ;80A08B;
+    STZ.W TimerStatus                                                    ;80A08E;
     JSL.L ResetSoundQueues                                               ;80A091;
     LDA.W #$FFFF                                                         ;80A095;
-    STA.W $05F5                                                          ;80A098;
+    STA.W DisableSounds                                                  ;80A098;
     JSL.L DisableNMI                                                     ;80A09B;
     JSL.L DisableHVCounterInterrupts                                     ;80A09F;
     JSL.L Load_Destination_Room                                          ;80A0A3;
@@ -5064,26 +5064,26 @@ StartGameplay:
     JSL.L LoadLibraryBackground_LoadingPausing                           ;80A0E9;
     JSR.W CalculateLayer2XPosition                                       ;80A0ED;
     JSR.W CalculateLayer2YPosition                                       ;80A0F0;
-    LDA.W $0917                                                          ;80A0F3;
-    STA.W $0921                                                          ;80A0F6;
-    LDA.W $0919                                                          ;80A0F9;
-    STA.W $0923                                                          ;80A0FC;
+    LDA.W Layer2XPosition                                                ;80A0F3;
+    STA.W BG2XOffset                                                     ;80A0F6;
+    LDA.W Layer2YPosition                                                ;80A0F9;
+    STA.W BG2YOffset                                                     ;80A0FC;
     JSR.W CalculateBGScrolls                                             ;80A0FF;
     JSL.L DisplayViewablePartOfRoom                                      ;80A102;
     JSL.L EnableNMI                                                      ;80A106;
-    LDA.B $A9                                                            ;80A10A;
+    LDA.B DP_RoomLoadIRQCmd                                              ;80A10A;
     BNE .setNextInterrupt                                                ;80A10C;
     LDA.W #$0004                                                         ;80A10E;
 
   .setNextInterrupt:
-    STA.B $A7                                                            ;80A111;
+    STA.B DP_NextIRQCmd                                                  ;80A111;
     JSL.L EnableHVCounterInterrupts                                      ;80A113;
     JSR.W HandleMusicQueueFor20Frames                                    ;80A117;
     JSL.L Spawn_Hardcoded_PLM                                            ;80A11A;
     db $08,$08                                                           ;80A11E;
     dw PLMEntries_enableSoundsIn20Frames_F0FramesIfCeres                 ;80A120;
     LDA.W #DoorTransitionFunction_FadeInTheScreen_and_RunEnemies_Finish  ;80A122;
-    STA.W $099C                                                          ;80A125;
+    STA.W DoorTransitionFunction                                         ;80A125;
     PLB                                                                  ;80A128;
     PLP                                                                  ;80A129;
     RTL                                                                  ;80A12A;
@@ -5151,47 +5151,47 @@ DisplayViewablePartOfRoom:
 ; Expects force blank to be enabled!
     PHP                                                                  ;80A176;
     SEP #$20                                                             ;80A177;
-    LDA.B $58                                                            ;80A179;
+    LDA.B DP_BG1TilemapAddrSize                                          ;80A179;
     SEC                                                                  ;80A17B;
-    SBC.B $59                                                            ;80A17C;
+    SBC.B DP_BG2TilemapAddrSize                                          ;80A17C;
     XBA                                                                  ;80A17E;
     REP #$20                                                             ;80A17F;
     AND.W #$F800                                                         ;80A181;
-    STA.W $098E                                                          ;80A184;
+    STA.W SizeOfBG2                                                      ;80A184;
     JSR.W Calculate_BGScroll_LayerPositionBlocks                         ;80A187;
     LDX.W #$0000                                                         ;80A18A;
 
   .loop:
     PHX                                                                  ;80A18D;
-    LDA.W $08F7                                                          ;80A18E;
-    STA.W $0990                                                          ;80A191;
-    LDA.W $08F9                                                          ;80A194;
-    STA.W $0992                                                          ;80A197;
-    LDA.W $0907                                                          ;80A19A;
-    STA.W $0994                                                          ;80A19D;
-    LDA.W $0909                                                          ;80A1A0;
-    STA.W $0996                                                          ;80A1A3;
+    LDA.W Layer1XBlock                                                   ;80A18E;
+    STA.W BlocksToUpdateXBlock                                           ;80A191;
+    LDA.W Layer1YBlock                                                   ;80A194;
+    STA.W BlocksToUpdateYBlock                                           ;80A197;
+    LDA.W BG1XBlock                                                      ;80A19A;
+    STA.W VRAMBlocksToUpdateXBlock                                       ;80A19D;
+    LDA.W BG1YBlock                                                      ;80A1A0;
+    STA.W VRAMBlocksToUpdateYBlock                                       ;80A1A3;
     JSR.W UpdateLevelDataColumn                                          ;80A1A6;
-    LDA.W $091B                                                          ;80A1A9;
+    LDA.W Layer2ScrollX                                                  ;80A1A9;
     LSR A                                                                ;80A1AC;
     BCS .increment                                                       ;80A1AD;
-    LDA.W $08FB                                                          ;80A1AF;
-    STA.W $0990                                                          ;80A1B2;
-    LDA.W $08FD                                                          ;80A1B5;
-    STA.W $0992                                                          ;80A1B8;
-    LDA.W $090B                                                          ;80A1BB;
-    STA.W $0994                                                          ;80A1BE;
-    LDA.W $090D                                                          ;80A1C1;
-    STA.W $0996                                                          ;80A1C4;
+    LDA.W Layer2XBlock                                                   ;80A1AF;
+    STA.W BlocksToUpdateXBlock                                           ;80A1B2;
+    LDA.W Layer2YBlock                                                   ;80A1B5;
+    STA.W BlocksToUpdateYBlock                                           ;80A1B8;
+    LDA.W BG2XBlock                                                      ;80A1BB;
+    STA.W VRAMBlocksToUpdateXBlock                                       ;80A1BE;
+    LDA.W BG2YBlock                                                      ;80A1C1;
+    STA.W VRAMBlocksToUpdateYBlock                                       ;80A1C4;
     JSR.W UpdateBackgroundDataColumn                                     ;80A1C7;
 
   .increment:
     JSL.L HandleVRAMWriteTable_ScrollingDMAs                             ;80A1CA;
     PLX                                                                  ;80A1CE;
-    INC.W $08F7                                                          ;80A1CF;
-    INC.W $0907                                                          ;80A1D2;
-    INC.W $08FB                                                          ;80A1D5;
-    INC.W $090B                                                          ;80A1D8;
+    INC.W Layer1XBlock                                                   ;80A1CF;
+    INC.W BG1XBlock                                                      ;80A1D2;
+    INC.W Layer2XBlock                                                   ;80A1D5;
+    INC.W BG2XBlock                                                      ;80A1D8;
     INX                                                                  ;80A1DB;
     CPX.W #$0011                                                         ;80A1DC;
     BNE .loop                                                            ;80A1DF;
@@ -5206,23 +5206,23 @@ UNUSED_QueueClearingOfBG2Tilemap_80A1E3:
     LDA.W #$0338                                                         ;80A1E6;
 
   .loop:
-    STA.L $7E4000,X                                                      ;80A1E9;
+    STA.L BG2Tilemap,X                                                   ;80A1E9;
     DEX                                                                  ;80A1ED;
     DEX                                                                  ;80A1EE;
     BPL .loop                                                            ;80A1EF;
-    LDX.W VRAMWriteStack                                                          ;80A1F1;
+    LDX.W VRAMWriteStack                                                 ;80A1F1;
     LDA.W #$1000                                                         ;80A1F4;
-    STA.B $D0,X                                                          ;80A1F7;
+    STA.B VRAMWrite.size,X                                               ;80A1F7;
     LDA.W #$4000                                                         ;80A1F9;
-    STA.B $D2,X                                                          ;80A1FC;
+    STA.B VRAMWrite.src,X                                                ;80A1FC;
     LDA.W #$007E                                                         ;80A1FE;
-    STA.B $D4,X                                                          ;80A201;
+    STA.B VRAMWrite.src+2,X                                              ;80A201;
     LDA.W #$4800                                                         ;80A203;
-    STA.B $D5,X                                                          ;80A206;
+    STA.B VRAMWrite.dest,X                                               ;80A206;
     TXA                                                                  ;80A208;
     CLC                                                                  ;80A209;
     ADC.W #$0007                                                         ;80A20A;
-    STA.W VRAMWriteStack                                                          ;80A20D;
+    STA.W VRAMWriteStack                                                 ;80A20D;
     RTL                                                                  ;80A210;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
@@ -5235,23 +5235,23 @@ QueueClearingOfFXTilemap:
     LDA.W #$184E                                                         ;80A214;
 
   .loop:
-    STA.L $7E4000,X                                                      ;80A217;
+    STA.L BG2Tilemap,X                                                   ;80A217;
     DEX                                                                  ;80A21B;
     DEX                                                                  ;80A21C;
     BPL .loop                                                            ;80A21D;
-    LDX.W VRAMWriteStack                                                          ;80A21F;
+    LDX.W VRAMWriteStack                                                 ;80A21F;
     LDA.W #$0F00                                                         ;80A222;
-    STA.B $D0,X                                                          ;80A225;
+    STA.B VRAMWrite.size,X                                               ;80A225;
     LDA.W #$4000                                                         ;80A227;
-    STA.B $D2,X                                                          ;80A22A;
+    STA.B VRAMWrite.src,X                                                ;80A22A;
     LDA.W #$007E                                                         ;80A22C;
-    STA.B $D4,X                                                          ;80A22F;
+    STA.B VRAMWrite.src+2,X                                              ;80A22F;
     LDA.W #$5880                                                         ;80A231;
-    STA.B $D5,X                                                          ;80A234;
+    STA.B VRAMWrite.dest,X                                               ;80A234;
     TXA                                                                  ;80A236;
     CLC                                                                  ;80A237;
     ADC.W #$0007                                                         ;80A238;
-    STA.W VRAMWriteStack                                                          ;80A23B;
+    STA.W VRAMWriteStack                                                 ;80A23B;
     RTL                                                                  ;80A23E;
 
 
@@ -5369,25 +5369,25 @@ CalculateLayer2XPosition:
 ; Else:
 ;     Layer 2 X position = [layer 1 X position] * ([layer 2 scroll X] >> 1) / 80h
     PHP                                                                  ;80A2F9;
-    LDY.W $0911                                                          ;80A2FA;
+    LDY.W Layer1XPosition                                                ;80A2FA;
     SEP #$20                                                             ;80A2FD;
-    LDA.W $091B                                                          ;80A2FF;
+    LDA.W Layer2ScrollX                                                  ;80A2FF;
     BEQ .scrollReturn                                                    ;80A302;
     CMP.B #$01                                                           ;80A304;
     BEQ .return                                                          ;80A306;
     AND.B #$FE                                                           ;80A308;
     STA.W $4202                                                          ;80A30A;
-    LDA.W $0911                                                          ;80A30D;
+    LDA.W Layer1XPosition                                                ;80A30D;
     STA.W $4203                                                          ;80A310;
-    STZ.W $0934                                                          ;80A313;
+    STZ.W VRAMOffsetBlocksToUpdate+1                                     ;80A313;
     PHA                                                                  ;80A316;
     PLA                                                                  ;80A317;
     LDA.W $4217                                                          ;80A318;
-    STA.W $0933                                                          ;80A31B;
-    LDA.W $0912                                                          ;80A31E;
+    STA.W VRAMOffsetBlocksToUpdate                                       ;80A31B;
+    LDA.W Layer1XPosition+1                                              ;80A31E;
     STA.W $4203                                                          ;80A321;
     REP #$20                                                             ;80A324;
-    LDA.W $0933                                                          ;80A326;
+    LDA.W VRAMOffsetBlocksToUpdate                                       ;80A326;
     CLC                                                                  ;80A329;
     ADC.W $4216                                                          ;80A32A;
     TAY                                                                  ;80A32D;
@@ -5395,7 +5395,7 @@ CalculateLayer2XPosition:
   .scrollReturn:
     REP #$20                                                             ;80A32E;
     TYA                                                                  ;80A330;
-    STA.W $0917                                                          ;80A331;
+    STA.W Layer2XPosition                                                ;80A331;
     PLP                                                                  ;80A334;
     CLC                                                                  ;80A335;
     RTS                                                                  ;80A336;
@@ -5427,25 +5427,25 @@ CalculateLayer2YPosition:
 ; Else:
 ;     Layer 2 Y position = [layer 1 Y position] * ([layer 2 scroll Y] >> 1) / 80h
     PHP                                                                  ;80A33A;
-    LDY.W $0915                                                          ;80A33B;
+    LDY.W Layer1YPosition                                                ;80A33B;
     SEP #$20                                                             ;80A33E;
-    LDA.W $091C                                                          ;80A340;
+    LDA.W Layer2ScrollY                                                  ;80A340;
     BEQ .scrollReturn                                                    ;80A343;
     CMP.B #$01                                                           ;80A345;
     BEQ .return                                                          ;80A347;
     AND.B #$FE                                                           ;80A349;
     STA.W $4202                                                          ;80A34B;
-    LDA.W $0915                                                          ;80A34E;
+    LDA.W Layer1YPosition                                                ;80A34E;
     STA.W $4203                                                          ;80A351;
     STZ.W $0934                                                          ;80A354;
     PHA                                                                  ;80A357;
     PLA                                                                  ;80A358;
     LDA.W $4217                                                          ;80A359;
-    STA.W $0933                                                          ;80A35C;
-    LDA.W $0916                                                          ;80A35F;
+    STA.W PositionOfScrollBoundary                                       ;80A35C;
+    LDA.W Layer1YPosition+1                                              ;80A35F;
     STA.W $4203                                                          ;80A362;
     REP #$20                                                             ;80A365;
-    LDA.W $0933                                                          ;80A367;
+    LDA.W PositionOfScrollBoundary                                       ;80A367;
     CLC                                                                  ;80A36A;
     ADC.W $4216                                                          ;80A36B;
     TAY                                                                  ;80A36E;
@@ -5453,7 +5453,7 @@ CalculateLayer2YPosition:
   .scrollReturn:
     REP #$20                                                             ;80A36F;
     TYA                                                                  ;80A371;
-    STA.W $0919                                                          ;80A372;
+    STA.W Layer2YPosition                                                ;80A372;
     PLP                                                                  ;80A375;
     CLC                                                                  ;80A376;
     RTS                                                                  ;80A377;
@@ -5469,22 +5469,22 @@ CalculateBGScrolls:
 ; Called by:
 ;     $A07B: Start gameplay
 ;     $A3A0: Calculate BG scrolls and update BG graphics when scrolling (door transition)
-    LDA.W $0911                                                          ;80A37B;
+    LDA.W Layer1XPosition                                                ;80A37B;
     CLC                                                                  ;80A37E;
-    ADC.W $091D                                                          ;80A37F;
-    STA.B $B1                                                            ;80A382;
-    LDA.W $0915                                                          ;80A384;
+    ADC.W Layer2ScrollY+1                                                ;80A37F;
+    STA.B DP_BG1XScroll                                                  ;80A382;
+    LDA.W Layer1YPosition                                                ;80A384;
     CLC                                                                  ;80A387;
-    ADC.W $091F                                                          ;80A388;
-    STA.B $B3                                                            ;80A38B;
-    LDA.W $0917                                                          ;80A38D;
+    ADC.W BG1YOffset                                                     ;80A388;
+    STA.B DP_BG1YScroll                                                  ;80A38B;
+    LDA.W Layer2XPosition                                                ;80A38D;
     CLC                                                                  ;80A390;
-    ADC.W $0921                                                          ;80A391;
-    STA.B $B5                                                            ;80A394;
-    LDA.W $0919                                                          ;80A396;
+    ADC.W BG2XOffset                                                     ;80A391;
+    STA.B DP_BG2XScroll                                                  ;80A394;
+    LDA.W Layer2YPosition                                                ;80A396;
     CLC                                                                  ;80A399;
-    ADC.W $0923                                                          ;80A39A;
-    STA.B $B7                                                            ;80A39D;
+    ADC.W BG2YOffset                                                     ;80A39A;
+    STA.B DP_BG2YScroll                                                  ;80A39D;
     RTS                                                                  ;80A39F;
 
 
@@ -5510,7 +5510,7 @@ Calc_Layer2Position_BGScrolls_UpdateBGGraphics_WhenScrolling:
 ;     $82:8B44: Game state 8 (main gameplay)
 ;     $82:E310: Door transition function - scroll screen to alignment
 ;     $82:E675: Unused. Door transition function
-    LDA.W TimeIsFrozenFlag                                                          ;80A3AB;
+    LDA.W TimeIsFrozenFlag                                               ;80A3AB;
     BEQ .continue                                                        ;80A3AE;
     RTL                                                                  ;80A3B0;
 
@@ -5520,26 +5520,26 @@ Calc_Layer2Position_BGScrolls_UpdateBGGraphics_WhenScrolling:
     PHK                                                                  ;80A3B3;
     PLB                                                                  ;80A3B4;
     REP #$30                                                             ;80A3B5;
-    LDA.W $0911                                                          ;80A3B7;
+    LDA.W Layer1XPosition                                                ;80A3B7;
     CLC                                                                  ;80A3BA;
-    ADC.W $091D                                                          ;80A3BB;
-    STA.B $B1                                                            ;80A3BE;
-    LDA.W $0915                                                          ;80A3C0;
+    ADC.W Layer2ScrollY+1                                                ;80A3BB;
+    STA.B DP_BG1XScroll                                                  ;80A3BE;
+    LDA.W Layer1YPosition                                                ;80A3C0;
     CLC                                                                  ;80A3C3;
-    ADC.W $091F                                                          ;80A3C4;
-    STA.B $B3                                                            ;80A3C7;
+    ADC.W BG1YOffset                                                     ;80A3C4;
+    STA.B DP_BG1YScroll                                                  ;80A3C7;
     JSR.W CalculateLayer2XPosition                                       ;80A3C9;
     BCS .layer2Y                                                         ;80A3CC;
     CLC                                                                  ;80A3CE;
-    ADC.W $0921                                                          ;80A3CF;
-    STA.B $B5                                                            ;80A3D2;
+    ADC.W BG2XOffset                                                     ;80A3CF;
+    STA.B DP_BG2XScroll                                                  ;80A3D2;
 
   .layer2Y:
     JSR.W CalculateLayer2YPosition                                       ;80A3D4;
     BCS UpdateBGGraphics_WhenScrolling                                   ;80A3D7;
     CLC                                                                  ;80A3D9;
-    ADC.W $0923                                                          ;80A3DA;
-    STA.B $B7                                                            ;80A3DD; fallthrough to UpdateBGGraphics_WhenScrolling
+    ADC.W BG2YOffset                                                     ;80A3DA;
+    STA.B DP_BG2YScroll                                                  ;80A3DD; fallthrough to UpdateBGGraphics_WhenScrolling
 
 
 ;;; $A3DF: Update BG graphics when scrolling ;;;
@@ -5553,103 +5553,103 @@ UpdateBGGraphics_WhenScrolling:
     REP #$20                                                             ;80A3DF;
     JSR.W Calculate_BGScroll_LayerPositionBlocks                         ;80A3E1;
     LDX.W #$0000                                                         ;80A3E4;
-    LDA.W $08F7                                                          ;80A3E7;
-    CMP.W $08FF                                                          ;80A3EA;
+    LDA.W Layer1XBlock                                                   ;80A3E7;
+    CMP.W PreviousLayer1XBlock                                           ;80A3EA;
     BEQ .layer1HorizontalEnd                                             ;80A3ED;
-    STA.W $08FF                                                          ;80A3EF;
+    STA.W PreviousLayer1XBlock                                           ;80A3EF;
     BMI .updateLayer1                                                    ;80A3F2;
     LDX.W #$0010                                                         ;80A3F4;
 
   .updateLayer1:
     TXA                                                                  ;80A3F7;
     CLC                                                                  ;80A3F8;
-    ADC.W $08F7                                                          ;80A3F9;
-    STA.W $0990                                                          ;80A3FC;
+    ADC.W Layer1XBlock                                                   ;80A3F9;
+    STA.W BlocksToUpdateXBlock                                           ;80A3FC;
     TXA                                                                  ;80A3FF;
     CLC                                                                  ;80A400;
-    ADC.W $0907                                                          ;80A401;
-    STA.W $0994                                                          ;80A404;
-    LDA.W $08F9                                                          ;80A407;
-    STA.W $0992                                                          ;80A40A;
-    LDA.W $0909                                                          ;80A40D;
-    STA.W $0996                                                          ;80A410;
+    ADC.W BG1XBlock                                                      ;80A401;
+    STA.W VRAMBlocksToUpdateXBlock                                       ;80A404;
+    LDA.W Layer1YBlock                                                   ;80A407;
+    STA.W BlocksToUpdateYBlock                                           ;80A40A;
+    LDA.W BG1YBlock                                                      ;80A40D;
+    STA.W VRAMBlocksToUpdateYBlock                                       ;80A410;
     JSR.W UpdateLevelDataColumn                                          ;80A413;
 
   .layer1HorizontalEnd:
-    LDA.W $091B                                                          ;80A416;
+    LDA.W Layer2ScrollX                                                  ;80A416;
     LSR A                                                                ;80A419;
     BCS .layer2HorizontalEnd                                             ;80A41A;
     LDX.W #$0000                                                         ;80A41C;
-    LDA.W $08FB                                                          ;80A41F;
-    CMP.W $0903                                                          ;80A422;
+    LDA.W Layer2XBlock                                                   ;80A41F;
+    CMP.W PreviousLayer2XBlock                                           ;80A422;
     BEQ .layer2HorizontalEnd                                             ;80A425;
-    STA.W $0903                                                          ;80A427;
+    STA.W PreviousLayer2XBlock                                           ;80A427;
     BMI .updateLayer2                                                    ;80A42A;
     LDX.W #$0010                                                         ;80A42C;
 
   .updateLayer2:
     TXA                                                                  ;80A42F;
     CLC                                                                  ;80A430;
-    ADC.W $08FB                                                          ;80A431;
-    STA.W $0990                                                          ;80A434;
+    ADC.W Layer2XBlock                                                   ;80A431;
+    STA.W BlocksToUpdateXBlock                                           ;80A434;
     TXA                                                                  ;80A437;
     CLC                                                                  ;80A438;
-    ADC.W $090B                                                          ;80A439;
-    STA.W $0994                                                          ;80A43C;
-    LDA.W $08FD                                                          ;80A43F;
-    STA.W $0992                                                          ;80A442;
-    LDA.W $090D                                                          ;80A445;
-    STA.W $0996                                                          ;80A448;
+    ADC.W BG2XBlock                                                      ;80A439;
+    STA.W VRAMBlocksToUpdateXBlock                                       ;80A43C;
+    LDA.W Layer2YBlock                                                   ;80A43F;
+    STA.W BlocksToUpdateYBlock                                           ;80A442;
+    LDA.W BG2YBlock                                                      ;80A445;
+    STA.W VRAMBlocksToUpdateYBlock                                       ;80A448;
     JSR.W UpdateBackgroundDataColumn                                     ;80A44B;
 
   .layer2HorizontalEnd:
     LDX.W #$0001                                                         ;80A44E;
-    LDA.W $08F9                                                          ;80A451;
-    CMP.W $0901                                                          ;80A454;
+    LDA.W Layer1YBlock                                                   ;80A451;
+    CMP.W PreviousLayer1YBlock                                           ;80A454;
     BEQ .layer1VerticalEnd                                               ;80A457;
-    STA.W $0901                                                          ;80A459;
+    STA.W PreviousLayer1YBlock                                           ;80A459;
     BMI +                                                                ;80A45C;
     LDX.W #$000F                                                         ;80A45E;
 
 +   TXA                                                                  ;80A461;
     CLC                                                                  ;80A462;
-    ADC.W $08F9                                                          ;80A463;
-    STA.W $0992                                                          ;80A466;
+    ADC.W Layer1YBlock                                                   ;80A463;
+    STA.W BlocksToUpdateYBlock                                           ;80A466;
     TXA                                                                  ;80A469;
     CLC                                                                  ;80A46A;
-    ADC.W $0909                                                          ;80A46B;
-    STA.W $0996                                                          ;80A46E;
-    LDA.W $08F7                                                          ;80A471;
-    STA.W $0990                                                          ;80A474;
-    LDA.W $0907                                                          ;80A477;
-    STA.W $0994                                                          ;80A47A;
+    ADC.W BG1YBlock                                                      ;80A46B;
+    STA.W VRAMBlocksToUpdateYBlock                                       ;80A46E;
+    LDA.W Layer1XBlock                                                   ;80A471;
+    STA.W BlocksToUpdateXBlock                                           ;80A474;
+    LDA.W BG1XBlock                                                      ;80A477;
+    STA.W VRAMBlocksToUpdateXBlock                                       ;80A47A;
     JSR.W UpdateLevelDataRow                                             ;80A47D;
 
   .layer1VerticalEnd:
-    LDA.W $091C                                                          ;80A480;
+    LDA.W Layer2ScrollY                                                  ;80A480;
     LSR A                                                                ;80A483;
     BCS .return                                                          ;80A484;
     LDX.W #$0001                                                         ;80A486;
-    LDA.W $08FD                                                          ;80A489;
-    CMP.W $0905                                                          ;80A48C;
+    LDA.W Layer2YBlock                                                   ;80A489;
+    CMP.W PreviousLayer2YBlock                                           ;80A48C;
     BEQ .return                                                          ;80A48F;
-    STA.W $0905                                                          ;80A491;
+    STA.W PreviousLayer2YBlock                                           ;80A491;
     BMI .finish                                                          ;80A494;
     LDX.W #$000F                                                         ;80A496;
 
   .finish:
     TXA                                                                  ;80A499;
     CLC                                                                  ;80A49A;
-    ADC.W $08FD                                                          ;80A49B;
-    STA.W $0992                                                          ;80A49E;
+    ADC.W Layer2YBlock                                                   ;80A49B;
+    STA.W BlocksToUpdateYBlock                                           ;80A49E;
     TXA                                                                  ;80A4A1;
     CLC                                                                  ;80A4A2;
-    ADC.W $090D                                                          ;80A4A3;
-    STA.W $0996                                                          ;80A4A6;
-    LDA.W $08FB                                                          ;80A4A9;
-    STA.W $0990                                                          ;80A4AC;
-    LDA.W $090B                                                          ;80A4AF;
-    STA.W $0994                                                          ;80A4B2;
+    ADC.W BG2YBlock                                                      ;80A4A3;
+    STA.W VRAMBlocksToUpdateYBlock                                       ;80A4A6;
+    LDA.W Layer2XBlock                                                   ;80A4A9;
+    STA.W BlocksToUpdateXBlock                                           ;80A4AC;
+    LDA.W BG2XBlock                                                      ;80A4AF;
+    STA.W VRAMBlocksToUpdateXBlock                                       ;80A4B2;
     JSR.W UpdateBackgroundDataRow                                        ;80A4B5;
 
   .return:
@@ -5670,19 +5670,19 @@ Calculate_BGScroll_LayerPositionBlocks:
 ;     $ADC8: Door transition scrolling setup - up
 ;     $AF02: Door transition scrolling - down
 ;     $AF89: Door transition scrolling - up
-    LDA.B $B1                                                            ;80A4BB;
+    LDA.B DP_BG1XScroll                                                  ;80A4BB;
     LSR A                                                                ;80A4BD;
     LSR A                                                                ;80A4BE;
     LSR A                                                                ;80A4BF;
     LSR A                                                                ;80A4C0;
-    STA.W $0907                                                          ;80A4C1;
-    LDA.B $B5                                                            ;80A4C4;
+    STA.W BG1XBlock                                                      ;80A4C1;
+    LDA.B DP_BG2XScroll                                                  ;80A4C4;
     LSR A                                                                ;80A4C6;
     LSR A                                                                ;80A4C7;
     LSR A                                                                ;80A4C8;
     LSR A                                                                ;80A4C9;
-    STA.W $090B                                                          ;80A4CA;
-    LDA.W $0911                                                          ;80A4CD;
+    STA.W BG2XBlock                                                      ;80A4CA;
+    LDA.W Layer1XPosition                                                ;80A4CD;
     LSR A                                                                ;80A4D0;
     LSR A                                                                ;80A4D1;
     LSR A                                                                ;80A4D2;
@@ -5691,8 +5691,8 @@ Calculate_BGScroll_LayerPositionBlocks:
     BEQ +                                                                ;80A4D7;
     ORA.W #$F000                                                         ;80A4D9;
 
-+   STA.W $08F7                                                          ;80A4DC;
-    LDA.W $0917                                                          ;80A4DF;
++   STA.W Layer1XBlock                                                   ;80A4DC;
+    LDA.W Layer2XPosition                                                ;80A4DF;
     LSR A                                                                ;80A4E2;
     LSR A                                                                ;80A4E3;
     LSR A                                                                ;80A4E4;
@@ -5701,20 +5701,20 @@ Calculate_BGScroll_LayerPositionBlocks:
     BEQ +                                                                ;80A4E9;
     ORA.W #$F000                                                         ;80A4EB;
 
-+   STA.W $08FB                                                          ;80A4EE;
-    LDA.B $B3                                                            ;80A4F1;
++   STA.W Layer2XBlock                                                   ;80A4EE;
+    LDA.B DP_BG1YScroll                                                  ;80A4F1;
     LSR A                                                                ;80A4F3;
     LSR A                                                                ;80A4F4;
     LSR A                                                                ;80A4F5;
     LSR A                                                                ;80A4F6;
-    STA.W $0909                                                          ;80A4F7;
-    LDA.B $B7                                                            ;80A4FA;
+    STA.W BG1YBlock                                                      ;80A4F7;
+    LDA.B DP_BG2YScroll                                                  ;80A4FA;
     LSR A                                                                ;80A4FC;
     LSR A                                                                ;80A4FD;
     LSR A                                                                ;80A4FE;
     LSR A                                                                ;80A4FF;
-    STA.W $090D                                                          ;80A500;
-    LDA.W $0915                                                          ;80A503;
+    STA.W BG2YBlock                                                      ;80A500;
+    LDA.W Layer1YPosition                                                ;80A503;
     LSR A                                                                ;80A506;
     LSR A                                                                ;80A507;
     LSR A                                                                ;80A508;
@@ -5723,8 +5723,8 @@ Calculate_BGScroll_LayerPositionBlocks:
     BEQ +                                                                ;80A50D;
     ORA.W #$F000                                                         ;80A50F;
 
-+   STA.W $08F9                                                          ;80A512;
-    LDA.W $0919                                                          ;80A515;
++   STA.W Layer1YBlock                                                   ;80A512;
+    LDA.W Layer2YPosition                                                ;80A515;
     LSR A                                                                ;80A518;
     LSR A                                                                ;80A519;
     LSR A                                                                ;80A51A;
@@ -5733,7 +5733,7 @@ Calculate_BGScroll_LayerPositionBlocks:
     BEQ +                                                                ;80A51F;
     ORA.W #$F000                                                         ;80A521;
 
-+   STA.W $08FD                                                          ;80A524;
++   STA.W Layer2YBlock                                                   ;80A524;
     RTS                                                                  ;80A527;
 
 
@@ -5750,25 +5750,25 @@ HandleScrollZones_HorizontalAutoscrolling:
 ;
 ; If layer 1 position + 1/2 scroll down's scroll = red:
 ; {
-;     $0933 = position of right scroll boundary
-;     $0939 = [layer 1 X position] + [camera X speed] + 2
-;     Layer 1 X position = min([$0939], [$0933])
-;     If [$0939] < [$0933] and layer 1 position + 1/2 scroll down + 1 scroll right's scroll = red:
+;     PositionOfScrollBoundary = position of right scroll boundary
+;     ProposedScrolledLayer1XPosition = [layer 1 X position] + [camera X speed] + 2
+;     Layer 1 X position = min(ProposedScrolledLayer1XPosition, PositionOfScrollBoundary)
+;     If ProposedScrolledLayer1XPosition < PositionOfScrollBoundary and layer 1 position + 1/2 scroll down + 1 scroll right's scroll = red:
 ;         Round layer 1 X position to left scroll boundary
 ; }
 ; Else if layer 1 position + 1/2 scroll down + 1 scroll right's scroll = red:
 ; {
-;     $0933 = position of left scroll boundary
-;     $0939 = [layer 1 X position] - [camera X speed] - 2
-;     Layer 1 X position = max([$0939], [$0933])
-;     If [$0939] >= [$0933] and layer 1 position + 1/2 scroll down's scroll = red:
-;         Layer 1 X position = [$0939] rounded to right scroll boundary
+;     PositionOfScrollBoundary = position of left scroll boundary
+;     ProposedScrolledLayer1XPosition = [layer 1 X position] - [camera X speed] - 2
+;     Layer 1 X position = max(ProposedScrolledLayer1XPosition, PositionOfScrollBoundary)
+;     If ProposedScrolledLayer1XPosition >= PositionOfScrollBoundary and layer 1 position + 1/2 scroll down's scroll = red:
+;         Layer 1 X position = ProposedScrolledLayer1XPosition rounded to right scroll boundary
 ; }
     PHP                                                                  ;80A528;
     PHB                                                                  ;80A529;
     SEP #$20                                                             ;80A52A;
-    LDA.W TimeIsFrozenFlag                                                          ;80A52C;
-    ORA.W $0A79                                                          ;80A52F;
+    LDA.W TimeIsFrozenFlag                                               ;80A52C;
+    ORA.W TimeIsFrozenFlag+1                                             ;80A52F;
     BEQ +                                                                ;80A532;
     JMP.W .return                                                        ;80A534;
 
@@ -5777,123 +5777,123 @@ HandleScrollZones_HorizontalAutoscrolling:
     PHA                                                                  ;80A539;
     PLB                                                                  ;80A53A;
     REP #$30                                                             ;80A53B;
-    LDA.W $0911                                                          ;80A53D;
-    STA.W $0939                                                          ;80A540;
+    LDA.W Layer1XPosition                                                ;80A53D;
+    STA.W ProposedScrolledLayer1XPosition                                ;80A540;
     BPL +                                                                ;80A543;
-    STZ.W $0911                                                          ;80A545;
+    STZ.W Layer1XPosition                                                ;80A545;
 
-+   LDA.W $07A9                                                          ;80A548;
++   LDA.W RoomWidthScrolls                                               ;80A548;
     DEC A                                                                ;80A54B;
     XBA                                                                  ;80A54C;
-    CMP.W $0911                                                          ;80A54D;
+    CMP.W Layer1XPosition                                                ;80A54D;
     BCS +                                                                ;80A550;
-    STA.W $0911                                                          ;80A552;
+    STA.W Layer1XPosition                                                ;80A552;
 
-+   LDA.W $0915                                                          ;80A555;
++   LDA.W Layer1YPosition                                                ;80A555;
     CLC                                                                  ;80A558;
     ADC.W #$0080                                                         ;80A559;
     XBA                                                                  ;80A55C;
     SEP #$20                                                             ;80A55D;
     STA.W $4202                                                          ;80A55F;
-    LDA.W $07A9                                                          ;80A562;
+    LDA.W RoomWidthScrolls                                               ;80A562;
     STA.W $4203                                                          ;80A565;
     REP #$20                                                             ;80A568;
-    LDA.W $0912                                                          ;80A56A;
+    LDA.W Layer1XPosition+1                                              ;80A56A;
     AND.W #$00FF                                                         ;80A56D;
     CLC                                                                  ;80A570;
     ADC.W $4216                                                          ;80A571;
     TAX                                                                  ;80A574;
-    LDA.L $7ECD20,X                                                      ;80A575;
+    LDA.L Scrolls,X                                                      ;80A575;
     AND.W #$00FF                                                         ;80A579;
     BNE .unboundedFromLeft                                               ;80A57C;
-    LDA.W $0911                                                          ;80A57E;
+    LDA.W Layer1XPosition                                                ;80A57E;
     AND.W #$FF00                                                         ;80A581;
     CLC                                                                  ;80A584;
     ADC.W #$0100                                                         ;80A585;
-    STA.W $0933                                                          ;80A588;
-    LDA.W $0939                                                          ;80A58B;
+    STA.W PositionOfScrollBoundary                                       ;80A588;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A58B;
     CLC                                                                  ;80A58E;
-    ADC.W $0DA2                                                          ;80A58F;
+    ADC.W CameraXSpeed                                                   ;80A58F;
     ADC.W #$0002                                                         ;80A592;
-    CMP.W $0933                                                          ;80A595;
+    CMP.W PositionOfScrollBoundary                                       ;80A595;
     BCS .reachedRightScrollBoundary                                      ;80A598;
-    STA.W $0939                                                          ;80A59A;
-    LDA.W $0915                                                          ;80A59D;
+    STA.W ProposedScrolledLayer1XPosition                                ;80A59A;
+    LDA.W Layer1YPosition                                                ;80A59D;
     CLC                                                                  ;80A5A0;
     ADC.W #$0080                                                         ;80A5A1;
     XBA                                                                  ;80A5A4;
     SEP #$20                                                             ;80A5A5;
     STA.W $4202                                                          ;80A5A7;
-    LDA.W $07A9                                                          ;80A5AA;
+    LDA.W RoomWidthScrolls                                               ;80A5AA;
     STA.W $4203                                                          ;80A5AD;
     REP #$20                                                             ;80A5B0;
-    LDA.W $093A                                                          ;80A5B2;
+    LDA.W BackgroundDataLoopCounter+1                                    ;80A5B2;
     INC A                                                                ;80A5B5;
     AND.W #$00FF                                                         ;80A5B6;
     CLC                                                                  ;80A5B9;
     ADC.W $4216                                                          ;80A5BA;
     TAX                                                                  ;80A5BD;
-    LDA.L $7ECD20,X                                                      ;80A5BE;
+    LDA.L Scrolls,X                                                      ;80A5BE;
     AND.W #$00FF                                                         ;80A5C2;
     BNE .returnLayer1X                                                   ;80A5C5;
-    LDA.W $0939                                                          ;80A5C7;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A5C7;
     AND.W #$FF00                                                         ;80A5CA;
     BRA +                                                                ;80A5CD;
 
   .returnLayer1X:
-    LDA.W $0939                                                          ;80A5CF;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A5CF;
     BRA +                                                                ;80A5D2;
 
   .reachedRightScrollBoundary:
-    LDA.W $0933                                                          ;80A5D4;
+    LDA.W PositionOfScrollBoundary                                       ;80A5D4;
     BRA +                                                                ;80A5D7;
 
   .unboundedFromLeft:
     INX                                                                  ;80A5D9;
-    LDA.L $7ECD20,X                                                      ;80A5DA;
+    LDA.L Scrolls,X                                                      ;80A5DA;
     AND.W #$00FF                                                         ;80A5DE;
     BNE .return                                                          ;80A5E1;
-    LDA.W $0911                                                          ;80A5E3;
+    LDA.W Layer1XPosition                                                ;80A5E3;
     AND.W #$FF00                                                         ;80A5E6;
-    STA.W $0933                                                          ;80A5E9;
-    LDA.W $0939                                                          ;80A5EC;
+    STA.W PositionOfScrollBoundary                                       ;80A5E9;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A5EC;
     SEC                                                                  ;80A5EF;
-    SBC.W $0DA2                                                          ;80A5F0;
+    SBC.W CameraXSpeed                                                   ;80A5F0;
     SBC.W #$0002                                                         ;80A5F3;
-    CMP.W $0933                                                          ;80A5F6;
+    CMP.W PositionOfScrollBoundary                                       ;80A5F6;
     BMI .reachedLeftScrollBoundary                                       ;80A5F9;
-    STA.W $0939                                                          ;80A5FB;
-    LDA.W $0915                                                          ;80A5FE;
+    STA.W ProposedScrolledLayer1XPosition                                ;80A5FB;
+    LDA.W Layer1YPosition                                                ;80A5FE;
     CLC                                                                  ;80A601;
     ADC.W #$0080                                                         ;80A602;
     XBA                                                                  ;80A605;
     SEP #$20                                                             ;80A606;
     STA.W $4202                                                          ;80A608;
-    LDA.W $07A9                                                          ;80A60B;
+    LDA.W RoomWidthScrolls                                               ;80A60B;
     STA.W $4203                                                          ;80A60E;
     REP #$20                                                             ;80A611;
-    LDA.W $093A                                                          ;80A613;
+    LDA.W BackgroundDataLoopCounter+1                                    ;80A613;
     AND.W #$00FF                                                         ;80A616;
     CLC                                                                  ;80A619;
     ADC.W $4216                                                          ;80A61A;
     TAX                                                                  ;80A61D;
-    LDA.L $7ECD20,X                                                      ;80A61E;
+    LDA.L Scrolls,X                                                      ;80A61E;
     AND.W #$00FF                                                         ;80A622;
     BNE .return0939                                                      ;80A625;
-    LDA.W $0939                                                          ;80A627;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A627;
     AND.W #$FF00                                                         ;80A62A;
     CLC                                                                  ;80A62D;
     ADC.W #$0100                                                         ;80A62E;
     BRA +                                                                ;80A631;
 
   .return0939:
-    LDA.W $0939                                                          ;80A633;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A633;
     BRA +                                                                ;80A636;
 
   .reachedLeftScrollBoundary:
-    LDA.W $0933                                                          ;80A638;
+    LDA.W PositionOfScrollBoundary                                       ;80A638;
 
-+   STA.W $0911                                                          ;80A63B;
++   STA.W Layer1XPosition                                                ;80A63B;
 
   .return:
     PLB                                                                  ;80A63E;
@@ -5912,52 +5912,52 @@ HandleScrollZones_ScrollingRight:
     PHA                                                                  ;80A647;
     PLB                                                                  ;80A648;
     REP #$30                                                             ;80A649;
-    LDA.W $0911                                                          ;80A64B;
-    STA.W $0939                                                          ;80A64E;
+    LDA.W Layer1XPosition                                                ;80A64B;
+    STA.W ProposedScrolledLayer1XPosition                                ;80A64E;
     LDA.W $0B0A                                                          ;80A651;
-    CMP.W $0911                                                          ;80A654;
+    CMP.W Layer1XPosition                                                ;80A654;
     BPL +                                                                ;80A657;
     LDA.W $0B0A                                                          ;80A659;
-    STA.W $0911                                                          ;80A65C;
+    STA.W Layer1XPosition                                                ;80A65C;
     STZ.W $090F                                                          ;80A65F;
 
-+   LDA.W $07A9                                                          ;80A662;
++   LDA.W RoomWidthScrolls                                               ;80A662;
     DEC A                                                                ;80A665;
     XBA                                                                  ;80A666;
-    CMP.W $0911                                                          ;80A667;
+    CMP.W Layer1XPosition                                                ;80A667;
     BCS +                                                                ;80A66A;
-    STA.W $0911                                                          ;80A66C;
+    STA.W Layer1XPosition                                                ;80A66C;
     BRA .return                                                          ;80A66F;
 
-+   LDA.W $0915                                                          ;80A671;
++   LDA.W Layer1YPosition                                                ;80A671;
     CLC                                                                  ;80A674;
     ADC.W #$0080                                                         ;80A675;
     XBA                                                                  ;80A678;
     SEP #$20                                                             ;80A679;
     STA.W $4202                                                          ;80A67B;
-    LDA.W $07A9                                                          ;80A67E;
+    LDA.W RoomWidthScrolls                                               ;80A67E;
     STA.W $4203                                                          ;80A681;
     REP #$20                                                             ;80A684;
-    LDA.W $0912                                                          ;80A686;
+    LDA.W Layer1XPosition+1                                              ;80A686;
     AND.W #$00FF                                                         ;80A689;
     SEC                                                                  ;80A68C;
     ADC.W $4216                                                          ;80A68D;
     TAX                                                                  ;80A690;
-    LDA.L $7ECD20,X                                                      ;80A691;
+    LDA.L Scrolls,X                                                      ;80A691;
     AND.W #$00FF                                                         ;80A695;
     BNE .return                                                          ;80A698;
-    LDA.W $0911                                                          ;80A69A;
+    LDA.W Layer1XPosition                                                ;80A69A;
     AND.W #$FF00                                                         ;80A69D;
-    STA.W $0933                                                          ;80A6A0;
-    LDA.W $0939                                                          ;80A6A3;
+    STA.W PositionOfScrollBoundary                                       ;80A6A0;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A6A3;
     SEC                                                                  ;80A6A6;
-    SBC.W $0DA2                                                          ;80A6A7;
+    SBC.W CameraXSpeed                                                   ;80A6A7;
     SBC.W #$0002                                                         ;80A6AA;
-    CMP.W $0933                                                          ;80A6AD;
+    CMP.W PositionOfScrollBoundary                                       ;80A6AD;
     BPL +                                                                ;80A6B0;
-    LDA.W $0933                                                          ;80A6B2;
+    LDA.W PositionOfScrollBoundary                                       ;80A6B2;
 
-+   STA.W $0911                                                          ;80A6B5;
++   STA.W Layer1XPosition                                                ;80A6B5;
 
   .return:
     PLB                                                                  ;80A6B8;
@@ -5976,50 +5976,50 @@ HandleScrollZones_ScrollingLeft:
     PHA                                                                  ;80A6C1;
     PLB                                                                  ;80A6C2;
     REP #$30                                                             ;80A6C3;
-    LDA.W $0911                                                          ;80A6C5;
-    STA.W $0939                                                          ;80A6C8;
+    LDA.W Layer1XPosition                                                ;80A6C5;
+    STA.W ProposedScrolledLayer1XPosition                                ;80A6C8;
     CMP.W $0B0A                                                          ;80A6CB;
     BPL +                                                                ;80A6CE;
     LDA.W $0B0A                                                          ;80A6D0;
-    STA.W $0911                                                          ;80A6D3;
+    STA.W Layer1XPosition                                                ;80A6D3;
     STZ.W $090F                                                          ;80A6D6;
 
-+   LDA.W $0911                                                          ;80A6D9;
++   LDA.W Layer1XPosition                                                ;80A6D9;
     BPL +                                                                ;80A6DC;
-    STZ.W $0911                                                          ;80A6DE;
+    STZ.W Layer1XPosition                                                ;80A6DE;
     BRA .return                                                          ;80A6E1;
 
-+   LDA.W $0915                                                          ;80A6E3;
++   LDA.W Layer1YPosition                                                ;80A6E3;
     CLC                                                                  ;80A6E6;
     ADC.W #$0080                                                         ;80A6E7;
     XBA                                                                  ;80A6EA;
     SEP #$20                                                             ;80A6EB;
     STA.W $4202                                                          ;80A6ED;
-    LDA.W $07A9                                                          ;80A6F0;
+    LDA.W RoomWidthScrolls                                               ;80A6F0;
     STA.W $4203                                                          ;80A6F3;
     REP #$20                                                             ;80A6F6;
-    LDA.W $0912                                                          ;80A6F8;
+    LDA.W Layer1XPosition+1                                              ;80A6F8;
     AND.W #$00FF                                                         ;80A6FB;
     CLC                                                                  ;80A6FE;
     ADC.W $4216                                                          ;80A6FF;
     TAX                                                                  ;80A702;
-    LDA.L $7ECD20,X                                                      ;80A703;
+    LDA.L Scrolls,X                                                      ;80A703;
     AND.W #$00FF                                                         ;80A707;
     BNE .return                                                          ;80A70A;
-    LDA.W $0911                                                          ;80A70C;
+    LDA.W Layer1XPosition                                                ;80A70C;
     AND.W #$FF00                                                         ;80A70F;
     CLC                                                                  ;80A712;
     ADC.W #$0100                                                         ;80A713;
-    STA.W $0933                                                          ;80A716;
-    LDA.W $0939                                                          ;80A719;
+    STA.W PositionOfScrollBoundary                                       ;80A716;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A719;
     CLC                                                                  ;80A71C;
-    ADC.W $0DA2                                                          ;80A71D;
+    ADC.W CameraXSpeed                                                   ;80A71D;
     ADC.W #$0002                                                         ;80A720;
-    CMP.W $0933                                                          ;80A723;
+    CMP.W PositionOfScrollBoundary                                       ;80A723;
     BCC +                                                                ;80A726;
-    LDA.W $0933                                                          ;80A728;
+    LDA.W PositionOfScrollBoundary                                       ;80A728;
 
-+   STA.W $0911                                                          ;80A72B;
++   STA.W Layer1XPosition                                                ;80A72B;
 
   .return:
     PLB                                                                  ;80A72E;
@@ -6037,36 +6037,36 @@ HandleScrollZones_VerticalAutoscrolling:
 ;     Return
 ;
 ; If layer 1 position + 1/2 scroll right's scroll = blue:
-;     $0933 = 0
+;     PositionOfScrollBoundary = 0
 ; Else
-;     $0933 = 1Fh
+;     PositionOfScrollBoundary = 1Fh
 ;
-; Layer 1 Y position = clamp([layer 1 Y position], 0, (room height in pixels) - 100h + [$0933])
+; Layer 1 Y position = clamp([layer 1 Y position], 0, (room height in pixels) - 100h + PositionOfScrollBoundary)
 ;
 ; If layer 1 position + 1/2 scroll right's scroll = red:
 ; {
-;     $0935 = position of bottom scroll boundary
-;     $0939 = [layer 1 Y position] + [camera Y speed] + 2
-;     Layer 1 X position = min([$0939], [$0935])
-;     If [$0939] < [$0935] and layer 1 position + 1/2 scroll right + 1 scroll down's scroll = red:
+;     XBlockOfVRAMBlocksToUpdate = position of bottom scroll boundary
+;     ProposedScrolledLayer1XPosition = [layer 1 Y position] + [camera Y speed] + 2
+;     Layer 1 X position = min(ProposedScrolledLayer1XPosition, XBlockOfVRAMBlocksToUpdate)
+;     If ProposedScrolledLayer1XPosition < XBlockOfVRAMBlocksToUpdate and layer 1 position + 1/2 scroll right + 1 scroll down's scroll = red:
 ;         Round layer 1 Y position to top scroll boundary
 ; }
 ; Else if layer 1 position + 1/2 scroll right + 1 scroll down's scroll = red:
 ; {
-;     $0937 = position of top scroll boundary + [$0933]
+;     $0937 = position of top scroll boundary + PositionOfScrollBoundary
 ;     If [$0937] < [layer 1 Y position]:
 ;     {
-;         $0939 = [layer 1 Y position] - [camera Y speed] - 2
-;         Layer 1 Y position = max([$0939], [$0937])
-;         If [$0939] >= [$0937] and layer 1 position + 1/2 scroll right's scroll = red:
-;             Layer 1 Y position = [$0939] rounded to right bottom boundary
+;         ProposedScrolledLayer1XPosition = [layer 1 Y position] - [camera Y speed] - 2
+;         Layer 1 Y position = max(ProposedScrolledLayer1XPosition, [$0937])
+;         If ProposedScrolledLayer1XPosition >= [$0937] and layer 1 position + 1/2 scroll right's scroll = red:
+;             Layer 1 Y position = ProposedScrolledLayer1XPosition rounded to right bottom boundary
 ;     }
 ; }
     PHP                                                                  ;80A731;
     PHB                                                                  ;80A732;
     SEP #$20                                                             ;80A733;
-    LDA.W TimeIsFrozenFlag                                                          ;80A735;
-    ORA.W $0A79                                                          ;80A738;
+    LDA.W TimeIsFrozenFlag                                               ;80A735;
+    ORA.W TimeIsFrozenFlag+1                                             ;80A738;
     BEQ +                                                                ;80A73B;
     JMP.W .return                                                        ;80A73D;
 
@@ -6076,12 +6076,12 @@ HandleScrollZones_VerticalAutoscrolling:
     REP #$30                                                             ;80A744;
     LDY.W #$0000                                                         ;80A746;
     SEP #$20                                                             ;80A749;
-    LDA.W $0916                                                          ;80A74B;
+    LDA.W Layer1YPosition+1                                              ;80A74B;
     STA.W $4202                                                          ;80A74E;
-    LDA.W $07A9                                                          ;80A751;
+    LDA.W RoomWidthScrolls                                               ;80A751;
     STA.W $4203                                                          ;80A754;
     REP #$20                                                             ;80A757;
-    LDA.W $0911                                                          ;80A759;
+    LDA.W Layer1XPosition                                                ;80A759;
     CLC                                                                  ;80A75C;
     ADC.W #$0080                                                         ;80A75D;
     XBA                                                                  ;80A760;
@@ -6090,34 +6090,34 @@ HandleScrollZones_VerticalAutoscrolling:
     ADC.W $4216                                                          ;80A765;
     STA.B $14                                                            ;80A768;
     TAX                                                                  ;80A76A;
-    LDA.L $7ECD20,X                                                      ;80A76B;
+    LDA.L Scrolls,X                                                      ;80A76B;
     AND.W #$00FF                                                         ;80A76F;
     CMP.W #$0001                                                         ;80A772;
     BEQ +                                                                ;80A775;
     LDY.W #$001F                                                         ;80A777;
 
-+   STY.W $0933                                                          ;80A77A;
-    LDA.W $0915                                                          ;80A77D;
-    STA.W $0939                                                          ;80A780;
++   STY.W PositionOfScrollBoundary                                       ;80A77A;
+    LDA.W Layer1YPosition                                                ;80A77D;
+    STA.W ProposedScrolledLayer1XPosition                                ;80A780;
     BPL +                                                                ;80A783;
-    STZ.W $0915                                                          ;80A785;
+    STZ.W Layer1YPosition                                                ;80A785;
 
-+   LDA.W $07AB                                                          ;80A788;
++   LDA.W RoomHeightScrolls                                              ;80A788;
     DEC A                                                                ;80A78B;
     XBA                                                                  ;80A78C;
     CLC                                                                  ;80A78D;
-    ADC.W $0933                                                          ;80A78E;
-    CMP.W $0915                                                          ;80A791;
+    ADC.W PositionOfScrollBoundary                                       ;80A78E;
+    CMP.W Layer1YPosition                                                ;80A791;
     BCS +                                                                ;80A794;
-    STA.W $0915                                                          ;80A796;
+    STA.W Layer1YPosition                                                ;80A796;
 
 +   SEP #$20                                                             ;80A799;
-    LDA.W $0916                                                          ;80A79B;
+    LDA.W Layer1YPosition+1                                              ;80A79B;
     STA.W $4202                                                          ;80A79E;
-    LDA.W $07A9                                                          ;80A7A1;
+    LDA.W RoomWidthScrolls                                               ;80A7A1;
     STA.W $4203                                                          ;80A7A4;
     REP #$20                                                             ;80A7A7;
-    LDA.W $0911                                                          ;80A7A9;
+    LDA.W Layer1XPosition                                                ;80A7A9;
     CLC                                                                  ;80A7AC;
     ADC.W #$0080                                                         ;80A7AD;
     XBA                                                                  ;80A7B0;
@@ -6125,29 +6125,29 @@ HandleScrollZones_VerticalAutoscrolling:
     CLC                                                                  ;80A7B4;
     ADC.W $4216                                                          ;80A7B5;
     TAX                                                                  ;80A7B8;
-    LDA.L $7ECD20,X                                                      ;80A7B9;
+    LDA.L Scrolls,X                                                      ;80A7B9;
     AND.W #$00FF                                                         ;80A7BD;
     BNE .unboundedFromAbove                                              ;80A7C0;
-    LDA.W $0915                                                          ;80A7C2;
+    LDA.W Layer1YPosition                                                ;80A7C2;
     AND.W #$FF00                                                         ;80A7C5;
     CLC                                                                  ;80A7C8;
     ADC.W #$0100                                                         ;80A7C9;
-    STA.W $0935                                                          ;80A7CC;
-    LDA.W $0939                                                          ;80A7CF;
+    STA.W XBlockOfVRAMBlocksToUpdate                                     ;80A7CC;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A7CF;
     CLC                                                                  ;80A7D2;
-    ADC.W $0DA6                                                          ;80A7D3;
+    ADC.W CameraYSpeed                                                   ;80A7D3;
     ADC.W #$0002                                                         ;80A7D6;
-    CMP.W $0935                                                          ;80A7D9;
+    CMP.W XBlockOfVRAMBlocksToUpdate                                     ;80A7D9;
     BCS .reachedBottomScrollBoundary                                     ;80A7DC;
-    STA.W $0939                                                          ;80A7DE;
+    STA.W ProposedScrolledLayer1XPosition                                ;80A7DE;
     SEP #$20                                                             ;80A7E1;
-    LDA.W $093A                                                          ;80A7E3;
+    LDA.W BackgroundDataLoopCounter+1                                    ;80A7E3;
     INC A                                                                ;80A7E6;
     STA.W $4202                                                          ;80A7E7;
-    LDA.W $07A9                                                          ;80A7EA;
+    LDA.W RoomWidthScrolls                                               ;80A7EA;
     STA.W $4203                                                          ;80A7ED;
     REP #$20                                                             ;80A7F0;
-    LDA.W $0911                                                          ;80A7F2;
+    LDA.W Layer1XPosition                                                ;80A7F2;
     CLC                                                                  ;80A7F5;
     ADC.W #$0080                                                         ;80A7F6;
     XBA                                                                  ;80A7F9;
@@ -6155,49 +6155,49 @@ HandleScrollZones_VerticalAutoscrolling:
     CLC                                                                  ;80A7FD;
     ADC.W $4216                                                          ;80A7FE;
     TAX                                                                  ;80A801;
-    LDA.L $7ECD20,X                                                      ;80A802;
+    LDA.L Scrolls,X                                                      ;80A802;
     AND.W #$00FF                                                         ;80A806;
     BNE +                                                                ;80A809;
-    LDA.W $0939                                                          ;80A80B;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A80B;
     AND.W #$FF00                                                         ;80A80E;
     BRA .returnLayer1Y                                                   ;80A811;
 
-+   LDA.W $0939                                                          ;80A813;
++   LDA.W ProposedScrolledLayer1XPosition                                ;80A813;
     BRA .returnLayer1Y                                                   ;80A816;
 
   .reachedBottomScrollBoundary:
-    LDA.W $0935                                                          ;80A818;
+    LDA.W XBlockOfVRAMBlocksToUpdate                                     ;80A818;
     BRA .returnLayer1Y                                                   ;80A81B;
 
   .unboundedFromAbove:
     TXA                                                                  ;80A81D;
     CLC                                                                  ;80A81E;
-    ADC.W $07A9                                                          ;80A81F;
+    ADC.W RoomWidthScrolls                                               ;80A81F;
     TAX                                                                  ;80A822;
-    LDA.L $7ECD20,X                                                      ;80A823;
+    LDA.L Scrolls,X                                                      ;80A823;
     AND.W #$00FF                                                         ;80A827;
     BNE .return                                                          ;80A82A;
-    LDA.W $0915                                                          ;80A82C;
+    LDA.W Layer1YPosition                                                ;80A82C;
     AND.W #$FF00                                                         ;80A82F;
     CLC                                                                  ;80A832;
-    ADC.W $0933                                                          ;80A833;
-    STA.W $0937                                                          ;80A836;
-    CMP.W $0915                                                          ;80A839;
+    ADC.W PositionOfScrollBoundary                                       ;80A833;
+    STA.W UpperScrollPosition                                            ;80A836;
+    CMP.W Layer1YPosition                                                ;80A839;
     BCS .return                                                          ;80A83C;
-    LDA.W $0939                                                          ;80A83E;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A83E;
     SEC                                                                  ;80A841;
-    SBC.W $0DA6                                                          ;80A842;
+    SBC.W CameraYSpeed                                                   ;80A842;
     SBC.W #$0002                                                         ;80A845;
-    CMP.W $0937                                                          ;80A848;
+    CMP.W UpperScrollPosition                                            ;80A848;
     BMI .reachedTopScrollBoundary                                        ;80A84B;
-    STA.W $0939                                                          ;80A84D;
+    STA.W ProposedScrolledLayer1XPosition                                ;80A84D;
     SEP #$20                                                             ;80A850;
-    LDA.W $093A                                                          ;80A852;
+    LDA.W BackgroundDataLoopCounter+1                                    ;80A852;
     STA.W $4202                                                          ;80A855;
-    LDA.W $07A9                                                          ;80A858;
+    LDA.W RoomWidthScrolls                                               ;80A858;
     STA.W $4203                                                          ;80A85B;
     REP #$20                                                             ;80A85E;
-    LDA.W $0911                                                          ;80A860;
+    LDA.W Layer1XPosition                                                ;80A860;
     CLC                                                                  ;80A863;
     ADC.W #$0080                                                         ;80A864;
     XBA                                                                  ;80A867;
@@ -6205,24 +6205,24 @@ HandleScrollZones_VerticalAutoscrolling:
     CLC                                                                  ;80A86B;
     ADC.W $4216                                                          ;80A86C;
     TAX                                                                  ;80A86F;
-    LDA.L $7ECD20,X                                                      ;80A870;
+    LDA.L Scrolls,X                                                      ;80A870;
     AND.W #$00FF                                                         ;80A874;
     BNE .returnProposedLayer1X                                           ;80A877;
-    LDA.W $0939                                                          ;80A879;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A879;
     AND.W #$FF00                                                         ;80A87C;
     CLC                                                                  ;80A87F;
     ADC.W #$0100                                                         ;80A880;
     BRA .returnLayer1Y                                                   ;80A883;
 
   .returnProposedLayer1X:
-    LDA.W $0939                                                          ;80A885;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A885;
     BRA .returnLayer1Y                                                   ;80A888;
 
   .reachedTopScrollBoundary:
-    LDA.W $0937                                                          ;80A88A;
+    LDA.W UpperScrollPosition                                            ;80A88A;
 
   .returnLayer1Y:
-    STA.W $0915                                                          ;80A88D;
+    STA.W Layer1YPosition                                                ;80A88D;
 
   .return:
     PLB                                                                  ;80A890;
@@ -6241,71 +6241,71 @@ HandleScrollZones_ScrollingDown:
     PHA                                                                  ;80A899;
     PLB                                                                  ;80A89A;
     REP #$30                                                             ;80A89B;
-    LDA.W $0915                                                          ;80A89D;
-    STA.W $0939                                                          ;80A8A0;
+    LDA.W Layer1YPosition                                                ;80A89D;
+    STA.W ProposedScrolledLayer1XPosition                                ;80A8A0;
     LDY.W #$0000                                                         ;80A8A3;
     SEP #$20                                                             ;80A8A6;
-    LDA.W $0916                                                          ;80A8A8;
+    LDA.W Layer1YPosition+1                                              ;80A8A8;
     STA.W $4202                                                          ;80A8AB;
-    LDA.W $07A9                                                          ;80A8AE;
+    LDA.W RoomWidthScrolls                                               ;80A8AE;
     STA.W $4203                                                          ;80A8B1;
     REP #$20                                                             ;80A8B4;
-    LDA.W $0911                                                          ;80A8B6;
+    LDA.W Layer1XPosition                                                ;80A8B6;
     CLC                                                                  ;80A8B9;
     ADC.W #$0080                                                         ;80A8BA;
     XBA                                                                  ;80A8BD;
     AND.W #$00FF                                                         ;80A8BE;
     CLC                                                                  ;80A8C1;
     ADC.W $4216                                                          ;80A8C2;
-    STA.B $14                                                            ;80A8C5;
+    STA.B DP_Temp14                                                      ;80A8C5;
     TAX                                                                  ;80A8C7;
-    LDA.L $7ECD20,X                                                      ;80A8C8;
+    LDA.L Scrolls,X                                                      ;80A8C8;
     AND.W #$00FF                                                         ;80A8CC;
     CMP.W #$0001                                                         ;80A8CF;
     BEQ +                                                                ;80A8D2;
     LDY.W #$001F                                                         ;80A8D4;
 
-+   STY.W $0933                                                          ;80A8D7;
-    LDA.W $0B0E                                                          ;80A8DA;
-    CMP.W $0915                                                          ;80A8DD;
++   STY.W PositionOfScrollBoundary                                       ;80A8D7;
+    LDA.W IdealLayer1YPosition                                           ;80A8DA;
+    CMP.W Layer1YPosition                                                ;80A8DD;
     BPL +                                                                ;80A8E0;
-    LDA.W $0B0E                                                          ;80A8E2;
-    STA.W $0915                                                          ;80A8E5;
-    STZ.W $0913                                                          ;80A8E8;
+    LDA.W IdealLayer1YPosition                                           ;80A8E2;
+    STA.W Layer1YPosition                                                ;80A8E5;
+    STZ.W Layer1YSubPosition                                             ;80A8E8;
 
-+   LDA.W $07AB                                                          ;80A8EB;
++   LDA.W RoomHeightScrolls                                              ;80A8EB;
     DEC A                                                                ;80A8EE;
     XBA                                                                  ;80A8EF;
     CLC                                                                  ;80A8F0;
-    ADC.W $0933                                                          ;80A8F1;
-    STA.W $0937                                                          ;80A8F4;
-    CMP.W $0915                                                          ;80A8F7;
+    ADC.W PositionOfScrollBoundary                                       ;80A8F1;
+    STA.W RoomHeightInPixels                                             ;80A8F4;
+    CMP.W Layer1YPosition                                                ;80A8F7;
     BCC .setLayer1Y                                                      ;80A8FA;
-    LDA.B $14                                                            ;80A8FC;
+    LDA.B DP_Temp14                                                      ;80A8FC;
     CLC                                                                  ;80A8FE;
-    ADC.W $07A9                                                          ;80A8FF;
+    ADC.W RoomWidthScrolls                                               ;80A8FF;
     TAX                                                                  ;80A902;
-    LDA.L $7ECD20,X                                                      ;80A903;
+    LDA.L Scrolls,X                                                      ;80A903;
     AND.W #$00FF                                                         ;80A907;
     BNE .return                                                          ;80A90A;
-    LDA.W $0915                                                          ;80A90C;
+    LDA.W Layer1YPosition                                                ;80A90C;
     AND.W #$FF00                                                         ;80A90F;
     CLC                                                                  ;80A912;
-    ADC.W $0933                                                          ;80A913;
-    STA.W $0937                                                          ;80A916;
-    CMP.W $0915                                                          ;80A919;
+    ADC.W PositionOfScrollBoundary                                       ;80A913;
+    STA.W UpperScrollPosition                                            ;80A916;
+    CMP.W Layer1YPosition                                                ;80A919;
     BCS .return                                                          ;80A91C;
 
   .setLayer1Y:
-    LDA.W $0939                                                          ;80A91E;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A91E;
     SEC                                                                  ;80A921;
-    SBC.W $0DA6                                                          ;80A922;
+    SBC.W CameraYSpeed                                                   ;80A922;
     SBC.W #$0002                                                         ;80A925;
-    CMP.W $0937                                                          ;80A928;
+    CMP.W UpperScrollPosition                                            ;80A928;
     BPL +                                                                ;80A92B;
-    LDA.W $0937                                                          ;80A92D;
+    LDA.W UpperScrollPosition                                            ;80A92D;
 
-+   STA.W $0915                                                          ;80A930;
++   STA.W Layer1YPosition                                                ;80A930;
 
   .return:
     PLB                                                                  ;80A933;
@@ -6324,26 +6324,26 @@ HandleScrollZones_ScrollingUp:
     PHA                                                                  ;80A93C;
     PLB                                                                  ;80A93D;
     REP #$30                                                             ;80A93E;
-    LDA.W $0915                                                          ;80A940;
-    STA.W $0939                                                          ;80A943;
-    CMP.W $0B0E                                                          ;80A946;
+    LDA.W Layer1YPosition                                                ;80A940;
+    STA.W ProposedScrolledLayer1XPosition                                ;80A943;
+    CMP.W IdealLayer1YPosition                                           ;80A946;
     BPL +                                                                ;80A949;
-    LDA.W $0B0E                                                          ;80A94B;
-    STA.W $0915                                                          ;80A94E;
-    STZ.W $0913                                                          ;80A951;
+    LDA.W IdealLayer1YPosition                                           ;80A94B;
+    STA.W Layer1YPosition                                                ;80A94E;
+    STZ.W Layer1YSubPosition                                             ;80A951;
 
-+   LDA.W $0915                                                          ;80A954;
++   LDA.W Layer1YPosition                                                ;80A954;
     BPL +                                                                ;80A957;
-    STZ.W $0915                                                          ;80A959;
+    STZ.W Layer1YPosition                                                ;80A959;
     BRA .return                                                          ;80A95C;
 
 +   SEP #$20                                                             ;80A95E;
-    LDA.W $0916                                                          ;80A960;
+    LDA.W Layer1YPosition+1                                              ;80A960;
     STA.W $4202                                                          ;80A963;
-    LDA.W $07A9                                                          ;80A966;
+    LDA.W RoomWidthScrolls                                               ;80A966;
     STA.W $4203                                                          ;80A969;
     REP #$20                                                             ;80A96C;
-    LDA.W $0911                                                          ;80A96E;
+    LDA.W Layer1XPosition                                                ;80A96E;
     CLC                                                                  ;80A971;
     ADC.W #$0080                                                         ;80A972;
     XBA                                                                  ;80A975;
@@ -6351,23 +6351,23 @@ HandleScrollZones_ScrollingUp:
     CLC                                                                  ;80A979;
     ADC.W $4216                                                          ;80A97A;
     TAX                                                                  ;80A97D;
-    LDA.L $7ECD20,X                                                      ;80A97E;
+    LDA.L Scrolls,X                                                      ;80A97E;
     AND.W #$00FF                                                         ;80A982;
     BNE .return                                                          ;80A985;
-    LDA.W $0915                                                          ;80A987;
+    LDA.W Layer1YPosition                                                ;80A987;
     AND.W #$FF00                                                         ;80A98A;
     CLC                                                                  ;80A98D;
     ADC.W #$0100                                                         ;80A98E;
-    STA.W $0933                                                          ;80A991;
-    LDA.W $0939                                                          ;80A994;
+    STA.W PositionOfScrollBoundary                                       ;80A991;
+    LDA.W ProposedScrolledLayer1XPosition                                ;80A994;
     CLC                                                                  ;80A997;
-    ADC.W $0DA6                                                          ;80A998;
+    ADC.W CameraYSpeed                                                   ;80A998;
     ADC.W #$0002                                                         ;80A99B;
-    CMP.W $0933                                                          ;80A99E;
+    CMP.W PositionOfScrollBoundary                                       ;80A99E;
     BCC +                                                                ;80A9A1;
-    LDA.W $0933                                                          ;80A9A3;
+    LDA.W PositionOfScrollBoundary                                       ;80A9A3;
 
-+   STA.W $0915                                                          ;80A9A6;
++   STA.W Layer1YPosition                                                ;80A9A6;
 
   .return:
     PLB                                                                  ;80A9A9;
@@ -6377,25 +6377,25 @@ HandleScrollZones_ScrollingUp:
 
 ;;; $A9AC: Debug layer 1 position save/loading ;;;
 Debug_Layer1Position_Saving_Loading:
-    LDA.B $91                                                            ;80A9AC;
+    LDA.B DP_Controller2New                                              ;80A9AC;
     AND.W #$0040                                                         ;80A9AE;
     BEQ +                                                                ;80A9B1;
-    INC.W $05D3                                                          ;80A9B3;
+    INC.W Debug_Layer1PositionFlag                                       ;80A9B3;
 
-+   LDA.W $05D3                                                          ;80A9B6;
++   LDA.W Debug_Layer1PositionFlag                                       ;80A9B6;
     LSR A                                                                ;80A9B9;
     BCC +                                                                ;80A9BA;
-    LDA.W $05D5                                                          ;80A9BC;
-    STA.W $0911                                                          ;80A9BF;
-    LDA.W $05D7                                                          ;80A9C2;
-    STA.W $0915                                                          ;80A9C5;
+    LDA.W Debug_Layer1X                                                  ;80A9BC;
+    STA.W Layer1XPosition                                                ;80A9BF;
+    LDA.W Debug_Layer1Y                                                  ;80A9C2;
+    STA.W Layer1YPosition                                                ;80A9C5;
     RTL                                                                  ;80A9C8;
 
 
-+   LDA.W $0911                                                          ;80A9C9;
-    STA.W $05D5                                                          ;80A9CC;
-    LDA.W $0915                                                          ;80A9CF;
-    STA.W $05D7                                                          ;80A9D2;
++   LDA.W Layer1XPosition                                                ;80A9C9;
+    STA.W Debug_Layer1X                                                  ;80A9CC;
+    LDA.W Layer1YPosition                                                ;80A9CF;
+    STA.W Debug_Layer1Y                                                  ;80A9D2;
     RTL                                                                  ;80A9D5;
 
 
@@ -6419,7 +6419,7 @@ UpdateLevelDataColumn:
 ;;; $A9DE: Update level/background data column ;;;
 UpdateLevelBackgroundDataColumn:
 ;; Parameters:
-;;     X: WRAM offset. 0 for level data, 1Ch for background data. See $0956 in RAM map
+;;     X: WRAM offset. 0 for level data, 1Ch for background data. See BG1Col_unwrappedTilemapVRAMUpdateSize in RAM map
 
 ; Called by:
 ;     $A9D6: Update background data column
@@ -6462,19 +6462,19 @@ UpdateLevelBackgroundDataColumn:
 ; D # # # # # # # # # # # # # # # #
 ; E # # # # # # # # # # # # # # # #
 ; F # # # # # # # # # # # # # # # #
-    LDA.W $0783                                                          ;80A9DE;
+    LDA.W Mode7Flag                                                      ;80A9DE;
     BEQ +                                                                ;80A9E1;
     RTS                                                                  ;80A9E3;
 
 +   PHP                                                                  ;80A9E4;
     SEP #$20                                                             ;80A9E5;
-    LDA.W $07A5                                                          ;80A9E7;
+    LDA.W RoomWidthBlocks                                                ;80A9E7;
     STA.W $4202                                                          ;80A9EA;
-    LDA.W $0992                                                          ;80A9ED;
+    LDA.W BlocksToUpdateYBlock                                           ;80A9ED;
     STA.W $4203                                                          ;80A9F0;
     PHB                                                                  ;80A9F3;
     REP #$30                                                             ;80A9F4;
-    LDA.W $0990                                                          ;80A9F6;
+    LDA.W BlocksToUpdateXBlock                                           ;80A9F6;
     CLC                                                                  ;80A9F9;
     ADC.W $4216                                                          ;80A9FA;
     ASL A                                                                ;80A9FD;
@@ -6483,35 +6483,35 @@ UpdateLevelBackgroundDataColumn:
     TXY                                                                  ;80AA02;
     BEQ +                                                                ;80AA03;
     CLC                                                                  ;80AA05;
-    ADC.W #$9600                                                         ;80AA06; $7F
+    ADC.W #CustomBackground-2                                            ;80AA06;
 
-+   STA.B $36                                                            ;80AA09;
-    LDA.W #$007F                                                         ;80AA0B;
-    STA.B $38                                                            ;80AA0E;
-    LDA.W $0996                                                          ;80AA10;
++   STA.B DP_BlocksToUpdate                                              ;80AA09;
+    LDA.W #CustomBackground>>16                                          ;80AA0B;
+    STA.B DP_BlocksToUpdate+2                                            ;80AA0E;
+    LDA.W VRAMBlocksToUpdateYBlock                                       ;80AA10;
     ASL A                                                                ;80AA13;
     ASL A                                                                ;80AA14;
     AND.W #$003C                                                         ;80AA15;
-    STA.W $0958,X                                                        ;80AA18;
+    STA.W BG1Col_wrappedTilemapVRAMUpdateSize,X                          ;80AA18;
     EOR.W #$003F                                                         ;80AA1B;
     INC A                                                                ;80AA1E;
-    STA.W $0956,X                                                        ;80AA1F;
+    STA.W BG1Col_unwrappedTilemapVRAMUpdateSize,X                        ;80AA1F;
     SEP #$20                                                             ;80AA22;
-    LDA.W $0996                                                          ;80AA24;
+    LDA.W VRAMBlocksToUpdateYBlock                                       ;80AA24;
     AND.B #$0F                                                           ;80AA27;
     STA.W $4202                                                          ;80AA29;
     LDA.B #$40                                                           ;80AA2C;
     STA.W $4203                                                          ;80AA2E;
     REP #$20                                                             ;80AA31;
-    LDA.W $0994                                                          ;80AA33;
+    LDA.W VRAMBlocksToUpdateXBlock                                       ;80AA33;
     AND.W #$001F                                                         ;80AA36;
-    STA.W $0935                                                          ;80AA39;
+    STA.W XBlockOfVRAMBlocksToUpdate                                     ;80AA39;
     ASL A                                                                ;80AA3C;
     CLC                                                                  ;80AA3D;
     ADC.W $4216                                                          ;80AA3E;
-    STA.W $0933                                                          ;80AA41;
+    STA.W PositionOfScrollBoundary                                       ;80AA41;
     LDA.W #$5000                                                         ;80AA44;
-    LDY.W $0935                                                          ;80AA47;
+    LDY.W XBlockOfVRAMBlocksToUpdate                                     ;80AA47;
     CPY.W #$0010                                                         ;80AA4A;
     BCC +                                                                ;80AA4D;
     LDA.W #$53E0                                                         ;80AA4F;
@@ -6519,31 +6519,31 @@ UpdateLevelBackgroundDataColumn:
 +   TXY                                                                  ;80AA52;
     BEQ +                                                                ;80AA53;
     SEC                                                                  ;80AA55;
-    SBC.W $098E                                                          ;80AA56;
+    SBC.W SizeOfBG2                                                      ;80AA56;
 
-+   STA.W $0937                                                          ;80AA59;
++   STA.W VRAMTilemapScreenBaseAddr                                      ;80AA59;
     CLC                                                                  ;80AA5C;
-    ADC.W $0933                                                          ;80AA5D;
+    ADC.W PositionOfScrollBoundary                                       ;80AA5D;
     STA.W $095A,X                                                        ;80AA60;
-    LDA.W $0937                                                          ;80AA63;
+    LDA.W VRAMTilemapScreenBaseAddr                                      ;80AA63;
     CLC                                                                  ;80AA66;
-    ADC.W $0935                                                          ;80AA67;
-    ADC.W $0935                                                          ;80AA6A;
+    ADC.W XBlockOfVRAMBlocksToUpdate                                     ;80AA67;
+    ADC.W XBlockOfVRAMBlocksToUpdate                                     ;80AA6A;
     STA.W $095C,X                                                        ;80AA6D;
-    LDA.W #$C8C8                                                         ;80AA70; $7E
+    LDA.W #BG1ColumnUpdateTilemapLeftHalves                              ;80AA70;
     LDY.W #$0000                                                         ;80AA73;
     CPX.W #$0000                                                         ;80AA76;
     BEQ +                                                                ;80AA79;
-    LDA.W #$C9D0                                                         ;80AA7B; $7E
+    LDA.W #BG2ColumnUpdateTilemapLeftHalves                              ;80AA7B;
     LDY.W #$0108                                                         ;80AA7E;
 
 +   CLC                                                                  ;80AA81;
-    ADC.W $0956,X                                                        ;80AA82;
+    ADC.W BG1Col_unwrappedTilemapVRAMUpdateSize,X                        ;80AA82;
     STA.W $095E,X                                                        ;80AA85;
     CLC                                                                  ;80AA88;
     ADC.W #$0040                                                         ;80AA89;
     STA.W $0960,X                                                        ;80AA8C;
-    STY.W $0937                                                          ;80AA8F;
+    STY.W VRAMTilemapScreenBaseAddr                                      ;80AA8F;
     SEP #$20                                                             ;80AA92;
     LDA.B #$7E                                                           ;80AA94;
     PHA                                                                  ;80AA96;
@@ -6552,19 +6552,19 @@ UpdateLevelBackgroundDataColumn:
     PHX                                                                  ;80AA9A;
     LDY.W #$0000                                                         ;80AA9B;
     LDA.W #$0010                                                         ;80AA9E;
-    STA.W $0939                                                          ;80AAA1;
+    STA.W ProposedScrolledLayer1XPosition                                ;80AAA1;
 
   .loop:
     LDA.B [$36],Y                                                        ;80AAA4;
-    STA.W $093B                                                          ;80AAA6;
+    STA.W BackgroundBlockToUpdate                                        ;80AAA6;
     AND.W #$03FF                                                         ;80AAA9;
     ASL A                                                                ;80AAAC;
     ASL A                                                                ;80AAAD;
     ASL A                                                                ;80AAAE;
     TAX                                                                  ;80AAAF;
     PHY                                                                  ;80AAB0;
-    LDY.W $0937                                                          ;80AAB1;
-    LDA.W $093B                                                          ;80AAB4;
+    LDY.W VRAMTilemapScreenBaseAddr                                      ;80AAB1;
+    LDA.W BackgroundBlockToUpdate                                        ;80AAB4;
     AND.W #$0C00                                                         ;80AAB7;
     BNE +                                                                ;80AABA;
     LDA.W $A000,X                                                        ;80AABC;
@@ -6627,19 +6627,19 @@ UpdateLevelBackgroundDataColumn:
     INY                                                                  ;80AB52;
     INY                                                                  ;80AB53;
     INY                                                                  ;80AB54;
-    STY.W $0937                                                          ;80AB55;
+    STY.W VRAMTilemapScreenBaseAddr                                      ;80AB55;
     PLA                                                                  ;80AB58;
     CLC                                                                  ;80AB59;
-    ADC.W $07A5                                                          ;80AB5A;
-    ADC.W $07A5                                                          ;80AB5D;
+    ADC.W RoomWidthBlocks                                                ;80AB5A;
+    ADC.W RoomWidthBlocks                                                ;80AB5D;
     TAY                                                                  ;80AB60;
-    DEC.W $0939                                                          ;80AB61;
+    DEC.W ProposedScrolledLayer1XPosition                                ;80AB61;
     BEQ .return                                                          ;80AB64;
     JMP.W .loop                                                          ;80AB66;
 
   .return:
     PLX                                                                  ;80AB69;
-    INC.W $0962,X                                                        ;80AB6A;
+    INC.W BG1Col_updateVRAMTilemapFlag,X                                 ;80AB6A;
     PLB                                                                  ;80AB6D;
     PLP                                                                  ;80AB6E;
     RTS                                                                  ;80AB6F;
@@ -6663,24 +6663,24 @@ UpdateLevelDataRow:
 ;;; $AB78: Update level/background data row ;;;
 UpdateBackgroundLevelDataRow:
 ;; Parameters:
-;;     X: WRAM offset. 0 for level data, 1Ch for background data. See $0964 in RAM map
+;;     X: WRAM offset. 0 for level data, 1Ch for background data. See BG1Row_unwrappedTilemapVRAMUpdateSize in RAM map
 
 ; Called by:
 ;     $AB70: Update background data row
 ;     $AB75: Update level data row
-    LDA.W $0783                                                          ;80AB78;
+    LDA.W Mode7Flag                                                      ;80AB78;
     BEQ +                                                                ;80AB7B;
     RTS                                                                  ;80AB7D;
 
 +   PHP                                                                  ;80AB7E;
     SEP #$20                                                             ;80AB7F;
-    LDA.W $07A5                                                          ;80AB81;
+    LDA.W RoomWidthBlocks                                                ;80AB81;
     STA.W $4202                                                          ;80AB84;
-    LDA.W $0992                                                          ;80AB87;
+    LDA.W BlocksToUpdateYBlock                                           ;80AB87;
     STA.W $4203                                                          ;80AB8A;
     PHB                                                                  ;80AB8D;
     REP #$30                                                             ;80AB8E;
-    LDA.W $0990                                                          ;80AB90;
+    LDA.W BlocksToUpdateXBlock                                           ;80AB90;
     CLC                                                                  ;80AB93;
     ADC.W $4216                                                          ;80AB94;
     ASL A                                                                ;80AB97;
@@ -6689,80 +6689,80 @@ UpdateBackgroundLevelDataRow:
     TXY                                                                  ;80AB9C;
     BEQ +                                                                ;80AB9D;
     CLC                                                                  ;80AB9F;
-    ADC.W #$9600                                                         ;80ABA0; $7F
+    ADC.W #CustomBackground-2                                            ;80ABA0;
 
-+   STA.B $36                                                            ;80ABA3;
-    LDA.W #$007F                                                         ;80ABA5;
-    STA.B $38                                                            ;80ABA8;
-    LDA.W $0994                                                          ;80ABAA;
++   STA.B DP_BlocksToUpdate                                              ;80ABA3;
+    LDA.W #CustomBackground>>16                                          ;80ABA5;
+    STA.B DP_BlocksToUpdate+2                                            ;80ABA8;
+    LDA.W VRAMBlocksToUpdateXBlock                                       ;80ABAA;
     AND.W #$000F                                                         ;80ABAD;
-    STA.W $0933                                                          ;80ABB0;
+    STA.W PositionOfScrollBoundary                                       ;80ABB0;
     LDA.W #$0010                                                         ;80ABB3;
     SEC                                                                  ;80ABB6;
-    SBC.W $0933                                                          ;80ABB7;
+    SBC.W PositionOfScrollBoundary                                       ;80ABB7;
     ASL A                                                                ;80ABBA;
     ASL A                                                                ;80ABBB;
-    STA.W $0964,X                                                        ;80ABBC;
-    LDA.W $0933                                                          ;80ABBF;
+    STA.W BG1Row_unwrappedTilemapVRAMUpdateSize,X                        ;80ABBC;
+    LDA.W PositionOfScrollBoundary                                       ;80ABBF;
     INC A                                                                ;80ABC2;
     ASL A                                                                ;80ABC3;
     ASL A                                                                ;80ABC4;
-    STA.W $0966,X                                                        ;80ABC5;
+    STA.W BG1Row_wrappedTilemapVRAMUpdateSize,X                          ;80ABC5;
     SEP #$20                                                             ;80ABC8;
-    LDA.W $0996                                                          ;80ABCA;
+    LDA.W VRAMBlocksToUpdateYBlock                                       ;80ABCA;
     AND.B #$0F                                                           ;80ABCD;
     STA.W $4202                                                          ;80ABCF;
     LDA.B #$40                                                           ;80ABD2;
     STA.W $4203                                                          ;80ABD4;
     REP #$20                                                             ;80ABD7;
-    LDA.W $0994                                                          ;80ABD9;
+    LDA.W VRAMBlocksToUpdateXBlock                                       ;80ABD9;
     AND.W #$001F                                                         ;80ABDC;
-    STA.W $0935                                                          ;80ABDF;
+    STA.W XBlockOfVRAMBlocksToUpdate                                     ;80ABDF;
     ASL A                                                                ;80ABE2;
     CLC                                                                  ;80ABE3;
     ADC.W $4216                                                          ;80ABE4;
-    STA.W $0933                                                          ;80ABE7;
+    STA.W PositionOfScrollBoundary                                       ;80ABE7;
     LDA.W #$5400                                                         ;80ABEA;
-    STA.W $0937                                                          ;80ABED;
+    STA.W VRAMTilemapScreenBaseAddr                                      ;80ABED;
     LDA.W #$5000                                                         ;80ABF0;
-    LDY.W $0935                                                          ;80ABF3;
+    LDY.W XBlockOfVRAMBlocksToUpdate                                     ;80ABF3;
     CPY.W #$0010                                                         ;80ABF6;
     BCC +                                                                ;80ABF9;
     LDA.W #$5000                                                         ;80ABFB;
-    STA.W $0937                                                          ;80ABFE;
+    STA.W VRAMTilemapScreenBaseAddr                                      ;80ABFE;
     LDA.W #$53E0                                                         ;80AC01;
 
 +   TXY                                                                  ;80AC04;
     BEQ +                                                                ;80AC05;
     SEC                                                                  ;80AC07;
-    SBC.W $098E                                                          ;80AC08;
+    SBC.W SizeOfBG2                                                      ;80AC08;
 
 +   CLC                                                                  ;80AC0B;
-    ADC.W $0933                                                          ;80AC0C;
-    STA.W $0968,X                                                        ;80AC0F;
-    LDA.W $0937                                                          ;80AC12;
+    ADC.W PositionOfScrollBoundary                                       ;80AC0C;
+    STA.W BG1Row_unwrappedTilemapVRAMUpdateDest,X                        ;80AC0F;
+    LDA.W VRAMTilemapScreenBaseAddr                                      ;80AC12;
     TXY                                                                  ;80AC15;
     BEQ +                                                                ;80AC16;
     SEC                                                                  ;80AC18;
-    SBC.W $098E                                                          ;80AC19;
+    SBC.W SizeOfBG2                                                      ;80AC19;
 
 +   CLC                                                                  ;80AC1C;
     ADC.W $4216                                                          ;80AC1D;
-    STA.W $096A,X                                                        ;80AC20;
-    LDA.W #$C948                                                         ;80AC23; $7E
+    STA.W BG1Row_wrappedTilemapVRAMUpdateDest,X                          ;80AC20;
+    LDA.W #BG1RowUpdateTilemapTopHalves                                  ;80AC23;
     LDY.W #$0000                                                         ;80AC26;
     CPX.W #$0000                                                         ;80AC29;
     BEQ +                                                                ;80AC2C;
-    LDA.W #$CA50                                                         ;80AC2E; $7E
+    LDA.W #BG2RowUpdateTilemapTopHalves                                  ;80AC2E;
     LDY.W #$0108                                                         ;80AC31;
 
 +   CLC                                                                  ;80AC34;
-    ADC.W $0964,X                                                        ;80AC35;
-    STA.W $096C,X                                                        ;80AC38;
+    ADC.W BG1Row_unwrappedTilemapVRAMUpdateSize,X                        ;80AC35;
+    STA.W BG1Row_wrappedTilemapVRAMUpdateLeftHalvesSrc,X                 ;80AC38;
     CLC                                                                  ;80AC3B;
     ADC.W #$0044                                                         ;80AC3C;
-    STA.W $096E,X                                                        ;80AC3F;
-    STY.W $0937                                                          ;80AC42;
+    STA.W BG1Row_wrappedTilemapVRAMUpdateRightHalvesSrc,X                ;80AC3F;
+    STY.W VRAMTilemapScreenBaseAddr                                      ;80AC42;
     SEP #$20                                                             ;80AC45;
     LDA.B #$7E                                                           ;80AC47;
     PHA                                                                  ;80AC49;
@@ -6771,92 +6771,92 @@ UpdateBackgroundLevelDataRow:
     PHX                                                                  ;80AC4D;
     LDY.W #$0000                                                         ;80AC4E;
     LDA.W #$0011                                                         ;80AC51;
-    STA.W $0939                                                          ;80AC54;
+    STA.W ProposedScrolledLayer1XPosition                                ;80AC54;
 
   .loop:
-    LDA.B [$36],Y                                                        ;80AC57;
-    STA.W $093B                                                          ;80AC59;
+    LDA.B [DP_BlocksToUpdate],Y                                          ;80AC57;
+    STA.W BackgroundBlockToUpdate                                        ;80AC59;
     AND.W #$03FF                                                         ;80AC5C;
     ASL A                                                                ;80AC5F;
     ASL A                                                                ;80AC60;
     ASL A                                                                ;80AC61;
     TAX                                                                  ;80AC62;
     PHY                                                                  ;80AC63;
-    LDY.W $0937                                                          ;80AC64;
-    LDA.W $093B                                                          ;80AC67;
+    LDY.W VRAMTilemapScreenBaseAddr                                      ;80AC64;
+    LDA.W BackgroundBlockToUpdate                                        ;80AC67;
     AND.W #$0C00                                                         ;80AC6A;
     BNE +                                                                ;80AC6D;
-    LDA.W $A000,X                                                        ;80AC6F;
-    STA.W $C948,Y                                                        ;80AC72;
-    LDA.W $A002,X                                                        ;80AC75;
-    STA.W $C94A,Y                                                        ;80AC78;
-    LDA.W $A004,X                                                        ;80AC7B;
-    STA.W $C98C,Y                                                        ;80AC7E;
-    LDA.W $A006,X                                                        ;80AC81;
-    STA.W $C98E,Y                                                        ;80AC84;
+    LDA.W TileTable_TopLeft,X                                            ;80AC6F;
+    STA.W BG1RowUpdateTilemapTopHalves,Y                                 ;80AC72;
+    LDA.W TileTable_TopRight,X                                           ;80AC75;
+    STA.W BG1RowUpdateTilemapTopHalves+2,Y                               ;80AC78;
+    LDA.W TileTable_BottomLeft,X                                         ;80AC7B;
+    STA.W BG1RowUpdateTilemapBottomHalves,Y                              ;80AC7E;
+    LDA.W TileTable_BottomRight,X                                        ;80AC81;
+    STA.W BG1RowUpdateTilemapBottomHalves+2,Y                            ;80AC84;
     JMP.W .next                                                          ;80AC87;
 
 +   CMP.W #$0400                                                         ;80AC8A;
     BNE +                                                                ;80AC8D;
-    LDA.W $A002,X                                                        ;80AC8F;
+    LDA.W TileTable_TopRight,X                                           ;80AC8F;
     EOR.W #$4000                                                         ;80AC92;
-    STA.W $C948,Y                                                        ;80AC95;
-    LDA.W $A000,X                                                        ;80AC98;
+    STA.W BG1RowUpdateTilemapTopHalves,Y                                 ;80AC95;
+    LDA.W TileTable_TopLeft,X                                            ;80AC98;
     EOR.W #$4000                                                         ;80AC9B;
-    STA.W $C94A,Y                                                        ;80AC9E;
-    LDA.W $A006,X                                                        ;80ACA1;
+    STA.W BG1RowUpdateTilemapTopHalves+2,Y                               ;80AC9E;
+    LDA.W TileTable_BottomRight,X                                        ;80ACA1;
     EOR.W #$4000                                                         ;80ACA4;
-    STA.W $C98C,Y                                                        ;80ACA7;
-    LDA.W $A004,X                                                        ;80ACAA;
+    STA.W BG1RowUpdateTilemapBottomHalves,Y                              ;80ACA7;
+    LDA.W TileTable_BottomLeft,X                                         ;80ACAA;
     EOR.W #$4000                                                         ;80ACAD;
-    STA.W $C98E,Y                                                        ;80ACB0;
+    STA.W BG1RowUpdateTilemapBottomHalves+2,Y                            ;80ACB0;
     BRA .next                                                            ;80ACB3;
 
 +   CMP.W #$0800                                                         ;80ACB5;
     BNE +                                                                ;80ACB8;
-    LDA.W $A004,X                                                        ;80ACBA;
+    LDA.W TileTable_BottomLeft,X                                         ;80ACBA;
     EOR.W #$8000                                                         ;80ACBD;
-    STA.W $C948,Y                                                        ;80ACC0;
-    LDA.W $A006,X                                                        ;80ACC3;
+    STA.W BG1RowUpdateTilemapTopHalves,Y                                 ;80ACC0;
+    LDA.W TileTable_BottomRight,X                                        ;80ACC3;
     EOR.W #$8000                                                         ;80ACC6;
-    STA.W $C94A,Y                                                        ;80ACC9;
-    LDA.W $A000,X                                                        ;80ACCC;
+    STA.W BG1RowUpdateTilemapTopHalves+2,Y                               ;80ACC9;
+    LDA.W TileTable_TopLeft,X                                            ;80ACCC;
     EOR.W #$8000                                                         ;80ACCF;
-    STA.W $C98C,Y                                                        ;80ACD2;
-    LDA.W $A002,X                                                        ;80ACD5;
+    STA.W BG1RowUpdateTilemapBottomHalves,Y                              ;80ACD2;
+    LDA.W TileTable_TopRight,X                                           ;80ACD5;
     EOR.W #$8000                                                         ;80ACD8;
-    STA.W $C98E,Y                                                        ;80ACDB;
+    STA.W BG1RowUpdateTilemapBottomHalves+2,Y                            ;80ACDB;
     BRA .next                                                            ;80ACDE;
 
-+   LDA.W $A006,X                                                        ;80ACE0;
++   LDA.W TileTable_BottomRight,X                                        ;80ACE0;
     EOR.W #$C000                                                         ;80ACE3;
-    STA.W $C948,Y                                                        ;80ACE6;
-    LDA.W $A004,X                                                        ;80ACE9;
+    STA.W BG1RowUpdateTilemapTopHalves,Y                                 ;80ACE6;
+    LDA.W TileTable_BottomLeft,X                                         ;80ACE9;
     EOR.W #$C000                                                         ;80ACEC;
-    STA.W $C94A,Y                                                        ;80ACEF;
-    LDA.W $A002,X                                                        ;80ACF2;
+    STA.W BG1RowUpdateTilemapTopHalves+2,Y                               ;80ACEF;
+    LDA.W TileTable_TopRight,X                                           ;80ACF2;
     EOR.W #$C000                                                         ;80ACF5;
-    STA.W $C98C,Y                                                        ;80ACF8;
-    LDA.W $A000,X                                                        ;80ACFB;
+    STA.W BG1RowUpdateTilemapBottomHalves,Y                              ;80ACF8;
+    LDA.W TileTable_TopLeft,X                                            ;80ACFB;
     EOR.W #$C000                                                         ;80ACFE;
-    STA.W $C98E,Y                                                        ;80AD01;
+    STA.W BG1RowUpdateTilemapBottomHalves+2,Y                            ;80AD01;
 
   .next:
     INY                                                                  ;80AD04;
     INY                                                                  ;80AD05;
     INY                                                                  ;80AD06;
     INY                                                                  ;80AD07;
-    STY.W $0937                                                          ;80AD08;
+    STY.W VRAMTilemapScreenBaseAddr                                      ;80AD08;
     PLY                                                                  ;80AD0B;
     INY                                                                  ;80AD0C;
     INY                                                                  ;80AD0D;
-    DEC.W $0939                                                          ;80AD0E;
+    DEC.W ProposedScrolledLayer1XPosition                                ;80AD0E;
     BEQ .return                                                          ;80AD11;
     JMP.W .loop                                                          ;80AD13;
 
   .return:
     PLX                                                                  ;80AD16;
-    INC.W $0970,X                                                        ;80AD17;
+    INC.W BG1Row_updateVRAMTilemapFlag,X                                 ;80AD17;
     PLB                                                                  ;80AD1A;
     PLP                                                                  ;80AD1B;
     RTS                                                                  ;80AD1C;
@@ -6868,11 +6868,11 @@ DrawTopRowOfScreenForUpwardsDoorTransition:
 ;     $82:E353: Door transition function - fix doors moving up
 
 ; See DoorTransitionScrolling_Up
-    STZ.W $0925                                                          ;80AD1D;
+    STZ.W DoorTransitionFrameCounter                                     ;80AD1D;
     JSR.W Calculate_BGScroll_LayerPositionBlocks                         ;80AD20;
     JSR.W UpdatePreviousLayerBlocks                                      ;80AD23;
-    INC.W $0901                                                          ;80AD26;
-    INC.W $0905                                                          ;80AD29;
+    INC.W PreviousLayer1YBlock                                           ;80AD26;
+    INC.W PreviousLayer2YBlock                                           ;80AD29;
     JSR.W DoorTransitionScrolling_Up                                     ;80AD2C;
     RTL                                                                  ;80AD2F;
 
@@ -6882,11 +6882,11 @@ DoorTransitionScrollingSetup:
 ; Called by:
 ;     $82:E38E: Door transition function - set up scrolling
     REP #$30                                                             ;80AD30;
-    LDA.W $0927                                                          ;80AD32;
-    STA.W $0911                                                          ;80AD35;
-    LDA.W $0929                                                          ;80AD38;
-    STA.W $0915                                                          ;80AD3B;
-    LDA.W $0791                                                          ;80AD3E;
+    LDA.W DoorDestinationXPosition                                       ;80AD32;
+    STA.W Layer1XPosition                                                ;80AD35;
+    LDA.W DoorDestinationYPosition                                       ;80AD38;
+    STA.W Layer1YPosition                                                ;80AD3B;
+    LDA.W DoorDirection                                                  ;80AD3E;
     AND.W #$0003                                                         ;80AD41;
     ASL A                                                                ;80AD44;
     TAX                                                                  ;80AD45;
@@ -6899,17 +6899,17 @@ DoorTransitionScrollingSetup_Right:
     JSR.W CalculateLayer2XPosition                                       ;80AD4A;
     SEC                                                                  ;80AD4D;
     SBC.W #$0100                                                         ;80AD4E;
-    STA.W $0917                                                          ;80AD51;
+    STA.W Layer2XPosition                                                ;80AD51;
     JSR.W CalculateLayer2YPosition                                       ;80AD54;
-    LDA.W $0911                                                          ;80AD57;
+    LDA.W Layer1XPosition                                                ;80AD57;
     SEC                                                                  ;80AD5A;
     SBC.W #$0100                                                         ;80AD5B;
-    STA.W $0911                                                          ;80AD5E;
+    STA.W Layer1XPosition                                                ;80AD5E;
     JSR.W UpdateBGScrollOffsets                                          ;80AD61;
     JSR.W Calculate_BGScroll_LayerPositionBlocks                         ;80AD64;
     JSR.W UpdatePreviousLayerBlocks                                      ;80AD67;
-    DEC.W $08FF                                                          ;80AD6A;
-    DEC.W $0903                                                          ;80AD6D;
+    DEC.W PreviousLayer1XBlock                                           ;80AD6A;
+    DEC.W PreviousLayer2XBlock                                           ;80AD6D;
     JSR.W DoorTransitionScrolling_Right                                  ;80AD70;
     RTS                                                                  ;80AD73;
 
@@ -6919,17 +6919,17 @@ DoorTransitionScrollingSetup_Left:
     JSR.W CalculateLayer2XPosition                                       ;80AD74;
     CLC                                                                  ;80AD77;
     ADC.W #$0100                                                         ;80AD78;
-    STA.W $0917                                                          ;80AD7B;
+    STA.W Layer2XPosition                                                ;80AD7B;
     JSR.W CalculateLayer2YPosition                                       ;80AD7E;
-    LDA.W $0911                                                          ;80AD81;
+    LDA.W Layer1XPosition                                                ;80AD81;
     CLC                                                                  ;80AD84;
     ADC.W #$0100                                                         ;80AD85;
-    STA.W $0911                                                          ;80AD88;
+    STA.W Layer1XPosition                                                ;80AD88;
     JSR.W UpdateBGScrollOffsets                                          ;80AD8B;
     JSR.W Calculate_BGScroll_LayerPositionBlocks                         ;80AD8E;
     JSR.W UpdatePreviousLayerBlocks                                      ;80AD91;
-    INC.W $08FF                                                          ;80AD94;
-    INC.W $0903                                                          ;80AD97;
+    INC.W PreviousLayer1XBlock                                           ;80AD94;
+    INC.W PreviousLayer2XBlock                                           ;80AD97;
     JSR.W DoorTransitionScrolling_Left                                   ;80AD9A;
     RTS                                                                  ;80AD9D;
 
@@ -6940,16 +6940,16 @@ DoorTransitionScrollingSetup_Down:
     JSR.W CalculateLayer2YPosition                                       ;80ADA1;
     SEC                                                                  ;80ADA4;
     SBC.W #$00E0                                                         ;80ADA5;
-    STA.W $0919                                                          ;80ADA8;
-    LDA.W $0915                                                          ;80ADAB;
+    STA.W Layer2YPosition                                                ;80ADA8;
+    LDA.W Layer1YPosition                                                ;80ADAB;
     SEC                                                                  ;80ADAE;
     SBC.W #$00E0                                                         ;80ADAF;
-    STA.W $0915                                                          ;80ADB2;
+    STA.W Layer1YPosition                                                ;80ADB2;
     JSR.W UpdateBGScrollOffsets                                          ;80ADB5;
     JSR.W Calculate_BGScroll_LayerPositionBlocks                         ;80ADB8;
     JSR.W UpdatePreviousLayerBlocks                                      ;80ADBB;
-    DEC.W $0901                                                          ;80ADBE;
-    DEC.W $0905                                                          ;80ADC1;
+    DEC.W PreviousLayer1YBlock                                           ;80ADBE;
+    DEC.W PreviousLayer2YBlock                                           ;80ADC1;
     JSR.W DoorTransitionScrolling_Down                                   ;80ADC4;
     RTS                                                                  ;80ADC7;
 
@@ -6957,29 +6957,29 @@ DoorTransitionScrollingSetup_Down:
 ;;; $ADC8: Door transition scrolling setup - up ;;;
 DoorTransitionScrollingSetup_Up:
     JSR.W CalculateLayer2XPosition                                       ;80ADC8;
-    LDA.W $0915                                                          ;80ADCB;
+    LDA.W Layer1YPosition                                                ;80ADCB;
     PHA                                                                  ;80ADCE;
     CLC                                                                  ;80ADCF;
     ADC.W #$001F                                                         ;80ADD0;
-    STA.W $0915                                                          ;80ADD3;
+    STA.W Layer1YPosition                                                ;80ADD3;
     JSR.W CalculateLayer2YPosition                                       ;80ADD6;
     CLC                                                                  ;80ADD9;
     ADC.W #$00E0                                                         ;80ADDA;
-    STA.W $0919                                                          ;80ADDD;
+    STA.W Layer2YPosition                                                ;80ADDD;
     PLA                                                                  ;80ADE0;
     CLC                                                                  ;80ADE1;
     ADC.W #$0100                                                         ;80ADE2;
-    STA.W $0915                                                          ;80ADE5;
+    STA.W Layer1YPosition                                                ;80ADE5;
     JSR.W UpdateBGScrollOffsets                                          ;80ADE8;
-    LDA.W $0929                                                          ;80ADEB;
+    LDA.W DoorDestinationYPosition                                       ;80ADEB;
     CLC                                                                  ;80ADEE;
     ADC.W #$0020                                                         ;80ADEF;
-    STA.W $0929                                                          ;80ADF2;
+    STA.W DoorDestinationYPosition                                       ;80ADF2;
     JSR.W Calculate_BGScroll_LayerPositionBlocks                         ;80ADF5;
     JSR.W UpdatePreviousLayerBlocks                                      ;80ADF8;
-    INC.W $0901                                                          ;80ADFB;
-    INC.W $0905                                                          ;80ADFE;
-    DEC.W $0915                                                          ;80AE01;
+    INC.W PreviousLayer1YBlock                                           ;80ADFB;
+    INC.W PreviousLayer2YBlock                                           ;80ADFE;
+    DEC.W Layer1YPosition                                                ;80AE01;
     JSR.W DoorTransitionScrolling_Up                                     ;80AE04;
     RTS                                                                  ;80AE07;
 
@@ -6994,14 +6994,14 @@ Door_Transition_Scrolling_Setup_Pointers:
 
 ;;; $AE10: Update previous layer blocks ;;;
 UpdatePreviousLayerBlocks:
-    LDA.W $08F7                                                          ;80AE10;
-    STA.W $08FF                                                          ;80AE13;
-    LDA.W $08FB                                                          ;80AE16;
-    STA.W $0903                                                          ;80AE19;
-    LDA.W $08F9                                                          ;80AE1C;
-    STA.W $0901                                                          ;80AE1F;
-    LDA.W $08FD                                                          ;80AE22;
-    STA.W $0905                                                          ;80AE25;
+    LDA.W Layer1XBlock                                                   ;80AE10;
+    STA.W PreviousLayer1XBlock                                           ;80AE13;
+    LDA.W Layer2XBlock                                                   ;80AE16;
+    STA.W PreviousLayer2XBlock                                           ;80AE19;
+    LDA.W Layer1YBlock                                                   ;80AE1C;
+    STA.W PreviousLayer1YBlock                                           ;80AE1F;
+    LDA.W Layer2YBlock                                                   ;80AE22;
+    STA.W PreviousLayer2YBlock                                           ;80AE25;
     RTS                                                                  ;80AE28;
 
 
@@ -7012,22 +7012,22 @@ UpdateBGScrollOffsets:
 ;     $AD74: Door transition scrolling setup - left
 ;     $AD9E: Door transition scrolling setup - down
 ;     $ADC8: Door transition scrolling setup - up
-    LDA.B $B1                                                            ;80AE29;
+    LDA.B DP_BG1XScroll                                                  ;80AE29;
     SEC                                                                  ;80AE2B;
-    SBC.W $0911                                                          ;80AE2C;
-    STA.W $091D                                                          ;80AE2F;
-    LDA.B $B3                                                            ;80AE32;
+    SBC.W Layer1XPosition                                                ;80AE2C;
+    STA.W Layer2ScrollY+1                                                ;80AE2F;
+    LDA.B DP_BG1YScroll                                                  ;80AE32;
     SEC                                                                  ;80AE34;
-    SBC.W $0915                                                          ;80AE35;
-    STA.W $091F                                                          ;80AE38;
-    LDA.B $B5                                                            ;80AE3B;
+    SBC.W Layer1YPosition                                                ;80AE35;
+    STA.W BG1YOffset                                                     ;80AE38;
+    LDA.B DP_BG2XScroll                                                  ;80AE3B;
     SEC                                                                  ;80AE3D;
-    SBC.W $0911                                                          ;80AE3E;
-    STA.W $0921                                                          ;80AE41;
-    LDA.B $B7                                                            ;80AE44;
+    SBC.W Layer1XPosition                                                ;80AE3E;
+    STA.W BG2XOffset                                                     ;80AE41;
+    LDA.B DP_BG2YScroll                                                  ;80AE44;
     SEC                                                                  ;80AE46;
-    SBC.W $0915                                                          ;80AE47;
-    STA.W $0923                                                          ;80AE4A;
+    SBC.W Layer1YPosition                                                ;80AE47;
+    STA.W BG2YOffset                                                     ;80AE4A;
     RTS                                                                  ;80AE4D;
 
 
@@ -7038,18 +7038,18 @@ DoorTransitionScrolling:
     PHK                                                                  ;80AE50;
     PLB                                                                  ;80AE51;
     REP #$30                                                             ;80AE52;
-    LDA.W $0791                                                          ;80AE54;
+    LDA.W DoorDirection                                                  ;80AE54;
     AND.W #$0003                                                         ;80AE57;
     ASL A                                                                ;80AE5A;
     TAX                                                                  ;80AE5B;
     JSR.W (.pointers,X)                                                  ;80AE5C;
     BCC .return                                                          ;80AE5F;
-    LDA.W $0927                                                          ;80AE61;
-    STA.W $0911                                                          ;80AE64;
-    LDA.W $0929                                                          ;80AE67;
-    STA.W $0915                                                          ;80AE6A;
+    LDA.W DoorDestinationXPosition                                       ;80AE61;
+    STA.W Layer1XPosition                                                ;80AE64;
+    LDA.W DoorDestinationYPosition                                       ;80AE67;
+    STA.W Layer1YPosition                                                ;80AE6A;
     LDA.W #$8000                                                         ;80AE6D;
-    TSB.W $0931                                                          ;80AE70;
+    TSB.W DoorTransitionFinishScrolling                                  ;80AE70;
 
   .return:
     PLB                                                                  ;80AE73;
@@ -7067,28 +7067,28 @@ DoorTransitionScrolling:
 DoorTransitionScrolling_Right:
 ;; Returns:
 ;;     Carry: Set if finished scrolling, clear otherwise
-    LDX.W $0925                                                          ;80AE7E;
+    LDX.W DoorTransitionFrameCounter                                     ;80AE7E;
     PHX                                                                  ;80AE81;
-    LDA.W $0AF8                                                          ;80AE82;
+    LDA.W SamusXSubPosition                                              ;80AE82;
     CLC                                                                  ;80AE85;
-    ADC.W $092B                                                          ;80AE86;
-    STA.W $0AF8                                                          ;80AE89;
-    LDA.W $0AF6                                                          ;80AE8C;
-    ADC.W $092D                                                          ;80AE8F;
-    STA.W $0AF6                                                          ;80AE92;
-    STA.W $0B10                                                          ;80AE95;
-    LDA.W $0911                                                          ;80AE98;
+    ADC.W SamusSubSpeedDuringDoorTransition                              ;80AE86;
+    STA.W SamusXSubPosition                                              ;80AE89;
+    LDA.W SamusXPosition                                                 ;80AE8C;
+    ADC.W SamusSpeedDuringDoorTransition                                 ;80AE8F;
+    STA.W SamusXPosition                                                 ;80AE92;
+    STA.W SamusPreviousXPosition                                         ;80AE95;
+    LDA.W Layer1XPosition                                                ;80AE98;
     CLC                                                                  ;80AE9B;
     ADC.W #$0004                                                         ;80AE9C;
-    STA.W $0911                                                          ;80AE9F;
-    LDA.W $0917                                                          ;80AEA2;
+    STA.W Layer1XPosition                                                ;80AE9F;
+    LDA.W Layer2XPosition                                                ;80AEA2;
     CLC                                                                  ;80AEA5;
     ADC.W #$0004                                                         ;80AEA6;
-    STA.W $0917                                                          ;80AEA9;
+    STA.W Layer2XPosition                                                ;80AEA9;
     JSL.L CalculateBGScrolls_UpdateBGGraphics_WhenScrolling              ;80AEAC;
     PLX                                                                  ;80AEB0;
     INX                                                                  ;80AEB1;
-    STX.W $0925                                                          ;80AEB2;
+    STX.W DoorTransitionFrameCounter                                     ;80AEB2;
     CPX.W #$0040                                                         ;80AEB5;
     BNE +                                                                ;80AEB8;
     JSL.L CalculateBGScrolls_UpdateBGGraphics_WhenScrolling              ;80AEBA;
@@ -7103,28 +7103,28 @@ DoorTransitionScrolling_Right:
 DoorTransitionScrolling_Left:
 ;; Returns:
 ;;     Carry: Set if finished scrolling, clear otherwise
-    LDX.W $0925                                                          ;80AEC2;
+    LDX.W DoorTransitionFrameCounter                                     ;80AEC2;
     PHX                                                                  ;80AEC5;
-    LDA.W $0AF8                                                          ;80AEC6;
+    LDA.W SamusXSubPosition                                              ;80AEC6;
     SEC                                                                  ;80AEC9;
-    SBC.W $092B                                                          ;80AECA;
-    STA.W $0AF8                                                          ;80AECD;
-    LDA.W $0AF6                                                          ;80AED0;
-    SBC.W $092D                                                          ;80AED3;
-    STA.W $0AF6                                                          ;80AED6;
-    STA.W $0B10                                                          ;80AED9;
-    LDA.W $0911                                                          ;80AEDC;
+    SBC.W SamusSubSpeedDuringDoorTransition                              ;80AECA;
+    STA.W SamusXSubPosition                                              ;80AECD;
+    LDA.W SamusXPosition                                                 ;80AED0;
+    SBC.W SamusSpeedDuringDoorTransition                                 ;80AED3;
+    STA.W SamusXPosition                                                 ;80AED6;
+    STA.W SamusPreviousXPosition                                         ;80AED9;
+    LDA.W Layer1XPosition                                                ;80AEDC;
     SEC                                                                  ;80AEDF;
     SBC.W #$0004                                                         ;80AEE0;
-    STA.W $0911                                                          ;80AEE3;
-    LDA.W $0917                                                          ;80AEE6;
+    STA.W Layer1XPosition                                                ;80AEE3;
+    LDA.W Layer2XPosition                                                ;80AEE6;
     SEC                                                                  ;80AEE9;
     SBC.W #$0004                                                         ;80AEEA;
-    STA.W $0917                                                          ;80AEED;
+    STA.W Layer2XPosition                                                ;80AEED;
     JSL.L CalculateBGScrolls_UpdateBGGraphics_WhenScrolling              ;80AEF0;
     PLX                                                                  ;80AEF4;
     INX                                                                  ;80AEF5;
-    STX.W $0925                                                          ;80AEF6;
+    STX.W DoorTransitionFrameCounter                                     ;80AEF6;
     CPX.W #$0040                                                         ;80AEF9;
     BNE +                                                                ;80AEFC;
     SEC                                                                  ;80AEFE;
@@ -7149,62 +7149,62 @@ DoorTransitionScrolling_Down:
 ; Any further scrolling would work on the assumption that row has been loaded already, and that row is the top row of the destination room
 
 ; tldr: need to redraw the top row to replace the garbage
-    LDX.W $0925                                                          ;80AF02;
+    LDX.W DoorTransitionFrameCounter                                     ;80AF02;
     PHX                                                                  ;80AF05;
     BNE +                                                                ;80AF06;
-    LDA.B $B3                                                            ;80AF08;
+    LDA.B DP_BG1YScroll                                                  ;80AF08;
     PHA                                                                  ;80AF0A;
-    LDA.B $B7                                                            ;80AF0B;
+    LDA.B DP_BG2YScroll                                                  ;80AF0B;
     PHA                                                                  ;80AF0D;
-    LDA.W $0915                                                          ;80AF0E;
+    LDA.W Layer1YPosition                                                ;80AF0E;
     PHA                                                                  ;80AF11;
     SEC                                                                  ;80AF12;
     SBC.W #$000F                                                         ;80AF13;
-    STA.W $0915                                                          ;80AF16;
-    LDA.W $0919                                                          ;80AF19;
+    STA.W Layer1YPosition                                                ;80AF16;
+    LDA.W Layer2YPosition                                                ;80AF19;
     PHA                                                                  ;80AF1C;
     SEC                                                                  ;80AF1D;
     SBC.W #$000F                                                         ;80AF1E;
-    STA.W $0919                                                          ;80AF21;
+    STA.W Layer2YPosition                                                ;80AF21;
     JSR.W Calculate_BGScroll_LayerPositionBlocks                         ;80AF24;
     JSR.W UpdatePreviousLayerBlocks                                      ;80AF27;
-    DEC.W $0901                                                          ;80AF2A;
-    DEC.W $0905                                                          ;80AF2D;
+    DEC.W PreviousLayer1YBlock                                           ;80AF2A;
+    DEC.W PreviousLayer2YBlock                                           ;80AF2D;
     JSL.L CalculateBGScrolls_UpdateBGGraphics_WhenScrolling              ;80AF30;
     PLA                                                                  ;80AF34;
-    STA.W $0919                                                          ;80AF35;
+    STA.W Layer2YPosition                                                ;80AF35;
     PLA                                                                  ;80AF38;
-    STA.W $0915                                                          ;80AF39;
+    STA.W Layer1YPosition                                                ;80AF39;
     PLA                                                                  ;80AF3C;
-    STA.B $B7                                                            ;80AF3D;
+    STA.B DP_BG2YScroll                                                  ;80AF3D;
     PLA                                                                  ;80AF3F;
-    STA.B $B3                                                            ;80AF40;
+    STA.B DP_BG1YScroll                                                  ;80AF40;
     BRA .finish                                                          ;80AF42;
 
 +   CPX.W #$0039                                                         ;80AF44;
     BCS .finish                                                          ;80AF47;
-    LDA.W $0AFC                                                          ;80AF49;
+    LDA.W SamusYSubPosition                                              ;80AF49;
     CLC                                                                  ;80AF4C;
-    ADC.W $092B                                                          ;80AF4D;
-    STA.W $0AFC                                                          ;80AF50;
-    LDA.W $0AFA                                                          ;80AF53;
-    ADC.W $092D                                                          ;80AF56;
-    STA.W $0AFA                                                          ;80AF59;
-    STA.W $0B14                                                          ;80AF5C;
-    LDA.W $0915                                                          ;80AF5F;
+    ADC.W SamusSubSpeedDuringDoorTransition                              ;80AF4D;
+    STA.W SamusYSubPosition                                              ;80AF50;
+    LDA.W SamusYPosition                                                 ;80AF53;
+    ADC.W SamusSpeedDuringDoorTransition                                 ;80AF56;
+    STA.W SamusYPosition                                                 ;80AF59;
+    STA.W SamusPreviousYPosition                                         ;80AF5C;
+    LDA.W Layer1YPosition                                                ;80AF5F;
     CLC                                                                  ;80AF62;
     ADC.W #$0004                                                         ;80AF63;
-    STA.W $0915                                                          ;80AF66;
-    LDA.W $0919                                                          ;80AF69;
+    STA.W Layer1YPosition                                                ;80AF66;
+    LDA.W Layer2YPosition                                                ;80AF69;
     CLC                                                                  ;80AF6C;
     ADC.W #$0004                                                         ;80AF6D;
-    STA.W $0919                                                          ;80AF70;
+    STA.W Layer2YPosition                                                ;80AF70;
     JSL.L CalculateBGScrolls_UpdateBGGraphics_WhenScrolling              ;80AF73;
 
   .finish:
     PLX                                                                  ;80AF77;
     INX                                                                  ;80AF78;
-    STX.W $0925                                                          ;80AF79;
+    STX.W DoorTransitionFrameCounter                                     ;80AF79;
     CPX.W #$0039                                                         ;80AF7C;
     BCC +                                                                ;80AF7F;
     JSL.L CalculateBGScrolls_UpdateBGGraphics_WhenScrolling              ;80AF81;
@@ -7229,72 +7229,72 @@ DoorTransitionScrolling_Up:
 
 ; tldr: need to load top row and not overwrite that row in the next room
 ; I'm fairly sure all of this could have been avoided if the vertical scrolling tilemap did updates to rows 0..Fh instead of 1..Fh (see $80:A45E)
-    LDX.W $0925                                                          ;80AF89;
+    LDX.W DoorTransitionFrameCounter                                     ;80AF89;
     PHX                                                                  ;80AF8C;
     BNE +                                                                ;80AF8D;
-    LDA.B $B3                                                            ;80AF8F;
+    LDA.B DP_BG1YScroll                                                  ;80AF8F;
     PHA                                                                  ;80AF91;
-    LDA.B $B7                                                            ;80AF92;
+    LDA.B DP_BG2YScroll                                                  ;80AF92;
     PHA                                                                  ;80AF94;
-    LDA.W $0915                                                          ;80AF95;
+    LDA.W Layer1YPosition                                                ;80AF95;
     PHA                                                                  ;80AF98;
     SEC                                                                  ;80AF99;
     SBC.W #$0010                                                         ;80AF9A;
-    STA.W $0915                                                          ;80AF9D;
-    LDA.W $0919                                                          ;80AFA0;
+    STA.W Layer1YPosition                                                ;80AF9D;
+    LDA.W Layer2YPosition                                                ;80AFA0;
     PHA                                                                  ;80AFA3;
     SEC                                                                  ;80AFA4;
     SBC.W #$0010                                                         ;80AFA5;
-    STA.W $0919                                                          ;80AFA8;
+    STA.W Layer2YPosition                                                ;80AFA8;
     JSR.W Calculate_BGScroll_LayerPositionBlocks                         ;80AFAB;
     JSR.W UpdatePreviousLayerBlocks                                      ;80AFAE;
-    INC.W $0901                                                          ;80AFB1;
-    INC.W $0905                                                          ;80AFB4;
+    INC.W PreviousLayer1YBlock                                           ;80AFB1;
+    INC.W PreviousLayer2YBlock                                           ;80AFB4;
     JSL.L CalculateBGScrolls_UpdateBGGraphics_WhenScrolling              ;80AFB7;
     PLA                                                                  ;80AFBB;
-    STA.W $0919                                                          ;80AFBC;
+    STA.W Layer2YPosition                                                ;80AFBC;
     PLA                                                                  ;80AFBF;
-    STA.W $0915                                                          ;80AFC0;
+    STA.W Layer1YPosition                                                ;80AFC0;
     PLA                                                                  ;80AFC3;
-    STA.B $B7                                                            ;80AFC4;
+    STA.B DP_BG2YScroll                                                  ;80AFC4;
     PLA                                                                  ;80AFC6;
-    STA.B $B3                                                            ;80AFC7;
+    STA.B DP_BG1YScroll                                                  ;80AFC7;
     BRA .done                                                            ;80AFC9;
 
-+   LDA.W $0AFC                                                          ;80AFCB;
++   LDA.W SamusYSubPosition                                              ;80AFCB;
     SEC                                                                  ;80AFCE;
-    SBC.W $092B                                                          ;80AFCF;
-    STA.W $0AFC                                                          ;80AFD2;
-    LDA.W $0AFA                                                          ;80AFD5;
-    SBC.W $092D                                                          ;80AFD8;
-    STA.W $0AFA                                                          ;80AFDB;
-    STA.W $0B14                                                          ;80AFDE;
-    LDA.W $0915                                                          ;80AFE1;
+    SBC.W SamusSubSpeedDuringDoorTransition                              ;80AFCF;
+    STA.W SamusYSubPosition                                              ;80AFD2;
+    LDA.W SamusYPosition                                                 ;80AFD5;
+    SBC.W SamusSpeedDuringDoorTransition                                 ;80AFD8;
+    STA.W SamusYPosition                                                 ;80AFDB;
+    STA.W SamusPreviousYPosition                                         ;80AFDE;
+    LDA.W Layer1YPosition                                                ;80AFE1;
     SEC                                                                  ;80AFE4;
     SBC.W #$0004                                                         ;80AFE5;
-    STA.W $0915                                                          ;80AFE8;
-    LDA.W $0919                                                          ;80AFEB;
+    STA.W Layer1YPosition                                                ;80AFE8;
+    LDA.W Layer2YPosition                                                ;80AFEB;
     SEC                                                                  ;80AFEE;
     SBC.W #$0004                                                         ;80AFEF;
-    STA.W $0919                                                          ;80AFF2;
+    STA.W Layer2YPosition                                                ;80AFF2;
     CPX.W #$0005                                                         ;80AFF5;
     BCS +                                                                ;80AFF8;
-    LDA.W $0911                                                          ;80AFFA;
+    LDA.W Layer1XPosition                                                ;80AFFA;
     CLC                                                                  ;80AFFD;
-    ADC.W $091D                                                          ;80AFFE;
-    STA.B $B1                                                            ;80B001;
-    LDA.W $0915                                                          ;80B003;
+    ADC.W Layer2ScrollY+1                                                ;80AFFE;
+    STA.B DP_BG1XScroll                                                  ;80B001;
+    LDA.W Layer1YPosition                                                ;80B003;
     CLC                                                                  ;80B006;
-    ADC.W $091F                                                          ;80B007;
-    STA.B $B3                                                            ;80B00A;
-    LDA.W $0917                                                          ;80B00C;
+    ADC.W BG1YOffset                                                     ;80B007;
+    STA.B DP_BG1YScroll                                                  ;80B00A;
+    LDA.W Layer2XPosition                                                ;80B00C;
     CLC                                                                  ;80B00F;
-    ADC.W $0921                                                          ;80B010;
-    STA.B $B5                                                            ;80B013;
-    LDA.W $0919                                                          ;80B015;
+    ADC.W BG2XOffset                                                     ;80B010;
+    STA.B DP_BG2XScroll                                                  ;80B013;
+    LDA.W Layer2YPosition                                                ;80B015;
     CLC                                                                  ;80B018;
-    ADC.W $0923                                                          ;80B019;
-    STA.B $B7                                                            ;80B01C;
+    ADC.W BG2YOffset                                                     ;80B019;
+    STA.B DP_BG2YScroll                                                  ;80B01C;
     BRA .done                                                            ;80B01E;
 
 +   JSL.L CalculateBGScrolls_UpdateBGGraphics_WhenScrolling              ;80B020;
@@ -7302,7 +7302,7 @@ DoorTransitionScrolling_Up:
   .done:
     PLX                                                                  ;80B024;
     INX                                                                  ;80B025;
-    STX.W $0925                                                          ;80B026;
+    STX.W DoorTransitionFrameCounter                                     ;80B026;
     CPX.W #$0039                                                         ;80B029;
     BNE +                                                                ;80B02C;
     SEC                                                                  ;80B02E;
@@ -7317,8 +7317,8 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_SetupRotatingMode7Background_80B032:
 ; Uses data from $98 that doesn't exist anymore
     LDA.W #$0001                                                         ;80B032;
-    STA.W $0783                                                          ;80B035;
-    LDA.W $0783                                                          ;80B038; >_<
+    STA.W Mode7Flag                                                      ;80B035;
+    LDA.W Mode7Flag                                                      ;80B038; >_<
     BNE +                                                                ;80B03B;
     SEC                                                                  ;80B03D; dead code
     RTL                                                                  ;80B03E;
@@ -7370,17 +7370,17 @@ UNUSED_SetupRotatingMode7Background_80B032:
     CPX.W #$0400                                                         ;80B09C;
     BNE .loop                                                            ;80B09F;
     LDA.B #$07                                                           ;80B0A1;
-    STA.B $55                                                            ;80B0A3;
+    STA.B DP_BGModeSize                                                  ;80B0A3;
     REP #$20                                                             ;80B0A5;
     LDA.W #$0100                                                         ;80B0A7;
-    STA.B $78                                                            ;80B0AA;
-    STZ.B $7A                                                            ;80B0AC;
-    STZ.B $7C                                                            ;80B0AE;
-    STA.B $7E                                                            ;80B0B0;
+    STA.B DP_Mode7TransMatrixA                                           ;80B0AA;
+    STZ.B DP_Mode7TransMatrixB                                           ;80B0AC;
+    STZ.B DP_Mode7TransMatrixC                                           ;80B0AE;
+    STA.B DP_Mode7TransMatrixD                                           ;80B0B0;
     LDA.W #$0080                                                         ;80B0B2;
-    STA.B $80                                                            ;80B0B5;
-    STA.B $82                                                            ;80B0B7;
-    STZ.W $0785                                                          ;80B0B9;
+    STA.B DP_Mode7TransOriginX                                           ;80B0B5;
+    STA.B DP_Mode7TransOriginY                                           ;80B0B7;
+    STZ.W UnusedMode7RotationAngle                                       ;80B0B9;
     JSL.L ClearForceBlankAndWaitForNMI                                   ;80B0BC;
     SEC                                                                  ;80B0C0;
     RTL                                                                  ;80B0C1;
@@ -7390,30 +7390,30 @@ UNUSED_SetupRotatingMode7Background_80B032:
 UNUSED_ConfigureMode7RotationMatrix_80B0C2:
     PHP                                                                  ;80B0C2;
     REP #$30                                                             ;80B0C3;
-    LDA.W $0783                                                          ;80B0C5;
+    LDA.W Mode7Flag                                                      ;80B0C5;
     BEQ .return                                                          ;80B0C8;
-    LDA.W NMI_FrameCounter                                                          ;80B0CA;
+    LDA.W NMI_FrameCounter                                               ;80B0CA;
     AND.W #$0007                                                         ;80B0CD;
     BNE .return                                                          ;80B0D0;
-    LDA.W $0785                                                          ;80B0D2;
+    LDA.W UnusedMode7RotationAngle                                       ;80B0D2;
     AND.W #$00FF                                                         ;80B0D5;
     ASL A                                                                ;80B0D8;
     TAX                                                                  ;80B0D9;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;80B0DA;
-    STA.B $7A                                                            ;80B0DE;
+    STA.B DP_Mode7TransMatrixB                                           ;80B0DE;
     EOR.W #$FFFF                                                         ;80B0E0;
     INC A                                                                ;80B0E3;
-    STA.B $7C                                                            ;80B0E4;
-    LDA.W $0785                                                          ;80B0E6;
+    STA.B DP_Mode7TransMatrixC                                           ;80B0E4;
+    LDA.W UnusedMode7RotationAngle                                       ;80B0E6;
     CLC                                                                  ;80B0E9;
     ADC.W #$0040                                                         ;80B0EA;
     AND.W #$00FF                                                         ;80B0ED;
     ASL A                                                                ;80B0F0;
     TAX                                                                  ;80B0F1;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;80B0F2;
-    STA.B $78                                                            ;80B0F6;
-    STA.B $7E                                                            ;80B0F8;
-    INC.W $0785                                                          ;80B0FA;
+    STA.B DP_Mode7TransMatrixA                                           ;80B0F6;
+    STA.B DP_Mode7TransMatrixD                                           ;80B0F8;
+    INC.W UnusedMode7RotationAngle                                       ;80B0FA;
 
   .return:
     PLP                                                                  ;80B0FD;
@@ -7429,18 +7429,18 @@ Decompression_HardcodedDestination:
 
 ; Source may overflow bank, target may NOT
     LDA.B $02,S                                                          ;80B0FF;
-    STA.B $45                                                            ;80B101;
+    STA.B DP_ReturnParam+1                                               ;80B101;
     LDA.B $01,S                                                          ;80B103;
-    STA.B $44                                                            ;80B105;
+    STA.B DP_ReturnParam                                                 ;80B105;
     CLC                                                                  ;80B107;
     ADC.W #$0003                                                         ;80B108;
     STA.B $01,S                                                          ;80B10B;
     LDY.W #$0001                                                         ;80B10D;
-    LDA.B [$44],Y                                                        ;80B110;
-    STA.B $4C                                                            ;80B112;
+    LDA.B [DP_ReturnParam],Y                                             ;80B110;
+    STA.B DP_DecompDest                                                  ;80B112;
     INY                                                                  ;80B114;
-    LDA.B [$44],Y                                                        ;80B115;
-    STA.B $4D                                                            ;80B117; fallthrough to Decompression_VariableDestination
+    LDA.B [DP_ReturnParam],Y                                             ;80B115;
+    STA.B DP_DecompDest+1                                                ;80B117; fallthrough to Decompression_VariableDestination
 
 
 ;;; $B119: Decompression - variable destination ;;;
@@ -7454,23 +7454,23 @@ Decompression_VariableDestination:
     PHB                                                                  ;80B11A;
     SEP #$20                                                             ;80B11B;
     REP #$10                                                             ;80B11D;
-    LDA.B $49                                                            ;80B11F;
+    LDA.B DP_DecompSrc+2                                                 ;80B11F;
     PHA                                                                  ;80B121;
     PLB                                                                  ;80B122;
-    STZ.B $50                                                            ;80B123;
+    STZ.B DP_DecompDictCopyBit+1                                         ;80B123;
     LDY.W #$0000                                                         ;80B125;
 
   .loopMain:
     PHX                                                                  ;80B128;
-    LDX.B $47                                                            ;80B129;
+    LDX.B DP_DecompSrc                                                   ;80B129;
     LDA.W $0000,X                                                        ;80B12B;
     INX                                                                  ;80B12E;
     BNE +                                                                ;80B12F;
     JSR.W SourceBankOverflowCorrection                                   ;80B131;
 
-+   STX.B $47                                                            ;80B134;
++   STX.B DP_DecompSrc                                                   ;80B134;
     PLX                                                                  ;80B136;
-    STA.B $4A                                                            ;80B137;
+    STA.B DP_DecompVar                                                   ;80B137;
     CMP.B #$FF                                                           ;80B139;
     BNE +                                                                ;80B13B;
     PLB                                                                  ;80B13D;
@@ -7480,23 +7480,23 @@ Decompression_VariableDestination:
 +   AND.B #$E0                                                           ;80B140;
     CMP.B #$E0                                                           ;80B142;
     BNE .pushCommandBits                                                 ;80B144;
-    LDA.B $4A                                                            ;80B146;
+    LDA.B DP_DecompVar                                                   ;80B146;
     ASL A                                                                ;80B148;
     ASL A                                                                ;80B149;
     ASL A                                                                ;80B14A;
     AND.B #$E0                                                           ;80B14B;
     PHA                                                                  ;80B14D;
-    LDA.B $4A                                                            ;80B14E;
+    LDA.B DP_DecompVar                                                   ;80B14E;
     AND.B #$03                                                           ;80B150;
     XBA                                                                  ;80B152;
     PHX                                                                  ;80B153;
-    LDX.B $47                                                            ;80B154;
+    LDX.B DP_DecompSrc                                                   ;80B154;
     LDA.W $0000,X                                                        ;80B156;
     INX                                                                  ;80B159;
     BNE +                                                                ;80B15A;
     JSR.W SourceBankOverflowCorrection                                   ;80B15C;
 
-+   STX.B $47                                                            ;80B15F;
++   STX.B DP_DecompSrc                                                   ;80B15F;
     PLX                                                                  ;80B161;
     BRA +                                                                ;80B162;
 
@@ -7504,7 +7504,7 @@ Decompression_VariableDestination:
     PHA                                                                  ;80B164;
     LDA.B #$00                                                           ;80B165;
     XBA                                                                  ;80B167;
-    LDA.B $4A                                                            ;80B168;
+    LDA.B DP_DecompVar                                                   ;80B168;
     AND.B #$1F                                                           ;80B16A;
 
 +   TAX                                                                  ;80B16C;
@@ -7524,15 +7524,15 @@ Decompression_VariableDestination:
   .loopDirectCopy:
 ; Command 0: Direct copy
     PHX                                                                  ;80B182;
-    LDX.B $47                                                            ;80B183;
+    LDX.B DP_DecompSrc                                                   ;80B183;
     LDA.W $0000,X                                                        ;80B185;
     INX                                                                  ;80B188;
     BNE +                                                                ;80B189;
     JSR.W SourceBankOverflowCorrection                                   ;80B18B;
 
-+   STX.B $47                                                            ;80B18E;
++   STX.B DP_DecompSrc                                                   ;80B18E;
     PLX                                                                  ;80B190;
-    STA.B [$4C],Y                                                        ;80B191;
+    STA.B [DP_DecompDest],Y                                              ;80B191;
     INY                                                                  ;80B193;
     DEX                                                                  ;80B194;
     BNE .loopDirectCopy                                                  ;80B195;
@@ -7541,17 +7541,17 @@ Decompression_VariableDestination:
   .byteFill:
 ; Command 1: Byte fill
     PHX                                                                  ;80B199;
-    LDX.B $47                                                            ;80B19A;
+    LDX.B DP_DecompSrc                                                   ;80B19A;
     LDA.W $0000,X                                                        ;80B19C;
     INX                                                                  ;80B19F;
     BNE +                                                                ;80B1A0;
     JSR.W SourceBankOverflowCorrection                                   ;80B1A2;
 
-+   STX.B $47                                                            ;80B1A5;
++   STX.B DP_DecompSrc                                                   ;80B1A5;
     PLX                                                                  ;80B1A7;
 
   .loopByteFill:
-    STA.B [$4C],Y                                                        ;80B1A8;
+    STA.B [DP_DecompDest],Y                                              ;80B1A8;
     INY                                                                  ;80B1AA;
     DEX                                                                  ;80B1AB;
     BNE .loopByteFill                                                    ;80B1AC;
@@ -7560,34 +7560,34 @@ Decompression_VariableDestination:
   .wordFill:
 ; Command 2: Word fill
     PHX                                                                  ;80B1B1;
-    LDX.B $47                                                            ;80B1B2;
+    LDX.B DP_DecompSrc                                                   ;80B1B2;
     LDA.W $0000,X                                                        ;80B1B4;
     INX                                                                  ;80B1B7;
     BNE +                                                                ;80B1B8;
     JSR.W SourceBankOverflowCorrection                                   ;80B1BA;
 
-+   STX.B $47                                                            ;80B1BD;
++   STX.B DP_DecompSrc                                                   ;80B1BD;
     PLX                                                                  ;80B1BF;
-    STA.B $4A                                                            ;80B1C0;
+    STA.B DP_DecompVar                                                   ;80B1C0;
     PHX                                                                  ;80B1C2;
-    LDX.B $47                                                            ;80B1C3;
+    LDX.B DP_DecompSrc                                                   ;80B1C3;
     LDA.W $0000,X                                                        ;80B1C5;
     INX                                                                  ;80B1C8;
     BNE +                                                                ;80B1C9;
     JSR.W SourceBankOverflowCorrection                                   ;80B1CB;
 
-+   STX.B $47                                                            ;80B1CE;
++   STX.B DP_DecompSrc                                                   ;80B1CE;
     PLX                                                                  ;80B1D0;
-    STA.B $4B                                                            ;80B1D1;
+    STA.B DP_DecompVar+1                                                 ;80B1D1;
 
   .loopWordFill:
-    LDA.B $4A                                                            ;80B1D3;
-    STA.B [$4C],Y                                                        ;80B1D5;
+    LDA.B DP_DecompVar                                                   ;80B1D3;
+    STA.B [DP_DecompDest],Y                                              ;80B1D5;
     INY                                                                  ;80B1D7;
     DEX                                                                  ;80B1D8;
     BEQ .goto_loopMain                                                   ;80B1D9;
-    LDA.B $4B                                                            ;80B1DB;
-    STA.B [$4C],Y                                                        ;80B1DD;
+    LDA.B DP_DecompVar+1                                                 ;80B1DB;
+    STA.B [DP_DecompDest],Y                                              ;80B1DD;
     INY                                                                  ;80B1DF;
     DEX                                                                  ;80B1E0;
     BNE .loopWordFill                                                    ;80B1E1;
@@ -7598,17 +7598,17 @@ Decompression_VariableDestination:
   .incrementingFill:
 ; Command 3: Incrementing fill
     PHX                                                                  ;80B1E6;
-    LDX.B $47                                                            ;80B1E7;
+    LDX.B DP_DecompSrc                                                   ;80B1E7;
     LDA.W $0000,X                                                        ;80B1E9;
     INX                                                                  ;80B1EC;
     BNE +                                                                ;80B1ED;
     JSR.W SourceBankOverflowCorrection                                   ;80B1EF;
 
-+   STX.B $47                                                            ;80B1F2;
++   STX.B DP_DecompSrc                                                   ;80B1F2;
     PLX                                                                  ;80B1F4;
 
   .loopIncrementingFill:
-    STA.B [$4C],Y                                                        ;80B1F5;
+    STA.B [DP_DecompDest],Y                                              ;80B1F5;
     INC A                                                                ;80B1F7;
     INY                                                                  ;80B1F8;
     DEX                                                                  ;80B1F9;
@@ -7621,27 +7621,27 @@ Decompression_VariableDestination:
     BCS .slidingDictionary                                               ;80B201;
 ; Command 4 and 5: dictionary copy and inverted dictionary copy
     AND.B #$20                                                           ;80B203;
-    STA.B $4F                                                            ;80B205;
+    STA.B DP_DecompDictCopyBit                                           ;80B205;
     PHX                                                                  ;80B207;
-    LDX.B $47                                                            ;80B208;
+    LDX.B DP_DecompSrc                                                   ;80B208;
     LDA.W $0000,X                                                        ;80B20A;
     INX                                                                  ;80B20D;
     BNE +                                                                ;80B20E;
     JSR.W SourceBankOverflowCorrection                                   ;80B210;
 
-+   STX.B $47                                                            ;80B213;
++   STX.B DP_DecompSrc                                                   ;80B213;
     PLX                                                                  ;80B215;
-    STA.B $4A                                                            ;80B216;
+    STA.B DP_DecompVar                                                   ;80B216;
     PHX                                                                  ;80B218;
-    LDX.B $47                                                            ;80B219;
+    LDX.B DP_DecompSrc                                                   ;80B219;
     LDA.W $0000,X                                                        ;80B21B;
     INX                                                                  ;80B21E;
     BNE +                                                                ;80B21F;
     JSR.W SourceBankOverflowCorrection                                   ;80B221;
 
-+   STX.B $47                                                            ;80B224;
++   STX.B DP_DecompSrc                                                   ;80B224;
     PLX                                                                  ;80B226;
-    STA.B $4B                                                            ;80B227;
+    STA.B DP_DecompVar+1                                                 ;80B227;
 
   .dictionaryCopy:
     SEP #$20                                                             ;80B229;
@@ -7649,16 +7649,16 @@ Decompression_VariableDestination:
   .loopDictionaryCopy:
     PHX                                                                  ;80B22B;
     PHY                                                                  ;80B22C;
-    LDY.B $4A                                                            ;80B22D;
-    LDA.B [$4C],Y                                                        ;80B22F;
+    LDY.B DP_DecompVar                                                   ;80B22D;
+    LDA.B [DP_DecompDest],Y                                              ;80B22F;
     INY                                                                  ;80B231;
-    STY.B $4A                                                            ;80B232;
+    STY.B DP_DecompVar                                                   ;80B232;
     PLY                                                                  ;80B234;
-    LDX.B $4F                                                            ;80B235;
+    LDX.B DP_DecompDictCopyBit                                           ;80B235;
     BEQ +                                                                ;80B237;
     EOR.B #$FF                                                           ;80B239;
 
-+   STA.B [$4C],Y                                                        ;80B23B;
++   STA.B [DP_DecompDest],Y                                              ;80B23B;
     INY                                                                  ;80B23D;
     PLX                                                                  ;80B23E;
     DEX                                                                  ;80B23F;
@@ -7668,23 +7668,23 @@ Decompression_VariableDestination:
   .slidingDictionary:
 ; Command 6 and 7: sliding dictionary copy and inverted sliding dictionary copy
     AND.B #$20                                                           ;80B245;
-    STA.B $4F                                                            ;80B247;
+    STA.B DP_DecompDictCopyBit                                           ;80B247;
     PHX                                                                  ;80B249;
-    LDX.B $47                                                            ;80B24A;
+    LDX.B DP_DecompSrc                                                   ;80B24A;
     LDA.W $0000,X                                                        ;80B24C;
     INX                                                                  ;80B24F;
     BNE +                                                                ;80B250;
     JSR.W SourceBankOverflowCorrection                                   ;80B252;
 
-+   STX.B $47                                                            ;80B255;
++   STX.B DP_DecompSrc                                                   ;80B255;
     PLX                                                                  ;80B257;
-    STA.B $4A                                                            ;80B258;
-    STZ.B $4B                                                            ;80B25A;
+    STA.B DP_DecompVar                                                   ;80B258;
+    STZ.B DP_DecompVar+1                                                 ;80B25A;
     REP #$20                                                             ;80B25C;
     TYA                                                                  ;80B25E;
     SEC                                                                  ;80B25F;
-    SBC.B $4A                                                            ;80B260;
-    STA.B $4A                                                            ;80B262;
+    SBC.B DP_DecompVar                                                   ;80B260;
+    STA.B DP_DecompVar                                                   ;80B262;
     BRA .dictionaryCopy                                                  ;80B264;
 
 
@@ -7717,23 +7717,23 @@ DecompressionToVRAM:
     PHB                                                                  ;80B272;
     REP #$10                                                             ;80B273;
     SEP #$20                                                             ;80B275;
-    LDA.B $49                                                            ;80B277;
+    LDA.B DP_DecompSrc+2                                                 ;80B277;
     PHA                                                                  ;80B279;
     PLB                                                                  ;80B27A;
-    STZ.B $50                                                            ;80B27B;
-    LDY.B $4C                                                            ;80B27D;
+    STZ.B DP_DecompDictCopyBit+1                                         ;80B27B;
+    LDY.B DP_DecompDest                                                  ;80B27D;
 
   .loopMain:
     PHX                                                                  ;80B27F;
-    LDX.B $47                                                            ;80B280;
+    LDX.B DP_DecompSrc                                                   ;80B280;
     LDA.W $0000,X                                                        ;80B282;
     INX                                                                  ;80B285;
     BNE +                                                                ;80B286;
     JSR.W SourceBankOverflowCorrection                                   ;80B288;
 
-+   STX.B $47                                                            ;80B28B;
++   STX.B DP_DecompSrc                                                   ;80B28B;
     PLX                                                                  ;80B28D;
-    STA.B $4A                                                            ;80B28E;
+    STA.B DP_DecompVar                                                   ;80B28E;
     CMP.B #$FF                                                           ;80B290;
     BNE +                                                                ;80B292;
     PLB                                                                  ;80B294;
@@ -7743,23 +7743,23 @@ DecompressionToVRAM:
 +   AND.B #$E0                                                           ;80B297;
     CMP.B #$E0                                                           ;80B299;
     BNE .pushCommandBits                                                 ;80B29B;
-    LDA.B $4A                                                            ;80B29D;
+    LDA.B DP_DecompVar                                                   ;80B29D;
     ASL A                                                                ;80B29F;
     ASL A                                                                ;80B2A0;
     ASL A                                                                ;80B2A1;
     AND.B #$E0                                                           ;80B2A2;
     PHA                                                                  ;80B2A4;
-    LDA.B $4A                                                            ;80B2A5;
+    LDA.B DP_DecompVar                                                   ;80B2A5;
     AND.B #$03                                                           ;80B2A7;
     XBA                                                                  ;80B2A9;
     PHX                                                                  ;80B2AA;
-    LDX.B $47                                                            ;80B2AB;
+    LDX.B DP_DecompSrc                                                   ;80B2AB;
     LDA.W $0000,X                                                        ;80B2AD;
     INX                                                                  ;80B2B0;
     BNE +                                                                ;80B2B1;
     JSR.W SourceBankOverflowCorrection                                   ;80B2B3;
 
-+   STX.B $47                                                            ;80B2B6;
++   STX.B DP_DecompSrc                                                   ;80B2B6;
     PLX                                                                  ;80B2B8;
     BRA +                                                                ;80B2B9;
 
@@ -7767,7 +7767,7 @@ DecompressionToVRAM:
     PHA                                                                  ;80B2BB;
     LDA.B #$00                                                           ;80B2BC;
     XBA                                                                  ;80B2BE;
-    LDA.B $4A                                                            ;80B2BF;
+    LDA.B DP_DecompVar                                                   ;80B2BF;
     AND.B #$1F                                                           ;80B2C1;
 
 +   TAX                                                                  ;80B2C3;
@@ -7788,13 +7788,13 @@ DecompressionToVRAM:
   .loopDirectCopy:
 ; Command 0: Direct copy
     PHX                                                                  ;80B2DC;
-    LDX.B $47                                                            ;80B2DD;
+    LDX.B DP_DecompSrc                                                   ;80B2DD;
     LDA.W $0000,X                                                        ;80B2DF;
     INX                                                                  ;80B2E2;
     BNE +                                                                ;80B2E3;
     JSR.W SourceBankOverflowCorrection                                   ;80B2E5;
 
-+   STX.B $47                                                            ;80B2E8;
++   STX.B DP_DecompSrc                                                   ;80B2E8;
     PLX                                                                  ;80B2EA;
     PHA                                                                  ;80B2EB;
     TYA                                                                  ;80B2EC;
@@ -7816,13 +7816,13 @@ DecompressionToVRAM:
   .byteFill:
 ; Command 1: Byte fill
     PHX                                                                  ;80B302;
-    LDX.B $47                                                            ;80B303;
+    LDX.B DP_DecompSrc                                                   ;80B303;
     LDA.W $0000,X                                                        ;80B305;
     INX                                                                  ;80B308;
     BNE +                                                                ;80B309;
     JSR.W SourceBankOverflowCorrection                                   ;80B30B;
 
-+   STX.B $47                                                            ;80B30E;
++   STX.B DP_DecompSrc                                                   ;80B30E;
     PLX                                                                  ;80B310;
 
   .loopByteFill:
@@ -7846,28 +7846,28 @@ DecompressionToVRAM:
   .wordFill:
 ; Command 2: Word fill
     PHX                                                                  ;80B328;
-    LDX.B $47                                                            ;80B329;
+    LDX.B DP_DecompSrc                                                   ;80B329;
     LDA.W $0000,X                                                        ;80B32B;
     INX                                                                  ;80B32E;
     BNE +                                                                ;80B32F;
     JSR.W SourceBankOverflowCorrection                                   ;80B331;
 
-+   STX.B $47                                                            ;80B334;
++   STX.B DP_DecompSrc                                                   ;80B334;
     PLX                                                                  ;80B336;
-    STA.B $4A                                                            ;80B337;
+    STA.B DP_DecompVar                                                   ;80B337;
     PHX                                                                  ;80B339;
-    LDX.B $47                                                            ;80B33A;
+    LDX.B DP_DecompSrc                                                   ;80B33A;
     LDA.W $0000,X                                                        ;80B33C;
     INX                                                                  ;80B33F;
     BNE +                                                                ;80B340;
     JSR.W SourceBankOverflowCorrection                                   ;80B342;
 
-+   STX.B $47                                                            ;80B345;
++   STX.B DP_DecompSrc                                                   ;80B345;
     PLX                                                                  ;80B347;
-    STA.B $4B                                                            ;80B348;
+    STA.B DP_DecompVar+1                                                 ;80B348;
 
   .loopWordFill:
-    LDA.B $4A                                                            ;80B34A;
+    LDA.B DP_DecompVar                                                   ;80B34A;
     PHA                                                                  ;80B34C;
     TYA                                                                  ;80B34D;
     LSR A                                                                ;80B34E;
@@ -7883,7 +7883,7 @@ DecompressionToVRAM:
     INY                                                                  ;80B35C;
     DEX                                                                  ;80B35D;
     BEQ .goto_loopMain                                                   ;80B35E;
-    LDA.B $4B                                                            ;80B360;
+    LDA.B DP_DecompVar+1                                                 ;80B360;
     PHA                                                                  ;80B362;
     TYA                                                                  ;80B363;
     LSR A                                                                ;80B364;
@@ -7906,13 +7906,13 @@ DecompressionToVRAM:
   .incrementingFill:
 ; Command 3: Incrementing fill
     PHX                                                                  ;80B379;
-    LDX.B $47                                                            ;80B37A;
+    LDX.B DP_DecompSrc                                                   ;80B37A;
     LDA.W $0000,X                                                        ;80B37C;
     INX                                                                  ;80B37F;
     BNE +                                                                ;80B380;
     JSR.W SourceBankOverflowCorrection                                   ;80B382;
 
-+   STX.B $47                                                            ;80B385;
++   STX.B DP_DecompSrc                                                   ;80B385;
     PLX                                                                  ;80B387;
 
   .loopIncrementingFill:
@@ -7940,37 +7940,37 @@ DecompressionToVRAM:
     BCS .slidingDictionary                                               ;80B3A2;
 ; Command 4 and 5: dictionary copy and inverted dictionary copy
     AND.B #$20                                                           ;80B3A4;
-    STA.B $4F                                                            ;80B3A6;
+    STA.B DP_DecompDictCopyBit                                           ;80B3A6;
     PHX                                                                  ;80B3A8;
-    LDX.B $47                                                            ;80B3A9;
+    LDX.B DP_DecompSrc                                                   ;80B3A9;
     LDA.W $0000,X                                                        ;80B3AB;
     INX                                                                  ;80B3AE;
     BNE +                                                                ;80B3AF;
     JSR.W SourceBankOverflowCorrection                                   ;80B3B1;
 
-+   STX.B $47                                                            ;80B3B4;
++   STX.B DP_DecompSrc                                                   ;80B3B4;
     PLX                                                                  ;80B3B6;
-    STA.B $4A                                                            ;80B3B7;
+    STA.B DP_DecompVar                                                   ;80B3B7;
     PHX                                                                  ;80B3B9;
-    LDX.B $47                                                            ;80B3BA;
+    LDX.B DP_DecompSrc                                                   ;80B3BA;
     LDA.W $0000,X                                                        ;80B3BC;
     INX                                                                  ;80B3BF;
     BNE +                                                                ;80B3C0;
     JSR.W SourceBankOverflowCorrection                                   ;80B3C2;
 
-+   STX.B $47                                                            ;80B3C5;
++   STX.B DP_DecompSrc                                                   ;80B3C5;
     PLX                                                                  ;80B3C7;
-    STA.B $4B                                                            ;80B3C8;
+    STA.B DP_DecompVar+1                                                 ;80B3C8;
     REP #$20                                                             ;80B3CA;
-    LDA.B $4C                                                            ;80B3CC;
+    LDA.B DP_DecompDest                                                  ;80B3CC;
     CLC                                                                  ;80B3CE;
-    ADC.B $4A                                                            ;80B3CF;
-    STA.B $4A                                                            ;80B3D1;
+    ADC.B DP_DecompVar                                                   ;80B3CF;
+    STA.B DP_DecompVar                                                   ;80B3D1;
 
   .loopDictionaryCopy:
     PHX                                                                  ;80B3D3;
     REP #$20                                                             ;80B3D4;
-    LDA.B $4A                                                            ;80B3D6;
+    LDA.B DP_DecompVar                                                   ;80B3D6;
     LSR A                                                                ;80B3D8;
     STA.L $002116                                                        ;80B3D9;
     LDA.L $002139                                                        ;80B3DD;
@@ -7978,9 +7978,9 @@ DecompressionToVRAM:
     BCC +                                                                ;80B3E5;
     XBA                                                                  ;80B3E7;
 
-+   INC.B $4A                                                            ;80B3E8;
++   INC.B DP_DecompVar                                                   ;80B3E8;
     SEP #$20                                                             ;80B3EA;
-    LDX.B $4F                                                            ;80B3EC;
+    LDX.B DP_DecompDictCopyBit                                           ;80B3EC;
     BEQ +                                                                ;80B3EE;
     EOR.B #$FF                                                           ;80B3F0;
 
@@ -8012,23 +8012,23 @@ DecompressionToVRAM:
   .slidingDictionary:
 ; Command 6 and 7: sliding dictionary copy and inverted sliding dictionary copy
     AND.B #$20                                                           ;80B416;
-    STA.B $4F                                                            ;80B418;
+    STA.B DP_DecompDictCopyBit                                           ;80B418;
     PHX                                                                  ;80B41A;
-    LDX.B $47                                                            ;80B41B;
+    LDX.B DP_DecompSrc                                                   ;80B41B;
     LDA.W $0000,X                                                        ;80B41D;
     INX                                                                  ;80B420;
     BNE +                                                                ;80B421;
     JSR.W SourceBankOverflowCorrection                                   ;80B423;
 
-+   STX.B $47                                                            ;80B426;
++   STX.B DP_DecompSrc                                                   ;80B426;
     PLX                                                                  ;80B428;
-    STA.B $4A                                                            ;80B429;
-    STZ.B $4B                                                            ;80B42B;
+    STA.B DP_DecompVar                                                   ;80B429;
+    STZ.B DP_DecompVar+1                                                 ;80B42B;
     REP #$20                                                             ;80B42D;
     TYA                                                                  ;80B42F;
     SEC                                                                  ;80B430;
-    SBC.B $4A                                                            ;80B431;
-    STA.B $4A                                                            ;80B433;
+    SBC.B DP_DecompVar                                                   ;80B431;
+    STA.B DP_DecompVar                                                   ;80B433;
     BRA .loopDictionaryCopy                                              ;80B435;
 
 
@@ -8323,54 +8323,54 @@ LoadFromLoadStation:
     PLB                                                                  ;80C43A;
     REP #$30                                                             ;80C43B;
     LDA.W #$0001                                                         ;80C43D;
-    STA.W $1E75                                                          ;80C440;
-    LDA.W $079F                                                          ;80C443;
+    STA.W SaveStationLockoutFlag                                         ;80C440;
+    LDA.W AreaIndex                                                      ;80C443;
     ASL A                                                                ;80C446;
     TAX                                                                  ;80C447;
-    LDA.W $078B                                                          ;80C448;
+    LDA.W LoadStationIndex                                               ;80C448;
     ASL A                                                                ;80C44B;
-    STA.B $12                                                            ;80C44C;
+    STA.B DP_Temp12                                                      ;80C44C;
     ASL A                                                                ;80C44E;
     CLC                                                                  ;80C44F;
-    ADC.B $12                                                            ;80C450;
-    ADC.W $078B                                                          ;80C452;
+    ADC.B DP_Temp12                                                      ;80C450;
+    ADC.W LoadStationIndex                                               ;80C452;
     ASL A                                                                ;80C455;
     CLC                                                                  ;80C456;
     ADC.W LoadStationListPointers,X                                      ;80C457;
     TAX                                                                  ;80C45A;
     LDA.W $0000,X                                                        ;80C45B;
-    STA.W $079B                                                          ;80C45E;
+    STA.W RoomPointer                                                    ;80C45E;
     LDA.W $0002,X                                                        ;80C461;
-    STA.W $078D                                                          ;80C464;
+    STA.W DoorPointer                                                    ;80C464;
     LDA.W $0004,X                                                        ;80C467;
-    STA.W $078F                                                          ;80C46A;
+    STA.W DoorBTS                                                        ;80C46A;
     LDA.W $0006,X                                                        ;80C46D;
-    STA.W $0911                                                          ;80C470;
-    STA.W $091D                                                          ;80C473;
+    STA.W Layer1XPosition                                                ;80C470;
+    STA.W Layer2ScrollY+1                                                ;80C473;
     LDA.W $0008,X                                                        ;80C476;
-    STA.W $0915                                                          ;80C479;
-    STA.W $091F                                                          ;80C47C;
+    STA.W Layer1YPosition                                                ;80C479;
+    STA.W BG1YOffset                                                     ;80C47C;
     LDA.W $000A,X                                                        ;80C47F;
     CLC                                                                  ;80C482;
-    ADC.W $0915                                                          ;80C483;
-    STA.W $0AFA                                                          ;80C486;
-    STA.W $0B14                                                          ;80C489;
-    LDA.W $0911                                                          ;80C48C;
+    ADC.W Layer1YPosition                                                ;80C483;
+    STA.W SamusYPosition                                                 ;80C486;
+    STA.W SamusPreviousYPosition                                         ;80C489;
+    LDA.W Layer1XPosition                                                ;80C48C;
     CLC                                                                  ;80C48F;
     ADC.W #$0080                                                         ;80C490;
     ADC.W $000C,X                                                        ;80C493;
-    STA.W $0AF6                                                          ;80C496;
-    STA.W $0B10                                                          ;80C499;
-    STZ.B $B1                                                            ;80C49C;
-    STZ.B $B3                                                            ;80C49E;
+    STA.W SamusXPosition                                                 ;80C496;
+    STA.W SamusPreviousXPosition                                         ;80C499;
+    STZ.B DP_BG1XScroll                                                  ;80C49C;
+    STZ.B DP_BG1YScroll                                                  ;80C49E;
     SEP #$20                                                             ;80C4A0;
     LDA.B #$8F                                                           ;80C4A2;
     PHA                                                                  ;80C4A4;
     PLB                                                                  ;80C4A5;
-    LDX.W $079B                                                          ;80C4A6;
+    LDX.W RoomPointer                                                    ;80C4A6;
     LDA.W $0001,X                                                        ;80C4A9;
-    STA.W $079F                                                          ;80C4AC;
-    STZ.W $05F7                                                          ;80C4AF;
+    STA.W AreaIndex                                                      ;80C4AC;
+    STZ.W DisableMinimap                                                 ;80C4AF;
     PLB                                                                  ;80C4B2;
     PLP                                                                  ;80C4B3;
     RTL                                                                  ;80C4B4;
@@ -8389,7 +8389,7 @@ LoadStationListPointers:
     dw LoadStations_Debug                                                ;80C4C3;
 
 
-; Load station lists are indexed by $078B
+; Load station lists are indexed by LoadStationIndex
 ; Indices 0..7 are the only ones that can be used by save stations (gunship save station uses 0)
 ; Indices 8..Fh are elevators, selectable by the debug file select map if they've been used before (if elevator doors mark them as used)
 ; Indices 10h+ are debug load points, except for Crateria's index 12h, which is used for the gunship landing sequence,
@@ -8410,7 +8410,7 @@ LoadStations_Crateria:
     dw $0000,$0400,$0400,$0040,$0000                                     ;80C4C9;
 
     dw RoomHeader_CrateriaSave
-; 1: Crateria save station (from Crateria mainstreet)                                          ;80C4D3;
+; 1: Crateria save station (from Crateria mainstreet)
     dw Door_Parlor_5                                                     ;80C4D5;
     dw $0000,$0000,$0000,$0098,$FFE0                                     ;80C4D7;
 
@@ -9088,10 +9088,10 @@ SetDebugElevatorAsUsed:
     PHK                                                                  ;80CD09;
     PLB                                                                  ;80CD0A;
     REP #$30                                                             ;80CD0B;
-    LDA.W $079F                                                          ;80CD0D;
+    LDA.W AreaIndex                                                      ;80CD0D;
     ASL A                                                                ;80CD10;
     TAX                                                                  ;80CD11;
-    LDA.W $0793                                                          ;80CD12;
+    LDA.W ElevatorDoorProperties                                         ;80CD12;
     AND.W #$000F                                                         ;80CD15;
     DEC A                                                                ;80CD18;
     ASL A                                                                ;80CD19;
@@ -9104,13 +9104,13 @@ SetDebugElevatorAsUsed:
     LDA.W $0000,Y                                                        ;80CD25;
     TAX                                                                  ;80CD28;
     LDA.W $0001,Y                                                        ;80CD29;
-    ORA.L $7ED8F8,X                                                      ;80CD2C;
-    STA.L $7ED8F8,X                                                      ;80CD30;
+    ORA.L SRAMMirror_UsedSaveStationsElevators,X                         ;80CD2C;
+    STA.L SRAMMirror_UsedSaveStationsElevators,X                         ;80CD30;
     LDA.W $0002,Y                                                        ;80CD34;
     TAX                                                                  ;80CD37;
     LDA.W $0003,Y                                                        ;80CD38;
-    ORA.L $7ED8F8,X                                                      ;80CD3B;
-    STA.L $7ED8F8,X                                                      ;80CD3F;
+    ORA.L SRAMMirror_UsedSaveStationsElevators,X                         ;80CD3B;
+    STA.L SRAMMirror_UsedSaveStationsElevators,X                         ;80CD3F;
     PLB                                                                  ;80CD43;
     PLP                                                                  ;80CD44;
     RTL                                                                  ;80CD45;
