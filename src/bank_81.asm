@@ -965,7 +965,7 @@ AddSpritemapFrom_82C569_TableToOAM:
 
 ; See $879F for spritemap format
     PHB                                                                  ;81891F;
-    PEA.W MenuSpritemap_Pointers>>8&FF00                                                          ;818920;
+    PEA.W MenuSpritemap_Pointers>>8&$FF00                                                          ;818920;
     PLB                                                                  ;818923;
     PLB                                                                  ;818924;
     STY.B DP_Temp12                                                            ;818925;
@@ -1053,7 +1053,7 @@ AddSamusSpritemapToOAM:
 ;     186h..18Eh: Bubbles
 ;     18Fh..197h: Diving splash
     PHB                                                                  ;8189AE;
-    PEA.W SamusSpritemapTable>>8&FF00                                                          ;8189AF;
+    PEA.W SamusSpritemapTable>>8&$FF00                                                          ;8189AF;
     PLB                                                                  ;8189B2;
     PLB                                                                  ;8189B3;
     STY.B DP_Temp12                                                            ;8189B4;
@@ -1141,7 +1141,7 @@ AddSpritemapFrom_93A1A1_TableToOAM:
 ; See $8A5F for spritemap format
 ; Draws charge / grapple beam flare and charge sparks
     PHB                                                                  ;818A37;
-    PEA.W FlareSpritemapPointers>>8&FF00                                                          ;818A38;
+    PEA.W FlareSpritemapPointers>>8&$FF00                                                          ;818A38;
     PLB                                                                  ;818A3B;
     PLB                                                                  ;818A3C;
     ASL A                                                                ;818A3D;
@@ -1164,7 +1164,7 @@ AddProjectileSpritemapToOAM:
 ; Actually uses the palette defined in the spritemap
 ; See $8A5F for spritemap format
     PHB                                                                  ;818A4B;
-    PEA.W FlareSpritemapPointers>>8&FF00                                                          ;818A4C;
+    PEA.W FlareSpritemapPointers>>8&$FF00                                                          ;818A4C;
     PLB                                                                  ;818A4F;
     PLB                                                                  ;818A50;
     LDY.W SamusProjectile_SpritemapPointers,X                                                        ;818A51;

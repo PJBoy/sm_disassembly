@@ -1259,7 +1259,7 @@ LayerBlending_PhantoonSemiTransparencyFlag: skip 2 ; $1988
 Unused198A: skip 3 ; $198A..8C
 
 EnemyProjectile_Enable: skip 4 ; $198D
-EnemyProjectile_Index: skip 4 ; $1991
+EnemyProjectile_Index: skip 2 ; $1991
 EnemyProjectile_InitParam0: skip 2 ; $1993
 EnemyProjectile_InitParam1: skip 2 ; $1995
 EnemyProjectile_ID: skip $24 ; $1997..BA
