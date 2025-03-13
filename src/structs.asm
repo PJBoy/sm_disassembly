@@ -1911,12 +1911,14 @@ SRAMMirror_LoadingGameState: skip 2 ; $7ED914
 SRAMMirror_SaveStationIndex: skip 2 ; $7ED916
 SRAMMirror_AreaIndex: skip 2 ; $7ED918
 SRAMMirror_GlobalNumberOfItemsLoadedCounter: skip 2 ; $7ED91A
-SRAMMirror_MapDataCrateria: skip 2 ; $7ED91C..65
-SRAMMirror_MapDataBrinstar: skip 2 ; $7ED966..AD
-SRAMMirror_MapDataNorfair: skip 2 ; $7ED9AE..F9
-SRAMMirror_MapDataWreckedShip: skip 2 ; $7ED9FA..DA0B
-SRAMMirror_MapDataMaridia: skip 2 ; $7ED90C..4D
-SRAMMirror_MapDataTourian: skip 2 ; $7ED94E..62
+SRAMMirror_MapDataCrateria: skip $4A ; $7ED91C..65
+SRAMMirror_MapDataBrinstar: skip $48 ; $7ED966..AD
+SRAMMirror_MapDataNorfair: skip $4C ; $7ED9AE..F9
+SRAMMirror_MapDataWreckedShip: skip $12 ; $7ED9FA..DA0B
+SRAMMirror_MapDataMaridia: skip $42 ; $7EDA0C..4D
+SRAMMirror_MapDataTourian: skip $15 ; $7EDA4E..62
+skip $3B8
+SRAMMirror_End: ; $7EDE1B
 
 org $7EDE1C
 PLMExtra_InstructionTimers: skip $50 ; $7EDE1C..6B

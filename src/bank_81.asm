@@ -23,20 +23,20 @@ SaveToSRAM:
     LDY.W #$005E                                                         ;818013;
 
   .loopSamus:
-    LDA.W $09A2,Y                                                        ;818016;
-    STA.W $D7C0,Y                                                        ;818019;
+    LDA.W EquippedItems,Y                                                ;818016;
+    STA.W SRAMMirror_Equipment,Y                                         ;818019;
     DEY                                                                  ;81801C;
     DEY                                                                  ;81801D;
     BPL .loopSamus                                                       ;81801E;
     LDX.W #$0000                                                         ;818020;
-    LDA.W $079F                                                          ;818023;
+    LDA.W AreaIndex                                                      ;818023;
     XBA                                                                  ;818026;
     TAX                                                                  ;818027;
     LDY.W #$0000                                                         ;818028;
 
   .loopMap:
-    LDA.W $07F7,Y                                                        ;81802B;
-    STA.W $CD52,X                                                        ;81802E;
+    LDA.W MapTilesExplored,Y                                             ;81802B;
+    STA.W ExploredMapTiles,X                                             ;81802E;
     INY                                                                  ;818031;
     INY                                                                  ;818032;
     INX                                                                  ;818033;
@@ -44,34 +44,34 @@ SaveToSRAM:
     CPY.W #$0100                                                         ;818035;
     BMI .loopMap                                                         ;818038;
     JSR.W SaveMap                                                        ;81803A;
-    LDA.W $078B                                                          ;81803D;
-    STA.W $D916                                                          ;818040;
-    LDA.W $079F                                                          ;818043;
-    STA.W $D918                                                          ;818046;
-    LDX.B $12                                                            ;818049;
+    LDA.W LoadStationIndex                                               ;81803D;
+    STA.W SRAMMirror_SaveStationIndex                                    ;818040;
+    LDA.W AreaIndex                                                      ;818043;
+    STA.W SRAMMirror_AreaIndex                                           ;818046;
+    LDX.B DP_Temp12                                                      ;818049;
     LDA.L SaveSlotOffsets,X                                              ;81804B;
     TAX                                                                  ;81804F;
-    LDY.W #$D7C0                                                         ;818050; $7E
+    LDY.W #SRAMMirror_Equipment                                          ;818050;
 
   .loopToSRAM:
     LDA.W $0000,Y                                                        ;818053;
     STA.L $700000,X                                                      ;818056;
     CLC                                                                  ;81805A;
-    ADC.B $14                                                            ;81805B;
-    STA.B $14                                                            ;81805D;
+    ADC.B DP_Temp14                                                      ;81805B;
+    STA.B DP_Temp14                                                      ;81805D;
     INX                                                                  ;81805F;
     INX                                                                  ;818060;
     INY                                                                  ;818061;
     INY                                                                  ;818062;
-    CPY.W #$DE1C                                                         ;818063; $7E
+    CPY.W #SRAMMirror_End+1                                              ;818063;
     BNE .loopToSRAM                                                      ;818066;
-    LDX.B $12                                                            ;818068;
-    LDA.B $14                                                            ;81806A;
-    STA.L $700000,X                                                      ;81806C;
-    STA.L $701FF0,X                                                      ;818070;
+    LDX.B DP_Temp12                                                      ;818068;
+    LDA.B DP_Temp14                                                      ;81806A;
+    STA.L SRAM_Slot0Checksum0,X                                          ;81806C;
+    STA.L SRAM_Slot0Checksum1,X                                          ;818070;
     EOR.W #$FFFF                                                         ;818074;
-    STA.L $700008,X                                                      ;818077;
-    STA.L $701FF8,X                                                      ;81807B;
+    STA.L SRAM_Slot0Complement0,X                                        ;818077;
+    STA.L SRAM_Slot0Complement1,X                                        ;81807B;
     PLY                                                                  ;81807F;
     PLX                                                                  ;818080;
     CLC                                                                  ;818081;
@@ -91,7 +91,7 @@ LoadFromSRAM:
 ; If SRAM is not corrupt (according to the checksums):
 ;     Copies data to $09A2..0A01 (Samus data and game options)
 ;     Loads map data to $7E:CD52..D351, clears Ceres map data $7E:D352..D451 (the working copy $07F7..08F6 isn't updated)
-;     Copies load station index to $078B and area index to $079F
+;     Copies load station index to LoadStationIndex and area index to AreaIndex
 ; Otherwise:
 ;     Clears the SRAM slot
 ;     Sets load station index to 0 and area index to Crateria
@@ -103,29 +103,29 @@ LoadFromSRAM:
     PEA.W $7E00                                                          ;81808A;
     PLB                                                                  ;81808D;
     PLB                                                                  ;81808E;
-    STZ.B $14                                                            ;81808F;
+    STZ.B DP_Temp14                                                      ;81808F;
     AND.W #$0003                                                         ;818091;
     ASL A                                                                ;818094;
-    STA.B $12                                                            ;818095;
+    STA.B DP_Temp12                                                      ;818095;
     TAX                                                                  ;818097;
     LDA.L SaveSlotOffsets,X                                              ;818098;
     TAX                                                                  ;81809C;
-    LDY.W #$D7C0                                                         ;81809D; $7E
+    LDY.W #SRAMMirror_Equipment                                          ;81809D;
 
   .loop:
     LDA.L $700000,X                                                      ;8180A0;
     STA.W $0000,Y                                                        ;8180A4;
     CLC                                                                  ;8180A7;
-    ADC.B $14                                                            ;8180A8;
-    STA.B $14                                                            ;8180AA;
+    ADC.B DP_Temp14                                                      ;8180A8;
+    STA.B DP_Temp14                                                      ;8180AA;
     INX                                                                  ;8180AC;
     INX                                                                  ;8180AD;
     INY                                                                  ;8180AE;
     INY                                                                  ;8180AF;
-    CPY.W #$DE1C                                                         ;8180B0; $7E
+    CPY.W #SRAMMirror_End+1                                              ;8180B0;
     BNE .loop                                                            ;8180B3;
-    LDX.B $12                                                            ;8180B5;
-    LDA.B $14                                                            ;8180B7;
+    LDX.B DP_Temp12                                                      ;8180B5;
+    LDA.B DP_Temp14                                                      ;8180B7;
     CMP.L $700000,X                                                      ;8180B9;
     BNE .doubleCheck                                                     ;8180BD;
     EOR.W #$FFFF                                                         ;8180BF;
@@ -134,27 +134,27 @@ LoadFromSRAM:
     BRA .success                                                         ;8180C8;
 
   .doubleCheck:
-    LDA.B $14                                                            ;8180CA;
-    CMP.L $701FF0,X                                                      ;8180CC;
+    LDA.B DP_Temp14                                                      ;8180CA;
+    CMP.L SRAM_Slot0Checksum1,X                                          ;8180CC;
     BNE .corrupt                                                         ;8180D0;
     EOR.W #$FFFF                                                         ;8180D2;
-    CMP.L $701FF8,X                                                      ;8180D5;
+    CMP.L SRAM_Slot0Complement1,X                                        ;8180D5;
     BNE .corrupt                                                         ;8180D9;
 
   .success:
     LDY.W #$005E                                                         ;8180DB;
 
   .loopSuccess:
-    LDA.W $D7C0,Y                                                        ;8180DE;
-    STA.W $09A2,Y                                                        ;8180E1;
+    LDA.W SRAMMirror_Equipment,Y                                         ;8180DE;
+    STA.W EquippedItems,Y                                                ;8180E1;
     DEY                                                                  ;8180E4;
     DEY                                                                  ;8180E5;
     BPL .loopSuccess                                                     ;8180E6;
     JSR.W LoadMap                                                        ;8180E8;
-    LDA.W $D916                                                          ;8180EB;
-    STA.W $078B                                                          ;8180EE;
-    LDA.W $D918                                                          ;8180F1;
-    STA.W $079F                                                          ;8180F4;
+    LDA.W SRAMMirror_SaveStationIndex                                    ;8180EB;
+    STA.W LoadStationIndex                                               ;8180EE;
+    LDA.W SRAMMirror_AreaIndex                                           ;8180F1;
+    STA.W AreaIndex                                                      ;8180F4;
     PLY                                                                  ;8180F7;
     PLX                                                                  ;8180F8;
     CLC                                                                  ;8180F9;
@@ -162,27 +162,27 @@ LoadFromSRAM:
     RTL                                                                  ;8180FB;
 
   .corrupt:
-    STZ.B $14                                                            ;8180FC;
-    LDX.B $12                                                            ;8180FE;
+    STZ.B DP_Temp14                                                      ;8180FC;
+    LDX.B DP_Temp12                                                      ;8180FE;
     LDA.L SaveSlotOffsets,X                                              ;818100;
     TAX                                                                  ;818104;
-    LDY.W #$D7C0                                                         ;818105; $7E
+    LDY.W #SRAMMirror_Equipment                                          ;818105;
     LDA.W #$0000                                                         ;818108;
 
   .loopCorrupt:
     STA.L $700000,X                                                      ;81810B;
     CLC                                                                  ;81810F;
-    ADC.B $14                                                            ;818110;
-    STA.B $14                                                            ;818112;
+    ADC.B DP_Temp14                                                      ;818110;
+    STA.B DP_Temp14                                                      ;818112;
     INX                                                                  ;818114;
     INX                                                                  ;818115;
     INY                                                                  ;818116;
     INY                                                                  ;818117;
-    CPY.W #$DE1C                                                         ;818118; $7E
+    CPY.W #SRAMMirror_End+1                                              ;818118;
     BNE .loopCorrupt                                                     ;81811B;
     LDA.W #$0000                                                         ;81811D;
-    STA.W $078B                                                          ;818120;
-    STA.W $079F                                                          ;818123;
+    STA.W LoadStationIndex                                               ;818120;
+    STA.W AreaIndex                                                      ;818123;
     PLY                                                                  ;818126;
     PLX                                                                  ;818127;
     SEC                                                                  ;818128;
@@ -424,50 +424,50 @@ LoadMap:
     LDA.W #$0000                                                         ;8182ED;
 
   .loopTilesExplored:
-    STA.L $7ECD52,X                                                      ;8182F0;
+    STA.L ExploredMapTiles,X                                             ;8182F0;
     DEX                                                                  ;8182F4;
     DEX                                                                  ;8182F5;
     BPL .loopTilesExplored                                               ;8182F6;
-    STZ.B $16                                                            ;8182F8;
+    STZ.B DP_Temp16                                                      ;8182F8;
 
   .loopArea:
-    LDA.B $16                                                            ;8182FA;
+    LDA.B DP_Temp16                                                      ;8182FA;
     XBA                                                                  ;8182FC;
-    STA.B $14                                                            ;8182FD;
-    LDX.B $16                                                            ;8182FF;
+    STA.B DP_Temp14                                                      ;8182FD;
+    LDX.B DP_Temp16                                                      ;8182FF;
     LDA.W SRAMMapData_size,X                                             ;818301;
     AND.W #$00FF                                                         ;818304;
-    STA.B $12                                                            ;818307;
-    LDA.B $16                                                            ;818309;
+    STA.B DP_Temp12                                                      ;818307;
+    LDA.B DP_Temp16                                                      ;818309;
     ASL A                                                                ;81830B;
     TAX                                                                  ;81830C;
     LDA.W MapRoomPointers,X                                              ;81830D;
-    STA.B $00                                                            ;818310;
-    LDA.W #$0081                                                         ;818312;
-    STA.B $02                                                            ;818315;
+    STA.B DP_Temp00                                                      ;818310;
+    LDA.W #SRAMMapData>>16                                               ;818312;
+    STA.B DP_Temp02                                                      ;818315;
     LDA.W SRAMMapData_offset,X                                           ;818317;
     TAX                                                                  ;81831A;
-    LDA.W #$CD52                                                         ;81831B; $7E
-    STA.B $03                                                            ;81831E;
-    LDA.W #$007E                                                         ;818320;
-    STA.B $05                                                            ;818323;
+    LDA.W #ExploredMapTiles                                              ;81831B;
+    STA.B DP_Temp03                                                      ;81831E;
+    LDA.W #ExploredMapTiles>>16                                          ;818320;
+    STA.B DP_Temp05                                                      ;818323;
 
   .loopRoom:
-    LDA.B ($00)                                                          ;818325;
+    LDA.B (DP_Temp00)                                                    ;818325;
     AND.W #$00FF                                                         ;818327;
     CLC                                                                  ;81832A;
-    ADC.B $14                                                            ;81832B;
+    ADC.B DP_Temp14                                                      ;81832B;
     TAY                                                                  ;81832D;
     SEP #$20                                                             ;81832E;
-    LDA.L $7ED91C,X                                                      ;818330;
-    STA.B [$03],Y                                                        ;818334;
+    LDA.L SRAMMirror_MapDataCrateria,X                                   ;818330;
+    STA.B [DP_Temp03],Y                                                  ;818334;
     REP #$20                                                             ;818336;
-    INC.B $00                                                            ;818338;
+    INC.B DP_Temp00                                                      ;818338;
     INX                                                                  ;81833A;
-    DEC.B $12                                                            ;81833B;
+    DEC.B DP_Temp12                                                      ;81833B;
     BNE .loopRoom                                                        ;81833D;
-    INC.B $16                                                            ;81833F;
-    LDA.B $16                                                            ;818341;
+    INC.B DP_Temp16                                                      ;81833F;
+    LDA.B DP_Temp16                                                      ;818341;
     CMP.W #$0006                                                         ;818343;
     BMI .loopArea                                                        ;818346;
     PLP                                                                  ;818348;
@@ -483,44 +483,44 @@ SaveMap:
     PHK                                                                  ;81834D;
     PLB                                                                  ;81834E;
     REP #$30                                                             ;81834F;
-    STZ.B $1A                                                            ;818351;
+    STZ.B DP_Temp1A                                                            ;818351;
 
   .loopAreas:
-    LDX.B $1A                                                            ;818353;
+    LDX.B DP_Temp1A                                                            ;818353;
     LDA.W SRAMMapData_size,X                                             ;818355;
     AND.W #$00FF                                                         ;818358;
-    STA.B $16                                                            ;81835B;
-    LDA.B $1A                                                            ;81835D;
+    STA.B DP_Temp16                                                            ;81835B;
+    LDA.B DP_Temp1A                                                            ;81835D;
     ASL A                                                                ;81835F;
     TAX                                                                  ;818360;
     LDA.W MapRoomPointers,X                                              ;818361;
-    STA.B $00                                                            ;818364;
+    STA.B DP_Temp00                                                            ;818364;
     LDA.W SRAMMapData_offset,X                                           ;818366;
     TAX                                                                  ;818369;
-    LDA.B $1A                                                            ;81836A;
+    LDA.B DP_Temp1A                                                            ;81836A;
     XBA                                                                  ;81836C;
-    STA.B $18                                                            ;81836D;
-    LDA.W #$CD52                                                         ;81836F; $7E
-    STA.B $03                                                            ;818372;
-    LDA.W #$007E                                                         ;818374;
-    STA.B $05                                                            ;818377;
+    STA.B DP_Temp18                                                            ;81836D;
+    LDA.W #ExploredMapTiles                                                         ;81836F; $7E
+    STA.B DP_Temp03                                                            ;818372;
+    LDA.W #ExploredMapTiles>>16                                                         ;818374;
+    STA.B DP_Temp05                                                            ;818377;
 
   .loopRooms:
-    LDA.B ($00)                                                          ;818379;
+    LDA.B (DP_Temp00)                                                          ;818379;
     AND.W #$00FF                                                         ;81837B;
     CLC                                                                  ;81837E;
-    ADC.B $18                                                            ;81837F;
+    ADC.B DP_Temp18                                                            ;81837F;
     TAY                                                                  ;818381;
     SEP #$20                                                             ;818382;
-    LDA.B [$03],Y                                                        ;818384;
-    STA.L $7ED91C,X                                                      ;818386;
+    LDA.B [DP_Temp03],Y                                                        ;818384;
+    STA.L SRAMMirror_MapDataCrateria,X                                                      ;818386;
     REP #$20                                                             ;81838A;
-    INC.B $00                                                            ;81838C;
+    INC.B DP_Temp00                                                            ;81838C;
     INX                                                                  ;81838E;
-    DEC.B $16                                                            ;81838F;
+    DEC.B DP_Temp16                                                            ;81838F;
     BNE .loopRooms                                                       ;818391;
-    INC.B $1A                                                            ;818393;
-    LDA.B $1A                                                            ;818395;
+    INC.B DP_Temp1A                                                            ;818393;
+    LDA.B DP_Temp1A                                                            ;818395;
     CMP.W #$0006                                                         ;818397;
     BMI .loopAreas                                                       ;81839A;
     PLP                                                                  ;81839C;
@@ -654,10 +654,10 @@ AddSpritemapToOAM:
   .gotoReturn:
     JMP.W .return                                                        ;8187A7;
 
-+   STA.B $18                                                            ;8187AA;
++   STA.B DP_Temp18                                                            ;8187AA;
     INY                                                                  ;8187AC;
     INY                                                                  ;8187AD;
-    LDA.W $0590                                                          ;8187AE;
+    LDA.W OAMStack                                                          ;8187AE;
     BIT.W #$FE00                                                         ;8187B1;
     BNE .gotoReturn                                                      ;8187B4;
     TAX                                                                  ;8187B6;
@@ -665,47 +665,47 @@ AddSpritemapToOAM:
 
   .loop:
     LDA.W $0000,Y                                                        ;8187B8;
-    ADC.B $14                                                            ;8187BB;
-    STA.W $0370,X                                                        ;8187BD;
+    ADC.B DP_Temp14                                                            ;8187BB;
+    STA.W OAMLow,X                                                        ;8187BD;
     AND.W #$0100                                                         ;8187C0;
     BEQ .xHighClear                                                      ;8187C3;
     LDA.W $0000,Y                                                        ;8187C5;
     BPL +                                                                ;8187C8;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;8187CA;
-    STA.B $1C                                                            ;8187CE;
-    LDA.B ($1C)                                                          ;8187D0;
+    STA.B DP_Temp1C                                                            ;8187CE;
+    LDA.B (DP_Temp1C)                                                          ;8187D0;
     ORA.L MapOfOAMIndexToHighOAM_bitmask,X                               ;8187D2;
-    STA.B ($1C)                                                          ;8187D6;
+    STA.B (DP_Temp1C)                                                          ;8187D6;
     JMP.W .merge                                                         ;8187D8;
 
 +   LDA.L MapOfOAMIndexToHighOAM_address,X                               ;8187DB;
-    STA.B $1C                                                            ;8187DF;
-    LDA.B ($1C)                                                          ;8187E1;
+    STA.B DP_Temp1C                                                            ;8187DF;
+    LDA.B (DP_Temp1C)                                                          ;8187E1;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;8187E3;
-    STA.B ($1C)                                                          ;8187E7;
+    STA.B (DP_Temp1C)                                                          ;8187E7;
     BRA .merge                                                           ;8187E9;
 
   .xHighClear:
     LDA.W $0000,Y                                                        ;8187EB;
     BPL .merge                                                           ;8187EE;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;8187F0;
-    STA.B $1C                                                            ;8187F4;
-    LDA.B ($1C)                                                          ;8187F6;
+    STA.B DP_Temp1C                                                            ;8187F4;
+    LDA.B (DP_Temp1C)                                                          ;8187F6;
     ORA.L MapOfOAMIndex_sizeBit,X                                        ;8187F8;
-    STA.B ($1C)                                                          ;8187FC;
+    STA.B (DP_Temp1C)                                                          ;8187FC;
 
   .merge:
     SEP #$20                                                             ;8187FE;
     LDA.W $0002,Y                                                        ;818800;
     CLC                                                                  ;818803;
     BMI +                                                                ;818804;
-    ADC.B $12                                                            ;818806;
+    ADC.B DP_Temp12                                                            ;818806;
     BCS .setOAMPos180h                                                   ;818808;
     CMP.B #$E0                                                           ;81880A;
     BCC .onScreen                                                        ;81880C;
     BRA .setOAMPos180h                                                   ;81880E;
 
-+   ADC.B $12                                                            ;818810;
++   ADC.B DP_Temp12                                                            ;818810;
     BCS .lessThanE0h                                                     ;818812;
     CMP.B #$E0                                                           ;818814;
     BCS .onScreen                                                        ;818816;
@@ -720,12 +720,12 @@ AddSpritemapToOAM:
     LDA.B #$E0                                                           ;818821;
 
   .onScreen:
-    STA.W $0371,X                                                        ;818823;
-    REP #$21                                                             ;818826;
+    STA.W OAMLow+1,X                                                        ;818823;
+    REP #$21                                                             ;818826; clear carry
     LDA.W $0003,Y                                                        ;818828;
     AND.W #$F1FF                                                         ;81882B;
-    ORA.B $16                                                            ;81882E;
-    STA.W $0372,X                                                        ;818830;
+    ORA.B DP_Temp16                                                            ;81882E;
+    STA.W OAMLow+2,X                                                        ;818830;
     TXA                                                                  ;818833;
     ADC.W #$0004                                                         ;818834;
     BIT.W #$FE00                                                         ;818837;
@@ -734,16 +734,16 @@ AddSpritemapToOAM:
     TYA                                                                  ;81883D;
     ADC.W #$0005                                                         ;81883E;
     TAY                                                                  ;818841;
-    DEC.B $18                                                            ;818842;
+    DEC.B DP_Temp18                                                            ;818842;
     BEQ +                                                                ;818844;
     JMP.W .loop                                                          ;818846;
 
-+   STX.W $0590                                                          ;818849;
++   STX.W OAMStack                                                          ;818849;
     PLX                                                                  ;81884C;
     RTL                                                                  ;81884D;
 
   .return:
-    STA.W $0590                                                          ;81884E;
+    STA.W OAMStack                                                          ;81884E;
     PLX                                                                  ;818851;
     RTL                                                                  ;818852;
 
@@ -770,10 +770,10 @@ AddSpritemapToOAM_Offscreen:
   .goto_return:
     JMP.W .return                                                        ;81885B;
 
-+   STA.B $18                                                            ;81885E;
++   STA.B DP_Temp18                                                            ;81885E;
     INY                                                                  ;818860;
     INY                                                                  ;818861;
-    LDA.W $0590                                                          ;818862;
+    LDA.W OAMStack                                                          ;818862;
     BIT.W #$FE00                                                         ;818865;
     BNE .goto_return                                                     ;818868;
     TAX                                                                  ;81886A;
@@ -781,47 +781,47 @@ AddSpritemapToOAM_Offscreen:
 
   .loop:
     LDA.W $0000,Y                                                        ;81886C;
-    ADC.B $14                                                            ;81886F;
-    STA.W $0370,X                                                        ;818871;
+    ADC.B DP_Temp14                                                            ;81886F;
+    STA.W OAMLow,X                                                        ;818871;
     AND.W #$0100                                                         ;818874;
     BEQ .xHighClear                                                      ;818877;
     LDA.W $0000,Y                                                        ;818879;
     BPL +                                                                ;81887C;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;81887E;
-    STA.B $1C                                                            ;818882;
-    LDA.B ($1C)                                                          ;818884;
+    STA.B DP_Temp1C                                                            ;818882;
+    LDA.B (DP_Temp1C)                                                          ;818884;
     ORA.L MapOfOAMIndexToHighOAM_bitmask,X                               ;818886;
-    STA.B ($1C)                                                          ;81888A;
+    STA.B (DP_Temp1C)                                                          ;81888A;
     JMP.W .merge                                                         ;81888C;
 
 +   LDA.L MapOfOAMIndexToHighOAM_address,X                               ;81888F;
-    STA.B $1C                                                            ;818893;
-    LDA.B ($1C)                                                          ;818895;
+    STA.B DP_Temp1C                                                            ;818893;
+    LDA.B (DP_Temp1C)                                                          ;818895;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;818897;
-    STA.B ($1C)                                                          ;81889B;
+    STA.B (DP_Temp1C)                                                          ;81889B;
     BRA .merge                                                           ;81889D;
 
   .xHighClear:
     LDA.W $0000,Y                                                        ;81889F;
     BPL .merge                                                           ;8188A2;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;8188A4;
-    STA.B $1C                                                            ;8188A8;
-    LDA.B ($1C)                                                          ;8188AA;
+    STA.B DP_Temp1C                                                            ;8188A8;
+    LDA.B (DP_Temp1C)                                                          ;8188AA;
     ORA.L MapOfOAMIndex_sizeBit,X                                        ;8188AC;
-    STA.B ($1C)                                                          ;8188B0;
+    STA.B (DP_Temp1C)                                                          ;8188B0;
 
   .merge:
     SEP #$20                                                             ;8188B2;
     LDA.W $0002,Y                                                        ;8188B4;
     CLC                                                                  ;8188B7;
     BMI +                                                                ;8188B8;
-    ADC.B $12                                                            ;8188BA;
+    ADC.B DP_Temp12                                                            ;8188BA;
     BCS .onScreen                                                        ;8188BC;
     CMP.B #$E0                                                           ;8188BE;
     BCS .onScreen                                                        ;8188C0;
     BRA .setOAMPos180h                                                   ;8188C2;
 
-+   ADC.B $12                                                            ;8188C4;
++   ADC.B DP_Temp12                                                            ;8188C4;
     BCS .lessThanE0h                                                     ;8188C6;
     CMP.B #$E0                                                           ;8188C8;
     BCC .onScreen                                                        ;8188CA;
@@ -836,12 +836,12 @@ AddSpritemapToOAM_Offscreen:
     LDA.B #$E0                                                           ;8188D5;
 
   .onScreen:
-    STA.W $0371,X                                                        ;8188D7;
-    REP #$21                                                             ;8188DA;
+    STA.W OAMLow+1,X                                                        ;8188D7;
+    REP #$21                                                             ;8188DA; clear carry
     LDA.W $0003,Y                                                        ;8188DC;
     AND.W #$F1FF                                                         ;8188DF;
-    ORA.B $16                                                            ;8188E2;
-    STA.W $0372,X                                                        ;8188E4;
+    ORA.B DP_Temp16                                                            ;8188E2;
+    STA.W OAMLow+2,X                                                        ;8188E4;
     TXA                                                                  ;8188E7;
     ADC.W #$0004                                                         ;8188E8;
     BIT.W #$FE00                                                         ;8188EB;
@@ -850,16 +850,16 @@ AddSpritemapToOAM_Offscreen:
     TYA                                                                  ;8188F1;
     ADC.W #$0005                                                         ;8188F2;
     TAY                                                                  ;8188F5;
-    DEC.B $18                                                            ;8188F6;
+    DEC.B DP_Temp18                                                            ;8188F6;
     BEQ +                                                                ;8188F8;
     JMP.W .loop                                                          ;8188FA;
 
-+   STX.W $0590                                                          ;8188FD;
++   STX.W OAMStack                                                          ;8188FD;
     PLX                                                                  ;818900;
     RTL                                                                  ;818901;
 
   .return:
-    STA.W $0590                                                          ;818902;
+    STA.W OAMStack                                                          ;818902;
     PLX                                                                  ;818905;
     RTL                                                                  ;818906;
 
@@ -869,13 +869,13 @@ OAMEntry_XPosition_180h:
 ;; Parameters:
 ;;     X: OAM entry index
     LDA.B #$80                                                           ;818907;
-    STA.W $0370,X                                                        ;818909;
+    STA.W OAMLow,X                                                        ;818909;
     REP #$20                                                             ;81890C;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;81890E;
-    STA.B $1C                                                            ;818912;
-    LDA.B ($1C)                                                          ;818914;
+    STA.B DP_Temp1C                                                            ;818912;
+    LDA.B (DP_Temp1C)                                                          ;818914;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;818916;
-    STA.B ($1C)                                                          ;81891A;
+    STA.B (DP_Temp1C)                                                          ;81891A;
     SEP #$20                                                             ;81891C;
     RTS                                                                  ;81891E;
 
@@ -965,63 +965,63 @@ AddSpritemapFrom_82C569_TableToOAM:
 
 ; See $879F for spritemap format
     PHB                                                                  ;81891F;
-    PEA.W $8200                                                          ;818920;
+    PEA.W MenuSpritemap_Pointers>>8&FF00                                                          ;818920;
     PLB                                                                  ;818923;
     PLB                                                                  ;818924;
-    STY.B $12                                                            ;818925;
-    STX.B $14                                                            ;818927;
+    STY.B DP_Temp12                                                            ;818925;
+    STX.B DP_Temp14                                                            ;818927;
     ASL A                                                                ;818929;
     TAX                                                                  ;81892A;
     LDY.W MenuSpritemap_Pointers,X                                       ;81892B;
     LDA.W $0000,Y                                                        ;81892E;
     BEQ .return                                                          ;818931;
-    STA.B $18                                                            ;818933;
+    STA.B DP_Temp18                                                            ;818933;
     INY                                                                  ;818935;
     INY                                                                  ;818936;
-    LDX.W $0590                                                          ;818937;
+    LDX.W OAMStack                                                          ;818937;
     CLC                                                                  ;81893A;
 
   .loop:
     LDA.W $0000,Y                                                        ;81893B;
-    ADC.B $14                                                            ;81893E;
-    STA.W $0370,X                                                        ;818940;
+    ADC.B DP_Temp14                                                            ;81893E;
+    STA.W OAMLow,X                                                        ;818940;
     AND.W #$0100                                                         ;818943;
     BEQ .xHighClear                                                      ;818946;
     LDA.W $0000,Y                                                        ;818948;
     BPL .preMerge                                                        ;81894B;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;81894D;
-    STA.B $16                                                            ;818951;
-    LDA.B ($16)                                                          ;818953;
+    STA.B DP_Temp16                                                            ;818951;
+    LDA.B (DP_Temp16)                                                          ;818953;
     ORA.L MapOfOAMIndexToHighOAM_bitmask,X                               ;818955;
-    STA.B ($16)                                                          ;818959;
+    STA.B (DP_Temp16)                                                          ;818959;
     JMP.W .merge                                                         ;81895B;
 
   .preMerge:
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;81895E;
-    STA.B $16                                                            ;818962;
-    LDA.B ($16)                                                          ;818964;
+    STA.B DP_Temp16                                                            ;818962;
+    LDA.B (DP_Temp16)                                                          ;818964;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;818966;
-    STA.B ($16)                                                          ;81896A;
+    STA.B (DP_Temp16)                                                          ;81896A;
     JMP.W .merge                                                         ;81896C;
 
   .xHighClear:
     LDA.W $0000,Y                                                        ;81896F;
     BPL .merge                                                           ;818972;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818974;
-    STA.B $16                                                            ;818978;
-    LDA.B ($16)                                                          ;81897A;
+    STA.B DP_Temp16                                                            ;818978;
+    LDA.B (DP_Temp16)                                                          ;81897A;
     ORA.L MapOfOAMIndex_sizeBit,X                                        ;81897C;
-    STA.B ($16)                                                          ;818980;
+    STA.B (DP_Temp16)                                                          ;818980;
 
   .merge:
     LDA.W $0002,Y                                                        ;818982;
     CLC                                                                  ;818985;
-    ADC.B $12                                                            ;818986;
-    STA.W $0371,X                                                        ;818988;
+    ADC.B DP_Temp12                                                            ;818986;
+    STA.W OAMLow+1,X                                                        ;818988;
     LDA.W $0003,Y                                                        ;81898B;
     AND.W #$F1FF                                                         ;81898E;
-    ORA.B $03                                                            ;818991;
-    STA.W $0372,X                                                        ;818993;
+    ORA.B DP_Temp03                                                            ;818991;
+    STA.W OAMLow+2,X                                                        ;818993;
     TYA                                                                  ;818996;
     CLC                                                                  ;818997;
     ADC.W #$0005                                                         ;818998;
@@ -1031,9 +1031,9 @@ AddSpritemapFrom_82C569_TableToOAM:
     ADC.W #$0004                                                         ;81899E;
     AND.W #$01FF                                                         ;8189A1;
     TAX                                                                  ;8189A4;
-    DEC.B $18                                                            ;8189A5;
+    DEC.B DP_Temp18                                                            ;8189A5;
     BNE .loop                                                            ;8189A7;
-    STX.W $0590                                                          ;8189A9;
+    STX.W OAMStack                                                          ;8189A9;
 
   .return:
     PLB                                                                  ;8189AC;
@@ -1053,61 +1053,61 @@ AddSamusSpritemapToOAM:
 ;     186h..18Eh: Bubbles
 ;     18Fh..197h: Diving splash
     PHB                                                                  ;8189AE;
-    PEA.W $9200                                                          ;8189AF;
+    PEA.W SamusSpritemapTable>>8&FF00                                                          ;8189AF;
     PLB                                                                  ;8189B2;
     PLB                                                                  ;8189B3;
-    STY.B $12                                                            ;8189B4;
-    STX.B $14                                                            ;8189B6;
+    STY.B DP_Temp12                                                            ;8189B4;
+    STX.B DP_Temp14                                                            ;8189B6;
     ASL A                                                                ;8189B8;
     TAX                                                                  ;8189B9;
     LDY.W SamusSpritemapTable,X                                          ;8189BA;
     LDA.W $0000,Y                                                        ;8189BD;
     BEQ .return                                                          ;8189C0;
-    STA.B $18                                                            ;8189C2;
+    STA.B DP_Temp18                                                            ;8189C2;
     INY                                                                  ;8189C4;
     INY                                                                  ;8189C5;
-    LDX.W $0590                                                          ;8189C6;
+    LDX.W OAMStack                                                          ;8189C6;
     CLC                                                                  ;8189C9;
 
   .loop:
     LDA.W $0000,Y                                                        ;8189CA;
-    ADC.B $14                                                            ;8189CD;
-    STA.W $0370,X                                                        ;8189CF;
+    ADC.B DP_Temp14                                                            ;8189CD;
+    STA.W OAMLow,X                                                        ;8189CF;
     AND.W #$0100                                                         ;8189D2;
     BEQ .xHighClear                                                      ;8189D5;
     LDA.W $0000,Y                                                        ;8189D7;
     BPL .preMerge                                                        ;8189DA;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;8189DC;
-    STA.B $16                                                            ;8189E0;
-    LDA.B ($16)                                                          ;8189E2;
+    STA.B DP_Temp16                                                            ;8189E0;
+    LDA.B (DP_Temp16)                                                          ;8189E2;
     ORA.L MapOfOAMIndexToHighOAM_bitmask,X                               ;8189E4;
-    STA.B ($16)                                                          ;8189E8;
+    STA.B (DP_Temp16)                                                          ;8189E8;
     JMP.W .merge                                                         ;8189EA;
 
   .preMerge:
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;8189ED;
-    STA.B $16                                                            ;8189F1;
-    LDA.B ($16)                                                          ;8189F3;
+    STA.B DP_Temp16                                                            ;8189F1;
+    LDA.B (DP_Temp16)                                                          ;8189F3;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;8189F5;
-    STA.B ($16)                                                          ;8189F9;
+    STA.B (DP_Temp16)                                                          ;8189F9;
     JMP.W .merge                                                         ;8189FB;
 
   .xHighClear:
     LDA.W $0000,Y                                                        ;8189FE;
     BPL .merge                                                           ;818A01;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818A03;
-    STA.B $16                                                            ;818A07;
-    LDA.B ($16)                                                          ;818A09;
+    STA.B DP_Temp16                                                            ;818A07;
+    LDA.B (DP_Temp16)                                                          ;818A09;
     ORA.L MapOfOAMIndex_sizeBit,X                                        ;818A0B;
-    STA.B ($16)                                                          ;818A0F;
+    STA.B (DP_Temp16)                                                          ;818A0F;
 
   .merge:
     LDA.W $0002,Y                                                        ;818A11;
     CLC                                                                  ;818A14;
-    ADC.B $12                                                            ;818A15;
-    STA.W $0371,X                                                        ;818A17;
+    ADC.B DP_Temp12                                                            ;818A15;
+    STA.W OAMLow+1,X                                                        ;818A17;
     LDA.W $0003,Y                                                        ;818A1A;
-    STA.W $0372,X                                                        ;818A1D;
+    STA.W OAMLow+2,X                                                        ;818A1D;
     TYA                                                                  ;818A20;
     CLC                                                                  ;818A21;
     ADC.W #$0005                                                         ;818A22;
@@ -1116,9 +1116,9 @@ AddSamusSpritemapToOAM:
     ADC.W #$0004                                                         ;818A27;
     AND.W #$01FF                                                         ;818A2A;
     TAX                                                                  ;818A2D;
-    DEC.B $18                                                            ;818A2E;
+    DEC.B DP_Temp18                                                            ;818A2E;
     BNE .loop                                                            ;818A30;
-    STX.W $0590                                                          ;818A32;
+    STX.W OAMStack                                                          ;818A32;
 
   .return:
     PLB                                                                  ;818A35;
@@ -1141,14 +1141,14 @@ AddSpritemapFrom_93A1A1_TableToOAM:
 ; See $8A5F for spritemap format
 ; Draws charge / grapple beam flare and charge sparks
     PHB                                                                  ;818A37;
-    PEA.W $9300                                                          ;818A38;
+    PEA.W FlareSpritemapPointers>>8&FF00                                                          ;818A38;
     PLB                                                                  ;818A3B;
     PLB                                                                  ;818A3C;
     ASL A                                                                ;818A3D;
     TAX                                                                  ;818A3E;
     LDY.W FlareSpritemapPointers,X                                       ;818A3F;
     LDA.W $0000,Y                                                        ;818A42;
-    STA.B $18                                                            ;818A45;
+    STA.B DP_Temp18                                                            ;818A45;
     INY                                                                  ;818A47;
     INY                                                                  ;818A48;
     BRA AddSpritemapToOAM_Common                                         ;818A49;
@@ -1164,16 +1164,16 @@ AddProjectileSpritemapToOAM:
 ; Actually uses the palette defined in the spritemap
 ; See $8A5F for spritemap format
     PHB                                                                  ;818A4B;
-    PEA.W $9300                                                          ;818A4C;
+    PEA.W FlareSpritemapPointers>>8&FF00                                                          ;818A4C;
     PLB                                                                  ;818A4F;
     PLB                                                                  ;818A50;
-    LDY.W $0CB8,X                                                        ;818A51;
+    LDY.W SamusProjectile_SpritemapPointers,X                                                        ;818A51;
     LDA.W $0000,Y                                                        ;818A54;
     BNE +                                                                ;818A57;
     PLB                                                                  ;818A59;
     RTL                                                                  ;818A5A;
 
-+   STA.B $18                                                            ;818A5B;
++   STA.B DP_Temp18                                                            ;818A5B;
     INY                                                                  ;818A5D;
     INY                                                                  ;818A5E; fallthrough to AddSpritemapToOAM_Common
 
@@ -1210,35 +1210,35 @@ AddSpritemapToOAM_Common:
 ;     t = tile number
 
 ; Out of all of the spritemap loading routines, this one is the most sanely coded. No offscreen handling though (sprites wrap)
-    LDX.W $0590                                                          ;818A5F;
+    LDX.W OAMStack                                                          ;818A5F;
     CLC                                                                  ;818A62;
 
   .loop:
     LDA.W $0000,Y                                                        ;818A63;
-    ADC.B $14                                                            ;818A66;
-    STA.W $0370,X                                                        ;818A68;
+    ADC.B DP_Temp14                                                            ;818A66;
+    STA.W OAMLow,X                                                        ;818A68;
     AND.W #$0100                                                         ;818A6B;
     BEQ +                                                                ;818A6E;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818A70;
-    STA.B $16                                                            ;818A74;
-    LDA.B ($16)                                                          ;818A76;
+    STA.B DP_Temp16                                                            ;818A74;
+    LDA.B (DP_Temp16)                                                          ;818A76;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;818A78;
-    STA.B ($16)                                                          ;818A7C;
+    STA.B (DP_Temp16)                                                          ;818A7C;
 
 +   LDA.W $0000,Y                                                        ;818A7E;
     BPL +                                                                ;818A81;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818A83;
-    STA.B $16                                                            ;818A87;
-    LDA.B ($16)                                                          ;818A89;
+    STA.B DP_Temp16                                                            ;818A87;
+    LDA.B (DP_Temp16)                                                          ;818A89;
     ORA.L MapOfOAMIndex_sizeBit,X                                        ;818A8B;
-    STA.B ($16)                                                          ;818A8F;
+    STA.B (DP_Temp16)                                                          ;818A8F;
 
 +   LDA.W $0002,Y                                                        ;818A91;
     CLC                                                                  ;818A94;
-    ADC.B $12                                                            ;818A95;
-    STA.W $0371,X                                                        ;818A97;
+    ADC.B DP_Temp12                                                            ;818A95;
+    STA.W OAMLow+1,X                                                        ;818A97;
     LDA.W $0003,Y                                                        ;818A9A;
-    STA.W $0372,X                                                        ;818A9D;
+    STA.W OAMLow+2,X                                                        ;818A9D;
     TYA                                                                  ;818AA0;
     CLC                                                                  ;818AA1;
     ADC.W #$0005                                                         ;818AA2;
@@ -1247,9 +1247,9 @@ AddSpritemapToOAM_Common:
     ADC.W #$0004                                                         ;818AA7;
     AND.W #$01FF                                                         ;818AAA;
     TAX                                                                  ;818AAD;
-    DEC.B $18                                                            ;818AAE;
+    DEC.B DP_Temp18                                                            ;818AAE;
     BNE .loop                                                            ;818AB0;
-    STX.W $0590                                                          ;818AB2;
+    STX.W OAMStack                                                          ;818AB2;
     PLB                                                                  ;818AB5;
     RTL                                                                  ;818AB6;
 
@@ -1278,40 +1278,40 @@ AddSpritemapToOAM_WithBaseTileNumber_8AB8:
     BEQ .return                                                          ;818ABC;
     INY                                                                  ;818ABE;
     INY                                                                  ;818ABF;
-    STA.B $18                                                            ;818AC0;
-    LDX.W $0590                                                          ;818AC2;
+    STA.B DP_Temp18                                                            ;818AC0;
+    LDX.W OAMStack                                                          ;818AC2;
     CLC                                                                  ;818AC5;
 
   .loop:
     LDA.W $0000,Y                                                        ;818AC6;
-    ADC.B $14                                                            ;818AC9;
-    STA.W $0370,X                                                        ;818ACB;
+    ADC.B DP_Temp14                                                            ;818AC9;
+    STA.W OAMLow,X                                                        ;818ACB;
     AND.W #$0100                                                         ;818ACE;
     BEQ +                                                                ;818AD1;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818AD3;
-    STA.B $16                                                            ;818AD7;
-    LDA.B ($16)                                                          ;818AD9;
+    STA.B DP_Temp16                                                            ;818AD7;
+    LDA.B (DP_Temp16)                                                          ;818AD9;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;818ADB;
-    STA.B ($16)                                                          ;818ADF;
+    STA.B (DP_Temp16)                                                          ;818ADF;
 
 +   LDA.W $0000,Y                                                        ;818AE1;
     BPL +                                                                ;818AE4;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818AE6;
-    STA.B $16                                                            ;818AEA;
-    LDA.B ($16)                                                          ;818AEC;
+    STA.B DP_Temp16                                                            ;818AEA;
+    LDA.B (DP_Temp16)                                                          ;818AEC;
     ORA.L MapOfOAMIndex_sizeBit,X                                        ;818AEE;
-    STA.B ($16)                                                          ;818AF2;
+    STA.B (DP_Temp16)                                                          ;818AF2;
 
 +   SEP #$20                                                             ;818AF4;
     LDA.W $0002,Y                                                        ;818AF6;
     CLC                                                                  ;818AF9;
-    ADC.B $12                                                            ;818AFA;
-    STA.W $0371,X                                                        ;818AFC;
-    REP #$21                                                             ;818AFF;
+    ADC.B DP_Temp12                                                            ;818AFA;
+    STA.W OAMLow+1,X                                                        ;818AFC;
+    REP #$21                                                             ;818AFF; clear carry
     LDA.W $0003,Y                                                        ;818B01;
-    ADC.B $00                                                            ;818B04;
-    ORA.B $03                                                            ;818B06;
-    STA.W $0372,X                                                        ;818B08;
+    ADC.B DP_Temp00                                                            ;818B04;
+    ORA.B DP_Temp03                                                            ;818B06;
+    STA.W OAMLow+2,X                                                        ;818B08;
     TYA                                                                  ;818B0B;
     ADC.W #$0005                                                         ;818B0C;
     TAY                                                                  ;818B0F;
@@ -1319,9 +1319,9 @@ AddSpritemapToOAM_WithBaseTileNumber_8AB8:
     ADC.W #$0004                                                         ;818B11;
     AND.W #$01FF                                                         ;818B14;
     TAX                                                                  ;818B17;
-    DEC.B $18                                                            ;818B18;
+    DEC.B DP_Temp18                                                            ;818B18;
     BNE .loop                                                            ;818B1A;
-    STX.W $0590                                                          ;818B1C;
+    STX.W OAMStack                                                          ;818B1C;
 
   .return:
     PLY                                                                  ;818B1F;
@@ -1352,50 +1352,50 @@ AddSpritemapToOAM_WithBaseTileNumber_8B22:
     BEQ .return                                                          ;818B26;
     INY                                                                  ;818B28;
     INY                                                                  ;818B29;
-    STA.B $18                                                            ;818B2A;
-    LDX.W $0590                                                          ;818B2C;
+    STA.B DP_Temp18                                                            ;818B2A;
+    LDX.W OAMStack                                                          ;818B2C;
     CLC                                                                  ;818B2F;
 
   .loop:
     LDA.W $0000,Y                                                        ;818B30;
-    ADC.B $14                                                            ;818B33;
-    STA.W $0370,X                                                        ;818B35;
+    ADC.B DP_Temp14                                                            ;818B33;
+    STA.W OAMLow,X                                                        ;818B35;
     AND.W #$0100                                                         ;818B38;
     BEQ +                                                                ;818B3B;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818B3D;
-    STA.B $16                                                            ;818B41;
-    LDA.B ($16)                                                          ;818B43;
+    STA.B DP_Temp16                                                            ;818B41;
+    LDA.B (DP_Temp16)                                                          ;818B43;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;818B45;
-    STA.B ($16)                                                          ;818B49;
+    STA.B (DP_Temp16)                                                          ;818B49;
 
 +   LDA.W $0000,Y                                                        ;818B4B;
     BPL +                                                                ;818B4E;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818B50;
-    STA.B $16                                                            ;818B54;
-    LDA.B ($16)                                                          ;818B56;
+    STA.B DP_Temp16                                                            ;818B54;
+    LDA.B (DP_Temp16)                                                          ;818B56;
     ORA.L MapOfOAMIndex_sizeBit,X                                        ;818B58;
-    STA.B ($16)                                                          ;818B5C;
+    STA.B (DP_Temp16)                                                          ;818B5C;
 
 +   SEP #$20                                                             ;818B5E;
     LDA.W $0002,Y                                                        ;818B60;
     BMI +                                                                ;818B63;
-    ADC.B $12                                                            ;818B65;
+    ADC.B DP_Temp12                                                            ;818B65;
     BCC .onScreen                                                        ;818B67;
     BCS .yPosF0h                                                         ;818B69;
 
-+   ADC.B $12                                                            ;818B6B;
++   ADC.B DP_Temp12                                                            ;818B6B;
     BCS .onScreen                                                        ;818B6D;
 
   .yPosF0h:
     LDA.B #$F0                                                           ;818B6F;
 
   .onScreen:
-    STA.W $0371,X                                                        ;818B71;
-    REP #$21                                                             ;818B74;
+    STA.W OAMLow+1,X                                                        ;818B71;
+    REP #$21                                                             ;818B74; clear carry
     LDA.W $0003,Y                                                        ;818B76;
-    ADC.B $00                                                            ;818B79;
-    ORA.B $03                                                            ;818B7B;
-    STA.W $0372,X                                                        ;818B7D;
+    ADC.B DP_Temp00                                                            ;818B79;
+    ORA.B DP_Temp03                                                            ;818B7B;
+    STA.W OAMLow+2,X                                                        ;818B7D;
     TYA                                                                  ;818B80;
     ADC.W #$0005                                                         ;818B81;
     TAY                                                                  ;818B84;
@@ -1403,9 +1403,9 @@ AddSpritemapToOAM_WithBaseTileNumber_8B22:
     ADC.W #$0004                                                         ;818B86;
     AND.W #$01FF                                                         ;818B89;
     TAX                                                                  ;818B8C;
-    DEC.B $18                                                            ;818B8D;
+    DEC.B DP_Temp18                                                            ;818B8D;
     BNE .loop                                                            ;818B8F;
-    STX.W $0590                                                          ;818B91;
+    STX.W OAMStack                                                          ;818B91;
 
   .return:
     PLY                                                                  ;818B94;
@@ -1431,50 +1431,50 @@ AddSpritemapToOAM_WithBaseTileNumber_Offscreen_8B96:
     BEQ .return                                                          ;818B9A;
     INY                                                                  ;818B9C;
     INY                                                                  ;818B9D;
-    STA.B $18                                                            ;818B9E;
-    LDX.W $0590                                                          ;818BA0;
+    STA.B DP_Temp18                                                            ;818B9E;
+    LDX.W OAMStack                                                          ;818BA0;
     CLC                                                                  ;818BA3;
 
   .loop:
     LDA.W $0000,Y                                                        ;818BA4;
-    ADC.B $14                                                            ;818BA7;
-    STA.W $0370,X                                                        ;818BA9;
+    ADC.B DP_Temp14                                                            ;818BA7;
+    STA.W OAMLow,X                                                        ;818BA9;
     AND.W #$0100                                                         ;818BAC;
     BEQ +                                                                ;818BAF;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818BB1;
-    STA.B $16                                                            ;818BB5;
-    LDA.B ($16)                                                          ;818BB7;
+    STA.B DP_Temp16                                                            ;818BB5;
+    LDA.B (DP_Temp16)                                                          ;818BB7;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;818BB9;
-    STA.B ($16)                                                          ;818BBD;
+    STA.B (DP_Temp16)                                                          ;818BBD;
 
 +   LDA.W $0000,Y                                                        ;818BBF;
     BPL +                                                                ;818BC2;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818BC4;
-    STA.B $16                                                            ;818BC8;
-    LDA.B ($16)                                                          ;818BCA;
+    STA.B DP_Temp16                                                            ;818BC8;
+    LDA.B (DP_Temp16)                                                          ;818BCA;
     ORA.L MapOfOAMIndex_sizeBit,X                                        ;818BCC;
-    STA.B ($16)                                                          ;818BD0;
+    STA.B (DP_Temp16)                                                          ;818BD0;
 
 +   SEP #$20                                                             ;818BD2;
     LDA.W $0002,Y                                                        ;818BD4;
     BMI +                                                                ;818BD7;
-    ADC.B $12                                                            ;818BD9;
+    ADC.B DP_Temp12                                                            ;818BD9;
     BCS .onScreen                                                        ;818BDB;
     BCC .yPosF0h                                                         ;818BDD;
 
-+   ADC.B $12                                                            ;818BDF;
++   ADC.B DP_Temp12                                                            ;818BDF;
     BCC .onScreen                                                        ;818BE1;
 
   .yPosF0h:
     LDA.B #$F0                                                           ;818BE3;
 
   .onScreen:
-    STA.W $0371,X                                                        ;818BE5;
-    REP #$21                                                             ;818BE8;
+    STA.W OAMLow+1,X                                                        ;818BE5;
+    REP #$21                                                             ;818BE8; clear carry
     LDA.W $0003,Y                                                        ;818BEA;
-    ADC.B $00                                                            ;818BED;
-    ORA.B $03                                                            ;818BEF;
-    STA.W $0372,X                                                        ;818BF1;
+    ADC.B DP_Temp00                                                            ;818BED;
+    ORA.B DP_Temp03                                                            ;818BEF;
+    STA.W OAMLow+2,X                                                        ;818BF1;
     TYA                                                                  ;818BF4;
     ADC.W #$0005                                                         ;818BF5;
     TAY                                                                  ;818BF8;
@@ -1482,9 +1482,9 @@ AddSpritemapToOAM_WithBaseTileNumber_Offscreen_8B96:
     ADC.W #$0004                                                         ;818BFA;
     AND.W #$01FF                                                         ;818BFD;
     TAX                                                                  ;818C00;
-    DEC.B $18                                                            ;818C01;
+    DEC.B DP_Temp18                                                            ;818C01;
     BNE .loop                                                            ;818C03;
-    STX.W $0590                                                          ;818C05;
+    STX.W OAMStack                                                          ;818C05;
 
   .return:
     PLY                                                                  ;818C08;
@@ -1508,54 +1508,54 @@ AddSpritemapToOAM_WithBaseTileNumber_8C0A:
     BNE +                                                                ;818C0D;
     RTL                                                                  ;818C0F;
 
-+   STA.B $18                                                            ;818C10;
++   STA.B DP_Temp18                                                            ;818C10;
     INY                                                                  ;818C12;
     INY                                                                  ;818C13;
-    LDX.W $0590                                                          ;818C14;
+    LDX.W OAMStack                                                          ;818C14;
     CLC                                                                  ;818C17;
 
   .loop:
     LDA.W $0000,Y                                                        ;818C18;
     CLC                                                                  ;818C1B;
-    ADC.B $14                                                            ;818C1C;
-    STA.W $0370,X                                                        ;818C1E;
+    ADC.B DP_Temp14                                                            ;818C1C;
+    STA.W OAMLow,X                                                        ;818C1E;
     BIT.W #$0100                                                         ;818C21;
     BEQ +                                                                ;818C24;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818C26;
-    STA.B $16                                                            ;818C2A;
-    LDA.B ($16)                                                          ;818C2C;
+    STA.B DP_Temp16                                                            ;818C2A;
+    LDA.B (DP_Temp16)                                                          ;818C2C;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;818C2E;
-    STA.B ($16)                                                          ;818C32;
+    STA.B (DP_Temp16)                                                          ;818C32;
 
 +   SEP #$20                                                             ;818C34;
     CLC                                                                  ;818C36;
     LDA.W $0002,Y                                                        ;818C37;
     BMI +                                                                ;818C3A;
-    ADC.B $12                                                            ;818C3C;
+    ADC.B DP_Temp12                                                            ;818C3C;
     BCC .onScreen                                                        ;818C3E;
     BCS .yPosF0h                                                         ;818C40;
 
-+   ADC.B $12                                                            ;818C42;
++   ADC.B DP_Temp12                                                            ;818C42;
     BCS .onScreen                                                        ;818C44;
 
   .yPosF0h:
     LDA.B #$F0                                                           ;818C46;
 
   .onScreen:
-    STA.W $0371,X                                                        ;818C48;
-    REP #$21                                                             ;818C4B;
+    STA.W OAMLow+1,X                                                        ;818C48;
+    REP #$21                                                             ;818C4B; clear carry
     LDA.W $0000,Y                                                        ;818C4D;
     BPL +                                                                ;818C50;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818C52;
-    STA.B $16                                                            ;818C56;
-    LDA.B ($16)                                                          ;818C58;
+    STA.B DP_Temp16                                                            ;818C56;
+    LDA.B (DP_Temp16)                                                          ;818C58;
     ORA.L MapOfOAMIndex_sizeBit,X                                        ;818C5A;
-    STA.B ($16)                                                          ;818C5E;
+    STA.B (DP_Temp16)                                                          ;818C5E;
 
 +   LDA.W $0003,Y                                                        ;818C60;
-    ADC.B $1A                                                            ;818C63;
-    ORA.B $1C                                                            ;818C65;
-    STA.W $0372,X                                                        ;818C67;
+    ADC.B DP_Temp1A                                                            ;818C63;
+    ORA.B DP_Temp1C                                                            ;818C65;
+    STA.W OAMLow+2,X                                                        ;818C67;
     TXA                                                                  ;818C6A;
     ADC.W #$0004                                                         ;818C6B;
     AND.W #$01FF                                                         ;818C6E;
@@ -1563,9 +1563,9 @@ AddSpritemapToOAM_WithBaseTileNumber_8C0A:
     TYA                                                                  ;818C72;
     ADC.W #$0005                                                         ;818C73;
     TAY                                                                  ;818C76;
-    DEC.B $18                                                            ;818C77;
+    DEC.B DP_Temp18                                                            ;818C77;
     BNE .loop                                                            ;818C79;
-    STX.W $0590                                                          ;818C7B;
+    STX.W OAMStack                                                          ;818C7B;
     RTL                                                                  ;818C7E;
 
 
@@ -1586,54 +1586,54 @@ AddSpritemapToOAM_WithBaseTileNumber_Offscreen_8C7F:
     BNE +                                                                ;818C82;
     RTL                                                                  ;818C84;
 
-+   STA.B $18                                                            ;818C85;
++   STA.B DP_Temp18                                                            ;818C85;
     INY                                                                  ;818C87;
     INY                                                                  ;818C88;
-    LDX.W $0590                                                          ;818C89;
+    LDX.W OAMStack                                                          ;818C89;
     CLC                                                                  ;818C8C;
 
   .loop:
     LDA.W $0000,Y                                                        ;818C8D;
     CLC                                                                  ;818C90;
-    ADC.B $14                                                            ;818C91;
-    STA.W $0370,X                                                        ;818C93;
+    ADC.B DP_Temp14                                                            ;818C91;
+    STA.W OAMLow,X                                                        ;818C93;
     BIT.W #$0100                                                         ;818C96;
     BEQ +                                                                ;818C99;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818C9B;
-    STA.B $16                                                            ;818C9F;
-    LDA.B ($16)                                                          ;818CA1;
+    STA.B DP_Temp16                                                            ;818C9F;
+    LDA.B (DP_Temp16)                                                          ;818CA1;
     ORA.L MapOfOAMIndex_highXPosBit,X                                    ;818CA3;
-    STA.B ($16)                                                          ;818CA7;
+    STA.B (DP_Temp16)                                                          ;818CA7;
 
 +   SEP #$20                                                             ;818CA9;
     CLC                                                                  ;818CAB;
     LDA.W $0002,Y                                                        ;818CAC;
     BMI +                                                                ;818CAF;
-    ADC.B $12                                                            ;818CB1;
+    ADC.B DP_Temp12                                                            ;818CB1;
     BCS .onScreen                                                        ;818CB3;
     BCC .yPosF0h                                                         ;818CB5;
 
-+   ADC.B $12                                                            ;818CB7;
++   ADC.B DP_Temp12                                                            ;818CB7;
     BCC .onScreen                                                        ;818CB9;
 
   .yPosF0h:
     LDA.B #$F0                                                           ;818CBB;
 
   .onScreen:
-    STA.W $0371,X                                                        ;818CBD;
-    REP #$21                                                             ;818CC0;
+    STA.W OAMLow+1,X                                                        ;818CBD;
+    REP #$21                                                             ;818CC0; clear carry
     LDA.W $0000,Y                                                        ;818CC2;
     BPL +                                                                ;818CC5;
     LDA.L MapOfOAMIndexToHighOAM_address,X                               ;818CC7;
-    STA.B $16                                                            ;818CCB;
-    LDA.B ($16)                                                          ;818CCD;
+    STA.B DP_Temp16                                                            ;818CCB;
+    LDA.B (DP_Temp16)                                                          ;818CCD;
     ORA.L MapOfOAMIndex_sizeBit,X                                        ;818CCF;
-    STA.B ($16)                                                          ;818CD3;
+    STA.B (DP_Temp16)                                                          ;818CD3;
 
 +   LDA.W $0003,Y                                                        ;818CD5;
-    ADC.B $1A                                                            ;818CD8;
-    ORA.B $1C                                                            ;818CDA;
-    STA.W $0372,X                                                        ;818CDC;
+    ADC.B DP_Temp1A                                                            ;818CD8;
+    ORA.B DP_Temp1C                                                            ;818CDA;
+    STA.W OAMLow+2,X                                                        ;818CDC;
     TXA                                                                  ;818CDF;
     ADC.W #$0004                                                         ;818CE0;
     AND.W #$01FF                                                         ;818CE3;
@@ -1641,9 +1641,9 @@ AddSpritemapToOAM_WithBaseTileNumber_Offscreen_8C7F:
     TYA                                                                  ;818CE7;
     ADC.W #$0005                                                         ;818CE8;
     TAY                                                                  ;818CEB;
-    DEC.B $18                                                            ;818CEC;
+    DEC.B DP_Temp18                                                            ;818CEC;
     BNE .loop                                                            ;818CEE;
-    STX.W $0590                                                          ;818CF0;
+    STX.W OAMStack                                                          ;818CF0;
     RTL                                                                  ;818CF3;
 
 
@@ -1654,8 +1654,8 @@ Debug_GameOverMenu:
     PHB                                                                  ;818CF6;
     PHK                                                                  ;818CF7;
     PLB                                                                  ;818CF8;
-    LDA.W $0727                                                          ;818CF9;
-    ASL A                                                                ;818CFC;
+    LDA.W PauseMenu_MenuIndex                                                          ;818CF9;
+    ASL                                                                  ;818CFC;
     TAX                                                                  ;818CFD;
     JSR.W (.pointers,X)                                                  ;818CFE;
     PLB                                                                  ;818D01;
@@ -1674,7 +1674,7 @@ Debug_GameOverMenu:
 Debug_GameOverMenu_Index0_FadeOut_ConfigureGraphicsForMenu:
     REP #$30                                                             ;818D0F;
     JSL.L HandleFadingOut                                                ;818D11;
-    LDA.B $51                                                            ;818D15;
+    LDA.B DP_Brightness                                                            ;818D15;
     AND.W #$000F                                                         ;818D17;
     BEQ +                                                                ;818D1A;
     RTS                                                                  ;818D1C;
@@ -1687,8 +1687,8 @@ Debug_GameOverMenu_Index0_FadeOut_ConfigureGraphicsForMenu:
     LDX.W #$0000                                                         ;818D30;
 
   .loopPalettes:
-    LDA.L $7EC000,X                                                      ;818D33;
-    STA.L $7E3300,X                                                      ;818D37;
+    LDA.L Palettes,X                                                      ;818D33;
+    STA.L BackupOfPalettesDuringMenu,X                                                      ;818D37;
     INX                                                                  ;818D3B;
     INX                                                                  ;818D3C;
     CPX.W #$0200                                                         ;818D3D;
@@ -1696,8 +1696,8 @@ Debug_GameOverMenu_Index0_FadeOut_ConfigureGraphicsForMenu:
     LDX.W #$0000                                                         ;818D42;
 
   .loopIORegisterMirrors:
-    LDA.B $51,X                                                          ;818D45;
-    STA.L $7E3500,X                                                      ;818D47;
+    LDA.B DP_Brightness,X                                                          ;818D45;
+    STA.L BackupOfRegularIORegistersDuringGameOverMenu,X                                                      ;818D47;
     INX                                                                  ;818D4B;
     INX                                                                  ;818D4C;
     CPX.W #$0036                                                         ;818D4D;
@@ -1705,14 +1705,14 @@ Debug_GameOverMenu_Index0_FadeOut_ConfigureGraphicsForMenu:
     JSR.W MapVRAMForMenu                                                 ;818D52;
     JSR.W LoadInitialMenuTiles                                           ;818D55;
     REP #$30                                                             ;818D58;
-    STZ.B $B1                                                            ;818D5A;
-    STZ.B $B5                                                            ;818D5C;
-    STZ.B $B9                                                            ;818D5E;
-    STZ.B $B3                                                            ;818D60;
-    STZ.B $B7                                                            ;818D62;
-    STZ.B $BB                                                            ;818D64;
+    STZ.B DP_BG1XScroll                                                            ;818D5A;
+    STZ.B DP_BG2XScroll                                                            ;818D5C;
+    STZ.B DP_BG3XScroll                                                            ;818D5E;
+    STZ.B DP_BG1YScroll                                                            ;818D60;
+    STZ.B DP_BG2YScroll                                                            ;818D62;
+    STZ.B DP_BG3YScroll                                                            ;818D64;
     JSR.W LoadMenuPalettes                                               ;818D66;
-    INC.W $0727                                                          ;818D69;
+    INC.W PauseMenu_MenuIndex                                                          ;818D69;
     RTS                                                                  ;818D6C;
 
 
@@ -1725,18 +1725,18 @@ Debug_GameOverMenu_Index1_Initialise:
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;818D79;
     SEP #$20                                                             ;818D7D;
     LDA.B #$11                                                           ;818D7F;
-    STA.B $69                                                            ;818D81;
+    STA.B DP_MainScreenLayers                                                            ;818D81;
     REP #$30                                                             ;818D83;
     LDA.W #Debug_GameOverMenu_VRAMTransferDefinitions                    ;818D85;
-    STA.B $00                                                            ;818D88;
+    STA.B DP_Temp00                                                            ;818D88;
     LDA.W #$0081                                                         ;818D8A;
-    STA.B $02                                                            ;818D8D;
+    STA.B DP_Temp02                                                            ;818D8D;
     JSL.L LoadDebugGameOverMenuTilemap                                   ;818D8F;
     JSL.L ClearForceBlankAndWaitForNMI                                   ;818D93;
-    INC.W $0727                                                          ;818D97;
-    STZ.W $0723                                                          ;818D9A;
-    STZ.W $0725                                                          ;818D9D;
-    STZ.W $0950                                                          ;818DA0;
+    INC.W PauseMenu_MenuIndex                                                          ;818D97;
+    STZ.W ScreenFadeDelay                                                          ;818D9A;
+    STZ.W ScreenFadeCounter                                                          ;818D9D;
+    STZ.W FileSelectMapAreaIndex                                                          ;818DA0;
     RTS                                                                  ;818DA3;
 
 
@@ -1751,11 +1751,11 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 Debug_GameOverMenu_Index24_FadeIn:
     REP #$30                                                             ;818DA6;
     JSL.L HandleFadingIn                                                 ;818DA8;
-    LDA.B $51                                                            ;818DAC;
+    LDA.B DP_Brightness                                                            ;818DAC;
     AND.W #$000F                                                         ;818DAE;
     CMP.W #$000F                                                         ;818DB1;
     BNE .return                                                          ;818DB4;
-    INC.W $0727                                                          ;818DB6;
+    INC.W PauseMenu_MenuIndex                                                          ;818DB6;
 
   .return:
     RTS                                                                  ;818DB9;
@@ -1765,21 +1765,21 @@ Debug_GameOverMenu_Index24_FadeIn:
 MapVRAMForMenu:
 ; PSR.M is set on return(!)
     SEP #$20                                                             ;818DBA;
-    STZ.B $6B                                                            ;818DBC;
+    STZ.B DP_SubScreenLayers                                                            ;818DBC;
     LDA.B #$03                                                           ;818DBE;
-    STA.B $52                                                            ;818DC0;
+    STA.B DP_SpriteSizeAddr                                                            ;818DC0;
     LDA.B #$51                                                           ;818DC2;
-    STA.B $58                                                            ;818DC4;
+    STA.B DP_BG1TilemapAddrSize                                                            ;818DC4;
     LDA.B #$58                                                           ;818DC6;
-    STA.B $59                                                            ;818DC8;
+    STA.B DP_BG2TilemapAddrSize                                                            ;818DC8;
     LDA.B #$5C                                                           ;818DCA;
-    STA.B $5A                                                            ;818DCC;
+    STA.B DP_BG3TilemapAddrSize                                                            ;818DCC;
     LDA.B #$00                                                           ;818DCE;
-    STA.B $5D                                                            ;818DD0;
+    STA.B DP_BGTilesAddr                                                            ;818DD0;
     LDA.B #$04                                                           ;818DD2;
-    STA.B $5E                                                            ;818DD4;
+    STA.B DP_BGTilesAddr+1                                                            ;818DD4;
     LDA.B #$13                                                           ;818DD6;
-    STA.B $69                                                            ;818DD8;
+    STA.B DP_MainScreenLayers                                                            ;818DD8;
     RTS                                                                  ;818DDA;
 
 
@@ -1846,9 +1846,9 @@ LoadMenuPalettes:
 
   .loop:
     LDA.L Menu_Palettes,X                                                ;818E65;
-    STA.L $7EC000,X                                                      ;818E69;
+    STA.L Palettes,X                                                      ;818E69;
     LDA.L Menu_Palettes+2,X                                              ;818E6D;
-    STA.L $7EC002,X                                                      ;818E71;
+    STA.L Palettes+2,X                                                      ;818E71;
     INX                                                                  ;818E75;
     INX                                                                  ;818E76;
     INX                                                                  ;818E77;
@@ -1866,46 +1866,46 @@ LoadDebugGameOverMenuTilemap:
     LDA.W #$000F                                                         ;818E82;
 
   .loopClear:
-    STA.L $7E3800,X                                                      ;818E85;
+    STA.L CinematicBGTilemap,X                                                      ;818E85;
     INX                                                                  ;818E89;
     INX                                                                  ;818E8A;
     CPX.W #$0800                                                         ;818E8B;
     BMI .loopClear                                                       ;818E8E;
-    LDX.W $0330                                                          ;818E90;
+    LDX.W VRAMWriteStack                                                          ;818E90;
     LDA.W #$0800                                                         ;818E93;
-    STA.B $D0,X                                                          ;818E96;
+    STA.B VRAMWrite.size,X                                                          ;818E96;
     LDA.W #$3800                                                         ;818E98;
-    STA.B $D2,X                                                          ;818E9B;
+    STA.B VRAMWrite.src,X                                                          ;818E9B;
     LDA.W #$007E                                                         ;818E9D;
-    STA.B $D4,X                                                          ;818EA0;
-    LDA.B $58                                                            ;818EA2;
+    STA.B VRAMWrite.src+2,X                                                          ;818EA0;
+    LDA.B DP_BG1TilemapAddrSize                                                            ;818EA2;
     AND.W #$00FC                                                         ;818EA4;
     XBA                                                                  ;818EA7;
-    STA.B $D5,X                                                          ;818EA8;
+    STA.B VRAMWrite.dest,X                                                          ;818EA8;
     TXA                                                                  ;818EAA;
     CLC                                                                  ;818EAB;
     ADC.W #$0007                                                         ;818EAC;
-    STA.W $0330                                                          ;818EAF;
-    LDX.W $0330                                                          ;818EB2;
+    STA.W VRAMWriteStack                                                          ;818EAF;
+    LDX.W VRAMWriteStack                                                          ;818EB2;
     LDY.W #$0000                                                         ;818EB5;
 
   .loop:
-    LDA.B [$00],Y                                                        ;818EB8;
+    LDA.B [DP_Temp00],Y                                                        ;818EB8;
     CMP.W #$FFFF                                                         ;818EBA;
     BEQ .return                                                          ;818EBD;
-    STA.B $D0,X                                                          ;818EBF;
+    STA.B VRAMWrite.size,X                                                          ;818EBF;
     INY                                                                  ;818EC1;
     INY                                                                  ;818EC2;
-    LDA.B [$00],Y                                                        ;818EC3;
-    STA.B $D2,X                                                          ;818EC5;
+    LDA.B [DP_Temp00],Y                                                        ;818EC3;
+    STA.B VRAMWrite.src,X                                                          ;818EC5;
     INY                                                                  ;818EC7;
     INY                                                                  ;818EC8;
-    LDA.B [$00],Y                                                        ;818EC9;
-    STA.B $D4,X                                                          ;818ECB;
+    LDA.B [DP_Temp00],Y                                                        ;818EC9;
+    STA.B VRAMWrite.src+2,X                                                          ;818ECB;
     INY                                                                  ;818ECD;
     INY                                                                  ;818ECE;
-    LDA.B [$00],Y                                                        ;818ECF;
-    STA.B $D5,X                                                          ;818ED1;
+    LDA.B [DP_Temp00],Y                                                        ;818ECF;
+    STA.B VRAMWrite.dest,X                                                          ;818ED1;
     TXA                                                                  ;818ED3;
     CLC                                                                  ;818ED4;
     ADC.W #$0007                                                         ;818ED5;
@@ -1915,7 +1915,7 @@ LoadDebugGameOverMenuTilemap:
     BRA .loop                                                            ;818EDB;
 
   .return:
-    STX.W $0330                                                          ;818EDD;
+    STX.W VRAMWriteStack                                                          ;818EDD;
     RTL                                                                  ;818EE0;
 
 
@@ -1986,7 +1986,7 @@ Tilemap_DebugGameOverMenu:
 ;;; $9003: Debug game over menu - index 3: main ;;;
 DebugGameOverMenu_Index3_Main:
     REP #$30                                                             ;819003;
-    LDA.B $8F                                                            ;819005;
+    LDA.B DP_Controller1New                                                            ;819005;
     BIT.W #$2000                                                         ;819007;
     BNE .toggleSelection                                                 ;81900A;
     BIT.W #$0800                                                         ;81900C;
@@ -1995,37 +1995,37 @@ DebugGameOverMenu_Index3_Main:
     BNE .toggleSelection                                                 ;819014;
     BIT.W #$9080                                                         ;819016;
     BEQ .noChange                                                        ;819019;
-    LDA.W $0950                                                          ;81901B;
+    LDA.W FileSelectMapAreaIndex                                                          ;81901B;
     BNE +                                                                ;81901E;
-    LDA.W $0952                                                          ;819020;
+    LDA.W SaveSlotSelected                                                          ;819020;
     JSL.L SaveToSRAM                                                     ;819023;
     JML.L SoftReset                                                      ;819027;
 
-+   INC.W $0727                                                          ;81902B;
++   INC.W PauseMenu_MenuIndex                                                          ;81902B;
     RTS                                                                  ;81902E;
 
   .toggleSelection:
-    LDA.W $0950                                                          ;81902F;
+    LDA.W FileSelectMapAreaIndex                                                          ;81902F;
     EOR.W #$0001                                                         ;819032;
-    STA.W $0950                                                          ;819035;
+    STA.W FileSelectMapAreaIndex                                                          ;819035;
 
   .noChange:
     LDX.W #$7800                                                         ;819038;
-    LDA.W $0950                                                          ;81903B;
+    LDA.W FileSelectMapAreaIndex                                                          ;81903B;
     BEQ +                                                                ;81903E;
     LDX.W #$8800                                                         ;819040;
 
 +   TXA                                                                  ;819043;
     ORA.W #$0028                                                         ;819044;
-    LDX.W $0590                                                          ;819047;
-    STA.W $0370,X                                                        ;81904A;
+    LDX.W OAMStack                                                          ;819047;
+    STA.W OAMLow,X                                                        ;81904A;
     LDA.W #$00B6                                                         ;81904D;
-    STA.W $0372,X                                                        ;819050;
+    STA.W OAMLow+2,X                                                        ;819050;
     INX                                                                  ;819053;
     INX                                                                  ;819054;
     INX                                                                  ;819055;
     INX                                                                  ;819056;
-    STX.W $0590                                                          ;819057;
+    STX.W OAMStack                                                          ;819057;
     RTS                                                                  ;81905A;
 
 
@@ -2036,8 +2036,8 @@ RestorePalettesAndIORegistersFromDebugGameOverMenu:
     LDX.W #$0000                                                         ;81905B;
 
   .loopPalettes:
-    LDA.L $7E3300,X                                                      ;81905E;
-    STA.L $7EC000,X                                                      ;819062;
+    LDA.L BackupOfPalettesDuringMenu,X                                                      ;81905E;
+    STA.L Palettes,X                                                      ;819062;
     INX                                                                  ;819066;
     INX                                                                  ;819067;
     CPX.W #$0200                                                         ;819068;
@@ -2045,8 +2045,8 @@ RestorePalettesAndIORegistersFromDebugGameOverMenu:
     LDX.W #$0000                                                         ;81906D;
 
   .loopIORegisters:
-    LDA.L $7E3500,X                                                      ;819070;
-    STA.B $51,X                                                          ;819074;
+    LDA.L BackupOfRegularIORegistersDuringGameOverMenu,X                                                      ;819070;
+    STA.B DP_Brightness,X                                                          ;819074;
     INX                                                                  ;819076;
     INX                                                                  ;819077;
     CPX.W #$0036                                                         ;819078;
@@ -2071,8 +2071,8 @@ DebugGameOverMenu_Index5_Continue:
     STA.W $420B                                                          ;81909D;
     REP #$30                                                             ;8190A0;
     LDA.W #$0010                                                         ;8190A2;
-    STA.W $0998                                                          ;8190A5;
-    STZ.W $0950                                                          ;8190A8;
+    STA.W GameState                                                          ;8190A5;
+    STZ.W FileSelectMapAreaIndex                                                          ;8190A8;
     JMP.W RestorePalettesAndIORegistersFromDebugGameOverMenu             ;8190AB;
 
 
@@ -2082,7 +2082,7 @@ GameOverMenu:
     PHB                                                                  ;8190B0;
     PHK                                                                  ;8190B1;
     PLB                                                                  ;8190B2;
-    LDA.W $0727                                                          ;8190B3;
+    LDA.W PauseMenu_MenuIndex                                                          ;8190B3;
     ASL A                                                                ;8190B6;
     TAX                                                                  ;8190B7;
     JSR.W (.pointers,X)                                                  ;8190B8;
@@ -2105,11 +2105,11 @@ GameOverMenu_Index3_FadeIn:
     JSL.L Handle_GameOver_BabyMetroid                                    ;8190CD;
     JSL.L Draw_Menu_Selection_Missile                                    ;8190D1;
     JSL.L HandleFadingIn                                                 ;8190D5;
-    LDA.B $51                                                            ;8190D9;
+    LDA.B DP_Brightness                                                            ;8190D9;
     AND.W #$000F                                                         ;8190DB;
     CMP.W #$000F                                                         ;8190DE;
     BNE .return                                                          ;8190E1;
-    INC.W $0727                                                          ;8190E3;
+    INC.W PauseMenu_MenuIndex                                                          ;8190E3;
 
   .return:
     RTS                                                                  ;8190E6;
@@ -2120,10 +2120,10 @@ GameOverMenu_Index5_FadeOutIntoGameMapView:
     JSL.L Handle_GameOver_BabyMetroid                                    ;8190E7;
     JSL.L Draw_Menu_Selection_Missile                                    ;8190EB;
     JSL.L HandleFadingOut                                                ;8190EF;
-    LDA.B $51                                                            ;8190F3;
+    LDA.B DP_Brightness                                                            ;8190F3;
     AND.W #$000F                                                         ;8190F5;
     BNE .return                                                          ;8190F8;
-    INC.W $0727                                                          ;8190FA;
+    INC.W PauseMenu_MenuIndex                                                          ;8190FA;
 
   .return:
     RTS                                                                  ;8190FD;
@@ -2134,7 +2134,7 @@ GameOverMenu_Index7_FadeOutIntoGameMapView:
     JSL.L Draw_Menu_Selection_Missile                                    ;8190FE;
     JSL.L Handle_GameOver_BabyMetroid                                    ;819102;
     JSL.L HandleFadingOut                                                ;819106;
-    LDA.B $51                                                            ;81910A;
+    LDA.B DP_Brightness                                                            ;81910A;
     AND.W #$000F                                                         ;81910C;
     BEQ .softReset                                                       ;81910F;
     RTS                                                                  ;819111;
@@ -2148,9 +2148,9 @@ GameOverMenu_Index6_LoadGameMapView:
     JSL.L Disable_HDMAObjects                                            ;819116;
     JSL.L Wait_End_VBlank_Clear_HDMA                                     ;81911A;
     LDA.W #$0005                                                         ;81911E;
-    STA.W $0998                                                          ;819121;
+    STA.W GameState                                                          ;819121;
     LDA.W #$0000                                                         ;819124;
-    STA.W $0727                                                          ;819127;
+    STA.W PauseMenu_MenuIndex                                                          ;819127;
     RTS                                                                  ;81912A;
 
 
@@ -2159,7 +2159,7 @@ GameOverMenu_Index4_Main:
     REP #$30                                                             ;81912B;
     JSL.L Handle_GameOver_BabyMetroid                                    ;81912D;
     JSL.L Draw_Menu_Selection_Missile                                    ;819131;
-    LDA.B $8F                                                            ;819135;
+    LDA.B DP_Controller1New                                                            ;819135;
     BIT.W #$2000                                                         ;819137;
     BNE .toggleSelection                                                 ;81913A;
     BIT.W #$0800                                                         ;81913C;
@@ -2169,43 +2169,43 @@ GameOverMenu_Index4_Main:
     BIT.W #$0080                                                         ;819146;
     BEQ .noChange                                                        ;819149;
     LDA.W #$00B4                                                         ;81914B;
-    STA.W $0F94                                                          ;81914E;
-    LDA.W $0950                                                          ;819151;
+    STA.W Enemy.instTimer                                                          ;81914E;
+    LDA.W FileSelectMapAreaIndex                                                          ;819151;
     BEQ +                                                                ;819154;
     LDA.W #$0007                                                         ;819156;
-    STA.W $0727                                                          ;819159;
+    STA.W PauseMenu_MenuIndex                                                          ;819159;
     RTS                                                                  ;81915C;
 
-+   LDA.L $7ED914                                                        ;81915D;
++   LDA.L SRAMMirror_LoadingGameState                                                        ;81915D;
     CMP.W #$001F                                                         ;819161;
     BEQ +                                                                ;819164;
-    INC.W $0727                                                          ;819166;
-    LDA.W $0952                                                          ;819169;
+    INC.W PauseMenu_MenuIndex                                                          ;819166;
+    LDA.W SaveSlotSelected                                                          ;819169;
     JSL.L LoadFromSRAM                                                   ;81916C;
     RTS                                                                  ;819170;
 
-+   STA.W $0998                                                          ;819171;
-    LDA.W $0952                                                          ;819174;
++   STA.W GameState                                                          ;819171;
+    LDA.W SaveSlotSelected                                                          ;819174;
     JSL.L LoadFromSRAM                                                   ;819177;
     RTS                                                                  ;81917B;
 
   .toggleSelection:
     LDA.W #$0037                                                         ;81917C;
     JSL.L QueueSound_Lib1_Max6                                           ;81917F;
-    LDA.W $0950                                                          ;819183;
+    LDA.W FileSelectMapAreaIndex                                                          ;819183;
     EOR.W #$0001                                                         ;819186;
-    STA.W $0950                                                          ;819189;
+    STA.W FileSelectMapAreaIndex                                                          ;819189;
 
   .noChange:
     LDX.W #$0028                                                         ;81918C;
     LDY.W #$00A0                                                         ;81918F;
-    LDA.W $0950                                                          ;819192;
+    LDA.W FileSelectMapAreaIndex                                                          ;819192;
     BEQ +                                                                ;819195;
     LDX.W #$0028                                                         ;819197;
     LDY.W #$00C0                                                         ;81919A;
 
-+   STX.W $19A1                                                          ;81919D;
-    STY.W $19AB                                                          ;8191A0;
++   STX.W Mode7Object_InstListPointers                                                          ;81919D;
+    STY.W Mode7Object_InstructionTimers+2                                                          ;8191A0;
     RTS                                                                  ;8191A3;
 
 
@@ -2213,22 +2213,22 @@ GameOverMenu_Index4_Main:
 GameOverMenu_Index1_Initialise:
     SEP #$20                                                             ;8191A4;
     LDA.B #$11                                                           ;8191A6;
-    STA.B $69                                                            ;8191A8;
+    STA.B DP_MainScreenLayers                                                            ;8191A8;
     LDA.B #$20                                                           ;8191AA;
-    STA.B $74                                                            ;8191AC;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8191AC;
     LDA.B #$40                                                           ;8191AE;
-    STA.B $75                                                            ;8191B0;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8191B0;
     LDA.B #$80                                                           ;8191B2;
-    STA.B $76                                                            ;8191B4;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8191B4;
     REP #$30                                                             ;8191B6;
     LDA.W #$0000                                                         ;8191B8;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8191BB;
     LDA.W #$FF03                                                         ;8191BF;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8191C2;
     LDA.W #$0001                                                         ;8191C6;
-    STA.W $198D                                                          ;8191C9;
+    STA.W EnemyProjectile_Enable                                                          ;8191C9;
     DEC A                                                                ;8191CC;
-    STA.W $1997                                                          ;8191CD;
+    STA.W EnemyProjectile_ID                                                          ;8191CD;
     LDX.W #$0000                                                         ;8191D0;
     LDA.W #$000F                                                         ;8191D3;
 
@@ -2238,21 +2238,21 @@ GameOverMenu_Index1_Initialise:
     INX                                                                  ;8191DB;
     CPX.W #$0800                                                         ;8191DC;
     BMI .loop                                                            ;8191DF;
-    LDX.W $0330                                                          ;8191E1;
+    LDX.W VRAMWriteStack                                                          ;8191E1;
     LDA.W #$0800                                                         ;8191E4;
-    STA.B $D0,X                                                          ;8191E7;
+    STA.B VRAMWrite.size,X                                                          ;8191E7;
     LDA.W #$3600                                                         ;8191E9;
-    STA.B $D2,X                                                          ;8191EC;
+    STA.B VRAMWrite.src,X                                                          ;8191EC;
     LDA.W #$007E                                                         ;8191EE;
-    STA.B $D4,X                                                          ;8191F1;
+    STA.B VRAMWrite.src+2,X                                                          ;8191F1;
     LDA.B $58                                                            ;8191F3;
     AND.W #$00FC                                                         ;8191F5;
     XBA                                                                  ;8191F8;
-    STA.B $D5,X                                                          ;8191F9;
+    STA.B VRAMWrite.dest,X                                                          ;8191F9;
     TXA                                                                  ;8191FB;
     CLC                                                                  ;8191FC;
     ADC.W #$0007                                                         ;8191FD;
-    STA.W $0330                                                          ;819200;
+    STA.W VRAMWriteStack                                                          ;819200;
     STZ.W $0F96                                                          ;819203;
     LDY.W #Tilemap_GameOver_gameOver                                     ;819206;
     LDX.W #($B<<1)|($5<<6)                                               ;819209; $0156
@@ -2285,14 +2285,14 @@ GameOverMenu_Index1_Initialise:
     db $00,$31                                                           ;81925C;
     dw HDMAObjInstList_ColorMathCtrlRegB_GameOverMenuGradient            ;81925E;
     JSL.L ClearForceBlankAndWaitForNMI                                   ;819260;
-    INC.W $0727                                                          ;819264;
-    STZ.W $0723                                                          ;819267;
-    STZ.W $0725                                                          ;81926A;
-    STZ.W $0950                                                          ;81926D;
+    INC.W PauseMenu_MenuIndex                                                          ;819264;
+    STZ.W ScreenFadeDelay                                                          ;819267;
+    STZ.W ScreenFadeCounter                                                          ;81926A;
+    STZ.W FileSelectMapAreaIndex                                                          ;81926D;
     LDA.W #$0028                                                         ;819270;
-    STA.W $19A1                                                          ;819273;
+    STA.W Mode7Object_InstListPointers                                                          ;819273;
     LDA.W #$00A0                                                         ;819276;
-    STA.W $19AB                                                          ;819279;
+    STA.W Mode7Object_InstructionTimers+2                                                          ;819279;
     RTS                                                                  ;81927C;
 
 
@@ -2405,7 +2405,7 @@ GameOverMenu_Index2_PlayMusicTrack:
     REP #$30                                                             ;8193E8;
     JSL.L CheckIfMusicIsQueued                                           ;8193EA;
     BCS .return                                                          ;8193EE;
-    INC.W $0727                                                          ;8193F0;
+    INC.W PauseMenu_MenuIndex                                                          ;8193F0;
     LDA.W #$0004                                                         ;8193F3;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8193F6;
 
@@ -2419,7 +2419,7 @@ FileSelectMenu:
     PHB                                                                  ;8193FD;
     PHK                                                                  ;8193FE;
     PLB                                                                  ;8193FF;
-    LDA.W $0727                                                          ;819400;
+    LDA.W PauseMenu_MenuIndex                                                          ;819400;
     ASL A                                                                ;819403;
     TAX                                                                  ;819404;
     JSR.W (.pointers,X)                                                  ;819405;
@@ -2477,7 +2477,7 @@ FileSelectMenu_Index0_TitleSequenceToMain_FadeOutConfigGfx:
     JSL.L QueueSound_Lib3_Max6                                           ;819463;
     JSL.L Disable_HDMAObjects                                            ;819467;
     JSL.L Wait_End_VBlank_Clear_HDMA                                     ;81946B;
-    INC.W $0727                                                          ;81946F;
+    INC.W PauseMenu_MenuIndex                                                          ;81946F;
     JSR.W MapVRAMForMenu                                                 ;819472;
     JSR.W LoadInitialMenuTiles                                           ;819475;
     REP #$30                                                             ;819478;
@@ -2496,7 +2496,7 @@ LoadFileSelectPalettes:
 
   .loop:
     LDA.L Menu_Palettes,X                                                ;819489;
-    STA.L $7EC000,X                                                      ;81948D;
+    STA.L Palettes,X                                                      ;81948D;
     LDA.L Menu_Palettes+2,X                                              ;819491;
     STA.L $7EC002,X                                                      ;819495;
     INX                                                                  ;819499;
@@ -2519,13 +2519,13 @@ FileSelectMenu_Index20_MainToOptionsMenu_FadeOut:
     AND.W #$000F                                                         ;8194B6;
     BNE .return                                                          ;8194B9;
     LDA.W #$0002                                                         ;8194BB;
-    STA.W $0998                                                          ;8194BE;
-    STZ.W $0727                                                          ;8194C1;
+    STA.W GameState                                                          ;8194BE;
+    STZ.W PauseMenu_MenuIndex                                                          ;8194C1;
     LDY.W #$0000                                                         ;8194C4;
     LDA.W #$0000                                                         ;8194C7;
 
   .loop:
-    STA.W $198D,Y                                                        ;8194CA;
+    STA.W EnemyProjectile_Enable,Y                                                        ;8194CA;
     INY                                                                  ;8194CD;
     INY                                                                  ;8194CE;
     CPY.W #$0030                                                         ;8194CF;
@@ -2575,7 +2575,7 @@ FileSelectMenu_IndexF_1B_FadeOutToMain:
     AND.W #$000F                                                         ;819511;
     BNE .return                                                          ;819514;
     JSL.L SetForceBlankAndWaitForNMI                                     ;819516;
-    INC.W $0727                                                          ;81951A;
+    INC.W PauseMenu_MenuIndex                                                          ;81951A;
 
   .return:
     RTS                                                                  ;81951D;
@@ -2584,14 +2584,14 @@ FileSelectMenu_IndexF_1B_FadeOutToMain:
 ;;; $951E: File select menu - index 11h/1Dh: fade in to main ;;;
 FileSelectMenu_Index11_10_FadeInToMain:
     REP #$30                                                             ;81951E;
-    LDA.W $0952                                                          ;819520;
+    LDA.W SaveSlotSelected                                                          ;819520;
     ASL A                                                                ;819523;
     ASL A                                                                ;819524;
     TAX                                                                  ;819525;
     LDA.W FileSelectMenu_SelectionMissile_Coordinates_Yposition,X        ;819526;
-    STA.W $19AB                                                          ;819529;
+    STA.W Mode7Object_InstructionTimers+2                                                          ;819529;
     LDA.W FileSelectMenu_SelectionMissile_Coordinates_Xposition,X        ;81952C;
-    STA.W $19A1                                                          ;81952F; fallthrough to FileSelectMenu_Index7_15_FadeInFromMain
+    STA.W Mode7Object_InstListPointers                                                          ;81952F; fallthrough to FileSelectMenu_Index7_15_FadeInFromMain
 
 
 ;;; $9532: File select menu - index 7/15h: fade in from main ;;;
@@ -2615,7 +2615,7 @@ FileSelectMenu_Index7_15_FadeInFromMain:
     AND.W #$000F                                                         ;819555;
     CMP.W #$000F                                                         ;819558;
     BNE .return                                                          ;81955B;
-    INC.W $0727                                                          ;81955D;
+    INC.W PauseMenu_MenuIndex                                                          ;81955D;
 
   .return:
     RTS                                                                  ;819560;
@@ -2624,7 +2624,7 @@ FileSelectMenu_Index7_15_FadeInFromMain:
 ;;; $9561: File select menu - index 6: main to file copy - initialise ;;;
 FileSelectMenu_Index6_MainToFileCopy_Initialise:
     REP #$30                                                             ;819561;
-    INC.W $0727                                                          ;819563; fallthrough to Initialise_FileSelectMenu_FileCopy
+    INC.W PauseMenu_MenuIndex                                                          ;819563; fallthrough to Initialise_FileSelectMenu_FileCopy
 
 
 ;;; $9566: Initialise file select menu file copy ;;;
@@ -2787,21 +2787,21 @@ Draw_FileCopyClear_SaveSlotCInfo:
 
 ;;; $969F: Queue transfer of menu tilemap to VRAM BG1 ;;;
 QueueTransfer_MenuTilemap_ToVRAMBG1:
-    LDX.W $0330                                                          ;81969F;
+    LDX.W VRAMWriteStack                                                          ;81969F;
     LDA.W #$0800                                                         ;8196A2;
-    STA.B $D0,X                                                          ;8196A5;
+    STA.B VRAMWrite.size,X                                                          ;8196A5;
     LDA.W #$3600                                                         ;8196A7;
-    STA.B $D2,X                                                          ;8196AA;
+    STA.B VRAMWrite.src,X                                                          ;8196AA;
     LDA.W #$007E                                                         ;8196AC;
-    STA.B $D4,X                                                          ;8196AF;
+    STA.B VRAMWrite.src+2,X                                                          ;8196AF;
     LDA.B $58                                                            ;8196B1;
     AND.W #$00FC                                                         ;8196B3;
     XBA                                                                  ;8196B6;
-    STA.B $D5,X                                                          ;8196B7;
+    STA.B VRAMWrite.dest,X                                                          ;8196B7;
     TXA                                                                  ;8196B9;
     CLC                                                                  ;8196BA;
     ADC.W #$0007                                                         ;8196BB;
-    STA.W $0330                                                          ;8196BE;
+    STA.W VRAMWriteStack                                                          ;8196BE;
     RTS                                                                  ;8196C1;
 
 
@@ -2840,10 +2840,10 @@ FileSelectMenu_Index8_FileCopy_SelectSource:
     REP #$30                                                             ;819706; >_< dead code
 
   .B:
-    LDA.W $0727                                                          ;819708;
+    LDA.W PauseMenu_MenuIndex                                                          ;819708;
     CLC                                                                  ;81970B;
     ADC.W #$0007                                                         ;81970C;
-    STA.W $0727                                                          ;81970F;
+    STA.W PauseMenu_MenuIndex                                                          ;81970F;
     LDA.W #$0037                                                         ;819712;
     JSL.L QueueSound_Lib1_Max6                                           ;819715;
     RTS                                                                  ;819719;
@@ -2872,13 +2872,13 @@ FileSelectMenu_Index8_FileCopy_SelectSource:
     CMP.W #$0003                                                         ;819744;
     BEQ +                                                                ;819747;
     STA.W $19B7                                                          ;819749;
-    INC.W $0727                                                          ;81974C;
+    INC.W PauseMenu_MenuIndex                                                          ;81974C;
     RTS                                                                  ;81974F;
 
-+   LDA.W $0727                                                          ;819750;
++   LDA.W PauseMenu_MenuIndex                                                          ;819750;
     CLC                                                                  ;819753;
     ADC.W #$0007                                                         ;819754;
-    STA.W $0727                                                          ;819757;
+    STA.W PauseMenu_MenuIndex                                                          ;819757;
     RTS                                                                  ;81975A;
 
   .bitmasks:
@@ -2892,9 +2892,9 @@ Set_FileCopyMenu_SelectionMissile_Position:
     ASL A                                                                ;819763;
     TAX                                                                  ;819764;
     LDA.W .position,X                                                    ;819765;
-    STA.W $19AB                                                          ;819768;
+    STA.W Mode7Object_InstructionTimers+2                                                          ;819768;
     LDA.W #$0016                                                         ;81976B;
-    STA.W $19A1                                                          ;81976E;
+    STA.W Mode7Object_InstListPointers                                                          ;81976E;
     RTS                                                                  ;819771;
 
   .position:
@@ -2906,7 +2906,7 @@ FileSelectMenu_Index9_FileCopy_InitialiseSelectDestination:
     REP #$30                                                             ;81977A;
     JSL.L Draw_Border_Around_DATA_COPY_MODE                              ;81977C;
     JSR.W Draw_FileCopy_SelectDestination_SaveFileInfo                   ;819780;
-    INC.W $0727                                                          ;819783;
+    INC.W PauseMenu_MenuIndex                                                          ;819783;
     LDA.W #$0000                                                         ;819786;
 
   .loop:
@@ -3005,16 +3005,16 @@ FileSelectMenu_IndexA_FileCopy_SelectDestination:
     ASL A                                                                ;819850;
     TAX                                                                  ;819851;
     LDA.W .positions,X                                                   ;819852;
-    STA.W $19AB                                                          ;819855;
+    STA.W Mode7Object_InstructionTimers+2                                                          ;819855;
     LDA.W #$0016                                                         ;819858;
-    STA.W $19A1                                                          ;81985B;
+    STA.W Mode7Object_InstListPointers                                                          ;81985B;
     RTS                                                                  ;81985E;
 
   .B:
-    LDA.W $0727                                                          ;81985F;
+    LDA.W PauseMenu_MenuIndex                                                          ;81985F;
     SEC                                                                  ;819862;
     SBC.W #$0002                                                         ;819863;
-    STA.W $0727                                                          ;819866;
+    STA.W PauseMenu_MenuIndex                                                          ;819866;
     LDA.W $19B7                                                          ;819869;
     STA.W $19B5                                                          ;81986C;
     LDA.W #$0037                                                         ;81986F;
@@ -3028,13 +3028,13 @@ FileSelectMenu_IndexA_FileCopy_SelectDestination:
     CMP.W #$0003                                                         ;819883;
     BEQ +                                                                ;819886;
     STA.W $19B9                                                          ;819888;
-    INC.W $0727                                                          ;81988B;
+    INC.W PauseMenu_MenuIndex                                                          ;81988B;
     BRA .setMissilePosition                                              ;81988E;
 
-+   LDA.W $0727                                                          ;819890;
++   LDA.W PauseMenu_MenuIndex                                                          ;819890;
     CLC                                                                  ;819893;
     ADC.W #$0005                                                         ;819894;
-    STA.W $0727                                                          ;819897;
+    STA.W PauseMenu_MenuIndex                                                          ;819897;
     RTS                                                                  ;81989A;
 
   .up:
@@ -3069,7 +3069,7 @@ FileSelectMenu_IndexB_FileCopy_InitialiseConfirmation:
     ADC.W #$206A                                                         ;8198D6;
     STA.L $7E3776                                                        ;8198D9;
     JSR.W Draw_FileCopyClear_Confirmation                                ;8198DD;
-    INC.W $0727                                                          ;8198E0;
+    INC.W PauseMenu_MenuIndex                                                          ;8198E0;
     STZ.W $19B5                                                          ;8198E3;
     LDA.W #$0008                                                         ;8198E6;
     STA.W $198F                                                          ;8198E9;
@@ -3163,17 +3163,17 @@ FileSelectMenu_IndexC_FileCopy_Confirmation:
     JSL.L QueueSound_Lib1_Max6                                           ;8199A7;
     LDA.W $19B5                                                          ;8199AB;
     BEQ .yes                                                             ;8199AE;
-    LDA.W $0727                                                          ;8199B0;
+    LDA.W PauseMenu_MenuIndex                                                          ;8199B0;
     SEC                                                                  ;8199B3;
     SBC.W #$0004                                                         ;8199B4;
-    STA.W $0727                                                          ;8199B7;
+    STA.W PauseMenu_MenuIndex                                                          ;8199B7;
     JMP.W Initialise_FileSelectMenu_FileCopy                             ;8199BA;
 
   .B:
-    LDA.W $0727                                                          ;8199BD;
+    LDA.W PauseMenu_MenuIndex                                                          ;8199BD;
     SEC                                                                  ;8199C0;
     SBC.W #$0003                                                         ;8199C1;
-    STA.W $0727                                                          ;8199C4;
+    STA.W PauseMenu_MenuIndex                                                          ;8199C4;
     LDA.W $19B9                                                          ;8199C7;
     STA.W $19B5                                                          ;8199CA;
     LDA.W #$0037                                                         ;8199CD;
@@ -3181,7 +3181,7 @@ FileSelectMenu_IndexC_FileCopy_Confirmation:
     RTS                                                                  ;8199D4;
 
   .yes:
-    INC.W $0727                                                          ;8199D5;
+    INC.W PauseMenu_MenuIndex                                                          ;8199D5;
     RTS                                                                  ;8199D8;
 
   .toggle:
@@ -3197,9 +3197,9 @@ FileSelectMenu_IndexC_FileCopy_Confirmation:
     BEQ +                                                                ;8199EF;
     LDY.W #$00D0                                                         ;8199F1;
 
-+   STY.W $19AB                                                          ;8199F4;
++   STY.W Mode7Object_InstructionTimers+2                                                          ;8199F4;
     LDA.W #$005E                                                         ;8199F7;
-    STA.W $19A1                                                          ;8199FA;
+    STA.W Mode7Object_InstListPointers                                                          ;8199FA;
     RTS                                                                  ;8199FD;
 
 
@@ -3261,9 +3261,9 @@ FileSelectMenu_Index0_FileCopy_DoFileCopy:
     LDA.W $19B7                                                          ;819A66;
     ASL A                                                                ;819A69;
     TAX                                                                  ;819A6A;
-    LDA.L $701FF0,X                                                      ;819A6B;
+    LDA.L SRAM_Slot0Checksum1,X                                                      ;819A6B;
     PHA                                                                  ;819A6F;
-    LDA.L $701FF8,X                                                      ;819A70;
+    LDA.L SRAM_Slot0Complement1,X                                                      ;819A70;
     PHA                                                                  ;819A74;
     LDA.L $700000,X                                                      ;819A75;
     PHA                                                                  ;819A79;
@@ -3277,10 +3277,10 @@ FileSelectMenu_Index0_FileCopy_DoFileCopy:
     PLA                                                                  ;819A89;
     STA.L $700000,X                                                      ;819A8A;
     PLA                                                                  ;819A8E;
-    STA.L $701FF8,X                                                      ;819A8F;
+    STA.L SRAM_Slot0Complement1,X                                                      ;819A8F;
     PLA                                                                  ;819A93;
-    STA.L $701FF0,X                                                      ;819A94;
-    INC.W $0727                                                          ;819A98;
+    STA.L SRAM_Slot0Checksum1,X                                                      ;819A94;
+    INC.W PauseMenu_MenuIndex                                                          ;819A98;
     LDX.W #$0500                                                         ;819A9B;
     LDA.W #$000F                                                         ;819A9E;
 
@@ -3339,7 +3339,7 @@ FileSelectMenu_IndexE_FileCopy_CopyCompleted:
     BEQ .return                                                          ;819B00;
     LDA.W #$0037                                                         ;819B02;
     JSL.L QueueSound_Lib1_Max6                                           ;819B05;
-    INC.W $0727                                                          ;819B09;
+    INC.W PauseMenu_MenuIndex                                                          ;819B09;
     LDA.L $701FEC                                                        ;819B0C;
     CMP.W #$0000                                                         ;819B10;
     BMI .zero                                                            ;819B13;
@@ -3353,7 +3353,7 @@ FileSelectMenu_IndexE_FileCopy_CopyCompleted:
     LDX.W #$0000                                                         ;819B21;
 
   .validSaveSlot:
-    STX.W $0952                                                          ;819B24;
+    STX.W SaveSlotSelected                                                          ;819B24;
 
   .return:
     RTS                                                                  ;819B27;
@@ -3361,10 +3361,10 @@ FileSelectMenu_IndexE_FileCopy_CopyCompleted:
 
 ;;; $9B28: File select menu - index 12h: file copy to main - menu index = main ;;;
 FileSelectMenu_Index12_FileCopyToMain_MenuIndex_Main:
-    LDA.W $0727                                                          ;819B28;
+    LDA.W PauseMenu_MenuIndex                                                          ;819B28;
     SEC                                                                  ;819B2B;
     SBC.W #$000E                                                         ;819B2C;
-    STA.W $0727                                                          ;819B2F;
+    STA.W PauseMenu_MenuIndex                                                          ;819B2F;
     RTS                                                                  ;819B32;
 
 
@@ -3372,7 +3372,7 @@ FileSelectMenu_Index12_FileCopyToMain_MenuIndex_Main:
 FileSelectMenu_Index14_MainToFileClear_Initialise:
     REP #$30                                                             ;819B33;
     JSL.L Draw_Border_Around_DATA_CLEAR_MODE                             ;819B35;
-    INC.W $0727                                                          ;819B39;
+    INC.W PauseMenu_MenuIndex                                                          ;819B39;
 
 
 ;;; $9B3C: Initialise file select menu file clear ;;;
@@ -3429,10 +3429,10 @@ FileSelectMenu_Index16_FileClear_SelectSlot:
     REP #$30                                                             ;819BA5;
     LDA.W #$0037                                                         ;819BA7;
     JSL.L QueueSound_Lib1_Max6                                           ;819BAA;
-    LDA.W $0727                                                          ;819BAE;
+    LDA.W PauseMenu_MenuIndex                                                          ;819BAE;
     CLC                                                                  ;819BB1;
     ADC.W #$0005                                                         ;819BB2;
-    STA.W $0727                                                          ;819BB5;
+    STA.W PauseMenu_MenuIndex                                                          ;819BB5;
     RTS                                                                  ;819BB8;
 
   .up:
@@ -3458,7 +3458,7 @@ FileSelectMenu_Index16_FileClear_SelectSlot:
     CMP.W #$0003                                                         ;819BE0;
     BEQ .exit                                                            ;819BE3;
     STA.W $19B7                                                          ;819BE5;
-    INC.W $0727                                                          ;819BE8;
+    INC.W PauseMenu_MenuIndex                                                          ;819BE8;
     RTS                                                                  ;819BEB;
 
   .data:
@@ -3472,9 +3472,9 @@ Set_FileClearMenuSelection_MissilePosition:
     ASL A                                                                ;819BF4;
     TAX                                                                  ;819BF5;
     LDA.W .positions,X                                                   ;819BF6;
-    STA.W $19AB                                                          ;819BF9;
+    STA.W Mode7Object_InstructionTimers+2                                                          ;819BF9;
     LDA.W #$0016                                                         ;819BFC;
-    STA.W $19A1                                                          ;819BFF;
+    STA.W Mode7Object_InstListPointers                                                          ;819BFF;
     RTS                                                                  ;819C02;
 
   .positions:
@@ -3495,7 +3495,7 @@ FileSelectMenu_Index17_FileClear_InitialiseConfirmation:
     LDA.W #$0003                                                         ;819C26;
     STA.W $19B9                                                          ;819C29;
     JSR.W Draw_FileCopyClear_Confirmation                                ;819C2C;
-    INC.W $0727                                                          ;819C2F;
+    INC.W PauseMenu_MenuIndex                                                          ;819C2F;
     STZ.W $19B5                                                          ;819C32;
     RTS                                                                  ;819C35;
 
@@ -3517,10 +3517,10 @@ FileSelectMenu_Index18_FileClear_Confirmation:
     BEQ .yes                                                             ;819C59;
 
   .B:
-    LDA.W $0727                                                          ;819C5B;
+    LDA.W PauseMenu_MenuIndex                                                          ;819C5B;
     SEC                                                                  ;819C5E;
     SBC.W #$0002                                                         ;819C5F;
-    STA.W $0727                                                          ;819C62;
+    STA.W PauseMenu_MenuIndex                                                          ;819C62;
     LDA.W $19B7                                                          ;819C65;
     STA.W $19B5                                                          ;819C68;
     LDA.W #$0037                                                         ;819C6B;
@@ -3528,7 +3528,7 @@ FileSelectMenu_Index18_FileClear_Confirmation:
     JMP.W Initialise_FileSelectMenu_FileClear                            ;819C72;
 
   .yes:
-    INC.W $0727                                                          ;819C75;
+    INC.W PauseMenu_MenuIndex                                                          ;819C75;
     RTS                                                                  ;819C78;
 
   .toggle:
@@ -3544,9 +3544,9 @@ FileSelectMenu_Index18_FileClear_Confirmation:
     BEQ +                                                                ;819C8F;
     LDY.W #$00D0                                                         ;819C91;
 
-+   STY.W $19AB                                                          ;819C94;
++   STY.W Mode7Object_InstructionTimers+2                                                          ;819C94;
     LDA.W #$005E                                                         ;819C97;
-    STA.W $19A1                                                          ;819C9A;
+    STA.W Mode7Object_InstListPointers                                                          ;819C9A;
     RTS                                                                  ;819C9D;
 
 
@@ -3576,14 +3576,14 @@ FileSelectMenu_Index19_FileClear_DoFileClear:
     LDA.W #$0000                                                         ;819CC8;
     STA.L $700000,X                                                      ;819CCB;
     STA.L $700008,X                                                      ;819CCF;
-    STA.L $701FF0,X                                                      ;819CD3;
-    STA.L $701FF8,X                                                      ;819CD7;
-    INC.W $0727                                                          ;819CDB;
+    STA.L SRAM_Slot0Checksum1,X                                                      ;819CD3;
+    STA.L SRAM_Slot0Complement1,X                                                      ;819CD7;
+    INC.W PauseMenu_MenuIndex                                                          ;819CDB;
     JSR.W NewSaveFile                                                    ;819CDE;
     LDA.W $19B7                                                          ;819CE1;
     JSL.L LoadFromSRAM                                                   ;819CE4;
     LDA.W $19B7                                                          ;819CE8;
-    STA.W $079F                                                          ;819CEB;
+    STA.W AreaIndex                                                          ;819CEB;
     JSL.L LoadMirrorOfCurrentAreasMapExplored                            ;819CEE;
     LDX.W #$0500                                                         ;819CF2;
     LDA.W #$000F                                                         ;819CF5;
@@ -3617,14 +3617,14 @@ FileSelectMenu_Index1A_FileClear_ClearCompleted:
     BEQ .return                                                          ;819D2C;
     LDA.W #$0037                                                         ;819D2E;
     JSL.L QueueSound_Lib1_Max6                                           ;819D31;
-    INC.W $0727                                                          ;819D35;
+    INC.W PauseMenu_MenuIndex                                                          ;819D35;
     LDA.W #$0000                                                         ;819D38;
     JSL.L LoadFromSRAM                                                   ;819D3B;
     BCS .slotACorrupt                                                    ;819D3F;
 
   .selectSlotA:
     LDA.W #$0000                                                         ;819D41;
-    STA.W $0952                                                          ;819D44;
+    STA.W SaveSlotSelected                                                          ;819D44;
     RTS                                                                  ;819D47;
 
   .slotACorrupt:
@@ -3632,14 +3632,14 @@ FileSelectMenu_Index1A_FileClear_ClearCompleted:
     JSL.L LoadFromSRAM                                                   ;819D4B;
     BCS +                                                                ;819D4F;
     LDA.W #$0001                                                         ;819D51;
-    STA.W $0952                                                          ;819D54;
+    STA.W SaveSlotSelected                                                          ;819D54;
     RTS                                                                  ;819D57;
 
 +   LDA.W #$0002                                                         ;819D58;
     JSL.L LoadFromSRAM                                                   ;819D5B;
     BCS .selectSlotA                                                     ;819D5F;
     LDA.W #$0002                                                         ;819D61;
-    STA.W $0952                                                          ;819D64;
+    STA.W SaveSlotSelected                                                          ;819D64;
 
   .return:
     RTS                                                                  ;819D67;
@@ -3648,10 +3648,10 @@ FileSelectMenu_Index1A_FileClear_ClearCompleted:
 ;;; $9D68: File select menu - index 1Eh: file clear to main - menu index = main ;;;
 FileSelectMenu_Index1E_FileClearToMain_MenuIndex_Main:
     JSL.L Draw_Border_Around_SAMUS_DATA                                  ;819D68;
-    LDA.W $0727                                                          ;819D6C;
+    LDA.W PauseMenu_MenuIndex                                                          ;819D6C;
     SEC                                                                  ;819D6F;
     SBC.W #$001A                                                         ;819D70;
-    STA.W $0727                                                          ;819D73;
+    STA.W PauseMenu_MenuIndex                                                          ;819D73;
     RTS                                                                  ;819D76;
 
 
@@ -3687,7 +3687,7 @@ FileSelectMenu_Index1F_MainToOptionsMenu_TurnSamusHelmet:
     BNE .return                                                          ;819DBD;
 
   .advance:
-    INC.W $0727                                                          ;819DBF;
+    INC.W PauseMenu_MenuIndex                                                          ;819DBF;
 
   .return:
     RTS                                                                  ;819DC2;
@@ -3697,15 +3697,15 @@ FileSelectMenu_Index1F_MainToOptionsMenu_TurnSamusHelmet:
 Draw_FileSelect_SamusHelmets:
     LDX.W #$0004                                                         ;819DC3;
     LDA.W #$0000                                                         ;819DC6;
-    STA.W $198D,X                                                        ;819DC9;
+    STA.W EnemyProjectile_Enable,X                                                        ;819DC9;
     JSR.W Draw_FileSelect_Slot_SamusHelmet                               ;819DCC;
     LDX.W #$0006                                                         ;819DCF;
     LDA.W #$0000                                                         ;819DD2;
-    STA.W $198D,X                                                        ;819DD5;
+    STA.W EnemyProjectile_Enable,X                                                        ;819DD5;
     JSR.W Draw_FileSelect_Slot_SamusHelmet                               ;819DD8;
     LDX.W #$0008                                                         ;819DDB;
     LDA.W #$0000                                                         ;819DDE;
-    STA.W $198D,X                                                        ;819DE1;
+    STA.W EnemyProjectile_Enable,X                                                        ;819DE1;
 
 
 ;;; $9DE4: Draw file select slot Samus helmet ;;;
@@ -3716,34 +3716,34 @@ Draw_FileSelect_Slot_SamusHelmet:
     PHB                                                                  ;819DE5;
     PHK                                                                  ;819DE6;
     PLB                                                                  ;819DE7;
-    LDA.W $198D,X                                                        ;819DE8;
+    LDA.W EnemyProjectile_Enable,X                                                        ;819DE8;
     BEQ .timerHandled                                                    ;819DEB;
     DEC A                                                                ;819DED;
-    STA.W $198D,X                                                        ;819DEE;
+    STA.W EnemyProjectile_Enable,X                                                        ;819DEE;
     BNE .timerHandled                                                    ;819DF1;
     LDA.W #$0008                                                         ;819DF3;
-    STA.W $198D,X                                                        ;819DF6;
-    LDA.W $1997,X                                                        ;819DF9;
+    STA.W EnemyProjectile_Enable,X                                                        ;819DF6;
+    LDA.W EnemyProjectile_ID,X                                                        ;819DF9;
     INC A                                                                ;819DFC;
     CMP.W #$0008                                                         ;819DFD;
     BMI +                                                                ;819E00;
     LDA.W #$0000                                                         ;819E02;
-    STA.W $198D,X                                                        ;819E05;
+    STA.W EnemyProjectile_Enable,X                                                        ;819E05;
     LDA.W #$0007                                                         ;819E08;
 
-+   STA.W $1997,X                                                        ;819E0B;
++   STA.W EnemyProjectile_ID,X                                                        ;819E0B;
 
   .timerHandled:
-    LDA.W $1997,X                                                        ;819E0E;
+    LDA.W EnemyProjectile_ID,X                                                        ;819E0E;
     ASL A                                                                ;819E11;
     TAY                                                                  ;819E12;
     LDA.W #$0E00                                                         ;819E13;
     STA.B $03                                                            ;819E16;
     LDA.W .data,Y                                                        ;819E18;
     PHA                                                                  ;819E1B;
-    LDA.W $19AB,X                                                        ;819E1C;
+    LDA.W Mode7Object_InstructionTimers+2,X                                                        ;819E1C;
     TAY                                                                  ;819E1F;
-    LDA.W $19A1,X                                                        ;819E20;
+    LDA.W Mode7Object_InstListPointers,X                                                        ;819E20;
     TAX                                                                  ;819E23;
     PLA                                                                  ;819E24;
     JSL.L AddSpritemapFrom_82C569_TableToOAM                             ;819E25;
@@ -3761,7 +3761,7 @@ FileSelectMap:
     PHB                                                                  ;819E40;
     PHK                                                                  ;819E41;
     PLB                                                                  ;819E42;
-    LDA.W $0727                                                          ;819E43;
+    LDA.W PauseMenu_MenuIndex                                                          ;819E43;
     ASL A                                                                ;819E46;
     TAX                                                                  ;819E47;
     JSR.W (.pointers,X)                                                  ;819E48;
@@ -3802,8 +3802,8 @@ FileSelectMap_Index16_FileClear_AreaSelectMapToGameOptions:
     AND.W #$000F                                                         ;819E84;
     BNE .return                                                          ;819E87;
     LDA.W #$0002                                                         ;819E89;
-    STA.W $0998                                                          ;819E8C;
-    STZ.W $0727                                                          ;819E8F;
+    STA.W GameState                                                          ;819E8C;
+    STZ.W PauseMenu_MenuIndex                                                          ;819E8F;
 
   .return:
     RTS                                                                  ;819E92;
@@ -3821,25 +3821,25 @@ FileSelectMenu_Index1_TitleSequenceToMain_LoadBG2:
     DEX                                                                  ;819EA3;
     DEX                                                                  ;819EA4;
     BPL .loop                                                            ;819EA5;
-    LDX.W $0330                                                          ;819EA7;
+    LDX.W VRAMWriteStack                                                          ;819EA7;
     LDA.W #$0800                                                         ;819EAA;
-    STA.B $D0,X                                                          ;819EAD;
+    STA.B VRAMWrite.size,X                                                          ;819EAD;
     LDA.W #$3600                                                         ;819EAF;
-    STA.B $D2,X                                                          ;819EB2;
+    STA.B VRAMWrite.src,X                                                          ;819EB2;
     LDA.W #$007E                                                         ;819EB4;
-    STA.B $D4,X                                                          ;819EB7;
+    STA.B VRAMWrite.src+2,X                                                          ;819EB7;
     LDA.B $59                                                            ;819EB9;
     AND.W #$00FC                                                         ;819EBB;
     XBA                                                                  ;819EBE;
-    STA.B $D5,X                                                          ;819EBF;
+    STA.B VRAMWrite.dest,X                                                          ;819EBF;
     TXA                                                                  ;819EC1;
     CLC                                                                  ;819EC2;
     ADC.W #$0007                                                         ;819EC3;
-    STA.W $0330                                                          ;819EC6;
-    INC.W $0727                                                          ;819EC9;
+    STA.W VRAMWriteStack                                                          ;819EC6;
+    INC.W PauseMenu_MenuIndex                                                          ;819EC9;
     LDA.W #$0001                                                         ;819ECC;
-    STA.W $198D                                                          ;819ECF;
-    STZ.W $1997                                                          ;819ED2;
+    STA.W EnemyProjectile_Enable                                                          ;819ECF;
+    STZ.W EnemyProjectile_ID                                                          ;819ED2;
     RTS                                                                  ;819ED5;
 
 
@@ -3858,7 +3858,7 @@ FileSelectMenu_Index2_TitleSequenceToMain:
 +   LDX.W #$0000                                                         ;819EED;
 
   .validSaveSlot:
-    STX.W $0952                                                          ;819EF0; fallthrough to FileSelectMenu_Index10_1C_ReloadMain
+    STX.W SaveSlotSelected                                                          ;819EF0; fallthrough to FileSelectMenu_Index10_1C_ReloadMain
 
 
 ;;; $9EF3: File select menu - index 10h/1Ch: reload main ;;;
@@ -3957,19 +3957,19 @@ FileSelectMenu_Index10_1C_ReloadMain:
     JSR.W Load_Tilemap_in_Y_to_X_Coordinates                             ;819FE7;
     JSR.W QueueTransfer_MenuTilemap_ToVRAMBG1                            ;819FEA;
     LDA.W #$0001                                                         ;819FED;
-    STA.W $198D                                                          ;819FF0;
+    STA.W EnemyProjectile_Enable                                                          ;819FF0;
     DEC A                                                                ;819FF3;
     STA.W $198F                                                          ;819FF4;
     STA.W $1991                                                          ;819FF7;
     STA.W $1993                                                          ;819FFA;
     STA.W $1995                                                          ;819FFD;
-    STA.W $1997                                                          ;81A000;
+    STA.W EnemyProjectile_ID                                                          ;81A000;
     STA.W $1999                                                          ;81A003;
     STA.W $199B                                                          ;81A006;
     STA.W $199D                                                          ;81A009;
     STA.W $199F                                                          ;81A00C;
-    STA.W $19A1                                                          ;81A00F;
-    STA.W $19AB                                                          ;81A012;
+    STA.W Mode7Object_InstListPointers                                                          ;81A00F;
+    STA.W Mode7Object_InstructionTimers+2                                                          ;81A012;
     STA.W $19A3                                                          ;81A015;
     STA.W $19AD                                                          ;81A018;
     LDA.W #$0064                                                         ;81A01B;
@@ -3983,10 +3983,10 @@ FileSelectMenu_Index10_1C_ReloadMain:
     LDA.W #$007F                                                         ;81A033;
     STA.W $19B3                                                          ;81A036;
     LDA.W #$0001                                                         ;81A039;
-    STA.W $0723                                                          ;81A03C;
-    STA.W $0725                                                          ;81A03F;
+    STA.W ScreenFadeDelay                                                          ;81A03C;
+    STA.W ScreenFadeCounter                                                          ;81A03F;
     JSL.L ClearForceBlankAndWaitForNMI                                   ;81A042;
-    INC.W $0727                                                          ;81A046;
+    INC.W PauseMenu_MenuIndex                                                          ;81A046;
     STZ.W $19B5                                                          ;81A049;
     STZ.W $19B7                                                          ;81A04C;
     STZ.W $19B9                                                          ;81A04F;
@@ -4006,14 +4006,14 @@ LoadFromSRAM_external:
 ;;; $A058: File select menu - index 3: title sequence to main - fade in ;;;
 FileSelectMenu_Index3_TitleSequenceToMain_FadeIn:
     JSR.W Draw_FileSelect_SamusHelmets                                   ;81A058;
-    LDA.W $0952                                                          ;81A05B;
+    LDA.W SaveSlotSelected                                                          ;81A05B;
     ASL A                                                                ;81A05E;
     ASL A                                                                ;81A05F;
     TAX                                                                  ;81A060;
     LDA.W FileSelectMenu_SelectionMissile_Coordinates_Yposition,X        ;81A061;
-    STA.W $19AB                                                          ;81A064;
+    STA.W Mode7Object_InstructionTimers+2                                                          ;81A064;
     LDA.W FileSelectMenu_SelectionMissile_Coordinates_Xposition,X        ;81A067;
-    STA.W $19A1                                                          ;81A06A;
+    STA.W Mode7Object_InstListPointers                                                          ;81A06A;
     JSL.L Draw_Menu_Selection_Missile                                    ;81A06D;
     JSL.L Draw_Border_Around_SAMUS_DATA                                  ;81A071;
     JSL.L HandleFadingIn                                                 ;81A075;
@@ -4021,7 +4021,7 @@ FileSelectMenu_Index3_TitleSequenceToMain_FadeIn:
     AND.W #$000F                                                         ;81A07B;
     CMP.W #$000F                                                         ;81A07E;
     BNE .return                                                          ;81A081;
-    INC.W $0727                                                          ;81A083;
+    INC.W PauseMenu_MenuIndex                                                          ;81A083;
 
   .return:
     RTS                                                                  ;81A086;
@@ -4222,7 +4222,7 @@ FileSelectMenu_Index4_Main:
     LDA.W #$0037                                                         ;81A1F7;
     JSL.L QueueSound_Lib1_Max6                                           ;81A1FA;
     LDA.W #$0021                                                         ;81A1FE;
-    STA.W $0727                                                          ;81A201;
+    STA.W PauseMenu_MenuIndex                                                          ;81A201;
     LDA.W #$0037                                                         ;81A204;
     JSL.L QueueSound_Lib1_Max6                                           ;81A207;
 
@@ -4230,29 +4230,29 @@ FileSelectMenu_Index4_Main:
     JMP.W .done                                                          ;81A20B;
 
   .select:
-    LDA.W $0952                                                          ;81A20E;
+    LDA.W SaveSlotSelected                                                          ;81A20E;
     CMP.W #$0003                                                         ;81A211;
     BMI +                                                                ;81A214;
     JMP.W .fileOperation                                                 ;81A216;
 
 +   LDA.W #$002A                                                         ;81A219;
     JSL.L QueueSound_Lib1_Max6                                           ;81A21C;
-    LDA.W $0727                                                          ;81A220;
+    LDA.W PauseMenu_MenuIndex                                                          ;81A220;
     CLC                                                                  ;81A223;
     ADC.W #$001B                                                         ;81A224;
-    STA.W $0727                                                          ;81A227;
-    LDA.W $0952                                                          ;81A22A;
+    STA.W PauseMenu_MenuIndex                                                          ;81A227;
+    LDA.W SaveSlotSelected                                                          ;81A22A;
     CLC                                                                  ;81A22D;
     ADC.W #$0002                                                         ;81A22E;
     ASL A                                                                ;81A231;
     TAX                                                                  ;81A232;
     LDA.W #$0001                                                         ;81A233;
-    STA.W $198D,X                                                        ;81A236;
-    LDA.W $0952                                                          ;81A239;
+    STA.W EnemyProjectile_Enable,X                                                        ;81A236;
+    LDA.W SaveSlotSelected                                                          ;81A239;
     STA.L $701FEC                                                        ;81A23C;
     EOR.W #$FFFF                                                         ;81A240;
     STA.L $701FEE                                                        ;81A243;
-    LDA.W $0952                                                          ;81A247;
+    LDA.W SaveSlotSelected                                                          ;81A247;
     JSL.L LoadFromSRAM                                                   ;81A24A;
     BCS +                                                                ;81A24E;
     JSL.L LoadMirrorOfCurrentAreasMapExplored                            ;81A250;
@@ -4265,13 +4265,13 @@ FileSelectMenu_Index4_Main:
   .up:
     LDA.W $0954                                                          ;81A25E;
     BEQ +                                                                ;81A261;
-    LDA.W $0952                                                          ;81A263;
+    LDA.W SaveSlotSelected                                                          ;81A263;
     DEC A                                                                ;81A266;
     BPL .storeSelection                                                  ;81A267;
     LDA.W #$0005                                                         ;81A269;
     BRA .storeSelection                                                  ;81A26C;
 
-+   LDA.W $0952                                                          ;81A26E;
++   LDA.W SaveSlotSelected                                                          ;81A26E;
     DEC A                                                                ;81A271;
     BPL +                                                                ;81A272;
     LDA.W #$0005                                                         ;81A274;
@@ -4282,20 +4282,20 @@ FileSelectMenu_Index4_Main:
     LDA.W #$0002                                                         ;81A27E;
 
   .storeSelection:
-    STA.W $0952                                                          ;81A281;
+    STA.W SaveSlotSelected                                                          ;81A281;
     BRA .cursorSound                                                     ;81A284;
 
   .down:
     LDA.W $0954                                                          ;81A286;
     BEQ +                                                                ;81A289;
-    LDA.W $0952                                                          ;81A28B;
+    LDA.W SaveSlotSelected                                                          ;81A28B;
     INC A                                                                ;81A28E;
     CMP.W #$0006                                                         ;81A28F;
     BMI .storeSelection2                                                 ;81A292;
     LDA.W #$0000                                                         ;81A294;
     BRA .storeSelection2                                                 ;81A297;
 
-+   LDA.W $0952                                                          ;81A299;
++   LDA.W SaveSlotSelected                                                          ;81A299;
     INC A                                                                ;81A29C;
     CMP.W #$0003                                                         ;81A29D;
     BMI .storeSelection2                                                 ;81A2A0;
@@ -4308,21 +4308,21 @@ FileSelectMenu_Index4_Main:
     LDA.W #$0000                                                         ;81A2AC;
 
   .storeSelection2:
-    STA.W $0952                                                          ;81A2AF;
+    STA.W SaveSlotSelected                                                          ;81A2AF;
 
   .cursorSound:
     LDA.W #$0037                                                         ;81A2B2;
     JSL.L QueueSound_Lib1_Max6                                           ;81A2B5;
 
   .done:
-    LDA.W $0952                                                          ;81A2B9;
+    LDA.W SaveSlotSelected                                                          ;81A2B9;
     ASL A                                                                ;81A2BC;
     ASL A                                                                ;81A2BD;
     TAX                                                                  ;81A2BE;
     LDA.W FileSelectMenu_SelectionMissile_Coordinates_Yposition,X        ;81A2BF;
-    STA.W $19AB                                                          ;81A2C2;
+    STA.W Mode7Object_InstructionTimers+2                                                          ;81A2C2;
     LDA.W FileSelectMenu_SelectionMissile_Coordinates_Xposition,X        ;81A2C5;
-    STA.W $19A1                                                          ;81A2C8;
+    STA.W Mode7Object_InstListPointers                                                          ;81A2C8;
     RTS                                                                  ;81A2CB;
 
   .fileOperation:
@@ -4330,7 +4330,7 @@ FileSelectMenu_Index4_Main:
     BNE +                                                                ;81A2CF;
     LDA.W #$0037                                                         ;81A2D1;
     JSL.L QueueSound_Lib1_Max6                                           ;81A2D4;
-    INC.W $0727                                                          ;81A2D8;
+    INC.W PauseMenu_MenuIndex                                                          ;81A2D8;
     LDA.B $57                                                            ;81A2DB;
     AND.W #$FF0F                                                         ;81A2DD;
     ORA.W #$0003                                                         ;81A2E0;
@@ -4341,10 +4341,10 @@ FileSelectMenu_Index4_Main:
     BNE .checkFive                                                       ;81A2E9;
     LDA.W #$0037                                                         ;81A2EB;
     JSL.L QueueSound_Lib1_Max6                                           ;81A2EE;
-    LDA.W $0727                                                          ;81A2F2;
+    LDA.W PauseMenu_MenuIndex                                                          ;81A2F2;
     CLC                                                                  ;81A2F5;
     ADC.W #$000F                                                         ;81A2F6;
-    STA.W $0727                                                          ;81A2F9;
+    STA.W PauseMenu_MenuIndex                                                          ;81A2F9;
     LDA.B $57                                                            ;81A2FC;
     AND.W #$FF0F                                                         ;81A2FE;
     ORA.W #$0003                                                         ;81A301;
@@ -4354,7 +4354,7 @@ FileSelectMenu_Index4_Main:
     CMP.W #$0005                                                         ;81A306;
     BNE .return                                                          ;81A309;
     LDA.W #$0021                                                         ;81A30B;
-    STA.W $0727                                                          ;81A30E;
+    STA.W PauseMenu_MenuIndex                                                          ;81A30E;
 
   .return:
     RTS                                                                  ;81A311;
@@ -4377,28 +4377,28 @@ FileSelectMenu_SelectionMissile_Coordinates:
 FileSelectMap_Index0_GameOptionsToAreaSelectMap_ClearBG2:
     REP #$30                                                             ;81A32A;
     JSR.W ClearMenuTilemap                                               ;81A32C;
-    LDX.W $0330                                                          ;81A32F;
+    LDX.W VRAMWriteStack                                                          ;81A32F;
     LDA.W #$0800                                                         ;81A332;
-    STA.B $D0,X                                                          ;81A335;
+    STA.B VRAMWrite.size,X                                                          ;81A335;
     LDA.W #$3600                                                         ;81A337;
-    STA.B $D2,X                                                          ;81A33A;
+    STA.B VRAMWrite.src,X                                                          ;81A33A;
     LDA.W #$007E                                                         ;81A33C;
-    STA.B $D4,X                                                          ;81A33F;
+    STA.B VRAMWrite.src+2,X                                                          ;81A33F;
     LDA.B $59                                                            ;81A341;
     AND.W #$00FC                                                         ;81A343;
     XBA                                                                  ;81A346;
-    STA.B $D5,X                                                          ;81A347;
+    STA.B VRAMWrite.dest,X                                                          ;81A347;
     TXA                                                                  ;81A349;
     CLC                                                                  ;81A34A;
     ADC.W #$0007                                                         ;81A34B;
-    STA.W $0330                                                          ;81A34E;
+    STA.W VRAMWriteStack                                                          ;81A34E;
     LDA.W #$0000                                                         ;81A351;
     STA.L $7EC400                                                        ;81A354;
     JSR.W LoadFileSelectPalettes                                         ;81A358;
     LDX.W #$0000                                                         ;81A35B;
 
   .loop:
-    LDA.L $7EC000,X                                                      ;81A35E;
+    LDA.L Palettes,X                                                      ;81A35E;
     STA.L $7EC200,X                                                      ;81A362;
     INX                                                                  ;81A366;
     INX                                                                  ;81A367;
@@ -4407,7 +4407,7 @@ FileSelectMap_Index0_GameOptionsToAreaSelectMap_ClearBG2:
     LDA.W #$0000                                                         ;81A36D;
     STA.L $7EC21C                                                        ;81A370;
     STA.L $7EC23C                                                        ;81A374;
-    INC.W $0727                                                          ;81A378;
+    INC.W PauseMenu_MenuIndex                                                          ;81A378;
     RTS                                                                  ;81A37B;
 
 
@@ -4423,7 +4423,7 @@ FileSelectMap_Index1_GameOptionsToAreaSelectMap_FadeOut:
     STZ.B $B7                                                            ;81A38E;
     STZ.B $B5                                                            ;81A390;
     LDX.W #$0000                                                         ;81A392;
-    LDA.W $079F                                                          ;81A395;
+    LDA.W AreaIndex                                                          ;81A395;
 
   .loopMapAreaIndex:
     CMP.W FileSelectMapArea_IndexTable,X                                 ;81A398;
@@ -4436,12 +4436,12 @@ FileSelectMap_Index1_GameOptionsToAreaSelectMap_FadeOut:
 
 +   TXA                                                                  ;81A3A7;
     LSR A                                                                ;81A3A8;
-    STA.W $0950                                                          ;81A3A9;
+    STA.W FileSelectMapAreaIndex                                                          ;81A3A9;
     LDX.W #$0000                                                         ;81A3AC;
 
   .loopAreaColors:
     PHX                                                                  ;81A3AF;
-    CPX.W $079F                                                          ;81A3B0;
+    CPX.W AreaIndex                                                          ;81A3B0;
     BEQ .loadForegroundColors                                            ;81A3B3;
     JSR.W LoadInactiveAreaMapForegroundColors                            ;81A3B5;
     BRA +                                                                ;81A3B8;
@@ -4453,7 +4453,7 @@ FileSelectMap_Index1_GameOptionsToAreaSelectMap_FadeOut:
     INX                                                                  ;81A3BE;
     CPX.W #$0006                                                         ;81A3BF;
     BMI .loopAreaColors                                                  ;81A3C2;
-    INC.W $0727                                                          ;81A3C4;
+    INC.W PauseMenu_MenuIndex                                                          ;81A3C4;
     STZ.W $0787                                                          ;81A3C7;
     SEP #$20                                                             ;81A3CA;
     LDA.B #$02                                                           ;81A3CC;
@@ -4518,7 +4518,7 @@ LoadAreaMapForegroundColors:
 
   .loopColors:
     LDA.W AreaSelectMap_ForgegroundPaletteTable,Y                        ;81A3F7;
-    STA.L $7EC000,X                                                      ;81A3FA;
+    STA.L Palettes,X                                                      ;81A3FA;
     INX                                                                  ;81A3FE;
     INX                                                                  ;81A3FF;
     INY                                                                  ;81A400;
@@ -4609,51 +4609,51 @@ AreaSelectMap_ForegroundPaletteTable:
 ;;; $A546: File select map - index 2/11h: load area select foreground tilemap ;;;
 FileSelectMap_Index2_11_Load_AreaSelect_ForegroundTilemap:
     REP #$30                                                             ;81A546;
-    LDX.W $0330                                                          ;81A548;
+    LDX.W VRAMWriteStack                                                          ;81A548;
     LDA.W #$0800                                                         ;81A54B;
-    STA.B $D0,X                                                          ;81A54E;
+    STA.B VRAMWrite.size,X                                                          ;81A54E;
     LDA.W #Tilemap_AreaSelect_Foreground                                 ;81A550;
-    STA.B $D2,X                                                          ;81A553;
+    STA.B VRAMWrite.src,X                                                          ;81A553;
     LDA.W #$0081                                                         ;81A555;
-    STA.B $D4,X                                                          ;81A558;
+    STA.B VRAMWrite.src+2,X                                                          ;81A558;
     LDA.B $58                                                            ;81A55A;
     AND.W #$00FC                                                         ;81A55C;
     XBA                                                                  ;81A55F;
-    STA.B $D5,X                                                          ;81A560;
+    STA.B VRAMWrite.dest,X                                                          ;81A560;
     TXA                                                                  ;81A562;
     CLC                                                                  ;81A563;
     ADC.W #$0007                                                         ;81A564;
-    STA.W $0330                                                          ;81A567;
+    STA.W VRAMWriteStack                                                          ;81A567;
     LDA.B $51                                                            ;81A56A;
     AND.W #$FF00                                                         ;81A56C;
     ORA.W #$000F                                                         ;81A56F;
     STA.B $51                                                            ;81A572;
-    INC.W $0727                                                          ;81A574;
+    INC.W PauseMenu_MenuIndex                                                          ;81A574;
     RTS                                                                  ;81A577;
 
 
 ;;; $A578: File select map - index 12h: room select map to area select map - load background tilemap ;;;
 FileSelectMap_Index12_RoomSelectMapToAreaSelectMap:
     REP #$30                                                             ;81A578;
-    INC.W $0727                                                          ;81A57A;
-    LDY.W $079F                                                          ;81A57D;
+    INC.W PauseMenu_MenuIndex                                                          ;81A57A;
+    LDY.W AreaIndex                                                          ;81A57D;
     BRA Load_AreaSelect_BackgroundTilemap                                ;81A580;
 
 
 ;;; $A582: File select map - index 3: game options to area select map - load background tilemap ;;;
 FileSelectMap_Index3_GameOptionsToAreaSelectMap:
     REP #$30                                                             ;81A582;
-    INC.W $0727                                                          ;81A584;
-    LDY.W $079F                                                          ;81A587; fallthrough to Load_AreaSelect_BackgroundTilemap
+    INC.W PauseMenu_MenuIndex                                                          ;81A584;
+    LDY.W AreaIndex                                                          ;81A587; fallthrough to Load_AreaSelect_BackgroundTilemap
 
 
 ;;; $A58A: Load area select background tilemap ;;;
 Load_AreaSelect_BackgroundTilemap:
 ;; Parameters:
 ;;     Y: Area index
-    LDX.W $0330                                                          ;81A58A;
+    LDX.W VRAMWriteStack                                                          ;81A58A;
     LDA.W #$0800                                                         ;81A58D;
-    STA.B $D0,X                                                          ;81A590;
+    STA.B VRAMWrite.size,X                                                          ;81A590;
     TYA                                                                  ;81A592;
     XBA                                                                  ;81A593;
     ASL A                                                                ;81A594;
@@ -4661,17 +4661,17 @@ Load_AreaSelect_BackgroundTilemap:
     ASL A                                                                ;81A596;
     CLC                                                                  ;81A597;
     ADC.W #Tilemap_AreaSelect_Background_Crateria                        ;81A598;
-    STA.B $D2,X                                                          ;81A59B;
+    STA.B VRAMWrite.src,X                                                          ;81A59B;
     LDA.W #Tilemap_AreaSelect_Background_Crateria>>16                    ;81A59D;
-    STA.B $D4,X                                                          ;81A5A0;
+    STA.B VRAMWrite.src+2,X                                                          ;81A5A0;
     LDA.B $5A                                                            ;81A5A2;
     AND.W #$00FC                                                         ;81A5A4;
     XBA                                                                  ;81A5A7;
-    STA.B $D5,X                                                          ;81A5A8;
+    STA.B VRAMWrite.dest,X                                                          ;81A5A8;
     TXA                                                                  ;81A5AA;
     CLC                                                                  ;81A5AB;
     ADC.W #$0007                                                         ;81A5AC;
-    STA.W $0330                                                          ;81A5AF;
+    STA.W VRAMWriteStack                                                          ;81A5AF;
     RTS                                                                  ;81A5B2;
 
 
@@ -4703,7 +4703,7 @@ FileSelectMap_Index4_13_PrepareTransitionToAreaSelectMap:
     JSR.W Config_Window1_ExpandingSquareTransition                       ;81A5E7;
     STZ.W $18B0                                                          ;81A5EA;
     STZ.W $18B1                                                          ;81A5ED;
-    INC.W $0727                                                          ;81A5F0;
+    INC.W PauseMenu_MenuIndex                                                          ;81A5F0;
     REP #$30                                                             ;81A5F3;
     RTS                                                                  ;81A5F5;
 
@@ -4861,7 +4861,7 @@ FileSelectMap_Index5_GameOptionsToAreaSelectMap_ExpSqrTrans:
     STA.L $7E9E36                                                        ;81A772;
     RTS                                                                  ;81A776;
 
-+   INC.W $0727                                                          ;81A777;
++   INC.W PauseMenu_MenuIndex                                                          ;81A777;
     LDA.B $69                                                            ;81A77A;
     AND.B #$FD                                                           ;81A77C;
     STA.B $69                                                            ;81A77E;
@@ -4911,21 +4911,21 @@ FileSelectMap_Index5_GameOptionsToAreaSelectMap_ExpSqrTrans:
     DEY                                                                  ;81A7D9;
     DEY                                                                  ;81A7DA;
     BNE .loopMapControls                                                 ;81A7DB;
-    LDX.W $0330                                                          ;81A7DD;
+    LDX.W VRAMWriteStack                                                          ;81A7DD;
     LDA.W #$0800                                                         ;81A7E0;
-    STA.B $D0,X                                                          ;81A7E3;
+    STA.B VRAMWrite.size,X                                                          ;81A7E3;
     LDA.W #$4000                                                         ;81A7E5;
-    STA.B $D2,X                                                          ;81A7E8;
+    STA.B VRAMWrite.src,X                                                          ;81A7E8;
     LDA.W #$007E                                                         ;81A7EA;
-    STA.B $D4,X                                                          ;81A7ED;
+    STA.B VRAMWrite.src+2,X                                                          ;81A7ED;
     LDA.B $59                                                            ;81A7EF;
     AND.W #$00FC                                                         ;81A7F1;
     XBA                                                                  ;81A7F4;
-    STA.B $D5,X                                                          ;81A7F5;
+    STA.B VRAMWrite.dest,X                                                          ;81A7F5;
     TXA                                                                  ;81A7F7;
     CLC                                                                  ;81A7F8;
     ADC.W #$0007                                                         ;81A7F9;
-    STA.W $0330                                                          ;81A7FC;
+    STA.W VRAMWriteStack                                                          ;81A7FC;
     RTS                                                                  ;81A7FF;
 
 
@@ -4952,7 +4952,7 @@ FileSelectMap_Index6_AreaSelectMap:
     BIT.W #$8000                                                         ;81A81E;
     BEQ +                                                                ;81A821;
     LDA.W #$0016                                                         ;81A823;
-    STA.W $0727                                                          ;81A826;
+    STA.W PauseMenu_MenuIndex                                                          ;81A826;
     JMP.W DrawAreaSelectMapLabels                                        ;81A829;
 
 +   BIT.W #$1080                                                         ;81A82C;
@@ -4968,7 +4968,7 @@ FileSelectMap_Index6_AreaSelectMap:
     STZ.B $18                                                            ;81A83E; >_<
     LDA.B $16                                                            ;81A840;
     STA.B $18                                                            ;81A842;
-    LDA.W $0950                                                          ;81A844;
+    LDA.W FileSelectMapAreaIndex                                                          ;81A844;
     JSR.W A_equals_A_Minus_1_Mod_6                                       ;81A847;
     JSR.W Debug_Check_FileSelectMapArea_CanBeSelected                    ;81A84A;
     BNE .selected                                                        ;81A84D;
@@ -4990,7 +4990,7 @@ FileSelectMap_Index6_AreaSelectMap:
   .debugNext:
     LDA.W #$0006                                                         ;81A870;
     STA.B $16                                                            ;81A873;
-    LDA.W $0950                                                          ;81A875;
+    LDA.W FileSelectMapAreaIndex                                                          ;81A875;
     STA.B $1C                                                            ;81A878;
 
   .loop:
@@ -5033,21 +5033,21 @@ A_equals_A_Plus_1_Mod_6:
 
 ;;; $A8A9: Select file select map area ;;;
 Select_FileSelectMap_Area:
-    INC.W $0727                                                          ;81A8A9;
+    INC.W PauseMenu_MenuIndex                                                          ;81A8A9;
     LDA.W $05D1                                                          ;81A8AC;
     BNE .debugEnabled                                                    ;81A8AF;
     LDA.L $7ED918                                                        ;81A8B1;
-    STA.W $079F                                                          ;81A8B5;
+    STA.W AreaIndex                                                          ;81A8B5;
     LDA.L $7ED916                                                        ;81A8B8;
-    STA.W $078B                                                          ;81A8BC;
+    STA.W LoadStationIndex                                                          ;81A8BC;
     JMP.W FileSelectMap_Index6_AreaSelectMap_JMP_DrawAreaSelectMapLabels ;81A8BF;
 
   .debugEnabled:
-    LDA.W $0950                                                          ;81A8C2;
+    LDA.W FileSelectMapAreaIndex                                                          ;81A8C2;
     ASL A                                                                ;81A8C5;
     TAX                                                                  ;81A8C6;
     LDA.W FileSelectMapArea_IndexTable,X                                 ;81A8C7;
-    STA.W $079F                                                          ;81A8CA;
+    STA.W AreaIndex                                                          ;81A8CA;
     ASL A                                                                ;81A8CD;
     TAX                                                                  ;81A8CE;
     LDA.L $7ED8F8,X                                                      ;81A8CF;
@@ -5057,7 +5057,7 @@ Select_FileSelectMap_Area:
     STA.B $02                                                            ;81A8DB;
     LDA.W #MapIcon_PositionTablePointers_savePoints                      ;81A8DD;
     STA.B $00                                                            ;81A8E0;
-    LDA.W $079F                                                          ;81A8E2;
+    LDA.W AreaIndex                                                          ;81A8E2;
     ASL A                                                                ;81A8E5;
     TAY                                                                  ;81A8E6;
     LDA.B [$00],Y                                                        ;81A8E7;
@@ -5107,7 +5107,7 @@ Select_FileSelectMap_Area:
     BRA .crash2                                                          ;81A929;
 
   .found:
-    STX.W $078B                                                          ;81A92B;
+    STX.W LoadStationIndex                                                          ;81A92B;
     JMP.W FileSelectMap_Index6_AreaSelectMap_JMP_DrawAreaSelectMapLabels ;81A92E;
 
 
@@ -5146,20 +5146,20 @@ Debug_Check_FileSelectMapArea_CanBeSelected:
 
 ;;; $A958: Debug. Switch active file select map area ;;;
 Switch_Active_FileSelectMapArea:
-    LDA.W $0950                                                          ;81A958;
+    LDA.W FileSelectMapAreaIndex                                                          ;81A958;
     ASL A                                                                ;81A95B;
     TAX                                                                  ;81A95C;
     LDA.W FileSelectMapArea_IndexTable,X                                 ;81A95D;
     TAX                                                                  ;81A960;
     JSR.W LoadInactiveAreaMapForegroundColors                            ;81A961;
     LDA.B $1C                                                            ;81A964;
-    STA.W $0950                                                          ;81A966;
+    STA.W FileSelectMapAreaIndex                                                          ;81A966;
     ASL A                                                                ;81A969;
     TAX                                                                  ;81A96A;
     LDA.W FileSelectMapArea_IndexTable,X                                 ;81A96B;
     TAX                                                                  ;81A96E;
     JSR.W LoadActiveAreaMapForegroundColors                              ;81A96F;
-    LDA.W $0950                                                          ;81A972;
+    LDA.W FileSelectMapAreaIndex                                                          ;81A972;
     ASL A                                                                ;81A975;
     TAX                                                                  ;81A976;
     LDA.W FileSelectMapArea_IndexTable,X                                 ;81A977;
@@ -5179,7 +5179,7 @@ DrawAreaSelectMapLabels:
   .loopAreas:
     LDX.W #$0200                                                         ;81A990;
     LDA.B $1C                                                            ;81A993;
-    CMP.W $0950                                                          ;81A995;
+    CMP.W FileSelectMapAreaIndex                                                          ;81A995;
     BNE +                                                                ;81A998;
     LDX.W #$0000                                                         ;81A99A;
 
@@ -5321,7 +5321,7 @@ RoomSelectMap_ExpandingSquare_Timers:
 
 ;;; $AAA0: File select map area index table ;;;
 FileSelectMapArea_IndexTable:
-; Maps file select map area index ($0950) to area index ($079F)
+; Maps file select map area index (FileSelectMapAreaIndex) to area index (AreaIndex)
     dw $0000 ; Crateria
     dw $0003 ; Wrecked Ship
     dw $0005 ; Tourian
@@ -5363,22 +5363,22 @@ FileSelectMap_Index7_AreaSelectMapToRoomSelectMap:
     LDA.W #$007E                                                         ;81AAEF;
     STA.B $02                                                            ;81AAF2;
     JSL.L DrawRoomSelectMap_AreaLabel                                    ;81AAF4;
-    LDX.W $0330                                                          ;81AAF8;
+    LDX.W VRAMWriteStack                                                          ;81AAF8;
     LDA.W #$0200                                                         ;81AAFB;
-    STA.B $D0,X                                                          ;81AAFE;
+    STA.B VRAMWrite.size,X                                                          ;81AAFE;
     LDA.W #$4000                                                         ;81AB00;
-    STA.B $D2,X                                                          ;81AB03;
+    STA.B VRAMWrite.src,X                                                          ;81AB03;
     LDA.W #$007E                                                         ;81AB05;
-    STA.B $D4,X                                                          ;81AB08;
+    STA.B VRAMWrite.src+2,X                                                          ;81AB08;
     LDA.B $59                                                            ;81AB0A;
     AND.W #$00FC                                                         ;81AB0C;
     XBA                                                                  ;81AB0F;
-    STA.B $D5,X                                                          ;81AB10;
+    STA.B VRAMWrite.dest,X                                                          ;81AB10;
     TXA                                                                  ;81AB12;
     CLC                                                                  ;81AB13;
     ADC.W #$0007                                                         ;81AB14;
-    STA.W $0330                                                          ;81AB17;
-    LDA.W $079F                                                          ;81AB1A;
+    STA.W VRAMWriteStack                                                          ;81AB17;
+    LDA.W AreaIndex                                                          ;81AB1A;
     ASL A                                                                ;81AB1D;
     TAX                                                                  ;81AB1E;
     LDA.W RoomSelectMap_ExpandingSquare_Timers,X                         ;81AB1F;
@@ -5423,7 +5423,7 @@ FileSelectMap_Index7_AreaSelectMapToRoomSelectMap:
     STA.B $85                                                            ;81AB95;
     STA.W $420C                                                          ;81AB97;
     REP #$20                                                             ;81AB9A;
-    INC.W $0727                                                          ;81AB9C;
+    INC.W PauseMenu_MenuIndex                                                          ;81AB9C;
     LDA.W #$003B                                                         ;81AB9F;
     JSL.L QueueSound_Lib1_Max6                                           ;81ABA2;
     RTS                                                                  ;81ABA6;
@@ -5548,7 +5548,7 @@ FileSelectMap_Index8_AreaSelectMapToRoomSelectMap:
     REP #$30                                                             ;81AC66;
     JSR.W HandleRoomSelectMap_ExpandingSquareTransition                  ;81AC68;
     BPL +                                                                ;81AC6B;
-    INC.W $0727                                                          ;81AC6D;
+    INC.W PauseMenu_MenuIndex                                                          ;81AC6D;
     SEP #$20                                                             ;81AC70;
     LDA.B #$02                                                           ;81AC72;
     STA.B $69                                                            ;81AC74;
@@ -5634,7 +5634,7 @@ FileSelectMap_Index9_AreaSelectMapToRoomSelectMap_Init:
     LDX.W $079B                                                          ;81AD34;
     LDA.W $0001,X                                                        ;81AD37;
     AND.B #$FF                                                           ;81AD3A;
-    STA.W $079F                                                          ;81AD3C;
+    STA.W AreaIndex                                                          ;81AD3C;
     LDA.W $0002,X                                                        ;81AD3F;
     AND.B #$FF                                                           ;81AD42;
     STA.W $07A1                                                          ;81AD44;
@@ -5653,7 +5653,7 @@ FileSelectMap_Index9_AreaSelectMapToRoomSelectMap_Init:
     LDA.B $69                                                            ;81AD65;
     AND.W #$FFFB                                                         ;81AD67;
     STA.B $69                                                            ;81AD6A;
-    INC.W $0727                                                          ;81AD6C;
+    INC.W PauseMenu_MenuIndex                                                          ;81AD6C;
     STZ.W $05FD                                                          ;81AD6F;
     STZ.W $05FF                                                          ;81AD72;
     STZ.W $0776                                                          ;81AD75;
@@ -5680,7 +5680,7 @@ FileSelectMap_IndexA_RoomSelectMap:
     BNE .exit                                                            ;81ADA1;
     BIT.W #$1080                                                         ;81ADA3;
     BEQ .earlyReturn                                                     ;81ADA6;
-    INC.W $0727                                                          ;81ADA8;
+    INC.W PauseMenu_MenuIndex                                                          ;81ADA8;
     LDA.W #$0038                                                         ;81ADAB;
     JSL.L QueueSound_Lib1_Max6                                           ;81ADAE;
 
@@ -5688,12 +5688,12 @@ FileSelectMap_IndexA_RoomSelectMap:
     RTS                                                                  ;81ADB2;
 
   .exit:
-    LDA.W $0727                                                          ;81ADB3;
+    LDA.W PauseMenu_MenuIndex                                                          ;81ADB3;
     CLC                                                                  ;81ADB6;
     ADC.W #$0005                                                         ;81ADB7;
-    STA.W $0727                                                          ;81ADBA;
+    STA.W PauseMenu_MenuIndex                                                          ;81ADBA;
     LDX.W #$0000                                                         ;81ADBD;
-    LDA.W $079F                                                          ;81ADC0;
+    LDA.W AreaIndex                                                          ;81ADC0;
 
   .loopMapAreaIndex:
     CMP.W FileSelectMapArea_IndexTable,X                                 ;81ADC3;
@@ -5702,12 +5702,12 @@ FileSelectMap_IndexA_RoomSelectMap:
     INX                                                                  ;81ADC9;
     CPX.W #$000C                                                         ;81ADCA;
     BMI .loopMapAreaIndex                                                ;81ADCD;
-    STZ.W $0950                                                          ;81ADCF;
+    STZ.W FileSelectMapAreaIndex                                                          ;81ADCF;
     RTS                                                                  ;81ADD2;
 
 +   TXA                                                                  ;81ADD3;
     LSR A                                                                ;81ADD4;
-    STA.W $0950                                                          ;81ADD5;
+    STA.W FileSelectMapAreaIndex                                                          ;81ADD5;
     LDA.W #$003C                                                         ;81ADD8;
     JSL.L QueueSound_Lib1_Max6                                           ;81ADDB;
     RTS                                                                  ;81ADDF;
@@ -5722,18 +5722,18 @@ FileSelectMap_IndexA_RoomSelectMap:
     PHA                                                                  ;81ADEE;
     PLB                                                                  ;81ADEF;
     REP #$20                                                             ;81ADF0;
-    LDA.W $079F                                                          ;81ADF2;
+    LDA.W AreaIndex                                                          ;81ADF2;
     ASL A                                                                ;81ADF5;
     TAX                                                                  ;81ADF6;
     LDA.L $7ED8F8,X                                                      ;81ADF7;
     STA.B $18                                                            ;81ADFB;
-    LDA.W $078B                                                          ;81ADFD;
+    LDA.W LoadStationIndex                                                          ;81ADFD;
 
   .loopIndex:
     LSR.B $18                                                            ;81AE00;
     DEC A                                                                ;81AE02;
     BPL .loopIndex                                                       ;81AE03;
-    LDA.W $079F                                                          ;81AE05;
+    LDA.W AreaIndex                                                          ;81AE05;
     ASL A                                                                ;81AE08;
     CLC                                                                  ;81AE09;
     ADC.W #MapIcon_PositionTablePointers_savePoints                      ;81AE0A;
@@ -5743,7 +5743,7 @@ FileSelectMap_IndexA_RoomSelectMap:
   .crash:
     BEQ .crash                                                           ;81AE11;
     STA.B $00                                                            ;81AE13;
-    LDA.W $078B                                                          ;81AE15;
+    LDA.W LoadStationIndex                                                          ;81AE15;
     ASL A                                                                ;81AE18;
     ASL A                                                                ;81AE19;
     TAY                                                                  ;81AE1A;
@@ -5753,7 +5753,7 @@ FileSelectMap_IndexA_RoomSelectMap:
     INY                                                                  ;81AE20;
     LDA.B [$00],Y                                                        ;81AE21;
     STA.B $14                                                            ;81AE23;
-    LDA.W $078B                                                          ;81AE25;
+    LDA.W LoadStationIndex                                                          ;81AE25;
     CMP.W #$0010                                                         ;81AE28;
     BPL .debugSavePoints                                                 ;81AE2B;
     BRA .savesElevators                                                  ;81AE2D;
@@ -5761,7 +5761,7 @@ FileSelectMap_IndexA_RoomSelectMap:
   .loopSavesElevators:
     LSR.B $18                                                            ;81AE2F;
     BCC .savesElevators                                                  ;81AE31;
-    LDA.W $078B                                                          ;81AE33;
+    LDA.W LoadStationIndex                                                          ;81AE33;
     ASL A                                                                ;81AE36;
     ASL A                                                                ;81AE37;
     TAY                                                                  ;81AE38;
@@ -5772,13 +5772,13 @@ FileSelectMap_IndexA_RoomSelectMap:
     BNE .found                                                           ;81AE43;
 
   .savesElevators:
-    INC.W $078B                                                          ;81AE45;
-    LDA.W $078B                                                          ;81AE48;
+    INC.W LoadStationIndex                                                          ;81AE45;
+    LDA.W LoadStationIndex                                                          ;81AE48;
     CMP.W #$0010                                                         ;81AE4B;
     BMI .loopSavesElevators                                              ;81AE4E;
 
   .loopDebugSavePoints:
-    LDA.W $078B                                                          ;81AE50;
+    LDA.W LoadStationIndex                                                          ;81AE50;
     ASL A                                                                ;81AE53;
     ASL A                                                                ;81AE54;
     TAY                                                                  ;81AE55;
@@ -5789,12 +5789,12 @@ FileSelectMap_IndexA_RoomSelectMap:
     BNE .found                                                           ;81AE60;
 
   .debugSavePoints:
-    INC.W $078B                                                          ;81AE62;
+    INC.W LoadStationIndex                                                          ;81AE62;
     BRA .loopDebugSavePoints                                             ;81AE65;
 
   .finishedDebugSavePoints:
-    STZ.W $078B                                                          ;81AE67;
-    LDA.W $079F                                                          ;81AE6A;
+    STZ.W LoadStationIndex                                                          ;81AE67;
+    LDA.W AreaIndex                                                          ;81AE6A;
     ASL A                                                                ;81AE6D;
     TAX                                                                  ;81AE6E;
     LDA.L $7ED8F8,X                                                      ;81AE6F;
@@ -5802,7 +5802,7 @@ FileSelectMap_IndexA_RoomSelectMap:
     BRA .loopSavesElevators                                              ;81AE75;
 
   .found:
-    LDA.W $078B                                                          ;81AE77;
+    LDA.W LoadStationIndex                                                          ;81AE77;
     ASL A                                                                ;81AE7A;
     ASL A                                                                ;81AE7B;
     TAY                                                                  ;81AE7C;
@@ -5945,7 +5945,7 @@ MapScroll_ArrowData_mapScrollDirection:
 FileSelectMap_IndexB_C_RoomSelectMapToLoadingGameData:
     JSL.L Draw_FileSelectMap_Icons                                       ;81AF5A;
     JSL.L Display_Map_Elevator_Destinations                              ;81AF5E;
-    INC.W $0727                                                          ;81AF62;
+    INC.W PauseMenu_MenuIndex                                                          ;81AF62;
     RTS                                                                  ;81AF65;
 
 
@@ -5957,7 +5957,7 @@ FileSelectMap_IndexD_RoomSelectMapToAreaSelectMap_FadeOut:
     LDA.B $51                                                            ;81AF72;
     AND.W #$000F                                                         ;81AF74;
     BNE .return                                                          ;81AF77;
-    INC.W $0727                                                          ;81AF79;
+    INC.W PauseMenu_MenuIndex                                                          ;81AF79;
     LDA.W #$0020                                                         ;81AF7C;
     STA.W $0F7A                                                          ;81AF7F;
 
@@ -5972,8 +5972,8 @@ FileSelectMap_IndexE_RoomSelectMapToLoadingGameData_Wait:
     STA.W $0F7A                                                          ;81AF87;
     BNE .return                                                          ;81AF8A;
     JSL.L SetForceBlankAndWaitForNMI                                     ;81AF8C;
-    INC.W $0998                                                          ;81AF90;
-    STZ.W $0727                                                          ;81AF93;
+    INC.W GameState                                                          ;81AF90;
+    STZ.W PauseMenu_MenuIndex                                                          ;81AF93;
 
   .return:
     RTS                                                                  ;81AF96;
@@ -5993,22 +5993,22 @@ FileSelectMap_IndexF_RoomSelectMapToAreaSelectMap_ClearBG1:
     DEX                                                                  ;81AFA9;
     DEX                                                                  ;81AFAA;
     BPL .loop                                                            ;81AFAB;
-    LDX.W $0330                                                          ;81AFAD;
+    LDX.W VRAMWriteStack                                                          ;81AFAD;
     LDA.W #$0800                                                         ;81AFB0;
-    STA.B $D0,X                                                          ;81AFB3;
+    STA.B VRAMWrite.size,X                                                          ;81AFB3;
     LDA.W #$3000                                                         ;81AFB5;
-    STA.B $D2,X                                                          ;81AFB8;
+    STA.B VRAMWrite.src,X                                                          ;81AFB8;
     LDA.W #$007E                                                         ;81AFBA;
-    STA.B $D4,X                                                          ;81AFBD;
+    STA.B VRAMWrite.src+2,X                                                          ;81AFBD;
     LDA.B $58                                                            ;81AFBF;
     AND.W #$00FC                                                         ;81AFC1;
     XBA                                                                  ;81AFC4;
-    STA.B $D5,X                                                          ;81AFC5;
+    STA.B VRAMWrite.dest,X                                                          ;81AFC5;
     TXA                                                                  ;81AFC7;
     CLC                                                                  ;81AFC8;
     ADC.W #$0007                                                         ;81AFC9;
-    STA.W $0330                                                          ;81AFCC;
-    INC.W $0727                                                          ;81AFCF;
+    STA.W VRAMWriteStack                                                          ;81AFCC;
+    INC.W PauseMenu_MenuIndex                                                          ;81AFCF;
     RTS                                                                  ;81AFD2;
 
 
@@ -6025,11 +6025,11 @@ FileSelectMap_Index10_RoomSelectMapToAreaSelectMap_LoadPal:
     INX                                                                  ;81AFE0;
     CPX.W #$0006                                                         ;81AFE1;
     BMI .loop                                                            ;81AFE4;
-    LDX.W $079F                                                          ;81AFE6;
+    LDX.W AreaIndex                                                          ;81AFE6;
     JSR.W LoadActiveAreaMapForegroundColors                              ;81AFE9;
-    LDY.W $079F                                                          ;81AFEC;
+    LDY.W AreaIndex                                                          ;81AFEC;
     JSR.W Load_AreaSelect_BackgroundTilemap                              ;81AFEF;
-    INC.W $0727                                                          ;81AFF2;
+    INC.W PauseMenu_MenuIndex                                                          ;81AFF2;
     RTS                                                                  ;81AFF5;
 
 
@@ -6041,7 +6041,7 @@ FileSelectMap_Index14_PrepContractSquareTransToAreaSelect:
     REP #$30                                                             ;81AFFC;
     LDA.W #$003C                                                         ;81AFFE;
     JSL.L QueueSound_Lib1_Max6                                           ;81B001;
-    LDA.W $079F                                                          ;81B005;
+    LDA.W AreaIndex                                                          ;81B005;
     ASL A                                                                ;81B008;
     TAX                                                                  ;81B009;
     LDA.W RoomSelectMap_ExpandingSquare_Timers,X                         ;81B00A;
@@ -6083,7 +6083,7 @@ FileSelectMap_Index14_PrepContractSquareTransToAreaSelect:
     STA.L $7E9E38                                                        ;81B079;
     STA.L $7E9E3C                                                        ;81B07D;
     JSR.W Setup_FileSelectMap_ExpandingSquareTransition_HDMA             ;81B081;
-    INC.W $0727                                                          ;81B084;
+    INC.W PauseMenu_MenuIndex                                                          ;81B084;
     SEP #$20                                                             ;81B087;
     LDA.B #$0C                                                           ;81B089;
     STA.B $85                                                            ;81B08B;
@@ -6147,10 +6147,10 @@ FileSelectMap_Index15_RoomSelectMapToAreaSelectMap:
     DEC A                                                                ;81B12D;
     STA.L $7E9E50                                                        ;81B12E;
     BPL .return                                                          ;81B132;
-    LDA.W $0727                                                          ;81B134;
+    LDA.W PauseMenu_MenuIndex                                                          ;81B134;
     SEC                                                                  ;81B137;
     SBC.W #$000F                                                         ;81B138;
-    STA.W $0727                                                          ;81B13B;
+    STA.W PauseMenu_MenuIndex                                                          ;81B13B;
     SEP #$20                                                             ;81B13E;
     LDA.B #$11                                                           ;81B140;
     STA.B $69                                                            ;81B142;
@@ -6216,7 +6216,7 @@ NewSaveFile:
     STZ.W $09A8                                                          ;81B2F4;
     STZ.W $09A6                                                          ;81B2F7;
     STZ.W $09A4                                                          ;81B2FA;
-    STZ.W $09A2                                                          ;81B2FD;
+    STZ.W EquippedItems                                                          ;81B2FD;
     STZ.W $09C0                                                          ;81B300;
     STZ.W $09D4                                                          ;81B303;
     STZ.W $09D6                                                          ;81B306;
@@ -6284,7 +6284,7 @@ NewSaveFile:
     LDA.W #$0000                                                         ;81B3B6;
 
   .loopClearMapData:
-    STA.L $7ECD52,X                                                      ;81B3B9;
+    STA.L ExploredMapTiles,X                                                      ;81B3B9;
     INX                                                                  ;81B3BD;
     INX                                                                  ;81B3BE;
     CPX.W #$0700                                                         ;81B3BF;
