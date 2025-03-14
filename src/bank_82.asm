@@ -6,7 +6,7 @@ org $828000
 GameState_6_1F_28_LoadingGameData_SetupNewGame_LoadDemoData:
     PHP                                                                  ;828000;
     REP #$30                                                             ;828001;
-    LDA.W $0998                                                          ;828003;
+    LDA.W GameState                                                      ;828003;
     CMP.W #$0028                                                         ;828006;
     BNE .notDemo                                                         ;828009;
     JSR.W InialiseIORegistersForGameplay                                 ;82800B;
@@ -17,7 +17,7 @@ GameState_6_1F_28_LoadingGameData_SetupNewGame_LoadDemoData:
     BRA .gameplay                                                        ;82801B;
 
   .notDemo:
-    LDA.L $7ED914                                                        ;82801D;
+    LDA.L SRAMMirror_LoadingGameState                                                        ;82801D;
     CMP.W #$0005                                                         ;828021;
     BEQ .onZebes                                                         ;828024;
     CMP.W #$001F                                                         ;828026;
@@ -27,16 +27,16 @@ GameState_6_1F_28_LoadingGameData_SetupNewGame_LoadDemoData:
     BRA .onZebes                                                         ;828030;
 
   .zebesLanding:
-    STZ.W $079F                                                          ;828032;
+    STZ.W AreaIndex                                                          ;828032;
     LDA.W #$0012                                                         ;828035;
-    STA.W $078B                                                          ;828038;
+    STA.W LoadStationIndex                                                          ;828038;
     JSL.L LoadMirrorOfCurrentAreasMapExplored                            ;82803B;
     BRA .onZebes                                                         ;82803F;
 
   .ceres:
     LDA.W #$0006                                                         ;828041;
-    STA.W $079F                                                          ;828044;
-    STZ.W $078B                                                          ;828047;
+    STA.W AreaIndex                                                          ;828044;
+    STZ.W LoadStationIndex                                                          ;828047;
     JSL.L ClearTimerRAM                                                  ;82804A;
 
   .onZebes:
@@ -56,8 +56,8 @@ GameState_6_1F_28_LoadingGameData_SetupNewGame_LoadDemoData:
     LDX.W #$0000                                                         ;828071;
 
   .loopTargetSamusPalette:
-    LDA.L $7EC180,X                                                      ;828074;
-    STA.L $7EC380,X                                                      ;828078;
+    LDA.L Palettes_SpriteP4C0,X                                          ;828074;
+    STA.L TargetPalettes_SpriteP4,X                                      ;828078;
     INX                                                                  ;82807C;
     INX                                                                  ;82807D;
     DEY                                                                  ;82807E;
@@ -65,8 +65,8 @@ GameState_6_1F_28_LoadingGameData_SetupNewGame_LoadDemoData:
     BNE .loopTargetSamusPalette                                          ;828080;
     PLP                                                                  ;828082;
     LDA.W #$0001                                                         ;828083;
-    STA.W $0723                                                          ;828086;
-    STA.W $0725                                                          ;828089;
+    STA.W ScreenFadeDelay                                                ;828086;
+    STA.W ScreenFadeCounter                                              ;828089;
     JSL.L EnableNMI                                                      ;82808C;
     JSL.L Enable_Enemy_Projectiles                                       ;828090;
     JSL.L Enable_PLMs                                                    ;828094;
@@ -74,33 +74,33 @@ GameState_6_1F_28_LoadingGameData_SetupNewGame_LoadDemoData:
     JSL.L Enable_HDMAObjects                                             ;82809C;
     JSL.L Enable_AnimatedTilesObjects                                    ;8280A0;
     JSL.L SetLiquidPhysicsType                                           ;8280A4;
-    LDA.W $0998                                                          ;8280A8;
+    LDA.W GameState                                                      ;8280A8;
     CMP.W #$0028                                                         ;8280AB;
     BNE +                                                                ;8280AE;
     JMP.W .demo                                                          ;8280B0;
 
-+   LDA.L $7ED914                                                        ;8280B3;
++   LDA.L SRAMMirror_LoadingGameState                                                        ;8280B3;
     CMP.W #$0022                                                         ;8280B7;
     BNE .notZebesLanding                                                 ;8280BA;
     LDA.W #$0005                                                         ;8280BC;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8280BF;
     LDA.W #$000F                                                         ;8280C3;
-    STA.W $0DA0                                                          ;8280C6;
+    STA.W EnemyTilesTransferLoopCounter                                                          ;8280C6;
 
   .loopAlpha:
     JSL.L TransferEnemyTilesToVRAM_InitialiseEnemies                     ;8280C9;
     JSL.L WaitForNMI                                                     ;8280CD;
-    DEC.W $0DA0                                                          ;8280D1;
+    DEC.W EnemyTilesTransferLoopCounter                                                          ;8280D1;
     BPL .loopAlpha                                                       ;8280D4;
-    INC.W $0998                                                          ;8280D6;
+    INC.W GameState                                                      ;8280D6;
     PHP                                                                  ;8280D9;
     REP #$30                                                             ;8280DA;
     LDY.W #$0200                                                         ;8280DC;
     LDX.W #$0000                                                         ;8280DF;
 
   .loopAlphaPalettes:
-    LDA.L $7EC200,X                                                      ;8280E2;
-    STA.L $7EC000,X                                                      ;8280E6;
+    LDA.L TargetPalettes_BGP0,X                                                      ;8280E2;
+    STA.L Palettes,X                                                      ;8280E6;
     INX                                                                  ;8280EA;
     INX                                                                  ;8280EB;
     DEY                                                                  ;8280EC;
@@ -112,34 +112,34 @@ GameState_6_1F_28_LoadingGameData_SetupNewGame_LoadDemoData:
 
   .notZebesLanding:
     LDA.W #$0006                                                         ;8280F3;
-    STA.W $0DA0                                                          ;8280F6;
+    STA.W EnemyTilesTransferLoopCounter                                                          ;8280F6;
 
   .loopBeta:
     JSL.L TransferEnemyTilesToVRAM_InitialiseEnemies                     ;8280F9;
     JSL.L WaitForNMI                                                     ;8280FD;
-    DEC.W $0DA0                                                          ;828101;
+    DEC.W EnemyTilesTransferLoopCounter                                                          ;828101;
     BPL .loopBeta                                                        ;828104;
     LDA.W #$0007                                                         ;828106;
-    STA.W $0998                                                          ;828109;
+    STA.W GameState                                                      ;828109;
     PHP                                                                  ;82810C;
     REP #$30                                                             ;82810D;
     LDY.W #$0200                                                         ;82810F;
     LDX.W #$0000                                                         ;828112;
 
   .loopBetaPalettes:
-    LDA.L $7EC200,X                                                      ;828115;
-    STA.L $7EC000,X                                                      ;828119;
+    LDA.L TargetPalettes_BGP0,X                                                      ;828115;
+    STA.L Palettes,X                                                      ;828119;
     INX                                                                  ;82811D;
     INX                                                                  ;82811E;
     DEY                                                                  ;82811F;
     DEY                                                                  ;828120;
     BNE .loopBetaPalettes                                                ;828121;
     PLP                                                                  ;828123;
-    LDA.L $7ED914                                                        ;828124;
+    LDA.L SRAMMirror_LoadingGameState                                                        ;828124;
     CMP.W #$001F                                                         ;828128;
     BNE .runSamusCmd                                                     ;82812B;
     LDA.W #$0000                                                         ;82812D;
-    STA.L $7EC1BE                                                        ;828130;
+    STA.L Palettes_SpriteP5+$1E                                                        ;828130;
     LDA.W #$0008                                                         ;828134;
     JSL.L Run_Samus_Command                                              ;828137;
     PLP                                                                  ;82813B;
@@ -153,42 +153,42 @@ GameState_6_1F_28_LoadingGameData_SetupNewGame_LoadDemoData:
 
   .demo:
     LDA.W #$0006                                                         ;828146;
-    STA.W $0DA0                                                          ;828149;
+    STA.W EnemyTilesTransferLoopCounter                                                          ;828149;
 
   .transferVRAM:
     JSL.L TransferEnemyTilesToVRAM_InitialiseEnemies                     ;82814C;
     JSL.L WaitForNMI                                                     ;828150;
-    DEC.W $0DA0                                                          ;828154;
+    DEC.W EnemyTilesTransferLoopCounter                                                          ;828154;
     BPL .transferVRAM                                                    ;828157;
-    LDA.W $1F57                                                          ;828159;
-    DEC A                                                                ;82815C;
-    STA.B $12                                                            ;82815D;
-    ASL A                                                                ;82815F;
-    ASL A                                                                ;828160;
-    ASL A                                                                ;828161;
-    ADC.B $12                                                            ;828162;
-    ASL A                                                                ;828164;
-    STA.B $12                                                            ;828165;
-    LDA.W $1F55                                                          ;828167;
-    ASL A                                                                ;82816A;
+    LDA.W DemoScene                                                          ;828159;
+    DEC                                                                  ;82815C;
+    STA.B DP_Temp12                                                            ;82815D;
+    ASL                                                                  ;82815F;
+    ASL                                                                  ;828160;
+    ASL                                                                  ;828161;
+    ADC.B DP_Temp12                                                            ;828162;
+    ASL                                                                  ;828164;
+    STA.B DP_Temp12                                                            ;828165;
+    LDA.W DemoSet                                                          ;828167;
+    ASL                                                                  ;82816A;
     TAX                                                                  ;82816B;
     LDA.W DemoRoomData_pointers,X                                        ;82816C;
     CLC                                                                  ;82816F;
-    ADC.B $12                                                            ;828170;
+    ADC.B DP_Temp12                                                            ;828170;
     TAX                                                                  ;828172;
-    LDA.W $0010,X                                                        ;828173;
-    STA.B $12                                                            ;828176;
+    LDA.W DP_Temp10,X                                                        ;828173;
+    STA.B DP_Temp12                                                            ;828176;
     LDX.W #$0000                                                         ;828178;
-    JSR.W ($0012,X)                                                      ;82817B;
-    INC.W $0998                                                          ;82817E;
+    JSR.W (DP_Temp12,X)                                                      ;82817B;
+    INC.W GameState                                                      ;82817E;
     PHP                                                                  ;828181;
     REP #$30                                                             ;828182;
     LDY.W #$0200                                                         ;828184;
     LDX.W #$0000                                                         ;828187;
 
   .loopDemoPalettes:
-    LDA.L $7EC200,X                                                      ;82818A;
-    STA.L $7EC000,X                                                      ;82818E;
+    LDA.L TargetPalettes_BGP0,X                                                      ;82818A;
+    STA.L Palettes,X                                                      ;82818E;
     INX                                                                  ;828192;
     INX                                                                  ;828193;
     DEY                                                                  ;828194;
@@ -214,7 +214,7 @@ InitialiseCPURegistersForGameplay:
     SEP #$30                                                             ;8281A5;
     LDA.B #$01                                                           ;8281A7;
     STA.W $4200                                                          ;8281A9;
-    STA.B $84                                                            ;8281AC;
+    STA.B DP_IRQAutoJoy                                                            ;8281AC;
     STZ.W $4201                                                          ;8281AE;
     STZ.W $4202                                                          ;8281B1;
     STZ.W $4203                                                          ;8281B4;
@@ -227,10 +227,10 @@ InitialiseCPURegistersForGameplay:
     STZ.W $420A                                                          ;8281C9;
     STZ.W $420B                                                          ;8281CC;
     STZ.W $420C                                                          ;8281CF;
-    STZ.B $85                                                            ;8281D2;
+    STZ.B DP_HDMAEnable                                                            ;8281D2;
     LDA.B #$01                                                           ;8281D4;
     STA.W $420D                                                          ;8281D6;
-    STA.B $86                                                            ;8281D9;
+    STA.B DP_ROMAccessSpeed                                                            ;8281D9;
     PLP                                                                  ;8281DB;
     RTS                                                                  ;8281DC;
 
@@ -241,81 +241,81 @@ SetupPPUForGameplay:
     SEP #$30                                                             ;8281DE;
     LDA.B #$80                                                           ;8281E0;
     STA.W $2100                                                          ;8281E2;
-    STA.B $51                                                            ;8281E5;
+    STA.B DP_Brightness                                                            ;8281E5;
     LDA.B #$03                                                           ;8281E7;
     STA.W $2101                                                          ;8281E9;
-    STA.B $52                                                            ;8281EC;
+    STA.B DP_SpriteSizeAddr                                                            ;8281EC;
     STZ.W $2102                                                          ;8281EE;
-    STZ.B $53                                                            ;8281F1;
+    STZ.B DP_OAMAddrPrio                                                            ;8281F1;
     LDA.B #$80                                                           ;8281F3;
     STA.W $2103                                                          ;8281F5;
-    STA.B $54                                                            ;8281F8;
+    STA.B DP_OAMAddrPrio+1                                                            ;8281F8;
     STZ.W $2104                                                          ;8281FA;
     STZ.W $2104                                                          ;8281FD;
     LDA.B #$09                                                           ;828200;
     STA.W $2105                                                          ;828202;
-    STA.B $55                                                            ;828205;
+    STA.B DP_BGModeSize                                                            ;828205;
     STZ.W $2106                                                          ;828207;
-    STZ.B $57                                                            ;82820A;
-    STZ.B $5D                                                            ;82820C;
+    STZ.B DP_Mosaic                                                            ;82820A;
+    STZ.B DP_BGTilesAddr                                                            ;82820C;
     STZ.W $210B                                                          ;82820E;
     LDA.B #$04                                                           ;828211;
-    STA.B $5E                                                            ;828213;
+    STA.B DP_BGTilesAddr+1                                                            ;828213;
     STA.W $210C                                                          ;828215;
     LDA.B #$51                                                           ;828218;
-    STA.B $58                                                            ;82821A;
+    STA.B DP_BG1TilemapAddrSize                                                            ;82821A;
     STA.W $2107                                                          ;82821C;
     LDA.B #$49                                                           ;82821F;
-    STA.B $59                                                            ;828221;
+    STA.B DP_BG2TilemapAddrSize                                                            ;828221;
     STA.W $2108                                                          ;828223;
     LDA.B #$5A                                                           ;828226;
-    STA.B $5A                                                            ;828228;
+    STA.B DP_BG3TilemapAddrSize                                                            ;828228;
     STA.W $2109                                                          ;82822A;
     LDA.B #$00                                                           ;82822D;
-    STA.B $5C                                                            ;82822F;
+    STA.B DP_BG4TilemapAddrSize                                                            ;82822F;
     STA.W $210A                                                          ;828231;
     STZ.W $2115                                                          ;828234;
     STZ.W $2123                                                          ;828237;
-    STZ.B $60                                                            ;82823A;
+    STZ.B DP_WindowMaskBG12                                                            ;82823A;
     STZ.W $2123                                                          ;82823C;
-    STZ.B $60                                                            ;82823F;
+    STZ.B DP_WindowMaskBG12                                                            ;82823F;
     STZ.W $2124                                                          ;828241;
-    STZ.B $61                                                            ;828244;
+    STZ.B DP_WindowMaskBG34                                                            ;828244;
     STZ.W $2125                                                          ;828246;
-    STZ.B $62                                                            ;828249;
+    STZ.B DP_WindowMaskSprite                                                            ;828249;
     STZ.W $2126                                                          ;82824B;
-    STZ.B $63                                                            ;82824E;
+    STZ.B DP_Window1Left                                                            ;82824E;
     STZ.W $2127                                                          ;828250;
-    STZ.B $64                                                            ;828253;
+    STZ.B DP_Window1Right                                                            ;828253;
     STZ.W $2128                                                          ;828255;
-    STZ.B $65                                                            ;828258;
+    STZ.B DP_Window2Left                                                            ;828258;
     STZ.W $2129                                                          ;82825A;
-    STZ.B $66                                                            ;82825D;
+    STZ.B DP_Window2Right                                                            ;82825D;
     STZ.W $212A                                                          ;82825F;
-    STZ.B $67                                                            ;828262;
+    STZ.B DP_Window12BGMaskLogic                                                            ;828262;
     STZ.W $212B                                                          ;828264;
-    STZ.B $68                                                            ;828267;
+    STZ.B DP_Window12SpriteMaskLogic                                                            ;828267;
     LDA.B #$17                                                           ;828269;
     STA.W $212C                                                          ;82826B;
-    STA.B $69                                                            ;82826E;
+    STA.B DP_MainScreenLayers                                                            ;82826E;
     STZ.W $212E                                                          ;828270;
-    STZ.B $6C                                                            ;828273;
+    STZ.B DP_WindowAreaMainScreen                                                            ;828273;
     LDA.B #$00                                                           ;828275;
     STA.W $212D                                                          ;828277;
-    STA.B $6B                                                            ;82827A;
+    STA.B DP_SubScreenLayers                                                            ;82827A;
     STZ.W $212F                                                          ;82827C;
-    STZ.B $6D                                                            ;82827F;
+    STZ.B DP_WindowAreaSubScreen                                                            ;82827F;
     STZ.W $2130                                                          ;828281;
-    STZ.B $6E                                                            ;828284;
+    STZ.B DP_NextGameplayColorMathA                                                            ;828284;
     STZ.W $2131                                                          ;828286;
-    STZ.B $71                                                            ;828289;
+    STZ.B DP_NextGameplayColorMathB                                                            ;828289;
     LDA.B #$E0                                                           ;82828B;
     STA.W $2132                                                          ;82828D;
     LDA.B #$00                                                           ;828290;
     STA.W $2133                                                          ;828292;
-    STA.B $77                                                            ;828295;
+    STA.B DP_DisplayResolution                                                            ;828295;
     REP #$30                                                             ;828297;
-    STZ.W $0590                                                          ;828299;
+    STZ.W OAMStack                                                          ;828299;
     LDA.W #$0000                                                         ;82829C;
     LDX.W #$3000                                                         ;82829F;
     LDY.W #$07FE                                                         ;8282A2;
@@ -338,14 +338,14 @@ LoadInitialPalette:
 ; Nothing is displayed during this time, so it's unclear why this palette is loaded at all
     PHP                                                                  ;8282C5;
     SEP #$30                                                             ;8282C6;
-    PHP                                                                  ;8282C8;
+    PHP                                                                  ;8282C8; >.<
     REP #$30                                                             ;8282C9;
     LDY.W #$0200                                                         ;8282CB;
     LDX.W #$0000                                                         ;8282CE;
 
   .loop:
     LDA.L Initial_Palette_BGPalette0,X                                   ;8282D1;
-    STA.L $7EC000,X                                                      ;8282D5;
+    STA.L Palettes,X                                                      ;8282D5;
     INX                                                                  ;8282D9;
     INX                                                                  ;8282DA;
     DEY                                                                  ;8282DB;
@@ -416,18 +416,18 @@ Load_StandardBG3Tiles_SpriteTiles_ClearTilemaps:
 GameState_20_MadeItToCeresElevator:
     PHP                                                                  ;828367;
     REP #$30                                                             ;828368;
-    LDA.W $0943                                                          ;82836A;
+    LDA.W TimerStatus                                                          ;82836A;
     BEQ +                                                                ;82836D;
     JSL.L DrawTimer                                                      ;82836F;
 
 +   JSR.W GameState_8_MainGameplay                                       ;828373;
-    DEC.W $0AA0                                                          ;828376;
+    DEC.W CeresElevatorFadeTimer                                                          ;828376;
     BEQ +                                                                ;828379;
     BPL .return                                                          ;82837B;
 
-+   INC.W $0998                                                          ;82837D;
-    STZ.W $0723                                                          ;828380;
-    STZ.W $0725                                                          ;828383;
++   INC.W GameState                                                      ;82837D;
+    STZ.W ScreenFadeDelay                                                          ;828380;
+    STZ.W ScreenFadeCounter                                                          ;828383;
 
   .return:
     PLP                                                                  ;828386;
@@ -438,14 +438,14 @@ GameState_20_MadeItToCeresElevator:
 GameState_21_BlackoutFromCeres:
     PHP                                                                  ;828388;
     REP #$30                                                             ;828389;
-    LDA.W $0943                                                          ;82838B;
+    LDA.W TimerStatus                                                          ;82838B;
     BEQ +                                                                ;82838E;
     JSL.L DrawTimer                                                      ;828390;
 
 +   JSR.W GameState_8_MainGameplay                                       ;828394;
     JSL.L HandleFadingOut                                                ;828397;
     SEP #$20                                                             ;82839B;
-    LDA.B $51                                                            ;82839D;
+    LDA.B DP_Brightness                                                            ;82839D;
     CMP.B #$80                                                           ;82839F;
     BEQ +                                                                ;8283A1;
     REP #$20                                                             ;8283A3;
@@ -469,17 +469,17 @@ GameState_21_BlackoutFromCeres:
     LDA.B #$09                                                           ;8283CA;
     STA.B $55                                                            ;8283CC;
     REP #$20                                                             ;8283CE;
-    STZ.W $0723                                                          ;8283D0;
-    STZ.W $0725                                                          ;8283D3;
+    STZ.W ScreenFadeDelay                                                          ;8283D0;
+    STZ.W ScreenFadeCounter                                                          ;8283D3;
     LDA.W #$0022                                                         ;8283D6;
-    STA.L $7ED914                                                        ;8283D9;
-    STA.W $0998                                                          ;8283DD;
+    STA.L SRAMMirror_LoadingGameState                                                        ;8283D9;
+    STA.W GameState                                                      ;8283DD;
     LDA.W $0952                                                          ;8283E0;
     JSL.L SaveToSRAM                                                     ;8283E3;
     LDA.W #CinematicFunction_CeresGoesBoom_Initial                       ;8283E7;
     STA.W $1F51                                                          ;8283EA;
     STZ.W $093F                                                          ;8283ED;
-    STZ.W $0943                                                          ;8283F0;
+    STZ.W TimerStatus                                                          ;8283F0;
     LDA.W #$0000                                                         ;8283F3;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8283F6;
     LDA.W #$0002                                                         ;8283FA;
@@ -502,9 +502,9 @@ GameState_23_TimeUp:
     JSR.W Advance_GradualColorChange_ofAllPalettes                       ;82841E;
     BCC .return                                                          ;828421;
     LDA.W #$0024                                                         ;828423;
-    STA.W $0998                                                          ;828426;
-    STZ.W $0723                                                          ;828429;
-    STZ.W $0725                                                          ;82842C;
+    STA.W GameState                                                      ;828426;
+    STZ.W ScreenFadeDelay                                                          ;828429;
+    STZ.W ScreenFadeCounter                                                          ;82842C;
 
   .return:
     PLP                                                                  ;82842F;
@@ -517,7 +517,7 @@ GameState_24_WhitingOutFromTimeUp:
     REP #$30                                                             ;828432;
     JSL.L HandleFadingOut                                                ;828434;
     SEP #$20                                                             ;828438;
-    LDA.B $51                                                            ;82843A;
+    LDA.B DP_Brightness                                                            ;82843A;
     CMP.B #$80                                                           ;82843C;
     BEQ +                                                                ;82843E;
     REP #$20                                                             ;828440;
@@ -541,10 +541,10 @@ GameState_24_WhitingOutFromTimeUp:
     LDA.B #$09                                                           ;828467;
     STA.B $55                                                            ;828469;
     REP #$20                                                             ;82846B;
-    STZ.W $0723                                                          ;82846D;
-    STZ.W $0725                                                          ;828470;
+    STZ.W ScreenFadeDelay                                                          ;82846D;
+    STZ.W ScreenFadeCounter                                                          ;828470;
     STZ.W $093F                                                          ;828473;
-    STZ.W $0943                                                          ;828476;
+    STZ.W TimerStatus                                                          ;828476;
     LDA.W #$0002                                                         ;828479;
     JSL.L QueueSound                                                     ;82847C;
     LDA.W #$0071                                                         ;828480;
@@ -554,7 +554,7 @@ GameState_24_WhitingOutFromTimeUp:
     LDA.W #$000E                                                         ;82848E;
     JSL.L CheckIfEvent_inA_HasHappened                                   ;828491;
     BCC .notZebesTimebomb                                                ;828495;
-    STZ.W $0DE2                                                          ;828497;
+    STZ.W DeathAnimation_Timer                                                          ;828497;
     STZ.W $0727                                                          ;82849A;
     LDX.W #$00FE                                                         ;82849D;
 
@@ -564,13 +564,13 @@ GameState_24_WhitingOutFromTimeUp:
     DEX                                                                  ;8284A4;
     BPL .loop                                                            ;8284A5;
     LDA.W #$0019                                                         ;8284A7;
-    STA.W $0998                                                          ;8284AA;
+    STA.W GameState                                                      ;8284AA;
     PLP                                                                  ;8284AD;
     RTS                                                                  ;8284AE;
 
   .notZebesTimebomb:
     LDA.W #$0025                                                         ;8284AF;
-    STA.W $0998                                                          ;8284B2;
+    STA.W GameState                                                      ;8284B2;
     LDA.W #CinematicFunction_CeresGoesBoom_Initial                       ;8284B5;
     STA.W $1F51                                                          ;8284B8;
     PLP                                                                  ;8284BB;
@@ -584,7 +584,7 @@ GameState_26_SamusEscapesFromZebes:
     JSR.W GameState_8_MainGameplay                                       ;8284C0;
     JSL.L HandleFadingOut                                                ;8284C3;
     SEP #$20                                                             ;8284C7;
-    LDA.B $51                                                            ;8284C9;
+    LDA.B DP_Brightness                                                            ;8284C9;
     CMP.B #$80                                                           ;8284CB;
     BEQ +                                                                ;8284CD;
     REP #$20                                                             ;8284CF;
@@ -608,13 +608,13 @@ GameState_26_SamusEscapesFromZebes:
     LDA.B #$09                                                           ;8284F4;
     STA.B $55                                                            ;8284F6;
     REP #$20                                                             ;8284F8;
-    STZ.W $0723                                                          ;8284FA;
-    STZ.W $0725                                                          ;8284FD;
+    STZ.W ScreenFadeDelay                                                          ;8284FA;
+    STZ.W ScreenFadeCounter                                                          ;8284FD;
     LDA.W #$0027                                                         ;828500;
-    STA.W $0998                                                          ;828503;
+    STA.W GameState                                                      ;828503;
     LDA.W #CinematicFunction_Ending_Setup                                ;828506;
     STA.W $1F51                                                          ;828509;
-    STZ.W $0943                                                          ;82850C;
+    STZ.W TimerStatus                                                          ;82850C;
     LDA.W #$0000                                                         ;82850F;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;828512;
     LDA.W #$0002                                                         ;828516;
@@ -634,10 +634,10 @@ GameState_29_TransitionToDemo:
     JSR.W GameState_8_MainGameplay                                       ;828530;
     JSL.L WaitForNMI                                                     ;828533;
     JSL.L HDMAObjectHandler_HandleMusicQueue                             ;828537;
-    INC.W $0998                                                          ;82853B;
+    INC.W GameState                                                      ;82853B;
     SEP #$20                                                             ;82853E;
     LDA.B #$0F                                                           ;828540;
-    STA.B $51                                                            ;828542;
+    STA.B DP_Brightness                                                            ;828542;
     REP #$20                                                             ;828544;
     PLP                                                                  ;828546;
     RTS                                                                  ;828547;
@@ -648,7 +648,7 @@ GameState_2A_PlayingDemo:
     PHP                                                                  ;828548;
     REP #$30                                                             ;828549;
     JSR.W GameState_8_MainGameplay                                       ;82854B;
-    LDA.B $8F                                                            ;82854E;
+    LDA.B DP_Controller1New                                                            ;82854E;
     BEQ .decDemoTimer                                                    ;828550;
     LDA.W #$0001                                                         ;828552;
     STA.W $0DEC                                                          ;828555;
@@ -664,7 +664,7 @@ GameState_2A_PlayingDemo:
 
   .loop:
     JSL.L WaitForNMI                                                     ;828567;
-    LDA.B $8F                                                            ;82856B;
+    LDA.B DP_Controller1New                                                            ;82856B;
     BNE .pressedInput                                                    ;82856D;
     DEX                                                                  ;82856F;
     BNE .loop                                                            ;828570;
@@ -675,15 +675,15 @@ GameState_2A_PlayingDemo:
     STA.W $0DEC                                                          ;828577;
 
   .endDemos:
-    INC.W $0998                                                          ;82857A;
+    INC.W GameState                                                      ;82857A;
     STZ.W $05F5                                                          ;82857D;
     SEP #$20                                                             ;828580;
     LDA.B #$80                                                           ;828582;
-    STA.B $51                                                            ;828584;
+    STA.B DP_Brightness                                                            ;828584;
     REP #$20                                                             ;828586;
     LDA.W #$0001                                                         ;828588;
-    STA.W $0723                                                          ;82858B;
-    STA.W $0725                                                          ;82858E;
+    STA.W ScreenFadeDelay                                                          ;82858B;
+    STA.W ScreenFadeCounter                                                          ;82858E;
 
   .return:
     PLP                                                                  ;828591;
@@ -700,9 +700,9 @@ GameState_2B_UnloadGameData:
     JSR.W CheckForNextDemo                                               ;82859E;
 
 +   JSL.L EnableNMI                                                      ;8285A1;
-    INC.W $0998                                                          ;8285A5;
-    STZ.W $0723                                                          ;8285A8;
-    STZ.W $0725                                                          ;8285AB;
+    INC.W GameState                                                      ;8285A5;
+    STZ.W ScreenFadeDelay                                                          ;8285A8;
+    STZ.W ScreenFadeCounter                                                          ;8285AB;
     JSL.L Wait_End_VBlank_Clear_HDMA                                     ;8285AE;
     JSL.L DisableHVCounterInterrupts                                     ;8285B2;
     STZ.W $1982                                                          ;8285B6;
@@ -722,7 +722,7 @@ GameState_2B_UnloadGameData:
     DEX                                                                  ;8285D2;
     DEX                                                                  ;8285D3;
     BPL .clearNonGameplayRAM                                             ;8285D4;
-    LDA.W #$0998                                                         ;8285D6;
+    LDA.W #GameState                                                     ;8285D6;
     DEC A                                                                ;8285D9;
     DEC A                                                                ;8285DA;
     SEC                                                                  ;8285DB;
@@ -752,7 +752,7 @@ GameState_2C_TransitionFromDemo:
     PHP                                                                  ;8285FB;
     REP #$30                                                             ;8285FC;
     LDA.W #$0001                                                         ;8285FE;
-    STA.W $0998                                                          ;828601;
+    STA.W GameState                                                      ;828601;
     LDA.W $0DEC                                                          ;828604;
     BMI .nextDemoScene                                                   ;828607;
     BNE .titleSequence                                                   ;828609;
@@ -775,7 +775,7 @@ GameState_2C_TransitionFromDemo:
 
   .nextDemoScene:
     LDA.W #$0028                                                         ;82862F;
-    STA.W $0998                                                          ;828632;
+    STA.W GameState                                                      ;828632;
     PLP                                                                  ;828635;
     RTS                                                                  ;828636;
 
@@ -784,14 +784,14 @@ GameState_2C_TransitionFromDemo:
 CheckForNextDemo:
     PHP                                                                  ;828637;
     REP #$30                                                             ;828638;
-    LDA.W $1F57                                                          ;82863A;
+    LDA.W DemoScene                                                          ;82863A;
     ASL A                                                                ;82863D;
     ASL A                                                                ;82863E;
     ASL A                                                                ;82863F;
-    ADC.W $1F57                                                          ;828640;
+    ADC.W DemoScene                                                          ;828640;
     ASL A                                                                ;828643;
     STA.B $12                                                            ;828644;
-    LDA.W $1F55                                                          ;828646;
+    LDA.W DemoSet                                                          ;828646;
     ASL A                                                                ;828649;
     TAX                                                                  ;82864A;
     LDA.W DemoRoomData_pointers,X                                        ;82864B;
@@ -802,14 +802,14 @@ CheckForNextDemo:
     CMP.W #$FFFF                                                         ;828655;
     BNE .nextDemoScene                                                   ;828658;
     STZ.W $0DEC                                                          ;82865A;
-    LDA.W $1F55                                                          ;82865D;
+    LDA.W DemoSet                                                          ;82865D;
     INC A                                                                ;828660;
     CMP.W $1F59                                                          ;828661;
     BCC +                                                                ;828664;
     LDA.W #$0000                                                         ;828666;
 
-+   STA.W $1F55                                                          ;828669;
-    STZ.W $1F57                                                          ;82866C;
++   STA.W DemoSet                                                          ;828669;
+    STZ.W DemoScene                                                          ;82866C;
     PLP                                                                  ;82866F;
     RTS                                                                  ;828670;
 
@@ -825,14 +825,14 @@ LoadDemoRoomData:
     PHP                                                                  ;828679;
     REP #$30                                                             ;82867A;
     STZ.W $078D                                                          ;82867C;
-    LDA.W $1F57                                                          ;82867F;
+    LDA.W DemoScene                                                          ;82867F;
     ASL A                                                                ;828682;
     ASL A                                                                ;828683;
     ASL A                                                                ;828684;
-    ADC.W $1F57                                                          ;828685;
+    ADC.W DemoScene                                                          ;828685;
     ASL A                                                                ;828688;
     STA.B $12                                                            ;828689;
-    LDA.W $1F55                                                          ;82868B;
+    LDA.W DemoSet                                                          ;82868B;
     ASL A                                                                ;82868E;
     TAX                                                                  ;82868F;
     LDA.W DemoRoomData_pointers,X                                        ;828690;
@@ -867,17 +867,17 @@ LoadDemoRoomData:
     STA.W $1F53                                                          ;8286DC;
     PHB                                                                  ;8286DF;
     SEP #$20                                                             ;8286E0;
-    LDA.B #$8F                                                           ;8286E2;
+    LDA.B #DP_Controller1New                                                           ;8286E2;
     PHA                                                                  ;8286E4;
     PLB                                                                  ;8286E5;
     LDX.W $079B                                                          ;8286E6;
     LDA.W $0001,X                                                        ;8286E9;
-    STA.W $079F                                                          ;8286EC;
+    STA.W AreaIndex                                                          ;8286EC;
     REP #$20                                                             ;8286EF;
     PLB                                                                  ;8286F1;
     STZ.B $B1                                                            ;8286F2;
     STZ.B $B3                                                            ;8286F4;
-    INC.W $1F57                                                          ;8286F6;
+    INC.W DemoScene                                                          ;8286F6;
     LDX.W #$0000                                                         ;8286F9;
 
   .loopEvents:
@@ -920,7 +920,7 @@ LoadDemoRoomData:
     STA.W $09D4                                                          ;82875A;
     STA.W $09D6                                                          ;82875D;
     STA.W $09C0                                                          ;828760;
-    STA.L $7ED914                                                        ;828763;
+    STA.L SRAMMirror_LoadingGameState                                                        ;828763;
     STA.W $05F7                                                          ;828767;
     PLP                                                                  ;82876A;
     RTS                                                                  ;82876B;
@@ -1136,7 +1136,7 @@ MainGameLoop:
     PHK                                                                  ;82893D;
     PLB                                                                  ;82893E;
     REP #$20                                                             ;82893F;
-    STZ.W $0998                                                          ;828941;
+    STZ.W GameState                                                      ;828941;
     STZ.W $0DF4                                                          ;828944;
     CLI                                                                  ;828947;
 
@@ -1146,11 +1146,11 @@ MainGameLoop:
     JSL.L HDMAObjectHandler_HandleMusicQueue                             ;82894B;
     JSL.L GenerateRandomNumber                                           ;82894F;
     JSL.L ClearHighOAM                                                   ;828953;
-    STZ.W $0590                                                          ;828957;
+    STZ.W OAMStack                                                          ;828957;
     STZ.W $071D                                                          ;82895A;
     STZ.W $071F                                                          ;82895D;
     STZ.W $0721                                                          ;828960;
-    LDA.W $0998                                                          ;828963;
+    LDA.W GameState                                                      ;828963;
     AND.W #$00FF                                                         ;828966;
     ASL A                                                                ;828969;
     TAX                                                                  ;82896A;
@@ -1407,7 +1407,7 @@ ShowSpareCPUDebug_UpdatePrevCtrl1Input:
 +   LDA.W $0DF4                                                          ;828ACB;
     BEQ .return                                                          ;828ACE;
     SEP #$20                                                             ;828AD0;
-    LDA.B $51                                                            ;828AD2;
+    LDA.B DP_Brightness                                                            ;828AD2;
     AND.B #$F0                                                           ;828AD4;
     ORA.B #$05                                                           ;828AD6;
     STA.W $2100                                                          ;828AD8;
@@ -1427,15 +1427,15 @@ GameState_0_ResetStart:
     STZ.W $0DFC                                                          ;828AEA;
     LDA.W #CinematicFunction_LoadTitleSequence                           ;828AED;
     STA.W $1F51                                                          ;828AF0;
-    STZ.W $1F55                                                          ;828AF3;
+    STZ.W DemoSet                                                          ;828AF3;
     LDA.W $1F59                                                          ;828AF6;
     CMP.W #$0004                                                         ;828AF9;
     BNE .return                                                          ;828AFC;
     LDA.W #$0003                                                         ;828AFE;
-    STA.W $1F55                                                          ;828B01;
+    STA.W DemoSet                                                          ;828B01;
 
   .return:
-    INC.W $0998                                                          ;828B04;
+    INC.W GameState                                                      ;828B04;
     RTS                                                                  ;828B07;
 
 
@@ -1467,7 +1467,7 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_IncrementGameState_828B18:
     PHP                                                                  ;828B18;
     REP #$30                                                             ;828B19;
-    INC.W $0998                                                          ;828B1B;
+    INC.W GameState                                                      ;828B1B;
     PLP                                                                  ;828B1E;
     RTS                                                                  ;828B1F;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -1480,13 +1480,13 @@ GameState_7_MainGameplayFadingIn:
     JSR.W GameState_8_MainGameplay                                       ;828B23;
     JSL.L HandleFadingIn                                                 ;828B26;
     SEP #$20                                                             ;828B2A;
-    LDA.B $51                                                            ;828B2C;
+    LDA.B DP_Brightness                                                            ;828B2C;
     CMP.B #$0F                                                           ;828B2E;
     BNE .return                                                          ;828B30;
     REP #$20                                                             ;828B32;
-    STZ.W $0723                                                          ;828B34;
-    STZ.W $0725                                                          ;828B37;
-    INC.W $0998                                                          ;828B3A;
+    STZ.W ScreenFadeDelay                                                          ;828B34;
+    STZ.W ScreenFadeCounter                                                          ;828B37;
+    INC.W GameState                                                      ;828B3A;
 
   .return:
     PLP                                                                  ;828B3D;
@@ -1803,13 +1803,13 @@ GameState_C_Pausing_NormalGameplayDarkening:
     REP #$30                                                             ;828CD0;
     JSR.W GameState_8_MainGameplay                                       ;828CD2;
     JSL.L HandleFadingOut                                                ;828CD5;
-    LDA.B $51                                                            ;828CD9;
+    LDA.B DP_Brightness                                                            ;828CD9;
     AND.W #$000F                                                         ;828CDB;
     BNE .return                                                          ;828CDE;
     JSL.L EnableNMI                                                      ;828CE0;
-    STZ.W $0723                                                          ;828CE4;
-    STZ.W $0725                                                          ;828CE7;
-    INC.W $0998                                                          ;828CEA;
+    STZ.W ScreenFadeDelay                                                          ;828CE4;
+    STZ.W ScreenFadeCounter                                                          ;828CE7;
+    INC.W GameState                                                      ;828CEA;
 
   .return:
     PLP                                                                  ;828CED;
@@ -1826,7 +1826,7 @@ GameState_D_Pausing_LoadingPauseScreen:
     JSL.L Disable_HDMAObjects                                            ;828CF5;
     SEP #$20                                                             ;828CF9;
     LDA.B #$00                                                           ;828CFB;
-    STA.B $85                                                            ;828CFD;
+    STA.B DP_HDMAEnable                                                            ;828CFD;
     STA.W $420C                                                          ;828CFF;
     REP #$20                                                             ;828D02;
     JSL.L Disable_AnimatedTilesObjects                                   ;828D04;
@@ -1848,15 +1848,15 @@ GameState_D_Pausing_LoadingPauseScreen:
     JSR.W BackupGameplayPalettes_LoadPauseScreenPalettes                 ;828D29;
     JSR.W ContinueInitializingPauseMenu                                  ;828D2C;
     LDA.W #$0001                                                         ;828D2F;
-    STA.W $0723                                                          ;828D32;
-    STA.W $0725                                                          ;828D35;
+    STA.W ScreenFadeDelay                                                          ;828D32;
+    STA.W ScreenFadeCounter                                                          ;828D35;
     STZ.W $074D                                                          ;828D38;
     LDA.W #$0001                                                         ;828D3B;
     STA.W $073B                                                          ;828D3E;
     STZ.W $05FD                                                          ;828D41;
     STZ.W $05FF                                                          ;828D44;
     JSL.L QueueClearingOfFXTilemap                                       ;828D47;
-    INC.W $0998                                                          ;828D4B;
+    INC.W GameState                                                      ;828D4B;
     PLB                                                                  ;828D4E;
     PLP                                                                  ;828D4F;
     RTS                                                                  ;828D50;
@@ -1934,7 +1934,7 @@ Backup_SomeGraphicsState_for_PauseScreen:
     STA.W $0768                                                          ;828DD1;
     LDA.B $5E                                                            ;828DD4;
     STA.W $0769                                                          ;828DD6;
-    LDA.B $52                                                            ;828DD9;
+    LDA.B DP_SpriteSizeAddr                                                            ;828DD9;
     STA.W $076A                                                          ;828DDB;
     LDA.B $B1                                                            ;828DDE;
     STA.W $076B                                                          ;828DE0;
@@ -1985,7 +1985,7 @@ Restore_SomeGraphicsState_from_PauseScreen:
     LDA.W $076B                                                          ;828E46;
     STA.B $B1                                                            ;828E49;
     LDA.W $076A                                                          ;828E4B;
-    STA.B $52                                                            ;828E4E;
+    STA.B DP_SpriteSizeAddr                                                            ;828E4E;
     LDA.W $0769                                                          ;828E50;
     STA.B $5E                                                            ;828E53;
     LDA.W $0768                                                          ;828E55;
@@ -2190,7 +2190,7 @@ BackupGameplayPalettes_LoadPauseScreenPalettes:
     LDX.W #$0000                                                         ;828FDD;
 
   .loopBackupGameplay:
-    LDA.L $7EC000,X                                                      ;828FE0;
+    LDA.L Palettes,X                                                      ;828FE0;
     STA.L $7E3300,X                                                      ;828FE4;
     INX                                                                  ;828FE8;
     INX                                                                  ;828FE9;
@@ -2205,7 +2205,7 @@ BackupGameplayPalettes_LoadPauseScreenPalettes:
 
   .loopLoadPause:
     LDA.L Palettes_PauseScreen,X                                         ;828FF8;
-    STA.L $7EC000,X                                                      ;828FFC;
+    STA.L Palettes,X                                                      ;828FFC;
     INX                                                                  ;829000;
     INX                                                                  ;829001;
     DEY                                                                  ;829002;
@@ -2337,13 +2337,13 @@ GameState_E_Paused_LoadingPauseScreen:
     JSL.L Draw_PauseMenu_during_FadeIn                                   ;8290CB;
     JSL.L HandleFadingIn                                                 ;8290CF;
     SEP #$20                                                             ;8290D3;
-    LDA.B $51                                                            ;8290D5;
+    LDA.B DP_Brightness                                                            ;8290D5;
     CMP.B #$0F                                                           ;8290D7;
     BNE .return                                                          ;8290D9;
     REP #$20                                                             ;8290DB;
-    STZ.W $0723                                                          ;8290DD;
-    STZ.W $0725                                                          ;8290E0;
-    INC.W $0998                                                          ;8290E3;
+    STZ.W ScreenFadeDelay                                                          ;8290DD;
+    STZ.W ScreenFadeCounter                                                          ;8290E0;
+    INC.W GameState                                                      ;8290E3;
 
   .return:
     PLP                                                                  ;8290E6;
@@ -2427,13 +2427,13 @@ PauseMenu_2_MapScreenToEquipmentScreen_FadingOut:
     STA.W $0763                                                          ;829167;
     JSL.L HandleFadingOut                                                ;82916A;
     SEP #$20                                                             ;82916E;
-    LDA.B $51                                                            ;829170;
+    LDA.B DP_Brightness                                                            ;829170;
     CMP.B #$80                                                           ;829172;
     BNE .return                                                          ;829174;
     JSL.L EnableNMI                                                      ;829176;
     REP #$20                                                             ;82917A;
-    STZ.W $0723                                                          ;82917C;
-    STZ.W $0725                                                          ;82917F;
+    STZ.W ScreenFadeDelay                                                          ;82917C;
+    STZ.W ScreenFadeCounter                                                          ;82917F;
     INC.W $0727                                                          ;829182;
 
   .return:
@@ -2447,13 +2447,13 @@ PauseMenu_5_EquipmentScreenToMapScreen_FadingOut:
     JSR.W Handle_PauseMenu_L_R_PressedHighlight                          ;82918C;
     JSL.L HandleFadingOut                                                ;82918F;
     SEP #$20                                                             ;829193;
-    LDA.B $51                                                            ;829195;
+    LDA.B DP_Brightness                                                            ;829195;
     CMP.B #$80                                                           ;829197;
     BNE .return                                                          ;829199;
     JSL.L EnableNMI                                                      ;82919B;
     REP #$20                                                             ;82919F;
-    STZ.W $0723                                                          ;8291A1;
-    STZ.W $0725                                                          ;8291A4;
+    STZ.W ScreenFadeDelay                                                          ;8291A1;
+    STZ.W ScreenFadeCounter                                                          ;8291A4;
     INC.W $0727                                                          ;8291A7;
 
   .return:
@@ -2473,8 +2473,8 @@ PauseMenu_3_MapScreenToEquipmentScreen_LoadEquipmentScreen:
     LDA.W L_R_HighlightAnimationData_PauseScreenPaletteAnimationDelays   ;8291C4;
     STA.W $072B                                                          ;8291C7;
     LDA.W #$0001                                                         ;8291CA;
-    STA.W $0723                                                          ;8291CD;
-    STA.W $0725                                                          ;8291D0;
+    STA.W ScreenFadeDelay                                                          ;8291CD;
+    STA.W ScreenFadeCounter                                                          ;8291D0;
     INC.W $0727                                                          ;8291D3;
     RTS                                                                  ;8291D6;
 
@@ -2489,8 +2489,8 @@ PauseMenu_6_EquipmentScreenToMapScreen_LoadMapScreen:
     LDA.W L_R_HighlightAnimationData_PauseScreenPaletteAnimationDelays   ;8291E7;
     STA.W $072B                                                          ;8291EA;
     LDA.W #$0001                                                         ;8291ED;
-    STA.W $0723                                                          ;8291F0;
-    STA.W $0725                                                          ;8291F3;
+    STA.W ScreenFadeDelay                                                          ;8291F0;
+    STA.W ScreenFadeCounter                                                          ;8291F3;
     LDA.W #$0000                                                         ;8291F6;
     STA.W $0763                                                          ;8291F9;
     INC.W $0727                                                          ;8291FC;
@@ -2506,12 +2506,12 @@ PauseMenu_7_EquipmentScreenToMapScreen_FadingIn:
     STA.W $0763                                                          ;82920E;
     JSL.L HandleFadingIn                                                 ;829211;
     SEP #$20                                                             ;829215;
-    LDA.B $51                                                            ;829217;
+    LDA.B DP_Brightness                                                            ;829217;
     CMP.B #$0F                                                           ;829219;
     BNE .return                                                          ;82921B;
     REP #$20                                                             ;82921D;
-    STZ.W $0723                                                          ;82921F;
-    STZ.W $0725                                                          ;829222;
+    STZ.W ScreenFadeDelay                                                          ;82921F;
+    STZ.W ScreenFadeCounter                                                          ;829222;
     LDA.W $0753                                                          ;829225;
     BEQ +                                                                ;829228;
     LDA.W #$0001                                                         ;82922A;
@@ -2530,12 +2530,12 @@ PauseMenu_4_MapScreenToEquipmentScreen_FadingIn:
     STA.W $0763                                                          ;82923A;
     JSL.L HandleFadingIn                                                 ;82923D;
     SEP #$20                                                             ;829241;
-    LDA.B $51                                                            ;829243;
+    LDA.B DP_Brightness                                                            ;829243;
     CMP.B #$0F                                                           ;829245;
     BNE .return                                                          ;829247;
     REP #$20                                                             ;829249;
-    STZ.W $0723                                                          ;82924B;
-    STZ.W $0725                                                          ;82924E;
+    STZ.W ScreenFadeDelay                                                          ;82924B;
+    STZ.W ScreenFadeCounter                                                          ;82924E;
     LDA.W $0753                                                          ;829251;
     BEQ +                                                                ;829254;
     LDA.W #$0001                                                         ;829256;
@@ -2665,14 +2665,14 @@ GameState_10_Unpausing_LoadingNormalGameplay:
     JSR.W Draw_PauseMenu_During_FadeOut                                  ;82932B;
     JSL.L HandleFadingOut                                                ;82932E;
     SEP #$20                                                             ;829332;
-    LDA.B $51                                                            ;829334;
+    LDA.B DP_Brightness                                                            ;829334;
     CMP.B #$80                                                           ;829336;
     BNE .return                                                          ;829338;
     JSL.L EnableNMI                                                      ;82933A;
     REP #$20                                                             ;82933E;
-    STZ.W $0723                                                          ;829340;
-    STZ.W $0725                                                          ;829343;
-    INC.W $0998                                                          ;829346;
+    STZ.W ScreenFadeDelay                                                          ;829340;
+    STZ.W ScreenFadeCounter                                                          ;829343;
+    INC.W GameState                                                      ;829346;
 
   .return:
     PLP                                                                  ;829349;
@@ -2705,8 +2705,8 @@ GameState_11_Unpausing_LoadingNormalGameplay:
     JSR.W Restore_BG2Tilemap_from_PauseMenu                              ;829377;
     REP #$30                                                             ;82937A;
     LDA.W #$0001                                                         ;82937C;
-    STA.W $0723                                                          ;82937F;
-    STA.W $0725                                                          ;829382;
+    STA.W ScreenFadeDelay                                                          ;82937F;
+    STA.W ScreenFadeCounter                                                          ;829382;
     PHP                                                                  ;829385;
     PHB                                                                  ;829386;
     PHK                                                                  ;829387;
@@ -2719,7 +2719,7 @@ GameState_11_Unpausing_LoadingNormalGameplay:
     JSL.L Queue_Samus_Movement_SoundEffects                              ;829396;
     PLB                                                                  ;82939A;
     PLP                                                                  ;82939B;
-    INC.W $0998                                                          ;82939C;
+    INC.W GameState                                                      ;82939C;
     PLP                                                                  ;82939F;
     RTS                                                                  ;8293A0;
 
@@ -2731,14 +2731,14 @@ GameState_12_Unpausing_NormalGameplayBrightening:
     JSR.W GameState_8_MainGameplay                                       ;8293A4;
     JSL.L HandleFadingIn                                                 ;8293A7;
     SEP #$20                                                             ;8293AB;
-    LDA.B $51                                                            ;8293AD;
+    LDA.B DP_Brightness                                                            ;8293AD;
     CMP.B #$0F                                                           ;8293AF;
     BNE .return                                                          ;8293B1;
     REP #$20                                                             ;8293B3;
-    STZ.W $0723                                                          ;8293B5;
-    STZ.W $0725                                                          ;8293B8;
+    STZ.W ScreenFadeDelay                                                          ;8293B5;
+    STZ.W ScreenFadeCounter                                                          ;8293B8;
     LDA.W #$0008                                                         ;8293BB;
-    STA.W $0998                                                          ;8293BE;
+    STA.W GameState                                                      ;8293BE;
 
   .return:
     PLP                                                                  ;8293C1;
@@ -2785,7 +2785,7 @@ Load_PauseMenuMapTilemap_and_AreaLabel:
     LDA.B #$00                                                           ;829414;
     STA.W $4316                                                          ;829416;
     REP #$30                                                             ;829419;
-    LDA.W $079F                                                          ;82941B;
+    LDA.W AreaIndex                                                          ;82941B;
     CMP.W #$0007                                                         ;82941E;
     BMI +                                                                ;829421;
     LDA.W #$0000                                                         ;829423;
@@ -2808,7 +2808,7 @@ Load_PauseMenuMapTilemap_and_AreaLabel:
 LoadPauseMenuMapTilemap:
     PHP                                                                  ;82943D;
     REP #$30                                                             ;82943E;
-    LDA.W $079F                                                          ;829440;
+    LDA.W AreaIndex                                                          ;829440;
     CMP.W #$0007                                                         ;829443;
     BMI +                                                                ;829446;
     LDA.W #$0000                                                         ;829448;
@@ -2833,7 +2833,7 @@ LoadPauseMenuMapTilemap:
     STA.B $08                                                            ;82946D;
     LDA.L MapData_pointers,X                                             ;82946F;
     STA.B $06                                                            ;829473;
-    LDX.W $079F                                                          ;829475;
+    LDX.W AreaIndex                                                          ;829475;
     LDA.L $7ED908,X                                                      ;829478;
     AND.W #$00FF                                                         ;82947C;
     BNE .mapCollected                                                    ;82947F;
@@ -2944,7 +2944,7 @@ DrawRoomSelectMap:
     REP #$30                                                             ;829529;
     PHK                                                                  ;82952B;
     PLB                                                                  ;82952C;
-    LDA.W $079F                                                          ;82952D;
+    LDA.W AreaIndex                                                          ;82952D;
     CMP.W #$0007                                                         ;829530;
     BMI +                                                                ;829533;
     LDA.W #$0000                                                         ;829535;
@@ -2969,7 +2969,7 @@ DrawRoomSelectMap:
     STA.B $08                                                            ;82955A;
     LDA.L MapData_pointers,X                                             ;82955C;
     STA.B $06                                                            ;829560;
-    LDX.W $079F                                                          ;829562;
+    LDX.W AreaIndex                                                          ;829562;
     LDA.L $7ED908,X                                                      ;829565;
     AND.W #$00FF                                                         ;829569;
     BNE .mapCollected                                                    ;82956C;
@@ -3088,7 +3088,7 @@ DrawRoomSelectMap_AreaLabel:
     PHB                                                                  ;829628;
     PHK                                                                  ;829629;
     PLB                                                                  ;82962A;
-    LDA.W $079F                                                          ;82962B;
+    LDA.W AreaIndex                                                          ;82962B;
     ASL A                                                                ;82962E;
     TAX                                                                  ;82962F;
     LDA.W AreaLabelTilemaps_pointers,X                                   ;829630;
@@ -3777,7 +3777,7 @@ DetermineMapScrollLimits:
     STA.B $08                                                            ;829ECE;
     LDA.W #MapData_pointers                                              ;829ED0;
     STA.B $06                                                            ;829ED3;
-    LDA.W $079F                                                          ;829ED5;
+    LDA.W AreaIndex                                                          ;829ED5;
     ASL A                                                                ;829ED8;
     TAY                                                                  ;829ED9;
     LDA.B [$06],Y                                                        ;829EDA;
@@ -3801,7 +3801,7 @@ DetermineMapScrollLimits:
     JSR.W DetermineLeftmostMapColumn                                     ;829EF8;
     JSR.W A_equals_X_times_8                                             ;829EFB;
     STA.W $05AC                                                          ;829EFE;
-    LDA.W $079F                                                          ;829F01;
+    LDA.W AreaIndex                                                          ;829F01;
     CMP.W #$0004                                                         ;829F04;
     BNE +                                                                ;829F07;
     LDA.W $05AC                                                          ;829F09;
@@ -4077,7 +4077,7 @@ SetupPPUForPauseMenu:
     SEP #$30                                                             ;82A09A;
     LDA.B #$01                                                           ;82A09C;
     STA.W $2101                                                          ;82A09E;
-    STA.B $52                                                            ;82A0A1;
+    STA.B DP_SpriteSizeAddr                                                            ;82A0A1;
     LDA.B #$09                                                           ;82A0A3;
     STA.W $2105                                                          ;82A0A5;
     STA.B $55                                                            ;82A0A8;
@@ -4397,7 +4397,7 @@ ContinueInitialising_GameplayResume:
 
   .loop:
     LDA.L $7E3300,X                                                      ;82A2EE;
-    STA.L $7EC000,X                                                      ;82A2F2;
+    STA.L Palettes,X                                                      ;82A2F2;
     INX                                                                  ;82A2F6;
     INX                                                                  ;82A2F7;
     DEY                                                                  ;82A2F8;
@@ -4420,7 +4420,7 @@ Setup_PPU_for_GameplayResume:
     SEP #$30                                                             ;82A314;
     LDA.B #$03                                                           ;82A316;
     STA.W $2101                                                          ;82A318;
-    STA.B $52                                                            ;82A31B;
+    STA.B DP_SpriteSizeAddr                                                            ;82A31B;
     LDA.B #$09                                                           ;82A31D;
     STA.W $2105                                                          ;82A31F;
     STA.B $55                                                            ;82A322;
@@ -4821,8 +4821,8 @@ Handle_PauseScreen_StartButton:
     LDA.W #$0038                                                         ;82A5C2;
     JSL.L QueueSound_Lib1_Max6                                           ;82A5C5;
     LDA.W #$0001                                                         ;82A5C9;
-    STA.W $0723                                                          ;82A5CC;
-    STA.W $0725                                                          ;82A5CF;
+    STA.W ScreenFadeDelay                                                          ;82A5CC;
+    STA.W ScreenFadeCounter                                                          ;82A5CF;
     LDA.W $0753                                                          ;82A5D2;
     PHA                                                                  ;82A5D5;
     LDA.W #$0001                                                         ;82A5D6;
@@ -4832,7 +4832,7 @@ Handle_PauseScreen_StartButton:
     STA.W $0753                                                          ;82A5E0;
     LDA.W #$000B                                                         ;82A5E3;
     STA.W $0729                                                          ;82A5E6;
-    INC.W $0998                                                          ;82A5E9;
+    INC.W GameState                                                      ;82A5E9;
 
 +   JSR.W Update_PauseMenu_L_R_Start_VRAMTilemap                         ;82A5EC;
     PLP                                                                  ;82A5EF;
@@ -5613,7 +5613,7 @@ EquipmentScreen_Main_Tanks_DPadResponse:
     REP #$30                                                             ;82AC8C;
     LDA.W $0755                                                          ;82AC8E;
     STA.B $12                                                            ;82AC91;
-    LDA.B $8F                                                            ;82AC93;
+    LDA.B DP_Controller1New                                                            ;82AC93;
     BIT.W #$0100                                                         ;82AC95;
     BEQ .notRight                                                        ;82AC98;
     BIT.W #$0400                                                         ;82AC9A;
@@ -5840,7 +5840,7 @@ EquipmentScreen_Disable_EnergyArrowGlow:
 EquipmentScreen_Main_Tanks_Mode:
     PHP                                                                  ;82AE8B;
     REP #$30                                                             ;82AE8C;
-    LDA.B $8F                                                            ;82AE8E;
+    LDA.B DP_Controller1New                                                            ;82AE8E;
     BIT.W #$0080                                                         ;82AE90;
     BEQ .return                                                          ;82AE93;
     LDA.W $09D4                                                          ;82AE95;
@@ -5946,7 +5946,7 @@ EquipmentScreen_Main_Tanks_ReserveTank:
     REP #$30                                                             ;82AF50;
     LDA.W $0757                                                          ;82AF52;
     BNE .soundTimer                                                      ;82AF55;
-    LDA.B $8F                                                            ;82AF57;
+    LDA.B DP_Controller1New                                                            ;82AF57;
     BIT.W #$0080                                                         ;82AF59;
     BEQ .return                                                          ;82AF5C;
     LDA.W $09D6                                                          ;82AF5E;
@@ -6024,7 +6024,7 @@ EquipmentScreen_Main_Weapons_MoveResponse:
     REP #$30                                                             ;82AFDC;
     LDA.W $0755                                                          ;82AFDE;
     STA.B $12                                                            ;82AFE1;
-    LDA.B $8F                                                            ;82AFE3;
+    LDA.B DP_Controller1New                                                            ;82AFE3;
     BIT.W #$0100                                                         ;82AFE5;
     BEQ .rightEnd                                                        ;82AFE8;
     BIT.W #$0800                                                         ;82AFEA;
@@ -6159,7 +6159,7 @@ EquipmentScreen_SuitsMisc_MoveResponse:
     REP #$30                                                             ;82B0D3;
     LDA.W $0755                                                          ;82B0D5;
     STA.B $12                                                            ;82B0D8;
-    LDA.B $8F                                                            ;82B0DA;
+    LDA.B DP_Controller1New                                                            ;82B0DA;
     BIT.W #$0200                                                         ;82B0DC;
     BEQ .leftEnd                                                         ;82B0DF;
     BIT.W #$0400                                                         ;82B0E1;
@@ -6239,7 +6239,7 @@ EquipmentScreen_Main_Boots_MoveResponse:
     REP #$30                                                             ;82B161;
     LDA.W $0755                                                          ;82B163;
     STA.B $12                                                            ;82B166;
-    LDA.B $8F                                                            ;82B168;
+    LDA.B DP_Controller1New                                                            ;82B168;
     BIT.W #$0200                                                         ;82B16A;
     BEQ .leftEnd                                                         ;82B16D;
     BIT.W #$0800                                                         ;82B16F;
@@ -6894,7 +6894,7 @@ EquipmentScreen_Main_ButtonResponse:
 ;;     $18: Tilemap size in bytes
     PHP                                                                  ;82B568;
     REP #$30                                                             ;82B569;
-    LDA.B $8F                                                            ;82B56B;
+    LDA.B DP_Controller1New                                                            ;82B56B;
     BIT.W #$0080                                                         ;82B56D;
     BNE +                                                                ;82B570;
     PLP                                                                  ;82B572;
@@ -7096,7 +7096,7 @@ Draw_Map_Icons:
     LDA.W #$0008                                                         ;82B6B6;
     JSR.W Draw_Simple_MapIcons                                           ;82B6B9;
 
-+   LDA.W $079F                                                          ;82B6BC;
++   LDA.W AreaIndex                                                          ;82B6BC;
     BNE .return                                                          ;82B6BF;
     LDA.W #$0E00                                                         ;82B6C1;
     STA.B $03                                                            ;82B6C4;
@@ -7143,12 +7143,12 @@ Draw_FileSelectMap_Icons:
     PHA                                                                  ;82B716;
     LDA.W #$0082                                                         ;82B717;
     STA.B $02                                                            ;82B71A;
-    LDA.W $079F                                                          ;82B71C;
+    LDA.W AreaIndex                                                          ;82B71C;
     ASL A                                                                ;82B71F;
     TAX                                                                  ;82B720;
     LDA.W MapIcon_PositionTablePointers_savePoints,X                     ;82B721;
     STA.B $00                                                            ;82B724;
-    LDA.W $078B                                                          ;82B726;
+    LDA.W LoadStationIndex                                                          ;82B726;
     ASL A                                                                ;82B729;
     ASL A                                                                ;82B72A;
     TAY                                                                  ;82B72B;
@@ -7188,7 +7188,7 @@ Draw_FileSelectMap_Icons:
     LDA.W #$000C                                                         ;82B771;
     JSR.W Draw_Simple_MapIcons                                           ;82B774;
 
-+   LDA.W $079F                                                          ;82B777;
++   LDA.W AreaIndex                                                          ;82B777;
     BNE .return                                                          ;82B77A;
     LDA.W #$0E00                                                         ;82B77C;
     STA.B $03                                                            ;82B77F;
@@ -7216,7 +7216,7 @@ Draw_SaveStation_MapIcons:
 ;;     $03: Sprite palette bits
     STX.B $20                                                            ;82B798;
     STA.B $22                                                            ;82B79A;
-    LDA.W $079F                                                          ;82B79C;
+    LDA.W AreaIndex                                                          ;82B79C;
     CMP.L $7ED918                                                        ;82B79F;
     BNE .return                                                          ;82B7A3;
     ASL A                                                                ;82B7A5;
@@ -7224,12 +7224,12 @@ Draw_SaveStation_MapIcons:
     LDA.L $7ED8F8,X                                                      ;82B7A7;
     STA.B $24                                                            ;82B7AB;
     SEP #$20                                                             ;82B7AD;
-    LDX.W $078B                                                          ;82B7AF;
+    LDX.W LoadStationIndex                                                          ;82B7AF;
     LDA.W .bits,X                                                        ;82B7B2;
     AND.B $24                                                            ;82B7B5;
     STA.B $24                                                            ;82B7B7;
     REP #$20                                                             ;82B7B9;
-    LDA.W $079F                                                          ;82B7BB;
+    LDA.W AreaIndex                                                          ;82B7BB;
     ASL A                                                                ;82B7BE;
     CLC                                                                  ;82B7BF;
     ADC.B $20                                                            ;82B7C0;
@@ -7252,7 +7252,7 @@ Draw_Debug_Save_MapIcons:
 ;;     $03: Sprite palette bits
     STX.B $20                                                            ;82B7D1;
     STA.B $22                                                            ;82B7D3;
-    LDA.W $079F                                                          ;82B7D5;
+    LDA.W AreaIndex                                                          ;82B7D5;
     ASL A                                                                ;82B7D8;
     TAX                                                                  ;82B7D9;
     LDA.L $7ED8F8,X                                                      ;82B7DA;
@@ -7274,7 +7274,7 @@ Draw_Debug_Elevator_Map_Icons:
 ;;     $03: Sprite palette bits
     STX.B $20                                                            ;82B7EB;
     STA.B $22                                                            ;82B7ED;
-    LDA.W $079F                                                          ;82B7EF;
+    LDA.W AreaIndex                                                          ;82B7EF;
     ASL A                                                                ;82B7F2;
     TAX                                                                  ;82B7F3;
     LDA.L $7ED8F9,X                                                      ;82B7F4;
@@ -7298,7 +7298,7 @@ Draw_Simple_MapIcons:
     STA.B $22                                                            ;82B807;
     LDA.W #$FFFF                                                         ;82B809;
     STA.B $24                                                            ;82B80C;
-    LDA.W $079F                                                          ;82B80E;
+    LDA.W AreaIndex                                                          ;82B80E;
     ASL A                                                                ;82B811;
     CLC                                                                  ;82B812;
     ADC.B $20                                                            ;82B813;
@@ -7409,11 +7409,11 @@ Display_Map_Boss_Icons:
 ;;     X: Pointer to boss icon data pointers (always MapIcon_PositionTablePointers)
     STX.B $20                                                            ;82B892;
     STA.B $22                                                            ;82B894;
-    LDX.W $079F                                                          ;82B896;
+    LDX.W AreaIndex                                                          ;82B896;
     LDA.L $7ED828,X                                                      ;82B899;
     AND.W #$00FF                                                         ;82B89D;
     STA.B $24                                                            ;82B8A0;
-    LDA.W $079F                                                          ;82B8A2;
+    LDA.W AreaIndex                                                          ;82B8A2;
     ASL A                                                                ;82B8A5;
     CLC                                                                  ;82B8A6;
     ADC.B $20                                                            ;82B8A7;
@@ -7805,11 +7805,11 @@ Display_Map_Elevator_Destinations:
     PLB                                                                  ;82BB34;
     LDA.W #$0000                                                         ;82BB35;
     STA.B $03                                                            ;82BB38;
-    LDX.W $079F                                                          ;82BB3A;
+    LDX.W AreaIndex                                                          ;82BB3A;
     LDA.L $7ED908,X                                                      ;82BB3D;
     AND.W #$00FF                                                         ;82BB41;
     BEQ .return                                                          ;82BB44;
-    LDA.W $079F                                                          ;82BB46;
+    LDA.W AreaIndex                                                          ;82BB46;
     ASL A                                                                ;82BB49;
     TAX                                                                  ;82BB4A;
     LDA.W Map_Elevator_Destinations,X                                    ;82BB4B;
@@ -7886,7 +7886,7 @@ Draw_GameOver_BabyMetroid:
 
   .loop:
     LDA.W $0000,Y                                                        ;82BBA6;
-    STA.L $7EC180,X                                                      ;82BBA9;
+    STA.L Palettes_SpriteP4C0,X                                                      ;82BBA9;
     INY                                                                  ;82BBAD;
     INY                                                                  ;82BBAE;
     INX                                                                  ;82BBAF;
@@ -8084,7 +8084,7 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $BE5A: Unused. Mark entire map as explored and crash ;;;
 UNUSED_MarkEntireMapExplored_Crash_82BE5A:
     REP #$30                                                             ;82BE5A;
-    LDA.W $079F                                                          ;82BE5C;
+    LDA.W AreaIndex                                                          ;82BE5C;
     STA.B $12                                                            ;82BE5F;
     ASL A                                                                ;82BE61;
     CLC                                                                  ;82BE62;
@@ -8153,11 +8153,11 @@ UNUSED_CountRooms_Crash_82BEA3:
     STA.L $7E4000                                                        ;82BEB7;
     STA.L $7E4002                                                        ;82BEBB;
     STA.L $7E4004                                                        ;82BEBF;
-    STZ.W $079F                                                          ;82BEC3;
+    STZ.W AreaIndex                                                          ;82BEC3;
 
   .biggerLoop:
     REP #$20                                                             ;82BEC6;
-    LDA.W $079F                                                          ;82BEC8;
+    LDA.W AreaIndex                                                          ;82BEC8;
     XBA                                                                  ;82BECB;
     TAY                                                                  ;82BECC;
     TAX                                                                  ;82BECD;
@@ -8172,7 +8172,7 @@ UNUSED_CountRooms_Crash_82BEA3:
     STA.L $7E3000,X                                                      ;82BEDA;
     INX                                                                  ;82BEDE;
     PHX                                                                  ;82BEDF;
-    LDX.W $079F                                                          ;82BEE0;
+    LDX.W AreaIndex                                                          ;82BEE0;
     LDA.L $7E4000,X                                                      ;82BEE3;
     INC A                                                                ;82BEE7;
     STA.L $7E4000,X                                                      ;82BEE8;
@@ -8184,9 +8184,9 @@ UNUSED_CountRooms_Crash_82BEA3:
     STA.B $12                                                            ;82BEF1;
     CMP.B #$FF                                                           ;82BEF3;
     BNE .middleLoop                                                      ;82BEF5;
-    LDA.W $079F                                                          ;82BEF7;
+    LDA.W AreaIndex                                                          ;82BEF7;
     INC A                                                                ;82BEFA;
-    STA.W $079F                                                          ;82BEFB;
+    STA.W AreaIndex                                                          ;82BEFB;
     CMP.B #$07                                                           ;82BEFE;
     BMI .biggerLoop                                                      ;82BF00;
 
@@ -10198,14 +10198,14 @@ Advance_GradualColorChange_ofBGPalette6:
 
   .loop:
     PHX                                                                  ;82D98E;
-    LDA.L $7EC200,X                                                      ;82D98F;
+    LDA.L TargetPalettes_BGP0,X                                                      ;82D98F;
     TAY                                                                  ;82D993;
-    LDA.L $7EC000,X                                                      ;82D994;
+    LDA.L Palettes,X                                                      ;82D994;
     TAX                                                                  ;82D998;
     LDA.L $7EC400                                                        ;82D999;
     JSR.W CalculateTheAth_TransitionalColor_fromXtoY                     ;82D99D;
     PLX                                                                  ;82D9A0;
-    STA.L $7EC000,X                                                      ;82D9A1;
+    STA.L Palettes,X                                                      ;82D9A1;
     INX                                                                  ;82D9A5;
     INX                                                                  ;82D9A6;
     CPX.W #$00E0                                                         ;82D9A7;
@@ -10241,15 +10241,15 @@ Advance_GradualColorChange_ofPaletteRAM:
 
   .loop:
     PHX                                                                  ;82D9D8;
-    LDA.L $7EC200,X                                                      ;82D9D9;
+    LDA.L TargetPalettes_BGP0,X                                                      ;82D9D9;
     TAY                                                                  ;82D9DD;
-    LDA.L $7EC000,X                                                      ;82D9DE;
+    LDA.L Palettes,X                                                      ;82D9DE;
     TAX                                                                  ;82D9E2;
     LDA.L $7EC400                                                        ;82D9E3;
     INC A                                                                ;82D9E7;
     JSR.W CalculateTheAth_TransitionalColor_fromXtoY                     ;82D9E8;
     PLX                                                                  ;82D9EB;
-    STA.L $7EC000,X                                                      ;82D9EC;
+    STA.L Palettes,X                                                      ;82D9EC;
     INX                                                                  ;82D9F0;
     INX                                                                  ;82D9F1;
     CPX.B $22                                                            ;82D9F2;
@@ -10609,13 +10609,13 @@ HandleSamusRunningOutOfEnergy_and_IncrementGameTime:
     LDA.W #$8000                                                         ;82DB80;
     STA.W $0A78                                                          ;82DB83;
     LDA.W #$001B                                                         ;82DB86;
-    STA.W $0998                                                          ;82DB89;
+    STA.W GameState                                                      ;82DB89;
     LDA.W #$001B                                                         ;82DB8C;
     JSL.L Run_Samus_Command                                              ;82DB8F;
     BRA .tickGameTime                                                    ;82DB93;
 
   .noAutoReserve:
-    LDA.W $0998                                                          ;82DB95;
+    LDA.W GameState                                                      ;82DB95;
     CMP.W #$0008                                                         ;82DB98;
     BEQ .normalGameplay                                                  ;82DB9B;
     PLP                                                                  ;82DB9D;
@@ -10627,7 +10627,7 @@ HandleSamusRunningOutOfEnergy_and_IncrementGameTime:
     LDA.W #$0011                                                         ;82DBA5;
     JSL.L Run_Samus_Command                                              ;82DBA8;
     LDA.W #$0013                                                         ;82DBAC;
-    STA.W $0998                                                          ;82DBAF;
+    STA.W GameState                                                      ;82DBAF;
 
   .tickGameTime:
     LDA.W $09DA                                                          ;82DBB2;
@@ -10682,7 +10682,7 @@ GameState_1B_ReserveTankAuto:
     BCC +                                                                ;82DC16;
     STZ.W $0A78                                                          ;82DC18;
     LDA.W #$0008                                                         ;82DC1B;
-    STA.W $0998                                                          ;82DC1E;
+    STA.W GameState                                                      ;82DC1E;
     LDA.W #$0010                                                         ;82DC21;
     JSL.L Run_Samus_Command                                              ;82DC24;
 
@@ -10746,7 +10746,7 @@ GameState_13_DeathSequence_Start:
     JSR.W GameState_8_MainGameplay                                       ;82DC83;
     LDX.W #$01FE                                                         ;82DC86;
 
--   LDA.L $7EC000,X                                                      ;82DC89;
+-   LDA.L Palettes,X                                                      ;82DC89;
     STA.L $7E3300,X                                                      ;82DC8D;
     DEX                                                                  ;82DC91;
     DEX                                                                  ;82DC92;
@@ -10754,7 +10754,7 @@ GameState_13_DeathSequence_Start:
     LDX.W #$017E                                                         ;82DC95;
     LDA.W #$0000                                                         ;82DC98;
 
--   STA.L $7EC200,X                                                      ;82DC9B;
+-   STA.L TargetPalettes_BGP0,X                                                      ;82DC9B;
     DEX                                                                  ;82DC9F;
     DEX                                                                  ;82DCA0;
     BPL -                                                                ;82DCA1;
@@ -10767,13 +10767,13 @@ GameState_13_DeathSequence_Start:
     BPL -                                                                ;82DCAF;
     LDX.W #$001E                                                         ;82DCB1;
 
--   LDA.L $7EC180,X                                                      ;82DCB4;
-    STA.L $7EC380,X                                                      ;82DCB8;
+-   LDA.L Palettes_SpriteP4C0,X                                                      ;82DCB4;
+    STA.L TargetPalettes_SpriteP4,X                                                      ;82DCB8;
     DEX                                                                  ;82DCBC;
     DEX                                                                  ;82DCBD;
     BPL -                                                                ;82DCBE;
     LDA.W #$0003                                                         ;82DCC0;
-    STA.W $0DE2                                                          ;82DCC3;
+    STA.W DeathAnimation_Timer                                                          ;82DCC3;
     STZ.W $0DE4                                                          ;82DCC6;
     STZ.W $0DE6                                                          ;82DCC9;
     STZ.W $0DE8                                                          ;82DCCC;
@@ -10781,7 +10781,7 @@ GameState_13_DeathSequence_Start:
     STZ.W $0A04                                                          ;82DCD2;
     STZ.W $18A8                                                          ;82DCD5;
     STZ.W $18AA                                                          ;82DCD8;
-    INC.W $0998                                                          ;82DCDB;
+    INC.W GameState                                                      ;82DCDB;
     PLP                                                                  ;82DCDE;
     RTS                                                                  ;82DCDF;
 
@@ -10813,9 +10813,9 @@ GameState_14_DeathSequence_BlackOutSurroundings:
     LDA.B #$09                                                           ;82DD11;
     STA.B $55                                                            ;82DD13;
     REP #$20                                                             ;82DD15;
-    STZ.W $0DE2                                                          ;82DD17;
-    STZ.W $0723                                                          ;82DD1A;
-    STZ.W $0725                                                          ;82DD1D;
+    STZ.W DeathAnimation_Timer                                                          ;82DD17;
+    STZ.W ScreenFadeDelay                                                          ;82DD1A;
+    STZ.W ScreenFadeCounter                                                          ;82DD1D;
     LDX.W #$00FE                                                         ;82DD20;
 
 -   STZ.W $1A8D,X                                                        ;82DD23;
@@ -10825,10 +10825,10 @@ GameState_14_DeathSequence_BlackOutSurroundings:
     LDA.W #$0010                                                         ;82DD2A;
     STA.W $0DE8                                                          ;82DD2D;
     LDA.W #$0003                                                         ;82DD30;
-    STA.W $0DE2                                                          ;82DD33;
+    STA.W DeathAnimation_Timer                                                          ;82DD33;
     STZ.W $0DE4                                                          ;82DD36;
     STZ.W $0DE6                                                          ;82DD39;
-    INC.W $0998                                                          ;82DD3C;
+    INC.W GameState                                                      ;82DD3C;
     STZ.W $0592                                                          ;82DD3F;
     LDA.W #$0002                                                         ;82DD42;
     JSL.L QueueSound                                                     ;82DD45;
@@ -10855,7 +10855,7 @@ GameState_15_DeathSequence_WaitForMusic:
     JSL.L CheckIfMusicIsQueued                                           ;82DD78;
     BCS .reutrn                                                          ;82DD7C;
     JSL.L SetSamusDeathSequencePose                                      ;82DD7E;
-    INC.W $0998                                                          ;82DD82;
+    INC.W GameState                                                      ;82DD82;
 
   .reutrn:
     PLP                                                                  ;82DD85;
@@ -10872,7 +10872,7 @@ GameState_16_DeathSequence_PreFlashing:
     BEQ +                                                                ;82DD91;
     BPL .return                                                          ;82DD93;
 
-+   INC.W $0998                                                          ;82DD95;
++   INC.W GameState                                                      ;82DD95;
 
   .return:
     PLP                                                                  ;82DD98;
@@ -10886,7 +10886,7 @@ GameState_17_DeathSequence_Flashing:
     JSL.L Handle_Death_Animation_Flashing                                ;82DD9D;
     TAX                                                                  ;82DDA1;
     BEQ .flashingEnded                                                   ;82DDA2;
-    INC.W $0998                                                          ;82DDA4;
+    INC.W GameState                                                      ;82DDA4;
     BRA .return                                                          ;82DDA7;
 
   .flashingEnded:
@@ -10905,9 +10905,9 @@ GameState_18_DeathSequence_ExplosionWhiteOut:
     TAX                                                                  ;82DDB6;
     BEQ .return                                                          ;82DDB7;
     LDA.W #$0001                                                         ;82DDB9;
-    STA.W $0723                                                          ;82DDBC;
-    STA.W $0725                                                          ;82DDBF;
-    INC.W $0998                                                          ;82DDC2;
+    STA.W ScreenFadeDelay                                                          ;82DDBC;
+    STA.W ScreenFadeCounter                                                          ;82DDBF;
+    INC.W GameState                                                      ;82DDC2;
 
   .return:
     PLP                                                                  ;82DDC5;
@@ -10921,14 +10921,14 @@ GameState_19_DeathSequence_BlackOut:
     REP #$30                                                             ;82DDC8;
     JSL.L HandleFadingOut                                                ;82DDCA;
     SEP #$20                                                             ;82DDCE;
-    LDA.B $51                                                            ;82DDD0;
+    LDA.B DP_Brightness                                                            ;82DDD0;
     CMP.B #$80                                                           ;82DDD2;
     BNE .return                                                          ;82DDD4;
     JSL.L EnableNMI                                                      ;82DDD6;
     REP #$20                                                             ;82DDDA;
-    STZ.W $0723                                                          ;82DDDC;
-    STZ.W $0725                                                          ;82DDDF;
-    INC.W $0998                                                          ;82DDE2;
+    STZ.W ScreenFadeDelay                                                          ;82DDDC;
+    STZ.W ScreenFadeCounter                                                          ;82DDDF;
+    INC.W GameState                                                      ;82DDE2;
     STZ.W $0727                                                          ;82DDE5;
     STZ.W $05F5                                                          ;82DDE8;
     PLP                                                                  ;82DDEB;
@@ -11010,7 +11010,7 @@ Load_Door_Header:
 
 ;;; $DE6F: Load room header ;;;
 Load_Room_Header:
-    PEA.W $8F00                                                          ;82DE6F;
+    PEA.W RoomHeader_LandingSite>>8&$FF00                                                          ;82DE6F;
     PLB                                                                  ;82DE72;
     PLB                                                                  ;82DE73;
     LDX.W $079B                                                          ;82DE74;
@@ -11019,7 +11019,7 @@ Load_Room_Header:
     STA.W $079D                                                          ;82DE7D;
     LDA.W $0001,X                                                        ;82DE80;
     AND.W #$00FF                                                         ;82DE83;
-    STA.W $079F                                                          ;82DE86;
+    STA.W AreaIndex                                                          ;82DE86;
     LDA.W $0002,X                                                        ;82DE89;
     AND.W #$00FF                                                         ;82DE8C;
     STA.W $07A1                                                          ;82DE8F;
@@ -11118,7 +11118,7 @@ WaitUntilTheEndOfAVBlank_and_Enable_H_V_CounterInterrupts:
     PHP                                                                  ;82DF69;
     SEP #$20                                                             ;82DF6A;
     JSL.L WaitUntilTheEndOfAVBlank                                       ;82DF6C;
-    LDA.B $84                                                            ;82DF70;
+    LDA.B DP_IRQAutoJoy                                                            ;82DF70;
     AND.B #$30                                                           ;82DF72;
     CMP.B #$30                                                           ;82DF74;
     BEQ .return                                                          ;82DF76;
@@ -11293,7 +11293,7 @@ Queue_Room_Music_Data:
     PHP                                                                  ;82E071;
     PHB                                                                  ;82E072;
     REP #$30                                                             ;82E073;
-    LDA.W $0998                                                          ;82E075;
+    LDA.W GameState                                                      ;82E075;
     CMP.W #$0028                                                         ;82E078;
     BCS .return                                                          ;82E07B;
     LDA.W $07CB                                                          ;82E07D;
@@ -11319,7 +11319,7 @@ Update_Music_Track_Index:
     PHP                                                                  ;82E09B;
     PHB                                                                  ;82E09C;
     REP #$30                                                             ;82E09D;
-    LDA.W $0998                                                          ;82E09F;
+    LDA.W GameState                                                      ;82E09F;
     CMP.W #$0028                                                         ;82E0A2;
     BCS .return                                                          ;82E0A5;
     LDA.W $07C9                                                          ;82E0A7;
@@ -11351,7 +11351,7 @@ Load_New_Music_Track_If_Changed:
     PHP                                                                  ;82E0D5;
     PHB                                                                  ;82E0D6;
     REP #$30                                                             ;82E0D7;
-    LDA.W $0998                                                          ;82E0D9;
+    LDA.W GameState                                                      ;82E0D9;
     CMP.W #$0028                                                         ;82E0DC;
     BCS .return                                                          ;82E0DF;
     LDA.W $07C9                                                          ;82E0E1;
@@ -11396,7 +11396,7 @@ Play_Room_Music_Track_After_A_Frames:
     REP #$30                                                             ;82E11A;
     PHY                                                                  ;82E11C;
     TAY                                                                  ;82E11D;
-    LDA.W $0998                                                          ;82E11E;
+    LDA.W GameState                                                      ;82E11E;
     CMP.W #$0028                                                         ;82E121;
     BCS .return                                                          ;82E124;
     LDA.W #$0000                                                         ;82E126;
@@ -11456,7 +11456,7 @@ GameState_9_HitADoorBlock:
     RTS                                                                  ;82E175;
 
   .gameStateA:
-    INC.W $0998                                                          ;82E176;
+    INC.W GameState                                                      ;82E176;
     PLP                                                                  ;82E179;
     JMP.W GameState_A_LoadingNextRoom                                    ;82E17A;
 
@@ -11556,7 +11556,7 @@ GameState_A_LoadingNextRoom:
     STA.W $C22E                                                          ;82E241;
     LDA.W $C038                                                          ;82E244;
     STA.W $C238                                                          ;82E247;
-    LDA.W $0943                                                          ;82E24A;
+    LDA.W TimerStatus                                                          ;82E24A;
     BEQ .clearSounds                                                     ;82E24D;
     LDA.W $C1A2                                                          ;82E24F;
     STA.W $C3A2                                                          ;82E252;
@@ -11576,7 +11576,7 @@ GameState_A_LoadingNextRoom:
     STA.W $05F5                                                          ;82E279;
     LDA.W #DoorTransitionFunction_WaitForSoundsToFinish                  ;82E27C;
     STA.W $099C                                                          ;82E27F;
-    INC.W $0998                                                          ;82E282;
+    INC.W GameState                                                      ;82E282;
     PLB                                                                  ;82E285;
     PLP                                                                  ;82E286;
     RTS                                                                  ;82E287;
@@ -11591,7 +11591,7 @@ GameState_B_LoadingNextRoom:
     JMP.W ($099C)                                                        ;82E28F;
 
   .manualReturn:
-    LDA.W $0943                                                          ;82E292;
+    LDA.W TimerStatus                                                          ;82E292;
     BEQ .return                                                          ;82E295;
     JSL.L DrawTimer                                                      ;82E297;
 
@@ -11816,7 +11816,7 @@ DoorTransitionFunction_PlaceSamus_LoadTiles:
     LDA.W $07C6                                                          ;82E43A;
     STA.B $47                                                            ;82E43D;
     JSL.L Decompression_HardcodedDestination                             ;82E43F;
-    dl $7EC200                                                           ;82E443;
+    dl TargetPalettes_BGP0                                                           ;82E443;
     JSR.W Perform_Door_Transition_VRAM_Update                            ;82E446;
     dl $7E2000                                                           ;82E449;
     dw $0000,$2000                                                       ;82E44C;
@@ -12282,9 +12282,9 @@ DoorTransitionFunction_NudgeSamusIfInterceptingTheDoor:
     JSL.L SetLiquidPhysicsType                                           ;82E725;
     LDA.W #DoorTransitionFunction_FadeInTheScreen_and_RunEnemies_Finish  ;82E729;
     STA.W $099C                                                          ;82E72C;
-    LDA.B $51                                                            ;82E72F;
+    LDA.B DP_Brightness                                                            ;82E72F;
     ORA.W #$001F                                                         ;82E731;
-    STA.B $51                                                            ;82E734;
+    STA.B DP_Brightness                                                            ;82E734;
     RTS                                                                  ;82E736;
 
 
@@ -12304,7 +12304,7 @@ DoorTransitionFunction_FadeInTheScreen_and_RunEnemies_Finish:
     STZ.W $0795                                                          ;82E75E;
     STZ.W $0797                                                          ;82E761;
     LDA.W #$0008                                                         ;82E764;
-    STA.W $0998                                                          ;82E767;
+    STA.W GameState                                                      ;82E767;
 
   .return:
     RTS                                                                  ;82E76A;
@@ -12361,7 +12361,7 @@ Load_CRETiles_TilesetTiles_and_TilesetPalette:
     LDY.W $07C6                                                          ;82E7C4;
     STY.B $47                                                            ;82E7C7;
     JSL.L Decompression_HardcodedDestination                             ;82E7C9;
-    dl $7EC200                                                           ;82E7CD;
+    dl TargetPalettes_BGP0                                                           ;82E7CD;
     PLB                                                                  ;82E7D0;
     PLP                                                                  ;82E7D1;
     RTL                                                                  ;82E7D2;
@@ -12440,7 +12440,7 @@ LoadLevelData_CRE_TileTable_ScrollData_PLMs_DoorASM_RoomASM:
     DEX                                                                  ;82E82F;
     BPL .loopC                                                           ;82E830;
     PLB                                                                  ;82E832;
-    LDA.W $079F                                                          ;82E833;
+    LDA.W AreaIndex                                                          ;82E833;
     CMP.W #$0006                                                         ;82E836;
     BEQ .skipCRE                                                         ;82E839;
     LDA.W #CRE_TileTable_Compressed>>8&$FF00                             ;82E83B;
@@ -12914,7 +12914,7 @@ Load_Level_Scroll_and_CRE_Data:
     DEX                                                                  ;82EAD7;
     BPL -                                                                ;82EAD8;
     PLB                                                                  ;82EADA;
-    LDA.W $079F                                                          ;82EADB;
+    LDA.W AreaIndex                                                          ;82EADB;
     CMP.W #$0006                                                         ;82EADE;
     BEQ .inCeres                                                         ;82EAE1;
     LDA.W $07B3                                                          ;82EAE3;
@@ -13031,13 +13031,13 @@ GameState_2_GameOptionsMenu:
     PHK                                                                  ;82EBA1;
     PLB                                                                  ;82EBA2;
     REP #$30                                                             ;82EBA3;
-    LDA.W $0DE2                                                          ;82EBA5;
+    LDA.W DeathAnimation_Timer                                                          ;82EBA5;
     ASL A                                                                ;82EBA8;
     TAX                                                                  ;82EBA9;
     JSR.W (.pointers,X)                                                  ;82EBAA;
     JSR.W GameOptionsMenu_ObjectHandler                                  ;82EBAD;
     JSR.W Draw_GameOptionsMenu_Spritemaps                                ;82EBB0;
-    LDA.W $0DE2                                                          ;82EBB3;
+    LDA.W DeathAnimation_Timer                                                          ;82EBB3;
     CMP.W #$0002                                                         ;82EBB6;
     BMI .return                                                          ;82EBB9;
     JSR.W Draw_GameOptionsMenu_BG1                                       ;82EBBB;
@@ -13067,18 +13067,18 @@ GameState_2_GameOptionsMenu:
 GameOptionsMenu_0_FinishFadingOut:
     JSL.L HandleFadingOut                                                ;82EBDB;
     SEP #$20                                                             ;82EBDF;
-    LDA.B $51                                                            ;82EBE1;
+    LDA.B DP_Brightness                                                            ;82EBE1;
     CMP.B #$80                                                           ;82EBE3;
     BNE +                                                                ;82EBE5;
     JSL.L EnableNMI                                                      ;82EBE7;
     REP #$20                                                             ;82EBEB;
-    STZ.W $0723                                                          ;82EBED;
-    STZ.W $0725                                                          ;82EBF0;
-    INC.W $0DE2                                                          ;82EBF3;
+    STZ.W ScreenFadeDelay                                                          ;82EBED;
+    STZ.W ScreenFadeCounter                                                          ;82EBF0;
+    INC.W DeathAnimation_Timer                                                          ;82EBF3;
     RTS                                                                  ;82EBF6;
 
 +   SEP #$20                                                             ;82EBF7;
-    LDA.B $51                                                            ;82EBF9;
+    LDA.B DP_Brightness                                                            ;82EBF9;
     CMP.B #$0E                                                           ;82EBFB;
     BNE .return                                                          ;82EBFD;
     LDA.B $6B                                                            ;82EBFF;
@@ -13131,7 +13131,7 @@ GameOptionsMenu_1_LoadingOptionsMenu:
     LDX.W #$01FE                                                         ;82EC57;
 
 -   LDA.L Menu_Palettes,X                                                ;82EC5A;
-    STA.L $7EC000,X                                                      ;82EC5E;
+    STA.L Palettes,X                                                      ;82EC5E;
     DEX                                                                  ;82EC62;
     DEX                                                                  ;82EC63;
     BPL -                                                                ;82EC64;
@@ -13172,13 +13172,13 @@ GameOptionsMenu_1_LoadingOptionsMenu:
     DEX                                                                  ;82ECC6;
     DEX                                                                  ;82ECC7;
     BPL -                                                                ;82ECC8;
-    STZ.W $099E                                                          ;82ECCA;
+    STZ.W MenuOptionIndex                                                          ;82ECCA;
     JSR.W Delete_GameOptionsMenu_Objects                                 ;82ECCD;
     LDY.W #GameOptionsMenu_Objects_MenuSelectionMissile_setup            ;82ECD0;
     JSR.W Spawn_GameOptionsMenu_Object                                   ;82ECD3;
     LDY.W #GameOptionsMenu_Objects_OPTION_MODE_Border                    ;82ECD6;
     JSR.W Spawn_GameOptionsMenu_Object                                   ;82ECD9;
-    INC.W $0DE2                                                          ;82ECDC;
+    INC.W DeathAnimation_Timer                                                          ;82ECDC;
     JSR.W Set_Language_Text_Option_Highlight                             ;82ECDF;
     PLP                                                                  ;82ECE2;
     RTS                                                                  ;82ECE3;
@@ -13188,13 +13188,13 @@ GameOptionsMenu_1_LoadingOptionsMenu:
 GameOptionsMenu_2_FadingInOptionsMenu:
     JSL.L HandleFadingIn                                                 ;82ECE4;
     SEP #$20                                                             ;82ECE8;
-    LDA.B $51                                                            ;82ECEA;
+    LDA.B DP_Brightness                                                            ;82ECEA;
     CMP.B #$0F                                                           ;82ECEC;
     BNE .return                                                          ;82ECEE;
     REP #$20                                                             ;82ECF0;
-    STZ.W $0723                                                          ;82ECF2;
-    STZ.W $0725                                                          ;82ECF5;
-    INC.W $0DE2                                                          ;82ECF8;
+    STZ.W ScreenFadeDelay                                                          ;82ECF2;
+    STZ.W ScreenFadeCounter                                                          ;82ECF5;
+    INC.W DeathAnimation_Timer                                                          ;82ECF8;
     RTS                                                                  ;82ECFB;
 
   .return:
@@ -13258,32 +13258,32 @@ Set_GameOptionsMenu_TilePalettes:
 GameOptionsMenu_3_OptionsMenu:
     PHP                                                                  ;82ED42;
     REP #$30                                                             ;82ED43;
-    LDA.B $8F                                                            ;82ED45;
+    LDA.B DP_Controller1New                                                            ;82ED45;
     AND.W #$0800                                                         ;82ED47;
     BEQ .checkDown                                                       ;82ED4A;
     LDA.W #$0037                                                         ;82ED4C;
     JSL.L QueueSound_Lib1_Max6                                           ;82ED4F;
-    DEC.W $099E                                                          ;82ED53;
+    DEC.W MenuOptionIndex                                                          ;82ED53;
     BPL .checkB                                                          ;82ED56;
     LDA.W #$0004                                                         ;82ED58;
-    STA.W $099E                                                          ;82ED5B;
+    STA.W MenuOptionIndex                                                          ;82ED5B;
     BRA .checkB                                                          ;82ED5E;
 
   .checkDown:
-    LDA.B $8F                                                            ;82ED60;
+    LDA.B DP_Controller1New                                                            ;82ED60;
     AND.W #$0400                                                         ;82ED62;
     BEQ .checkB                                                          ;82ED65;
     LDA.W #$0037                                                         ;82ED67;
     JSL.L QueueSound_Lib1_Max6                                           ;82ED6A;
-    LDA.W $099E                                                          ;82ED6E;
+    LDA.W MenuOptionIndex                                                          ;82ED6E;
     INC A                                                                ;82ED71;
-    STA.W $099E                                                          ;82ED72;
+    STA.W MenuOptionIndex                                                          ;82ED72;
     CMP.W #$0005                                                         ;82ED75;
     BNE .checkB                                                          ;82ED78;
-    STZ.W $099E                                                          ;82ED7A;
+    STZ.W MenuOptionIndex                                                          ;82ED7A;
 
   .checkB:
-    LDA.B $8F                                                            ;82ED7D;
+    LDA.B DP_Controller1New                                                            ;82ED7D;
     BIT.W #$8000                                                         ;82ED7F;
     BNE .cancel                                                          ;82ED82;
     BIT.W #$0080                                                         ;82ED84;
@@ -13294,7 +13294,7 @@ GameOptionsMenu_3_OptionsMenu:
   .actiate:
     LDA.W #$0038                                                         ;82ED8E;
     JSL.L QueueSound_Lib1_Max6                                           ;82ED91;
-    LDA.W $099E                                                          ;82ED95;
+    LDA.W MenuOptionIndex                                                          ;82ED95;
     ASL A                                                                ;82ED98;
     TAX                                                                  ;82ED99;
     JSR.W (.pointers,X)                                                  ;82ED9A;
@@ -13305,7 +13305,7 @@ GameOptionsMenu_3_OptionsMenu:
 
   .cancel:
     LDA.W #$000B                                                         ;82ED9F;
-    STA.W $0DE2                                                          ;82EDA2;
+    STA.W DeathAnimation_Timer                                                          ;82EDA2;
     PLP                                                                  ;82EDA5;
     RTS                                                                  ;82EDA6;
 
@@ -13326,26 +13326,26 @@ GameOptionsMenu_StartGame:
     BEQ .startGame                                                       ;82EDBB;
 
   .debug:
-    LDA.L $7ED914                                                        ;82EDBD;
+    LDA.L SRAMMirror_LoadingGameState                                                        ;82EDBD;
     CMP.W #$0005                                                         ;82EDC1;
     BNE .fadeScreen                                                      ;82EDC4;
 
   .startGame:
     LDA.W #$0004                                                         ;82EDC6;
-    STA.W $0DE2                                                          ;82EDC9;
+    STA.W DeathAnimation_Timer                                                          ;82EDC9;
     RTS                                                                  ;82EDCC;
 
   .fadeScreen:
-    STZ.W $0723                                                          ;82EDCD;
-    STZ.W $0725                                                          ;82EDD0;
+    STZ.W ScreenFadeDelay                                                          ;82EDCD;
+    STZ.W ScreenFadeCounter                                                          ;82EDD0;
     LDA.W #$000C                                                         ;82EDD3;
-    STA.W $0DE2                                                          ;82EDD6;
+    STA.W DeathAnimation_Timer                                                          ;82EDD6;
     RTS                                                                  ;82EDD9;
 
 
 ;;; $EDDA: Game options menu - options menu - toggle language text ;;;
 GameOptionsMenu_OptionsMenu_ToggleLanguageText:
-    STZ.W $099E                                                          ;82EDDA;
+    STZ.W MenuOptionIndex                                                          ;82EDDA;
     LDA.W $09E2                                                          ;82EDDD;
     BEQ .japaneseText                                                    ;82EDE0;
     STZ.W $09E2                                                          ;82EDE2;
@@ -13406,10 +13406,10 @@ Start_GameOptionsMenu_DissolveTransition:
     LDA.B #$03                                                           ;82EE57;
     STA.B $57                                                            ;82EE59;
     REP #$20                                                             ;82EE5B;
-    STZ.W $0723                                                          ;82EE5D;
-    STZ.W $0725                                                          ;82EE60;
+    STZ.W ScreenFadeDelay                                                          ;82EE5D;
+    STZ.W ScreenFadeCounter                                                          ;82EE60;
     LDA.W #$0005                                                         ;82EE63;
-    STA.W $0DE2                                                          ;82EE66;
+    STA.W DeathAnimation_Timer                                                          ;82EE66;
     RTS                                                                  ;82EE69;
 
 
@@ -13417,17 +13417,17 @@ Start_GameOptionsMenu_DissolveTransition:
 GameOptionsMenu_B_TransitionBackToFileSelect:
     JSL.L HandleFadingOut                                                ;82EE6A;
     SEP #$20                                                             ;82EE6E;
-    LDA.B $51                                                            ;82EE70;
+    LDA.B DP_Brightness                                                            ;82EE70;
     CMP.B #$80                                                           ;82EE72;
     BNE .return                                                          ;82EE74;
     JSL.L EnableNMI                                                      ;82EE76;
     REP #$20                                                             ;82EE7A;
-    STZ.W $0723                                                          ;82EE7C;
-    STZ.W $0725                                                          ;82EE7F;
+    STZ.W ScreenFadeDelay                                                          ;82EE7C;
+    STZ.W ScreenFadeCounter                                                          ;82EE7F;
     LDA.W #$0004                                                         ;82EE82;
-    STA.W $0998                                                          ;82EE85;
+    STA.W GameState                                                      ;82EE85;
     STZ.W $0727                                                          ;82EE88;
-    STZ.W $0DE2                                                          ;82EE8B;
+    STZ.W DeathAnimation_Timer                                                          ;82EE8B;
     RTS                                                                  ;82EE8E;
 
   .return:
@@ -13439,15 +13439,15 @@ GameOptionsMenu_B_TransitionBackToFileSelect:
 GameOptionsMenu_C_FadingOutOptionsMenuToStartGame:
     JSL.L HandleFadingOut                                                ;82EE92;
     SEP #$20                                                             ;82EE96;
-    LDA.B $51                                                            ;82EE98;
+    LDA.B DP_Brightness                                                            ;82EE98;
     CMP.B #$80                                                           ;82EE9A;
     BNE .return                                                          ;82EE9C;
     JSL.L EnableNMI                                                      ;82EE9E;
     REP #$20                                                             ;82EEA2;
-    STZ.W $0723                                                          ;82EEA4;
-    STZ.W $0725                                                          ;82EEA7;
+    STZ.W ScreenFadeDelay                                                          ;82EEA4;
+    STZ.W ScreenFadeCounter                                                          ;82EEA7;
     LDA.W #$0004                                                         ;82EEAA;
-    STA.W $0DE2                                                          ;82EEAD;
+    STA.W DeathAnimation_Timer                                                          ;82EEAD;
     RTS                                                                  ;82EEB0;
 
   .return:
@@ -13457,7 +13457,7 @@ GameOptionsMenu_C_FadingOutOptionsMenuToStartGame:
 
 ;;; $EEB4: Game options menu - [menu index] = 4 (start game) ;;;
 GameOptionsMenu_4_StartGame:
-    STZ.W $0DE2                                                          ;82EEB4;
+    STZ.W DeathAnimation_Timer                                                          ;82EEB4;
     LDA.W $05D1                                                          ;82EEB7;
     BEQ .checkLoadingState                                               ;82EEBA;
     LDA.B $8B                                                            ;82EEBC;
@@ -13465,9 +13465,9 @@ GameOptionsMenu_4_StartGame:
     BEQ .debug                                                           ;82EEC1;
 
   .checkLoadingState:
-    LDA.L $7ED914                                                        ;82EEC3;
+    LDA.L SRAMMirror_LoadingGameState                                                        ;82EEC3;
     BEQ .intro                                                           ;82EEC7;
-    STA.W $0998                                                          ;82EEC9;
+    STA.W GameState                                                      ;82EEC9;
     CMP.W #$0022                                                         ;82EECC;
     BNE .cutscene                                                        ;82EECF;
     LDA.W #CinematicFunction_CeresGoesBoom_Initial                       ;82EED1;
@@ -13476,33 +13476,33 @@ GameOptionsMenu_4_StartGame:
 
   .intro:
     LDA.W #$001E                                                         ;82EED9;
-    STA.W $0998                                                          ;82EEDC;
+    STA.W GameState                                                      ;82EEDC;
     LDA.W #CinematicFunction_Intro_Initial                               ;82EEDF;
     STA.W $1F51                                                          ;82EEE2;
-    STZ.W $099E                                                          ;82EEE5;
-    STZ.W $0723                                                          ;82EEE8;
-    STZ.W $0725                                                          ;82EEEB;
+    STZ.W MenuOptionIndex                                                          ;82EEE5;
+    STZ.W ScreenFadeDelay                                                          ;82EEE8;
+    STZ.W ScreenFadeCounter                                                          ;82EEEB;
     RTS                                                                  ;82EEEE;
 
   .cutscene:
-    STZ.W $099E                                                          ;82EEEF;
-    STZ.W $0DE2                                                          ;82EEF2;
+    STZ.W MenuOptionIndex                                                          ;82EEEF;
+    STZ.W DeathAnimation_Timer                                                          ;82EEF2;
     RTS                                                                  ;82EEF5;
 
   .debug:
-    LDA.L $7ED914                                                        ;82EEF6;
+    LDA.L SRAMMirror_LoadingGameState                                                        ;82EEF6;
     CMP.W #$0005                                                         ;82EEFA;
     BEQ .fileSelectMap                                                   ;82EEFD;
     LDA.W #$0005                                                         ;82EEFF;
-    STA.W $0998                                                          ;82EF02;
-    STA.L $7ED914                                                        ;82EF05;
+    STA.W GameState                                                      ;82EF02;
+    STA.L SRAMMirror_LoadingGameState                                                        ;82EF05;
     LDA.W $0952                                                          ;82EF09;
     JSL.L SaveToSRAM                                                     ;82EF0C;
     RTS                                                                  ;82EF10;
 
   .fileSelectMap:
     LDA.W #$0005                                                         ;82EF11;
-    STA.W $0998                                                          ;82EF14;
+    STA.W GameState                                                      ;82EF14;
     RTS                                                                  ;82EF17;
 
 
@@ -13518,7 +13518,7 @@ GameOptionsMenu_5_DissolveOutScreen:
     STA.B $57                                                            ;82EF27;
 
   .notFinishedFadingOut:
-    LDA.B $51                                                            ;82EF29;
+    LDA.B DP_Brightness                                                            ;82EF29;
     CMP.B #$80                                                           ;82EF2B;
     BEQ .finishedFadingOut                                               ;82EF2D;
     REP #$20                                                             ;82EF2F;
@@ -13527,11 +13527,11 @@ GameOptionsMenu_5_DissolveOutScreen:
   .finishedFadingOut:
     JSL.L EnableNMI                                                      ;82EF32;
     REP #$20                                                             ;82EF36;
-    STZ.W $0723                                                          ;82EF38;
-    STZ.W $0725                                                          ;82EF3B;
+    STZ.W ScreenFadeDelay                                                          ;82EF38;
+    STZ.W ScreenFadeCounter                                                          ;82EF3B;
     STZ.B $B3                                                            ;82EF3E;
-    INC.W $0DE2                                                          ;82EF40;
-    LDA.W $099E                                                          ;82EF43;
+    INC.W DeathAnimation_Timer                                                          ;82EF40;
+    LDA.W MenuOptionIndex                                                          ;82EF43;
     BEQ .gotoOptionsMenu                                                 ;82EF46;
     BIT.W #$0004                                                         ;82EF48;
     BNE .specialSubmenu                                                  ;82EF4B;
@@ -13591,13 +13591,13 @@ GameOptionsMenu_5_DissolveOutScreen:
     BPL .japaneseSettingsLoop                                            ;82EFA4;
 
   .continueSpecial:
-    STZ.W $099E                                                          ;82EFA6;
+    STZ.W MenuOptionIndex                                                          ;82EFA6;
     JSR.W Set_SpecialSetting_Highlights                                  ;82EFA9;
     LDA.W #$0001                                                         ;82EFAC;
-    STA.W $099E                                                          ;82EFAF;
+    STA.W MenuOptionIndex                                                          ;82EFAF;
     JSR.W Set_SpecialSetting_Highlights                                  ;82EFB2;
     LDA.W #$0004                                                         ;82EFB5;
-    STA.W $099E                                                          ;82EFB8;
+    STA.W MenuOptionIndex                                                          ;82EFB8;
     LDY.W #GameOptionsMenu_Objects_SPECIAL_SETTING_MODE_Border           ;82EFBB;
     JSR.W Spawn_GameOptionsMenu_Object                                   ;82EFBE;
     RTS                                                                  ;82EFC1;
@@ -13629,31 +13629,31 @@ GameOptionsMenu_6_DissolveInScreen:
     STA.B $57                                                            ;82EFEA;
 
   .brightness:
-    LDA.B $51                                                            ;82EFEC;
+    LDA.B DP_Brightness                                                            ;82EFEC;
     CMP.B #$0F                                                           ;82EFEE;
     BNE .return                                                          ;82EFF0;
     STZ.B $57                                                            ;82EFF2;
     REP #$20                                                             ;82EFF4;
-    STZ.W $0723                                                          ;82EFF6;
-    STZ.W $0725                                                          ;82EFF9;
-    LDA.W $099E                                                          ;82EFFC;
+    STZ.W ScreenFadeDelay                                                          ;82EFF6;
+    STZ.W ScreenFadeCounter                                                          ;82EFF9;
+    LDA.W MenuOptionIndex                                                          ;82EFFC;
     BEQ .OptionsMenu                                                     ;82EFFF;
     BIT.W #$0004                                                         ;82F001;
     BNE .specialSubmenu                                                  ;82F004;
     LDA.W #$0007                                                         ;82F006;
-    STA.W $0DE2                                                          ;82F009;
-    STZ.W $099E                                                          ;82F00C;
+    STA.W DeathAnimation_Timer                                                          ;82F009;
+    STZ.W MenuOptionIndex                                                          ;82F00C;
     RTS                                                                  ;82F00F;
 
   .specialSubmenu:
     LDA.W #$0008                                                         ;82F010;
-    STA.W $0DE2                                                          ;82F013;
-    STZ.W $099E                                                          ;82F016;
+    STA.W DeathAnimation_Timer                                                          ;82F013;
+    STZ.W MenuOptionIndex                                                          ;82F016;
     RTS                                                                  ;82F019;
 
   .OptionsMenu:
     LDA.W #$0003                                                         ;82F01A;
-    STA.W $0DE2                                                          ;82F01D;
+    STA.W DeathAnimation_Timer                                                          ;82F01D;
     RTS                                                                  ;82F020;
 
   .return:
@@ -13663,47 +13663,47 @@ GameOptionsMenu_6_DissolveInScreen:
 
 ;;; $F024: Game options menu - [menu index] = 8 (special settings) ;;;
 GameOptionsMenu_8_SpecialSettings:
-    LDA.B $8F                                                            ;82F024;
+    LDA.B DP_Controller1New                                                            ;82F024;
     AND.W #$0800                                                         ;82F026;
     BEQ .checkDown                                                       ;82F029;
     LDA.W #$0037                                                         ;82F02B;
     JSL.L QueueSound_Lib1_Max6                                           ;82F02E;
-    DEC.W $099E                                                          ;82F032;
+    DEC.W MenuOptionIndex                                                          ;82F032;
     BPL .checkB                                                          ;82F035;
     LDA.W #$0002                                                         ;82F037;
-    STA.W $099E                                                          ;82F03A;
+    STA.W MenuOptionIndex                                                          ;82F03A;
     BRA .checkB                                                          ;82F03D;
 
   .checkDown:
-    LDA.B $8F                                                            ;82F03F;
+    LDA.B DP_Controller1New                                                            ;82F03F;
     AND.W #$0400                                                         ;82F041;
     BEQ .checkB                                                          ;82F044;
     LDA.W #$0037                                                         ;82F046;
     JSL.L QueueSound_Lib1_Max6                                           ;82F049;
-    LDA.W $099E                                                          ;82F04D;
+    LDA.W MenuOptionIndex                                                          ;82F04D;
     INC A                                                                ;82F050;
-    STA.W $099E                                                          ;82F051;
+    STA.W MenuOptionIndex                                                          ;82F051;
     CMP.W #$0003                                                         ;82F054;
     BNE .checkB                                                          ;82F057;
-    STZ.W $099E                                                          ;82F059;
+    STZ.W MenuOptionIndex                                                          ;82F059;
 
   .checkB:
-    LDA.B $8F                                                            ;82F05C;
+    LDA.B DP_Controller1New                                                            ;82F05C;
     BIT.W #$8000                                                         ;82F05E;
     BEQ .checkActivate                                                   ;82F061;
     LDA.W #$0038                                                         ;82F063;
     JSL.L QueueSound_Lib1_Max6                                           ;82F066;
-    STZ.W $099E                                                          ;82F06A;
+    STZ.W MenuOptionIndex                                                          ;82F06A;
     JSR.W Start_GameOptionsMenu_DissolveTransition                       ;82F06D;
     RTS                                                                  ;82F070;
 
   .checkActivate:
-    LDA.B $8F                                                            ;82F071;
+    LDA.B DP_Controller1New                                                            ;82F071;
     BIT.W #$1380                                                         ;82F073;
     BEQ .return                                                          ;82F076;
     LDA.W #$0038                                                         ;82F078;
     JSL.L QueueSound_Lib1_Max6                                           ;82F07B;
-    LDA.W $099E                                                          ;82F07F;
+    LDA.W MenuOptionIndex                                                          ;82F07F;
     ASL A                                                                ;82F082;
     TAX                                                                  ;82F083;
     JSR.W (.pointers,X)                                                  ;82F084;
@@ -13719,7 +13719,7 @@ GameOptionsMenu_8_SpecialSettings:
 
 ;;; $F08E: Game options - special settings - toggle setting ;;;
 GameOptions_SpecialSettings_ToggleSetting:
-    LDA.W $099E                                                          ;82F08E;
+    LDA.W MenuOptionIndex                                                          ;82F08E;
     ASL A                                                                ;82F091;
     TAX                                                                  ;82F092;
     LDA.W SpecialSettingRAMAddresses,X                                   ;82F093;
@@ -13747,21 +13747,21 @@ SpecialSettingRAMAddresses:                                              ;82F0AE
 
 ;;; $F0B2: Game options - special settings - end ;;;
 GameOptions_SpecialSettings_End:
-    STZ.W $099E                                                          ;82F0B2;
+    STZ.W MenuOptionIndex                                                          ;82F0B2;
     JSR.W Start_GameOptionsMenu_DissolveTransition                       ;82F0B5;
     RTS                                                                  ;82F0B8;
 
 
 ;;; $F0B9: Set special setting highlights ;;;
 Set_SpecialSetting_Highlights:
-    LDA.W $099E                                                          ;82F0B9;
+    LDA.W MenuOptionIndex                                                          ;82F0B9;
     ASL A                                                                ;82F0BC;
     TAX                                                                  ;82F0BD;
     LDA.W SpecialSettingRAMAddresses,X                                   ;82F0BE;
     TAX                                                                  ;82F0C1;
     LDA.W $0000,X                                                        ;82F0C2;
     BNE .settingIsOn                                                     ;82F0C5;
-    LDA.W $099E                                                          ;82F0C7;
+    LDA.W MenuOptionIndex                                                          ;82F0C7;
     ASL A                                                                ;82F0CA;
     ASL A                                                                ;82F0CB;
     TAX                                                                  ;82F0CC;
@@ -13794,7 +13794,7 @@ Set_SpecialSetting_Highlights:
     RTS                                                                  ;82F107;
 
   .settingIsOn:
-    LDA.W $099E                                                          ;82F108;
+    LDA.W MenuOptionIndex                                                          ;82F108;
     ASL A                                                                ;82F10B;
     ASL A                                                                ;82F10C;
     TAX                                                                  ;82F10D;
@@ -13849,14 +13849,14 @@ GameOptionsMenu_7_ControllerSettings:
 ; There's some quirky code at $F1DB that enables debug invincibility going to "reset to default" in the controller settings and pressing L L L L R R R on controller 2
 ; But it has no effect, due to the code in Samus initialisation that disables it ($91:E156)
 ; Instead, it can be enabled by controller 2 holding L + R and pressing A whilst Samus is facing forward ($90:F5E4)
-    LDA.B $8F                                                            ;82F159;
+    LDA.B DP_Controller1New                                                            ;82F159;
     AND.W #$0800                                                         ;82F15B;
     BEQ .upEnd                                                           ;82F15E;
     LDA.W #$0037                                                         ;82F160;
     JSL.L QueueSound_Lib1_Max6                                           ;82F163;
-    LDA.W $099E                                                          ;82F167;
+    LDA.W MenuOptionIndex                                                          ;82F167;
     DEC A                                                                ;82F16A;
-    STA.W $099E                                                          ;82F16B;
+    STA.W MenuOptionIndex                                                          ;82F16B;
     BMI .gotoScrollDown                                                  ;82F16E;
     CMP.W #$0006                                                         ;82F170;
     BEQ .scrollUp                                                        ;82F173;
@@ -13864,44 +13864,44 @@ GameOptionsMenu_7_ControllerSettings:
 
   .gotoScrollDown:
     LDA.W #$0008                                                         ;82F176;
-    STA.W $099E                                                          ;82F179;
+    STA.W MenuOptionIndex                                                          ;82F179;
     BRA .scrollDown                                                      ;82F17C;
 
   .return:
     RTS                                                                  ;82F17E;
 
   .upEnd:
-    LDA.B $8F                                                            ;82F17F;
+    LDA.B DP_Controller1New                                                            ;82F17F;
     AND.W #$0400                                                         ;82F181;
     BEQ .downEnd                                                         ;82F184;
     LDA.W #$0037                                                         ;82F186;
     JSL.L QueueSound_Lib1_Max6                                           ;82F189;
-    LDA.W $099E                                                          ;82F18D;
+    LDA.W MenuOptionIndex                                                          ;82F18D;
     INC A                                                                ;82F190;
-    STA.W $099E                                                          ;82F191;
+    STA.W MenuOptionIndex                                                          ;82F191;
     CMP.W #$0007                                                         ;82F194;
     BEQ .scrollDown                                                      ;82F197;
     CMP.W #$0009                                                         ;82F199;
     BNE .return                                                          ;82F19C;
-    STZ.W $099E                                                          ;82F19E;
+    STZ.W MenuOptionIndex                                                          ;82F19E;
     BRA .scrollUp                                                        ;82F1A1;
 
   .scrollDown:
     LDA.W #$0009                                                         ;82F1A3;
-    STA.W $0DE2                                                          ;82F1A6;
+    STA.W DeathAnimation_Timer                                                          ;82F1A6;
     RTS                                                                  ;82F1A9;
 
   .scrollUp:
     LDA.W #$000A                                                         ;82F1AA;
-    STA.W $0DE2                                                          ;82F1AD;
+    STA.W DeathAnimation_Timer                                                          ;82F1AD;
     RTS                                                                  ;82F1B0;
 
   .downEnd:
-    LDA.B $8F                                                            ;82F1B1;
+    LDA.B DP_Controller1New                                                            ;82F1B1;
     BEQ .misplacedCode                                                   ;82F1B3;
     LDA.W #$0038                                                         ;82F1B5;
     JSL.L QueueSound_Lib1_Max6                                           ;82F1B8;
-    LDA.W $099E                                                          ;82F1BC;
+    LDA.W MenuOptionIndex                                                          ;82F1BC;
     ASL A                                                                ;82F1BF;
     TAX                                                                  ;82F1C0;
     JSR.W (.pointers,X)                                                  ;82F1C1;
@@ -13925,7 +13925,7 @@ GameOptionsMenu_7_ControllerSettings:
   .backOnTrack:
     TAY                                                                  ;82F1DB;
     BEQ .otherReturn                                                     ;82F1DC;
-    LDA.W $099E                                                          ;82F1DE;
+    LDA.W MenuOptionIndex                                                          ;82F1DE;
     CMP.W #$0008                                                         ;82F1E1;
     BNE .otherReturn                                                     ;82F1E4;
     LDA.W $0DE0                                                          ;82F1E6;
@@ -13957,7 +13957,7 @@ GameOptionsMenu_7_ControllerSettings:
 
 ;;; $F224: Game options - controller settings - reset to default ;;;
 GameOptions_ControllerSettings_ResetToDefault:
-    LDA.B $8F                                                            ;82F224;
+    LDA.B DP_Controller1New                                                            ;82F224;
     BIT.W #$1080                                                         ;82F226;
     BNE .reset                                                           ;82F229;
     RTS                                                                  ;82F22B;
@@ -13984,7 +13984,7 @@ GameOptions_ControllerSettings_ResetToDefault:
 
 ;;; $F25D: Game options - controller settings - end ;;;
 GameOptions_ControllerSettings_End:
-    LDA.B $8F                                                            ;82F25D;
+    LDA.B DP_Controller1New                                                            ;82F25D;
     BIT.W #$1080                                                         ;82F25F;
     BNE .end                                                             ;82F262;
     RTS                                                                  ;82F264;
@@ -13992,7 +13992,7 @@ GameOptions_ControllerSettings_End:
   .end:
     JSR.W Save_GameOptionsMenu_ControllerBindings                        ;82F265;
     BCS .return                                                          ;82F268;
-    STZ.W $099E                                                          ;82F26A;
+    STZ.W MenuOptionIndex                                                          ;82F26A;
     JSR.W Start_GameOptionsMenu_DissolveTransition                       ;82F26D;
 
   .return:
@@ -14008,7 +14008,7 @@ GameOptionsMenu_9_ScrollControllerSettingsDown:
     CMP.W #$0020                                                         ;82F279;
     BNE .return                                                          ;82F27C;
     LDA.W #$0007                                                         ;82F27E;
-    STA.W $0DE2                                                          ;82F281;
+    STA.W DeathAnimation_Timer                                                          ;82F281;
 
   .return:
     RTS                                                                  ;82F284;
@@ -14022,7 +14022,7 @@ GameOptionsMenu_A_ScrollControllerSettingsUp:
     STA.B $B3                                                            ;82F28B;
     BNE .return                                                          ;82F28D;
     LDA.W #$0007                                                         ;82F28F;
-    STA.W $0DE2                                                          ;82F292;
+    STA.W DeathAnimation_Timer                                                          ;82F292;
 
   .return:
     RTS                                                                  ;82F295;
@@ -14045,7 +14045,7 @@ Setup_MenuSelectionMissile:
 PreInstruction_MenuSelectionMissile:
 ;; Parameters:
 ;;     X: Game options menu object index
-    LDA.W $0998                                                          ;82F2A9;
+    LDA.W GameState                                                      ;82F2A9;
     CMP.W #$0002                                                         ;82F2AC;
     BEQ +                                                                ;82F2AF;
     LDA.W #$0001                                                         ;82F2B1;
@@ -14054,13 +14054,13 @@ PreInstruction_MenuSelectionMissile:
     STA.W $1AFD,X                                                        ;82F2BA;
     RTS                                                                  ;82F2BD;
 
-+   LDA.W $0DE2                                                          ;82F2BE;
++   LDA.W DeathAnimation_Timer                                                          ;82F2BE;
     ASL A                                                                ;82F2C1;
     TAY                                                                  ;82F2C2;
     LDA.W .pointers,Y                                                    ;82F2C3;
     BEQ +                                                                ;82F2C6;
     STA.B $12                                                            ;82F2C8;
-    LDA.W $099E                                                          ;82F2CA;
+    LDA.W MenuOptionIndex                                                          ;82F2CA;
     ASL A                                                                ;82F2CD;
     ASL A                                                                ;82F2CE;
     CLC                                                                  ;82F2CF;
@@ -14169,14 +14169,14 @@ Common_Border_Setup:
 PreInstruction_BorderAround_OPTIONS_MODE:
 ;; Parameters:
 ;;     X: Game options menu object index
-    LDA.W $0998                                                          ;82F376;
+    LDA.W GameState                                                      ;82F376;
     CMP.W #$0002                                                         ;82F379;
     BNE .delete                                                          ;82F37C;
-    LDA.W $0DE2                                                          ;82F37E;
+    LDA.W DeathAnimation_Timer                                                          ;82F37E;
     CMP.W #$0006                                                         ;82F381;
     BNE .return                                                          ;82F384;
     SEP #$20                                                             ;82F386;
-    LDA.B $51                                                            ;82F388;
+    LDA.B DP_Brightness                                                            ;82F388;
     CMP.B #$80                                                           ;82F38A;
     BEQ .delete                                                          ;82F38C;
     REP #$20                                                             ;82F38E;
@@ -14197,11 +14197,11 @@ PreInstruction_BorderAround_OPTIONS_MODE:
 PreInstruction_BorderAround_CONTRLLER_SETTING_MODE:
 ;; Parameters:
 ;;     X: Game options menu object index
-    LDA.W $0DE2                                                          ;82F3A0;
+    LDA.W DeathAnimation_Timer                                                          ;82F3A0;
     CMP.W #$0006                                                         ;82F3A3;
     BNE .dissolveInEnd                                                   ;82F3A6;
     SEP #$20                                                             ;82F3A8;
-    LDA.B $51                                                            ;82F3AA;
+    LDA.B DP_Brightness                                                            ;82F3AA;
     CMP.B #$80                                                           ;82F3AC;
     BEQ .delete                                                          ;82F3AE;
     REP #$20                                                             ;82F3B0;
@@ -14240,11 +14240,11 @@ PreInstruction_BorderAround_CONTRLLER_SETTING_MODE:
 PreInstruction_BorderAround_SPECIAL_SETTING_MODE:
 ;; Parameters:
 ;;     X: Game options menu object index
-    LDA.W $0DE2                                                          ;82F3E2;
+    LDA.W DeathAnimation_Timer                                                          ;82F3E2;
     CMP.W #$0006                                                         ;82F3E5;
     BNE .return                                                          ;82F3E8;
     SEP #$20                                                             ;82F3EA;
-    LDA.B $51                                                            ;82F3EC;
+    LDA.B DP_Brightness                                                            ;82F3EC;
     CMP.B #$80                                                           ;82F3EE;
     BEQ .startedFadingIn                                                 ;82F3F0;
     REP #$20                                                             ;82F3F2;
@@ -14266,7 +14266,7 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_PreInstruction_82F404:
 ;; Parameters:
 ;;     X: Game options menu object index
-    LDA.W $0DE2                                                          ;82F404;
+    LDA.W DeathAnimation_Timer                                                          ;82F404;
     CMP.W #$0001                                                         ;82F407;
     BNE .return                                                          ;82F40A;
     LDA.W #$0001                                                         ;82F40C;
@@ -14296,7 +14296,7 @@ Setup_FileSelectMenu_SamusHelmet:
 PreInstruction_FileSelectMenu_SamusHelmet:
 ;; Parameters:
 ;;     X: Game options menu object index
-    LDA.W $0998                                                          ;82F42C;
+    LDA.W GameState                                                      ;82F42C;
     CMP.W #$0002                                                         ;82F42F;
     BEQ .extraRTS                                                        ;82F432;
     LDA.W #$0001                                                         ;82F434;
@@ -14665,7 +14665,7 @@ ButtonTilemaps_OFF:                                                      ;82F6AD
 ;;; $F6B9: Game options - controller settings - set binding ;;;
 GameOptions_ControllerSettings_SetBinding:
     LDX.W #$000C                                                         ;82F6B9;
-    LDA.B $8F                                                            ;82F6BC;
+    LDA.B DP_Controller1New                                                            ;82F6BC;
 
   .loopInput:
     BIT.W Controller_Input_Bitmasks,X                                    ;82F6BE;
@@ -14678,7 +14678,7 @@ GameOptions_ControllerSettings_SetBinding:
 +   TXA                                                                  ;82F6C8;
     LSR A                                                                ;82F6C9;
     STA.B $12                                                            ;82F6CA;
-    LDA.W $099E                                                          ;82F6CC;
+    LDA.W MenuOptionIndex                                                          ;82F6CC;
     ASL A                                                                ;82F6CF;
     CLC                                                                  ;82F6D0;
     ADC.W #$0002                                                         ;82F6D1;
@@ -14705,7 +14705,7 @@ GameOptions_ControllerSettings_SetBinding:
 
   .found:
     PHY                                                                  ;82F6F4;
-    LDA.W $099E                                                          ;82F6F5;
+    LDA.W MenuOptionIndex                                                          ;82F6F5;
     ASL A                                                                ;82F6F8;
     TAY                                                                  ;82F6F9;
     LDA.W $1B3D,Y                                                        ;82F6FA;

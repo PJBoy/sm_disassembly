@@ -315,7 +315,7 @@ SamusTiles_BottomHalfFlag: skip 1 ; $071E
 SamusTiles_TopHalfTilesDef: skip 2 ; $071F
 SamusTiles_BottomHalfTilesDef: skip 2 ; $0721
 
-ScreenFadeDelay: skip 2 ; $0723
+ScreenFadeDelay  : skip 2 ; $0723
 ScreenFadeCounter: skip 2 ; $0725
 
 PauseMenu_MenuIndex: skip 2 ; $0727
