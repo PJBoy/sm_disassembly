@@ -530,7 +530,7 @@ UpBinding: skip 2 ; $09AA
 DownBinding: skip 2 ; $09AC
 LeftBinding: skip 2 ; $09AE
 RightBinding: skip 2 ; $09B0
-ShootBinding: skip 2 ; $09B2
+ShotBinding: skip 2 ; $09B2
 JumpBinding: skip 2 ; $09B4
 DashBinding: skip 2 ; $09B6
 ItemCancelBinding: skip 2 ; $09B8
@@ -1324,8 +1324,8 @@ org $198D
 TitleMenu_SelectionMissileAnimTimer: skip 2 ; $198D
 TitleMenu_FileCopyArrowPaletteTimer: skip 2 ; $198F
 TitleMenu_SlotAHelmetAnimationTimer: skip 2 ; $1991
-TitleMenu_SlotBHelmetAnimationTimer: skip 2 ; $1995
-TitleMenu_SlotCHelmetAnimationTimer: skip 2 ; $1993
+TitleMenu_SlotBHelmetAnimationTimer: skip 2 ; $1993
+TitleMenu_SlotCHelmetAnimationTimer: skip 2 ; $1995
 TitleMenu_SelectionMissileAnimFrame: skip 2 ; $1997
 NeverRead1999: skip 2 ; $1999
 TitleMenu_SlotAHelmetAnimationFrame: skip 2 ; $199B
@@ -1502,9 +1502,9 @@ EnemyBG2Tilemap: ; $7E2000..2FFF
 
 org $7E3000
 CinematicBGTilemap_TopMarginInitialJapanText: skip $100 ; $7E3000..FF
-CinematicBGTilemap_EnglishTextRegion: skip 2 ; $7E3100..35FF
-CinematicBGTilemap_JapanTextRegion: skip 2 ; $7E3600..FF
-CinematicBGTilemap_BottomMargin: skip 2 ; $7E3700..FF
+CinematicBGTilemap_EnglishTextRegion: skip $500 ; $7E3100..35FF
+CinematicBGTilemap_JapanTextRegion: skip $100 ; $7E3600..FF
+CinematicBGTilemap_BottomMargin: skip $100 ; $7E3700..FF
 
 org $7E3000
 GameOptionsMenuTilemap: ; $7E3000..37FF
@@ -1647,7 +1647,7 @@ org $7E9E10
 ExpandingSquare_TransitionWindow1RightIndirectHDMATable: skip $10 ; $7E9E10..1B
 ExpandingSquare_TopBottomMarginRightPosition: skip 2 ; $7E9E20
 ExpandingSquare_TopBottomMarginLeftPosition: skip 2 ; $7E9E22
-skip 14
+skip 12
 ExpandingSquare_LeftSubPosition: skip 2 ; $7E9E30
 ExpandingSquare_LeftPosition: skip 2 ; $7E9E32
 ExpandingSquare_RightSubPosition: skip 2 ; $7E9E34
