@@ -8257,7 +8257,7 @@ PreInstruction_PaletteFXObject_SamusInHeat:
     CMP.W $1EEF                                                          ;8DE3AE;
     BEQ .return                                                          ;8DE3B1;
     STA.W $1EEF                                                          ;8DE3B3;
-    ASL A                                                                ;8DE3B6;
+    ASL                                                                  ;8DE3B6;
     TAY                                                                  ;8DE3B7;
     LDA.W #$0001                                                         ;8DE3B8;
     STA.W $1ECD,X                                                        ;8DE3BB;

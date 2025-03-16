@@ -15,7 +15,7 @@ InitializeProjectile:
     REP #$30                                                             ;938004;
     LDA.W $0C04,X                                                        ;938006;
     AND.W #$000F                                                         ;938009;
-    ASL A                                                                ;93800C;
+    ASL                                                                  ;93800C;
     STA.B $12                                                            ;93800D;
     LDA.W $0C18,X                                                        ;93800F;
     BIT.W #$0F00                                                         ;938012;
@@ -23,7 +23,7 @@ InitializeProjectile:
     BIT.W #$0010                                                         ;938017;
     BNE .charged                                                         ;93801A;
     AND.W #$000F                                                         ;93801C;
-    ASL A                                                                ;93801F;
+    ASL                                                                  ;93801F;
     TAY                                                                  ;938020;
     LDA.W SamusProjectileDataPointers_UnchargedBeams,Y                   ;938021;
     TAY                                                                  ;938024;
@@ -31,7 +31,7 @@ InitializeProjectile:
 
   .charged:
     AND.W #$000F                                                         ;938027;
-    ASL A                                                                ;93802A;
+    ASL                                                                  ;93802A;
     TAY                                                                  ;93802B;
     LDA.W SamusProjectileDataPointers_ChargedBeams,Y                     ;93802C;
     TAY                                                                  ;93802F;
@@ -40,7 +40,7 @@ InitializeProjectile:
   .notBeam:
     XBA                                                                  ;938032;
     AND.W #$000F                                                         ;938033;
-    ASL A                                                                ;938036;
+    ASL                                                                  ;938036;
     TAY                                                                  ;938037;
     LDA.W SamusProjectileDataPointers_NonBeam,Y                          ;938038;
     TAY                                                                  ;93803B;
@@ -84,7 +84,7 @@ InitializeSuperMissileLink:
     REP #$30                                                             ;938075;
     LDA.W $0C19,X                                                        ;938077;
     AND.W #$000F                                                         ;93807A;
-    ASL A                                                                ;93807D;
+    ASL                                                                  ;93807D;
     TAY                                                                  ;93807E;
     LDA.W SamusProjectileDataPointers_SuperMissileLink,Y                 ;93807F;
     TAY                                                                  ;938082;
@@ -114,7 +114,7 @@ InitializeBomb:
     REP #$30                                                             ;9380A4;
     LDA.W $0C19,X                                                        ;9380A6;
     AND.W #$000F                                                         ;9380A9;
-    ASL A                                                                ;9380AC;
+    ASL                                                                  ;9380AC;
     TAY                                                                  ;9380AD;
     LDA.W SamusProjectileDataPointers_NonBeam,Y                          ;9380AE;
     TAY                                                                  ;9380B1;
@@ -225,13 +225,13 @@ Initialize_ShinesparkEcho_or_SpazerSBATrailProjectile:
     REP #$30                                                             ;938167;
     LDA.W $0C04,X                                                        ;938169;
     AND.W #$000F                                                         ;93816C;
-    ASL A                                                                ;93816F;
+    ASL                                                                  ;93816F;
     STA.B $12                                                            ;938170;
     LDA.W $0C18,X                                                        ;938172;
     AND.W #$00FF                                                         ;938175;
     SEC                                                                  ;938178;
     SBC.W #$0022                                                         ;938179;
-    ASL A                                                                ;93817C;
+    ASL                                                                  ;93817C;
     TAY                                                                  ;93817D;
     LDA.W SamusProjectileDataPointers_ShinesparkEcho_SpazerSBATrail,Y    ;93817E;
     TAY                                                                  ;938181;
@@ -266,7 +266,7 @@ InitializeSBAProjectile:
     REP #$30                                                             ;9381A8;
     LDA.W $0C18,X                                                        ;9381AA;
     AND.W #$000F                                                         ;9381AD;
-    ASL A                                                                ;9381B0;
+    ASL                                                                  ;9381B0;
     TAY                                                                  ;9381B1;
     LDA.W SamusProjectileDataPointers_SBA,Y                              ;9381B2;
     TAY                                                                  ;9381B5;

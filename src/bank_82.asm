@@ -711,8 +711,8 @@ GameState_2B_UnloadGameData:
     JSL.L Disable_PaletteFXObjects                                       ;8285BD;
     JSL.L Clear_PaletteFXObjects                                         ;8285C1;
     LDA.W #$1C1F                                                         ;8285C5;
-    DEC A                                                                ;8285C8;
-    DEC A                                                                ;8285C9;
+    DEC                                                                  ;8285C8;
+    DEC                                                                  ;8285C9;
     SEC                                                                  ;8285CA;
     SBC.W #$198D                                                         ;8285CB;
     TAX                                                                  ;8285CE;
@@ -723,8 +723,8 @@ GameState_2B_UnloadGameData:
     DEX                                                                  ;8285D3;
     BPL .clearNonGameplayRAM                                             ;8285D4;
     LDA.W #GameState                                                     ;8285D6;
-    DEC A                                                                ;8285D9;
-    DEC A                                                                ;8285DA;
+    DEC                                                                  ;8285D9;
+    DEC                                                                  ;8285DA;
     SEC                                                                  ;8285DB;
     SBC.W #$077C                                                         ;8285DC;
     TAX                                                                  ;8285DF;
@@ -785,14 +785,14 @@ CheckForNextDemo:
     PHP                                                                  ;828637;
     REP #$30                                                             ;828638;
     LDA.W DemoScene                                                          ;82863A;
-    ASL A                                                                ;82863D;
-    ASL A                                                                ;82863E;
-    ASL A                                                                ;82863F;
+    ASL                                                                  ;82863D;
+    ASL                                                                  ;82863E;
+    ASL                                                                  ;82863F;
     ADC.W DemoScene                                                          ;828640;
-    ASL A                                                                ;828643;
+    ASL                                                                  ;828643;
     STA.B $12                                                            ;828644;
     LDA.W DemoSet                                                          ;828646;
-    ASL A                                                                ;828649;
+    ASL                                                                  ;828649;
     TAX                                                                  ;82864A;
     LDA.W DemoRoomData_pointers,X                                        ;82864B;
     CLC                                                                  ;82864E;
@@ -803,7 +803,7 @@ CheckForNextDemo:
     BNE .nextDemoScene                                                   ;828658;
     STZ.W $0DEC                                                          ;82865A;
     LDA.W DemoSet                                                          ;82865D;
-    INC A                                                                ;828660;
+    INC                                                                  ;828660;
     CMP.W $1F59                                                          ;828661;
     BCC +                                                                ;828664;
     LDA.W #$0000                                                         ;828666;
@@ -826,14 +826,14 @@ LoadDemoRoomData:
     REP #$30                                                             ;82867A;
     STZ.W $078D                                                          ;82867C;
     LDA.W DemoScene                                                          ;82867F;
-    ASL A                                                                ;828682;
-    ASL A                                                                ;828683;
-    ASL A                                                                ;828684;
+    ASL                                                                  ;828682;
+    ASL                                                                  ;828683;
+    ASL                                                                  ;828684;
     ADC.W DemoScene                                                          ;828685;
-    ASL A                                                                ;828688;
+    ASL                                                                  ;828688;
     STA.B $12                                                            ;828689;
     LDA.W DemoSet                                                          ;82868B;
-    ASL A                                                                ;82868E;
+    ASL                                                                  ;82868E;
     TAX                                                                  ;82868F;
     LDA.W DemoRoomData_pointers,X                                        ;828690;
     CLC                                                                  ;828693;
@@ -1152,7 +1152,7 @@ MainGameLoop:
     STZ.W $0721                                                          ;828960;
     LDA.W GameState                                                      ;828963;
     AND.W #$00FF                                                         ;828966;
-    ASL A                                                                ;828969;
+    ASL                                                                  ;828969;
     TAX                                                                  ;82896A;
     JSR.W (.gamemodes,X)                                                 ;82896B;
     JSL.L HandleSounds                                                   ;82896E;
@@ -1239,14 +1239,14 @@ HandleSounds:
     PHP                                                                  ;8289EF;
     SEP #$30                                                             ;8289F0;
     LDA.W $0686                                                          ;8289F2;
-    DEC A                                                                ;8289F5;
+    DEC                                                                  ;8289F5;
     BPL .downtime                                                        ;8289F6;
     LDY.B #$00                                                           ;8289F8;
 
   .loop:
     PHY                                                                  ;8289FA;
     LDA.W $0649,Y                                                        ;8289FB;
-    ASL A                                                                ;8289FE;
+    ASL                                                                  ;8289FE;
     TAX                                                                  ;8289FF;
     JSR.W (.pointers,X)                                                  ;828A00;
     PLY                                                                  ;828A03;
@@ -2244,7 +2244,7 @@ Setup_MapScrolling_for_FileSelectMap:
     LDA.W $05AE                                                          ;82902E;
     SEC                                                                  ;829031;
     SBC.W $05AC                                                          ;829032;
-    LSR A                                                                ;829035;
+    LSR                                                                  ;829035;
     CLC                                                                  ;829036;
     ADC.W $05AC                                                          ;829037;
     SEC                                                                  ;82903A;
@@ -2255,9 +2255,9 @@ Setup_MapScrolling_for_FileSelectMap:
     XBA                                                                  ;829046;
     CLC                                                                  ;829047;
     ADC.W $07A1                                                          ;829048;
-    ASL A                                                                ;82904B;
-    ASL A                                                                ;82904C;
-    ASL A                                                                ;82904D;
+    ASL                                                                  ;82904B;
+    ASL                                                                  ;82904C;
+    ASL                                                                  ;82904D;
     SEC                                                                  ;82904E;
     SBC.B $B1                                                            ;82904F;
     STA.B $12                                                            ;829051;
@@ -2287,7 +2287,7 @@ Setup_MapScrolling_for_FileSelectMap:
     LDA.W $05B2                                                          ;829077;
     SEC                                                                  ;82907A;
     SBC.W $05B0                                                          ;82907B;
-    LSR A                                                                ;82907E;
+    LSR                                                                  ;82907E;
     CLC                                                                  ;82907F;
     ADC.W #$0010                                                         ;829080;
     CLC                                                                  ;829083;
@@ -2298,17 +2298,17 @@ Setup_MapScrolling_for_FileSelectMap:
     SBC.B $12                                                            ;82908D;
     AND.W #$FFF8                                                         ;82908F;
     EOR.W #$FFFF                                                         ;829092;
-    INC A                                                                ;829095;
+    INC                                                                  ;829095;
     STA.B $B3                                                            ;829096;
     LDA.W $0AFA                                                          ;829098;
     XBA                                                                  ;82909B;
     AND.W #$00FF                                                         ;82909C;
     CLC                                                                  ;82909F;
     ADC.W $07A3                                                          ;8290A0;
-    INC A                                                                ;8290A3;
-    ASL A                                                                ;8290A4;
-    ASL A                                                                ;8290A5;
-    ASL A                                                                ;8290A6;
+    INC                                                                  ;8290A3;
+    ASL                                                                  ;8290A4;
+    ASL                                                                  ;8290A5;
+    ASL                                                                  ;8290A6;
     SEC                                                                  ;8290A7;
     SBC.B $B3                                                            ;8290A8;
     STA.B $12                                                            ;8290AA;
@@ -2372,7 +2372,7 @@ MainPauseRoutine:
     PLB                                                                  ;829102;
     REP #$30                                                             ;829103;
     LDA.W $0727                                                          ;829105;
-    ASL A                                                                ;829108;
+    ASL                                                                  ;829108;
     TAX                                                                  ;829109;
     JSR.W (.pointers,X)                                                  ;82910A;
     PLB                                                                  ;82910D;
@@ -2554,7 +2554,7 @@ MapScrolling:
     PLB                                                                  ;829260;
     REP #$30                                                             ;829261;
     LDA.W $05FD                                                          ;829263;
-    ASL A                                                                ;829266;
+    ASL                                                                  ;829266;
     TAX                                                                  ;829267;
     JSR.W (.pointers,X)                                                  ;829268;
     PLB                                                                  ;82926B;
@@ -2790,7 +2790,7 @@ Load_PauseMenuMapTilemap_and_AreaLabel:
     BMI +                                                                ;829421;
     LDA.W #$0000                                                         ;829423;
 
-+   ASL A                                                                ;829426;
++   ASL                                                                  ;829426;
     TAX                                                                  ;829427;
     LDA.W AreaLabelTilemaps_pointers,X                                   ;829428;
     STA.W $4312                                                          ;82942B;
@@ -2814,7 +2814,7 @@ LoadPauseMenuMapTilemap:
     LDA.W #$0000                                                         ;829448;
 
 +   STA.B $12                                                            ;82944B;
-    ASL A                                                                ;82944D;
+    ASL                                                                  ;82944D;
     CLC                                                                  ;82944E;
     ADC.B $12                                                            ;82944F;
     TAX                                                                  ;829451;
@@ -2827,7 +2827,7 @@ LoadPauseMenuMapTilemap:
     LDA.W #$007E                                                         ;829461;
     STA.B $05                                                            ;829464;
     LDA.B $12                                                            ;829466;
-    ASL A                                                                ;829468;
+    ASL                                                                  ;829468;
     TAX                                                                  ;829469;
     LDA.W #$0082                                                         ;82946A;
     STA.B $08                                                            ;82946D;
@@ -2950,7 +2950,7 @@ DrawRoomSelectMap:
     LDA.W #$0000                                                         ;829535;
 
 +   STA.B $12                                                            ;829538;
-    ASL A                                                                ;82953A;
+    ASL                                                                  ;82953A;
     CLC                                                                  ;82953B;
     ADC.B $12                                                            ;82953C;
     TAX                                                                  ;82953E;
@@ -2963,7 +2963,7 @@ DrawRoomSelectMap:
     LDA.W #$007E                                                         ;82954E;
     STA.B $05                                                            ;829551;
     LDA.B $12                                                            ;829553;
-    ASL A                                                                ;829555;
+    ASL                                                                  ;829555;
     TAX                                                                  ;829556;
     LDA.W #$0082                                                         ;829557;
     STA.B $08                                                            ;82955A;
@@ -3089,7 +3089,7 @@ DrawRoomSelectMap_AreaLabel:
     PHK                                                                  ;829629;
     PLB                                                                  ;82962A;
     LDA.W AreaIndex                                                          ;82962B;
-    ASL A                                                                ;82962E;
+    ASL                                                                  ;82962E;
     TAX                                                                  ;82962F;
     LDA.W AreaLabelTilemaps_pointers,X                                   ;829630;
     TAX                                                                  ;829633;
@@ -3681,7 +3681,7 @@ SetupMapScrollingForPauseMenu:
     LDA.W $05AE                                                          ;829E2B;
     SEC                                                                  ;829E2E;
     SBC.W $05AC                                                          ;829E2F;
-    LSR A                                                                ;829E32;
+    LSR                                                                  ;829E32;
     CLC                                                                  ;829E33;
     ADC.W $05AC                                                          ;829E34;
     SEC                                                                  ;829E37;
@@ -3692,9 +3692,9 @@ SetupMapScrollingForPauseMenu:
     XBA                                                                  ;829E43;
     CLC                                                                  ;829E44;
     ADC.W $07A1                                                          ;829E45;
-    ASL A                                                                ;829E48;
-    ASL A                                                                ;829E49;
-    ASL A                                                                ;829E4A;
+    ASL                                                                  ;829E48;
+    ASL                                                                  ;829E49;
+    ASL                                                                  ;829E4A;
     SEC                                                                  ;829E4B;
     SBC.B $B1                                                            ;829E4C;
     STA.B $12                                                            ;829E4E;
@@ -3724,7 +3724,7 @@ SetupMapScrollingForPauseMenu:
     LDA.W $05B2                                                          ;829E74;
     SEC                                                                  ;829E77;
     SBC.W $05B0                                                          ;829E78;
-    LSR A                                                                ;829E7B;
+    LSR                                                                  ;829E7B;
     CLC                                                                  ;829E7C;
     ADC.W #$0010                                                         ;829E7D;
     CLC                                                                  ;829E80;
@@ -3735,17 +3735,17 @@ SetupMapScrollingForPauseMenu:
     SBC.B $12                                                            ;829E89;
     AND.W #$FFF8                                                         ;829E8B;
     EOR.W #$FFFF                                                         ;829E8E;
-    INC A                                                                ;829E91;
+    INC                                                                  ;829E91;
     STA.B $B3                                                            ;829E92;
     LDA.W $0AFA                                                          ;829E94;
     XBA                                                                  ;829E97;
     AND.W #$00FF                                                         ;829E98;
     CLC                                                                  ;829E9B;
     ADC.W $07A3                                                          ;829E9C;
-    INC A                                                                ;829E9F;
-    ASL A                                                                ;829EA0;
-    ASL A                                                                ;829EA1;
-    ASL A                                                                ;829EA2;
+    INC                                                                  ;829E9F;
+    ASL                                                                  ;829EA0;
+    ASL                                                                  ;829EA1;
+    ASL                                                                  ;829EA2;
     SEC                                                                  ;829EA3;
     SBC.B $B3                                                            ;829EA4;
     STA.B $12                                                            ;829EA6;
@@ -3778,7 +3778,7 @@ DetermineMapScrollLimits:
     LDA.W #MapData_pointers                                              ;829ED0;
     STA.B $06                                                            ;829ED3;
     LDA.W AreaIndex                                                          ;829ED5;
-    ASL A                                                                ;829ED8;
+    ASL                                                                  ;829ED8;
     TAY                                                                  ;829ED9;
     LDA.B [$06],Y                                                        ;829EDA;
     STA.B $06                                                            ;829EDC;
@@ -3836,9 +3836,9 @@ DetermineMapScrollLimits:
 ;;; $9F45: A = [X] * 8 ;;;
 A_equals_X_times_8:
     TXA                                                                  ;829F45;
-    ASL A                                                                ;829F46;
-    ASL A                                                                ;829F47;
-    ASL A                                                                ;829F48;
+    ASL                                                                  ;829F46;
+    ASL                                                                  ;829F47;
+    ASL                                                                  ;829F48;
     RTS                                                                  ;829F49;
 
 
@@ -4524,7 +4524,7 @@ UNUSED_Change_Pose_Due_to_Equipment_Change:
     REP #$30                                                             ;82A3DA;
     LDA.W $0A1F                                                          ;82A3DC;
     AND.W #$00FF                                                         ;82A3DF;
-    ASL A                                                                ;82A3E2;
+    ASL                                                                  ;82A3E2;
     TAX                                                                  ;82A3E3;
     JSR.W (.pointers,X)                                                  ;82A3E4;
     JSL.L LoadSamusSuitPalette                                           ;82A3E7;
@@ -4771,12 +4771,12 @@ Handle_PauseMenu_L_R_PressedHighlight:
     REP #$30                                                             ;82A56E;
     LDA.W $0729                                                          ;82A570;
     BEQ .return                                                          ;82A573;
-    DEC A                                                                ;82A575;
+    DEC                                                                  ;82A575;
     STA.W $0729                                                          ;82A576;
     LDA.W $0751                                                          ;82A579;
     BEQ .return                                                          ;82A57C;
-    DEC A                                                                ;82A57E;
-    ASL A                                                                ;82A57F;
+    DEC                                                                  ;82A57E;
+    ASL                                                                  ;82A57F;
     TAX                                                                  ;82A580;
     LDA.W #$0000                                                         ;82A581;
     STA.B $03                                                            ;82A584;
@@ -4848,7 +4848,7 @@ Handle_PauseMenu_StartPressedHighlight:
     REP #$30                                                             ;82A5F5;
     LDA.W $0729                                                          ;82A5F7;
     BEQ .return                                                          ;82A5FA;
-    DEC A                                                                ;82A5FC;
+    DEC                                                                  ;82A5FC;
     STA.W $0729                                                          ;82A5FD;
     LDA.W #$0000                                                         ;82A600;
     STA.B $03                                                            ;82A603;
@@ -4868,7 +4868,7 @@ Set_PauseScreen_ButtonLabelPalettes:
     PHP                                                                  ;82A615;
     REP #$30                                                             ;82A616;
     LDA.W $0753                                                          ;82A618;
-    ASL A                                                                ;82A61B;
+    ASL                                                                  ;82A61B;
     TAX                                                                  ;82A61C;
     JSR.W (.pointers,X)                                                  ;82A61D;
     PLP                                                                  ;82A620;
@@ -5249,13 +5249,13 @@ Draw_PauseScreen_SpriteAnimation:
     REP #$30                                                             ;82A883;
     STX.B $12                                                            ;82A885;
     STY.B $14                                                            ;82A887;
-    DEC A                                                                ;82A889;
-    ASL A                                                                ;82A88A;
+    DEC                                                                  ;82A889;
+    ASL                                                                  ;82A88A;
     TAX                                                                  ;82A88B;
     LDA.W PauseScreen_SpriteAnimationData_timer,X                        ;82A88C;
     TAY                                                                  ;82A88F;
     LDA.W $0000,Y                                                        ;82A890;
-    DEC A                                                                ;82A893;
+    DEC                                                                  ;82A893;
     STA.W $0000,Y                                                        ;82A894;
     BEQ +                                                                ;82A897;
     BPL .nonZero                                                         ;82A899;
@@ -5264,9 +5264,9 @@ Draw_PauseScreen_SpriteAnimation:
     LDA.W PauseScreen_SpriteAnimationData_frame,X                        ;82A89D;
     TAY                                                                  ;82A8A0;
     LDA.W $0000,Y                                                        ;82A8A1;
-    INC A                                                                ;82A8A4;
+    INC                                                                  ;82A8A4;
     STA.W $0000,Y                                                        ;82A8A5;
-    ASL A                                                                ;82A8A8;
+    ASL                                                                  ;82A8A8;
     CLC                                                                  ;82A8A9;
     ADC.W $0000,Y                                                        ;82A8AA;
     STA.B $16                                                            ;82A8AD;
@@ -5294,18 +5294,18 @@ Draw_PauseScreen_SpriteAnimation:
     LDA.W PauseScreen_SpriteAnimationData_frame,X                        ;82A8DA;
     TAY                                                                  ;82A8DD;
     LDA.W $0000,Y                                                        ;82A8DE;
-    ASL A                                                                ;82A8E1;
+    ASL                                                                  ;82A8E1;
     CLC                                                                  ;82A8E2;
     ADC.W $0000,Y                                                        ;82A8E3;
     STA.B $18                                                            ;82A8E6;
     LDA.W PauseScreen_SpriteAnimationData_data,X                         ;82A8E8;
     CLC                                                                  ;82A8EB;
     ADC.B $18                                                            ;82A8EC;
-    INC A                                                                ;82A8EE;
+    INC                                                                  ;82A8EE;
     TAY                                                                  ;82A8EF;
     PHY                                                                  ;82A8F0;
     LDA.W #$0003                                                         ;82A8F1;
-    ASL A                                                                ;82A8F4;
+    ASL                                                                  ;82A8F4;
     TAY                                                                  ;82A8F5;
     LDA.W SpritePalette_IndexValues,Y                                    ;82A8F6;
     STA.B $03                                                            ;82A8F9;
@@ -5318,7 +5318,7 @@ Draw_PauseScreen_SpriteAnimation:
     TAY                                                                  ;82A908;
     LDA.W $0000,Y                                                        ;82A909;
     AND.W #$00FF                                                         ;82A90C;
-    ASL A                                                                ;82A90F;
+    ASL                                                                  ;82A90F;
     STA.B $1A                                                            ;82A910;
     LDA.W AnimationSpritemapBaseIDPointers,X                             ;82A912;
     CLC                                                                  ;82A915;
@@ -5346,15 +5346,15 @@ Handle_PauseScreen_PaletteAnimation:
     LDA.B #$00                                                           ;82A931;
     LDA.W $073B                                                          ;82A933;
     BEQ .return                                                          ;82A936;
-    DEC A                                                                ;82A938;
+    DEC                                                                  ;82A938;
     STA.W $073B                                                          ;82A939;
     BNE .return                                                          ;82A93C;
     LDA.W $074F                                                          ;82A93E;
-    INC A                                                                ;82A941;
+    INC                                                                  ;82A941;
 
   .loop:
     STA.W $074F                                                          ;82A942;
-    ASL A                                                                ;82A945;
+    ASL                                                                  ;82A945;
     CLC                                                                  ;82A946;
     ADC.W $074F                                                          ;82A947;
     TAX                                                                  ;82A94A;
@@ -5374,9 +5374,9 @@ Handle_PauseScreen_PaletteAnimation:
     LDA.W $074F                                                          ;82A967;
     REP #$30                                                             ;82A96A;
     XBA                                                                  ;82A96C;
-    LSR A                                                                ;82A96D;
-    LSR A                                                                ;82A96E;
-    LSR A                                                                ;82A96F;
+    LSR                                                                  ;82A96D;
+    LSR                                                                  ;82A96E;
+    LSR                                                                  ;82A96F;
     CLC                                                                  ;82A970;
     ADC.W #$001E                                                         ;82A971;
     TAY                                                                  ;82A974;
@@ -5482,7 +5482,7 @@ EquipmentScreen_SetupReserveMode_and_DetermineInitialSelect:
     BRA .noBeams                                                         ;82ABD1;
 
 +   TXA                                                                  ;82ABD3;
-    LSR A                                                                ;82ABD4;
+    LSR                                                                  ;82ABD4;
     XBA                                                                  ;82ABD5;
     ORA.W #$0001                                                         ;82ABD6;
     STA.W $0755                                                          ;82ABD9;
@@ -5502,7 +5502,7 @@ EquipmentScreen_SetupReserveMode_and_DetermineInitialSelect:
     BRA .noSuitMisc                                                      ;82ABF0;
 
 +   TXA                                                                  ;82ABF2;
-    LSR A                                                                ;82ABF3;
+    LSR                                                                  ;82ABF3;
     XBA                                                                  ;82ABF4;
     ORA.W #$0002                                                         ;82ABF5;
     STA.W $0755                                                          ;82ABF8;
@@ -5520,7 +5520,7 @@ EquipmentScreen_SetupReserveMode_and_DetermineInitialSelect:
     BRA .return                                                          ;82AC0A;
 
     TXA                                                                  ;82AC0C; dead code
-    LSR A                                                                ;82AC0D;
+    LSR                                                                  ;82AC0D;
     XBA                                                                  ;82AC0E;
     ORA.W #$0003                                                         ;82AC0F;
     STA.W $0755                                                          ;82AC12;
@@ -5567,7 +5567,7 @@ EquipmentScreen_Main:
     REP #$30                                                             ;82AC50;
     LDA.W $0755                                                          ;82AC52;
     AND.W #$00FF                                                         ;82AC55;
-    ASL A                                                                ;82AC58;
+    ASL                                                                  ;82AC58;
     TAX                                                                  ;82AC59;
     JSR.W (.pointers,X)                                                  ;82AC5A;
     JSR.W EquipmentScreen_DrawItemSelector                               ;82AC5D;
@@ -5590,7 +5590,7 @@ EquipmentScreen_Main_Tanks:
     LDA.W $0755                                                          ;82AC73;
     XBA                                                                  ;82AC76;
     AND.W #$00FF                                                         ;82AC77;
-    ASL A                                                                ;82AC7A;
+    ASL                                                                  ;82AC7A;
     TAX                                                                  ;82AC7B;
     JSR.W (.pointers,X)                                                  ;82AC7C;
     JSR.W EquipmentScreen_Main_Tanks_DPadResponse                        ;82AC7F;
@@ -5683,7 +5683,7 @@ EquipmentScreen_Main_Tanks_GlowingArrow:
     BNE .solidOff                                                        ;82AD13;
     XBA                                                                  ;82AD15;
     AND.W #$00FF                                                         ;82AD16;
-    ASL A                                                                ;82AD19;
+    ASL                                                                  ;82AD19;
     TAX                                                                  ;82AD1A;
     JSR.W (.pointers,X)                                                  ;82AD1B;
     PLP                                                                  ;82AD1E;
@@ -5706,7 +5706,7 @@ EquipmentScreen_GlowingArrow_Animated:
     BNE .disableGlow                                                     ;82AD2F;
     LDA.W $05B5                                                          ;82AD31;
     AND.W #$001F                                                         ;82AD34;
-    ASL A                                                                ;82AD37;
+    ASL                                                                  ;82AD37;
     TAX                                                                  ;82AD38;
     LDA.W .palette6,X                                                    ;82AD39;
     STA.L $7EC0CC                                                        ;82AD3C;
@@ -5957,7 +5957,7 @@ EquipmentScreen_Main_Tanks_ReserveTank:
 
   .soundTimer:
     LDA.W $0757                                                          ;82AF6B;
-    DEC A                                                                ;82AF6E;
+    DEC                                                                  ;82AF6E;
     STA.W $0757                                                          ;82AF6F;
     AND.W #$0007                                                         ;82AF72;
     CMP.W #$0007                                                         ;82AF75;
@@ -6056,7 +6056,7 @@ EquipmentScreen_Main_Weapons_MoveResponse:
     STA.W $0755                                                          ;82B023;
     XBA                                                                  ;82B026;
     AND.W #$00FF                                                         ;82B027;
-    ASL A                                                                ;82B02A;
+    ASL                                                                  ;82B02A;
     TAX                                                                  ;82B02B;
     JSR.W EquipmentScreen_MoveHigherOnBeams                              ;82B02C;
     CMP.W #$FFFF                                                         ;82B02F;
@@ -6083,7 +6083,7 @@ EquipmentScreen_Main_Weapons_MoveResponse:
     STA.W $0755                                                          ;82B05A;
     XBA                                                                  ;82B05D;
     AND.W #$00FF                                                         ;82B05E;
-    ASL A                                                                ;82B061;
+    ASL                                                                  ;82B061;
     TAX                                                                  ;82B062;
     JSR.W EquipmentScreen_MoveLowerOnBeams                               ;82B063;
 
@@ -6191,7 +6191,7 @@ EquipmentScreen_SuitsMisc_MoveResponse:
     STA.W $0755                                                          ;82B11A;
     XBA                                                                  ;82B11D;
     AND.W #$00FF                                                         ;82B11E;
-    ASL A                                                                ;82B121;
+    ASL                                                                  ;82B121;
     TAX                                                                  ;82B122;
     JSR.W EquipmentScreen_MoveLowerOnSuitsMisc                           ;82B123;
     CMP.W #$FFFF                                                         ;82B126;
@@ -6212,7 +6212,7 @@ EquipmentScreen_SuitsMisc_MoveResponse:
     STA.W $0755                                                          ;82B142;
     XBA                                                                  ;82B145;
     AND.W #$00FF                                                         ;82B146;
-    ASL A                                                                ;82B149;
+    ASL                                                                  ;82B149;
     TAX                                                                  ;82B14A;
     JSR.W EquipmentScreen_MoveHigherOnSuitsMisc                          ;82B14B;
 
@@ -6272,7 +6272,7 @@ EquipmentScreen_Main_Boots_MoveResponse:
     STA.W $0755                                                          ;82B1AA;
     XBA                                                                  ;82B1AD;
     AND.W #$00FF                                                         ;82B1AE;
-    ASL A                                                                ;82B1B1;
+    ASL                                                                  ;82B1B1;
     TAX                                                                  ;82B1B2;
     JSR.W EquipmentScreen_MoveHigherOnBoots                              ;82B1B3;
     CMP.W #$FFFF                                                         ;82B1B6;
@@ -6293,7 +6293,7 @@ EquipmentScreen_Main_Boots_MoveResponse:
     STA.W $0755                                                          ;82B1D2;
     XBA                                                                  ;82B1D5;
     AND.W #$00FF                                                         ;82B1D6;
-    ASL A                                                                ;82B1D9;
+    ASL                                                                  ;82B1D9;
     TAX                                                                  ;82B1DA;
     JSR.W EquipmentScreen_MoveLowerOnBoots                               ;82B1DB;
 
@@ -6403,15 +6403,15 @@ EquipmentScreen_DrawItemSelector:
     BEQ .return                                                          ;82B273;
     LDA.W $0755                                                          ;82B275;
     AND.W #$00FF                                                         ;82B278;
-    ASL A                                                                ;82B27B;
+    ASL                                                                  ;82B27B;
     TAX                                                                  ;82B27C;
     LDA.W EquipmentScreen_ItemSelectorPositions_pointers,X               ;82B27D;
     STA.B $12                                                            ;82B280;
     LDA.W $0755                                                          ;82B282;
     XBA                                                                  ;82B285;
     AND.W #$00FF                                                         ;82B286;
-    ASL A                                                                ;82B289;
-    ASL A                                                                ;82B28A;
+    ASL                                                                  ;82B289;
+    ASL                                                                  ;82B28A;
     CLC                                                                  ;82B28B;
     ADC.B $12                                                            ;82B28C;
     TAY                                                                  ;82B28E;
@@ -6518,7 +6518,7 @@ EquipmentScreen_DisplayReserveTankAmount:
     NOP                                                                  ;82B32B;
     NOP                                                                  ;82B32C;
     LDA.W $4214                                                          ;82B32D;
-    ASL A                                                                ;82B330;
+    ASL                                                                  ;82B330;
     TAX                                                                  ;82B331;
     CMP.W #$0007                                                         ;82B332;
     BPL +                                                                ;82B335;
@@ -6625,9 +6625,9 @@ EquipmentScreen_Main_DisplayReserves_PaletteSetup:
 
   .incrementAnimationFrame:
     LDA.W $0743                                                          ;82B40D;
-    INC A                                                                ;82B410;
+    INC                                                                  ;82B410;
     STA.W $0743                                                          ;82B411;
-    ASL A                                                                ;82B414;
+    ASL                                                                  ;82B414;
     TAX                                                                  ;82B415;
     LDA.W ReserveTank_AnimationData,X                                    ;82B416;
     AND.W #$00FF                                                         ;82B419;
@@ -6642,11 +6642,11 @@ EquipmentScreen_Main_DisplayReserves_PaletteSetup:
 
   .positive:
     LDA.W $0743                                                          ;82B42D;
-    ASL A                                                                ;82B430;
-    INC A                                                                ;82B431;
+    ASL                                                                  ;82B430;
+    INC                                                                  ;82B431;
     TAX                                                                  ;82B432;
     LDA.W #$0003                                                         ;82B433;
-    ASL A                                                                ;82B436;
+    ASL                                                                  ;82B436;
     TAX                                                                  ;82B437;
     LDA.W SpritePalette_IndexValues,X                                    ;82B438;
     STA.B $03                                                            ;82B43B;
@@ -6700,7 +6700,7 @@ EquipmentScreen_MoveLowerOnBeams:
 
   .found:
     TXA                                                                  ;82B474;
-    LSR A                                                                ;82B475;
+    LSR                                                                  ;82B475;
     XBA                                                                  ;82B476;
     AND.W #$FF00                                                         ;82B477;
     ORA.W #$0001                                                         ;82B47A;
@@ -6740,7 +6740,7 @@ EquipmentScreen_MoveHigherOnBeams:
     LDA.W #$0037                                                         ;82B4A2;
     JSL.L QueueSound_Lib1_Max6                                           ;82B4A5;
     TXA                                                                  ;82B4A9;
-    LSR A                                                                ;82B4AA;
+    LSR                                                                  ;82B4AA;
     XBA                                                                  ;82B4AB;
     AND.W #$FF00                                                         ;82B4AC;
     ORA.W #$0001                                                         ;82B4AF;
@@ -6776,7 +6776,7 @@ EquipmentScreen_MoveLowerOnSuitsMisc:
 +   LDA.W #$0037                                                         ;82B4CE;
     JSL.L QueueSound_Lib1_Max6                                           ;82B4D1;
     TXA                                                                  ;82B4D5;
-    LSR A                                                                ;82B4D6;
+    LSR                                                                  ;82B4D6;
     XBA                                                                  ;82B4D7;
     AND.W #$FF00                                                         ;82B4D8;
     ORA.W #$0002                                                         ;82B4DB;
@@ -6810,7 +6810,7 @@ EquipmentScreen_MoveHigherOnSuitsMisc:
 +   LDA.W #$0037                                                         ;82B4FC;
     JSL.L QueueSound_Lib1_Max6                                           ;82B4FF;
     TXA                                                                  ;82B503;
-    LSR A                                                                ;82B504;
+    LSR                                                                  ;82B504;
     XBA                                                                  ;82B505;
     AND.W #$FF00                                                         ;82B506;
     ORA.W #$0002                                                         ;82B509;
@@ -6844,7 +6844,7 @@ EquipmentScreen_MoveLowerOnBoots:
 +   LDA.W #$0037                                                         ;82B52A;
     JSL.L QueueSound_Lib1_Max6                                           ;82B52D;
     TXA                                                                  ;82B531;
-    LSR A                                                                ;82B532;
+    LSR                                                                  ;82B532;
     XBA                                                                  ;82B533;
     AND.W #$FF00                                                         ;82B534;
     ORA.W #$0003                                                         ;82B537;
@@ -6877,7 +6877,7 @@ EquipmentScreen_MoveHigherOnBoots:
 +   LDA.W #$0037                                                         ;82B553;
     JSL.L QueueSound_Lib1_Max6                                           ;82B556;
     TXA                                                                  ;82B55A;
-    LSR A                                                                ;82B55B;
+    LSR                                                                  ;82B55B;
     XBA                                                                  ;82B55C;
     AND.W #$FF00                                                         ;82B55D;
     ORA.W #$0003                                                         ;82B560;
@@ -6904,13 +6904,13 @@ EquipmentScreen_Main_ButtonResponse:
     JSL.L QueueSound_Lib1_Max6                                           ;82B577;
     LDA.W $0755                                                          ;82B57B;
     AND.W #$00FF                                                         ;82B57E;
-    ASL A                                                                ;82B581;
+    ASL                                                                  ;82B581;
     TAX                                                                  ;82B582;
     STA.B $1A                                                            ;82B583;
     LDA.W $0755                                                          ;82B585;
     XBA                                                                  ;82B588;
     AND.W #$00FF                                                         ;82B589;
-    ASL A                                                                ;82B58C;
+    ASL                                                                  ;82B58C;
     STA.B $12                                                            ;82B58D;
     LDA.W EquipmentScreenDataPointers_tilemapOffsets,X                   ;82B58F;
     CLC                                                                  ;82B592;
@@ -7144,13 +7144,13 @@ Draw_FileSelectMap_Icons:
     LDA.W #$0082                                                         ;82B717;
     STA.B $02                                                            ;82B71A;
     LDA.W AreaIndex                                                          ;82B71C;
-    ASL A                                                                ;82B71F;
+    ASL                                                                  ;82B71F;
     TAX                                                                  ;82B720;
     LDA.W MapIcon_PositionTablePointers_savePoints,X                     ;82B721;
     STA.B $00                                                            ;82B724;
     LDA.W LoadStationIndex                                                          ;82B726;
-    ASL A                                                                ;82B729;
-    ASL A                                                                ;82B72A;
+    ASL                                                                  ;82B729;
+    ASL                                                                  ;82B72A;
     TAY                                                                  ;82B72B;
     LDA.B [$00],Y                                                        ;82B72C;
     SEC                                                                  ;82B72E;
@@ -7219,7 +7219,7 @@ Draw_SaveStation_MapIcons:
     LDA.W AreaIndex                                                          ;82B79C;
     CMP.L $7ED918                                                        ;82B79F;
     BNE .return                                                          ;82B7A3;
-    ASL A                                                                ;82B7A5;
+    ASL                                                                  ;82B7A5;
     TAX                                                                  ;82B7A6;
     LDA.L $7ED8F8,X                                                      ;82B7A7;
     STA.B $24                                                            ;82B7AB;
@@ -7230,7 +7230,7 @@ Draw_SaveStation_MapIcons:
     STA.B $24                                                            ;82B7B7;
     REP #$20                                                             ;82B7B9;
     LDA.W AreaIndex                                                          ;82B7BB;
-    ASL A                                                                ;82B7BE;
+    ASL                                                                  ;82B7BE;
     CLC                                                                  ;82B7BF;
     ADC.B $20                                                            ;82B7C0;
     TAX                                                                  ;82B7C2;
@@ -7253,7 +7253,7 @@ Draw_Debug_Save_MapIcons:
     STX.B $20                                                            ;82B7D1;
     STA.B $22                                                            ;82B7D3;
     LDA.W AreaIndex                                                          ;82B7D5;
-    ASL A                                                                ;82B7D8;
+    ASL                                                                  ;82B7D8;
     TAX                                                                  ;82B7D9;
     LDA.L $7ED8F8,X                                                      ;82B7DA;
     STA.B $24                                                            ;82B7DE;
@@ -7275,7 +7275,7 @@ Draw_Debug_Elevator_Map_Icons:
     STX.B $20                                                            ;82B7EB;
     STA.B $22                                                            ;82B7ED;
     LDA.W AreaIndex                                                          ;82B7EF;
-    ASL A                                                                ;82B7F2;
+    ASL                                                                  ;82B7F2;
     TAX                                                                  ;82B7F3;
     LDA.L $7ED8F9,X                                                      ;82B7F4;
     STA.B $24                                                            ;82B7F8;
@@ -7299,7 +7299,7 @@ Draw_Simple_MapIcons:
     LDA.W #$FFFF                                                         ;82B809;
     STA.B $24                                                            ;82B80C;
     LDA.W AreaIndex                                                          ;82B80E;
-    ASL A                                                                ;82B811;
+    ASL                                                                  ;82B811;
     CLC                                                                  ;82B812;
     ADC.B $20                                                            ;82B813;
     TAX                                                                  ;82B815;
@@ -7366,29 +7366,29 @@ Check_if_MapPosition_isExplored:
 ;;     Zero: Clear if map square is explored, else set
     TXA                                                                  ;82B855;
     AND.W #$FF00                                                         ;82B856;
-    LSR A                                                                ;82B859;
+    LSR                                                                  ;82B859;
     STA.B $12                                                            ;82B85A;
     TXA                                                                  ;82B85C;
     AND.W #$00FF                                                         ;82B85D;
-    LSR A                                                                ;82B860;
-    LSR A                                                                ;82B861;
-    LSR A                                                                ;82B862;
-    LSR A                                                                ;82B863;
-    LSR A                                                                ;82B864;
-    LSR A                                                                ;82B865;
+    LSR                                                                  ;82B860;
+    LSR                                                                  ;82B861;
+    LSR                                                                  ;82B862;
+    LSR                                                                  ;82B863;
+    LSR                                                                  ;82B864;
+    LSR                                                                  ;82B865;
     CLC                                                                  ;82B866;
     ADC.B $12                                                            ;82B867;
     STA.B $12                                                            ;82B869;
     TYA                                                                  ;82B86B;
     AND.W #$FFF8                                                         ;82B86C;
-    LSR A                                                                ;82B86F;
+    LSR                                                                  ;82B86F;
     CLC                                                                  ;82B870;
     ADC.B $12                                                            ;82B871;
     STA.B $12                                                            ;82B873;
     TXA                                                                  ;82B875;
-    LSR A                                                                ;82B876;
-    LSR A                                                                ;82B877;
-    LSR A                                                                ;82B878;
+    LSR                                                                  ;82B876;
+    LSR                                                                  ;82B877;
+    LSR                                                                  ;82B878;
     AND.W #$0007                                                         ;82B879;
     TAX                                                                  ;82B87C;
     LDY.B $12                                                            ;82B87D;
@@ -7414,7 +7414,7 @@ Display_Map_Boss_Icons:
     AND.W #$00FF                                                         ;82B89D;
     STA.B $24                                                            ;82B8A0;
     LDA.W AreaIndex                                                          ;82B8A2;
-    ASL A                                                                ;82B8A5;
+    ASL                                                                  ;82B8A5;
     CLC                                                                  ;82B8A6;
     ADC.B $20                                                            ;82B8A7;
     TAX                                                                  ;82B8A9;
@@ -7607,9 +7607,9 @@ MapScreen_DrawSamusPositionIndicator:
     AND.W #$00FF                                                         ;82B9D5;
     CLC                                                                  ;82B9D8;
     ADC.W $07A1                                                          ;82B9D9;
-    ASL A                                                                ;82B9DC;
-    ASL A                                                                ;82B9DD;
-    ASL A                                                                ;82B9DE;
+    ASL                                                                  ;82B9DC;
+    ASL                                                                  ;82B9DD;
+    ASL                                                                  ;82B9DE;
     SEC                                                                  ;82B9DF;
     SBC.B $B1                                                            ;82B9E0;
     TAX                                                                  ;82B9E2;
@@ -7618,10 +7618,10 @@ MapScreen_DrawSamusPositionIndicator:
     AND.W #$00FF                                                         ;82B9E7;
     CLC                                                                  ;82B9EA;
     ADC.W $07A3                                                          ;82B9EB;
-    INC A                                                                ;82B9EE;
-    ASL A                                                                ;82B9EF;
-    ASL A                                                                ;82B9F0;
-    ASL A                                                                ;82B9F1;
+    INC                                                                  ;82B9EE;
+    ASL                                                                  ;82B9EF;
+    ASL                                                                  ;82B9F0;
+    ASL                                                                  ;82B9F1;
     SEC                                                                  ;82B9F2;
     SBC.B $B3                                                            ;82B9F3;
     TAY                                                                  ;82B9F5;
@@ -7649,7 +7649,7 @@ Update_Samus_Position_Indicator_Animation:
     STA.W $0778                                                          ;82BA17;
 
   .nonZero:
-    DEC A                                                                ;82BA1A;
+    DEC                                                                  ;82BA1A;
     STA.W $0778                                                          ;82BA1B;
     LDX.W $0776                                                          ;82BA1E;
     LDA.W .spritemapIDs,X                                                ;82BA21;
@@ -7702,14 +7702,14 @@ Draw_Menu_Selection_Missile:
     PLB                                                                  ;82BA70;
     LDA.W $198D                                                          ;82BA71;
     BEQ +                                                                ;82BA74;
-    DEC A                                                                ;82BA76;
+    DEC                                                                  ;82BA76;
     STA.W $198D                                                          ;82BA77;
     BNE +                                                                ;82BA7A;
     LDA.W $1997                                                          ;82BA7C;
-    INC A                                                                ;82BA7F;
+    INC                                                                  ;82BA7F;
     AND.W #$0003                                                         ;82BA80;
     STA.W $1997                                                          ;82BA83;
-    ASL A                                                                ;82BA86;
+    ASL                                                                  ;82BA86;
     TAY                                                                  ;82BA87;
     LDA.W .animTimer,Y                                                   ;82BA88;
     STA.W $198D                                                          ;82BA8B;
@@ -7717,7 +7717,7 @@ Draw_Menu_Selection_Missile:
 +   LDA.W #$0E00                                                         ;82BA8E;
     STA.B $03                                                            ;82BA91;
     LDA.W $1997                                                          ;82BA93;
-    ASL A                                                                ;82BA96;
+    ASL                                                                  ;82BA96;
     TAY                                                                  ;82BA97;
     LDA.W .spritemapIDs,Y                                                ;82BA98;
     PHA                                                                  ;82BA9B;
@@ -7746,7 +7746,7 @@ Draw_FileCopy_Arrow:
     SBC.W $19B9                                                          ;82BAC1;
     BPL .upwards                                                         ;82BAC4;
     EOR.W #$FFFF                                                         ;82BAC6;
-    INC A                                                                ;82BAC9;
+    INC                                                                  ;82BAC9;
     LDX.W #$0000                                                         ;82BACA;
     CMP.W #$0002                                                         ;82BACD;
     BPL .spawnSprite                                                     ;82BAD0;
@@ -7810,7 +7810,7 @@ Display_Map_Elevator_Destinations:
     AND.W #$00FF                                                         ;82BB41;
     BEQ .return                                                          ;82BB44;
     LDA.W AreaIndex                                                          ;82BB46;
-    ASL A                                                                ;82BB49;
+    ASL                                                                  ;82BB49;
     TAX                                                                  ;82BB4A;
     LDA.W Map_Elevator_Destinations,X                                    ;82BB4B;
     TAX                                                                  ;82BB4E;
@@ -7858,7 +7858,7 @@ Process_GameOver_BabyMetroid_InstructionList:
 
 ; Expects a pushed DB
     LDX.W $0F92                                                          ;82BB7F;
-    DEC A                                                                ;82BB82;
+    DEC                                                                  ;82BB82;
     STA.W $0F94                                                          ;82BB83;
     BNE Draw_GameOver_BabyMetroid                                        ;82BB86;
     LDA.W $0006,X                                                        ;82BB88;
@@ -8086,7 +8086,7 @@ UNUSED_MarkEntireMapExplored_Crash_82BE5A:
     REP #$30                                                             ;82BE5A;
     LDA.W AreaIndex                                                          ;82BE5C;
     STA.B $12                                                            ;82BE5F;
-    ASL A                                                                ;82BE61;
+    ASL                                                                  ;82BE61;
     CLC                                                                  ;82BE62;
     ADC.B $12                                                            ;82BE63;
     TAX                                                                  ;82BE65;
@@ -8121,10 +8121,10 @@ UNUSED_MarkEntireMapExplored_Crash_82BE5A:
   .crash:
     BPL .crash                                                           ;82BE90;
     TYA                                                                  ;82BE92; dead code
-    LSR A                                                                ;82BE93;
-    LSR A                                                                ;82BE94;
-    LSR A                                                                ;82BE95;
-    LSR A                                                                ;82BE96;
+    LSR                                                                  ;82BE93;
+    LSR                                                                  ;82BE94;
+    LSR                                                                  ;82BE95;
+    LSR                                                                  ;82BE96;
     TAX                                                                  ;82BE97;
     SEP #$20                                                             ;82BE98;
     LDA.B $12                                                            ;82BE9A;
@@ -8174,18 +8174,18 @@ UNUSED_CountRooms_Crash_82BEA3:
     PHX                                                                  ;82BEDF;
     LDX.W AreaIndex                                                          ;82BEE0;
     LDA.L $7E4000,X                                                      ;82BEE3;
-    INC A                                                                ;82BEE7;
+    INC                                                                  ;82BEE7;
     STA.L $7E4000,X                                                      ;82BEE8;
     PLX                                                                  ;82BEEC;
 
 +   INY                                                                  ;82BEED;
     LDA.B $12                                                            ;82BEEE;
-    DEC A                                                                ;82BEF0;
+    DEC                                                                  ;82BEF0;
     STA.B $12                                                            ;82BEF1;
     CMP.B #$FF                                                           ;82BEF3;
     BNE .middleLoop                                                      ;82BEF5;
     LDA.W AreaIndex                                                          ;82BEF7;
-    INC A                                                                ;82BEFA;
+    INC                                                                  ;82BEFA;
     STA.W AreaIndex                                                          ;82BEFB;
     CMP.B #$07                                                           ;82BEFE;
     BMI .biggerLoop                                                      ;82BF00;
@@ -10181,7 +10181,7 @@ Advance_GradualColorChange_ofBGPalette6:
     REP #$30                                                             ;82D96C;
     LDA.W #$000C                                                         ;82D96E;
     STA.L $7EC402                                                        ;82D971;
-    INC A                                                                ;82D975;
+    INC                                                                  ;82D975;
     CMP.L $7EC400                                                        ;82D976;
     BCS .advance                                                         ;82D97A;
     LDA.W #$0000                                                         ;82D97C;
@@ -10212,7 +10212,7 @@ Advance_GradualColorChange_ofBGPalette6:
     BCC .loop                                                            ;82D9AA;
     PLB                                                                  ;82D9AC;
     LDA.L $7EC400                                                        ;82D9AD;
-    INC A                                                                ;82D9B1;
+    INC                                                                  ;82D9B1;
     STA.L $7EC400                                                        ;82D9B2;
     CLC                                                                  ;82D9B6;
     RTL                                                                  ;82D9B7;
@@ -10246,7 +10246,7 @@ Advance_GradualColorChange_ofPaletteRAM:
     LDA.L Palettes,X                                                      ;82D9DE;
     TAX                                                                  ;82D9E2;
     LDA.L $7EC400                                                        ;82D9E3;
-    INC A                                                                ;82D9E7;
+    INC                                                                  ;82D9E7;
     JSR.W CalculateTheAth_TransitionalColor_fromXtoY                     ;82D9E8;
     PLX                                                                  ;82D9EB;
     STA.L Palettes,X                                                      ;82D9EC;
@@ -10256,7 +10256,7 @@ Advance_GradualColorChange_ofPaletteRAM:
     BCC .loop                                                            ;82D9F4;
     PLB                                                                  ;82D9F6;
     LDA.L $7EC400                                                        ;82D9F7;
-    INC A                                                                ;82D9FB;
+    INC                                                                  ;82D9FB;
     STA.L $7EC400                                                        ;82D9FC;
     CLC                                                                  ;82DA00;
     RTL                                                                  ;82DA01;
@@ -10268,7 +10268,7 @@ Advance_GradualColorChange_ofAllPalettes:
 ;;     Carry: Set if reached target colour, clear otherwise
     REP #$30                                                             ;82DA02;
     LDA.L $7EC402                                                        ;82DA04;
-    INC A                                                                ;82DA08;
+    INC                                                                  ;82DA08;
     CMP.L $7EC400                                                        ;82DA09;
     BCS .advance                                                         ;82DA0D;
     LDA.W #$0000                                                         ;82DA0F;
@@ -10335,44 +10335,44 @@ CalculateTheAth_TransitionalColor_fromXtoY:
     JSR.W CalculateTheAth_TransitionalColorComponent_fromXtoY            ;82DA5C;
     STA.B $07,S                                                          ;82DA5F;
     LDA.B $01,S                                                          ;82DA61;
-    ASL A                                                                ;82DA63;
-    ASL A                                                                ;82DA64;
-    ASL A                                                                ;82DA65;
+    ASL                                                                  ;82DA63;
+    ASL                                                                  ;82DA64;
+    ASL                                                                  ;82DA65;
     XBA                                                                  ;82DA66;
     AND.W #$001F                                                         ;82DA67;
     TAY                                                                  ;82DA6A;
     LDA.B $03,S                                                          ;82DA6B;
-    ASL A                                                                ;82DA6D;
-    ASL A                                                                ;82DA6E;
-    ASL A                                                                ;82DA6F;
+    ASL                                                                  ;82DA6D;
+    ASL                                                                  ;82DA6E;
+    ASL                                                                  ;82DA6F;
     XBA                                                                  ;82DA70;
     AND.W #$001F                                                         ;82DA71;
     TAX                                                                  ;82DA74;
     LDA.B $05,S                                                          ;82DA75;
     JSR.W CalculateTheAth_TransitionalColorComponent_fromXtoY            ;82DA77;
-    ASL A                                                                ;82DA7A;
-    ASL A                                                                ;82DA7B;
-    ASL A                                                                ;82DA7C;
-    ASL A                                                                ;82DA7D;
-    ASL A                                                                ;82DA7E;
+    ASL                                                                  ;82DA7A;
+    ASL                                                                  ;82DA7B;
+    ASL                                                                  ;82DA7C;
+    ASL                                                                  ;82DA7D;
+    ASL                                                                  ;82DA7E;
     ORA.B $07,S                                                          ;82DA7F;
     STA.B $07,S                                                          ;82DA81;
     LDA.B $01,S                                                          ;82DA83;
-    LSR A                                                                ;82DA85;
-    LSR A                                                                ;82DA86;
+    LSR                                                                  ;82DA85;
+    LSR                                                                  ;82DA86;
     XBA                                                                  ;82DA87;
     AND.W #$001F                                                         ;82DA88;
     TAY                                                                  ;82DA8B;
     LDA.B $03,S                                                          ;82DA8C;
-    LSR A                                                                ;82DA8E;
-    LSR A                                                                ;82DA8F;
+    LSR                                                                  ;82DA8E;
+    LSR                                                                  ;82DA8F;
     XBA                                                                  ;82DA90;
     AND.W #$001F                                                         ;82DA91;
     TAX                                                                  ;82DA94;
     LDA.B $05,S                                                          ;82DA95;
     JSR.W CalculateTheAth_TransitionalColorComponent_fromXtoY            ;82DA97;
-    ASL A                                                                ;82DA9A;
-    ASL A                                                                ;82DA9B;
+    ASL                                                                  ;82DA9A;
+    ASL                                                                  ;82DA9B;
     XBA                                                                  ;82DA9C;
     ORA.B $07,S                                                          ;82DA9D;
     STA.B $07,S                                                          ;82DA9F;
@@ -10416,14 +10416,14 @@ CalculateTheAth_TransitionalColorComponent_fromXtoY:
     RTS                                                                  ;82DAAC;
 
   .AisNonZero:
-    DEC A                                                                ;82DAAD;
+    DEC                                                                  ;82DAAD;
     CMP.W $C402                                                          ;82DAAE;
     BNE +                                                                ;82DAB1;
     TYA                                                                  ;82DAB3;
     RTS                                                                  ;82DAB4;
 
 +   PHX                                                                  ;82DAB5;
-    INC A                                                                ;82DAB6;
+    INC                                                                  ;82DAB6;
     STA.B $14                                                            ;82DAB7;
     TYA                                                                  ;82DAB9;
     SEC                                                                  ;82DABA;
@@ -10431,7 +10431,7 @@ CalculateTheAth_TransitionalColorComponent_fromXtoY:
     STA.B $12                                                            ;82DABD;
     BPL +                                                                ;82DABF;
     EOR.W #$FFFF                                                         ;82DAC1;
-    INC A                                                                ;82DAC4;
+    INC                                                                  ;82DAC4;
 
 +   XBA                                                                  ;82DAC5;
     AND.W #$FF00                                                         ;82DAC6;
@@ -10439,7 +10439,7 @@ CalculateTheAth_TransitionalColorComponent_fromXtoY:
     SEP #$21                                                             ;82DACD;
     LDA.W $C402                                                          ;82DACF;
     SBC.B $14                                                            ;82DAD2;
-    INC A                                                                ;82DAD4;
+    INC                                                                  ;82DAD4;
     STA.L $004206                                                        ;82DAD5;
     REP #$20                                                             ;82DAD9;
     XBA                                                                  ;82DADB;
@@ -10450,7 +10450,7 @@ CalculateTheAth_TransitionalColorComponent_fromXtoY:
     BIT.B $12                                                            ;82DAE3;
     BPL +                                                                ;82DAE5;
     EOR.W #$FFFF                                                         ;82DAE7;
-    INC A                                                                ;82DAEA;
+    INC                                                                  ;82DAEA;
 
 +   STA.B $12                                                            ;82DAEB;
     PLA                                                                  ;82DAED;
@@ -10532,7 +10532,7 @@ Advance_GradualColorChange_ofPalettesInA:
     REP #$30                                                             ;82DB0C;
     PHA                                                                  ;82DB0E;
     LDA.W $C402                                                          ;82DB0F;
-    INC A                                                                ;82DB12;
+    INC                                                                  ;82DB12;
     CMP.W $C400                                                          ;82DB13;
     BCS +                                                                ;82DB16;
     LDA.W #$0000                                                         ;82DB18;
@@ -10546,7 +10546,7 @@ Advance_GradualColorChange_ofPalettesInA:
   .loop:
     PLA                                                                  ;82DB24;
     BEQ +                                                                ;82DB25;
-    LSR A                                                                ;82DB27;
+    LSR                                                                  ;82DB27;
     PHA                                                                  ;82DB28;
     BCS .advance                                                         ;82DB29;
     LDA.W $C404                                                          ;82DB2B;
@@ -11029,18 +11029,18 @@ Load_Room_Header:
     LDA.W $0004,X                                                        ;82DE9B;
     AND.W #$00FF                                                         ;82DE9E;
     STA.W $07A9                                                          ;82DEA1;
-    ASL A                                                                ;82DEA4;
-    ASL A                                                                ;82DEA5;
-    ASL A                                                                ;82DEA6;
-    ASL A                                                                ;82DEA7;
+    ASL                                                                  ;82DEA4;
+    ASL                                                                  ;82DEA5;
+    ASL                                                                  ;82DEA6;
+    ASL                                                                  ;82DEA7;
     STA.W $07A5                                                          ;82DEA8;
     LDA.W $0005,X                                                        ;82DEAB;
     AND.W #$00FF                                                         ;82DEAE;
     STA.W $07AB                                                          ;82DEB1;
-    ASL A                                                                ;82DEB4;
-    ASL A                                                                ;82DEB5;
-    ASL A                                                                ;82DEB6;
-    ASL A                                                                ;82DEB7;
+    ASL                                                                  ;82DEB4;
+    ASL                                                                  ;82DEB5;
+    ASL                                                                  ;82DEB6;
+    ASL                                                                  ;82DEB7;
     STA.W $07A7                                                          ;82DEB8;
     LDA.W $0006,X                                                        ;82DEBB;
     AND.W #$00FF                                                         ;82DEBE;
@@ -11061,7 +11061,7 @@ Load_Room_Header:
     NOP                                                                  ;82DEE8;
     NOP                                                                  ;82DEE9;
     LDA.W $4216                                                          ;82DEEA;
-    ASL A                                                                ;82DEED;
+    ASL                                                                  ;82DEED;
     STA.W $07B9                                                          ;82DEEE;
     RTS                                                                  ;82DEF1;
 
@@ -11074,7 +11074,7 @@ Load_State_Header:
     LDX.W $07BB                                                          ;82DEF7;
     LDA.W $0003,X                                                        ;82DEFA;
     AND.W #$00FF                                                         ;82DEFD;
-    ASL A                                                                ;82DF00;
+    ASL                                                                  ;82DF00;
     TAY                                                                  ;82DF01;
     LDX.W Tileset_Pointers,Y                                             ;82DF02;
     LDA.W $0001,X                                                        ;82DF05;
@@ -11214,7 +11214,7 @@ Load_EnemyGFX_to_VRAM:
     LDA.B $12                                                            ;82DFFD;
     STA.W $05BE                                                          ;82DFFF;
     LDA.L $A00000,X                                                      ;82E002;
-    LSR A                                                                ;82E006;
+    LSR                                                                  ;82E006;
     CLC                                                                  ;82E007;
     ADC.B $12                                                            ;82E008;
     STA.B $12                                                            ;82E00A;
@@ -11225,10 +11225,10 @@ Load_EnemyGFX_to_VRAM:
     TYX                                                                  ;82E014;
     LDA.L $B40002,X                                                      ;82E015;
     AND.W #$F000                                                         ;82E019;
-    LSR A                                                                ;82E01C;
-    LSR A                                                                ;82E01D;
-    LSR A                                                                ;82E01E;
-    LSR A                                                                ;82E01F;
+    LSR                                                                  ;82E01C;
+    LSR                                                                  ;82E01D;
+    LSR                                                                  ;82E01E;
+    LSR                                                                  ;82E01F;
     ORA.W #$6000                                                         ;82E020;
     STA.W $05BE                                                          ;82E023;
 
@@ -11257,7 +11257,7 @@ Perform_Door_Transition_VRAM_Update:
 ;;     [[S] + 1] + 4: VRAM address
 ;;     [[S] + 1] + 6: Size (in bytes)
     LDA.B $01,S                                                          ;82E039;
-    INC A                                                                ;82E03B;
+    INC                                                                  ;82E03B;
     STA.B $AD                                                            ;82E03C;
     PHB                                                                  ;82E03E;
     PHK                                                                  ;82E03F;
@@ -11277,7 +11277,7 @@ Perform_Door_Transition_VRAM_Update:
     STA.W $05C3                                                          ;82E05C;
     PLB                                                                  ;82E05F;
     LDA.B $AD                                                            ;82E060;
-    INC A                                                                ;82E062;
+    INC                                                                  ;82E062;
     STA.B $01,S                                                          ;82E063;
     LDA.W #$8000                                                         ;82E065;
     TSB.W $05BC                                                          ;82E068;
@@ -12346,7 +12346,7 @@ Load_CRETiles_TilesetTiles_and_TilesetPalette:
     STA.B $47                                                            ;82E79D;
     LDA.W #$5000                                                         ;82E79F;
     STA.B $4C                                                            ;82E7A2;
-    LSR A                                                                ;82E7A4;
+    LSR                                                                  ;82E7A4;
     STA.W $2116                                                          ;82E7A5;
     JSL.L DecompressionToVRAM                                            ;82E7A8;
     LDA.W $07C4                                                          ;82E7AC;
@@ -12408,7 +12408,7 @@ LoadLevelData_CRE_TileTable_ScrollData_PLMs_DoorASM_RoomASM:
     PLB                                                                  ;82E800;
     LDA.W $0000                                                          ;82E801;
     TAX                                                                  ;82E804;
-    LSR A                                                                ;82E805;
+    LSR                                                                  ;82E805;
     ADC.W $0000                                                          ;82E806;
     ADC.W $0000                                                          ;82E809;
     TAY                                                                  ;82E80C;
@@ -12424,7 +12424,7 @@ LoadLevelData_CRE_TileTable_ScrollData_PLMs_DoorASM_RoomASM:
     DEX                                                                  ;82E818;
     BPL .loopB                                                           ;82E819;
     LDA.W $0000                                                          ;82E81B;
-    LSR A                                                                ;82E81E;
+    LSR                                                                  ;82E81E;
     TAX                                                                  ;82E81F;
     ADC.W $0000                                                          ;82E820;
     TAY                                                                  ;82E823;
@@ -12486,7 +12486,7 @@ LoadLevelData_CRE_TileTable_ScrollData_PLMs_DoorASM_RoomASM:
     STY.B $12                                                            ;82E88D;
     SEP #$30                                                             ;82E88F;
     LDA.W $07AB                                                          ;82E891;
-    DEC A                                                                ;82E894;
+    DEC                                                                  ;82E894;
     STA.B $14                                                            ;82E895;
     LDA.B #$02                                                           ;82E897;
     LDX.B #$00                                                           ;82E899;
@@ -12496,7 +12496,7 @@ LoadLevelData_CRE_TileTable_ScrollData_PLMs_DoorASM_RoomASM:
     CPY.B $14                                                            ;82E89D;
     BNE +                                                                ;82E89F;
     LDA.B $12                                                            ;82E8A1;
-    INC A                                                                ;82E8A3;
+    INC                                                                  ;82E8A3;
 
 +   PHY                                                                  ;82E8A4;
     LDY.B #$00                                                           ;82E8A5;
@@ -12557,7 +12557,7 @@ Spawn_Door_Closing_PLM:
     JSR.W CheckIfColoredDoorcapWasSpawned_SwitchDoorPLMInstruction       ;82E8F4;
     BCS .return                                                          ;82E8F7;
     LDA.W $0791                                                          ;82E8F9;
-    ASL A                                                                ;82E8FC;
+    ASL                                                                  ;82E8FC;
     CLC                                                                  ;82E8FD;
     ADC.W #Door_Closing_PLMs                                             ;82E8FE;
     TAX                                                                  ;82E901;
@@ -12595,7 +12595,7 @@ CheckIfColoredDoorcapWasSpawned_SwitchDoorPLMInstruction:
     AND.W #$00FF                                                         ;82E935;
     CLC                                                                  ;82E938;
     ADC.W $4216                                                          ;82E939;
-    ASL A                                                                ;82E93C;
+    ASL                                                                  ;82E93C;
     CLI                                                                  ;82E93D;
     LDX.W #$004E                                                         ;82E93E;
 
@@ -12884,7 +12884,7 @@ Load_Level_Scroll_and_CRE_Data:
     PLB                                                                  ;82EAA8;
     LDA.W $0000                                                          ;82EAA9;
     TAX                                                                  ;82EAAC;
-    LSR A                                                                ;82EAAD;
+    LSR                                                                  ;82EAAD;
     ADC.W $0000                                                          ;82EAAE;
     ADC.W $0000                                                          ;82EAB1;
     TAY                                                                  ;82EAB4;
@@ -12899,7 +12899,7 @@ Load_Level_Scroll_and_CRE_Data:
     DEX                                                                  ;82EAC0;
     BPL -                                                                ;82EAC1;
     LDA.W $0000                                                          ;82EAC3;
-    LSR A                                                                ;82EAC6;
+    LSR                                                                  ;82EAC6;
     TAX                                                                  ;82EAC7;
     ADC.W $0000                                                          ;82EAC8;
     TAY                                                                  ;82EACB;
@@ -12962,7 +12962,7 @@ Load_Level_Scroll_and_CRE_Data:
     STY.B $12                                                            ;82EB3D;
     SEP #$30                                                             ;82EB3F;
     LDA.W $07AB                                                          ;82EB41;
-    DEC A                                                                ;82EB44;
+    DEC                                                                  ;82EB44;
     STA.B $14                                                            ;82EB45;
     LDA.B #$02                                                           ;82EB47;
     LDX.B #$00                                                           ;82EB49;
@@ -12972,7 +12972,7 @@ Load_Level_Scroll_and_CRE_Data:
     CPY.B $14                                                            ;82EB4D;
     BNE +                                                                ;82EB4F;
     LDA.B $12                                                            ;82EB51;
-    INC A                                                                ;82EB53;
+    INC                                                                  ;82EB53;
 
 +   PHY                                                                  ;82EB54;
     LDY.B #$00                                                           ;82EB55;
@@ -13032,7 +13032,7 @@ GameState_2_GameOptionsMenu:
     PLB                                                                  ;82EBA2;
     REP #$30                                                             ;82EBA3;
     LDA.W DeathAnimation_Timer                                                          ;82EBA5;
-    ASL A                                                                ;82EBA8;
+    ASL                                                                  ;82EBA8;
     TAX                                                                  ;82EBA9;
     JSR.W (.pointers,X)                                                  ;82EBAA;
     JSR.W GameOptionsMenu_ObjectHandler                                  ;82EBAD;
@@ -13276,7 +13276,7 @@ GameOptionsMenu_3_OptionsMenu:
     LDA.W #$0037                                                         ;82ED67;
     JSL.L QueueSound_Lib1_Max6                                           ;82ED6A;
     LDA.W MenuOptionIndex                                                          ;82ED6E;
-    INC A                                                                ;82ED71;
+    INC                                                                  ;82ED71;
     STA.W MenuOptionIndex                                                          ;82ED72;
     CMP.W #$0005                                                         ;82ED75;
     BNE .checkB                                                          ;82ED78;
@@ -13295,7 +13295,7 @@ GameOptionsMenu_3_OptionsMenu:
     LDA.W #$0038                                                         ;82ED8E;
     JSL.L QueueSound_Lib1_Max6                                           ;82ED91;
     LDA.W MenuOptionIndex                                                          ;82ED95;
-    ASL A                                                                ;82ED98;
+    ASL                                                                  ;82ED98;
     TAX                                                                  ;82ED99;
     JSR.W (.pointers,X)                                                  ;82ED9A;
 
@@ -13681,7 +13681,7 @@ GameOptionsMenu_8_SpecialSettings:
     LDA.W #$0037                                                         ;82F046;
     JSL.L QueueSound_Lib1_Max6                                           ;82F049;
     LDA.W MenuOptionIndex                                                          ;82F04D;
-    INC A                                                                ;82F050;
+    INC                                                                  ;82F050;
     STA.W MenuOptionIndex                                                          ;82F051;
     CMP.W #$0003                                                         ;82F054;
     BNE .checkB                                                          ;82F057;
@@ -13704,7 +13704,7 @@ GameOptionsMenu_8_SpecialSettings:
     LDA.W #$0038                                                         ;82F078;
     JSL.L QueueSound_Lib1_Max6                                           ;82F07B;
     LDA.W MenuOptionIndex                                                          ;82F07F;
-    ASL A                                                                ;82F082;
+    ASL                                                                  ;82F082;
     TAX                                                                  ;82F083;
     JSR.W (.pointers,X)                                                  ;82F084;
 
@@ -13720,7 +13720,7 @@ GameOptionsMenu_8_SpecialSettings:
 ;;; $F08E: Game options - special settings - toggle setting ;;;
 GameOptions_SpecialSettings_ToggleSetting:
     LDA.W MenuOptionIndex                                                          ;82F08E;
-    ASL A                                                                ;82F091;
+    ASL                                                                  ;82F091;
     TAX                                                                  ;82F092;
     LDA.W SpecialSettingRAMAddresses,X                                   ;82F093;
     TAX                                                                  ;82F096;
@@ -13755,15 +13755,15 @@ GameOptions_SpecialSettings_End:
 ;;; $F0B9: Set special setting highlights ;;;
 Set_SpecialSetting_Highlights:
     LDA.W MenuOptionIndex                                                          ;82F0B9;
-    ASL A                                                                ;82F0BC;
+    ASL                                                                  ;82F0BC;
     TAX                                                                  ;82F0BD;
     LDA.W SpecialSettingRAMAddresses,X                                   ;82F0BE;
     TAX                                                                  ;82F0C1;
     LDA.W $0000,X                                                        ;82F0C2;
     BNE .settingIsOn                                                     ;82F0C5;
     LDA.W MenuOptionIndex                                                          ;82F0C7;
-    ASL A                                                                ;82F0CA;
-    ASL A                                                                ;82F0CB;
+    ASL                                                                  ;82F0CA;
+    ASL                                                                  ;82F0CB;
     TAX                                                                  ;82F0CC;
     PHX                                                                  ;82F0CD;
     LDA.W .iconCancelManualRow0,X                                        ;82F0CE;
@@ -13795,8 +13795,8 @@ Set_SpecialSetting_Highlights:
 
   .settingIsOn:
     LDA.W MenuOptionIndex                                                          ;82F108;
-    ASL A                                                                ;82F10B;
-    ASL A                                                                ;82F10C;
+    ASL                                                                  ;82F10B;
+    ASL                                                                  ;82F10C;
     TAX                                                                  ;82F10D;
     PHX                                                                  ;82F10E;
     LDA.W .iconCancelManualRow0,X                                        ;82F10F;
@@ -13855,7 +13855,7 @@ GameOptionsMenu_7_ControllerSettings:
     LDA.W #$0037                                                         ;82F160;
     JSL.L QueueSound_Lib1_Max6                                           ;82F163;
     LDA.W MenuOptionIndex                                                          ;82F167;
-    DEC A                                                                ;82F16A;
+    DEC                                                                  ;82F16A;
     STA.W MenuOptionIndex                                                          ;82F16B;
     BMI .gotoScrollDown                                                  ;82F16E;
     CMP.W #$0006                                                         ;82F170;
@@ -13877,7 +13877,7 @@ GameOptionsMenu_7_ControllerSettings:
     LDA.W #$0037                                                         ;82F186;
     JSL.L QueueSound_Lib1_Max6                                           ;82F189;
     LDA.W MenuOptionIndex                                                          ;82F18D;
-    INC A                                                                ;82F190;
+    INC                                                                  ;82F190;
     STA.W MenuOptionIndex                                                          ;82F191;
     CMP.W #$0007                                                         ;82F194;
     BEQ .scrollDown                                                      ;82F197;
@@ -13902,7 +13902,7 @@ GameOptionsMenu_7_ControllerSettings:
     LDA.W #$0038                                                         ;82F1B5;
     JSL.L QueueSound_Lib1_Max6                                           ;82F1B8;
     LDA.W MenuOptionIndex                                                          ;82F1BC;
-    ASL A                                                                ;82F1BF;
+    ASL                                                                  ;82F1BF;
     TAX                                                                  ;82F1C0;
     JSR.W (.pointers,X)                                                  ;82F1C1;
     RTS                                                                  ;82F1C4;
@@ -13932,7 +13932,7 @@ GameOptionsMenu_7_ControllerSettings:
     CMP.W #$0010                                                         ;82F1E9;
     BPL .otherReturn                                                     ;82F1EC;
     LDA.W $0DE0                                                          ;82F1EE;
-    ASL A                                                                ;82F1F1;
+    ASL                                                                  ;82F1F1;
     TAX                                                                  ;82F1F2;
     TYA                                                                  ;82F1F3;
     AND.W .inputs,X                                                      ;82F1F4;
@@ -14055,14 +14055,14 @@ PreInstruction_MenuSelectionMissile:
     RTS                                                                  ;82F2BD;
 
 +   LDA.W DeathAnimation_Timer                                                          ;82F2BE;
-    ASL A                                                                ;82F2C1;
+    ASL                                                                  ;82F2C1;
     TAY                                                                  ;82F2C2;
     LDA.W .pointers,Y                                                    ;82F2C3;
     BEQ +                                                                ;82F2C6;
     STA.B $12                                                            ;82F2C8;
     LDA.W MenuOptionIndex                                                          ;82F2CA;
-    ASL A                                                                ;82F2CD;
-    ASL A                                                                ;82F2CE;
+    ASL                                                                  ;82F2CD;
+    ASL                                                                  ;82F2CE;
     CLC                                                                  ;82F2CF;
     ADC.B $12                                                            ;82F2D0;
     TAY                                                                  ;82F2D2;
@@ -14507,7 +14507,7 @@ Save_GameOptionsMenu_ControllerBindings:
     LDA.W Configurable_Controller_Binding_RAM_Addresses,X                ;82F55C;
     TAY                                                                  ;82F55F;
     LDA.W $1B3D,X                                                        ;82F560;
-    ASL A                                                                ;82F563;
+    ASL                                                                  ;82F563;
     TAX                                                                  ;82F564;
     LDA.W Controller_Input_Bitmasks,X                                    ;82F565;
     STA.W $0000,Y                                                        ;82F568;
@@ -14541,7 +14541,7 @@ Draw_GameOptionsMenu_ControllerBindings:
   .loop:
     PHX                                                                  ;82F58A;
     LDA.W $1B3D,X                                                        ;82F58B;
-    ASL A                                                                ;82F58E;
+    ASL                                                                  ;82F58E;
     TAY                                                                  ;82F58F;
     LDA.W GameOptionsMenu_TilemapOffsets,X                               ;82F590;
     TAX                                                                  ;82F593;
@@ -14676,10 +14676,10 @@ GameOptions_ControllerSettings_SetBinding:
     RTS                                                                  ;82F6C7;
 
 +   TXA                                                                  ;82F6C8;
-    LSR A                                                                ;82F6C9;
+    LSR                                                                  ;82F6C9;
     STA.B $12                                                            ;82F6CA;
     LDA.W MenuOptionIndex                                                          ;82F6CC;
-    ASL A                                                                ;82F6CF;
+    ASL                                                                  ;82F6CF;
     CLC                                                                  ;82F6D0;
     ADC.W #$0002                                                         ;82F6D1;
     CMP.W #$000E                                                         ;82F6D4;
@@ -14706,7 +14706,7 @@ GameOptions_ControllerSettings_SetBinding:
   .found:
     PHY                                                                  ;82F6F4;
     LDA.W MenuOptionIndex                                                          ;82F6F5;
-    ASL A                                                                ;82F6F8;
+    ASL                                                                  ;82F6F8;
     TAY                                                                  ;82F6F9;
     LDA.W $1B3D,Y                                                        ;82F6FA;
     STA.B $14                                                            ;82F6FD;

@@ -1584,7 +1584,7 @@ PreInstruction_Xray_Main:
 +   TXA                                                                  ;888718;
     TSB.W $1986                                                          ;888719;
     LDA.W $0A7A                                                          ;88871C;
-    ASL A                                                                ;88871F;
+    ASL                                                                  ;88871F;
     TAX                                                                  ;888720;
     JSR.W (.pointers,X)                                                  ;888721;
     PLP                                                                  ;888724;
@@ -1613,7 +1613,7 @@ HandleXrayScope_State0_NoBeam:
   .calculateHDMATable:
     JSR.W Calculate_Xray_HDMADataTable                                   ;888744;
     LDA.W $0A7A                                                          ;888747;
-    INC A                                                                ;88874A;
+    INC                                                                  ;88874A;
     STA.W $0A7A                                                          ;88874B;
     JSR.W RTS_888753                                                     ;88874E;
 
@@ -1660,7 +1660,7 @@ HandleXrayScope_State1_BeamIsWidening:
     LDA.W #$000A                                                         ;888799;
     STA.W $0A84                                                          ;88879C;
     LDA.W $0A7A                                                          ;88879F;
-    INC A                                                                ;8887A2;
+    INC                                                                  ;8887A2;
     STA.W $0A7A                                                          ;8887A3;
 
   .calculateHDMATable:
@@ -2244,7 +2244,7 @@ PreInstruction_PowerBombExplosion_5_AfterGlow:
     LDA.W $0074                                                          ;888BAA;
     AND.B #$1F                                                           ;888BAD;
     BEQ .green                                                           ;888BAF;
-    DEC A                                                                ;888BB1;
+    DEC                                                                  ;888BB1;
     ORA.B #$20                                                           ;888BB2;
     STA.W $0074                                                          ;888BB4;
 
@@ -2252,7 +2252,7 @@ PreInstruction_PowerBombExplosion_5_AfterGlow:
     LDA.W $0075                                                          ;888BB7;
     AND.B #$1F                                                           ;888BBA;
     BEQ .blue                                                            ;888BBC;
-    DEC A                                                                ;888BBE;
+    DEC                                                                  ;888BBE;
     ORA.B #$40                                                           ;888BBF;
     STA.W $0075                                                          ;888BC1;
 
@@ -2260,7 +2260,7 @@ PreInstruction_PowerBombExplosion_5_AfterGlow:
     LDA.W $0076                                                          ;888BC4;
     AND.B #$1F                                                           ;888BC7;
     BEQ .setTimer                                                        ;888BC9;
-    DEC A                                                                ;888BCB;
+    DEC                                                                  ;888BCB;
     ORA.B #$80                                                           ;888BCC;
     STA.W $0076                                                          ;888BCE;
 
@@ -2296,7 +2296,7 @@ Calc_PowerBombExplo_HDMADataTables_PreScaled_LeftOfScreen:
     BCS +                                                                ;888BF1;
     LDA.B #$00                                                           ;888BF3;
     STA.L $7EC506,X                                                      ;888BF5;
-    INC A                                                                ;888BF9;
+    INC                                                                  ;888BF9;
     STA.L $7EC406,X                                                      ;888BFA;
     BRA .next                                                            ;888BFE;
 
@@ -2361,7 +2361,7 @@ Calc_PowerBombExplo_HDMADataTables_PreScaled_RightOfScreen:
     BCC +                                                                ;888C41;
     LDA.B #$FF                                                           ;888C43;
     STA.L $7EC406,X                                                      ;888C45;
-    DEC A                                                                ;888C49;
+    DEC                                                                  ;888C49;
     STA.L $7EC506,X                                                      ;888C4A;
     BRA .next                                                            ;888C4E;
 
@@ -2430,7 +2430,7 @@ Calculate_PowerBombExplosion_HDMADataTablePointers:
     AND.W #$00FF                                                         ;888CA8;
     TAY                                                                  ;888CAB;
     LDA.W $0CE8                                                          ;888CAC;
-    ASL A                                                                ;888CAF;
+    ASL                                                                  ;888CAF;
     CLC                                                                  ;888CB0;
     ADC.W $0CE8                                                          ;888CB1;
     STA.B $16                                                            ;888CB4;
@@ -2690,7 +2690,7 @@ PreInstruction_PowerBombExplosion_3_Explosion_Yellow:
     LDA.W $0CE7                                                          ;888E1D;
     AND.B #$FF                                                           ;888E20;
     BEQ .offScreenLeft                                                   ;888E22;
-    DEC A                                                                ;888E24;
+    DEC                                                                  ;888E24;
     BEQ .onScreen                                                        ;888E25;
     JMP.W Calculate_PowerBombExplo_HDMADataTables_Scaled_RightOfScreen   ;888E27;
 
@@ -2715,21 +2715,21 @@ PreInstruction_PowerBombExplosion_3_Explosion_Yellow:
 
   .loopPadDataTableEnd:
     STA.L $7EC406,X                                                      ;888E46;
-    INC A                                                                ;888E4A;
+    INC                                                                  ;888E4A;
     STA.L $7EC506,X                                                      ;888E4B;
-    DEC A                                                                ;888E4F;
+    DEC                                                                  ;888E4F;
     INX                                                                  ;888E50;
     CPX.B #$C0                                                           ;888E51;
     BNE .loopPadDataTableEnd                                             ;888E53;
 
   .finishedTable:
     LDA.W $0CEB                                                          ;888E55;
-    LSR A                                                                ;888E58;
-    LSR A                                                                ;888E59;
-    LSR A                                                                ;888E5A;
+    LSR                                                                  ;888E58;
+    LSR                                                                  ;888E59;
+    LSR                                                                  ;888E5A;
     AND.B #$1F                                                           ;888E5B;
     STA.B $12                                                            ;888E5D;
-    ASL A                                                                ;888E5F;
+    ASL                                                                  ;888E5F;
     CLC                                                                  ;888E60;
     ADC.B $12                                                            ;888E61;
     TAX                                                                  ;888E63;
@@ -2795,7 +2795,7 @@ PreInstruction_PowerBombExplosion_4_Explosion_White:
     LDA.W $0CE7                                                          ;888ED2;
     AND.B #$FF                                                           ;888ED5;
     BEQ .offScreenLeft                                                   ;888ED7;
-    DEC A                                                                ;888ED9;
+    DEC                                                                  ;888ED9;
     BEQ .onScreen                                                        ;888EDA;
     JMP.W Calc_PowerBombExplo_HDMADataTables_PreScaled_RightOfScreen     ;888EDC;
 
@@ -2810,12 +2810,12 @@ PreInstruction_PowerBombExplosion_4_Explosion_White:
     LDA.B #$00                                                           ;888EE7;
     XBA                                                                  ;888EE9;
     LDA.W $0CEB                                                          ;888EEA;
-    LSR A                                                                ;888EED;
-    LSR A                                                                ;888EEE;
-    LSR A                                                                ;888EEF;
+    LSR                                                                  ;888EED;
+    LSR                                                                  ;888EEE;
+    LSR                                                                  ;888EEF;
     AND.B #$1F                                                           ;888EF0;
     STA.B $12                                                            ;888EF2;
-    ASL A                                                                ;888EF4;
+    ASL                                                                  ;888EF4;
     CLC                                                                  ;888EF5;
     ADC.B $12                                                            ;888EF6;
     TAX                                                                  ;888EF8;
@@ -2915,7 +2915,7 @@ Calculate_PowerBombPreExplosion_HDMAObjectTablePointers:
     AND.W #$00FF                                                         ;888F9C;
     TAY                                                                  ;888F9F;
     LDA.W $0CE8                                                          ;888FA0;
-    ASL A                                                                ;888FA3;
+    ASL                                                                  ;888FA3;
     CLC                                                                  ;888FA4;
     ADC.W $0CE8                                                          ;888FA5;
     STA.B $16                                                            ;888FA8;
@@ -3162,7 +3162,7 @@ PreInstruction_PowerBombExplosion_1_PreExplosion_White:
     LDA.W $0CE7                                                          ;889113;
     AND.B #$FF                                                           ;889116;
     BEQ .offScreenLeft                                                   ;889118;
-    DEC A                                                                ;88911A;
+    DEC                                                                  ;88911A;
     BEQ .onScreen                                                        ;88911B;
     JMP.W Calculate_PowerBombExplo_HDMADataTables_Scaled_RightOfScreen   ;88911D;
 
@@ -3187,21 +3187,21 @@ PreInstruction_PowerBombExplosion_1_PreExplosion_White:
 
   .loopPadDataTableEnd:
     STA.L $7EC406,X                                                      ;88913C;
-    INC A                                                                ;889140;
+    INC                                                                  ;889140;
     STA.L $7EC506,X                                                      ;889141;
-    DEC A                                                                ;889145;
+    DEC                                                                  ;889145;
     INX                                                                  ;889146;
     CPX.B #$C0                                                           ;889147;
     BNE .loopPadDataTableEnd                                             ;889149;
 
   .finishedTable:
     LDA.W $0CED                                                          ;88914B;
-    LSR A                                                                ;88914E;
-    LSR A                                                                ;88914F;
-    LSR A                                                                ;889150;
+    LSR                                                                  ;88914E;
+    LSR                                                                  ;88914F;
+    LSR                                                                  ;889150;
     AND.B #$0F                                                           ;889151;
     STA.B $12                                                            ;889153;
-    ASL A                                                                ;889155;
+    ASL                                                                  ;889155;
     CLC                                                                  ;889156;
     ADC.B $12                                                            ;889157;
     TAX                                                                  ;889159;
@@ -3267,7 +3267,7 @@ PreInstruction_PowerBombExplosion_2_PreExplosion_Yellow:
     LDA.W $0CE7                                                          ;8891C8;
     AND.B #$FF                                                           ;8891CB;
     BEQ .offScreenLeft                                                   ;8891CD;
-    DEC A                                                                ;8891CF;
+    DEC                                                                  ;8891CF;
     BEQ .onScreen                                                        ;8891D0;
     JMP.W Calc_PowerBombExplo_HDMADataTables_PreScaled_RightOfScreen     ;8891D2;
 
@@ -3282,12 +3282,12 @@ PreInstruction_PowerBombExplosion_2_PreExplosion_Yellow:
     LDA.B #$00                                                           ;8891DD;
     XBA                                                                  ;8891DF;
     LDA.W $0CED                                                          ;8891E0;
-    LSR A                                                                ;8891E3;
-    LSR A                                                                ;8891E4;
-    LSR A                                                                ;8891E5;
+    LSR                                                                  ;8891E3;
+    LSR                                                                  ;8891E4;
+    LSR                                                                  ;8891E5;
     AND.B #$0F                                                           ;8891E6;
     STA.B $12                                                            ;8891E8;
-    ASL A                                                                ;8891EA;
+    ASL                                                                  ;8891EA;
     CLC                                                                  ;8891EB;
     ADC.B $12                                                            ;8891EC;
     TAX                                                                  ;8891EE;
@@ -3755,7 +3755,7 @@ PreInstruction_CrystalFlash_2_AfterGlow:
     LDA.W $0074                                                          ;88A377;
     AND.B #$1F                                                           ;88A37A;
     BEQ .green                                                           ;88A37C;
-    DEC A                                                                ;88A37E;
+    DEC                                                                  ;88A37E;
     ORA.B #$20                                                           ;88A37F;
     STA.W $0074                                                          ;88A381; >.<
 
@@ -3763,7 +3763,7 @@ PreInstruction_CrystalFlash_2_AfterGlow:
     LDA.W $0075                                                          ;88A384; >.<
     AND.B #$1F                                                           ;88A387;
     BEQ .blue                                                            ;88A389;
-    DEC A                                                                ;88A38B;
+    DEC                                                                  ;88A38B;
     ORA.B #$40                                                           ;88A38C;
     STA.W $0075                                                          ;88A38E; >.<
 
@@ -3771,7 +3771,7 @@ PreInstruction_CrystalFlash_2_AfterGlow:
     LDA.W $0076                                                          ;88A391; >.<
     AND.B #$1F                                                           ;88A394;
     BEQ .setTimer                                                        ;88A396;
-    DEC A                                                                ;88A398;
+    DEC                                                                  ;88A398;
     ORA.B #$80                                                           ;88A399;
     STA.W $0076                                                          ;88A39B; >.<
 
@@ -3802,7 +3802,7 @@ UNUSED_CalcCrystalFlashHDMADataTables_PreScaled_Left_88A3B7:
     BCS +                                                                ;88A3BE;
     LDA.B #$00                                                           ;88A3C0;
     STA.L $7EC506,X                                                      ;88A3C2;
-    INC A                                                                ;88A3C6;
+    INC                                                                  ;88A3C6;
     STA.L $7EC406,X                                                      ;88A3C7;
     BRA .loop                                                            ;88A3CB;
 
@@ -3854,7 +3854,7 @@ UNUSED_Calc_CF_HDMADataTables_PreScaled_RightOfScreen_88A407:
     BCC +                                                                ;88A40E;
     LDA.B #$FF                                                           ;88A410;
     STA.L $7EC406,X                                                      ;88A412;
-    DEC A                                                                ;88A416;
+    DEC                                                                  ;88A416;
     STA.L $7EC506,X                                                      ;88A417;
     BRA .next                                                            ;88A41B;
 
@@ -3914,7 +3914,7 @@ Calculate_CrystalFlash_HDMAObjectTablePointers:
     AND.W #$00FF                                                         ;88A475;
     TAY                                                                  ;88A478;
     LDA.W $0CE8                                                          ;88A479;
-    ASL A                                                                ;88A47C;
+    ASL                                                                  ;88A47C;
     CLC                                                                  ;88A47D;
     ADC.W $0CE8                                                          ;88A47E;
     STA.B $16                                                            ;88A481;
@@ -4093,7 +4093,7 @@ PreInstruction_CrystalFlash_1_Explosion:
     LDA.W $0CE7                                                          ;88A586;
     AND.B #$FF                                                           ;88A589;
     BEQ .offScreenLeft                                                   ;88A58B;
-    DEC A                                                                ;88A58D;
+    DEC                                                                  ;88A58D;
     BEQ .onScreen                                                        ;88A58E;
     JMP.W Calculate_CrystalFlash_HDMADataTables_Scaled_RightOfScreen     ;88A590;
 
@@ -4118,21 +4118,21 @@ PreInstruction_CrystalFlash_1_Explosion:
 
   .loopPadDataTableEnd:
     STA.L $7EC406,X                                                      ;88A5AF;
-    INC A                                                                ;88A5B3;
+    INC                                                                  ;88A5B3;
     STA.L $7EC506,X                                                      ;88A5B4;
-    DEC A                                                                ;88A5B8;
+    DEC                                                                  ;88A5B8;
     INX                                                                  ;88A5B9;
     CPX.B #$C0                                                           ;88A5BA;
     BNE .loopPadDataTableEnd                                             ;88A5BC;
 
   .finishedTable:
     LDA.W $0CEB                                                          ;88A5BE;
-    LSR A                                                                ;88A5C1;
-    LSR A                                                                ;88A5C2;
-    LSR A                                                                ;88A5C3;
+    LSR                                                                  ;88A5C1;
+    LSR                                                                  ;88A5C2;
+    LSR                                                                  ;88A5C3;
     AND.B #$1F                                                           ;88A5C4;
     STA.B $12                                                            ;88A5C6;
-    ASL A                                                                ;88A5C8;
+    ASL                                                                  ;88A5C8;
     CLC                                                                  ;88A5C9;
     ADC.B $12                                                            ;88A5CA;
     TAX                                                                  ;88A5CC;
@@ -4244,8 +4244,8 @@ PreInstruction_FXType_22_BG3XScroll:
     AND.W #$0001                                                         ;88A684;
     BNE +                                                                ;88A687;
     LDA.W $0596                                                          ;88A689;
-    INC A                                                                ;88A68C;
-    INC A                                                                ;88A68D;
+    INC                                                                  ;88A68C;
+    INC                                                                  ;88A68D;
     AND.W #$001E                                                         ;88A68E;
     STA.W $0596                                                          ;88A691;
 
@@ -4269,8 +4269,8 @@ PreInstruction_FXType_22_BG3XScroll:
     LDA.W #$0006                                                         ;88A6B1;
     STA.W $1920,X                                                        ;88A6B4;
     LDA.W $1914,X                                                        ;88A6B7;
-    INC A                                                                ;88A6BA;
-    INC A                                                                ;88A6BB;
+    INC                                                                  ;88A6BA;
+    INC                                                                  ;88A6BB;
     AND.W #$001F                                                         ;88A6BC;
     STA.W $1914,X                                                        ;88A6BF;
 
@@ -4284,8 +4284,8 @@ PreInstruction_FXType_22_BG3XScroll:
     ADC.W WaveDisplacementTable_Water,Y                                  ;88A6CC;
     STA.L $7E9E80,X                                                      ;88A6CF;
     TXA                                                                  ;88A6D3;
-    DEC A                                                                ;88A6D4;
-    DEC A                                                                ;88A6D5;
+    DEC                                                                  ;88A6D4;
+    DEC                                                                  ;88A6D5;
     AND.W #$001F                                                         ;88A6D6;
     TAX                                                                  ;88A6D9;
     DEY                                                                  ;88A6DA;
@@ -4490,7 +4490,7 @@ Calculate_FXType_22_BG3YScrollHDMATable:
     PLB                                                                  ;88A81E;
     LDA.W #$0020                                                         ;88A81F;
     STA.W $0598                                                          ;88A822;
-    DEC A                                                                ;88A825;
+    DEC                                                                  ;88A825;
     STA.L $7E9C00                                                        ;88A826;
     LDA.W #$0000                                                         ;88A82A;
     STA.L $7E9C01                                                        ;88A82D;
@@ -4907,8 +4907,8 @@ Handle_ScrollingSky_BG2XScroll_HDMATables:
     LDA.W #$007F                                                         ;88AE7E;
     STA.L $7E9F00,X                                                      ;88AE81;
     LDA.W ScrollingSky_ScrollingTable_HDMADataTableEntryPointer,Y        ;88AE85;
-    INC A                                                                ;88AE88;
-    INC A                                                                ;88AE89;
+    INC                                                                  ;88AE88;
+    INC                                                                  ;88AE89;
     STA.L $7E9F01,X                                                      ;88AE8A;
     INX                                                                  ;88AE8E;
     INX                                                                  ;88AE8F;
@@ -5052,13 +5052,13 @@ RoomMainASM_ScrollingSky:
     PHA                                                                  ;88AFCF;
     AND.W #$FF00                                                         ;88AFD0;
     XBA                                                                  ;88AFD3;
-    ASL A                                                                ;88AFD4;
+    ASL                                                                  ;88AFD4;
     TAY                                                                  ;88AFD5;
     PLA                                                                  ;88AFD6;
     AND.W #$00FF                                                         ;88AFD7;
-    ASL A                                                                ;88AFDA;
-    ASL A                                                                ;88AFDB;
-    ASL A                                                                ;88AFDC;
+    ASL                                                                  ;88AFDA;
+    ASL                                                                  ;88AFDB;
+    ASL                                                                  ;88AFDC;
     CLC                                                                  ;88AFDD;
     ADC.B [$00],Y                                                        ;88AFDE;
     STA.B $D2,X                                                          ;88AFE0;
@@ -5072,13 +5072,13 @@ RoomMainASM_ScrollingSky:
     PHA                                                                  ;88AFF2;
     AND.W #$FF00                                                         ;88AFF3;
     XBA                                                                  ;88AFF6;
-    ASL A                                                                ;88AFF7;
+    ASL                                                                  ;88AFF7;
     TAY                                                                  ;88AFF8;
     PLA                                                                  ;88AFF9;
     AND.W #$00FF                                                         ;88AFFA;
-    ASL A                                                                ;88AFFD;
-    ASL A                                                                ;88AFFE;
-    ASL A                                                                ;88AFFF;
+    ASL                                                                  ;88AFFD;
+    ASL                                                                  ;88AFFE;
+    ASL                                                                  ;88AFFF;
     CLC                                                                  ;88B000;
     ADC.B [$00],Y                                                        ;88B001;
     STA.B $E0,X                                                          ;88B003;
@@ -5100,8 +5100,8 @@ RoomMainASM_ScrollingSky:
     SEC                                                                  ;88B024;
     SBC.W #$0010                                                         ;88B025;
     AND.W #$01F8                                                         ;88B028;
-    ASL A                                                                ;88B02B;
-    ASL A                                                                ;88B02C;
+    ASL                                                                  ;88B02B;
+    ASL                                                                  ;88B02C;
     CLC                                                                  ;88B02D;
     ADC.B $12                                                            ;88B02E;
     STA.B $D5,X                                                          ;88B030;
@@ -5112,8 +5112,8 @@ RoomMainASM_ScrollingSky:
     CLC                                                                  ;88B03B;
     ADC.W #$00F0                                                         ;88B03C;
     AND.W #$01F8                                                         ;88B03F;
-    ASL A                                                                ;88B042;
-    ASL A                                                                ;88B043;
+    ASL                                                                  ;88B042;
+    ASL                                                                  ;88B043;
     CLC                                                                  ;88B044;
     ADC.B $12                                                            ;88B045;
     STA.B $E3,X                                                          ;88B047;
@@ -5198,7 +5198,7 @@ PreInstruction_Fireflea_BG3XScroll:
 
   .lessThanA:
     LDA.W $177A                                                          ;88B0E8;
-    INC A                                                                ;88B0EB;
+    INC                                                                  ;88B0EB;
     CMP.W #$000C                                                         ;88B0EC;
     BCC .storeIndex                                                      ;88B0EF;
     LDA.W #$0000                                                         ;88B0F1;
@@ -5209,7 +5209,7 @@ PreInstruction_Fireflea_BG3XScroll:
   .nonZero:
     REP #$30                                                             ;88B0F7;
     LDA.W $177A                                                          ;88B0F9;
-    ASL A                                                                ;88B0FC;
+    ASL                                                                  ;88B0FC;
     TAX                                                                  ;88B0FD;
     LDA.L Fireflea_Flashing_Shades,X                                     ;88B0FE;
     LDX.W $177E                                                          ;88B102;
@@ -5344,10 +5344,10 @@ PreInstruction_ExpandingContractingEffect_BG2YScroll:
 
   .counterLessThan4:
     LDA.W $05A4                                                          ;88B1D3;
-    ASL A                                                                ;88B1D6;
+    ASL                                                                  ;88B1D6;
     TAX                                                                  ;88B1D7;
     LDA.W $05A8                                                          ;88B1D8;
-    ASL A                                                                ;88B1DB;
+    ASL                                                                  ;88B1DB;
     TAY                                                                  ;88B1DC;
     STZ.B $12                                                            ;88B1DD;
     LDA.W #$0020                                                         ;88B1DF;
@@ -5394,7 +5394,7 @@ Handle_Earthquake_SoundEffect:
     REP #$30                                                             ;88B220;
     LDA.W $0609                                                          ;88B222;
     BMI .return                                                          ;88B225;
-    DEC A                                                                ;88B227;
+    DEC                                                                  ;88B227;
     STA.W $0609                                                          ;88B228;
     BPL .return                                                          ;88B22B;
     LDX.W $0607                                                          ;88B22D;
@@ -5491,12 +5491,12 @@ Handle_Tide:
     STZ.W $1972                                                          ;88B2D4;
     LDA.W $1975                                                          ;88B2D7;
     AND.W #$00FF                                                         ;88B2DA;
-    ASL A                                                                ;88B2DD;
+    ASL                                                                  ;88B2DD;
     TAX                                                                  ;88B2DE;
     LDA.L SineCosineTables_NegativeCosine_SignExtended,X                 ;88B2DF;
-    ASL A                                                                ;88B2E3;
-    ASL A                                                                ;88B2E4;
-    ASL A                                                                ;88B2E5;
+    ASL                                                                  ;88B2E3;
+    ASL                                                                  ;88B2E4;
+    ASL                                                                  ;88B2E5;
     BPL +                                                                ;88B2E6;
     DEC.W $1972                                                          ;88B2E8;
 
@@ -5522,14 +5522,14 @@ Handle_Tide:
     STZ.W $1972                                                          ;88B30B;
     LDA.W $1975                                                          ;88B30E;
     AND.W #$00FF                                                         ;88B311;
-    ASL A                                                                ;88B314;
+    ASL                                                                  ;88B314;
     TAX                                                                  ;88B315;
     LDA.L SineCosineTables_NegativeCosine_SignExtended,X                 ;88B316;
-    ASL A                                                                ;88B31A;
-    ASL A                                                                ;88B31B;
-    ASL A                                                                ;88B31C;
-    ASL A                                                                ;88B31D;
-    ASL A                                                                ;88B31E;
+    ASL                                                                  ;88B31A;
+    ASL                                                                  ;88B31B;
+    ASL                                                                  ;88B31C;
+    ASL                                                                  ;88B31D;
+    ASL                                                                  ;88B31E;
     BPL +                                                                ;88B31F;
     DEC.W $1972                                                          ;88B321;
 
@@ -5749,11 +5749,11 @@ PreInstruction_LavaAcid_BG3YScroll:
 
   .merge2:
     EOR.W #$01FF                                                         ;88B477;
-    INC A                                                                ;88B47A;
+    INC                                                                  ;88B47A;
     AND.W #$03FF                                                         ;88B47B;
     STA.B $12                                                            ;88B47E;
     LDA.B $12                                                            ;88B480;
-    ASL A                                                                ;88B482;
+    ASL                                                                  ;88B482;
     CLC                                                                  ;88B483;
     ADC.B $12                                                            ;88B484;
     ADC.W #IndirectHDMATable_LavaAcid_BG3Yscroll                         ;88B486;
@@ -5815,7 +5815,7 @@ PreInstruction_LavaAcid_BG2YScroll:
     AND.W #$000F                                                         ;88B509;
     STA.B $12                                                            ;88B50C;
     LDA.B $12                                                            ;88B50E;
-    ASL A                                                                ;88B510;
+    ASL                                                                  ;88B510;
     CLC                                                                  ;88B511;
     ADC.B $12                                                            ;88B512;
     CLC                                                                  ;88B514;
@@ -5864,8 +5864,8 @@ Setup_LavaAcid_BG2YScrollDataTable_HorizontallyWavy:
     LDA.W #$0006                                                         ;88B54C;
     STA.W $1920,X                                                        ;88B54F;
     LDA.W $1914,X                                                        ;88B552;
-    DEC A                                                                ;88B555;
-    DEC A                                                                ;88B556;
+    DEC                                                                  ;88B555;
+    DEC                                                                  ;88B556;
     AND.W #$001E                                                         ;88B557;
     STA.W $1914,X                                                        ;88B55A;
 
@@ -5883,13 +5883,13 @@ Setup_LavaAcid_BG2YScrollDataTable_HorizontallyWavy:
     AND.W #$01FF                                                         ;88B56E;
     STA.L $7E9C46,X                                                      ;88B571;
     TYA                                                                  ;88B575;
-    DEC A                                                                ;88B576;
-    DEC A                                                                ;88B577;
+    DEC                                                                  ;88B576;
+    DEC                                                                  ;88B577;
     AND.W #$001E                                                         ;88B578;
     TAY                                                                  ;88B57B;
     TXA                                                                  ;88B57C;
-    DEC A                                                                ;88B57D;
-    DEC A                                                                ;88B57E;
+    DEC                                                                  ;88B57D;
+    DEC                                                                  ;88B57E;
     AND.W #$001E                                                         ;88B57F;
     TAX                                                                  ;88B582;
     DEC.B $12                                                            ;88B583;
@@ -5916,8 +5916,8 @@ Setup_LavaAcid_BG2YScrollDataTable_VerticallyWavy:
     LDA.W #$0004                                                         ;88B5BA;
     STA.W $1920,X                                                        ;88B5BD;
     LDA.W $1914,X                                                        ;88B5C0;
-    DEC A                                                                ;88B5C3;
-    DEC A                                                                ;88B5C4;
+    DEC                                                                  ;88B5C3;
+    DEC                                                                  ;88B5C4;
     AND.W #$001E                                                         ;88B5C5;
     STA.W $1914,X                                                        ;88B5C8;
 
@@ -5925,7 +5925,7 @@ Setup_LavaAcid_BG2YScrollDataTable_VerticallyWavy:
     PHX                                                                  ;88B5CB;
     LDA.B $B7                                                            ;88B5CC;
     AND.W #$000F                                                         ;88B5CE;
-    ASL A                                                                ;88B5D1;
+    ASL                                                                  ;88B5D1;
     PHA                                                                  ;88B5D2;
     CLC                                                                  ;88B5D3;
     ADC.W $1914,X                                                        ;88B5D4;
@@ -5946,13 +5946,13 @@ Setup_LavaAcid_BG2YScrollDataTable_VerticallyWavy:
     AND.W #$01FF                                                         ;88B5EF;
     STA.L $7E9C46,X                                                      ;88B5F2;
     TXA                                                                  ;88B5F6;
-    DEC A                                                                ;88B5F7;
-    DEC A                                                                ;88B5F8;
+    DEC                                                                  ;88B5F7;
+    DEC                                                                  ;88B5F8;
     AND.W #$001E                                                         ;88B5F9;
     TAX                                                                  ;88B5FC;
     TYA                                                                  ;88B5FD;
-    DEC A                                                                ;88B5FE;
-    DEC A                                                                ;88B5FF;
+    DEC                                                                  ;88B5FE;
+    DEC                                                                  ;88B5FF;
     AND.W #$001E                                                         ;88B600;
     TAY                                                                  ;88B603;
     DEC.B $12                                                            ;88B604;
@@ -7343,8 +7343,8 @@ PreInstruction_Water_BG3_Xscroll:
     LDA.W #$000A                                                         ;88C506;
     STA.W $1920,X                                                        ;88C509;
     LDA.W $1914,X                                                        ;88C50C;
-    INC A                                                                ;88C50F;
-    INC A                                                                ;88C510;
+    INC                                                                  ;88C50F;
+    INC                                                                  ;88C510;
     AND.W #$001E                                                         ;88C511;
     STA.W $1914,X                                                        ;88C514;
 
@@ -7396,11 +7396,11 @@ PreInstruction_Water_BG3_Xscroll:
 
   .merge2:
     EOR.W #$01FF                                                         ;88C569;
-    INC A                                                                ;88C56C;
+    INC                                                                  ;88C56C;
     AND.W #$03FF                                                         ;88C56D;
     STA.B $12                                                            ;88C570;
     LDA.B $12                                                            ;88C572;
-    ASL A                                                                ;88C574;
+    ASL                                                                  ;88C574;
     CLC                                                                  ;88C575;
     ADC.B $12                                                            ;88C576;
     ADC.W #IndirectHDMATable_WaterBG3XScroll_0                           ;88C578;
@@ -7474,7 +7474,7 @@ PreInstruction_Water_BG2_Xscroll:
     AND.W #$03FF                                                         ;88C5D1;
     STA.B $12                                                            ;88C5D4;
     LDA.B $12                                                            ;88C5D6;
-    ASL A                                                                ;88C5D8;
+    ASL                                                                  ;88C5D8;
     CLC                                                                  ;88C5D9;
     ADC.B $12                                                            ;88C5DA;
     ADC.W #IndirectHDMATable_WaterBG2XScroll                             ;88C5DC;
@@ -7492,15 +7492,15 @@ Setup_Water_BG2_Xscroll_DataTable_Wavy:
     LDA.W #$0006                                                         ;88C5E9;
     STA.W $1920,X                                                        ;88C5EC;
     LDA.W $1914,X                                                        ;88C5EF;
-    INC A                                                                ;88C5F2;
-    INC A                                                                ;88C5F3;
+    INC                                                                  ;88C5F2;
+    INC                                                                  ;88C5F3;
     AND.W #$001E                                                         ;88C5F4;
     STA.W $1914,X                                                        ;88C5F7;
 
 +   PHX                                                                  ;88C5FA;
     LDA.B $B7                                                            ;88C5FB;
     AND.W #$000F                                                         ;88C5FD;
-    ASL A                                                                ;88C600;
+    ASL                                                                  ;88C600;
     PHA                                                                  ;88C601;
     CLC                                                                  ;88C602;
     ADC.W $1914,X                                                        ;88C603;
@@ -9322,7 +9322,7 @@ Instruction_HDMAObjectBG3XVelocity:
 ;;     X: HDMA object index
     PHX                                                                  ;88D981;
     LDA.W $05E5                                                          ;88D982;
-    LSR A                                                                ;88D985;
+    LSR                                                                  ;88D985;
     AND.W #$0006                                                         ;88D986;
     TAX                                                                  ;88D989;
     LDA.W .BG3XVelocities,X                                              ;88D98A;
@@ -9515,8 +9515,8 @@ UNUSED_HandleSporesWaviness_88DA9F:
     LDA.W #$000A                                                         ;88DAA4;
     STA.W $1920,X                                                        ;88DAA7;
     LDA.W $1914,X                                                        ;88DAAA;
-    INC A                                                                ;88DAAD;
-    INC A                                                                ;88DAAE;
+    INC                                                                  ;88DAAD;
+    INC                                                                  ;88DAAE;
     AND.W #$001F                                                         ;88DAAF;
     STA.W $1914,X                                                        ;88DAB2;
 
@@ -9532,8 +9532,8 @@ UNUSED_HandleSporesWaviness_88DA9F:
     ADC.W .waveDisplacementTable,Y                                       ;88DAC1;
     STA.L $7E9C04,X                                                      ;88DAC4;
     TXA                                                                  ;88DAC8;
-    DEC A                                                                ;88DAC9;
-    DEC A                                                                ;88DACA;
+    DEC                                                                  ;88DAC9;
+    DEC                                                                  ;88DACA;
     AND.W #$001F                                                         ;88DACB;
     TAX                                                                  ;88DACE;
     DEY                                                                  ;88DACF;
@@ -9543,7 +9543,7 @@ UNUSED_HandleSporesWaviness_88DA9F:
     LDA.W #$FFF0                                                         ;88DAD6;
     TRB.B $14                                                            ;88DAD9;
     LDA.B $14                                                            ;88DADB;
-    ASL A                                                                ;88DADD;
+    ASL                                                                  ;88DADD;
     CLC                                                                  ;88DADE;
     ADC.B $14                                                            ;88DADF;
     ADC.W #IndirectHDMATable_WaterBG3XScroll_1                           ;88DAE1;
@@ -10017,7 +10017,7 @@ UNUSED_PreInst_CeresHaze_ColorMathSubScnBackdropColor_NoFade:
 
   .loop:
     STA.L $7E9D00,X                                                      ;88DE04;
-    DEC A                                                                ;88DE08;
+    DEC                                                                  ;88DE08;
     DEX                                                                  ;88DE09;
     BPL .loop                                                            ;88DE0A;
     PLX                                                                  ;88DE0C;
@@ -10085,7 +10085,7 @@ PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadingIn:
     ORA.B $14                                                            ;88DE57;
     STA.L $7E9D00,X                                                      ;88DE59;
     LDA.B $12                                                            ;88DE5D;
-    DEC A                                                                ;88DE5F;
+    DEC                                                                  ;88DE5F;
     BPL .next                                                            ;88DE60;
     LDA.B #$00                                                           ;88DE62;
 
@@ -10153,7 +10153,7 @@ PreInstruction_CeresHaze_ColorMathSubScnBackColor_FadingOut:
     ORA.B $14                                                            ;88DEBD;
     STA.L $7E9D00,X                                                      ;88DEBF;
     LDA.B $12                                                            ;88DEC3;
-    DEC A                                                                ;88DEC5;
+    DEC                                                                  ;88DEC5;
     BPL .next                                                            ;88DEC6;
     LDA.B #$00                                                           ;88DEC8;
 
@@ -10425,7 +10425,7 @@ PreInstruction_VariaSuitPickup:
     PHP                                                                  ;88E026;
     REP #$30                                                             ;88E027;
     LDA.W $0DEC                                                          ;88E029;
-    ASL A                                                                ;88E02C;
+    ASL                                                                  ;88E02C;
     TAX                                                                  ;88E02D;
     JSR.W (.pointers,X)                                                  ;88E02E;
     BCC .return                                                          ;88E031;
@@ -10459,7 +10459,7 @@ PreInstruction_GravitySuitPickup:
     PHP                                                                  ;88E05C;
     REP #$30                                                             ;88E05D;
     LDA.W $0DEC                                                          ;88E05F;
-    ASL A                                                                ;88E062;
+    ASL                                                                  ;88E062;
     TAX                                                                  ;88E063;
     JSR.W (.poitners,X)                                                  ;88E064;
     BCC .return                                                          ;88E067;
@@ -10654,7 +10654,7 @@ SuitPickup_Stage2_LightBeamWidens_Curved:
     BNE .return                                                          ;88E1A9;
     INC.W $0DEC                                                          ;88E1AB;
     LDA.W $0DDC                                                          ;88E1AE;
-    LSR A                                                                ;88E1B1;
+    LSR                                                                  ;88E1B1;
     STA.W $0DDC                                                          ;88E1B2;
     STZ.W $0DEE                                                          ;88E1B5;
 
@@ -10796,8 +10796,8 @@ GravitySuitPickup_Stage6:
     STZ.W $0DF2                                                          ;88E297;
     LDX.W $18B2                                                          ;88E29A;
     LDA.W $18CC,X                                                        ;88E29D;
-    INC A                                                                ;88E2A0;
-    INC A                                                                ;88E2A1;
+    INC                                                                  ;88E2A0;
+    INC                                                                  ;88E2A1;
     STA.W $18CC,X                                                        ;88E2A2;
     LDA.W #$0001                                                         ;88E2A5;
     STA.W $18E4,X                                                        ;88E2A8;
@@ -10813,8 +10813,8 @@ AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToWhite:
     LDA.W $0DF0                                                          ;88E2B6;
     CMP.B #$3F                                                           ;88E2B9;
     BEQ .green                                                           ;88E2BB;
-    INC A                                                                ;88E2BD;
-    INC A                                                                ;88E2BE;
+    INC                                                                  ;88E2BD;
+    INC                                                                  ;88E2BE;
     STA.W $0DF0                                                          ;88E2BF;
     CMP.B #$40                                                           ;88E2C2;
     BMI .green                                                           ;88E2C4;
@@ -10825,8 +10825,8 @@ AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToWhite:
     LDA.W $0DF1                                                          ;88E2CB;
     CMP.B #$5F                                                           ;88E2CE;
     BEQ .blue                                                            ;88E2D0;
-    INC A                                                                ;88E2D2;
-    INC A                                                                ;88E2D3;
+    INC                                                                  ;88E2D2;
+    INC                                                                  ;88E2D3;
     STA.W $0DF1                                                          ;88E2D4;
     CMP.B #$60                                                           ;88E2D7;
     BMI .blue                                                            ;88E2D9;
@@ -10837,8 +10837,8 @@ AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToWhite:
     LDA.W $0DF2                                                          ;88E2E0;
     CMP.B #$9F                                                           ;88E2E3;
     BEQ .return                                                          ;88E2E5;
-    INC A                                                                ;88E2E7;
-    INC A                                                                ;88E2E8;
+    INC                                                                  ;88E2E7;
+    INC                                                                  ;88E2E8;
     STA.W $0DF2                                                          ;88E2E9;
     CMP.B #$A0                                                           ;88E2EC;
     BMI .return                                                          ;88E2EE;
@@ -10857,21 +10857,21 @@ AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToOrange:
     LDA.W $0DF0                                                          ;88E2FB;
     CMP.B #$3F                                                           ;88E2FE;
     BEQ .green                                                           ;88E300;
-    DEC A                                                                ;88E302;
+    DEC                                                                  ;88E302;
     STA.W $0DF0                                                          ;88E303;
 
   .green:
     LDA.W $0DF1                                                          ;88E306;
     CMP.B #$4D                                                           ;88E309;
     BEQ .blue                                                            ;88E30B;
-    DEC A                                                                ;88E30D;
+    DEC                                                                  ;88E30D;
     STA.W $0DF1                                                          ;88E30E;
 
   .blue:
     LDA.W $0DF2                                                          ;88E311;
     CMP.B #$83                                                           ;88E314;
     BEQ .return                                                          ;88E316;
-    DEC A                                                                ;88E318;
+    DEC                                                                  ;88E318;
     STA.W $0DF2                                                          ;88E319;
 
   .return:
@@ -10946,21 +10946,21 @@ AdvanceSuitPickup_ColorMathSubScnBackdrop_TransitionToBlue:
     LDA.W $0DF0                                                          ;88E3A4;
     CMP.B #$30                                                           ;88E3A7;
     BEQ .green                                                           ;88E3A9;
-    DEC A                                                                ;88E3AB;
+    DEC                                                                  ;88E3AB;
     STA.W $0DF0                                                          ;88E3AC;
 
   .green:
     LDA.W $0DF1                                                          ;88E3AF;
     CMP.B #$49                                                           ;88E3B2;
     BEQ .blue                                                            ;88E3B4;
-    DEC A                                                                ;88E3B6;
+    DEC                                                                  ;88E3B6;
     STA.W $0DF1                                                          ;88E3B7;
 
   .blue:
     LDA.W $0DF2                                                          ;88E3BA;
     CMP.B #$90                                                           ;88E3BD;
     BEQ .return                                                          ;88E3BF;
-    DEC A                                                                ;88E3C1;
+    DEC                                                                  ;88E3C1;
     STA.W $0DF2                                                          ;88E3C2;
 
   .return:
@@ -11013,8 +11013,8 @@ PreInstruction_PhantoonSemiTransparency:
     STA.W $1986                                                          ;88E471;
     LDX.W $18B2                                                          ;88E474;
     LDA.W $18CC,X                                                        ;88E477;
-    INC A                                                                ;88E47A;
-    INC A                                                                ;88E47B;
+    INC                                                                  ;88E47A;
+    INC                                                                  ;88E47B;
     STA.W $18CC,X                                                        ;88E47C;
     LDA.W #$0001                                                         ;88E47F;
     STA.W $18E4,X                                                        ;88E482;
@@ -11147,8 +11147,8 @@ PreInstruction_WavyPhantoon:
     BNE .phantoonEnabled                                                 ;88E56D;
     LDX.W $18B2                                                          ;88E56F;
     LDA.W $18CC,X                                                        ;88E572;
-    INC A                                                                ;88E575;
-    INC A                                                                ;88E576;
+    INC                                                                  ;88E575;
+    INC                                                                  ;88E576;
     STA.W $18CC,X                                                        ;88E577;
     LDA.W #$0001                                                         ;88E57A;
     STA.W $18E4,X                                                        ;88E57D;
@@ -11176,7 +11176,7 @@ PreInstruction_WavyPhantoon:
     LDA.W #$0001                                                         ;88E5A3;
     STA.W $1920,X                                                        ;88E5A6;
     LDA.W $1072                                                          ;88E5A9;
-    ASL A                                                                ;88E5AC;
+    ASL                                                                  ;88E5AC;
     STA.B $12                                                            ;88E5AD;
     LDA.W $1914,X                                                        ;88E5AF;
     CLC                                                                  ;88E5B2;
@@ -11265,7 +11265,7 @@ PreInstruction_WavyPhantoon:
 
   .negative:
     EOR.W #$FFFF                                                         ;88E656;
-    INC A                                                                ;88E659;
+    INC                                                                  ;88E659;
     STA.B $12                                                            ;88E65A;
     SEP #$20                                                             ;88E65C;
     STA.W $4202                                                          ;88E65E;
@@ -11522,9 +11522,9 @@ Set_RainbowBeam_ColorMathSubscreenBackdropColor:
     STA.B $74                                                            ;88E810;
     REP #$20                                                             ;88E812;
     LDA.B $01,S                                                          ;88E814;
-    ASL A                                                                ;88E816;
-    ASL A                                                                ;88E817;
-    ASL A                                                                ;88E818;
+    ASL                                                                  ;88E816;
+    ASL                                                                  ;88E817;
+    ASL                                                                  ;88E818;
     XBA                                                                  ;88E819;
     SEP #$20                                                             ;88E81A;
     AND.B #$1F                                                           ;88E81C;
@@ -11532,8 +11532,8 @@ Set_RainbowBeam_ColorMathSubscreenBackdropColor:
     STA.B $75                                                            ;88E820;
     REP #$20                                                             ;88E822;
     PLA                                                                  ;88E824;
-    LSR A                                                                ;88E825;
-    LSR A                                                                ;88E826;
+    LSR                                                                  ;88E825;
+    LSR                                                                  ;88E826;
     XBA                                                                  ;88E827;
     SEP #$20                                                             ;88E828;
     AND.B #$1F                                                           ;88E82A;
@@ -11722,8 +11722,8 @@ PreInstruction_MorphBallEyeBeam_BeamIsWidening:
     STA.W $192C,X                                                        ;88EA23;
     LDX.W $18B2                                                          ;88EA26;
     LDA.W $18CC,X                                                        ;88EA29;
-    INC A                                                                ;88EA2C;
-    INC A                                                                ;88EA2D;
+    INC                                                                  ;88EA2C;
+    INC                                                                  ;88EA2D;
     STA.W $18CC,X                                                        ;88EA2E;
     LDA.W #$0001                                                         ;88EA31;
     STA.W $18E4,X                                                        ;88EA34;
@@ -11746,8 +11746,8 @@ PreInstruction_MorphBallEyeBeamHDMA_FullBeam:
     BNE .update                                                          ;88EA48;
     LDX.W $18B2                                                          ;88EA4A;
     LDA.W $18CC,X                                                        ;88EA4D;
-    INC A                                                                ;88EA50;
-    INC A                                                                ;88EA51;
+    INC                                                                  ;88EA50;
+    INC                                                                  ;88EA51;
     STA.W $18CC,X                                                        ;88EA52;
     LDA.W #$0001                                                         ;88EA55;
     STA.W $18E4,X                                                        ;88EA58;
@@ -11757,8 +11757,8 @@ PreInstruction_MorphBallEyeBeamHDMA_FullBeam:
   .update:
     JSR.W Update_MorphBallEyeBeam_HDMATable_ColorMathSubScnBackColor     ;88EA5D;
     LDA.L $7E9090                                                        ;88EA60;
-    ASL A                                                                ;88EA64;
-    ASL A                                                                ;88EA65;
+    ASL                                                                  ;88EA64;
+    ASL                                                                  ;88EA65;
     TAY                                                                  ;88EA66;
     SEP #$20                                                             ;88EA67;
     LDA.W .red,Y                                                         ;88EA69;
@@ -11769,7 +11769,7 @@ PreInstruction_MorphBallEyeBeamHDMA_FullBeam:
     STA.W $1920,X                                                        ;88EA78;
     REP #$20                                                             ;88EA7B;
     LDA.L $7E9090                                                        ;88EA7D;
-    INC A                                                                ;88EA81;
+    INC                                                                  ;88EA81;
     AND.W #$000F                                                         ;88EA82;
     STA.L $7E9090                                                        ;88EA85;
     PLP                                                                  ;88EA89;
@@ -11839,8 +11839,8 @@ PreInstruction_MorphBallEyeBeamHDMA_DeactivateBeam:
     STA.L $7E9008                                                        ;88EB12;
     LDX.W $18B2                                                          ;88EB16;
     LDA.W $18CC,X                                                        ;88EB19;
-    INC A                                                                ;88EB1C;
-    INC A                                                                ;88EB1D;
+    INC                                                                  ;88EB1C;
+    INC                                                                  ;88EB1D;
     STA.W $18CC,X                                                        ;88EB1E;
     LDA.W #$0001                                                         ;88EB21;
     STA.W $18E4,X                                                        ;88EB24;
@@ -11854,21 +11854,21 @@ PreInstruction_MorphBallEyeBeamHDMA_DeactivateBeam:
     LDA.W $1914,X                                                        ;88EB33;
     CMP.B #$20                                                           ;88EB36;
     BEQ .green                                                           ;88EB38;
-    DEC A                                                                ;88EB3A;
+    DEC                                                                  ;88EB3A;
     STA.W $1914,X                                                        ;88EB3B;
 
   .green:
     LDA.W $1915,X                                                        ;88EB3E;
     CMP.B #$40                                                           ;88EB41;
     BEQ .blue                                                            ;88EB43;
-    DEC A                                                                ;88EB45;
+    DEC                                                                  ;88EB45;
     STA.W $1915,X                                                        ;88EB46;
 
   .blue:
     LDA.W $1920,X                                                        ;88EB49;
     CMP.B #$80                                                           ;88EB4C;
     BEQ .returnREP20                                                     ;88EB4E;
-    DEC A                                                                ;88EB50;
+    DEC                                                                  ;88EB50;
     STA.W $1920,X                                                        ;88EB51;
 
   .returnREP20:
@@ -11954,8 +11954,8 @@ PreInst_ColorMathSubScnBackdropColor_TitleSequenceGradient:
     BNE .return                                                          ;88EBBD;
     LDX.W $18B2                                                          ;88EBBF;
     LDA.W $18CC,X                                                        ;88EBC2;
-    INC A                                                                ;88EBC5;
-    INC A                                                                ;88EBC6;
+    INC                                                                  ;88EBC5;
+    INC                                                                  ;88EBC6;
     STA.W $18CC,X                                                        ;88EBC7;
     LDA.W #$0001                                                         ;88EBCA;
     STA.W $18E4,X                                                        ;88EBCD;
@@ -11974,8 +11974,8 @@ PreInstruction_ColorMathControlRegB_TitleSequenceGradient:
     BNE .return                                                          ;88EBDB;
     LDX.W $18B2                                                          ;88EBDD;
     LDA.W $18CC,X                                                        ;88EBE0;
-    INC A                                                                ;88EBE3;
-    INC A                                                                ;88EBE4;
+    INC                                                                  ;88EBE3;
+    INC                                                                  ;88EBE4;
     STA.W $18CC,X                                                        ;88EBE5;
     LDA.W #$0001                                                         ;88EBE8;
     STA.W $18E4,X                                                        ;88EBEB;
@@ -12030,8 +12030,8 @@ PreInstruction_IntroCutsceneCrossFade:
     BNE .return                                                          ;88EC26;
     LDX.W $18B2                                                          ;88EC28;
     LDA.W $18CC,X                                                        ;88EC2B;
-    INC A                                                                ;88EC2E;
-    INC A                                                                ;88EC2F;
+    INC                                                                  ;88EC2E;
+    INC                                                                  ;88EC2F;
     STA.W $18CC,X                                                        ;88EC30;
     LDA.W #$0001                                                         ;88EC33;
     STA.W $18E4,X                                                        ;88EC36;
@@ -12115,8 +12115,8 @@ PreInstruction_WavySamus:
     BNE .enabled                                                         ;88ECBC;
     LDX.W $18B2                                                          ;88ECBE;
     LDA.W $18CC,X                                                        ;88ECC1;
-    INC A                                                                ;88ECC4;
-    INC A                                                                ;88ECC5;
+    INC                                                                  ;88ECC4;
+    INC                                                                  ;88ECC5;
     STA.W $18CC,X                                                        ;88ECC6;
     LDA.W #$0001                                                         ;88ECC9;
     STA.W $18E4,X                                                        ;88ECCC;
@@ -12130,7 +12130,7 @@ PreInstruction_WavySamus:
     STA.B $1E                                                            ;88ECD9;
     PHX                                                                  ;88ECDB;
     LDA.W $0DA0                                                          ;88ECDC;
-    ASL A                                                                ;88ECDF;
+    ASL                                                                  ;88ECDF;
     STA.B $12                                                            ;88ECE0;
     LDA.W $1914,X                                                        ;88ECE2;
     CLC                                                                  ;88ECE5;
@@ -12216,7 +12216,7 @@ PreInstruction_WavySamus:
 
   .negative:
     EOR.W #$FFFF                                                         ;88ED89;
-    INC A                                                                ;88ED8C;
+    INC                                                                  ;88ED8C;
     STA.B $12                                                            ;88ED8D;
     SEP #$20                                                             ;88ED8F;
     STA.W $4202                                                          ;88ED91;

@@ -46,7 +46,7 @@ incbin "../data/Tiles_SpacePirate.bin" ; $1800 bytes
 CalculateMotherBrainRainbowBeamHDMATables:
     LDA.L $7E8027                                                        ;ADDE00;
     AND.W #$00FF                                                         ;ADDE04;
-    LSR A                                                                ;ADDE07;
+    LSR                                                                  ;ADDE07;
     STA.B $12                                                            ;ADDE08;
     LDA.L $7E8022                                                        ;ADDE0A;
     SEC                                                                  ;ADDE0E;
@@ -69,15 +69,15 @@ CalculateMotherBrainRainbowBeamHDMATables:
     STA.L MotherBrainBody.rainbowBeamOriginYPositionDuplicate                                                        ;ADDE3D;
     LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADDE41;
     AND.W #$00C0                                                         ;ADDE45;
-    ASL A                                                                ;ADDE48;
-    ASL A                                                                ;ADDE49;
+    ASL                                                                  ;ADDE48;
+    ASL                                                                  ;ADDE49;
     STA.B $12                                                            ;ADDE4A;
     LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADDE4C;
     AND.W #$00C0                                                         ;ADDE50;
     ORA.B $12                                                            ;ADDE53;
-    ASL A                                                                ;ADDE55;
-    ASL A                                                                ;ADDE56;
-    ASL A                                                                ;ADDE57;
+    ASL                                                                  ;ADDE55;
+    ASL                                                                  ;ADDE56;
+    ASL                                                                  ;ADDE57;
     XBA                                                                  ;ADDE58;
     TAX                                                                  ;ADDE59;
     JSR.W (CalculateMotherBrainRainbowBeamHDMATables_pointers,X)         ;ADDE5A;
@@ -167,13 +167,13 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight:
     STA.W $9D02                                                          ;ADDEDA;
     LDA.W $8034                                                          ;ADDEDD;
     AND.W #$00FF                                                         ;ADDEE0;
-    ASL A                                                                ;ADDEE3;
+    ASL                                                                  ;ADDEE3;
     TAX                                                                  ;ADDEE4;
     LDA.L AbsoluteTangentTable,X                                         ;ADDEE5;
     STA.B $12                                                            ;ADDEE9;
     LDA.W $8036                                                          ;ADDEEB;
     AND.W #$00FF                                                         ;ADDEEE;
-    ASL A                                                                ;ADDEF1;
+    ASL                                                                  ;ADDEF1;
     TAX                                                                  ;ADDEF2;
     LDA.L AbsoluteTangentTable,X                                         ;ADDEF3;
     STA.B $14                                                            ;ADDEF7;
@@ -181,7 +181,7 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight:
     TAY                                                                  ;ADDEFC;
     SEC                                                                  ;ADDEFD;
     SBC.W #$0020                                                         ;ADDEFE;
-    ASL A                                                                ;ADDF01;
+    ASL                                                                  ;ADDF01;
     CLC                                                                  ;ADDF02;
     ADC.W #$9D02                                                         ;ADDF03;
     TAX                                                                  ;ADDF06;
@@ -262,15 +262,15 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpwards:
     STA.B $18                                                            ;ADDF78;
     SEP #$20                                                             ;ADDF7A;
     LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADDF7C;
-    ASL A                                                                ;ADDF80;
+    ASL                                                                  ;ADDF80;
     ROL.B $12                                                            ;ADDF81;
     LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADDF83;
-    ASL A                                                                ;ADDF87;
+    ASL                                                                  ;ADDF87;
     ROL.B $12                                                            ;ADDF88;
     LDA.B $12                                                            ;ADDF8A;
     REP #$20                                                             ;ADDF8C;
     AND.W #$0003                                                         ;ADDF8E;
-    ASL A                                                                ;ADDF91;
+    ASL                                                                  ;ADDF91;
     TAX                                                                  ;ADDF92;
     JSR.W (.pointers,X)                                                  ;ADDF93;
     LDA.W #$0010                                                         ;ADDF96;
@@ -294,7 +294,7 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpwards:
     LDA.W #$007F                                                         ;ADDFCE;
     STA.L $7E9C09                                                        ;ADDFD1;
     PLA                                                                  ;ADDFD5;
-    ASL A                                                                ;ADDFD6;
+    ASL                                                                  ;ADDFD6;
     CLC                                                                  ;ADDFD7;
     ADC.W #$9D04                                                         ;ADDFD8;
     STA.L $7E9C0A                                                        ;ADDFDB;
@@ -313,7 +313,7 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpwards:
     LDA.W #$00FF                                                         ;ADDFFB;
     STA.L $7E9C09                                                        ;ADDFFE;
     LDA.B $12                                                            ;ADE002;
-    ASL A                                                                ;ADE004;
+    ASL                                                                  ;ADE004;
     ADC.W #$9D04                                                         ;ADE005;
     STA.L $7E9C0A                                                        ;ADE008;
     PHA                                                                  ;ADE00C;
@@ -349,13 +349,13 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpRight:
     STA.W $9D02                                                          ;ADE038;
     LDA.W $8036                                                          ;ADE03B;
     AND.W #$00FF                                                         ;ADE03E;
-    ASL A                                                                ;ADE041;
+    ASL                                                                  ;ADE041;
     TAX                                                                  ;ADE042;
     LDA.L AbsoluteTangentTable,X                                         ;ADE043;
     STA.B $12                                                            ;ADE047;
     LDA.W $8034                                                          ;ADE049;
     AND.W #$00FF                                                         ;ADE04C;
-    ASL A                                                                ;ADE04F;
+    ASL                                                                  ;ADE04F;
     TAX                                                                  ;ADE050;
     LDA.L AbsoluteTangentTable,X                                         ;ADE051;
     STA.B $14                                                            ;ADE055;
@@ -363,7 +363,7 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpRight:
     TAY                                                                  ;ADE05A;
     SEC                                                                  ;ADE05B;
     SBC.W #$0020                                                         ;ADE05C;
-    ASL A                                                                ;ADE05F;
+    ASL                                                                  ;ADE05F;
     CLC                                                                  ;ADE060;
     ADC.W #$9D02                                                         ;ADE061;
     TAX                                                                  ;ADE064;
@@ -422,15 +422,15 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUp:
     STA.W $9D02                                                          ;ADE0B2;
     LDA.W $8036                                                          ;ADE0B5;
     EOR.W #$FFFF                                                         ;ADE0B8;
-    INC A                                                                ;ADE0BB;
+    INC                                                                  ;ADE0BB;
     AND.W #$00FF                                                         ;ADE0BC;
-    ASL A                                                                ;ADE0BF;
+    ASL                                                                  ;ADE0BF;
     TAX                                                                  ;ADE0C0;
     LDA.L AbsoluteTangentTable,X                                         ;ADE0C1;
     STA.B $12                                                            ;ADE0C5;
     LDA.W $8034                                                          ;ADE0C7;
     AND.W #$00FF                                                         ;ADE0CA;
-    ASL A                                                                ;ADE0CD;
+    ASL                                                                  ;ADE0CD;
     TAX                                                                  ;ADE0CE;
     LDA.L AbsoluteTangentTable,X                                         ;ADE0CF;
     STA.B $14                                                            ;ADE0D3;
@@ -438,7 +438,7 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUp:
     TAY                                                                  ;ADE0D8;
     SEC                                                                  ;ADE0D9;
     SBC.W #$0020                                                         ;ADE0DA;
-    ASL A                                                                ;ADE0DD;
+    ASL                                                                  ;ADE0DD;
     CLC                                                                  ;ADE0DE;
     ADC.W #$9D02                                                         ;ADE0DF;
     TAX                                                                  ;ADE0E2;
@@ -497,17 +497,17 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpLeft:
     STA.W $9D02                                                          ;ADE130;
     LDA.W $8036                                                          ;ADE133;
     EOR.W #$FFFF                                                         ;ADE136;
-    INC A                                                                ;ADE139;
+    INC                                                                  ;ADE139;
     AND.W #$00FF                                                         ;ADE13A;
-    ASL A                                                                ;ADE13D;
+    ASL                                                                  ;ADE13D;
     TAX                                                                  ;ADE13E;
     LDA.L AbsoluteTangentTable,X                                         ;ADE13F;
     STA.B $12                                                            ;ADE143;
     LDA.W $8034                                                          ;ADE145;
     EOR.W #$FFFF                                                         ;ADE148;
-    INC A                                                                ;ADE14B;
+    INC                                                                  ;ADE14B;
     AND.W #$00FF                                                         ;ADE14C;
-    ASL A                                                                ;ADE14F;
+    ASL                                                                  ;ADE14F;
     TAX                                                                  ;ADE150;
     LDA.L AbsoluteTangentTable,X                                         ;ADE151;
     STA.B $14                                                            ;ADE155;
@@ -515,7 +515,7 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpLeft:
     TAY                                                                  ;ADE15A;
     SEC                                                                  ;ADE15B;
     SBC.W #$0020                                                         ;ADE15C;
-    ASL A                                                                ;ADE15F;
+    ASL                                                                  ;ADE15F;
     CLC                                                                  ;ADE160;
     ADC.W #$9D02                                                         ;ADE161;
     TAX                                                                  ;ADE164;
@@ -566,15 +566,15 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownwards:
     STA.B $18                                                            ;ADE1B0;
     SEP #$20                                                             ;ADE1B2;
     LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADE1B4;
-    ASL A                                                                ;ADE1B8;
+    ASL                                                                  ;ADE1B8;
     ROL.B $12                                                            ;ADE1B9;
     LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADE1BB;
-    ASL A                                                                ;ADE1BF;
+    ASL                                                                  ;ADE1BF;
     ROL.B $12                                                            ;ADE1C0;
     LDA.B $12                                                            ;ADE1C2;
     REP #$20                                                             ;ADE1C4;
     AND.W #$0003                                                         ;ADE1C6;
-    ASL A                                                                ;ADE1C9;
+    ASL                                                                  ;ADE1C9;
     TAX                                                                  ;ADE1CA;
     JSR.W (.pointers,X)                                                  ;ADE1CB;
     LDA.W #$0010                                                         ;ADE1CE;
@@ -620,13 +620,13 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownRight:
     STA.W $9D02                                                          ;ADE222;
     LDA.W $8034                                                          ;ADE225;
     AND.W #$00FF                                                         ;ADE228;
-    ASL A                                                                ;ADE22B;
+    ASL                                                                  ;ADE22B;
     TAX                                                                  ;ADE22C;
     LDA.L AbsoluteTangentTable,X                                         ;ADE22D;
     STA.B $12                                                            ;ADE231;
     LDA.W $8036                                                          ;ADE233;
     AND.W #$00FF                                                         ;ADE236;
-    ASL A                                                                ;ADE239;
+    ASL                                                                  ;ADE239;
     TAX                                                                  ;ADE23A;
     LDA.L AbsoluteTangentTable,X                                         ;ADE23B;
     STA.B $14                                                            ;ADE23F;
@@ -696,15 +696,15 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDown:
     STA.W $9D02                                                          ;ADE29F;
     LDA.W $8034                                                          ;ADE2A2;
     EOR.W #$FFFF                                                         ;ADE2A5;
-    INC A                                                                ;ADE2A8;
+    INC                                                                  ;ADE2A8;
     AND.W #$00FF                                                         ;ADE2A9;
-    ASL A                                                                ;ADE2AC;
+    ASL                                                                  ;ADE2AC;
     TAX                                                                  ;ADE2AD;
     LDA.L AbsoluteTangentTable,X                                         ;ADE2AE;
     STA.B $12                                                            ;ADE2B2;
     LDA.W $8036                                                          ;ADE2B4;
     AND.W #$00FF                                                         ;ADE2B7;
-    ASL A                                                                ;ADE2BA;
+    ASL                                                                  ;ADE2BA;
     TAX                                                                  ;ADE2BB;
     LDA.L AbsoluteTangentTable,X                                         ;ADE2BC;
     STA.B $14                                                            ;ADE2C0;
@@ -774,17 +774,17 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownLeft:
     STA.W $9D02                                                          ;ADE320;
     LDA.W $8034                                                          ;ADE323;
     EOR.W #$FFFF                                                         ;ADE326;
-    INC A                                                                ;ADE329;
+    INC                                                                  ;ADE329;
     AND.W #$00FF                                                         ;ADE32A;
-    ASL A                                                                ;ADE32D;
+    ASL                                                                  ;ADE32D;
     TAX                                                                  ;ADE32E;
     LDA.L AbsoluteTangentTable,X                                         ;ADE32F;
     STA.B $12                                                            ;ADE333;
     LDA.W $8036                                                          ;ADE335;
     EOR.W #$FFFF                                                         ;ADE338;
-    INC A                                                                ;ADE33B;
+    INC                                                                  ;ADE33B;
     AND.W #$00FF                                                         ;ADE33C;
-    ASL A                                                                ;ADE33F;
+    ASL                                                                  ;ADE33F;
     TAX                                                                  ;ADE340;
     LDA.L AbsoluteTangentTable,X                                         ;ADE341;
     STA.B $14                                                            ;ADE345;
@@ -1184,7 +1184,7 @@ FadeMotherBrainPaletteToBlack:
 ; BG palette 4: Mother Brain body
 ; Sprite palette 1: Mother Brain brain
 ; Sprite palette 3: Mother Brain's back leg
-    ASL A                                                                ;ADE9B4;
+    ASL                                                                  ;ADE9B4;
     TAX                                                                  ;ADE9B5;
     LDA.L .pointers,X                                                    ;ADE9B6;
     BNE .notZero                                                         ;ADE9BA;
@@ -1402,7 +1402,7 @@ MotherBrainPalettes_TransitionToFromGrey_7:
 ;;; $EEDE: Transition Mother Brain palette to grey - fake death ;;;
 TransitionMotherBrainPaletteToGrey_FakeDeath:
     PHX                                                                  ;ADEEDE;
-    ASL A                                                                ;ADEEDF;
+    ASL                                                                  ;ADEEDF;
     TAX                                                                  ;ADEEE0;
     LDA.L MotherBrainPalettes_TransitionToGrey,X                         ;ADEEE1;
     BNE TransitionMotherBrainPaletteToFromGrey_FakeDeath                 ;ADEEE5;
@@ -1414,7 +1414,7 @@ TransitionMotherBrainPaletteToGrey_FakeDeath:
 ;;; $EEEA: Transition Mother Brain palette from grey - fake death ;;;
 TransitionMotherBrainPaletteFromGrey_FakeDeath:
     PHX                                                                  ;ADEEEA;
-    ASL A                                                                ;ADEEEB;
+    ASL                                                                  ;ADEEEB;
     TAX                                                                  ;ADEEEC;
     LDA.L MotherBrainPalettes_TransitionFromGrey,X                       ;ADEEED;
     BNE TransitionMotherBrainPaletteToFromGrey_FakeDeath                 ;ADEEF1;
@@ -1448,7 +1448,7 @@ TransitionMotherBrainPaletteFromGrey_DrainedByBabyMetroid:
 ; BG palette 4: Mother Brain body
 ; Sprite palette 1: Mother Brain brain
 ; Sprite palette 3: Mother Brain's back leg
-    ASL A                                                                ;ADEF0D;
+    ASL                                                                  ;ADEF0D;
     TAX                                                                  ;ADEF0E;
     LDA.L MotherBrainPalettes_TransitionFromGrey,X                       ;ADEF0F;
     BNE .notZero                                                         ;ADEF13;
@@ -1485,7 +1485,7 @@ TransitionMotherBrainPaletteToGrey_DrainedByBabyMetroid:
 ; BG palette 4: Mother Brain body
 ; Sprite palette 1: Mother Brain brain
 ; Sprite palette 3: Mother Brain's back leg
-    ASL A                                                                ;ADEF4A;
+    ASL                                                                  ;ADEF4A;
     TAX                                                                  ;ADEF4B;
     LDA.L .pointers,X                                                    ;ADEF4C;
     BNE .notZero                                                         ;ADEF50;
@@ -1574,7 +1574,7 @@ TransitionMotherBrainPaletteToGrey_DrainedByBabyMetroid:
 ;;; $F0E9: Transition Mother Brain palette to grey - real death ;;;
 TransitionMotherBrainPaletteToGrey_RealDeath:
 ; Sprite palette 7: Mother Brain brain whilst/after body explodes
-    ASL A                                                                ;ADF0E9;
+    ASL                                                                  ;ADF0E9;
     TAX                                                                  ;ADF0EA;
     LDA.L .pointers,X                                                    ;ADF0EB;
     BNE .notZero                                                         ;ADF0EF;
@@ -1673,7 +1673,7 @@ FadeOutBackgroundForBabyMetroidDeathSequence:
 FadeInBackgroundForMotherBrainPhase3:
 ; BG palette 3: Room background
 ; BG palette 5: Room level graphics
-    ASL A                                                                ;ADF24B;
+    ASL                                                                  ;ADF24B;
     TAX                                                                  ;ADF24C;
     LDA.L .pointers,X                                                    ;ADF24D;
     BNE .notZero                                                         ;ADF251;
@@ -1764,7 +1764,7 @@ EnableEarthquakeTypeInAFor20Frames:
 ;;; $F41C: Handle Mother Brain body flickering ;;;
 HandleMotherBrainBodyFlickering:
     LDA.W $0FA4                                                          ;ADF41C;
-    LSR A                                                                ;ADF41F;
+    LSR                                                                  ;ADF41F;
     BCC .invisible                                                       ;ADF420;
     LDA.B $69                                                            ;ADF422;
     ORA.W #$0002                                                         ;ADF424;

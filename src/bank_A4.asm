@@ -712,7 +712,7 @@ FightAI_Crocomire_4_Asleep:
     SBC.W $0AF6                                                          ;A486F6;
     BPL +                                                                ;A486F9;
     EOR.W #$FFFF                                                         ;A486FB;
-    INC A                                                                ;A486FE;
+    INC                                                                  ;A486FE;
 
 +   CMP.W #$00E0                                                         ;A486FF;
     BPL .return                                                          ;A48702;
@@ -840,7 +840,7 @@ FightAI_Crocomire_C_SteppingBack:
 ;;     Y: Instruction list pointer
     LDA.W Crocomire.stepCounter                                          ;A487CA;
     BEQ .stepForward                                                     ;A487CD;
-    DEC A                                                                ;A487CF;
+    DEC                                                                  ;A487CF;
     STA.W Crocomire.stepCounter                                          ;A487D0;
     BEQ .stepForward                                                     ;A487D3;
     LDY.W #InstList_Crocomire_SteppingBack                               ;A487D5;
@@ -969,7 +969,7 @@ FightAI_Crocomire_18_PowerBombedCharge:
 ;;     Y: Instruction list pointer
     LDX.W $0E54                                                          ;A4887E;
     LDA.W Crocomire.stepCounter                                          ;A48881;
-    DEC A                                                                ;A48884;
+    DEC                                                                  ;A48884;
     STA.W Crocomire.stepCounter                                          ;A48885;
     CMP.W #$0002                                                         ;A48888;
     BPL .return                                                          ;A4888B;
@@ -1342,7 +1342,7 @@ UpdateCrocomireBG2Scroll:
     SEC                                                                  ;A48B5E;
     SBC.W #$0043                                                         ;A48B5F;
     EOR.W #$FFFF                                                         ;A48B62;
-    INC A                                                                ;A48B65;
+    INC                                                                  ;A48B65;
     STA.B $B7                                                            ;A48B66;
     LDX.W #$0020                                                         ;A48B68;
 
@@ -1408,7 +1408,7 @@ UpdateCrocomireBG2XScroll:
     PHA                                                                  ;A48BD3;
     BPL +                                                                ;A48BD4;
     EOR.W #$FFFF                                                         ;A48BD6;
-    INC A                                                                ;A48BD9;
+    INC                                                                  ;A48BD9;
 
 +   CMP.W #$011C                                                         ;A48BDA;
     BMI +                                                                ;A48BDD;
@@ -1624,7 +1624,7 @@ HandlePlayingCrocomireAcidDamageSFX:
     PHY                                                                  ;A48D20;
     LDA.L $7E8000                                                        ;A48D21;
     BEQ .return                                                          ;A48D25;
-    DEC A                                                                ;A48D27;
+    DEC                                                                  ;A48D27;
     STA.L $7E8000                                                        ;A48D28;
     BNE .return                                                          ;A48D2C;
     LDA.W #$0020                                                         ;A48D2E;
@@ -1648,7 +1648,7 @@ MainAI_Crocomire_DeathSequence_4_A_Hop_1_2_Resting:
 MainAI_Crocomire_DeathSequence_20_26_Hop_4_5_Resting:
     LDA.W Crocomire.timer                                                ;A48D47;
     BEQ .timerExpired                                                    ;A48D4A;
-    DEC A                                                                ;A48D4C;
+    DEC                                                                  ;A48D4C;
     STA.W Crocomire.timer                                                ;A48D4D;
     RTS                                                                  ;A48D50;
 
@@ -1970,7 +1970,7 @@ SpawnBigDustCloudProjectileWithRandomXOffset:
     CPX.W #$1000                                                         ;A4900E;
     BMI .spawn                                                           ;A49011;
     EOR.W #$FFFF                                                         ;A49013;
-    INC A                                                                ;A49016;
+    INC                                                                  ;A49016;
 
   .spawn:
     JSL.L SpawnBigDustCloudProjectile                                    ;A49017;
@@ -2146,8 +2146,8 @@ MainAI_Crocomire_DeathSequence_2_Falling:
 
   .indexLessThan16:
     TAX                                                                  ;A49142;
-    INC A                                                                ;A49143;
-    INC A                                                                ;A49144;
+    INC                                                                  ;A49143;
+    INC                                                                  ;A49144;
     STA.L $7E9016                                                        ;A49145;
     LDA.W .XPositions,X                                                  ;A49149;
     LDY.W #EnemyProjectile_CrocomireBridgeCrumbling                      ;A4914C;
@@ -2166,7 +2166,7 @@ MainAI_Crocomire_DeathSequence_2_Falling:
 ;;; $916C: Handle Crocomire acid damage smoke ;;;
 HandleCrocomireAcidDamageSmoke:
     LDA.L $7E9018                                                        ;A4916C;
-    DEC A                                                                ;A49170;
+    DEC                                                                  ;A49170;
     STA.L $7E9018                                                        ;A49171;
     BNE .return                                                          ;A49175;
     LDA.W #$0006                                                         ;A49177;
@@ -2232,15 +2232,15 @@ SinkCrocomireDown:
   .reachedLeftLedge:
     LDA.B $B7                                                            ;A491E9;
     EOR.W #$FFFF                                                         ;A491EB;
-    INC A                                                                ;A491EE;
+    INC                                                                  ;A491EE;
     STA.B $12                                                            ;A491EF;
     LDA.W #$0120                                                         ;A491F1;
     SEC                                                                  ;A491F4;
     SBC.B $12                                                            ;A491F5;
     AND.W #$FFF8                                                         ;A491F7;
-    ASL A                                                                ;A491FA;
-    ASL A                                                                ;A491FB;
-    ASL A                                                                ;A491FC;
+    ASL                                                                  ;A491FA;
+    ASL                                                                  ;A491FB;
+    ASL                                                                  ;A491FC;
     TAX                                                                  ;A491FD;
     LDA.W #$0020                                                         ;A491FE;
     STA.B $12                                                            ;A49201;
@@ -2672,7 +2672,7 @@ CreateCrocomireMeltingHDMAObject:
     LDA.W $0FBE                                                          ;A4950F;
     SEC                                                                  ;A49512;
     SBC.W #$0048                                                         ;A49513;
-    ASL A                                                                ;A49516;
+    ASL                                                                  ;A49516;
     TAX                                                                  ;A49517;
     LDA.B $B7                                                            ;A49518;
 
@@ -2806,12 +2806,12 @@ MainAI_Crocomire_DeathSequence_1A_38_Hop_3_6_Melting:
     LDA.W $0FBE                                                          ;A4960E;
     SEC                                                                  ;A49611;
     SBC.W #$0048                                                         ;A49612;
-    ASL A                                                                ;A49615;
+    ASL                                                                  ;A49615;
     TAX                                                                  ;A49616;
     LDA.W $0694                                                          ;A49617;
     TAY                                                                  ;A4961A;
     STA.W $05A6                                                          ;A4961B;
-    ASL A                                                                ;A4961E;
+    ASL                                                                  ;A4961E;
 
   .loopMeltingRows:
     TYA                                                                  ;A4961F;
@@ -2952,23 +2952,23 @@ EraseMeltingCrocomirePixelColumn:
     AND.W #$00FF                                                         ;A49708;
     TAX                                                                  ;A4970B;
     AND.W #$FFF8                                                         ;A4970C;
-    ASL A                                                                ;A4970F;
-    ASL A                                                                ;A49710;
+    ASL                                                                  ;A4970F;
+    ASL                                                                  ;A49710;
     STA.B $14                                                            ;A49711;
     LDA.W $069C,X                                                        ;A49713;
     AND.W #$0007                                                         ;A49716;
-    ASL A                                                                ;A49719;
+    ASL                                                                  ;A49719;
     CLC                                                                  ;A4971A;
     ADC.B $14                                                            ;A4971B;
     STA.B $14                                                            ;A4971D;
     LDA.W $069C,X                                                        ;A4971F;
     AND.W #$FFF8                                                         ;A49722;
-    ASL A                                                                ;A49725;
-    ASL A                                                                ;A49726;
-    ASL A                                                                ;A49727;
-    ASL A                                                                ;A49728;
-    ASL A                                                                ;A49729;
-    ASL A                                                                ;A4972A;
+    ASL                                                                  ;A49725;
+    ASL                                                                  ;A49726;
+    ASL                                                                  ;A49727;
+    ASL                                                                  ;A49728;
+    ASL                                                                  ;A49729;
+    ASL                                                                  ;A4972A;
     CLC                                                                  ;A4972B;
     ADC.B $14                                                            ;A4972C;
     TAX                                                                  ;A4972E;
@@ -3143,7 +3143,7 @@ MainAI_Crocomire_DeathSequence_40_BehindWall_Rumbling:
     BPL .positive                                                        ;A4989C;
     LDA.W Crocomire.timer102E                                            ;A4989E;
     BEQ .rumbleTimerExpired                                              ;A498A1;
-    DEC A                                                                ;A498A3;
+    DEC                                                                  ;A498A3;
     STA.W Crocomire.timer102E                                            ;A498A4;
     DEX                                                                  ;A498A7;
     DEX                                                                  ;A498A8;
@@ -3199,7 +3199,7 @@ MainAI_Crocomire_DeathSequence_42_BehindWall_NoMoreRumbling:
 ; It spawns it Fh blocks to the right of where the bridge is, and the bridge was already cleared ages ago when Crocomire fell through it
     LDA.W Crocomire.timer                                                ;A4990A;
     BEQ .zero                                                            ;A4990D;
-    DEC A                                                                ;A4990F;
+    DEC                                                                  ;A4990F;
     STA.W Crocomire.timer                                                ;A49910;
     LDY.W $0688                                                          ;A49913;
     LDA.W .VRAMSpriteTilesOffset,Y                                       ;A49916;
@@ -3217,11 +3217,11 @@ MainAI_Crocomire_DeathSequence_42_BehindWall_NoMoreRumbling:
     LDA.B $52                                                            ;A49931;
     AND.W #$0007                                                         ;A49933;
     XBA                                                                  ;A49936;
-    ASL A                                                                ;A49937;
-    ASL A                                                                ;A49938;
-    ASL A                                                                ;A49939;
-    ASL A                                                                ;A4993A;
-    ASL A                                                                ;A4993B;
+    ASL                                                                  ;A49937;
+    ASL                                                                  ;A49938;
+    ASL                                                                  ;A49939;
+    ASL                                                                  ;A4993A;
+    ASL                                                                  ;A4993B;
     STA.B $12                                                            ;A4993C;
     CLC                                                                  ;A4993E;
     ADC.W .VRAMSpriteTilesOffset,Y                                       ;A4993F;
@@ -3815,7 +3815,7 @@ EnemyShot_Crocomire_Nothing:
     AND.W #$000F                                                         ;A4B954;
     CMP.W #$000F                                                         ;A4B957;
     BPL +                                                                ;A4B95A;
-    INC A                                                                ;A4B95C;
+    INC                                                                  ;A4B95C;
 
 +   STA.B $12                                                            ;A4B95D;
     LDA.W Crocomire.fightFlags                                           ;A4B95F;
@@ -3829,7 +3829,7 @@ EnemyShot_Crocomire_SpawnShotExplosion:
     PHX                                                                  ;A4B968;
     PHY                                                                  ;A4B969;
     LDA.W $18A6                                                          ;A4B96A;
-    ASL A                                                                ;A4B96D;
+    ASL                                                                  ;A4B96D;
     TAX                                                                  ;A4B96E;
     LDA.W $0B64,X                                                        ;A4B96F;
     STA.B $12                                                            ;A4B972;
@@ -3918,7 +3918,7 @@ EnemyShot_Crocomire_OpenMouth:
     SBC.W $0911                                                          ;A4BA17;
     BPL .offScreen                                                       ;A4BA1A;
     LDA.W $18A6                                                          ;A4BA1C;
-    ASL A                                                                ;A4BA1F;
+    ASL                                                                  ;A4BA1F;
     TAX                                                                  ;A4BA20;
     LDA.W $0C18,X                                                        ;A4BA21;
     BIT.W #$0F00                                                         ;A4BA24;
@@ -3954,7 +3954,7 @@ EnemyShot_Crocomire_OpenMouth:
     AND.W #$000F                                                         ;A4BA63;
     CMP.W #$000F                                                         ;A4BA66;
     BPL +                                                                ;A4BA69;
-    INC A                                                                ;A4BA6B;
+    INC                                                                  ;A4BA6B;
 
 +   STA.B $12                                                            ;A4BA6C;
     LDA.W Crocomire.fightFlags                                           ;A4BA6E;
@@ -3998,7 +3998,7 @@ EnemyShot_Crocomire_SpawnShotExplosion_duplicate:
     PHX                                                                  ;A4BAB4;
     PHY                                                                  ;A4BAB5;
     LDA.W $18A6                                                          ;A4BAB6;
-    ASL A                                                                ;A4BAB9;
+    ASL                                                                  ;A4BAB9;
     TAX                                                                  ;A4BABA;
     LDA.W $0B64,X                                                        ;A4BABB;
     STA.B $12                                                            ;A4BABE;

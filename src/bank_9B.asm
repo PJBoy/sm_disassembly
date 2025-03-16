@@ -593,41 +593,41 @@ SetProjectileTrailPosition:
     BIT.W #$0010                                                         ;9BA406;
     BNE .getOffset                                                       ;9BA409;
     AND.W #$000F                                                         ;9BA40B;
-    ASL A                                                                ;9BA40E;
+    ASL                                                                  ;9BA40E;
     TAY                                                                  ;9BA40F;
     LDA.W $0C04,X                                                        ;9BA410;
     AND.W #$000F                                                         ;9BA413;
-    ASL A                                                                ;9BA416;
+    ASL                                                                  ;9BA416;
     CLC                                                                  ;9BA417;
     ADC.W BeamTrailOffsets_uncharged,Y                                   ;9BA418;
     BRA .merge                                                           ;9BA41B;
 
   .getOffset:
     AND.W #$000F                                                         ;9BA41D;
-    ASL A                                                                ;9BA420;
+    ASL                                                                  ;9BA420;
     TAY                                                                  ;9BA421;
     LDA.W $0C04,X                                                        ;9BA422;
     AND.W #$000F                                                         ;9BA425;
-    ASL A                                                                ;9BA428;
+    ASL                                                                  ;9BA428;
     CLC                                                                  ;9BA429;
     ADC.W BeamTrailOffsets_charged,Y                                     ;9BA42A;
     BRA .merge                                                           ;9BA42D;
 
   .SBATrail:
     AND.W #$000F                                                         ;9BA42F;
-    ASL A                                                                ;9BA432;
+    ASL                                                                  ;9BA432;
     TAY                                                                  ;9BA433;
     LDA.W $0C04,X                                                        ;9BA434;
     AND.W #$000F                                                         ;9BA437;
-    ASL A                                                                ;9BA43A;
+    ASL                                                                  ;9BA43A;
     CLC                                                                  ;9BA43B;
     ADC.W BeamTrailOffsets_spazerSBA,Y                                   ;9BA43C;
 
   .merge:
     TAY                                                                  ;9BA43F;
     LDA.B $16                                                            ;9BA440;
-    ASL A                                                                ;9BA442;
-    ASL A                                                                ;9BA443;
+    ASL                                                                  ;9BA442;
+    ASL                                                                  ;9BA443;
     CLC                                                                  ;9BA444;
     ADC.W $0000,Y                                                        ;9BA445;
     TAY                                                                  ;9BA448;
@@ -1446,18 +1446,18 @@ Handle_Death_Animation_Flashing:
     LDA.W $0DE6                                                          ;9BB447;
     CMP.W #$0004                                                         ;9BB44A;
     BPL .timerGreaterThan3                                               ;9BB44D;
-    ASL A                                                                ;9BB44F;
+    ASL                                                                  ;9BB44F;
     TAY                                                                  ;9BB450;
     JSR.W QueueTransferOfSegmentOfSamusDeathSequenceToVRAM               ;9BB451;
 
   .timerGreaterThan3:
     LDA.W $0DE6                                                          ;9BB454;
-    INC A                                                                ;9BB457;
+    INC                                                                  ;9BB457;
     STA.W $0DE6                                                          ;9BB458;
     CMP.W #$003C                                                         ;9BB45B;
     BPL .end                                                             ;9BB45E;
     LDA.W $0DE2                                                          ;9BB460;
-    DEC A                                                                ;9BB463; >.<
+    DEC                                                                  ;9BB463; >.<
     STA.W $0DE2                                                          ;9BB464;
     BEQ .timerExpired                                                    ;9BB467;
     BPL .returnFlashing                                                  ;9BB469;
@@ -1478,7 +1478,7 @@ Handle_Death_Animation_Flashing:
     STA.W $0DE2                                                          ;9BB487;
 
 +   LDA.W $0DE4                                                          ;9BB48A;
-    ASL A                                                                ;9BB48D;
+    ASL                                                                  ;9BB48D;
     TAX                                                                  ;9BB48E;
     JSR.W WriteDeathAnimationSpritePalettes                              ;9BB48F;
 
@@ -1758,7 +1758,7 @@ HandleDeathSequenceWhiteOut:
     LDA.W $0DE4                                                          ;9BB71D;
     BEQ .return                                                          ;9BB720;
     LDA.W $0DE6                                                          ;9BB722;
-    ASL A                                                                ;9BB725;
+    ASL                                                                  ;9BB725;
     TAX                                                                  ;9BB726;
     LDA.W #$C000                                                         ;9BB727;
     STA.B $00                                                            ;9BB72A;
@@ -1783,7 +1783,7 @@ HandleDeathSequenceWhiteOut:
     LDA.W $0DE6                                                          ;9BB74A;
     CMP.W #$0014                                                         ;9BB74D;
     BPL .return                                                          ;9BB750;
-    INC A                                                                ;9BB752;
+    INC                                                                  ;9BB752;
     STA.W $0DE6                                                          ;9BB753;
 
   .return:
@@ -1798,14 +1798,14 @@ HandleDeathSequenceSuitExplosion:
     PHP                                                                  ;9BB758;
     REP #$30                                                             ;9BB759;
     LDA.W $0DE2                                                          ;9BB75B;
-    DEC A                                                                ;9BB75E;
+    DEC                                                                  ;9BB75E;
     STA.W $0DE2                                                          ;9BB75F;
     BEQ .timerExpired                                                    ;9BB762;
     BPL .notFinished                                                     ;9BB764;
 
   .timerExpired:
     LDA.W $0DE4                                                          ;9BB766;
-    INC A                                                                ;9BB769;
+    INC                                                                  ;9BB769;
     STA.W $0DE4                                                          ;9BB76A;
     CMP.W #$0009                                                         ;9BB76D;
     BMI .lessThan9                                                       ;9BB770;
@@ -1822,7 +1822,7 @@ HandleDeathSequenceSuitExplosion:
     LDA.W $0DE4                                                          ;9BB788;
     CMP.W #$0002                                                         ;9BB78B;
     BMI .lessThan2                                                       ;9BB78E;
-    ASL A                                                                ;9BB790;
+    ASL                                                                  ;9BB790;
     TAX                                                                  ;9BB791;
     LDA.W DeathSequenceSuitExplosionPaletteIndexTable_timer,X            ;9BB792;
     AND.W #$00FF                                                         ;9BB795;
@@ -1831,14 +1831,14 @@ HandleDeathSequenceSuitExplosion:
 
   .lessThan2:
     LDA.W $0DE4                                                          ;9BB79D;
-    ASL A                                                                ;9BB7A0;
+    ASL                                                                  ;9BB7A0;
     TAX                                                                  ;9BB7A1;
     LDA.W DeathSequenceSuitExplosionPaletteIndexTable_timer,X            ;9BB7A2;
     AND.W #$00FF                                                         ;9BB7A5;
     STA.W $0DE2                                                          ;9BB7A8;
     LDA.W DeathSequenceSuitExplosionPaletteIndexTable_index,X            ;9BB7AB;
     AND.W #$00FF                                                         ;9BB7AE;
-    ASL A                                                                ;9BB7B1;
+    ASL                                                                  ;9BB7B1;
     TAX                                                                  ;9BB7B2;
     JSR.W WriteDeathAnimationSpritePalettes                              ;9BB7B3;
 
@@ -1967,9 +1967,9 @@ CancelGrappleBeamIfInIncompatiblePose:
     CMP.W #GrappleBeamFunction_Connected_LockedInPlace                   ;9BB887;
     BPL .return                                                          ;9BB88A;
     LDA.W $0A1C                                                          ;9BB88C;
-    ASL A                                                                ;9BB88F;
-    ASL A                                                                ;9BB890;
-    ASL A                                                                ;9BB891;
+    ASL                                                                  ;9BB88F;
+    ASL                                                                  ;9BB890;
+    ASL                                                                  ;9BB891;
     TAX                                                                  ;9BB892;
     LDA.L PoseDefinitions_directionShotsFired,X                          ;9BB893;
     AND.W #$00FF                                                         ;9BB897;
@@ -2026,9 +2026,9 @@ RTS_9BB8D4:
 
 ; Load direction grapple is fired from pose definitions
     LDA.W $0A1C                                                          ;9BB8D5;
-    ASL A                                                                ;9BB8D8;
-    ASL A                                                                ;9BB8D9;
-    ASL A                                                                ;9BB8DA;
+    ASL                                                                  ;9BB8D8;
+    ASL                                                                  ;9BB8D9;
+    ASL                                                                  ;9BB8DA;
     TAX                                                                  ;9BB8DB;
     LDA.L PoseDefinitions_directionShotsFired,X                          ;9BB8DC;
     AND.W #$00FF                                                         ;9BB8E0;
@@ -2077,7 +2077,7 @@ ProcessEnemyGrappleBeamCollisionResult:
 ;; Returns:
 ;;     A: If carry is set: non-zero to cancel grapple beam
 ;;     Carry: Set if enemy collision occurred
-    ASL A                                                                ;9BB907;
+    ASL                                                                  ;9BB907;
     TAX                                                                  ;9BB908;
     JMP.W (.pointers,X)                                                  ;9BB909;
 
@@ -2139,7 +2139,7 @@ ProcessEnemyGrappleBeamCollisionResult_HurtSamus:
     LDA.W $09A2                                                          ;9BB93A;
     BIT.W #$0020                                                         ;9BB93D;
     BNE .gravitySuit                                                     ;9BB940;
-    LSR A                                                                ;9BB942;
+    LSR                                                                  ;9BB942;
     BCC .suitless                                                        ;9BB943;
     LSR.B $12                                                            ;9BB945;
 
@@ -2188,8 +2188,8 @@ HandleConnectingGrapple:
 
   .notGrabbedByDraygon:
     LDA.W $0D34                                                          ;9BB991;
-    ASL A                                                                ;9BB994;
-    ASL A                                                                ;9BB995;
+    ASL                                                                  ;9BB994;
+    ASL                                                                  ;9BB995;
     TAX                                                                  ;9BB996;
     LDA.W $0B2E                                                          ;9BB997;
     BNE .movingVertically                                                ;9BB99A;
@@ -2509,7 +2509,7 @@ HandleGrappleDpadInput:
     BEQ .gotoAdjustLengthEnd                                             ;9BBB8D;
     LDA.W #$0002                                                         ;9BBB8F;
     EOR.W #$FFFF                                                         ;9BBB92;
-    INC A                                                                ;9BBB95;
+    INC                                                                  ;9BBB95;
     STA.W $0D00                                                          ;9BBB96;
 
   .adjustLengthEnd:
@@ -2545,16 +2545,16 @@ HandleGrappleDpadInput:
     BIT.W #$0001                                                         ;9BBBD4;
     BEQ .minusC                                                          ;9BBBD7;
     LDA.W GrappleSwingConstants_AccelerationDueToButtonInput             ;9BBBD9;
-    LSR A                                                                ;9BBBDC;
+    LSR                                                                  ;9BBBDC;
     EOR.W #$FFFF                                                         ;9BBBDD;
-    INC A                                                                ;9BBBE0;
+    INC                                                                  ;9BBBE0;
     STA.W $0D2A                                                          ;9BBBE1;
     RTS                                                                  ;9BBBE4;
 
   .minusC:
     LDA.W GrappleSwingConstants_AccelerationDueToButtonInput             ;9BBBE5;
     EOR.W #$FFFF                                                         ;9BBBE8;
-    INC A                                                                ;9BBBEB;
+    INC                                                                  ;9BBBEB;
     STA.W $0D2A                                                          ;9BBBEC;
     RTS                                                                  ;9BBBEF;
 
@@ -2574,7 +2574,7 @@ HandleGrappleDpadInput:
     BIT.W #$0001                                                         ;9BBC0B;
     BEQ ..plusC                                                          ;9BBC0E;
     LDA.W GrappleSwingConstants_AccelerationDueToButtonInput             ;9BBC10;
-    LSR A                                                                ;9BBC13;
+    LSR                                                                  ;9BBC13;
     STA.W $0D2A                                                          ;9BBC14;
     RTS                                                                  ;9BBC17;
 
@@ -2595,24 +2595,24 @@ DetermineGrappleSwingAngularAccelerationDueToAngleOfSwing:
     BIT.W #$4000                                                         ;9BBC2F;
     BNE .downRight                                                       ;9BBC32;
     LDA.W GrappleSwingConstants_Deceleration                             ;9BBC34;
-    LSR A                                                                ;9BBC37;
-    LSR A                                                                ;9BBC38;
+    LSR                                                                  ;9BBC37;
+    LSR                                                                  ;9BBC38;
     STA.W $0D2C                                                          ;9BBC39;
     LDA.W $0CF4                                                          ;9BBC3C;
     BEQ +                                                                ;9BBC3F;
     BIT.W #$0001                                                         ;9BBC41;
     BEQ +                                                                ;9BBC44;
     LDA.W GrappleSwingConstants_AccelerationDueToAngleOfSwing            ;9BBC46;
-    LSR A                                                                ;9BBC49;
-    LSR A                                                                ;9BBC4A;
-    LSR A                                                                ;9BBC4B;
+    LSR                                                                  ;9BBC49;
+    LSR                                                                  ;9BBC4A;
+    LSR                                                                  ;9BBC4B;
     STA.W $0D28                                                          ;9BBC4C;
     RTS                                                                  ;9BBC4F;
 
 ; Up right
 +   LDA.W GrappleSwingConstants_AccelerationDueToAngleOfSwing            ;9BBC50;
-    LSR A                                                                ;9BBC53;
-    LSR A                                                                ;9BBC54;
+    LSR                                                                  ;9BBC53;
+    LSR                                                                  ;9BBC54;
     STA.W $0D28                                                          ;9BBC55;
     RTS                                                                  ;9BBC58;
 
@@ -2627,7 +2627,7 @@ DetermineGrappleSwingAngularAccelerationDueToAngleOfSwing:
     BIT.W #$0001                                                         ;9BBC67;
     BEQ +                                                                ;9BBC6A;
     LDA.W GrappleSwingConstants_AccelerationDueToAngleOfSwing            ;9BBC6C;
-    LSR A                                                                ;9BBC6F;
+    LSR                                                                  ;9BBC6F;
     STA.W $0D28                                                          ;9BBC70;
     RTS                                                                  ;9BBC73;
 
@@ -2642,22 +2642,22 @@ DetermineGrappleSwingAngularAccelerationDueToAngleOfSwing:
     BEQ .straightDown                                                    ;9BBC84;
     LDA.W GrappleSwingConstants_Deceleration                             ;9BBC86;
     EOR.W #$FFFF                                                         ;9BBC89;
-    INC A                                                                ;9BBC8C;
+    INC                                                                  ;9BBC8C;
     STA.W $0D2C                                                          ;9BBC8D;
     LDA.W $0CF4                                                          ;9BBC90;
     BEQ +                                                                ;9BBC93;
     BIT.W #$0001                                                         ;9BBC95;
     BEQ +                                                                ;9BBC98;
     LDA.W GrappleSwingConstants_AccelerationDueToAngleOfSwing            ;9BBC9A;
-    LSR A                                                                ;9BBC9D;
+    LSR                                                                  ;9BBC9D;
     EOR.W #$FFFF                                                         ;9BBC9E;
-    INC A                                                                ;9BBCA1;
+    INC                                                                  ;9BBCA1;
     STA.W $0D28                                                          ;9BBCA2;
     RTS                                                                  ;9BBCA5;
 
 +   LDA.W GrappleSwingConstants_AccelerationDueToAngleOfSwing            ;9BBCA6;
     EOR.W #$FFFF                                                         ;9BBCA9;
-    INC A                                                                ;9BBCAC;
+    INC                                                                  ;9BBCAC;
     STA.W $0D28                                                          ;9BBCAD;
     RTS                                                                  ;9BBCB0;
 
@@ -2666,7 +2666,7 @@ DetermineGrappleSwingAngularAccelerationDueToAngleOfSwing:
     STZ.W $0D2C                                                          ;9BBCB4;
     LDA.W $0D26                                                          ;9BBCB7;
     BPL +                                                                ;9BBCBA;
-    DEC A                                                                ;9BBCBC;
+    DEC                                                                  ;9BBCBC;
     EOR.W #$FFFF                                                         ;9BBCBD;
 
 +   XBA                                                                  ;9BBCC0;
@@ -2681,30 +2681,30 @@ DetermineGrappleSwingAngularAccelerationDueToAngleOfSwing:
 
   .upLeft:
     LDA.W GrappleSwingConstants_Deceleration                             ;9BBCCE;
-    LSR A                                                                ;9BBCD1;
-    LSR A                                                                ;9BBCD2;
+    LSR                                                                  ;9BBCD1;
+    LSR                                                                  ;9BBCD2;
     EOR.W #$FFFF                                                         ;9BBCD3;
-    INC A                                                                ;9BBCD6;
+    INC                                                                  ;9BBCD6;
     STA.W $0D2C                                                          ;9BBCD7;
     LDA.W $0CF4                                                          ;9BBCDA;
     BEQ .minus6                                                          ;9BBCDD;
     BIT.W #$0001                                                         ;9BBCDF;
     BEQ .minus6                                                          ;9BBCE2;
     LDA.W GrappleSwingConstants_AccelerationDueToAngleOfSwing            ;9BBCE4;
-    LSR A                                                                ;9BBCE7;
-    LSR A                                                                ;9BBCE8;
-    LSR A                                                                ;9BBCE9;
+    LSR                                                                  ;9BBCE7;
+    LSR                                                                  ;9BBCE8;
+    LSR                                                                  ;9BBCE9;
     EOR.W #$FFFF                                                         ;9BBCEA;
-    INC A                                                                ;9BBCED;
+    INC                                                                  ;9BBCED;
     STA.W $0D28                                                          ;9BBCEE;
     RTS                                                                  ;9BBCF1;
 
   .minus6:
     LDA.W GrappleSwingConstants_AccelerationDueToAngleOfSwing            ;9BBCF2;
-    LSR A                                                                ;9BBCF5;
-    LSR A                                                                ;9BBCF6;
+    LSR                                                                  ;9BBCF5;
+    LSR                                                                  ;9BBCF6;
     EOR.W #$FFFF                                                         ;9BBCF7;
-    INC A                                                                ;9BBCFA;
+    INC                                                                  ;9BBCFA;
     STA.W $0D28                                                          ;9BBCFB;
     RTS                                                                  ;9BBCFE;
 
@@ -2729,12 +2729,12 @@ UpdateGrappleSwingAngularVelocity:
     LDA.W $0D26                                                          ;9BBD1F;
     BPL .positiveAngularVelocity                                         ;9BBD22;
     EOR.W #$FFFF                                                         ;9BBD24;
-    INC A                                                                ;9BBD27;
+    INC                                                                  ;9BBD27;
     CMP.W GrappleSwingConstants_AbsoluteAngularVelocity                  ;9BBD28;
     BCC .return                                                          ;9BBD2B;
     LDA.W GrappleSwingConstants_AbsoluteAngularVelocity                  ;9BBD2D;
     EOR.W #$FFFF                                                         ;9BBD30;
-    INC A                                                                ;9BBD33;
+    INC                                                                  ;9BBD33;
     STA.W $0D26                                                          ;9BBD34;
     RTS                                                                  ;9BBD37;
 
@@ -2769,7 +2769,7 @@ HandleGrappleKick:
     BIT.W #$0001                                                         ;9BBD60;
     BEQ .notLiquidPhysics                                                ;9BBD63;
     LDA.W GrappleSwingConstants_ExtraAngularVelocity_GrappleKick         ;9BBD65;
-    LSR A                                                                ;9BBD68;
+    LSR                                                                  ;9BBD68;
     STA.W $0D2E                                                          ;9BBD69;
     RTS                                                                  ;9BBD6C;
 
@@ -2784,16 +2784,16 @@ HandleGrappleKick:
     BIT.W #$0001                                                         ;9BBD79;
     BEQ ..notLiquidPhysics                                               ;9BBD7C;
     LDA.W GrappleSwingConstants_ExtraAngularVelocity_GrappleKick         ;9BBD7E;
-    LSR A                                                                ;9BBD81;
+    LSR                                                                  ;9BBD81;
     EOR.W #$FFFF                                                         ;9BBD82;
-    INC A                                                                ;9BBD85;
+    INC                                                                  ;9BBD85;
     STA.W $0D2E                                                          ;9BBD86;
     RTS                                                                  ;9BBD89;
 
   ..notLiquidPhysics:
     LDA.W GrappleSwingConstants_ExtraAngularVelocity_GrappleKick         ;9BBD8A;
     EOR.W #$FFFF                                                         ;9BBD8D;
-    INC A                                                                ;9BBD90;
+    INC                                                                  ;9BBD90;
     STA.W $0D2E                                                          ;9BBD91;
     RTS                                                                  ;9BBD94;
 
@@ -2808,7 +2808,7 @@ SetSamusAnimationFrameAndPositionDuringGrappleSwinging:
     LDA.W $0D26                                                          ;9BBD9B;
     BPL +                                                                ;9BBD9E;
     EOR.W #$FFFF                                                         ;9BBDA0;
-    INC A                                                                ;9BBDA3;
+    INC                                                                  ;9BBDA3;
 
 +   CMP.W #$0040                                                         ;9BBDA4;
     BMI .slowGrapple                                                     ;9BBDA7;
@@ -2849,12 +2849,12 @@ SetSamusAnimationFrameAndPositionDuringGrappleSwinging:
     STA.W $0A96                                                          ;9BBDF5;
 
   .merge:
-    ASL A                                                                ;9BBDF8;
+    ASL                                                                  ;9BBDF8;
     TAX                                                                  ;9BBDF9;
     LDA.W $0D2E                                                          ;9BBDFA;
     BPL +                                                                ;9BBDFD;
     EOR.W #$FFFF                                                         ;9BBDFF;
-    INC A                                                                ;9BBE02;
+    INC                                                                  ;9BBE02;
 
 +   AND.W #$FF00                                                         ;9BBE03;
     CMP.W #$0100                                                         ;9BBE06;
@@ -2983,7 +2983,7 @@ SetSamusAnimationFrameAndPositionForConnectingGrapple_Stuck:
     PLB                                                                  ;9BBEEE;
     REP #$30                                                             ;9BBEEF;
     LDA.W $0D34                                                          ;9BBEF1;
-    ASL A                                                                ;9BBEF4;
+    ASL                                                                  ;9BBEF4;
     TAX                                                                  ;9BBEF5;
     LDA.W $0D16                                                          ;9BBEF6;
     SEC                                                                  ;9BBEF9;
@@ -3012,15 +3012,15 @@ UpdateGrappleBeamStartPositionDuringGrappleFire:
     PLB                                                                  ;9BBF1E;
     REP #$30                                                             ;9BBF1F;
     LDA.W $0A1C                                                          ;9BBF21;
-    ASL A                                                                ;9BBF24;
-    ASL A                                                                ;9BBF25;
-    ASL A                                                                ;9BBF26;
+    ASL                                                                  ;9BBF24;
+    ASL                                                                  ;9BBF25;
+    ASL                                                                  ;9BBF26;
     TAX                                                                  ;9BBF27;
     LDA.L PoseDefinitions_YOffset,X                                      ;9BBF28;
     AND.W #$00FF                                                         ;9BBF2C;
     STA.B $16                                                            ;9BBF2F;
     LDA.W $0D34                                                          ;9BBF31;
-    ASL A                                                                ;9BBF34;
+    ASL                                                                  ;9BBF34;
     TAX                                                                  ;9BBF35;
     LDA.W $0A1C                                                          ;9BBF36;
     CMP.W #$0049                                                         ;9BBF39;
@@ -3094,7 +3094,7 @@ UpdateGrappleBeamTiles_IncrementFlareCounter:
     LDA.W $0CD0                                                          ;9BBFAE;
     CMP.W #$0078                                                         ;9BBFB1;
     BPL .return                                                          ;9BBFB4;
-    INC A                                                                ;9BBFB6;
+    INC                                                                  ;9BBFB6;
     STA.W $0CD0                                                          ;9BBFB7;
 
   .return:
@@ -3106,7 +3106,7 @@ UpdateGrappleBeamTiles_IncrementFlareCounter:
 ;;; $BFBD: Update grapple beam tiles ;;;
 UpdateGrappleBeamTiles:
     LDA.W $0D3E                                                          ;9BBFBD;
-    DEC A                                                                ;9BBFC0;
+    DEC                                                                  ;9BBFC0;
     STA.W $0D3E                                                          ;9BBFC1;
     BPL .timerNotExpired                                                 ;9BBFC4;
     LDA.W #$0005                                                         ;9BBFC6;
@@ -3143,7 +3143,7 @@ UpdateGrappleBeamTiles:
     LDA.W $0CFA                                                          ;9BC005;
     AND.W #$FF00                                                         ;9BC008;
     XBA                                                                  ;9BC00B;
-    LSR A                                                                ;9BC00C;
+    LSR                                                                  ;9BC00C;
     AND.W #$00FE                                                         ;9BC00D;
     TAY                                                                  ;9BC010;
     LDX.W $0330                                                          ;9BC011;
@@ -3191,11 +3191,11 @@ HandleGrappleBeamFlare:
 
   .greaterThan1:
     LDA.W $0CDC                                                          ;9BC055;
-    DEC A                                                                ;9BC058;
+    DEC                                                                  ;9BC058;
     STA.W $0CDC                                                          ;9BC059;
     BPL .positive                                                        ;9BC05C;
     LDA.W $0CD6                                                          ;9BC05E;
-    INC A                                                                ;9BC061;
+    INC                                                                  ;9BC061;
     STA.W $0CD6                                                          ;9BC062;
     TAX                                                                  ;9BC065;
     LDA.L FlareAnimationDelays_MainFlare,X                               ;9BC066;
@@ -3617,7 +3617,7 @@ GrappleBeamHandler:
     REP #$30                                                             ;9BC494;
     LDA.W $0CF6                                                          ;9BC496;
     BEQ +                                                                ;9BC499;
-    DEC A                                                                ;9BC49B;
+    DEC                                                                  ;9BC49B;
     STA.W $0CF6                                                          ;9BC49C;
 
 +   LDA.W $0A64                                                          ;9BC49F;
@@ -3690,9 +3690,9 @@ GrappleBeamFunction_Fire_GotoCancel:
     BEQ .draygon                                                         ;9BC524;
     CMP.W #$00BE                                                         ;9BC526;
     BEQ .draygon                                                         ;9BC529;
-    ASL A                                                                ;9BC52B;
-    ASL A                                                                ;9BC52C;
-    ASL A                                                                ;9BC52D;
+    ASL                                                                  ;9BC52B;
+    ASL                                                                  ;9BC52C;
+    ASL                                                                  ;9BC52D;
     TAX                                                                  ;9BC52E;
     LDA.L PoseDefinitions_YOffset,X                                      ;9BC52F;
     AND.W #$00FF                                                         ;9BC533;
@@ -3713,7 +3713,7 @@ GrappleBeamFunction_Fire_GotoCancel:
 
   .fire:
     STA.W $0D34                                                          ;9BC550;
-    ASL A                                                                ;9BC553;
+    ASL                                                                  ;9BC553;
     TAX                                                                  ;9BC554;
     LDA.W GrappleBeamFireVelocityTable_X,X                               ;9BC555;
     STA.W $0D22                                                          ;9BC558;
@@ -3972,7 +3972,7 @@ GrappleBeamFunction_Firing:
     JSR.W HandleConnectingGrapple                                        ;9BC742;
     LDA.W #$0008                                                         ;9BC745;
     EOR.W #$FFFF                                                         ;9BC748;
-    INC A                                                                ;9BC74B;
+    INC                                                                  ;9BC74B;
     STA.W $0D00                                                          ;9BC74C;
     LDA.W $0A64                                                          ;9BC74F;
     ORA.W #$0001                                                         ;9BC752;
@@ -4112,7 +4112,7 @@ GrappleBeamFunction_WallGrab:
 ;;; $C832: Grapple beam function - wallgrab release ;;;
 GrappleBeamFunction_WallGrabRelease:
     LDA.W $0A9E                                                          ;9BC832;
-    DEC A                                                                ;9BC835;
+    DEC                                                                  ;9BC835;
     STA.W $0A9E                                                          ;9BC836;
     BPL .timerNotExpired                                                 ;9BC839;
     LDA.W #GrappleBeamFunction_Dropped                                   ;9BC83B;
@@ -4211,9 +4211,9 @@ GrappleBeamFunction_Dropped:
     CMP.W #$0011                                                         ;9BC8F9;
     BMI .crouching                                                       ;9BC8FC;
     LDA.W $0A1C                                                          ;9BC8FE;
-    ASL A                                                                ;9BC901;
-    ASL A                                                                ;9BC902;
-    ASL A                                                                ;9BC903;
+    ASL                                                                  ;9BC901;
+    ASL                                                                  ;9BC902;
+    ASL                                                                  ;9BC903;
     TAX                                                                  ;9BC904;
     LDA.L PoseDefinitions_directionShotsFired,X                          ;9BC905;
     AND.W #$00FF                                                         ;9BC909;
@@ -4227,9 +4227,9 @@ GrappleBeamFunction_Dropped:
 
   .crouching:
     LDA.W $0A1C                                                          ;9BC91D;
-    ASL A                                                                ;9BC920;
-    ASL A                                                                ;9BC921;
-    ASL A                                                                ;9BC922;
+    ASL                                                                  ;9BC920;
+    ASL                                                                  ;9BC921;
+    ASL                                                                  ;9BC922;
     TAX                                                                  ;9BC923;
     LDA.L PoseDefinitions_directionShotsFired,X                          ;9BC924;
     AND.W #$00FF                                                         ;9BC928;
@@ -4368,13 +4368,13 @@ PropelSamusFromGrappleSwing:
 
   .negativeVelocity:
     EOR.W #$FFFF                                                         ;9BCA6D;
-    INC A                                                                ;9BCA70;
-    ASL A                                                                ;9BCA71;
+    INC                                                                  ;9BCA70;
+    ASL                                                                  ;9BCA71;
     TAY                                                                  ;9BCA72;
     LDA.W $0CFA                                                          ;9BCA73;
     XBA                                                                  ;9BCA76;
     AND.W #$00FF                                                         ;9BCA77;
-    ASL A                                                                ;9BCA7A;
+    ASL                                                                  ;9BCA7A;
     TAX                                                                  ;9BCA7B;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;9BCA7C;
     BMI .negativeAngle                                                   ;9BCA80;
@@ -4391,7 +4391,7 @@ PropelSamusFromGrappleSwing:
 
   .negativeAngle:
     EOR.W #$FFFF                                                         ;9BCA9C;
-    INC A                                                                ;9BCA9F;
+    INC                                                                  ;9BCA9F;
     PHY                                                                  ;9BCAA0;
     JSL.L A_Y_16bit_UnsignedMultiplication                               ;9BCAA1;
     PLY                                                                  ;9BCAA5;
@@ -4406,11 +4406,11 @@ PropelSamusFromGrappleSwing:
     LDA.W #$0002                                                         ;9BCAB8;
     STA.W $0B4A                                                          ;9BCABB;
     TYA                                                                  ;9BCABE;
-    LSR A                                                                ;9BCABF;
+    LSR                                                                  ;9BCABF;
     XBA                                                                  ;9BCAC0;
     AND.W #$00FF                                                         ;9BCAC1;
     STA.B $12                                                            ;9BCAC4;
-    ASL A                                                                ;9BCAC6;
+    ASL                                                                  ;9BCAC6;
     CLC                                                                  ;9BCAC7;
     ADC.B $12                                                            ;9BCAC8;
     STA.B $12                                                            ;9BCACA;
@@ -4424,12 +4424,12 @@ PropelSamusFromGrappleSwing:
     SEC                                                                  ;9BCADB;
     SBC.B $12                                                            ;9BCADC;
     AND.W #$00FF                                                         ;9BCADE;
-    ASL A                                                                ;9BCAE1;
+    ASL                                                                  ;9BCAE1;
     TAX                                                                  ;9BCAE2;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;9BCAE3;
     BPL +                                                                ;9BCAE7;
     EOR.W #$FFFF                                                         ;9BCAE9;
-    INC A                                                                ;9BCAEC;
+    INC                                                                  ;9BCAEC;
 
 +   JSL.L A_Y_16bit_UnsignedMultiplication                               ;9BCAED;
     LDA.W $05F1                                                          ;9BCAF1;
@@ -4439,17 +4439,17 @@ PropelSamusFromGrappleSwing:
     RTS                                                                  ;9BCAFD;
 
   .positive:
-    ASL A                                                                ;9BCAFE;
+    ASL                                                                  ;9BCAFE;
     TAY                                                                  ;9BCAFF;
     LDA.W $0CFA                                                          ;9BCB00;
     XBA                                                                  ;9BCB03;
     AND.W #$00FF                                                         ;9BCB04;
-    ASL A                                                                ;9BCB07;
+    ASL                                                                  ;9BCB07;
     TAX                                                                  ;9BCB08;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;9BCB09;
     BPL +                                                                ;9BCB0D;
     EOR.W #$FFFF                                                         ;9BCB0F;
-    INC A                                                                ;9BCB12;
+    INC                                                                  ;9BCB12;
     PHY                                                                  ;9BCB13;
     JSL.L A_Y_16bit_UnsignedMultiplication                               ;9BCB14;
     PLY                                                                  ;9BCB18;
@@ -4475,11 +4475,11 @@ PropelSamusFromGrappleSwing:
     LDA.W #$0002                                                         ;9BCB45;
     STA.W $0B4A                                                          ;9BCB48;
     TYA                                                                  ;9BCB4B;
-    LSR A                                                                ;9BCB4C;
+    LSR                                                                  ;9BCB4C;
     XBA                                                                  ;9BCB4D;
     AND.W #$00FF                                                         ;9BCB4E;
     STA.B $12                                                            ;9BCB51;
-    ASL A                                                                ;9BCB53;
+    ASL                                                                  ;9BCB53;
     CLC                                                                  ;9BCB54;
     ADC.B $12                                                            ;9BCB55;
     STA.B $12                                                            ;9BCB57;
@@ -4493,12 +4493,12 @@ PropelSamusFromGrappleSwing:
     SEC                                                                  ;9BCB68;
     SBC.B $12                                                            ;9BCB69;
     AND.W #$00FF                                                         ;9BCB6B;
-    ASL A                                                                ;9BCB6E;
+    ASL                                                                  ;9BCB6E;
     TAX                                                                  ;9BCB6F;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;9BCB70;
     BPL +                                                                ;9BCB74;
     EOR.W #$FFFF                                                         ;9BCB76;
-    INC A                                                                ;9BCB79;
+    INC                                                                  ;9BCB79;
 
 +   JSL.L A_Y_16bit_UnsignedMultiplication                               ;9BCB7A;
     LDA.W $05F1                                                          ;9BCB7E;

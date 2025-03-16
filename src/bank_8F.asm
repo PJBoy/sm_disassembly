@@ -7888,10 +7888,10 @@ GenerateRandomExplosionOnEvenFramesOnRandomNonBlankTile:
     CLC                                                                  ;8FC151;
     ADC.W $0915                                                          ;8FC152;
     STA.B $14                                                            ;8FC155;
-    LSR A                                                                ;8FC157;
-    LSR A                                                                ;8FC158;
-    LSR A                                                                ;8FC159;
-    LSR A                                                                ;8FC15A;
+    LSR                                                                  ;8FC157;
+    LSR                                                                  ;8FC158;
+    LSR                                                                  ;8FC159;
+    LSR                                                                  ;8FC15A;
     SEP #$20                                                             ;8FC15B;
     PHA                                                                  ;8FC15D;
     LDA.W $07A5                                                          ;8FC15E;
@@ -7900,13 +7900,13 @@ GenerateRandomExplosionOnEvenFramesOnRandomNonBlankTile:
     STA.W $4203                                                          ;8FC165;
     REP #$20                                                             ;8FC168;
     LDA.B $12                                                            ;8FC16A;
-    LSR A                                                                ;8FC16C;
-    LSR A                                                                ;8FC16D;
-    LSR A                                                                ;8FC16E;
-    LSR A                                                                ;8FC16F;
+    LSR                                                                  ;8FC16C;
+    LSR                                                                  ;8FC16D;
+    LSR                                                                  ;8FC16E;
+    LSR                                                                  ;8FC16F;
     CLC                                                                  ;8FC170;
     ADC.W $4216                                                          ;8FC171;
-    ASL A                                                                ;8FC174;
+    ASL                                                                  ;8FC174;
     TAX                                                                  ;8FC175;
     LDA.L $7F0002,X                                                      ;8FC176;
     AND.W #$03FF                                                         ;8FC17A;
@@ -12683,13 +12683,13 @@ MainASM_SpawnCeresPreElevatorHallFallingDebris:
     STA.W $07E1                                                          ;8FE532;
     LDY.W #EnemyProjectile_CeresFallingTile_Light                        ;8FE535;
     LDA.W $05E5                                                          ;8FE538;
-    ASL A                                                                ;8FE53B;
+    ASL                                                                  ;8FE53B;
     BCC +                                                                ;8FE53C;
     LDY.W #EnemyProjectile_CeresFallingTile_Dark                         ;8FE53E;
 
 +   LDA.W $05E5                                                          ;8FE541;
     AND.W #$000F                                                         ;8FE544;
-    ASL A                                                                ;8FE547;
+    ASL                                                                  ;8FE547;
     TAX                                                                  ;8FE548;
     LDA.W .debrisXpos,X                                                  ;8FE549;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;8FE54C;
@@ -12704,7 +12704,7 @@ MainASM_SpawnCeresPreElevatorHallFallingDebris:
 MainASM_HandleCeresRidleyGetawayCutscene:
 ; Room $E0B5. Ceres Ridley's room
     LDA.W $093F                                                          ;8FE571;
-    LSR A                                                                ;8FE574;
+    LSR                                                                  ;8FE574;
     BCC .return                                                          ;8FE575;
     JSL.L HandleCeresRidleyGetawayCutscene                               ;8FE577;
 
@@ -13298,7 +13298,7 @@ MainASM_CrocomiresRoomShaking:
     BIT.W #$0400                                                         ;8FE8E0;
     BEQ .branch                                                          ;8FE8E3;
     LDA.W $0FEE                                                          ;8FE8E5;
-    DEC A                                                                ;8FE8E8;
+    DEC                                                                  ;8FE8E8;
     STA.W $0FEE                                                          ;8FE8E9;
     CMP.W #$FFF9                                                         ;8FE8EC;
     BMI +                                                                ;8FE8EF;
@@ -13308,7 +13308,7 @@ MainASM_CrocomiresRoomShaking:
 +   LDA.W #$0007                                                         ;8FE8F6;
     CLC                                                                  ;8FE8F9;
     ADC.W $0FEE                                                          ;8FE8FA;
-    ASL A                                                                ;8FE8FD;
+    ASL                                                                  ;8FE8FD;
     STA.B $12                                                            ;8FE8FE;
     LDA.W $0FEE                                                          ;8FE900;
     SEC                                                                  ;8FE903;
@@ -13333,7 +13333,7 @@ MainASM_CrocomiresRoomShaking:
     BNE .return                                                          ;8FE91C;
     LDA.W $0FAE                                                          ;8FE91E;
     BEQ .return                                                          ;8FE921;
-    DEC A                                                                ;8FE923;
+    DEC                                                                  ;8FE923;
     STA.W $0FAE                                                          ;8FE924;
     BIT.W #$0001                                                         ;8FE927;
     BNE +                                                                ;8FE92A;
@@ -13366,9 +13366,9 @@ MainASM_RidleysRoomShaking:
 ; It's actually probably a good thing if this never happens, messing with the BG scroll registers can break scrolling
     LDA.W $10A8                                                          ;8FE950;
     BEQ .return                                                          ;8FE953;
-    DEC A                                                                ;8FE955;
+    DEC                                                                  ;8FE955;
     STA.W $10A8                                                          ;8FE956;
-    ASL A                                                                ;8FE959;
+    ASL                                                                  ;8FE959;
     TAX                                                                  ;8FE95A;
     LDA.B $B1                                                            ;8FE95B;
     ADC.W .Xspeeds,X                                                     ;8FE95D;

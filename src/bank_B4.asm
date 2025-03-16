@@ -2489,14 +2489,14 @@ Debug_HandleDigitModification:
     LDA.W $1860                                                          ;B496DF;
     SEC                                                                  ;B496E2;
     SBC.W #$00C0                                                         ;B496E3;
-    LSR A                                                                ;B496E6;
-    LSR A                                                                ;B496E7;
+    LSR                                                                  ;B496E6;
+    LSR                                                                  ;B496E7;
     TAX                                                                  ;B496E8;
     LDA.W $1862                                                          ;B496E9;
     SEC                                                                  ;B496EC;
     SBC.W #$0030                                                         ;B496ED;
-    LSR A                                                                ;B496F0;
-    LSR A                                                                ;B496F1;
+    LSR                                                                  ;B496F0;
+    LSR                                                                  ;B496F1;
     TAY                                                                  ;B496F2;
     LDA.W $0012,Y                                                        ;B496F3;
     CLC                                                                  ;B496F6;
@@ -2510,14 +2510,14 @@ Debug_HandleDigitModification:
     LDA.W $1860                                                          ;B49704;
     SEC                                                                  ;B49707;
     SBC.W #$00C0                                                         ;B49708;
-    LSR A                                                                ;B4970B;
-    LSR A                                                                ;B4970C;
+    LSR                                                                  ;B4970B;
+    LSR                                                                  ;B4970C;
     TAX                                                                  ;B4970D;
     LDA.W $1862                                                          ;B4970E;
     SEC                                                                  ;B49711;
     SBC.W #$0030                                                         ;B49712;
-    LSR A                                                                ;B49715;
-    LSR A                                                                ;B49716;
+    LSR                                                                  ;B49715;
+    LSR                                                                  ;B49716;
     TAY                                                                  ;B49717;
     LDA.W $0012,Y                                                        ;B49718;
     SEC                                                                  ;B4971B;
@@ -2576,7 +2576,7 @@ DebugHandler_10_EnemyDebugger_EnemyAllocationViewer:
     LDA.L $A00000,X                                                      ;B49786;
     XBA                                                                  ;B4978A;
     AND.W #$00FF                                                         ;B4978B;
-    LSR A                                                                ;B4978E;
+    LSR                                                                  ;B4978E;
     CLC                                                                  ;B4978F;
     ADC.W $0E2C                                                          ;B49790;
     STA.W $0E2C                                                          ;B49793;
@@ -2639,7 +2639,7 @@ DebugHandler:
     REP #$30                                                             ;B49810;
     LDA.W $185C                                                          ;B49812;
     AND.W #$00FF                                                         ;B49815;
-    ASL A                                                                ;B49818;
+    ASL                                                                  ;B49818;
     TAX                                                                  ;B49819;
     JSR.W (.pointers,X)                                                  ;B4981A;
     PLB                                                                  ;B4981D;
@@ -3570,10 +3570,10 @@ Draw4DigitHexValue:
     LDA.W $0E24                                                          ;B49F95;
     AND.W #$F000                                                         ;B49F98;
     XBA                                                                  ;B49F9B;
-    LSR A                                                                ;B49F9C;
-    LSR A                                                                ;B49F9D;
-    LSR A                                                                ;B49F9E;
-    LSR A                                                                ;B49F9F;
+    LSR                                                                  ;B49F9C;
+    LSR                                                                  ;B49F9D;
+    LSR                                                                  ;B49F9E;
+    LSR                                                                  ;B49F9F;
     CLC                                                                  ;B49FA0;
     ADC.W #$0004                                                         ;B49FA1;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49FA4;
@@ -3605,10 +3605,10 @@ Draw4DigitHexValue:
     STA.B $26                                                            ;B49FE3;
     LDA.W $0E24                                                          ;B49FE5;
     AND.W #$00F0                                                         ;B49FE8;
-    LSR A                                                                ;B49FEB;
-    LSR A                                                                ;B49FEC;
-    LSR A                                                                ;B49FED;
-    LSR A                                                                ;B49FEE;
+    LSR                                                                  ;B49FEB;
+    LSR                                                                  ;B49FEC;
+    LSR                                                                  ;B49FED;
+    LSR                                                                  ;B49FEE;
     CLC                                                                  ;B49FEF;
     ADC.W #$0004                                                         ;B49FF0;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49FF3;
@@ -3666,7 +3666,7 @@ Add_Debug_Spritemap_to_OAM:
     PHK                                                                  ;B4A021;
     PLB                                                                  ;B4A022;
     REP #$30                                                             ;B4A023;
-    ASL A                                                                ;B4A025;
+    ASL                                                                  ;B4A025;
     TAX                                                                  ;B4A026;
     LDA.W Debug_Spritemap_Addresses,X                                    ;B4A027;
     TAY                                                                  ;B4A02A;
@@ -3691,7 +3691,7 @@ Add_Debug_Spritemap_to_OAM:
     BEQ +                                                                ;B4A04B;
     TXA                                                                  ;B4A04D;
     STA.B $1C                                                            ;B4A04E;
-    LSR A                                                                ;B4A050;
+    LSR                                                                  ;B4A050;
     PHY                                                                  ;B4A051;
     TAY                                                                  ;B4A052;
     AND.W #$000E                                                         ;B4A053;
@@ -3709,7 +3709,7 @@ Add_Debug_Spritemap_to_OAM:
     BEQ +                                                                ;B4A06D;
     TXA                                                                  ;B4A06F;
     STA.B $1C                                                            ;B4A070;
-    LSR A                                                                ;B4A072;
+    LSR                                                                  ;B4A072;
     PHY                                                                  ;B4A073;
     TAY                                                                  ;B4A074;
     AND.W #$000E                                                         ;B4A075;
@@ -5704,7 +5704,7 @@ Create_Sprite_Object:
     LDA.B $18                                                            ;B4BC5F;
     STA.L $7EF078,X                                                      ;B4BC61;
     LDA.B $16                                                            ;B4BC65;
-    ASL A                                                                ;B4BC67;
+    ASL                                                                  ;B4BC67;
     TAY                                                                  ;B4BC68;
     LDA.W SpriteObject_DrawInst_Pointers,Y                               ;B4BC69;
     STA.L $7EEF78,X                                                      ;B4BC6C;
@@ -5748,14 +5748,14 @@ HandleSpriteObjects:
     BNE .next                                                            ;B4BCAB;
     LDA.L $7EEFF8,X                                                      ;B4BCAD;
     BMI .ASMInstruction                                                  ;B4BCB1;
-    DEC A                                                                ;B4BCB3;
+    DEC                                                                  ;B4BCB3;
     STA.L $7EEFF8,X                                                      ;B4BCB4;
     BNE .next                                                            ;B4BCB8;
     LDA.L $7EEF78,X                                                      ;B4BCBA;
-    INC A                                                                ;B4BCBE;
-    INC A                                                                ;B4BCBF;
-    INC A                                                                ;B4BCC0;
-    INC A                                                                ;B4BCC1;
+    INC                                                                  ;B4BCBE;
+    INC                                                                  ;B4BCBF;
+    INC                                                                  ;B4BCC0;
+    INC                                                                  ;B4BCC1;
     STA.L $7EEF78,X                                                      ;B4BCC2;
     TAX                                                                  ;B4BCC6;
     LDA.L $B40000,X                                                      ;B4BCC7;
@@ -5766,8 +5766,8 @@ HandleSpriteObjects:
 
   .next:
     LDA.W $1844                                                          ;B4BCD7;
-    DEC A                                                                ;B4BCDA;
-    DEC A                                                                ;B4BCDB;
+    DEC                                                                  ;B4BCDA;
+    DEC                                                                  ;B4BCDB;
     STA.W $1844                                                          ;B4BCDC;
     BPL .loop                                                            ;B4BCDF;
     BRA .return                                                          ;B4BCE1;
@@ -5789,10 +5789,10 @@ HandleSpriteObjects:
 Instruction_SpriteObject_GoBack4Bytes:
     LDX.W $1844                                                          ;B4BCF0;
     LDA.L $7EEF78,X                                                      ;B4BCF3;
-    DEC A                                                                ;B4BCF7;
-    DEC A                                                                ;B4BCF8;
-    DEC A                                                                ;B4BCF9;
-    DEC A                                                                ;B4BCFA;
+    DEC                                                                  ;B4BCF7;
+    DEC                                                                  ;B4BCF8;
+    DEC                                                                  ;B4BCF9;
+    DEC                                                                  ;B4BCFA;
     STA.L $7EEF78,X                                                      ;B4BCFB;
     LDA.W #$7FFF                                                         ;B4BCFF;
     STA.L $7EEFF8,X                                                      ;B4BD02;

@@ -565,14 +565,14 @@ UNUSED_ModifyMode7TransformAndBG1PosWithController_8B8488:
     BIT.W #$0020                                                         ;8B84D6;
     BEQ .checkB                                                          ;8B84D9;
     LDA.W $198D                                                          ;8B84DB;
-    DEC A                                                                ;8B84DE;
+    DEC                                                                  ;8B84DE;
     AND.W #$00FF                                                         ;8B84DF;
     STA.W $198D                                                          ;8B84E2;
     BRA .checkB                                                          ;8B84E5;
 
   .pressingR:
     LDA.W $198D                                                          ;8B84E7;
-    INC A                                                                ;8B84EA;
+    INC                                                                  ;8B84EA;
     AND.W #$00FF                                                         ;8B84EB;
     STA.W $198D                                                          ;8B84EE;
 
@@ -589,14 +589,14 @@ UNUSED_ModifyMode7TransformAndBG1PosWithController_8B8488:
     LDA.W $198F                                                          ;8B84FF;
     CMP.W #$7000                                                         ;8B8502;
     BPL .return                                                          ;8B8505;
-    INC A                                                                ;8B8507;
+    INC                                                                  ;8B8507;
     STA.W $198F                                                          ;8B8508;
     BRA .return                                                          ;8B850B;
 
   .zoomIn:
     LDA.W $198F                                                          ;8B850D;
     BEQ .return                                                          ;8B8510;
-    DEC A                                                                ;8B8512;
+    DEC                                                                  ;8B8512;
     STA.W $198F                                                          ;8B8513;
 
   .return:
@@ -630,7 +630,7 @@ HandleMode7TransformMatrixAndBG1Position:
     CLC                                                                  ;8B8538;
     ADC.W #$0040                                                         ;8B8539;
     AND.W #$00FF                                                         ;8B853C;
-    ASL A                                                                ;8B853F;
+    ASL                                                                  ;8B853F;
     TAX                                                                  ;8B8540;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;8B8541;
     STA.B $26                                                            ;8B8545;
@@ -646,7 +646,7 @@ HandleMode7TransformMatrixAndBG1Position:
     STA.B $7E                                                            ;8B855A;
     LDA.W $198D                                                          ;8B855C;
     AND.W #$00FF                                                         ;8B855F;
-    ASL A                                                                ;8B8562;
+    ASL                                                                  ;8B8562;
     TAX                                                                  ;8B8563;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;8B8564;
     STA.B $26                                                            ;8B8568;
@@ -660,7 +660,7 @@ HandleMode7TransformMatrixAndBG1Position:
     REP #$20                                                             ;8B8579;
     STA.B $7A                                                            ;8B857B;
     EOR.W #$FFFF                                                         ;8B857D;
-    INC A                                                                ;8B8580;
+    INC                                                                  ;8B8580;
     STA.B $7C                                                            ;8B8581;
     LDA.W $1993                                                          ;8B8583;
     STA.B $B1                                                            ;8B8586;
@@ -682,7 +682,7 @@ Multiplication_16bitSigned_8B858F:
     LDA.B $26                                                            ;8B8592;
     BPL .leftPositive                                                    ;8B8594;
     EOR.W #$FFFF                                                         ;8B8596;
-    INC A                                                                ;8B8599;
+    INC                                                                  ;8B8599;
     STA.B $26                                                            ;8B859A;
     LDA.B $28                                                            ;8B859C;
     BMI +                                                                ;8B859E;
@@ -700,7 +700,7 @@ Multiplication_16bitSigned_8B858F:
     RTS                                                                  ;8B85B9;
 
 +   EOR.W #$FFFF                                                         ;8B85BA;
-    INC A                                                                ;8B85BD;
+    INC                                                                  ;8B85BD;
     STA.B $28                                                            ;8B85BE;
     JSR.W Multiplication_16bitUnsigned_8B85EE                            ;8B85C0;
     PLP                                                                  ;8B85C3;
@@ -708,7 +708,7 @@ Multiplication_16bitSigned_8B858F:
 
   .leftPositiveRightNegative:
     EOR.W #$FFFF                                                         ;8B85C5;
-    INC A                                                                ;8B85C8;
+    INC                                                                  ;8B85C8;
     STA.B $28                                                            ;8B85C9;
     JSR.W Multiplication_16bitUnsigned_8B85EE                            ;8B85CB;
     LDA.B $2C                                                            ;8B85CE;
@@ -880,7 +880,7 @@ Debug_DisplayVersionInfo:
     BEQ .decimalPoint                                                    ;8B86BC;
     SEC                                                                  ;8B86BE;
     SBC.W #$0030                                                         ;8B86BF;
-    ASL A                                                                ;8B86C2;
+    ASL                                                                  ;8B86C2;
     TAY                                                                  ;8B86C3;
     LDA.W .versionStringOAMEntryTileNumbersAttributes,Y                  ;8B86C4;
     STA.W $0372,X                                                        ;8B86C7;
@@ -919,13 +919,13 @@ Debug_DisplayVersionInfo:
     LDA.L ROM_HEADER_version&$00FFFF                                     ;8B86FE;
     PHA                                                                  ;8B8702;
     AND.W #$000F                                                         ;8B8703;
-    ASL A                                                                ;8B8706;
+    ASL                                                                  ;8B8706;
     STA.B $12                                                            ;8B8707;
     PLA                                                                  ;8B8709;
     AND.W #$00F0                                                         ;8B870A;
-    LSR A                                                                ;8B870D;
-    LSR A                                                                ;8B870E;
-    LSR A                                                                ;8B870F;
+    LSR                                                                  ;8B870D;
+    LSR                                                                  ;8B870E;
+    LSR                                                                  ;8B870F;
     TAY                                                                  ;8B8710;
     LDA.W #$00E8                                                         ;8B8711;
     STA.W $0370,X                                                        ;8B8714;
@@ -1140,15 +1140,15 @@ IndirectInstructionFunction_DrawTextCharacter:
     BMI .pointer                                                         ;8B886A;
     LDA.W $0008,Y                                                        ;8B886C;
     AND.W #$00FF                                                         ;8B886F;
-    ASL A                                                                ;8B8872;
-    ASL A                                                                ;8B8873;
-    ASL A                                                                ;8B8874;
+    ASL                                                                  ;8B8872;
+    ASL                                                                  ;8B8873;
+    ASL                                                                  ;8B8874;
     STA.W $1A7D,X                                                        ;8B8875;
     LDA.W $0009,Y                                                        ;8B8878;
     AND.W #$00FF                                                         ;8B887B;
-    ASL A                                                                ;8B887E;
-    ASL A                                                                ;8B887F;
-    ASL A                                                                ;8B8880;
+    ASL                                                                  ;8B887E;
+    ASL                                                                  ;8B887F;
+    ASL                                                                  ;8B8880;
     SEC                                                                  ;8B8881;
     SBC.W #$0008                                                         ;8B8882;
     STA.W $1A9D,X                                                        ;8B8885;
@@ -1159,11 +1159,11 @@ IndirectInstructionFunction_DrawTextCharacter:
     STA.W $1A7D,X                                                        ;8B888D;
     LDA.W $0003,Y                                                        ;8B8890;
     AND.W #$00FF                                                         ;8B8893;
-    INC A                                                                ;8B8896;
-    INC A                                                                ;8B8897;
-    ASL A                                                                ;8B8898;
-    ASL A                                                                ;8B8899;
-    ASL A                                                                ;8B889A;
+    INC                                                                  ;8B8896;
+    INC                                                                  ;8B8897;
+    ASL                                                                  ;8B8898;
+    ASL                                                                  ;8B8899;
+    ASL                                                                  ;8B889A;
     SEC                                                                  ;8B889B;
     SBC.W #$0008                                                         ;8B889C;
     STA.W $1A9D,X                                                        ;8B889F;
@@ -1282,7 +1282,7 @@ CinematicBGObjects_X_16_TilemapOffsetForTile_12_13:
 ;;     X/$16: Tilemap offset (in octets). ([$13] * 20h + [$12]) * 2
     LDA.W $0012                                                          ;8B8943;
     AND.W #$00FF                                                         ;8B8946;
-    ASL A                                                                ;8B8949;
+    ASL                                                                  ;8B8949;
     STA.W $0014                                                          ;8B894A;
     SEP #$20                                                             ;8B894D;
     LDA.B #$40                                                           ;8B894F;
@@ -1748,30 +1748,30 @@ PaletteCrossFading_DecomposePaletteDataForFading:
     XBA                                                                  ;8B8C22;
     STA.L $7E2400,X                                                      ;8B8C23;
     XBA                                                                  ;8B8C27;
-    ASL A                                                                ;8B8C28;
-    ASL A                                                                ;8B8C29;
-    ASL A                                                                ;8B8C2A;
+    ASL                                                                  ;8B8C28;
+    ASL                                                                  ;8B8C29;
+    ASL                                                                  ;8B8C2A;
     STA.L $7E2A00,X                                                      ;8B8C2B;
     LDA.B $12                                                            ;8B8C2F;
     AND.W #$03E0                                                         ;8B8C31;
-    ASL A                                                                ;8B8C34;
-    ASL A                                                                ;8B8C35;
-    ASL A                                                                ;8B8C36;
+    ASL                                                                  ;8B8C34;
+    ASL                                                                  ;8B8C35;
+    ASL                                                                  ;8B8C36;
     STA.L $7E2600,X                                                      ;8B8C37;
     XBA                                                                  ;8B8C3B;
-    ASL A                                                                ;8B8C3C;
-    ASL A                                                                ;8B8C3D;
-    ASL A                                                                ;8B8C3E;
+    ASL                                                                  ;8B8C3C;
+    ASL                                                                  ;8B8C3D;
+    ASL                                                                  ;8B8C3E;
     STA.L $7E2C00,X                                                      ;8B8C3F;
     LDA.B $12                                                            ;8B8C43;
     AND.W #$7C00                                                         ;8B8C45;
-    LSR A                                                                ;8B8C48;
-    LSR A                                                                ;8B8C49;
+    LSR                                                                  ;8B8C48;
+    LSR                                                                  ;8B8C49;
     STA.L $7E2800,X                                                      ;8B8C4A;
     XBA                                                                  ;8B8C4E;
-    ASL A                                                                ;8B8C4F;
-    ASL A                                                                ;8B8C50;
-    ASL A                                                                ;8B8C51;
+    ASL                                                                  ;8B8C4F;
+    ASL                                                                  ;8B8C50;
+    ASL                                                                  ;8B8C51;
     STA.L $7E2E00,X                                                      ;8B8C52;
     INX                                                                  ;8B8C56;
     INX                                                                  ;8B8C57;
@@ -1881,15 +1881,15 @@ PaletteCrossFading_ComposeFadingPalettes:
     AND.W #$001F                                                         ;8B8CF6;
     STA.B $12                                                            ;8B8CF9;
     LDA.L $7E2600,X                                                      ;8B8CFB;
-    LSR A                                                                ;8B8CFF;
-    LSR A                                                                ;8B8D00;
-    LSR A                                                                ;8B8D01;
+    LSR                                                                  ;8B8CFF;
+    LSR                                                                  ;8B8D00;
+    LSR                                                                  ;8B8D01;
     AND.W #$03E0                                                         ;8B8D02;
     ORA.B $12                                                            ;8B8D05;
     STA.B $12                                                            ;8B8D07;
     LDA.L $7E2800,X                                                      ;8B8D09;
-    ASL A                                                                ;8B8D0D;
-    ASL A                                                                ;8B8D0E;
+    ASL                                                                  ;8B8D0D;
+    ASL                                                                  ;8B8D0E;
     AND.W #$7C00                                                         ;8B8D0F;
     ORA.B $12                                                            ;8B8D12;
     STA.L $7E2000,X                                                      ;8B8D14;
@@ -2041,13 +2041,13 @@ HandleSamusDuringIntro:
     JSL.L SamusNewStateHandler                                           ;8B8E16;
     LDA.W $18A8                                                          ;8B8E1A;
     BEQ .handleKnockback                                                 ;8B8E1D;
-    DEC A                                                                ;8B8E1F;
+    DEC                                                                  ;8B8E1F;
     STA.W $18A8                                                          ;8B8E20;
 
   .handleKnockback:
     LDA.W $18AA                                                          ;8B8E23;
     BEQ .return                                                          ;8B8E26;
-    DEC A                                                                ;8B8E28;
+    DEC                                                                  ;8B8E28;
     STA.W $18AA                                                          ;8B8E29;
 
   .return:
@@ -2096,7 +2096,7 @@ UNUSED_CalculateXYComponentsOfRadiusAAngleY_8B8E52:
     STA.B $1A                                                            ;8B8E59;
     CMP.W #$0080                                                         ;8B8E5B;
     BPL +                                                                ;8B8E5E;
-    ASL A                                                                ;8B8E60;
+    ASL                                                                  ;8B8E60;
     TAX                                                                  ;8B8E61;
     JSR.W UNUSED_Math_8B8EA3                                             ;8B8E62;
     BRA .storeXComponent                                                 ;8B8E65;
@@ -2104,11 +2104,11 @@ UNUSED_CalculateXYComponentsOfRadiusAAngleY_8B8E52:
 +   SEC                                                                  ;8B8E67;
     SBC.W #$0080                                                         ;8B8E68;
     AND.W #$00FF                                                         ;8B8E6B;
-    ASL A                                                                ;8B8E6E;
+    ASL                                                                  ;8B8E6E;
     TAX                                                                  ;8B8E6F;
     JSR.W UNUSED_Math_8B8EA3                                             ;8B8E70;
     EOR.W #$FFFF                                                         ;8B8E73;
-    INC A                                                                ;8B8E76;
+    INC                                                                  ;8B8E76;
 
   .storeXComponent:
     STA.B $14                                                            ;8B8E77;
@@ -2118,7 +2118,7 @@ UNUSED_CalculateXYComponentsOfRadiusAAngleY_8B8E52:
     AND.W #$00FF                                                         ;8B8E7F;
     CMP.W #$0080                                                         ;8B8E82;
     BPL +                                                                ;8B8E85;
-    ASL A                                                                ;8B8E87;
+    ASL                                                                  ;8B8E87;
     TAX                                                                  ;8B8E88;
     JSR.W UNUSED_Math_8B8EA3                                             ;8B8E89;
     BRA .storeYComponent                                                 ;8B8E8C;
@@ -2126,11 +2126,11 @@ UNUSED_CalculateXYComponentsOfRadiusAAngleY_8B8E52:
 +   SEC                                                                  ;8B8E8E;
     SBC.W #$0080                                                         ;8B8E8F;
     AND.W #$00FF                                                         ;8B8E92;
-    ASL A                                                                ;8B8E95;
+    ASL                                                                  ;8B8E95;
     TAX                                                                  ;8B8E96;
     JSR.W UNUSED_Math_8B8EA3                                             ;8B8E97;
     EOR.W #$FFFF                                                         ;8B8E9A;
-    INC A                                                                ;8B8E9D;
+    INC                                                                  ;8B8E9D;
 
   .storeYComponent:
     STA.B $16                                                            ;8B8E9E;
@@ -2188,15 +2188,15 @@ MoveUnusedSpritesOffScreen:
     LDA.W $0590                                                          ;8B8EDC;
     CMP.W #$0200                                                         ;8B8EDF;
     BPL .return                                                          ;8B8EE2;
-    LSR A                                                                ;8B8EE4;
-    LSR A                                                                ;8B8EE5;
+    LSR                                                                  ;8B8EE4;
+    LSR                                                                  ;8B8EE5;
     PHA                                                                  ;8B8EE6;
     AND.W #$0007                                                         ;8B8EE7;
-    ASL A                                                                ;8B8EEA;
+    ASL                                                                  ;8B8EEA;
     TAY                                                                  ;8B8EEB;
     PLA                                                                  ;8B8EEC;
-    LSR A                                                                ;8B8EED;
-    LSR A                                                                ;8B8EEE;
+    LSR                                                                  ;8B8EED;
+    LSR                                                                  ;8B8EEE;
     TAX                                                                  ;8B8EEF;
     LDA.W $0570,X                                                        ;8B8EF0;
     ORA.W .Xpos,Y                                                        ;8B8EF3;
@@ -2216,9 +2216,9 @@ MoveUnusedSpritesOffScreen:
 
   .setXpos:
     LDA.W $0590                                                          ;8B8F0D;
-    LSR A                                                                ;8B8F10;
+    LSR                                                                  ;8B8F10;
     STA.B $12                                                            ;8B8F11;
-    LSR A                                                                ;8B8F13;
+    LSR                                                                  ;8B8F13;
     ADC.B $12                                                            ;8B8F14;
     CLC                                                                  ;8B8F16;
     ADC.W #.moveAllSprites                                               ;8B8F17;
@@ -2420,7 +2420,7 @@ AdvanceSlowScreenFadeOut:
     LDA.B $51                                                            ;8B90DF;
     AND.B #$0F                                                           ;8B90E1;
     BEQ .done                                                            ;8B90E3;
-    DEC A                                                                ;8B90E5;
+    DEC                                                                  ;8B90E5;
     BEQ .zeroBrightness                                                  ;8B90E6;
     STA.B $51                                                            ;8B90E8;
     LDA.W $0725                                                          ;8B90EA;
@@ -2484,7 +2484,7 @@ AdvanceSlowScreenFadeIn:
 
   .checkBrightness:
     LDA.B $51                                                            ;8B9125;
-    INC A                                                                ;8B9127;
+    INC                                                                  ;8B9127;
     AND.B #$1F                                                           ;8B9128;
     CMP.B #$0F                                                           ;8B912A;
     BPL .maxBrightness                                                   ;8B912C;
@@ -3750,7 +3750,7 @@ Process_TextGlowObject:
     LDY.W $19F7,X                                                        ;8B9857;
     LDA.W $1A17,X                                                        ;8B985A;
     AND.W #$00FF                                                         ;8B985D;
-    ASL A                                                                ;8B9860;
+    ASL                                                                  ;8B9860;
     STA.W $0014                                                          ;8B9861;
     SEP #$20                                                             ;8B9864;
     LDA.B #$40                                                           ;8B9866;
@@ -3939,7 +3939,7 @@ Process_CreditsObject_InstList:
   .copyRow:
     JSR.W Copy_CreditsRow_ToCinematicBGTilemap                           ;8B99AA;
     LDA.W $1A01                                                          ;8B99AD;
-    INC A                                                                ;8B99B0;
+    INC                                                                  ;8B99B0;
     AND.W #$001F                                                         ;8B99B1;
     STA.W $1A01                                                          ;8B99B4;
     TYA                                                                  ;8B99B7;
@@ -4082,7 +4082,7 @@ SkipToTitleScreenHandler:
     REP #$30                                                             ;8B9A6D;
     LDA.W $1A53                                                          ;8B9A6F;
     BEQ .return                                                          ;8B9A72;
-    ASL A                                                                ;8B9A74;
+    ASL                                                                  ;8B9A74;
     TAX                                                                  ;8B9A75;
     JSR.W (.pointers,X)                                                  ;8B9A76;
 
@@ -4599,7 +4599,7 @@ CinematicFunction_TitleSequenceScene3_ZoomingOut:
     LDA.W $198F                                                          ;8B9E93;
     CMP.W #$0100                                                         ;8B9E96;
     BPL .finish                                                          ;8B9E99;
-    INC A                                                                ;8B9E9B;
+    INC                                                                  ;8B9E9B;
     STA.W $198F                                                          ;8B9E9C;
 
   .return:
@@ -4742,8 +4742,8 @@ CinematicFunction_TransitionToFileSelectMenu:
     JSL.L Disable_PaletteFXObjects                                       ;8B9F7D;
     JSL.L Clear_PaletteFXObjects                                         ;8B9F81;
     LDA.W #$1C1F                                                         ;8B9F85;
-    DEC A                                                                ;8B9F88;
-    DEC A                                                                ;8B9F89;
+    DEC                                                                  ;8B9F88;
+    DEC                                                                  ;8B9F89;
     SEC                                                                  ;8B9F8A;
     SBC.W #$198D                                                         ;8B9F8B;
     TAX                                                                  ;8B9F8E;
@@ -4791,8 +4791,8 @@ CinematicFunction_TransitionToDemos:
     JSL.L Disable_PaletteFXObjects                                       ;8B9FD9;
     JSL.L Clear_PaletteFXObjects                                         ;8B9FDD;
     LDA.W #$1C1F                                                         ;8B9FE1;
-    DEC A                                                                ;8B9FE4;
-    DEC A                                                                ;8B9FE5;
+    DEC                                                                  ;8B9FE4;
+    DEC                                                                  ;8B9FE5;
     SEC                                                                  ;8B9FE6;
     SBC.W #$198D                                                         ;8B9FE7;
     TAX                                                                  ;8B9FEA;
@@ -4827,9 +4827,9 @@ Configure_TitleScreen_GradientHDMATable:
     REP #$30                                                             ;8BA00E;
     LDA.W $198F                                                          ;8BA010;
     AND.W #$00F0                                                         ;8BA013;
-    LSR A                                                                ;8BA016;
-    LSR A                                                                ;8BA017;
-    LSR A                                                                ;8BA018;
+    LSR                                                                  ;8BA016;
+    LSR                                                                  ;8BA017;
+    LSR                                                                  ;8BA018;
     TAX                                                                  ;8BA019;
     LDA.L TitleSequenceHDMATables,X                                      ;8BA01A;
     TAY                                                                  ;8BA01E;
@@ -5265,7 +5265,7 @@ GameState_1E_22_25_Intro_CeresGoesBoom_SamusGoesToZebes_8B:
   .manualReturn:
     LDA.W $1B9F                                                          ;8BA367;
     BMI +                                                                ;8BA36A;
-    INC A                                                                ;8BA36C;
+    INC                                                                  ;8BA36C;
     STA.W $1B9F                                                          ;8BA36D;
 
 +   INC.W $1A51                                                          ;8BA370;
@@ -5320,8 +5320,8 @@ CinematicFunction_Intro_Initial:
     STZ.W $18A8                                                          ;8BA3C5;
     STZ.W $18AA                                                          ;8BA3C8;
     LDA.W #$1C1F                                                         ;8BA3CB;
-    DEC A                                                                ;8BA3CE;
-    DEC A                                                                ;8BA3CF;
+    DEC                                                                  ;8BA3CE;
+    DEC                                                                  ;8BA3CF;
     SEC                                                                  ;8BA3D0;
     SBC.W #$198D                                                         ;8BA3D1;
     TAX                                                                  ;8BA3D4;
@@ -5899,8 +5899,8 @@ Instruction_SpawnMetroidEggParticles:
 InitFunction_CinematicSpriteObject_MetroidEggParticles:
     LDA.W $1B9D                                                          ;8BA958;
     STA.W $1B7D,Y                                                        ;8BA95B;
-    ASL A                                                                ;8BA95E;
-    ASL A                                                                ;8BA95F;
+    ASL                                                                  ;8BA95E;
+    ASL                                                                  ;8BA95F;
     TAX                                                                  ;8BA960;
     LDA.W .Xposition,X                                                   ;8BA961;
     CLC                                                                  ;8BA964;
@@ -5932,8 +5932,8 @@ InitFunction_CinematicSpriteObject_MetroidEggParticles:
 PreInstruction_CinematicSpriteObject_MetroidEggParticle:
     LDA.W $1B7D,X                                                        ;8BA994;
     AND.W #$00FF                                                         ;8BA997;
-    ASL A                                                                ;8BA99A;
-    ASL A                                                                ;8BA99B;
+    ASL                                                                  ;8BA99A;
+    ASL                                                                  ;8BA99B;
     TAY                                                                  ;8BA99C;
     LDA.W $1ADD,X                                                        ;8BA99D;
     CLC                                                                  ;8BA9A0;
@@ -5945,8 +5945,8 @@ PreInstruction_CinematicSpriteObject_MetroidEggParticle:
     LDA.W $1B7D,X                                                        ;8BA9B0;
     XBA                                                                  ;8BA9B3;
     AND.W #$00FF                                                         ;8BA9B4;
-    ASL A                                                                ;8BA9B7;
-    ASL A                                                                ;8BA9B8;
+    ASL                                                                  ;8BA9B7;
+    ASL                                                                  ;8BA9B8;
     TAY                                                                  ;8BA9B9;
     LDA.W $1AFD,X                                                        ;8BA9BA;
     CLC                                                                  ;8BA9BD;
@@ -6007,8 +6007,8 @@ InitFunction_CinematicSpriteObject_MetroidEggSlimeDrops:
 PreInstruction_CinematicSpriteObject_MetroidEggSlimeDrops:
     LDA.W $1B7D,X                                                        ;8BAAB3;
     AND.W #$00FF                                                         ;8BAAB6;
-    ASL A                                                                ;8BAAB9;
-    ASL A                                                                ;8BAABA;
+    ASL                                                                  ;8BAAB9;
+    ASL                                                                  ;8BAABA;
     TAY                                                                  ;8BAABB;
     LDA.W $1ADD,X                                                        ;8BAABC;
     CLC                                                                  ;8BAABF;
@@ -6022,8 +6022,8 @@ PreInstruction_CinematicSpriteObject_MetroidEggSlimeDrops:
     BNE .nonZero                                                         ;8BAAD5;
     XBA                                                                  ;8BAAD7;
     AND.W #$00FF                                                         ;8BAAD8;
-    ASL A                                                                ;8BAADB;
-    ASL A                                                                ;8BAADC;
+    ASL                                                                  ;8BAADB;
+    ASL                                                                  ;8BAADC;
     TAY                                                                  ;8BAADD;
     LDA.W $1AFD,X                                                        ;8BAADE;
     CLC                                                                  ;8BAAE1;
@@ -6039,8 +6039,8 @@ PreInstruction_CinematicSpriteObject_MetroidEggSlimeDrops:
   .nonZero:
     XBA                                                                  ;8BAAF8;
     AND.W #$00FF                                                         ;8BAAF9;
-    ASL A                                                                ;8BAAFC;
-    ASL A                                                                ;8BAAFD;
+    ASL                                                                  ;8BAAFC;
+    ASL                                                                  ;8BAAFD;
     TAY                                                                  ;8BAAFE;
     LDA.W $1AFD,X                                                        ;8BAAFF;
     CLC                                                                  ;8BAB02;
@@ -6140,10 +6140,10 @@ PreInst_CinematicSpriteObject_BabyMetroidBeingDelivered:
     BNE .return                                                          ;8BAD80;
     LDA.W $1993                                                          ;8BAD82;
     BEQ .return                                                          ;8BAD85;
-    DEC A                                                                ;8BAD87;
+    DEC                                                                  ;8BAD87;
     STA.W $1993                                                          ;8BAD88;
     LDA.W $1A7D,X                                                        ;8BAD8B;
-    INC A                                                                ;8BAD8E;
+    INC                                                                  ;8BAD8E;
     STA.W $1A7D,X                                                        ;8BAD8F;
 
   .return:
@@ -6178,10 +6178,10 @@ PreInst_CinematicSpriteObject_BabyMetroidBeingExamined:
     LDA.W $1997                                                          ;8BADC0;
     CMP.W #$0008                                                         ;8BADC3;
     BPL .return                                                          ;8BADC6;
-    INC A                                                                ;8BADC8;
+    INC                                                                  ;8BADC8;
     STA.W $1997                                                          ;8BADC9;
     LDA.W $1A9D,X                                                        ;8BADCC;
-    DEC A                                                                ;8BADCF;
+    DEC                                                                  ;8BADCF;
     STA.W $1A9D,X                                                        ;8BADD0;
 
   .return:
@@ -6341,7 +6341,7 @@ Instruction_SpawnBlinkingMarkers_WaitForInput_Page2:
 CinematicFunction_Intro_WaitForInput_SetupMotherBrainFight:
     LDA.W $1BA3                                                          ;8BAEB8;
     BEQ .timerExpired                                                    ;8BAEBB;
-    DEC A                                                                ;8BAEBD;
+    DEC                                                                  ;8BAEBD;
     STA.W $1BA3                                                          ;8BAEBE;
     RTS                                                                  ;8BAEC1;
 
@@ -6420,7 +6420,7 @@ CinematicFunction_Intro_WaitForInput_SetupMotherBrainFight:
 CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDiscovery:
     LDA.W $1BA3                                                          ;8BAF6C;
     BEQ .timerExpired                                                    ;8BAF6F;
-    DEC A                                                                ;8BAF71;
+    DEC                                                                  ;8BAF71;
     STA.W $1BA3                                                          ;8BAF72;
     RTS                                                                  ;8BAF75;
 
@@ -6624,7 +6624,7 @@ Instruction_SpawnBlinkingMarkers_WaitForInput_Page4:
 CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDelivery:
     LDA.W $1BA3                                                          ;8BB0F2;
     BEQ .timerExpired                                                    ;8BB0F5;
-    DEC A                                                                ;8BB0F7;
+    DEC                                                                  ;8BB0F7;
     STA.W $1BA3                                                          ;8BB0F8;
     RTS                                                                  ;8BB0FB;
 
@@ -6653,7 +6653,7 @@ CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDelivery:
 CinematicFunc_Intro_WaitForInput_SetupBabyMetroidExamined:
     LDA.W $1BA3                                                          ;8BB123;
     BEQ .timerExpired                                                    ;8BB126;
-    DEC A                                                                ;8BB128;
+    DEC                                                                  ;8BB128;
     STA.W $1BA3                                                          ;8BB129;
     RTS                                                                  ;8BB12C;
 
@@ -6762,7 +6762,7 @@ CinematicFunction_Intro_WaitForInput_ClearText:
     JSR.W RTS_BackgroundFLickeringEffect                                 ;8BB1DA;
     LDA.W $1BA3                                                          ;8BB1DD;
     BEQ .timerExpired                                                    ;8BB1E0;
-    DEC A                                                                ;8BB1E2;
+    DEC                                                                  ;8BB1E2;
     STA.W $1BA3                                                          ;8BB1E3;
     RTS                                                                  ;8BB1E6;
 
@@ -7486,8 +7486,8 @@ CinematicFunction_Intro_Finish:
     STZ.B $BB                                                            ;8BB74D;
     STZ.W $198D                                                          ;8BB74F;
     LDA.W #$1C1F                                                         ;8BB752;
-    DEC A                                                                ;8BB755;
-    DEC A                                                                ;8BB756;
+    DEC                                                                  ;8BB755;
+    DEC                                                                  ;8BB756;
     SEC                                                                  ;8BB757;
     SBC.W #$198D                                                         ;8BB758;
     TAX                                                                  ;8BB75B;
@@ -7544,7 +7544,7 @@ PreInstruction_CinematicSpriteObject_IntroMotherBrain:
     LDA.W #$0008                                                         ;8BB7AB;
     STA.W $1ADD,X                                                        ;8BB7AE;
     LDA.W $1B7D,X                                                        ;8BB7B1;
-    INC A                                                                ;8BB7B4;
+    INC                                                                  ;8BB7B4;
     STA.W $1B7D,X                                                        ;8BB7B5;
     CMP.W #$0004                                                         ;8BB7B8;
     BNE .return                                                          ;8BB7BB;
@@ -7585,7 +7585,7 @@ PreInstruction_IntroMotherBrain_Exploding:
     JSR.W IntroMotherBrain_HurtFlashHandling                             ;8BB80F;
     JSR.W IntroMotherBrain_ScreenShaking                                 ;8BB812;
     LDA.W $1B7D,X                                                        ;8BB815;
-    INC A                                                                ;8BB818;
+    INC                                                                  ;8BB818;
     STA.W $1B7D,X                                                        ;8BB819;
     CMP.W #$0080                                                         ;8BB81C;
     BMI .return                                                          ;8BB81F;
@@ -7674,7 +7674,7 @@ IntroMotherBrain_ScreenShaking:
 InitFunction_CinematicSpriteObject_IntroRinka:
     LDA.W $1B9D                                                          ;8BB896;
     STA.W $1B7D,Y                                                        ;8BB899;
-    ASL A                                                                ;8BB89C;
+    ASL                                                                  ;8BB89C;
     TAX                                                                  ;8BB89D;
     LDA.W .Xposition,X                                                   ;8BB89E;
     STA.W $1A7D,Y                                                        ;8BB8A1;
@@ -7760,7 +7760,7 @@ PreInstruction_IntroRinka_Moving_HitsSamus:
 PreInstruction_IntroRinka_Moving_MissesSamus:
 ; Cinematic sprite object 0 here is intro Mother Brain
     LDA.W $1B7D,X                                                        ;8BB93B;
-    ASL A                                                                ;8BB93E;
+    ASL                                                                  ;8BB93E;
     TAY                                                                  ;8BB93F;
     LDA.W $1ADD,X                                                        ;8BB940;
     CLC                                                                  ;8BB943;
@@ -7802,7 +7802,7 @@ PreInstruction_IntroRinka_Moving_MissesSamus:
 InitFunc_CinematicSpriteObject_IntroMotherBrainExplosion_Big:
     LDA.W $1B9D                                                          ;8BB98D;
     STA.W $1B7D,Y                                                        ;8BB990;
-    ASL A                                                                ;8BB993;
+    ASL                                                                  ;8BB993;
     TAX                                                                  ;8BB994;
     LDA.W #$0038                                                         ;8BB995;
     CLC                                                                  ;8BB998;
@@ -7832,7 +7832,7 @@ InitFunc_CinematicSpriteObject_IntroMotherBrainExplosion_Big:
 InitFunc_CineSpriteObject_IntroMotherBrainExplosion_Small:
     LDA.W $1B9D                                                          ;8BB9D4;
     STA.W $1B7D,Y                                                        ;8BB9D7;
-    ASL A                                                                ;8BB9DA;
+    ASL                                                                  ;8BB9DA;
     TAX                                                                  ;8BB9DB;
     LDA.W #$0038                                                         ;8BB9DC;
     CLC                                                                  ;8BB9DF;
@@ -8026,7 +8026,7 @@ PreInstruction_ConfusedBabyMetroid_Dancing:
     LDA.W $1B7D,X                                                        ;8BBB39;
     CMP.W #$0080                                                         ;8BBB3C;
     BPL +                                                                ;8BBB3F;
-    INC A                                                                ;8BBB41;
+    INC                                                                  ;8BBB41;
     STA.W $1B7D,X                                                        ;8BBB42;
     BIT.W #$003F                                                         ;8BBB45;
     BNE +                                                                ;8BBB48;
@@ -8727,8 +8727,8 @@ CinematicFunction_FlyToCeres_Finish:
     STZ.B $BB                                                            ;8BC0E3;
     STZ.W $198D                                                          ;8BC0E5;
     LDA.W #$1C1F                                                         ;8BC0E8;
-    DEC A                                                                ;8BC0EB;
-    DEC A                                                                ;8BC0EC;
+    DEC                                                                  ;8BC0EB;
+    DEC                                                                  ;8BC0EC;
     SEC                                                                  ;8BC0ED;
     SBC.W #$198D                                                         ;8BC0EE;
     TAX                                                                  ;8BC0F1;
@@ -8768,8 +8768,8 @@ CinematicFunction_CeresGoesBoom_Initial:
     BPL .wait                                                            ;8BC123;
     JSR.W Setup_PPU_CeresCutscene                                        ;8BC125;
     LDA.W #$1C1F                                                         ;8BC128;
-    DEC A                                                                ;8BC12B;
-    DEC A                                                                ;8BC12C;
+    DEC                                                                  ;8BC12B;
+    DEC                                                                  ;8BC12C;
     SEC                                                                  ;8BC12D;
     SBC.W #$198D                                                         ;8BC12E;
     TAX                                                                  ;8BC131;
@@ -9015,13 +9015,13 @@ CinematicFunction_CeresGoesBoom_CeresExplosions:
 
 +   LDA.W $1993                                                          ;8BC37B;
     EOR.W #$FFFF                                                         ;8BC37E;
-    INC A                                                                ;8BC381;
+    INC                                                                  ;8BC381;
     CLC                                                                  ;8BC382;
     ADC.B $80                                                            ;8BC383;
     STA.W $0CE2                                                          ;8BC385;
     LDA.W $1997                                                          ;8BC388;
     EOR.W #$FFFF                                                         ;8BC38B;
-    INC A                                                                ;8BC38E;
+    INC                                                                  ;8BC38E;
     CLC                                                                  ;8BC38F;
     ADC.B $82                                                            ;8BC390;
     STA.W $0CE4                                                          ;8BC392;
@@ -9110,13 +9110,13 @@ Instruction_SpawnCeresExplosions1:
 InitFunction_CinematicSpriteObject_CeresExplosion1:
     LDA.W $1B9D                                                          ;8BC434;
     STA.W $1B7D,Y                                                        ;8BC437;
-    ASL A                                                                ;8BC43A;
+    ASL                                                                  ;8BC43A;
     TAX                                                                  ;8BC43B;
     LDA.W .timer,X                                                       ;8BC43C;
     STA.W $1B5D,Y                                                        ;8BC43F;
     LDA.W $1993                                                          ;8BC442;
     EOR.W #$FFFF                                                         ;8BC445;
-    INC A                                                                ;8BC448;
+    INC                                                                  ;8BC448;
     CLC                                                                  ;8BC449;
     ADC.B $80                                                            ;8BC44A;
     CLC                                                                  ;8BC44C;
@@ -9124,7 +9124,7 @@ InitFunction_CinematicSpriteObject_CeresExplosion1:
     STA.W $1A7D,Y                                                        ;8BC450;
     LDA.W $1997                                                          ;8BC453;
     EOR.W #$FFFF                                                         ;8BC456;
-    INC A                                                                ;8BC459;
+    INC                                                                  ;8BC459;
     CLC                                                                  ;8BC45A;
     ADC.B $82                                                            ;8BC45B;
     CLC                                                                  ;8BC45D;
@@ -9163,7 +9163,7 @@ PreInst_CeresExplosionSpawner_SpawnExplosion2EveryCFrames:
     LDA.W #$000C                                                         ;8BC4A8;
     STA.W $1A49                                                          ;8BC4AB;
     LDA.W $1A4B                                                          ;8BC4AE;
-    INC A                                                                ;8BC4B1;
+    INC                                                                  ;8BC4B1;
     AND.W #$0007                                                         ;8BC4B2;
     STA.W $1A4B                                                          ;8BC4B5;
 
@@ -9175,12 +9175,12 @@ PreInst_CeresExplosionSpawner_SpawnExplosion2EveryCFrames:
 InitFunction_CinematicSpriteObject_CeresExplosion2:
     LDA.W $1B9D                                                          ;8BC4B9;
     STA.W $1B7D,Y                                                        ;8BC4BC;
-    ASL A                                                                ;8BC4BF;
-    ASL A                                                                ;8BC4C0;
+    ASL                                                                  ;8BC4BF;
+    ASL                                                                  ;8BC4C0;
     TAX                                                                  ;8BC4C1;
     LDA.W $1993                                                          ;8BC4C2;
     EOR.W #$FFFF                                                         ;8BC4C5;
-    INC A                                                                ;8BC4C8;
+    INC                                                                  ;8BC4C8;
     CLC                                                                  ;8BC4C9;
     ADC.B $80                                                            ;8BC4CA;
     CLC                                                                  ;8BC4CC;
@@ -9188,7 +9188,7 @@ InitFunction_CinematicSpriteObject_CeresExplosion2:
     STA.W $1A7D,Y                                                        ;8BC4D0;
     LDA.W $1997                                                          ;8BC4D3;
     EOR.W #$FFFF                                                         ;8BC4D6;
-    INC A                                                                ;8BC4D9;
+    INC                                                                  ;8BC4D9;
     CLC                                                                  ;8BC4DA;
     ADC.B $82                                                            ;8BC4DB;
     CLC                                                                  ;8BC4DD;
@@ -9239,13 +9239,13 @@ Instruction_SpawnCeresExplosions3:
 InitFunction_CinematicSpriteObject_CeresExplosion3:
     LDA.W $1B9D                                                          ;8BC533;
     STA.W $1B7D,Y                                                        ;8BC536;
-    ASL A                                                                ;8BC539;
+    ASL                                                                  ;8BC539;
     TAX                                                                  ;8BC53A;
     LDA.W .timer,X                                                       ;8BC53B;
     STA.W $1B5D,Y                                                        ;8BC53E;
     LDA.W $1993                                                          ;8BC541;
     EOR.W #$FFFF                                                         ;8BC544;
-    INC A                                                                ;8BC547;
+    INC                                                                  ;8BC547;
     CLC                                                                  ;8BC548;
     ADC.B $80                                                            ;8BC549;
     CLC                                                                  ;8BC54B;
@@ -9253,7 +9253,7 @@ InitFunction_CinematicSpriteObject_CeresExplosion3:
     STA.W $1A7D,Y                                                        ;8BC54F;
     LDA.W $1997                                                          ;8BC552;
     EOR.W #$FFFF                                                         ;8BC555;
-    INC A                                                                ;8BC558;
+    INC                                                                  ;8BC558;
     CLC                                                                  ;8BC559;
     ADC.B $82                                                            ;8BC55A;
     CLC                                                                  ;8BC55C;
@@ -9294,13 +9294,13 @@ PreInstruction_CinematicSpriteObject_CeresExplosion:
 InitFunction_CinematicSpriteObject_CeresFinalExplosion:
     LDA.W $1993                                                          ;8BC5A9;
     EOR.W #$FFFF                                                         ;8BC5AC;
-    INC A                                                                ;8BC5AF;
+    INC                                                                  ;8BC5AF;
     CLC                                                                  ;8BC5B0;
     ADC.B $80                                                            ;8BC5B1;
     STA.W $1A7D,Y                                                        ;8BC5B3;
     LDA.W $1997                                                          ;8BC5B6;
     EOR.W #$FFFF                                                         ;8BC5B9;
-    INC A                                                                ;8BC5BC;
+    INC                                                                  ;8BC5BC;
     CLC                                                                  ;8BC5BD;
     ADC.B $82                                                            ;8BC5BE;
     STA.W $1A9D,Y                                                        ;8BC5C0;
@@ -9326,7 +9326,7 @@ CinematicFunction_CeresGoesBoom_GunshipFlyingAway:
     ADC.W #$0002                                                         ;8BC5E3;
     STA.W $1993                                                          ;8BC5E6;
     LDA.W $198D                                                          ;8BC5E9;
-    DEC A                                                                ;8BC5EC;
+    DEC                                                                  ;8BC5EC;
     AND.W #$00FF                                                         ;8BC5ED;
     STA.W $198D                                                          ;8BC5F0;
     LDA.W $198F                                                          ;8BC5F3;
@@ -9422,8 +9422,8 @@ CinematicFunction_CeresGoesBoom_FadeOut:
 CinematicFunction_FlyToZebes_Initial:
     JSR.W Setup_PPU_SamusGoesToZebesCutscene                             ;8BC699;
     LDA.W #$1C1F                                                         ;8BC69C;
-    DEC A                                                                ;8BC69F;
-    DEC A                                                                ;8BC6A0;
+    DEC                                                                  ;8BC69F;
+    DEC                                                                  ;8BC6A0;
     SEC                                                                  ;8BC6A1;
     SBC.W #$198D                                                         ;8BC6A2;
     TAX                                                                  ;8BC6A5;
@@ -10006,8 +10006,8 @@ CinematicFunction_FlyToZebes_LoadGameData:
     STA.B $51                                                            ;8BCAE3;
     REP #$20                                                             ;8BCAE5;
     LDA.W #$1C1F                                                         ;8BCAE7;
-    DEC A                                                                ;8BCAEA;
-    DEC A                                                                ;8BCAEB;
+    DEC                                                                  ;8BCAEA;
+    DEC                                                                  ;8BCAEB;
     SEC                                                                  ;8BCAEC;
     SBC.W #$198D                                                         ;8BCAED;
     TAX                                                                  ;8BCAF0;
@@ -11285,7 +11285,7 @@ GameState27_EndingAndCredits:
   .manualReturn:
     LDA.W $1B9F                                                          ;8BD44F;
     BMI .zeroTimer                                                       ;8BD452;
-    INC A                                                                ;8BD454;
+    INC                                                                  ;8BD454;
     STA.W $1B9F                                                          ;8BD455;
 
   .zeroTimer:
@@ -11326,8 +11326,8 @@ CinematicFunction_Ending_Setup:
     BPL .wait8Frames                                                     ;8BD48C;
     JSR.W Setup_PPU_ZebesDestruction                                     ;8BD48E;
     LDA.W #$1C1F                                                         ;8BD491;
-    DEC A                                                                ;8BD494;
-    DEC A                                                                ;8BD495;
+    DEC                                                                  ;8BD494;
+    DEC                                                                  ;8BD495;
     SEC                                                                  ;8BD496;
     SBC.W #$198D                                                         ;8BD497;
     TAX                                                                  ;8BD49A;
@@ -12003,7 +12003,7 @@ CinematicFunc_Ending_SpaceView_LoadGunshipBG:
     LDA.W $1A49                                                          ;8BDAD3;
     CMP.W #$0008                                                         ;8BDAD6;
     BPL .timerGreaterThan7                                               ;8BDAD9;
-    ASL A                                                                ;8BDADB;
+    ASL                                                                  ;8BDADB;
     TAX                                                                  ;8BDADC;
     LDY.W $0334                                                          ;8BDADD;
     LDA.W #$00C0                                                         ;8BDAE0;
@@ -12025,7 +12025,7 @@ CinematicFunc_Ending_SpaceView_LoadGunshipBG:
     BRA +                                                                ;8BDB0C;
 
   .timerGreaterThan7:
-    ASL A                                                                ;8BDB0E;
+    ASL                                                                  ;8BDB0E;
     TAX                                                                  ;8BDB0F;
     LDY.W $0334                                                          ;8BDB10;
     LDA.W #$0080                                                         ;8BDB13;
@@ -12046,7 +12046,7 @@ CinematicFunc_Ending_SpaceView_LoadGunshipBG:
     STA.W $0334                                                          ;8BDB3C;
 
 +   LDA.W $1A49                                                          ;8BDB3F;
-    INC A                                                                ;8BDB42;
+    INC                                                                  ;8BDB42;
     STA.W $1A49                                                          ;8BDB43;
     CMP.W #$0010                                                         ;8BDB46;
     BMI .return                                                          ;8BDB49;
@@ -12218,7 +12218,7 @@ FadeOut_ZebesExplosion_AfterGlow:
 CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningFast:
     LDA.W $1A4B                                                          ;8BDCA5;
     BEQ .fadeOutAfterGlow                                                ;8BDCA8;
-    DEC A                                                                ;8BDCAA;
+    DEC                                                                  ;8BDCAA;
     STA.W $1A4B                                                          ;8BDCAB;
     BRA .timerExpired                                                    ;8BDCAE;
 
@@ -12232,8 +12232,8 @@ CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningFast:
     AND.W #$00FF                                                         ;8BDCBA;
     STA.W $198D                                                          ;8BDCBD;
     LDA.W $1A4D                                                          ;8BDCC0;
-    ASL A                                                                ;8BDCC3;
-    ASL A                                                                ;8BDCC4;
+    ASL                                                                  ;8BDCC3;
+    ASL                                                                  ;8BDCC4;
     TAX                                                                  ;8BDCC5;
     LDA.W $1991                                                          ;8BDCC6;
     CLC                                                                  ;8BDCC9;
@@ -12243,7 +12243,7 @@ CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningFast:
     ADC.W .shakingXVelocities,X                                          ;8BDCD3;
     STA.W $1993                                                          ;8BDCD6;
     LDA.W $1A4D                                                          ;8BDCD9;
-    INC A                                                                ;8BDCDC;
+    INC                                                                  ;8BDCDC;
     AND.W #$000F                                                         ;8BDCDD;
     STA.W $1A4D                                                          ;8BDCE0;
     LDA.W $198F                                                          ;8BDCE3;
@@ -12281,8 +12281,8 @@ CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningSlow:
 
   .notE0:
     LDA.W $1A4D                                                          ;8BDD57;
-    ASL A                                                                ;8BDD5A;
-    ASL A                                                                ;8BDD5B;
+    ASL                                                                  ;8BDD5A;
+    ASL                                                                  ;8BDD5B;
     TAX                                                                  ;8BDD5C;
     LDA.W $1991                                                          ;8BDD5D;
     CLC                                                                  ;8BDD60;
@@ -12292,7 +12292,7 @@ CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningSlow:
     ADC.W .shakingXVelocities,X                                          ;8BDD6A;
     STA.W $1993                                                          ;8BDD6D;
     LDA.W $1A4D                                                          ;8BDD70;
-    INC A                                                                ;8BDD73;
+    INC                                                                  ;8BDD73;
     AND.W #$0007                                                         ;8BDD74;
     STA.W $1A4D                                                          ;8BDD77;
     LDA.W $198F                                                          ;8BDD7A;
@@ -12865,7 +12865,7 @@ CinematicFunc_PostCredits_IdleSamus_1_CrossFadeOutSamusSuit:
 ;;; $E293: Cinematic function - post-credits - idle Samus 1/2 ;;;
 CinematicFunction_PostCredits_IdleSamus1:
     LDA.W $1A49                                                          ;8BE293;
-    DEC A                                                                ;8BE296;
+    DEC                                                                  ;8BE296;
     STA.W $1A49                                                          ;8BE297;
     CMP.W #$0041                                                         ;8BE29A;
     BPL .return                                                          ;8BE29D;
@@ -13016,7 +13016,7 @@ CinematicFunction_PostCredits_IdleSamus2:
 CinematicFunction_PostCredits_SamusShootsScreen:
     LDA.W $1A4D                                                          ;8BE3AE;
     BEQ .timerExpired                                                    ;8BE3B1;
-    DEC A                                                                ;8BE3B3;
+    DEC                                                                  ;8BE3B3;
     STA.W $1A4D                                                          ;8BE3B4;
     LDX.W #$0180                                                         ;8BE3B7;
     LDY.W #$0010                                                         ;8BE3BA;
@@ -13028,7 +13028,7 @@ CinematicFunction_PostCredits_SamusShootsScreen:
   .timerExpired:
     LDA.W $1A49                                                          ;8BE3C8;
     BEQ .transitionPalette                                               ;8BE3CB;
-    DEC A                                                                ;8BE3CD;
+    DEC                                                                  ;8BE3CD;
     STA.W $1A49                                                          ;8BE3CE;
     BRA +                                                                ;8BE3D1;
 
@@ -13063,7 +13063,7 @@ CinematicFunction_PostCredits_SamusShootsScreen:
 TransitionSamusPaletteToBlack:
     LDA.W $1A4F                                                          ;8BE409;
     BEQ .return                                                          ;8BE40C;
-    DEC A                                                                ;8BE40E;
+    DEC                                                                  ;8BE40E;
     STA.W $1A4F                                                          ;8BE40F;
     LDX.W #$01E0                                                         ;8BE412;
     LDY.W #$0010                                                         ;8BE415;
@@ -13086,9 +13086,9 @@ TransferPostCreditsSuperMetroidIconToVRAM:
     RTS                                                                  ;8BE42C;
 
   .loading:
-    ASL A                                                                ;8BE42D;
-    ASL A                                                                ;8BE42E;
-    ASL A                                                                ;8BE42F;
+    ASL                                                                  ;8BE42D;
+    ASL                                                                  ;8BE42E;
+    ASL                                                                  ;8BE42F;
     TAY                                                                  ;8BE430;
     LDX.W $0330                                                          ;8BE431;
     LDA.W .size,Y                                                        ;8BE434;
@@ -13289,8 +13289,8 @@ CinematicFunction_PostCredits_GreyOutSuperMetroidIcon:
     PHY                                                                  ;8BE58B;
     PHB                                                                  ;8BE58C;
     LDA.W $1A49                                                          ;8BE58D;
-    ASL A                                                                ;8BE590;
-    ASL A                                                                ;8BE591;
+    ASL                                                                  ;8BE590;
+    ASL                                                                  ;8BE591;
     TAX                                                                  ;8BE592;
     LDA.W .spritePalette,X                                               ;8BE593;
     PHA                                                                  ;8BE596;
@@ -13321,7 +13321,7 @@ CinematicFunction_PostCredits_GreyOutSuperMetroidIcon:
     DEX                                                                  ;8BE5BE;
     BPL .loopSpritePalette                                               ;8BE5BF;
     LDA.W $1A49                                                          ;8BE5C1;
-    INC A                                                                ;8BE5C4;
+    INC                                                                  ;8BE5C4;
     STA.W $1A49                                                          ;8BE5C5;
     CMP.W #$0010                                                         ;8BE5C8;
     BMI .return                                                          ;8BE5CB;
@@ -13472,8 +13472,8 @@ Instruction_DrawItemPercentageCount:
     STA.B $14                                                            ;8BE6B5;
     LDA.B $12                                                            ;8BE6B7;
     BEQ +                                                                ;8BE6B9;
-    ASL A                                                                ;8BE6BB;
-    ASL A                                                                ;8BE6BC;
+    ASL                                                                  ;8BE6BB;
+    ASL                                                                  ;8BE6BC;
     TAY                                                                  ;8BE6BD;
     LDA.W TilemapValuesForDecimalDigits_topHalf,Y                        ;8BE6BE;
     STA.L $7E339C                                                        ;8BE6C1;
@@ -13486,8 +13486,8 @@ Instruction_DrawItemPercentageCount:
     BEQ .unitsOnly                                                       ;8BE6D2;
     LDA.B $14                                                            ;8BE6D4;
 
-+   ASL A                                                                ;8BE6D6;
-    ASL A                                                                ;8BE6D7;
++   ASL                                                                  ;8BE6D6;
+    ASL                                                                  ;8BE6D7;
     TAY                                                                  ;8BE6D8;
     LDA.W TilemapValuesForDecimalDigits_topHalf,Y                        ;8BE6D9;
     STA.L $7E339E                                                        ;8BE6DC;
@@ -13496,8 +13496,8 @@ Instruction_DrawItemPercentageCount:
 
   .unitsOnly:
     LDA.B $16                                                            ;8BE6E7;
-    ASL A                                                                ;8BE6E9;
-    ASL A                                                                ;8BE6EA;
+    ASL                                                                  ;8BE6E9;
+    ASL                                                                  ;8BE6EA;
     TAY                                                                  ;8BE6EB;
     LDA.W TilemapValuesForDecimalDigits_topHalf,Y                        ;8BE6EC;
     STA.L $7E33A0                                                        ;8BE6EF;
@@ -13634,9 +13634,9 @@ Initialize_ShootingStars:
     PHX                                                                  ;8BE7C6;
     TXA                                                                  ;8BE7C7;
     STA.W $0000,Y                                                        ;8BE7C8;
-    ASL A                                                                ;8BE7CB;
-    ASL A                                                                ;8BE7CC;
-    ASL A                                                                ;8BE7CD;
+    ASL                                                                  ;8BE7CB;
+    ASL                                                                  ;8BE7CC;
+    ASL                                                                  ;8BE7CD;
     TAX                                                                  ;8BE7CE;
     LDA.W #$0000                                                         ;8BE7CF;
     STA.W $000C,Y                                                        ;8BE7D2;
@@ -13688,7 +13688,7 @@ Handle_ShootingStars:
 
   .delay:
     LDA.W $000A,Y                                                        ;8BE826;
-    DEC A                                                                ;8BE829;
+    DEC                                                                  ;8BE829;
     STA.W $000A,Y                                                        ;8BE82A;
     BPL .gotoNextProcess                                                 ;8BE82D;
     LDA.W #$0020                                                         ;8BE82F;
@@ -13709,9 +13709,9 @@ Handle_ShootingStars:
     BMI .lessThan4                                                       ;8BE84D;
     PLA                                                                  ;8BE84F;
     AND.W #$00FF                                                         ;8BE850;
-    ASL A                                                                ;8BE853;
-    ASL A                                                                ;8BE854;
-    ASL A                                                                ;8BE855;
+    ASL                                                                  ;8BE853;
+    ASL                                                                  ;8BE854;
+    ASL                                                                  ;8BE855;
     TAX                                                                  ;8BE856;
     LDA.W $000C,Y                                                        ;8BE857;
     CLC                                                                  ;8BE85A;
@@ -13730,9 +13730,9 @@ Handle_ShootingStars:
   .lessThan4:
     PLA                                                                  ;8BE875;
     AND.W #$00FF                                                         ;8BE876;
-    ASL A                                                                ;8BE879;
-    ASL A                                                                ;8BE87A;
-    ASL A                                                                ;8BE87B;
+    ASL                                                                  ;8BE879;
+    ASL                                                                  ;8BE87A;
+    ASL                                                                  ;8BE87B;
     TAX                                                                  ;8BE87C;
     LDA.W $000C,Y                                                        ;8BE87D;
     CLC                                                                  ;8BE880;
@@ -13819,7 +13819,7 @@ Handle_ShootingStars:
     BNE .offScreen                                                       ;8BE925;
     STA.W $0371,X                                                        ;8BE927;
     LDA.W $000A,Y                                                        ;8BE92A;
-    DEC A                                                                ;8BE92D;
+    DEC                                                                  ;8BE92D;
     STA.W $000A,Y                                                        ;8BE92E;
     BEQ .timerExpired                                                    ;8BE931;
     BPL .nonZero                                                         ;8BE933;
@@ -13829,9 +13829,9 @@ Handle_ShootingStars:
     LDA.W $0000,Y                                                        ;8BE936;
     PHA                                                                  ;8BE939;
     AND.W #$00FF                                                         ;8BE93A;
-    ASL A                                                                ;8BE93D;
-    ASL A                                                                ;8BE93E;
-    ASL A                                                                ;8BE93F;
+    ASL                                                                  ;8BE93D;
+    ASL                                                                  ;8BE93E;
+    ASL                                                                  ;8BE93F;
     TAX                                                                  ;8BE940;
     LDA.W ShootingStar_Table_timer,X                                     ;8BE941;
     STA.W $000A,Y                                                        ;8BE944;
@@ -14815,9 +14815,9 @@ InitFunction_CineSpriteObject_ClearTime_Minutes_OnesDigit:
 
 ;;; $F0A3: Cinematic sprite object instruction list pointer += [A] * 8 ;;;
 CinematicSpriteObject_InstListPointer_PlusA_Times8:
-    ASL A                                                                ;8BF0A3;
-    ASL A                                                                ;8BF0A4;
-    ASL A                                                                ;8BF0A5;
+    ASL                                                                  ;8BF0A3;
+    ASL                                                                  ;8BF0A4;
+    ASL                                                                  ;8BF0A5;
     STA.B $12                                                            ;8BF0A6;
     LDA.W $1B1D,Y                                                        ;8BF0A8;
     CLC                                                                  ;8BF0AB;
@@ -15710,7 +15710,7 @@ TransferPostCreditsSamusBeamToVRAM:
     LDA.W $1A4D                                                          ;8BF684;
     CMP.W #$0010                                                         ;8BF687;
     BPL .return                                                          ;8BF68A;
-    ASL A                                                                ;8BF68C;
+    ASL                                                                  ;8BF68C;
     TAY                                                                  ;8BF68D;
     LDX.W $0330                                                          ;8BF68E;
     LDA.W #$0800                                                         ;8BF691;

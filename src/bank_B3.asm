@@ -867,14 +867,14 @@ Function_Zeb_Zebbo_WaitForSamusToGetNear:
     JSL.L Get_SamusX_minus_EnemyX                                        ;B3889B;
     TAY                                                                  ;B3889F;
     ROL.W Zeb.direction,X                                                ;B388A0;
-    ROL A                                                                ;B388A3;
+    ROL                                                                  ;B388A3;
     ROR.W Zeb.direction,X                                                ;B388A4;
     LDA.W $0F7A,X                                                        ;B388A7;
     SEC                                                                  ;B388AA;
     SBC.W $0AF6                                                          ;B388AB;
     BPL +                                                                ;B388AE;
     EOR.W #$FFFF                                                         ;B388B0;
-    INC A                                                                ;B388B3;
+    INC                                                                  ;B388B3;
 
 +   CMP.W #$0040                                                         ;B388B4;
     BCC .close                                                           ;B388B7;
@@ -997,7 +997,7 @@ Set_Zeb_Zebbo_InstList:
     CMP.L Zeb.previousInstListTableIndex,X                               ;B38991;
     BEQ .return                                                          ;B38995;
     STA.L Zeb.previousInstListTableIndex,X                               ;B38997;
-    ASL A                                                                ;B3899B;
+    ASL                                                                  ;B3899B;
     TAY                                                                  ;B3899C;
     LDA.W $0FB4,X                                                        ;B3899D;
     BNE .zebbo                                                           ;B389A0;
@@ -1224,9 +1224,9 @@ InitAI_Gamet:
     STA.W $0F86,X                                                        ;B38B76;
     LDA.W $0FB7,X                                                        ;B38B79;
     AND.W #$00FF                                                         ;B38B7C;
-    ASL A                                                                ;B38B7F;
-    ASL A                                                                ;B38B80;
-    ASL A                                                                ;B38B81;
+    ASL                                                                  ;B38B7F;
+    ASL                                                                  ;B38B80;
+    ASL                                                                  ;B38B81;
     STA.W Gamet.XSpeedTableIndex,X                                       ;B38B82;
     STZ.W Gamet.shootDelayTimer,X                                        ;B38B85;
     LDA.W #$0001                                                         ;B38B88;
@@ -1734,9 +1734,9 @@ InitAI_Geega:
     STA.W $0F92,X                                                        ;B38F7A;
 
 +   LDA.W $0FB6,X                                                        ;B38F7D;
-    ASL A                                                                ;B38F80;
-    ASL A                                                                ;B38F81;
-    ASL A                                                                ;B38F82;
+    ASL                                                                  ;B38F80;
+    ASL                                                                  ;B38F81;
+    ASL                                                                  ;B38F82;
     TAY                                                                  ;B38F83;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing,Y                         ;B38F84;
     STA.L Geega.rightVelocity,X                                          ;B38F87;
@@ -1795,7 +1795,7 @@ Function_Geega_WaitForSamusToGetNear:
 ;;; $8FF5: Geega function - shoot delay ;;;
 Function_Geega_ShootDelay:
     LDA.L Geega.shootDelayTimer,X                                        ;B38FF5;
-    DEC A                                                                ;B38FF9;
+    DEC                                                                  ;B38FF9;
     STA.L Geega.shootDelayTimer,X                                        ;B38FFA;
     BEQ .timerExpired                                                    ;B38FFE;
     RTS                                                                  ;B39000;
@@ -1912,7 +1912,7 @@ Function_Geega_ShootingRight:
     SEC                                                                  ;B390FE;
     SBC.W $0AF6                                                          ;B390FF;
     EOR.W #$FFFF                                                         ;B39102;
-    INC A                                                                ;B39105;
+    INC                                                                  ;B39105;
     CMP.W #$0030                                                         ;B39106;
     BPL .return                                                          ;B39109;
     LDA.W #Function_Geega_DippingRight                                   ;B3910B;
@@ -2061,9 +2061,9 @@ Function_Geega_DippingRight:
 MoveGeegaUp:
     INC.W Geega.YSpeedTableIndex,X                                       ;B39256;
     LDA.W Geega.YSpeedTableIndex,X                                       ;B39259;
-    ASL A                                                                ;B3925C;
-    ASL A                                                                ;B3925D;
-    ASL A                                                                ;B3925E;
+    ASL                                                                  ;B3925C;
+    ASL                                                                  ;B3925D;
+    ASL                                                                  ;B3925E;
     TAY                                                                  ;B3925F;
     LDA.W $0F80,X                                                        ;B39260;
     CLC                                                                  ;B39263;
@@ -2089,9 +2089,9 @@ MoveGeegaDown:
     BRA .return                                                          ;B39288;
 
 +   LDA.W Geega.YSpeedTableIndex,X                                       ;B3928A;
-    ASL A                                                                ;B3928D;
-    ASL A                                                                ;B3928E;
-    ASL A                                                                ;B3928F;
+    ASL                                                                  ;B3928D;
+    ASL                                                                  ;B3928E;
+    ASL                                                                  ;B3928F;
     TAY                                                                  ;B39290;
     LDA.W $0F80,X                                                        ;B39291;
     CLC                                                                  ;B39294;
@@ -2685,9 +2685,9 @@ InitAI_Botwoon:
     STA.W $0F86,X                                                        ;B3961E;
     LDA.W $0F8C,X                                                        ;B39621;
     STA.L Botwoon.maxHealth,X                                            ;B39624;
-    LSR A                                                                ;B39628;
+    LSR                                                                  ;B39628;
     STA.L Botwoon.maxHealth_1_2,X                                        ;B39629;
-    LSR A                                                                ;B3962D;
+    LSR                                                                  ;B3962D;
     STA.L Botwoon.maxHealth_1_4,X                                        ;B3962E;
     LDA.W $0F7A,X                                                        ;B39632;
     STA.L Botwoon.XPosition1FrameAgo,X                                   ;B39635;
@@ -2700,10 +2700,10 @@ InitAI_Botwoon:
     STA.L Botwoon.YPosition3FramesAgo,X                                  ;B39650;
     STA.L Botwoon.YPosition4FramesAgo,X                                  ;B39654;
     LDA.W $0F96,X                                                        ;B39658;
-    LSR A                                                                ;B3965B;
-    LSR A                                                                ;B3965C;
-    LSR A                                                                ;B3965D;
-    LSR A                                                                ;B3965E;
+    LSR                                                                  ;B3965B;
+    LSR                                                                  ;B3965C;
+    LSR                                                                  ;B3965D;
+    LSR                                                                  ;B3965E;
     CLC                                                                  ;B3965F;
     ADC.W #$0100                                                         ;B39660;
     STA.L Botwoon.paletteDataOffset,X                                    ;B39663;
@@ -2730,7 +2730,7 @@ UNUSED_Data_B39675:
 ;;; $967B: Unused ;;;
 UNUSED_SpeedTable_Random_B3967B:
     LDA.L Botwoon.speedTableIndex,X                                      ;B3967B;
-    ASL A                                                                ;B3967F;
+    ASL                                                                  ;B3967F;
     TAY                                                                  ;B39680;
     LDA.W UNUSED_Data_B39675,Y                                           ;B39681;
     STA.B $12                                                            ;B39684;
@@ -2852,10 +2852,10 @@ BotwoonHealthBasedPaletteHandling:
     CMP.W BotwoonHealthThresholdsForPaletteChange,Y                      ;B3983B;
     BPL .return                                                          ;B3983E;
     LDA.L Botwoon.healthBasedPaletteIndex,X                              ;B39840;
-    ASL A                                                                ;B39844;
-    ASL A                                                                ;B39845;
-    ASL A                                                                ;B39846;
-    ASL A                                                                ;B39847;
+    ASL                                                                  ;B39844;
+    ASL                                                                  ;B39845;
+    ASL                                                                  ;B39846;
+    ASL                                                                  ;B39847;
     STA.B $12                                                            ;B39848;
     LDA.L Botwoon.paletteDataOffset,X                                    ;B3984A;
     STA.B $14                                                            ;B3984E;
@@ -2874,8 +2874,8 @@ BotwoonHealthBasedPaletteHandling:
     BNE .loop                                                            ;B39868;
     LDX.W $0E54                                                          ;B3986A;
     LDA.L Botwoon.healthBasedPaletteIndex,X                              ;B3986D;
-    INC A                                                                ;B39871;
-    INC A                                                                ;B39872;
+    INC                                                                  ;B39871;
+    INC                                                                  ;B39872;
     STA.L Botwoon.healthBasedPaletteIndex,X                              ;B39873;
 
   .return:
@@ -2886,7 +2886,7 @@ BotwoonHealthBasedPaletteHandling:
 Function_Botwoon_Initial:
     LDX.W $0E54                                                          ;B39878;
     LDA.L Botwoon.initTimer,X                                            ;B3987B;
-    DEC A                                                                ;B3987F;
+    DEC                                                                  ;B3987F;
     STA.L Botwoon.initTimer,X                                            ;B39880;
     BNE .return                                                          ;B39884;
     LDA.W #Function_Botwoon_GoThroughHole                                ;B39886;
@@ -2989,8 +2989,8 @@ ChooseBotwoonMovementPath:
     AND.W #$0018                                                         ;B39947;
     STA.B $14                                                            ;B3994A;
     LDA.L Botwoon.targetHoleIndex,X                                      ;B3994C;
-    ASL A                                                                ;B39950;
-    ASL A                                                                ;B39951;
+    ASL                                                                  ;B39950;
+    ASL                                                                  ;B39951;
     CLC                                                                  ;B39952;
     ADC.B $12                                                            ;B39953;
     CLC                                                                  ;B39955;
@@ -3025,8 +3025,8 @@ SetBotwoonSpeed:
 
   .merge:
     LDA.L Botwoon.speedTableIndex,X                                      ;B3998F;
-    ASL A                                                                ;B39993;
-    ASL A                                                                ;B39994;
+    ASL                                                                  ;B39993;
+    ASL                                                                  ;B39994;
     TAY                                                                  ;B39995;
     LDA.W BotwoonSpeedTable_speed,Y                                      ;B39996;
     STA.L Botwoon.speed,X                                                ;B39999;
@@ -3115,7 +3115,7 @@ Function_Botwoon_Spitting:
 Function_Botwoon_DeathSequence_PreDeathDelay:
     LDX.W $0E54                                                          ;B39A46;
     LDA.L Botwoon.preDeathCounter,X                                      ;B39A49;
-    INC A                                                                ;B39A4D;
+    INC                                                                  ;B39A4D;
     STA.L Botwoon.preDeathCounter,X                                      ;B39A4E;
     CMP.W #$0100                                                         ;B39A52;
     BMI .return                                                          ;B39A55;
@@ -3132,9 +3132,9 @@ Function_Botwoon_DeathSequence_FallingToGround:
     LDA.L $7E8010,X                                                      ;B39A61;
     AND.W #$FF00                                                         ;B39A65;
     XBA                                                                  ;B39A68;
-    ASL A                                                                ;B39A69;
-    ASL A                                                                ;B39A6A;
-    ASL A                                                                ;B39A6B;
+    ASL                                                                  ;B39A69;
+    ASL                                                                  ;B39A6A;
+    ASL                                                                  ;B39A6B;
     TAY                                                                  ;B39A6C;
     LDA.W $0F80,X                                                        ;B39A6D;
     CLC                                                                  ;B39A70;
@@ -3224,7 +3224,7 @@ Function_Botwoon_DeathSequence_CrumblingWall:
 
   .wall:
     LDA.L Botwoon.largeWallExplosionTimer,X                              ;B39B22;
-    DEC A                                                                ;B39B26;
+    DEC                                                                  ;B39B26;
     STA.L Botwoon.largeWallExplosionTimer,X                              ;B39B27;
     BPL .timerNotExpired                                                 ;B39B2B;
     LDA.W #$000C                                                         ;B39B2D;
@@ -3250,7 +3250,7 @@ Function_Botwoon_DeathSequence_CrumblingWall:
 
   .timerNotExpired:
     LDA.L Botwoon.wallSmokeTimer,X                                       ;B39B65;
-    DEC A                                                                ;B39B69;
+    DEC                                                                  ;B39B69;
     STA.L Botwoon.wallSmokeTimer,X                                       ;B39B6A;
     BPL .return                                                          ;B39B6E;
     LDA.W #$0004                                                         ;B39B70;
@@ -3281,7 +3281,7 @@ Function_Botwoon_DeathSequence_CrumblingWall:
 
   .return:
     LDA.L Botwoon.deathCounter,X                                         ;B39BAD;
-    INC A                                                                ;B39BB1;
+    INC                                                                  ;B39BB1;
     STA.L Botwoon.deathCounter,X                                         ;B39BB2;
     RTS                                                                  ;B39BB6;
 
@@ -3295,7 +3295,7 @@ Function_Botwoon_Movement_DirectlyTowardTargetHole:
     SEC                                                                  ;B39BC5;
     SBC.W #$0040                                                         ;B39BC6;
     EOR.W #$FFFF                                                         ;B39BC9;
-    INC A                                                                ;B39BCC;
+    INC                                                                  ;B39BCC;
     CLC                                                                  ;B39BCD;
     ADC.W #$0100                                                         ;B39BCE;
     AND.W #$00FF                                                         ;B39BD1;
@@ -3545,12 +3545,12 @@ SetBotwoonInstListTableIndices:
     JSL.L CalculateAngleOf_12_14_Offset                                  ;B39DA6;
     CLC                                                                  ;B39DAA;
     ADC.B $18                                                            ;B39DAB;
-    LSR A                                                                ;B39DAD;
-    LSR A                                                                ;B39DAE;
-    LSR A                                                                ;B39DAF;
-    LSR A                                                                ;B39DB0;
-    LSR A                                                                ;B39DB1;
-    ASL A                                                                ;B39DB2;
+    LSR                                                                  ;B39DAD;
+    LSR                                                                  ;B39DAE;
+    LSR                                                                  ;B39DAF;
+    LSR                                                                  ;B39DB0;
+    LSR                                                                  ;B39DB1;
+    ASL                                                                  ;B39DB2;
     STA.W $1AFF,Y                                                        ;B39DB3;
     DEC.B $16                                                            ;B39DB6;
     DEC.B $16                                                            ;B39DB8;
@@ -3602,12 +3602,12 @@ Function_Botwoon_Head_MovingAround:
     STA.W $0F86,X                                                        ;B39E13;
 
 +   LDA.B $16                                                            ;B39E16;
-    LSR A                                                                ;B39E18;
-    LSR A                                                                ;B39E19;
-    LSR A                                                                ;B39E1A;
-    LSR A                                                                ;B39E1B;
-    LSR A                                                                ;B39E1C;
-    ASL A                                                                ;B39E1D;
+    LSR                                                                  ;B39E18;
+    LSR                                                                  ;B39E19;
+    LSR                                                                  ;B39E1A;
+    LSR                                                                  ;B39E1B;
+    LSR                                                                  ;B39E1C;
+    ASL                                                                  ;B39E1D;
     TAY                                                                  ;B39E1E;
     LDA.W InstListPointers_Botwoon,Y                                     ;B39E1F;
     CMP.L Botwoon.instList,X                                             ;B39E22;
@@ -3653,12 +3653,12 @@ Function_Botwoon_Head_Spitting_SetAngleAndShow:
     CLC                                                                  ;B39E8E;
     ADC.W #$0010                                                         ;B39E8F;
     AND.W #$00FF                                                         ;B39E92;
-    LSR A                                                                ;B39E95;
-    LSR A                                                                ;B39E96;
-    LSR A                                                                ;B39E97;
-    LSR A                                                                ;B39E98;
-    LSR A                                                                ;B39E99;
-    ASL A                                                                ;B39E9A;
+    LSR                                                                  ;B39E95;
+    LSR                                                                  ;B39E96;
+    LSR                                                                  ;B39E97;
+    LSR                                                                  ;B39E98;
+    LSR                                                                  ;B39E99;
+    ASL                                                                  ;B39E9A;
     TAY                                                                  ;B39E9B;
     LDA.W InstListPointers_Botwoon_spit,Y                                ;B39E9C;
     STA.W $0F92,X                                                        ;B39E9F;
@@ -3671,7 +3671,7 @@ Function_Botwoon_Head_Spitting_SetAngleAndShow:
     SBC.W #$0040                                                         ;B39EB4;
     AND.W #$00FF                                                         ;B39EB7;
     EOR.W #$FFFF                                                         ;B39EBA;
-    INC A                                                                ;B39EBD;
+    INC                                                                  ;B39EBD;
     CLC                                                                  ;B39EBE;
     ADC.W #$0100                                                         ;B39EBF;
     AND.W #$00FF                                                         ;B39EC2;
@@ -3704,7 +3704,7 @@ Function_Botwoon_Head_Spitting_Spawn5SpitProjectiles:
     LDA.W #$0005                                                         ;B39EF8;
     STA.W $060D                                                          ;B39EFB;
     LDA.L Botwoon.speedTableIndex,X                                      ;B39EFE;
-    ASL A                                                                ;B39F02;
+    ASL                                                                  ;B39F02;
     TAY                                                                  ;B39F03;
     LDA.W BotwoonSpitSpeeds,Y                                            ;B39F04;
     STA.W $0E32                                                          ;B39F07;
@@ -3738,7 +3738,7 @@ Function_Botwoon_Head_Spitting_Spawn3SpitProjectiles:
     LDA.W #$0003                                                         ;B39F45;
     STA.W $060D                                                          ;B39F48;
     LDA.L Botwoon.speedTableIndex,X                                      ;B39F4B;
-    ASL A                                                                ;B39F4F;
+    ASL                                                                  ;B39F4F;
     TAY                                                                  ;B39F50;
     LDA.W BotwoonSpitSpeeds,Y                                            ;B39F51;
     STA.W $0E32                                                          ;B39F54;
@@ -3762,7 +3762,7 @@ Function_Botwoon_Head_Spitting_Spawn3SpitProjectiles:
 ;;; $9F7A: Botwoon head function - spitting - cooldown ;;;
 Function_Botwoon_Head_Spitting_Cooldown:
     LDA.L Botwoon.spitTimer,X                                            ;B39F7A;
-    DEC A                                                                ;B39F7E;
+    DEC                                                                  ;B39F7E;
     STA.L Botwoon.spitTimer,X                                            ;B39F7F;
     BPL .return                                                          ;B39F83;
     LDA.W #$0000                                                         ;B39F85;
@@ -3807,7 +3807,7 @@ Botwoon_vs_Hole_CollisionDetection:
     LDA.W Botwoon.positionHistoryIndex,X                                 ;B39FD8;
     STA.L Botwoon.targetPositionHistoryIndex,X                           ;B39FDB;
     LDA.L $7E800C,X                                                      ;B39FDF;
-    DEC A                                                                ;B39FE3;
+    DEC                                                                  ;B39FE3;
     STA.L $7E800C,X                                                      ;B39FE4;
     BRA .return                                                          ;B39FE8;
 
@@ -5128,11 +5128,11 @@ Function_Botwoon_Movement_MoveAccordingToMovementData:
     BPL .positive                                                        ;B3E2E9;
     LDA.B $12                                                            ;B3E2EB;
     EOR.W #$FFFF                                                         ;B3E2ED;
-    INC A                                                                ;B3E2F0;
+    INC                                                                  ;B3E2F0;
     STA.B $12                                                            ;B3E2F1;
     LDA.B $14                                                            ;B3E2F3;
     EOR.W #$FFFF                                                         ;B3E2F5;
-    INC A                                                                ;B3E2F8;
+    INC                                                                  ;B3E2F8;
     STA.B $14                                                            ;B3E2F9;
 
   .positive:
@@ -5577,7 +5577,7 @@ Function_EtecoonEscape_RunningAroundAimlessly:
     STA.W $0F94,X                                                        ;B3E696;
     LDA.W EtecoonEscape.XVelocity,X                                      ;B3E699;
     EOR.W #$FFFF                                                         ;B3E69C;
-    INC A                                                                ;B3E69F;
+    INC                                                                  ;B3E69F;
     STA.W EtecoonEscape.XVelocity,X                                      ;B3E6A0;
     BPL .greaterThan0                                                    ;B3E6A3;
     LDA.W #InstList_EtecoonEscape_RunningLeft_LowTide_0                  ;B3E6A5;

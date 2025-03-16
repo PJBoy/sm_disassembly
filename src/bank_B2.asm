@@ -702,7 +702,7 @@ EnemyShot_SpacePirate_GoldNinjaIsVulnerable:
 
   .goldNinja:
     LDA.W $18A6                                                          ;B287D6;
-    ASL A                                                                ;B287D9;
+    ASL                                                                  ;B287D9;
     TAY                                                                  ;B287DA;
     LDA.W $0C18,Y                                                        ;B287DB;
     STA.B $12                                                            ;B287DE;
@@ -769,7 +769,7 @@ EnemyShot_SpacePirate_GoldNinjaIsInvincible:
   .gold:
     LDX.W $0E54                                                          ;B2884C;
     LDA.W $18A6                                                          ;B2884F;
-    ASL A                                                                ;B28852;
+    ASL                                                                  ;B28852;
     TAY                                                                  ;B28853;
     LDA.W $0C18,Y                                                        ;B28854;
     STA.B $12                                                            ;B28857;
@@ -9320,7 +9320,7 @@ Instruction_PirateWall_PrepareWallJumpToRight:
     ADC.W $0F7A,X                                                        ;B2EEDD;
     STA.W $0FAA,X                                                        ;B2EEE0;
     LDA.W $0FB6,X                                                        ;B2EEE3;
-    LSR A                                                                ;B2EEE6;
+    LSR                                                                  ;B2EEE6;
     CLC                                                                  ;B2EEE7;
     ADC.W $0F7A,X                                                        ;B2EEE8;
     STA.W PirateWall.wallJumpArcCenterXPosition,X                        ;B2EEEB;
@@ -9343,7 +9343,7 @@ Instruction_PirateWall_PrepareWallJumpToLeft:
     SBC.W $0FB6,X                                                        ;B2EF06;
     STA.W $0FAA,X                                                        ;B2EF09;
     LDA.W $0FB6,X                                                        ;B2EF0C;
-    LSR A                                                                ;B2EF0F;
+    LSR                                                                  ;B2EF0F;
     STA.B $12                                                            ;B2EF10;
     LDA.W $0F7A,X                                                        ;B2EF12;
     SEC                                                                  ;B2EF15;
@@ -9532,7 +9532,7 @@ RTS_B2F04F:
 Function_PirateWall_WallJumpingRight:
     LDX.W $0E54                                                          ;B2F050;
     LDA.W $0FB6,X                                                        ;B2F053;
-    LSR A                                                                ;B2F056;
+    LSR                                                                  ;B2F056;
     STA.W $0E32                                                          ;B2F057;
     LDA.W PirateWall.wallJumpArcAngle,X                                  ;B2F05A;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;B2F05D;
@@ -9540,13 +9540,13 @@ Function_PirateWall_WallJumpingRight:
     ADC.W PirateWall.wallJumpArcCenterXPosition,X                        ;B2F062;
     STA.W $0F7A,X                                                        ;B2F065;
     LDA.W $0FB6,X                                                        ;B2F068;
-    LSR A                                                                ;B2F06B;
-    LSR A                                                                ;B2F06C;
+    LSR                                                                  ;B2F06B;
+    LSR                                                                  ;B2F06C;
     STA.W $0E32                                                          ;B2F06D;
     LDA.W PirateWall.wallJumpArcAngle,X                                  ;B2F070;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;B2F073;
     EOR.W #$FFFF                                                         ;B2F077;
-    INC A                                                                ;B2F07A;
+    INC                                                                  ;B2F07A;
     CLC                                                                  ;B2F07B;
     ADC.W PirateWall.wallJumpArcCenterYPosition,X                        ;B2F07C;
     STA.W $0F7E,X                                                        ;B2F07F;
@@ -9612,7 +9612,7 @@ RTS_B2F0E3:
 Function_PirateWall_WallJumpingLeft:
     LDX.W $0E54                                                          ;B2F0E4;
     LDA.W $0FB6,X                                                        ;B2F0E7;
-    LSR A                                                                ;B2F0EA;
+    LSR                                                                  ;B2F0EA;
     STA.W $0E32                                                          ;B2F0EB;
     LDA.W PirateWall.wallJumpArcAngle,X                                  ;B2F0EE;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;B2F0F1;
@@ -9620,13 +9620,13 @@ Function_PirateWall_WallJumpingLeft:
     ADC.W PirateWall.wallJumpArcCenterXPosition,X                        ;B2F0F6;
     STA.W $0F7A,X                                                        ;B2F0F9;
     LDA.W $0FB6,X                                                        ;B2F0FC;
-    LSR A                                                                ;B2F0FF;
-    LSR A                                                                ;B2F100;
+    LSR                                                                  ;B2F0FF;
+    LSR                                                                  ;B2F100;
     STA.W $0E32                                                          ;B2F101;
     LDA.W PirateWall.wallJumpArcAngle,X                                  ;B2F104;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;B2F107;
     EOR.W #$FFFF                                                         ;B2F10B;
-    INC A                                                                ;B2F10E;
+    INC                                                                  ;B2F10E;
     CLC                                                                  ;B2F10F;
     ADC.W PirateWall.wallJumpArcCenterYPosition,X                        ;B2F110;
     STA.W $0F7E,X                                                        ;B2F113;
@@ -10247,7 +10247,7 @@ InitAI_PirateNinja:
 +   LDA.W PirateNinja.rightPostXPosition,X                               ;B2F61A;
     SEC                                                                  ;B2F61D;
     SBC.W PirateNinja.leftPostXPosition,X                                ;B2F61E;
-    LSR A                                                                ;B2F621;
+    LSR                                                                  ;B2F621;
     STA.B $14                                                            ;B2F622;
     CLC                                                                  ;B2F624;
     ADC.W PirateNinja.leftPostXPosition,X                                ;B2F625;
@@ -10328,7 +10328,7 @@ Function_PirateNinja_Initial:
     SBC.W $0AF6                                                          ;B2F6B0;
     BPL +                                                                ;B2F6B3;
     EOR.W #$FFFF                                                         ;B2F6B5;
-    INC A                                                                ;B2F6B8;
+    INC                                                                  ;B2F6B8;
 
 +   SEC                                                                  ;B2F6B9;
     SBC.W #$0080                                                         ;B2F6BA;
@@ -10423,7 +10423,7 @@ PirateNinja_FlinchTrigger:
     SBC.W $0F7A,X                                                        ;B2F744;
     BPL +                                                                ;B2F747;
     EOR.W #$FFFF                                                         ;B2F749;
-    INC A                                                                ;B2F74C;
+    INC                                                                  ;B2F74C;
 
 +   SEC                                                                  ;B2F74D;
     SBC.W #$0020                                                         ;B2F74E;
@@ -10433,7 +10433,7 @@ PirateNinja_FlinchTrigger:
     SBC.W $0F7E,X                                                        ;B2F757;
     BPL +                                                                ;B2F75A;
     EOR.W #$FFFF                                                         ;B2F75C;
-    INC A                                                                ;B2F75F;
+    INC                                                                  ;B2F75F;
 
 +   SEC                                                                  ;B2F760;
     SBC.W #$0020                                                         ;B2F761;
@@ -10473,7 +10473,7 @@ PirateNinja_SpinJumpTrigger:
     SBC.W $0AF6                                                          ;B2F795;
     BPL +                                                                ;B2F798;
     EOR.W #$FFFF                                                         ;B2F79A;
-    INC A                                                                ;B2F79D;
+    INC                                                                  ;B2F79D;
 
 +   SEC                                                                  ;B2F79E;
     SBC.W #$0020                                                         ;B2F79F;
@@ -10510,7 +10510,7 @@ PirateNinja_StandingKickTrigger:
     SBC.W $0F7A,X                                                        ;B2F7CE;
     BPL +                                                                ;B2F7D1;
     EOR.W #$FFFF                                                         ;B2F7D3;
-    INC A                                                                ;B2F7D6;
+    INC                                                                  ;B2F7D6;
 
 +   SEC                                                                  ;B2F7D7;
     SBC.W #$0028                                                         ;B2F7D8;
@@ -10520,7 +10520,7 @@ PirateNinja_StandingKickTrigger:
     SBC.W $0F7E,X                                                        ;B2F7E1;
     BPL +                                                                ;B2F7E4;
     EOR.W #$FFFF                                                         ;B2F7E6;
-    INC A                                                                ;B2F7E9;
+    INC                                                                  ;B2F7E9;
 
 +   SEC                                                                  ;B2F7EA;
     SBC.W #$0028                                                         ;B2F7EB;
@@ -10687,7 +10687,7 @@ PirateNinja_DivekickTrigger:
     SBC.W $0AF6                                                          ;B2F91E;
     BPL +                                                                ;B2F921;
     EOR.W #$FFFF                                                         ;B2F923;
-    INC A                                                                ;B2F926;
+    INC                                                                  ;B2F926;
 
 +   SEC                                                                  ;B2F927;
     SBC.W #$0020                                                         ;B2F928;
@@ -10708,7 +10708,7 @@ PirateNinja_DivekickTrigger:
     TYA                                                                  ;B2F946;
     CLC                                                                  ;B2F947;
     ADC.B $12                                                            ;B2F948;
-    ASL A                                                                ;B2F94A;
+    ASL                                                                  ;B2F94A;
     TAY                                                                  ;B2F94B;
     LDA.W .leftPointers,Y                                                ;B2F94C;
     STA.W $0F92,X                                                        ;B2F94F;
@@ -10740,7 +10740,7 @@ Instruction_PirateNinja_SetLeftDivekickJumpInitialYSpeed:
     LDA.W PirateNinja.rightPostXPosition,X                               ;B2F972;
     SEC                                                                  ;B2F975;
     SBC.W PirateNinja.postsMidpointXPosition,X                           ;B2F976;
-    LSR A                                                                ;B2F979;
+    LSR                                                                  ;B2F979;
     CLC                                                                  ;B2F97A;
     ADC.W PirateNinja.postsMidpointXPosition,X                           ;B2F97B;
     STA.L $7E7806,X                                                      ;B2F97E;
@@ -10845,7 +10845,7 @@ Instruction_PirateNinja_SetRightDivekickJumpInitialYSpeed:
     LDA.W PirateNinja.postsMidpointXPosition,X                           ;B2FA46;
     SEC                                                                  ;B2FA49;
     SBC.W PirateNinja.leftPostXPosition,X                                ;B2FA4A;
-    LSR A                                                                ;B2FA4D;
+    LSR                                                                  ;B2FA4D;
     CLC                                                                  ;B2FA4E;
     ADC.W PirateNinja.leftPostXPosition,X                                ;B2FA4F;
     STA.L $7E7806,X                                                      ;B2FA52;
@@ -11379,7 +11379,7 @@ PirateWalking_FlinchTrigger:
     SBC.W $0F7A,X                                                        ;B2FE61;
     BPL +                                                                ;B2FE64;
     EOR.W #$FFFF                                                         ;B2FE66;
-    INC A                                                                ;B2FE69;
+    INC                                                                  ;B2FE69;
 
 +   SEC                                                                  ;B2FE6A;
     SBC.W #$0020                                                         ;B2FE6B;
@@ -11389,7 +11389,7 @@ PirateWalking_FlinchTrigger:
     SBC.W $0F7E,X                                                        ;B2FE74;
     BPL +                                                                ;B2FE77;
     EOR.W #$FFFF                                                         ;B2FE79;
-    INC A                                                                ;B2FE7C;
+    INC                                                                  ;B2FE7C;
 
 +   SEC                                                                  ;B2FE7D;
     SBC.W #$0020                                                         ;B2FE7E;

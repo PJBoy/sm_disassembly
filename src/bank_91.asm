@@ -12,7 +12,7 @@ NormalSamusPoseInputHandler:
     REP #$30                                                             ;918004;
     LDA.W $0A1F                                                          ;918006;
     AND.W #$00FF                                                         ;918009;
-    ASL A                                                                ;91800C;
+    ASL                                                                  ;91800C;
     TAX                                                                  ;91800D;
     JSR.W (.pointers,X)                                                  ;91800E;
     PLB                                                                  ;918011;
@@ -417,16 +417,16 @@ DetermineProspectivePoseFromTransitionTable:
     BEQ .noInput                                                         ;9181AB;
     JSR.W TranslateCustomControllerBindingsToDefaultBindings             ;9181AD;
     LDA.W $0A1C                                                          ;9181B0;
-    ASL A                                                                ;9181B3;
+    ASL                                                                  ;9181B3;
     TAX                                                                  ;9181B4;
     LDA.W TransitionTable,X                                              ;9181B5;
     TAY                                                                  ;9181B8;
     LDA.W $0000,Y                                                        ;9181B9;
-    INC A                                                                ;9181BC;
+    INC                                                                  ;9181BC;
     BEQ .notFound                                                        ;9181BD;
 
   .loop:
-    DEC A                                                                ;9181BF;
+    DEC                                                                  ;9181BF;
     BEQ .input                                                           ;9181C0;
     AND.B $12                                                            ;9181C2;
     BNE .next                                                            ;9181C4;
@@ -443,7 +443,7 @@ DetermineProspectivePoseFromTransitionTable:
     ADC.W #$0006                                                         ;9181D1;
     TAY                                                                  ;9181D4;
     LDA.W $0000,Y                                                        ;9181D5;
-    INC A                                                                ;9181D8;
+    INC                                                                  ;9181D8;
     BNE .loop                                                            ;9181D9;
 
   .noInput:
@@ -617,9 +617,9 @@ HandleTransitionTableLookupFailure:
 
   .consultPoseDefinition:
     LDA.W $0A1C                                                          ;9182EC;
-    ASL A                                                                ;9182EF;
-    ASL A                                                                ;9182F0;
-    ASL A                                                                ;9182F1;
+    ASL                                                                  ;9182EF;
+    ASL                                                                  ;9182F0;
+    ASL                                                                  ;9182F1;
     TAX                                                                  ;9182F2;
     LDA.W PoseDefinitions_newPose,X                                      ;9182F3;
     AND.W #$00FF                                                         ;9182F6;
@@ -918,10 +918,10 @@ RecordDemoInputFrame:
 
   .record:
     LDA.W $0A8A                                                          ;918490;
-    ASL A                                                                ;918493;
-    ASL A                                                                ;918494;
+    ASL                                                                  ;918493;
+    ASL                                                                  ;918494;
     STA.B $12                                                            ;918495;
-    ASL A                                                                ;918497;
+    ASL                                                                  ;918497;
     ADC.B $12                                                            ;918498;
     TAX                                                                  ;91849A;
     LDA.B $8B                                                            ;91849B;
@@ -937,7 +937,7 @@ RecordDemoInputFrame:
     LDA.W $0AFA                                                          ;9184BC;
     STA.L $B8800A,X                                                      ;9184BF;
     LDA.W $0A8A                                                          ;9184C3;
-    INC A                                                                ;9184C6;
+    INC                                                                  ;9184C6;
     CMP.W #$0A00                                                         ;9184C7;
     BNE .cappedAtA00                                                     ;9184CA;
     LDA.W #$0000                                                         ;9184CC;
@@ -964,10 +964,10 @@ Pause_Terminate_Reset_DemoRecorder:
     BIT.W #$0040                                                         ;9184DD;
     BEQ .checkA                                                          ;9184E0;
     LDA.W $0A8A                                                          ;9184E2;
-    ASL A                                                                ;9184E5;
-    ASL A                                                                ;9184E6;
+    ASL                                                                  ;9184E5;
+    ASL                                                                  ;9184E6;
     STA.B $12                                                            ;9184E7;
-    ASL A                                                                ;9184E9;
+    ASL                                                                  ;9184E9;
     ADC.B $12                                                            ;9184EA;
     TAX                                                                  ;9184EC;
     LDA.W #$FFFF                                                         ;9184ED;
@@ -1017,10 +1017,10 @@ Draw_RecordedDemoDuration:
     LDA.W $0E24                                                          ;918546;
     AND.W #$F000                                                         ;918549;
     XBA                                                                  ;91854C;
-    LSR A                                                                ;91854D;
-    LSR A                                                                ;91854E;
-    LSR A                                                                ;91854F;
-    LSR A                                                                ;918550;
+    LSR                                                                  ;91854D;
+    LSR                                                                  ;91854E;
+    LSR                                                                  ;91854F;
+    LSR                                                                  ;918550;
     CLC                                                                  ;918551;
     ADC.W #$0004                                                         ;918552;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;918555;
@@ -1052,10 +1052,10 @@ Draw_RecordedDemoDuration:
     STA.B $26                                                            ;918594;
     LDA.W $0E24                                                          ;918596;
     AND.W #$00F0                                                         ;918599;
-    LSR A                                                                ;91859C;
-    LSR A                                                                ;91859D;
-    LSR A                                                                ;91859E;
-    LSR A                                                                ;91859F;
+    LSR                                                                  ;91859C;
+    LSR                                                                  ;91859D;
+    LSR                                                                  ;91859E;
+    LSR                                                                  ;91859F;
     CLC                                                                  ;9185A0;
     ADC.W #$0004                                                         ;9185A1;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;9185A4;
@@ -1301,13 +1301,13 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 ;;; $8790: Load demo data ;;;
 LoadDemoData:
     LDA.W $1F57                                                          ;918790;
-    ASL A                                                                ;918793;
-    ASL A                                                                ;918794;
-    ASL A                                                                ;918795;
-    ASL A                                                                ;918796;
+    ASL                                                                  ;918793;
+    ASL                                                                  ;918794;
+    ASL                                                                  ;918795;
+    ASL                                                                  ;918796;
     STA.B $12                                                            ;918797;
     LDA.W $1F55                                                          ;918799;
-    ASL A                                                                ;91879C;
+    ASL                                                                  ;91879C;
     TAX                                                                  ;91879D;
     LDA.W DemoData_Pointers,X                                            ;91879E;
     CLC                                                                  ;9187A1;
@@ -1341,10 +1341,10 @@ LoadDemoData:
     TAY                                                                  ;9187EE;
     JSL.L Load_DemoInputObject                                           ;9187EF;
     LDA.W $1F57                                                          ;9187F3;
-    ASL A                                                                ;9187F6;
+    ASL                                                                  ;9187F6;
     STA.B $12                                                            ;9187F7;
     LDA.W $1F55                                                          ;9187F9;
-    ASL A                                                                ;9187FC;
+    ASL                                                                  ;9187FC;
     TAX                                                                  ;9187FD;
     LDA.W DemoSamusSetup_Pointers,X                                      ;9187FE;
     CLC                                                                  ;918801;
@@ -6348,7 +6348,7 @@ Calc_Xray_HDMADataTable_OffScreen:
     SEC                                                                  ;91BE94;
     SBC.W #$0080                                                         ;91BE95;
 
-+   ASL A                                                                ;91BE98;
++   ASL                                                                  ;91BE98;
     TAX                                                                  ;91BE99;
     LDA.W AbsoluteTangentTable,X                                         ;91BE9A;
     STA.B $1E                                                            ;91BE9D;
@@ -6358,7 +6358,7 @@ Calc_Xray_HDMADataTable_OffScreen:
     SEC                                                                  ;91BEA6;
     SBC.W #$0080                                                         ;91BEA7;
 
-+   ASL A                                                                ;91BEAA;
++   ASL                                                                  ;91BEAA;
     TAX                                                                  ;91BEAB;
     LDA.W AbsoluteTangentTable,X                                         ;91BEAC;
     STA.B $20                                                            ;91BEAF;
@@ -6391,8 +6391,8 @@ Calc_Xray_HDMADataTable_OffScreen_AimedRight:
     PHP                                                                  ;91BEC2;
     REP #$30                                                             ;91BEC3;
     LDA.B $18                                                            ;91BEC5;
-    DEC A                                                                ;91BEC7;
-    ASL A                                                                ;91BEC8;
+    DEC                                                                  ;91BEC7;
+    ASL                                                                  ;91BEC8;
     TAY                                                                  ;91BEC9;
     LDA.B $16                                                            ;91BECA;
     STA.B $22                                                            ;91BECC;
@@ -6444,7 +6444,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedRight:
 
   .leftEdgeEnd:
     LDA.B $18                                                            ;91BF12;
-    ASL A                                                                ;91BF14;
+    ASL                                                                  ;91BF14;
     TAY                                                                  ;91BF15;
 
   .loopRightOffScreen:
@@ -6524,8 +6524,8 @@ Calc_Xray_HDMADataTable_OffScreen_AimedLeft:
     PHP                                                                  ;91BF72;
     REP #$30                                                             ;91BF73;
     LDA.B $18                                                            ;91BF75;
-    DEC A                                                                ;91BF77;
-    ASL A                                                                ;91BF78;
+    DEC                                                                  ;91BF77;
+    ASL                                                                  ;91BF78;
     TAY                                                                  ;91BF79;
     LDA.B $16                                                            ;91BF7A;
     STA.B $22                                                            ;91BF7C;
@@ -6577,7 +6577,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedLeft:
 
   .rightEdgeEnd:
     LDA.B $18                                                            ;91BFC2;
-    ASL A                                                                ;91BFC4;
+    ASL                                                                  ;91BFC4;
     TAY                                                                  ;91BFC5;
 
   .loopLeftOffScreen:
@@ -6655,8 +6655,8 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards:
     PHP                                                                  ;91C022;
     REP #$30                                                             ;91C023;
     LDA.B $18                                                            ;91C025;
-    DEC A                                                                ;91C027;
-    ASL A                                                                ;91C028;
+    DEC                                                                  ;91C027;
+    ASL                                                                  ;91C028;
     TAY                                                                  ;91C029;
     LDA.B $16                                                            ;91C02A;
     STA.B $22                                                            ;91C02C;
@@ -6677,7 +6677,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards:
 
   .merge:
     LDA.B $18                                                            ;91C04B;
-    ASL A                                                                ;91C04D;
+    ASL                                                                  ;91C04D;
     STA.B $1A                                                            ;91C04E;
     JSR.W (.pointers,X)                                                  ;91C050;
     LDY.B $12                                                            ;91C053;
@@ -6843,7 +6843,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_UpRight:
     BMI .loop00                                                          ;91C118;
     REP #$20                                                             ;91C11A;
     LDA.B $14                                                            ;91C11C;
-    DEC A                                                                ;91C11E;
+    DEC                                                                  ;91C11E;
     STA.B $12                                                            ;91C11F;
     PLP                                                                  ;91C121;
     RTS                                                                  ;91C122;
@@ -7153,7 +7153,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards:
     PHP                                                                  ;91C27F;
     REP #$30                                                             ;91C280;
     LDA.B $18                                                            ;91C282;
-    ASL A                                                                ;91C284;
+    ASL                                                                  ;91C284;
     TAY                                                                  ;91C285;
     LDA.B $16                                                            ;91C286;
     STA.B $22                                                            ;91C288;
@@ -7335,7 +7335,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownRight:
     BPL .loopEnd                                                         ;91C376;
     REP #$20                                                             ;91C378;
     LDA.B $14                                                            ;91C37A;
-    DEC A                                                                ;91C37C;
+    DEC                                                                  ;91C37C;
     STA.B $12                                                            ;91C37D;
     PLP                                                                  ;91C37F;
     RTS                                                                  ;91C380;
@@ -7643,8 +7643,8 @@ Calc_Xray_HDMADataTable_OffScreen_HorizontalLine:
     PHP                                                                  ;91C505;
     REP #$30                                                             ;91C506;
     LDA.B $18                                                            ;91C508;
-    DEC A                                                                ;91C50A;
-    ASL A                                                                ;91C50B;
+    DEC                                                                  ;91C50A;
+    ASL                                                                  ;91C50B;
     TAY                                                                  ;91C50C;
     LDA.B $12                                                            ;91C50D;
     CMP.W #$0040                                                         ;91C50F;
@@ -7672,7 +7672,7 @@ Calc_Xray_HDMADataTable_OffScreen_HorizontalLine:
 
   .loopBottom:
     LDA.B $18                                                            ;91C532;
-    ASL A                                                                ;91C534;
+    ASL                                                                  ;91C534;
     TAY                                                                  ;91C535;
 
   .loop:
@@ -7785,7 +7785,7 @@ Calc_Xray_HDMADataTable_OnScreen:
     SEC                                                                  ;91C5CE;
     SBC.W #$0080                                                         ;91C5CF;
 
-+   ASL A                                                                ;91C5D2;
++   ASL                                                                  ;91C5D2;
     TAX                                                                  ;91C5D3;
     LDA.W AbsoluteTangentTable,X                                         ;91C5D4;
     STA.B $1E                                                            ;91C5D7;
@@ -7795,7 +7795,7 @@ Calc_Xray_HDMADataTable_OnScreen:
     SEC                                                                  ;91C5E0;
     SBC.W #$0080                                                         ;91C5E1;
 
-+   ASL A                                                                ;91C5E4;
++   ASL                                                                  ;91C5E4;
     TAX                                                                  ;91C5E5;
     LDA.W AbsoluteTangentTable,X                                         ;91C5E6;
     STA.B $20                                                            ;91C5E9;
@@ -7828,8 +7828,8 @@ Calc_Xray_HDMADataTable_OnScreen_AimedRight:
     PHP                                                                  ;91C5FF;
     REP #$30                                                             ;91C600;
     LDA.B $18                                                            ;91C602;
-    DEC A                                                                ;91C604;
-    ASL A                                                                ;91C605;
+    DEC                                                                  ;91C604;
+    ASL                                                                  ;91C605;
     TAY                                                                  ;91C606;
     LDA.B $17                                                            ;91C607;
     ORA.W #$FF00                                                         ;91C609;
@@ -7863,7 +7863,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedRight:
 
   .leftEdgeEnd:
     LDA.B $18                                                            ;91C635;
-    ASL A                                                                ;91C637;
+    ASL                                                                  ;91C637;
     TAY                                                                  ;91C638;
 
   .loopRightOnScreen:
@@ -7908,8 +7908,8 @@ Calc_Xray_HDMADataTable_OnScreen_AimedLeft:
     PHP                                                                  ;91C660;
     REP #$30                                                             ;91C661;
     LDA.B $18                                                            ;91C663;
-    DEC A                                                                ;91C665;
-    ASL A                                                                ;91C666;
+    DEC                                                                  ;91C665;
+    ASL                                                                  ;91C666;
     TAY                                                                  ;91C667;
     LDA.B $16                                                            ;91C668;
     AND.W #$FF00                                                         ;91C66A;
@@ -7943,7 +7943,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedLeft:
 
   .rightEdgeEnd:
     LDA.B $18                                                            ;91C696;
-    ASL A                                                                ;91C698;
+    ASL                                                                  ;91C698;
     TAY                                                                  ;91C699;
 
   .loopLeftOnScreen:
@@ -7987,8 +7987,8 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards:
     PHP                                                                  ;91C6C1;
     REP #$30                                                             ;91C6C2;
     LDA.B $18                                                            ;91C6C4;
-    DEC A                                                                ;91C6C6;
-    ASL A                                                                ;91C6C7;
+    DEC                                                                  ;91C6C6;
+    ASL                                                                  ;91C6C7;
     TAY                                                                  ;91C6C8;
     SEP #$20                                                             ;91C6C9;
     LDA.B $17                                                            ;91C6CB;
@@ -8020,7 +8020,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards:
   .merge:
     JSR.W (.pointers,X)                                                  ;91C6FA;
     LDA.B $18                                                            ;91C6FD;
-    ASL A                                                                ;91C6FF;
+    ASL                                                                  ;91C6FF;
     TAY                                                                  ;91C700;
 
   .loop:
@@ -8305,8 +8305,8 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards:
     PHP                                                                  ;91C822;
     REP #$30                                                             ;91C823;
     LDA.B $18                                                            ;91C825;
-    DEC A                                                                ;91C827;
-    ASL A                                                                ;91C828;
+    DEC                                                                  ;91C827;
+    ASL                                                                  ;91C828;
     TAY                                                                  ;91C829;
     SEP #$20                                                             ;91C82A;
     LDA.B $17                                                            ;91C82C;
@@ -8336,9 +8336,9 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards:
   .merge:
     JSR.W (.pointers,X)                                                  ;91C859;
     LDA.B $18                                                            ;91C85C;
-    DEC A                                                                ;91C85E;
-    DEC A                                                                ;91C85F;
-    ASL A                                                                ;91C860;
+    DEC                                                                  ;91C85E;
+    DEC                                                                  ;91C85F;
+    ASL                                                                  ;91C860;
     TAY                                                                  ;91C861;
 
   .loop:
@@ -8618,8 +8618,8 @@ Calc_Xray_HDMADataTable_OnScreen_HorizontalLine:
     PHP                                                                  ;91C998;
     REP #$30                                                             ;91C999;
     LDA.B $18                                                            ;91C99B;
-    DEC A                                                                ;91C99D;
-    ASL A                                                                ;91C99E;
+    DEC                                                                  ;91C99D;
+    ASL                                                                  ;91C99E;
     TAY                                                                  ;91C99F;
     LDA.B $12                                                            ;91C9A0;
     CMP.W #$0040                                                         ;91C9A2;
@@ -8644,7 +8644,7 @@ Calc_Xray_HDMADataTable_OnScreen_HorizontalLine:
     DEY                                                                  ;91C9BF;
     BPL .loopUpper                                                       ;91C9C0;
     LDA.B $18                                                            ;91C9C2;
-    ASL A                                                                ;91C9C4;
+    ASL                                                                  ;91C9C4;
     TAY                                                                  ;91C9C5;
     LDA.W #$00FF                                                         ;91C9C6;
 
@@ -8793,16 +8793,16 @@ XraySetup_4_BuildBG2Tilemap_ReadBG2Tilemap_1stScreen:
     CLC                                                                  ;91CB94;
     ADC.W $0915                                                          ;91CB95;
     AND.W #$00F0                                                         ;91CB98;
-    ASL A                                                                ;91CB9B;
-    ASL A                                                                ;91CB9C;
+    ASL                                                                  ;91CB9B;
+    ASL                                                                  ;91CB9C;
     STA.B $18                                                            ;91CB9D;
     LDA.W $091D                                                          ;91CB9F;
     CLC                                                                  ;91CBA2;
     ADC.W $0911                                                          ;91CBA3;
     AND.W #$00F0                                                         ;91CBA6;
-    LSR A                                                                ;91CBA9;
-    LSR A                                                                ;91CBAA;
-    LSR A                                                                ;91CBAB;
+    LSR                                                                  ;91CBA9;
+    LSR                                                                  ;91CBAA;
+    LSR                                                                  ;91CBAB;
     CLC                                                                  ;91CBAC;
     ADC.B $18                                                            ;91CBAD;
     STA.B $18                                                            ;91CBAF;
@@ -8810,8 +8810,8 @@ XraySetup_4_BuildBG2Tilemap_ReadBG2Tilemap_1stScreen:
     CLC                                                                  ;91CBB4;
     ADC.W $0911                                                          ;91CBB5;
     AND.W #$0100                                                         ;91CBB8;
-    ASL A                                                                ;91CBBB;
-    ASL A                                                                ;91CBBC;
+    ASL                                                                  ;91CBBB;
+    ASL                                                                  ;91CBBC;
     CLC                                                                  ;91CBBD;
     ADC.B $18                                                            ;91CBBE;
     STA.B $18                                                            ;91CBC0;
@@ -8849,7 +8849,7 @@ XraySetup_4_BuildBG2Tilemap_ReadBG2Tilemap_1stScreen:
     CLC                                                                  ;91CBFC;
     ADC.B $1C                                                            ;91CBFD;
     ADC.B $1E                                                            ;91CBFF;
-    ASL A                                                                ;91CC01;
+    ASL                                                                  ;91CC01;
     TAX                                                                  ;91CC02;
     LDA.L $7E6000,X                                                      ;91CC03;
     PHA                                                                  ;91CC07;
@@ -8895,18 +8895,18 @@ XraySetup_4_BuildBG2Tilemap_ReadBG2Tilemap_1stScreen:
     JMP.W .loopCopyBG1Row                                                ;91CC62;
 
 +   LDA.W $0915                                                          ;91CC65;
-    LSR A                                                                ;91CC68;
-    LSR A                                                                ;91CC69;
-    LSR A                                                                ;91CC6A;
-    LSR A                                                                ;91CC6B;
+    LSR                                                                  ;91CC68;
+    LSR                                                                  ;91CC69;
+    LSR                                                                  ;91CC6A;
+    LSR                                                                  ;91CC6B;
     XBA                                                                  ;91CC6C;
     ORA.W $07A5                                                          ;91CC6D;
     STA.W $4202                                                          ;91CC70;
     LDA.W $0911                                                          ;91CC73;
-    LSR A                                                                ;91CC76;
-    LSR A                                                                ;91CC77;
-    LSR A                                                                ;91CC78;
-    LSR A                                                                ;91CC79;
+    LSR                                                                  ;91CC76;
+    LSR                                                                  ;91CC77;
+    LSR                                                                  ;91CC78;
+    LSR                                                                  ;91CC79;
     CLC                                                                  ;91CC7A;
     ADC.W $4216                                                          ;91CC7B;
     STA.B $22                                                            ;91CC7E;
@@ -8990,7 +8990,7 @@ CopyLastBG1BlockOfRowToXrayBG2Tilemap:
 
 +   CLC                                                                  ;91CD0D;
     ADC.B $20                                                            ;91CD0E;
-    ASL A                                                                ;91CD10;
+    ASL                                                                  ;91CD10;
     TAX                                                                  ;91CD11;
     LDA.L $7E6000,X                                                      ;91CD12;
     PHA                                                                  ;91CD16;
@@ -9036,9 +9036,9 @@ LoadRightHalfOfRevealed2xNBlock:
     ADC.W #$0008                                                         ;91CD56;
     TAY                                                                  ;91CD59;
     LDA.B ($03),Y                                                        ;91CD5A;
-    ASL A                                                                ;91CD5C;
-    ASL A                                                                ;91CD5D;
-    ASL A                                                                ;91CD5E;
+    ASL                                                                  ;91CD5C;
+    ASL                                                                  ;91CD5D;
+    ASL                                                                  ;91CD5E;
     TAX                                                                  ;91CD5F;
     LDA.L $7EA000,X                                                      ;91CD60;
     PHA                                                                  ;91CD64;
@@ -9063,9 +9063,9 @@ LoadRightHalfOfRevealed2xNBlock:
     ADC.W #$0004                                                         ;91CD8B;
     TAY                                                                  ;91CD8E;
     LDA.B ($03),Y                                                        ;91CD8F;
-    ASL A                                                                ;91CD91;
-    ASL A                                                                ;91CD92;
-    ASL A                                                                ;91CD93;
+    ASL                                                                  ;91CD91;
+    ASL                                                                  ;91CD92;
+    ASL                                                                  ;91CD93;
     TAX                                                                  ;91CD94;
     LDA.L $7EA000,X                                                      ;91CD95;
     PHA                                                                  ;91CD99;
@@ -9125,7 +9125,7 @@ LoadRevealedBlockCommand:
     AND.W #$00FF                                                         ;91CDDA;
     STA.B $26                                                            ;91CDDD;
     TXA                                                                  ;91CDDF;
-    ASL A                                                                ;91CDE0;
+    ASL                                                                  ;91CDE0;
     TAX                                                                  ;91CDE1;
     LDA.L $7F0002,X                                                      ;91CDE2;
     AND.W #$F000                                                         ;91CDE6;
@@ -9227,7 +9227,7 @@ GetBlockTypeAndBTS:
     AND.W #$00FF                                                         ;91CE67;
     STA.B $2E                                                            ;91CE6A;
     TXA                                                                  ;91CE6C;
-    ASL A                                                                ;91CE6D;
+    ASL                                                                  ;91CE6D;
     TAX                                                                  ;91CE6E;
     LDA.L $7F0002,X                                                      ;91CE6F;
     AND.W #$F000                                                         ;91CE73;
@@ -9368,8 +9368,8 @@ Copy1x1BlockToXrayBG2TilemapIfScrollPLMTrigger:
 +   INY                                                                  ;91CF22;
     INY                                                                  ;91CF23;
     LDA.B ($00),Y                                                        ;91CF24;
-    INC A                                                                ;91CF26;
-    INC A                                                                ;91CF27;
+    INC                                                                  ;91CF26;
+    INC                                                                  ;91CF27;
     STA.B $03                                                            ;91CF28;
     LDY.W #$0000                                                         ;91CF2A;
     JSR.W CopyRevealedBlockCommandArgumentToXrayBG2Tilemap               ;91CF2D;
@@ -9475,9 +9475,9 @@ RevealedBlockCommand_Copy2x2BlockToXrayBG2Tilemap:
     CMP.W #$0001                                                         ;91CF89;
     BEQ .gotoDone                                                        ;91CF8C;
     LDA.B ($03),Y                                                        ;91CF8E;
-    ASL A                                                                ;91CF90;
-    ASL A                                                                ;91CF91;
-    ASL A                                                                ;91CF92;
+    ASL                                                                  ;91CF90;
+    ASL                                                                  ;91CF91;
+    ASL                                                                  ;91CF92;
     TAX                                                                  ;91CF93;
     LDA.L $7EA000,X                                                      ;91CF94;
     PHA                                                                  ;91CF98;
@@ -9513,9 +9513,9 @@ CopyBlockToXrayBG2Tilemap:
 ;; Parameters:
 ;;     A: Tile table index
 ;;     $16: X-ray BG2 tilemap index
-    ASL A                                                                ;91CFC1;
-    ASL A                                                                ;91CFC2;
-    ASL A                                                                ;91CFC3;
+    ASL                                                                  ;91CFC1;
+    ASL                                                                  ;91CFC2;
+    ASL                                                                  ;91CFC3;
     TAX                                                                  ;91CFC4;
     LDA.L $7EA000,X                                                      ;91CFC5;
     PHA                                                                  ;91CFC9;
@@ -9542,9 +9542,9 @@ CopyRevealedBlockCommandArgumentToXrayBG2Tilemap_1BlockRight:
 ;;     $03: Revealed block command pointer
 ;;     $16: X-ray BG2 tilemap index
     LDA.B ($03),Y                                                        ;91CFEE;
-    ASL A                                                                ;91CFF0;
-    ASL A                                                                ;91CFF1;
-    ASL A                                                                ;91CFF2;
+    ASL                                                                  ;91CFF0;
+    ASL                                                                  ;91CFF1;
+    ASL                                                                  ;91CFF2;
     TAX                                                                  ;91CFF3;
     LDA.L $7EA000,X                                                      ;91CFF4;
     PHA                                                                  ;91CFF8;
@@ -9571,9 +9571,9 @@ CopyRevealedBlockCommandArgumentToXrayBG2Tilemap_1BlockDown:
 ;;     $03: Revealed block command pointer
 ;;     $16: X-ray BG2 tilemap index
     LDA.B ($03),Y                                                        ;91D01D;
-    ASL A                                                                ;91D01F;
-    ASL A                                                                ;91D020;
-    ASL A                                                                ;91D021;
+    ASL                                                                  ;91D01F;
+    ASL                                                                  ;91D020;
+    ASL                                                                  ;91D021;
     TAX                                                                  ;91D022;
     LDA.L $7EA000,X                                                      ;91D023;
     PHA                                                                  ;91D027;
@@ -9608,10 +9608,10 @@ LoadBlockToXrayBG2Tilemap:
     REP #$30                                                             ;91D04F;
     STA.B $28                                                            ;91D051;
     LDA.W $0911                                                          ;91D053;
-    LSR A                                                                ;91D056;
-    LSR A                                                                ;91D057;
-    LSR A                                                                ;91D058;
-    LSR A                                                                ;91D059;
+    LSR                                                                  ;91D056;
+    LSR                                                                  ;91D057;
+    LSR                                                                  ;91D058;
+    LSR                                                                  ;91D059;
     STA.B $18                                                            ;91D05A;
     TXA                                                                  ;91D05C;
     SEC                                                                  ;91D05D;
@@ -9621,10 +9621,10 @@ LoadBlockToXrayBG2Tilemap:
     SBC.W #$0010                                                         ;91D064;
     BPL .return                                                          ;91D067;
     LDA.W $0915                                                          ;91D069;
-    LSR A                                                                ;91D06C;
-    LSR A                                                                ;91D06D;
-    LSR A                                                                ;91D06E;
-    LSR A                                                                ;91D06F;
+    LSR                                                                  ;91D06C;
+    LSR                                                                  ;91D06D;
+    LSR                                                                  ;91D06E;
+    LSR                                                                  ;91D06F;
     STA.B $1A                                                            ;91D070;
     TYA                                                                  ;91D072;
     SEC                                                                  ;91D073;
@@ -9634,15 +9634,15 @@ LoadBlockToXrayBG2Tilemap:
     SBC.W #$0010                                                         ;91D07A;
     BPL .return                                                          ;91D07D;
     LDA.B $1A                                                            ;91D07F;
-    ASL A                                                                ;91D081;
-    ASL A                                                                ;91D082;
-    ASL A                                                                ;91D083;
-    ASL A                                                                ;91D084;
-    ASL A                                                                ;91D085;
+    ASL                                                                  ;91D081;
+    ASL                                                                  ;91D082;
+    ASL                                                                  ;91D083;
+    ASL                                                                  ;91D084;
+    ASL                                                                  ;91D085;
     CLC                                                                  ;91D086;
     ADC.B $18                                                            ;91D087;
-    ASL A                                                                ;91D089;
-    ASL A                                                                ;91D08A;
+    ASL                                                                  ;91D089;
+    ASL                                                                  ;91D08A;
     STA.B $16                                                            ;91D08B;
     LDA.B $28                                                            ;91D08D;
     BIT.W #$0800                                                         ;91D08F;
@@ -9667,9 +9667,9 @@ CopyYFlippedBlockToXrayBG2Tilemap:
 ;; Parameters:
 ;;     A: Tile table index
 ;;     $16: X-ray BG2 tilemap index
-    ASL A                                                                ;91D0A6;
-    ASL A                                                                ;91D0A7;
-    ASL A                                                                ;91D0A8;
+    ASL                                                                  ;91D0A6;
+    ASL                                                                  ;91D0A7;
+    ASL                                                                  ;91D0A8;
     TAX                                                                  ;91D0A9;
     LDA.L $7EA000,X                                                      ;91D0AA;
     PHA                                                                  ;91D0AE;
@@ -10520,7 +10520,7 @@ HandleSamusPalette:
     JSR.W HandleBeamChargePalettes                                       ;91D708;
     BCS .glowEnded                                                       ;91D70B;
     LDA.W $0ACC                                                          ;91D70D;
-    ASL A                                                                ;91D710;
+    ASL                                                                  ;91D710;
     TAX                                                                  ;91D711;
     JSR.W (.special,X)                                                   ;91D712;
     BCS .return                                                          ;91D715;
@@ -10593,8 +10593,8 @@ HandleBeamChargePalettes:
     TAX                                                                  ;91D77E;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91D77F;
     LDA.W $0B62                                                          ;91D782;
-    INC A                                                                ;91D785;
-    INC A                                                                ;91D786;
+    INC                                                                  ;91D785;
+    INC                                                                  ;91D786;
     CMP.W #$000C                                                         ;91D787;
     BMI .setPaletteIndex                                                 ;91D78A;
     LDA.W #$0000                                                         ;91D78C;
@@ -10746,7 +10746,7 @@ HandleVisorPalette:
     BNE .normal                                                          ;91D854;
 
 +   LDA.W $0A72                                                          ;91D856;
-    DEC A                                                                ;91D859;
+    DEC                                                                  ;91D859;
     STA.W $0A72                                                          ;91D85A;
     BIT.W #$00FF                                                         ;91D85D;
     BEQ +                                                                ;91D860;
@@ -10760,8 +10760,8 @@ HandleVisorPalette:
     LDA.L SamusPalettes_Visor,X                                          ;91D86F;
     STA.L $7EC188                                                        ;91D873;
     TXA                                                                  ;91D877;
-    INC A                                                                ;91D878;
-    INC A                                                                ;91D879;
+    INC                                                                  ;91D878;
+    INC                                                                  ;91D879;
     CMP.W #$000C                                                         ;91D87A;
     BMI +                                                                ;91D87D;
     LDA.W $0A72                                                          ;91D87F;
@@ -10843,7 +10843,7 @@ HandleMiscSamusPalette:
 
   .hurtFlashDone:
     LDA.W $0A48                                                          ;91D8FC;
-    INC A                                                                ;91D8FF;
+    INC                                                                  ;91D8FF;
     STA.W $0A48                                                          ;91D900;
     CMP.W #$0028                                                         ;91D903;
     BEQ .nonHurtSFX                                                      ;91D906;
@@ -10905,7 +10905,7 @@ HandleMiscSamusPalette:
 
   .acquiringHyperBeam:
     LDA.W $0B62                                                          ;91D96F;
-    ASL A                                                                ;91D972;
+    ASL                                                                  ;91D972;
     TAY                                                                  ;91D973;
     LDA.W .hyperBeamPalettes,Y                                           ;91D974;
     TAX                                                                  ;91D977;
@@ -10918,7 +10918,7 @@ HandleMiscSamusPalette:
     LDA.W $0ACE                                                          ;91D982;
     STA.W $0AD0                                                          ;91D985;
     LDA.W $0B62                                                          ;91D988;
-    INC A                                                                ;91D98B;
+    INC                                                                  ;91D98B;
     STA.W $0B62                                                          ;91D98C;
     CMP.W #$000A                                                         ;91D98F;
     BMI .returnLower                                                     ;91D992;
@@ -11018,8 +11018,8 @@ Handle_ScrewAttack_SpeedBoosting_Palette:
     TAX                                                                  ;91DA2D;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91DA2E;
     LDA.W $0ACE                                                          ;91DA31;
-    INC A                                                                ;91DA34;
-    INC A                                                                ;91DA35;
+    INC                                                                  ;91DA34;
+    INC                                                                  ;91DA35;
     CMP.W #$000C                                                         ;91DA36;
     BMI .storeIndex                                                      ;91DA39;
     LDA.W #$0000                                                         ;91DA3B;
@@ -11090,8 +11090,8 @@ Handle_ScrewAttack_SpeedBoosting_Palette:
     TAX                                                                  ;91DA93;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91DA94;
     LDA.W $0ACE                                                          ;91DA97;
-    INC A                                                                ;91DA9A;
-    INC A                                                                ;91DA9B;
+    INC                                                                  ;91DA9A;
+    INC                                                                  ;91DA9B;
     CMP.W #$0008                                                         ;91DA9C;
     BMI .storeIndexSpeedBooster                                          ;91DA9F;
     LDA.W #$0006                                                         ;91DAA1;
@@ -11141,7 +11141,7 @@ HandleSpeedBoosterShinePalette:
     PLA                                                                  ;91DAD7;
 
   .notAA:
-    DEC A                                                                ;91DAD8;
+    DEC                                                                  ;91DAD8;
     STA.W $0A68                                                          ;91DAD9;
     BEQ .finish                                                          ;91DADC;
     BMI .finish                                                          ;91DADE;
@@ -11156,8 +11156,8 @@ HandleSpeedBoosterShinePalette:
     TAX                                                                  ;91DAF2;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91DAF3;
     LDA.W $0ACE                                                          ;91DAF6;
-    INC A                                                                ;91DAF9;
-    INC A                                                                ;91DAFA;
+    INC                                                                  ;91DAF9;
+    INC                                                                  ;91DAFA;
     CMP.W #$000C                                                         ;91DAFB;
     BMI .storeIndex                                                      ;91DAFE;
     LDA.W #$0000                                                         ;91DB00;
@@ -11210,7 +11210,7 @@ HandleShinesparkingPalette:
 ;; Returns:
 ;;     Carry: Clear to use normal suit palette, set otherwise
     LDA.W $0A68                                                          ;91DB3A;
-    DEC A                                                                ;91DB3D;
+    DEC                                                                  ;91DB3D;
     STA.W $0A68                                                          ;91DB3E;
     BEQ .finish                                                          ;91DB41;
     BMI .finish                                                          ;91DB43;
@@ -11225,8 +11225,8 @@ HandleShinesparkingPalette:
     TAX                                                                  ;91DB57;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91DB58;
     LDA.W $0ACE                                                          ;91DB5B;
-    INC A                                                                ;91DB5E;
-    INC A                                                                ;91DB5F;
+    INC                                                                  ;91DB5E;
+    INC                                                                  ;91DB5F;
     CMP.W #$0008                                                         ;91DB60;
     BMI .storeIndex                                                      ;91DB63;
     LDA.W #$0000                                                         ;91DB65;
@@ -11274,7 +11274,7 @@ HandleCrystalFlashPalette:
 ;;     Carry: Clear to use normal suit palette, set otherwise
     LDA.W $0A68                                                          ;91DB93;
     BMI .finish                                                          ;91DB96;
-    DEC A                                                                ;91DB98;
+    DEC                                                                  ;91DB98;
     STA.W $0A68                                                          ;91DB99;
     BEQ .specialPaletteTimerExpired                                      ;91DB9C;
     BPL .bubbleEnd                                                       ;91DB9E;
@@ -11287,8 +11287,8 @@ HandleCrystalFlashPalette:
     TAY                                                                  ;91DBAC;
     JSR.W SetCrystalFlashBubbleColors                                    ;91DBAD;
     LDA.W $0ACE                                                          ;91DBB0;
-    INC A                                                                ;91DBB3;
-    INC A                                                                ;91DBB4;
+    INC                                                                  ;91DBB3;
+    INC                                                                  ;91DBB4;
     CMP.W #$000C                                                         ;91DBB5;
     BMI .storeIndex                                                      ;91DBB8;
     LDA.W #$0000                                                         ;91DBBA;
@@ -11435,8 +11435,8 @@ HandleXrayPalette:
     LDA.W $0ACE                                                          ;91DCDB;
     CMP.W #$0004                                                         ;91DCDE;
     BPL .returnCarrySet                                                  ;91DCE1;
-    INC A                                                                ;91DCE3;
-    INC A                                                                ;91DCE4;
+    INC                                                                  ;91DCE3;
+    INC                                                                  ;91DCE4;
     STA.W $0ACE                                                          ;91DCE5;
 
   .returnCarrySet:
@@ -11462,8 +11462,8 @@ HandleXrayPalette:
     LDA.L SamusPalettes_Visor,X                                          ;91DD09;
     STA.L $7EC188                                                        ;91DD0D;
     LDA.W $0ACE                                                          ;91DD11;
-    INC A                                                                ;91DD14;
-    INC A                                                                ;91DD15;
+    INC                                                                  ;91DD14;
+    INC                                                                  ;91DD15;
     CMP.W #$000C                                                         ;91DD16;
     BMI .storeIndex                                                      ;91DD19;
     LDA.W #$0006                                                         ;91DD1B;
@@ -12268,9 +12268,9 @@ Set_NonXray_SamusPose:
     LDA.W #$FFFF                                                         ;91E31B;
     STA.W $0A80                                                          ;91E31E;
     LDA.W $0A1C                                                          ;91E321;
-    ASL A                                                                ;91E324;
-    ASL A                                                                ;91E325;
-    ASL A                                                                ;91E326;
+    ASL                                                                  ;91E324;
+    ASL                                                                  ;91E325;
+    ASL                                                                  ;91E326;
     TAX                                                                  ;91E327;
     LDA.L PoseDefinitions_YRadius,X                                      ;91E328;
     AND.W #$00FF                                                         ;91E32C;
@@ -12312,7 +12312,7 @@ Debug_HandleSelectL_B:
     LDA.W #$0001                                                         ;91E36B;
     STA.W $0DF6                                                          ;91E36E;
     LDA.W $09A6                                                          ;91E371;
-    INC A                                                                ;91E374;
+    INC                                                                  ;91E374;
     STA.W $09A6                                                          ;91E375;
     AND.W #$0FFF                                                         ;91E378;
     CMP.W #$000C                                                         ;91E37B;
@@ -12461,7 +12461,7 @@ DrainedSamusController:
     REP #$30                                                             ;91E4B1;
     PHX                                                                  ;91E4B3;
     PHY                                                                  ;91E4B4;
-    ASL A                                                                ;91E4B5;
+    ASL                                                                  ;91E4B5;
     TAX                                                                  ;91E4B6;
     JSR.W (.pointers,X)                                                  ;91E4B7;
     BCC .return                                                          ;91E4BA;
@@ -12524,9 +12524,9 @@ DrainedSamusController_0_LetDrainedSamusFall:
     JSL.L InitializeSamusPose_1                                          ;91E52C;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91E530;
     LDA.W $0A1C                                                          ;91E534;
-    ASL A                                                                ;91E537;
-    ASL A                                                                ;91E538;
-    ASL A                                                                ;91E539;
+    ASL                                                                  ;91E537;
+    ASL                                                                  ;91E538;
+    ASL                                                                  ;91E539;
     TAX                                                                  ;91E53A;
     LDA.W PoseDefinitions_YRadius,X                                      ;91E53B;
     AND.W #$00FF                                                         ;91E53E;
@@ -12600,9 +12600,9 @@ DrainedSamusController_2_ReleaseSamusFromDrainedPose:
 
   .merge:
     LDA.W $0A1C                                                          ;91E5CC;
-    ASL A                                                                ;91E5CF;
-    ASL A                                                                ;91E5D0;
-    ASL A                                                                ;91E5D1;
+    ASL                                                                  ;91E5CF;
+    ASL                                                                  ;91E5D0;
+    ASL                                                                  ;91E5D1;
     TAX                                                                  ;91E5D2;
     LDA.W PoseDefinitions_YRadius,X                                      ;91E5D3;
     AND.W #$00FF                                                         ;91E5D6;
@@ -12667,7 +12667,7 @@ UpdateSamusPoseDueToChangeOfEquipment:
     REP #$30                                                             ;91E637;
     LDA.W $0A1F                                                          ;91E639;
     AND.W #$00FF                                                         ;91E63C;
-    ASL A                                                                ;91E63F;
+    ASL                                                                  ;91E63F;
     TAX                                                                  ;91E640;
     JSR.W (.pointers,X)                                                  ;91E641;
     LDA.W $09A2                                                          ;91E644;
@@ -13012,7 +13012,7 @@ SetProspectiveSamusPoseAccordingToSolidVerticalCollision_PSP:
     LDA.W $0DC6                                                          ;91E8BC;
     BEQ .return                                                          ;91E8BF;
     AND.W #$00FF                                                         ;91E8C1;
-    ASL A                                                                ;91E8C4;
+    ASL                                                                  ;91E8C4;
     TAX                                                                  ;91E8C5;
     JSR.W (.pointers,X)                                                  ;91E8C6;
 
@@ -13060,8 +13060,8 @@ PSP_Falling:
     RTS                                                                  ;91E8FD;
 
   .changed:
-    ASL A                                                                ;91E8FE;
-    ASL A                                                                ;91E8FF;
+    ASL                                                                  ;91E8FE;
+    ASL                                                                  ;91E8FF;
     TAX                                                                  ;91E900;
     LDA.W $0A1E                                                          ;91E901;
     AND.W #$00FF                                                         ;91E904;
@@ -13097,7 +13097,7 @@ PSP_Landed:
     AND.W #$00FF                                                         ;91E934;
     CMP.W #$0004                                                         ;91E937;
     BEQ .return                                                          ;91E93A;
-    ASL A                                                                ;91E93C;
+    ASL                                                                  ;91E93C;
     TAX                                                                  ;91E93D;
     JSR.W (.pointers,X)                                                  ;91E93E;
     BCC .solidVerticalCollision                                          ;91E941;
@@ -13132,9 +13132,9 @@ PSP_Landed_Grounded:
     CMP.W #$0014                                                         ;91E968;
     BEQ .wasSpinning                                                     ;91E96B;
     LDA.W $0A1C                                                          ;91E96D;
-    ASL A                                                                ;91E970;
-    ASL A                                                                ;91E971;
-    ASL A                                                                ;91E972;
+    ASL                                                                  ;91E970;
+    ASL                                                                  ;91E971;
+    ASL                                                                  ;91E972;
     TAX                                                                  ;91E973;
     LDA.W PoseDefinitions_directionShotsFired,X                          ;91E974;
     AND.W #$00FF                                                         ;91E977;
@@ -13146,7 +13146,7 @@ PSP_Landed_Grounded:
     BEQ .aimHorizontal                                                   ;91E987;
 
   .landingFromNormalJumpNoFire:
-    ASL A                                                                ;91E989;
+    ASL                                                                  ;91E989;
     TAX                                                                  ;91E98A;
     LDA.W .directions,X                                                  ;91E98B;
     STA.W $0A28                                                          ;91E98E;
@@ -13230,7 +13230,7 @@ PSP_Landed_MorphBallGrounded:
 ; TODO: talk about how dequipping spring ball during bounce causes jump table overflow here due to [$0B20] >= 600h
 ;       need to check other places like SolidVerticalCollision_Landed_MorphBallGrounded too
     LDA.W $0B20                                                          ;91EA07;
-    ASL A                                                                ;91EA0A;
+    ASL                                                                  ;91EA0A;
     TAX                                                                  ;91EA0B;
     JMP.W (.pointers,X)                                                  ;91EA0C;
 
@@ -13312,7 +13312,7 @@ PSP_Landed_SpringBallGrounded:
   .pressingJump:
     LDA.W $0B20                                                          ;91EA72;
     AND.W #$00FF                                                         ;91EA75;
-    ASL A                                                                ;91EA78;
+    ASL                                                                  ;91EA78;
     TAX                                                                  ;91EA79;
     JMP.W (.pointers,X)                                                  ;91EA7A;
 
@@ -13413,9 +13413,9 @@ CheckIfProspectivePoseRunsIntoAWall:
     LDA.W $0A28                                                          ;91EAEE;
     CMP.W #$FFFF                                                         ;91EAF1;
     BEQ .returnPoseUnchanged                                             ;91EAF4;
-    ASL A                                                                ;91EAF6;
-    ASL A                                                                ;91EAF7;
-    ASL A                                                                ;91EAF8;
+    ASL                                                                  ;91EAF6;
+    ASL                                                                  ;91EAF7;
+    ASL                                                                  ;91EAF8;
     TAX                                                                  ;91EAF9;
     LDA.W PoseDefinitions_movementType,X                                 ;91EAFA;
     AND.W #$00FF                                                         ;91EAFD;
@@ -13463,13 +13463,13 @@ CheckIfProspectivePoseRunsIntoAWall:
     LDA.W $0A1C                                                          ;91EB53;
 
   .setRanIntoWallPose:
-    ASL A                                                                ;91EB56;
-    ASL A                                                                ;91EB57;
-    ASL A                                                                ;91EB58;
+    ASL                                                                  ;91EB56;
+    ASL                                                                  ;91EB57;
+    ASL                                                                  ;91EB58;
     TAX                                                                  ;91EB59;
     LDA.W PoseDefinitions_directionShotsFired,X                          ;91EB5A;
     AND.W #$00FF                                                         ;91EB5D;
-    ASL A                                                                ;91EB60;
+    ASL                                                                  ;91EB60;
     TAX                                                                  ;91EB61;
     LDA.W .poses,X                                                       ;91EB62;
     STA.W $0A28                                                          ;91EB65;
@@ -13532,7 +13532,7 @@ UpdateSamusPose:
 
   .knockbackFinished:
     LDA.W $0A32                                                          ;91EBBB;
-    ASL A                                                                ;91EBBE;
+    ASL                                                                  ;91EBBE;
     TAX                                                                  ;91EBBF;
     JSR.W (.superSpecialProspectivePoseChangeCommand,X)                  ;91EBC0;
     BRA .poseChanged                                                     ;91EBC3;
@@ -13550,7 +13550,7 @@ UpdateSamusPose:
     JSL.L HandleSamusPoseChange                                          ;91EBD7;
     BCS .poseChanged                                                     ;91EBDB;
     LDA.W $0A30                                                          ;91EBDD;
-    ASL A                                                                ;91EBE0;
+    ASL                                                                  ;91EBE0;
     TAX                                                                  ;91EBE1;
     JSR.W (.specialProspectivePoseChangeCommand,X)                       ;91EBE2;
     BRA .poseChanged                                                     ;91EBE5;
@@ -13560,7 +13560,7 @@ UpdateSamusPose:
     JSL.L HandleSamusPoseChange                                          ;91EBEA;
     BCS .poseChanged                                                     ;91EBEE;
     LDA.W $0A2E                                                          ;91EBF0;
-    ASL A                                                                ;91EBF3;
+    ASL                                                                  ;91EBF3;
     TAX                                                                  ;91EBF4;
     JSR.W (.prospectivePoseChangeCommand,X)                              ;91EBF5;
 
@@ -13714,7 +13714,7 @@ ProspectivePoseCmd_7_StartTransitionAnimation:
     BPL .aiming                                                          ;91ECE0;
     SEC                                                                  ;91ECE2;
     SBC.W #$0035                                                         ;91ECE3;
-    ASL A                                                                ;91ECE6;
+    ASL                                                                  ;91ECE6;
     TAX                                                                  ;91ECE7;
     LDA.W .YRadii,X                                                      ;91ECE8;
     STA.B $12                                                            ;91ECEB;
@@ -13723,9 +13723,9 @@ ProspectivePoseCmd_7_StartTransitionAnimation:
 
   .shrinking:
     LDA.W $0A1C                                                          ;91ECF1;
-    ASL A                                                                ;91ECF4;
-    ASL A                                                                ;91ECF5;
-    ASL A                                                                ;91ECF6;
+    ASL                                                                  ;91ECF4;
+    ASL                                                                  ;91ECF5;
+    ASL                                                                  ;91ECF6;
     TAX                                                                  ;91ECF7;
     LDA.W PoseDefinitions_YRadius,X                                      ;91ECF8;
     AND.W #$00FF                                                         ;91ECFB;
@@ -13777,7 +13777,7 @@ ProspectivePoseCmd_7_StartTransitionAnimation:
 SpecialProspectivePoseCmd_1_StartKnockback:
     LDA.W $0A23                                                          ;91ED4E;
     AND.W #$00FF                                                         ;91ED51;
-    ASL A                                                                ;91ED54;
+    ASL                                                                  ;91ED54;
     TAX                                                                  ;91ED55;
     JSR.W (.pointers,X)                                                  ;91ED56;
     JSL.L SetSamusYSpeedForKnockback                                     ;91ED59;
@@ -14152,7 +14152,7 @@ RTS_91EFC3:
 SpecialProspectivePoseCmd_5_SolidVerticalCollision:
     LDA.W $0DC6                                                          ;91EFC4;
     AND.W #$00FF                                                         ;91EFC7;
-    ASL A                                                                ;91EFCA;
+    ASL                                                                  ;91EFCA;
     TAX                                                                  ;91EFCB;
     JSR.W (.pointers,X)                                                  ;91EFCC;
     RTS                                                                  ;91EFCF;
@@ -14211,7 +14211,7 @@ SolidVerticalCollision_Landed:
     RTS                                                                  ;91F021;
 
   .change:
-    ASL A                                                                ;91F022;
+    ASL                                                                  ;91F022;
     TAX                                                                  ;91F023;
     JSR.W (.pointers,X)                                                  ;91F024;
     BCC .carryClear                                                      ;91F027;
@@ -14292,7 +14292,7 @@ HandleLandingSoundEffectsAndGraphics:
 ;;; $F0A5: Handle landing graphics ;;;
 HandleLandingGraphics:
     LDA.W $079F                                                          ;91F0A5;
-    ASL A                                                                ;91F0A8;
+    ASL                                                                  ;91F0A8;
     TAX                                                                  ;91F0A9;
     JSR.W (.areaPointers,X)                                              ;91F0AA;
     RTS                                                                  ;91F0AD;
@@ -14518,7 +14518,7 @@ SolidVerticalCollision_Landed_Grounded:
 SolidVerticalCollision_Landed_MorphBallGrounded:
 ; Morph ball bounce - no springball
     LDA.W $0B20                                                          ;91F1FC;
-    ASL A                                                                ;91F1FF;
+    ASL                                                                  ;91F1FF;
     TAX                                                                  ;91F200;
     JMP.W (.pointers,X)                                                  ;91F201;
 
@@ -14552,7 +14552,7 @@ MorphBallBounce_MorphBall_FirstBounce:
     LDA.L SamusPhysicsConstants_YSubSpeedWhenBouncingInMorphBall         ;91F234;
     STA.W $0B2C                                                          ;91F238;
     LDA.L SamusPhysicsConstants_YSpeedWhenBouncingInMorphBall            ;91F23B;
-    DEC A                                                                ;91F23F;
+    DEC                                                                  ;91F23F;
     STA.W $0B2E                                                          ;91F240;
     SEC                                                                  ;91F243;
     RTS                                                                  ;91F244;
@@ -14591,7 +14591,7 @@ SolidVerticalCollision_Landed_SpringBallGrounded:
   .notPressingJump:
     LDA.W $0B20                                                          ;91F26E;
     AND.W #$00FF                                                         ;91F271;
-    ASL A                                                                ;91F274;
+    ASL                                                                  ;91F274;
     TAX                                                                  ;91F275;
     JMP.W (.pointers,X)                                                  ;91F276;
 
@@ -14627,7 +14627,7 @@ MorphBallBounce_SpringBall_FirstBounce:
     LDA.L SamusPhysicsConstants_YSubSpeedWhenBouncingInMorphBall         ;91F2AF;
     STA.W $0B2C                                                          ;91F2B3;
     LDA.L SamusPhysicsConstants_YSpeedWhenBouncingInMorphBall            ;91F2B6;
-    DEC A                                                                ;91F2BA;
+    DEC                                                                  ;91F2BA;
     STA.W $0B2E                                                          ;91F2BB;
     SEC                                                                  ;91F2BE;
     RTS                                                                  ;91F2BF;
@@ -14873,9 +14873,9 @@ InitializeSamusPose_1:
     PLB                                                                  ;91F436;
     REP #$30                                                             ;91F437;
     LDA.W $0A1C                                                          ;91F439;
-    ASL A                                                                ;91F43C;
-    ASL A                                                                ;91F43D;
-    ASL A                                                                ;91F43E;
+    ASL                                                                  ;91F43C;
+    ASL                                                                  ;91F43D;
+    ASL                                                                  ;91F43E;
     TAX                                                                  ;91F43F;
     LDA.W PoseDefinitions_XDirection,X                                   ;91F440;
     STA.W $0A1E                                                          ;91F443;
@@ -14905,14 +14905,14 @@ InitializeSamusPose_2:
     REP #$30                                                             ;91F469;
     LDA.W $0A1F                                                          ;91F46B;
     AND.W #$00FF                                                         ;91F46E;
-    ASL A                                                                ;91F471;
+    ASL                                                                  ;91F471;
     TAX                                                                  ;91F472;
     JSR.W (.pointers,X)                                                  ;91F473;
     BCC .return                                                          ;91F476;
     LDA.W $0A1C                                                          ;91F478;
-    ASL A                                                                ;91F47B;
-    ASL A                                                                ;91F47C;
-    ASL A                                                                ;91F47D;
+    ASL                                                                  ;91F47B;
+    ASL                                                                  ;91F47C;
+    ASL                                                                  ;91F47D;
     TAX                                                                  ;91F47E;
     LDA.W PoseDefinitions_XDirection,X                                   ;91F47F;
     STA.W $0A1E                                                          ;91F482;
@@ -14920,13 +14920,13 @@ InitializeSamusPose_2:
     CMP.W #$0E00                                                         ;91F488;
     BNE .return                                                          ;91F48B;
     XBA                                                                  ;91F48D;
-    ASL A                                                                ;91F48E;
+    ASL                                                                  ;91F48E;
     TAX                                                                  ;91F48F;
     JSR.W (.pointers,X)                                                  ;91F490;
     LDA.W $0A1C                                                          ;91F493;
-    ASL A                                                                ;91F496;
-    ASL A                                                                ;91F497;
-    ASL A                                                                ;91F498;
+    ASL                                                                  ;91F496;
+    ASL                                                                  ;91F497;
+    ASL                                                                  ;91F498;
     TAX                                                                  ;91F499;
     LDA.W PoseDefinitions_XDirection,X                                   ;91F49A;
     STA.W $0A1E                                                          ;91F49D;
@@ -14975,9 +14975,9 @@ CLCRTS_91F4DA:
 ;;; $F4DC: Initialise Samus pose - standing ;;;
 InitializeSamusPose_Standing:
     LDA.W $0A1C                                                          ;91F4DC;
-    ASL A                                                                ;91F4DF;
-    ASL A                                                                ;91F4E0;
-    ASL A                                                                ;91F4E1;
+    ASL                                                                  ;91F4DF;
+    ASL                                                                  ;91F4E0;
+    ASL                                                                  ;91F4E1;
     TAX                                                                  ;91F4E2;
     LDA.W PoseDefinitions_directionShotsFired,X                          ;91F4E3;
     AND.W #$00FF                                                         ;91F4E6;
@@ -14986,9 +14986,9 @@ InitializeSamusPose_Standing:
     BNE .returnCarryClear                                                ;91F4EE;
 
 +   LDA.W $0A20                                                          ;91F4F0;
-    ASL A                                                                ;91F4F3;
-    ASL A                                                                ;91F4F4;
-    ASL A                                                                ;91F4F5;
+    ASL                                                                  ;91F4F3;
+    ASL                                                                  ;91F4F4;
+    ASL                                                                  ;91F4F5;
     TAX                                                                  ;91F4F6;
     LDA.W PoseDefinitions_directionShotsFired,X                          ;91F4F7;
     AND.W #$00FF                                                         ;91F4FA;
@@ -15128,9 +15128,9 @@ InitializeSamusPose_NormalJumping:
     BIT.W $09B2                                                          ;91F5D1;
     BEQ .returnCarryClear                                                ;91F5D4;
     LDA.W $0A1C                                                          ;91F5D6;
-    ASL A                                                                ;91F5D9;
-    ASL A                                                                ;91F5DA;
-    ASL A                                                                ;91F5DB;
+    ASL                                                                  ;91F5D9;
+    ASL                                                                  ;91F5DA;
+    ASL                                                                  ;91F5DB;
     TAX                                                                  ;91F5DC;
     LDA.W PoseDefinitions_directionShotsFired,X                          ;91F5DD;
     AND.W #$00FF                                                         ;91F5E0;
@@ -15356,7 +15356,7 @@ InitializeSamusPose_TransitionPoses:
     BPL .unused                                                          ;91F763;
     SEC                                                                  ;91F765;
     SBC.W #$0035                                                         ;91F766;
-    ASL A                                                                ;91F769;
+    ASL                                                                  ;91F769;
     TAX                                                                  ;91F76A;
 
 -   LDA.W #$0007                                                         ;91F76B;
@@ -15367,7 +15367,7 @@ InitializeSamusPose_TransitionPoses:
   .unused:
     SEC                                                                  ;91F775;
     SBC.W #$00DB                                                         ;91F776;
-    ASL A                                                                ;91F779;
+    ASL                                                                  ;91F779;
     TAX                                                                  ;91F77A;
     JSR.W (.unusedPointers,X)                                            ;91F77B;
     RTS                                                                  ;91F77E;
@@ -15602,9 +15602,9 @@ InitializeSamusPose_TurningAround_OnGround:
     BEQ .done                                                            ;91F8D6;
     CMP.W #$009B                                                         ;91F8D8;
     BEQ .done                                                            ;91F8DB;
-    ASL A                                                                ;91F8DD;
-    ASL A                                                                ;91F8DE;
-    ASL A                                                                ;91F8DF;
+    ASL                                                                  ;91F8DD;
+    ASL                                                                  ;91F8DE;
+    ASL                                                                  ;91F8DF;
     TAX                                                                  ;91F8E0;
     LDA.W PoseDefinitions_directionShotsFired,X                          ;91F8E1;
     AND.W #$00FF                                                         ;91F8E4;
@@ -15614,9 +15614,9 @@ InitializeSamusPose_TurningAround_OnGround:
     CMP.W #$0010                                                         ;91F8EE;
     BNE .notMoonwalking                                                  ;91F8F1;
     LDA.W $0A20                                                          ;91F8F3;
-    ASL A                                                                ;91F8F6;
-    ASL A                                                                ;91F8F7;
-    ASL A                                                                ;91F8F8;
+    ASL                                                                  ;91F8F6;
+    ASL                                                                  ;91F8F7;
+    ASL                                                                  ;91F8F8;
     TAY                                                                  ;91F8F9;
     LDA.W PoseDefinitions_directionShotsFired,Y                          ;91F8FA;
     AND.W #$00FF                                                         ;91F8FD;
@@ -15664,9 +15664,9 @@ InitializeSamusPose_TurningAround_OnGround:
 ;;; $F952: Initialise Samus pose - turning around - jumping ;;;
 InitializeSamusPose_TurningAround_Jumping:
     LDA.W $0A20                                                          ;91F952;
-    ASL A                                                                ;91F955;
-    ASL A                                                                ;91F956;
-    ASL A                                                                ;91F957;
+    ASL                                                                  ;91F955;
+    ASL                                                                  ;91F956;
+    ASL                                                                  ;91F957;
     TAX                                                                  ;91F958;
     LDA.W PoseDefinitions_directionShotsFired,X                          ;91F959;
     AND.W #$00FF                                                         ;91F95C;
@@ -15692,9 +15692,9 @@ InitializeSamusPose_TurningAround_Jumping:
 ;;; $F98A: Initialise Samus pose - turning around - falling ;;;
 InitializeSamusPose_TurningAround_Falling:
     LDA.W $0A20                                                          ;91F98A;
-    ASL A                                                                ;91F98D;
-    ASL A                                                                ;91F98E;
-    ASL A                                                                ;91F98F;
+    ASL                                                                  ;91F98D;
+    ASL                                                                  ;91F98E;
+    ASL                                                                  ;91F98F;
     TAX                                                                  ;91F990;
     LDA.W PoseDefinitions_directionShotsFired,X                          ;91F991;
     AND.W #$00FF                                                         ;91F994;
@@ -15873,7 +15873,7 @@ InitializeSamusPose_Shinespark_CF_Drained_DamagedMB:
     BPL .returnCarryClear                                                ;91FAD0;
     SEC                                                                  ;91FAD2;
     SBC.W #$00C9                                                         ;91FAD3;
-    ASL A                                                                ;91FAD6;
+    ASL                                                                  ;91FAD6;
     TAX                                                                  ;91FAD7;
     LDA.W .pointers,X                                                    ;91FAD8;
     STA.W $0A58                                                          ;91FADB;
@@ -15911,15 +15911,15 @@ Set_Samus_AnimationFrame_if_PoseChanged:
     BIT.W #$0020                                                         ;91FB11;
     BNE .normalGravity                                                   ;91FB14;
     LDA.W $0A1C                                                          ;91FB16;
-    ASL A                                                                ;91FB19;
-    ASL A                                                                ;91FB1A;
-    ASL A                                                                ;91FB1B;
+    ASL                                                                  ;91FB19;
+    ASL                                                                  ;91FB1A;
+    ASL                                                                  ;91FB1B;
     TAX                                                                  ;91FB1C;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FB1D;
     AND.W #$00FF                                                         ;91FB21;
     CLC                                                                  ;91FB24;
     ADC.W $0AFA                                                          ;91FB25;
-    DEC A                                                                ;91FB28;
+    DEC                                                                  ;91FB28;
     STA.B $12                                                            ;91FB29;
     LDA.W $195E                                                          ;91FB2B;
     BMI .negativeYPosition                                               ;91FB2E;
@@ -15962,7 +15962,7 @@ Set_Samus_AnimationFrame_if_PoseChanged:
     STA.W $0A96                                                          ;91FB70;
     TAY                                                                  ;91FB73;
     LDA.W $0A1C                                                          ;91FB74;
-    ASL A                                                                ;91FB77;
+    ASL                                                                  ;91FB77;
     TAX                                                                  ;91FB78;
     TYA                                                                  ;91FB79;
     CLC                                                                  ;91FB7A;
@@ -16019,7 +16019,7 @@ HandleJumpTransition:
     REP #$30                                                             ;91FBBF;
     LDA.W $0A1F                                                          ;91FBC1;
     AND.W #$00FF                                                         ;91FBC4;
-    ASL A                                                                ;91FBC7;
+    ASL                                                                  ;91FBC7;
     TAX                                                                  ;91FBC8;
     JSR.W (.pointers,X)                                                  ;91FBC9;
     PLB                                                                  ;91FBCC;
@@ -16329,17 +16329,17 @@ HandlePoseChangeCollision:
     STZ.W $0A34                                                          ;91FDBD;
     STZ.W $0A36                                                          ;91FDC0;
     LDA.W $0A1C                                                          ;91FDC3;
-    ASL A                                                                ;91FDC6;
-    ASL A                                                                ;91FDC7;
-    ASL A                                                                ;91FDC8;
+    ASL                                                                  ;91FDC6;
+    ASL                                                                  ;91FDC7;
+    ASL                                                                  ;91FDC8;
     TAX                                                                  ;91FDC9;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FDCA;
     AND.W #$00FF                                                         ;91FDCE;
     STA.B $12                                                            ;91FDD1;
     LDA.W $0A20                                                          ;91FDD3;
-    ASL A                                                                ;91FDD6;
-    ASL A                                                                ;91FDD7;
-    ASL A                                                                ;91FDD8;
+    ASL                                                                  ;91FDD6;
+    ASL                                                                  ;91FDD7;
+    ASL                                                                  ;91FDD8;
     TAX                                                                  ;91FDD9;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FDDA;
     AND.W #$00FF                                                         ;91FDDE;
@@ -16385,13 +16385,13 @@ HandlePoseChangeCollision:
     LDA.B $12                                                            ;91FE32;
     STA.W $0A40                                                          ;91FE34;
     LDA.W $0A34                                                          ;91FE37;
-    ASL A                                                                ;91FE3A;
+    ASL                                                                  ;91FE3A;
     TAX                                                                  ;91FE3B;
     JSR.W (.solidEnemyPointers,X)                                        ;91FE3C;
     BCS .revertPose                                                      ;91FE3F;
     LDA.W $0A3A                                                          ;91FE41;
     EOR.W #$FFFF                                                         ;91FE44;
-    INC A                                                                ;91FE47;
+    INC                                                                  ;91FE47;
     STA.B $12                                                            ;91FE48;
     STZ.B $14                                                            ;91FE4A;
     JSL.L BlockCollisionDetectionDueToChangeOfPose                       ;91FE4C;
@@ -16415,7 +16415,7 @@ HandlePoseChangeCollision:
     LDA.B $12                                                            ;91FE73;
     STA.W $0A3C                                                          ;91FE75;
     LDA.W $0A36                                                          ;91FE78;
-    ASL A                                                                ;91FE7B;
+    ASL                                                                  ;91FE7B;
     TAX                                                                  ;91FE7C;
     JSR.W (.blockPointers,X)                                             ;91FE7D;
     BCC .return                                                          ;91FE80;
@@ -16467,9 +16467,9 @@ PoseChangeCollision_SolidEnemy_FromAbove:
     LDA.W $0B00                                                          ;91FEA9;
     PHA                                                                  ;91FEAC;
     LDA.W $0A1C                                                          ;91FEAD;
-    ASL A                                                                ;91FEB0;
-    ASL A                                                                ;91FEB1;
-    ASL A                                                                ;91FEB2;
+    ASL                                                                  ;91FEB0;
+    ASL                                                                  ;91FEB1;
+    ASL                                                                  ;91FEB2;
     TAX                                                                  ;91FEB3;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FEB4;
     AND.W #$00FF                                                         ;91FEB8;
@@ -16508,9 +16508,9 @@ PoseChangeCollision_SolidEnemy_FromBelow:
     LDA.W $0B00                                                          ;91FEEA;
     PHA                                                                  ;91FEED;
     LDA.W $0A1C                                                          ;91FEEE;
-    ASL A                                                                ;91FEF1;
-    ASL A                                                                ;91FEF2;
-    ASL A                                                                ;91FEF3;
+    ASL                                                                  ;91FEF1;
+    ASL                                                                  ;91FEF2;
+    ASL                                                                  ;91FEF3;
     TAX                                                                  ;91FEF4;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FEF5;
     AND.W #$00FF                                                         ;91FEF9;
@@ -16566,7 +16566,7 @@ PoseChangeCollision_Block_FromBelow:
     SEC                                                                  ;91FF4C;
     SBC.W $0A3C                                                          ;91FF4D;
     EOR.W #$FFFF                                                         ;91FF50;
-    INC A                                                                ;91FF53;
+    INC                                                                  ;91FF53;
     STA.B $12                                                            ;91FF54;
     STZ.B $14                                                            ;91FF56;
     JSL.L BlockCollisionDetectionDueToChangeOfPose                       ;91FF58;
@@ -16590,7 +16590,7 @@ PoseChangeCollision_Block_FromBelow:
 ;;; $FF76: Handle block collision due to pose change - no collision ;;;
 PoseChangeCollision_NoCollision:
     LDA.W $0A34                                                          ;91FF76;
-    ASL A                                                                ;91FF79;
+    ASL                                                                  ;91FF79;
     TAX                                                                  ;91FF7A;
     JMP.W (.pointers,X)                                                  ;91FF7B;
     RTS                                                                  ;91FF7E; >.<
@@ -16650,9 +16650,9 @@ HandleCollisionFromBothSidesDueToPoseChange:
     LDA.W #$0028                                                         ;91FFC1;
 
 +   STA.W $0A1C                                                          ;91FFC4;
-    ASL A                                                                ;91FFC7;
-    ASL A                                                                ;91FFC8;
-    ASL A                                                                ;91FFC9;
+    ASL                                                                  ;91FFC7;
+    ASL                                                                  ;91FFC8;
+    ASL                                                                  ;91FFC9;
     TAX                                                                  ;91FFCA;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FFCB;
     AND.W #$00FF                                                         ;91FFCF;

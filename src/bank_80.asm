@@ -149,7 +149,7 @@ SendAPUData:
   .wait:
     CMP.L $002140                                                        ;808092;
     BNE .wait                                                            ;808096; Wait until APU IO 0 echoes
-    INC A                                                                ;808098; Increment index
+    INC                                                                  ;808098; Increment index
 
   .uploadData:
     REP #$20                                                             ;808099;
@@ -178,7 +178,7 @@ SendAPUData:
     SEP #$20                                                             ;8080C2;
     CPX.W #$0001                                                         ;8080C4;
     LDA.B #$00                                                           ;8080C7;
-    ROL A                                                                ;8080C9; If block size = 0: APU IO 1 = 0 (EOF), else APU IO 1 = 1 (arbitrary non-zero value)
+    ROL                                                                  ;8080C9; If block size = 0: APU IO 1 = 0 (EOF), else APU IO 1 = 1 (arbitrary non-zero value)
     STA.L $002141                                                        ;8080CA;
     ADC.B #$7F                                                           ;8080CE; Set overflow if block size != 0, else clear overflow
     PLA                                                                  ;8080D0;
@@ -1337,7 +1337,7 @@ NTSC_PAL_SRAM_MappingCheck:
 
   .writeSRAM:
     STA.L $702000,X                                                      ;8086B8;
-    INC A                                                                ;8086BC; $70:2000..3FFF = 0..FFFh
+    INC                                                                  ;8086BC; $70:2000..3FFF = 0..FFFh
     DEX                                                                  ;8086BD;
     DEX                                                                  ;8086BE;
     BPL .writeSRAM                                                       ;8086BF;
@@ -1347,7 +1347,7 @@ NTSC_PAL_SRAM_MappingCheck:
   .loop:
     CMP.L $700000,X                                                      ;8086C7;
     BNE .failedSRAMCheck                                                 ;8086CB; If [$70:0000..1FFF] != 0..FFFh: go to .failedSRAMCheck
-    INC A                                                                ;8086CD;
+    INC                                                                  ;8086CD;
     DEX                                                                  ;8086CE;
     DEX                                                                  ;8086CF;
 
@@ -1680,7 +1680,7 @@ HandleFadingOut:
     LDA.B DP_Brightness                                                  ;80893A;
     AND.B #$0F                                                           ;80893C; If (brightness) = 0: return
     BEQ .return                                                          ;80893E;
-    DEC A                                                                ;808940;
+    DEC                                                                  ;808940;
     BNE .disableFBlank                                                   ;808941; If (brightness) = 1:
     LDA.B #$80                                                           ;808943;
     STA.B DP_Brightness                                                  ;808945; Enable forced blank, brightness = 0
@@ -1704,7 +1704,7 @@ HandleFadingIn:
     PHP                                                                  ;80894D;
     REP #$20                                                             ;80894E;
     LDA.W ScreenFadeCounter                                              ;808950;
-    DEC A                                                                ;808953; If [screen fade counter] != 0:
+    DEC                                                                  ;808953; If [screen fade counter] != 0:
     BMI .fadeIn                                                          ;808954;
     STA.W ScreenFadeCounter                                              ;808956; Decrement screen fade counter
     BRA .return                                                          ;808959; Return
@@ -1714,7 +1714,7 @@ HandleFadingIn:
     STA.W ScreenFadeCounter                                              ;80895E; Screen fade counter = [screen fade delay]
     SEP #$30                                                             ;808961;
     LDA.B DP_Brightness                                                  ;808963;
-    INC A                                                                ;808965;
+    INC                                                                  ;808965;
     AND.B #$0F                                                           ;808966; If brightness is not max:
     BEQ .return                                                          ;808968;
     STA.B DP_Brightness                                                  ;80896A; Increment brightness (disable forced blank)
@@ -1733,9 +1733,9 @@ Finalise_OAM:
     LDA.W OAMStack                                                       ;808971;
     CMP.W #$0200                                                         ;808974;
     BPL .clearOAMStackPointer                                            ;808977;
-    LSR A                                                                ;808979;
+    LSR                                                                  ;808979;
     STA.B DP_Temp12                                                      ;80897A;
-    LSR A                                                                ;80897C;
+    LSR                                                                  ;80897C;
     ADC.B DP_Temp12                                                      ;80897D;
     CLC                                                                  ;80897F;
     ADC.W #.spriteY00F0                                                  ;808980;
@@ -2023,13 +2023,13 @@ ProcessMode7Transfers:
     SEP #$20                                                             ;808BD4;
     LDA.W $0000,X                                                        ;808BD6;
     BMI .VRAM                                                            ;808BD9;
-    ASL A                                                                ;808BDB;
+    ASL                                                                  ;808BDB;
     BMI .CGRAM                                                           ;808BDC;
     PLP                                                                  ;808BDE;
     RTL                                                                  ;808BDF;
 
   .CGRAM:
-    LSR A                                                                ;808BE0;
+    LSR                                                                  ;808BE0;
     AND.B #$1F                                                           ;808BE1;
     STA.W $4310                                                          ;808BE3;
     LDY.W $0001,X                                                        ;808BE6;
@@ -2051,9 +2051,9 @@ ProcessMode7Transfers:
     BRA .loop                                                            ;808C0F;
 
   .VRAM:
-    ASL A                                                                ;808C11;
+    ASL                                                                  ;808C11;
     BMI .VRAMTiles                                                       ;808C12;
-    LSR A                                                                ;808C14;
+    LSR                                                                  ;808C14;
     AND.B #$1F                                                           ;808C15;
     STA.W $4310                                                          ;808C17;
     LDY.W $0001,X                                                        ;808C1A;
@@ -2077,7 +2077,7 @@ ProcessMode7Transfers:
     BRA .loop                                                            ;808C49;
 
   .VRAMTiles:
-    LSR A                                                                ;808C4B;
+    LSR                                                                  ;808C4B;
     AND.B #$1F                                                           ;808C4C;
     STA.W $4310                                                          ;808C4E;
     LDY.W $0001,X                                                        ;808C51;
@@ -2123,7 +2123,7 @@ HandleVRAMWriteTable_ScrollingDMAs:
     LDA.W #$0080                                                         ;808CAA;
     LDX.B VRAMWrite.dest,Y                                               ;808CAD;
     BPL .skip                                                            ;808CAF;
-    INC A                                                                ;808CB1;
+    INC                                                                  ;808CB1;
 
   .skip:
     STA.W $2115                                                          ;808CB2;
@@ -2551,8 +2551,8 @@ QueueMusicDataOrTrack_8FrameDelay:
     BCS .return                                                          ;808FCC;
     PHA                                                                  ;808FCE;
     LDA.W APU_MusicQueueNextIndex                                        ;808FCF;
-    INC A                                                                ;808FD2;
-    INC A                                                                ;808FD3;
+    INC                                                                  ;808FD2;
+    INC                                                                  ;808FD3;
     AND.W #$000E                                                         ;808FD4;
     TAX                                                                  ;808FD7;
     PLA                                                                  ;808FD8;
@@ -4384,7 +4384,7 @@ HandleHUDTilemap_PausedAndRunning:
     REP #$30                                                             ;809BC4;
     LDY.W #$0000                                                         ;809BC6;
     LDA.W $4214                                                          ;809BC9;
-    INC A                                                                ;809BCC;
+    INC                                                                  ;809BCC;
     STA.B DP_Temp16                                                      ;809BCD;
 
   .loopEtanks:
@@ -4528,9 +4528,9 @@ ToggleHUDItemHighlight:
 ; Palette 4 (X = 1000h) is used for the highlighted palette, otherwise palette 5 (X = 1400h) is used
 ; This routine assumes missiles are 3 tiles wide and all other icons are 2 tiles wide
     STX.W HUDItemTilemapPaletteBits                                      ;809CEA;
-    DEC A                                                                ;809CED;
+    DEC                                                                  ;809CED;
     BMI .return                                                          ;809CEE;
-    ASL A                                                                ;809CF0;
+    ASL                                                                  ;809CF0;
     TAY                                                                  ;809CF1;
     LDX.W .HUDItemOffsets,Y                                              ;809CF2;
     LDA.L HUDTilemap,X                                                   ;809CF5;
@@ -4638,7 +4638,7 @@ DrawTwoHUDDigits:
     PLA                                                                  ;809DA5;
     REP #$20                                                             ;809DA6;
     LDA.W $4214                                                          ;809DA8;
-    ASL A                                                                ;809DAB;
+    ASL                                                                  ;809DAB;
     TAY                                                                  ;809DAC;
     LDA.B [DP_Temp00],Y                                                  ;809DAD;
     STA.L HUDTilemap,X                                                   ;809DAF;
@@ -4678,7 +4678,7 @@ ProcessTimer:
     PHY                                                                  ;809DEB;
     LDA.W TimerStatus                                                    ;809DEC;
     AND.W #$00FF                                                         ;809DEF;
-    ASL A                                                                ;809DF2;
+    ASL                                                                  ;809DF2;
     TAX                                                                  ;809DF3;
     JSR.W (.pointers,X)                                                  ;809DF4;
     PLY                                                                  ;809DF7;
@@ -4910,16 +4910,16 @@ DrawTwoTimerDigits:
     PHX                                                                  ;809F95;
     PHA                                                                  ;809F96;
     AND.W #$00F0                                                         ;809F97;
-    LSR A                                                                ;809F9A;
-    LSR A                                                                ;809F9B;
-    LSR A                                                                ;809F9C;
+    LSR                                                                  ;809F9A;
+    LSR                                                                  ;809F9B;
+    LSR                                                                  ;809F9C;
     TAX                                                                  ;809F9D;
     LDY.W TimerDigitsSpritemapPointers,X                                 ;809F9E;
     LDA.B $03,S                                                          ;809FA1;
     JSR.W DrawTimerSpritemap                                             ;809FA3;
     PLA                                                                  ;809FA6;
     AND.W #$000F                                                         ;809FA7;
-    ASL A                                                                ;809FAA;
+    ASL                                                                  ;809FAA;
     TAX                                                                  ;809FAB;
     LDY.W TimerDigitsSpritemapPointers,X                                 ;809FAC;
     PLA                                                                  ;809FAF;
@@ -5173,7 +5173,7 @@ DisplayViewablePartOfRoom:
     STA.W VRAMBlocksToUpdateYBlock                                       ;80A1A3;
     JSR.W UpdateLevelDataColumn                                          ;80A1A6;
     LDA.W Layer2ScrollX                                                  ;80A1A9;
-    LSR A                                                                ;80A1AC;
+    LSR                                                                  ;80A1AC;
     BCS .increment                                                       ;80A1AD;
     LDA.W Layer2XBlock                                                   ;80A1AF;
     STA.W BlocksToUpdateXBlock                                           ;80A1B2;
@@ -5577,7 +5577,7 @@ UpdateBGGraphics_WhenScrolling:
 
   .layer1HorizontalEnd:
     LDA.W Layer2ScrollX                                                  ;80A416;
-    LSR A                                                                ;80A419;
+    LSR                                                                  ;80A419;
     BCS .layer2HorizontalEnd                                             ;80A41A;
     LDX.W #$0000                                                         ;80A41C;
     LDA.W Layer2XBlock                                                   ;80A41F;
@@ -5627,7 +5627,7 @@ UpdateBGGraphics_WhenScrolling:
 
   .layer1VerticalEnd:
     LDA.W Layer2ScrollY                                                  ;80A480;
-    LSR A                                                                ;80A483;
+    LSR                                                                  ;80A483;
     BCS .return                                                          ;80A484;
     LDX.W #$0001                                                         ;80A486;
     LDA.W Layer2YBlock                                                   ;80A489;
@@ -5671,64 +5671,64 @@ Calculate_BGScroll_LayerPositionBlocks:
 ;     $AF02: Door transition scrolling - down
 ;     $AF89: Door transition scrolling - up
     LDA.B DP_BG1XScroll                                                  ;80A4BB;
-    LSR A                                                                ;80A4BD;
-    LSR A                                                                ;80A4BE;
-    LSR A                                                                ;80A4BF;
-    LSR A                                                                ;80A4C0;
+    LSR                                                                  ;80A4BD;
+    LSR                                                                  ;80A4BE;
+    LSR                                                                  ;80A4BF;
+    LSR                                                                  ;80A4C0;
     STA.W BG1XBlock                                                      ;80A4C1;
     LDA.B DP_BG2XScroll                                                  ;80A4C4;
-    LSR A                                                                ;80A4C6;
-    LSR A                                                                ;80A4C7;
-    LSR A                                                                ;80A4C8;
-    LSR A                                                                ;80A4C9;
+    LSR                                                                  ;80A4C6;
+    LSR                                                                  ;80A4C7;
+    LSR                                                                  ;80A4C8;
+    LSR                                                                  ;80A4C9;
     STA.W BG2XBlock                                                      ;80A4CA;
     LDA.W Layer1XPosition                                                ;80A4CD;
-    LSR A                                                                ;80A4D0;
-    LSR A                                                                ;80A4D1;
-    LSR A                                                                ;80A4D2;
-    LSR A                                                                ;80A4D3;
+    LSR                                                                  ;80A4D0;
+    LSR                                                                  ;80A4D1;
+    LSR                                                                  ;80A4D2;
+    LSR                                                                  ;80A4D3;
     BIT.W #$0800                                                         ;80A4D4;
     BEQ +                                                                ;80A4D7;
     ORA.W #$F000                                                         ;80A4D9;
 
 +   STA.W Layer1XBlock                                                   ;80A4DC;
     LDA.W Layer2XPosition                                                ;80A4DF;
-    LSR A                                                                ;80A4E2;
-    LSR A                                                                ;80A4E3;
-    LSR A                                                                ;80A4E4;
-    LSR A                                                                ;80A4E5;
+    LSR                                                                  ;80A4E2;
+    LSR                                                                  ;80A4E3;
+    LSR                                                                  ;80A4E4;
+    LSR                                                                  ;80A4E5;
     BIT.W #$0800                                                         ;80A4E6;
     BEQ +                                                                ;80A4E9;
     ORA.W #$F000                                                         ;80A4EB;
 
 +   STA.W Layer2XBlock                                                   ;80A4EE;
     LDA.B DP_BG1YScroll                                                  ;80A4F1;
-    LSR A                                                                ;80A4F3;
-    LSR A                                                                ;80A4F4;
-    LSR A                                                                ;80A4F5;
-    LSR A                                                                ;80A4F6;
+    LSR                                                                  ;80A4F3;
+    LSR                                                                  ;80A4F4;
+    LSR                                                                  ;80A4F5;
+    LSR                                                                  ;80A4F6;
     STA.W BG1YBlock                                                      ;80A4F7;
     LDA.B DP_BG2YScroll                                                  ;80A4FA;
-    LSR A                                                                ;80A4FC;
-    LSR A                                                                ;80A4FD;
-    LSR A                                                                ;80A4FE;
-    LSR A                                                                ;80A4FF;
+    LSR                                                                  ;80A4FC;
+    LSR                                                                  ;80A4FD;
+    LSR                                                                  ;80A4FE;
+    LSR                                                                  ;80A4FF;
     STA.W BG2YBlock                                                      ;80A500;
     LDA.W Layer1YPosition                                                ;80A503;
-    LSR A                                                                ;80A506;
-    LSR A                                                                ;80A507;
-    LSR A                                                                ;80A508;
-    LSR A                                                                ;80A509;
+    LSR                                                                  ;80A506;
+    LSR                                                                  ;80A507;
+    LSR                                                                  ;80A508;
+    LSR                                                                  ;80A509;
     BIT.W #$0800                                                         ;80A50A;
     BEQ +                                                                ;80A50D;
     ORA.W #$F000                                                         ;80A50F;
 
 +   STA.W Layer1YBlock                                                   ;80A512;
     LDA.W Layer2YPosition                                                ;80A515;
-    LSR A                                                                ;80A518;
-    LSR A                                                                ;80A519;
-    LSR A                                                                ;80A51A;
-    LSR A                                                                ;80A51B;
+    LSR                                                                  ;80A518;
+    LSR                                                                  ;80A519;
+    LSR                                                                  ;80A51A;
+    LSR                                                                  ;80A51B;
     BIT.W #$0800                                                         ;80A51C;
     BEQ +                                                                ;80A51F;
     ORA.W #$F000                                                         ;80A521;
@@ -5783,7 +5783,7 @@ HandleScrollZones_HorizontalAutoscrolling:
     STZ.W Layer1XPosition                                                ;80A545;
 
 +   LDA.W RoomWidthScrolls                                               ;80A548;
-    DEC A                                                                ;80A54B;
+    DEC                                                                  ;80A54B;
     XBA                                                                  ;80A54C;
     CMP.W Layer1XPosition                                                ;80A54D;
     BCS +                                                                ;80A550;
@@ -5828,7 +5828,7 @@ HandleScrollZones_HorizontalAutoscrolling:
     STA.W $4203                                                          ;80A5AD;
     REP #$20                                                             ;80A5B0;
     LDA.W BackgroundDataLoopCounter+1                                    ;80A5B2;
-    INC A                                                                ;80A5B5;
+    INC                                                                  ;80A5B5;
     AND.W #$00FF                                                         ;80A5B6;
     CLC                                                                  ;80A5B9;
     ADC.W $4216                                                          ;80A5BA;
@@ -5922,7 +5922,7 @@ HandleScrollZones_ScrollingRight:
     STZ.W $090F                                                          ;80A65F;
 
 +   LDA.W RoomWidthScrolls                                               ;80A662;
-    DEC A                                                                ;80A665;
+    DEC                                                                  ;80A665;
     XBA                                                                  ;80A666;
     CMP.W Layer1XPosition                                                ;80A667;
     BCS +                                                                ;80A66A;
@@ -6103,7 +6103,7 @@ HandleScrollZones_VerticalAutoscrolling:
     STZ.W Layer1YPosition                                                ;80A785;
 
 +   LDA.W RoomHeightScrolls                                              ;80A788;
-    DEC A                                                                ;80A78B;
+    DEC                                                                  ;80A78B;
     XBA                                                                  ;80A78C;
     CLC                                                                  ;80A78D;
     ADC.W PositionOfScrollBoundary                                       ;80A78E;
@@ -6142,7 +6142,7 @@ HandleScrollZones_VerticalAutoscrolling:
     STA.W ProposedScrolledLayer1XPosition                                ;80A7DE;
     SEP #$20                                                             ;80A7E1;
     LDA.W BackgroundDataLoopCounter+1                                    ;80A7E3;
-    INC A                                                                ;80A7E6;
+    INC                                                                  ;80A7E6;
     STA.W $4202                                                          ;80A7E7;
     LDA.W RoomWidthScrolls                                               ;80A7EA;
     STA.W $4203                                                          ;80A7ED;
@@ -6274,7 +6274,7 @@ HandleScrollZones_ScrollingDown:
     STZ.W Layer1YSubPosition                                             ;80A8E8;
 
 +   LDA.W RoomHeightScrolls                                              ;80A8EB;
-    DEC A                                                                ;80A8EE;
+    DEC                                                                  ;80A8EE;
     XBA                                                                  ;80A8EF;
     CLC                                                                  ;80A8F0;
     ADC.W PositionOfScrollBoundary                                       ;80A8F1;
@@ -6383,7 +6383,7 @@ Debug_Layer1Position_Saving_Loading:
     INC.W Debug_Layer1PositionFlag                                       ;80A9B3;
 
 +   LDA.W Debug_Layer1PositionFlag                                       ;80A9B6;
-    LSR A                                                                ;80A9B9;
+    LSR                                                                  ;80A9B9;
     BCC +                                                                ;80A9BA;
     LDA.W Debug_Layer1X                                                  ;80A9BC;
     STA.W Layer1XPosition                                                ;80A9BF;
@@ -6477,7 +6477,7 @@ UpdateLevelBackgroundDataColumn:
     LDA.W BlocksToUpdateXBlock                                           ;80A9F6;
     CLC                                                                  ;80A9F9;
     ADC.W $4216                                                          ;80A9FA;
-    ASL A                                                                ;80A9FD;
+    ASL                                                                  ;80A9FD;
     CLC                                                                  ;80A9FE;
     ADC.W #$0002                                                         ;80A9FF;
     TXY                                                                  ;80AA02;
@@ -6489,12 +6489,12 @@ UpdateLevelBackgroundDataColumn:
     LDA.W #CustomBackground>>16                                          ;80AA0B;
     STA.B DP_BlocksToUpdate+2                                            ;80AA0E;
     LDA.W VRAMBlocksToUpdateYBlock                                       ;80AA10;
-    ASL A                                                                ;80AA13;
-    ASL A                                                                ;80AA14;
+    ASL                                                                  ;80AA13;
+    ASL                                                                  ;80AA14;
     AND.W #$003C                                                         ;80AA15;
     STA.W BG1Col_wrappedTilemapVRAMUpdateSize,X                          ;80AA18;
     EOR.W #$003F                                                         ;80AA1B;
-    INC A                                                                ;80AA1E;
+    INC                                                                  ;80AA1E;
     STA.W BG1Col_unwrappedTilemapVRAMUpdateSize,X                        ;80AA1F;
     SEP #$20                                                             ;80AA22;
     LDA.W VRAMBlocksToUpdateYBlock                                       ;80AA24;
@@ -6506,7 +6506,7 @@ UpdateLevelBackgroundDataColumn:
     LDA.W VRAMBlocksToUpdateXBlock                                       ;80AA33;
     AND.W #$001F                                                         ;80AA36;
     STA.W XBlockOfVRAMBlocksToUpdate                                     ;80AA39;
-    ASL A                                                                ;80AA3C;
+    ASL                                                                  ;80AA3C;
     CLC                                                                  ;80AA3D;
     ADC.W $4216                                                          ;80AA3E;
     STA.W PositionOfScrollBoundary                                       ;80AA41;
@@ -6558,9 +6558,9 @@ UpdateLevelBackgroundDataColumn:
     LDA.B [$36],Y                                                        ;80AAA4;
     STA.W BackgroundBlockToUpdate                                        ;80AAA6;
     AND.W #$03FF                                                         ;80AAA9;
-    ASL A                                                                ;80AAAC;
-    ASL A                                                                ;80AAAD;
-    ASL A                                                                ;80AAAE;
+    ASL                                                                  ;80AAAC;
+    ASL                                                                  ;80AAAD;
+    ASL                                                                  ;80AAAE;
     TAX                                                                  ;80AAAF;
     PHY                                                                  ;80AAB0;
     LDY.W VRAMTilemapScreenBaseAddr                                      ;80AAB1;
@@ -6683,7 +6683,7 @@ UpdateBackgroundLevelDataRow:
     LDA.W BlocksToUpdateXBlock                                           ;80AB90;
     CLC                                                                  ;80AB93;
     ADC.W $4216                                                          ;80AB94;
-    ASL A                                                                ;80AB97;
+    ASL                                                                  ;80AB97;
     CLC                                                                  ;80AB98;
     ADC.W #$0002                                                         ;80AB99;
     TXY                                                                  ;80AB9C;
@@ -6700,13 +6700,13 @@ UpdateBackgroundLevelDataRow:
     LDA.W #$0010                                                         ;80ABB3;
     SEC                                                                  ;80ABB6;
     SBC.W PositionOfScrollBoundary                                       ;80ABB7;
-    ASL A                                                                ;80ABBA;
-    ASL A                                                                ;80ABBB;
+    ASL                                                                  ;80ABBA;
+    ASL                                                                  ;80ABBB;
     STA.W BG1Row_unwrappedTilemapVRAMUpdateSize,X                        ;80ABBC;
     LDA.W PositionOfScrollBoundary                                       ;80ABBF;
-    INC A                                                                ;80ABC2;
-    ASL A                                                                ;80ABC3;
-    ASL A                                                                ;80ABC4;
+    INC                                                                  ;80ABC2;
+    ASL                                                                  ;80ABC3;
+    ASL                                                                  ;80ABC4;
     STA.W BG1Row_wrappedTilemapVRAMUpdateSize,X                          ;80ABC5;
     SEP #$20                                                             ;80ABC8;
     LDA.W VRAMBlocksToUpdateYBlock                                       ;80ABCA;
@@ -6718,7 +6718,7 @@ UpdateBackgroundLevelDataRow:
     LDA.W VRAMBlocksToUpdateXBlock                                       ;80ABD9;
     AND.W #$001F                                                         ;80ABDC;
     STA.W XBlockOfVRAMBlocksToUpdate                                     ;80ABDF;
-    ASL A                                                                ;80ABE2;
+    ASL                                                                  ;80ABE2;
     CLC                                                                  ;80ABE3;
     ADC.W $4216                                                          ;80ABE4;
     STA.W PositionOfScrollBoundary                                       ;80ABE7;
@@ -6777,9 +6777,9 @@ UpdateBackgroundLevelDataRow:
     LDA.B [DP_BlocksToUpdate],Y                                          ;80AC57;
     STA.W BackgroundBlockToUpdate                                        ;80AC59;
     AND.W #$03FF                                                         ;80AC5C;
-    ASL A                                                                ;80AC5F;
-    ASL A                                                                ;80AC60;
-    ASL A                                                                ;80AC61;
+    ASL                                                                  ;80AC5F;
+    ASL                                                                  ;80AC60;
+    ASL                                                                  ;80AC61;
     TAX                                                                  ;80AC62;
     PHY                                                                  ;80AC63;
     LDY.W VRAMTilemapScreenBaseAddr                                      ;80AC64;
@@ -6888,7 +6888,7 @@ DoorTransitionScrollingSetup:
     STA.W Layer1YPosition                                                ;80AD3B;
     LDA.W DoorDirection                                                  ;80AD3E;
     AND.W #$0003                                                         ;80AD41;
-    ASL A                                                                ;80AD44;
+    ASL                                                                  ;80AD44;
     TAX                                                                  ;80AD45;
     JSR.W (Door_Transition_Scrolling_Setup_Pointers,X)                   ;80AD46;
     RTL                                                                  ;80AD49;
@@ -7040,7 +7040,7 @@ DoorTransitionScrolling:
     REP #$30                                                             ;80AE52;
     LDA.W DoorDirection                                                  ;80AE54;
     AND.W #$0003                                                         ;80AE57;
-    ASL A                                                                ;80AE5A;
+    ASL                                                                  ;80AE5A;
     TAX                                                                  ;80AE5B;
     JSR.W (.pointers,X)                                                  ;80AE5C;
     BCC .return                                                          ;80AE5F;
@@ -7397,18 +7397,18 @@ UNUSED_ConfigureMode7RotationMatrix_80B0C2:
     BNE .return                                                          ;80B0D0;
     LDA.W UnusedMode7RotationAngle                                       ;80B0D2;
     AND.W #$00FF                                                         ;80B0D5;
-    ASL A                                                                ;80B0D8;
+    ASL                                                                  ;80B0D8;
     TAX                                                                  ;80B0D9;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;80B0DA;
     STA.B DP_Mode7TransMatrixB                                           ;80B0DE;
     EOR.W #$FFFF                                                         ;80B0E0;
-    INC A                                                                ;80B0E3;
+    INC                                                                  ;80B0E3;
     STA.B DP_Mode7TransMatrixC                                           ;80B0E4;
     LDA.W UnusedMode7RotationAngle                                       ;80B0E6;
     CLC                                                                  ;80B0E9;
     ADC.W #$0040                                                         ;80B0EA;
     AND.W #$00FF                                                         ;80B0ED;
-    ASL A                                                                ;80B0F0;
+    ASL                                                                  ;80B0F0;
     TAX                                                                  ;80B0F1;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;80B0F2;
     STA.B DP_Mode7TransMatrixA                                           ;80B0F6;
@@ -7481,9 +7481,9 @@ Decompression_VariableDestination:
     CMP.B #$E0                                                           ;80B142;
     BNE .pushCommandBits                                                 ;80B144;
     LDA.B DP_DecompVar                                                   ;80B146;
-    ASL A                                                                ;80B148;
-    ASL A                                                                ;80B149;
-    ASL A                                                                ;80B14A;
+    ASL                                                                  ;80B148;
+    ASL                                                                  ;80B149;
+    ASL                                                                  ;80B14A;
     AND.B #$E0                                                           ;80B14B;
     PHA                                                                  ;80B14D;
     LDA.B DP_DecompVar                                                   ;80B14E;
@@ -7609,7 +7609,7 @@ Decompression_VariableDestination:
 
   .loopIncrementingFill:
     STA.B [DP_DecompDest],Y                                              ;80B1F5;
-    INC A                                                                ;80B1F7;
+    INC                                                                  ;80B1F7;
     INY                                                                  ;80B1F8;
     DEX                                                                  ;80B1F9;
     BNE .loopIncrementingFill                                            ;80B1FA;
@@ -7699,7 +7699,7 @@ SourceBankOverflowCorrection:
     PHA                                                                  ;80B269;
     PHB                                                                  ;80B26A;
     PLA                                                                  ;80B26B;
-    INC A                                                                ;80B26C;
+    INC                                                                  ;80B26C;
     PHA                                                                  ;80B26D;
     PLB                                                                  ;80B26E;
     PLA                                                                  ;80B26F;
@@ -7744,9 +7744,9 @@ DecompressionToVRAM:
     CMP.B #$E0                                                           ;80B299;
     BNE .pushCommandBits                                                 ;80B29B;
     LDA.B DP_DecompVar                                                   ;80B29D;
-    ASL A                                                                ;80B29F;
-    ASL A                                                                ;80B2A0;
-    ASL A                                                                ;80B2A1;
+    ASL                                                                  ;80B29F;
+    ASL                                                                  ;80B2A0;
+    ASL                                                                  ;80B2A1;
     AND.B #$E0                                                           ;80B2A2;
     PHA                                                                  ;80B2A4;
     LDA.B DP_DecompVar                                                   ;80B2A5;
@@ -7798,7 +7798,7 @@ DecompressionToVRAM:
     PLX                                                                  ;80B2EA;
     PHA                                                                  ;80B2EB;
     TYA                                                                  ;80B2EC;
-    LSR A                                                                ;80B2ED;
+    LSR                                                                  ;80B2ED;
     PLA                                                                  ;80B2EE;
     BCS .VRAMDataWriteLow                                                ;80B2EF;
     STA.L $002118                                                        ;80B2F1;
@@ -7828,7 +7828,7 @@ DecompressionToVRAM:
   .loopByteFill:
     PHA                                                                  ;80B311;
     TYA                                                                  ;80B312;
-    LSR A                                                                ;80B313;
+    LSR                                                                  ;80B313;
     PLA                                                                  ;80B314;
     BCS ..writeHigh                                                      ;80B315;
     STA.L $002118                                                        ;80B317;
@@ -7870,7 +7870,7 @@ DecompressionToVRAM:
     LDA.B DP_DecompVar                                                   ;80B34A;
     PHA                                                                  ;80B34C;
     TYA                                                                  ;80B34D;
-    LSR A                                                                ;80B34E;
+    LSR                                                                  ;80B34E;
     PLA                                                                  ;80B34F;
     BCS ..writeHigh                                                      ;80B350;
     STA.L $002118                                                        ;80B352;
@@ -7886,7 +7886,7 @@ DecompressionToVRAM:
     LDA.B DP_DecompVar+1                                                 ;80B360;
     PHA                                                                  ;80B362;
     TYA                                                                  ;80B363;
-    LSR A                                                                ;80B364;
+    LSR                                                                  ;80B364;
     PLA                                                                  ;80B365;
     BCS ..writeHigh2                                                     ;80B366;
     STA.L $002118                                                        ;80B368;
@@ -7918,7 +7918,7 @@ DecompressionToVRAM:
   .loopIncrementingFill:
     PHA                                                                  ;80B388;
     TYA                                                                  ;80B389;
-    LSR A                                                                ;80B38A;
+    LSR                                                                  ;80B38A;
     PLA                                                                  ;80B38B;
     BCS ..writeHigh                                                      ;80B38C;
     STA.L $002118                                                        ;80B38E;
@@ -7929,7 +7929,7 @@ DecompressionToVRAM:
 
   ..writeLow:
     INY                                                                  ;80B398;
-    INC A                                                                ;80B399;
+    INC                                                                  ;80B399;
     DEX                                                                  ;80B39A;
     BNE .loopIncrementingFill                                            ;80B39B;
     JMP.W .loopMain                                                      ;80B39D;
@@ -7971,7 +7971,7 @@ DecompressionToVRAM:
     PHX                                                                  ;80B3D3;
     REP #$20                                                             ;80B3D4;
     LDA.B DP_DecompVar                                                   ;80B3D6;
-    LSR A                                                                ;80B3D8;
+    LSR                                                                  ;80B3D8;
     STA.L $002116                                                        ;80B3D9;
     LDA.L $002139                                                        ;80B3DD;
     LDA.L $002139                                                        ;80B3E1;
@@ -7987,13 +7987,13 @@ DecompressionToVRAM:
 +   PHA                                                                  ;80B3F2;
     REP #$20                                                             ;80B3F3;
     TYA                                                                  ;80B3F5;
-    LSR A                                                                ;80B3F6;
+    LSR                                                                  ;80B3F6;
     STA.L $002116                                                        ;80B3F7;
     SEP #$20                                                             ;80B3FB;
     PLA                                                                  ;80B3FD;
     PHA                                                                  ;80B3FE;
     TYA                                                                  ;80B3FF;
-    LSR A                                                                ;80B400;
+    LSR                                                                  ;80B400;
     PLA                                                                  ;80B401;
     BCS ..writeHigh                                                      ;80B402;
     STA.L $002118                                                        ;80B404;
@@ -8325,16 +8325,16 @@ LoadFromLoadStation:
     LDA.W #$0001                                                         ;80C43D;
     STA.W SaveStationLockoutFlag                                         ;80C440;
     LDA.W AreaIndex                                                      ;80C443;
-    ASL A                                                                ;80C446;
+    ASL                                                                  ;80C446;
     TAX                                                                  ;80C447;
     LDA.W LoadStationIndex                                               ;80C448;
-    ASL A                                                                ;80C44B;
+    ASL                                                                  ;80C44B;
     STA.B DP_Temp12                                                      ;80C44C;
-    ASL A                                                                ;80C44E;
+    ASL                                                                  ;80C44E;
     CLC                                                                  ;80C44F;
     ADC.B DP_Temp12                                                      ;80C450;
     ADC.W LoadStationIndex                                               ;80C452;
-    ASL A                                                                ;80C455;
+    ASL                                                                  ;80C455;
     CLC                                                                  ;80C456;
     ADC.W LoadStationListPointers,X                                      ;80C457;
     TAX                                                                  ;80C45A;
@@ -9089,13 +9089,13 @@ SetDebugElevatorAsUsed:
     PLB                                                                  ;80CD0A;
     REP #$30                                                             ;80CD0B;
     LDA.W AreaIndex                                                      ;80CD0D;
-    ASL A                                                                ;80CD10;
+    ASL                                                                  ;80CD10;
     TAX                                                                  ;80CD11;
     LDA.W ElevatorDoorProperties                                         ;80CD12;
     AND.W #$000F                                                         ;80CD15;
-    DEC A                                                                ;80CD18;
-    ASL A                                                                ;80CD19;
-    ASL A                                                                ;80CD1A;
+    DEC                                                                  ;80CD18;
+    ASL                                                                  ;80CD19;
+    ASL                                                                  ;80CD1A;
     CLC                                                                  ;80CD1B;
     ADC.W .elevatorBits,X                                                ;80CD1C;
     TAY                                                                  ;80CD1F;

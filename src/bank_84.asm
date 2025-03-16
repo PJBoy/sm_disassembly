@@ -19,8 +19,8 @@ GoldenTorizo_HealthBasedPalette_Handling:
     BEQ +                                                                ;84800C;
     LDA.W #$0038                                                         ;84800E;
 
-+   ASL A                                                                ;848011;
-    ASL A                                                                ;848012;
++   ASL                                                                  ;848011;
+    ASL                                                                  ;848012;
     ORA.W #$001E                                                         ;848013;
     TAY                                                                  ;848016;
     LDX.W #$001E                                                         ;848017;
@@ -151,7 +151,7 @@ Calculate_PLM_Block_Coordinates:
 ;; Parameters:
 ;;     X: PLM index
     LDA.W $1C87,X                                                        ;848290;
-    LSR A                                                                ;848293;
+    LSR                                                                  ;848293;
     STA.W $4204                                                          ;848294;
     SEP #$20                                                             ;848297;
     LDA.W $07A5                                                          ;848299;
@@ -185,7 +185,7 @@ Write_Level_Data_Block_Type_and_BTS:
     STA.L $7F0003,X                                                      ;8482C1;
     REP #$20                                                             ;8482C5;
     TXA                                                                  ;8482C7;
-    LSR A                                                                ;8482C8;
+    LSR                                                                  ;8482C8;
     TAX                                                                  ;8482C9;
     SEP #$20                                                             ;8482CA;
     LDA.B $12                                                            ;8482CC;
@@ -221,7 +221,7 @@ Write_Row_of_Level_Data_Block_and_BTS:
     STA.B $05,S                                                          ;8482F1;
     LDA.W $1C87,X                                                        ;8482F3;
     TAX                                                                  ;8482F6;
-    LSR A                                                                ;8482F7;
+    LSR                                                                  ;8482F7;
     PHA                                                                  ;8482F8;
     LDA.B $12                                                            ;8482F9;
     LDY.B $16                                                            ;8482FB;
@@ -425,7 +425,7 @@ Spawn_Hardcoded_PLM:
     AND.W #$00FF                                                         ;848411;
     CLC                                                                  ;848414;
     ADC.W $4216                                                          ;848415;
-    ASL A                                                                ;848418;
+    ASL                                                                  ;848418;
     STA.W $1C87,X                                                        ;848419;
     LDY.W #$0003                                                         ;84841C;
     LDA.B ($06,S),Y                                                      ;84841F;
@@ -510,7 +510,7 @@ Spawn_Room_PLM:
     AND.W #$00FF                                                         ;848497;
     CLC                                                                  ;84849A;
     ADC.W $4216                                                          ;84849B;
-    ASL A                                                                ;84849E;
+    ASL                                                                  ;84849E;
     STA.W $1C87,Y                                                        ;84849F;
     LDA.L $8F0004,X                                                      ;8484A2;
     STA.W $1DC7,Y                                                        ;8484A6;
@@ -570,7 +570,7 @@ Spawn_PLM_to_CurrentBlockIndex:;; Parameter:
 
   .found:
     LDA.W $0DC4                                                          ;8484FD;
-    ASL A                                                                ;848500;
+    ASL                                                                  ;848500;
     STA.W $1C87,X                                                        ;848501;
     TYA                                                                  ;848504;
     STA.W $1C37,X                                                        ;848505;
@@ -628,23 +628,23 @@ UNUSED_Spawn_Enemy_PLM_84853E:
 
   .found:
     LDA.W $0F7E,Y                                                        ;848556;
-    LSR A                                                                ;848559;
-    LSR A                                                                ;84855A;
-    LSR A                                                                ;84855B;
-    LSR A                                                                ;84855C;
+    LSR                                                                  ;848559;
+    LSR                                                                  ;84855A;
+    LSR                                                                  ;84855B;
+    LSR                                                                  ;84855C;
     SEP #$20                                                             ;84855D;
     STA.W $4202                                                          ;84855F;
     LDA.W $07A5                                                          ;848562;
     STA.W $4203                                                          ;848565;
     REP #$20                                                             ;848568;
     LDA.W $0F7A,Y                                                        ;84856A;
-    LSR A                                                                ;84856D;
-    LSR A                                                                ;84856E;
-    LSR A                                                                ;84856F;
-    LSR A                                                                ;848570;
+    LSR                                                                  ;84856D;
+    LSR                                                                  ;84856E;
+    LSR                                                                  ;84856F;
+    LSR                                                                  ;848570;
     CLC                                                                  ;848571;
     ADC.W $4216                                                          ;848572;
-    ASL A                                                                ;848575;
+    ASL                                                                  ;848575;
     STA.W $1C87,X                                                        ;848576;
     PLA                                                                  ;848579;
     STA.W $1C37,X                                                        ;84857A;
@@ -715,7 +715,7 @@ Process_PLM:
     JSR.W ($1CD7,X)                                                      ;8485DA;
     LDX.W $1C27                                                          ;8485DD;
     LDA.L $7EDE1C,X                                                      ;8485E0;
-    DEC A                                                                ;8485E4;
+    DEC                                                                  ;8485E4;
     STA.L $7EDE1C,X                                                      ;8485E5;
     BNE .return                                                          ;8485E9;
     LDY.W $1D27,X                                                        ;8485EB;
@@ -809,7 +809,7 @@ Process_PLM_Draw_Instruction:
   .positive:
     AND.W #$00FF                                                         ;848676;
 
-+   ASL A                                                                ;848679;
++   ASL                                                                  ;848679;
     CLC                                                                  ;84867A;
     ADC.B $12                                                            ;84867B;
     STA.B $14                                                            ;84867D;
@@ -818,7 +818,7 @@ Process_PLM_Draw_Instruction:
     BPL +                                                                ;848683;
     ORA.W #$FF00                                                         ;848685;
     EOR.W #$FFFF                                                         ;848688;
-    INC A                                                                ;84868B;
+    INC                                                                  ;84868B;
     TAX                                                                  ;84868C;
     LDA.W #$0000                                                         ;84868D;
 
@@ -839,7 +839,7 @@ Process_PLM_Draw_Instruction:
     BNE -                                                                ;8486A7;
 
   .setX:
-    ASL A                                                                ;8486A9;
+    ASL                                                                  ;8486A9;
     CLC                                                                  ;8486AA;
     ADC.B $14                                                            ;8486AB;
     TAX                                                                  ;8486AD;
@@ -1090,8 +1090,8 @@ Instruction_PLM_LoadItemPLMGFX:
     LDA.W $1C2D                                                          ;848764;
     STA.L $7EDF0C,X                                                      ;848767;
     TAX                                                                  ;84876B;
-    INC A                                                                ;84876C;
-    INC A                                                                ;84876D;
+    INC                                                                  ;84876C;
+    INC                                                                  ;84876D;
     AND.W #$0006                                                         ;84876E;
     STA.W $1C2D                                                          ;848771;
     LDA.W .VRAMAddresses,X                                               ;848774;
@@ -1127,8 +1127,8 @@ Instruction_PLM_LoadItemPLMGFX:
     LDA.W $0000,Y                                                        ;8487B0;
     AND.W #$00FF                                                         ;8487B3;
     XBA                                                                  ;8487B6;
-    ASL A                                                                ;8487B7;
-    ASL A                                                                ;8487B8;
+    ASL                                                                  ;8487B7;
+    ASL                                                                  ;8487B8;
     CLC                                                                  ;8487B9;
     ADC.B $16                                                            ;8487BA;
     STA.L $7EA000,X                                                      ;8487BC;
@@ -1352,11 +1352,11 @@ Instruction_PLM_PickUpBeam_DisplayMessageBox:
     ORA.W $09A6                                                          ;8488BC;
     STA.W $09A6                                                          ;8488BF;
     LDA.W $0000,Y                                                        ;8488C2;
-    ASL A                                                                ;8488C5;
+    ASL                                                                  ;8488C5;
     AND.W #$0008                                                         ;8488C6;
     TRB.W $09A6                                                          ;8488C9;
     LDA.W $0000,Y                                                        ;8488CC;
-    LSR A                                                                ;8488CF;
+    LSR                                                                  ;8488CF;
     AND.W #$0004                                                         ;8488D0;
     TRB.W $09A6                                                          ;8488D3;
     PHX                                                                  ;8488D6;
@@ -1580,8 +1580,8 @@ Instruction_PLM_Call_Y:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     TYA                                                                  ;848A2E;
-    INC A                                                                ;848A2F;
-    INC A                                                                ;848A30;
+    INC                                                                  ;848A2F;
+    INC                                                                  ;848A30;
     STA.L $7EDEBC,X                                                      ;848A31;
     LDA.W $0000,Y                                                        ;848A35;
     TAY                                                                  ;848A38;
@@ -1676,7 +1676,7 @@ Instruction_PLM_IncDoorHit_SetRoomArgDoor_GotoY:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     LDA.L $7EDF0C,X                                                      ;848A91;
-    INC A                                                                ;848A95;
+    INC                                                                  ;848A95;
     STA.L $7EDF0C,X                                                      ;848A96;
     SEP #$20                                                             ;848A9A;
     CMP.W $0000,Y                                                        ;848A9C;
@@ -1719,7 +1719,7 @@ Instruction_PLM_IncRoomArg_RoomArgFFFF_GotoY:
 ; Used by Draygon turrets
     SEP #$20                                                             ;848ACD;
     LDA.W $1DC7,X                                                        ;848ACF;
-    INC A                                                                ;848AD2;
+    INC                                                                  ;848AD2;
     CMP.W $0000,Y                                                        ;848AD3;
     REP #$20                                                             ;848AD6;
     BCS .FFFF                                                            ;848AD8;
@@ -1749,7 +1749,7 @@ Instruction_PLM_PLMBTS_Y:
 ;;     Y: Pointer to next instruction
     PHX                                                                  ;848AF1;
     LDA.W $1C87,X                                                        ;848AF2;
-    LSR A                                                                ;848AF5;
+    LSR                                                                  ;848AF5;
     TAX                                                                  ;848AF6;
     SEP #$20                                                             ;848AF7;
     LDA.W $0000,Y                                                        ;848AF9;
@@ -2206,7 +2206,7 @@ Instruction_PLM_GotoY_or_ActivateSaveStation:
     STA.W $078B                                                          ;848D0F;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;848D12;
     LDA.W $079F                                                          ;848D16;
-    ASL A                                                                ;848D19;
+    ASL                                                                  ;848D19;
     TAX                                                                  ;848D1A;
     LDA.L $7ED8F8,X                                                      ;848D1B;
     ORA.W $05E7                                                          ;848D1F;
@@ -2245,15 +2245,15 @@ Instruction_PLM_GotoY_ifSamusIsWithin_YColumnsRowsOfPLM:
 ;;     Y: Pointer to next instruction
     JSL.L Calculate_PLM_Block_Coordinates                                ;848D41;
     LDA.W $0AF6                                                          ;848D45;
-    LSR A                                                                ;848D48;
-    LSR A                                                                ;848D49;
-    LSR A                                                                ;848D4A;
-    LSR A                                                                ;848D4B;
+    LSR                                                                  ;848D48;
+    LSR                                                                  ;848D49;
+    LSR                                                                  ;848D4A;
+    LSR                                                                  ;848D4B;
     SEC                                                                  ;848D4C;
     SBC.W $1C29                                                          ;848D4D;
     BPL +                                                                ;848D50;
     EOR.W #$FFFF                                                         ;848D52;
-    INC A                                                                ;848D55;
+    INC                                                                  ;848D55;
 
 +   SEP #$20                                                             ;848D56;
     CMP.W $0000,Y                                                        ;848D58;
@@ -2262,15 +2262,15 @@ Instruction_PLM_GotoY_ifSamusIsWithin_YColumnsRowsOfPLM:
     BCS .tooFar                                                          ;848D5F;
 
 +   LDA.W $0AFA                                                          ;848D61;
-    LSR A                                                                ;848D64;
-    LSR A                                                                ;848D65;
-    LSR A                                                                ;848D66;
-    LSR A                                                                ;848D67;
+    LSR                                                                  ;848D64;
+    LSR                                                                  ;848D65;
+    LSR                                                                  ;848D66;
+    LSR                                                                  ;848D67;
     SEC                                                                  ;848D68;
     SBC.W $1C2B                                                          ;848D69;
     BPL +                                                                ;848D6C;
     EOR.W #$FFFF                                                         ;848D6E;
-    INC A                                                                ;848D71;
+    INC                                                                  ;848D71;
 
 +   SEP #$20                                                             ;848D72;
     CMP.W $0001,Y                                                        ;848D74;
@@ -2357,10 +2357,10 @@ DrawPLM:
 
   .loopDrawEntry:
     LDA.W $0915                                                          ;848DC5;
-    LSR A                                                                ;848DC8;
-    LSR A                                                                ;848DC9;
-    LSR A                                                                ;848DCA;
-    LSR A                                                                ;848DCB;
+    LSR                                                                  ;848DC8;
+    LSR                                                                  ;848DC9;
+    LSR                                                                  ;848DCA;
+    LSR                                                                  ;848DCB;
     STA.B $1A                                                            ;848DCC;
     CLC                                                                  ;848DCE;
     ADC.W #$000F                                                         ;848DCF;
@@ -2386,11 +2386,11 @@ DrawPLM:
     LDA.W $0911                                                          ;848DF4;
     CLC                                                                  ;848DF7;
     ADC.W #$000F                                                         ;848DF8;
-    LSR A                                                                ;848DFB;
-    LSR A                                                                ;848DFC;
-    LSR A                                                                ;848DFD;
-    LSR A                                                                ;848DFE;
-    DEC A                                                                ;848DFF;
+    LSR                                                                  ;848DFB;
+    LSR                                                                  ;848DFC;
+    LSR                                                                  ;848DFD;
+    LSR                                                                  ;848DFE;
+    DEC                                                                  ;848DFF;
     STA.B $16                                                            ;848E00;
     SEC                                                                  ;848E02;
     SBC.B $1E                                                            ;848E03;
@@ -2424,7 +2424,7 @@ DrawPLM:
 +   LDA.B $18                                                            ;848E30;
     CLC                                                                  ;848E32;
     ADC.B $14                                                            ;848E33;
-    DEC A                                                                ;848E35;
+    DEC                                                                  ;848E35;
     SEC                                                                  ;848E36;
     SBC.B $16                                                            ;848E37;
     STA.B $16                                                            ;848E39;
@@ -2449,9 +2449,9 @@ DrawPLM:
 +   LDA.W #$0200                                                         ;848E51;
     SEC                                                                  ;848E54;
     SBC.W $1C25                                                          ;848E55;
-    LSR A                                                                ;848E58;
-    LSR A                                                                ;848E59;
-    LSR A                                                                ;848E5A;
+    LSR                                                                  ;848E58;
+    LSR                                                                  ;848E59;
+    LSR                                                                  ;848E5A;
     CMP.B $14                                                            ;848E5B;
     BMI .pullXreturn                                                     ;848E5D;
     LDA.B $1A                                                            ;848E5F;
@@ -2462,7 +2462,7 @@ DrawPLM:
     AND.W #$001F                                                         ;848E6C;
     CMP.W #$0010                                                         ;848E6F;
     BCS .greaterThan10h                                                  ;848E72;
-    ASL A                                                                ;848E74;
+    ASL                                                                  ;848E74;
     CLC                                                                  ;848E75;
     ADC.B $09                                                            ;848E76;
     ADC.W $4216                                                          ;848E78;
@@ -2477,7 +2477,7 @@ DrawPLM:
     BRA +                                                                ;848E8A;
 
   .greaterThan10h:
-    ASL A                                                                ;848E8C;
+    ASL                                                                  ;848E8C;
     CLC                                                                  ;848E8D;
     ADC.B $0C                                                            ;848E8E;
     ADC.W $4216                                                          ;848E90;
@@ -2491,7 +2491,7 @@ DrawPLM:
     PHA                                                                  ;848EA1;
 
 +   LDA.B $14                                                            ;848EA2;
-    ASL A                                                                ;848EA4;
+    ASL                                                                  ;848EA4;
     STA.B $1E                                                            ;848EA5;
     PLA                                                                  ;848EA7;
     PHA                                                                  ;848EA8;
@@ -2499,7 +2499,7 @@ DrawPLM:
     STA.B $22                                                            ;848EAC;
     CLC                                                                  ;848EAE;
     ADC.B $1E                                                            ;848EAF;
-    DEC A                                                                ;848EB1;
+    DEC                                                                  ;848EB1;
     AND.W #$FFE0                                                         ;848EB2;
     BNE +                                                                ;848EB5;
     JMP.W .horizOneScreen                                                ;848EB7;
@@ -2510,7 +2510,7 @@ DrawPLM:
     SEC                                                                  ;848EC2;
     SBC.B $22                                                            ;848EC3;
     BMI .return8F2C                                                      ;848EC5;
-    ASL A                                                                ;848EC7;
+    ASL                                                                  ;848EC7;
     STA.B $D0,X                                                          ;848EC8;
     STA.B $DE,X                                                          ;848ECA;
     PLA                                                                  ;848ECC;
@@ -2527,8 +2527,8 @@ DrawPLM:
     ADC.W #$0020                                                         ;848EE2;
     STA.B $E3,X                                                          ;848EE5;
     LDA.B $14                                                            ;848EE7;
-    ASL A                                                                ;848EE9;
-    ASL A                                                                ;848EEA;
+    ASL                                                                  ;848EE9;
+    ASL                                                                  ;848EEA;
     STA.B $1E                                                            ;848EEB;
     SEC                                                                  ;848EED;
     SBC.B $D0,X                                                          ;848EEE;
@@ -2583,7 +2583,7 @@ DrawPLM:
 
   .horizAddToVRAMWriteTableEnd:
     LDA.B $12                                                            ;848F43;
-    ASL A                                                                ;848F45;
+    ASL                                                                  ;848F45;
     STA.B $12                                                            ;848F46;
     INY                                                                  ;848F48;
     INY                                                                  ;848F49;
@@ -2597,9 +2597,9 @@ DrawPLM:
     LDA.B ($03)                                                          ;848F53;
     STA.B $1E                                                            ;848F55;
     AND.W #$03FF                                                         ;848F57;
-    ASL A                                                                ;848F5A;
-    ASL A                                                                ;848F5B;
-    ASL A                                                                ;848F5C;
+    ASL                                                                  ;848F5A;
+    ASL                                                                  ;848F5B;
+    ASL                                                                  ;848F5C;
     TAX                                                                  ;848F5D;
     LDA.B $1E                                                            ;848F5E;
     AND.W #$0C00                                                         ;848F60;
@@ -2693,10 +2693,10 @@ DrawPLM:
     AND.W #$7FFF                                                         ;84901F;
     STA.B $14                                                            ;849022;
     LDA.W $0911                                                          ;849024;
-    LSR A                                                                ;849027;
-    LSR A                                                                ;849028;
-    LSR A                                                                ;849029;
-    LSR A                                                                ;84902A;
+    LSR                                                                  ;849027;
+    LSR                                                                  ;849028;
+    LSR                                                                  ;849029;
+    LSR                                                                  ;84902A;
     CMP.B $1E                                                            ;84902B;
     BEQ +                                                                ;84902D;
     BPL .return903B                                                      ;84902F;
@@ -2767,23 +2767,23 @@ DrawPLM:
 +   LDA.W #$0200                                                         ;84908E;
     SEC                                                                  ;849091;
     SBC.W $1C25                                                          ;849092;
-    LSR A                                                                ;849095;
-    LSR A                                                                ;849096;
-    LSR A                                                                ;849097;
+    LSR                                                                  ;849095;
+    LSR                                                                  ;849096;
+    LSR                                                                  ;849097;
     CMP.B $14                                                            ;849098;
     BMI .return908C                                                      ;84909A;
     LDA.W #$8000                                                         ;84909C;
     STA.B $1C                                                            ;84909F;
     JSR.W Calculate_PLMDrawTilemap_VRAMDestination                       ;8490A1;
     LDA.B $D5,X                                                          ;8490A4;
-    INC A                                                                ;8490A6;
+    INC                                                                  ;8490A6;
     STA.B $DC,X                                                          ;8490A7;
     TXA                                                                  ;8490A9;
     CLC                                                                  ;8490AA;
     ADC.W #$000E                                                         ;8490AB;
     STA.W $0330                                                          ;8490AE;
     LDA.B $12                                                            ;8490B1;
-    ASL A                                                                ;8490B3;
+    ASL                                                                  ;8490B3;
     STA.B $12                                                            ;8490B4;
     INY                                                                  ;8490B6;
     INY                                                                  ;8490B7;
@@ -2797,9 +2797,9 @@ DrawPLM:
     LDA.B ($03)                                                          ;8490C1;
     STA.B $1E                                                            ;8490C3;
     AND.W #$03FF                                                         ;8490C5;
-    ASL A                                                                ;8490C8;
-    ASL A                                                                ;8490C9;
-    ASL A                                                                ;8490CA;
+    ASL                                                                  ;8490C8;
+    ASL                                                                  ;8490C9;
+    ASL                                                                  ;8490CA;
     TAX                                                                  ;8490CB;
     LDA.B $1E                                                            ;8490CC;
     AND.W #$0C00                                                         ;8490CE;
@@ -2894,7 +2894,7 @@ DrawPLM:
     LDY.B $03                                                            ;84918F;
     LDA.B $16                                                            ;849191;
     BMI +                                                                ;849193;
-    ASL A                                                                ;849195;
+    ASL                                                                  ;849195;
     CLC                                                                  ;849196;
     ADC.B $03                                                            ;849197;
     TAY                                                                  ;849199;
@@ -2947,7 +2947,7 @@ Calculate_PLMDrawTilemap_VRAMDestination:
     AND.W #$001F                                                         ;8491E9;
     CMP.W #$0010                                                         ;8491EC;
     BCS .greaterThanF                                                    ;8491EF;
-    ASL A                                                                ;8491F1;
+    ASL                                                                  ;8491F1;
     CLC                                                                  ;8491F2;
     ADC.B $09                                                            ;8491F3;
     ADC.W $4216                                                          ;8491F5;
@@ -2962,7 +2962,7 @@ Calculate_PLMDrawTilemap_VRAMDestination:
     BRA .fallthrough                                                     ;849207;
 
   .greaterThanF:
-    ASL A                                                                ;849209;
+    ASL                                                                  ;849209;
     CLC                                                                  ;84920A;
     ADC.B $0C                                                            ;84920B;
     ADC.W $4216                                                          ;84920D;
@@ -2987,8 +2987,8 @@ PartiallySetupVRAMWriteTableEntries_SingleScrnPLMDrawTilemap:
     ORA.B $1C                                                            ;849220;
     STA.B $D5,X                                                          ;849222;
     LDA.B $14                                                            ;849224;
-    ASL A                                                                ;849226;
-    ASL A                                                                ;849227;
+    ASL                                                                  ;849226;
+    ASL                                                                  ;849227;
     STA.B $D0,X                                                          ;849228;
     STA.B $D7,X                                                          ;84922A;
     LDA.W #$C6C8                                                         ;84922C; $7E
@@ -6192,7 +6192,7 @@ Instruction_PLM_MovePLMDown1Block_84AB00:
 
 ; Clone of UNUSED_Instruction_PLM_MovePLMDown1Block_848D89
     LDA.W $07A5                                                          ;84AB00;
-    ASL A                                                                ;84AB03;
+    ASL                                                                  ;84AB03;
     CLC                                                                  ;84AB04;
     ADC.W $1C87,X                                                        ;84AB05;
     STA.W $1C87,X                                                        ;84AB08;
@@ -7150,10 +7150,10 @@ UNUSED_LoadFXEntry_CompletelyBroken_84B05D:
     PEA.W $8F00                                                          ;84B05F;
     PLB                                                                  ;84B062;
     PLB                                                                  ;84B063;
-    ASL A                                                                ;84B064;
-    ASL A                                                                ;84B065;
-    ASL A                                                                ;84B066;
-    ASL A                                                                ;84B067;
+    ASL                                                                  ;84B064;
+    ASL                                                                  ;84B065;
+    ASL                                                                  ;84B066;
+    ASL                                                                  ;84B067;
     TAX                                                                  ;84B068;
     CMP.W $1968                                                          ;84B069;
     BEQ .return                                                          ;84B06C;
@@ -7183,10 +7183,10 @@ UNUSED_LoadFXEntry0IfPLMIsInLeftmostScreenColumn_84B08B:
     LDX.W $1C27                                                          ;84B08B;
     JSL.L Calculate_PLM_Block_Coordinates                                ;84B08E;
     LDA.W $0AF6                                                          ;84B092;
-    LSR A                                                                ;84B095;
-    LSR A                                                                ;84B096;
-    LSR A                                                                ;84B097;
-    LSR A                                                                ;84B098;
+    LSR                                                                  ;84B095;
+    LSR                                                                  ;84B096;
+    LSR                                                                  ;84B097;
+    LSR                                                                  ;84B098;
     CMP.W $1C29                                                          ;84B099;
     BNE .return                                                          ;84B09C;
     LDA.W #$0000                                                         ;84B09E;
@@ -7202,10 +7202,10 @@ UNUSED_LoadFXEntry1IfPLMIsInLeftmostScreenColumn_84B0A6:
     LDX.W $1C27                                                          ;84B0A6;
     JSL.L Calculate_PLM_Block_Coordinates                                ;84B0A9;
     LDA.W $0AF6                                                          ;84B0AD;
-    LSR A                                                                ;84B0B0;
-    LSR A                                                                ;84B0B1;
-    LSR A                                                                ;84B0B2;
-    LSR A                                                                ;84B0B3;
+    LSR                                                                  ;84B0B0;
+    LSR                                                                  ;84B0B1;
+    LSR                                                                  ;84B0B2;
+    LSR                                                                  ;84B0B3;
     CMP.W $1C29                                                          ;84B0B4;
     BNE .return                                                          ;84B0B7;
     LDA.W #$0001                                                         ;84B0B9;
@@ -7221,10 +7221,10 @@ UNUSED_LoadFXEntry2IfPLMIsInLeftmostScreenColumn_84B0C1:
     LDX.W $1C27                                                          ;84B0C1;
     JSL.L Calculate_PLM_Block_Coordinates                                ;84B0C4;
     LDA.W $0AF6                                                          ;84B0C8;
-    LSR A                                                                ;84B0CB;
-    LSR A                                                                ;84B0CC;
-    LSR A                                                                ;84B0CD;
-    LSR A                                                                ;84B0CE;
+    LSR                                                                  ;84B0CB;
+    LSR                                                                  ;84B0CC;
+    LSR                                                                  ;84B0CD;
+    LSR                                                                  ;84B0CE;
     CMP.W $1C29                                                          ;84B0CF;
     BNE .return                                                          ;84B0D2;
     LDA.W #$0002                                                         ;84B0D4;
@@ -7243,7 +7243,7 @@ Setup_BrinstarFloorPlant:
     LDA.W $0AFA                                                          ;84B0DC;
     CLC                                                                  ;84B0DF;
     ADC.W $0B00                                                          ;84B0E0;
-    DEC A                                                                ;84B0E3;
+    DEC                                                                  ;84B0E3;
     AND.W #$000F                                                         ;84B0E4;
     CMP.W #$000F                                                         ;84B0E7;
     BEQ .deactivate                                                      ;84B0EA;
@@ -7261,7 +7261,7 @@ Setup_BrinstarFloorPlant:
     LDA.W $0AF6                                                          ;84B103;
     STA.W $1E17,X                                                        ;84B106;
     LDA.W $0AFA                                                          ;84B109;
-    DEC A                                                                ;84B10C;
+    DEC                                                                  ;84B10C;
     STA.L $7EDF0C,X                                                      ;84B10D;
     CLC                                                                  ;84B111;
     RTS                                                                  ;84B112;
@@ -7290,7 +7290,7 @@ Setup_BrinstarCeilingPlant:
     LDA.W $0AF6                                                          ;84B136;
     STA.W $1E17,X                                                        ;84B139;
     LDA.W $0AFA                                                          ;84B13C;
-    INC A                                                                ;84B13F;
+    INC                                                                  ;84B13F;
     STA.L $7EDF0C,X                                                      ;84B140;
     CLC                                                                  ;84B144;
     RTS                                                                  ;84B145;
@@ -7319,10 +7319,10 @@ ActivateStationIfSamusArmCannonLinedUp:
     JSL.L Calculate_PLM_Block_Coordinates                                ;84B158;
     PLX                                                                  ;84B15C;
     LDA.W $1C2B                                                          ;84B15D;
-    ASL A                                                                ;84B160;
-    ASL A                                                                ;84B161;
-    ASL A                                                                ;84B162;
-    ASL A                                                                ;84B163;
+    ASL                                                                  ;84B160;
+    ASL                                                                  ;84B161;
+    ASL                                                                  ;84B162;
+    ASL                                                                  ;84B163;
     ORA.W #$000B                                                         ;84B164;
     CMP.W $0AFA                                                          ;84B167;
     BNE .delete                                                          ;84B16A;
@@ -7391,8 +7391,8 @@ Setup_MapStationRightAccess:
     AND.W #$0004                                                         ;84B1DB;
     BEQ .connected                                                       ;84B1DE;
     LDA.W $1C87,Y                                                        ;84B1E0;
-    DEC A                                                                ;84B1E3;
-    DEC A                                                                ;84B1E4;
+    DEC                                                                  ;84B1E3;
+    DEC                                                                  ;84B1E4;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B1E5;
 
   .connected:
@@ -7419,10 +7419,10 @@ Setup_MapStationLeftAccess:
     AND.W #$0008                                                         ;84B206;
     BEQ .connected                                                       ;84B209;
     LDA.W $1C87,Y                                                        ;84B20B;
-    INC A                                                                ;84B20E;
-    INC A                                                                ;84B20F;
-    INC A                                                                ;84B210;
-    INC A                                                                ;84B211;
+    INC                                                                  ;84B20E;
+    INC                                                                  ;84B20F;
+    INC                                                                  ;84B210;
+    INC                                                                  ;84B211;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B212;
 
   .connected:
@@ -7495,8 +7495,8 @@ Setup_EnergyStationRightAccess:
     CMP.W $09C4                                                          ;84B288;
     BEQ .connected                                                       ;84B28B;
     LDA.W $1C87,Y                                                        ;84B28D;
-    DEC A                                                                ;84B290;
-    DEC A                                                                ;84B291;
+    DEC                                                                  ;84B290;
+    DEC                                                                  ;84B291;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B292;
 
   .connected:
@@ -7526,8 +7526,8 @@ Setup_EnergyStationLeftAccess:
     CMP.W $09C4                                                          ;84B2BB;
     BEQ .connected                                                       ;84B2BE;
     LDA.W $1C87,Y                                                        ;84B2C0;
-    INC A                                                                ;84B2C3;
-    INC A                                                                ;84B2C4;
+    INC                                                                  ;84B2C3;
+    INC                                                                  ;84B2C4;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B2C5;
 
   .connected:
@@ -7556,8 +7556,8 @@ Setup_MissileStationRightAccess:
     CMP.W $09C8                                                          ;84B2EB;
     BEQ .connected                                                       ;84B2EE;
     LDA.W $1C87,Y                                                        ;84B2F0;
-    DEC A                                                                ;84B2F3;
-    DEC A                                                                ;84B2F4;
+    DEC                                                                  ;84B2F3;
+    DEC                                                                  ;84B2F4;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B2F5;
 
   .connected:
@@ -7587,8 +7587,8 @@ Setup_MissileStationLeftAccess:
     CMP.W $09C8                                                          ;84B31E;
     BEQ .connected                                                       ;84B321;
     LDA.W $1C87,Y                                                        ;84B323;
-    INC A                                                                ;84B326;
-    INC A                                                                ;84B327;
+    INC                                                                  ;84B326;
+    INC                                                                  ;84B327;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B328;
 
   .connected:
@@ -7782,7 +7782,7 @@ Setup_IcePhysics:
     LDA.W $0AFA                                                          ;84B3EB;
     CLC                                                                  ;84B3EE;
     ADC.W $0B00                                                          ;84B3EF;
-    DEC A                                                                ;84B3F2;
+    DEC                                                                  ;84B3F2;
     AND.W #$000F                                                         ;84B3F3;
     CMP.W #$0007                                                         ;84B3F6;
     BEQ .decel                                                           ;84B3F9;
@@ -7818,7 +7818,7 @@ Setup_QuicksandSurface:
     BNE InsideReaction_QuicksandSurface_SamusIsGrounded_return           ;84B431;
     LDA.W $0B36                                                          ;84B433;
     AND.W #$0003                                                         ;84B436;
-    ASL A                                                                ;84B439;
+    ASL                                                                  ;84B439;
     TAX                                                                  ;84B43A;
     JSR.W (.pointers,X)                                                  ;84B43B;
     RTS                                                                  ;84B43E;
@@ -7948,7 +7948,7 @@ Setup_QuicksandSurface_BTS85:
     STX.B $14                                                            ;84B4E2;
     LDA.W $0B36                                                          ;84B4E4;
     AND.W #$0003                                                         ;84B4E7;
-    ASL A                                                                ;84B4EA;
+    ASL                                                                  ;84B4EA;
     TAX                                                                  ;84B4EB;
     JSR.W (.pointers,X)                                                  ;84B4EC;
     LDX.B $12                                                            ;84B4EF;
@@ -8131,10 +8131,10 @@ Setup_CollisionReaction_SaveStationTrigger:
     LDA.W $0AF6                                                          ;84B5B7;
     SEC                                                                  ;84B5BA;
     SBC.W #$0008                                                         ;84B5BB;
-    LSR A                                                                ;84B5BE;
-    LSR A                                                                ;84B5BF;
-    LSR A                                                                ;84B5C0;
-    LSR A                                                                ;84B5C1;
+    LSR                                                                  ;84B5BE;
+    LSR                                                                  ;84B5BF;
+    LSR                                                                  ;84B5C0;
+    LSR                                                                  ;84B5C1;
     CMP.W $1C29                                                          ;84B5C2;
     BNE .collisionReturn                                                 ;84B5C5;
     TYX                                                                  ;84B5C7;
@@ -9295,7 +9295,7 @@ UNUSED_Setup_84BAD1:
 ; Would be the setup for the Bomb Torizo grey door, just the same as the generic grey door setup, but with a hard coded grey door type
     LDA.W $1DC8,Y                                                        ;84BAD1;
     AND.W #$007C                                                         ;84BAD4;
-    LSR A                                                                ;84BAD7;
+    LSR                                                                  ;84BAD7;
     LDA.W #$0004                                                         ;84BAD8;
     STA.W $1E17,Y                                                        ;84BADB;
     LDA.W $1DC7,Y                                                        ;84BADE;
@@ -9422,17 +9422,17 @@ PreInst_PLM_WakePLMIfTriggeredOrSamusWithin4BlockColumnBelow:
 ;;     X: PLM index
     JSL.L Calculate_PLM_Block_Coordinates                                ;84BB6B;
     LDA.W $0AF6                                                          ;84BB6F;
-    LSR A                                                                ;84BB72;
-    LSR A                                                                ;84BB73;
-    LSR A                                                                ;84BB74;
-    LSR A                                                                ;84BB75;
+    LSR                                                                  ;84BB72;
+    LSR                                                                  ;84BB73;
+    LSR                                                                  ;84BB74;
+    LSR                                                                  ;84BB75;
     CMP.W $1C29                                                          ;84BB76;
     BNE +                                                                ;84BB79;
     LDA.W $0AFA                                                          ;84BB7B;
-    LSR A                                                                ;84BB7E;
-    LSR A                                                                ;84BB7F;
-    LSR A                                                                ;84BB80;
-    LSR A                                                                ;84BB81;
+    LSR                                                                  ;84BB7E;
+    LSR                                                                  ;84BB7F;
+    LSR                                                                  ;84BB80;
+    LSR                                                                  ;84BB81;
     SEC                                                                  ;84BB82;
     SBC.W $1C2B                                                          ;84BB83;
     CMP.W #$0005                                                         ;84BB86;
@@ -9459,17 +9459,17 @@ PreInst_PLM_WakePLMIfTriggeredOrSamusWithin4BlockColumnAbove:
 ;;     X: PLM index
     JSL.L Calculate_PLM_Block_Coordinates                                ;84BBA4;
     LDA.W $0AF6                                                          ;84BBA8;
-    LSR A                                                                ;84BBAB;
-    LSR A                                                                ;84BBAC;
-    LSR A                                                                ;84BBAD;
-    LSR A                                                                ;84BBAE;
+    LSR                                                                  ;84BBAB;
+    LSR                                                                  ;84BBAC;
+    LSR                                                                  ;84BBAD;
+    LSR                                                                  ;84BBAE;
     CMP.W $1C29                                                          ;84BBAF;
     BNE +                                                                ;84BBB2;
     LDA.W $0AFA                                                          ;84BBB4;
-    LSR A                                                                ;84BBB7;
-    LSR A                                                                ;84BBB8;
-    LSR A                                                                ;84BBB9;
-    LSR A                                                                ;84BBBA;
+    LSR                                                                  ;84BBB7;
+    LSR                                                                  ;84BBB8;
+    LSR                                                                  ;84BBB9;
+    LSR                                                                  ;84BBBA;
     SEC                                                                  ;84BBBB;
     SBC.W $1C2B                                                          ;84BBBC;
     CMP.W #$FFFC                                                         ;84BBBF;
@@ -10974,8 +10974,8 @@ TriggerPLMOfBlockToTheRight:
 ;; Parameters:
 ;;     Y: PLM index
     LDA.W $1C87,Y                                                        ;84C63F;
-    INC A                                                                ;84C642;
-    INC A                                                                ;84C643;
+    INC                                                                  ;84C642;
+    INC                                                                  ;84C643;
     JMP.W TriggerPLMAtBlockIndex_A                                       ;84C644;
 
 
@@ -10983,8 +10983,8 @@ TriggerPLMOfBlockToTheLeft:
 ;; Parameters:
 ;;     Y: PLM index
     LDA.W $1C87,Y                                                        ;84C647;
-    DEC A                                                                ;84C64A;
-    DEC A                                                                ;84C64B; fallthrough to TriggerPLMAtBlockIndex_A
+    DEC                                                                  ;84C64A;
+    DEC                                                                  ;84C64B; fallthrough to TriggerPLMAtBlockIndex_A
 
 
 ;;; $C647: Trigger PLM of block to the left ;;;
@@ -11019,7 +11019,7 @@ Give5BlockColumnBelowPLM_BTS10:
 ;; Parameters:
 ;;     Y: PLM index
     LDA.W $1C87,Y                                                        ;84C66A;
-    LSR A                                                                ;84C66D;
+    LSR                                                                  ;84C66D;
     TAX                                                                  ;84C66E;
     JSR.W PLM_BTS10_MovePLMDownARow                                      ;84C66F;
     JSR.W PLM_BTS10_MovePLMDownARow                                      ;84C672;
@@ -11051,7 +11051,7 @@ Give5BlockColumnAbovePLM_BTS10:
 ;; Parameters:
 ;;     Y: PLM index
     LDA.W $1C87,Y                                                        ;84C694;
-    LSR A                                                                ;84C697;
+    LSR                                                                  ;84C697;
     TAX                                                                  ;84C698;
     JSR.W PLM_BTS10_MovePLMUpARow                                        ;84C699;
     JSR.W PLM_BTS10_MovePLMUpARow                                        ;84C69C;
@@ -11226,7 +11226,7 @@ Setup_GreyDoor:
 ;;     Y: PLM index
     LDA.W $1DC8,Y                                                        ;84C794;
     AND.W #$007C                                                         ;84C797;
-    LSR A                                                                ;84C79A;
+    LSR                                                                  ;84C79A;
     STA.W $1E17,Y                                                        ;84C79B;
     LDA.W $1DC7,Y                                                        ;84C79E;
     AND.W #$83FF                                                         ;84C7A1;
@@ -12176,7 +12176,7 @@ Instruction_SetPLMBTSTo1:
 ;;     X: PLM index
     PHX                                                                  ;84CD93;
     LDA.W $1C87,X                                                        ;84CD94;
-    LSR A                                                                ;84CD97;
+    LSR                                                                  ;84CD97;
     TAX                                                                  ;84CD98;
     LDA.L $7F6402,X                                                      ;84CD99;
     AND.W #$FF00                                                         ;84CD9D;
@@ -12482,7 +12482,7 @@ Setup_RespawningBreakableGrappleBlock:
     LDA.L $7F0002,X                                                      ;84CFB8;
     STA.W $1E17,Y                                                        ;84CFBC;
     TXA                                                                  ;84CFBF;
-    LSR A                                                                ;84CFC0;
+    LSR                                                                  ;84CFC0;
     TAX                                                                  ;84CFC1;
     LDA.L $7F6402,X                                                      ;84CFC2;
     AND.W #$FF00                                                         ;84CFC6;
@@ -12977,7 +12977,7 @@ PreInstruction_DeletePLM_SpawnTriggerBlockIf_4_8_IsBlankAir:
     AND.W #$00FF                                                         ;84D16E;
     CLC                                                                  ;84D171;
     ADC.W $4216                                                          ;84D172;
-    ASL A                                                                ;84D175;
+    ASL                                                                  ;84D175;
     TAX                                                                  ;84D176;
     LDA.L $7F0002,X                                                      ;84D177;
     CMP.W #$00FF                                                         ;84D17B;
@@ -13865,30 +13865,30 @@ UNUSED_PreInst_PLM_WakePLMIfSamusIsWithin4Blocks_84D710:
 ;;     X: PLM index
     JSL.L Calculate_PLM_Block_Coordinates                                ;84D710;
     LDA.W $0AF6                                                          ;84D714;
-    LSR A                                                                ;84D717;
-    LSR A                                                                ;84D718;
-    LSR A                                                                ;84D719;
-    LSR A                                                                ;84D71A;
+    LSR                                                                  ;84D717;
+    LSR                                                                  ;84D718;
+    LSR                                                                  ;84D719;
+    LSR                                                                  ;84D71A;
     SEC                                                                  ;84D71B;
     SBC.W $1C29                                                          ;84D71C;
     BPL +                                                                ;84D71F;
     EOR.W #$FFFF                                                         ;84D721;
-    INC A                                                                ;84D724;
+    INC                                                                  ;84D724;
 
 +   CMP.W #$0004                                                         ;84D725;
     BEQ +                                                                ;84D728;
     BCS .return                                                          ;84D72A;
 
 +   LDA.W $0AFA                                                          ;84D72C;
-    LSR A                                                                ;84D72F;
-    LSR A                                                                ;84D730;
-    LSR A                                                                ;84D731;
-    LSR A                                                                ;84D732;
+    LSR                                                                  ;84D72F;
+    LSR                                                                  ;84D730;
+    LSR                                                                  ;84D731;
+    LSR                                                                  ;84D732;
     SEC                                                                  ;84D733;
     SBC.W $1C2B                                                          ;84D734;
     BPL +                                                                ;84D737;
     EOR.W #$FFFF                                                         ;84D739;
-    INC A                                                                ;84D73C;
+    INC                                                                  ;84D73C;
 
 +   CMP.W #$0004                                                         ;84D73D;
     BEQ +                                                                ;84D740;
@@ -17468,7 +17468,7 @@ Setup_Ability:
     LDA.W #$0045                                                         ;84EE67;
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84EE6A;
     LDA.L $7ED91A                                                        ;84EE6D;
-    INC A                                                                ;84EE71;
+    INC                                                                  ;84EE71;
     STA.L $7ED91A                                                        ;84EE72;
     RTS                                                                  ;84EE76;
 
@@ -17524,7 +17524,7 @@ Setup_AbilityShotBlock:
     LDA.L $7F0002,X                                                      ;84EE9A;
     STA.W $1E17,Y                                                        ;84EE9E;
     LDA.L $7ED91A                                                        ;84EEA1;
-    INC A                                                                ;84EEA5;
+    INC                                                                  ;84EEA5;
     STA.L $7ED91A                                                        ;84EEA6;
     RTS                                                                  ;84EEAA;
 

@@ -655,14 +655,14 @@ InitAI_Boulder:
 
   .notRolling:
     EOR.W #$FFFF                                                         ;A68735;
-    INC A                                                                ;A68738;
+    INC                                                                  ;A68738;
     CLC                                                                  ;A68739;
     ADC.L $7E780A,X                                                      ;A6873A;
     STA.W $0F7E,X                                                        ;A6873E;
     LDA.W $0FB6,X                                                        ;A68741;
     AND.W #$00FF                                                         ;A68744;
     EOR.W #$FFFF                                                         ;A68747;
-    INC A                                                                ;A6874A;
+    INC                                                                  ;A6874A;
     STA.L $7E7800,X                                                      ;A6874B;
     LDA.W $0F92,X                                                        ;A6874F;
     AND.W #$00FF                                                         ;A68752;
@@ -675,7 +675,7 @@ InitAI_Boulder:
     BNE .left                                                            ;A68768;
     LDA.L $7E7800,X                                                      ;A6876A;
     EOR.W #$FFFF                                                         ;A6876E;
-    INC A                                                                ;A68771;
+    INC                                                                  ;A68771;
     STA.L $7E7800,X                                                      ;A68772;
     LDA.W #InstList_Boulder_FacingRight                                  ;A68776;
     STA.W $0F92,X                                                        ;A68779;
@@ -744,9 +744,9 @@ Function_Boulder_Falling:
     LDA.W $0FAC,X                                                        ;A687F0;
     AND.W #$FF00                                                         ;A687F3;
     XBA                                                                  ;A687F6;
-    ASL A                                                                ;A687F7;
-    ASL A                                                                ;A687F8;
-    ASL A                                                                ;A687F9;
+    ASL                                                                  ;A687F7;
+    ASL                                                                  ;A687F8;
+    ASL                                                                  ;A687F9;
     TAY                                                                  ;A687FA;
     JSR.W MoveBoulderVertically                                          ;A687FB;
     LDA.W $0F7E,X                                                        ;A687FE;
@@ -780,13 +780,13 @@ Function_Boulder_Bounce_Rising:
     LDA.W $0FAC,X                                                        ;A68835;
     AND.W #$FF00                                                         ;A68838;
     XBA                                                                  ;A6883B;
-    ASL A                                                                ;A6883C;
-    ASL A                                                                ;A6883D;
-    ASL A                                                                ;A6883E;
-    INC A                                                                ;A6883F;
-    INC A                                                                ;A68840;
-    INC A                                                                ;A68841;
-    INC A                                                                ;A68842;
+    ASL                                                                  ;A6883C;
+    ASL                                                                  ;A6883D;
+    ASL                                                                  ;A6883E;
+    INC                                                                  ;A6883F;
+    INC                                                                  ;A68840;
+    INC                                                                  ;A68841;
+    INC                                                                  ;A68842;
     TAY                                                                  ;A68843;
     JSR.W MoveBoulderVertically                                          ;A68844;
     LDA.W $0FAC,X                                                        ;A68847;
@@ -803,9 +803,9 @@ Function_Boulder_Bounce_Rising:
     LDA.W $0FAA,X                                                        ;A6885E;
     AND.W #$FF00                                                         ;A68861;
     XBA                                                                  ;A68864;
-    ASL A                                                                ;A68865;
-    ASL A                                                                ;A68866;
-    ASL A                                                                ;A68867;
+    ASL                                                                  ;A68865;
+    ASL                                                                  ;A68866;
+    ASL                                                                  ;A68867;
     TAY                                                                  ;A68868;
     LDA.W $0FB0,X                                                        ;A68869;
     BEQ .right                                                           ;A6886C;
@@ -835,9 +835,9 @@ Function_Boulder_Bounce_Falling:
     LDA.W $0FAC,X                                                        ;A6888E;
     AND.W #$FF00                                                         ;A68891;
     XBA                                                                  ;A68894;
-    ASL A                                                                ;A68895;
-    ASL A                                                                ;A68896;
-    ASL A                                                                ;A68897;
+    ASL                                                                  ;A68895;
+    ASL                                                                  ;A68896;
+    ASL                                                                  ;A68897;
     TAY                                                                  ;A68898;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing,Y                    ;A68899;
     STA.B $12                                                            ;A6889C;
@@ -868,8 +868,8 @@ Function_Boulder_Bounce_Falling:
     LDA.W #Function_Boulder_Bounce_Rising                                ;A688DE;
     STA.W $0FA8,X                                                        ;A688E1;
     LDA.W $0FAE,X                                                        ;A688E4;
-    DEC A                                                                ;A688E7;
-    ASL A                                                                ;A688E8;
+    DEC                                                                  ;A688E7;
+    ASL                                                                  ;A688E8;
     TAY                                                                  ;A688E9;
     LDA.W BounceSpeedTableIndices+2,Y                                    ;A688EA;
     STA.W $0FAC,X                                                        ;A688ED;
@@ -891,9 +891,9 @@ Function_Boulder_Bounce_Falling:
     LDA.W $0FAA,X                                                        ;A68915;
     AND.W #$FF00                                                         ;A68918;
     XBA                                                                  ;A6891B;
-    ASL A                                                                ;A6891C;
-    ASL A                                                                ;A6891D;
-    ASL A                                                                ;A6891E;
+    ASL                                                                  ;A6891C;
+    ASL                                                                  ;A6891D;
+    ASL                                                                  ;A6891E;
     TAY                                                                  ;A6891F;
     LDA.W $0FB0,X                                                        ;A68920;
     BEQ ..right                                                          ;A68923;
@@ -923,9 +923,9 @@ Function_Boulder_Rolling:
     LDA.W $0FAA,X                                                        ;A68945;
     AND.W #$FF00                                                         ;A68948;
     XBA                                                                  ;A6894B;
-    ASL A                                                                ;A6894C;
-    ASL A                                                                ;A6894D;
-    ASL A                                                                ;A6894E;
+    ASL                                                                  ;A6894C;
+    ASL                                                                  ;A6894D;
+    ASL                                                                  ;A6894E;
     TAY                                                                  ;A6894F;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing,Y                    ;A68950;
     STA.B $12                                                            ;A68953;
@@ -1154,9 +1154,9 @@ InitAI_KzanTop:
     STA.W $0FA8,X                                                        ;A68B3B;
     LDA.W $0FB4,X                                                        ;A68B3E;
     AND.W #$00FF                                                         ;A68B41;
-    ASL A                                                                ;A68B44;
-    ASL A                                                                ;A68B45;
-    ASL A                                                                ;A68B46;
+    ASL                                                                  ;A68B44;
+    ASL                                                                  ;A68B45;
+    ASL                                                                  ;A68B46;
     STA.L $7E7804,X                                                      ;A68B47;
     TAX                                                                  ;A68B4B;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing,X                         ;A68B4C;
@@ -1225,9 +1225,9 @@ Function_Kzan_WaitingToFall:
     STA.W $0FAA,X                                                        ;A68BC4;
     LDA.W $0FB4,X                                                        ;A68BC7;
     AND.W #$00FF                                                         ;A68BCA;
-    ASL A                                                                ;A68BCD;
-    ASL A                                                                ;A68BCE;
-    ASL A                                                                ;A68BCF;
+    ASL                                                                  ;A68BCD;
+    ASL                                                                  ;A68BCE;
+    ASL                                                                  ;A68BCF;
     STA.L $7E7804,X                                                      ;A68BD0;
     LDA.W #Function_Kzan_Falling                                         ;A68BD4;
     STA.W $0FA8,X                                                        ;A68BD7;
@@ -1289,7 +1289,7 @@ Function_Kzan_Falling:
 ;;; $8C4A: Spike platform function - waiting to rise ;;;
 Function_Kzan_WaitingToRise:
     LDA.L $7E7806,X                                                      ;A68C4A;
-    DEC A                                                                ;A68C4E;
+    DEC                                                                  ;A68C4E;
     STA.L $7E7806,X                                                      ;A68C4F;
     BEQ .timerExpired                                                    ;A68C53;
     RTS                                                                  ;A68C55;
@@ -1345,7 +1345,7 @@ CheckIfKzanIsTouchingSamusFromBelow:
     SBC.W $0F7A,X                                                        ;A68CA5;
     BPL +                                                                ;A68CA8;
     EOR.W #$FFFF                                                         ;A68CAA;
-    INC A                                                                ;A68CAD;
+    INC                                                                  ;A68CAD;
 
 +   SEC                                                                  ;A68CAE;
     SBC.W $0AFE                                                          ;A68CAF;
@@ -1363,7 +1363,7 @@ CheckIfKzanIsTouchingSamusFromBelow:
     SBC.W $0F7E,X                                                        ;A68CC5;
     BPL .returnNotTouchingSamus                                          ;A68CC8;
     EOR.W #$FFFF                                                         ;A68CCA;
-    INC A                                                                ;A68CCD;
+    INC                                                                  ;A68CCD;
     SEC                                                                  ;A68CCE;
     SBC.W $0B00                                                          ;A68CCF;
     BCC .returnTouchingSamus                                             ;A68CD2;
@@ -2243,8 +2243,8 @@ InitAI_Puromi:
     LDA.W #Function_Puromi_Inactive                                      ;A694F4;
     STA.W $0FA8,X                                                        ;A694F7;
     LDA.W $0FB0,X                                                        ;A694FA;
-    ASL A                                                                ;A694FD;
-    ASL A                                                                ;A694FE;
+    ASL                                                                  ;A694FD;
+    ASL                                                                  ;A694FE;
     TAY                                                                  ;A694FF;
     LDA.W .startAngle_clockwise,Y                                        ;A69500;
     STA.L $7E8006,X                                                      ;A69503;
@@ -2260,9 +2260,9 @@ InitAI_Puromi:
     LDA.W .fallingExplosionAngle_clockwise,Y                             ;A69527;
     STA.L $7E801E,X                                                      ;A6952A;
     LDA.W $0FAC,X                                                        ;A6952E;
-    ASL A                                                                ;A69531;
-    ASL A                                                                ;A69532;
-    ASL A                                                                ;A69533;
+    ASL                                                                  ;A69531;
+    ASL                                                                  ;A69532;
+    ASL                                                                  ;A69533;
     TAY                                                                  ;A69534;
     LDA.W $0FB0,X                                                        ;A69535;
     BNE .firingUp                                                        ;A69538;
@@ -2992,8 +2992,8 @@ MainAI_MiniKraid:
     LDX.W $0E54                                                          ;A69AC2;
     LDA.L $7E780E,X                                                      ;A69AC5;
     TAY                                                                  ;A69AC9;
-    INC A                                                                ;A69ACA;
-    INC A                                                                ;A69ACB;
+    INC                                                                  ;A69ACA;
+    INC                                                                  ;A69ACB;
     CMP.W #$0006                                                         ;A69ACC;
     BMI +                                                                ;A69ACF;
     LDA.W #$0000                                                         ;A69AD1;
@@ -3020,7 +3020,7 @@ HandleMiniKraidSpike:
     TAX                                                                  ;A69AE3;
     LDA.L $7E7806,X                                                      ;A69AE4;
     BEQ .timerExpired                                                    ;A69AE8;
-    DEC A                                                                ;A69AEA;
+    DEC                                                                  ;A69AEA;
     STA.L $7E7806,X                                                      ;A69AEB;
     PLX                                                                  ;A69AEF;
     RTS                                                                  ;A69AF0;
@@ -3078,7 +3078,7 @@ Instruction_MiniKraid_Move:
   .negateEnemyXVelocity:
     LDA.W $0FAA,X                                                        ;A69B53;
     EOR.W #$FFFF                                                         ;A69B56;
-    INC A                                                                ;A69B59;
+    INC                                                                  ;A69B59;
     STA.W $0FAA,X                                                        ;A69B5A;
 
   .noCollision:
@@ -3584,7 +3584,7 @@ InitAI_Ridley:
     STA.W $0F9A                                                          ;A6A18E;
     LDA.W #$0000                                                         ;A6A191;
     STA.L $7E7802                                                        ;A6A194; >.<
-    INC A                                                                ;A6A198;
+    INC                                                                  ;A6A198;
     STA.L $7E7804                                                        ;A6A199;
     LDA.W #$0040                                                         ;A6A19D;
     STA.L $7E8000                                                        ;A6A1A0;
@@ -3628,7 +3628,7 @@ InitAI_Ridley:
     STA.W $093F                                                          ;A6A206;
     STA.L $7E7820                                                        ;A6A209;
     STA.L $7E7804                                                        ;A6A20D;
-    INC A                                                                ;A6A211;
+    INC                                                                  ;A6A211;
     STA.L $7E2002                                                        ;A6A212;
     LDA.W #$000F                                                         ;A6A216;
     STA.L $7E7838                                                        ;A6A219;
@@ -3843,10 +3843,10 @@ Function_Ridley_Startup_EyesAppear_Wait:
     CMP.W #$00FF                                                         ;A6A3A4;
     BEQ .done                                                            ;A6A3A7;
     STA.B $12                                                            ;A6A3A9;
-    ASL A                                                                ;A6A3AB;
+    ASL                                                                  ;A6A3AB;
     CLC                                                                  ;A6A3AC;
     ADC.B $12                                                            ;A6A3AD;
-    ASL A                                                                ;A6A3AF;
+    ASL                                                                  ;A6A3AF;
     TAY                                                                  ;A6A3B0;
     INX                                                                  ;A6A3B1;
     STX.W $0FB0                                                          ;A6A3B2;
@@ -3899,7 +3899,7 @@ Function_Ridley_Startup_MainBodyAppears:
     INC.B $14                                                            ;A6A413;
     INC.B $14                                                            ;A6A415;
     PLA                                                                  ;A6A417;
-    DEC A                                                                ;A6A418;
+    DEC                                                                  ;A6A418;
     BNE .loop                                                            ;A6A419;
     CPY.W #$0160                                                         ;A6A41B;
     BCS .done                                                            ;A6A41E;
@@ -3961,9 +3961,9 @@ Function_Ridley_Startup_ColorBGInNorfair_RaiseAcid_MainAI:
     LDA.W #$0002                                                         ;A6A485;
     STA.W $0FB2                                                          ;A6A488;
     LDA.W $0FB0                                                          ;A6A48B;
-    INC A                                                                ;A6A48E;
+    INC                                                                  ;A6A48E;
     STA.W $0FB0                                                          ;A6A48F;
-    DEC A                                                                ;A6A492;
+    DEC                                                                  ;A6A492;
     JSR.W AdjustRidleyBackgroundColorsIfNecessary                        ;A6A493;
     BCC Function_Ridley_Startup_RidleyRoars_return                       ;A6A496;
     LDA.W #$01B8                                                         ;A6A498;
@@ -3996,7 +3996,7 @@ Function_Ridley_Startup_ColorBGInNorfair_RaiseAcid_MainAI:
 ;;; $A4D6:  ;;;
 AdjustRidleyBackgroundColorsIfNecessary:
 ; Adjust background colors if necessary
-    ASL A                                                                ;A6A4D6;
+    ASL                                                                  ;A6A4D6;
     TAX                                                                  ;A6A4D7;
     LDY.W .pointers,X                                                    ;A6A4D8;
     BNE .adjust                                                          ;A6A4DB;
@@ -4151,7 +4151,7 @@ Function_RidleyCeres_MainAI:
     JSR.W CeresRidleyAttackCooldown_FlyToPosition                        ;A6A719;
     BCC .notReachedTarget                                                ;A6A71C;
     LDA.L $7E7800                                                        ;A6A71E;
-    INC A                                                                ;A6A722;
+    INC                                                                  ;A6A722;
     STA.L $7E7800                                                        ;A6A723;
     CMP.W #$007C                                                         ;A6A727;
     BCC .return                                                          ;A6A72A;
@@ -4160,7 +4160,7 @@ Function_RidleyCeres_MainAI:
   .notReachedTarget:
     LDA.W $05E5                                                          ;A6A72D;
     AND.W #$000F                                                         ;A6A730;
-    ASL A                                                                ;A6A733;
+    ASL                                                                  ;A6A733;
     TAX                                                                  ;A6A734;
     LDA.W .pointers,X                                                    ;A6A735;
     STA.W $0FA8                                                          ;A6A738;
@@ -4212,7 +4212,7 @@ Function_RidleyCeres_StartFireballing:
     LDA.W $0FAC                                                          ;A6A782;
     BPL +                                                                ;A6A785;
     EOR.W #$FFFF                                                         ;A6A787;
-    INC A                                                                ;A6A78A;
+    INC                                                                  ;A6A78A;
 
 +   CMP.W #$0080                                                         ;A6A78B;
     BCS +                                                                ;A6A78E;
@@ -4221,7 +4221,7 @@ Function_RidleyCeres_StartFireballing:
 +   BIT.W $0FAC                                                          ;A6A793;
     BPL +                                                                ;A6A796;
     EOR.W #$FFFF                                                         ;A6A798;
-    INC A                                                                ;A6A79B;
+    INC                                                                  ;A6A79B;
 
 +   STA.W $0FAC                                                          ;A6A79C;
     LDA.W $0F7A                                                          ;A6A79F;
@@ -4253,7 +4253,7 @@ Function_RidleyCeres_StartFireballing:
 
   .reachedTarget:
     LDA.L $7E7800                                                        ;A6A7E4;
-    INC A                                                                ;A6A7E8;
+    INC                                                                  ;A6A7E8;
     STA.L $7E7800                                                        ;A6A7E9;
     CMP.W #$0030                                                         ;A6A7ED;
     BCC .return                                                          ;A6A7F0;
@@ -4269,7 +4269,7 @@ Function_RidleyCeres_Fireballing:
     BIT.W $05E5                                                          ;A6A7FF;
     BPL +                                                                ;A6A802;
     EOR.W #$FFFF                                                         ;A6A804;
-    INC A                                                                ;A6A807;
+    INC                                                                  ;A6A807;
 
 +   STA.B $16                                                            ;A6A808;
     LDA.L $7E782E                                                        ;A6A80A;
@@ -4282,7 +4282,7 @@ Function_RidleyCeres_Fireballing:
     LDY.W #$0000                                                         ;A6A81D;
     JSR.W AccelerateCeresRidleyTowardDesiredXY                           ;A6A820;
     LDA.L $7E7800                                                        ;A6A823;
-    DEC A                                                                ;A6A827;
+    DEC                                                                  ;A6A827;
     STA.L $7E7800                                                        ;A6A828;
     BPL .return                                                          ;A6A82C;
     LDA.W #$0000                                                         ;A6A82E;
@@ -4453,7 +4453,7 @@ Function_RidleyCeres_EndOfSwoop:
     STA.W $0FA8                                                          ;A6A961;
     LDA.W #$0000                                                         ;A6A964;
     STA.L $7E7800                                                        ;A6A967;
-    INC A                                                                ;A6A96B;
+    INC                                                                  ;A6A96B;
     STA.L $7E2002                                                        ;A6A96C;
 
   .return:
@@ -4621,8 +4621,8 @@ HandleCeresRidleyGetawayCutscene:
 ExecuteCeresRidleyGetawayCutscene:
     LDA.L $7E8026                                                        ;A6AABD;
     TAX                                                                  ;A6AAC1;
-    INC A                                                                ;A6AAC2;
-    INC A                                                                ;A6AAC3;
+    INC                                                                  ;A6AAC2;
+    INC                                                                  ;A6AAC3;
     STA.L $7E8026                                                        ;A6AAC4;
     CPX.W #$0000                                                         ;A6AAC8;
     BNE .notFirstExecution                                               ;A6AACB;
@@ -4666,7 +4666,7 @@ ExecuteCeresRidleyGetawayCutscene:
 
   .done:
     LDA.L $7E8024                                                        ;A6AB2E;
-    INC A                                                                ;A6AB32;
+    INC                                                                  ;A6AB32;
     STA.L $7E8024                                                        ;A6AB33;
     SEP #$20                                                             ;A6AB37;
     LDA.B #$09                                                           ;A6AB39;
@@ -4702,7 +4702,7 @@ HandleCeresRidleyMode7TransformationMatrix:
     BIT.B $18                                                            ;A6AB72;
     BPL +                                                                ;A6AB74;
     EOR.W #$FFFF                                                         ;A6AB76;
-    INC A                                                                ;A6AB79;
+    INC                                                                  ;A6AB79;
 
 +   STA.B $26                                                            ;A6AB7A;
     LDA.L $7E8020                                                        ;A6AB7C;
@@ -4712,7 +4712,7 @@ HandleCeresRidleyMode7TransformationMatrix:
     BIT.B $18                                                            ;A6AB87;
     BPL +                                                                ;A6AB89;
     EOR.W #$FFFF                                                         ;A6AB8B;
-    INC A                                                                ;A6AB8E;
+    INC                                                                  ;A6AB8E;
 
 +   STA.B $78                                                            ;A6AB8F;
     LDA.W #$0100                                                         ;A6AB91;
@@ -4721,7 +4721,7 @@ HandleCeresRidleyMode7TransformationMatrix:
     BIT.B $18                                                            ;A6AB9A;
     BPL +                                                                ;A6AB9C;
     EOR.W #$FFFF                                                         ;A6AB9E;
-    INC A                                                                ;A6ABA1;
+    INC                                                                  ;A6ABA1;
 
 +   STA.B $26                                                            ;A6ABA2;
     LDA.L $7E8020                                                        ;A6ABA4;
@@ -4731,18 +4731,18 @@ HandleCeresRidleyMode7TransformationMatrix:
     BIT.B $18                                                            ;A6ABAF;
     BPL +                                                                ;A6ABB1;
     EOR.W #$FFFF                                                         ;A6ABB3;
-    INC A                                                                ;A6ABB6;
+    INC                                                                  ;A6ABB6;
 
 +   STA.B $7A                                                            ;A6ABB7;
     LDA.W #$0100                                                         ;A6ABB9;
     JSL.L Mode7Math_A6AC0E                                               ;A6ABBC;
     EOR.W #$FFFF                                                         ;A6ABC0;
-    INC A                                                                ;A6ABC3;
+    INC                                                                  ;A6ABC3;
     STA.B $18                                                            ;A6ABC4;
     BIT.B $18                                                            ;A6ABC6;
     BPL +                                                                ;A6ABC8;
     EOR.W #$FFFF                                                         ;A6ABCA;
-    INC A                                                                ;A6ABCD;
+    INC                                                                  ;A6ABCD;
 
 +   STA.B $26                                                            ;A6ABCE;
     LDA.L $7E8020                                                        ;A6ABD0;
@@ -4752,7 +4752,7 @@ HandleCeresRidleyMode7TransformationMatrix:
     BIT.B $18                                                            ;A6ABDB;
     BPL +                                                                ;A6ABDD;
     EOR.W #$FFFF                                                         ;A6ABDF;
-    INC A                                                                ;A6ABE2;
+    INC                                                                  ;A6ABE2;
 
 +   STA.B $7C                                                            ;A6ABE3;
     LDA.W #$0100                                                         ;A6ABE5;
@@ -4761,7 +4761,7 @@ HandleCeresRidleyMode7TransformationMatrix:
     BIT.B $18                                                            ;A6ABEE;
     BPL +                                                                ;A6ABF0;
     EOR.W #$FFFF                                                         ;A6ABF2;
-    INC A                                                                ;A6ABF5;
+    INC                                                                  ;A6ABF5;
 
 +   STA.B $26                                                            ;A6ABF6;
     LDA.L $7E8020                                                        ;A6ABF8;
@@ -4771,7 +4771,7 @@ HandleCeresRidleyMode7TransformationMatrix:
     BIT.B $18                                                            ;A6AC03;
     BPL +                                                                ;A6AC05;
     EOR.W #$FFFF                                                         ;A6AC07;
-    INC A                                                                ;A6AC0A;
+    INC                                                                  ;A6AC0A;
 
 +   STA.B $7E                                                            ;A6AC0B;
     RTS                                                                  ;A6AC0D;
@@ -4783,7 +4783,7 @@ Mode7Math_A6AC0E:
     BIT.B $14                                                            ;A6AC10;
     BPL +                                                                ;A6AC12;
     EOR.W #$FFFF                                                         ;A6AC14;
-    INC A                                                                ;A6AC17;
+    INC                                                                  ;A6AC17;
 
 +   STA.B $26                                                            ;A6AC18;
     LDA.B $12                                                            ;A6AC1A;
@@ -4796,7 +4796,7 @@ Mode7Math_A6AC1E:
     BIT.B $14                                                            ;A6AC20;
     BPL +                                                                ;A6AC22;
     EOR.W #$FFFF                                                         ;A6AC24;
-    INC A                                                                ;A6AC27;
+    INC                                                                  ;A6AC27;
 
 +   STA.B $26                                                            ;A6AC28;
     LDA.B $12                                                            ;A6AC2A;
@@ -4806,7 +4806,7 @@ Mode7Math_A6AC1E:
 
 ;;; $AC30:  ;;;
 Mode7Math_Common_A6AC30:
-    ASL A                                                                ;A6AC30;
+    ASL                                                                  ;A6AC30;
     AND.W #$01FE                                                         ;A6AC31;
     TAX                                                                  ;A6AC34;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;A6AC35;
@@ -4814,7 +4814,7 @@ Mode7Math_Common_A6AC30:
     STA.B $16                                                            ;A6AC3B;
     BPL +                                                                ;A6AC3D;
     EOR.W #$FFFF                                                         ;A6AC3F;
-    INC A                                                                ;A6AC42;
+    INC                                                                  ;A6AC42;
 
 +   STA.B $28                                                            ;A6AC43;
     JSR.W Mode7Math_A6AC58                                               ;A6AC45;
@@ -4826,7 +4826,7 @@ Mode7Math_Common_A6AC30:
 
 +   LDA.B $2B                                                            ;A6AC51;
     EOR.W #$FFFF                                                         ;A6AC53;
-    INC A                                                                ;A6AC56;
+    INC                                                                  ;A6AC56;
 
   .return:
     RTL                                                                  ;A6AC57;
@@ -4899,10 +4899,10 @@ AnimateMode7BabyMetroidCapsuleDuringGetaway:
     AND.W #$0003                                                         ;A6ACBF;
     BNE .return                                                          ;A6ACC2;
     LDA.L $7E802C                                                        ;A6ACC4;
-    INC A                                                                ;A6ACC8;
+    INC                                                                  ;A6ACC8;
     AND.W #$0003                                                         ;A6ACC9;
     STA.L $7E802C                                                        ;A6ACCC;
-    ASL A                                                                ;A6ACD0;
+    ASL                                                                  ;A6ACD0;
     TAY                                                                  ;A6ACD1;
     LDX.W .pointers,Y                                                    ;A6ACD2;
     JSL.L QueueMode7Transfers                                            ;A6ACD5;
@@ -4979,10 +4979,10 @@ AnimateMode7RidleyWings:
     AND.W #$0007                                                         ;A6AD2A;
     BNE .return                                                          ;A6AD2D;
     LDA.L $7E802E                                                        ;A6AD2F;
-    INC A                                                                ;A6AD33;
+    INC                                                                  ;A6AD33;
     AND.W #$0001                                                         ;A6AD34;
     STA.L $7E802E                                                        ;A6AD37;
-    ASL A                                                                ;A6AD3B;
+    ASL                                                                  ;A6AD3B;
     TAY                                                                  ;A6AD3C;
     LDX.W .pointers,Y                                                    ;A6AD3D;
     JSL.L QueueMode7Transfers                                            ;A6AD40;
@@ -5144,11 +5144,11 @@ CeresRidleyGetawayXVelocityTable:
 RidleyCeres_UpdateBG12Palette5:
     XBA                                                                  ;A6B0EF;
     AND.W #$00FF                                                         ;A6B0F0;
-    ASL A                                                                ;A6B0F3;
-    ASL A                                                                ;A6B0F4;
-    ASL A                                                                ;A6B0F5;
-    ASL A                                                                ;A6B0F6;
-    ASL A                                                                ;A6B0F7;
+    ASL                                                                  ;A6B0F3;
+    ASL                                                                  ;A6B0F4;
+    ASL                                                                  ;A6B0F5;
+    ASL                                                                  ;A6B0F6;
+    ASL                                                                  ;A6B0F7;
     ADC.W #.palette0                                                     ;A6B0F8;
     TAY                                                                  ;A6B0FB;
     LDX.W #$00A2                                                         ;A6B0FC;
@@ -5337,7 +5337,7 @@ DetermineAndExecuteNewRidleyAIScript:
     JSR.W GetNewRidleyAIScript                                           ;A6B321;
     JSL.L GenerateRandomNumber                                           ;A6B324;
     AND.W #$0007                                                         ;A6B328;
-    ASL A                                                                ;A6B32B;
+    ASL                                                                  ;A6B32B;
     TAY                                                                  ;A6B32C;
     LDA.B ($12),Y                                                        ;A6B32D;
     STA.W $0FA8                                                          ;A6B32F;
@@ -5361,7 +5361,7 @@ GetNewRidleyAIScript:
     LDA.W #CheckIfRidleyBelowHalfHealth_zeroHealth                       ;A6B34B;
     STA.B $12                                                            ;A6B34E;
     LDA.L $7E800A                                                        ;A6B350;
-    INC A                                                                ;A6B354;
+    INC                                                                  ;A6B354;
     STA.L $7E800A                                                        ;A6B355;
     RTS                                                                  ;A6B359;
 
@@ -5503,7 +5503,7 @@ Function_Ridley_MoveToCenterSide:
 GetRidleyAccelerationDivisorIndex:
 ; Y = 4, 8, A, or C, depending on general speed byte
     LDA.L $7E7824                                                        ;A6B42E;
-    ASL A                                                                ;A6B432;
+    ASL                                                                  ;A6B432;
     TAY                                                                  ;A6B433;
     LDA.W .accelerationDivisorIndex,Y                                    ;A6B434;
     TAY                                                                  ;A6B437;
@@ -5577,7 +5577,7 @@ Function_Ridley_USwoop_FirstDive:
     JSR.W UpdateRidleysUSwoopSpeedAndAngle                               ;A6B4B4;
     LDA.L $7E7800                                                        ;A6B4B7;
     BEQ .timerExpired                                                    ;A6B4BB;
-    DEC A                                                                ;A6B4BD;
+    DEC                                                                  ;A6B4BD;
     STA.L $7E7800                                                        ;A6B4BE;
     RTS                                                                  ;A6B4C2;
 
@@ -5611,7 +5611,7 @@ Function_Ridley_USwoop_DiveToHalfwayPoint:
     JSR.W UpdateRidleysUSwoopSpeedAndAngle                               ;A6B4F2;
     LDA.L $7E7800                                                        ;A6B4F5;
     BEQ .timerExpired                                                    ;A6B4F9;
-    DEC A                                                                ;A6B4FB;
+    DEC                                                                  ;A6B4FB;
     STA.L $7E7800                                                        ;A6B4FC;
     RTS                                                                  ;A6B500;
 
@@ -5647,7 +5647,7 @@ Function_Ridley_USwoop_ClimbAfterHalfwayPoint:
     JSR.W UpdateRidleysUSwoopSpeedAndAngle                               ;A6B537;
     LDA.L $7E7800                                                        ;A6B53A;
     BEQ .timerExpired                                                    ;A6B53E;
-    DEC A                                                                ;A6B540;
+    DEC                                                                  ;A6B540;
     STA.L $7E7800                                                        ;A6B541;
     RTS                                                                  ;A6B545;
 
@@ -5681,7 +5681,7 @@ Function_Ridley_USwoop_FinalClimb:
     JSR.W UpdateRidleysUSwoopSpeedAndAngle                               ;A6B575;
     LDA.L $7E7800                                                        ;A6B578;
     BEQ .timerExpired                                                    ;A6B57C;
-    DEC A                                                                ;A6B57E;
+    DEC                                                                  ;A6B57E;
     STA.L $7E7800                                                        ;A6B57F;
     RTS                                                                  ;A6B583;
 
@@ -5704,7 +5704,7 @@ Function_Ridley_USwoop_End:
     JSR.W UpdateRidleysUSwoopSpeedAndAngle                               ;A6B5A0;
     LDA.L $7E7800                                                        ;A6B5A3;
     BEQ .timerExpired                                                    ;A6B5A7;
-    DEC A                                                                ;A6B5A9;
+    DEC                                                                  ;A6B5A9;
     STA.L $7E7800                                                        ;A6B5AA;
     RTS                                                                  ;A6B5AE;
 
@@ -5744,7 +5744,7 @@ Function_Ridley_ConsiderTailbouncing:
 ;;; $B5E5: Ridley function ;;;
 Function_Ridley_ConsideringTailbouncing:
     LDA.L $7E7820                                                        ;A6B5E5;
-    ASL A                                                                ;A6B5E9;
+    ASL                                                                  ;A6B5E9;
     TAY                                                                  ;A6B5EA;
     LDA.W .targetXPosition,Y                                             ;A6B5EB;
     STA.B $12                                                            ;A6B5EE;
@@ -5773,7 +5773,7 @@ Function_Ridley_ConsideringTailbouncing:
 Function_Ridley_HoverWhileSamusIsSpinJumping:
 ; Hover since Samus is spinjumping
     LDA.L $7E7820                                                        ;A6B613;
-    ASL A                                                                ;A6B617;
+    ASL                                                                  ;A6B617;
     TAY                                                                  ;A6B618;
     LDA.W .targetXPosition,Y                                             ;A6B619;
     STA.B $12                                                            ;A6B61C;
@@ -5825,7 +5825,7 @@ FlyTowardTargetXPositionAndSamusYPosition:
     LDA.L $7E781E                                                        ;A6B674;
     BNE .returnSamusNotSpinJumping                                       ;A6B678;
     LDA.L $7E7820                                                        ;A6B67A;
-    DEC A                                                                ;A6B67E;
+    DEC                                                                  ;A6B67E;
     BEQ .returnSamusNotSpinJumping                                       ;A6B67F;
     LDA.W #InstList_Ridley_FacingLeft_Fireballing_0                      ;A6B681;
     JSR.W SetRidleyInstList                                              ;A6B684;
@@ -5859,7 +5859,7 @@ Function_Ridley_FlyToTailbouncingStartPosition:
     CMP.W #$0120                                                         ;A6B6AA;
     BMI .startTailbouncing                                               ;A6B6AD;
     LDA.L $7E7820                                                        ;A6B6AF;
-    ASL A                                                                ;A6B6B3;
+    ASL                                                                  ;A6B6B3;
     TAY                                                                  ;A6B6B4;
     LDA.W .targetXPositions,Y                                            ;A6B6B5;
     STA.B $12                                                            ;A6B6B8;
@@ -5959,11 +5959,11 @@ Function_Ridley_Tailbouncing_AttemptToGrabSamus:
     LDA.W #$0004                                                         ;A6B78D;
     STA.L $7E2000                                                        ;A6B790;
     LDA.L $7E800C                                                        ;A6B794;
-    INC A                                                                ;A6B798;
+    INC                                                                  ;A6B798;
     CMP.W #$0002                                                         ;A6B799;
     BMI .everyOtherBounce                                                ;A6B79C;
     LDA.L $7E7820                                                        ;A6B79E;
-    DEC A                                                                ;A6B7A2;
+    DEC                                                                  ;A6B7A2;
     BEQ .RidleyTurning                                                   ;A6B7A3;
     LDA.W #InstList_Ridley_FacingLeft_Fireballing_0                      ;A6B7A5;
     JSR.W SetRidleyInstList                                              ;A6B7A8;
@@ -6077,7 +6077,7 @@ AttemptToGrabSamus_SkipSpinCheck:
     STX.B $16                                                            ;A6B865;
     STY.B $18                                                            ;A6B867;
     LDA.L $7E7820                                                        ;A6B869;
-    ASL A                                                                ;A6B86D;
+    ASL                                                                  ;A6B86D;
     TAY                                                                  ;A6B86E;
     LDA.W HoldingSamusXDispacement,Y                                     ;A6B86F;
     CLC                                                                  ;A6B872;
@@ -6097,7 +6097,7 @@ GrabbingSamus_SetMinimumYSpeed_ResetTailAI:
     LDA.W $0FAC                                                          ;A6B889;
     BMI +                                                                ;A6B88C;
     EOR.W #$FFFF                                                         ;A6B88E;
-    INC A                                                                ;A6B891;
+    INC                                                                  ;A6B891;
 
 +   CMP.W #$FE00                                                         ;A6B892;
     BMI +                                                                ;A6B895;
@@ -6118,7 +6118,7 @@ CheckForTurnaroundDuringTailbounce_RandomlyChangeDirection:
     BIT.W $0F79                                                          ;A6B8B1;
     BPL +                                                                ;A6B8B4;
     EOR.W #$FFFF                                                         ;A6B8B6;
-    INC A                                                                ;A6B8B9;
+    INC                                                                  ;A6B8B9;
 
 +   STA.W $0FAA                                                          ;A6B8BA;
 
@@ -6140,7 +6140,7 @@ CheckForTurnaroundDuringTailbounce_RandomlyChangeDirection:
   .changeDirection:
     LDA.W $0FAA                                                          ;A6B8E0;
     EOR.W #$FFFF                                                         ;A6B8E3;
-    INC A                                                                ;A6B8E6;
+    INC                                                                  ;A6B8E6;
     STA.W $0FAA                                                          ;A6B8E7;
 
   .return:
@@ -6172,7 +6172,7 @@ SetSpeedsForTailbouncing:
 ; Set speeds for tailbouncing (depends on random and speed
     LDA.W $05E5                                                          ;A6B90F;
     AND.W #$0003                                                         ;A6B912;
-    ASL A                                                                ;A6B915;
+    ASL                                                                  ;A6B915;
     TAY                                                                  ;A6B916;
     LDA.W .XSpeedPointers,Y                                              ;A6B917;
     STA.B $12                                                            ;A6B91A;
@@ -6181,7 +6181,7 @@ SetSpeedsForTailbouncing:
     LDA.L $7E7824                                                        ;A6B921;
     CLC                                                                  ;A6B925;
     ADC.W #$0002                                                         ;A6B926;
-    ASL A                                                                ;A6B929;
+    ASL                                                                  ;A6B929;
     TAY                                                                  ;A6B92A;
     LDA.W .acceleration,Y                                                ;A6B92B;
     STA.L $7E200E                                                        ;A6B92E;
@@ -6193,7 +6193,7 @@ SetSpeedsForTailbouncing:
     LDX.W $0FAA                                                          ;A6B940;
     BPL +                                                                ;A6B943;
     EOR.W #$FFFF                                                         ;A6B945;
-    INC A                                                                ;A6B948;
+    INC                                                                  ;A6B948;
 
 +   STA.W $0FAA                                                          ;A6B949;
     RTS                                                                  ;A6B94C;
@@ -6259,7 +6259,7 @@ MoveSamusToWithinRidleysClawsIfHolding:
     STA.B $12                                                            ;A6B9E7;
     BPL +                                                                ;A6B9E9;
     EOR.W #$FFFF                                                         ;A6B9EB;
-    INC A                                                                ;A6B9EE;
+    INC                                                                  ;A6B9EE;
 
 +   SEC                                                                  ;A6B9EF;
     SBC.W #$0004                                                         ;A6B9F0;
@@ -6271,7 +6271,7 @@ MoveSamusToWithinRidleysClawsIfHolding:
     BIT.B $12                                                            ;A6B9FA;
     BPL +                                                                ;A6B9FC;
     EOR.W #$FFFF                                                         ;A6B9FE;
-    INC A                                                                ;A6BA01;
+    INC                                                                  ;A6BA01;
 
 +   STA.L $7E7828                                                        ;A6BA02;
 
@@ -6281,7 +6281,7 @@ MoveSamusToWithinRidleysClawsIfHolding:
     STA.B $12                                                            ;A6BA0C;
     BPL +                                                                ;A6BA0E;
     EOR.W #$FFFF                                                         ;A6BA10;
-    INC A                                                                ;A6BA13;
+    INC                                                                  ;A6BA13;
 
 +   SEC                                                                  ;A6BA14;
     SBC.W #$0004                                                         ;A6BA15;
@@ -6293,13 +6293,13 @@ MoveSamusToWithinRidleysClawsIfHolding:
     BIT.B $12                                                            ;A6BA1F;
     BPL +                                                                ;A6BA21;
     EOR.W #$FFFF                                                         ;A6BA23;
-    INC A                                                                ;A6BA26;
+    INC                                                                  ;A6BA26;
 
 +   STA.L $7E782A                                                        ;A6BA27;
 
   .noSamusYDisplacement:
     LDA.L $7E7820                                                        ;A6BA2B;
-    ASL A                                                                ;A6BA2F;
+    ASL                                                                  ;A6BA2F;
     TAY                                                                  ;A6BA30;
     LDA.W HoldingSamusXDispacement,Y                                     ;A6BA31;
     ADC.W $0F7A                                                          ;A6BA34;
@@ -6321,14 +6321,14 @@ MoveSamusToWithinRidleysClawsIfHolding:
 SetDisplacementForRidleyGrabbingSamus:
 ; Set displacement for Ridley grabbing Samus
     LDA.L $7E7820                                                        ;A6BA54;
-    ASL A                                                                ;A6BA58;
+    ASL                                                                  ;A6BA58;
     TAY                                                                  ;A6BA59;
     LDA.W HoldingSamusXDispacement,Y                                     ;A6BA5A;
     ADC.W $0F7A                                                          ;A6BA5D;
     SEC                                                                  ;A6BA60;
     SBC.W $0AF6                                                          ;A6BA61;
     EOR.W #$FFFF                                                         ;A6BA64;
-    INC A                                                                ;A6BA67;
+    INC                                                                  ;A6BA67;
     STA.L $7E7828                                                        ;A6BA68;
     LDA.L $7E783A                                                        ;A6BA6C;
     TAY                                                                  ;A6BA70;
@@ -6338,7 +6338,7 @@ SetDisplacementForRidleyGrabbingSamus:
     SEC                                                                  ;A6BA78;
     SBC.W $0AFA                                                          ;A6BA79;
     EOR.W #$FFFF                                                         ;A6BA7C;
-    INC A                                                                ;A6BA7F;
+    INC                                                                  ;A6BA7F;
     STA.L $7E782A                                                        ;A6BA80;
     RTS                                                                  ;A6BA84;
 
@@ -6378,7 +6378,7 @@ CheckFor_Deathswoop_PowerBombDodge_MoveToCenter_RamGrabSamus:
     LDA.L $7E783E                                                        ;A6BABC;
     BNE CheckIfRidleyIsReadyToExplode                                    ;A6BAC0;
     LDA.L $7E7820                                                        ;A6BAC2;
-    ASL A                                                                ;A6BAC6;
+    ASL                                                                  ;A6BAC6;
     TAY                                                                  ;A6BAC7;
     LDA.W .signedBitmask,Y                                               ;A6BAC8;
     STA.B $12                                                            ;A6BACB;
@@ -6391,7 +6391,7 @@ CheckFor_Deathswoop_PowerBombDodge_MoveToCenter_RamGrabSamus:
     LDA.B $14                                                            ;A6BADA;
     BPL .positive                                                        ;A6BADC;
     EOR.W #$FFFF                                                         ;A6BADE;
-    INC A                                                                ;A6BAE1;
+    INC                                                                  ;A6BAE1;
 
   .positive:
     CMP.W #$0020                                                         ;A6BAE2;
@@ -6419,13 +6419,13 @@ CheckFor_Deathswoop_PowerBombDodge_MoveToCenter_RamGrabSamus:
     STA.B $14                                                            ;A6BB0E;
     LDX.W #$0000                                                         ;A6BB10;
     LDA.L $7E7824                                                        ;A6BB13;
-    ASL A                                                                ;A6BB17;
+    ASL                                                                  ;A6BB17;
     TAY                                                                  ;A6BB18;
     LDA.W .accelerationDivisorIndex,Y                                    ;A6BB19;
     TAY                                                                  ;A6BB1C;
     JSR.W AccelerateRidleyTowardDesiredXYPosition_NoDecelerationBoost    ;A6BB1D;
     LDA.L $7E7820                                                        ;A6BB20;
-    ASL A                                                                ;A6BB24;
+    ASL                                                                  ;A6BB24;
     TAY                                                                  ;A6BB25;
     LDA.W HoldingSamusXDispacement,Y                                     ;A6BB26;
     CLC                                                                  ;A6BB29;
@@ -6455,7 +6455,7 @@ CheckFor_Deathswoop_PowerBombDodge_MoveToCenter_RamGrabSamus:
   .collision:
     LDA.W $0FAC                                                          ;A6BB56;
     EOR.W #$FFFF                                                         ;A6BB59;
-    INC A                                                                ;A6BB5C;
+    INC                                                                  ;A6BB5C;
     STA.W $0FAC                                                          ;A6BB5D;
     LDA.W $0F8C                                                          ;A6BB60;
     BEQ .dead                                                            ;A6BB63;
@@ -6483,7 +6483,7 @@ CheckFor_Deathswoop_PowerBombDodge_MoveToCenter_RamGrabSamus:
 Function_Ridley_InPositionToGrabSamus_NoPowerBomb:
 ; Ridley in position to grab Samus, no powerbombs
     LDA.L $7E7820                                                        ;A6BB8F;
-    ASL A                                                                ;A6BB93;
+    ASL                                                                  ;A6BB93;
     TAY                                                                  ;A6BB94;
     LDA.W TargetXPositionHoldingSamus,Y                                  ;A6BB95;
     STA.L $7E782E                                                        ;A6BB98;
@@ -6571,7 +6571,7 @@ Function_Ridley_FallBackIntoPositionAfterDroppingSamus:
     DEC.W $0FB2                                                          ;A6BC2E;
     BMI .timerExpired                                                    ;A6BC31;
     LDA.L $7E7820                                                        ;A6BC33;
-    ASL A                                                                ;A6BC37;
+    ASL                                                                  ;A6BC37;
     TAY                                                                  ;A6BC38;
     LDA.W .targetXPositions,Y                                            ;A6BC39;
     STA.B $12                                                            ;A6BC3C;
@@ -6605,7 +6605,7 @@ GrabSamus:
     STA.W $0F86                                                          ;A6BC71;
     LDA.W #$0001                                                         ;A6BC74;
     STA.L $7E7836                                                        ;A6BC77;
-    DEC A                                                                ;A6BC7B;
+    DEC                                                                  ;A6BC7B;
     JSL.L Run_Samus_Command                                              ;A6BC7C;
     SEC                                                                  ;A6BC80;
     JMP.W TransferGraphicsForRidleysClawsHoldingSamusOrBabyMetroid       ;A6BC81;
@@ -6629,7 +6629,7 @@ ReleaseSamus:
   .dead:
     LDA.W #$0000                                                         ;A6BCA4;
     STA.L $7E7836                                                        ;A6BCA7;
-    INC A                                                                ;A6BCAB;
+    INC                                                                  ;A6BCAB;
     JSL.L Run_Samus_Command                                              ;A6BCAC;
     CLC                                                                  ;A6BCB0;
     JMP.W TransferGraphicsForRidleysClawsHoldingSamusOrBabyMetroid       ;A6BCB1;
@@ -6656,7 +6656,7 @@ HandleRidleySamusInteractionBit:
   .ridleyInactive:
     LDA.L $7E783C                                                        ;A6BCD4;
     BEQ .return                                                          ;A6BCD8;
-    DEC A                                                                ;A6BCDA;
+    DEC                                                                  ;A6BCDA;
     STA.L $7E783C                                                        ;A6BCDB;
     BNE .return                                                          ;A6BCDF;
     LDA.L $7E7802                                                        ;A6BCE1;
@@ -6903,7 +6903,7 @@ CheckIfRidleyIsWithinRangeToPickupBabyMetroid:
     SBC.B $12                                                            ;A6BE66;
     BPL +                                                                ;A6BE68;
     EOR.W #$FFFF                                                         ;A6BE6A;
-    INC A                                                                ;A6BE6D;
+    INC                                                                  ;A6BE6D;
 
 +   SEC                                                                  ;A6BE6E;
     SBC.W #$0004                                                         ;A6BE6F;
@@ -6916,7 +6916,7 @@ CheckIfRidleyIsWithinRangeToPickupBabyMetroid:
     SBC.B $14                                                            ;A6BE7D;
     BPL +                                                                ;A6BE7F;
     EOR.W #$FFFF                                                         ;A6BE81;
-    INC A                                                                ;A6BE84;
+    INC                                                                  ;A6BE84;
 
 +   SEC                                                                  ;A6BE85;
     SBC.W #$0004                                                         ;A6BE86;
@@ -7263,9 +7263,9 @@ PostGetawayFunction_CycleEmergencyTextColors_StartEscape:
     STA.W $0FA8                                                          ;A6C123;
     LDA.W #$0001                                                         ;A6C126;
     STA.W $0943                                                          ;A6C129;
-    INC A                                                                ;A6C12C;
+    INC                                                                  ;A6C12C;
     STA.W $093F                                                          ;A6C12D;
-    DEC A                                                                ;A6C130;
+    DEC                                                                  ;A6C130;
     JSL.L SetBossBitsInAForCurrentArea                                   ;A6C131;
     RTS                                                                  ;A6C135;
 
@@ -7304,7 +7304,7 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_CycleColor_A6C176:
     LDX.W #$0016                                                         ;A6C176;
     LDA.L $7E8032                                                        ;A6C179;
-    INC A                                                                ;A6C17D;
+    INC                                                                  ;A6C17D;
     CMP.W #$0020                                                         ;A6C17E;
     BMI +                                                                ;A6C181;
     LDA.W #$FFE1                                                         ;A6C183;
@@ -7313,7 +7313,7 @@ UNUSED_CycleColor_A6C176:
     LDA.L $7E8032                                                        ;A6C18A;
     BPL +                                                                ;A6C18E;
     EOR.W #$FFFF                                                         ;A6C190;
-    INC A                                                                ;A6C193;
+    INC                                                                  ;A6C193;
 
 +   AND.W #$001F                                                         ;A6C194;
     STA.L $7EC000,X                                                      ;A6C197;
@@ -7334,16 +7334,16 @@ CycleEmergencyTextColors:
     AND.W #$0003                                                         ;A6C1A9;
     BNE .return                                                          ;A6C1AC;
     LDA.L $7E8030                                                        ;A6C1AE;
-    INC A                                                                ;A6C1B2;
+    INC                                                                  ;A6C1B2;
     CMP.W #$0010                                                         ;A6C1B3;
     BCC .cycle                                                           ;A6C1B6;
     LDA.W #$0000                                                         ;A6C1B8;
 
   .cycle:
     STA.L $7E8030                                                        ;A6C1BB;
-    ASL A                                                                ;A6C1BF;
+    ASL                                                                  ;A6C1BF;
     ADC.L $7E8030                                                        ;A6C1C0;
-    ASL A                                                                ;A6C1C4;
+    ASL                                                                  ;A6C1C4;
     TAY                                                                  ;A6C1C5;
     LDX.W #$00C2                                                         ;A6C1C6;
     LDA.W .emergencyColor0,Y                                             ;A6C1C9;
@@ -7449,7 +7449,7 @@ HandleTypewriterText:
 ; Incrementally writes text like "TIME BOMB SET EVACUATE IMMEDIATELY",
     LDA.L $7E803A                                                        ;A6C2B1;
     BEQ .timerExpired                                                    ;A6C2B5;
-    DEC A                                                                ;A6C2B7;
+    DEC                                                                  ;A6C2B7;
     STA.L $7E803A                                                        ;A6C2B8;
     RTS                                                                  ;A6C2BC;
 
@@ -7489,7 +7489,7 @@ HandleTypewriterText:
     CMP.W #$0020                                                         ;A6C2FA;
     BNE +                                                                ;A6C2FD;
     LDA.L $7E8038                                                        ;A6C2FF;
-    INC A                                                                ;A6C303;
+    INC                                                                  ;A6C303;
     STA.L $7E8038                                                        ;A6C304;
     INX                                                                  ;A6C308;
     TXA                                                                  ;A6C309;
@@ -7503,7 +7503,7 @@ HandleTypewriterText:
 
 +   PHA                                                                  ;A6C318;
     TXA                                                                  ;A6C319;
-    INC A                                                                ;A6C31A;
+    INC                                                                  ;A6C31A;
     STA.L $7E8036                                                        ;A6C31B;
     LDY.W $0330                                                          ;A6C31F;
     LDA.W #$0002                                                         ;A6C322;
@@ -7520,14 +7520,14 @@ HandleTypewriterText:
     STA.W $00D2,Y                                                        ;A6C33D;
     LDA.L $7E8038                                                        ;A6C340;
     STA.W $00D5,Y                                                        ;A6C344;
-    INC A                                                                ;A6C347;
+    INC                                                                  ;A6C347;
     STA.L $7E8038                                                        ;A6C348;
     TYA                                                                  ;A6C34C;
     CLC                                                                  ;A6C34D;
     ADC.W #$0007                                                         ;A6C34E;
     STA.W $0330                                                          ;A6C351;
     LDA.L $7E803E                                                        ;A6C354;
-    INC A                                                                ;A6C358;
+    INC                                                                  ;A6C358;
     STA.L $7E803E                                                        ;A6C359;
     CMP.W #$0002                                                         ;A6C35D;
     BMI .returnStillTyping                                               ;A6C360;
@@ -7884,7 +7884,7 @@ MoveRidleyToDeathSpot:
 SpawnRidleyExplosions:
 ; Keep playing explosions
     LDA.L $7E800E                                                        ;A6C623;
-    DEC A                                                                ;A6C627;
+    DEC                                                                  ;A6C627;
     BMI .timerExpired                                                    ;A6C628;
     STA.L $7E800E                                                        ;A6C62A;
     RTS                                                                  ;A6C62E;
@@ -7893,15 +7893,15 @@ SpawnRidleyExplosions:
     LDA.W #$0004                                                         ;A6C62F;
     STA.L $7E800E                                                        ;A6C632;
     LDA.L $7E8010                                                        ;A6C636;
-    INC A                                                                ;A6C63A;
+    INC                                                                  ;A6C63A;
     CMP.W #$000A                                                         ;A6C63B;
     BMI .notA                                                            ;A6C63E;
     LDA.W #$0000                                                         ;A6C640;
 
   .notA:
     STA.L $7E8010                                                        ;A6C643;
-    ASL A                                                                ;A6C647;
-    ASL A                                                                ;A6C648;
+    ASL                                                                  ;A6C647;
+    ASL                                                                  ;A6C648;
     TAY                                                                  ;A6C649;
     LDA.W .XPosition,Y                                                   ;A6C64A;
     CLC                                                                  ;A6C64D;
@@ -7943,7 +7943,7 @@ InitAI_RidleyExplosion:
     BIT.W $05E5                                                          ;A6C6BB;
     BPL +                                                                ;A6C6BE;
     EOR.W #$FFFF                                                         ;A6C6C0;
-    INC A                                                                ;A6C6C3;
+    INC                                                                  ;A6C6C3;
 
 +   STA.W $0FAA,X                                                        ;A6C6C4;
     STZ.W $0FAC,X                                                        ;A6C6C7;
@@ -8056,9 +8056,9 @@ RidleyExplosionInitialization_C:
     CLC                                                                  ;A6C7A8;
     ADC.W #$0008                                                         ;A6C7A9;
     AND.W #$00F0                                                         ;A6C7AC;
-    LSR A                                                                ;A6C7AF;
-    LSR A                                                                ;A6C7B0;
-    LSR A                                                                ;A6C7B1;
+    LSR                                                                  ;A6C7AF;
+    LSR                                                                  ;A6C7B0;
+    LSR                                                                  ;A6C7B1;
     TAY                                                                  ;A6C7B2;
     LDA.W .instListPointers,Y                                            ;A6C7B3;
     STA.W $0F92,X                                                        ;A6C7B6;
@@ -8235,7 +8235,7 @@ MainAI_RidleyExplosion:
     LDA.W $0FAA,X                                                        ;A6C8DA;
     BPL +                                                                ;A6C8DD;
     EOR.W #$FFFF                                                         ;A6C8DF;
-    INC A                                                                ;A6C8E2;
+    INC                                                                  ;A6C8E2;
 
 +   CLC                                                                  ;A6C8E3;
     ADC.W #$FFFC                                                         ;A6C8E4;
@@ -8245,7 +8245,7 @@ MainAI_RidleyExplosion:
 +   BIT.W $0FAA,X                                                        ;A6C8EC;
     BPL +                                                                ;A6C8EF;
     EOR.W #$FFFF                                                         ;A6C8F1;
-    INC A                                                                ;A6C8F4;
+    INC                                                                  ;A6C8F4;
 
 +   STA.W $0FAA,X                                                        ;A6C8F5;
     LDA.W $0FAC,X                                                        ;A6C8F8;
@@ -8544,7 +8544,7 @@ HandleRidleyTailAI:
 ; Run Tail AI: Sound, control AI, X/Y positions, tail extension, hurt Samus
     JSR.W PlaySwishingSFXIfTailIsMovingFast                              ;A6CAF5;
     LDA.L $7E2000                                                        ;A6CAF8;
-    ASL A                                                                ;A6CAFC;
+    ASL                                                                  ;A6CAFC;
     TAX                                                                  ;A6CAFD;
     JSR.W (.pointers,X)                                                  ;A6CAFE;
     PHB                                                                  ;A6CB01;
@@ -8696,7 +8696,7 @@ ExecuteRidleyTailAI:
     ADC.W #$0014                                                         ;A6CBF4;
     TAX                                                                  ;A6CBF7;
     PLA                                                                  ;A6CBF8;
-    DEC A                                                                ;A6CBF9;
+    DEC                                                                  ;A6CBF9;
     BNE .loop                                                            ;A6CBFA;
     PLB                                                                  ;A6CBFC;
     RTS                                                                  ;A6CBFD;
@@ -8706,7 +8706,7 @@ ExecuteRidleyTailAI:
 SetMinMaxTailAnglesBasedOnDirection:
 ; Set min and max tail angles based on direction
     LDA.W $7820                                                          ;A6CBFE;
-    ASL A                                                                ;A6CC01;
+    ASL                                                                  ;A6CC01;
     TAX                                                                  ;A6CC02;
     LDA.L .minAngle,X                                                    ;A6CC03;
     STA.W $2016                                                          ;A6CC07;
@@ -8799,7 +8799,7 @@ HandleRidleyTailFlingTrigger:
     SBC.W $0F7A                                                          ;A6CC9E;
     BPL .rightOfRidley                                                   ;A6CCA1;
     EOR.W #$FFFF                                                         ;A6CCA3;
-    INC A                                                                ;A6CCA6;
+    INC                                                                  ;A6CCA6;
 
   .rightOfRidley:
     CMP.W #$0080                                                         ;A6CCA7;
@@ -8809,7 +8809,7 @@ HandleRidleyTailFlingTrigger:
 
   .notRotating:
     LDA.W $2004                                                          ;A6CCB1;
-    DEC A                                                                ;A6CCB4;
+    DEC                                                                  ;A6CCB4;
 
 +   JSR.W TargetAnAngleTowardMissileOrSamus                              ;A6CCB5;
     PLA                                                                  ;A6CCB8;
@@ -8885,7 +8885,7 @@ Function_Ridley_Tailbouncing:
     SBC.L $000F7A                                                        ;A6CD3B;
     BPL .SamusOnRight                                                    ;A6CD3F;
     EOR.W #$FFFF                                                         ;A6CD41;
-    INC A                                                                ;A6CD44;
+    INC                                                                  ;A6CD44;
 
   .SamusOnRight:
     CMP.W #$0080                                                         ;A6CD45;
@@ -8930,7 +8930,7 @@ Function_Ridley_Tailbouncing:
     RTS                                                                  ;A6CD93;
 
   .decrementTimer:
-    DEC A                                                                ;A6CD94;
+    DEC                                                                  ;A6CD94;
     STA.W $2010                                                          ;A6CD95;
     BNE .done                                                            ;A6CD98;
     LDA.W #$8000                                                         ;A6CD9A;
@@ -8956,7 +8956,7 @@ ExtendTailForTailbouncing:
     SBC.L $000F7A                                                        ;A6CDC1;
     BPL .SamusOnRight                                                    ;A6CDC5;
     EOR.W #$FFFF                                                         ;A6CDC7;
-    INC A                                                                ;A6CDCA;
+    INC                                                                  ;A6CDCA;
 
   .SamusOnRight:
     CMP.W #$0080                                                         ;A6CDCB;
@@ -9016,7 +9016,7 @@ ExtendTailForTailbouncing:
     JMP.W .done                                                          ;A6CE4C;
 
   .decrementTimer:
-    DEC A                                                                ;A6CE4F;
+    DEC                                                                  ;A6CE4F;
     STA.W $2010                                                          ;A6CE50;
     BNE .done                                                            ;A6CE53;
     LDA.W #$8000                                                         ;A6CE55;
@@ -9091,10 +9091,10 @@ UpdateRidleyTailPositions:
     ADC.W $20AA                                                          ;A6CEEC;
     STA.W $20A6                                                          ;A6CEEF;
     LDA.W $7820                                                          ;A6CEF2;
-    DEC A                                                                ;A6CEF5;
+    DEC                                                                  ;A6CEF5;
     BEQ .facingForward                                                   ;A6CEF6;
-    INC A                                                                ;A6CEF8;
-    ASL A                                                                ;A6CEF9;
+    INC                                                                  ;A6CEF8;
+    ASL                                                                  ;A6CEF9;
     TAX                                                                  ;A6CEFA;
     LDA.L .XPositionOffsets,X                                            ;A6CEFB;
     ADC.W $2030                                                          ;A6CEFF;
@@ -9104,7 +9104,7 @@ UpdateRidleyTailPositions:
     ADC.W $0F7A                                                          ;A6CF03;
     STA.W $202C                                                          ;A6CF06;
     LDA.W $7820                                                          ;A6CF09;
-    DEC A                                                                ;A6CF0C;
+    DEC                                                                  ;A6CF0C;
     BNE .notFacingForward                                                ;A6CF0D;
     LDA.W $0F7A                                                          ;A6CF0F;
     STA.W $2040                                                          ;A6CF12;
@@ -9381,7 +9381,7 @@ SetRidleyTailAngles:
     LDA.W $202A,X                                                        ;A6D133;
     SEC                                                                  ;A6D136;
     SBC.W $2014                                                          ;A6D137;
-    DEC A                                                                ;A6D13A;
+    DEC                                                                  ;A6D13A;
     CMP.W $201A                                                          ;A6D13B;
     BPL .incrementAngle                                                  ;A6D13E;
     TXA                                                                  ;A6D140;
@@ -9397,7 +9397,7 @@ SetRidleyTailAngles:
     LDA.W $202A,X                                                        ;A6D151;
     SEC                                                                  ;A6D154;
     SBC.W $2014                                                          ;A6D155;
-    DEC A                                                                ;A6D158;
+    DEC                                                                  ;A6D158;
     CMP.W $2016                                                          ;A6D159;
     BPL .incrementAngle                                                  ;A6D15C;
 
@@ -9408,7 +9408,7 @@ SetRidleyTailAngles:
     BRA .storeAngle                                                      ;A6D167;
 
   .incrementAngle:
-    INC A                                                                ;A6D169;
+    INC                                                                  ;A6D169;
 
   .storeAngle:
     STA.W $202A,X                                                        ;A6D16A;
@@ -9447,7 +9447,7 @@ TargetAnAngleTowardMissileOrSamus:
     XBA                                                                  ;A6D1A0;
     STA.W $200A                                                          ;A6D1A1;
     LDA.W $7820                                                          ;A6D1A4;
-    DEC A                                                                ;A6D1A7;
+    DEC                                                                  ;A6D1A7;
     BEQ .returnUpper                                                     ;A6D1A8;
     LDA.W $7802                                                          ;A6D1AA;
     BEQ .returnUpper                                                     ;A6D1AD;
@@ -9485,7 +9485,7 @@ TargetAnAngleTowardMissileOrSamus:
     SEC                                                                  ;A6D1E4;
     SBC.W #$0080                                                         ;A6D1E5;
     EOR.W #$FFFF                                                         ;A6D1E8;
-    INC A                                                                ;A6D1EB;
+    INC                                                                  ;A6D1EB;
     AND.W #$00FF                                                         ;A6D1EC;
     STA.B $12                                                            ;A6D1EF;
     LDA.W $7820                                                          ;A6D1F1;
@@ -9553,9 +9553,9 @@ TargetAMissileOrSuperMissileIfAvailable:
   .loop:
     LDA.W $0C19,Y                                                        ;A6D25D;
     AND.W #$000F                                                         ;A6D260;
-    DEC A                                                                ;A6D263;
+    DEC                                                                  ;A6D263;
     BEQ .missileOrSuperMissile                                           ;A6D264;
-    DEC A                                                                ;A6D266;
+    DEC                                                                  ;A6D266;
     BNE .nextProjectile                                                  ;A6D267;
 
   .missileOrSuperMissile:
@@ -9564,7 +9564,7 @@ TargetAMissileOrSuperMissileIfAvailable:
     SBC.B $12                                                            ;A6D26D;
     BPL +                                                                ;A6D26F;
     EOR.W #$FFFF                                                         ;A6D271;
-    INC A                                                                ;A6D274;
+    INC                                                                  ;A6D274;
 
 +   SEC                                                                  ;A6D275;
     SBC.W $0BB4,Y                                                        ;A6D276;
@@ -9577,7 +9577,7 @@ TargetAMissileOrSuperMissileIfAvailable:
     SBC.B $14                                                            ;A6D283;
     BPL +                                                                ;A6D285;
     EOR.W #$FFFF                                                         ;A6D287;
-    INC A                                                                ;A6D28A;
+    INC                                                                  ;A6D28A;
 
 +   SEC                                                                  ;A6D28B;
     SBC.W $0BC8,Y                                                        ;A6D28C;
@@ -9609,7 +9609,7 @@ PlaySwishingSFXIfTailIsMovingFast:
     CMP.W #$0008                                                         ;A6D2AE;
     BMI .noSFX                                                           ;A6D2B1;
     LDA.L $7E781C                                                        ;A6D2B3;
-    INC A                                                                ;A6D2B7;
+    INC                                                                  ;A6D2B7;
     STA.L $7E781C                                                        ;A6D2B8;
     CMP.W #$0010                                                         ;A6D2BC;
     BMI .return                                                          ;A6D2BF;
@@ -9642,7 +9642,7 @@ InitializeTailParts:
     STA.L $7E2012                                                        ;A6D2F9;
     LDA.W #$0010                                                         ;A6D2FD;
     STA.L $7E201E                                                        ;A6D300;
-    INC A                                                                ;A6D304;
+    INC                                                                  ;A6D304;
     STA.L $7E2022                                                        ;A6D305;
     STA.L $7E2036                                                        ;A6D309;
     STA.L $7E204A                                                        ;A6D30D;
@@ -9716,7 +9716,7 @@ UpdateTailPartRAMFromXToY:
     ADC.W #$0014                                                         ;A6D3CB;
     TAY                                                                  ;A6D3CE;
     PLA                                                                  ;A6D3CF;
-    DEC A                                                                ;A6D3D0;
+    DEC                                                                  ;A6D3D0;
     BNE .loop                                                            ;A6D3D1;
     RTS                                                                  ;A6D3D3;
 
@@ -9760,7 +9760,7 @@ Update_TailRotationDirection_Angle_DistanceFromRidley:
   .loop:
     LDA.L $7E202A,X                                                      ;A6D40A;
     EOR.W #$FFFF                                                         ;A6D40E;
-    INC A                                                                ;A6D411;
+    INC                                                                  ;A6D411;
     CLC                                                                  ;A6D412;
     ADC.W #$8000                                                         ;A6D413;
     STA.L $7E202A,X                                                      ;A6D416;
@@ -9825,16 +9825,16 @@ DetermineAndSetRidleySpeedAndColorPalette:
     LDY.W $0F8C                                                          ;A6D477;
     CPY.W #$2328                                                         ;A6D47A;
     BCS +                                                                ;A6D47D;
-    INC A                                                                ;A6D47F;
+    INC                                                                  ;A6D47F;
     CPY.W #$1518                                                         ;A6D480;
     BCS +                                                                ;A6D483;
-    INC A                                                                ;A6D485;
+    INC                                                                  ;A6D485;
     CPY.W #$0708                                                         ;A6D486;
     BCS +                                                                ;A6D489;
-    INC A                                                                ;A6D48B;
+    INC                                                                  ;A6D48B;
 
 +   STA.L $7E7824                                                        ;A6D48C;
-    DEC A                                                                ;A6D490;
+    DEC                                                                  ;A6D490;
     STA.B $12                                                            ;A6D491;
     BMI HandleRidleyHealthBasedPalette_return                            ;A6D493; fallthrough to HandleRidleyHealthBasedPalette
 
@@ -9844,13 +9844,13 @@ HandleRidleyHealthBasedPalette:
     LDA.L $7EC400                                                        ;A6D495;
     BNE .return                                                          ;A6D499;
     LDA.B $12                                                            ;A6D49B;
-    ASL A                                                                ;A6D49D;
-    ASL A                                                                ;A6D49E;
-    ASL A                                                                ;A6D49F;
+    ASL                                                                  ;A6D49D;
+    ASL                                                                  ;A6D49E;
+    ASL                                                                  ;A6D49F;
     SEC                                                                  ;A6D4A0;
     SBC.B $12                                                            ;A6D4A1;
-    ASL A                                                                ;A6D4A3;
-    ASL A                                                                ;A6D4A4;
+    ASL                                                                  ;A6D4A3;
+    ASL                                                                  ;A6D4A4;
     CLC                                                                  ;A6D4A5;
     ADC.W #Palette_Ridley_HealthBased_Below9000                          ;A6D4A6;
     TAY                                                                  ;A6D4A9;
@@ -9889,10 +9889,10 @@ MakeRidleysWingsAndTailFlashWhenHit:
     LDX.W #$0E00                                                         ;A6D4DB;
     LDA.W $0F9C                                                          ;A6D4DE;
     BEQ .noFlash                                                         ;A6D4E1;
-    DEC A                                                                ;A6D4E3;
+    DEC                                                                  ;A6D4E3;
     BEQ .noFlash                                                         ;A6D4E4;
     LDA.W $0E44                                                          ;A6D4E6;
-    INC A                                                                ;A6D4E9;
+    INC                                                                  ;A6D4E9;
     AND.W #$0002                                                         ;A6D4EA;
     BEQ .noFlash                                                         ;A6D4ED;
     LDX.W #$0000                                                         ;A6D4EF;
@@ -9912,23 +9912,23 @@ CheckForCollisionWithNonAirBlock:
 ;; Returns:
 ;;     Carry: Set if collision, clear otherwise
     TYA                                                                  ;A6D4F9;
-    LSR A                                                                ;A6D4FA;
-    LSR A                                                                ;A6D4FB;
-    LSR A                                                                ;A6D4FC;
-    LSR A                                                                ;A6D4FD;
+    LSR                                                                  ;A6D4FA;
+    LSR                                                                  ;A6D4FB;
+    LSR                                                                  ;A6D4FC;
+    LSR                                                                  ;A6D4FD;
     SEP #$20                                                             ;A6D4FE;
     STA.W $4202                                                          ;A6D500;
     LDA.W $07A5                                                          ;A6D503;
     STA.W $4203                                                          ;A6D506;
     REP #$20                                                             ;A6D509;
     TXA                                                                  ;A6D50B;
-    LSR A                                                                ;A6D50C;
-    LSR A                                                                ;A6D50D;
-    LSR A                                                                ;A6D50E;
-    LSR A                                                                ;A6D50F;
+    LSR                                                                  ;A6D50C;
+    LSR                                                                  ;A6D50D;
+    LSR                                                                  ;A6D50E;
+    LSR                                                                  ;A6D50F;
     CLC                                                                  ;A6D510;
     ADC.W $4216                                                          ;A6D511;
-    ASL A                                                                ;A6D514;
+    ASL                                                                  ;A6D514;
     TAX                                                                  ;A6D515;
     LDA.L $7F0002,X                                                      ;A6D516;
     AND.W #$F000                                                         ;A6D51A;
@@ -9963,7 +9963,7 @@ AccelerateRidleyTowardDesiredXYPosition:
     BEQ .return                                                          ;A6D539;
     BPL .belowTarget                                                     ;A6D53B;
     EOR.W #$FFFF                                                         ;A6D53D;
-    INC A                                                                ;A6D540;
+    INC                                                                  ;A6D540;
     STA.W $4204                                                          ;A6D541;
     SEP #$20                                                             ;A6D544;
     LDA.B $18                                                            ;A6D546;
@@ -9975,7 +9975,7 @@ AccelerateRidleyTowardDesiredXYPosition:
     NOP                                                                  ;A6D550;
     LDA.W $4214                                                          ;A6D551;
     BNE +                                                                ;A6D554;
-    INC A                                                                ;A6D556;
+    INC                                                                  ;A6D556;
 
 +   STA.B $16                                                            ;A6D557;
     LDA.W $0FAC,X                                                        ;A6D559;
@@ -10008,7 +10008,7 @@ AccelerateRidleyTowardDesiredXYPosition:
     NOP                                                                  ;A6D584;
     LDA.W $4214                                                          ;A6D585;
     BNE +                                                                ;A6D588;
-    INC A                                                                ;A6D58A;
+    INC                                                                  ;A6D58A;
 
 +   STA.B $16                                                            ;A6D58B;
     LDA.W $0FAC,X                                                        ;A6D58D;
@@ -10038,7 +10038,7 @@ AccelerateRidleyTowardDesiredXPosition:
     BEQ .return                                                          ;A6D5AF;
     BPL .rightOfTarget                                                   ;A6D5B1;
     EOR.W #$FFFF                                                         ;A6D5B3;
-    INC A                                                                ;A6D5B6;
+    INC                                                                  ;A6D5B6;
     STA.W $4204                                                          ;A6D5B7;
     SEP #$20                                                             ;A6D5BA;
     LDA.B $18                                                            ;A6D5BC;
@@ -10050,7 +10050,7 @@ AccelerateRidleyTowardDesiredXPosition:
     NOP                                                                  ;A6D5C6;
     LDA.W $4214                                                          ;A6D5C7;
     BNE +                                                                ;A6D5CA;
-    INC A                                                                ;A6D5CC;
+    INC                                                                  ;A6D5CC;
 
 +   STA.B $16                                                            ;A6D5CD;
     LDA.W $0FAA,X                                                        ;A6D5CF;
@@ -10083,7 +10083,7 @@ AccelerateRidleyTowardDesiredXPosition:
     NOP                                                                  ;A6D5FA;
     LDA.W $4214                                                          ;A6D5FB;
     BNE +                                                                ;A6D5FE;
-    INC A                                                                ;A6D600;
+    INC                                                                  ;A6D600;
 
 +   STA.B $16                                                            ;A6D601;
     LDA.W $0FAA,X                                                        ;A6D603;
@@ -10120,7 +10120,7 @@ AccelerateCeresRidleyTowardDesiredXY:
     BEQ .return                                                          ;A6D640;
     BPL .positive                                                        ;A6D642;
     EOR.W #$FFFF                                                         ;A6D644;
-    INC A                                                                ;A6D647;
+    INC                                                                  ;A6D647;
     STA.W $4204                                                          ;A6D648;
     SEP #$20                                                             ;A6D64B;
     LDA.B $18                                                            ;A6D64D;
@@ -10132,7 +10132,7 @@ AccelerateCeresRidleyTowardDesiredXY:
     NOP                                                                  ;A6D657;
     LDA.W $4214                                                          ;A6D658;
     BNE +                                                                ;A6D65B;
-    INC A                                                                ;A6D65D;
+    INC                                                                  ;A6D65D;
 
 +   STA.B $16                                                            ;A6D65E;
     LDA.W $0FAC,X                                                        ;A6D660;
@@ -10164,7 +10164,7 @@ AccelerateCeresRidleyTowardDesiredXY:
     NOP                                                                  ;A6D686;
     LDA.W $4214                                                          ;A6D687;
     BNE +                                                                ;A6D68A;
-    INC A                                                                ;A6D68C;
+    INC                                                                  ;A6D68C;
 
 +   STA.B $16                                                            ;A6D68D;
     LDA.W $0FAC,X                                                        ;A6D68F;
@@ -10190,7 +10190,7 @@ CalculateRidleyXSpeed:
     BEQ .return                                                          ;A6D6AC;
     BPL .moveLeft                                                        ;A6D6AE;
     EOR.W #$FFFF                                                         ;A6D6B0;
-    INC A                                                                ;A6D6B3;
+    INC                                                                  ;A6D6B3;
     STA.W $4204                                                          ;A6D6B4;
     SEP #$20                                                             ;A6D6B7;
     LDA.B $18                                                            ;A6D6B9;
@@ -10202,7 +10202,7 @@ CalculateRidleyXSpeed:
     NOP                                                                  ;A6D6C3;
     LDA.W $4214                                                          ;A6D6C4;
     BNE +                                                                ;A6D6C7;
-    INC A                                                                ;A6D6C9;
+    INC                                                                  ;A6D6C9;
 
 +   STA.B $16                                                            ;A6D6CA;
     LDA.W $0FAA,X                                                        ;A6D6CC;
@@ -10233,7 +10233,7 @@ CalculateRidleyXSpeed:
     NOP                                                                  ;A6D6F2;
     LDA.W $4214                                                          ;A6D6F3;
     BNE +                                                                ;A6D6F6;
-    INC A                                                                ;A6D6F8;
+    INC                                                                  ;A6D6F8;
 
 +   STA.B $16                                                            ;A6D6F9;
     LDA.W $0FAA,X                                                        ;A6D6FB;
@@ -10336,7 +10336,7 @@ UNUSED_A6D798:
     SBC.B $12                                                            ;A6D79C;
     BPL .unknown                                                         ;A6D79E;
     EOR.W #$FFFF                                                         ;A6D7A0;
-    INC A                                                                ;A6D7A3;
+    INC                                                                  ;A6D7A3;
     LDA.W $0FAA,X                                                        ;A6D7A4;
     CLC                                                                  ;A6D7A7;
     ADC.B $16                                                            ;A6D7A8;
@@ -10537,14 +10537,14 @@ CeresRidleyRoomShaking:
     LDA.W $0FAA,X                                                        ;A6D91C;
     BPL .movingRight                                                     ;A6D91F;
     EOR.W #$FFFF                                                         ;A6D921;
-    INC A                                                                ;A6D924;
+    INC                                                                  ;A6D924;
 
   .movingRight:
     STA.B $12                                                            ;A6D925;
     LDA.W $0FAC,X                                                        ;A6D927;
     BPL .movingDown                                                      ;A6D92A;
     EOR.W #$FFFF                                                         ;A6D92C;
-    INC A                                                                ;A6D92F;
+    INC                                                                  ;A6D92F;
 
   .movingDown:
     CMP.B $12                                                            ;A6D930;
@@ -10576,7 +10576,7 @@ TurnAroundIfFacingAwayFromRoomCenter:
 ; Turn around if facing away from the center of the room (facing a wall)
     LDA.L $7E7820                                                        ;A6D955;
     BEQ .facingLeft                                                      ;A6D959;
-    DEC A                                                                ;A6D95B;
+    DEC                                                                  ;A6D95B;
     BEQ .return                                                          ;A6D95C;
     LDA.W $0F79                                                          ;A6D95E;
     BPL .return                                                          ;A6D961;
@@ -10609,7 +10609,7 @@ HandleWingFlapping:
     LDA.W #$0020                                                         ;A6D98F;
     STA.L $7E7812                                                        ;A6D992;
     LDA.L $7E780E                                                        ;A6D996;
-    INC A                                                                ;A6D99A;
+    INC                                                                  ;A6D99A;
     CMP.W #$000A                                                         ;A6D99B;
     BCC .lessThanA                                                       ;A6D99E;
     LDA.W #$0000                                                         ;A6D9A0;
@@ -10627,13 +10627,13 @@ CalculateWingFlapSpeed:
     LDA.W $0FAA                                                          ;A6D9A8;
     BPL +                                                                ;A6D9AB;
     EOR.W #$FFFF                                                         ;A6D9AD;
-    INC A                                                                ;A6D9B0;
+    INC                                                                  ;A6D9B0;
 
 +   STA.B $12                                                            ;A6D9B1;
     LDA.W $0FAC                                                          ;A6D9B3;
     BPL +                                                                ;A6D9B6;
     EOR.W #$FFFF                                                         ;A6D9B8;
-    INC A                                                                ;A6D9BB;
+    INC                                                                  ;A6D9BB;
 
 +   CLC                                                                  ;A6D9BC;
     ADC.B $12                                                            ;A6D9BD;
@@ -10649,11 +10649,11 @@ CalculateWingFlapSpeed:
     LDA.B $12                                                            ;A6D9CD;
 
   .YSpeedGreater:
-    ASL A                                                                ;A6D9CF;
-    ASL A                                                                ;A6D9D0;
+    ASL                                                                  ;A6D9CF;
+    ASL                                                                  ;A6D9D0;
     AND.W #$0F00                                                         ;A6D9D1;
     XBA                                                                  ;A6D9D4;
-    ASL A                                                                ;A6D9D5;
+    ASL                                                                  ;A6D9D5;
     CMP.W #$000E                                                         ;A6D9D6;
     BCC .maxE                                                            ;A6D9D9;
     LDA.W #$000E                                                         ;A6D9DB;
@@ -10663,7 +10663,7 @@ CalculateWingFlapSpeed:
     LDA.W .wingFlapSpeeds,X                                              ;A6D9DF;
     BIT.W $0FAC                                                          ;A6D9E2;
     BMI .movingUp                                                        ;A6D9E5;
-    LSR A                                                                ;A6D9E7;
+    LSR                                                                  ;A6D9E7;
 
   .movingUp:
     STA.L $7E7810                                                        ;A6D9E8;
@@ -10688,7 +10688,7 @@ InitializeRibAnimation:
 AnimateRidleysRibs:
 ; Animate Ridley's ribs
     LDA.L $7E780C                                                        ;A6DA0C;
-    DEC A                                                                ;A6DA10;
+    DEC                                                                  ;A6DA10;
     STA.L $7E780C                                                        ;A6DA11;
     BNE InitializeRibAnimation_return                                    ;A6DA15;
     LDA.L $7E780A                                                        ;A6DA17;
@@ -10803,14 +10803,14 @@ DrawRidleysWings:
 ; Drawing routine for Ridley's wings
     LDA.L $7E7820                                                        ;A6DAD8;
     BEQ .facingLeft                                                      ;A6DADC;
-    DEC A                                                                ;A6DADE;
+    DEC                                                                  ;A6DADE;
     BEQ .return                                                          ;A6DADF;
     LDA.W #$000A                                                         ;A6DAE1;
 
   .facingLeft:
     CLC                                                                  ;A6DAE4;
     ADC.L $7E780E                                                        ;A6DAE5;
-    ASL A                                                                ;A6DAE9;
+    ASL                                                                  ;A6DAE9;
     TAX                                                                  ;A6DAEA;
     LDY.W .spritemapPointersLeft,X                                       ;A6DAEB;
     LDA.L $7E7818                                                        ;A6DAEE;
@@ -10868,9 +10868,9 @@ DrawRidleyTail:
     CLC                                                                  ;A6DB48;
     ADC.W #$0008                                                         ;A6DB49;
     AND.W #$00F0                                                         ;A6DB4C;
-    LSR A                                                                ;A6DB4F;
-    LSR A                                                                ;A6DB50;
-    LSR A                                                                ;A6DB51;
+    LSR                                                                  ;A6DB4F;
+    LSR                                                                  ;A6DB50;
+    LSR                                                                  ;A6DB51;
     TAX                                                                  ;A6DB52;
     LDY.W RidleyTailTipSpritemapPointers,X                               ;A6DB53;
     JSR.W GeneralPurposeRidleyDrawing_SetPalette                         ;A6DB56;
@@ -10926,8 +10926,8 @@ GetBabyMetroidSpritemapPointerFromInstList:
 ; data at pointer (to rom) should be a counter (frame duration) followed by a graphic pointer,
 ; OR a pointer to code.
     STA.B $00                                                            ;A6DBCB;
-    INC A                                                                ;A6DBCD;
-    INC A                                                                ;A6DBCE;
+    INC                                                                  ;A6DBCD;
+    INC                                                                  ;A6DBCE;
     STA.B $03                                                            ;A6DBCF;
     SEP #$20                                                             ;A6DBD1;
     LDA.B #$7E                                                           ;A6DBD3;
@@ -10971,7 +10971,7 @@ GetBabyMetroidSpritemapPointerFromInstList:
 
   .timerDoesNotMatchCounter:
     LDA.B [$03]                                                          ;A6DC0A;
-    INC A                                                                ;A6DC0C;
+    INC                                                                  ;A6DC0C;
     STA.B [$03]                                                          ;A6DC0D;
     LDY.W $0002,X                                                        ;A6DC0F;
     RTS                                                                  ;A6DC12;
@@ -11303,7 +11303,7 @@ RidleyTail_vs_SamusProjectile_CollisionDetection:
     SBC.B $12                                                            ;A6DEC2;
     BPL +                                                                ;A6DEC4;
     EOR.W #$FFFF                                                         ;A6DEC6;
-    INC A                                                                ;A6DEC9;
+    INC                                                                  ;A6DEC9;
 
 +   SEC                                                                  ;A6DECA;
     SBC.W $0BB4,Y                                                        ;A6DECB;
@@ -11317,7 +11317,7 @@ RidleyTail_vs_SamusProjectile_CollisionDetection:
     SBC.B $14                                                            ;A6DED8;
     BPL +                                                                ;A6DEDA;
     EOR.W #$FFFF                                                         ;A6DEDC;
-    INC A                                                                ;A6DEDF;
+    INC                                                                  ;A6DEDF;
 
 +   SEC                                                                  ;A6DEE0;
     SBC.W $0BC8,Y                                                        ;A6DEE1;
@@ -11378,7 +11378,7 @@ EfficientCollisionDetectionForSamusAt_12_14:
     SBC.B $12                                                            ;A6DF2D;
     BPL +                                                                ;A6DF2F;
     EOR.W #$FFFF                                                         ;A6DF31;
-    INC A                                                                ;A6DF34;
+    INC                                                                  ;A6DF34;
 
 +   SEC                                                                  ;A6DF35;
     SBC.W $0AFE                                                          ;A6DF36;
@@ -11391,7 +11391,7 @@ EfficientCollisionDetectionForSamusAt_12_14:
     SBC.B $14                                                            ;A6DF43;
     BPL +                                                                ;A6DF45;
     EOR.W #$FFFF                                                         ;A6DF47;
-    INC A                                                                ;A6DF4A;
+    INC                                                                  ;A6DF4A;
 
 +   SEC                                                                  ;A6DF4B;
     SBC.W $0B00                                                          ;A6DF4C;
@@ -11448,14 +11448,14 @@ EnemyShot_Ridley:
     LDY.W #$000D                                                         ;A6DF92;
     LDA.W $0F9C                                                          ;A6DF95;
     BEQ .oddFlashTimer                                                   ;A6DF98;
-    LSR A                                                                ;A6DF9A;
+    LSR                                                                  ;A6DF9A;
     BCC .oddFlashTimer                                                   ;A6DF9B;
     INY                                                                  ;A6DF9D;
 
   .oddFlashTimer:
     STY.W $0F9C                                                          ;A6DF9E;
     LDA.L $7E781A                                                        ;A6DFA1;
-    INC A                                                                ;A6DFA5;
+    INC                                                                  ;A6DFA5;
     STA.L $7E781A                                                        ;A6DFA6;
     BRA RTL_A6DFB6                                                       ;A6DFAA;
 
@@ -11542,17 +11542,17 @@ UNUSED_ProjectileCollision_A6E01B:
     SEC                                                                  ;A6E034;
     SBC.W #$0080                                                         ;A6E035;
     EOR.W #$FFFF                                                         ;A6E038;
-    INC A                                                                ;A6E03B;
+    INC                                                                  ;A6E03B;
     CLC                                                                  ;A6E03C;
     ADC.W #$0080                                                         ;A6E03D;
     AND.W #$00FF                                                         ;A6E040;
     STA.B $12                                                            ;A6E043;
     LDA.W $18A6                                                          ;A6E045;
-    ASL A                                                                ;A6E048;
+    ASL                                                                  ;A6E048;
     TAX                                                                  ;A6E049;
     LDA.W $0C2C,X                                                        ;A6E04A;
-    ASL A                                                                ;A6E04D;
-    ASL A                                                                ;A6E04E;
+    ASL                                                                  ;A6E04D;
+    ASL                                                                  ;A6E04E;
     CMP.W #$0300                                                         ;A6E04F;
     BCC +                                                                ;A6E052;
     LDA.W #$0300                                                         ;A6E054;
@@ -11666,7 +11666,7 @@ TailProjectileCollision:
     LDA.W $0C19,Y                                                        ;A6E130;
     AND.W #$000F                                                         ;A6E133;
     LDY.W #$000C                                                         ;A6E136;
-    DEC A                                                                ;A6E139;
+    DEC                                                                  ;A6E139;
     BNE .notAMissile                                                     ;A6E13A;
     LDA.W #$003D                                                         ;A6E13C;
     JSL.L QueueSound_Lib1_Max6                                           ;A6E13F;
@@ -12343,7 +12343,7 @@ Instruction_Ridley_CalculateFireballAngleAndXYSpeeds:
     SEC                                                                  ;A6E87B;
     SBC.W #$0080                                                         ;A6E87C;
     EOR.W #$FFFF                                                         ;A6E87F;
-    INC A                                                                ;A6E882;
+    INC                                                                  ;A6E882;
     AND.W #$00FF                                                         ;A6E883;
     CMP.W #$00B0                                                         ;A6E886;
     BCS .checkEB                                                         ;A6E889;
@@ -12383,7 +12383,7 @@ Instruction_Ridley_CalculateFireballAngleAndXYSpeeds:
     SEC                                                                  ;A6E8C7;
     SBC.W #$0080                                                         ;A6E8C8;
     EOR.W #$FFFF                                                         ;A6E8CB;
-    INC A                                                                ;A6E8CE;
+    INC                                                                  ;A6E8CE;
     AND.W #$00FF                                                         ;A6E8CF;
     CMP.W #$0050                                                         ;A6E8D2;
     BCC .check15                                                         ;A6E8D5;
@@ -13031,10 +13031,10 @@ InitAI_CeresSteam:
     STA.W $0F96,X                                                        ;A6EFD5;
     JSL.L GenerateRandomNumber                                           ;A6EFD8;
     AND.W #$001F                                                         ;A6EFDC;
-    INC A                                                                ;A6EFDF;
+    INC                                                                  ;A6EFDF;
     STA.W $0FAE,X                                                        ;A6EFE0;
     LDA.W $0FB4,X                                                        ;A6EFE3;
-    ASL A                                                                ;A6EFE6;
+    ASL                                                                  ;A6EFE6;
     TAY                                                                  ;A6EFE7;
     LDA.W InitAI_CeresSteam_instListPointers,Y                           ;A6EFE8;
     STA.W $0F92,X                                                        ;A6EFEB;
@@ -13862,7 +13862,7 @@ Inst_CeresDoor_GotoYIfSamusIsNotWithing30Pixels:
     SBC.W $0AF6                                                          ;A6F642;
     BPL +                                                                ;A6F645;
     EOR.W #$FFFF                                                         ;A6F647;
-    INC A                                                                ;A6F64A;
+    INC                                                                  ;A6F64A;
 
 +   CMP.W #$0030                                                         ;A6F64B;
     BCS Inst_CeresDoor_GotoYIfSamusIsNotWithin30Pixels_gotoY             ;A6F64E;
@@ -13871,7 +13871,7 @@ Inst_CeresDoor_GotoYIfSamusIsNotWithing30Pixels:
     SBC.W $0AFA                                                          ;A6F654;
     BPL +                                                                ;A6F657;
     EOR.W #$FFFF                                                         ;A6F659;
-    INC A                                                                ;A6F65C;
+    INC                                                                  ;A6F65C;
 
 +   CMP.W #$0030                                                         ;A6F65D;
     BCS Inst_CeresDoor_GotoYIfSamusIsNotWithin30Pixels_gotoY             ;A6F660; fallthrough to Inst_CeresDoor_GotoYIfSamusIsNotWithin30Pixels_outOfRange
@@ -13895,7 +13895,7 @@ Instruction_CeresDoor_GotoYIfAreaBossIsAlive:
     LDX.W $079F                                                          ;A6F66B;
     LDA.L $7ED828,X                                                      ;A6F66E;
     PLX                                                                  ;A6F672;
-    LSR A                                                                ;A6F673;
+    LSR                                                                  ;A6F673;
     BCC Inst_CeresDoor_GotoYIfSamusIsNotWithin30Pixels_gotoY             ;A6F674;
     BRA Inst_CeresDoor_GotoYIfSamusIsNotWithin30Pixels_outOfRange        ;A6F676;
 
@@ -13981,7 +13981,7 @@ InitAI_CeresDoor:
     LDA.W #$0400                                                         ;A6F6DA;
     STA.W $0F96,X                                                        ;A6F6DD;
     LDA.W $0FB4,X                                                        ;A6F6E0;
-    ASL A                                                                ;A6F6E3;
+    ASL                                                                  ;A6F6E3;
     TAY                                                                  ;A6F6E4;
     LDA.W .functionPointers,Y                                            ;A6F6E5;
     STA.W $0FA8,X                                                        ;A6F6E8;
@@ -14102,7 +14102,7 @@ Function_CeresDoor_RidleyEscapeMode7Wall:
     LDX.W $0E54                                                          ;A6F7A5;
     JSL.L Instruction_CeresDoor_SetAsInvisible                           ;A6F7A8;
     LDA.W $093F                                                          ;A6F7AC;
-    LSR A                                                                ;A6F7AF;
+    LSR                                                                  ;A6F7AF;
     BCC .return                                                          ;A6F7B0;
     LDA.W #$0E00                                                         ;A6F7B2;
     STA.W $0F96,X                                                        ;A6F7B5;
@@ -14152,8 +14152,8 @@ Function_CeresDoor_RotatingElevatorRoom_Rumbling_Explosions:
 
   .ceresDoorTimerNotExpired:
     LDA.W $0FB2                                                          ;A6F809;
-    ASL A                                                                ;A6F80C;
-    ASL A                                                                ;A6F80D;
+    ASL                                                                  ;A6F80C;
+    ASL                                                                  ;A6F80D;
     TAY                                                                  ;A6F80E;
     LDA.W .XOffset,Y                                                     ;A6F80F;
     CLC                                                                  ;A6F812;
@@ -14197,7 +14197,7 @@ Function_CeresDoor_RotatingElevatorRoom_ElevatorAnimations:
     BNE .return                                                          ;A6F858;
     LDA.W $05B6                                                          ;A6F85A;
     AND.W #$0038                                                         ;A6F85D;
-    ASL A                                                                ;A6F860;
+    ASL                                                                  ;A6F860;
     ADC.W #.paletteAnimation                                             ;A6F861;
     TAY                                                                  ;A6F864;
     LDX.W #$0052                                                         ;A6F865;
@@ -14460,7 +14460,7 @@ InitAI_Zebetite:
     RTL                                                                  ;A6FBD5;
 
   .notAllDestroyed:
-    ASL A                                                                ;A6FBD6;
+    ASL                                                                  ;A6FBD6;
     TAY                                                                  ;A6FBD7;
     LDA.W .multipartFlag,Y                                               ;A6FBD8;
     STA.W $0FB2,X                                                        ;A6FBDB;
@@ -14588,7 +14588,7 @@ MarkZebetiteDestroyedEvent:
 ; which are a long-winded way of writing `$7E:D820 = [$7E:D820] & ~(7 << 3) | [enemy $0FAE] << 3`
     LDX.W $0E54                                                          ;A6FCAA;
     LDA.W $0FAE,X                                                        ;A6FCAD;
-    INC A                                                                ;A6FCB0;
+    INC                                                                  ;A6FCB0;
     STA.W $0FAE,X                                                        ;A6FCB1;
     STA.B $12                                                            ;A6FCB4;
     LDY.W #$0003                                                         ;A6FCB6;
@@ -14716,11 +14716,11 @@ HandleZebetitePaletteAnimation:
     LDA.W $0FB4,X                                                        ;A6FD67;
     BNE .return                                                          ;A6FD6A;
     LDA.W $0FAC                                                          ;A6FD6C;
-    INC A                                                                ;A6FD6F;
+    INC                                                                  ;A6FD6F;
     AND.W #$0007                                                         ;A6FD70;
     STA.W $0FAC                                                          ;A6FD73;
-    ASL A                                                                ;A6FD76;
-    ASL A                                                                ;A6FD77;
+    ASL                                                                  ;A6FD76;
+    ASL                                                                  ;A6FD77;
     ADC.W #.colors                                                       ;A6FD78;
     TAY                                                                  ;A6FD7B;
     LDX.W #$0158                                                         ;A6FD7C;

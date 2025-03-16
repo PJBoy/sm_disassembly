@@ -613,7 +613,7 @@ InitAI_DraygonBody:
     BPL .loopBG2Tilemap                                                  ;A586A1;
     LDX.W $0E54                                                          ;A586A3;
     LDA.W #$0700                                                         ;A586A6;
-    ASL A                                                                ;A586A9;
+    ASL                                                                  ;A586A9;
     STA.W $0F96,X                                                        ;A586AA;
     LDA.W #$00A5                                                         ;A586AD;
     STA.W $178E                                                          ;A586B0;
@@ -733,9 +733,9 @@ HandleFiringWallTurret:
     AND.W #$0003                                                         ;A587B6;
     CLC                                                                  ;A587B9;
     ADC.W #$0002                                                         ;A587BA;
-    ASL A                                                                ;A587BD;
+    ASL                                                                  ;A587BD;
     TAX                                                                  ;A587BE;
-    ASL A                                                                ;A587BF;
+    ASL                                                                  ;A587BF;
     TAY                                                                  ;A587C0;
     LDA.L $7E8800,X                                                      ;A587C1;
     BNE .return                                                          ;A587C5;
@@ -796,7 +796,7 @@ CalculateDraygonSwoopYPositions:
     XBA                                                                  ;A58837;
     AND.W #$00FF                                                         ;A58838;
     EOR.W #$FFFF                                                         ;A5883B;
-    INC A                                                                ;A5883E;
+    INC                                                                  ;A5883E;
     CLC                                                                  ;A5883F;
     ADC.W $0E24                                                          ;A58840;
     CMP.L DraygonBody.resetYPosition                                     ;A58843;
@@ -831,8 +831,8 @@ CalculateDraygonSwoopYPositions:
 +   STA.B $2C                                                            ;A58885;
     STZ.B $2A                                                            ;A58887;
     LDA.W $0E26                                                          ;A58889;
-    LSR A                                                                ;A5888C;
-    LSR A                                                                ;A5888D;
+    LSR                                                                  ;A5888C;
+    LSR                                                                  ;A5888D;
     STA.B $2E                                                            ;A5888E;
     STZ.B $30                                                            ;A58890;
     JSL.L UnsignedDivision_32bit_A0B761                                  ;A58892;
@@ -918,8 +918,8 @@ Function_DraygonBody_SwoopRight_Apex:
     STA.B $2C                                                            ;A5892F;
     STZ.B $2A                                                            ;A58931;
     LDA.W DraygonBody.swoopDuration                                      ;A58933;
-    LSR A                                                                ;A58936;
-    LSR A                                                                ;A58937;
+    LSR                                                                  ;A58936;
+    LSR                                                                  ;A58937;
     STA.B $2E                                                            ;A58938;
     STZ.B $30                                                            ;A5893A;
     JSL.L UnsignedDivision_32bit_A0B761                                  ;A5893C;
@@ -991,8 +991,8 @@ Function_DraygonBody_SwoopLeft_Setup:
     STA.B $2C                                                            ;A589C5;
     STZ.B $2A                                                            ;A589C7;
     LDA.W $0E26                                                          ;A589C9;
-    LSR A                                                                ;A589CC;
-    LSR A                                                                ;A589CD;
+    LSR                                                                  ;A589CC;
+    LSR                                                                  ;A589CD;
     STA.B $2E                                                            ;A589CE;
     STZ.B $30                                                            ;A589D0;
     JSL.L UnsignedDivision_32bit_A0B761                                  ;A589D2;
@@ -1063,15 +1063,15 @@ Function_DraygonBody_SwoopLeft_Apex:
 
   .leftSideReset:
     EOR.W #$FFFF                                                         ;A58A66;
-    INC A                                                                ;A58A69;
+    INC                                                                  ;A58A69;
     CLC                                                                  ;A58A6A;
     ADC.W $0F7A                                                          ;A58A6B;
 
 +   STA.B $2C                                                            ;A58A6E;
     STZ.B $2A                                                            ;A58A70;
     LDA.W DraygonBody.swoopDuration                                      ;A58A72;
-    LSR A                                                                ;A58A75;
-    LSR A                                                                ;A58A76;
+    LSR                                                                  ;A58A75;
+    LSR                                                                  ;A58A76;
     STA.B $2E                                                            ;A58A77;
     STZ.B $30                                                            ;A58A79;
     JSL.L UnsignedDivision_32bit_A0B761                                  ;A58A7B;
@@ -1213,7 +1213,7 @@ Function_DraygonBody_GoopRight_FiringGoops:
     AND.W #$000F                                                         ;A58BB9;
     BNE .noGoop                                                          ;A58BBC;
     LDA.L DraygonBody.goopCounter                                        ;A58BBE;
-    DEC A                                                                ;A58BC2;
+    DEC                                                                  ;A58BC2;
     STA.L DraygonBody.goopCounter                                        ;A58BC3;
     BEQ .reloadSpeedDivisor                                              ;A58BC7;
     LDY.W #InstList_DraygonBody_FacingRight_FireGoop                     ;A58BC9;
@@ -1382,7 +1382,7 @@ Function_DraygonBody_GoopLeft_FiringGoops:
     AND.W #$000F                                                         ;A58D38;
     BNE .noGoop                                                          ;A58D3B;
     LDA.L DraygonBody.goopCounter                                        ;A58D3D;
-    DEC A                                                                ;A58D41;
+    DEC                                                                  ;A58D41;
     STA.L DraygonBody.goopCounter                                        ;A58D42;
     BEQ .reloadSpeedDivisor                                              ;A58D46;
     LDY.W #InstList_DraygonBody_FacingLeft_FireGoop                      ;A58D48;
@@ -1530,7 +1530,7 @@ Function_DraygonBody_ChaseSamus:
     STA.B $14                                                            ;A58E71;
     JSL.L CalculateAngleOf_12_14_Offset                                  ;A58E73;
     EOR.W #$00FF                                                         ;A58E77;
-    INC A                                                                ;A58E7A;
+    INC                                                                  ;A58E7A;
     CLC                                                                  ;A58E7B;
     ADC.W #$0040                                                         ;A58E7C;
     AND.W #$00FF                                                         ;A58E7F;
@@ -1651,7 +1651,7 @@ Function_DraygonBody_GrabbedSamus_MovingToTargetPosition:
     STA.B $14                                                            ;A58F75;
     JSL.L CalculateAngleOf_12_14_Offset                                  ;A58F77;
     EOR.W #$00FF                                                         ;A58F7B;
-    INC A                                                                ;A58F7E;
+    INC                                                                  ;A58F7E;
     CLC                                                                  ;A58F7F;
     ADC.W #$0040                                                         ;A58F80;
     AND.W #$00FF                                                         ;A58F83;
@@ -1728,8 +1728,8 @@ Function_DraygonBody_GrabbedSamus_RisingSpiralMovement:
     ADC.L DraygonBody.spiralXPosition                                    ;A59021;
     STA.W $0F7A                                                          ;A59025;
     LDA.L DraygonBody.spiralXRadius                                      ;A59028;
-    LSR A                                                                ;A5902C;
-    LSR A                                                                ;A5902D;
+    LSR                                                                  ;A5902C;
+    LSR                                                                  ;A5902D;
     STA.W $0E32                                                          ;A5902E;
     LDA.L DraygonBody.spiralAngle                                        ;A59031;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A59035;
@@ -1802,7 +1802,7 @@ Function_DraygonBody_GrabbedSamus_RisingSpiralMovement:
 Function_DraygonBody_GrabbedSamus_TailWhip:
     JSR.W MoveSamusWithDraygon                                           ;A590D4;
     LDA.L DraygonBody.tailWhipTimer                                      ;A590D7;
-    DEC A                                                                ;A590DB;
+    DEC                                                                  ;A590DB;
     STA.L DraygonBody.tailWhipTimer                                      ;A590DC;
     BEQ .done                                                            ;A590E0;
     CMP.W #$003F                                                         ;A590E2;
@@ -1925,22 +1925,22 @@ Function_DraygonBody_DeathSequence_DriftToDeathSpot:
 
   .noFoam:
     LDA.W $0F7A                                                          ;A591BC;
-    LSR A                                                                ;A591BF;
-    LSR A                                                                ;A591C0;
+    LSR                                                                  ;A591BF;
+    LSR                                                                  ;A591C0;
     STA.B $12                                                            ;A591C1;
     LDA.W #$0100                                                         ;A591C3;
-    LSR A                                                                ;A591C6; >.<
-    LSR A                                                                ;A591C7;
+    LSR                                                                  ;A591C6; >.<
+    LSR                                                                  ;A591C7;
     SEC                                                                  ;A591C8;
     SBC.B $12                                                            ;A591C9;
     STA.B $12                                                            ;A591CB;
     LDA.W $0F7E                                                          ;A591CD;
-    LSR A                                                                ;A591D0;
-    LSR A                                                                ;A591D1;
+    LSR                                                                  ;A591D0;
+    LSR                                                                  ;A591D1;
     STA.B $14                                                            ;A591D2;
     LDA.W #$01E0                                                         ;A591D4;
-    LSR A                                                                ;A591D7; >.<
-    LSR A                                                                ;A591D8;
+    LSR                                                                  ;A591D7; >.<
+    LSR                                                                  ;A591D8;
     SEC                                                                  ;A591D9;
     SBC.B $14                                                            ;A591DA;
     STA.B $14                                                            ;A591DC;
@@ -1948,7 +1948,7 @@ Function_DraygonBody_DeathSequence_DriftToDeathSpot:
     SEC                                                                  ;A591E2;
     SBC.W #$0040                                                         ;A591E3;
     EOR.W #$FFFF                                                         ;A591E6;
-    INC A                                                                ;A591E9;
+    INC                                                                  ;A591E9;
     AND.W #$00FF                                                         ;A591EA;
     STA.L $7E8806                                                        ;A591ED;
     LDA.W #$0001                                                         ;A591F1;
@@ -2425,8 +2425,8 @@ HurtAI_Draygon:
     BIT.W #$0002                                                         ;A5957D;
     BNE .flashing                                                        ;A59580;
     LDA.L DraygonBody.healthBasedPaletteTableIndex                       ;A59582;
-    ASL A                                                                ;A59586;
-    ASL A                                                                ;A59587;
+    ASL                                                                  ;A59586;
+    ASL                                                                  ;A59587;
     TAY                                                                  ;A59588;
     LDX.W #$0000                                                         ;A59589;
 
@@ -2554,7 +2554,7 @@ DraygonReaction_Common:
     SEC                                                                  ;A59671;
     SBC.W #$0040                                                         ;A59672;
     EOR.W #$FFFF                                                         ;A59675;
-    INC A                                                                ;A59678;
+    INC                                                                  ;A59678;
     AND.W #$00FF                                                         ;A59679;
     STA.L $7E8806                                                        ;A5967C;
     LDA.W #$0001                                                         ;A59680;
@@ -2622,8 +2622,8 @@ DraygonHealthBasedPaletteHandling:
     BEQ .return                                                          ;A59715;
     STA.L $7E781C                                                        ;A59717;
     LDA.L $7E781C                                                        ;A5971B; >_<
-    ASL A                                                                ;A5971F;
-    ASL A                                                                ;A59720;
+    ASL                                                                  ;A5971F;
+    ASL                                                                  ;A59720;
     TAY                                                                  ;A59721;
     LDX.W #$0000                                                         ;A59722;
 
@@ -3873,10 +3873,10 @@ HandleDraygonFightIntroDance:
     CPX.W #$0038                                                         ;A5A183;
     BPL .loop                                                            ;A5A186;
     LDA.L DraygonBody.fightIntroDanceIndex                               ;A5A188;
-    INC A                                                                ;A5A18C;
-    INC A                                                                ;A5A18D;
-    INC A                                                                ;A5A18E;
-    INC A                                                                ;A5A18F;
+    INC                                                                  ;A5A18C;
+    INC                                                                  ;A5A18D;
+    INC                                                                  ;A5A18E;
+    INC                                                                  ;A5A18F;
     STA.L DraygonBody.fightIntroDanceIndex                               ;A5A190;
     PLY                                                                  ;A5A194;
     RTS                                                                  ;A5A195;
@@ -6591,7 +6591,7 @@ InitAI_DraygonTail:
     LDA.W #InstList_DraygonTail_FacingLeft_FakeTailWhip                  ;A5C59C;
     STA.W $0F92,X                                                        ;A5C59F;
     LDA.W #$0700                                                         ;A5C5A2;
-    ASL A                                                                ;A5C5A5;
+    ASL                                                                  ;A5C5A5;
     STA.W $0F96,X                                                        ;A5C5A6;
     RTL                                                                  ;A5C5A9;
 
@@ -6617,7 +6617,7 @@ InitAI_DraygonArms:
     LDA.W #InstList_DraygonArms_FacingLeft_Idle_0                        ;A5C5B0;
     STA.W $0F92,X                                                        ;A5C5B3;
     LDA.W #$0700                                                         ;A5C5B6;
-    ASL A                                                                ;A5C5B9;
+    ASL                                                                  ;A5C5B9;
     STA.W $0F96,X                                                        ;A5C5BA;
     LDA.W #$0002                                                         ;A5C5BD;
     STA.W $0F9A,X                                                        ;A5C5C0;
@@ -7891,7 +7891,7 @@ Function_SporeSpawn_Moving:
     LDA.L SporeSpawn.angle                                               ;A5EB76;
     SEC                                                                  ;A5EB7A;
     SBC.W #$0040                                                         ;A5EB7B;
-    ASL A                                                                ;A5EB7E;
+    ASL                                                                  ;A5EB7E;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A5EB7F;
     CLC                                                                  ;A5EB83;
     ADC.W SporeSpawn.YOrigin,X                                           ;A5EB84;
@@ -7919,7 +7919,7 @@ Function_SporeSpawn_SetupDeath:
     SEC                                                                  ;A5EBB4;
     SBC.W #$0040                                                         ;A5EBB5;
     EOR.W #$FFFF                                                         ;A5EBB8;
-    INC A                                                                ;A5EBBB;
+    INC                                                                  ;A5EBBB;
     AND.W #$00FF                                                         ;A5EBBC;
     STA.L SporeSpawn.deathDriftAngle                                     ;A5EBBF;
     LDA.W #$0001                                                         ;A5EBC3;
@@ -7982,10 +7982,10 @@ UpdateSporeSpawnStalkSegmentPositions:
     SBC.L SporeSpawn.stalkXOrigin                                        ;A5EC4D;
     BPL .positiveX                                                       ;A5EC51;
     EOR.W #$FFFF                                                         ;A5EC53;
-    INC A                                                                ;A5EC56;
-    LSR A                                                                ;A5EC57;
+    INC                                                                  ;A5EC56;
+    LSR                                                                  ;A5EC57;
     STA.B $12                                                            ;A5EC58;
-    LSR A                                                                ;A5EC5A;
+    LSR                                                                  ;A5EC5A;
     STA.B $14                                                            ;A5EC5B;
     CLC                                                                  ;A5EC5D;
     ADC.B $12                                                            ;A5EC5E;
@@ -8010,9 +8010,9 @@ UpdateSporeSpawnStalkSegmentPositions:
     BRA .checkY                                                          ;A5EC92;
 
   .positiveX:
-    LSR A                                                                ;A5EC94;
+    LSR                                                                  ;A5EC94;
     STA.B $12                                                            ;A5EC95;
-    LSR A                                                                ;A5EC97;
+    LSR                                                                  ;A5EC97;
     STA.B $14                                                            ;A5EC98;
     CLC                                                                  ;A5EC9A;
     ADC.B $12                                                            ;A5EC9B;
@@ -8043,10 +8043,10 @@ UpdateSporeSpawnStalkSegmentPositions:
     SBC.L SporeSpawn.stalkYOrigin                                        ;A5ECD7;
     BPL .positiveY                                                       ;A5ECDB;
     EOR.W #$FFFF                                                         ;A5ECDD;
-    INC A                                                                ;A5ECE0;
-    LSR A                                                                ;A5ECE1;
+    INC                                                                  ;A5ECE0;
+    LSR                                                                  ;A5ECE1;
     STA.B $12                                                            ;A5ECE2;
-    LSR A                                                                ;A5ECE4;
+    LSR                                                                  ;A5ECE4;
     STA.B $14                                                            ;A5ECE5;
     CLC                                                                  ;A5ECE7;
     ADC.B $12                                                            ;A5ECE8;
@@ -8071,9 +8071,9 @@ UpdateSporeSpawnStalkSegmentPositions:
     BRA .return                                                          ;A5ED1C;
 
   .positiveY:
-    LSR A                                                                ;A5ED1E;
+    LSR                                                                  ;A5ED1E;
     STA.B $12                                                            ;A5ED1F;
-    LSR A                                                                ;A5ED21;
+    LSR                                                                  ;A5ED21;
     STA.B $14                                                            ;A5ED22;
     CLC                                                                  ;A5ED24;
     ADC.B $12                                                            ;A5ED25;
@@ -8103,7 +8103,7 @@ UpdateSporeSpawnStalkSegmentPositions:
 ;;; $ED5A: Enemy shot - Spore Spawn - vulnerable ;;;
 EnemyShot_SporeSpawn_Vulnerable:
     LDA.W $18A6                                                          ;A5ED5A;
-    ASL A                                                                ;A5ED5D;
+    ASL                                                                  ;A5ED5D;
     TAX                                                                  ;A5ED5E;
     LDA.W $0C18,X                                                        ;A5ED5F;
     BIT.W #$0700                                                         ;A5ED62;
@@ -8126,7 +8126,7 @@ EnemyShot_SporeSpawn_Vulnerable:
     BPL .negativeAngleDelta                                              ;A5ED8B;
     TYA                                                                  ;A5ED8D;
     EOR.W #$FFFF                                                         ;A5ED8E;
-    INC A                                                                ;A5ED91;
+    INC                                                                  ;A5ED91;
     TAY                                                                  ;A5ED92;
 
   .negativeAngleDelta:
@@ -8138,7 +8138,7 @@ EnemyShot_SporeSpawn_Vulnerable:
     BNE EnemyShot_SporeSpawn                                             ;A5ED9C;
     LDA.L SporeSpawn.angleDelta                                          ;A5ED9E;
     EOR.W #$FFFF                                                         ;A5EDA2;
-    INC A                                                                ;A5EDA5;
+    INC                                                                  ;A5EDA5;
     STA.L SporeSpawn.angleDelta                                          ;A5EDA6;
     LDA.W #$0001                                                         ;A5EDAA;
     STA.L SporeSpawn.damagedFlag                                         ;A5EDAD;

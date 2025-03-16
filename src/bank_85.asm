@@ -147,7 +147,7 @@ Play_Saving_Sound_Effect:
     JSL.L HandleSounds                                                   ;85812A;
     JSR.W Wait_for_Lag_Frame                                             ;85812E;
     PLA                                                                  ;858131;
-    DEC A                                                                ;858132;
+    DEC                                                                  ;858132;
     BNE .loop                                                            ;858133;
     RTS                                                                  ;858135;
 
@@ -279,10 +279,10 @@ Clear_MessageBox_BG3Tilemap:
 Initialise_MessageBox:
     REP #$30                                                             ;858241;
     LDA.W $1C1F                                                          ;858243;
-    DEC A                                                                ;858246;
-    ASL A                                                                ;858247;
+    DEC                                                                  ;858246;
+    ASL                                                                  ;858247;
     STA.B $34                                                            ;858248;
-    ASL A                                                                ;85824A;
+    ASL                                                                  ;85824A;
     CLC                                                                  ;85824B;
     ADC.B $34                                                            ;85824C;
     TAX                                                                  ;85824E;
@@ -381,10 +381,10 @@ Write_Message_Tilemap:
     CPX.W #$00E0                                                         ;8582E0;
     BNE .zeroLoop                                                        ;8582E3;
     LDA.W $1C1F                                                          ;8582E5;
-    DEC A                                                                ;8582E8;
-    ASL A                                                                ;8582E9;
+    DEC                                                                  ;8582E8;
+    ASL                                                                  ;8582E9;
     STA.B $34                                                            ;8582EA;
-    ASL A                                                                ;8582EC;
+    ASL                                                                  ;8582EC;
     CLC                                                                  ;8582ED;
     ADC.B $34                                                            ;8582EE;
     TAX                                                                  ;8582F0;
@@ -394,7 +394,7 @@ Write_Message_Tilemap:
     SEC                                                                  ;8582F9;
     SBC.B $00                                                            ;8582FA;
     STA.B $09                                                            ;8582FC;
-    LSR A                                                                ;8582FE;
+    LSR                                                                  ;8582FE;
     STA.B $16                                                            ;8582FF;
     LDA.B $09                                                            ;858301;
     CLC                                                                  ;858303;
@@ -529,8 +529,8 @@ DrawSpecialButton_SetupPPUForLargeMessageBox:
 
   .found:
     LDA.W $1C1F                                                          ;85840C;
-    DEC A                                                                ;85840F;
-    ASL A                                                                ;858410;
+    DEC                                                                  ;85840F;
+    ASL                                                                  ;858410;
     TAX                                                                  ;858411;
     LDA.W Special_Button_Tilemap_Offsets,X                               ;858412;
     TAX                                                                  ;858415;

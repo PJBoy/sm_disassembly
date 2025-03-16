@@ -3255,9 +3255,9 @@ InitAI_Kraid:
     STA.L $7E7808                                                        ;A7A9FB;
     LDX.W #$0000                                                         ;A7A9FF;
     LDA.W $0F8C                                                          ;A7AA02;
-    LSR A                                                                ;A7AA05;
-    LSR A                                                                ;A7AA06;
-    LSR A                                                                ;A7AA07;
+    LSR                                                                  ;A7AA05;
+    LSR                                                                  ;A7AA06;
+    LSR                                                                  ;A7AA07;
     STA.B $12                                                            ;A7AA08;
 
   .loopKraidHealth:
@@ -3273,8 +3273,8 @@ InitAI_Kraid:
     LDX.W $0E54                                                          ;A7AA1D;
     JSR.W SetupKraidGFXWithTheTilePriorityCleared                        ;A7AA20;
     LDA.W $0F8C                                                          ;A7AA23;
-    LSR A                                                                ;A7AA26;
-    LSR A                                                                ;A7AA27;
+    LSR                                                                  ;A7AA26;
+    LSR                                                                  ;A7AA27;
     STA.L $7E7820                                                        ;A7AA28;
     CLC                                                                  ;A7AA2C;
     ADC.L $7E7820                                                        ;A7AA2D;
@@ -3760,12 +3760,12 @@ SetLintYPositionsAndRandomThinkingTimer:
     LDA.W #$0002                                                         ;A7AE15;
 
   .multiplyBy40:
-    ASL A                                                                ;A7AE18;
-    ASL A                                                                ;A7AE19;
-    ASL A                                                                ;A7AE1A;
-    ASL A                                                                ;A7AE1B;
-    ASL A                                                                ;A7AE1C;
-    ASL A                                                                ;A7AE1D;
+    ASL                                                                  ;A7AE18;
+    ASL                                                                  ;A7AE19;
+    ASL                                                                  ;A7AE1A;
+    ASL                                                                  ;A7AE1B;
+    ASL                                                                  ;A7AE1C;
+    ASL                                                                  ;A7AE1D;
     STA.L $7E7806                                                        ;A7AE1E;
     RTS                                                                  ;A7AE22;
 
@@ -3829,7 +3829,7 @@ Function_Kraid_MainLoop_Thinking:
 ; This is the function for which Kraid can be shot to trigger his mouth opening
     LDA.L $7E7806                                                        ;A7AEA4;
     BEQ .return                                                          ;A7AEA8;
-    DEC A                                                                ;A7AEAA;
+    DEC                                                                  ;A7AEAA;
     STA.L $7E7806                                                        ;A7AEAB;
     BNE .return                                                          ;A7AEAF;
     LDA.W #Function_KraidMainLoop_AttackingWithMouthOpen                 ;A7AEB1;
@@ -3847,7 +3847,7 @@ Function_Kraid_MainLoop_Thinking:
 Function_Kraid_KraidGetsBig_Thinking:
     LDA.L $7E7806                                                        ;A7AEC4;
     BEQ .return                                                          ;A7AEC8;
-    DEC A                                                                ;A7AECA;
+    DEC                                                                  ;A7AECA;
     STA.L $7E7806                                                        ;A7AECB;
     BNE .return                                                          ;A7AECF;
     LDA.W #Function_Kraid_KraidShot_KraidsMouthIsOpen                    ;A7AED1;
@@ -4037,14 +4037,14 @@ KraidsMouth_vs_Projectile_CollisionHandling:
     STA.B $12                                                            ;A7AFF0;
     LDA.W $0CCE                                                          ;A7AFF2;
     BEQ .noProjectiles                                                   ;A7AFF5;
-    ASL A                                                                ;A7AFF7;
+    ASL                                                                  ;A7AFF7;
     TAX                                                                  ;A7AFF8;
 
   .loop:
     LDA.W $0B78,X                                                        ;A7AFF9;
     SEC                                                                  ;A7AFFC;
     SBC.W $0BC8,X                                                        ;A7AFFD;
-    DEC A                                                                ;A7B000;
+    DEC                                                                  ;A7B000;
     CMP.B $12                                                            ;A7B001;
     BPL .next                                                            ;A7B003;
     LDA.W $0B78,X                                                        ;A7B005;
@@ -4069,7 +4069,7 @@ KraidsMouth_vs_Projectile_CollisionHandling:
   .notBeam:
     PHX                                                                  ;A7B033;
     TXA                                                                  ;A7B034;
-    LSR A                                                                ;A7B035;
+    LSR                                                                  ;A7B035;
     STA.W $18A6                                                          ;A7B036;
     PHP                                                                  ;A7B039;
     JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;A7B03A;
@@ -4282,14 +4282,14 @@ KraidBody_vs_Projectile_CollisionHandling:
     STA.B $12                                                            ;A7B1C1;
     LDA.W $0CCE                                                          ;A7B1C3;
     BEQ .noProjectiles                                                   ;A7B1C6;
-    ASL A                                                                ;A7B1C8;
+    ASL                                                                  ;A7B1C8;
     TAX                                                                  ;A7B1C9;
 
   .loop:
     LDA.W $0B78,X                                                        ;A7B1CA;
     SEC                                                                  ;A7B1CD;
     SBC.W $0BC8,X                                                        ;A7B1CE;
-    DEC A                                                                ;A7B1D1;
+    DEC                                                                  ;A7B1D1;
     CMP.B $12                                                            ;A7B1D2;
     BPL .body                                                            ;A7B1D4;
     LDA.W $0B78,X                                                        ;A7B1D6;
@@ -4441,7 +4441,7 @@ UNUSED_HandleProjectileDamageAndSound:
     STA.W $0E32                                                          ;A7B2DD;
     BEQ .return                                                          ;A7B2E0;
     LDA.W $187A                                                          ;A7B2E2;
-    LSR A                                                                ;A7B2E5;
+    LSR                                                                  ;A7B2E5;
     STA.W $4202                                                          ;A7B2E6;
     SEP #$20                                                             ;A7B2E9;
     LDA.W $0E32                                                          ;A7B2EB;
@@ -4501,13 +4501,13 @@ KraidPaletteHandling:
     LDA.L $7E782A                                                        ;A7B347;
     BEQ .return                                                          ;A7B34B;
     LDA.L $7E782C                                                        ;A7B34D;
-    DEC A                                                                ;A7B351;
+    DEC                                                                  ;A7B351;
     STA.L $7E782C                                                        ;A7B352;
     BNE .return                                                          ;A7B356;
     LDA.W #$0002                                                         ;A7B358;
     STA.L $7E782C                                                        ;A7B35B;
     LDA.L $7E782A                                                        ;A7B35F;
-    DEC A                                                                ;A7B363;
+    DEC                                                                  ;A7B363;
     STA.L $7E782A                                                        ;A7B364;
 
 +   JSR.W KraidHurtFlashHandling                                         ;A7B368;
@@ -4563,10 +4563,10 @@ KraidHealthBasedPaletteHandling:
     INX                                                                  ;A7B3B0;
     INX                                                                  ;A7B3B1;
     TXA                                                                  ;A7B3B2;
-    ASL A                                                                ;A7B3B3;
-    ASL A                                                                ;A7B3B4;
-    ASL A                                                                ;A7B3B5;
-    ASL A                                                                ;A7B3B6;
+    ASL                                                                  ;A7B3B3;
+    ASL                                                                  ;A7B3B4;
+    ASL                                                                  ;A7B3B5;
+    ASL                                                                  ;A7B3B6;
     TAY                                                                  ;A7B3B7;
 
   .hurtFlashFrame:
@@ -4766,7 +4766,7 @@ UNUSED_Instruction_Kraid_MoveRight_A7B683:
     CMP.W #$0140                                                         ;A7B688;
     BMI .leftScreen                                                      ;A7B68B;
     LDA.L $7E781E                                                        ;A7B68D;
-    DEC A                                                                ;A7B691;
+    DEC                                                                  ;A7B691;
     STA.L $7E781E                                                        ;A7B692;
     BNE .return                                                          ;A7B696;
 
@@ -4879,10 +4879,10 @@ Function_Kraid_KraidShot_UnglowEye:
     INX                                                                  ;A7B74F;
     INX                                                                  ;A7B750;
     TXA                                                                  ;A7B751;
-    ASL A                                                                ;A7B752;
-    ASL A                                                                ;A7B753;
-    ASL A                                                                ;A7B754;
-    ASL A                                                                ;A7B755;
+    ASL                                                                  ;A7B752;
+    ASL                                                                  ;A7B753;
+    ASL                                                                  ;A7B754;
+    ASL                                                                  ;A7B755;
     TAY                                                                  ;A7B756;
     LDX.W #$00E2                                                         ;A7B757;
     STZ.B $14                                                            ;A7B75A;
@@ -4897,7 +4897,7 @@ Function_Kraid_KraidShot_UnglowEye:
     BEQ +                                                                ;A7B76D;
     INC.B $14                                                            ;A7B76F;
     LDA.L $7EC000,X                                                      ;A7B771;
-    DEC A                                                                ;A7B775;
+    DEC                                                                  ;A7B775;
     STA.L $7EC000,X                                                      ;A7B776;
 
 +   LDA.L $7EC000,X                                                      ;A7B77A;
@@ -4963,7 +4963,7 @@ MainAI_KraidArm:
     BIT.W #$FF00                                                         ;A7B7F4;
     BEQ .return                                                          ;A7B7F7;
     LDA.W $0FD4                                                          ;A7B7F9;
-    INC A                                                                ;A7B7FC;
+    INC                                                                  ;A7B7FC;
     STA.W $0FD4                                                          ;A7B7FD;
 
   .return:
@@ -5290,7 +5290,7 @@ RTL_A7BA2D:
 ;;; $BA2E: Kraid foot function - second phase - thinking ;;;
 Function_KraidFoot_Phase2_Thinking:
     LDA.L $7E7940                                                        ;A7BA2E;
-    DEC A                                                                ;A7BA32;
+    DEC                                                                  ;A7BA32;
     STA.L $7E7940                                                        ;A7BA33;
     BNE .return                                                          ;A7BA37;
     LDX.W #$0000                                                         ;A7BA39;
@@ -5823,11 +5823,11 @@ Function_KraidNail_Fire:
     BCC .loopSetup                                                       ;A7BE9C;
     LDA.W $0FAA,X                                                        ;A7BE9E;
     EOR.W #$FFFF                                                         ;A7BEA1;
-    INC A                                                                ;A7BEA4;
+    INC                                                                  ;A7BEA4;
     STA.W $0FAA,X                                                        ;A7BEA5;
     LDA.W $0FAC,X                                                        ;A7BEA8;
     EOR.W #$FFFF                                                         ;A7BEAB;
-    INC A                                                                ;A7BEAE;
+    INC                                                                  ;A7BEAE;
     STA.W $0FAC,X                                                        ;A7BEAF;
     BRA .bounced                                                         ;A7BEB2;
 
@@ -5859,11 +5859,11 @@ Function_KraidNail_Fire:
     BMI .bounced                                                         ;A7BEE0;
     LDA.W $0FAA,X                                                        ;A7BEE2;
     EOR.W #$FFFF                                                         ;A7BEE5;
-    INC A                                                                ;A7BEE8;
+    INC                                                                  ;A7BEE8;
     STA.W $0FAA,X                                                        ;A7BEE9;
     LDA.W $0FAC,X                                                        ;A7BEEC;
     EOR.W #$FFFF                                                         ;A7BEEF;
-    INC A                                                                ;A7BEF2;
+    INC                                                                  ;A7BEF2;
     STA.W $0FAC,X                                                        ;A7BEF3;
 
   .bounced:
@@ -5875,7 +5875,7 @@ Function_KraidNail_Fire:
     BCC .return                                                          ;A7BF04;
     LDA.W $0FAE,X                                                        ;A7BF06;
     EOR.W #$FFFF                                                         ;A7BF09;
-    INC A                                                                ;A7BF0C;
+    INC                                                                  ;A7BF0C;
     STA.W $0FAE,X                                                        ;A7BF0D;
     LDA.W $0FB0,X                                                        ;A7BF10;
     EOR.W #$FFFF                                                         ;A7BF13;
@@ -6254,10 +6254,10 @@ UnpauseHook_KraidIsDead:
     STA.W $2116                                                          ;A7C204;
     LDA.B $5D                                                            ;A7C207;
     AND.B #$0F                                                           ;A7C209;
-    ASL A                                                                ;A7C20B;
-    ASL A                                                                ;A7C20C;
-    ASL A                                                                ;A7C20D;
-    ASL A                                                                ;A7C20E;
+    ASL                                                                  ;A7C20B;
+    ASL                                                                  ;A7C20C;
+    ASL                                                                  ;A7C20D;
+    ASL                                                                  ;A7C20E;
     CLC                                                                  ;A7C20F;
     ADC.B #$3F                                                           ;A7C210;
     STA.W $2117                                                          ;A7C212;
@@ -6642,7 +6642,7 @@ KraidDeath_UpdateBG2TilemapBottomHalf:
 ;;; $C51D: Play sound every half second ;;;
 PlaySoundEveryHalfSecond:
     LDA.L $7E9000                                                        ;A7C51D;
-    DEC A                                                                ;A7C521;
+    DEC                                                                  ;A7C521;
     STA.L $7E9000                                                        ;A7C522;
     BNE .return                                                          ;A7C526;
     LDA.W #$001E                                                         ;A7C528;
@@ -7151,7 +7151,7 @@ UpdateBG2TilemapBottomHalf:
 Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery10f:
     JSR.W RestrictSamusXPositionToFirstScreen                            ;A7C8E0;
     LDA.W $0FB2                                                          ;A7C8E3;
-    DEC A                                                                ;A7C8E6;
+    DEC                                                                  ;A7C8E6;
     STA.W $0FB2                                                          ;A7C8E7;
     BNE .timerNotExpired                                                 ;A7C8EA;
     LDA.W #Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery8f   ;A7C8EC;
@@ -7173,7 +7173,7 @@ Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery10f:
 Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery8f:
     JSR.W RestrictSamusXPositionToFirstScreen                            ;A7C902;
     LDA.W $0FB2                                                          ;A7C905;
-    DEC A                                                                ;A7C908;
+    DEC                                                                  ;A7C908;
     STA.W $0FB2                                                          ;A7C909;
     BNE .timerNotExpired                                                 ;A7C90C;
     LDA.W #Function_Kraid_RaiseThruFloor_RaiseKraid                      ;A7C90E;
@@ -7733,7 +7733,7 @@ InitAI_Phantoon_Eye_Tentacles_Mouth:
     LDA.W $0F98                                                          ;A7CE6D;
     STA.W $0F98,X                                                        ;A7CE70;
     LDA.W $0FB6,X                                                        ;A7CE73;
-    ASL A                                                                ;A7CE76;
+    ASL                                                                  ;A7CE76;
     TAY                                                                  ;A7CE77;
     LDA.W .instListPointers,Y                                            ;A7CE78;
     STA.W $0F92,X                                                        ;A7CE7B;
@@ -7803,12 +7803,12 @@ MainAI_Phantoon:
 ;;; $CEED: Play Phantoon materialisation sound effect ;;;
 PlayPhantoonMaterializationSFX:
     LDA.L $7E9032                                                        ;A7CEED;
-    ASL A                                                                ;A7CEF1;
+    ASL                                                                  ;A7CEF1;
     TAY                                                                  ;A7CEF2;
     LDA.W Phantoon_MaterializationSFX,Y                                  ;A7CEF3;
     JSL.L QueueSound_Lib2_Max6                                           ;A7CEF6;
     LDA.L $7E9032                                                        ;A7CEFA;
-    INC A                                                                ;A7CEFE;
+    INC                                                                  ;A7CEFE;
     CMP.W #$0003                                                         ;A7CEFF;
     BMI .storeIndex                                                      ;A7CF02;
     LDA.W #$0000                                                         ;A7CF04;
@@ -7973,13 +7973,13 @@ HandleCasualFlames:
     JSL.L GenerateRandomNumber                                           ;A7CFD6;
     AND.W #$0003                                                         ;A7CFDA;
     STA.W $1068,X                                                        ;A7CFDD;
-    ASL A                                                                ;A7CFE0;
+    ASL                                                                  ;A7CFE0;
     TAY                                                                  ;A7CFE1;
     LDA.W CasualFlameTimers_pointers,Y                                   ;A7CFE2;
     TAY                                                                  ;A7CFE5;
     LDA.W $0000,Y                                                        ;A7CFE6;
     STA.W $106C,X                                                        ;A7CFE9;
-    ASL A                                                                ;A7CFEC;
+    ASL                                                                  ;A7CFEC;
     STA.B $12                                                            ;A7CFED;
     TYA                                                                  ;A7CFEF;
     CLC                                                                  ;A7CFF0;
@@ -7998,7 +7998,7 @@ HandleCasualFlames:
     LDA.W #$FFFF                                                         ;A7D003;
     STA.W $106C,X                                                        ;A7D006;
     LDA.W $1068,X                                                        ;A7D009;
-    ASL A                                                                ;A7D00C;
+    ASL                                                                  ;A7D00C;
     TAY                                                                  ;A7D00D;
     LDA.W CasualFlameTimers_pointers,Y                                   ;A7D00E;
     TAY                                                                  ;A7D011;
@@ -8008,10 +8008,10 @@ HandleCasualFlames:
 
   .nonZeroTimer:
     LDA.W $106C,X                                                        ;A7D01A;
-    ASL A                                                                ;A7D01D;
+    ASL                                                                  ;A7D01D;
     STA.B $12                                                            ;A7D01E;
     LDA.W $1068,X                                                        ;A7D020;
-    ASL A                                                                ;A7D023;
+    ASL                                                                  ;A7D023;
     TAY                                                                  ;A7D024;
     LDA.W CasualFlameTimers_pointers,Y                                   ;A7D025;
     CLC                                                                  ;A7D028;
@@ -8044,7 +8044,7 @@ SetupEyeOpenPhantoonState:
     STA.W $0F86                                                          ;A7D05D;
     JSL.L GenerateRandomNumber                                           ;A7D060;
     AND.W #$0007                                                         ;A7D064;
-    ASL A                                                                ;A7D067;
+    ASL                                                                  ;A7D067;
     TAY                                                                  ;A7D068;
     LDA.W Phantoon_Figure8_VulnerableWindowTimers,Y                      ;A7D069;
     STA.W $0FB0                                                          ;A7D06C;
@@ -8061,7 +8061,7 @@ PickNewPhantoonPattern:
     STA.W $0FB0                                                          ;A7D079;
     JSL.L GenerateRandomNumber                                           ;A7D07C;
     AND.W #$0007                                                         ;A7D080;
-    ASL A                                                                ;A7D083;
+    ASL                                                                  ;A7D083;
     TAY                                                                  ;A7D084;
     LDA.W Phantoon_EyeClosedTimers,Y                                     ;A7D085;
     STA.W $0FE8                                                          ;A7D088;
@@ -8071,7 +8071,7 @@ PickNewPhantoonPattern:
     LDA.W $0FEC                                                          ;A7D093;
     BEQ +                                                                ;A7D096;
     LDA.W $0FA8                                                          ;A7D098;
-    INC A                                                                ;A7D09B;
+    INC                                                                  ;A7D09B;
     STA.W $0FA8                                                          ;A7D09C;
     CMP.W #$0216                                                         ;A7D09F;
     BMI +                                                                ;A7D0A2;
@@ -8088,7 +8088,7 @@ PickNewPhantoonPattern:
     LDA.W $0FEC                                                          ;A7D0B8;
     BNE +                                                                ;A7D0BB;
     LDA.W $0FA8                                                          ;A7D0BD;
-    DEC A                                                                ;A7D0C0;
+    DEC                                                                  ;A7D0C0;
     STA.W $0FA8                                                          ;A7D0C1;
     BPL +                                                                ;A7D0C4;
     LDA.W #$0215                                                         ;A7D0C6;
@@ -8152,7 +8152,7 @@ UpdateFigure8PhantoonSpeed:
     CMP.W Phantoon_Figure8_SpeedCaps_Stage0Max                           ;A7D133;
     BMI ..return                                                         ;A7D136;
     LDA.W Phantoon_Figure8_SpeedCaps_Stage0Max                           ;A7D138;
-    DEC A                                                                ;A7D13B;
+    DEC                                                                  ;A7D13B;
     STA.W $0FAC                                                          ;A7D13C;
     STZ.W $0FAA                                                          ;A7D13F;
     INC.W $0FAE                                                          ;A7D142;
@@ -8192,7 +8192,7 @@ UpdateFigure8PhantoonSpeed:
 
   .negativeSpeed:
     LDA.W Phantoon_Figure8_SpeedCaps_Stage2Min                           ;A7D185;
-    INC A                                                                ;A7D188;
+    INC                                                                  ;A7D188;
     STA.W $0FAC                                                          ;A7D189;
     STZ.W $0FAA                                                          ;A7D18C;
     STZ.W $0FAE                                                          ;A7D18F;
@@ -8222,8 +8222,8 @@ UpdateReversedFigure8PhantoonSpeed:
     BPL .stage0_return                                                   ;A7D1B7;
 
 +   LDA.W Phantoon_ReverseFigure8_SpeedCaps_Stage0Max                    ;A7D1B9;
-    INC A                                                                ;A7D1BC;
-    INC A                                                                ;A7D1BD;
+    INC                                                                  ;A7D1BC;
+    INC                                                                  ;A7D1BD;
     STA.W $0FAC                                                          ;A7D1BE;
     STZ.W $0FAA                                                          ;A7D1C1;
     INC.W $0FAE                                                          ;A7D1C4;
@@ -8244,7 +8244,7 @@ UpdateReversedFigure8PhantoonSpeed:
     BPL .stage1_return                                                   ;A7D1E0;
 
 +   LDA.W Phantoon_ReverseFigure8_SpeedCaps_Stage1Max                    ;A7D1E2;
-    INC A                                                                ;A7D1E5;
+    INC                                                                  ;A7D1E5;
     STA.W $0FAC                                                          ;A7D1E6;
     STZ.W $0FAA                                                          ;A7D1E9;
     INC.W $0FAE                                                          ;A7D1EC;
@@ -8284,7 +8284,7 @@ MovePhantoonInFigure8:
   .loop:
     PHY                                                                  ;A7D21D;
     LDA.W $0FA8                                                          ;A7D21E;
-    ASL A                                                                ;A7D221;
+    ASL                                                                  ;A7D221;
     STA.B $12                                                            ;A7D222;
     TYA                                                                  ;A7D224;
     CLC                                                                  ;A7D225;
@@ -8313,7 +8313,7 @@ MovePhantoonInFigure8:
     ADC.B $12                                                            ;A7D256;
     STA.W $0F7E                                                          ;A7D258;
     LDA.W $0FA8                                                          ;A7D25B;
-    INC A                                                                ;A7D25E;
+    INC                                                                  ;A7D25E;
     STA.W $0FA8                                                          ;A7D25F;
     CMP.B $14                                                            ;A7D262;
     BMI +                                                                ;A7D264;
@@ -8335,7 +8335,7 @@ MovePhantoonInReverseFigure8:
 ;;     $14: 215h (last index of Phantoon movement data)
     LDA.W $0FAC                                                          ;A7D271;
     EOR.W #$FFFF                                                         ;A7D274;
-    INC A                                                                ;A7D277;
+    INC                                                                  ;A7D277;
     STA.B $16                                                            ;A7D278;
     BNE .loop                                                            ;A7D27A;
     RTS                                                                  ;A7D27C;
@@ -8343,7 +8343,7 @@ MovePhantoonInReverseFigure8:
   .loop:
     PHY                                                                  ;A7D27D;
     LDA.W $0FA8                                                          ;A7D27E;
-    ASL A                                                                ;A7D281;
+    ASL                                                                  ;A7D281;
     STA.B $12                                                            ;A7D282;
     TYA                                                                  ;A7D284;
     CLC                                                                  ;A7D285;
@@ -8372,7 +8372,7 @@ MovePhantoonInReverseFigure8:
     SBC.B $12                                                            ;A7D2B6;
     STA.W $0F7E                                                          ;A7D2B8;
     LDA.W $0FA8                                                          ;A7D2BB;
-    DEC A                                                                ;A7D2BE;
+    DEC                                                                  ;A7D2BE;
     STA.W $0FA8                                                          ;A7D2BF;
     BPL +                                                                ;A7D2C2;
     LDA.B $14                                                            ;A7D2C4;
@@ -8541,7 +8541,7 @@ StartPhantoonSwoopingPattern:
 ;;; $D3FA: Make Phantoon look towards Samus ;;;
 MakePhantoonLookTowardsSamus:
     JSL.L DetermineDirectionOfSamusFromEnemy                             ;A7D3FA;
-    ASL A                                                                ;A7D3FE;
+    ASL                                                                  ;A7D3FE;
     TAY                                                                  ;A7D3FF;
     LDA.W #$0001                                                         ;A7D400;
     STA.W $0FD4                                                          ;A7D403;
@@ -8664,7 +8664,7 @@ Function_Phantoon_FightIntro_SpawnCircleOfFlames:
     LDA.W #$001E                                                         ;A7D4C1;
     STA.W $0FB0,X                                                        ;A7D4C4;
     LDA.W $0FA8                                                          ;A7D4C7;
-    INC A                                                                ;A7D4CA;
+    INC                                                                  ;A7D4CA;
     STA.W $0FA8                                                          ;A7D4CB;
     CMP.W #$0008                                                         ;A7D4CE;
     BMI .return                                                          ;A7D4D1;
@@ -8790,9 +8790,9 @@ Function_Phantoon_FightIntro_PickFirstPattern:
     LDA.W #Function_Phantoon_Figure8_Moving                              ;A7D5A0;
     STA.W $0FB2,X                                                        ;A7D5A3;
     LDA.W $05B6                                                          ;A7D5A6;
-    LSR A                                                                ;A7D5A9;
+    LSR                                                                  ;A7D5A9;
     AND.W #$0003                                                         ;A7D5AA;
-    ASL A                                                                ;A7D5AD;
+    ASL                                                                  ;A7D5AD;
     TAY                                                                  ;A7D5AE;
     LDA.W Phantoon_EyeClosedTimers,Y                                     ;A7D5AF;
     STA.W $0FE8                                                          ;A7D5B2;
@@ -9089,7 +9089,7 @@ Function_Phantoon_FlameRain_FadingOut:
     STA.W $0FB2,X                                                        ;A7D7E4;
     JSL.L GenerateRandomNumber                                           ;A7D7E7;
     AND.W #$0007                                                         ;A7D7EB;
-    ASL A                                                                ;A7D7EE;
+    ASL                                                                  ;A7D7EE;
     TAY                                                                  ;A7D7EF;
     LDA.W Phantoon_FlameRain_HidingTimers,Y                              ;A7D7F0;
     STA.W $0FB0,X                                                        ;A7D7F3;
@@ -9106,9 +9106,9 @@ Function_Phantoon_FlameRain_SubsequentFlameRain:
     JSL.L GenerateRandomNumber                                           ;A7D7FE;
     AND.W #$0007                                                         ;A7D802;
     PHA                                                                  ;A7D805;
-    ASL A                                                                ;A7D806;
-    ASL A                                                                ;A7D807;
-    ASL A                                                                ;A7D808;
+    ASL                                                                  ;A7D806;
+    ASL                                                                  ;A7D807;
+    ASL                                                                  ;A7D808;
     TAY                                                                  ;A7D809;
     LDA.W Phantoon_FlameRain_PositionTable_index,Y                       ;A7D80A;
     STA.W $0FA8                                                          ;A7D80D;
@@ -9246,7 +9246,7 @@ Function_Phantoon_Enraged_Rage:
     LDA.W #$0029                                                         ;A7D8E6;
     JSL.L QueueSound_Lib3_Max6                                           ;A7D8E9;
     LDA.W $0FF2                                                          ;A7D8ED;
-    INC A                                                                ;A7D8F0;
+    INC                                                                  ;A7D8F0;
     STA.W $0FF2                                                          ;A7D8F1;
     CMP.W #$0008                                                         ;A7D8F4;
     BPL .doneRaging                                                      ;A7D8F7;
@@ -9319,7 +9319,7 @@ Function_Phantoon_DeathSequence_FadingInAndOut:
   .fadeComplete:
     STZ.W $0FF2                                                          ;A7D969;
     LDA.W $0FEC                                                          ;A7D96C;
-    INC A                                                                ;A7D96F;
+    INC                                                                  ;A7D96F;
     STA.W $0FEC                                                          ;A7D970;
     CMP.W #$000A                                                         ;A7D973;
     BMI .return                                                          ;A7D976;
@@ -9343,8 +9343,8 @@ Function_Phantoon_DeathSequence_Exploding:
 
   .timerExpired:
     LDA.W $1032                                                          ;A7D993;
-    ASL A                                                                ;A7D996;
-    ASL A                                                                ;A7D997;
+    ASL                                                                  ;A7D996;
+    ASL                                                                  ;A7D997;
     TAY                                                                  ;A7D998;
     LDA.W .XOffset,Y                                                     ;A7D999;
     AND.W #$00FF                                                         ;A7D99C;
@@ -9390,14 +9390,14 @@ Function_Phantoon_DeathSequence_Exploding:
     AND.W #$00FF                                                         ;A7D9F2;
     STA.W $0FB0,X                                                        ;A7D9F5;
     LDA.W $1032                                                          ;A7D9F8;
-    INC A                                                                ;A7D9FB;
+    INC                                                                  ;A7D9FB;
     STA.W $1032                                                          ;A7D9FC;
     CMP.W #$000D                                                         ;A7D9FF;
     BMI .return                                                          ;A7DA02;
     LDA.W #$0005                                                         ;A7DA04;
     STA.W $1032                                                          ;A7DA07;
     LDA.W $0FA8                                                          ;A7DA0A;
-    INC A                                                                ;A7DA0D;
+    INC                                                                  ;A7DA0D;
     STA.W $0FA8                                                          ;A7DA0E;
     CMP.W #$0003                                                         ;A7DA11;
     BMI .return                                                          ;A7DA14;
@@ -9599,7 +9599,7 @@ AdvancePhantoonFadeOut:
 ;;     Carry: Set if reached target colour, clear otherwise
     REP #$30                                                             ;A7DB9A;
     LDA.W $0FEE                                                          ;A7DB9C;
-    INC A                                                                ;A7DB9F;
+    INC                                                                  ;A7DB9F;
     CMP.W $0FF0                                                          ;A7DBA0;
     BCS .advance                                                         ;A7DBA3;
     LDA.W #$0000                                                         ;A7DBA5;
@@ -9625,7 +9625,7 @@ AdvancePhantoonFadeOut:
     CPX.W #$0020                                                         ;A7DBC7;
     BCC .loop                                                            ;A7DBCA;
     LDA.W $0FF0                                                          ;A7DBCC;
-    INC A                                                                ;A7DBCF;
+    INC                                                                  ;A7DBCF;
     STA.W $0FF0                                                          ;A7DBD0;
     CLC                                                                  ;A7DBD3;
     RTS                                                                  ;A7DBD4;
@@ -9637,7 +9637,7 @@ AdvancePhantoonFadeIn:
 ;;     Carry: Set if reached target colour, clear otherwise
     REP #$30                                                             ;A7DBD5;
     LDA.W $0FEE                                                          ;A7DBD7;
-    INC A                                                                ;A7DBDA;
+    INC                                                                  ;A7DBDA;
     CMP.W $0FF0                                                          ;A7DBDB;
     BCS .advance                                                         ;A7DBDE;
     LDA.W #$0000                                                         ;A7DBE0;
@@ -9662,7 +9662,7 @@ AdvancePhantoonFadeIn:
     CPX.W #$0020                                                         ;A7DC01;
     BCC .loop                                                            ;A7DC04;
     LDA.W $0FF0                                                          ;A7DC06;
-    INC A                                                                ;A7DC09;
+    INC                                                                  ;A7DC09;
     STA.W $0FF0                                                          ;A7DC0A;
     CLC                                                                  ;A7DC0D;
     RTS                                                                  ;A7DC0E;
@@ -9675,9 +9675,9 @@ GetPhantoonHealthBasedPaletteColor:
     STX.B $18                                                            ;A7DC0F;
     LDX.W $0E54                                                          ;A7DC11;
     LDA.W #$09C4                                                         ;A7DC14;
-    LSR A                                                                ;A7DC17;
-    LSR A                                                                ;A7DC18;
-    LSR A                                                                ;A7DC19;
+    LSR                                                                  ;A7DC17;
+    LSR                                                                  ;A7DC18;
+    LSR                                                                  ;A7DC19;
     STA.B $12                                                            ;A7DC1A;
     STA.B $14                                                            ;A7DC1C;
     STZ.B $16                                                            ;A7DC1E;
@@ -9691,14 +9691,14 @@ GetPhantoonHealthBasedPaletteColor:
     ADC.B $12                                                            ;A7DC2A;
     STA.B $14                                                            ;A7DC2C;
     LDA.B $16                                                            ;A7DC2E;
-    INC A                                                                ;A7DC30;
+    INC                                                                  ;A7DC30;
     STA.B $16                                                            ;A7DC31;
     CMP.W #$0007                                                         ;A7DC33;
     BMI .loop                                                            ;A7DC36;
 
   .getPointer:
     LDA.B $16                                                            ;A7DC38;
-    ASL A                                                                ;A7DC3A;
+    ASL                                                                  ;A7DC3A;
     TAY                                                                  ;A7DC3B;
     LDA.W .palettePointers,Y                                             ;A7DC3C;
     CLC                                                                  ;A7DC3F;
@@ -9726,7 +9726,7 @@ AdvanceWreckedShipPowerOnPaletteTransition:
 ;;     Carry: Set if reached target colour, clear otherwise
     REP #$30                                                             ;A7DC5A;
     LDA.W $0FEE                                                          ;A7DC5C;
-    INC A                                                                ;A7DC5F;
+    INC                                                                  ;A7DC5F;
     CMP.W $0FF0                                                          ;A7DC60;
     BCS .advance                                                         ;A7DC63;
     LDA.W #$0000                                                         ;A7DC65;
@@ -9752,7 +9752,7 @@ AdvanceWreckedShipPowerOnPaletteTransition:
     CPX.W #$00E0                                                         ;A7DC87;
     BCC .loop                                                            ;A7DC8A;
     LDA.W $0FF0                                                          ;A7DC8C;
-    INC A                                                                ;A7DC8F;
+    INC                                                                  ;A7DC8F;
     STA.W $0FF0                                                          ;A7DC90;
     CLC                                                                  ;A7DC93;
     RTS                                                                  ;A7DC94;
@@ -9778,44 +9778,44 @@ CalculateAthTransitionalColorFromXToY:
     JSR.W CalculateTheAthTransitionalColorComponentFromXToY              ;A7DCA7;
     STA.B $07,S                                                          ;A7DCAA;
     LDA.B $01,S                                                          ;A7DCAC;
-    ASL A                                                                ;A7DCAE;
-    ASL A                                                                ;A7DCAF;
-    ASL A                                                                ;A7DCB0;
+    ASL                                                                  ;A7DCAE;
+    ASL                                                                  ;A7DCAF;
+    ASL                                                                  ;A7DCB0;
     XBA                                                                  ;A7DCB1;
     AND.W #$001F                                                         ;A7DCB2;
     TAY                                                                  ;A7DCB5;
     LDA.B $03,S                                                          ;A7DCB6;
-    ASL A                                                                ;A7DCB8;
-    ASL A                                                                ;A7DCB9;
-    ASL A                                                                ;A7DCBA;
+    ASL                                                                  ;A7DCB8;
+    ASL                                                                  ;A7DCB9;
+    ASL                                                                  ;A7DCBA;
     XBA                                                                  ;A7DCBB;
     AND.W #$001F                                                         ;A7DCBC;
     TAX                                                                  ;A7DCBF;
     LDA.B $05,S                                                          ;A7DCC0;
     JSR.W CalculateTheAthTransitionalColorComponentFromXToY              ;A7DCC2;
-    ASL A                                                                ;A7DCC5;
-    ASL A                                                                ;A7DCC6;
-    ASL A                                                                ;A7DCC7;
-    ASL A                                                                ;A7DCC8;
-    ASL A                                                                ;A7DCC9;
+    ASL                                                                  ;A7DCC5;
+    ASL                                                                  ;A7DCC6;
+    ASL                                                                  ;A7DCC7;
+    ASL                                                                  ;A7DCC8;
+    ASL                                                                  ;A7DCC9;
     ORA.B $07,S                                                          ;A7DCCA;
     STA.B $07,S                                                          ;A7DCCC;
     LDA.B $01,S                                                          ;A7DCCE;
-    LSR A                                                                ;A7DCD0;
-    LSR A                                                                ;A7DCD1;
+    LSR                                                                  ;A7DCD0;
+    LSR                                                                  ;A7DCD1;
     XBA                                                                  ;A7DCD2;
     AND.W #$001F                                                         ;A7DCD3;
     TAY                                                                  ;A7DCD6;
     LDA.B $03,S                                                          ;A7DCD7;
-    LSR A                                                                ;A7DCD9;
-    LSR A                                                                ;A7DCDA;
+    LSR                                                                  ;A7DCD9;
+    LSR                                                                  ;A7DCDA;
     XBA                                                                  ;A7DCDB;
     AND.W #$001F                                                         ;A7DCDC;
     TAX                                                                  ;A7DCDF;
     LDA.B $05,S                                                          ;A7DCE0;
     JSR.W CalculateTheAthTransitionalColorComponentFromXToY              ;A7DCE2;
-    ASL A                                                                ;A7DCE5;
-    ASL A                                                                ;A7DCE6;
+    ASL                                                                  ;A7DCE5;
+    ASL                                                                  ;A7DCE6;
     XBA                                                                  ;A7DCE7;
     ORA.B $07,S                                                          ;A7DCE8;
     STA.B $07,S                                                          ;A7DCEA;
@@ -9843,14 +9843,14 @@ CalculateTheAthTransitionalColorComponentFromXToY:
     RTS                                                                  ;A7DCF7;
 
   .notZero:
-    DEC A                                                                ;A7DCF8;
+    DEC                                                                  ;A7DCF8;
     CMP.W $0FEE                                                          ;A7DCF9;
     BNE +                                                                ;A7DCFC;
     TYA                                                                  ;A7DCFE;
     RTS                                                                  ;A7DCFF;
 
 +   PHX                                                                  ;A7DD00;
-    INC A                                                                ;A7DD01;
+    INC                                                                  ;A7DD01;
     STA.B $14                                                            ;A7DD02;
     TYA                                                                  ;A7DD04;
     SEC                                                                  ;A7DD05;
@@ -9858,14 +9858,14 @@ CalculateTheAthTransitionalColorComponentFromXToY:
     STA.B $12                                                            ;A7DD08;
     BPL +                                                                ;A7DD0A;
     EOR.W #$FFFF                                                         ;A7DD0C;
-    INC A                                                                ;A7DD0F;
+    INC                                                                  ;A7DD0F;
 
 +   SEP #$21                                                             ;A7DD10;
     STZ.W $4204                                                          ;A7DD12;
     STA.W $4205                                                          ;A7DD15;
     LDA.W $0FEE                                                          ;A7DD18;
     SBC.B $14                                                            ;A7DD1B;
-    INC A                                                                ;A7DD1D;
+    INC                                                                  ;A7DD1D;
     STA.W $4206                                                          ;A7DD1E;
     REP #$20                                                             ;A7DD21;
     NOP                                                                  ;A7DD23;
@@ -9877,7 +9877,7 @@ CalculateTheAthTransitionalColorComponentFromXToY:
     BIT.B $12                                                            ;A7DD2B;
     BPL +                                                                ;A7DD2D;
     EOR.W #$FFFF                                                         ;A7DD2F;
-    INC A                                                                ;A7DD32;
+    INC                                                                  ;A7DD32;
 
 +   STA.B $12                                                            ;A7DD33;
     PLA                                                                  ;A7DD35;
@@ -10004,7 +10004,7 @@ EnemyShot_Phantoon:
     CMP.W #$012C                                                         ;A7DE00;
     BMI .overDamaged                                                     ;A7DE03;
     LDA.W $18A6                                                          ;A7DE05;
-    ASL A                                                                ;A7DE08;
+    ASL                                                                  ;A7DE08;
     TAY                                                                  ;A7DE09;
     LDA.W $0C18,Y                                                        ;A7DE0A;
     AND.W #$0F00                                                         ;A7DE0D;
@@ -10031,7 +10031,7 @@ EnemyShot_Phantoon:
     CMP.W #$012C                                                         ;A7DE36;
     BMI +                                                                ;A7DE39;
     LDA.W $18A6                                                          ;A7DE3B;
-    ASL A                                                                ;A7DE3E;
+    ASL                                                                  ;A7DE3E;
     TAY                                                                  ;A7DE3F;
     LDA.W $0C18,Y                                                        ;A7DE40;
     AND.W #$0F00                                                         ;A7DE43;
@@ -10884,8 +10884,8 @@ Function_Etecoon_StartHop_BottomOfRoom:
     LDA.W EtecoonConstants_initialYVelocityOfHopsAndFailedJumps+2        ;A7EA0D;
     STA.W $0FAA,X                                                        ;A7EA10;
     LDA.W $0F92,X                                                        ;A7EA13;
-    INC A                                                                ;A7EA16;
-    INC A                                                                ;A7EA17;
+    INC                                                                  ;A7EA16;
+    INC                                                                  ;A7EA17;
     STA.W $0F92,X                                                        ;A7EA18;
     LDA.W #$0001                                                         ;A7EA1B;
     STA.W $0F94,X                                                        ;A7EA1E;
@@ -10969,8 +10969,8 @@ Function_Etecoon_LookAtSamus:
 
   .timerExpired:
     LDA.W $0F92,X                                                        ;A7EABC;
-    INC A                                                                ;A7EABF;
-    INC A                                                                ;A7EAC0;
+    INC                                                                  ;A7EABF;
+    INC                                                                  ;A7EAC0;
     STA.W $0F92,X                                                        ;A7EAC1;
     LDA.W #$0001                                                         ;A7EAC4;
     STA.W $0F94,X                                                        ;A7EAC7;
@@ -11156,7 +11156,7 @@ Function_Etecoon_LandedFromJump:
     TXY                                                                  ;A7EC2E;
     LDA.W $0FB6,X                                                        ;A7EC2F;
     AND.W #$00FF                                                         ;A7EC32;
-    ASL A                                                                ;A7EC35;
+    ASL                                                                  ;A7EC35;
     TAX                                                                  ;A7EC36;
     JSR.W (.pointers,X)                                                  ;A7EC37;
     LDA.W #$0001                                                         ;A7EC3A;
@@ -11205,8 +11205,8 @@ HopAtCenterRunUpPoint:
     LDA.W #Function_Etecoon_Hopping_TopOfRoom                            ;A7EC7C;
     STA.W $0FB2,X                                                        ;A7EC7F;
     LDA.W $0F92,X                                                        ;A7EC82;
-    INC A                                                                ;A7EC85;
-    INC A                                                                ;A7EC86;
+    INC                                                                  ;A7EC85;
+    INC                                                                  ;A7EC86;
     STA.W $0F92,X                                                        ;A7EC87;
     LDA.W EtecoonConstants_XVelocityRight                                ;A7EC8A;
     STA.W $0FAC,X                                                        ;A7EC8D;
@@ -11411,8 +11411,8 @@ Function_Etecoon_StartHop_TopOfRoom:
     LDA.W #Function_Etecoon_Hopping_TopOfRoom                            ;A7EE0E;
     STA.W $0FB2,X                                                        ;A7EE11;
     LDA.W $0F92,X                                                        ;A7EE14;
-    INC A                                                                ;A7EE17;
-    INC A                                                                ;A7EE18;
+    INC                                                                  ;A7EE17;
+    INC                                                                  ;A7EE18;
     STA.W $0F92,X                                                        ;A7EE19;
 
   .merge:
@@ -11460,8 +11460,8 @@ Function_Etecoon_HopUntilSamusIsNear:
     LDA.W EtecoonConstants_initialYVelocityOfHopsAndFailedJumps+2        ;A7EE70;
     STA.W $0FAA,X                                                        ;A7EE73;
     LDA.W $0F92,X                                                        ;A7EE76;
-    INC A                                                                ;A7EE79;
-    INC A                                                                ;A7EE7A;
+    INC                                                                  ;A7EE79;
+    INC                                                                  ;A7EE7A;
     STA.W $0F92,X                                                        ;A7EE7B;
     LDA.W #Function_Etecoon_Hopping_TopOfRoom                            ;A7EE7E;
     STA.W $0FB2,X                                                        ;A7EE81;
@@ -12089,8 +12089,8 @@ LoadDachoraPalette:
     STA.B $01                                                            ;A7F53C;
     LDA.W $0F96,X                                                        ;A7F53E;
     XBA                                                                  ;A7F541;
-    LSR A                                                                ;A7F542;
-    ASL A                                                                ;A7F543;
+    LSR                                                                  ;A7F542;
+    ASL                                                                  ;A7F543;
     TAX                                                                  ;A7F544;
     LDA.W .pointers,X                                                    ;A7F545;
     STA.B $00                                                            ;A7F548;
@@ -12199,7 +12199,7 @@ Function_Dachora_RunningLeft:
     STA.B $14                                                            ;A7F5F5;
     LDA.B $12                                                            ;A7F5F7;
     EOR.W #$FFFF                                                         ;A7F5F9;
-    INC A                                                                ;A7F5FC;
+    INC                                                                  ;A7F5FC;
     STA.B $12                                                            ;A7F5FD;
     BNE +                                                                ;A7F5FF;
     INC.B $14                                                            ;A7F601;
@@ -12319,7 +12319,7 @@ AccelerateRunningDachora:
 
   .animTimer:
     LDA.W $0FB0,X                                                        ;A7F6EC;
-    DEC A                                                                ;A7F6EF;
+    DEC                                                                  ;A7F6EF;
     STA.W $0FB0,X                                                        ;A7F6F0;
     AND.W #$00FF                                                         ;A7F6F3;
     BEQ .loadPalette                                                     ;A7F6F6;
@@ -12329,7 +12329,7 @@ AccelerateRunningDachora:
     LDA.W $0FB0,X                                                        ;A7F6FA;
     XBA                                                                  ;A7F6FD;
     AND.W #$00FF                                                         ;A7F6FE;
-    ASL A                                                                ;A7F701;
+    ASL                                                                  ;A7F701;
     TAY                                                                  ;A7F702;
     LDA.W .pointers,Y                                                    ;A7F703;
     TAY                                                                  ;A7F706;
@@ -12408,8 +12408,8 @@ Function_Dachora_ActivateShinespark:
     DEC.W $0FA8,X                                                        ;A7F792;
     BNE .return                                                          ;A7F795;
     LDA.W $0F92,X                                                        ;A7F797;
-    INC A                                                                ;A7F79A;
-    INC A                                                                ;A7F79B;
+    INC                                                                  ;A7F79A;
+    INC                                                                  ;A7F79B;
     STA.W $0F92,X                                                        ;A7F79C;
     LDA.W #$0001                                                         ;A7F79F;
     STA.W $0F94,X                                                        ;A7F7A2;
@@ -12484,7 +12484,7 @@ Function_Dachora_Shinesparking:
     STA.B $14                                                            ;A7F847;
     LDA.B $12                                                            ;A7F849;
     EOR.W #$FFFF                                                         ;A7F84B;
-    INC A                                                                ;A7F84E;
+    INC                                                                  ;A7F84E;
     STA.B $12                                                            ;A7F84F;
     BNE .move                                                            ;A7F851;
     INC.B $14                                                            ;A7F853;
@@ -12525,7 +12525,7 @@ Function_Dachora_Shinesparking:
 UpdateDachoraEchoPositions:
     LDA.W $0FE8,X                                                        ;A7F89A;
     BEQ .timerExpired                                                    ;A7F89D;
-    DEC A                                                                ;A7F89F;
+    DEC                                                                  ;A7F89F;
     STA.W $0FE8,X                                                        ;A7F8A0;
     RTS                                                                  ;A7F8A3;
 
@@ -12583,7 +12583,7 @@ LoadDachoraShinePalette:
     LDA.W $0FB0,X                                                        ;A7F90A;
     XBA                                                                  ;A7F90D;
     AND.W #$00FF                                                         ;A7F90E;
-    ASL A                                                                ;A7F911;
+    ASL                                                                  ;A7F911;
     TAY                                                                  ;A7F912;
     LDA.W .pointers,Y                                                    ;A7F913;
     TAY                                                                  ;A7F916;
@@ -12652,7 +12652,7 @@ Function_Dachora_Falling:
 Function_Dachora_Echo:
     LDA.W $0FAE,X                                                        ;A7F98C;
     BEQ .invisible                                                       ;A7F98F;
-    DEC A                                                                ;A7F991;
+    DEC                                                                  ;A7F991;
     STA.W $0FAE,X                                                        ;A7F992;
     TXA                                                                  ;A7F995;
     BIT.W #$0040                                                         ;A7F996;
