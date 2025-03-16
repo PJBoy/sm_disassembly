@@ -176,7 +176,7 @@ GameState_6_1F_28_LoadingGameData_SetupNewGame_LoadDemoData:
     CLC                                                                  ;82816F;
     ADC.B DP_Temp12                                                            ;828170;
     TAX                                                                  ;828172;
-    LDA.W DP_Temp10,X                                                        ;828173;
+    LDA.W $0010,X                                                        ;828173;
     STA.B DP_Temp12                                                            ;828176;
     LDX.W #$0000                                                         ;828178;
     JSR.W (DP_Temp12,X)                                                      ;82817B;
