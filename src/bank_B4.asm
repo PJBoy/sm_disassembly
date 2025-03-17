@@ -2,6 +2,7 @@
 org $B48000
 
 
+EnemySets:
 ;;; $8000: Enemy sets ;;;
 EnemySets_Draygon_1_MotherBrain_2:
     dw $FFFF                                                             ;B48000;

@@ -682,6 +682,7 @@ FXHeader_LNSave:
     db $00,$02,$02,$1E,$01,$00,$00,$02                                   ;8388F4;
 
 
+DoorHeaders:
 ; Door header format
 ;        _____________________________ 0: Destination room header pointer (bank $8F)
 ;       |     ________________________ 2: Elevator properties

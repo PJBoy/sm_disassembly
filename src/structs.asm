@@ -48,7 +48,8 @@ DP_Temp2E: skip 1 ; $2E
 DP_Temp2F: skip 1 ; $2F
 DP_Temp30: skip 1 ; $30
 DP_Temp31: skip 1 ; $31
-DP_Temp32: skip 2 ; $32
+DP_Temp32: skip 1 ; $32
+DP_Temp33: skip 1 ; $33
 DP_Temp34: skip 2 ; $34
 DP_BlocksToUpdate: skip 3 ; $36
 DP_Unused39: skip 3 ; $39..3B
@@ -1562,6 +1563,7 @@ PostCreditsSuperMetroidIcon_Tilemap: skip $800 ; $7E8000..87FF
 
 org $7E7000
 EnemyTileData: ; $7E7000..97FF
+CRETiles: ; $7E7000..9FFF
 
 Unused7000: skip 2 ; $7E7000
 NeverRead7002: skip 2 ; $7E7002

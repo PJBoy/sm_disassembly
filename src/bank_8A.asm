@@ -2,6 +2,7 @@
 org $8A8000
 
 
+FXTilemaps:
 ;;; $8000: Lava tilemap ;;;
 FX_Layer3_Tilemaps_lava:
     dw $1850,$1851,$1852,$1850,$1851,$1852,$1850,$1851                   ;8A8000;

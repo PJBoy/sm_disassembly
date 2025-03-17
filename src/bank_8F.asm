@@ -1699,6 +1699,8 @@ RTS_8F91F7:
     RTS                                                                  ;8F91F7;
 
 
+RoomHeaders:
+RoomStates:
 ;;; $91F8: Room headers, scroll data, door lists ;;;
 RoomHeader_LandingSite:
     db $00,$00,$17,$00,$09,$05,$70,$A0,$00                               ;8F91F8;
