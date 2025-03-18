@@ -6,6 +6,8 @@ org $B48000
 ;;; $8000: Enemy sets ;;;
 EnemySets_Draygon_1_MotherBrain_2:
     dw $FFFF                                                             ;B48000;
+
+EnemySetName_EastOcean:
     db "SF1_10 "                                                         ;B48002;
 
 EnemySets_EastOcean:
@@ -14,6 +16,8 @@ EnemySets_EastOcean:
     dw EnemyHeaders_Kamer2,$0003                                         ;B48011;
     dw $FFFF
     db $00                                                               ;B48017;
+
+EnemySetName_CrateriaPowerBombs:
     db "sf1_04 "                                                         ;B48018;
 
 EnemySets_CrateriaPowerBombs:
@@ -21,6 +25,8 @@ EnemySets_CrateriaPowerBombs:
     dw EnemyHeaders_Zero,$0001                                           ;B48023;
     dw $FFFF
     db $00                                                               ;B48029;
+
+EnemySetName_Terminator:
     db "sf2_06 "                                                         ;B4802A;
 
 EnemySets_Terminator:
@@ -28,6 +34,8 @@ EnemySets_Terminator:
     dw EnemyHeaders_Zoomer,$0002                                         ;B48035;
     dw $FFFF
     db $00                                                               ;B4803B;
+
+EnemySetName_FinalMissileBombway_1:
     db "SF2_12a"                                                         ;B4803C;
 
 EnemySets_FinalMissileBombway_1:
@@ -35,6 +43,8 @@ EnemySets_FinalMissileBombway_1:
     dw EnemyHeaders_Stoke,$0007                                          ;B48047;
     dw $FFFF
     db $00                                                               ;B4804D;
+
+EnemySetName_FinalMissileBombway_0:
     db "SF2_12 "                                                         ;B4804E;
 
 EnemySets_FinalMissileBombway_0:
@@ -42,6 +52,8 @@ EnemySets_FinalMissileBombway_0:
     dw EnemyHeaders_Stoke,$0007                                          ;B48059;
     dw $FFFF
     db $00                                                               ;B4805F;
+
+EnemySetName_Parlor_1:
     db "sf1_02A"                                                         ;B48060;
 
 EnemySets_Parlor_1:
@@ -50,6 +62,8 @@ EnemySets_Parlor_1:
     dw EnemyHeaders_Ripper,$0003                                         ;B4806F;
     dw $FFFF
     db $00                                                               ;B48075;
+
+EnemySetName_Flyway_0_1:
     db "sf2_04 "                                                         ;B48076;
 
 EnemySets_Flyway_0_1:
@@ -57,6 +71,8 @@ EnemySets_Flyway_0_1:
     dw EnemyHeaders_Mellow,$0002                                         ;B48081;
     dw $FFFF
     db $00                                                               ;B48087;
+
+EnemySetName_Pit_1:
     db "sf2_01A"                                                         ;B48088;
 
 EnemySets_Pit_1:
@@ -64,6 +80,8 @@ EnemySets_Pit_1:
     dw EnemyHeaders_PirateGreyWall,$0002                                 ;B48093;
     dw $FFFF
     db $00                                                               ;B48099;
+
+EnemySetName_GauntletEntrance:
     db "sf1_01 "                                                         ;B4809A;
 
 EnemySets_GauntletEntrance:
@@ -71,12 +89,16 @@ EnemySets_GauntletEntrance:
     dw EnemyHeaders_Waver,$0002                                          ;B480A5;
     dw $FFFF
     db $00                                                               ;B480AB;
+
+EnemySetName_BombTorizo_0_1:
     db "sf2_03 "                                                         ;B480AC;
 
 EnemySets_BombTorizo_0_1:
     dw EnemyHeaders_BombTorizo,$0001                                     ;B480B3;
     dw $FFFF
     db $00                                                               ;B480B9;
+
+EnemySetName_GreenPiratesShaft:
     db "sf2_10 "                                                         ;B480BA;
 
 EnemySets_GreenPiratesShaft:
@@ -84,66 +106,88 @@ EnemySets_GreenPiratesShaft:
     dw EnemyHeaders_Beetom,$0002                                         ;B480C5;
     dw $FFFF
     db $00                                                               ;B480CB;
+
+EnemySetName_GreenBrinstarElev:
     db "sf2_07 "                                                         ;B480CC;
 
 EnemySets_GreenBrinstarElev:
     dw $FFFF                                                             ;B480D3;
     db $00                                                               ;B480D5;
+
+EnemySetName_FinalMissile_0:
     db "SF2_13 "                                                         ;B480D6;
 
 EnemySets_FinalMissile_0:
     dw EnemyHeaders_Eye,$0001                                            ;B480DD;
     dw $FFFF
     db $00                                                               ;B480E3;
+
+EnemySetName_CrateriaMap:
     db "sf2_09 "                                                         ;B480E4;
 
 EnemySets_CrateriaMap:
     dw EnemyHeaders_BombTorizo,$0001                                     ;B480EB;
     dw $FFFF
     db $00                                                               ;B480F1;
-    db "SF2_14 "                                                         ;B480F2;
 
 if !FEATURE_KEEP_UNREFERENCED
+UNUSED_EnemySetName_B480F9:
+    db "SF2_14 "                                                         ;B480F2;
+
 UNUSED_EnemySets_B480F9:
     dw EnemyHeaders_FaceBlock,$0001                                      ;B480F9;
     dw $FFFF
     db $00                                                               ;B480FF;
-    db "SF2_13a"                                                         ;B48100;
 endif ; !FEATURE_KEEP_UNREFERENCED
+
+EnemySetName_FinalMissile_1:
+    db "SF2_13a"                                                         ;B48100;
 
 EnemySets_FinalMissile_1:
     dw $FFFF                                                             ;B48107;
     db $00                                                               ;B48109;
+
+EnemySetName_Climb_2:
     db "sf2_00 "                                                         ;B4810A;
 
 EnemySets_Climb_2:
     dw EnemyHeaders_PirateSilverNinja,$0002                              ;B48111;
     dw $FFFF
     db $00                                                               ;B48117;
-    db "sf1_03 "                                                         ;B48118;
 
 if !FEATURE_KEEP_UNREFERENCED
+UNUSED_EnemySetName_B4811F:
+    db "sf1_03 "                                                         ;B48118;
+
 UNUSED_EnemySets_B4811F:
     dw $FFFF                                                             ;B4811F;
     db $00                                                               ;B48121;
-    db "SF1_05 "                                                         ;B48122;
 endif ; !FEATURE_KEEP_UNREFERENCED
+
+EnemySetName_CrateriaSave:
+    db "SF1_05 "                                                         ;B48122;
 
 EnemySets_CrateriaSave:
     dw $FFFF                                                             ;B48129;
     db $00                                                               ;B4812B;
+
+EnemySetName_ForgottenHighwayElbow:
     db "SF1_13 "                                                         ;B4812C;
 
 EnemySets_ForgottenHighwayElbow:
     dw EnemyHeaders_FaceBlock,$0001                                      ;B48133;
     dw $FFFF
     db $00                                                               ;B48139;
+
+EnemySetName_Moat:
     db "SF1_15 "                                                         ;B4813A;
 
 EnemySets_Moat:
     dw EnemyHeaders_FaceBlock,$0001                                      ;B48141;
     dw $FFFF
     db $00                                                               ;B48147;
+
+EnemySetName_Climb_0:
     db "sf2_00 "                                                         ;B48148;
 
 EnemySets_Climb_0:
@@ -151,6 +195,8 @@ EnemySets_Climb_0:
     dw EnemyHeaders_FaceBlock,$0007                                      ;B48153;
     dw $FFFF
     db $00                                                               ;B48159;
+
+EnemySetName_WestOcean:
     db "SF1_06 "                                                         ;B4815A;
 
 EnemySets_WestOcean:
@@ -160,19 +206,25 @@ EnemySets_WestOcean:
     dw EnemyHeaders_Tripper,$0007                                        ;B4816D;
     dw $FFFF
     db $00                                                               ;B48173;
-    db "SF1_20 "                                                         ;B48174;
 
 if !FEATURE_KEEP_UNREFERENCED
+UNUSED_EnemySetName_B4817B:
+    db "SF1_20 "                                                         ;B48174;
+
 UNUSED_EnemySets_B4817B:
     dw $FFFF                                                             ;B4817B;
     db $00                                                               ;B4817D;
-    db "sf1_02 "                                                         ;B4817E;
 endif ; !FEATURE_KEEP_UNREFERENCED
+
+EnemySetName_Parlor_0:
+    db "sf1_02 "                                                         ;B4817E;
 
 EnemySets_Parlor_0:
     dw EnemyHeaders_Sbug,$0007                                           ;B48185;
     dw $FFFF
     db $00                                                               ;B4818B;
+
+EnemySetName_LandingSite_0_1_2:
     db "sf1_00 "                                                         ;B4818C;
 
 EnemySets_LandingSite_0_1_2:
@@ -180,6 +232,8 @@ EnemySets_LandingSite_0_1_2:
     dw EnemyHeaders_ShipBottomEntrance,$0007                             ;B48197;
     dw $FFFF
     db $00                                                               ;B4819D;
+
+EnemySetName_CrateriaSuper:
     db "SF2_11 "                                                         ;B4819E;
 
 EnemySets_CrateriaSuper:
@@ -187,26 +241,34 @@ EnemySets_CrateriaSuper:
     dw EnemyHeaders_YappingMaw,$0002                                     ;B481A9;
     dw $FFFF
     db $00                                                               ;B481AF;
-    db "SF1_19 "                                                         ;B481B0;
 
 if !FEATURE_KEEP_UNREFERENCED
+UNUSED_EnemySetName_B481B7:
+    db "SF1_19 "                                                         ;B481B0;
+
 UNUSED_EnemySets_B481B7:
     dw $FFFF                                                             ;B481B7;
     db $00                                                               ;B481B9;
-    db "SF1_18 "                                                         ;B481BA;
 endif ; !FEATURE_KEEP_UNREFERENCED
+
+EnemySetName_PreBowling:
+    db "SF1_18 "                                                         ;B481BA;
 
 EnemySets_PreBowling:
     dw EnemyHeaders_HZoomer,$0001                                        ;B481C1;
     dw EnemyHeaders_Sova,$0001                                           ;B481C5;
     dw $FFFF
     db $00                                                               ;B481CB;
+
+EnemySetName_Climb_1:
     db "sf2_00A"                                                         ;B481CC;
 
 EnemySets_Climb_1:
     dw EnemyHeaders_PirateGreyWall,$0001                                 ;B481D3;
     dw $FFFF
     db $00                                                               ;B481D9;
+
+EnemySetName_BowlingAlleyPath:
     db "SF1_07 "                                                         ;B481DA;
 
 EnemySets_BowlingAlleyPath:
@@ -214,11 +276,15 @@ EnemySets_BowlingAlleyPath:
     dw EnemyHeaders_Choot,$0007                                          ;B481E5;
     dw $FFFF
     db $00                                                               ;B481EB;
+
+EnemySetName_RedBinstarElev:
     db "SF1_16 "                                                         ;B481EC;
 
 EnemySets_RedBinstarElev:
     dw $FFFF                                                             ;B481F3;
     db $00                                                               ;B481F5;
+
+EnemySetName_GauntletETank:
     db "SF1_17 "                                                         ;B481F6;
 
 EnemySets_GauntletETank:
@@ -226,6 +292,8 @@ EnemySets_GauntletETank:
     dw EnemyHeaders_Zebbo,$0002                                          ;B48201;
     dw $FFFF
     db $00                                                               ;B48207;
+
+EnemySetName_Pit_0:
     db "sf2_01 "                                                         ;B48208;
 
 EnemySets_Pit_0:
@@ -233,6 +301,8 @@ EnemySets_Pit_0:
     dw EnemyHeaders_FaceBlock,$0007                                      ;B48213;
     dw $FFFF
     db $00                                                               ;B48219;
+
+EnemySetName_CrabMaze:
     db "SF1_12 "                                                         ;B4821A;
 
 EnemySets_CrabMaze:
@@ -240,27 +310,37 @@ EnemySets_CrabMaze:
     dw EnemyHeaders_Puyo,$0007                                           ;B48225;
     dw $FFFF
     db $00                                                               ;B4822B;
+
+EnemySetName_CrateriaTube:
     db "SF1_14 "                                                         ;B4822C;
 
 EnemySets_CrateriaTube:
     dw $FFFF                                                             ;B48233;
     db $00                                                               ;B48235;
+
+EnemySetName_ForgottenHighwayKagos:
     db "SF1_11 "                                                         ;B48236;
 
 EnemySets_ForgottenHighwayKagos:
     dw EnemyHeaders_Kago,$0001                                           ;B4823D;
     dw $FFFF
     db $00                                                               ;B48243;
+
+EnemySetName_ElevToBlueBrinstar:
     db "sf2_02 "                                                         ;B48244;
 
 EnemySets_ElevToBlueBrinstar:
     dw $FFFF                                                             ;B4824B;
     db $00                                                               ;B4824D;
+
+EnemySetName_ForgottenHighwayElev:
     db "SF1_09 "                                                         ;B4824E;
 
 EnemySets_ForgottenHighwayElev:
     dw $FFFF                                                             ;B48255;
     db $00                                                               ;B48257;
+
+EnemySetName_PreMapFlyway:
     db "sf2_05 "                                                         ;B48258;
 
 EnemySets_PreMapFlyway:
@@ -268,6 +348,8 @@ EnemySets_PreMapFlyway:
     dw EnemyHeaders_Rio,$0002                                            ;B48263;
     dw $FFFF
     db $00                                                               ;B48269;
+
+EnemySetName_LowerMushrooms:
     db "sf2_08 "                                                         ;B4826A;
 
 EnemySets_LowerMushrooms:
@@ -275,6 +357,8 @@ EnemySets_LowerMushrooms:
     dw EnemyHeaders_MZoomer,$0003                                        ;B48275;
     dw $FFFF
     db $00                                                               ;B4827B;
+
+EnemySetName_LandingSite_3:
     db "sf1_00 "                                                         ;B4827C;
 
 EnemySets_LandingSite_3:
@@ -282,12 +366,16 @@ EnemySets_LandingSite_3:
     dw EnemyHeaders_ShipBottomEntrance,$0007                             ;B48287;
     dw $FFFF
     db $00                                                               ;B4828D;
+
+EnemySetName_Parlor_2:
     db "sf1_02 "                                                         ;B4828E;
 
 EnemySets_Parlor_2:
     dw EnemyHeaders_Sbug,$0007                                           ;B48295;
     dw $FFFF
     db $00                                                               ;B4829B;
+
+EnemySetName_BombTorizo_2:
     db "sf2_03 "                                                         ;B4829C;
 
 EnemySets_BombTorizo_2:
@@ -295,11 +383,15 @@ EnemySets_BombTorizo_2:
     dw EnemyHeaders_DachoraEscape,$0007                                  ;B482A7;
     dw $FFFF
     db $00                                                               ;B482AD;
+
+EnemySetName_Flyway_2:
     db "sf2_04 "                                                         ;B482AE;
 
 EnemySets_Flyway_2:
     dw $FFFF                                                             ;B482B5;
     db $00                                                               ;B482B7;
+
+EnemySetName_CrateriaKihunter:
     db "SF1_08 "                                                         ;B482B8;
 
 EnemySets_CrateriaKihunter:
@@ -308,6 +400,8 @@ EnemySets_CrateriaKihunter:
     dw EnemyHeaders_Zero,$0002                                           ;B482C7;
     dw $FFFF
     db $00                                                               ;B482CD;
+
+EnemySetName_BrinstarPreMap:
     db "bl1_02 "                                                         ;B482CE;
 
 EnemySets_BrinstarPreMap:
@@ -315,33 +409,45 @@ EnemySets_BrinstarPreMap:
     dw EnemyHeaders_Zeela,$0002                                          ;B482D9;
     dw $FFFF
     db $00                                                               ;B482DF;
+
+EnemySetName_GreenBrinstarMap:
     db "bl1_05 "                                                         ;B482E0;
 
 EnemySets_GreenBrinstarMap:
     dw $FFFF                                                             ;B482E7;
     db $00                                                               ;B482E9;
+
+EnemySetName_GreenBrinstarMissileRefill:
     db "bl1_07 "                                                         ;B482EA;
 
 EnemySets_GreenBrinstarMissileRefill:
     dw $FFFF                                                             ;B482F1;
     db $00                                                               ;B482F3;
+
+EnemySetName_SporeSpawnKihunters:
     db "BL1_10 "                                                         ;B482F4;
 
 EnemySets_SporeSpawnKihunters:
     dw EnemyHeaders_KihunterGreen,$0007                                  ;B482FB;
     dw $FFFF
     db $00                                                               ;B48301;
+
+EnemySetName_EtecoonSuper:
     db "BL1_20 "                                                         ;B48302;
 
 EnemySets_EtecoonSuper:
     dw $FFFF                                                             ;B48309;
     db $00                                                               ;B4830B;
+
+EnemySetName_DachoraEnergyRefill:
     db "BL1_21 "                                                         ;B4830C;
 
 EnemySets_DachoraEnergyRefill:
     dw EnemyHeaders_FaceBlock,$0001                                      ;B48313;
     dw $FFFF
     db $00                                                               ;B48319;
+
+EnemySetName_SporeSpawnFarming:
     db "BL1_22 "                                                         ;B4831A;
 
 EnemySets_SporeSpawnFarming:
@@ -349,6 +455,8 @@ EnemySets_SporeSpawnFarming:
     dw EnemyHeaders_Zeela,$0002                                          ;B48325;
     dw $FFFF
     db $00                                                               ;B4832B;
+
+EnemySetName_Statues:
     db "BL2_19 "                                                         ;B4832C;
 
 EnemySets_Statues:
@@ -356,11 +464,15 @@ EnemySets_Statues:
     dw EnemyHeaders_TourianStatueGhost,$D003                             ;B48337;
     dw $FFFF
     db $00                                                               ;B4833D;
+
+EnemySetName_HopperETank:
     db "BL1_26 "                                                         ;B4833E;
 
 EnemySets_HopperETank:
     dw $FFFF                                                             ;B48345;
     db $00                                                               ;B48347;
+
+EnemySetName_BetaPowerBomb:
     db "BL2_05 "                                                         ;B48348;
 
 EnemySets_BetaPowerBomb:
@@ -368,6 +480,8 @@ EnemySets_BetaPowerBomb:
     dw EnemyHeaders_SidehopperLarge,$0002                                ;B48353;
     dw $FFFF
     db $00                                                               ;B48359;
+
+EnemySetName_WaterwayETank:
     db "BL1_23 "                                                         ;B4835A;
 
 EnemySets_WaterwayETank:
@@ -376,6 +490,8 @@ EnemySets_WaterwayETank:
     dw EnemyHeaders_Zero,$0003                                           ;B48369;
     dw $FFFF
     db $00                                                               ;B4836F;
+
+EnemySetName_ConstructionZone_1:
     db "BL1_15A"                                                         ;B48370;
 
 EnemySets_ConstructionZone_1:
@@ -383,6 +499,8 @@ EnemySets_ConstructionZone_1:
     dw EnemyHeaders_FaceBlock,$0002                                      ;B4837B;
     dw $FFFF
     db $00                                                               ;B48381;
+
+EnemySetName_BlueBrinstarETank_1:
     db "BL1_16A"                                                         ;B48382;
 
 EnemySets_BlueBrinstarETank_1:
@@ -392,6 +510,8 @@ EnemySets_BlueBrinstarETank_1:
     dw EnemyHeaders_Rio,$0007                                            ;B48395;
     dw $FFFF
     db $00                                                               ;B4839B;
+
+EnemySetName_NoobBridge:
     db "BL1_17 "                                                         ;B4839C;
 
 EnemySets_NoobBridge:
@@ -399,6 +519,8 @@ EnemySets_NoobBridge:
     dw EnemyHeaders_Zeela,$0002                                          ;B483A7;
     dw $FFFF
     db $00                                                               ;B483AD;
+
+EnemySetName_MorphBall_1:
     db "BL1_14A"                                                         ;B483AE;
 
 EnemySets_MorphBall_1:
@@ -406,11 +528,15 @@ EnemySets_MorphBall_1:
     dw EnemyHeaders_FaceBlock,$0007                                      ;B483B9;
     dw $FFFF
     db $00                                                               ;B483BF;
+
+EnemySetName_WarehouseSave:
     db "BL2_22 "                                                         ;B483C0;
 
 EnemySets_WarehouseSave:
     dw $FFFF                                                             ;B483C7;
     db $00                                                               ;B483C9;
+
+EnemySetName_MorphBall_0:
     db "BL1_14 "                                                         ;B483CA;
 
 EnemySets_MorphBall_0:
@@ -418,12 +544,16 @@ EnemySets_MorphBall_0:
     dw EnemyHeaders_FaceBlock,$0007                                      ;B483D5;
     dw $FFFF
     db $00                                                               ;B483DB;
+
+EnemySetName_WarehouseZeela:
     db "BL2_10 "                                                         ;B483DC;
 
 EnemySets_WarehouseZeela:
     dw EnemyHeaders_Zeela,$0001                                          ;B483E3;
     dw $FFFF
     db $00                                                               ;B483E9;
+
+EnemySetName_RedTower:
     db "BL2_00 "                                                         ;B483EA;
 
 EnemySets_RedTower:
@@ -432,22 +562,30 @@ EnemySets_RedTower:
     dw EnemyHeaders_Geega,$0003                                          ;B483F9;
     dw $FFFF
     db $00                                                               ;B483FF;
+
+EnemySetName_BlueBrinstarBoulders:
     db "bl1_28 "                                                         ;B48400;
 
 EnemySets_BlueBrinstarBoulders:
     dw EnemyHeaders_Boulder,$0001                                        ;B48407;
     dw $FFFF
     db $00                                                               ;B4840D;
+
+EnemySetName_BillyMays:
     db "bl1_29 "                                                         ;B4840E;
 
 EnemySets_BillyMays:
     dw $FFFF                                                             ;B48415;
     db $00                                                               ;B48417;
+
+EnemySetName_BigPinkSaveRoom:
     db "bl1_27 "                                                         ;B48418;
 
 EnemySets_BigPinkSaveRoom:
     dw $FFFF                                                             ;B4841F;
     db $00                                                               ;B48421;
+
+EnemySetName_BigPink:
     db "BL1_09 "                                                         ;B48422;
 
 EnemySets_BigPink:
@@ -456,11 +594,15 @@ EnemySets_BigPink:
     dw EnemyHeaders_Zeb,$0003                                            ;B48431;
     dw $FFFF
     db $00                                                               ;B48437;
+
+EnemySetName_EtecoonSave:
     db "bl1_31 "                                                         ;B48438;
 
 EnemySets_EtecoonSave:
     dw $FFFF                                                             ;B4843F;
     db $00                                                               ;B48441;
+
+EnemySetName_BelowSpazer:
     db "BL2_08 "                                                         ;B48442;
 
 EnemySets_BelowSpazer:
@@ -468,16 +610,22 @@ EnemySets_BelowSpazer:
     dw EnemyHeaders_Cacatac,$0002                                        ;B4844D;
     dw $FFFF
     db $00                                                               ;B48453;
+
+EnemySetName_GreenBrinstarSave:
     db "bl1_30 "                                                         ;B48454;
 
 EnemySets_GreenBrinstarSave:
     dw $FFFF                                                             ;B4845B;
     db $00                                                               ;B4845D;
+
+EnemySetName_Spazer:
     db "BL2_09 "                                                         ;B4845E;
 
 EnemySets_Spazer:
     dw $FFFF                                                             ;B48465;
     db $00                                                               ;B48467;
+
+EnemySetName_PinkBrinstarPowerBombs:
     db "BL1_12 "                                                         ;B48468;
 
 EnemySets_PinkBrinstarPowerBombs:
@@ -486,52 +634,70 @@ EnemySets_PinkBrinstarPowerBombs:
     dw EnemyHeaders_SidehopperLarge,$0002                                ;B48477;
     dw $FFFF
     db $00                                                               ;B4847D;
+
+EnemySetName_RedTowerRefill:
     db "BL2_17 "                                                         ;B4847E;
 
 EnemySets_RedTowerRefill:
     dw $FFFF                                                             ;B48485;
     db $00                                                               ;B48487;
+
+EnemySetName_KraidRefill:
     db "BL2_18 "                                                         ;B48488;
 
 EnemySets_KraidRefill:
     dw $FFFF                                                             ;B4848F;
     db $00                                                               ;B48491;
+
+EnemySetName_VariaSuit:
     db "BL2_21 "                                                         ;B48492;
 
 EnemySets_VariaSuit:
     dw $FFFF                                                             ;B48499;
     db $00                                                               ;B4849B;
+
+EnemySetName_RedBrinstarSave:
     db "BL2_23 "                                                         ;B4849C;
 
 EnemySets_RedBrinstarSave:
     dw $FFFF                                                             ;B484A3;
     db $00                                                               ;B484A5;
-    db "BL1_24a"                                                         ;B484A6;
 
 if !FEATURE_KEEP_UNREFERENCED
+UNUSED_EnemySetName_B484AD:
+    db "BL1_24a"                                                         ;B484A6;
+
 UNUSED_EnemySets_B484AD:
     dw $FFFF                                                             ;B484AD;
     db $00                                                               ;B484AF;
-    db "BL1_16 "                                                         ;B484B0;
 endif ; !FEATURE_KEEP_UNREFERENCED
+
+EnemySetName_BlueBrinstarETank_0:
+    db "BL1_16 "                                                         ;B484B0;
 
 EnemySets_BlueBrinstarETank_0:
     dw EnemyHeaders_Eye,$0007                                            ;B484B7;
     dw EnemyHeaders_FaceBlock,$0007                                      ;B484BB;
     dw $FFFF
     db $00                                                               ;B484C1;
+
+EnemySetName_GreenBrinstarFirefleas:
     db "bl1_06 "                                                         ;B484C2;
 
 EnemySets_GreenBrinstarFirefleas:
     dw EnemyHeaders_Fireflea,$0002                                       ;B484C9;
     dw $FFFF
     db $00                                                               ;B484CF;
+
+EnemySetName_GreenBrinstarBeetoms:
     db "BL1_18 "                                                         ;B484D0;
 
 EnemySets_GreenBrinstarBeetoms:
     dw EnemyHeaders_Beetom,$0001                                         ;B484D7;
     dw $FFFF
     db $00                                                               ;B484DD;
+
+EnemySetName_EtecoonETank:
     db "BL1_19 "                                                         ;B484DE;
 
 EnemySets_EtecoonETank:
@@ -539,6 +705,8 @@ EnemySets_EtecoonETank:
     dw EnemyHeaders_Beetom,$0002                                         ;B484E9;
     dw $FFFF
     db $00                                                               ;B484EF;
+
+EnemySetName_PinkBrinstarHoppers:
     db "BL1_25 "                                                         ;B484F0;
 
 EnemySets_PinkBrinstarHoppers:
@@ -547,6 +715,8 @@ EnemySets_PinkBrinstarHoppers:
     dw EnemyHeaders_ShutterShootable,$0003                               ;B484FF;
     dw $FFFF
     db $00                                                               ;B48505;
+
+EnemySetName_WarehouseETank:
     db "BL2_11 "                                                         ;B48506;
 
 EnemySets_WarehouseETank:
@@ -554,24 +724,32 @@ EnemySets_WarehouseETank:
     dw EnemyHeaders_Beetom,$0002                                         ;B48511;
     dw $FFFF
     db $00                                                               ;B48517;
-    db "BL2_20a"                                                         ;B48518;
 
 if !FEATURE_KEEP_UNREFERENCED
+UNUSED_EnemySetName_B4851F:
+    db "BL2_20a"                                                         ;B48518;
+
 UNUSED_EnemySets_B4851F:
     dw $FFFF                                                             ;B4851F;
     db $00                                                               ;B48521;
-    db "BL2_20 "                                                         ;B48522;
 endif ; !FEATURE_KEEP_UNREFERENCED
+
+EnemySetName_WarehouseEntrance:
+    db "BL2_20 "                                                         ;B48522;
 
 EnemySets_WarehouseEntrance:
     dw $FFFF                                                             ;B48529;
     db $00                                                               ;B4852B;
+
+EnemySetName_WarehouseKihunter:
     db "BL2_12 "                                                         ;B4852C;
 
 EnemySets_WarehouseKihunter:
     dw EnemyHeaders_KihunterGreen,$0001                                  ;B48533;
     dw $FFFF
     db $00                                                               ;B48539;
+
+EnemySetName_GreenBrinstarMainShaft:
     db "bl1_00 "                                                         ;B4853A;
 
 EnemySets_GreenBrinstarMainShaft:
@@ -580,12 +758,16 @@ EnemySets_GreenBrinstarMainShaft:
     dw EnemyHeaders_Ripper2,$0003                                        ;B48549;
     dw $FFFF
     db $00                                                               ;B4854F;
+
+EnemySetName_SporeSpawnSuper:
     db "bl1_01 "                                                         ;B48550;
 
 EnemySets_SporeSpawnSuper:
     dw EnemyHeaders_Zeb,$0001                                            ;B48557;
     dw $FFFF
     db $00                                                               ;B4855D;
+
+EnemySetName_EarlySupers:
     db "bl1_03 "                                                         ;B4855E;
 
 EnemySets_EarlySupers:
@@ -595,6 +777,8 @@ EnemySets_EarlySupers:
     dw EnemyHeaders_Zeb,$0007                                            ;B48571;
     dw $FFFF
     db $00                                                               ;B48577;
+
+EnemySetName_RedBrinstarFirefleas:
     db "BL2_01 "                                                         ;B48578;
 
 EnemySets_RedBrinstarFirefleas:
@@ -603,6 +787,8 @@ EnemySets_RedBrinstarFirefleas:
     dw EnemyHeaders_YappingMaw,$0003                                     ;B48587;
     dw $FFFF
     db $00                                                               ;B4858D;
+
+EnemySetName_ConstructionZone_0:
     db "BL1_15 "                                                         ;B4858E;
 
 EnemySets_ConstructionZone_0:
@@ -610,6 +796,8 @@ EnemySets_ConstructionZone_0:
     dw EnemyHeaders_FaceBlock,$0007                                      ;B48599;
     dw $FFFF
     db $00                                                               ;B4859F;
+
+EnemySetName_GreenHillZone:
     db "BL1_13 "                                                         ;B485A0;
 
 EnemySets_GreenHillZone:
@@ -617,6 +805,8 @@ EnemySets_GreenHillZone:
     dw EnemyHeaders_Geega,$0002                                          ;B485AB;
     dw $FFFF
     db $00                                                               ;B485B1;
+
+EnemySetName_Dachora:
     db "BL1_08 "                                                         ;B485B2;
 
 EnemySets_Dachora:
@@ -626,6 +816,8 @@ EnemySets_Dachora:
     dw EnemyHeaders_Dachora,$0007                                        ;B485C5;
     dw $FFFF
     db $00                                                               ;B485CB;
+
+EnemySetName_Hellway:
     db "BL2_03 "                                                         ;B485CC;
 
 EnemySets_Hellway:
@@ -633,39 +825,53 @@ EnemySets_Hellway:
     dw EnemyHeaders_Zebbo,$0002                                          ;B485D7;
     dw $FFFF
     db $00                                                               ;B485DD;
+
+EnemySetName_FirstMissile:
     db "BL1_24 "                                                         ;B485DE;
 
 EnemySets_FirstMissile:
     dw $FFFF                                                             ;B485E5;
     db $00                                                               ;B485E7;
+
+EnemySetName_Kraid:
     db "BL2_15 "                                                         ;B485E8;
 
 EnemySets_Kraid:
     dw EnemyHeaders_Kraid,$0007                                          ;B485EF;
     dw $FFFF
     db $00                                                               ;B485F5;
+
+EnemySetName_BrinstarReserveTank:
     db "bl1_04 "                                                         ;B485F6;
 
 EnemySets_BrinstarReserveTank:
     dw $FFFF                                                             ;B485FD;
     db $00                                                               ;B485FF;
+
+EnemySetName_XrayScope:
     db "BL2_02 "                                                         ;B48600;
 
 EnemySets_XrayScope:
     dw EnemyHeaders_ShutterShootable,$0001                               ;B48607;
     dw $FFFF
     db $00                                                               ;B4860D;
+
+EnemySetName_StatuesHallway:
     db "BL2_16 "                                                         ;B4860E;
 
 EnemySets_StatuesHallway:
     dw $FFFF                                                             ;B48615;
     db $00                                                               ;B48617;
+
+EnemySetName_AlphaPowerBomb:
     db "BL2_06 "                                                         ;B48618;
 
 EnemySets_AlphaPowerBomb:
     dw EnemyHeaders_Boyon,$0001                                          ;B4861F;
     dw $FFFF
     db $00                                                               ;B48625;
+
+EnemySetName_KraidEyeDoor:
     db "BL2_14 "                                                         ;B48626;
 
 EnemySets_KraidEyeDoor:
@@ -673,6 +879,8 @@ EnemySets_KraidEyeDoor:
     dw EnemyHeaders_Sbug,$0002                                           ;B48631;
     dw $FFFF
     db $00                                                               ;B48637;
+
+EnemySetName_Caterpillar:
     db "BL2_04 "                                                         ;B48638;
 
 EnemySets_Caterpillar:
@@ -680,6 +888,8 @@ EnemySets_Caterpillar:
     dw EnemyHeaders_Cacatac,$0003                                        ;B48643;
     dw $FFFF
     db $00                                                               ;B48649;
+
+EnemySetName_MiniKraid:
     db "BL2_13 "                                                         ;B4864A;
 
 EnemySets_MiniKraid:
@@ -687,12 +897,16 @@ EnemySets_MiniKraid:
     dw EnemyHeaders_MiniKraid,$0003                                      ;B48655;
     dw $FFFF
     db $00                                                               ;B4865B;
+
+EnemySetName_SporeSpawn:
     db "BL1_11 "                                                         ;B4865C;
 
 EnemySets_SporeSpawn:
     dw EnemyHeaders_SporeSpawn,$0001                                     ;B48663;
     dw $FFFF
     db $00                                                               ;B48669;
+
+EnemySetName_SkreeBoost:
     db "BL2_07 "                                                         ;B4866A;
 
 EnemySets_SkreeBoost:
@@ -700,6 +914,8 @@ EnemySets_SkreeBoost:
     dw EnemyHeaders_Boyon,$0007                                          ;B48675;
     dw $FFFF
     db $00                                                               ;B4867B;
+
+EnemySetName_GrappleTutorial3:
     db "NO1_19 "                                                         ;B4867C;
 
 EnemySets_GrappleTutorial3:
@@ -707,18 +923,24 @@ EnemySets_GrappleTutorial3:
     dw EnemyHeaders_Puyo,$0002                                           ;B48687;
     dw $FFFF
     db $00                                                               ;B4868D;
+
+EnemySetName_PostCrocShaft:
     db "NO1_17 "                                                         ;B4868E;
 
 EnemySets_PostCrocShaft:
     dw EnemyHeaders_Viola,$0001                                          ;B48695;
     dw $FFFF
     db $00                                                               ;B4869B;
+
+EnemySetName_MetalPirates:
     db "NO2_18 "                                                         ;B4869C;
 
 EnemySets_MetalPirates:
     dw EnemyHeaders_PirateGoldNinja,$0001                                ;B486A3;
     dw $FFFF
     db $00                                                               ;B486A9;
+
+EnemySetName_AcidStatue:
     db "NO2_00 "                                                         ;B486AA;
 
 EnemySets_AcidStatue:
@@ -727,12 +949,16 @@ EnemySets_AcidStatue:
     dw EnemyHeaders_Holtz,$0007                                          ;B486B9;
     dw $FFFF
     db $00                                                               ;B486BF;
+
+EnemySetName_PurpleFarming:
     db "NO1_44 "                                                         ;B486C0;
 
 EnemySets_PurpleFarming:
     dw EnemyHeaders_Gamet,$0001                                          ;B486C7;
     dw $FFFF
     db $00                                                               ;B486CD;
+
+EnemySetName_IceBeamGate:
     db "NO1_04 "                                                         ;B486CE;
 
 EnemySets_IceBeamGate:
@@ -742,12 +968,16 @@ EnemySets_IceBeamGate:
     dw EnemyHeaders_Sova,$0007                                           ;B486E1;
     dw $FFFF
     db $00                                                               ;B486E7;
+
+EnemySetName_SpikyAcidSnakesTunnel:
     db "NO1_42 "                                                         ;B486E8;
 
 EnemySets_SpikyAcidSnakesTunnel:
     dw EnemyHeaders_YappingMaw,$0001                                     ;B486EF;
     dw $FFFF
     db $00                                                               ;B486F5;
+
+EnemySetName_RedKihunterShaft:
     db "NO2_16 "                                                         ;B486F6;
 
 EnemySets_RedKihunterShaft:
@@ -755,17 +985,23 @@ EnemySets_RedKihunterShaft:
     dw EnemyHeaders_Reflec,$0002                                         ;B48701;
     dw $FFFF
     db $00                                                               ;B48707;
+
+EnemySetName_FastRipper:
     db "NO2_03 "                                                         ;B48708;
 
 EnemySets_FastRipper:
     dw EnemyHeaders_Ripper2,$0001                                        ;B4870F;
     dw $FFFF
     db $00                                                               ;B48715;
+
+EnemySetName_WaveBeam:
     db "NO1_31 "                                                         ;B48716;
 
 EnemySets_WaveBeam:
     dw $FFFF                                                             ;B4871D;
     db $00                                                               ;B4871F;
+
+EnemySetName_FastPillarsSetup:
     db "NO2_07 "                                                         ;B48720;
 
 EnemySets_FastPillarsSetup:
@@ -774,26 +1010,36 @@ EnemySets_FastPillarsSetup:
     dw EnemyHeaders_Viola,$0003                                          ;B4872F;
     dw $FFFF
     db $00                                                               ;B48735;
+
+EnemySetName_LowerNorfairElev:
     db "NO1_38 "                                                         ;B48736;
 
 EnemySets_LowerNorfairElev:
     dw $FFFF                                                             ;B4873D;
     db $00                                                               ;B4873F;
+
+EnemySetName_LNSave:
     db "NO2_23 "                                                         ;B48740;
 
 EnemySets_LNSave:
     dw $FFFF                                                             ;B48747;
     db $00                                                               ;B48749;
+
+EnemySetName_UpperNorfairRefill:
     db "NO1_43 "                                                         ;B4874A;
 
 EnemySets_UpperNorfairRefill:
     dw $FFFF                                                             ;B48751;
     db $00                                                               ;B48753;
+
+EnemySetName_NorfairMap:
     db "NO1_46 "                                                         ;B48754;
 
 EnemySets_NorfairMap:
     dw $FFFF                                                             ;B4875B;
     db $00                                                               ;B4875D;
+
+EnemySetName_MickeyMouse:
     db "NO2_09 "                                                         ;B4875E;
 
 EnemySets_MickeyMouse:
@@ -801,11 +1047,15 @@ EnemySets_MickeyMouse:
     dw EnemyHeaders_Multiviola,$0002                                     ;B48769;
     dw $FFFF
     db $00                                                               ;B4876F;
+
+EnemySetName_GTEnergyRefill:
     db "NO2_04 "                                                         ;B48770;
 
 EnemySets_GTEnergyRefill:
     dw $FFFF                                                             ;B48777;
     db $00                                                               ;B48779;
+
+EnemySetName_Ridley:
     db "NO2_05 "                                                         ;B4877A;
 
 EnemySets_Ridley:
@@ -813,32 +1063,44 @@ EnemySets_Ridley:
     dw EnemyHeaders_RidleyExplosion,$E001                                ;B48785;
     dw $FFFF
     db $00                                                               ;B4878B;
+
+EnemySetName_PostCrocPowerBombs:
     db "NO1_16 "                                                         ;B4878C;
 
 EnemySets_PostCrocPowerBombs:
     dw $FFFF                                                             ;B48793;
     db $00                                                               ;B48795;
+
+EnemySetName_IceBeam:
     db "NO1_06 "                                                         ;B48796;
 
 EnemySets_IceBeam:
     dw $FFFF                                                             ;B4879D;
     db $00                                                               ;B4879F;
+
+EnemySetName_HiJumpBoots:
     db "NO1_11 "                                                         ;B487A0;
 
 EnemySets_HiJumpBoots:
     dw $FFFF                                                             ;B487A7;
     db $00                                                               ;B487A9;
+
+EnemySetName_PostCrocSave:
     db "NO1_15 "                                                         ;B487AA;
 
 EnemySets_PostCrocSave:
     dw $FFFF                                                             ;B487B1;
     db $00                                                               ;B487B3;
+
+EnemySetName_FrogSpeedway:
     db "NO1_48 "                                                         ;B487B4;
 
 EnemySets_FrogSpeedway:
     dw EnemyHeaders_Beetom,$0001                                         ;B487BB;
     dw $FFFF
     db $00                                                               ;B487C1;
+
+EnemySetName_RisingTide:
     db "NO1_40 "                                                         ;B487C2;
 
 EnemySets_RisingTide:
@@ -847,6 +1109,8 @@ EnemySets_RisingTide:
     dw EnemyHeaders_Dragon,$0003                                         ;B487D1;
     dw $FFFF
     db $00                                                               ;B487D7;
+
+EnemySetName_PostCrocFarming:
     db "NO1_14 "                                                         ;B487D8;
 
 EnemySets_PostCrocFarming:
@@ -855,6 +1119,8 @@ EnemySets_PostCrocFarming:
     dw EnemyHeaders_Kamer2,$0003                                         ;B487E7;
     dw $FFFF
     db $00                                                               ;B487ED;
+
+EnemySetName_WorstRoomInTheGame:
     db "NO2_12 "                                                         ;B487EE;
 
 EnemySets_WorstRoomInTheGame:
@@ -863,6 +1129,8 @@ EnemySets_WorstRoomInTheGame:
     dw EnemyHeaders_PirateGoldWalking,$0003                              ;B487FD;
     dw $FFFF
     db $00                                                               ;B48803;
+
+EnemySetName_DoubleChamber:
     db "NO1_30 "                                                         ;B48804;
 
 EnemySets_DoubleChamber:
@@ -872,12 +1140,16 @@ EnemySets_DoubleChamber:
     dw EnemyHeaders_GRipper,$0007                                        ;B48817;
     dw $FFFF
     db $00                                                               ;B4881D;
+
+EnemySetName_GrappleBeam:
     db "NO1_23 "                                                         ;B4881E;
 
 EnemySets_GrappleBeam:
     dw EnemyHeaders_Multiviola,$0001                                     ;B48825;
     dw $FFFF
     db $00                                                               ;B4882B;
+
+EnemySetName_RedPirateShaft:
     db "NO1_49 "                                                         ;B4882C;
 
 EnemySets_RedPirateShaft:
@@ -885,6 +1157,8 @@ EnemySets_RedPirateShaft:
     dw EnemyHeaders_MZoomer,$0003                                        ;B48837;
     dw $FFFF
     db $00                                                               ;B4883D;
+
+EnemySetName_CrocomireSpeedway:
     db "NO1_09 "                                                         ;B4883E;
 
 EnemySets_CrocomireSpeedway:
@@ -894,6 +1168,8 @@ EnemySets_CrocomireSpeedway:
     dw EnemyHeaders_Sova,$0003                                           ;B48851;
     dw $FFFF
     db $00                                                               ;B48857;
+
+EnemySetName_Plowerhouse:
     db "NO2_11 "                                                         ;B48858;
 
 EnemySets_Plowerhouse:
@@ -901,6 +1177,8 @@ EnemySets_Plowerhouse:
     dw EnemyHeaders_Holtz,$0007                                          ;B48863;
     dw $FFFF
     db $00                                                               ;B48869;
+
+EnemySetName_LNFireflea:
     db "NO2_22 "                                                         ;B4886A;
 
 EnemySets_LNFireflea:
@@ -909,6 +1187,8 @@ EnemySets_LNFireflea:
     dw EnemyHeaders_Fune,$0003                                           ;B48879;
     dw $FFFF
     db $00                                                               ;B4887F;
+
+EnemySetName_MagdolliteTunnel:
     db "NO1_35 "                                                         ;B48880;
 
 EnemySets_MagdolliteTunnel:
@@ -916,25 +1196,33 @@ EnemySets_MagdolliteTunnel:
     dw EnemyHeaders_Magdollite,$0007                                     ;B4888B;
     dw $FFFF
     db $00                                                               ;B48891;
-    db "NO2_08 "                                                         ;B48892;
 
 if !FEATURE_KEEP_UNREFERENCED
+UNUSED_EnemySetName_State8FB3EE_B48899:
+    db "NO2_08 "                                                         ;B48892;
+
 UNUSED_EnemySets_State8FB3EE_B48899:
     dw $FFFF                                                             ;B48899;
     db $00                                                               ;B4889B;
-    db "NO1_37 "                                                         ;B4889C;
 endif ; !FEATURE_KEEP_UNREFERENCED
+
+EnemySetName_LavaDive:
+    db "NO1_37 "                                                         ;B4889C;
 
 EnemySets_LavaDive:
     dw EnemyHeaders_Namihe,$0001                                         ;B488A3;
     dw $FFFF
     db $00                                                               ;B488A9;
+
+EnemySetName_Pillar:
     db "NO2_10 "                                                         ;B488AA;
 
 EnemySets_Pillar:
     dw EnemyHeaders_Puromi,$0007                                         ;B488B1;
     dw $FFFF
     db $00                                                               ;B488B7;
+
+EnemySetName_CrocomireEscape:
     db "NO1_12 "                                                         ;B488B8;
 
 EnemySets_CrocomireEscape:
@@ -942,32 +1230,44 @@ EnemySets_CrocomireEscape:
     dw EnemyHeaders_Geruta,$0002                                         ;B488C3;
     dw $FFFF
     db $00                                                               ;B488C9;
+
+EnemySetName_LNSpringBallMaze:
     db "NO2_14 "                                                         ;B488CA;
 
 EnemySets_LNSpringBallMaze:
     dw EnemyHeaders_Alcoon,$0001                                         ;B488D1;
     dw $FFFF
     db $00                                                               ;B488D7;
+
+EnemySetName_LNEscapePowerBombs:
     db "NO2_15 "                                                         ;B488D8;
 
 EnemySets_LNEscapePowerBombs:
     dw $FFFF                                                             ;B488DF;
     db $00                                                               ;B488E1;
+
+EnemySetName_PurpleShaft:
     db "NO1_36 "                                                         ;B488E2;
 
 EnemySets_PurpleShaft:
     dw $FFFF                                                             ;B488E9;
     db $00                                                               ;B488EB;
+
+EnemySetName_RidleyETank:
     db "NO2_20 "                                                         ;B488EC;
 
 EnemySets_RidleyETank:
     dw $FFFF                                                             ;B488F3;
     db $00                                                               ;B488F5;
+
+EnemySetName_ScrewAttack:
     db "NO2_21 "                                                         ;B488F6;
 
 EnemySets_ScrewAttack:
     dw $FFFF                                                             ;B488FD;
     db $00                                                               ;B488FF;
+
+EnemySetName_GreenBubblesMissiles:
     db "NO1_25 "                                                         ;B48900;
 
 EnemySets_GreenBubblesMissiles:
@@ -976,12 +1276,16 @@ EnemySets_GreenBubblesMissiles:
     dw EnemyHeaders_Geruta,$0003                                         ;B4890F;
     dw $FFFF
     db $00                                                               ;B48915;
+
+EnemySetName_Amphitheatre:
     db "NO2_13 "                                                         ;B48916;
 
 EnemySets_Amphitheatre:
     dw EnemyHeaders_PirateGoldWalking,$0007                              ;B4891D;
     dw $FFFF
     db $00                                                               ;B48923;
+
+EnemySetName_CathedralEntrance:
     db "NO1_02 "                                                         ;B48924;
 
 EnemySets_CathedralEntrance:
@@ -989,6 +1293,8 @@ EnemySets_CathedralEntrance:
     dw EnemyHeaders_Dessgeega,$0002                                      ;B4892F;
     dw $FFFF
     db $00                                                               ;B48935;
+
+EnemySetName_MainHall:
     db "NO2_01 "                                                         ;B48936;
 
 EnemySets_MainHall:
@@ -997,6 +1303,8 @@ EnemySets_MainHall:
     dw EnemyHeaders_Gamet,$0007                                          ;B48945;
     dw $FFFF
     db $00                                                               ;B4894B;
+
+EnemySetName_PostCrocJump:
     db "NO1_20 "                                                         ;B4894C;
 
 EnemySets_PostCrocJump:
@@ -1005,22 +1313,30 @@ EnemySets_PostCrocJump:
     dw EnemyHeaders_Kamer2,$0003                                         ;B4895B;
     dw $FFFF
     db $00                                                               ;B48961;
+
+EnemySetName_FrogSave:
     db "NO1_50 "                                                         ;B48962;
 
 EnemySets_FrogSave:
     dw $FFFF                                                             ;B48969;
     db $00                                                               ;B4896B;
+
+EnemySetName_CrocomireSave:
     db "NO1_51 "                                                         ;B4896C;
 
 EnemySets_CrocomireSave:
     dw $FFFF                                                             ;B48973;
     db $00                                                               ;B48975;
+
+EnemySetName_CrumbleShaft:
     db "NO1_08 "                                                         ;B48976;
 
 EnemySets_CrumbleShaft:
     dw EnemyHeaders_Sova,$0001                                           ;B4897D;
     dw $FFFF
     db $00                                                               ;B48983;
+
+EnemySetName_Wasteland:
     db "NO2_17 "                                                         ;B48984;
 
 EnemySets_Wasteland:
@@ -1030,6 +1346,8 @@ EnemySets_Wasteland:
     dw EnemyHeaders_KzanTop,$0007                                        ;B48997;
     dw $FFFF
     db $00                                                               ;B4899D;
+
+EnemySetName_AcidSnakesTunnel:
     db "NO1_41 "                                                         ;B4899E;
 
 EnemySets_AcidSnakesTunnel:
@@ -1037,22 +1355,30 @@ EnemySets_AcidSnakesTunnel:
     dw EnemyHeaders_Gamet,$0002                                          ;B489A9;
     dw $FFFF
     db $00                                                               ;B489AF;
+
+EnemySetName_GrappleTutorial1:
     db "NO1_22 "                                                         ;B489B0;
 
 EnemySets_GrappleTutorial1:
     dw $FFFF                                                             ;B489B7;
     db $00                                                               ;B489B9;
+
+EnemySetName_BubbleMountainSave:
     db "NO1_47 "                                                         ;B489BA;
 
 EnemySets_BubbleMountainSave:
     dw $FFFF                                                             ;B489C1;
     db $00                                                               ;B489C3;
+
+EnemySetName_HiJumpETank:
     db "NO1_13 "                                                         ;B489C4;
 
 EnemySets_HiJumpETank:
     dw EnemyHeaders_Sova,$0001                                           ;B489CB;
     dw $FFFF
     db $00                                                               ;B489D1;
+
+EnemySetName_BubbleMountain:
     db "NO1_26 "                                                         ;B489D2;
 
 EnemySets_BubbleMountain:
@@ -1062,12 +1388,16 @@ EnemySets_BubbleMountain:
     dw EnemyHeaders_Sova,$0002                                           ;B489E5;
     dw $FFFF
     db $00                                                               ;B489EB;
+
+EnemySetName_IceBeamAcid:
     db "NO1_00 "                                                         ;B489EC;
 
 EnemySets_IceBeamAcid:
     dw EnemyHeaders_Tripper,$0007                                        ;B489F3;
     dw $FFFF
     db $00                                                               ;B489F9;
+
+EnemySetName_IceBeamTutorial:
     db "NO1_05 "                                                         ;B489FA;
 
 EnemySets_IceBeamTutorial:
@@ -1075,6 +1405,8 @@ EnemySets_IceBeamTutorial:
     dw EnemyHeaders_Ripper2,$0002                                        ;B48A05;
     dw $FFFF
     db $00                                                               ;B48A0B;
+
+EnemySetName_PostCrocMissile:
     db "NO1_18 "                                                         ;B48A0C;
 
 EnemySets_PostCrocMissile:
@@ -1082,6 +1414,8 @@ EnemySets_PostCrocMissile:
     dw EnemyHeaders_Gamet,$0002                                          ;B48A17;
     dw $FFFF
     db $00                                                               ;B48A1D;
+
+EnemySetName_Cathedral:
     db "NO1_01 "                                                         ;B48A1E;
 
 EnemySets_Cathedral:
@@ -1089,6 +1423,8 @@ EnemySets_Cathedral:
     dw EnemyHeaders_Geruta,$0002                                         ;B48A29;
     dw $FFFF
     db $00                                                               ;B48A2F;
+
+EnemySetName_NorfairReserveTank:
     db "NO1_24 "                                                         ;B48A30;
 
 EnemySets_NorfairReserveTank:
@@ -1096,6 +1432,8 @@ EnemySets_NorfairReserveTank:
     dw EnemyHeaders_Sova,$0002                                           ;B48A3B;
     dw $FFFF
     db $00                                                               ;B48A41;
+
+EnemySetName_GrappleTutorial2:
     db "NO1_21 "                                                         ;B48A42;
 
 EnemySets_GrappleTutorial2:
@@ -1103,6 +1441,8 @@ EnemySets_GrappleTutorial2:
     dw EnemyHeaders_Multiviola,$0002                                     ;B48A4D;
     dw $FFFF
     db $00                                                               ;B48A53;
+
+EnemySetName_IceBeamSnake:
     db "NO1_07 "                                                         ;B48A54;
 
 EnemySets_IceBeamSnake:
@@ -1110,12 +1450,16 @@ EnemySets_IceBeamSnake:
     dw EnemyHeaders_Fune,$0002                                           ;B48A5F;
     dw $FFFF
     db $00                                                               ;B48A65;
+
+EnemySetName_GoldenTorizo:
     db "NO2_02 "                                                         ;B48A66;
 
 EnemySets_GoldenTorizo:
     dw EnemyHeaders_GoldenTorizo,$0001                                   ;B48A6D;
     dw $FFFF
     db $00                                                               ;B48A73;
+
+EnemySetName_SpikyPlatformsTunnel:
     db "NO1_32 "                                                         ;B48A74;
 
 EnemySets_SpikyPlatformsTunnel:
@@ -1123,11 +1467,15 @@ EnemySets_SpikyPlatformsTunnel:
     dw EnemyHeaders_ShutterShootable,$0002                               ;B48A7F;
     dw $FFFF
     db $00                                                               ;B48A85;
+
+EnemySetName_SpeedBooster:
     db "NO1_28 "                                                         ;B48A86;
 
 EnemySets_SpeedBooster:
     dw $FFFF                                                             ;B48A8D;
     db $00                                                               ;B48A8F;
+
+EnemySetName_LNFarming:
     db "NO2_06 "                                                         ;B48A90;
 
 EnemySets_LNFarming:
@@ -1135,6 +1483,8 @@ EnemySets_LNFarming:
     dw EnemyHeaders_Zebbo,$0007                                          ;B48A9B;
     dw $FFFF
     db $00                                                               ;B48AA1;
+
+EnemySetName_SingleChamber:
     db "NO1_29 "                                                         ;B48AA2;
 
 EnemySets_SingleChamber:
@@ -1142,6 +1492,8 @@ EnemySets_SingleChamber:
     dw EnemyHeaders_Alcoon,$0002                                         ;B48AAD;
     dw $FFFF
     db $00                                                               ;B48AB3;
+
+EnemySetName_SpeedBoosterHall:
     db "NO1_27 "                                                         ;B48AB4;
 
 EnemySets_SpeedBoosterHall:
@@ -1149,6 +1501,8 @@ EnemySets_SpeedBoosterHall:
     dw EnemyHeaders_Metaree,$0002                                        ;B48ABF;
     dw $FFFF
     db $00                                                               ;B48AC5;
+
+EnemySetName_BatCave:
     db "NO1_45 "                                                         ;B48AC6;
 
 EnemySets_BatCave:
@@ -1156,18 +1510,24 @@ EnemySets_BatCave:
     dw EnemyHeaders_Skree,$0002                                          ;B48AD1;
     dw $FFFF
     db $00                                                               ;B48AD7;
+
+EnemySetName_KronicBoost:
     db "NO1_34 "                                                         ;B48AD8;
 
 EnemySets_KronicBoost:
     dw EnemyHeaders_Viola,$0001                                          ;B48ADF;
     dw $FFFF
     db $00                                                               ;B48AE5;
+
+EnemySetName_BusinessCenter:
     db "NO1_03 "                                                         ;B48AE6;
 
 EnemySets_BusinessCenter:
     dw EnemyHeaders_Sova,$0002                                           ;B48AED;
     dw $FFFF
     db $00                                                               ;B48AF3;
+
+EnemySetName_ThreeMusketeers:
     db "NO2_19 "                                                         ;B48AF4;
 
 EnemySets_ThreeMusketeers:
@@ -1176,17 +1536,23 @@ EnemySets_ThreeMusketeers:
     dw EnemyHeaders_ShutterShootable,$0003                               ;B48B03;
     dw $FFFF
     db $00                                                               ;B48B09;
+
+EnemySetName_Crocomire:
     db "NO1_10 "                                                         ;B48B0A;
 
 EnemySets_Crocomire:
     dw EnemyHeaders_Crocomire,$D007                                      ;B48B11;
     dw $FFFF
     db $00                                                               ;B48B17;
+
+EnemySetName_LNElevSave:
     db "NO1_52 "                                                         ;B48B18;
 
 EnemySets_LNElevSave:
     dw $FFFF                                                             ;B48B1F;
     db $00                                                               ;B48B21;
+
+EnemySetName_Volcano:
     db "NO1_33 "                                                         ;B48B22;
 
 EnemySets_Volcano:
@@ -1194,6 +1560,8 @@ EnemySets_Volcano:
     dw EnemyHeaders_LavaRocks,$0002                                      ;B48B2D;
     dw $FFFF
     db $00                                                               ;B48B33;
+
+EnemySetName_UpperNorfairFarming:
     db "NO1_39 "                                                         ;B48B34;
 
 EnemySets_UpperNorfairFarming:
@@ -1201,12 +1569,16 @@ EnemySets_UpperNorfairFarming:
     dw EnemyHeaders_Gamet,$0002                                          ;B48B3F;
     dw $FFFF
     db $00                                                               ;B48B45;
+
+EnemySetName_SpongeBath_1:
     db "NP1_11a"                                                         ;B48B46;
 
 EnemySets_SpongeBath_1:
     dw EnemyHeaders_Bull,$0001                                           ;B48B4D;
     dw $FFFF
     db $00                                                               ;B48B53;
+
+EnemySetName_WreckedShipETank_1:
     db "NP1_07a"                                                         ;B48B54;
 
 EnemySets_WreckedShipETank_1:
@@ -1214,6 +1586,8 @@ EnemySets_WreckedShipETank_1:
     dw EnemyHeaders_Skultera,$0002                                       ;B48B5F;
     dw $FFFF
     db $00                                                               ;B48B65;
+
+EnemySetName_WreckedShipMainShaft_0:
     db "NP1_04 "                                                         ;B48B66;
 
 EnemySets_WreckedShipMainShaft_0:
@@ -1223,6 +1597,8 @@ EnemySets_WreckedShipMainShaft_0:
     dw EnemyHeaders_Sbug,$0003                                           ;B48B79;
     dw $FFFF
     db $00                                                               ;B48B7F;
+
+EnemySetName_BowlingAlley_0:
     db "NP1_00 "                                                         ;B48B80;
 
 EnemySets_BowlingAlley_0:
@@ -1230,6 +1606,8 @@ EnemySets_BowlingAlley_0:
     dw EnemyHeaders_Sbug,$0007                                           ;B48B8B;
     dw $FFFF
     db $00                                                               ;B48B91;
+
+EnemySetName_Attic_1:
     db "NP1_02a"                                                         ;B48B92;
 
 EnemySets_Attic_1:
@@ -1238,6 +1616,8 @@ EnemySets_Attic_1:
     dw EnemyHeaders_Spark,$0003                                          ;B48BA1;
     dw $FFFF
     db $00                                                               ;B48BA7;
+
+EnemySetName_Basement_1:
     db "NP1_08a"                                                         ;B48BA8;
 
 EnemySets_Basement_1:
@@ -1246,36 +1626,50 @@ EnemySets_Basement_1:
     dw EnemyHeaders_Spark,$0003                                          ;B48BB7;
     dw $FFFF
     db $00                                                               ;B48BBD;
+
+EnemySetName_WreckedShipMap_1:
     db "NP1_09a"                                                         ;B48BBE;
 
 EnemySets_WreckedShipMap_1:
     dw $FFFF                                                             ;B48BC5;
     db $00                                                               ;B48BC7;
+
+EnemySetName_WSWestSuper_0:
     db "NP1_12 "                                                         ;B48BC8;
 
 EnemySets_WSWestSuper_0:
     dw $FFFF                                                             ;B48BCF;
     db $00                                                               ;B48BD1;
+
+EnemySetName_SpikyDeath_0:
     db "NP1_05 "                                                         ;B48BD2;
 
 EnemySets_SpikyDeath_0:
     dw $FFFF                                                             ;B48BD9;
     db $00                                                               ;B48BDB;
+
+EnemySetName_SpongeBath_0:
     db "NP1_11 "                                                         ;B48BDC;
 
 EnemySets_SpongeBath_0:
     dw $FFFF                                                             ;B48BE3;
     db $00                                                               ;B48BE5;
+
+EnemySetName_WreckedShipEntrance_1:
     db "NP1_01a"                                                         ;B48BE6;
 
 EnemySets_WreckedShipEntrance_1:
     dw $FFFF                                                             ;B48BED;
     db $00                                                               ;B48BEF;
+
+EnemySetName_ElectricDeath_0:
     db "NP1_06 "                                                         ;B48BF0;
 
 EnemySets_ElectricDeath_0:
     dw $FFFF                                                             ;B48BF7;
     db $00                                                               ;B48BF9;
+
+EnemySetName_BowlingAlley_1:
     db "NP1_00a"                                                         ;B48BFA;
 
 EnemySets_BowlingAlley_1:
@@ -1283,26 +1677,36 @@ EnemySets_BowlingAlley_1:
     dw EnemyHeaders_Robot,$0003                                          ;B48C05;
     dw $FFFF
     db $00                                                               ;B48C0B;
+
+EnemySetName_AssemblyLine_0:
     db "NP1_03 "                                                         ;B48C0C;
 
 EnemySets_AssemblyLine_0:
     dw $FFFF                                                             ;B48C13;
     db $00                                                               ;B48C15;
+
+EnemySetName_Phantoon_1:
     db "NP1_10a"                                                         ;B48C16;
 
 EnemySets_Phantoon_1:
     dw $FFFF                                                             ;B48C1D;
     db $00                                                               ;B48C1F;
+
+EnemySetName_WreckedShipETank_0:
     db "NP1_07 "                                                         ;B48C20;
 
 EnemySets_WreckedShipETank_0:
     dw $FFFF                                                             ;B48C27;
     db $00                                                               ;B48C29;
+
+EnemySetName_GravitySuit_0:
     db "NP1_14 "                                                         ;B48C2A;
 
 EnemySets_GravitySuit_0:
     dw $FFFF                                                             ;B48C31;
     db $00                                                               ;B48C33;
+
+EnemySetName_WreckedShipMap_0:
     db "NP1_09 "                                                         ;B48C34;
 
 EnemySets_WreckedShipMap_0:
@@ -1311,11 +1715,15 @@ EnemySets_WreckedShipMap_0:
     dw EnemyHeaders_Bull,$0007                                           ;B48C43;
     dw $FFFF
     db $00                                                               ;B48C49;
+
+EnemySetName_GravitySuit_1:
     db "NP1_14a"                                                         ;B48C4A;
 
 EnemySets_GravitySuit_1:
     dw $FFFF                                                             ;B48C51;
     db $00                                                               ;B48C53;
+
+EnemySetName_Basement_0:
     db "NP1_08 "                                                         ;B48C54;
 
 EnemySets_Basement_0:
@@ -1323,12 +1731,16 @@ EnemySets_Basement_0:
     dw EnemyHeaders_Sbug,$0007                                           ;B48C5F;
     dw $FFFF
     db $00                                                               ;B48C65;
+
+EnemySetName_WreckedShipEntrance_0:
     db "NP1_01 "                                                         ;B48C66;
 
 EnemySets_WreckedShipEntrance_0:
     dw EnemyHeaders_Sbug,$0001                                           ;B48C6D;
     dw $FFFF
     db $00                                                               ;B48C73;
+
+EnemySetName_AssemblyLine_1:
     db "NP1_03a"                                                         ;B48C74;
 
 EnemySets_AssemblyLine_1:
@@ -1337,17 +1749,23 @@ EnemySets_AssemblyLine_1:
     dw EnemyHeaders_Robot,$0003                                          ;B48C83;
     dw $FFFF
     db $00                                                               ;B48C89;
+
+EnemySetName_WreckedShipSave_1:
     db "NP1_15a"                                                         ;B48C8A;
 
 EnemySets_WreckedShipSave_1:
     dw $FFFF                                                             ;B48C91;
     db $00                                                               ;B48C93;
+
+EnemySetName_WSWestSuper_1:
     db "NP1_12a"                                                         ;B48C94;
 
 EnemySets_WSWestSuper_1:
     dw EnemyHeaders_Spark,$0001                                          ;B48C9B;
     dw $FFFF
     db $00                                                               ;B48CA1;
+
+EnemySetName_Attic_0:
     db "NP1_02 "                                                         ;B48CA2;
 
 EnemySets_Attic_0:
@@ -1356,6 +1774,8 @@ EnemySets_Attic_0:
     dw EnemyHeaders_Sbug,$0002                                           ;B48CB1;
     dw $FFFF
     db $00                                                               ;B48CB7;
+
+EnemySetName_WSEastSuper_0:
     db "NP1_13 "                                                         ;B48CB8;
 
 EnemySets_WSEastSuper_0:
@@ -1365,6 +1785,8 @@ EnemySets_WSEastSuper_0:
     dw EnemyHeaders_RobotNoPower,$0007                                   ;B48CCB;
     dw $FFFF
     db $00                                                               ;B48CD1;
+
+EnemySetName_WreckedShipSave_0:
     db "NP1_15 "                                                         ;B48CD2;
 
 EnemySets_WreckedShipSave_0:
@@ -1372,18 +1794,24 @@ EnemySets_WreckedShipSave_0:
     dw EnemyHeaders_Sbug,$0002                                           ;B48CDD;
     dw $FFFF
     db $00                                                               ;B48CE3;
+
+EnemySetName_ElectricDeath_1:
     db "NP1_06a"                                                         ;B48CE4;
 
 EnemySets_ElectricDeath_1:
     dw EnemyHeaders_Spark,$0001                                          ;B48CEB;
     dw $FFFF
     db $00                                                               ;B48CF1;
+
+EnemySetName_SpikyDeath_1:
     db "NP1_05a"                                                         ;B48CF2;
 
 EnemySets_SpikyDeath_1:
     dw EnemyHeaders_KzanTop,$0007                                        ;B48CF9;
     dw $FFFF
     db $00                                                               ;B48CFF;
+
+EnemySetName_WSEastSuper_1:
     db "NP1_13a"                                                         ;B48D00;
 
 EnemySets_WSEastSuper_1:
@@ -1392,12 +1820,16 @@ EnemySets_WSEastSuper_1:
     dw EnemyHeaders_Spark,$0003                                          ;B48D0F;
     dw $FFFF
     db $00                                                               ;B48D15;
+
+EnemySetName_Phantoon_0:
     db "NP1_10 "                                                         ;B48D16;
 
 EnemySets_Phantoon_0:
     dw EnemyHeaders_PhantoonBody,$0007                                   ;B48D1D;
     dw $FFFF
     db $00                                                               ;B48D23;
+
+EnemySetName_WreckedShipMainShaft_1:
     db "NP1_04a"                                                         ;B48D24;
 
 EnemySets_WreckedShipMainShaft_1:
@@ -1406,6 +1838,8 @@ EnemySets_WreckedShipMainShaft_1:
     dw EnemyHeaders_KzanTop,$0003                                        ;B48D33;
     dw $FFFF
     db $00                                                               ;B48D39;
+
+EnemySetName_MtEverest:
     db "ML1_08 "                                                         ;B48D3A;
 
 EnemySets_MtEverest:
@@ -1413,6 +1847,8 @@ EnemySets_MtEverest:
     dw EnemyHeaders_Sciser,$0003                                         ;B48D45;
     dw $FFFF
     db $00                                                               ;B48D4B;
+
+EnemySetName_HalfieClimb:
     db "ML2_25 "                                                         ;B48D4C;
 
 EnemySets_HalfieClimb:
@@ -1420,6 +1856,8 @@ EnemySets_HalfieClimb:
     dw EnemyHeaders_Mochtroid,$0002                                      ;B48D57;
     dw $FFFF
     db $00                                                               ;B48D5D;
+
+EnemySetName_WateringHole:
     db "ML1_10 "                                                         ;B48D5E;
 
 EnemySets_WateringHole:
@@ -1427,12 +1865,16 @@ EnemySets_WateringHole:
     dw EnemyHeaders_Zeb,$0002                                            ;B48D69;
     dw $FFFF
     db $00                                                               ;B48D6F;
+
+EnemySetName_CrabShaft:
     db "ML1_12 "                                                         ;B48D70;
 
 EnemySets_CrabShaft:
     dw EnemyHeaders_Sciser,$0001                                         ;B48D77;
     dw $FFFF
     db $00                                                               ;B48D7D;
+
+EnemySetName_MaridiaElev:
     db "ML1_19 "                                                         ;B48D7E;
 
 EnemySets_MaridiaElev:
@@ -1440,22 +1882,30 @@ EnemySets_MaridiaElev:
     dw EnemyHeaders_Owtch,$0007                                          ;B48D89;
     dw $FFFF
     db $00                                                               ;B48D8F;
+
+EnemySetName_Colosseum:
     db "ML2_16 "                                                         ;B48D90;
 
 EnemySets_Colosseum:
     dw EnemyHeaders_Mochtroid,$0001                                      ;B48D97;
     dw $FFFF
     db $00                                                               ;B48D9D;
+
+EnemySetName_AqueductSave:
     db "ML2_17 "                                                         ;B48D9E;
 
 EnemySets_AqueductSave:
     dw $FFFF                                                             ;B48DA5;
     db $00                                                               ;B48DA7;
+
+EnemySetName_ThePrecious:
     db "ML2_18 "                                                         ;B48DA8;
 
 EnemySets_ThePrecious:
     dw $FFFF                                                             ;B48DAF;
     db $00                                                               ;B48DB1;
+
+EnemySetName_BotwoonETank:
     db "ML2_19 "                                                         ;B48DB2;
 
 EnemySets_BotwoonETank:
@@ -1464,28 +1914,38 @@ EnemySets_BotwoonETank:
     dw EnemyHeaders_Zoa,$0002                                            ;B48DC1;
     dw $FFFF
     db $00                                                               ;B48DC7;
+
+EnemySetName_DraygonSave:
     db "ML2_20 "                                                         ;B48DC8;
 
 EnemySets_DraygonSave:
     dw $FFFF                                                             ;B48DCF;
     db $00                                                               ;B48DD1;
+
+EnemySetName_MaridiaMissileRefill:
     db "ML2_21 "                                                         ;B48DD2;
 
 EnemySets_MaridiaMissileRefill:
     dw $FFFF                                                             ;B48DD9;
     db $00                                                               ;B48DDB;
+
+EnemySetName_PlasmaBeachQuicksand:
     db "ML2_22 "                                                         ;B48DDC;
 
 EnemySets_PlasmaBeachQuicksand:
     dw EnemyHeaders_Bull,$0001                                           ;B48DE3;
     dw $FFFF
     db $00                                                               ;B48DE9;
+
+EnemySetName_BotwoonQuicksand:
     db "ML2_23 "                                                         ;B48DEA;
 
 EnemySets_BotwoonQuicksand:
     dw EnemyHeaders_Bull,$0001                                           ;B48DF1;
     dw $FFFF
     db $00                                                               ;B48DF7;
+
+EnemySetName_Shaktool:
     db "ML2_24 "                                                         ;B48DF8;
 
 EnemySets_Shaktool:
@@ -1493,18 +1953,24 @@ EnemySets_Shaktool:
     dw EnemyHeaders_Yard,$0002                                           ;B48E03;
     dw $FFFF
     db $00                                                               ;B48E09;
+
+EnemySetName_Draygon_0:
     db "MLB_00"                                                          ;B48E0A;
 
 EnemySets_Draygon_0:
     dw EnemyHeaders_DraygonBody,$0007                                    ;B48E10;
     dw $FFFF
     db $00                                                               ;B48E16;
+
+EnemySetName_Aqueduct:
     db "ML2_09 "                                                         ;B48E17;
 
 EnemySets_Aqueduct:
     dw EnemyHeaders_Yard,$0001                                           ;B48E1E;
     dw $FFFF
     db $00                                                               ;B48E24;
+
+EnemySetName_RedFish:
     db "ML1_09 "                                                         ;B48E25;
 
 EnemySets_RedFish:
@@ -1513,6 +1979,8 @@ EnemySets_RedFish:
     dw EnemyHeaders_Zebbo,$0002                                          ;B48E34;
     dw $FFFF
     db $00                                                               ;B48E3A;
+
+EnemySetName_Plasma:
     db "ML1_17 "                                                         ;B48E3B;
 
 EnemySets_Plasma:
@@ -1520,11 +1988,15 @@ EnemySets_Plasma:
     dw EnemyHeaders_PirateMagentaWall,$0002                              ;B48E46;
     dw $FFFF
     db $00                                                               ;B48E4C;
+
+EnemySetName_SpaceJump:
     db "ML2_27 "                                                         ;B48E4D;
 
 EnemySets_SpaceJump:
     dw $FFFF                                                             ;B48E54;
     db $00                                                               ;B48E56;
+
+EnemySetName_Pants:
     db "ML2_12 "                                                         ;B48E57;
 
 EnemySets_Pants:
@@ -1533,22 +2005,30 @@ EnemySets_Pants:
     dw EnemyHeaders_Tripper,$0002                                        ;B48E66;
     dw $FFFF
     db $00                                                               ;B48E6C;
+
+EnemySetName_GlassTunnelSave:
     db "ML1_00 "                                                         ;B48E6D;
 
 EnemySets_GlassTunnelSave:
     dw $FFFF                                                             ;B48E74;
     db $00                                                               ;B48E76;
+
+EnemySetName_GlassTunnel:
     db "ML1_01 "                                                         ;B48E77;
 
 EnemySets_GlassTunnel:
     dw EnemyHeaders_NoobTubeCrack,$0007                                  ;B48E7E;
     dw $FFFF
     db $00                                                               ;B48E84;
+
+EnemySetName_WestTunnel:
     db "ML1_02 "                                                         ;B48E85;
 
 EnemySets_WestTunnel:
     dw $FFFF                                                             ;B48E8C;
     db $00                                                               ;B48E8E;
+
+EnemySetName_EastTunnel:
     db "ML1_03 "                                                         ;B48E8F;
 
 EnemySets_EastTunnel:
@@ -1556,18 +2036,24 @@ EnemySets_EastTunnel:
     dw EnemyHeaders_Zebbo,$0002                                          ;B48E9A;
     dw $FFFF
     db $00                                                               ;B48EA0;
+
+EnemySetName_MamaTurtle:
     db "ML1_06 "                                                         ;B48EA1;
 
 EnemySets_MamaTurtle:
     dw EnemyHeaders_MamaTurtle,$0001                                     ;B48EA8;
     dw $FFFF
     db $00                                                               ;B48EAE;
+
+EnemySetName_CrabTunnel:
     db "ML1_07 "                                                         ;B48EAF;
 
 EnemySets_CrabTunnel:
     dw EnemyHeaders_Sciser,$0001                                         ;B48EB6;
     dw $FFFF
     db $00                                                               ;B48EBC;
+
+EnemySetName_NWestMaridiaBug:
     db "ML1_11 "                                                         ;B48EBD;
 
 EnemySets_NWestMaridiaBug:
@@ -1575,6 +2061,8 @@ EnemySets_NWestMaridiaBug:
     dw EnemyHeaders_Menu,$0002                                           ;B48EC8;
     dw $FFFF
     db $00                                                               ;B48ECE;
+
+EnemySetName_PseudoPlasmaSpark:
     db "ML1_13 "                                                         ;B48ECF;
 
 EnemySets_PseudoPlasmaSpark:
@@ -1583,12 +2071,16 @@ EnemySets_PseudoPlasmaSpark:
     dw EnemyHeaders_Skultera,$0003                                       ;B48EDE;
     dw $FFFF
     db $00                                                               ;B48EE4;
+
+EnemySetName_WestSandHallTunnel:
     db "ML1_15 "                                                         ;B48EE5;
 
 EnemySets_WestSandHallTunnel:
     dw EnemyHeaders_Sciser,$0001                                         ;B48EEC;
     dw $FFFF
     db $00                                                               ;B48EF2;
+
+EnemySetName_PlasmaTutorial:
     db "ML1_16 "                                                         ;B48EF3;
 
 EnemySets_PlasmaTutorial:
@@ -1596,6 +2088,8 @@ EnemySets_PlasmaTutorial:
     dw EnemyHeaders_MZoomer,$0001                                        ;B48EFE;
     dw $FFFF
     db $00                                                               ;B48F04;
+
+EnemySetName_ThreadTheNeedle:
     db "ML1_18 "                                                         ;B48F05;
 
 EnemySets_ThreadTheNeedle:
@@ -1604,6 +2098,8 @@ EnemySets_ThreadTheNeedle:
     dw EnemyHeaders_Choot,$0002                                          ;B48F14;
     dw $FFFF
     db $00                                                               ;B48F1A;
+
+EnemySetName_PlasmaSpark:
     db "ML1_20 "                                                         ;B48F1B;
 
 EnemySets_PlasmaSpark:
@@ -1612,6 +2108,8 @@ EnemySets_PlasmaSpark:
     dw EnemyHeaders_Skultera,$0003                                       ;B48F2A;
     dw $FFFF
     db $00                                                               ;B48F30;
+
+EnemySetName_Toilet:
     db "ML2_00 "                                                         ;B48F31;
 
 EnemySets_Toilet:
@@ -1621,41 +2119,55 @@ EnemySets_Toilet:
     dw EnemyHeaders_Yard,$0003                                           ;B48F44;
     dw $FFFF
     db $00                                                               ;B48F4A;
+
+EnemySetName_WestSandHall:
     db "ML2_02 "                                                         ;B48F4B;
 
 EnemySets_WestSandHall:
     dw EnemyHeaders_Evir,$0001                                           ;B48F52;
     dw $FFFF
     db $00                                                               ;B48F58;
+
+EnemySetName_Oasis:
     db "ML2_03 "                                                         ;B48F59;
 
 EnemySets_Oasis:
     dw $FFFF                                                             ;B48F60;
     db $00                                                               ;B48F62;
+
+EnemySetName_EastSandHall:
     db "ML2_04 "                                                         ;B48F63;
 
 EnemySets_EastSandHall:
     dw EnemyHeaders_Evir,$0001                                           ;B48F6A;
     dw $FFFF
     db $00                                                               ;B48F70;
+
+EnemySetName_WestAqueductQuicksand:
     db "ML2_07 "                                                         ;B48F71;
 
 EnemySets_WestAqueductQuicksand:
     dw EnemyHeaders_Bull,$0001                                           ;B48F78;
     dw $FFFF
     db $00                                                               ;B48F7E;
+
+EnemySetName_EastAqueductQuicksand:
     db "ML2_08 "                                                         ;B48F7F;
 
 EnemySets_EastAqueductQuicksand:
     dw EnemyHeaders_Bull,$0001                                           ;B48F86;
     dw $FFFF
     db $00                                                               ;B48F8C;
+
+EnemySetName_Butterfly:
     db "ML2_10 "                                                         ;B48F8D;
 
 EnemySets_Butterfly:
     dw EnemyHeaders_Zoa,$0001                                            ;B48F94;
     dw $FFFF
     db $00                                                               ;B48F9A;
+
+EnemySetName_BotwoonHallway:
     db "ML2_11 "                                                         ;B48F9B;
 
 EnemySets_BotwoonHallway:
@@ -1664,6 +2176,8 @@ EnemySets_BotwoonHallway:
     dw EnemyHeaders_Sciser,$0002                                         ;B48FAA;
     dw $FFFF
     db $00                                                               ;B48FB0;
+
+EnemySetName_EastPants:
     db "ML2_13 "                                                         ;B48FB1;
 
 EnemySets_EastPants:
@@ -1671,11 +2185,15 @@ EnemySets_EastPants:
     dw EnemyHeaders_Tripper,$0001                                        ;B48FBC;
     dw $FFFF
     db $00                                                               ;B48FC2;
+
+EnemySetName_Springball:
     db "ML2_14 "                                                         ;B48FC3;
 
 EnemySets_Springball:
     dw $FFFF                                                             ;B48FCA;
     db $00                                                               ;B48FCC;
+
+EnemySetName_BelowBotwoonETank:
     db "ML2_15 "                                                         ;B48FCD;
 
 EnemySets_BelowBotwoonETank:
@@ -1683,6 +2201,8 @@ EnemySets_BelowBotwoonETank:
     dw EnemyHeaders_Owtch,$0002                                          ;B48FD8;
     dw $FFFF
     db $00                                                               ;B48FDE;
+
+EnemySetName_Kassiuz:
     db "ML1_21 "                                                         ;B48FDF;
 
 EnemySets_Kassiuz:
@@ -1691,27 +2211,37 @@ EnemySets_Kassiuz:
     dw EnemyHeaders_Boyon,$0002                                          ;B48FEE;
     dw $FFFF
     db $00                                                               ;B48FF4;
+
+EnemySetName_ForgottenHighwaySave:
     db "ML1_23 "                                                         ;B48FF5;
 
 EnemySets_ForgottenHighwaySave:
     dw $FFFF                                                             ;B48FFC;
     db $00                                                               ;B48FFE;
+
+EnemySetName_MaridiaEnergyRefill:
     db "ML2_28 "                                                         ;B48FFF;
 
 EnemySets_MaridiaEnergyRefill:
     dw $FFFF                                                             ;B49006;
     db $00                                                               ;B49008;
+
+EnemySetName_MaridiaMap:
     db "ML1_22 "                                                         ;B49009;
 
 EnemySets_MaridiaMap:
     dw $FFFF                                                             ;B49010;
     db $00                                                               ;B49012;
+
+EnemySetName_CrabHole:
     db "ML1_14 "                                                         ;B49013;
 
 EnemySets_CrabHole:
     dw EnemyHeaders_Sciser,$0001                                         ;B4901A;
     dw $FFFF
     db $00                                                               ;B49020;
+
+EnemySetName_Botwoon:
     db "ML2_26 "                                                         ;B49021;
 
 EnemySets_Botwoon:
@@ -1719,6 +2249,8 @@ EnemySets_Botwoon:
     dw EnemyHeaders_Botwoon,$0007                                        ;B4902C;
     dw $FFFF
     db $00                                                               ;B49032;
+
+EnemySetName_MainStreet:
     db "ML1_04 "                                                         ;B49033;
 
 EnemySets_MainStreet:
@@ -1726,6 +2258,8 @@ EnemySets_MainStreet:
     dw EnemyHeaders_Sciser,$0002                                         ;B4903E;
     dw $FFFF
     db $00                                                               ;B49044;
+
+EnemySetName_BugSandHole:
     db "ML2_01 "                                                         ;B49045;
 
 EnemySets_BugSandHole:
@@ -1733,18 +2267,24 @@ EnemySets_BugSandHole:
     dw EnemyHeaders_Zoa,$0007                                            ;B49050;
     dw $FFFF
     db $00                                                               ;B49056;
+
+EnemySetName_EastSandHole:
     db "ML2_06 "                                                         ;B49057;
 
 EnemySets_EastSandHole:
     dw EnemyHeaders_Boulder,$0001                                        ;B4905E;
     dw $FFFF
     db $00                                                               ;B49064;
+
+EnemySetName_WestSandHole:
     db "ML2_05 "                                                         ;B49065;
 
 EnemySets_WestSandHole:
     dw EnemyHeaders_Boulder,$0001                                        ;B4906C;
     dw $FFFF
     db $00                                                               ;B49072;
+
+EnemySetName_WestCactusAlley:
     db "ML2_29 "                                                         ;B49073;
 
 EnemySets_WestCactusAlley:
@@ -1752,6 +2292,8 @@ EnemySets_WestCactusAlley:
     dw EnemyHeaders_Zoa,$0007                                            ;B4907E;
     dw $FFFF
     db $00                                                               ;B49084;
+
+EnemySetName_EastCactusAlley:
     db "ML2_30 "                                                         ;B49085;
 
 EnemySets_EastCactusAlley:
@@ -1759,6 +2301,8 @@ EnemySets_EastCactusAlley:
     dw EnemyHeaders_Zoa,$0001                                            ;B49090;
     dw $FFFF
     db $00                                                               ;B49096;
+
+EnemySetName_FishTank:
     db "ML1_05 "                                                         ;B49097;
 
 EnemySets_FishTank:
@@ -1766,6 +2310,8 @@ EnemySets_FishTank:
     dw EnemyHeaders_PirateMagentaWalking,$0002                           ;B490A2;
     dw $FFFF
     db $00                                                               ;B490A8;
+
+EnemySetName_TourianEscape4:
     db "TS1_17 "                                                         ;B490A9;
 
 EnemySets_TourianEscape4:
@@ -1773,11 +2319,15 @@ EnemySets_TourianEscape4:
     dw EnemyHeaders_PirateSilverWalking,$0002                            ;B490B4;
     dw $FFFF
     db $00                                                               ;B490BA;
+
+EnemySetName_MotherBrainSave:
     db "TS1_13 "                                                         ;B490BB;
 
 EnemySets_MotherBrainSave:
     dw $FFFF                                                             ;B490C2;
     db $00                                                               ;B490C4;
+
+EnemySetName_Metroids1_0:
     db "TS1_01 "                                                         ;B490C5;
 
 EnemySets_Metroids1_0:
@@ -1785,12 +2335,16 @@ EnemySets_Metroids1_0:
     dw EnemyHeaders_Rinka,$0002                                          ;B490D0;
     dw $FFFF
     db $00                                                               ;B490D6;
+
+EnemySetName_DustTorizo:
     db "TS1_06 "                                                         ;B490D7;
 
 EnemySets_DustTorizo:
     dw EnemyHeaders_CorpseTorizo,$0001                                   ;B490DE;
     dw $FFFF
     db $00                                                               ;B490E4;
+
+EnemySetName_BigBoy:
     db "TS1_07 "                                                         ;B490E5;
 
 EnemySets_BigBoy:
@@ -1799,6 +2353,8 @@ EnemySets_BigBoy:
     dw EnemyHeaders_BabyMetroid,$0001                                    ;B490F4;
     dw $FFFF
     db $00                                                               ;B490FA;
+
+EnemySetName_MotherBrain_0_1:
     db "TS1_10 "                                                         ;B490FB;
 
 EnemySets_MotherBrain_0_1:
@@ -1807,28 +2363,38 @@ EnemySets_MotherBrain_0_1:
     dw EnemyHeaders_MotherBrainBody,$D001                                ;B4910A;
     dw $FFFF
     db $00                                                               ;B49110;
+
+EnemySetName_TourianEyeDoor:
     db "TS1_11 "                                                         ;B49111;
 
 EnemySets_TourianEyeDoor:
     dw $FFFF                                                             ;B49118;
     db $00                                                               ;B4911A;
+
+EnemySetName_BlueHopper:
     db "TS1_05 "                                                         ;B4911B;
 
 EnemySets_BlueHopper:
     dw EnemyHeaders_SidehopperTourian,$0001                              ;B49122;
     dw $FFFF
     db $00                                                               ;B49128;
+
+EnemySetName_TourianEscape1:
     db "TS1_14 "                                                         ;B49129;
 
 EnemySets_TourianEscape1:
     dw EnemyHeaders_ShutterDestroyable,$0001                             ;B49130;
     dw $FFFF
     db $00                                                               ;B49136;
+
+EnemySetName_TourianFirst:
     db "TS1_00 "                                                         ;B49137;
 
 EnemySets_TourianFirst:
     dw $FFFF                                                             ;B4913E;
     db $00                                                               ;B49140;
+
+EnemySetName_Metroids2_0:
     db "TS1_02 "                                                         ;B49141;
 
 EnemySets_Metroids2_0:
@@ -1836,6 +2402,8 @@ EnemySets_Metroids2_0:
     dw EnemyHeaders_Rinka,$0002                                          ;B4914C;
     dw $FFFF
     db $00                                                               ;B49152;
+
+EnemySetName_Metroids4_0:
     db "TS1_04 "                                                         ;B49153;
 
 EnemySets_Metroids4_0:
@@ -1843,36 +2411,48 @@ EnemySets_Metroids4_0:
     dw EnemyHeaders_Rinka,$0002                                          ;B4915E;
     dw $FFFF
     db $00                                                               ;B49164;
+
+EnemySetName_Metroids1_1:
     db "TS1_01 "                                                         ;B49165;
 
 EnemySets_Metroids1_1:
     dw EnemyHeaders_Rinka,$0002                                          ;B4916C;
     dw $FFFF
     db $00                                                               ;B49172;
+
+EnemySetName_Metroids2_1:
     db "TS1_02 "                                                         ;B49173;
 
 EnemySets_Metroids2_1:
     dw EnemyHeaders_Rinka,$0002                                          ;B4917A;
     dw $FFFF
     db $00                                                               ;B49180;
+
+EnemySetName_TourianEscape2:
     db "TS1_15 "                                                         ;B49181;
 
 EnemySets_TourianEscape2:
     dw EnemyHeaders_PirateSilverWall,$0001                               ;B49188;
     dw $FFFF
     db $00                                                               ;B4918E;
+
+EnemySetName_Metroids3_1:
     db "TS1_03 "                                                         ;B4918F;
 
 EnemySets_Metroids3_1:
     dw EnemyHeaders_Rinka,$0002                                          ;B49196;
     dw $FFFF
     db $00                                                               ;B4919C;
+
+EnemySetName_Metroids4_1:
     db "TS1_04 "                                                         ;B4919D;
 
 EnemySets_Metroids4_1:
     dw EnemyHeaders_Rinka,$0002                                          ;B491A4;
     dw $FFFF
     db $00                                                               ;B491AA;
+
+EnemySetName_TourianEscape3:
     db "TS1_16 "                                                         ;B491AB;
 
 EnemySets_TourianEscape3:
@@ -1880,27 +2460,35 @@ EnemySets_TourianEscape3:
     dw EnemyHeaders_ShutterGrowing,$0002                                 ;B491B6;
     dw $FFFF
     db $00                                                               ;B491BC;
+
+EnemySetName_Seaweed:
     db "TS1_08 "                                                         ;B491BD;
 
 EnemySets_Seaweed:
     dw $FFFF                                                             ;B491C4;
     db $00                                                               ;B491C6;
+
+EnemySetName_TourianRecharge:
     db "TS1_09 "                                                         ;B491C7;
 
 EnemySets_TourianRecharge:
     dw $FFFF                                                             ;B491CE;
     db $00                                                               ;B491D0;
-    db "TS1_07 "                                                         ;B491D1;
 
 if !FEATURE_KEEP_UNREFERENCED
+UNUSED_EnemySetName_B491D1:
+    db "TS1_07 "                                                         ;B491D1;
+
 UNUSED_EnemySets_B491D8:
     dw EnemyHeaders_CorpseSidehopper,$0001                               ;B491D8;
     dw EnemyHeaders_CorpseSidehopper2,$0001                              ;B491DC;
     dw EnemyHeaders_BabyMetroid,$0001                                    ;B491E0;
     dw $FFFF
     db $00                                                               ;B491E6;
-    db "TS1_18 "                                                         ;B491E7;
 endif ; !FEATURE_KEEP_UNREFERENCED
+
+EnemySetName_Metroids3_0:
+    db "TS1_18 "                                                         ;B491E7;
 
 EnemySets_UpperTourianSave:
     dw $FFFF                                                             ;B491EE;
@@ -1912,42 +2500,56 @@ EnemySets_Metroids3_0:
     dw EnemyHeaders_Rinka,$0002                                          ;B491FC;
     dw $FFFF
     db $00                                                               ;B49202;
+
+EnemySetName_RinkaShaft:
     db "TS1_12 "                                                         ;B49203;
 
 EnemySets_RinkaShaft:
     dw EnemyHeaders_Rinka,$0002                                          ;B4920A;
     dw $FFFF
     db $00                                                               ;B49210;
+
+EnemySetName_CeresElev_0:
     db "cl1_00 "                                                         ;B49211;
 
 EnemySets_CeresElev_0:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B49218;
     dw $FFFF
     db $00                                                               ;B4921E;
+
+EnemySetName_FallingTile_0:
     db "cl1_01 "                                                         ;B4921F;
 
 EnemySets_FallingTile_0:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B49226;
     dw $FFFF
     db $00                                                               ;B4922C;
+
+EnemySetName_MagnetStairs_0:
     db "cl1_02 "                                                         ;B4922D;
 
 EnemySets_MagnetStairs_0:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B49234;
     dw $FFFF
     db $00                                                               ;B4923A;
+
+EnemySetName_DeadScientist_0:
     db "cl1_03 "                                                         ;B4923B;
 
 EnemySets_DeadScientist_0:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B49242;
     dw $FFFF
     db $00                                                               ;B49248;
+
+EnemySetName_58Escape_0:
     db "cl1_04 "                                                         ;B49249;
 
 EnemySets_58Escape_0:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B49250;
     dw $FFFF
     db $00                                                               ;B49256;
+
+EnemySetName_CeresRidley_0:
     db "cl1_05 "                                                         ;B49257;
 
 EnemySets_CeresRidley_0:
@@ -1955,42 +2557,56 @@ EnemySets_CeresRidley_0:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B49262;
     dw $FFFF
     db $00                                                               ;B49268;
+
+EnemySetName_CeresElev_1:
     db "cl1_00 "                                                         ;B49269;
 
 EnemySets_CeresElev_1:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B49270;
     dw $FFFF
     db $00                                                               ;B49276;
+
+EnemySetName_FallingTile_1:
     db "cl1_01 "                                                         ;B49277;
 
 EnemySets_FallingTile_1:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B4927E;
     dw $FFFF
     db $00                                                               ;B49284;
+
+EnemySetName_MagnetStairs_1:
     db "cl1_02 "                                                         ;B49285;
 
 EnemySets_MagnetStairs_1:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B4928C;
     dw $FFFF
     db $00                                                               ;B49292;
+
+EnemySetName_DeadScientist_1:
     db "cl1_03 "                                                         ;B49293;
 
 EnemySets_DeadScientist_1:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B4929A;
     dw $FFFF
     db $00                                                               ;B492A0;
+
+EnemySetName_58Escape_1:
     db "cl1_04 "                                                         ;B492A1;
 
 EnemySets_58Escape_1:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B492A8;
     dw $FFFF
     db $00                                                               ;B492AE;
+
+EnemySetName_CeresRidley_1:
     db "cl1_05 "                                                         ;B492AF;
 
 EnemySets_CeresRidley_1:
     dw EnemyHeaders_CeresDoor,$D002                                      ;B492B6;
     dw $FFFF
     db $00                                                               ;B492BC;
+
+EnemySetName_Debug:
     db "TT_00 "                                                          ;B492BD;
 
 EnemySets_Debug:
@@ -2036,7 +2652,6 @@ DebugHandler_7_EnemyDebugger_EnemySpawnDataEditor:
 
   .nonZeroName:
     TAX                                                                  ;B49319;
-    LDA.L $B4000C,X                                                      ;B4931A;
     LDA.L EnemyNames_spritemap,X                                         ;B4931A;
     CLC                                                                  ;B4931E;
     ADC.W #$0030                                                         ;B4931F;
