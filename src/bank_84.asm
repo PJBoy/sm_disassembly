@@ -256,6 +256,8 @@ Load_Item_and_Room_Special_Xray_Blocks:
 
 ; Note that these same PLMs are expected to have $7E:DF0C,x set to a 'PLM item GFX index',
 ; which is an index (2k for k in 0..7) to the table of draw instruction pointers responsible for drawing the x-ray tile
+
+; see labels.asm for RoomVars:
     PHP                                                                  ;84831A;
     PHB                                                                  ;84831B;
     REP #$30                                                             ;84831C;
@@ -294,20 +296,20 @@ Load_Item_and_Room_Special_Xray_Blocks:
     DEX                                                                  ;848360;
     BPL .loopPLM                                                         ;848361;
     LDX.W $07BB                                                          ;848363;
-    LDA.L $8F0010,X                                                      ;848366;
+    LDA.L RoomStates_XrayBlocks,X                                        ;848366;
     BEQ .return                                                          ;84836A;
     TAX                                                                  ;84836C;
 
   .loopRoomVar:
-    LDA.L $8F0000,X                                                      ;84836D;
+    LDA.L RoomVars_XPosition,X                                           ;84836D;
     BEQ .return                                                          ;848371;
     AND.W #$00FF                                                         ;848373;
     STA.B $12                                                            ;848376;
-    LDA.L $8F0001,X                                                      ;848378;
+    LDA.L RoomVars_YPosition,X                                           ;848378;
     AND.W #$00FF                                                         ;84837C;
     STA.B $14                                                            ;84837F;
     PHX                                                                  ;848381;
-    LDA.L $8F0002,X                                                      ;848382;
+    LDA.L RoomVars_block,X                                               ;848382;
     LDX.B $12                                                            ;848386;
     LDY.B $14                                                            ;848388;
     JSL.L LoadBlockToXrayBG2Tilemap                                      ;84838A;
@@ -478,6 +480,8 @@ Spawn_Room_PLM:
 ;;         [X] + 4: PLM room argument
 ;; Returns:
 ;;     Carry: set if PLM could not be spawned
+
+; see labels.asm for PLMPopulations:
     PHP                                                                  ;84846A;
     PHB                                                                  ;84846B;
     PHY                                                                  ;84846C;
@@ -501,20 +505,20 @@ Spawn_Room_PLM:
 
   .found:
     SEP #$20                                                             ;848482;
-    LDA.L $8F0003,X                                                      ;848484;
+    LDA.L PLMPopulations_Y,X                                             ;848484;
     STA.W $4202                                                          ;848488;
     LDA.W $07A5                                                          ;84848B;
     STA.W $4203                                                          ;84848E;
-    LDA.L $8F0002,X                                                      ;848491;
+    LDA.L PLMPopulations_X,X                                             ;848491;
     REP #$20                                                             ;848495;
     AND.W #$00FF                                                         ;848497;
     CLC                                                                  ;84849A;
     ADC.W $4216                                                          ;84849B;
     ASL                                                                  ;84849E;
     STA.W $1C87,Y                                                        ;84849F;
-    LDA.L $8F0004,X                                                      ;8484A2;
+    LDA.L PLMPopulations_param,X                                         ;8484A2;
     STA.W $1DC7,Y                                                        ;8484A6;
-    LDA.L $8F0000,X                                                      ;8484A9;
+    LDA.L $PLMPopulations_PLM,X                                          ;8484A9;
     STA.W $1C37,Y                                                        ;8484AD;
     TYX                                                                  ;8484B0;
     TAY                                                                  ;8484B1;
@@ -545,7 +549,8 @@ Spawn_Room_PLM:
 
 
 ;;; $84E7: Spawn PLM (to current block index) ;;;
-Spawn_PLM_to_CurrentBlockIndex:;; Parameter:
+Spawn_PLM_to_CurrentBlockIndex:
+;; Parameter:
 ;;     A: PLM ID
 ;; Returns:
 ;;     Carry: If PLM is not spawned, carry is unchanged. Otherwise set according to PLM setup, or clear if PLM setup doesn't change the carry (thanks to the lucky ASL at $8500)

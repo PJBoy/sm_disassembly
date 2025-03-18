@@ -10963,11 +10963,11 @@ GameState_19_DeathSequence_BlackOut:
 Load_Destination_RoomCRE_Bitset:
     PHB                                                                  ;82DDF1;
     PHX                                                                  ;82DDF2;
-    PEA.W RoomHeaders>>8&$FF00                                           ;82DDF3;
+    PEA.W RoomHeaders>>8                                                 ;82DDF3;
     PLB                                                                  ;82DDF6;
     PLB                                                                  ;82DDF7;
     LDX.W DoorPointer                                                    ;82DDF8;
-    LDA.L DoorHeaders&$FF0000,X                                          ;82DDFB;
+    LDA.L DoorHeaders_destRoomHeader,X                                   ;82DDFB;
     TAX                                                                  ;82DDFF;
     LDA.W CREBitset                                                      ;82DE00;
     STA.W PreviousCREBitset                                              ;82DE03;
@@ -10984,7 +10984,7 @@ Load_Door_Header:
 ; Regarding door transition speed.
 ; For speed s, the distance Samus is moved is 40h * s and 38h * s pixels total for horizontal and vertical transitions respectively
 ; With the default speeds of 0.C8h and 1.80h, that's 32h and 54h pixels distance respectively
-    PEA.W DoorHeaders>>8&$FF00                                           ;82DE12;
+    PEA.W DoorHeaders>>8                                                 ;82DE12;
     PLB                                                                  ;82DE15;
     PLB                                                                  ;82DE16;
     LDX.W DoorPointer                                                    ;82DE17;
@@ -11178,7 +11178,7 @@ Save_Map_Explored_If_Elevator:
     JSL.L SetDebugElevatorAsUsed                                         ;82DFA1;
 
 +   LDX.W DoorPointer                                                    ;82DFA5;
-    LDA.L (DoorHeaders&$FF0000)+2,X                                      ;82DFA8;
+    LDA.L DoorHeaders_elevatorProperties,X                               ;82DFA8;
     BIT.W #$0040                                                         ;82DFAC;
     BEQ .return                                                          ;82DFAF;
     JSL.L MirrorCurrentAreasMapExplored                                  ;82DFB1;
@@ -11190,7 +11190,7 @@ Save_Map_Explored_If_Elevator:
 ;;; $DFB6: Load map explored if elevator ;;;
 Load_Map_Explored_If_Elevator:
     LDX.W DoorPointer                                                    ;82DFB6;
-    LDA.L (DoorHeaders&$FF0000)+2,X                                      ;82DFB9;
+    LDA.L DoorHeaders_elevatorProperties,X                               ;82DFB9;
     BIT.W #$0040                                                         ;82DFBD;
     BEQ .return                                                          ;82DFC0;
     JSL.L LoadMirrorOfCurrentAreasMapExplored                            ;82DFC2;
@@ -12334,7 +12334,7 @@ Load_Destination_Room:
     PHP                                                                  ;82E76B;
     PHB                                                                  ;82E76C;
     REP #$30                                                             ;82E76D;
-    PEA.W RoomHeaders>>8&$FF00                                           ;82E76F;
+    PEA.W RoomHeaders>>8                                                 ;82E76F;
     PLB                                                                  ;82E772;
     PLB                                                                  ;82E773;
     JSR.W Load_Destination_RoomCRE_Bitset                                ;82E774;
@@ -12584,7 +12584,7 @@ Spawn_Door_Closing_PLM:
     BEQ .return                                                          ;82E905;
     STA.B $12                                                            ;82E907;
     LDX.W DoorPointer                                                    ;82E909;
-    LDA.L $830004,X                                                      ;82E90C;
+    LDA.L DoorHeaders_doorcapXBlocks,X                                   ;82E90C;
     STA.B $14                                                            ;82E910;
     LDX.W #$0012                                                         ;82E912;
     JSL.L Spawn_Room_PLM                                                 ;82E915;
@@ -12605,11 +12605,11 @@ CheckIfColoredDoorcapWasSpawned_SwitchDoorPLMInstruction:
     LDX.W DoorPointer                                                    ;82E91C;
     SEI                                                                  ;82E91F;
     SEP #$20                                                             ;82E920;
-    LDA.L $830005,X                                                      ;82E922;
+    LDA.L DoorHeaders_doorcapYBlocks,X                                   ;82E922;
     STA.W $4202                                                          ;82E926;
     LDA.W RoomWidthBlocks                                                ;82E929;
     STA.W $4203                                                          ;82E92C;
-    LDA.L $830004,X                                                      ;82E92F;
+    LDA.L DoorHeaders_doorcapXBlocks,X                                   ;82E92F;
     REP #$20                                                             ;82E933;
     AND.W #$00FF                                                         ;82E935;
     CLC                                                                  ;82E938;

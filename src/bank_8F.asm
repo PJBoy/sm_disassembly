@@ -1699,8 +1699,7 @@ RTS_8F91F7:
     RTS                                                                  ;8F91F7;
 
 
-RoomHeaders:
-RoomStates:
+; see labels.asm for RoomHeaders: RoomStates: and RoomDoors:
 ;;; $91F8: Room headers, scroll data, door lists ;;;
 RoomHeader_LandingSite:
     db $00,$00,$17,$00,$09,$05,$70,$A0,$00                               ;8F91F8;
@@ -2541,7 +2540,10 @@ RoomDoors_BombTorizo:
     dw Door_BombTorizo_0                                                 ;8F9869;
 
 RoomVar_BombTorizo:
-    db $0F,$0A,$52,$00,$0F,$0B,$52,$00,$0F,$0C,$52,$00,$00,$00           ;8F986B;
+    db $0F,$0A : dw $0052                                                ;8F986B;
+    db $0F,$0B : dw $0052
+    db $0F,$0C : dw $0052
+    db $00,$00
 
 RoomHeader_Flyway:
     db $16,$00,$16,$06,$03,$01,$70,$A0,$00                               ;8F9879;
@@ -13258,7 +13260,7 @@ Execute_Door_ASM:
     PHB                                                                  ;8FE8A4;
     REP #$30                                                             ;8FE8A5;
     LDX.W $078D                                                          ;8FE8A7;
-    LDA.L $83000A,X                                                      ;8FE8AA;
+    LDA.L DoorHeaders_doorASM,X                                          ;8FE8AA;
     BEQ .return                                                          ;8FE8AE;
     STA.B $12                                                            ;8FE8B0;
     PHK                                                                  ;8FE8B2;

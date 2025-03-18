@@ -2675,9 +2675,9 @@ SamusBlockCollisionReaction_Horizontal_Door:
     ASL                                                                  ;9493A2;
     ADC.W $07B5                                                          ;9493A3;
     TAX                                                                  ;9493A6;
-    LDA.L $8F0000,X                                                      ;9493A7;
+    LDA.L RoomDoors,X                                                    ;9493A7;
     TAX                                                                  ;9493AB;
-    LDA.L $830000,X                                                      ;9493AC;
+    LDA.L DoorHeaders_destRoomHeader,X                                   ;9493AC;
     BPL .notAPointer                                                     ;9493B0;
     STX.W $078D                                                          ;9493B2;
     LDA.W #$0009                                                         ;9493B5;
@@ -2715,9 +2715,9 @@ SamusBlockCollisionReaction_Vertical_Door:
     ASL                                                                  ;9493E5;
     ADC.W $07B5                                                          ;9493E6;
     TAX                                                                  ;9493E9;
-    LDA.L $8F0000,X                                                      ;9493EA;
+    LDA.L RoomDoors,X                                                    ;9493EA;
     TAX                                                                  ;9493EE;
-    LDA.L $830000,X                                                      ;9493EF;
+    LDA.L DoorHeaders_destRoomHeader,X                                   ;9493EF;
     BPL .notAPointer                                                     ;9493F3;
     STX.W $078D                                                          ;9493F5;
     LDA.W #$0009                                                         ;9493F8;
