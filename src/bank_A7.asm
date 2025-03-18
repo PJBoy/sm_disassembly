@@ -4394,7 +4394,7 @@ UNUSED_HandleProjectileDamageAndSound:
     LDX.W $0F78                                                          ;A7B288;
     LDA.L $A0003C,X                                                      ;A7B28B;
     BNE .vulnerabilities                                                 ;A7B28F;
-    LDA.W #EnemyVulnerabilities                                          ;A7B291;
+    LDA.W #EnemyVulnerabilities_Default                                  ;A7B291;
 
   .vulnerabilities:
     STA.B $14                                                            ;A7B294;
@@ -4405,7 +4405,7 @@ UNUSED_HandleProjectileDamageAndSound:
     CLC                                                                  ;A7B2A0;
     ADC.B $14                                                            ;A7B2A1;
     TAX                                                                  ;A7B2A3;
-    LDA.L $B40000,X                                                      ;A7B2A4;
+    LDA.L EnemyVulnerabilities_power,X                                   ;A7B2A4;
     BRA .determinedVulnerability                                         ;A7B2A8;
 
   .notBeam:
@@ -4420,21 +4420,21 @@ UNUSED_HandleProjectileDamageAndSound:
     CLC                                                                  ;A7B2B8;
     ADC.B $14                                                            ;A7B2B9;
     TAX                                                                  ;A7B2BB;
-    LDA.L $B4000B,X                                                      ;A7B2BC;
+    LDA.L EnemyVulnerabilities_plasmaIceWave,X                           ;A7B2BC;
     BRA .determinedVulnerability                                         ;A7B2C0;
 
   .missileEnd:
     CMP.W #$0300                                                         ;A7B2C2;
     BNE .notPowerBomb                                                    ;A7B2C5;
     LDX.B $14                                                            ;A7B2C7;
-    LDA.L $B4000E,X                                                      ;A7B2C9;
+    LDA.L EnemyVulnerabilities_bomb,X                                    ;A7B2C9;
     BRA .determinedVulnerability                                         ;A7B2CD;
 
   .notPowerBomb:
     CMP.W #$0500                                                         ;A7B2CF;
     BNE .return                                                          ;A7B2D2;
     LDX.B $14                                                            ;A7B2D4;
-    LDA.L $B4000F,X                                                      ;A7B2D6;
+    LDA.L EnemyVulnerabilities_powerBomb,X                               ;A7B2D6;
 
   .determinedVulnerability:
     AND.W #$00FF                                                         ;A7B2DA;

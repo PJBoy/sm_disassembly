@@ -17545,16 +17545,16 @@ Random_Drop_Routine:
     SEP #$20                                                             ;86F154;
     LDA.W $0E1A                                                          ;86F156;
     BEQ .noHealthBomb                                                    ;86F159;
-    LDA.L EnemyDropChances_smallEnergy-(EnemyDropChances&$00FFFF),X      ;86F15B; $B40000
+    LDA.L EnemyDropChances_smallEnergy,X                                 ;86F15B; $B40000
     CLC                                                                  ;86F15F;
-    ADC.L EnemyDropChances_bigEnergy-(EnemyDropChances&$00FFFF),X        ;86F160; $B40001
+    ADC.L EnemyDropChances_bigEnergy,X                                   ;86F160; $B40001
     STA.B $12                                                            ;86F164;
     LDA.B #$03                                                           ;86F166;
     STA.B $16                                                            ;86F168;
     JMP.W .dropChancesPooled                                             ;86F16A;
 
   .noHealthBomb:
-    LDA.L $B40003,X                                                      ;86F16D;
+    LDA.L EnemyDropChances_nothing,X                                     ;86F16D;
     STA.B $12                                                            ;86F171;
     LDA.B #$08                                                           ;86F173;
     STA.B $16                                                            ;86F175;

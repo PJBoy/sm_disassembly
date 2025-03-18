@@ -63,3 +63,56 @@ PLMPopulations:
 org $8F0000
 RoomDoors:
 
+
+org $B40000
+EnemySetNames:
+
+
+org $B40000
+EnemySets:
+  .ID: skip 2 ; 0: Enemy ID
+  .palette: skip 2 ; 2: Palette index
+
+
+org $B40000
+EnemyNames:
+  .name: skip 10 ; 0: Enemy name in ASCII
+  .population: skip 2 ; Ah: Enemy population pointer (for debug enemy spawner)
+  .spritemap: skip 2 ; Ch: Enemy name debug spritemap index (add 30h to index $A201)
+
+
+org $B40000
+EnemyVulnerabilities:
+  .power: skip 1 ; 0: Power
+  .wave: skip 1 ; 1: Wave
+  .ice: skip 1 ; 2: Ice
+  .iceWave: skip 1 ; 3: Ice + wave
+  .spazer: skip 1 ; 4: Spazer
+  .spazerWave: skip 1 ; 5: Spazer + wave
+  .spazerIce: skip 1 ; 6: Spazer + ice
+  .spazerIceWave: skip 1 ; 7: Spazer + ice + wave
+  .plasma: skip 1 ; 8: Plasma
+  .plasmaWave: skip 1 ; 9: Plasma + wave / shinespark echo
+  .plasmaIce: skip 1 ; Ah: Plasma + ice
+  .plasmaIceWave: skip 1 ; Bh: Plasma + ice + wave
+  .missile: skip 1 ; Ch: Missile
+  .superMissile: skip 1 ; Dh: Super missile
+  .bomb: skip 1 ; Eh: Bomb
+  .powerBomb: skip 1 ; Fh: Power bomb
+  .speedBooster: skip 1 ; 10h: Speed booster
+  .shinespark: skip 1 ; 11h: Shinespark
+  .screwAttack: skip 1 ; 12h: Screw attack
+  .chargedBeam: skip 1 ; 13h: Charged beam (including SBA)
+  .pseudoScrew: skip 1 ; 14h: Pseudo screw attack
+  .unused: skip 1 ; 15h: Unused
+
+
+org $B40000
+EnemyDropChances:
+  .smallEnergy: skip 1 ; 0: Small health
+  .bigEnergy: skip 1 ; 1: Big health
+  .missiles: skip 1 ; 2: Missiles
+  .nothing: skip 1 ; 3: Nothing
+  .superMissiles: skip 1 ; 4: Super missiles
+  .powerBombs: skip 1 ; 5: Power bombs
+

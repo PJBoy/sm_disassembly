@@ -2,7 +2,7 @@
 org $B48000
 
 
-EnemySets:
+; see labels.asm for EnemySets:
 ;;; $8000: Enemy sets ;;;
 EnemySets_Draygon_1_MotherBrain_2:
     dw $FFFF                                                             ;B48000;
@@ -2037,6 +2037,7 @@ DebugHandler_7_EnemyDebugger_EnemySpawnDataEditor:
   .nonZeroName:
     TAX                                                                  ;B49319;
     LDA.L $B4000C,X                                                      ;B4931A;
+    LDA.L EnemyNames_spritemap,X                                         ;B4931A;
     CLC                                                                  ;B4931E;
     ADC.W #$0030                                                         ;B4931F;
 
@@ -2165,7 +2166,7 @@ Debug_Draw_Enemy_Set_Name:
     SEC                                                                  ;B4943B;
     SBC.W #$0007                                                         ;B4943C;
     TAX                                                                  ;B4943F;
-    LDA.L $B40002,X                                                      ;B49440;
+    LDA.L EnemyNames_name+2,X                                            ;B49440;
     AND.W #$00FF                                                         ;B49444;
     SEC                                                                  ;B49447;
     SBC.W #$002C                                                         ;B49448;
@@ -2182,7 +2183,7 @@ Debug_Draw_Enemy_Set_Name:
     SEC                                                                  ;B49465;
     SBC.W #$0007                                                         ;B49466;
     TAX                                                                  ;B49469;
-    LDA.L $B40004,X                                                      ;B4946A;
+    LDA.L EnemyNames_name+4,X                                            ;B4946A;
     AND.W #$00FF                                                         ;B4946E;
     SEC                                                                  ;B49471;
     SBC.W #$002C                                                         ;B49472;
@@ -2199,7 +2200,7 @@ Debug_Draw_Enemy_Set_Name:
     SEC                                                                  ;B4948F;
     SBC.W #$0007                                                         ;B49490;
     TAX                                                                  ;B49493;
-    LDA.L $B40005,X                                                      ;B49494;
+    LDA.L EnemyNames_name+5,X                                            ;B49494;
     AND.W #$00FF                                                         ;B49498;
     SEC                                                                  ;B4949B;
     SBC.W #$002C                                                         ;B4949C;
@@ -2252,13 +2253,13 @@ DebugHandler_9_EnemyDebugger_EnemySpawner:
 
   .loop:
     LDX.W $0E26                                                          ;B494E5;
-    LDA.L $B40000,X                                                      ;B494E8;
+    LDA.L EnemySets_ID,X                                                 ;B494E8;
     CMP.W #$FFFF                                                         ;B494EC;
     BEQ .endLoop                                                         ;B494EF;
     TAX                                                                  ;B494F1;
     LDA.L $A0003E,X                                                      ;B494F2;
     TAX                                                                  ;B494F6;
-    LDA.L $B4000C,X                                                      ;B494F7;
+    LDA.L EnemyNames_spritemap,X                                         ;B494F7;
     CLC                                                                  ;B494FB;
     ADC.W #$0030                                                         ;B494FC;
     STA.B $16                                                            ;B494FF;
@@ -2274,7 +2275,7 @@ DebugHandler_9_EnemyDebugger_EnemySpawner:
     AND.W #$00FF                                                         ;B49516;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49519;
     LDX.W $0E26                                                          ;B4951D;
-    LDA.L $B40002,X                                                      ;B49520;
+    LDA.L EnemySets_palette,X                                            ;B49520;
     STA.W $0E24                                                          ;B49524;
     LDA.W #$00D8                                                         ;B49527;
     STA.W $0E20                                                          ;B4952A;
@@ -2312,7 +2313,7 @@ DebugHandler_9_EnemyDebugger_EnemySpawner:
     BRA .resolvedName                                                    ;B49573;
 
 +   TAX                                                                  ;B49575;
-    LDA.L $B4000C,X                                                      ;B49576;
+    LDA.L EnemyNames_spritemap,X                                         ;B49576;
     CLC                                                                  ;B4957A;
     ADC.W #$0030                                                         ;B4957B;
 
@@ -2335,7 +2336,7 @@ DebugHandler_9_EnemyDebugger_EnemySpawner:
     CLC                                                                  ;B4959E;
     ADC.W $1864                                                          ;B4959F;
     TAX                                                                  ;B495A2;
-    LDA.L $B40000,X                                                      ;B495A3;
+    LDA.L EnemySets_ID,X                                                 ;B495A3;
     CMP.W #$FFFF                                                         ;B495A7;
     BNE +                                                                ;B495AA;
     STZ.W $1864                                                          ;B495AC;
@@ -9871,8 +9872,8 @@ DebugEnemyPopulationData_RobotNoPower:
     dw $FFFF : db $01
 
 
+; see labels.asm for EnemyVulnerabilities:
 ;;; $EC1C: Enemy vulnerabilities ;;;
-EnemyVulnerabilities:
 ; Vulnerability format:
 ;     v = f000dddd
 ;     If v = FFh:
@@ -10193,9 +10194,9 @@ EnemyVulnerabilities_MotherBrainBody:
     db $80,$80,$80,$80,$80,$80,$80,$00,$80,$80
 
 
+; see labels.asm for EnemyDropChances:
 ;;; $F1F4: Enemy drop chances ;;;
 EnemyDropChances_Geruta:
-EnemyDropChances:
   .smallEnergy:
     db $3C                                                               ;B4F1F4;
   .bigEnergy:

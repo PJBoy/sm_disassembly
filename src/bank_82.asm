@@ -11219,7 +11219,7 @@ Load_EnemyGFX_to_VRAM:
     TXY                                                                  ;82DFDB;
 
   .loop:
-    LDA.L EnemySets&$FF0000,X                                            ;82DFDC;
+    LDA.L EnemySets_ID,X                                                 ;82DFDC;
     CMP.W #$FFFF                                                         ;82DFE0;
     BEQ .return                                                          ;82DFE3;
     TAX                                                                  ;82DFE5;
@@ -11242,7 +11242,7 @@ Load_EnemyGFX_to_VRAM:
 +   AND.W #$7FFF                                                         ;82E00E;
     STA.W DoorTransitionVRAM_Size                                        ;82E011;
     TYX                                                                  ;82E014;
-    LDA.L (EnemySets&$FF0000)+2,X                                        ;82E015;
+    LDA.L EnemySets_palette,X                                            ;82E015;
     AND.W #$F000                                                         ;82E019;
     LSR                                                                  ;82E01C;
     LSR                                                                  ;82E01D;

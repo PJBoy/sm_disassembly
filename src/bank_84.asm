@@ -518,7 +518,7 @@ Spawn_Room_PLM:
     STA.W $1C87,Y                                                        ;84849F;
     LDA.L PLMPopulations_param,X                                         ;8484A2;
     STA.W $1DC7,Y                                                        ;8484A6;
-    LDA.L $PLMPopulations_PLM,X                                          ;8484A9;
+    LDA.L PLMPopulations_PLM,X                                           ;8484A9;
     STA.W $1C37,Y                                                        ;8484AD;
     TYX                                                                  ;8484B0;
     TAY                                                                  ;8484B1;

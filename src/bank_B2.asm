@@ -717,7 +717,7 @@ EnemyShot_SpacePirate_GoldNinjaIsVulnerable:
     TAX                                                                  ;B287EF;
     LDA.L $A0003C,X                                                      ;B287F0;
     BNE .zeroVuln                                                        ;B287F4;
-    LDA.W #EnemyVulnerabilities                                          ;B287F6;
+    LDA.W #EnemyVulnerabilities_Default                                  ;B287F6;
 
   .zeroVuln:
     STA.B $14                                                            ;B287F9;
@@ -729,7 +729,7 @@ EnemyShot_SpacePirate_GoldNinjaIsVulnerable:
     CLC                                                                  ;B28807;
     ADC.B $14                                                            ;B28808;
     TAX                                                                  ;B2880A;
-    LDA.L $B40000,X                                                      ;B2880B;
+    LDA.L EnemyVulnerabilities_power,X                                   ;B2880B;
     AND.W #$000F                                                         ;B2880F;
     BEQ EnemyShot_SpacePirate_GoldNinjaIsInvincible                      ;B28812;
     CMP.W #$000F                                                         ;B28814;
@@ -750,7 +750,7 @@ EnemyShot_SpacePirate_GoldNinjaIsVulnerable:
     CLC                                                                  ;B2882A;
     ADC.B $14                                                            ;B2882B;
     TAX                                                                  ;B2882D;
-    LDA.L $B4000B,X                                                      ;B2882E;
+    LDA.L EnemyVulnerabilities_plasmaIceWave,X                           ;B2882E;
     AND.W #$000F                                                         ;B28832;
     BEQ EnemyShot_SpacePirate_GoldNinjaIsInvincible                      ;B28835;
     CMP.W #$000F                                                         ;B28837;

@@ -875,17 +875,17 @@ Record_EnemySpawnData:
     LDA.L $A0003E,X                                                      ;A0891C;
     BEQ .doneName                                                        ;A08920;
     TAX                                                                  ;A08922;
-    LDA.L $B40000,X                                                      ;A08923;
+    LDA.L EnemyNames_name,X                                              ;A08923;
     STA.B $12                                                            ;A08927;
-    LDA.L $B40002,X                                                      ;A08929;
+    LDA.L EnemyNames_name+2,X                                            ;A08929;
     STA.B $14                                                            ;A0892D;
-    LDA.L $B40004,X                                                      ;A0892F;
+    LDA.L EnemyNames_name+4,X                                            ;A0892F;
     STA.B $16                                                            ;A08933;
-    LDA.L $B40006,X                                                      ;A08935;
+    LDA.L EnemyNames_name+6,X                                            ;A08935;
     STA.B $18                                                            ;A08939;
-    LDA.L $B40008,X                                                      ;A0893B;
+    LDA.L EnemyNames_name+8,X                                            ;A0893B;
     STA.B $1A                                                            ;A0893F;
-    LDA.L $B4000C,X                                                      ;A08941;
+    LDA.L EnemyNames_spritemap,X                                         ;A08941;
     STA.B $1C                                                            ;A08945;
 
   .doneName:
@@ -925,20 +925,20 @@ Debug_LoadEnemySetData:
     SEC                                                                  ;A08985;
     SBC.W #$0007                                                         ;A08986;
     TAX                                                                  ;A08989;
-    LDA.L $B40000,X                                                      ;A0898A;
+    LDA.L EnemySetNames,X                                                ;A0898A;
     STA.L $7ED552                                                        ;A0898E;
-    LDA.L $B40002,X                                                      ;A08992;
+    LDA.L EnemySetNames+2,X                                              ;A08992;
     STA.L $7ED554                                                        ;A08996;
-    LDA.L $B40004,X                                                      ;A0899A;
+    LDA.L EnemySetNames+4,X                                              ;A0899A;
     STA.L $7ED556                                                        ;A0899E;
-    LDA.L $B40006,X                                                      ;A089A2;
+    LDA.L EnemySetNames+6,X                                              ;A089A2;
     STA.L $7ED558                                                        ;A089A6;
     LDY.W #$0007                                                         ;A089AA;
     LDA.W $07D1                                                          ;A089AD;
     TAX                                                                  ;A089B0;
 
   .loop:
-    LDA.L $B40000,X                                                      ;A089B1;
+    LDA.L EnemySets_ID,X                                                 ;A089B1;
     CMP.W #$FFFF                                                         ;A089B5;
     BEQ .return                                                          ;A089B8;
     PHX                                                                  ;A089BA;
@@ -949,15 +949,15 @@ Debug_LoadEnemySetData:
 
   .hasName:
     TAX                                                                  ;A089C5;
-    LDA.L $B40000,X                                                      ;A089C6;
+    LDA.L EnemyNames_name,X                                              ;A089C6;
     STA.B $12                                                            ;A089CA;
-    LDA.L $B40002,X                                                      ;A089CC;
+    LDA.L EnemyNames_name+2,X                                            ;A089CC;
     STA.B $14                                                            ;A089D0;
-    LDA.L $B40004,X                                                      ;A089D2;
+    LDA.L EnemyNames_name+4,X                                            ;A089D2;
     STA.B $16                                                            ;A089D6;
-    LDA.L $B40006,X                                                      ;A089D8;
+    LDA.L EnemyNames_name+6,X                                            ;A089D8;
     STA.B $18                                                            ;A089DC;
-    LDA.L $B40008,X                                                      ;A089DE;
+    LDA.L EnemyNames_name+8,X                                            ;A089DE;
     STA.B $1A                                                            ;A089E2;
     TYX                                                                  ;A089E4;
     LDA.B $12                                                            ;A089E5;
@@ -972,7 +972,7 @@ Debug_LoadEnemySetData:
     STA.L $7ED55A,X                                                      ;A089FF;
     PLX                                                                  ;A08A03;
     PHX                                                                  ;A08A04;
-    LDA.L $B40002,X                                                      ;A08A05;
+    LDA.L EnemySets_palette,X                                            ;A08A05;
     TYX                                                                  ;A08A09;
     STA.L $7ED55C,X                                                      ;A08A0A;
     PLX                                                                  ;A08A0E;
@@ -1242,12 +1242,12 @@ LoadEnemyGFXIndices:
     LDX.B $12                                                            ;A08C00;
     LDA.L $A10000,X                                                      ;A08C02;
     LDX.B $1C                                                            ;A08C06;
-    CMP.L $B40000,X                                                      ;A08C08;
+    CMP.L EnemySets_ID,X                                                 ;A08C08;
     BEQ .found                                                           ;A08C0C;
-    LDA.L $B40000,X                                                      ;A08C0E;
+    LDA.L EnemySets_ID,X                                                 ;A08C0E;
     CMP.W #$FFFF                                                         ;A08C12;
     BEQ .notFound                                                        ;A08C15;
-    LDA.L $B40000,X                                                      ;A08C17;
+    LDA.L EnemySets_ID,X                                                 ;A08C17; >.<
     TAX                                                                  ;A08C1B;
     LDA.W $0000,X                                                        ;A08C1C;
     LSR                                                                  ;A08C1F;
@@ -1278,7 +1278,7 @@ LoadEnemyGFXIndices:
 
   .found:
     LDX.B $1C                                                            ;A08C4C;
-    LDA.L $B40002,X                                                      ;A08C4E;
+    LDA.L EnemySets_palette,X                                            ;A08C4E;
     AND.W #$000F                                                         ;A08C52;
     XBA                                                                  ;A08C55;
     ASL                                                                  ;A08C56;
@@ -1462,7 +1462,7 @@ ProcessEnemySet_LoadPalettesAndEnemyLoadingData:
 
   .loop:
     TAX                                                                  ;A08DAE;
-    LDA.L $B40000,X                                                      ;A08DAF;
+    LDA.L EnemySets_ID,X                                                 ;A08DAF;
     CMP.W #$FFFF                                                         ;A08DB3;
     BNE .notFFFF                                                         ;A08DB6;
     JMP.W .return                                                        ;A08DB8;
@@ -1476,7 +1476,7 @@ ProcessEnemySet_LoadPalettesAndEnemyLoadingData:
     LDA.W $000C,X                                                        ;A08DC6;
     STA.W $0E20                                                          ;A08DC9;
     LDX.B $1C                                                            ;A08DCC;
-    LDA.L $B40002,X                                                      ;A08DCE;
+    LDA.L EnemySets_palette,X                                            ;A08DCE;
     AND.W #$00FF                                                         ;A08DD2;
     CLC                                                                  ;A08DD5;
     ADC.W #$0008                                                         ;A08DD6;
@@ -1506,7 +1506,7 @@ ProcessEnemySet_LoadPalettesAndEnemyLoadingData:
     BNE .loopTargetEnemyPalette                                          ;A08E03;
     PLB                                                                  ;A08E05;
     LDX.B $1C                                                            ;A08E06;
-    LDA.L $B40000,X                                                      ;A08E08;
+    LDA.L EnemySets_ID,X                                                 ;A08E08;
     TAX                                                                  ;A08E0C;
     LDA.W $0036,X                                                        ;A08E0D;
     STA.B $16                                                            ;A08E10;
@@ -1524,7 +1524,7 @@ ProcessEnemySet_LoadPalettesAndEnemyLoadingData:
     BPL .noMSB                                                           ;A08E2E;
     PHX                                                                  ;A08E30;
     LDX.B $1C                                                            ;A08E31;
-    LDA.L $B40002,X                                                      ;A08E33;
+    LDA.L EnemySets_palette,X                                            ;A08E33;
     AND.W #$3000                                                         ;A08E37;
     LSR                                                                  ;A08E3A;
     LSR                                                                  ;A08E3B;
@@ -1549,12 +1549,12 @@ ProcessEnemySet_LoadPalettesAndEnemyLoadingData:
     STA.L $7EEF64,X                                                      ;A08E5F;
     PHX                                                                  ;A08E63;
     LDX.B $1C                                                            ;A08E64;
-    LDA.L $B40000,X                                                      ;A08E66;
+    LDA.L EnemySets_ID,X                                                 ;A08E66;
     PLX                                                                  ;A08E6A;
     STA.L $7EEF5C,X                                                      ;A08E6B;
     PHX                                                                  ;A08E6F;
     LDX.B $1C                                                            ;A08E70;
-    LDA.L $B40002,X                                                      ;A08E72;
+    LDA.L EnemySets_palette,X                                            ;A08E72;
     PLX                                                                  ;A08E76;
     STA.L $7EEF6C,X                                                      ;A08E77;
     LDA.L $7EEF74                                                        ;A08E7B;
@@ -1573,7 +1573,7 @@ ProcessEnemySet_LoadPalettesAndEnemyLoadingData:
     ADC.L $7EEF76                                                        ;A08E91;
     STA.L $7EEF76                                                        ;A08E95;
     LDX.B $1C                                                            ;A08E99;
-    LDA.L $B40000,X                                                      ;A08E9B;
+    LDA.L EnemySets_ID,X                                                 ;A08E9B;
     TAX                                                                  ;A08E9F;
     LDA.W $0000,X                                                        ;A08EA0;
     CLC                                                                  ;A08EA3;
@@ -4469,7 +4469,7 @@ Process_Enemy_PowerBomb_Interaction:
     LDA.W #EnemyVulnerabilities_Default                                  ;A0A33F;
 
 +   TAX                                                                  ;A0A342;
-    LDA.L $B4000F,X                                                      ;A0A343;
+    LDA.L EnemyVulnerabilities_powerBomb,X                               ;A0A343;
     AND.W #$007F                                                         ;A0A347;
     BEQ .next                                                            ;A0A34A;
     LDX.W $0E54                                                          ;A0A34C;
@@ -4737,7 +4737,7 @@ NormalEnemyTouchAI_NoDeathCheck:
     CLC                                                                  ;A0A4F2;
     ADC.B $14                                                            ;A0A4F3;
     TAX                                                                  ;A0A4F5;
-    LDA.L $B40000,X                                                      ;A0A4F6;
+    LDA.L EnemyVulnerabilities_power,X                                   ;A0A4F6;
     STA.W $0E40                                                          ;A0A4FA;
     AND.W #$007F                                                         ;A0A4FD;
     STA.W $0E32                                                          ;A0A500;
@@ -4849,7 +4849,7 @@ NormalEnemyPowerBombAI_NoDeathCheck:
 
   .XNonZero:
     TAX                                                                  ;A0A5D1;
-    LDA.L $B4000F,X                                                      ;A0A5D2;
+    LDA.L EnemyVulnerabilities_powerBomb,X                               ;A0A5D2;
     AND.W #$00FF                                                         ;A0A5D6;
     CMP.W #$00FF                                                         ;A0A5D9;
     BEQ .return                                                          ;A0A5DC;
@@ -5025,7 +5025,7 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     CLC                                                                  ;A0A70E;
     ADC.B $14                                                            ;A0A70F;
     TAX                                                                  ;A0A711;
-    LDA.L $B40000,X                                                      ;A0A712;
+    LDA.L EnemyVulnerabilities_power,X                                   ;A0A712;
     AND.W #$00FF                                                         ;A0A716;
     STA.W $0E40                                                          ;A0A719;
     AND.W #$007F                                                         ;A0A71C;
@@ -5040,7 +5040,7 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     BIT.W #$0010                                                         ;A0A72F;
     BEQ .calculateDamage                                                 ;A0A732;
     LDX.B $14                                                            ;A0A734;
-    LDA.L $B40013,X                                                      ;A0A736;
+    LDA.L EnemyVulnerabilities_chargedBeam,X                             ;A0A736;
     AND.W #$00FF                                                         ;A0A73A;
     CMP.W #$00FF                                                         ;A0A73D;
     BEQ .noDamage                                                        ;A0A740;
@@ -5071,7 +5071,7 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     CLC                                                                  ;A0A771;
     ADC.B $14                                                            ;A0A772;
     TAX                                                                  ;A0A774;
-    LDA.L $B4000B,X                                                      ;A0A775;
+    LDA.L EnemyVulnerabilities_plasmaIceWave,X                           ;A0A775;
     AND.W #$007F                                                         ;A0A779;
     STA.W $0E32                                                          ;A0A77C;
     BRA .calculateDamage                                                 ;A0A77F;
@@ -5080,7 +5080,7 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     CMP.W #$0500                                                         ;A0A781;
     BNE .checkPowerBomb                                                  ;A0A784;
     LDX.B $14                                                            ;A0A786;
-    LDA.L $B4000E,X                                                      ;A0A788;
+    LDA.L EnemyVulnerabilities_bomb,X                                    ;A0A788;
     AND.W #$007F                                                         ;A0A78C;
     STA.W $0E32                                                          ;A0A78F;
     BRA .calculateDamage                                                 ;A0A792;
@@ -5089,7 +5089,7 @@ NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic:
     CMP.W #$0300                                                         ;A0A794;
     BNE .noDamage                                                        ;A0A797;
     LDX.B $14                                                            ;A0A799;
-    LDA.L $B4000F,X                                                      ;A0A79B;
+    LDA.L EnemyVulnerabilities_powerBomb,X                               ;A0A79B;
     AND.W #$007F                                                         ;A0A79F;
     STA.W $0E32                                                          ;A0A7A2;
     JMP.W .calculateDamage                                               ;A0A7A5;
@@ -10788,7 +10788,7 @@ EnemyHeaders_Geruta:
     dw $0000                                                             ;A0D333;
     dl Tiles_Geruta                                                      ;A0D335;
     db $05                                                               ;A0D338;
-    dw EnemyDropChances_smallEnergy                                      ;A0D339;
+    dw EnemyDropChances_Geruta                                           ;A0D339;
     dw EnemyVulnerabilities_Geruta                                       ;A0D33B;
     dw EnemyName_Geruta                                                  ;A0D33D;
 
