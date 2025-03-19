@@ -1678,10 +1678,11 @@ FXType22BG1XScrollIndirectHDMADataTable: skip $7E ; $7E9F02..??
 ScrollingSkyBG2XScrollHDMADataTable: ; $7E9F80..DB
 
 org $7EA000
-TileTable_TopLeft: skip 2 ; $7EA000
-TileTable_TopRight: skip 2 ; $7EA002
-TileTable_BottomLeft: skip 2 ; $7EA004
-TileTable_BottomRight: skip 2 ; $7EA006
+TileTable:
+  .topLeft: skip 2 ; $7EA000
+  .topRight: skip 2 ; $7EA002
+  .bottomLeft: skip 2 ; $7EA004
+  .bottomRight: skip 2 ; $7EA006
 
 org $7EA000
 DecompressedCRE: ; $7EA000..A7FF
