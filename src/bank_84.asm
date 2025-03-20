@@ -27,9 +27,9 @@ GoldenTorizo_HealthBasedPalette_Handling:
 
   .loop:
     LDA.W .palette2,Y                                                    ;84801A;
-    STA.L Palettes_SpriteP2,X                                                      ;84801D;
+    STA.L Palettes_SpriteP2,X                                            ;84801D;
     LDA.W .palette1,Y                                                    ;848021;
-    STA.L Palettes_SpriteP1,X                                                      ;848024;
+    STA.L Palettes_SpriteP1,X                                            ;848024;
     DEY                                                                  ;848028;
     DEY                                                                  ;848029;
     DEX                                                                  ;84802A;
@@ -75,12 +75,12 @@ Load_Room_PLM_Graphics:
     REP #$30                                                             ;848234;
     PHK                                                                  ;848236;
     PLB                                                                  ;848237;
-    STZ.W PLM_ItemGFXIndex                                                          ;848238;
+    STZ.W PLM_ItemGFXIndex                                               ;848238;
     LDX.W #$0000                                                         ;84823B;
 
   .loop:
     PHX                                                                  ;84823E;
-    LDY.W PLM_ItemGFXPointers,X                                                        ;84823F;
+    LDY.W PLM_ItemGFXPointers,X                                          ;84823F;
     JSR.W Instruction_PLM_LoadItemPLMGFX                                 ;848242;
     PLX                                                                  ;848245;
     INX                                                                  ;848246;
@@ -103,7 +103,7 @@ Clear_Sounds_When_Going_Through_Door:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $8258: Unused. Clear spin jump sound when going through door ;;;
 UNUSED_Clear_SpinJumpSound_GoingThroughDoor_848258:
-    LDA.W PoseXDirection                                                          ;848258;
+    LDA.W PoseXDirection                                                 ;848258;
     AND.W #$FF00                                                         ;84825B;
     CMP.W #$0300                                                         ;84825E;
     BEQ .playSound                                                       ;848261;
@@ -130,7 +130,7 @@ Play_SpinJumpSound_if_SpinJumping:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $8278: Unused. Play resumed spin jump sound ;;;
 UNUSED_Play_Resumed_SpinJumpSound_848278:
-    LDA.W PoseXDirection                                                          ;848278;
+    LDA.W PoseXDirection                                                 ;848278;
     AND.W #$FF00                                                         ;84827B;
     CMP.W #$0300                                                         ;84827E;
     BEQ .playSound                                                       ;848281;
@@ -150,11 +150,11 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 Calculate_PLM_Block_Coordinates:
 ;; Parameters:
 ;;     X: PLM index
-    LDA.W PLM_BlockIndices,X                                                        ;848290;
+    LDA.W PLM_BlockIndices,X                                             ;848290;
     LSR                                                                  ;848293;
     STA.W $4204                                                          ;848294;
     SEP #$20                                                             ;848297;
-    LDA.W RoomWidthBlocks                                                          ;848299;
+    LDA.W RoomWidthBlocks                                                ;848299;
     STA.W $4206                                                          ;84829C;
     REP #$20                                                             ;84829F;
     NOP                                                                  ;8482A1;
@@ -164,9 +164,9 @@ Calculate_PLM_Block_Coordinates:
     NOP                                                                  ;8482A5;
     NOP                                                                  ;8482A6;
     LDA.W $4214                                                          ;8482A7;
-    STA.W PLM_YBlock                                                          ;8482AA;
+    STA.W PLM_YBlock                                                     ;8482AA;
     LDA.W $4216                                                          ;8482AD;
-    STA.W PLM_XBlock                                                          ;8482B0;
+    STA.W PLM_XBlock                                                     ;8482B0;
     RTL                                                                  ;8482B3;
 
 
@@ -177,18 +177,18 @@ Write_Level_Data_Block_Type_and_BTS:
 ;;     A high: Block type in high nybble (like level data)
 ;;     X: PLM block index
     PHX                                                                  ;8482B4;
-    STA.B DP_Temp12                                                            ;8482B5;
+    STA.B DP_Temp12                                                      ;8482B5;
     SEP #$20                                                             ;8482B7;
-    LDA.L LevelData+1,X                                                      ;8482B9;
+    LDA.L LevelData+1,X                                                  ;8482B9;
     AND.B #$0F                                                           ;8482BD;
-    ORA.B DP_Temp13                                                            ;8482BF;
-    STA.L LevelData+1,X                                                      ;8482C1;
+    ORA.B DP_Temp13                                                      ;8482BF;
+    STA.L LevelData+1,X                                                  ;8482C1;
     REP #$20                                                             ;8482C5;
     TXA                                                                  ;8482C7;
     LSR                                                                  ;8482C8;
     TAX                                                                  ;8482C9;
     SEP #$20                                                             ;8482CA;
-    LDA.B DP_Temp12                                                            ;8482CC;
+    LDA.B DP_Temp12                                                      ;8482CC;
     STA.L BTS,X                                                          ;8482CE;
     REP #$20                                                             ;8482D2;
     PLX                                                                  ;8482D4;
@@ -206,39 +206,39 @@ Write_Row_of_Level_Data_Block_and_BTS:
     PHY                                                                  ;8482D7;
     LDY.W #$0001                                                         ;8482D8;
     LDA.B ($05,S),Y                                                      ;8482DB;
-    STA.B DP_Temp12                                                            ;8482DD;
+    STA.B DP_Temp12                                                      ;8482DD;
     INY                                                                  ;8482DF;
     INY                                                                  ;8482E0;
     LDA.B ($05,S),Y                                                      ;8482E1;
-    STA.B DP_Temp14                                                            ;8482E3;
+    STA.B DP_Temp14                                                      ;8482E3;
     INY                                                                  ;8482E5;
     INY                                                                  ;8482E6;
     LDA.B ($05,S),Y                                                      ;8482E7;
-    STA.B DP_Temp16                                                            ;8482E9;
+    STA.B DP_Temp16                                                      ;8482E9;
     LDA.B $05,S                                                          ;8482EB;
     CLC                                                                  ;8482ED;
     ADC.W #$0006                                                         ;8482EE;
     STA.B $05,S                                                          ;8482F1;
-    LDA.W PLM_BlockIndices,X                                                        ;8482F3;
+    LDA.W PLM_BlockIndices,X                                             ;8482F3;
     TAX                                                                  ;8482F6;
     LSR                                                                  ;8482F7;
     PHA                                                                  ;8482F8;
-    LDA.B DP_Temp12                                                            ;8482F9;
-    LDY.B DP_Temp16                                                            ;8482FB;
+    LDA.B DP_Temp12                                                      ;8482F9;
+    LDY.B DP_Temp16                                                      ;8482FB;
 
   .loopLevelData:
-    STA.L LevelData,X                                                      ;8482FD;
+    STA.L LevelData,X                                                    ;8482FD;
     INX                                                                  ;848301;
     INX                                                                  ;848302;
     DEY                                                                  ;848303;
     BNE .loopLevelData                                                   ;848304;
     SEP #$20                                                             ;848306;
     PLX                                                                  ;848308;
-    LDA.B DP_Temp14                                                            ;848309;
-    LDY.B DP_Temp16                                                            ;84830B;
+    LDA.B DP_Temp14                                                      ;848309;
+    LDY.B DP_Temp16                                                      ;84830B;
 
   .loopBTS:
-    STA.L BTS,X                                                      ;84830D;
+    STA.L BTS,X                                                          ;84830D;
     INX                                                                  ;848311;
     DEY                                                                  ;848312;
     BNE .loopBTS                                                         ;848313;
@@ -268,26 +268,26 @@ Load_Item_and_Room_Special_Xray_Blocks:
     LDX.W #$004E                                                         ;848322;
 
   .loopPLM:
-    LDA.W PLM_IDs,X                                                        ;848325;
+    LDA.W PLM_IDs,X                                                      ;848325;
     CMP.W #PreInstruction_PLM_GotoLinkInstructionIfTriggered             ;848328;
     BCC .next                                                            ;84832B;
     PHX                                                                  ;84832D;
-    LDA.W PLM_RoomArgs,X                                                        ;84832E;
+    LDA.W PLM_RoomArgs,X                                                 ;84832E;
     BMI .next                                                            ;848331;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;848333;
-    LDA.L SRAMMirror_Items,X                                                      ;848337;
+    LDA.L SRAMMirror_Items,X                                             ;848337;
     PLX                                                                  ;84833B;
-    AND.W Bitmask                                                          ;84833C;
+    AND.W Bitmask                                                        ;84833C;
     BNE .next                                                            ;84833F;
     PHX                                                                  ;848341;
     JSL.L Calculate_PLM_Block_Coordinates                                ;848342;
-    LDA.L PLMExtra_Vars,X                                                      ;848346;
+    LDA.L PLMExtra_Vars,X                                                ;848346;
     TAY                                                                  ;84834A;
     LDX.W .InstructionPointers,Y                                         ;84834B;
     LDA.W $0002,X                                                        ;84834E;
     AND.W #$0FFF                                                         ;848351;
-    LDX.W PLM_XBlock                                                          ;848354;
-    LDY.W PLM_YBlock                                                          ;848357;
+    LDX.W PLM_XBlock                                                     ;848354;
+    LDY.W PLM_YBlock                                                     ;848357;
     JSL.L LoadBlockToXrayBG2Tilemap                                      ;84835A;
     PLX                                                                  ;84835E;
 
@@ -295,7 +295,7 @@ Load_Item_and_Room_Special_Xray_Blocks:
     DEX                                                                  ;84835F;
     DEX                                                                  ;848360;
     BPL .loopPLM                                                         ;848361;
-    LDX.W RoomStatePointer                                                          ;848363;
+    LDX.W RoomStatePointer                                               ;848363;
     LDA.L RoomStates_XrayBlocks,X                                        ;848366;
     BEQ .return                                                          ;84836A;
     TAX                                                                  ;84836C;
@@ -304,14 +304,14 @@ Load_Item_and_Room_Special_Xray_Blocks:
     LDA.L RoomVars_XPosition,X                                           ;84836D;
     BEQ .return                                                          ;848371;
     AND.W #$00FF                                                         ;848373;
-    STA.B DP_Temp12                                                            ;848376;
+    STA.B DP_Temp12                                                      ;848376;
     LDA.L RoomVars_YPosition,X                                           ;848378;
     AND.W #$00FF                                                         ;84837C;
-    STA.B DP_Temp14                                                            ;84837F;
+    STA.B DP_Temp14                                                      ;84837F;
     PHX                                                                  ;848381;
     LDA.L RoomVars_block,X                                               ;848382;
-    LDX.B DP_Temp12                                                            ;848386;
-    LDY.B DP_Temp14                                                            ;848388;
+    LDX.B DP_Temp12                                                      ;848386;
+    LDY.B DP_Temp14                                                      ;848388;
     JSL.L LoadBlockToXrayBG2Tilemap                                      ;84838A;
     PLX                                                                  ;84838E;
     TXA                                                                  ;84838F;
@@ -344,7 +344,7 @@ Enable_PLMs:
     PHP                                                                  ;8483AD;
     REP #$20                                                             ;8483AE;
     LDA.W #$8000                                                         ;8483B0;
-    TSB.W PLM_Flag                                                          ;8483B3;
+    TSB.W PLM_Flag                                                       ;8483B3;
     PLP                                                                  ;8483B6;
     RTL                                                                  ;8483B7;
 
@@ -354,7 +354,7 @@ Disable_PLMs:
     PHP                                                                  ;8483B8;
     REP #$20                                                             ;8483B9;
     LDA.W #$8000                                                         ;8483BB;
-    TRB.W PLM_Flag                                                          ;8483BE;
+    TRB.W PLM_Flag                                                       ;8483BE;
     PLP                                                                  ;8483C1;
     RTL                                                                  ;8483C2;
 
@@ -367,11 +367,11 @@ Clear_PLMs:
     LDX.W #$004E                                                         ;8483C7;
 
   .loop:
-    STZ.W PLM_IDs,X                                                        ;8483CA;
+    STZ.W PLM_IDs,X                                                      ;8483CA;
     DEX                                                                  ;8483CD;
     DEX                                                                  ;8483CE;
     BPL .loop                                                            ;8483CF;
-    STZ.W PLM_ItemGFXIndex                                                          ;8483D1;
+    STZ.W PLM_ItemGFXIndex                                               ;8483D1;
     PLX                                                                  ;8483D4;
     PLP                                                                  ;8483D5;
     RTL                                                                  ;8483D6;
@@ -395,7 +395,7 @@ Spawn_Hardcoded_PLM:
     LDY.W #$004E                                                         ;8483DC;
 
   .loop:
-    LDA.W PLM_IDs,Y                                                        ;8483DF;
+    LDA.W PLM_IDs,Y                                                      ;8483DF;
     BEQ .found                                                           ;8483E2;
     DEY                                                                  ;8483E4;
     DEY                                                                  ;8483E5;
@@ -419,7 +419,7 @@ Spawn_Hardcoded_PLM:
     LDY.W #$0002                                                         ;8483FC;
     LDA.B ($06,S),Y                                                      ;8483FF;
     STA.W $4202                                                          ;848401;
-    LDA.W RoomWidthBlocks                                                          ;848404;
+    LDA.W RoomWidthBlocks                                                ;848404;
     STA.W $4203                                                          ;848407;
     LDY.W #$0001                                                         ;84840A;
     LDA.B ($06,S),Y                                                      ;84840D;
@@ -428,7 +428,7 @@ Spawn_Hardcoded_PLM:
     CLC                                                                  ;848414;
     ADC.W $4216                                                          ;848415;
     ASL                                                                  ;848418;
-    STA.W PLM_BlockIndices,X                                                        ;848419;
+    STA.W PLM_BlockIndices,X                                             ;848419;
     LDY.W #$0003                                                         ;84841C;
     LDA.B ($06,S),Y                                                      ;84841F;
     TXY                                                                  ;848421;
@@ -444,20 +444,20 @@ Spawn_Hardcoded_PLM:
     TYX                                                                  ;848431;
     TAY                                                                  ;848432;
     LDA.W #$0000                                                         ;848433;
-    STA.W PLM_RoomArgs,X                                                        ;848436;
-    STA.L PLMExtra_Vars,X                                                      ;848439;
+    STA.W PLM_RoomArgs,X                                                 ;848436;
+    STA.L PLMExtra_Vars,X                                                ;848439;
     LDA.W #.return                                                       ;84843D;
-    STA.W PLM_PreInstructions,X                                                        ;848440;
+    STA.W PLM_PreInstructions,X                                          ;848440;
     LDA.W $0002,Y                                                        ;848443;
-    STA.W PLM_InstListPointers,X                                                        ;848446;
+    STA.W PLM_InstListPointers,X                                         ;848446;
     LDA.W #$0001                                                         ;848449;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84844C;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84844C;
     LDA.W #InstList_PLM_DefaultPLMDrawInstruction                        ;848450;
-    STA.L PLMExtra_DrawInstructionPointers,X                                                      ;848453;
-    STZ.W PLM_Timers,X                                                        ;848457;
-    STX.W PLM_Index                                                          ;84845A;
+    STA.L PLMExtra_DrawInstructionPointers,X                             ;848453;
+    STZ.W PLM_Timers,X                                                   ;848457;
+    STX.W PLM_Index                                                      ;84845A;
     TYX                                                                  ;84845D;
-    LDY.W PLM_Index                                                          ;84845E;
+    LDY.W PLM_Index                                                      ;84845E;
     JSR.W ($0000,X)                                                      ;848461;
     PLX                                                                  ;848464;
     PLY                                                                  ;848465;
@@ -491,7 +491,7 @@ Spawn_Room_PLM:
     LDY.W #$004E                                                         ;848470;
 
   .loop:
-    LDA.W PLM_IDs,Y                                                        ;848473;
+    LDA.W PLM_IDs,Y                                                      ;848473;
     BEQ .found                                                           ;848476;
     DEY                                                                  ;848478;
     DEY                                                                  ;848479;
@@ -507,7 +507,7 @@ Spawn_Room_PLM:
     SEP #$20                                                             ;848482;
     LDA.L PLMPopulations_Y,X                                             ;848484;
     STA.W $4202                                                          ;848488;
-    LDA.W RoomWidthBlocks                                                          ;84848B;
+    LDA.W RoomWidthBlocks                                                ;84848B;
     STA.W $4203                                                          ;84848E;
     LDA.L PLMPopulations_X,X                                             ;848491;
     REP #$20                                                             ;848495;
@@ -515,27 +515,27 @@ Spawn_Room_PLM:
     CLC                                                                  ;84849A;
     ADC.W $4216                                                          ;84849B;
     ASL                                                                  ;84849E;
-    STA.W PLM_BlockIndices,Y                                                        ;84849F;
+    STA.W PLM_BlockIndices,Y                                             ;84849F;
     LDA.L PLMPopulations_param,X                                         ;8484A2;
-    STA.W PLM_RoomArgs,Y                                                        ;8484A6;
+    STA.W PLM_RoomArgs,Y                                                 ;8484A6;
     LDA.L PLMPopulations_PLM,X                                           ;8484A9;
-    STA.W PLM_IDs,Y                                                        ;8484AD;
+    STA.W PLM_IDs,Y                                                      ;8484AD;
     TYX                                                                  ;8484B0;
     TAY                                                                  ;8484B1;
     LDA.W #$0000                                                         ;8484B2;
-    STA.L PLMExtra_Vars,X                                                      ;8484B5;
+    STA.L PLMExtra_Vars,X                                                ;8484B5;
     LDA.W #.return                                                       ;8484B9;
-    STA.W PLM_PreInstructions,X                                                        ;8484BC;
+    STA.W PLM_PreInstructions,X                                          ;8484BC;
     LDA.W $0002,Y                                                        ;8484BF;
-    STA.W PLM_InstListPointers,X                                                        ;8484C2;
+    STA.W PLM_InstListPointers,X                                         ;8484C2;
     LDA.W #$0001                                                         ;8484C5;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;8484C8;
+    STA.L PLMExtra_InstructionTimers,X                                   ;8484C8;
     LDA.W #InstList_PLM_DefaultPLMDrawInstruction                        ;8484CC;
-    STA.L PLMExtra_DrawInstructionPointers,X                                                      ;8484CF;
-    STZ.W PLM_Timers,X                                                        ;8484D3;
-    STX.W PLM_Index                                                          ;8484D6;
+    STA.L PLMExtra_DrawInstructionPointers,X                             ;8484CF;
+    STZ.W PLM_Timers,X                                                   ;8484D3;
+    STX.W PLM_Index                                                      ;8484D6;
     TYX                                                                  ;8484D9;
-    LDY.W PLM_Index                                                          ;8484DA;
+    LDY.W PLM_Index                                                      ;8484DA;
     JSR.W ($0000,X)                                                      ;8484DD;
     PLX                                                                  ;8484E0;
     PLY                                                                  ;8484E1;
@@ -563,7 +563,7 @@ Spawn_PLM_to_CurrentBlockIndex:
     LDX.W #$004E                                                         ;8484ED;
 
   .loop:
-    LDA.W PLM_IDs,X                                                        ;8484F0;
+    LDA.W PLM_IDs,X                                                      ;8484F0;
     BEQ .found                                                           ;8484F3;
     DEX                                                                  ;8484F5;
     DEX                                                                  ;8484F6;
@@ -574,26 +574,26 @@ Spawn_PLM_to_CurrentBlockIndex:
     RTL                                                                  ;8484FC;
 
   .found:
-    LDA.W CurrentBlockIndex                                                          ;8484FD;
+    LDA.W CurrentBlockIndex                                              ;8484FD;
     ASL                                                                  ;848500;
-    STA.W PLM_BlockIndices,X                                                        ;848501;
+    STA.W PLM_BlockIndices,X                                             ;848501;
     TYA                                                                  ;848504;
-    STA.W PLM_IDs,X                                                        ;848505;
+    STA.W PLM_IDs,X                                                      ;848505;
     LDA.W #.return                                                       ;848508;
-    STA.W PLM_PreInstructions,X                                                        ;84850B;
+    STA.W PLM_PreInstructions,X                                          ;84850B;
     LDA.W $0002,Y                                                        ;84850E;
-    STA.W PLM_InstListPointers,X                                                        ;848511;
+    STA.W PLM_InstListPointers,X                                         ;848511;
     LDA.W #$0001                                                         ;848514;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;848517;
+    STA.L PLMExtra_InstructionTimers,X                                   ;848517;
     LDA.W #InstList_PLM_DefaultPLMDrawInstruction                        ;84851B;
-    STA.L PLMExtra_DrawInstructionPointers,X                                                      ;84851E;
+    STA.L PLMExtra_DrawInstructionPointers,X                             ;84851E;
     LDA.W #$0000                                                         ;848522;
-    STA.W PLM_Timers,X                                                        ;848525;
-    STA.W PLM_RoomArgs,X                                                        ;848528;
-    STA.L PLMExtra_Vars,X                                                      ;84852B;
-    STX.W PLM_Index                                                          ;84852F;
+    STA.W PLM_Timers,X                                                   ;848525;
+    STA.W PLM_RoomArgs,X                                                 ;848528;
+    STA.L PLMExtra_Vars,X                                                ;84852B;
+    STX.W PLM_Index                                                      ;84852F;
     TYX                                                                  ;848532;
-    LDY.W PLM_Index                                                          ;848533;
+    LDY.W PLM_Index                                                      ;848533;
     JSR.W ($0000,X)                                                      ;848536;
     PLX                                                                  ;848539;
     PLY                                                                  ;84853A;
@@ -620,7 +620,7 @@ UNUSED_Spawn_Enemy_PLM_84853E:
     LDX.W #$004E                                                         ;848545;
 
   .loop:
-    LDA.W PLM_IDs,X                                                        ;848548;
+    LDA.W PLM_IDs,X                                                      ;848548;
     BEQ .found                                                           ;84854B;
     DEX                                                                  ;84854D;
     DEX                                                                  ;84854E;
@@ -632,17 +632,17 @@ UNUSED_Spawn_Enemy_PLM_84853E:
     RTL                                                                  ;848555;
 
   .found:
-    LDA.W Enemy.YPosition,Y                                                        ;848556;
+    LDA.W Enemy.YPosition,Y                                              ;848556;
     LSR                                                                  ;848559;
     LSR                                                                  ;84855A;
     LSR                                                                  ;84855B;
     LSR                                                                  ;84855C;
     SEP #$20                                                             ;84855D;
     STA.W $4202                                                          ;84855F;
-    LDA.W RoomWidthBlocks                                                          ;848562;
+    LDA.W RoomWidthBlocks                                                ;848562;
     STA.W $4203                                                          ;848565;
     REP #$20                                                             ;848568;
-    LDA.W Enemy.XPosition,Y                                                        ;84856A;
+    LDA.W Enemy.XPosition,Y                                              ;84856A;
     LSR                                                                  ;84856D;
     LSR                                                                  ;84856E;
     LSR                                                                  ;84856F;
@@ -650,25 +650,25 @@ UNUSED_Spawn_Enemy_PLM_84853E:
     CLC                                                                  ;848571;
     ADC.W $4216                                                          ;848572;
     ASL                                                                  ;848575;
-    STA.W PLM_BlockIndices,X                                                        ;848576;
+    STA.W PLM_BlockIndices,X                                             ;848576;
     PLA                                                                  ;848579;
-    STA.W PLM_IDs,X                                                        ;84857A;
+    STA.W PLM_IDs,X                                                      ;84857A;
     TAY                                                                  ;84857D;
     LDA.W #.return                                                       ;84857E;
-    STA.W PLM_PreInstructions,X                                                        ;848581;
+    STA.W PLM_PreInstructions,X                                          ;848581;
     LDA.W $0002,Y                                                        ;848584;
-    STA.W PLM_InstListPointers,X                                                        ;848587;
+    STA.W PLM_InstListPointers,X                                         ;848587;
     LDA.W #$0001                                                         ;84858A;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84858D;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84858D;
     LDA.W #InstList_PLM_DefaultPLMDrawInstruction                        ;848591;
-    STA.L PLMExtra_DrawInstructionPointers,X                                                      ;848594;
+    STA.L PLMExtra_DrawInstructionPointers,X                             ;848594;
     LDA.W #$0000                                                         ;848598;
-    STA.W PLM_Timers,X                                                        ;84859B;
-    STA.W PLM_RoomArgs,X                                                        ;84859E;
-    STA.L PLMExtra_Vars,X                                                      ;8485A1;
-    STX.W PLM_Index                                                          ;8485A5;
+    STA.W PLM_Timers,X                                                   ;84859B;
+    STA.W PLM_RoomArgs,X                                                 ;84859E;
+    STA.L PLMExtra_Vars,X                                                ;8485A1;
+    STX.W PLM_Index                                                      ;8485A5;
     TYX                                                                  ;8485A8;
-    LDY.W PLM_Index                                                          ;8485A9;
+    LDY.W PLM_Index                                                      ;8485A9;
     JSR.W ($0000,X)                                                      ;8485AC;
     PLX                                                                  ;8485AF;
     PLY                                                                  ;8485B0;
@@ -687,17 +687,17 @@ PLM_Handler:
     PHK                                                                  ;8485B6;
     PLB                                                                  ;8485B7;
     REP #$30                                                             ;8485B8;
-    BIT.W PLM_Flag                                                          ;8485BA;
+    BIT.W PLM_Flag                                                       ;8485BA;
     BPL .return                                                          ;8485BD;
-    STZ.W PLM_DrawTilemapIndex                                                          ;8485BF;
+    STZ.W PLM_DrawTilemapIndex                                           ;8485BF;
     LDX.W #$004E                                                         ;8485C2;
 
   .loop:
-    STX.W PLM_Index                                                          ;8485C5;
-    LDA.W PLM_IDs,X                                                        ;8485C8;
+    STX.W PLM_Index                                                      ;8485C5;
+    LDA.W PLM_IDs,X                                                      ;8485C8;
     BEQ .next                                                            ;8485CB;
     JSR.W Process_PLM                                                    ;8485CD;
-    LDX.W PLM_Index                                                          ;8485D0;
+    LDX.W PLM_Index                                                      ;8485D0;
 
   .next:
     DEX                                                                  ;8485D3;
@@ -717,33 +717,33 @@ Process_PLM:
 
 ; Some instructions (e.g. sleep) pop the return address pushed to the stack by $85F7 to return out of *this* routine
 ; (marked "terminate processing PLM")
-    JSR.W (PLM_PreInstructions,X)                                                      ;8485DA;
-    LDX.W PLM_Index                                                          ;8485DD;
-    LDA.L PLMExtra_InstructionTimers,X                                                      ;8485E0;
+    JSR.W (PLM_PreInstructions,X)                                        ;8485DA;
+    LDX.W PLM_Index                                                      ;8485DD;
+    LDA.L PLMExtra_InstructionTimers,X                                   ;8485E0;
     DEC                                                                  ;8485E4;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;8485E5;
+    STA.L PLMExtra_InstructionTimers,X                                   ;8485E5;
     BNE .return                                                          ;8485E9;
-    LDY.W PLM_InstListPointers,X                                                        ;8485EB;
+    LDY.W PLM_InstListPointers,X                                         ;8485EB;
 
   .loop:
     LDA.W $0000,Y                                                        ;8485EE;
     BPL .nonZeroTimer                                                    ;8485F1;
-    STA.B DP_Temp12                                                            ;8485F3;
+    STA.B DP_Temp12                                                      ;8485F3;
     INY                                                                  ;8485F5;
     INY                                                                  ;8485F6;
     PEA.W .loop-1                                                        ;8485F7;
-    JMP.W (DP_Temp12)                                                        ;8485FA; Execute ASM Instruction
+    JMP.W (DP_Temp12)                                                    ;8485FA; Execute ASM Instruction
 
   .nonZeroTimer:
-    STA.L PLMExtra_InstructionTimers,X                                                      ;8485FD;
+    STA.L PLMExtra_InstructionTimers,X                                   ;8485FD;
     LDA.W $0002,Y                                                        ;848601;
-    STA.L PLMExtra_DrawInstructionPointers,X                                                      ;848604;
+    STA.L PLMExtra_DrawInstructionPointers,X                             ;848604;
     TYA                                                                  ;848608;
     CLC                                                                  ;848609;
     ADC.W #$0004                                                         ;84860A;
-    STA.W PLM_InstListPointers,X                                                        ;84860D;
+    STA.W PLM_InstListPointers,X                                         ;84860D;
     JSR.W Process_PLM_Draw_Instruction                                   ;848610;
-    LDX.W PLM_Index                                                          ;848613;
+    LDX.W PLM_Index                                                      ;848613;
     JSL.L Calculate_PLM_Block_Coordinates                                ;848616;
     JSR.W DrawPLM_HardCoded                                              ;84861A;
 
@@ -755,48 +755,48 @@ Process_PLM:
 Process_PLM_Draw_Instruction:
 ;; Parameter:
 ;;     X: PLM index
-    LDA.L PLMExtra_DrawInstructionPointers,X                                                      ;84861E;
+    LDA.L PLMExtra_DrawInstructionPointers,X                             ;84861E;
     TAY                                                                  ;848622;
-    LDA.W PLM_BlockIndices,X                                                        ;848623;
-    STA.B DP_Temp12                                                            ;848626;
+    LDA.W PLM_BlockIndices,X                                             ;848623;
+    STA.B DP_Temp12                                                      ;848626;
     TAX                                                                  ;848628;
 
   .loopDrawEntry:
     LDA.W $0000,Y                                                        ;848629;
     BMI .column                                                          ;84862C;
     AND.W #$00FF                                                         ;84862E;
-    STA.B DP_Temp16                                                            ;848631;
+    STA.B DP_Temp16                                                      ;848631;
     INY                                                                  ;848633;
     INY                                                                  ;848634;
 
   .loopRow:
     LDA.W $0000,Y                                                        ;848635;
-    STA.L LevelData,X                                                      ;848638;
+    STA.L LevelData,X                                                    ;848638;
     INY                                                                  ;84863C;
     INY                                                                  ;84863D;
     INX                                                                  ;84863E;
     INX                                                                  ;84863F;
-    DEC.B DP_Temp16                                                            ;848640;
+    DEC.B DP_Temp16                                                      ;848640;
     BNE .loopRow                                                         ;848642;
     JMP.W .next                                                          ;848644;
 
   .column:
     AND.W #$00FF                                                         ;848647;
-    STA.B DP_Temp16                                                            ;84864A;
+    STA.B DP_Temp16                                                      ;84864A;
     INY                                                                  ;84864C;
     INY                                                                  ;84864D;
 
   .loopColumn:
     LDA.W $0000,Y                                                        ;84864E;
-    STA.L LevelData,X                                                      ;848651;
+    STA.L LevelData,X                                                    ;848651;
     INY                                                                  ;848655;
     INY                                                                  ;848656;
     TXA                                                                  ;848657;
     CLC                                                                  ;848658;
-    ADC.W RoomWidthBlocks                                                          ;848659;
-    ADC.W RoomWidthBlocks                                                          ;84865C;
+    ADC.W RoomWidthBlocks                                                ;848659;
+    ADC.W RoomWidthBlocks                                                ;84865C;
     TAX                                                                  ;84865F;
-    DEC.B DP_Temp16                                                            ;848660;
+    DEC.B DP_Temp16                                                      ;848660;
     BNE .loopColumn                                                      ;848662;
 
   .next:
@@ -816,8 +816,8 @@ Process_PLM_Draw_Instruction:
 
 +   ASL                                                                  ;848679;
     CLC                                                                  ;84867A;
-    ADC.B DP_Temp12                                                            ;84867B;
-    STA.B DP_Temp14                                                            ;84867D;
+    ADC.B DP_Temp12                                                      ;84867B;
+    STA.B DP_Temp14                                                      ;84867D;
     LDA.W $0001,Y                                                        ;84867F;
     XBA                                                                  ;848682;
     BPL +                                                                ;848683;
@@ -828,7 +828,7 @@ Process_PLM_Draw_Instruction:
     LDA.W #$0000                                                         ;84868D;
 
 -   SEC                                                                  ;848690;
-    SBC.W RoomWidthBlocks                                                          ;848691;
+    SBC.W RoomWidthBlocks                                                ;848691;
     DEX                                                                  ;848694;
     BNE -                                                                ;848695;
     BRA .setX                                                            ;848697;
@@ -839,14 +839,14 @@ Process_PLM_Draw_Instruction:
     LDA.W #$0000                                                         ;84869F;
 
 -   CLC                                                                  ;8486A2;
-    ADC.W RoomWidthBlocks                                                          ;8486A3;
+    ADC.W RoomWidthBlocks                                                ;8486A3;
     DEX                                                                  ;8486A6;
     BNE -                                                                ;8486A7;
 
   .setX:
     ASL                                                                  ;8486A9;
     CLC                                                                  ;8486AA;
-    ADC.B DP_Temp14                                                            ;8486AB;
+    ADC.B DP_Temp14                                                      ;8486AB;
     TAX                                                                  ;8486AD;
     INY                                                                  ;8486AE;
     INY                                                                  ;8486AF;
@@ -862,7 +862,7 @@ Instruction_PLM_Sleep:
     DEY                                                                  ;8486B4;
     DEY                                                                  ;8486B5;
     TYA                                                                  ;8486B6;
-    STA.W PLM_InstListPointers,X                                                        ;8486B7;
+    STA.W PLM_InstListPointers,X                                         ;8486B7;
     PLA                                                                  ;8486BA;
     RTS                                                                  ;8486BB;
 
@@ -871,7 +871,7 @@ Instruction_PLM_Sleep:
 Instruction_PLM_Delete:
 ;; Parameters:
 ;;     X: PLM index
-    STZ.W PLM_IDs,X                                                        ;8486BC;
+    STZ.W PLM_IDs,X                                                      ;8486BC;
     PLA                                                                  ;8486BF;
     RTS                                                                  ;8486C0;
 
@@ -884,7 +884,7 @@ Instruction_PLM_PreInstruction_inY:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;8486C1;
-    STA.W PLM_PreInstructions,X                                                        ;8486C4;
+    STA.W PLM_PreInstructions,X                                          ;8486C4;
     INY                                                                  ;8486C7;
     INY                                                                  ;8486C8;
     RTS                                                                  ;8486C9;
@@ -895,7 +895,7 @@ Instruction_PLM_ClearPreInstruction:
 ;; Parameters:
 ;;     X: PLM index
     LDA.W #.return                                                       ;8486CA;
-    STA.W PLM_PreInstructions,X                                                        ;8486CD;
+    STA.W PLM_PreInstructions,X                                          ;8486CD;
 
   .return:
     RTS                                                                  ;8486D0;
@@ -909,20 +909,20 @@ UNUSED_Instruction_PLM_CallFuctionInY_8486D1:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;8486D1;
-    STA.B DP_Temp12                                                            ;8486D4;
+    STA.B DP_Temp12                                                      ;8486D4;
     LDA.W $0001,Y                                                        ;8486D6;
-    STA.B DP_Temp13                                                            ;8486D9;
+    STA.B DP_Temp13                                                      ;8486D9;
     PHY                                                                  ;8486DB;
     JSL.L .externalFunction                                              ;8486DC;
     PLY                                                                  ;8486E0;
-    LDX.W PLM_Index                                                          ;8486E1;
+    LDX.W PLM_Index                                                      ;8486E1;
     INY                                                                  ;8486E4;
     INY                                                                  ;8486E5;
     INY                                                                  ;8486E6;
     RTS                                                                  ;8486E7;
 
   .externalFunction
-    JML.W [DP_Temp12]                                                        ;8486E8;
+    JML.W [DP_Temp12]                                                    ;8486E8;
 
 
 ;;; $86EB: Unused. Instruction - call function [[Y]] with A = [[Y] + 3] ;;;
@@ -932,14 +932,14 @@ UNUSED_Instruction_PLM_CallFuctionInY_withA_8486EB:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;8486EB;
-    STA.B DP_Temp12                                                            ;8486EE;
+    STA.B DP_Temp12                                                      ;8486EE;
     LDA.W $0001,Y                                                        ;8486F0;
-    STA.B DP_Temp13                                                            ;8486F3;
+    STA.B DP_Temp13                                                      ;8486F3;
     LDA.W $0003,Y                                                        ;8486F5;
     PHY                                                                  ;8486F8;
     JSL.L .externalFunction                                              ;8486F9;
     PLY                                                                  ;8486FD;
-    LDX.W PLM_Index                                                          ;8486FE;
+    LDX.W PLM_Index                                                      ;8486FE;
     TYA                                                                  ;848701;
     CLC                                                                  ;848702;
     ADC.W #$0005                                                         ;848703;
@@ -947,7 +947,7 @@ UNUSED_Instruction_PLM_CallFuctionInY_withA_8486EB:
     RTS                                                                  ;848707;
 
   .externalFunction:
-    JML.W [DP_Temp12]                                                        ;848708;
+    JML.W [DP_Temp12]                                                    ;848708;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -958,9 +958,9 @@ Instruction_PLM_CallFunctionInY:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;84870B;
-    STA.B DP_Temp12                                                            ;84870E;
+    STA.B DP_Temp12                                                      ;84870E;
     LDA.W $0001,Y                                                        ;848710;
-    STA.B DP_Temp13                                                            ;848713;
+    STA.B DP_Temp13                                                      ;848713;
     PHX                                                                  ;848715;
     PHY                                                                  ;848716;
     JSL.L .externalFunction                                              ;848717;
@@ -972,7 +972,7 @@ Instruction_PLM_CallFunctionInY:
     RTS                                                                  ;848720;
 
   .externalFunction:
-    JML.W [DP_Temp12]                                                        ;848721;
+    JML.W [DP_Temp12]                                                    ;848721;
 
 
 ;;; $8724: Instruction - go to [[Y]] ;;;
@@ -993,7 +993,7 @@ UNUSED_Instruction_PLM_GotoY_PlusMinusY_848729:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    STY.B DP_Temp12                                                            ;848729;
+    STY.B DP_Temp12                                                      ;848729;
     DEY                                                                  ;84872B;
     LDA.W $0000,Y                                                        ;84872C;
     XBA                                                                  ;84872F;
@@ -1005,7 +1005,7 @@ UNUSED_Instruction_PLM_GotoY_PlusMinusY_848729:
     ORA.W #$FF00                                                         ;848737;
 
 +   CLC                                                                  ;84873A;
-    ADC.B DP_Temp12                                                            ;84873B;
+    ADC.B DP_Temp12                                                      ;84873B;
     TAY                                                                  ;84873D;
     RTS                                                                  ;84873E;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -1018,7 +1018,7 @@ Instruction_PLM_DecrementTimer_GotoYIfNonZero:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    DEC.W PLM_Timers,X                                                        ;84873F;
+    DEC.W PLM_Timers,X                                                   ;84873F;
     BNE Instruction_PLM_GotoY                                            ;848742;
     INY                                                                  ;848744;
     INY                                                                  ;848745;
@@ -1033,7 +1033,7 @@ UNUSED_Instruction_PLM_DecrementTimer_GotoYIfNonZero_848747:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    DEC.W PLM_Timers,X                                                        ;848747;
+    DEC.W PLM_Timers,X                                                   ;848747;
     BNE UNUSED_Instruction_PLM_GotoY_PlusMinusY_848729                   ;84874A;
     INY                                                                  ;84874C;
     RTS                                                                  ;84874D;
@@ -1049,7 +1049,7 @@ Instruction_PLM_TimerEqualsY_8Bit:
 ;;     Y: Pointer to next instruction
     SEP #$20                                                             ;84874E;
     LDA.W $0000,Y                                                        ;848750;
-    STA.W PLM_Timers,X                                                        ;848753;
+    STA.W PLM_Timers,X                                                   ;848753;
     REP #$20                                                             ;848756;
     INY                                                                  ;848758;
     RTS                                                                  ;848759;
@@ -1064,7 +1064,7 @@ UNUSED_Instruction_PLM_TimerEqualsY_16Bit_84875A:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;84875A;
-    STA.W PLM_Timers,X                                                        ;84875D;
+    STA.W PLM_Timers,X                                                   ;84875D;
     INY                                                                  ;848760;
     INY                                                                  ;848761;
     RTS                                                                  ;848762;
@@ -1092,41 +1092,41 @@ Instruction_PLM_LoadItemPLMGFX:
 ;;         [Y] + 9: Palette index - block 2 - bottom-right
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W PLM_ItemGFXIndex                                                          ;848764;
-    STA.L PLMExtra_Vars,X                                                      ;848767;
+    LDA.W PLM_ItemGFXIndex                                               ;848764;
+    STA.L PLMExtra_Vars,X                                                ;848767;
     TAX                                                                  ;84876B;
     INC                                                                  ;84876C;
     INC                                                                  ;84876D;
     AND.W #$0006                                                         ;84876E;
-    STA.W PLM_ItemGFXIndex                                                          ;848771;
+    STA.W PLM_ItemGFXIndex                                               ;848771;
     LDA.W .VRAMAddresses,X                                               ;848774;
-    STA.B DP_Temp12                                                            ;848777;
+    STA.B DP_Temp12                                                      ;848777;
     LDA.W .tileTableIndices,X                                            ;848779;
-    STA.B DP_Temp14                                                            ;84877C;
+    STA.B DP_Temp14                                                      ;84877C;
     LDA.W .startingTileNumbers,X                                         ;84877E;
-    STA.B DP_Temp16                                                            ;848781;
+    STA.B DP_Temp16                                                      ;848781;
     TYA                                                                  ;848783;
-    STA.W PLM_ItemGFXPointers,X                                                        ;848784;
-    LDX.W VRAMWriteStack                                                          ;848787;
+    STA.W PLM_ItemGFXPointers,X                                          ;848784;
+    LDX.W VRAMWriteStack                                                 ;848787;
     LDA.W #$0100                                                         ;84878A;
-    STA.B VRAMWrite.size,X                                                          ;84878D;
+    STA.B VRAMWrite.size,X                                               ;84878D;
     LDA.W $0000,Y                                                        ;84878F;
-    STA.B VRAMWrite.src,X                                                          ;848792;
+    STA.B VRAMWrite.src,X                                                ;848792;
     LDA.W #$0089                                                         ;848794;
-    STA.B VRAMWrite.src+2,X                                                          ;848797;
-    LDA.B DP_Temp12                                                            ;848799;
-    STA.B VRAMWrite.dest,X                                                          ;84879B;
+    STA.B VRAMWrite.src+2,X                                              ;848797;
+    LDA.B DP_Temp12                                                      ;848799;
+    STA.B VRAMWrite.dest,X                                               ;84879B;
     TXA                                                                  ;84879D;
     CLC                                                                  ;84879E;
     ADC.W #$0007                                                         ;84879F;
-    STA.W VRAMWriteStack                                                          ;8487A2;
+    STA.W VRAMWriteStack                                                 ;8487A2;
     INY                                                                  ;8487A5;
     INY                                                                  ;8487A6;
-    LDX.B DP_Temp14                                                            ;8487A7;
+    LDX.B DP_Temp14                                                      ;8487A7;
     TXA                                                                  ;8487A9;
     CLC                                                                  ;8487AA;
     ADC.W #$0010                                                         ;8487AB;
-    STA.B DP_Temp18                                                            ;8487AE;
+    STA.B DP_Temp18                                                      ;8487AE;
 
   .loop:
     LDA.W $0000,Y                                                        ;8487B0;
@@ -1135,15 +1135,15 @@ Instruction_PLM_LoadItemPLMGFX:
     ASL                                                                  ;8487B7;
     ASL                                                                  ;8487B8;
     CLC                                                                  ;8487B9;
-    ADC.B DP_Temp16                                                            ;8487BA;
-    STA.L TileTable,X                                                      ;8487BC;
-    INC.B DP_Temp16                                                            ;8487C0;
+    ADC.B DP_Temp16                                                      ;8487BA;
+    STA.L TileTable,X                                                    ;8487BC;
+    INC.B DP_Temp16                                                      ;8487C0;
     INY                                                                  ;8487C2;
     INX                                                                  ;8487C3;
     INX                                                                  ;8487C4;
-    CPX.B DP_Temp18                                                            ;8487C5;
+    CPX.B DP_Temp18                                                      ;8487C5;
     BNE .loop                                                            ;8487C7;
-    LDX.W PLM_Index                                                          ;8487C9;
+    LDX.W PLM_Index                                                      ;8487C9;
     RTS                                                                  ;8487CC;
 
   .VRAMAddresses:
@@ -1160,24 +1160,24 @@ Instruction_PLM_TransferBytesToVRAM:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDX.W VRAMWriteStack                                                          ;8487E5;
+    LDX.W VRAMWriteStack                                                 ;8487E5;
     LDA.W $0000,Y                                                        ;8487E8;
-    STA.B VRAMWrite.size,X                                                          ;8487EB;
+    STA.B VRAMWrite.size,X                                               ;8487EB;
     LDA.W $0002,Y                                                        ;8487ED;
-    STA.B VRAMWrite.src,X                                                          ;8487F0;
+    STA.B VRAMWrite.src,X                                                ;8487F0;
     LDA.W $0003,Y                                                        ;8487F2;
-    STA.B VRAMWrite.src+1,X                                                          ;8487F5;
+    STA.B VRAMWrite.src+1,X                                              ;8487F5;
     LDA.W $0005,Y                                                        ;8487F7;
-    STA.B VRAMWrite.dest,X                                                          ;8487FA;
+    STA.B VRAMWrite.dest,X                                               ;8487FA;
     TXA                                                                  ;8487FC;
     CLC                                                                  ;8487FD;
     ADC.W #$0007                                                         ;8487FE;
-    STA.W VRAMWriteStack                                                          ;848801;
+    STA.W VRAMWriteStack                                                 ;848801;
     TYA                                                                  ;848804;
     CLC                                                                  ;848805;
     ADC.W #$0007                                                         ;848806;
     TAY                                                                  ;848809;
-    LDX.W PLM_Index                                                          ;84880A;
+    LDX.W PLM_Index                                                      ;84880A;
     RTS                                                                  ;84880D;
 
 
@@ -1257,12 +1257,12 @@ Instruction_PLM_GotoY_ifRoomArg_ChozoBlockDestroyed:
 ; Negative room argument => chozo block is not destroyed
 ; Used by unused chozo block PLMs $D700/D708
     PHX                                                                  ;848848;
-    LDA.W PLM_RoomArgs,X                                                        ;848849;
+    LDA.W PLM_RoomArgs,X                                                 ;848849;
     BMI .pullX                                                           ;84884C;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;84884E;
-    LDA.L SRAMMirror_ChozeBlockDestroyed,X                                                      ;848852;
+    LDA.L SRAMMirror_ChozeBlockDestroyed,X                               ;848852;
     PLX                                                                  ;848856;
-    AND.W Bitmask                                                          ;848857;
+    AND.W Bitmask                                                        ;848857;
     BEQ .return                                                          ;84885A;
     JMP.W Instruction_PLM_GotoY                                          ;84885C;
 
@@ -1284,12 +1284,12 @@ Instruction_PLM_SetRoomArg_ChozoBlockDestroyed:
 ; Negative room argument => chozo block destroyed flag isn't set
 ; Used by unused chozo block PLMs $D700/D708
     PHX                                                                  ;848865;
-    LDA.W PLM_RoomArgs,X                                                        ;848866;
+    LDA.W PLM_RoomArgs,X                                                 ;848866;
     BMI .return                                                          ;848869;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;84886B;
-    LDA.L SRAMMirror_ChozeBlockDestroyed,X                                                      ;84886F;
-    ORA.W Bitmask                                                          ;848873;
-    STA.L SRAMMirror_ChozeBlockDestroyed,X                                                      ;848876;
+    LDA.L SRAMMirror_ChozeBlockDestroyed,X                               ;84886F;
+    ORA.W Bitmask                                                        ;848873;
+    STA.L SRAMMirror_ChozeBlockDestroyed,X                               ;848876;
 
   .return:
     PLX                                                                  ;84887A;
@@ -1306,12 +1306,12 @@ Instruction_PLM_GotoY_ifRoomArg_ItemIsCollected:
 
 ; Negative room argument => item is not collected
     PHX                                                                  ;84887C;
-    LDA.W PLM_RoomArgs,X                                                        ;84887D;
+    LDA.W PLM_RoomArgs,X                                                 ;84887D;
     BMI .pullX                                                           ;848880;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;848882;
-    LDA.L SRAMMirror_Items,X                                                      ;848886;
+    LDA.L SRAMMirror_Items,X                                             ;848886;
     PLX                                                                  ;84888A;
-    AND.W Bitmask                                                          ;84888B;
+    AND.W Bitmask                                                        ;84888B;
     BEQ .return                                                          ;84888E;
     JMP.W Instruction_PLM_GotoY                                          ;848890;
 
@@ -1332,12 +1332,12 @@ Instruction_PLM_SetRoomArg_ItemCollected:
 
 ; Negative room argument => item collected is not set
     PHX                                                                  ;848899;
-    LDA.W PLM_RoomArgs,X                                                        ;84889A;
+    LDA.W PLM_RoomArgs,X                                                 ;84889A;
     BMI .return                                                          ;84889D;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;84889F;
-    LDA.L SRAMMirror_Items,X                                                      ;8488A3;
-    ORA.W Bitmask                                                          ;8488A7;
-    STA.L SRAMMirror_Items,X                                                      ;8488AA;
+    LDA.L SRAMMirror_Items,X                                             ;8488A3;
+    ORA.W Bitmask                                                        ;8488A7;
+    STA.L SRAMMirror_Items,X                                             ;8488AA;
 
   .return:
     PLX                                                                  ;8488AE;
@@ -1351,19 +1351,19 @@ Instruction_PLM_PickUpBeam_DisplayMessageBox:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;8488B0;
-    ORA.W CollectedBeams                                                          ;8488B3;
-    STA.W CollectedBeams                                                          ;8488B6;
+    ORA.W CollectedBeams                                                 ;8488B3;
+    STA.W CollectedBeams                                                 ;8488B6;
     LDA.W $0000,Y                                                        ;8488B9;
-    ORA.W EquippedBeams                                                          ;8488BC;
-    STA.W EquippedBeams                                                          ;8488BF;
+    ORA.W EquippedBeams                                                  ;8488BC;
+    STA.W EquippedBeams                                                  ;8488BF;
     LDA.W $0000,Y                                                        ;8488C2;
     ASL                                                                  ;8488C5;
     AND.W #$0008                                                         ;8488C6;
-    TRB.W EquippedBeams                                                          ;8488C9;
+    TRB.W EquippedBeams                                                  ;8488C9;
     LDA.W $0000,Y                                                        ;8488CC;
     LSR                                                                  ;8488CF;
     AND.W #$0004                                                         ;8488D0;
-    TRB.W EquippedBeams                                                          ;8488D3;
+    TRB.W EquippedBeams                                                  ;8488D3;
     PHX                                                                  ;8488D6;
     PHY                                                                  ;8488D7;
     JSL.L Update_Beam_Tiles_and_Palette                                  ;8488D8;
@@ -1386,12 +1386,12 @@ Instruction_PLM_PickUpEquipment_DisplayMessageBox:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W EquippedItems                                                          ;8488F3;
+    LDA.W EquippedItems                                                  ;8488F3;
     ORA.W $0000,Y                                                        ;8488F6;
-    STA.W EquippedItems                                                          ;8488F9;
-    LDA.W CollectedItems                                                          ;8488FC;
+    STA.W EquippedItems                                                  ;8488F9;
+    LDA.W CollectedItems                                                 ;8488FC;
     ORA.W $0000,Y                                                        ;8488FF;
-    STA.W CollectedItems                                                          ;848902;
+    STA.W CollectedItems                                                 ;848902;
     LDA.W #$0168                                                         ;848905;
     JSL.L Play_Room_Music_Track_After_A_Frames                           ;848908;
     LDA.W $0002,Y                                                        ;84890C;
@@ -1409,12 +1409,12 @@ Inst_PLM_PickUpEquipment_AddGrappleHUD_DisplayMessageBox:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W EquippedItems                                                          ;84891A;
+    LDA.W EquippedItems                                                  ;84891A;
     ORA.W $0000,Y                                                        ;84891D;
-    STA.W EquippedItems                                                          ;848920;
-    LDA.W CollectedItems                                                          ;848923;
+    STA.W EquippedItems                                                  ;848920;
+    LDA.W CollectedItems                                                 ;848923;
     ORA.W $0000,Y                                                        ;848926;
-    STA.W CollectedItems                                                          ;848929;
+    STA.W CollectedItems                                                 ;848929;
     JSL.L AddGrappleToHUDTilemap                                         ;84892C;
     LDA.W #$0168                                                         ;848930;
     JSL.L Play_Room_Music_Track_After_A_Frames                           ;848933;
@@ -1431,12 +1431,12 @@ Inst_PLM_PickUpEquipment_AddXrayToHUD_DisplayMessageBox:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W EquippedItems                                                          ;848941;
+    LDA.W EquippedItems                                                  ;848941;
     ORA.W $0000,Y                                                        ;848944;
-    STA.W EquippedItems                                                          ;848947;
-    LDA.W CollectedItems                                                          ;84894A;
+    STA.W EquippedItems                                                  ;848947;
+    LDA.W CollectedItems                                                 ;84894A;
     ORA.W $0000,Y                                                        ;84894D;
-    STA.W CollectedItems                                                          ;848950;
+    STA.W CollectedItems                                                 ;848950;
     JSL.L AddXrayToHUDTilemap                                            ;848953;
     LDA.W #$0168                                                         ;848957;
     JSL.L Play_Room_Music_Track_After_A_Frames                           ;84895A;
@@ -1453,11 +1453,11 @@ Instruction_PLM_CollectHealth_EnergyTank:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W MaxEnergy                                                          ;848968;
+    LDA.W MaxEnergy                                                      ;848968;
     CLC                                                                  ;84896B;
     ADC.W $0000,Y                                                        ;84896C;
-    STA.W MaxEnergy                                                          ;84896F;
-    STA.W Energy                                                          ;848972;
+    STA.W MaxEnergy                                                      ;84896F;
+    STA.W Energy                                                         ;848972;
     LDA.W #$0168                                                         ;848975;
     JSL.L Play_Room_Music_Track_After_A_Frames                           ;848978;
     LDA.W #$0001                                                         ;84897C;
@@ -1473,13 +1473,13 @@ Instruction_PLM_CollectHealth_ReserveTank:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W MaxReserveEnergy                                                          ;848986;
+    LDA.W MaxReserveEnergy                                               ;848986;
     CLC                                                                  ;848989;
     ADC.W $0000,Y                                                        ;84898A;
-    STA.W MaxReserveEnergy                                                          ;84898D;
-    LDA.W ReserveTankMode                                                          ;848990;
+    STA.W MaxReserveEnergy                                               ;84898D;
+    LDA.W ReserveTankMode                                                ;848990;
     BNE .playMusic                                                       ;848993;
-    INC.W ReserveTankMode                                                          ;848995;
+    INC.W ReserveTankMode                                                ;848995;
 
   .playMusic:
     LDA.W #$0168                                                         ;848998;
@@ -1497,14 +1497,14 @@ Instruction_PLM_CollectAmmo_MissileTank:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W MaxMissiles                                                          ;8489A9;
+    LDA.W MaxMissiles                                                    ;8489A9;
     CLC                                                                  ;8489AC;
     ADC.W $0000,Y                                                        ;8489AD;
-    STA.W MaxMissiles                                                          ;8489B0;
-    LDA.W Missiles                                                          ;8489B3;
+    STA.W MaxMissiles                                                    ;8489B0;
+    LDA.W Missiles                                                       ;8489B3;
     CLC                                                                  ;8489B6;
     ADC.W $0000,Y                                                        ;8489B7;
-    STA.W Missiles                                                          ;8489BA;
+    STA.W Missiles                                                       ;8489BA;
     JSL.L AddMissilesToHUDTilemap                                        ;8489BD;
     LDA.W #$0168                                                         ;8489C1;
     JSL.L Play_Room_Music_Track_After_A_Frames                           ;8489C4;
@@ -1521,14 +1521,14 @@ Instruction_PLM_CollectAmmo_SuperMissileTank:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W MaxSuperMissiles                                                          ;8489D2;
+    LDA.W MaxSuperMissiles                                               ;8489D2;
     CLC                                                                  ;8489D5;
     ADC.W $0000,Y                                                        ;8489D6;
-    STA.W MaxSuperMissiles                                                          ;8489D9;
-    LDA.W SuperMissiles                                                          ;8489DC;
+    STA.W MaxSuperMissiles                                               ;8489D9;
+    LDA.W SuperMissiles                                                  ;8489DC;
     CLC                                                                  ;8489DF;
     ADC.W $0000,Y                                                        ;8489E0;
-    STA.W SuperMissiles                                                          ;8489E3;
+    STA.W SuperMissiles                                                  ;8489E3;
     JSL.L AddSuperMissilesToHUDTilemap                                   ;8489E6;
     LDA.W #$0168                                                         ;8489EA;
     JSL.L Play_Room_Music_Track_After_A_Frames                           ;8489ED;
@@ -1545,14 +1545,14 @@ Instruction_PLM_CollectAmmo_PowerBombTank:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W MaxPowerBombs                                                          ;8489FB;
+    LDA.W MaxPowerBombs                                                  ;8489FB;
     CLC                                                                  ;8489FE;
     ADC.W $0000,Y                                                        ;8489FF;
-    STA.W MaxPowerBombs                                                          ;848A02;
-    LDA.W PowerBombs                                                          ;848A05;
+    STA.W MaxPowerBombs                                                  ;848A02;
+    LDA.W PowerBombs                                                     ;848A05;
     CLC                                                                  ;848A08;
     ADC.W $0000,Y                                                        ;848A09;
-    STA.W PowerBombs                                                          ;848A0C;
+    STA.W PowerBombs                                                     ;848A0C;
     JSL.L AddPowerBombsToHUDTilemap                                      ;848A0F;
     LDA.W #$0168                                                         ;848A13;
     JSL.L Play_Room_Music_Track_After_A_Frames                           ;848A16;
@@ -1571,7 +1571,7 @@ Instruction_PLM_LinkInstruction_Y:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     LDA.W $0000,Y                                                        ;848A24;
-    STA.L PLMExtra_LinkInstructions,X                                                      ;848A27;
+    STA.L PLMExtra_LinkInstructions,X                                    ;848A27;
     INY                                                                  ;848A2B;
     INY                                                                  ;848A2C;
     RTS                                                                  ;848A2D;
@@ -1587,7 +1587,7 @@ Instruction_PLM_Call_Y:
     TYA                                                                  ;848A2E;
     INC                                                                  ;848A2F;
     INC                                                                  ;848A30;
-    STA.L PLMExtra_LinkInstructions,X                                                      ;848A31;
+    STA.L PLMExtra_LinkInstructions,X                                    ;848A31;
     LDA.W $0000,Y                                                        ;848A35;
     TAY                                                                  ;848A38;
     RTS                                                                  ;848A39;
@@ -1599,7 +1599,7 @@ Instruction_PLM_Return:
 ;;     X: PLM index
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;848A3A;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;848A3A;
     TAY                                                                  ;848A3E;
     RTS                                                                  ;848A3F;
 
@@ -1609,15 +1609,15 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Instruction_PLM_WaitUntil_Enemy0_IsDead_848A40:
 ;; Parameters:
 ;;     X: PLM index
-    LDA.W Enemy.properties                                                          ;848A40;
+    LDA.W Enemy.properties                                               ;848A40;
     AND.W #$0200                                                         ;848A43;
     BNE .return                                                          ;848A46;
-    LDA.W Enemy.ID                                                          ;848A48;
+    LDA.W Enemy.ID                                                       ;848A48;
     CMP.W #EnemyHeaders_Respawn                                          ;848A4B;
     BEQ .return                                                          ;848A4E;
     PLA                                                                  ;848A50;
     LDA.W #$0001                                                         ;848A51;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;848A54;
+    STA.L PLMExtra_InstructionTimers,X                                   ;848A54;
 
   .return:
     RTS                                                                  ;848A58;
@@ -1627,15 +1627,15 @@ UNUSED_Instruction_PLM_WaitUntil_Enemy0_IsDead_848A40:
 UNUSED_Instruction_PLM_WaitUntil_Enemy0_IsDead_848A59:
 ;; Parameters:
 ;;     X: PLM index
-    LDA.W Enemy[1].properties                                                          ;848A59;
+    LDA.W Enemy[1].properties                                            ;848A59;
     AND.W #$0200                                                         ;848A5C;
     BNE .return                                                          ;848A5F;
-    LDA.W Enemy[1].ID                                                          ;848A61;
+    LDA.W Enemy[1].ID                                                    ;848A61;
     CMP.W #EnemyHeaders_Respawn                                          ;848A64;
     BEQ .return                                                          ;848A67;
     PLA                                                                  ;848A69;
     LDA.W #$0001                                                         ;848A6A;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;848A6D;
+    STA.L PLMExtra_InstructionTimers,X                                   ;848A6D;
 
   .return:
     RTS                                                                  ;848A71;
@@ -1652,12 +1652,12 @@ Instruction_PLM_GotoY_ifRoomArg_DoorIsSet:
 
 ; Negative room argument => door is not set
     PHX                                                                  ;848A72;
-    LDA.W PLM_RoomArgs,X                                                        ;848A73;
+    LDA.W PLM_RoomArgs,X                                                 ;848A73;
     BMI .pullX                                                           ;848A76;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;848A78;
-    LDA.L SRAMMirror_Doors,X                                                      ;848A7C;
+    LDA.L SRAMMirror_Doors,X                                             ;848A7C;
     PLX                                                                  ;848A80;
-    AND.W Bitmask                                                          ;848A81;
+    AND.W Bitmask                                                        ;848A81;
     BEQ .return                                                          ;848A84;
     LDA.W $0000,Y                                                        ;848A86;
     TAY                                                                  ;848A89;
@@ -1680,9 +1680,9 @@ Instruction_PLM_IncDoorHit_SetRoomArgDoor_GotoY:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.L PLMExtra_Vars,X                                                      ;848A91;
+    LDA.L PLMExtra_Vars,X                                                ;848A91;
     INC                                                                  ;848A95;
-    STA.L PLMExtra_Vars,X                                                      ;848A96;
+    STA.L PLMExtra_Vars,X                                                ;848A96;
     SEP #$20                                                             ;848A9A;
     CMP.W $0000,Y                                                        ;848A9C;
     REP #$20                                                             ;848A9F;
@@ -1696,19 +1696,19 @@ Instruction_PLM_IncDoorHit_SetRoomArgDoor_GotoY:
 
   .carrySet:
     PHX                                                                  ;848AA7;
-    LDA.W PLM_RoomArgs,X                                                        ;848AA8;
+    LDA.W PLM_RoomArgs,X                                                 ;848AA8;
     BMI .setMSB                                                          ;848AAB;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;848AAD;
-    LDA.L SRAMMirror_Doors,X                                                      ;848AB1;
-    ORA.W Bitmask                                                          ;848AB5;
-    STA.L SRAMMirror_Doors,X                                                      ;848AB8;
+    LDA.L SRAMMirror_Doors,X                                             ;848AB1;
+    ORA.W Bitmask                                                        ;848AB5;
+    STA.L SRAMMirror_Doors,X                                             ;848AB8;
 
   .setMSB:
     PLX                                                                  ;848ABC;
     ORA.W #$8000                                                         ;848ABD;
-    STA.W PLM_RoomArgs,X                                                        ;848AC0;
+    STA.W PLM_RoomArgs,X                                                 ;848AC0;
     LDA.W #.return                                                       ;848AC3;
-    STA.W PLM_PreInstructions,X                                                        ;848AC6;
+    STA.W PLM_PreInstructions,X                                          ;848AC6;
     INY                                                                  ;848AC9;
     JMP.W Instruction_PLM_GotoY                                          ;848ACA;
 
@@ -1723,12 +1723,12 @@ Instruction_PLM_IncRoomArg_RoomArgFFFF_GotoY:
 
 ; Used by Draygon turrets
     SEP #$20                                                             ;848ACD;
-    LDA.W PLM_RoomArgs,X                                                        ;848ACF;
+    LDA.W PLM_RoomArgs,X                                                 ;848ACF;
     INC                                                                  ;848AD2;
     CMP.W $0000,Y                                                        ;848AD3;
     REP #$20                                                             ;848AD6;
     BCS .FFFF                                                            ;848AD8;
-    STA.W PLM_RoomArgs,X                                                        ;848ADA;
+    STA.W PLM_RoomArgs,X                                                 ;848ADA;
     INY                                                                  ;848ADD;
     INY                                                                  ;848ADE;
     INY                                                                  ;848ADF;
@@ -1738,9 +1738,9 @@ Instruction_PLM_IncRoomArg_RoomArgFFFF_GotoY:
 
   .FFFF:
     LDA.W #$FFFF                                                         ;848AE1;
-    STA.W PLM_RoomArgs,X                                                        ;848AE4;
+    STA.W PLM_RoomArgs,X                                                 ;848AE4;
     LDA.W #.return                                                       ;848AE7;
-    STA.W PLM_PreInstructions,X                                                        ;848AEA;
+    STA.W PLM_PreInstructions,X                                          ;848AEA;
     INY                                                                  ;848AED;
     JMP.W Instruction_PLM_GotoY                                          ;848AEE;
 
@@ -1753,12 +1753,12 @@ Instruction_PLM_PLMBTS_Y:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     PHX                                                                  ;848AF1;
-    LDA.W PLM_BlockIndices,X                                                        ;848AF2;
+    LDA.W PLM_BlockIndices,X                                             ;848AF2;
     LSR                                                                  ;848AF5;
     TAX                                                                  ;848AF6;
     SEP #$20                                                             ;848AF7;
     LDA.W $0000,Y                                                        ;848AF9;
-    STA.L BTS,X                                                      ;848AFC;
+    STA.L BTS,X                                                          ;848AFC;
     REP #$20                                                             ;848B00;
     PLX                                                                  ;848B02;
     INY                                                                  ;848B03;
@@ -1775,9 +1775,9 @@ Instruction_PLM_DrawPLMBlock_Clone:
     PHX                                                                  ;848B07;
     PHY                                                                  ;848B08;
     TXY                                                                  ;848B09;
-    LDX.W PLM_BlockIndices,Y                                                        ;848B0A;
-    LDA.W PLM_Vars,Y                                                        ;848B0D;
-    STA.L LevelData,X                                                      ;848B10;
+    LDX.W PLM_BlockIndices,Y                                             ;848B0A;
+    LDA.W PLM_Vars,Y                                                     ;848B0D;
+    STA.L LevelData,X                                                    ;848B10;
     JMP.W Instruction_PLM_DrawPLMBlock_Common                            ;848B14;
 
 
@@ -1792,26 +1792,26 @@ Instruction_PLM_DrawPLMBlock:
     PHX                                                                  ;848B19;
     PHY                                                                  ;848B1A;
     TXY                                                                  ;848B1B;
-    LDX.W PLM_BlockIndices,Y                                                        ;848B1C;
-    LDA.W PLM_Vars,Y                                                        ;848B1F;
-    STA.L LevelData,X                                                      ;848B22; fallthrough to Instruction_PLM_DrawPLMBlock_Common
+    LDX.W PLM_BlockIndices,Y                                             ;848B1C;
+    LDA.W PLM_Vars,Y                                                     ;848B1F;
+    STA.L LevelData,X                                                    ;848B22; fallthrough to Instruction_PLM_DrawPLMBlock_Common
 
 
 Instruction_PLM_DrawPLMBlock_Common:
-    STA.W CustomDrawInst_PLMBlock                                                          ;848B26;
+    STA.W CustomDrawInst_PLMBlock                                        ;848B26;
     LDA.W #$0001                                                         ;848B29;
-    STA.W CustomDrawInst_NumberOfBlocks                                                          ;848B2C;
-    STZ.W CustomDrawInst_Terminator                                                          ;848B2F;
+    STA.W CustomDrawInst_NumberOfBlocks                                  ;848B2C;
+    STZ.W CustomDrawInst_Terminator                                      ;848B2F;
     PLY                                                                  ;848B32;
     PLX                                                                  ;848B33;
     LDA.W #$0001                                                         ;848B34;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;848B37;
-    LDA.W #CustomDrawInst_NumberOfBlocks                                                         ;848B3B;
-    STA.L PLMExtra_DrawInstructionPointers,X                                                      ;848B3E;
+    STA.L PLMExtra_InstructionTimers,X                                   ;848B37;
+    LDA.W #CustomDrawInst_NumberOfBlocks                                 ;848B3B;
+    STA.L PLMExtra_DrawInstructionPointers,X                             ;848B3E;
     TYA                                                                  ;848B42;
-    STA.W PLM_InstListPointers,X                                                        ;848B43;
+    STA.W PLM_InstListPointers,X                                         ;848B43;
     JSR.W Process_PLM_Draw_Instruction                                   ;848B46;
-    LDX.W PLM_Index                                                          ;848B49;
+    LDX.W PLM_Index                                                      ;848B49;
     JSL.L Calculate_PLM_Block_Coordinates                                ;848B4C;
     JSR.W DrawPLM_HardCoded                                              ;848B50;
     PLA                                                                  ;848B53;
@@ -1825,8 +1825,8 @@ Instruction_PLM_ProcessAirScrollUpdate:
     PHB                                                                  ;848B55;
     PHX                                                                  ;848B56;
     PHY                                                                  ;848B57;
-    STZ.W PLM_Vars,X                                                        ;848B58;
-    LDY.W PLM_RoomArgs,X                                                        ;848B5B;
+    STZ.W PLM_Vars,X                                                     ;848B58;
+    LDY.W PLM_RoomArgs,X                                                 ;848B5B;
     PEA.W $8F00                                                          ;848B5E;
     PLB                                                                  ;848B61;
     PLB                                                                  ;848B62;
@@ -1849,12 +1849,12 @@ Instruction_PLM_ProcessAirScrollUpdate:
     PLX                                                                  ;848B7C;
     PLB                                                                  ;848B7D;
     PHX                                                                  ;848B7E;
-    LDA.W PLM_BlockIndices,X                                                        ;848B7F;
+    LDA.W PLM_BlockIndices,X                                             ;848B7F;
     TAX                                                                  ;848B82;
-    LDA.L LevelData,X                                                      ;848B83;
+    LDA.L LevelData,X                                                    ;848B83;
     AND.W #$0FFF                                                         ;848B87;
     ORA.W #$3000                                                         ;848B8A;
-    STA.L LevelData,X                                                      ;848B8D;
+    STA.L LevelData,X                                                    ;848B8D;
     PLX                                                                  ;848B91;
     RTS                                                                  ;848B92;
 
@@ -1866,8 +1866,8 @@ Instruction_PLM_ProcessSolidScrollUpdate:
     PHB                                                                  ;848B93;
     PHX                                                                  ;848B94;
     PHY                                                                  ;848B95;
-    STZ.W PLM_Vars,X                                                        ;848B96;
-    LDY.W PLM_RoomArgs,X                                                        ;848B99;
+    STZ.W PLM_Vars,X                                                     ;848B96;
+    LDY.W PLM_RoomArgs,X                                                 ;848B99;
     PEA.W $8F00                                                          ;848B9C;
     PLB                                                                  ;848B9F;
     PLB                                                                  ;848BA0;
@@ -1890,12 +1890,12 @@ Instruction_PLM_ProcessSolidScrollUpdate:
     PLX                                                                  ;848BBA;
     PLB                                                                  ;848BBB;
     PHX                                                                  ;848BBC;
-    LDA.W PLM_BlockIndices,X                                                        ;848BBD;
+    LDA.W PLM_BlockIndices,X                                             ;848BBD;
     TAX                                                                  ;848BC0;
-    LDA.L LevelData,X                                                      ;848BC1;
+    LDA.L LevelData,X                                                    ;848BC1;
     AND.W #$0FFF                                                         ;848BC5;
     ORA.W #$B000                                                         ;848BC8;
-    STA.L LevelData,X                                                      ;848BCB;
+    STA.L LevelData,X                                                    ;848BCB;
     PLX                                                                  ;848BCF;
     RTS                                                                  ;848BD0;
 
@@ -1925,17 +1925,17 @@ Instruction_PLM_ClearMusicQueue_QueueMusicTrack:
     LDX.W #$000E                                                         ;848BDE;
 
   .loop:
-    STZ.W APU_MusicQueueEntries,X                                                        ;848BE1;
-    STZ.W APU_MusicQueueTimers,X                                                        ;848BE4;
+    STZ.W APU_MusicQueueEntries,X                                        ;848BE1;
+    STZ.W APU_MusicQueueTimers,X                                         ;848BE4;
     DEX                                                                  ;848BE7;
     DEX                                                                  ;848BE8;
     BPL .loop                                                            ;848BE9;
     PLX                                                                  ;848BEB;
-    LDA.W APU_MusicQueueNextIndex                                                          ;848BEC;
-    STA.W APU_MusicQueueStartIndex                                                          ;848BEF;
+    LDA.W APU_MusicQueueNextIndex                                        ;848BEC;
+    STA.W APU_MusicQueueStartIndex                                       ;848BEF;
     LDA.W #$0000                                                         ;848BF2;
-    STA.W APU_MusicTimer                                                          ;848BF5;
-    STA.W APU_MusicEntry                                                          ;848BF8;
+    STA.W APU_MusicTimer                                                 ;848BF5;
+    STA.W APU_MusicEntry                                                 ;848BF8;
     LDA.W $0000,Y                                                        ;848BFB;
     AND.W #$00FF                                                         ;848BFE;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;848C01;
@@ -2138,14 +2138,14 @@ RTS_848C8E:
 Instruction_PLM_Activate_MapStation:
     PHX                                                                  ;848C8F;
     PHY                                                                  ;848C90;
-    LDX.W AreaIndex                                                          ;848C91;
-    LDA.L SRAMMirror_MapStations,X                                                      ;848C94;
+    LDX.W AreaIndex                                                      ;848C91;
+    LDA.L SRAMMirror_MapStations,X                                       ;848C94;
     ORA.W #$00FF                                                         ;848C98;
-    STA.L SRAMMirror_MapStations,X                                                      ;848C9B;
+    STA.L SRAMMirror_MapStations,X                                       ;848C9B;
     LDA.W #$0014                                                         ;848C9F;
     JSL.L MessageBox_Routine                                             ;848CA2;
     LDA.W #$0001                                                         ;848CA6;
-    STA.W CurrentAreaMapCollectedFlag                                                          ;848CA9;
+    STA.W CurrentAreaMapCollectedFlag                                    ;848CA9;
     PLY                                                                  ;848CAC;
     PLX                                                                  ;848CAD;
     RTS                                                                  ;848CAE;
@@ -2155,13 +2155,13 @@ Instruction_PLM_Activate_MapStation:
 Instruction_PLM_Activate_EnergyStation:
     PHX                                                                  ;848CAF;
     PHY                                                                  ;848CB0;
-    LDA.W MaxEnergy                                                          ;848CB1;
-    CMP.W Energy                                                          ;848CB4;
+    LDA.W MaxEnergy                                                      ;848CB1;
+    CMP.W Energy                                                         ;848CB4;
     BEQ .unlockSamus                                                     ;848CB7;
     LDA.W #$0015                                                         ;848CB9;
     JSL.L MessageBox_Routine                                             ;848CBC;
-    LDA.W MaxEnergy                                                          ;848CC0;
-    STA.W Energy                                                          ;848CC3;
+    LDA.W MaxEnergy                                                      ;848CC0;
+    STA.W Energy                                                         ;848CC3;
 
   .unlockSamus:
     LDA.W #$0001                                                         ;848CC6;
@@ -2175,13 +2175,13 @@ Instruction_PLM_Activate_EnergyStation:
 Instruction_PLM_Activate_MissileStation:
     PHX                                                                  ;848CD0;
     PHY                                                                  ;848CD1;
-    LDA.W MaxMissiles                                                          ;848CD2;
-    CMP.W Missiles                                                          ;848CD5;
+    LDA.W MaxMissiles                                                    ;848CD2;
+    CMP.W Missiles                                                       ;848CD5;
     BEQ .unlockSamus                                                     ;848CD8;
     LDA.W #$0016                                                         ;848CDA;
     JSL.L MessageBox_Routine                                             ;848CDD;
-    LDA.W MaxMissiles                                                          ;848CE1;
-    STA.W Missiles                                                          ;848CE4;
+    LDA.W MaxMissiles                                                    ;848CE1;
+    STA.W Missiles                                                       ;848CE4;
 
   .unlockSamus:
     LDA.W #$0001                                                         ;848CE7;
@@ -2203,20 +2203,20 @@ Instruction_PLM_GotoY_or_ActivateSaveStation:
     JSL.L MessageBox_Routine                                             ;848CF6;
     CMP.W #$0002                                                         ;848CFA;
     BEQ .gotoY                                                           ;848CFD;
-    LDX.W PLM_Index                                                          ;848CFF;
+    LDX.W PLM_Index                                                      ;848CFF;
     LDY.W #EnemyProjectile_SaveStationElectricity                        ;848D02;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;848D05;
-    LDA.W PLM_RoomArgs,X                                                        ;848D09;
+    LDA.W PLM_RoomArgs,X                                                 ;848D09;
     AND.W #$0007                                                         ;848D0C;
-    STA.W LoadStationIndex                                                          ;848D0F;
+    STA.W LoadStationIndex                                               ;848D0F;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;848D12;
-    LDA.W AreaIndex                                                          ;848D16;
+    LDA.W AreaIndex                                                      ;848D16;
     ASL                                                                  ;848D19;
     TAX                                                                  ;848D1A;
-    LDA.L SRAMMirror_UsedSaveStationsElevators,X                                                      ;848D1B;
-    ORA.W Bitmask                                                          ;848D1F;
-    STA.L SRAMMirror_UsedSaveStationsElevators,X                                                      ;848D22;
-    LDA.W SaveSlotSelected                                                          ;848D26;
+    LDA.L SRAMMirror_UsedSaveStationsElevators,X                         ;848D1B;
+    ORA.W Bitmask                                                        ;848D1F;
+    STA.L SRAMMirror_UsedSaveStationsElevators,X                         ;848D22;
+    LDA.W SaveSlotSelected                                               ;848D26;
     JSL.L SaveToSRAM                                                     ;848D29;
     PLY                                                                  ;848D2D;
     PLX                                                                  ;848D2E;
@@ -2249,13 +2249,13 @@ Instruction_PLM_GotoY_ifSamusIsWithin_YColumnsRowsOfPLM:
 ;; Returns:
 ;;     Y: Pointer to next instruction
     JSL.L Calculate_PLM_Block_Coordinates                                ;848D41;
-    LDA.W SamusXPosition                                                          ;848D45;
+    LDA.W SamusXPosition                                                 ;848D45;
     LSR                                                                  ;848D48;
     LSR                                                                  ;848D49;
     LSR                                                                  ;848D4A;
     LSR                                                                  ;848D4B;
     SEC                                                                  ;848D4C;
-    SBC.W PLM_XBlock                                                          ;848D4D;
+    SBC.W PLM_XBlock                                                     ;848D4D;
     BPL +                                                                ;848D50;
     EOR.W #$FFFF                                                         ;848D52;
     INC                                                                  ;848D55;
@@ -2266,13 +2266,13 @@ Instruction_PLM_GotoY_ifSamusIsWithin_YColumnsRowsOfPLM:
     BEQ +                                                                ;848D5D;
     BCS .tooFar                                                          ;848D5F;
 
-+   LDA.W SamusYPosition                                                          ;848D61;
++   LDA.W SamusYPosition                                                 ;848D61;
     LSR                                                                  ;848D64;
     LSR                                                                  ;848D65;
     LSR                                                                  ;848D66;
     LSR                                                                  ;848D67;
     SEC                                                                  ;848D68;
-    SBC.W PLM_YBlock                                                          ;848D69;
+    SBC.W PLM_YBlock                                                     ;848D69;
     BPL +                                                                ;848D6C;
     EOR.W #$FFFF                                                         ;848D6E;
     INC                                                                  ;848D71;
@@ -2301,11 +2301,11 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Instruction_PLM_MovePLMDown1Block_848D89:
 ;; Parameters:
 ;;     X: PLM index
-    LDA.W PLM_BlockIndices,X                                                        ;848D89;
+    LDA.W PLM_BlockIndices,X                                             ;848D89;
     CLC                                                                  ;848D8C;
-    ADC.W RoomWidthBlocks                                                          ;848D8D;
-    ADC.W RoomWidthBlocks                                                          ;848D90;
-    STA.W PLM_BlockIndices,X                                                        ;848D93;
+    ADC.W RoomWidthBlocks                                                ;848D8D;
+    ADC.W RoomWidthBlocks                                                ;848D90;
+    STA.W PLM_BlockIndices,X                                             ;848D93;
     RTS                                                                  ;848D96;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
@@ -2347,29 +2347,29 @@ DrawPLM_HardCoded:
 ; Devs opted to pre-subtract 20h when setting $0C, rather than take ANDing [$18] with Fh before summing at $8E8C
     REP #$30                                                             ;848DAA;
     LDA.W #$5000                                                         ;848DAC;
-    STA.B DP_Temp09                                                            ;848DAF;
+    STA.B DP_Temp09                                                      ;848DAF;
     LDA.W #$53E0                                                         ;848DB1;
-    STA.B DP_Temp0C                                                            ;848DB4;
-    LDA.L PLMExtra_DrawInstructionPointers,X                                                      ;848DB6;
+    STA.B DP_Temp0C                                                      ;848DB4;
+    LDA.L PLMExtra_DrawInstructionPointers,X                             ;848DB6;
     TAY                                                                  ;848DBA; fallthrough to DrawPLM
 
 
 DrawPLM:
-    LDA.W PLM_XBlock                                                          ;848DBB;
-    STA.B DP_Temp1E                                                            ;848DBE;
-    LDA.W PLM_YBlock                                                          ;848DC0;
-    STA.B DP_Temp20                                                            ;848DC3;
+    LDA.W PLM_XBlock                                                     ;848DBB;
+    STA.B DP_Temp1E                                                      ;848DBE;
+    LDA.W PLM_YBlock                                                     ;848DC0;
+    STA.B DP_Temp20                                                      ;848DC3;
 
   .loopDrawEntry:
-    LDA.W Layer1YPosition                                                          ;848DC5;
+    LDA.W Layer1YPosition                                                ;848DC5;
     LSR                                                                  ;848DC8;
     LSR                                                                  ;848DC9;
     LSR                                                                  ;848DCA;
     LSR                                                                  ;848DCB;
-    STA.B DP_Temp1A                                                            ;848DCC;
+    STA.B DP_Temp1A                                                      ;848DCC;
     CLC                                                                  ;848DCE;
     ADC.W #$000F                                                         ;848DCF;
-    CMP.B DP_Temp20                                                            ;848DD2;
+    CMP.B DP_Temp20                                                      ;848DD2;
     BPL +                                                                ;848DD4;
     RTS                                                                  ;848DD6;
 
@@ -2379,16 +2379,16 @@ DrawPLM:
 
   .horizontal:
     AND.W #$7FFF                                                         ;848DDF;
-    STA.B DP_Temp14                                                            ;848DE2;
-    STZ.B DP_Temp1C                                                            ;848DE4;
-    LDA.B DP_Temp20                                                            ;848DE6;
-    CMP.B DP_Temp1A                                                            ;848DE8;
+    STA.B DP_Temp14                                                      ;848DE2;
+    STZ.B DP_Temp1C                                                      ;848DE4;
+    LDA.B DP_Temp20                                                      ;848DE6;
+    CMP.B DP_Temp1A                                                      ;848DE8;
     BMI .return8E2F                                                      ;848DEA;
-    STA.B DP_Temp1A                                                            ;848DEC;
-    STZ.B DP_Temp12                                                            ;848DEE;
-    LDA.B DP_Temp1E                                                            ;848DF0;
-    STA.B DP_Temp18                                                            ;848DF2;
-    LDA.W Layer1XPosition                                                          ;848DF4;
+    STA.B DP_Temp1A                                                      ;848DEC;
+    STZ.B DP_Temp12                                                      ;848DEE;
+    LDA.B DP_Temp1E                                                      ;848DF0;
+    STA.B DP_Temp18                                                      ;848DF2;
+    LDA.W Layer1XPosition                                                ;848DF4;
     CLC                                                                  ;848DF7;
     ADC.W #$000F                                                         ;848DF8;
     LSR                                                                  ;848DFB;
@@ -2396,52 +2396,52 @@ DrawPLM:
     LSR                                                                  ;848DFD;
     LSR                                                                  ;848DFE;
     DEC                                                                  ;848DFF;
-    STA.B DP_Temp16                                                            ;848E00;
+    STA.B DP_Temp16                                                      ;848E00;
     SEC                                                                  ;848E02;
-    SBC.B DP_Temp1E                                                            ;848E03;
+    SBC.B DP_Temp1E                                                      ;848E03;
     BMI +                                                                ;848E05;
     BEQ +                                                                ;848E07;
-    STA.B DP_Temp12                                                            ;848E09;
-    LDA.B DP_Temp14                                                            ;848E0B;
+    STA.B DP_Temp12                                                      ;848E09;
+    LDA.B DP_Temp14                                                      ;848E0B;
     CLC                                                                  ;848E0D;
-    ADC.B DP_Temp1E                                                            ;848E0E;
-    CMP.B DP_Temp16                                                            ;848E10;
+    ADC.B DP_Temp1E                                                      ;848E0E;
+    CMP.B DP_Temp16                                                      ;848E10;
     BEQ .return8E2F                                                      ;848E12;
     BMI .return8E2F                                                      ;848E14;
-    LDA.B DP_Temp14                                                            ;848E16;
-    LDA.B DP_Temp14                                                            ;848E18; >_<
+    LDA.B DP_Temp14                                                      ;848E16;
+    LDA.B DP_Temp14                                                      ;848E18; >_<
     SEC                                                                  ;848E1A;
-    SBC.B DP_Temp12                                                            ;848E1B;
-    STA.B DP_Temp14                                                            ;848E1D;
-    LDA.B DP_Temp16                                                            ;848E1F;
-    STA.B DP_Temp18                                                            ;848E21;
+    SBC.B DP_Temp12                                                      ;848E1B;
+    STA.B DP_Temp14                                                      ;848E1D;
+    LDA.B DP_Temp16                                                      ;848E1F;
+    STA.B DP_Temp18                                                      ;848E21;
 
-+   LDA.B DP_Temp16                                                            ;848E23;
++   LDA.B DP_Temp16                                                      ;848E23;
     CLC                                                                  ;848E25;
     ADC.W #$0011                                                         ;848E26;
-    STA.B DP_Temp16                                                            ;848E29;
-    CMP.B DP_Temp1E                                                            ;848E2B;
+    STA.B DP_Temp16                                                      ;848E29;
+    CMP.B DP_Temp1E                                                      ;848E2B;
     BPL +                                                                ;848E2D;
 
   .return8E2F:
     RTS                                                                  ;848E2F;
 
-+   LDA.B DP_Temp18                                                            ;848E30;
++   LDA.B DP_Temp18                                                      ;848E30;
     CLC                                                                  ;848E32;
-    ADC.B DP_Temp14                                                            ;848E33;
+    ADC.B DP_Temp14                                                      ;848E33;
     DEC                                                                  ;848E35;
     SEC                                                                  ;848E36;
-    SBC.B DP_Temp16                                                            ;848E37;
-    STA.B DP_Temp16                                                            ;848E39;
+    SBC.B DP_Temp16                                                      ;848E37;
+    STA.B DP_Temp16                                                      ;848E39;
     BMI +                                                                ;848E3B;
-    LDA.B DP_Temp14                                                            ;848E3D;
+    LDA.B DP_Temp14                                                      ;848E3D;
     SEC                                                                  ;848E3F;
-    SBC.B DP_Temp16                                                            ;848E40;
-    STA.B DP_Temp14                                                            ;848E42;
+    SBC.B DP_Temp16                                                      ;848E40;
+    STA.B DP_Temp14                                                      ;848E42;
     BEQ .return8E2F                                                      ;848E44;
 
 +   PHX                                                                  ;848E46;
-    LDX.W VRAMWriteStack                                                          ;848E47;
+    LDX.W VRAMWriteStack                                                 ;848E47;
     CPX.W #$01E0                                                         ;848E4A;
     BMI +                                                                ;848E4D;
 
@@ -2453,26 +2453,26 @@ DrawPLM:
 
 +   LDA.W #$0200                                                         ;848E51;
     SEC                                                                  ;848E54;
-    SBC.W PLM_DrawTilemapIndex                                                          ;848E55;
+    SBC.W PLM_DrawTilemapIndex                                           ;848E55;
     LSR                                                                  ;848E58;
     LSR                                                                  ;848E59;
     LSR                                                                  ;848E5A;
-    CMP.B DP_Temp14                                                            ;848E5B;
+    CMP.B DP_Temp14                                                      ;848E5B;
     BMI .pullXreturn                                                     ;848E5D;
-    LDA.B DP_Temp1A                                                            ;848E5F;
+    LDA.B DP_Temp1A                                                      ;848E5F;
     AND.W #$000F                                                         ;848E61;
     ORA.W #$4000                                                         ;848E64;
     STA.W $4202                                                          ;848E67;
-    LDA.B DP_Temp18                                                            ;848E6A;
+    LDA.B DP_Temp18                                                      ;848E6A;
     AND.W #$001F                                                         ;848E6C;
     CMP.W #$0010                                                         ;848E6F;
     BCS .greaterThan10h                                                  ;848E72;
     ASL                                                                  ;848E74;
     CLC                                                                  ;848E75;
-    ADC.B DP_Temp09                                                            ;848E76;
+    ADC.B DP_Temp09                                                      ;848E76;
     ADC.W $4216                                                          ;848E78;
     PHA                                                                  ;848E7B;
-    LDA.W BG1XOffset                                                          ;848E7C;
+    LDA.W BG1XOffset                                                     ;848E7C;
     AND.W #$0100                                                         ;848E7F;
     BEQ +                                                                ;848E82;
     PLA                                                                  ;848E84;
@@ -2484,10 +2484,10 @@ DrawPLM:
   .greaterThan10h:
     ASL                                                                  ;848E8C;
     CLC                                                                  ;848E8D;
-    ADC.B DP_Temp0C                                                            ;848E8E;
+    ADC.B DP_Temp0C                                                      ;848E8E;
     ADC.W $4216                                                          ;848E90;
     PHA                                                                  ;848E93;
-    LDA.W BG1XOffset                                                          ;848E94;
+    LDA.W BG1XOffset                                                     ;848E94;
     AND.W #$0100                                                         ;848E97;
     BEQ +                                                                ;848E9A;
     PLA                                                                  ;848E9C;
@@ -2495,15 +2495,15 @@ DrawPLM:
     SBC.W #$0400                                                         ;848E9E;
     PHA                                                                  ;848EA1;
 
-+   LDA.B DP_Temp14                                                            ;848EA2;
++   LDA.B DP_Temp14                                                      ;848EA2;
     ASL                                                                  ;848EA4;
-    STA.B DP_Temp1E                                                            ;848EA5;
+    STA.B DP_Temp1E                                                      ;848EA5;
     PLA                                                                  ;848EA7;
     PHA                                                                  ;848EA8;
     AND.W #$001F                                                         ;848EA9;
-    STA.B DP_Temp22                                                            ;848EAC;
+    STA.B DP_Temp22                                                      ;848EAC;
     CLC                                                                  ;848EAE;
-    ADC.B DP_Temp1E                                                            ;848EAF;
+    ADC.B DP_Temp1E                                                      ;848EAF;
     DEC                                                                  ;848EB1;
     AND.W #$FFE0                                                         ;848EB2;
     BNE +                                                                ;848EB5;
@@ -2513,60 +2513,60 @@ DrawPLM:
     BPL .return8F2C                                                      ;848EBD;
     LDA.W #$0020                                                         ;848EBF;
     SEC                                                                  ;848EC2;
-    SBC.B DP_Temp22                                                            ;848EC3;
+    SBC.B DP_Temp22                                                      ;848EC3;
     BMI .return8F2C                                                      ;848EC5;
     ASL                                                                  ;848EC7;
-    STA.B VRAMWrite.size,X                                                          ;848EC8;
-    STA.B VRAMWrite[2].size,X                                                          ;848ECA;
+    STA.B VRAMWrite.size,X                                               ;848EC8;
+    STA.B VRAMWrite[2].size,X                                            ;848ECA;
     PLA                                                                  ;848ECC;
-    STA.B VRAMWrite.dest,X                                                          ;848ECD;
+    STA.B VRAMWrite.dest,X                                               ;848ECD;
     AND.W #$FFE0                                                         ;848ECF;
     EOR.W #$0400                                                         ;848ED2;
-    STA.B VRAMWrite[1].dest,X                                                          ;848ED5;
-    LDA.B VRAMWrite[1].dest,X                                                          ;848ED7; >.<
+    STA.B VRAMWrite[1].dest,X                                            ;848ED5;
+    LDA.B VRAMWrite[1].dest,X                                            ;848ED7; >.<
     CLC                                                                  ;848ED9;
     ADC.W #$0020                                                         ;848EDA;
-    STA.B VRAMWrite[3].dest,X                                                          ;848EDD;
-    LDA.B VRAMWrite.dest,X                                                          ;848EDF;
+    STA.B VRAMWrite[3].dest,X                                            ;848EDD;
+    LDA.B VRAMWrite.dest,X                                               ;848EDF;
     CLC                                                                  ;848EE1;
     ADC.W #$0020                                                         ;848EE2;
-    STA.B VRAMWrite[2].dest,X                                                          ;848EE5;
-    LDA.B DP_Temp14                                                            ;848EE7;
+    STA.B VRAMWrite[2].dest,X                                            ;848EE5;
+    LDA.B DP_Temp14                                                      ;848EE7;
     ASL                                                                  ;848EE9;
     ASL                                                                  ;848EEA;
-    STA.B DP_Temp1E                                                            ;848EEB;
+    STA.B DP_Temp1E                                                      ;848EEB;
     SEC                                                                  ;848EED;
-    SBC.B VRAMWrite.size,X                                                          ;848EEE;
-    STA.B VRAMWrite[1].size,X                                                          ;848EF0;
-    STA.B VRAMWrite[3].size,X                                                          ;848EF2;
-    LDA.W #PLMDrawTilemap                                                         ;848EF4; $7E
+    SBC.B VRAMWrite.size,X                                               ;848EEE;
+    STA.B VRAMWrite[1].size,X                                            ;848EF0;
+    STA.B VRAMWrite[3].size,X                                            ;848EF2;
+    LDA.W #PLMDrawTilemap                                                ;848EF4;
     CLC                                                                  ;848EF7;
-    ADC.W PLM_DrawTilemapIndex                                                          ;848EF8;
-    STA.B VRAMWrite.src,X                                                          ;848EFB;
-    STA.B DP_Temp00                                                            ;848EFD;
+    ADC.W PLM_DrawTilemapIndex                                           ;848EF8;
+    STA.B VRAMWrite.src,X                                                ;848EFB;
+    STA.B DP_Temp00                                                      ;848EFD;
     CLC                                                                  ;848EFF;
-    ADC.B VRAMWrite.size,X                                                          ;848F00;
-    STA.B VRAMWrite[1].src,X                                                          ;848F02;
+    ADC.B VRAMWrite.size,X                                               ;848F00;
+    STA.B VRAMWrite[1].src,X                                             ;848F02;
     CLC                                                                  ;848F04;
-    ADC.B VRAMWrite[1].size,X                                                          ;848F05;
-    STA.B VRAMWrite[2].src,X                                                          ;848F07;
-    STA.B DP_Temp06                                                            ;848F09;
+    ADC.B VRAMWrite[1].size,X                                            ;848F05;
+    STA.B VRAMWrite[2].src,X                                             ;848F07;
+    STA.B DP_Temp06                                                      ;848F09;
     CLC                                                                  ;848F0B;
-    ADC.B VRAMWrite[2].size,X                                                          ;848F0C;
-    STA.B VRAMWrite[3].src,X                                                          ;848F0E;
+    ADC.B VRAMWrite[2].size,X                                            ;848F0C;
+    STA.B VRAMWrite[3].src,X                                             ;848F0E;
     SEP #$20                                                             ;848F10;
     LDA.B #$7E                                                           ;848F12;
-    STA.B VRAMWrite.src+2,X                                                          ;848F14;
-    STA.B DP_Temp02                                                            ;848F16;
-    STA.B VRAMWrite[1].src+2,X                                                          ;848F18;
-    STA.B DP_Temp08                                                            ;848F1A;
-    STA.B VRAMWrite[2].src+2,X                                                          ;848F1C;
-    STA.B VRAMWrite[3].src+2,X                                                          ;848F1E;
+    STA.B VRAMWrite.src+2,X                                              ;848F14;
+    STA.B DP_Temp02                                                      ;848F16;
+    STA.B VRAMWrite[1].src+2,X                                           ;848F18;
+    STA.B DP_Temp08                                                      ;848F1A;
+    STA.B VRAMWrite[2].src+2,X                                           ;848F1C;
+    STA.B VRAMWrite[3].src+2,X                                           ;848F1E;
     REP #$20                                                             ;848F20;
     TXA                                                                  ;848F22;
     CLC                                                                  ;848F23;
     ADC.W #$001C                                                         ;848F24;
-    STA.W VRAMWriteStack                                                          ;848F27;
+    STA.W VRAMWriteStack                                                 ;848F27;
     BRA .horizAddToVRAMWriteTableEnd                                     ;848F2A;
 
   .return8F2C:
@@ -2577,80 +2577,80 @@ DrawPLM:
   .horizOneScreen:
     PLA                                                                  ;848F2F;
     JSR.W PartiallySetupVRAMWriteTableEntries_SingleScrnPLMDrawTilemap   ;848F30;
-    LDA.B VRAMWrite.dest,X                                                          ;848F33;
+    LDA.B VRAMWrite.dest,X                                               ;848F33;
     CLC                                                                  ;848F35;
     ADC.W #$0020                                                         ;848F36;
-    STA.B VRAMWrite[1].dest,X                                                          ;848F39;
+    STA.B VRAMWrite[1].dest,X                                            ;848F39;
     TXA                                                                  ;848F3B;
     CLC                                                                  ;848F3C;
     ADC.W #$000E                                                         ;848F3D;
-    STA.W VRAMWriteStack                                                          ;848F40;
+    STA.W VRAMWriteStack                                                 ;848F40;
 
   .horizAddToVRAMWriteTableEnd:
-    LDA.B DP_Temp12                                                            ;848F43;
+    LDA.B DP_Temp12                                                      ;848F43;
     ASL                                                                  ;848F45;
-    STA.B DP_Temp12                                                            ;848F46;
+    STA.B DP_Temp12                                                      ;848F46;
     INY                                                                  ;848F48;
     INY                                                                  ;848F49;
     TYA                                                                  ;848F4A;
     CLC                                                                  ;848F4B;
-    ADC.B DP_Temp12                                                            ;848F4C;
-    STA.B DP_Temp03                                                            ;848F4E;
+    ADC.B DP_Temp12                                                      ;848F4C;
+    STA.B DP_Temp03                                                      ;848F4E;
     LDY.W #$0000                                                         ;848F50;
 
   .loopHorizBlock:
-    LDA.B (DP_Temp03)                                                          ;848F53;
-    STA.B DP_Temp1E                                                            ;848F55;
+    LDA.B (DP_Temp03)                                                    ;848F53;
+    STA.B DP_Temp1E                                                      ;848F55;
     AND.W #$03FF                                                         ;848F57;
     ASL                                                                  ;848F5A;
     ASL                                                                  ;848F5B;
     ASL                                                                  ;848F5C;
     TAX                                                                  ;848F5D;
-    LDA.B DP_Temp1E                                                            ;848F5E;
+    LDA.B DP_Temp1E                                                      ;848F5E;
     AND.W #$0C00                                                         ;848F60;
     BNE .horizCopyBlockWithFlip                                          ;848F63;
-    LDA.L TileTable_topLeft,X                                                      ;848F65;
-    STA.B [DP_Temp00],Y                                                        ;848F69;
-    LDA.L TileTable_bottomLeft,X                                                      ;848F6B;
-    STA.B [DP_Temp06],Y                                                        ;848F6F;
+    LDA.L TileTable_topLeft,X                                            ;848F65;
+    STA.B [DP_Temp00],Y                                                  ;848F69;
+    LDA.L TileTable_bottomLeft,X                                         ;848F6B;
+    STA.B [DP_Temp06],Y                                                  ;848F6F;
     INY                                                                  ;848F71;
     INY                                                                  ;848F72;
-    LDA.L TileTable_topRight,X                                                      ;848F73;
-    STA.B [DP_Temp00],Y                                                        ;848F77;
-    LDA.L TileTable_bottomRight,X                                                      ;848F79;
-    STA.B [DP_Temp06],Y                                                        ;848F7D;
+    LDA.L TileTable_topRight,X                                           ;848F73;
+    STA.B [DP_Temp00],Y                                                  ;848F77;
+    LDA.L TileTable_bottomRight,X                                        ;848F79;
+    STA.B [DP_Temp06],Y                                                  ;848F7D;
     BRA .horizNextBlock                                                  ;848F7F;
 
   .horizCopyBlockWithFlip:
     CMP.W #$0400                                                         ;848F81;
     BNE .horizCopyBlockWithVertFlip                                      ;848F84;
-    LDA.L TileTable_topRight,X                                                      ;848F86;
+    LDA.L TileTable_topRight,X                                           ;848F86;
     EOR.W #$4000                                                         ;848F8A;
-    STA.B [DP_Temp00],Y                                                        ;848F8D;
-    LDA.L TileTable_bottomRight,X                                                      ;848F8F;
+    STA.B [DP_Temp00],Y                                                  ;848F8D;
+    LDA.L TileTable_bottomRight,X                                        ;848F8F;
     EOR.W #$4000                                                         ;848F93;
-    STA.B [DP_Temp06],Y                                                        ;848F96;
+    STA.B [DP_Temp06],Y                                                  ;848F96;
     INY                                                                  ;848F98;
     INY                                                                  ;848F99;
-    LDA.L TileTable_topLeft,X                                                      ;848F9A;
+    LDA.L TileTable_topLeft,X                                            ;848F9A;
     EOR.W #$4000                                                         ;848F9E;
-    STA.B [DP_Temp00],Y                                                        ;848FA1;
-    LDA.L TileTable_bottomLeft,X                                                      ;848FA3;
+    STA.B [DP_Temp00],Y                                                  ;848FA1;
+    LDA.L TileTable_bottomLeft,X                                         ;848FA3;
     EOR.W #$4000                                                         ;848FA7;
-    STA.B [DP_Temp06],Y                                                        ;848FAA;
+    STA.B [DP_Temp06],Y                                                  ;848FAA;
 
   .horizNextBlock:
     INY                                                                  ;848FAC;
     INY                                                                  ;848FAD;
-    INC.B DP_Temp03                                                            ;848FAE;
-    INC.B DP_Temp03                                                            ;848FB0;
-    LDA.W PLM_DrawTilemapIndex                                                          ;848FB2;
+    INC.B DP_Temp03                                                      ;848FAE;
+    INC.B DP_Temp03                                                      ;848FB0;
+    LDA.W PLM_DrawTilemapIndex                                           ;848FB2;
     CLC                                                                  ;848FB5;
     ADC.W #$0008                                                         ;848FB6;
-    STA.W PLM_DrawTilemapIndex                                                          ;848FB9;
+    STA.W PLM_DrawTilemapIndex                                           ;848FB9;
     CMP.W #$0200                                                         ;848FBC;
     BPL .return8FC8                                                      ;848FBF;
-    DEC.B DP_Temp14                                                            ;848FC1;
+    DEC.B DP_Temp14                                                      ;848FC1;
     BNE .loopHorizBlock                                                  ;848FC3;
     JMP.W .nextDrawEntry                                                 ;848FC5;
 
@@ -2661,81 +2661,81 @@ DrawPLM:
   .horizCopyBlockWithVertFlip:
     CMP.W #$0800                                                         ;848FCA;
     BNE .horizCopyBlockWithBothFlips                                     ;848FCD;
-    LDA.L TileTable_bottomLeft,X                                                      ;848FCF;
+    LDA.L TileTable_bottomLeft,X                                         ;848FCF;
     EOR.W #$8000                                                         ;848FD3;
-    STA.B [DP_Temp00],Y                                                        ;848FD6;
-    LDA.L TileTable_topLeft,X                                                      ;848FD8;
+    STA.B [DP_Temp00],Y                                                  ;848FD6;
+    LDA.L TileTable_topLeft,X                                            ;848FD8;
     EOR.W #$8000                                                         ;848FDC;
-    STA.B [DP_Temp06],Y                                                        ;848FDF;
+    STA.B [DP_Temp06],Y                                                  ;848FDF;
     INY                                                                  ;848FE1;
     INY                                                                  ;848FE2;
-    LDA.L TileTable_bottomRight,X                                                      ;848FE3;
+    LDA.L TileTable_bottomRight,X                                        ;848FE3;
     EOR.W #$8000                                                         ;848FE7;
-    STA.B [DP_Temp00],Y                                                        ;848FEA;
-    LDA.L TileTable_topRight,X                                                      ;848FEC;
+    STA.B [DP_Temp00],Y                                                  ;848FEA;
+    LDA.L TileTable_topRight,X                                           ;848FEC;
     EOR.W #$8000                                                         ;848FF0;
-    STA.B [DP_Temp06],Y                                                        ;848FF3;
+    STA.B [DP_Temp06],Y                                                  ;848FF3;
     BRA .horizNextBlock                                                  ;848FF5;
 
   .horizCopyBlockWithBothFlips:
-    LDA.L TileTable_bottomRight,X                                                      ;848FF7;
+    LDA.L TileTable_bottomRight,X                                        ;848FF7;
     EOR.W #$C000                                                         ;848FFB;
-    STA.B [DP_Temp00],Y                                                        ;848FFE;
-    LDA.L TileTable_topRight,X                                                      ;849000;
+    STA.B [DP_Temp00],Y                                                  ;848FFE;
+    LDA.L TileTable_topRight,X                                           ;849000;
     EOR.W #$C000                                                         ;849004;
-    STA.B [DP_Temp06],Y                                                        ;849007;
+    STA.B [DP_Temp06],Y                                                  ;849007;
     INY                                                                  ;849009;
     INY                                                                  ;84900A;
-    LDA.L TileTable_bottomLeft,X                                                      ;84900B;
+    LDA.L TileTable_bottomLeft,X                                         ;84900B;
     EOR.W #$C000                                                         ;84900F;
-    STA.B [DP_Temp00],Y                                                        ;849012;
-    LDA.L TileTable_topLeft,X                                                      ;849014;
+    STA.B [DP_Temp00],Y                                                  ;849012;
+    LDA.L TileTable_topLeft,X                                            ;849014;
     EOR.W #$C000                                                         ;849018;
-    STA.B [DP_Temp06],Y                                                        ;84901B;
+    STA.B [DP_Temp06],Y                                                  ;84901B;
     BRA .horizNextBlock                                                  ;84901D;
 
   .vertical:
     AND.W #$7FFF                                                         ;84901F;
-    STA.B DP_Temp14                                                            ;849022;
-    LDA.W Layer1XPosition                                                          ;849024;
+    STA.B DP_Temp14                                                      ;849022;
+    LDA.W Layer1XPosition                                                ;849024;
     LSR                                                                  ;849027;
     LSR                                                                  ;849028;
     LSR                                                                  ;849029;
     LSR                                                                  ;84902A;
-    CMP.B DP_Temp1E                                                            ;84902B;
+    CMP.B DP_Temp1E                                                      ;84902B;
     BEQ +                                                                ;84902D;
     BPL .return903B                                                      ;84902F;
 
 +   CLC                                                                  ;849031;
     ADC.W #$0011                                                         ;849032;
-    CMP.B DP_Temp1E                                                            ;849035;
+    CMP.B DP_Temp1E                                                      ;849035;
     BEQ .return903B                                                      ;849037;
     BPL +                                                                ;849039;
 
   .return903B:
     RTS                                                                  ;84903B;
 
-+   LDA.B DP_Temp1E                                                            ;84903C;
-    STA.B DP_Temp18                                                            ;84903E;
-    STZ.B DP_Temp12                                                            ;849040;
-    LDA.B DP_Temp1A                                                            ;849042;
++   LDA.B DP_Temp1E                                                      ;84903C;
+    STA.B DP_Temp18                                                      ;84903E;
+    STZ.B DP_Temp12                                                      ;849040;
+    LDA.B DP_Temp1A                                                      ;849042;
     CLC                                                                  ;849044;
     ADC.W #$0010                                                         ;849045;
-    STA.B DP_Temp16                                                            ;849048;
-    LDA.B DP_Temp1A                                                            ;84904A;
+    STA.B DP_Temp16                                                      ;849048;
+    LDA.B DP_Temp1A                                                      ;84904A;
     SEC                                                                  ;84904C;
-    SBC.B DP_Temp20                                                            ;84904D;
+    SBC.B DP_Temp20                                                      ;84904D;
     BMI .drawBlockGreaterThanScreenBlock                                 ;84904F;
-    STA.B DP_Temp12                                                            ;849051;
-    LDA.B DP_Temp14                                                            ;849053;
+    STA.B DP_Temp12                                                      ;849051;
+    LDA.B DP_Temp14                                                      ;849053;
     CLC                                                                  ;849055;
-    ADC.B DP_Temp20                                                            ;849056;
-    CMP.B DP_Temp1A                                                            ;849058;
+    ADC.B DP_Temp20                                                      ;849056;
+    CMP.B DP_Temp1A                                                      ;849058;
     BMI .return903B                                                      ;84905A;
-    LDA.B DP_Temp14                                                            ;84905C;
+    LDA.B DP_Temp14                                                      ;84905C;
     SEC                                                                  ;84905E;
-    SBC.B DP_Temp12                                                            ;84905F;
-    STA.B DP_Temp14                                                            ;849061;
+    SBC.B DP_Temp12                                                      ;84905F;
+    STA.B DP_Temp14                                                      ;849061;
 
   .crash:
     BMI .crash                                                           ;849063;
@@ -2743,25 +2743,25 @@ DrawPLM:
     RTS                                                                  ;849067;
 
   .drawBlockGreaterThanScreenBlock:
-    LDA.B DP_Temp20                                                            ;849068;
-    STA.B DP_Temp1A                                                            ;84906A;
+    LDA.B DP_Temp20                                                      ;849068;
+    STA.B DP_Temp1A                                                      ;84906A;
 
-+   LDA.B DP_Temp1A                                                            ;84906C;
++   LDA.B DP_Temp1A                                                      ;84906C;
     CLC                                                                  ;84906E;
-    ADC.B DP_Temp14                                                            ;84906F;
+    ADC.B DP_Temp14                                                      ;84906F;
     SEC                                                                  ;849071;
-    SBC.B DP_Temp16                                                            ;849072;
-    STA.B DP_Temp16                                                            ;849074;
+    SBC.B DP_Temp16                                                      ;849072;
+    STA.B DP_Temp16                                                      ;849074;
     BMI +                                                                ;849076;
-    LDA.B DP_Temp14                                                            ;849078;
+    LDA.B DP_Temp14                                                      ;849078;
     SEC                                                                  ;84907A;
-    SBC.B DP_Temp16                                                            ;84907B;
-    STA.B DP_Temp14                                                            ;84907D;
+    SBC.B DP_Temp16                                                      ;84907B;
+    STA.B DP_Temp14                                                      ;84907D;
     BEQ .return903B                                                      ;84907F;
     BMI .return908C                                                      ;849081;
 
 +   PHX                                                                  ;849083;
-    LDX.W VRAMWriteStack                                                          ;849084;
+    LDX.W VRAMWriteStack                                                 ;849084;
     CPX.W #$00F0                                                         ;849087;
     BMI +                                                                ;84908A;
 
@@ -2771,122 +2771,122 @@ DrawPLM:
 
 +   LDA.W #$0200                                                         ;84908E;
     SEC                                                                  ;849091;
-    SBC.W PLM_DrawTilemapIndex                                                          ;849092;
+    SBC.W PLM_DrawTilemapIndex                                           ;849092;
     LSR                                                                  ;849095;
     LSR                                                                  ;849096;
     LSR                                                                  ;849097;
-    CMP.B DP_Temp14                                                            ;849098;
+    CMP.B DP_Temp14                                                      ;849098;
     BMI .return908C                                                      ;84909A;
     LDA.W #$8000                                                         ;84909C;
-    STA.B DP_Temp1C                                                            ;84909F;
+    STA.B DP_Temp1C                                                      ;84909F;
     JSR.W Calculate_PLMDrawTilemap_VRAMDestination                       ;8490A1;
-    LDA.B VRAMWrite.dest,X                                                          ;8490A4;
+    LDA.B VRAMWrite.dest,X                                               ;8490A4;
     INC                                                                  ;8490A6;
-    STA.B VRAMWrite[1].dest,X                                                          ;8490A7;
+    STA.B VRAMWrite[1].dest,X                                            ;8490A7;
     TXA                                                                  ;8490A9;
     CLC                                                                  ;8490AA;
     ADC.W #$000E                                                         ;8490AB;
-    STA.W VRAMWriteStack                                                          ;8490AE;
-    LDA.B DP_Temp12                                                            ;8490B1;
+    STA.W VRAMWriteStack                                                 ;8490AE;
+    LDA.B DP_Temp12                                                      ;8490B1;
     ASL                                                                  ;8490B3;
-    STA.B DP_Temp12                                                            ;8490B4;
+    STA.B DP_Temp12                                                      ;8490B4;
     INY                                                                  ;8490B6;
     INY                                                                  ;8490B7;
     TYA                                                                  ;8490B8;
     CLC                                                                  ;8490B9;
-    ADC.B DP_Temp12                                                            ;8490BA;
-    STA.B DP_Temp03                                                            ;8490BC;
+    ADC.B DP_Temp12                                                      ;8490BA;
+    STA.B DP_Temp03                                                      ;8490BC;
     LDY.W #$0000                                                         ;8490BE;
 
   .loopVertBlock:
-    LDA.B (DP_Temp03)                                                          ;8490C1;
-    STA.B DP_Temp1E                                                            ;8490C3;
+    LDA.B (DP_Temp03)                                                    ;8490C1;
+    STA.B DP_Temp1E                                                      ;8490C3;
     AND.W #$03FF                                                         ;8490C5;
     ASL                                                                  ;8490C8;
     ASL                                                                  ;8490C9;
     ASL                                                                  ;8490CA;
     TAX                                                                  ;8490CB;
-    LDA.B DP_Temp1E                                                            ;8490CC;
+    LDA.B DP_Temp1E                                                      ;8490CC;
     AND.W #$0C00                                                         ;8490CE;
     BNE .vertCopyBlockWithFlip                                           ;8490D1;
-    LDA.L TileTable_topLeft,X                                                      ;8490D3;
-    STA.B [DP_Temp00],Y                                                        ;8490D7;
-    LDA.L TileTable_topRight,X                                                      ;8490D9;
-    STA.B [DP_Temp06],Y                                                        ;8490DD;
+    LDA.L TileTable_topLeft,X                                            ;8490D3;
+    STA.B [DP_Temp00],Y                                                  ;8490D7;
+    LDA.L TileTable_topRight,X                                           ;8490D9;
+    STA.B [DP_Temp06],Y                                                  ;8490DD;
     INY                                                                  ;8490DF;
     INY                                                                  ;8490E0;
-    LDA.L TileTable_bottomLeft,X                                                      ;8490E1;
-    STA.B [DP_Temp00],Y                                                        ;8490E5;
-    LDA.L TileTable_bottomRight,X                                                      ;8490E7;
-    STA.B [DP_Temp06],Y                                                        ;8490EB;
+    LDA.L TileTable_bottomLeft,X                                         ;8490E1;
+    STA.B [DP_Temp00],Y                                                  ;8490E5;
+    LDA.L TileTable_bottomRight,X                                        ;8490E7;
+    STA.B [DP_Temp06],Y                                                  ;8490EB;
     JMP.W .vertNextBlock                                                 ;8490ED;
 
   .vertCopyBlockWithFlip:
     CMP.W #$0400                                                         ;8490F0;
     BNE .vertCopyBlockWithVertFlip                                       ;8490F3;
-    LDA.L TileTable_topRight,X                                                      ;8490F5;
+    LDA.L TileTable_topRight,X                                           ;8490F5;
     EOR.W #$4000                                                         ;8490F9;
-    STA.B [DP_Temp00],Y                                                        ;8490FC;
-    LDA.L TileTable_topLeft,X                                                      ;8490FE;
+    STA.B [DP_Temp00],Y                                                  ;8490FC;
+    LDA.L TileTable_topLeft,X                                            ;8490FE;
     EOR.W #$4000                                                         ;849102;
-    STA.B [DP_Temp06],Y                                                        ;849105;
+    STA.B [DP_Temp06],Y                                                  ;849105;
     INY                                                                  ;849107;
     INY                                                                  ;849108;
-    LDA.L TileTable_bottomRight,X                                                      ;849109;
+    LDA.L TileTable_bottomRight,X                                        ;849109;
     EOR.W #$4000                                                         ;84910D;
-    STA.B [DP_Temp00],Y                                                        ;849110;
-    LDA.L TileTable_bottomLeft,X                                                      ;849112;
+    STA.B [DP_Temp00],Y                                                  ;849110;
+    LDA.L TileTable_bottomLeft,X                                         ;849112;
     EOR.W #$4000                                                         ;849116;
-    STA.B [DP_Temp06],Y                                                        ;849119;
+    STA.B [DP_Temp06],Y                                                  ;849119;
     BRA .vertNextBlock                                                   ;84911B;
 
   .vertCopyBlockWithVertFlip:
     CMP.W #$0800                                                         ;84911D;
     BNE .vertCopyBlockWithBothFlips                                      ;849120;
-    LDA.L TileTable_bottomLeft,X                                                      ;849122;
+    LDA.L TileTable_bottomLeft,X                                         ;849122;
     EOR.W #$8000                                                         ;849126;
-    STA.B [DP_Temp00],Y                                                        ;849129;
-    LDA.L TileTable_bottomRight,X                                                      ;84912B;
+    STA.B [DP_Temp00],Y                                                  ;849129;
+    LDA.L TileTable_bottomRight,X                                        ;84912B;
     EOR.W #$8000                                                         ;84912F;
-    STA.B [DP_Temp06],Y                                                        ;849132;
+    STA.B [DP_Temp06],Y                                                  ;849132;
     INY                                                                  ;849134;
     INY                                                                  ;849135;
-    LDA.L TileTable_topLeft,X                                                      ;849136;
+    LDA.L TileTable_topLeft,X                                            ;849136;
     EOR.W #$8000                                                         ;84913A;
-    STA.B [DP_Temp00],Y                                                        ;84913D;
-    LDA.L TileTable_topRight,X                                                      ;84913F;
+    STA.B [DP_Temp00],Y                                                  ;84913D;
+    LDA.L TileTable_topRight,X                                           ;84913F;
     EOR.W #$8000                                                         ;849143;
-    STA.B [DP_Temp06],Y                                                        ;849146;
+    STA.B [DP_Temp06],Y                                                  ;849146;
     BRA .vertNextBlock                                                   ;849148;
 
   .vertCopyBlockWithBothFlips:
-    LDA.L TileTable_bottomRight,X                                                      ;84914A;
+    LDA.L TileTable_bottomRight,X                                        ;84914A;
     EOR.W #$C000                                                         ;84914E;
-    STA.B [DP_Temp00],Y                                                        ;849151;
-    LDA.L TileTable_bottomLeft,X                                                      ;849153;
+    STA.B [DP_Temp00],Y                                                  ;849151;
+    LDA.L TileTable_bottomLeft,X                                         ;849153;
     EOR.W #$C000                                                         ;849157;
-    STA.B [DP_Temp06],Y                                                        ;84915A;
+    STA.B [DP_Temp06],Y                                                  ;84915A;
     INY                                                                  ;84915C;
     INY                                                                  ;84915D;
-    LDA.L TileTable_topRight,X                                                      ;84915E;
+    LDA.L TileTable_topRight,X                                           ;84915E;
     EOR.W #$C000                                                         ;849162;
-    STA.B [DP_Temp00],Y                                                        ;849165;
-    LDA.L TileTable_topLeft,X                                                      ;849167;
+    STA.B [DP_Temp00],Y                                                  ;849165;
+    LDA.L TileTable_topLeft,X                                            ;849167;
     EOR.W #$C000                                                         ;84916B;
-    STA.B [DP_Temp06],Y                                                        ;84916E;
+    STA.B [DP_Temp06],Y                                                  ;84916E;
 
   .vertNextBlock:
     INY                                                                  ;849170;
     INY                                                                  ;849171;
-    INC.B DP_Temp03                                                            ;849172;
-    INC.B DP_Temp03                                                            ;849174;
-    LDA.W PLM_DrawTilemapIndex                                                          ;849176;
+    INC.B DP_Temp03                                                      ;849172;
+    INC.B DP_Temp03                                                      ;849174;
+    LDA.W PLM_DrawTilemapIndex                                           ;849176;
     CLC                                                                  ;849179;
     ADC.W #$0008                                                         ;84917A;
-    STA.W PLM_DrawTilemapIndex                                                          ;84917D;
+    STA.W PLM_DrawTilemapIndex                                           ;84917D;
     CMP.W #$0200                                                         ;849180;
     BPL .return918C                                                      ;849183;
-    DEC.B DP_Temp14                                                            ;849185;
+    DEC.B DP_Temp14                                                      ;849185;
     BEQ .nextDrawEntry                                                   ;849187;
     JMP.W .loopVertBlock                                                 ;849189;
 
@@ -2896,12 +2896,12 @@ DrawPLM:
 
   .nextDrawEntry:
     PLX                                                                  ;84918E;
-    LDY.B DP_Temp03                                                            ;84918F;
-    LDA.B DP_Temp16                                                            ;849191;
+    LDY.B DP_Temp03                                                      ;84918F;
+    LDA.B DP_Temp16                                                      ;849191;
     BMI +                                                                ;849193;
     ASL                                                                  ;849195;
     CLC                                                                  ;849196;
-    ADC.B DP_Temp03                                                            ;849197;
+    ADC.B DP_Temp03                                                      ;849197;
     TAY                                                                  ;849199;
 
 +   LDA.W $0000,Y                                                        ;84919A;
@@ -2912,14 +2912,14 @@ DrawPLM:
     BIT.W #$0080                                                         ;8491A3;
     BNE +                                                                ;8491A6;
     CLC                                                                  ;8491A8;
-    ADC.W PLM_XBlock                                                          ;8491A9;
-    STA.B DP_Temp1E                                                            ;8491AC;
+    ADC.W PLM_XBlock                                                     ;8491A9;
+    STA.B DP_Temp1E                                                      ;8491AC;
     BRA .incY                                                            ;8491AE;
 
 +   ORA.W #$FF00                                                         ;8491B0;
     CLC                                                                  ;8491B3;
-    ADC.W PLM_XBlock                                                          ;8491B4;
-    STA.B DP_Temp1E                                                            ;8491B7;
+    ADC.W PLM_XBlock                                                     ;8491B4;
+    STA.B DP_Temp1E                                                      ;8491B7;
 
   .incY:
     INY                                                                  ;8491B9;
@@ -2928,36 +2928,36 @@ DrawPLM:
     BIT.W #$0080                                                         ;8491C0;
     BNE .setHighByte                                                     ;8491C3;
     CLC                                                                  ;8491C5;
-    ADC.W PLM_YBlock                                                          ;8491C6;
-    STA.B DP_Temp20                                                            ;8491C9;
+    ADC.W PLM_YBlock                                                     ;8491C6;
+    STA.B DP_Temp20                                                      ;8491C9;
     INY                                                                  ;8491CB;
     JMP.W .loopDrawEntry                                                 ;8491CC;
 
   .setHighByte:
     ORA.W #$FF00                                                         ;8491CF;
     CLC                                                                  ;8491D2;
-    ADC.W PLM_YBlock                                                          ;8491D3;
-    STA.B DP_Temp20                                                            ;8491D6;
+    ADC.W PLM_YBlock                                                     ;8491D3;
+    STA.B DP_Temp20                                                      ;8491D6;
     INY                                                                  ;8491D8;
     JMP.W .loopDrawEntry                                                 ;8491D9;
 
 
 ;;; $91DC: Calculate PLM draw tilemap VRAM destination ;;;
 Calculate_PLMDrawTilemap_VRAMDestination:
-    LDA.B $1A                                                            ;8491DC;
+    LDA.B DP_Temp1A                                                      ;8491DC;
     AND.W #$000F                                                         ;8491DE;
     ORA.W #$4000                                                         ;8491E1;
     STA.W $4202                                                          ;8491E4;
-    LDA.B $18                                                            ;8491E7;
+    LDA.B DP_Temp18                                                      ;8491E7;
     AND.W #$001F                                                         ;8491E9;
     CMP.W #$0010                                                         ;8491EC;
     BCS .greaterThanF                                                    ;8491EF;
     ASL                                                                  ;8491F1;
     CLC                                                                  ;8491F2;
-    ADC.B $09                                                            ;8491F3;
+    ADC.B DP_Temp09                                                      ;8491F3;
     ADC.W $4216                                                          ;8491F5;
     PHA                                                                  ;8491F8;
-    LDA.W BG1XOffset                                                          ;8491F9;
+    LDA.W BG1XOffset                                                     ;8491F9;
     AND.W #$0100                                                         ;8491FC;
     BEQ .fallthrough                                                     ;8491FF;
     PLA                                                                  ;849201;
@@ -2969,10 +2969,10 @@ Calculate_PLMDrawTilemap_VRAMDestination:
   .greaterThanF:
     ASL                                                                  ;849209;
     CLC                                                                  ;84920A;
-    ADC.B $0C                                                            ;84920B;
+    ADC.B DP_Temp0C                                                      ;84920B;
     ADC.W $4216                                                          ;84920D;
     PHA                                                                  ;849210;
-    LDA.W BG1XOffset                                                          ;849211;
+    LDA.W BG1XOffset                                                     ;849211;
     AND.W #$0100                                                         ;849214;
     BEQ .fallthrough                                                     ;849217;
     PLA                                                                  ;849219;
@@ -2989,28 +2989,28 @@ PartiallySetupVRAMWriteTableEntries_SingleScrnPLMDrawTilemap:
 ;; Parameter:
 ;;     A: PLM draw tilemap VRAM destination
 ;;     X: VRAM write table stack pointer
-    ORA.B $1C                                                            ;849220;
-    STA.B VRAMWrite.dest,X                                                          ;849222;
-    LDA.B $14                                                            ;849224;
+    ORA.B DP_Temp1C                                                      ;849220;
+    STA.B VRAMWrite.dest,X                                               ;849222;
+    LDA.B DP_Temp14                                                      ;849224;
     ASL                                                                  ;849226;
     ASL                                                                  ;849227;
-    STA.B VRAMWrite.size,X                                                          ;849228;
-    STA.B VRAMWrite[1].size,X                                                          ;84922A;
-    LDA.W #PLMDrawTilemap                                                         ;84922C; $7E
+    STA.B VRAMWrite.size,X                                               ;849228;
+    STA.B VRAMWrite[1].size,X                                            ;84922A;
+    LDA.W #PLMDrawTilemap                                                ;84922C;
     CLC                                                                  ;84922F;
-    ADC.W PLM_DrawTilemapIndex                                                          ;849230;
-    STA.B VRAMWrite.src,X                                                          ;849233;
-    STA.B $00                                                            ;849235;
+    ADC.W PLM_DrawTilemapIndex                                           ;849230;
+    STA.B VRAMWrite.src,X                                                ;849233;
+    STA.B DP_Temp00                                                      ;849235;
     CLC                                                                  ;849237;
-    ADC.B VRAMWrite.size,X                                                          ;849238;
-    STA.B VRAMWrite[1].src,X                                                          ;84923A;
-    STA.B $06                                                            ;84923C;
+    ADC.B VRAMWrite.size,X                                               ;849238;
+    STA.B VRAMWrite[1].src,X                                             ;84923A;
+    STA.B DP_Temp06                                                      ;84923C;
     SEP #$20                                                             ;84923E;
     LDA.B #$7E                                                           ;849240;
-    STA.B VRAMWrite.src+2,X                                                          ;849242;
-    STA.B VRAMWrite[1].src+2,X                                                          ;849244;
-    STA.B $02                                                            ;849246;
-    STA.B $08                                                            ;849248;
+    STA.B VRAMWrite.src+2,X                                              ;849242;
+    STA.B VRAMWrite[1].src+2,X                                           ;849244;
+    STA.B DP_Temp02                                                      ;849246;
+    STA.B DP_Temp08                                                      ;849248;
     REP #$20                                                             ;84924A;
     RTS                                                                  ;84924C;
 
@@ -3099,24 +3099,24 @@ DrawInst_ClearBotwoonWall:
 ; Used by instruction list $AB67: PLM $B797 (clear Botwoon wall)
     dw $8009,$00FF,$00FF,$00FF,$00FF,$00FF,$00FF,$00FF                   ;84930F;
     dw $00FF,$00FF
-    dw $0000                                                 ;84931F;
+    dw $0000
 
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_DrawInst_849325:
     dw $8009,$8053,$8053,$8053,$8053,$8053,$8053,$8053                   ;849325;
     dw $8053,$8053
-    dw $0000                                                 ;849335;
+    dw $0000
 
 UNUSED_DrawInst_84933B:
     dw $8009,$8054,$8054,$8054,$8054,$8054,$8054,$8054                   ;84933B;
     dw $8054,$8054
-    dw $0000                                                 ;84934B;
+    dw $0000
 
 UNUSED_DrawInst_849351:
     dw $8009,$0055,$0055,$0055,$0055,$0055,$0055,$0055                   ;849351;
     dw $0055,$0055
-    dw $0000                                                 ;849361;
+    dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -3127,8 +3127,8 @@ DrawInst_CrumbleKraidCeiling_CrumbleKraidSpikes_Elevatube:
 ;     $AB91: PLM $B7B3 (crumble Kraid ceiling block into background 3)
 ;     $ABA9: PLM $B7BF (crumble Kraid spike blocks)
 ;     $B8F0: PLM $B8F9 (Maridia elevatube)
-    dw $0001,$8180
-    dw $0000                                                 ;849367;
+    dw $0001,$8180                                                       ;849367;
+    dw $0000
 
 
 DrawInst_CrumbleKraidCeiling_CrumbleKraidSpikes_0:
@@ -3137,8 +3137,8 @@ DrawInst_CrumbleKraidCeiling_CrumbleKraidSpikes_0:
 ;     $AB7F: PLM $B7AB (crumble Kraid ceiling block into background 2)
 ;     $AB91: PLM $B7B3 (crumble Kraid ceiling block into background 3)
 ;     $ABA9: PLM $B7BF (crumble Kraid spike blocks)
-    dw $0001,$8181
-    dw $0000                                                 ;84936D;
+    dw $0001,$8181                                                       ;84936D;
+    dw $0000
 
 DrawInst_CrumbleKraidCeiling_CrumbleKraidSpikes_1:
 ; Used by instruction lists:
@@ -3146,44 +3146,44 @@ DrawInst_CrumbleKraidCeiling_CrumbleKraidSpikes_1:
 ;     $AB7F: PLM $B7AB (crumble Kraid ceiling block into background 2)
 ;     $AB91: PLM $B7B3 (crumble Kraid ceiling block into background 3)
 ;     $ABA9: PLM $B7BF (crumble Kraid spike blocks)
-    dw $0001,$0182
-    dw $0000                                                 ;849373;
+    dw $0001,$0182                                                       ;849373;
+    dw $0000
 
 
 UNUSED_DrawInst_SetKraidCeilingBlockToBackground1_849379:
 ; Used by instruction list $AB79: PLM $B79F (unused. Set Kraid ceiling block to background 1)
-    dw $0001,$013C
-    dw $0000                                                 ;849379;
+    dw $0001,$013C                                                       ;849379;
+    dw $0000
 
 
 DrawInst_SetKraidCeilingBlockToBackground2:
 ; Used by instruction list $AB8B: PLM $B7A7 (set Kraid ceiling block to background 2)
-    dw $0001,$0131
-    dw $0000                                                 ;84937F;
+    dw $0001,$0131                                                       ;84937F;
+    dw $0000
 
 
 DrawInst_SetKraidCeilingBlockToBackground3:
 ; Used by instruction list $AB9D: PLM $B7AF (set Kraid ceiling block to background 3)
-    dw $0001,$0130
-    dw $0000                                                 ;849385;
+    dw $0001,$0130                                                       ;849385;
+    dw $0000
 
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_DrawInst_84938B:
-    dw $0001,$011C
-    dw $0000                                                 ;84938B;
+    dw $0001,$011C                                                       ;84938B;
+    dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
 DrawInst_CrumbleKraidSpikeBlocks_0:
 ; Used by instruction list $ABA9: PLM $B7BF (crumble Kraid spike blocks)
-    dw $0001,$0111
-    dw $0000                                                 ;849391;
+    dw $0001,$0111                                                       ;849391;
+    dw $0000
 
 DrawInst_CrumbleKraidSpikeBlocks_1:
 ; Used by instruction list $ABA9: PLM $B7BF (crumble Kraid spike blocks)
-    dw $0001,$0110
-    dw $0000                                                 ;849397;
+    dw $0001,$0110                                                       ;849397;
+    dw $0000
 
 
 DrawInst_ClearKraidCeiling:
@@ -6196,11 +6196,11 @@ Instruction_PLM_MovePLMDown1Block_84AB00:
 ;;     X: PLM index
 
 ; Clone of UNUSED_Instruction_PLM_MovePLMDown1Block_848D89
-    LDA.W RoomWidthBlocks                                                          ;84AB00;
+    LDA.W RoomWidthBlocks                                                ;84AB00;
     ASL                                                                  ;84AB03;
     CLC                                                                  ;84AB04;
-    ADC.W PLM_BlockIndices,X                                                        ;84AB05;
-    STA.W PLM_BlockIndices,X                                                        ;84AB08;
+    ADC.W PLM_BlockIndices,X                                             ;84AB05;
+    STA.W PLM_BlockIndices,X                                             ;84AB08;
     RTS                                                                  ;84AB0B;
 
 
@@ -6235,7 +6235,7 @@ Setup_CrumbleBotwoonWall_Wait40Frames:
 ;;     Y: PLM index
     TYX                                                                  ;84AB28;
     LDA.W #$0040                                                         ;84AB29;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84AB2C;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84AB2C;
     RTS                                                                  ;84AB30;
 
 
@@ -6269,11 +6269,11 @@ Instruction_PLM_MovePLMDown1Block:
 ;;     X: PLM index
 
 ; Clone of UNUSED_Instruction_PLM_MovePLMDown1Block_848D89
-    LDA.W PLM_BlockIndices,X                                                        ;84AB59;
+    LDA.W PLM_BlockIndices,X                                             ;84AB59;
     CLC                                                                  ;84AB5C;
-    ADC.W RoomWidthBlocks                                                          ;84AB5D;
-    ADC.W RoomWidthBlocks                                                          ;84AB60;
-    STA.W PLM_BlockIndices,X                                                        ;84AB63;
+    ADC.W RoomWidthBlocks                                                ;84AB5D;
+    ADC.W RoomWidthBlocks                                                ;84AB60;
+    STA.W PLM_BlockIndices,X                                             ;84AB63;
     RTS                                                                  ;84AB66;
 
 
@@ -6352,8 +6352,8 @@ InstList_PLM_CrumbleKraidSpikeBlocks_1:
 Instruction_PLM_MovePLMRight1Block:
 ;; Parameters:
 ;;     X: PLM index
-    INC.W PLM_BlockIndices,X                                                        ;84ABD6;
-    INC.W PLM_BlockIndices,X                                                        ;84ABD9;
+    INC.W PLM_BlockIndices,X                                             ;84ABD6;
+    INC.W PLM_BlockIndices,X                                             ;84ABD9;
     RTS                                                                  ;84ABDC;
 
 
@@ -6541,31 +6541,31 @@ PreInst_PLM_PositionSamus_GiveAtLeast10FramesOfInvincibility:
 ;;     X: PLM index
 
 ; Used for Brinstar plants
-    LDA.W PLM_Vars,X                                                        ;84AC89;
-    STA.W SamusXPosition                                                          ;84AC8C;
-    LDA.L PLMExtra_Vars,X                                                      ;84AC8F;
-    STA.W SamusYPosition                                                          ;84AC93;
+    LDA.W PLM_Vars,X                                                     ;84AC89;
+    STA.W SamusXPosition                                                 ;84AC8C;
+    LDA.L PLMExtra_Vars,X                                                ;84AC8F;
+    STA.W SamusYPosition                                                 ;84AC93;
     LDA.W #$0010                                                         ;84AC96;
-    TSB.W $18A8                                                          ;84AC99;
+    TSB.W SamusInvincibilityTimer                                        ;84AC99;
     RTS                                                                  ;84AC9C;
 
 
 ;;; $AC9D: Instruction - deal 2 damage to Samus ;;;
 Instruction_PLM_Deal2DamageToSamus:
-    LDA.W $0A4E                                                          ;84AC9D;
+    LDA.W PeriodicSubDamage                                              ;84AC9D;
     CLC                                                                  ;84ACA0;
     ADC.W #$0000                                                         ;84ACA1;
-    STA.W $0A4E                                                          ;84ACA4;
-    LDA.W $0A50                                                          ;84ACA7;
+    STA.W PeriodicSubDamage                                              ;84ACA4;
+    LDA.W PeriodicDamage                                                 ;84ACA7;
     ADC.W #$0002                                                         ;84ACAA;
-    STA.W $0A50                                                          ;84ACAD;
+    STA.W PeriodicDamage                                                 ;84ACAD;
     RTS                                                                  ;84ACB0;
 
 
 ;;; $ACB1: Instruction - give Samus 30h frames of invincibility ;;;
 Instruction_PLM_GiveSamus30FramesOfInvincibility:
     LDA.W #$0030                                                         ;84ACB1;
-    STA.W $18A8                                                          ;84ACB4;
+    STA.W SamusInvincibilityTimer                                        ;84ACB4;
     RTS                                                                  ;84ACB7;
 
 
@@ -6778,8 +6778,8 @@ Instruction_PLM_GotoY_EnableMovementIfSamusEnergyIsFull:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W MaxEnergy                                                          ;84AE35;
-    CMP.W Energy                                                          ;84AE38;
+    LDA.W MaxEnergy                                                      ;84AE35;
+    CMP.W Energy                                                         ;84AE38;
     BEQ .fullEnergy                                                      ;84AE3B;
     INY                                                                  ;84AE3D;
     INY                                                                  ;84AE3E;
@@ -6862,8 +6862,8 @@ Instruction_PLM_GotoY_EnableMovementIfSamusMissilesAreFull:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W MaxMissiles                                                          ;84AEBF;
-    CMP.W Missiles                                                          ;84AEC2;
+    LDA.W MaxMissiles                                                    ;84AEBF;
+    CMP.W Missiles                                                       ;84AEC2;
     BEQ .missilesFull                                                    ;84AEC5;
     INY                                                                  ;84AEC7;
     INY                                                                  ;84AEC8;
@@ -7078,11 +7078,11 @@ InstList_PLM_SaveStation_2:
 
 ;;; $B00E: Instruction - place Samus on save station ;;;
 Instruction_PLM_PlaceSamusOnSaveStation:
-    LDA.W SamusXPosition                                                          ;84B00E;
+    LDA.W SamusXPosition                                                 ;84B00E;
     CLC                                                                  ;84B011;
     ADC.W #$0008                                                         ;84B012;
     AND.W #$FFF0                                                         ;84B015;
-    STA.W SamusXPosition                                                          ;84B018;
+    STA.W SamusXPosition                                                 ;84B018;
     PHX                                                                  ;84B01B;
     PHY                                                                  ;84B01C;
     JSL.L MakeSamusFaceForward                                           ;84B01D;
@@ -7107,7 +7107,7 @@ Instruction_PLM_EnableMovement_SetSaveStationUsed:
     LDA.W #$0001                                                         ;84B030;
     JSL.L Run_Samus_Command                                              ;84B033;
     LDA.W #$0001                                                         ;84B037;
-    STA.W $1E75                                                          ;84B03A;
+    STA.W SaveStationLockoutFlag                                         ;84B03A;
     RTS                                                                  ;84B03D;
 
 
@@ -7131,12 +7131,12 @@ Setup_WreckedShipEntranceTreadmill:
 ;;     Y: PLM index
 
 ; Write 38h blocks of blank air
-    LDX.W PLM_BlockIndices,Y                                                        ;84B04A;
+    LDX.W PLM_BlockIndices,Y                                             ;84B04A;
     LDA.W #$00FF                                                         ;84B04D;
     LDY.W #$0038                                                         ;84B050;
 
   .loop:
-    STA.L LevelData,X                                                      ;84B053;
+    STA.L LevelData,X                                                    ;84B053;
     INX                                                                  ;84B057;
     INX                                                                  ;84B058;
     DEY                                                                  ;84B059;
@@ -7160,15 +7160,15 @@ UNUSED_LoadFXEntry_CompletelyBroken_84B05D:
     ASL                                                                  ;84B066;
     ASL                                                                  ;84B067;
     TAX                                                                  ;84B068;
-    CMP.W $1968                                                          ;84B069;
+    CMP.W FX_CurrentEntryOffset                                          ;84B069;
     BEQ .return                                                          ;84B06C;
-    LDA.W $197C                                                          ;84B06E;
+    LDA.W FX_YSubVelocity                                                ;84B06E;
     BEQ .loadFXEntry                                                     ;84B071;
-    LDA.W $1978                                                          ;84B073;
+    LDA.W FX_BaseYPosition                                               ;84B073;
     BMI .loadFXEntry                                                     ;84B076;
     TYA                                                                  ;84B078;
     CLC                                                                  ;84B079;
-    ADC.W $07CD                                                          ;84B07A;
+    ADC.W FXPointer                                                      ;84B07A;
     TAX                                                                  ;84B07D;
     CMP.W $0002,X                                                        ;84B07E;
     PLA                                                                  ;84B081;
@@ -7185,14 +7185,14 @@ UNUSED_LoadFXEntry_CompletelyBroken_84B05D:
 
 ;;; $B08B: Unused. Load FX entry 0 if PLM is in leftmost screen column ;;;
 UNUSED_LoadFXEntry0IfPLMIsInLeftmostScreenColumn_84B08B:
-    LDX.W PLM_Index                                                          ;84B08B;
+    LDX.W PLM_Index                                                      ;84B08B;
     JSL.L Calculate_PLM_Block_Coordinates                                ;84B08E;
-    LDA.W SamusXPosition                                                          ;84B092;
+    LDA.W SamusXPosition                                                 ;84B092;
     LSR                                                                  ;84B095;
     LSR                                                                  ;84B096;
     LSR                                                                  ;84B097;
     LSR                                                                  ;84B098;
-    CMP.W PLM_XBlock                                                          ;84B099;
+    CMP.W PLM_XBlock                                                     ;84B099;
     BNE .return                                                          ;84B09C;
     LDA.W #$0000                                                         ;84B09E;
     JMP.W UNUSED_LoadFXEntry_CompletelyBroken_84B05D                     ;84B0A1;
@@ -7204,14 +7204,14 @@ UNUSED_LoadFXEntry0IfPLMIsInLeftmostScreenColumn_84B08B:
 
 ;;; $B0A6: Unused. Load FX entry 1 if PLM is in leftmost screen column ;;;
 UNUSED_LoadFXEntry1IfPLMIsInLeftmostScreenColumn_84B0A6:
-    LDX.W PLM_Index                                                          ;84B0A6;
+    LDX.W PLM_Index                                                      ;84B0A6;
     JSL.L Calculate_PLM_Block_Coordinates                                ;84B0A9;
-    LDA.W SamusXPosition                                                          ;84B0AD;
+    LDA.W SamusXPosition                                                 ;84B0AD;
     LSR                                                                  ;84B0B0;
     LSR                                                                  ;84B0B1;
     LSR                                                                  ;84B0B2;
     LSR                                                                  ;84B0B3;
-    CMP.W PLM_XBlock                                                          ;84B0B4;
+    CMP.W PLM_XBlock                                                     ;84B0B4;
     BNE .return                                                          ;84B0B7;
     LDA.W #$0001                                                         ;84B0B9;
     JMP.W UNUSED_LoadFXEntry_CompletelyBroken_84B05D                     ;84B0BC;
@@ -7223,14 +7223,14 @@ UNUSED_LoadFXEntry1IfPLMIsInLeftmostScreenColumn_84B0A6:
 
 ;;; $B0C1: Unused. Load FX entry 2 if PLM is in leftmost screen column ;;;
 UNUSED_LoadFXEntry2IfPLMIsInLeftmostScreenColumn_84B0C1:
-    LDX.W PLM_Index                                                          ;84B0C1;
+    LDX.W PLM_Index                                                      ;84B0C1;
     JSL.L Calculate_PLM_Block_Coordinates                                ;84B0C4;
-    LDA.W SamusXPosition                                                          ;84B0C8;
+    LDA.W SamusXPosition                                                 ;84B0C8;
     LSR                                                                  ;84B0CB;
     LSR                                                                  ;84B0CC;
     LSR                                                                  ;84B0CD;
     LSR                                                                  ;84B0CE;
-    CMP.W PLM_XBlock                                                          ;84B0CF;
+    CMP.W PLM_XBlock                                                     ;84B0CF;
     BNE .return                                                          ;84B0D2;
     LDA.W #$0002                                                         ;84B0D4;
     JMP.W UNUSED_LoadFXEntry_CompletelyBroken_84B05D                     ;84B0D7;
@@ -7245,29 +7245,29 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 Setup_BrinstarFloorPlant:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W SamusYPosition                                                          ;84B0DC;
+    LDA.W SamusYPosition                                                 ;84B0DC;
     CLC                                                                  ;84B0DF;
-    ADC.W $0B00                                                          ;84B0E0;
+    ADC.W SamusYRadius                                                   ;84B0E0;
     DEC                                                                  ;84B0E3;
     AND.W #$000F                                                         ;84B0E4;
     CMP.W #$000F                                                         ;84B0E7;
     BEQ .deactivate                                                      ;84B0EA;
     LDA.W #$0000                                                         ;84B0EC;
-    STA.W PLM_IDs,Y                                                        ;84B0EF;
+    STA.W PLM_IDs,Y                                                      ;84B0EF;
     CLC                                                                  ;84B0F2;
     RTS                                                                  ;84B0F3;
 
   .deactivate:
-    LDX.W PLM_BlockIndices,Y                                                        ;84B0F4;
-    LDA.L LevelData,X                                                      ;84B0F7;
+    LDX.W PLM_BlockIndices,Y                                             ;84B0F4;
+    LDA.L LevelData,X                                                    ;84B0F7;
     AND.W #$8FFF                                                         ;84B0FB;
-    STA.L LevelData,X                                                      ;84B0FE;
+    STA.L LevelData,X                                                    ;84B0FE;
     TYX                                                                  ;84B102;
-    LDA.W SamusXPosition                                                          ;84B103;
-    STA.W PLM_Vars,X                                                        ;84B106;
-    LDA.W SamusYPosition                                                          ;84B109;
+    LDA.W SamusXPosition                                                 ;84B103;
+    STA.W PLM_Vars,X                                                     ;84B106;
+    LDA.W SamusYPosition                                                 ;84B109;
     DEC                                                                  ;84B10C;
-    STA.L PLMExtra_Vars,X                                                      ;84B10D;
+    STA.L PLMExtra_Vars,X                                                ;84B10D;
     CLC                                                                  ;84B111;
     RTS                                                                  ;84B112;
 
@@ -7276,27 +7276,27 @@ Setup_BrinstarFloorPlant:
 Setup_BrinstarCeilingPlant:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W SamusYPosition                                                          ;84B113;
+    LDA.W SamusYPosition                                                 ;84B113;
     SEC                                                                  ;84B116;
-    SBC.W $0B00                                                          ;84B117;
+    SBC.W SamusYRadius                                                   ;84B117;
     AND.W #$000F                                                         ;84B11A;
     BEQ .deactivate                                                      ;84B11D;
     LDA.W #$0000                                                         ;84B11F;
-    STA.W PLM_IDs,Y                                                        ;84B122;
+    STA.W PLM_IDs,Y                                                      ;84B122;
     CLC                                                                  ;84B125;
     RTS                                                                  ;84B126;
 
   .deactivate:
-    LDX.W PLM_BlockIndices,Y                                                        ;84B127;
-    LDA.L LevelData,X                                                      ;84B12A;
+    LDX.W PLM_BlockIndices,Y                                             ;84B127;
+    LDA.L LevelData,X                                                    ;84B12A;
     AND.W #$8FFF                                                         ;84B12E;
-    STA.L LevelData,X                                                      ;84B131;
+    STA.L LevelData,X                                                    ;84B131;
     TYX                                                                  ;84B135;
-    LDA.W SamusXPosition                                                          ;84B136;
-    STA.W PLM_Vars,X                                                        ;84B139;
-    LDA.W SamusYPosition                                                          ;84B13C;
+    LDA.W SamusXPosition                                                 ;84B136;
+    STA.W PLM_Vars,X                                                     ;84B139;
+    LDA.W SamusYPosition                                                 ;84B13C;
     INC                                                                  ;84B13F;
-    STA.L PLMExtra_Vars,X                                                      ;84B140;
+    STA.L PLMExtra_Vars,X                                                ;84B140;
     CLC                                                                  ;84B144;
     RTS                                                                  ;84B145;
 
@@ -7311,7 +7311,7 @@ ActivateStationIfSamusArmCannonLinedUp:
     LDX.W #$004E                                                         ;84B146;
 
   .loop:
-    CMP.W PLM_BlockIndices,X                                                        ;84B149;
+    CMP.W PLM_BlockIndices,X                                             ;84B149;
     BEQ .found                                                           ;84B14C;
     DEX                                                                  ;84B14E;
     DEX                                                                  ;84B14F;
@@ -7320,21 +7320,21 @@ ActivateStationIfSamusArmCannonLinedUp:
 
   .found:
     PHX                                                                  ;84B154;
-    LDX.W PLM_Index                                                          ;84B155;
+    LDX.W PLM_Index                                                      ;84B155;
     JSL.L Calculate_PLM_Block_Coordinates                                ;84B158;
     PLX                                                                  ;84B15C;
-    LDA.W PLM_YBlock                                                          ;84B15D;
+    LDA.W PLM_YBlock                                                     ;84B15D;
     ASL                                                                  ;84B160;
     ASL                                                                  ;84B161;
     ASL                                                                  ;84B162;
     ASL                                                                  ;84B163;
     ORA.W #$000B                                                         ;84B164;
-    CMP.W SamusYPosition                                                          ;84B167;
+    CMP.W SamusYPosition                                                 ;84B167;
     BNE .delete                                                          ;84B16A;
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;84B16C;
-    STA.W PLM_InstListPointers,X                                                        ;84B170;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;84B16C;
+    STA.W PLM_InstListPointers,X                                         ;84B170;
     LDA.W #$0001                                                         ;84B173;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84B176;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84B176;
     LDA.W #$0006                                                         ;84B17A;
     JSL.L Run_Samus_Command                                              ;84B17D;
     SEC                                                                  ;84B181;
@@ -7342,7 +7342,7 @@ ActivateStationIfSamusArmCannonLinedUp:
 
   .delete:
     LDA.W #$0000                                                         ;84B183;
-    STA.W PLM_IDs,Y                                                        ;84B186;
+    STA.W PLM_IDs,Y                                                      ;84B186;
     SEC                                                                  ;84B189;
     RTS                                                                  ;84B18A;
 
@@ -7351,32 +7351,32 @@ ActivateStationIfSamusArmCannonLinedUp:
 Setup_MapStation:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_BlockIndices,Y                                                        ;84B18B;
-    LDA.L LevelData,X                                                      ;84B18E;
+    LDX.W PLM_BlockIndices,Y                                             ;84B18B;
+    LDA.L LevelData,X                                                    ;84B18E;
     AND.W #$0FFF                                                         ;84B192;
     ORA.W #$8000                                                         ;84B195;
-    STA.L LevelData,X                                                      ;84B198;
-    LDX.W AreaIndex                                                          ;84B19C;
-    LDA.L SRAMMirror_MapStations,X                                                      ;84B19F;
+    STA.L LevelData,X                                                    ;84B198;
+    LDX.W AreaIndex                                                      ;84B19C;
+    LDA.L SRAMMirror_MapStations,X                                       ;84B19F;
     AND.W #$00FF                                                         ;84B1A3;
     BNE .setInstruction                                                  ;84B1A6;
-    LDX.W PLM_BlockIndices,Y                                                        ;84B1A8;
+    LDX.W PLM_BlockIndices,Y                                             ;84B1A8;
     INX                                                                  ;84B1AB;
     INX                                                                  ;84B1AC;
-    LDA.W #$B047                                                         ;84B1AD;
+    LDA.W #$B047                                                         ;84B1AD; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B1B0;
-    LDX.W PLM_BlockIndices,Y                                                        ;84B1B3;
+    LDX.W PLM_BlockIndices,Y                                             ;84B1B3;
     DEX                                                                  ;84B1B6;
     DEX                                                                  ;84B1B7;
     DEX                                                                  ;84B1B8;
     DEX                                                                  ;84B1B9;
-    LDA.W #$B048                                                         ;84B1BA;
+    LDA.W #$B048                                                         ;84B1BA; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B1BD;
     RTS                                                                  ;84B1C0;
 
   .setInstruction:
     LDA.W #InstList_PLM_MapStation_2                                     ;84B1C1;
-    STA.W PLM_InstListPointers,Y                                                        ;84B1C4;
+    STA.W PLM_InstListPointers,Y                                         ;84B1C4;
     RTS                                                                  ;84B1C7;
 
 
@@ -7386,23 +7386,23 @@ Setup_MapStationRightAccess:
 ;;     Y: PLM index
 ;; Returns:
 ;;     Carry: Set. Unconditional collision
-    LDA.W $0B02                                                          ;84B1C8;
+    LDA.W CollisionMovementDirection                                     ;84B1C8;
     AND.W #$000F                                                         ;84B1CB;
     BNE .connected                                                       ;84B1CE;
-    LDA.W $0A1C                                                          ;84B1D0;
+    LDA.W Pose                                                           ;84B1D0;
     CMP.W #$008A                                                         ;84B1D3;
     BNE .connected                                                       ;84B1D6;
-    LDA.W PoseXDirection                                                          ;84B1D8;
+    LDA.W PoseXDirection                                                 ;84B1D8;
     AND.W #$0004                                                         ;84B1DB;
     BEQ .connected                                                       ;84B1DE;
-    LDA.W PLM_BlockIndices,Y                                                        ;84B1E0;
+    LDA.W PLM_BlockIndices,Y                                             ;84B1E0;
     DEC                                                                  ;84B1E3;
     DEC                                                                  ;84B1E4;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B1E5;
 
   .connected:
     LDA.W #$0000                                                         ;84B1E8;
-    STA.W PLM_IDs,Y                                                        ;84B1EB;
+    STA.W PLM_IDs,Y                                                      ;84B1EB;
     SEC                                                                  ;84B1EE;
     RTS                                                                  ;84B1EF;
 
@@ -7413,17 +7413,17 @@ Setup_MapStationLeftAccess:
 ;;     Y: PLM index
 ;; Returns:
 ;;     Carry: Set. Unconditional collision
-    LDA.W $0B02                                                          ;84B1F0;
+    LDA.W CollisionMovementDirection                                     ;84B1F0;
     AND.W #$000F                                                         ;84B1F3;
     CMP.W #$0001                                                         ;84B1F6;
     BNE .connected                                                       ;84B1F9;
-    LDA.W $0A1C                                                          ;84B1FB;
+    LDA.W Pose                                                           ;84B1FB;
     CMP.W #$0089                                                         ;84B1FE;
     BNE .connected                                                       ;84B201;
-    LDA.W PoseXDirection                                                          ;84B203;
+    LDA.W PoseXDirection                                                 ;84B203;
     AND.W #$0008                                                         ;84B206;
     BEQ .connected                                                       ;84B209;
-    LDA.W PLM_BlockIndices,Y                                                        ;84B20B;
+    LDA.W PLM_BlockIndices,Y                                             ;84B20B;
     INC                                                                  ;84B20E;
     INC                                                                  ;84B20F;
     INC                                                                  ;84B210;
@@ -7432,7 +7432,7 @@ Setup_MapStationLeftAccess:
 
   .connected:
     LDA.W #$0000                                                         ;84B215;
-    STA.W PLM_IDs,Y                                                        ;84B218;
+    STA.W PLM_IDs,Y                                                      ;84B218;
     SEC                                                                  ;84B21B;
     RTS                                                                  ;84B21C;
 
@@ -7441,20 +7441,20 @@ Setup_MapStationLeftAccess:
 Setup_EnergyStation:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_BlockIndices,Y                                                        ;84B21D;
-    LDA.L LevelData,X                                                      ;84B220;
+    LDX.W PLM_BlockIndices,Y                                             ;84B21D;
+    LDA.L LevelData,X                                                    ;84B220;
     AND.W #$0FFF                                                         ;84B224;
     ORA.W #$8000                                                         ;84B227;
-    STA.L LevelData,X                                                      ;84B22A;
-    LDX.W PLM_BlockIndices,Y                                                        ;84B22E;
+    STA.L LevelData,X                                                    ;84B22A;
+    LDX.W PLM_BlockIndices,Y                                             ;84B22E;
     INX                                                                  ;84B231;
     INX                                                                  ;84B232;
-    LDA.W #$B049                                                         ;84B233;
+    LDA.W #$B049                                                         ;84B233; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B236;
-    LDX.W PLM_BlockIndices,Y                                                        ;84B239;
+    LDX.W PLM_BlockIndices,Y                                             ;84B239;
     DEX                                                                  ;84B23C;
     DEX                                                                  ;84B23D;
-    LDA.W #$B04A                                                         ;84B23E;
+    LDA.W #$B04A                                                         ;84B23E; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B241;
     RTS                                                                  ;84B244;
 
@@ -7463,20 +7463,20 @@ Setup_EnergyStation:
 Setup_MissileStation:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_BlockIndices,Y                                                        ;84B245;
-    LDA.L LevelData,X                                                      ;84B248;
+    LDX.W PLM_BlockIndices,Y                                             ;84B245;
+    LDA.L LevelData,X                                                    ;84B248;
     AND.W #$0FFF                                                         ;84B24C;
     ORA.W #$8000                                                         ;84B24F;
-    STA.L LevelData,X                                                      ;84B252;
-    LDX.W PLM_BlockIndices,Y                                                        ;84B256;
+    STA.L LevelData,X                                                    ;84B252;
+    LDX.W PLM_BlockIndices,Y                                             ;84B256;
     INX                                                                  ;84B259;
     INX                                                                  ;84B25A;
-    LDA.W #$B04B                                                         ;84B25B;
+    LDA.W #$B04B                                                         ;84B25B; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B25E;
-    LDX.W PLM_BlockIndices,Y                                                        ;84B261;
+    LDX.W PLM_BlockIndices,Y                                             ;84B261;
     DEX                                                                  ;84B264;
     DEX                                                                  ;84B265;
-    LDA.W #$B04C                                                         ;84B266;
+    LDA.W #$B04C                                                         ;84B266; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B269;
     RTS                                                                  ;84B26C;
 
@@ -7487,26 +7487,26 @@ Setup_EnergyStationRightAccess:
 ;;     Y: PLM index
 ;; Returns:
 ;;     Carry: Set. Unconditional collision
-    LDA.W $0B02                                                          ;84B26D;
+    LDA.W CollisionMovementDirection                                     ;84B26D;
     AND.W #$000F                                                         ;84B270;
     BNE .connected                                                       ;84B273;
-    LDA.W $0A1C                                                          ;84B275;
+    LDA.W Pose                                                           ;84B275;
     CMP.W #$008A                                                         ;84B278;
     BNE .connected                                                       ;84B27B;
-    LDA.W PoseXDirection                                                          ;84B27D;
+    LDA.W PoseXDirection                                                 ;84B27D;
     AND.W #$0004                                                         ;84B280;
     BEQ .connected                                                       ;84B283;
-    LDA.W Energy                                                          ;84B285;
-    CMP.W MaxEnergy                                                          ;84B288;
+    LDA.W Energy                                                         ;84B285;
+    CMP.W MaxEnergy                                                      ;84B288;
     BEQ .connected                                                       ;84B28B;
-    LDA.W PLM_BlockIndices,Y                                                        ;84B28D;
+    LDA.W PLM_BlockIndices,Y                                             ;84B28D;
     DEC                                                                  ;84B290;
     DEC                                                                  ;84B291;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B292;
 
   .connected:
     LDA.W #$0000                                                         ;84B295;
-    STA.W PLM_IDs,Y                                                        ;84B298;
+    STA.W PLM_IDs,Y                                                      ;84B298;
     SEC                                                                  ;84B29B;
     RTS                                                                  ;84B29C;
 
@@ -7517,27 +7517,27 @@ Setup_EnergyStationLeftAccess:
 ;;     Y: PLM index
 ;; Returns:
 ;;     Carry: Set. Unconditional collision
-    LDA.W $0B02                                                          ;84B29D;
+    LDA.W CollisionMovementDirection                                     ;84B29D;
     AND.W #$000F                                                         ;84B2A0;
     CMP.W #$0001                                                         ;84B2A3;
     BNE .connected                                                       ;84B2A6;
-    LDA.W $0A1C                                                          ;84B2A8;
+    LDA.W Pose                                                           ;84B2A8;
     CMP.W #$0089                                                         ;84B2AB;
     BNE .connected                                                       ;84B2AE;
-    LDA.W PoseXDirection                                                          ;84B2B0;
+    LDA.W PoseXDirection                                                 ;84B2B0;
     AND.W #$0008                                                         ;84B2B3;
     BEQ .connected                                                       ;84B2B6;
-    LDA.W Energy                                                          ;84B2B8;
-    CMP.W MaxEnergy                                                          ;84B2BB;
+    LDA.W Energy                                                         ;84B2B8;
+    CMP.W MaxEnergy                                                      ;84B2BB;
     BEQ .connected                                                       ;84B2BE;
-    LDA.W PLM_BlockIndices,Y                                                        ;84B2C0;
+    LDA.W PLM_BlockIndices,Y                                             ;84B2C0;
     INC                                                                  ;84B2C3;
     INC                                                                  ;84B2C4;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B2C5;
 
   .connected:
     LDA.W #$0000                                                         ;84B2C8;
-    STA.W PLM_IDs,Y                                                        ;84B2CB;
+    STA.W PLM_IDs,Y                                                      ;84B2CB;
     SEC                                                                  ;84B2CE;
     RTS                                                                  ;84B2CF;
 
@@ -7548,26 +7548,26 @@ Setup_MissileStationRightAccess:
 ;;     Y: PLM index
 ;; Returns:
 ;;     Carry: Set. Unconditional collision
-    LDA.W $0B02                                                          ;84B2D0;
+    LDA.W CollisionMovementDirection                                     ;84B2D0;
     AND.W #$000F                                                         ;84B2D3;
     BNE .connected                                                       ;84B2D6;
-    LDA.W $0A1C                                                          ;84B2D8;
+    LDA.W Pose                                                           ;84B2D8;
     CMP.W #$008A                                                         ;84B2DB;
     BNE .connected                                                       ;84B2DE;
-    LDA.W PoseXDirection                                                          ;84B2E0;
+    LDA.W PoseXDirection                                                 ;84B2E0;
     AND.W #$0004                                                         ;84B2E3;
     BEQ .connected                                                       ;84B2E6;
-    LDA.W Missiles                                                          ;84B2E8;
-    CMP.W MaxMissiles                                                          ;84B2EB;
+    LDA.W Missiles                                                       ;84B2E8;
+    CMP.W MaxMissiles                                                    ;84B2EB;
     BEQ .connected                                                       ;84B2EE;
-    LDA.W PLM_BlockIndices,Y                                                        ;84B2F0;
+    LDA.W PLM_BlockIndices,Y                                             ;84B2F0;
     DEC                                                                  ;84B2F3;
     DEC                                                                  ;84B2F4;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B2F5;
 
   .connected:
     LDA.W #$0000                                                         ;84B2F8;
-    STA.W PLM_IDs,Y                                                        ;84B2FB;
+    STA.W PLM_IDs,Y                                                      ;84B2FB;
     SEC                                                                  ;84B2FE;
     RTS                                                                  ;84B2FF;
 
@@ -7578,27 +7578,27 @@ Setup_MissileStationLeftAccess:
 ;;     Y: PLM index
 ;; Returns:
 ;;     Carry: Set. Unconditional collision
-    LDA.W $0B02                                                          ;84B300;
+    LDA.W CollisionMovementDirection                                     ;84B300;
     AND.W #$000F                                                         ;84B303;
     CMP.W #$0001                                                         ;84B306;
     BNE .connected                                                       ;84B309;
-    LDA.W $0A1C                                                          ;84B30B;
+    LDA.W Pose                                                           ;84B30B;
     CMP.W #$0089                                                         ;84B30E;
     BNE .connected                                                       ;84B311;
-    LDA.W PoseXDirection                                                          ;84B313;
+    LDA.W PoseXDirection                                                 ;84B313;
     AND.W #$0008                                                         ;84B316;
     BEQ .connected                                                       ;84B319;
-    LDA.W Missiles                                                          ;84B31B;
-    CMP.W MaxMissiles                                                          ;84B31E;
+    LDA.W Missiles                                                       ;84B31B;
+    CMP.W MaxMissiles                                                    ;84B31E;
     BEQ .connected                                                       ;84B321;
-    LDA.W PLM_BlockIndices,Y                                                        ;84B323;
+    LDA.W PLM_BlockIndices,Y                                             ;84B323;
     INC                                                                  ;84B326;
     INC                                                                  ;84B327;
     JMP.W ActivateStationIfSamusArmCannonLinedUp                         ;84B328;
 
   .connected:
     LDA.W #$0000                                                         ;84B32B;
-    STA.W PLM_IDs,Y                                                        ;84B32E;
+    STA.W PLM_IDs,Y                                                      ;84B32E;
     SEC                                                                  ;84B331;
     RTS                                                                  ;84B332;
 
@@ -7608,7 +7608,7 @@ DeletePLM:
 ;; Parameters:
 ;;     Y: PLM index
     LDA.W #$0000                                                         ;84B333;
-    STA.W PLM_IDs,Y                                                        ;84B336;
+    STA.W PLM_IDs,Y                                                      ;84B336;
     RTS                                                                  ;84B339;
 
 
@@ -7618,8 +7618,8 @@ Setup_RightwardsExtension:
 ;;     Y: PLM index
 
 ; Write horizontal extension block with BTS FFh and delete PLM
-    LDX.W PLM_BlockIndices,Y                                                        ;84B33A;
-    LDA.W #$50FF                                                         ;84B33D;
+    LDX.W PLM_BlockIndices,Y                                             ;84B33A;
+    LDA.W #$50FF                                                         ;84B33D; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B340;
     BRA DeletePLM                                                        ;84B343;
 
@@ -7630,8 +7630,8 @@ Setup_LeftwardsExtension:
 ;;     Y: PLM index
 
 ; Write horizontal extension block with BTS 1 and delete PLM
-    LDX.W PLM_BlockIndices,Y                                                        ;84B345;
-    LDA.W #$5001                                                         ;84B348;
+    LDX.W PLM_BlockIndices,Y                                             ;84B345;
+    LDA.W #$5001                                                         ;84B348; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B34B;
     BRA DeletePLM                                                        ;84B34E;
 
@@ -7642,8 +7642,8 @@ Setup_DownwardsExtension:
 ;;     Y: PLM index
 
 ; Write vertical extension block with BTS FFh and delete PLM
-    LDX.W PLM_BlockIndices,Y                                                        ;84B350;
-    LDA.W #$D0FF                                                         ;84B353;
+    LDX.W PLM_BlockIndices,Y                                             ;84B350;
+    LDA.W #$D0FF                                                         ;84B353; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B356;
     BRA DeletePLM                                                        ;84B359;
 
@@ -7654,8 +7654,8 @@ Setup_UpwardsExtension:
 ;;     Y: PLM index
 
 ; Write vertical extension block with BTS 1 and delete PLM
-    LDX.W PLM_BlockIndices,Y                                                        ;84B35B;
-    LDA.W #$D001                                                         ;84B35E;
+    LDX.W PLM_BlockIndices,Y                                             ;84B35B;
+    LDA.W #$D001                                                         ;84B35E; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B361;
     BRA DeletePLM                                                        ;84B364;
 
@@ -7664,10 +7664,10 @@ Setup_UpwardsExtension:
 Skip_Debug_DrawInstruction_for_ScrollPLM:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W PLM_InstListPointers,Y                                                        ;84B366;
+    LDA.W PLM_InstListPointers,Y                                         ;84B366;
     CLC                                                                  ;84B369;
     ADC.W #$0004                                                         ;84B36A;
-    STA.W PLM_InstListPointers,Y                                                        ;84B36D;
+    STA.W PLM_InstListPointers,Y                                         ;84B36D;
     RTS                                                                  ;84B370;
 
 
@@ -7677,11 +7677,11 @@ Setup_ScrollPLM:
 ;;     Y: PLM index
 
 ; Write scroll PLM trigger block, set PLM as not triggered and skip debug draw instruction
-    LDX.W PLM_BlockIndices,Y                                                        ;84B371;
-    LDA.W #$3046                                                         ;84B374;
+    LDX.W PLM_BlockIndices,Y                                             ;84B371;
+    LDA.W #$3046                                                         ;84B374; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B377;
     LDA.W #$0000                                                         ;84B37A;
-    STA.W PLM_Vars,Y                                                        ;84B37D;
+    STA.W PLM_Vars,Y                                                     ;84B37D;
     BRA Skip_Debug_DrawInstruction_for_ScrollPLM                         ;84B380;
 
 
@@ -7691,11 +7691,11 @@ Setup_SolidScrollPLM:
 ;;     Y: PLM index
 
 ; Write solid scroll PLM trigger block, set PLM as not triggered and skip debug draw instruction
-    LDX.W PLM_BlockIndices,Y                                                        ;84B382;
-    LDA.W #$B046                                                         ;84B385;
+    LDX.W PLM_BlockIndices,Y                                             ;84B382;
+    LDA.W #$B046                                                         ;84B385; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B388;
     LDA.W #$0000                                                         ;84B38B;
-    STA.W PLM_Vars,Y                                                        ;84B38E;
+    STA.W PLM_Vars,Y                                                     ;84B38E;
     BRA Skip_Debug_DrawInstruction_for_ScrollPLM                         ;84B391;
 
 
@@ -7706,12 +7706,12 @@ Setup_ScrollBlockTouchPLM:
 ;; Returns:
 ;;     Carry: Set. Unconditional collision
     TYX                                                                  ;84B393;
-    LDA.W PLM_BlockIndices,X                                                        ;84B394;
-    STZ.W PLM_BlockIndices,X                                                        ;84B397;
+    LDA.W PLM_BlockIndices,X                                             ;84B394;
+    STZ.W PLM_BlockIndices,X                                             ;84B397;
     LDX.W #$004E                                                         ;84B39A;
 
   .loop:
-    CMP.W PLM_BlockIndices,X                                                        ;84B39D;
+    CMP.W PLM_BlockIndices,X                                             ;84B39D;
     BEQ .found                                                           ;84B3A0;
     DEX                                                                  ;84B3A2;
     DEX                                                                  ;84B3A3;
@@ -7721,14 +7721,14 @@ Setup_ScrollBlockTouchPLM:
     BRA .crash                                                           ;84B3A6;
 
   .found:
-    LDA.W PLM_Vars,X                                                        ;84B3A8;
+    LDA.W PLM_Vars,X                                                     ;84B3A8;
     BMI .return                                                          ;84B3AB;
     LDA.W #$8000                                                         ;84B3AD;
-    STA.W PLM_Vars,X                                                        ;84B3B0;
-    INC.W PLM_InstListPointers,X                                                        ;84B3B3;
-    INC.W PLM_InstListPointers,X                                                        ;84B3B6;
+    STA.W PLM_Vars,X                                                     ;84B3B0;
+    INC.W PLM_InstListPointers,X                                         ;84B3B3;
+    INC.W PLM_InstListPointers,X                                         ;84B3B6;
     LDA.W #$0001                                                         ;84B3B9;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84B3BC;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84B3BC;
 
   .return:
     RTS                                                                  ;84B3C0;
@@ -7738,10 +7738,10 @@ Setup_ScrollBlockTouchPLM:
 Setup_DeactivatePLM:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_BlockIndices,Y                                                        ;84B3C1;
-    LDA.L LevelData,X                                                      ;84B3C4;
+    LDX.W PLM_BlockIndices,Y                                             ;84B3C1;
+    LDA.L LevelData,X                                                    ;84B3C4;
     AND.W #$8FFF                                                         ;84B3C8;
-    STA.L LevelData,X                                                      ;84B3CB; fallthrough to RTS_84B3CF
+    STA.L LevelData,X                                                    ;84B3CB; fallthrough to RTS_84B3CF
 
 
 RTS_84B3CF:
@@ -7766,10 +7766,10 @@ Setup_EnemyBreakableBlock:
 ;;     Y: PLM index
 
 ; Make PLM block air
-    LDX.W PLM_BlockIndices,Y                                                        ;84B3D4;
-    LDA.L LevelData,X                                                      ;84B3D7;
+    LDX.W PLM_BlockIndices,Y                                             ;84B3D4;
+    LDA.L LevelData,X                                                    ;84B3D7;
     AND.W #$0FFF                                                         ;84B3DB;
-    STA.L LevelData,X                                                      ;84B3DE;
+    STA.L LevelData,X                                                    ;84B3DE;
     RTS                                                                  ;84B3E2;
 
 
@@ -7784,9 +7784,9 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 ;;; $B3EB: Setup - PLM $B70F (inside reaction, special air, BTS Crateria/Debug 80h. Ice physics) ;;;
 Setup_IcePhysics:
-    LDA.W SamusYPosition                                                          ;84B3EB;
+    LDA.W SamusYPosition                                                 ;84B3EB;
     CLC                                                                  ;84B3EE;
-    ADC.W $0B00                                                          ;84B3EF;
+    ADC.W SamusYRadius                                                   ;84B3EF;
     DEC                                                                  ;84B3F2;
     AND.W #$000F                                                         ;84B3F3;
     CMP.W #$0007                                                         ;84B3F6;
@@ -7796,7 +7796,7 @@ Setup_IcePhysics:
 
   .decel:
     LDA.W #$0010                                                         ;84B400;
-    STA.W $0B4C                                                          ;84B403;
+    STA.W SamusXDecelerationMultiplier                                   ;84B403;
 
   .return:
     CLC                                                                  ;84B406;
@@ -7805,23 +7805,23 @@ Setup_IcePhysics:
 
 ;;; $B408: Setup - PLM $B713 / $B717 / $B71B (inside reaction, special air, BTS Maridia 80h/81h/82h. Quicksand surface) ;;;
 Setup_QuicksandSurface:
-    STZ.W $0B3C                                                          ;84B408;
-    STZ.W $0B3E                                                          ;84B40B;
-    STZ.W $0B40                                                          ;84B40E;
-    STZ.W $0B44                                                          ;84B411;
-    STZ.W $0B42                                                          ;84B414;
+    STZ.W SamusRunningMomentumFlag                                       ;84B408;
+    STZ.W SamusBoostTimer                                                ;84B40B;
+    STZ.W SamusEchoesSFXFlag                                             ;84B40E;
+    STZ.W SamusXExtraRunSubSpeed                                         ;84B411;
+    STZ.W SamusXExtraRunSpeed                                            ;84B414;
     LDA.W #$8000                                                         ;84B417;
-    TRB.W $0B48                                                          ;84B41A;
-    STZ.W $0B46                                                          ;84B41D;
+    TRB.W SamusXBaseSubSpeed                                             ;84B41A;
+    STZ.W SamusXBaseSpeed                                                ;84B41D;
     LDY.W #$0000                                                         ;84B420;
-    LDA.W EquippedItems                                                          ;84B423;
+    LDA.W EquippedItems                                                  ;84B423;
     BIT.W #$0020                                                         ;84B426;
     BEQ +                                                                ;84B429;
     LDY.W #$0002                                                         ;84B42B;
 
-+   LDA.W $1E73                                                          ;84B42E;
++   LDA.W InsideBlockReactionSamusPoint                                  ;84B42E;
     BNE InsideReaction_QuicksandSurface_SamusIsGrounded_return           ;84B431;
-    LDA.W $0B36                                                          ;84B433;
+    LDA.W SamusYDirection                                                ;84B433;
     AND.W #$0003                                                         ;84B436;
     ASL                                                                  ;84B439;
     TAX                                                                  ;84B43A;
@@ -7839,12 +7839,12 @@ Setup_QuicksandSurface:
 InsideReaction_QuicksandSurface_SamusIsGrounded:
 ;; Parameters:
 ;;     Y: Quicksand physics table index. 0 = without gravity suit, 2 = with gravity suit
-    STZ.W $0B2C                                                          ;84B447;
-    STZ.W $0B2E                                                          ;84B44A;
-    STZ.W $0B5A                                                          ;84B44D;
-    STZ.W $0B5C                                                          ;84B450;
+    STZ.W SamusYSubSpeed                                                 ;84B447;
+    STZ.W SamusYSpeed                                                    ;84B44A;
+    STZ.W ExtraSamusYSubDisplacement                                     ;84B44D;
+    STZ.W ExtraSamusYDisplacement                                        ;84B450;
     LDA.W QuicksandSurface_InsideReaction_distanceOnGround,Y             ;84B453;
-    STA.W $0B5B                                                          ;84B456;
+    STA.W ExtraSamusYSubDisplacement+1                                   ;84B456;
 
   .return:
     RTS                                                                  ;84B459;
@@ -7855,17 +7855,17 @@ InsideReaction_QuicksandSurface_SamusIsMovingUp:
 ;; Parameters:
 ;;     Y: Quicksand physics table index. 0 = without gravity suit, 2 = with gravity suit
     LDA.W QuicksandSurface_InsideReaction_maxVelocity,Y                  ;84B45A;
-    CMP.W $0B2D                                                          ;84B45D;
+    CMP.W SamusYSpeedCombined                                            ;84B45D;
     BCS +                                                                ;84B460;
-    STZ.W $0B2C                                                          ;84B462;
-    STZ.W $0B2E                                                          ;84B465;
+    STZ.W SamusYSubSpeed                                                 ;84B462;
+    STZ.W SamusYSpeed                                                    ;84B465;
     LDA.W QuicksandSurface_InsideReaction_maxVelocity,Y                  ;84B468;
-    STA.W $0B2D                                                          ;84B46B;
+    STA.W SamusYSpeedCombined                                            ;84B46B;
 
-+   STZ.W $0B5A                                                          ;84B46E;
-    STZ.W $0B5C                                                          ;84B471;
++   STZ.W ExtraSamusYSubDisplacement                                     ;84B46E;
+    STZ.W ExtraSamusYDisplacement                                        ;84B471;
     LDA.W QuicksandSurface_InsideReaction_distanceInAir,Y                ;84B474;
-    STA.W $0B5B                                                          ;84B477;
+    STA.W ExtraSamusYSubDisplacement+1                                   ;84B477;
     RTS                                                                  ;84B47A;
 
 
@@ -7873,11 +7873,11 @@ InsideReaction_QuicksandSurface_SamusIsMovingUp:
 InsideReaction_QuicksandSurface_SamusIsMovingDown:
 ;; Parameters:
 ;;     Y: Quicksand physics table index. 0 = without gravity suit, 2 = with gravity suit
-    STZ.W $0B5A                                                          ;84B47B;
-    STZ.W $0B5C                                                          ;84B47E;
+    STZ.W ExtraSamusYSubDisplacement                                     ;84B47B;
+    STZ.W ExtraSamusYDisplacement                                        ;84B47E;
     LDA.W QuicksandSurface_InsideReaction_distanceInAir,Y                ;84B481;
-    STA.W $0B5B                                                          ;84B484;
-    STZ.W $0AF4                                                          ;84B487;
+    STA.W ExtraSamusYSubDisplacement+1                                   ;84B484;
+    STZ.W AutoJumpTimer                                                  ;84B487;
     RTS                                                                  ;84B48A;
 
 
@@ -7896,11 +7896,11 @@ QuicksandSurface_InsideReaction:
 
 ;;; $B497: Setup - PLM $B71F (inside reaction, special air, BTS Maridia 83h. Submerging quicksand) ;;;
 Setup_Inside_SubmergingQuicksand:
-    STZ.W $0AF4                                                          ;84B497;
+    STZ.W AutoJumpTimer                                                  ;84B497;
     LDA.W #$2000                                                         ;84B49A;
-    STA.W $0B5A                                                          ;84B49D;
+    STA.W ExtraSamusYSubDisplacement                                     ;84B49D;
     LDA.W #$0001                                                         ;84B4A0;
-    STA.W $0B5C                                                          ;84B4A3;
+    STA.W ExtraSamusYDisplacement                                        ;84B4A3;
     CLC                                                                  ;84B4A6;
     RTS                                                                  ;84B4A7;
 
@@ -7908,9 +7908,9 @@ Setup_Inside_SubmergingQuicksand:
 ;;; $B4A8: Setup - PLM $B723 (inside reaction, special air, BTS Maridia 84h. Sand falls - slow) ;;;
 Setup_SandfallsSlow:
     LDA.W #$4000                                                         ;84B4A8;
-    STA.W $0B5A                                                          ;84B4AB;
+    STA.W ExtraSamusYSubDisplacement                                     ;84B4AB;
     LDA.W #$0001                                                         ;84B4AE;
-    STA.W $0B5C                                                          ;84B4B1;
+    STA.W ExtraSamusYDisplacement                                        ;84B4B1;
     CLC                                                                  ;84B4B4;
     RTS                                                                  ;84B4B5;
 
@@ -7918,9 +7918,9 @@ Setup_SandfallsSlow:
 ;;; $B4B6: Setup - PLM $B727 (inside reaction, special air, BTS Maridia 85h. Sand falls - fast) ;;;
 Setup_SandfallsFast:
     LDA.W #$C000                                                         ;84B4B6;
-    STA.W $0B5A                                                          ;84B4B9;
+    STA.W ExtraSamusYSubDisplacement                                     ;84B4B9;
     LDA.W #$0001                                                         ;84B4BC;
-    STA.W $0B5C                                                          ;84B4BF;
+    STA.W ExtraSamusYDisplacement                                        ;84B4BF;
     CLC                                                                  ;84B4C2;
     RTS                                                                  ;84B4C3;
 
@@ -7934,7 +7934,7 @@ Setup_QuicksandSurface_BTS85:
 ;;     $12.$14: Adjusted distance to move Samus or distance to collision
 
 ; Effectively no effect for horizontal collisions
-    LDA.W $0B02                                                          ;84B4C4;
+    LDA.W CollisionMovementDirection                                     ;84B4C4;
     AND.W #$0002                                                         ;84B4C7;
     BNE .vertical                                                        ;84B4CA;
     CLC                                                                  ;84B4CC;
@@ -7942,24 +7942,24 @@ Setup_QuicksandSurface_BTS85:
 
   .vertical:
     LDY.W #$0000                                                         ;84B4CE;
-    LDA.W EquippedItems                                                          ;84B4D1;
+    LDA.W EquippedItems                                                  ;84B4D1;
     BIT.W #$0020                                                         ;84B4D4;
     BEQ +                                                                ;84B4D7;
     LDY.W #$0002                                                         ;84B4D9;
 
-+   LDX.B $12                                                            ;84B4DC;
-    LDA.B $14                                                            ;84B4DE;
-    STA.B $12                                                            ;84B4E0;
-    STX.B $14                                                            ;84B4E2;
-    LDA.W $0B36                                                          ;84B4E4;
++   LDX.B DP_Temp12                                                      ;84B4DC;
+    LDA.B DP_Temp14                                                      ;84B4DE;
+    STA.B DP_Temp12                                                      ;84B4E0;
+    STX.B DP_Temp14                                                      ;84B4E2;
+    LDA.W SamusYDirection                                                ;84B4E4;
     AND.W #$0003                                                         ;84B4E7;
     ASL                                                                  ;84B4EA;
     TAX                                                                  ;84B4EB;
     JSR.W (.pointers,X)                                                  ;84B4EC;
-    LDX.B $12                                                            ;84B4EF;
-    LDA.B $14                                                            ;84B4F1;
-    STA.B $12                                                            ;84B4F3;
-    STX.B $14                                                            ;84B4F5;
+    LDX.B DP_Temp12                                                      ;84B4EF;
+    LDA.B DP_Temp14                                                      ;84B4F1;
+    STA.B DP_Temp12                                                      ;84B4F3;
+    STX.B DP_Temp14                                                      ;84B4F5;
     RTS                                                                  ;84B4F7;
 
   .pointers:
@@ -7977,7 +7977,7 @@ CollisionReaction_QuicksandSurface_SamusIsGrounded:
 ;; Returns:
 ;;     Carry: Set if collision, clear otherwise
 ;;     $14.$12: Adjusted distance to move Samus or distance to collision
-    LDA.W $0B02                                                          ;84B500;
+    LDA.W CollisionMovementDirection                                     ;84B500;
     AND.W #$000F                                                         ;84B503;
     CMP.W #$0002                                                         ;84B506;
     BEQ .noCollision                                                     ;84B509;
@@ -7986,15 +7986,15 @@ CollisionReaction_QuicksandSurface_SamusIsGrounded:
     BRA .noCollision                                                     ;84B510;
 
   .up:
-    LDA.W $0A6E                                                          ;84B512;
+    LDA.W ContactDamageIndex                                             ;84B512;
     CMP.W #$0001                                                         ;84B515;
     BEQ CollisionReaction_QuicksandSurface_QuicksandSpeedBoosting        ;84B518;
     LDA.W QuicksandSurface_MaxSinkingSpeed,Y                             ;84B51A;
-    CMP.B $13                                                            ;84B51D;
+    CMP.B DP_Temp13                                                      ;84B51D;
     BCS +                                                                ;84B51F;
-    STA.B $13                                                            ;84B521;
+    STA.B DP_Temp13                                                      ;84B521;
 
-+   INC.W $1E71                                                          ;84B523;
++   INC.W SamusInQuicksand                                               ;84B523;
 
   .noCollision:
     CLC                                                                  ;84B526;
@@ -8014,10 +8014,10 @@ CollisionReaction_QuicksandSurface_SamusIsMovingDown:
 ;; Returns:
 ;;     Carry: Set if collision, clear otherwise
 ;;     $14.$12: Distance to move Samus or distance to collision
-    LDA.W $0A6E                                                          ;84B52A;
+    LDA.W ContactDamageIndex                                             ;84B52A;
     CMP.W #$0001                                                         ;84B52D;
     BEQ CollisionReaction_QuicksandSurface_QuicksandSpeedBoosting        ;84B530;
-    INC.W $1E71                                                          ;84B532;
+    INC.W SamusInQuicksand                                               ;84B532;
     CLC                                                                  ;84B535;
     RTS                                                                  ;84B536;
 
@@ -8027,8 +8027,8 @@ CollisionReaction_QuicksandSurface_QuicksandSpeedBoosting:
 ;; Returns:
 ;;     Carry: Set. Unconditional collision
 ;;     $14.$12: 0.0. Distance to collision
-    STZ.B $12                                                            ;84B537;
-    STZ.B $14                                                            ;84B539;
+    STZ.B DP_Temp12                                                      ;84B537;
+    STZ.B DP_Temp14                                                      ;84B539;
     SEC                                                                  ;84B53B;
     RTS                                                                  ;84B53C;
 
@@ -8045,10 +8045,10 @@ QuicksandSurface_MaxSinkingSpeed:
 Setup_Collision_SubmergingQuicksand:
 ;; Returns:
 ;;     Carry: Clear. No collision
-    STZ.W $0B2C                                                          ;84B541;
-    STZ.W $0B2E                                                          ;84B544;
-    STZ.W $0B32                                                          ;84B547;
-    STZ.W $0B34                                                          ;84B54A;
+    STZ.W SamusYSubSpeed                                                 ;84B541;
+    STZ.W SamusYSpeed                                                    ;84B544;
+    STZ.W SamusYSubAcceleration                                          ;84B547;
+    STZ.W SamusYAcceleration                                             ;84B54A;
     CLC                                                                  ;84B54D;
     RTS                                                                  ;84B54E;
 
@@ -8065,17 +8065,17 @@ Setup_ClearBabyMetroidInvisibleWall:
 ;;     Y: PLM index
 
 ; Make the 10-block column below this PLM air
-    LDX.W PLM_BlockIndices,Y                                                        ;84B551;
+    LDX.W PLM_BlockIndices,Y                                             ;84B551;
     LDY.W #$000A                                                         ;84B554;
 
   .loop:
-    LDA.L LevelData,X                                                      ;84B557;
+    LDA.L LevelData,X                                                    ;84B557;
     AND.W #$0FFF                                                         ;84B55B;
-    STA.L LevelData,X                                                      ;84B55E;
+    STA.L LevelData,X                                                    ;84B55E;
     TXA                                                                  ;84B562;
     CLC                                                                  ;84B563;
-    ADC.W RoomWidthBlocks                                                          ;84B564;
-    ADC.W RoomWidthBlocks                                                          ;84B567;
+    ADC.W RoomWidthBlocks                                                ;84B564;
+    ADC.W RoomWidthBlocks                                                ;84B567;
     TAX                                                                  ;84B56A;
     DEY                                                                  ;84B56B;
     BNE .loop                                                            ;84B56C;
@@ -8088,18 +8088,18 @@ CreateBabyMetroidInvisibleWall:
 ;;     Y: PLM index
 
 ; Make the 10-block column below this PLM solid
-    LDX.W PLM_BlockIndices,Y                                                        ;84B56F;
+    LDX.W PLM_BlockIndices,Y                                             ;84B56F;
     LDY.W #$000A                                                         ;84B572;
 
   .loop:
-    LDA.L LevelData,X                                                      ;84B575;
+    LDA.L LevelData,X                                                    ;84B575;
     AND.W #$0FFF                                                         ;84B579;
     ORA.W #$8000                                                         ;84B57C;
-    STA.L LevelData,X                                                      ;84B57F;
+    STA.L LevelData,X                                                    ;84B57F;
     TXA                                                                  ;84B583;
     CLC                                                                  ;84B584;
-    ADC.W RoomWidthBlocks                                                          ;84B585;
-    ADC.W RoomWidthBlocks                                                          ;84B588;
+    ADC.W RoomWidthBlocks                                                ;84B585;
+    ADC.W RoomWidthBlocks                                                ;84B588;
     TAX                                                                  ;84B58B;
     DEY                                                                  ;84B58C;
     BNE .loop                                                            ;84B58D;
@@ -8116,40 +8116,40 @@ Setup_CollisionReaction_SaveStationTrigger:
 ; I wrote `[Samus X position] < PLM X position + 18h` below,
 ; but Samus X position must be less than PLM X position + 10h for the collision to happen in the first place.
 ; So save stations cruelly require Samus center to be within the center-left quarter of the station
-    LDA.W $0592                                                          ;84B590;
+    LDA.W PowerBombExplosionStatus                                       ;84B590;
     BNE .collisionReturn                                                 ;84B593;
-    LDA.W $0A1C                                                          ;84B595;
+    LDA.W Pose                                                           ;84B595;
     CMP.W #$0001                                                         ;84B598;
     BEQ .standing                                                        ;84B59B;
     CMP.W #$0002                                                         ;84B59D;
     BNE .collisionReturn                                                 ;84B5A0;
 
   .standing:
-    LDA.W $1E75                                                          ;84B5A2;
+    LDA.W SaveStationLockoutFlag                                         ;84B5A2;
     BNE .collisionReturn                                                 ;84B5A5;
-    LDA.W $0B02                                                          ;84B5A7;
+    LDA.W CollisionMovementDirection                                     ;84B5A7;
     AND.W #$000F                                                         ;84B5AA;
     CMP.W #$0003                                                         ;84B5AD;
     BNE .collisionReturn                                                 ;84B5B0;
     TYX                                                                  ;84B5B2;
     JSL.L Calculate_PLM_Block_Coordinates                                ;84B5B3;
-    LDA.W SamusXPosition                                                          ;84B5B7;
+    LDA.W SamusXPosition                                                 ;84B5B7;
     SEC                                                                  ;84B5BA;
     SBC.W #$0008                                                         ;84B5BB;
     LSR                                                                  ;84B5BE;
     LSR                                                                  ;84B5BF;
     LSR                                                                  ;84B5C0;
     LSR                                                                  ;84B5C1;
-    CMP.W PLM_XBlock                                                          ;84B5C2;
+    CMP.W PLM_XBlock                                                     ;84B5C2;
     BNE .collisionReturn                                                 ;84B5C5;
     TYX                                                                  ;84B5C7;
-    LDA.W PLM_BlockIndices,X                                                        ;84B5C8;
-    STZ.W PLM_BlockIndices,X                                                        ;84B5CB;
-    STZ.W PLM_IDs,X                                                        ;84B5CE;
+    LDA.W PLM_BlockIndices,X                                             ;84B5C8;
+    STZ.W PLM_BlockIndices,X                                             ;84B5CB;
+    STZ.W PLM_IDs,X                                                      ;84B5CE;
     LDX.W #$004E                                                         ;84B5D1;
 
   .loop:
-    CMP.W PLM_BlockIndices,X                                                        ;84B5D4;
+    CMP.W PLM_BlockIndices,X                                             ;84B5D4;
     BEQ .found                                                           ;84B5D7;
     DEX                                                                  ;84B5D9;
     DEX                                                                  ;84B5DA;
@@ -8158,10 +8158,10 @@ Setup_CollisionReaction_SaveStationTrigger:
     RTS                                                                  ;84B5DE;
 
   .found:
-    INC.W PLM_InstListPointers,X                                                        ;84B5DF;
-    INC.W PLM_InstListPointers,X                                                        ;84B5E2;
+    INC.W PLM_InstListPointers,X                                         ;84B5DF;
+    INC.W PLM_InstListPointers,X                                         ;84B5E2;
     LDA.W #$0001                                                         ;84B5E5;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84B5E8;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84B5E8;
 
   .collisionReturn:
     SEC                                                                  ;84B5EC;
@@ -8174,8 +8174,8 @@ Setup_SaveStation:
 ;;     Y: PLM index
 
 ; Make PLM block a save station trigger
-    LDX.W PLM_BlockIndices,Y                                                        ;84B5EE;
-    LDA.W #$B04D                                                         ;84B5F1;
+    LDX.W PLM_BlockIndices,Y                                             ;84B5EE;
+    LDA.W #$B04D                                                         ;84B5F1; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B5F4;
     RTS                                                                  ;84B5F7;
 
@@ -8186,29 +8186,29 @@ Setup_MotherBrainsRoomEscapeDoor:
 ;;     Y: PLM index
 
 ; Make PLM block a door block with BTS 1, extended downwards by 3 blocks
-    LDX.W PLM_BlockIndices,Y                                                        ;84B5F8;
-    LDA.W #$9001                                                         ;84B5FB;
+    LDX.W PLM_BlockIndices,Y                                             ;84B5F8;
+    LDA.W #$9001                                                         ;84B5FB; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B5FE;
     TXA                                                                  ;84B601;
     CLC                                                                  ;84B602;
-    ADC.W RoomWidthBlocks                                                          ;84B603;
-    ADC.W RoomWidthBlocks                                                          ;84B606;
+    ADC.W RoomWidthBlocks                                                ;84B603;
+    ADC.W RoomWidthBlocks                                                ;84B606;
     TAX                                                                  ;84B609;
-    LDA.W #$D0FF                                                         ;84B60A;
+    LDA.W #$D0FF                                                         ;84B60A; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B60D;
     TXA                                                                  ;84B610;
     CLC                                                                  ;84B611;
-    ADC.W RoomWidthBlocks                                                          ;84B612;
-    ADC.W RoomWidthBlocks                                                          ;84B615;
+    ADC.W RoomWidthBlocks                                                ;84B612;
+    ADC.W RoomWidthBlocks                                                ;84B615;
     TAX                                                                  ;84B618;
-    LDA.W #$D0FF                                                         ;84B619;
+    LDA.W #$D0FF                                                         ;84B619; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B61C;
     TXA                                                                  ;84B61F;
     CLC                                                                  ;84B620;
-    ADC.W RoomWidthBlocks                                                          ;84B621;
-    ADC.W RoomWidthBlocks                                                          ;84B624;
+    ADC.W RoomWidthBlocks                                                ;84B621;
+    ADC.W RoomWidthBlocks                                                ;84B624;
     TAX                                                                  ;84B627;
-    LDA.W #$D0FF                                                         ;84B628;
+    LDA.W #$D0FF                                                         ;84B628; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B62B;
     RTS                                                                  ;84B62E;
 
@@ -8741,7 +8741,7 @@ PLMEntries_crumbleKraidSpikeBlocks:
 Setup_EnableSoundsIn20Frames_F0FramesIfCeres:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W AreaIndex                                                          ;84B7C3;
+    LDA.W AreaIndex                                                      ;84B7C3;
     CMP.W #$0006                                                         ;84B7C6;
     BNE .ceres                                                           ;84B7C9;
     LDA.W #$0020                                                         ;84B7CB;
@@ -8750,9 +8750,9 @@ Setup_EnableSoundsIn20Frames_F0FramesIfCeres:
   .ceres:
     LDA.W #$00F0                                                         ;84B7D0;
 
-+   STA.W PLM_Timers,Y                                                        ;84B7D3;
++   STA.W PLM_Timers,Y                                                   ;84B7D3;
     LDA.W #PreInstruction_PLM_DecTimer_EnableSounds_DeletePLMIfZero      ;84B7D6;
-    STA.W PLM_PreInstructions,Y                                                        ;84B7D9;
+    STA.W PLM_PreInstructions,Y                                          ;84B7D9;
     RTS                                                                  ;84B7DC;
 
 
@@ -8762,10 +8762,10 @@ PreInstruction_PLM_DecTimer_EnableSounds_DeletePLMIfZero:
 ;;     X: PLM index
 
 ; Used by PLM $B7EB (enable sounds in 20h frames, or F0h frames if on Ceres)
-    DEC.W PLM_Timers,X                                                        ;84B7DD;
+    DEC.W PLM_Timers,X                                                   ;84B7DD;
     BNE .return                                                          ;84B7E0;
-    STZ.W $05F5                                                          ;84B7E2;
-    STZ.W PLM_IDs,X                                                        ;84B7E5;
+    STZ.W DisableSounds                                                  ;84B7E2;
+    STZ.W PLM_IDs,X                                                      ;84B7E5;
 
   .return:
     RTS                                                                  ;84B7E8;
@@ -8788,31 +8788,31 @@ PreInst_PLM_WakePLM_StartLavaquakeIfSpeedBoosterCollected:
 ;;     X: PLM index
 
 ; Used by PLM $B8AC (speed booster escape)
-    LDA.W CollectedItems                                                          ;84B7EF;
+    LDA.W CollectedItems                                                 ;84B7EF;
     AND.W #$2000                                                         ;84B7F2;
     BNE .collectedSpeedBooster                                           ;84B7F5;
     LDA.W #$FFFF                                                         ;84B7F7;
-    STA.W $197A                                                          ;84B7FA;
-    STZ.W $197C                                                          ;84B7FD;
-    STZ.W $1980                                                          ;84B800;
-    STZ.W $1840                                                          ;84B803;
-    STZ.W PLM_IDs,X                                                        ;84B806;
+    STA.W FX_TargetYPosition                                             ;84B7FA;
+    STZ.W FX_YSubVelocity                                                ;84B7FD;
+    STZ.W FX_Timer                                                       ;84B800;
+    STZ.W EarthquakeTimer                                                ;84B803;
+    STZ.W PLM_IDs,X                                                      ;84B806;
     RTS                                                                  ;84B809;
 
   .collectedSpeedBooster:
-    LDA.W $197A                                                          ;84B80A;
+    LDA.W FX_TargetYPosition                                             ;84B80A;
     BMI .deletePLM                                                       ;84B80D;
     LDA.W #$FF80                                                         ;84B80F;
-    STA.W $197C                                                          ;84B812;
+    STA.W FX_YSubVelocity                                                ;84B812;
     LDA.W #$0001                                                         ;84B815;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84B818;
-    INC.W PLM_InstListPointers,X                                                        ;84B81C;
-    INC.W PLM_InstListPointers,X                                                        ;84B81F;
-    STZ.W PLM_Timers,X                                                        ;84B822;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84B818;
+    INC.W PLM_InstListPointers,X                                         ;84B81C;
+    INC.W PLM_InstListPointers,X                                         ;84B81F;
+    STZ.W PLM_Timers,X                                                   ;84B822;
     RTS                                                                  ;84B825;
 
   .deletePLM:
-    STZ.W PLM_IDs,X                                                        ;84B826;
+    STZ.W PLM_IDs,X                                                      ;84B826;
     RTS                                                                  ;84B829;
 
 
@@ -8823,14 +8823,14 @@ PreInst_PLM_WakePLM_StartFXMotionIfSamusIsFarEnoughLeft:
 
 ; Used by PLM $B8AC (speed booster escape)
     LDA.W #$0AE0                                                         ;84B82A;
-    CMP.W SamusXPosition                                                          ;84B82D;
+    CMP.W SamusXPosition                                                 ;84B82D;
     BCC .return                                                          ;84B830;
     LDA.W #$0001                                                         ;84B832;
-    STA.W $1980                                                          ;84B835;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84B838;
-    INC.W PLM_InstListPointers,X                                                        ;84B83C;
-    INC.W PLM_InstListPointers,X                                                        ;84B83F;
-    STZ.W PLM_Timers,X                                                        ;84B842;
+    STA.W FX_Timer                                                       ;84B835;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84B838;
+    INC.W PLM_InstListPointers,X                                         ;84B83C;
+    INC.W PLM_InstListPointers,X                                         ;84B83F;
+    STZ.W PLM_Timers,X                                                   ;84B842;
 
   .return:
     RTS                                                                  ;84B845;
@@ -8842,23 +8842,23 @@ PreInst_PLM_AdvanceLavaAsSamusMovesLeft_SetLavaquakeEvent:
 ;;     X: PLM index
 
 ; Used by PLM $B8AC (speed booster escape)
-    LDA.W PLM_Timers,X                                                        ;84B846;
+    LDA.W PLM_Timers,X                                                   ;84B846;
     TAY                                                                  ;84B849;
     LDA.W .targetSamusXpos,Y                                             ;84B84A;
     BMI .setLavaquake                                                    ;84B84D;
-    CMP.W SamusXPosition                                                          ;84B84F;
+    CMP.W SamusXPosition                                                 ;84B84F;
     BCC .return                                                          ;84B852;
     LDA.W .maxFXYpos,Y                                                   ;84B854;
-    CMP.W $1978                                                          ;84B857;
+    CMP.W FX_BaseYPosition                                               ;84B857;
     BCS +                                                                ;84B85A;
-    STA.W $1978                                                          ;84B85C;
+    STA.W FX_BaseYPosition                                               ;84B85C;
 
 +   LDA.W .FXYVelocity,Y                                                 ;84B85F;
-    STA.W $197C                                                          ;84B862;
+    STA.W FX_YSubVelocity                                                ;84B862;
     TYA                                                                  ;84B865;
     CLC                                                                  ;84B866;
     ADC.W #$0006                                                         ;84B867;
-    STA.W PLM_Timers,X                                                        ;84B86A;
+    STA.W PLM_Timers,X                                                   ;84B86A;
 
   .return:
     RTS                                                                  ;84B86D;
@@ -8904,7 +8904,7 @@ Setup_SpeedBoosterEscape:
     JSL.L CheckIfEvent_inA_HasHappened                                   ;84B89F;
     BCC .return                                                          ;84B8A3;
     LDA.W #$0000                                                         ;84B8A5;
-    STA.W PLM_IDs,Y                                                        ;84B8A8;
+    STA.W PLM_IDs,Y                                                      ;84B8A8;
 
   .return:
     RTS                                                                  ;84B8AB;
@@ -8922,20 +8922,20 @@ PreInstruction_PLM_ShaktoolsRoom:
 ;;     X: PLM index
 
 ; Used by PLM $B8EB (Shaktool's room)
-    LDA.W $0592                                                          ;84B8B0;
+    LDA.W PowerBombExplosionStatus                                       ;84B8B0;
     BEQ .powerBombNotActive                                              ;84B8B3;
     LDA.W #$0101                                                         ;84B8B5;
     STA.L Scrolls                                                        ;84B8B8;
     LDA.W #$0101                                                         ;84B8BC;
-    STA.L $7ECD22                                                        ;84B8BF;
+    STA.L Scrolls+2                                                      ;84B8BF;
 
   .powerBombNotActive:
     LDA.W #$0348                                                         ;84B8C3;
-    CMP.W SamusXPosition                                                          ;84B8C6;
+    CMP.W SamusXPosition                                                 ;84B8C6;
     BCS .return                                                          ;84B8C9;
     LDA.W #$000D                                                         ;84B8CB;
     JSL.L MarkEvent_inA                                                  ;84B8CE;
-    STZ.W PLM_IDs,X                                                        ;84B8D2;
+    STZ.W PLM_IDs,X                                                      ;84B8D2;
 
   .return:
     RTS                                                                  ;84B8D5;
@@ -8954,7 +8954,7 @@ Setup_ShaktoolsRoom:
     LDA.W #$0001                                                         ;84B8DC;
     STA.L Scrolls                                                        ;84B8DF;
     LDA.W #$0000                                                         ;84B8E3;
-    STA.L $7ECD22                                                        ;84B8E6;
+    STA.L Scrolls+2                                                      ;84B8E6;
     RTS                                                                  ;84B8EA;
 
 
@@ -8991,16 +8991,16 @@ WakePLMIfSamusIsBelowRightOfTarget:
 ;;     X: PLM index
 ;;     $12: Target X position
 ;;     $14: Target Y position
-    LDA.B $12                                                            ;84B8FD;
-    CMP.W SamusXPosition                                                          ;84B8FF;
+    LDA.B DP_Temp12                                                      ;84B8FD;
+    CMP.W SamusXPosition                                                 ;84B8FF;
     BCS .return                                                          ;84B902;
-    LDA.B $14                                                            ;84B904;
-    CMP.W SamusYPosition                                                          ;84B906;
+    LDA.B DP_Temp14                                                      ;84B904;
+    CMP.W SamusYPosition                                                 ;84B906;
     BCS .return                                                          ;84B909;
-    INC.W PLM_InstListPointers,X                                                        ;84B90B;
-    INC.W PLM_InstListPointers,X                                                        ;84B90E;
+    INC.W PLM_InstListPointers,X                                         ;84B90B;
+    INC.W PLM_InstListPointers,X                                         ;84B90E;
     LDA.W #$0001                                                         ;84B911;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84B914;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84B914;
 
   .return:
     RTS                                                                  ;84B918;
@@ -9021,9 +9021,9 @@ PreInstruction_PLM_MakeOldTourianEscapeShaftFakeWallExplode:
 ;; Parameter:
 ;;     X: PLM index
     LDA.W #$00F0                                                         ;84B927;
-    STA.B $12                                                            ;84B92A;
+    STA.B DP_Temp12                                                      ;84B92A;
     LDA.W #$0820                                                         ;84B92C;
-    STA.B $14                                                            ;84B92F;
+    STA.B DP_Temp14                                                      ;84B92F;
     JSR.W WakePLMIfSamusIsBelowRightOfTarget                             ;84B931;
     BCS .return                                                          ;84B934;
     PHY                                                                  ;84B936;
@@ -9048,15 +9048,15 @@ PreInst_PLM_RaiseAcidInEscapeRoomBeforeOldTourianEscapeShaft:
 ;; Parameter:
 ;;     X: PLM index
     LDA.W #$00F0                                                         ;84B948;
-    STA.B $12                                                            ;84B94B;
+    STA.B DP_Temp12                                                      ;84B94B;
     LDA.W #$0540                                                         ;84B94D;
-    STA.B $14                                                            ;84B950;
+    STA.B DP_Temp14                                                      ;84B950;
     JSR.W WakePLMIfSamusIsBelowRightOfTarget                             ;84B952;
     BCS .return                                                          ;84B955;
     LDA.W #$FF98                                                         ;84B957;
-    STA.W $197C                                                          ;84B95A;
+    STA.W FX_YSubVelocity                                                ;84B95A;
     LDA.W #$0010                                                         ;84B95D;
-    STA.W $1980                                                          ;84B960;
+    STA.W FX_Timer                                                       ;84B960;
 
   .return:
     RTS                                                                  ;84B963;
@@ -9076,9 +9076,9 @@ PLMEntries_RaiseAcidInEscapeRoomBeforeOldTourianEscapeShaft:
 
 ;;; $B96C: Setup - PLM $B974 (shot/bombed/grappled reaction, shootable, BTS 10h. Gate block) ;;;
 Setup_GateBlock:
-    STZ.B $26                                                            ;84B96C;
+    STZ.B DP_Temp26                                                      ;84B96C;
     LDA.W #$FFFF                                                         ;84B96E;
-    STA.B $28                                                            ;84B971;
+    STA.B DP_Temp28                                                      ;84B971;
     RTS                                                                  ;84B973;
 
 
@@ -9094,22 +9094,22 @@ Setup_Reaction_CrittersEscapeBlock:
 ;;     Y: PLM index
 
 ; Sets the PLM respawn block, but never uses it
-    LDX.W $0DDE                                                          ;84B978;
-    LDA.W $0C18,X                                                        ;84B97B;
+    LDX.W ProjectileIndex                                                ;84B978;
+    LDA.W SamusProjectile_Types,X                                        ;84B97B;
     BNE .projectile                                                      ;84B97E;
     AND.W #$0F00                                                         ;84B980;
     LDA.W #$0000                                                         ;84B983;
-    STA.W PLM_IDs,Y                                                        ;84B986;
+    STA.W PLM_IDs,Y                                                      ;84B986;
     RTS                                                                  ;84B989;
 
   .projectile:
-    LDX.W PLM_BlockIndices,Y                                                        ;84B98A;
-    LDA.L LevelData,X                                                      ;84B98D;
+    LDX.W PLM_BlockIndices,Y                                             ;84B98A;
+    LDA.L LevelData,X                                                    ;84B98D;
     AND.W #$F000                                                         ;84B991;
     ORA.W #$009F                                                         ;84B994;
-    STA.W PLM_Vars,Y                                                        ;84B997;
+    STA.W PLM_Vars,Y                                                     ;84B997;
     AND.W #$8FFF                                                         ;84B99A;
-    STA.L LevelData,X                                                      ;84B99D;
+    STA.L LevelData,X                                                    ;84B99D;
     RTS                                                                  ;84B9A1;
 
 
@@ -9143,22 +9143,22 @@ Setup_CrittersEscapeBlock:
 ;;     Y: PLM index
 
 ; Make PLM block a critters escape block, extended downwards by 2 blocks
-    LDX.W PLM_BlockIndices,Y                                                        ;84B9C5;
-    LDA.W #$C04F                                                         ;84B9C8;
+    LDX.W PLM_BlockIndices,Y                                             ;84B9C5;
+    LDA.W #$C04F                                                         ;84B9C8; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B9CB;
     TXA                                                                  ;84B9CE;
     CLC                                                                  ;84B9CF;
-    ADC.W RoomWidthBlocks                                                          ;84B9D0;
-    ADC.W RoomWidthBlocks                                                          ;84B9D3;
+    ADC.W RoomWidthBlocks                                                ;84B9D0;
+    ADC.W RoomWidthBlocks                                                ;84B9D3;
     TAX                                                                  ;84B9D6;
-    LDA.W #$D0FF                                                         ;84B9D7;
+    LDA.W #$D0FF                                                         ;84B9D7; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B9DA;
     TXA                                                                  ;84B9DD;
     CLC                                                                  ;84B9DE;
-    ADC.W RoomWidthBlocks                                                          ;84B9DF;
-    ADC.W RoomWidthBlocks                                                          ;84B9E2;
+    ADC.W RoomWidthBlocks                                                ;84B9DF;
+    ADC.W RoomWidthBlocks                                                ;84B9E2;
     TAX                                                                  ;84B9E5;
-    LDA.W #$D0FF                                                         ;84B9E6;
+    LDA.W #$D0FF                                                         ;84B9E6; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84B9E9;
     RTS                                                                  ;84B9EC;
 
@@ -9173,38 +9173,38 @@ PLMEntries_CrittersEscapeBlock:
 Setup_TurnCeresElevatorDoorToSolidBlocksDuringEscape:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_BlockIndices,Y                                                        ;84B9F1;
-    LDA.L LevelData,X                                                      ;84B9F4;
+    LDX.W PLM_BlockIndices,Y                                             ;84B9F1;
+    LDA.L LevelData,X                                                    ;84B9F4;
     AND.W #$0FFF                                                         ;84B9F8;
     ORA.W #$8000                                                         ;84B9FB;
-    STA.L LevelData,X                                                      ;84B9FE;
+    STA.L LevelData,X                                                    ;84B9FE;
     TXA                                                                  ;84BA02;
     CLC                                                                  ;84BA03;
-    ADC.W RoomWidthBlocks                                                          ;84BA04;
-    ADC.W RoomWidthBlocks                                                          ;84BA07;
+    ADC.W RoomWidthBlocks                                                ;84BA04;
+    ADC.W RoomWidthBlocks                                                ;84BA07;
     TAX                                                                  ;84BA0A;
-    LDA.L LevelData,X                                                      ;84BA0B;
+    LDA.L LevelData,X                                                    ;84BA0B;
     AND.W #$0FFF                                                         ;84BA0F;
     ORA.W #$8000                                                         ;84BA12;
-    STA.L LevelData,X                                                      ;84BA15;
+    STA.L LevelData,X                                                    ;84BA15;
     TXA                                                                  ;84BA19;
     CLC                                                                  ;84BA1A;
-    ADC.W RoomWidthBlocks                                                          ;84BA1B;
-    ADC.W RoomWidthBlocks                                                          ;84BA1E;
+    ADC.W RoomWidthBlocks                                                ;84BA1B;
+    ADC.W RoomWidthBlocks                                                ;84BA1E;
     TAX                                                                  ;84BA21;
-    LDA.L LevelData,X                                                      ;84BA22;
+    LDA.L LevelData,X                                                    ;84BA22;
     AND.W #$0FFF                                                         ;84BA26;
     ORA.W #$8000                                                         ;84BA29;
-    STA.L LevelData,X                                                      ;84BA2C;
+    STA.L LevelData,X                                                    ;84BA2C;
     TXA                                                                  ;84BA30;
     CLC                                                                  ;84BA31;
-    ADC.W RoomWidthBlocks                                                          ;84BA32;
-    ADC.W RoomWidthBlocks                                                          ;84BA35;
+    ADC.W RoomWidthBlocks                                                ;84BA32;
+    ADC.W RoomWidthBlocks                                                ;84BA35;
     TAX                                                                  ;84BA38;
-    LDA.L LevelData,X                                                      ;84BA39;
+    LDA.L LevelData,X                                                    ;84BA39;
     AND.W #$0FFF                                                         ;84BA3D;
     ORA.W #$8000                                                         ;84BA40;
-    STA.L LevelData,X                                                      ;84BA43;
+    STA.L LevelData,X                                                    ;84BA43;
     RTS                                                                  ;84BA47;
 
 
@@ -9235,7 +9235,7 @@ Instruction_PLM_GotoYIfSamusDoesntHaveBombs:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W CollectedItems                                                          ;84BA6F;
+    LDA.W CollectedItems                                                 ;84BA6F;
     BIT.W #$1000                                                         ;84BA72;
     BEQ .noBombs                                                         ;84BA75;
     INY                                                                  ;84BA77;
@@ -9298,17 +9298,17 @@ UNUSED_Setup_84BAD1:
 ;;     Y: PLM index
 
 ; Would be the setup for the Bomb Torizo grey door, just the same as the generic grey door setup, but with a hard coded grey door type
-    LDA.W $1DC8,Y                                                        ;84BAD1;
+    LDA.W PLM_RoomArgs+1,Y                                               ;84BAD1;
     AND.W #$007C                                                         ;84BAD4;
     LSR                                                                  ;84BAD7;
     LDA.W #$0004                                                         ;84BAD8;
-    STA.W PLM_Vars,Y                                                        ;84BADB;
-    LDA.W PLM_RoomArgs,Y                                                        ;84BADE;
+    STA.W PLM_Vars,Y                                                     ;84BADB;
+    LDA.W PLM_RoomArgs,Y                                                 ;84BADE;
     AND.W #$83FF                                                         ;84BAE1;
     ORA.W #$8000                                                         ;84BAE4;
-    STA.W PLM_RoomArgs,Y                                                        ;84BAE7;
-    LDX.W PLM_BlockIndices,Y                                                        ;84BAEA;
-    LDA.W #$C044                                                         ;84BAED;
+    STA.W PLM_RoomArgs,Y                                                 ;84BAE7;
+    LDX.W PLM_BlockIndices,Y                                             ;84BAEA;
+    LDA.W #$C044                                                         ;84BAED; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84BAF0;
     RTS                                                                  ;84BAF3;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -9349,7 +9349,7 @@ Setup_ClearCrateriaMainstreetEscapePassageIfCrittersEscaped:
     JSL.L CheckIfEvent_inA_HasHappened                                   ;84BB0C;
     BCS .return                                                          ;84BB10;
     LDA.W #$0000                                                         ;84BB12;
-    STA.W PLM_IDs,Y                                                        ;84BB15;
+    STA.W PLM_IDs,Y                                                      ;84BB15;
 
   .return:
     RTS                                                                  ;84BB18;
@@ -9367,10 +9367,10 @@ InstList_PLM_ClearCrateriaMainstreetEscPassageIfCrittersEsc:
 Instruction_PLM_MovePLMRight4Blocks:
 ;; Parameters:
 ;;     X: PLM index
-    LDA.W PLM_BlockIndices,X                                                        ;84BB25;
+    LDA.W PLM_BlockIndices,X                                             ;84BB25;
     CLC                                                                  ;84BB28;
     ADC.W #$0008                                                         ;84BB29;
-    STA.W PLM_BlockIndices,X                                                        ;84BB2C;
+    STA.W PLM_BlockIndices,X                                             ;84BB2C;
     RTS                                                                  ;84BB2F;
 
 
@@ -9408,14 +9408,14 @@ InstList_PLM_GateThatClosesDuringEscapeAfterMotherBrain_1:
 PreInstruction_PLM_WakePLMIfTriggered:
 ;; Parameter:
 ;;     X: PLM index
-    LDA.W PLM_Timers,X                                                        ;84BB52;
+    LDA.W PLM_Timers,X                                                   ;84BB52;
     BEQ .return                                                          ;84BB55;
-    INC.W PLM_InstListPointers,X                                                        ;84BB57;
-    INC.W PLM_InstListPointers,X                                                        ;84BB5A;
+    INC.W PLM_InstListPointers,X                                         ;84BB57;
+    INC.W PLM_InstListPointers,X                                         ;84BB5A;
     LDA.W #$0001                                                         ;84BB5D;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84BB60;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84BB60;
     LDA.W #.return                                                       ;84BB64;
-    STA.W PLM_PreInstructions,X                                                        ;84BB67;
+    STA.W PLM_PreInstructions,X                                          ;84BB67;
 
   .return:
     RTS                                                                  ;84BB6A;
@@ -9426,33 +9426,33 @@ PreInst_PLM_WakePLMIfTriggeredOrSamusWithin4BlockColumnBelow:
 ;; Parameter:
 ;;     X: PLM index
     JSL.L Calculate_PLM_Block_Coordinates                                ;84BB6B;
-    LDA.W SamusXPosition                                                          ;84BB6F;
+    LDA.W SamusXPosition                                                 ;84BB6F;
     LSR                                                                  ;84BB72;
     LSR                                                                  ;84BB73;
     LSR                                                                  ;84BB74;
     LSR                                                                  ;84BB75;
-    CMP.W PLM_XBlock                                                          ;84BB76;
+    CMP.W PLM_XBlock                                                     ;84BB76;
     BNE +                                                                ;84BB79;
-    LDA.W SamusYPosition                                                          ;84BB7B;
+    LDA.W SamusYPosition                                                 ;84BB7B;
     LSR                                                                  ;84BB7E;
     LSR                                                                  ;84BB7F;
     LSR                                                                  ;84BB80;
     LSR                                                                  ;84BB81;
     SEC                                                                  ;84BB82;
-    SBC.W PLM_YBlock                                                          ;84BB83;
+    SBC.W PLM_YBlock                                                     ;84BB83;
     CMP.W #$0005                                                         ;84BB86;
     BCC .triggered                                                       ;84BB89;
 
-+   LDA.W PLM_Timers,X                                                        ;84BB8B;
++   LDA.W PLM_Timers,X                                                   ;84BB8B;
     BEQ .return                                                          ;84BB8E;
 
   .triggered:
-    INC.W PLM_InstListPointers,X                                                        ;84BB90;
-    INC.W PLM_InstListPointers,X                                                        ;84BB93;
+    INC.W PLM_InstListPointers,X                                         ;84BB90;
+    INC.W PLM_InstListPointers,X                                         ;84BB93;
     LDA.W #$0001                                                         ;84BB96;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84BB99;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84BB99;
     LDA.W #.return                                                       ;84BB9D;
-    STA.W PLM_PreInstructions,X                                                        ;84BBA0;
+    STA.W PLM_PreInstructions,X                                          ;84BBA0;
 
   .return:
     RTS                                                                  ;84BBA3;
@@ -9463,33 +9463,33 @@ PreInst_PLM_WakePLMIfTriggeredOrSamusWithin4BlockColumnAbove:
 ;; Parameter:
 ;;     X: PLM index
     JSL.L Calculate_PLM_Block_Coordinates                                ;84BBA4;
-    LDA.W SamusXPosition                                                          ;84BBA8;
+    LDA.W SamusXPosition                                                 ;84BBA8;
     LSR                                                                  ;84BBAB;
     LSR                                                                  ;84BBAC;
     LSR                                                                  ;84BBAD;
     LSR                                                                  ;84BBAE;
-    CMP.W PLM_XBlock                                                          ;84BBAF;
+    CMP.W PLM_XBlock                                                     ;84BBAF;
     BNE +                                                                ;84BBB2;
-    LDA.W SamusYPosition                                                          ;84BBB4;
+    LDA.W SamusYPosition                                                 ;84BBB4;
     LSR                                                                  ;84BBB7;
     LSR                                                                  ;84BBB8;
     LSR                                                                  ;84BBB9;
     LSR                                                                  ;84BBBA;
     SEC                                                                  ;84BBBB;
-    SBC.W PLM_YBlock                                                          ;84BBBC;
+    SBC.W PLM_YBlock                                                     ;84BBBC;
     CMP.W #$FFFC                                                         ;84BBBF;
     BCS .triggered                                                       ;84BBC2;
 
-+   LDA.W PLM_Timers,X                                                        ;84BBC4;
++   LDA.W PLM_Timers,X                                                   ;84BBC4;
     BEQ .return                                                          ;84BBC7;
 
   .triggered:
-    INC.W PLM_InstListPointers,X                                                        ;84BBC9;
-    INC.W PLM_InstListPointers,X                                                        ;84BBCC;
+    INC.W PLM_InstListPointers,X                                         ;84BBC9;
+    INC.W PLM_InstListPointers,X                                         ;84BBCC;
     LDA.W #$0001                                                         ;84BBCF;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84BBD2;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84BBD2;
     LDA.W #.return                                                       ;84BBD6;
-    STA.W PLM_PreInstructions,X                                                        ;84BBD9;
+    STA.W PLM_PreInstructions,X                                          ;84BBD9;
 
   .return:
     RTS                                                                  ;84BBDC;
@@ -9499,7 +9499,7 @@ PreInst_PLM_WakePLMIfTriggeredOrSamusWithin4BlockColumnAbove:
 Instruction_PLM_ClearTrigger:
 ;; Parameters:
 ;;     X: PLM index
-    STZ.W PLM_Timers,X                                                        ;84BBDD;
+    STZ.W PLM_Timers,X                                                   ;84BBDD;
     RTS                                                                  ;84BBE0;
 
 
@@ -9532,11 +9532,11 @@ Instruction_PLM_WakeEnemyProjectileAtPLMsPosition:
 ; 2-byte unused enemy projectile ID argument
     PHX                                                                  ;84BBF0;
     PHY                                                                  ;84BBF1;
-    LDA.W PLM_BlockIndices,X                                                        ;84BBF2;
+    LDA.W PLM_BlockIndices,X                                             ;84BBF2;
     LDX.W #$0022                                                         ;84BBF5;
 
   .loop:
-    CMP.W $1AFF,X                                                        ;84BBF8;
+    CMP.W EnemyProjectile_Var0,X                                         ;84BBF8;
     BEQ .found                                                           ;84BBFB;
     DEX                                                                  ;84BBFD;
     DEX                                                                  ;84BBFE;
@@ -9545,9 +9545,9 @@ Instruction_PLM_WakeEnemyProjectileAtPLMsPosition:
 
   .found:
     LDA.W #$0001                                                         ;84BC02;
-    STA.W $1B8F,X                                                        ;84BC05;
-    INC.W $1B47,X                                                        ;84BC08;
-    INC.W $1B47,X                                                        ;84BC0B;
+    STA.W EnemyProjectile_InstructionTimers,X                            ;84BC05;
+    INC.W EnemyProjectile_InstListPointers,X                             ;84BC08;
+    INC.W EnemyProjectile_InstListPointers,X                             ;84BC0B;
     PLY                                                                  ;84BC0E;
     PLX                                                                  ;84BC0F;
     INY                                                                  ;84BC10;
@@ -9725,13 +9725,13 @@ InstList_PLM_UpwardsGateShotblock_YellowRight:
 PreInstruction_PLM_GotoLinkInstructionIfShot:
 ;; Parameter:
 ;;     X: PLM index
-    LDA.W PLM_Timers,X                                                        ;84BD0F;
+    LDA.W PLM_Timers,X                                                   ;84BD0F;
     BEQ .return                                                          ;84BD12;
-    STZ.W PLM_Timers,X                                                        ;84BD14;
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;84BD17;
-    STA.W PLM_InstListPointers,X                                                        ;84BD1B;
+    STZ.W PLM_Timers,X                                                   ;84BD14;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;84BD17;
+    STA.W PLM_InstListPointers,X                                         ;84BD1B;
     LDA.W #$0001                                                         ;84BD1E;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84BD21;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84BD21;
 
   .return:
     RTS                                                                  ;84BD25;
@@ -9741,16 +9741,16 @@ PreInstruction_PLM_GotoLinkInstructionIfShot:
 PreInstruction_PLM_GotoLinkInstructionIfHitWithPowerBomb:
 ;; Parameter:
 ;;     X: PLM index
-    LDA.W PLM_Timers,X                                                        ;84BD26;
+    LDA.W PLM_Timers,X                                                   ;84BD26;
     BEQ .clearPLMShotStatus                                              ;84BD29;
     AND.W #$0F00                                                         ;84BD2B;
     CMP.W #$0300                                                         ;84BD2E;
     BNE .playSFX                                                         ;84BD31;
-    STZ.W PLM_Timers,X                                                        ;84BD33;
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;84BD36;
-    STA.W PLM_InstListPointers,X                                                        ;84BD3A;
+    STZ.W PLM_Timers,X                                                   ;84BD33;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;84BD36;
+    STA.W PLM_InstListPointers,X                                         ;84BD3A;
     LDA.W #$0001                                                         ;84BD3D;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84BD40;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84BD40;
     RTS                                                                  ;84BD44;
 
   .playSFX:
@@ -9758,7 +9758,7 @@ PreInstruction_PLM_GotoLinkInstructionIfHitWithPowerBomb:
     JSL.L QueueSound_Lib2_Max6                                           ;84BD48;
 
   .clearPLMShotStatus:
-    STZ.W PLM_Timers,X                                                        ;84BD4C;
+    STZ.W PLM_Timers,X                                                   ;84BD4C;
     RTS                                                                  ;84BD4F;
 
 
@@ -9766,7 +9766,7 @@ PreInstruction_PLM_GotoLinkInstructionIfHitWithPowerBomb:
 PreInstruction_PLM_GotoLinkInstructionIfShotWithAMissile:
 ;; Parameter:
 ;;     X: PLM index
-    LDA.W PLM_Timers,X                                                        ;84BD50;
+    LDA.W PLM_Timers,X                                                   ;84BD50;
     BEQ .clearPLMShotStatus                                              ;84BD53;
     AND.W #$0F00                                                         ;84BD55;
     CMP.W #$0200                                                         ;84BD58;
@@ -9775,11 +9775,11 @@ PreInstruction_PLM_GotoLinkInstructionIfShotWithAMissile:
     BNE .dud                                                             ;84BD60;
 
   .missile:
-    STZ.W PLM_Timers,X                                                        ;84BD62;
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;84BD65;
-    STA.W PLM_InstListPointers,X                                                        ;84BD69;
+    STZ.W PLM_Timers,X                                                   ;84BD62;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;84BD65;
+    STA.W PLM_InstListPointers,X                                         ;84BD69;
     LDA.W #$0001                                                         ;84BD6C;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84BD6F;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84BD6F;
     RTS                                                                  ;84BD73;
 
   .dud:
@@ -9787,12 +9787,12 @@ PreInstruction_PLM_GotoLinkInstructionIfShotWithAMissile:
     JSL.L QueueSound_Lib2_Max6                                           ;84BD77;
 
   .clearPLMShotStatus:
-    STZ.W PLM_Timers,X                                                        ;84BD7B;
+    STZ.W PLM_Timers,X                                                   ;84BD7B;
     RTS                                                                  ;84BD7E;
 
   .super:
     LDA.W #$0077                                                         ;84BD7F;
-    STA.L PLMExtra_Vars,X                                                      ;84BD82;
+    STA.L PLMExtra_Vars,X                                                ;84BD82;
     BRA .missile                                                         ;84BD86;
 
 
@@ -9800,16 +9800,16 @@ PreInstruction_PLM_GotoLinkInstructionIfShotWithAMissile:
 PreInstruction_PLM_GotoLinkInstIfShotWithASuperMissile:
 ;; Parameter:
 ;;     X: PLM index
-    LDA.W PLM_Timers,X                                                        ;84BD88;
+    LDA.W PLM_Timers,X                                                   ;84BD88;
     BEQ .clearPLMShotStatus                                              ;84BD8B;
     AND.W #$0F00                                                         ;84BD8D;
     CMP.W #$0200                                                         ;84BD90;
     BNE .playSFX                                                         ;84BD93;
-    STZ.W PLM_Timers,X                                                        ;84BD95;
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;84BD98;
-    STA.W PLM_InstListPointers,X                                                        ;84BD9C;
+    STZ.W PLM_Timers,X                                                   ;84BD95;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;84BD98;
+    STA.W PLM_InstListPointers,X                                         ;84BD9C;
     LDA.W #$0001                                                         ;84BD9F;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84BDA2;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84BDA2;
     RTS                                                                  ;84BDA6;
 
   .playSFX:
@@ -9817,7 +9817,7 @@ PreInstruction_PLM_GotoLinkInstIfShotWithASuperMissile:
     JSL.L QueueSound_Lib2_Max6                                           ;84BDAA;
 
   .clearPLMShotStatus:
-    STZ.W PLM_Timers,X                                                        ;84BDAE;
+    STZ.W PLM_Timers,X                                                   ;84BDAE;
     RTS                                                                  ;84BDB1;
 
 
@@ -9825,11 +9825,11 @@ PreInstruction_PLM_GotoLinkInstIfShotWithASuperMissile:
 Goto_Link_Instruction:
 ;; Parameter:
 ;;     X: PLM index
-    STZ.W PLM_Timers,X                                                        ;84BDB2;
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;84BDB5;
-    STA.W PLM_InstListPointers,X                                                        ;84BDB9;
+    STZ.W PLM_Timers,X                                                   ;84BDB2;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;84BDB5;
+    STA.W PLM_InstListPointers,X                                         ;84BDB9;
     LDA.W #$0001                                                         ;84BDBC;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84BDBF;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84BDBF;
     RTS                                                                  ;84BDC3;
 
 
@@ -9837,13 +9837,13 @@ Goto_Link_Instruction:
 Play_Dud_Sound:
 ;; Parameter:
 ;;     X: PLM index
-    LDA.W PLM_Timers,X                                                        ;84BDC4;
+    LDA.W PLM_Timers,X                                                   ;84BDC4;
     BEQ .clearPLMShotStatus                                              ;84BDC7;
     LDA.W #$0057                                                         ;84BDC9;
     JSL.L QueueSound_Lib2_Max6                                           ;84BDCC;
 
   .clearPLMShotStatus:
-    STZ.W PLM_Timers,X                                                        ;84BDD0;
+    STZ.W PLM_Timers,X                                                   ;84BDD0;
     RTS                                                                  ;84BDD3;
 
 
@@ -9889,8 +9889,8 @@ PreInst_PLM_GotoLinkInst_SetZebesAwakeEventIfEnemiesDead:
 ;;     X: PLM index
     PHY                                                                  ;84BE01;
     PHX                                                                  ;84BE02;
-    LDA.W $0E50                                                          ;84BE03;
-    CMP.W $0E52                                                          ;84BE06;
+    LDA.W NumberOfEnemiesKilled                                          ;84BE03;
+    CMP.W NumberOfEnemiesRequiredToKill                                  ;84BE06;
     BCC .playSFX                                                         ;84BE09;
     LDA.W #$0000                                                         ;84BE0B;
     JSL.L MarkEvent_inA                                                  ;84BE0E;
@@ -9917,7 +9917,7 @@ PreInst_PLM_GotoLinkInstIfTourianStatueFinishedProcessing:
 ;;     X: PLM index
     PHY                                                                  ;84BE1F;
     PHX                                                                  ;84BE20;
-    LDA.W $1E6D                                                          ;84BE21;
+    LDA.W TourianStatueFinishedProcessing                                ;84BE21;
     BPL .playSFX                                                         ;84BE24;
     PLX                                                                  ;84BE26;
     PLY                                                                  ;84BE27;
@@ -9947,9 +9947,9 @@ Instruction_PLM_SetGreyDoorPreInstruction:
 ;; Parameter:
 ;;     X: PLM index
     PHY                                                                  ;84BE3F;
-    LDY.W PLM_Vars,X                                                        ;84BE40;
+    LDY.W PLM_Vars,X                                                     ;84BE40;
     LDA.W .pointers,Y                                                    ;84BE43;
-    STA.W PLM_PreInstructions,X                                                        ;84BE46;
+    STA.W PLM_PreInstructions,X                                          ;84BE46;
     PLY                                                                  ;84BE49;
     RTS                                                                  ;84BE4A;
 
@@ -10820,8 +10820,8 @@ InstList_PLM_ClosedBlueDoorFacingUp_43:
 Setup_LeftGreenGateTrigger:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84C54D;
-    LDA.W $0C18,X                                                        ;84C550;
+    LDX.W ProjectileIndex                                                ;84C54D;
+    LDA.W SamusProjectile_Types,X                                        ;84C550;
     AND.W #$0FFF                                                         ;84C553;
     CMP.W #$0200                                                         ;84C556;
     BNE .playSFX                                                         ;84C559;
@@ -10831,7 +10831,7 @@ Setup_LeftGreenGateTrigger:
     LDA.W #$0057                                                         ;84C55E;
     JSL.L QueueSound_Lib2_Max6                                           ;84C561;
     LDA.W #$0000                                                         ;84C565;
-    STA.W PLM_IDs,Y                                                        ;84C568;
+    STA.W PLM_IDs,Y                                                      ;84C568;
     RTS                                                                  ;84C56B;
 
 
@@ -10839,8 +10839,8 @@ Setup_LeftGreenGateTrigger:
 Setup_RightGreenGateTrigger:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84C56C;
-    LDA.W $0C18,X                                                        ;84C56F;
+    LDX.W ProjectileIndex                                                ;84C56C;
+    LDA.W SamusProjectile_Types,X                                        ;84C56F;
     AND.W #$0FFF                                                         ;84C572;
     CMP.W #$0200                                                         ;84C575;
     BNE .playSFX                                                         ;84C578;
@@ -10850,7 +10850,7 @@ Setup_RightGreenGateTrigger:
     LDA.W #$0057                                                         ;84C57D;
     JSL.L QueueSound_Lib2_Max6                                           ;84C580;
     LDA.W #$0000                                                         ;84C584;
-    STA.W PLM_IDs,Y                                                        ;84C587;
+    STA.W PLM_IDs,Y                                                      ;84C587;
     RTS                                                                  ;84C58A;
 
 
@@ -10858,8 +10858,8 @@ Setup_RightGreenGateTrigger:
 Setup_LeftRedGateTrigger:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84C58B;
-    LDA.W $0C18,X                                                        ;84C58E;
+    LDX.W ProjectileIndex                                                ;84C58B;
+    LDA.W SamusProjectile_Types,X                                        ;84C58E;
     AND.W #$0FFF                                                         ;84C591;
     CMP.W #$0100                                                         ;84C594;
     BEQ .triggerPLM                                                      ;84C597;
@@ -10873,7 +10873,7 @@ Setup_LeftRedGateTrigger:
     LDA.W #$0057                                                         ;84C5A1;
     JSL.L QueueSound_Lib2_Max6                                           ;84C5A4;
     LDA.W #$0000                                                         ;84C5A8;
-    STA.W PLM_IDs,Y                                                        ;84C5AB;
+    STA.W PLM_IDs,Y                                                      ;84C5AB;
     RTS                                                                  ;84C5AE;
 
 
@@ -10881,8 +10881,8 @@ Setup_LeftRedGateTrigger:
 Setup_RightRedGateTrigger:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84C5AF;
-    LDA.W $0C18,X                                                        ;84C5B2;
+    LDX.W ProjectileIndex                                                ;84C5AF;
+    LDA.W SamusProjectile_Types,X                                        ;84C5B2;
     AND.W #$0FFF                                                         ;84C5B5;
     CMP.W #$0100                                                         ;84C5B8;
     BEQ .triggerPLM                                                      ;84C5BB;
@@ -10896,7 +10896,7 @@ Setup_RightRedGateTrigger:
     LDA.W #$0057                                                         ;84C5C5;
     JSL.L QueueSound_Lib2_Max6                                           ;84C5C8;
     LDA.W #$0000                                                         ;84C5CC;
-    STA.W PLM_IDs,Y                                                        ;84C5CF;
+    STA.W PLM_IDs,Y                                                      ;84C5CF;
     RTS                                                                  ;84C5D2;
 
 
@@ -10906,8 +10906,8 @@ Setup_LeftYellowGateTrigger:
 ;;     Y: PLM index
 
 ; Missing RTS, causes dud shot sound effect to be queued twice >_<;
-    LDX.W $0DDE                                                          ;84C5D3;
-    LDA.W $0C18,X                                                        ;84C5D6;
+    LDX.W ProjectileIndex                                                ;84C5D3;
+    LDA.W SamusProjectile_Types,X                                        ;84C5D6;
     AND.W #$0FFF                                                         ;84C5D9;
     CMP.W #$0300                                                         ;84C5DC;
     BNE .playSFX                                                         ;84C5DF;
@@ -10917,15 +10917,15 @@ Setup_LeftYellowGateTrigger:
     LDA.W #$0057                                                         ;84C5E4;
     JSL.L QueueSound_Lib2_Max6                                           ;84C5E7;
     LDA.W #$0000                                                         ;84C5EB;
-    STA.W PLM_IDs,Y                                                        ;84C5EE; fallthrough to RightYellowGateTrigger
+    STA.W PLM_IDs,Y                                                      ;84C5EE; fallthrough to RightYellowGateTrigger
 
 
 ;;; $C5F1: Setup - PLM $C822 (shot/bombed/grappled reaction, shootable, BTS 4Dh. Right yellow gate trigger) ;;;
 RightYellowGateTrigger:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84C5F1;
-    LDA.W $0C18,X                                                        ;84C5F4;
+    LDX.W ProjectileIndex                                                ;84C5F1;
+    LDA.W SamusProjectile_Types,X                                        ;84C5F4;
     AND.W #$0FFF                                                         ;84C5F7;
     CMP.W #$0300                                                         ;84C5FA;
     BNE .playSFX                                                         ;84C5FD;
@@ -10935,7 +10935,7 @@ RightYellowGateTrigger:
     LDA.W #$0057                                                         ;84C602;
     JSL.L QueueSound_Lib2_Max6                                           ;84C605;
     LDA.W #$0000                                                         ;84C609;
-    STA.W PLM_IDs,Y                                                        ;84C60C;
+    STA.W PLM_IDs,Y                                                      ;84C60C;
     RTS                                                                  ;84C60F;
 
 
@@ -10945,8 +10945,8 @@ Setup_LeftBlueGateTrigger:
 ;;     Y: PLM index
 
 ; (Harmless) missing RTS >_<;
-    LDX.W $0DDE                                                          ;84C610;
-    LDA.W $0C18,X                                                        ;84C613;
+    LDX.W ProjectileIndex                                                ;84C610;
+    LDA.W SamusProjectile_Types,X                                        ;84C613;
     AND.W #$0FFF                                                         ;84C616;
     CMP.W #$0300                                                         ;84C619;
     BEQ .deletePLM                                                       ;84C61C;
@@ -10954,15 +10954,15 @@ Setup_LeftBlueGateTrigger:
 
   .deletePLM:
     LDA.W #$0000                                                         ;84C621;
-    STA.W PLM_IDs,Y                                                        ;84C624; fallthrough to Setup_RightBlueGateTrigger
+    STA.W PLM_IDs,Y                                                      ;84C624; fallthrough to Setup_RightBlueGateTrigger
 
 
 ;;; $C627: Setup - PLM $C81A (shot/bombed/grappled reaction, shootable, BTS 47h. Right blue gate trigger) ;;;
 Setup_RightBlueGateTrigger:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84C627;
-    LDA.W $0C18,X                                                        ;84C62A;
+    LDX.W ProjectileIndex                                                ;84C627;
+    LDA.W SamusProjectile_Types,X                                        ;84C62A;
     AND.W #$0FFF                                                         ;84C62D;
     CMP.W #$0300                                                         ;84C630;
     BEQ .deletePLM                                                       ;84C633;
@@ -10970,7 +10970,7 @@ Setup_RightBlueGateTrigger:
 
   .deletePLM:
     LDA.W #$0000                                                         ;84C638;
-    STA.W PLM_IDs,Y                                                        ;84C63B;
+    STA.W PLM_IDs,Y                                                      ;84C63B;
     RTS                                                                  ;84C63E;
 
 
@@ -10978,7 +10978,7 @@ Setup_RightBlueGateTrigger:
 TriggerPLMOfBlockToTheRight:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W PLM_BlockIndices,Y                                                        ;84C63F;
+    LDA.W PLM_BlockIndices,Y                                             ;84C63F;
     INC                                                                  ;84C642;
     INC                                                                  ;84C643;
     JMP.W TriggerPLMAtBlockIndex_A                                       ;84C644;
@@ -10987,7 +10987,7 @@ TriggerPLMOfBlockToTheRight:
 TriggerPLMOfBlockToTheLeft:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W PLM_BlockIndices,Y                                                        ;84C647;
+    LDA.W PLM_BlockIndices,Y                                             ;84C647;
     DEC                                                                  ;84C64A;
     DEC                                                                  ;84C64B; fallthrough to TriggerPLMAtBlockIndex_A
 
@@ -11000,7 +11000,7 @@ TriggerPLMAtBlockIndex_A:
     LDX.W #$004E                                                         ;84C64C;
 
   .loop:
-    CMP.W PLM_BlockIndices,X                                                        ;84C64F;
+    CMP.W PLM_BlockIndices,X                                             ;84C64F;
     BEQ .found                                                           ;84C652;
     DEX                                                                  ;84C654;
     DEX                                                                  ;84C655;
@@ -11008,13 +11008,13 @@ TriggerPLMAtBlockIndex_A:
     BRA .return                                                          ;84C658;
 
   .found:
-    LDA.W PLM_Timers,X                                                        ;84C65A;
+    LDA.W PLM_Timers,X                                                   ;84C65A;
     BNE .return                                                          ;84C65D;
-    INC.W PLM_Timers,X                                                        ;84C65F;
+    INC.W PLM_Timers,X                                                   ;84C65F;
 
   .return:
     LDA.W #$0000                                                         ;84C662;
-    STA.W PLM_IDs,Y                                                        ;84C665;
+    STA.W PLM_IDs,Y                                                      ;84C665;
     SEC                                                                  ;84C668;
     RTS                                                                  ;84C669;
 
@@ -11023,7 +11023,7 @@ TriggerPLMAtBlockIndex_A:
 Give5BlockColumnBelowPLM_BTS10:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W PLM_BlockIndices,Y                                                        ;84C66A;
+    LDA.W PLM_BlockIndices,Y                                             ;84C66A;
     LSR                                                                  ;84C66D;
     TAX                                                                  ;84C66E;
     JSR.W PLM_BTS10_MovePLMDownARow                                      ;84C66F;
@@ -11040,13 +11040,13 @@ PLM_BTS10_MovePLMDownARow:
 ;;     X: Block index
 ;; Returns:
 ;;     X: Next block index
-    LDA.L BTS,X                                                      ;84C67F;
+    LDA.L BTS,X                                                          ;84C67F;
     AND.W #$FF00                                                         ;84C683;
     ORA.W #$0010                                                         ;84C686;
-    STA.L BTS,X                                                      ;84C689;
+    STA.L BTS,X                                                          ;84C689;
     TXA                                                                  ;84C68D;
     CLC                                                                  ;84C68E;
-    ADC.W RoomWidthBlocks                                                          ;84C68F;
+    ADC.W RoomWidthBlocks                                                ;84C68F;
     TAX                                                                  ;84C692;
     RTS                                                                  ;84C693;
 
@@ -11055,7 +11055,7 @@ PLM_BTS10_MovePLMDownARow:
 Give5BlockColumnAbovePLM_BTS10:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W PLM_BlockIndices,Y                                                        ;84C694;
+    LDA.W PLM_BlockIndices,Y                                             ;84C694;
     LSR                                                                  ;84C697;
     TAX                                                                  ;84C698;
     JSR.W PLM_BTS10_MovePLMUpARow                                        ;84C699;
@@ -11072,13 +11072,13 @@ PLM_BTS10_MovePLMUpARow:
 ;;     X: Block index
 ;; Returns:
 ;;     X: Next block index
-    LDA.L BTS,X                                                      ;84C6A9;
+    LDA.L BTS,X                                                          ;84C6A9;
     AND.W #$FF00                                                         ;84C6AD;
     ORA.W #$0010                                                         ;84C6B0;
-    STA.L BTS,X                                                      ;84C6B3;
+    STA.L BTS,X                                                          ;84C6B3;
     TXA                                                                  ;84C6B7;
     SEC                                                                  ;84C6B8;
-    SBC.W RoomWidthBlocks                                                          ;84C6B9;
+    SBC.W RoomWidthBlocks                                                ;84C6B9;
     TAX                                                                  ;84C6BC;
     RTS                                                                  ;84C6BD;
 
@@ -11127,22 +11127,22 @@ Setup_UpwardsOpenGate:
 Setup_DownwardsGateShotblock:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_RoomArgs,Y                                                        ;84C6E0;
+    LDX.W PLM_RoomArgs,Y                                                 ;84C6E0;
     LDA.W .instListPointers,X                                            ;84C6E3;
-    STA.W PLM_InstListPointers,Y                                                        ;84C6E6;
-    LDX.W PLM_RoomArgs,Y                                                        ;84C6E9;
+    STA.W PLM_InstListPointers,Y                                         ;84C6E6;
+    LDX.W PLM_RoomArgs,Y                                                 ;84C6E9;
     LDA.W .leftBlock,X                                                   ;84C6EC;
     BEQ .noRoomArg                                                       ;84C6EF;
-    LDX.W PLM_BlockIndices,Y                                                        ;84C6F1;
+    LDX.W PLM_BlockIndices,Y                                             ;84C6F1;
     DEX                                                                  ;84C6F4;
     DEX                                                                  ;84C6F5;
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84C6F6;
 
   .noRoomArg:
-    LDX.W PLM_RoomArgs,Y                                                        ;84C6F9;
+    LDX.W PLM_RoomArgs,Y                                                 ;84C6F9;
     LDA.W .rightBlock,X                                                  ;84C6FC;
     BEQ .return                                                          ;84C6FF;
-    LDX.W PLM_BlockIndices,Y                                                        ;84C701;
+    LDX.W PLM_BlockIndices,Y                                             ;84C701;
     INX                                                                  ;84C704;
     INX                                                                  ;84C705;
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84C706;
@@ -11178,22 +11178,22 @@ Setup_DownwardsGateShotblock:
 Setup_UpwardsGateShotblock:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_RoomArgs,Y                                                        ;84C73A;
+    LDX.W PLM_RoomArgs,Y                                                 ;84C73A;
     LDA.W .instListPointers,X                                            ;84C73D;
-    STA.W PLM_InstListPointers,Y                                                        ;84C740;
-    LDX.W PLM_RoomArgs,Y                                                        ;84C743;
+    STA.W PLM_InstListPointers,Y                                         ;84C740;
+    LDX.W PLM_RoomArgs,Y                                                 ;84C743;
     LDA.W .leftBlock,X                                                   ;84C746;
     BEQ .noRoomArg                                                       ;84C749;
-    LDX.W PLM_BlockIndices,Y                                                        ;84C74B;
+    LDX.W PLM_BlockIndices,Y                                             ;84C74B;
     DEX                                                                  ;84C74E;
     DEX                                                                  ;84C74F;
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84C750;
 
   .noRoomArg:
-    LDX.W PLM_RoomArgs,Y                                                        ;84C753;
+    LDX.W PLM_RoomArgs,Y                                                 ;84C753;
     LDA.W .rightBlock,X                                                  ;84C756;
     BEQ .return                                                          ;84C759;
-    LDX.W PLM_BlockIndices,Y                                                        ;84C75B;
+    LDX.W PLM_BlockIndices,Y                                             ;84C75B;
     INX                                                                  ;84C75E;
     INX                                                                  ;84C75F;
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84C760;
@@ -11229,15 +11229,15 @@ Setup_UpwardsGateShotblock:
 Setup_GreyDoor:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W $1DC8,Y                                                        ;84C794;
+    LDA.W PLM_RoomArgs+1,Y                                               ;84C794;
     AND.W #$007C                                                         ;84C797;
     LSR                                                                  ;84C79A;
-    STA.W PLM_Vars,Y                                                        ;84C79B;
-    LDA.W PLM_RoomArgs,Y                                                        ;84C79E;
+    STA.W PLM_Vars,Y                                                     ;84C79B;
+    LDA.W PLM_RoomArgs,Y                                                 ;84C79E;
     AND.W #$83FF                                                         ;84C7A1;
-    STA.W PLM_RoomArgs,Y                                                        ;84C7A4;
-    LDX.W PLM_BlockIndices,Y                                                        ;84C7A7;
-    LDA.W #$C044                                                         ;84C7AA;
+    STA.W PLM_RoomArgs,Y                                                 ;84C7A4;
+    LDX.W PLM_BlockIndices,Y                                             ;84C7A7;
+    LDA.W #$C044                                                         ;84C7AA; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84C7AD;
     RTS                                                                  ;84C7B0;
 
@@ -11246,8 +11246,8 @@ Setup_GreyDoor:
 Setup_ColoredDoor:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_BlockIndices,Y                                                        ;84C7B1;
-    LDA.W #$C044                                                         ;84C7B4;
+    LDX.W PLM_BlockIndices,Y                                             ;84C7B1;
+    LDA.W #$C044                                                         ;84C7B4; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84C7B7;
     RTS                                                                  ;84C7BA;
 
@@ -11256,21 +11256,21 @@ Setup_ColoredDoor:
 Setup_BlueDoor:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84C7BB;
-    LDA.W $0C18,X                                                        ;84C7BE;
+    LDX.W ProjectileIndex                                                ;84C7BB;
+    LDA.W SamusProjectile_Types,X                                        ;84C7BE;
     AND.W #$0F00                                                         ;84C7C1;
     CMP.W #$0300                                                         ;84C7C4;
     BNE .notPowerBomb                                                    ;84C7C7;
     LDA.W #$0000                                                         ;84C7C9;
-    STA.W PLM_IDs,Y                                                        ;84C7CC;
+    STA.W PLM_IDs,Y                                                      ;84C7CC;
     RTS                                                                  ;84C7CF;
 
   .notPowerBomb:
-    LDX.W PLM_BlockIndices,Y                                                        ;84C7D0;
-    LDA.L LevelData,X                                                      ;84C7D3;
+    LDX.W PLM_BlockIndices,Y                                             ;84C7D0;
+    LDA.L LevelData,X                                                    ;84C7D3;
     AND.W #$0FFF                                                         ;84C7D7;
     ORA.W #$8000                                                         ;84C7DA;
-    STA.L LevelData,X                                                      ;84C7DD;
+    STA.L LevelData,X                                                    ;84C7DD;
     RTS                                                                  ;84C7E1;
 
 
@@ -11281,12 +11281,12 @@ Setup_GenericShotTriggerForAPLM:
 ;; Returns:
 ;;     Carry: Set if PLM found (unconditional collision), garbage otherwise
     TYX                                                                  ;84C7E2;
-    LDA.W PLM_BlockIndices,X                                                        ;84C7E3;
-    STZ.W PLM_BlockIndices,X                                                        ;84C7E6;
+    LDA.W PLM_BlockIndices,X                                             ;84C7E3;
+    STZ.W PLM_BlockIndices,X                                             ;84C7E6;
     LDX.W #$004E                                                         ;84C7E9;
 
   .loop:
-    CMP.W PLM_BlockIndices,X                                                        ;84C7EC;
+    CMP.W PLM_BlockIndices,X                                             ;84C7EC;
     BEQ .found                                                           ;84C7EF;
     DEX                                                                  ;84C7F1;
     DEX                                                                  ;84C7F2;
@@ -11294,11 +11294,11 @@ Setup_GenericShotTriggerForAPLM:
     RTS                                                                  ;84C7F5;
 
   .found:
-    LDY.W $0DDE                                                          ;84C7F6;
-    LDA.W $0C18,Y                                                        ;84C7F9;
+    LDY.W ProjectileIndex                                                ;84C7F6;
+    LDA.W SamusProjectile_Types,Y                                        ;84C7F9;
     AND.W #$1FFF                                                         ;84C7FC;
     ORA.W #$8000                                                         ;84C7FF;
-    STA.W PLM_Timers,X                                                        ;84C802;
+    STA.W PLM_Timers,X                                                   ;84C802;
     RTS                                                                  ;84C805;
 
 
@@ -11675,7 +11675,6 @@ InstList_PLM_RespawningSpeedBoostBlock:
 ;;; $C997: Instruction list - PLM $D03C (collision reaction, special, BTS Brinstar 84h. Respawning speed block) ;;;
 InstList_PLM_RespawningSpeedBlock:
     dw Instruction_PLM_QueueSound_Y_Lib2_Max1 : db $06                   ;84C997;
-                                                                   ;84C999;
     dw $0001,DrawInst_Respawn1x1_0                                       ;84C99A;
     dw $0001,DrawInst_Respawn1x1_1                                       ;84C99E;
     dw $0001,DrawInst_Respawn1x1_2                                       ;84C9A2;
@@ -12180,13 +12179,13 @@ Instruction_SetPLMBTSTo1:
 ;; Parameters:
 ;;     X: PLM index
     PHX                                                                  ;84CD93;
-    LDA.W PLM_BlockIndices,X                                                        ;84CD94;
+    LDA.W PLM_BlockIndices,X                                             ;84CD94;
     LSR                                                                  ;84CD97;
     TAX                                                                  ;84CD98;
-    LDA.L BTS,X                                                      ;84CD99;
+    LDA.L BTS,X                                                          ;84CD99;
     AND.W #$FF00                                                         ;84CD9D;
     ORA.W #$0001                                                         ;84CDA0;
-    STA.L BTS,X                                                      ;84CDA3;
+    STA.L BTS,X                                                          ;84CDA3;
     PLX                                                                  ;84CDA7;
     RTS                                                                  ;84CDA8;
 
@@ -12207,24 +12206,24 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Setup_84CDC2:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W $0A1C                                                          ;84CDC2;
+    LDA.W Pose                                                           ;84CDC2;
     CMP.W #$0081                                                         ;84CDC5;
     BEQ .screwAttacking                                                  ;84CDC8;
     CMP.W #$0082                                                         ;84CDCA;
     BNE .deletePLM                                                       ;84CDCD;
 
   .screwAttacking:
-    LDX.W PLM_BlockIndices,Y                                                        ;84CDCF;
-    LDA.L LevelData,X                                                      ;84CDD2;
-    STA.W PLM_Vars,Y                                                        ;84CDD6;
+    LDX.W PLM_BlockIndices,Y                                             ;84CDCF;
+    LDA.L LevelData,X                                                    ;84CDD2;
+    STA.W PLM_Vars,Y                                                     ;84CDD6;
     AND.W #$0FFF                                                         ;84CDD9;
-    STA.L LevelData,X                                                      ;84CDDC;
+    STA.L LevelData,X                                                    ;84CDDC;
     CLC                                                                  ;84CDE0;
     RTS                                                                  ;84CDE1;
 
   .deletePLM:
     LDA.W #$0000                                                         ;84CDE2;
-    STA.W PLM_IDs,Y                                                        ;84CDE5;
+    STA.W PLM_IDs,Y                                                      ;84CDE5;
     SEC                                                                  ;84CDE8;
     RTS                                                                  ;84CDE9;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -12236,11 +12235,11 @@ Setup_Collision_RespawningSpeedBoostBlock:
 ;;     Y: PLM index
 ;; Returns:
 ;;     Carry: Set if collision, clear otherwise
-    LDA.W $0B3E                                                          ;84CDEA;
+    LDA.W SamusBoostTimer                                                ;84CDEA;
     AND.W #$0F00                                                         ;84CDED;
     CMP.W #$0400                                                         ;84CDF0;
     BEQ .speed                                                           ;84CDF3;
-    LDA.W $0A1C                                                          ;84CDF5;
+    LDA.W Pose                                                           ;84CDF5;
     CMP.W #$00C9                                                         ;84CDF8;
     BEQ .speed                                                           ;84CDFB;
     CMP.W #$00CA                                                         ;84CDFD;
@@ -12254,18 +12253,18 @@ Setup_Collision_RespawningSpeedBoostBlock:
     CMP.W #$00CE                                                         ;84CE11;
     BEQ .speed                                                           ;84CE14;
     LDA.W #$0000                                                         ;84CE16;
-    STA.W PLM_IDs,Y                                                        ;84CE19;
+    STA.W PLM_IDs,Y                                                      ;84CE19;
     SEC                                                                  ;84CE1C;
     RTS                                                                  ;84CE1D;
 
   .speed:
-    LDX.W PLM_BlockIndices,Y                                                        ;84CE1E;
-    LDA.L LevelData,X                                                      ;84CE21;
+    LDX.W PLM_BlockIndices,Y                                             ;84CE1E;
+    LDA.L LevelData,X                                                    ;84CE21;
     AND.W #$F000                                                         ;84CE25;
     ORA.W #$00B6                                                         ;84CE28;
-    STA.W PLM_Vars,Y                                                        ;84CE2B;
+    STA.W PLM_Vars,Y                                                     ;84CE2B;
     AND.W #$0FFF                                                         ;84CE2E;
-    STA.L LevelData,X                                                      ;84CE31;
+    STA.L LevelData,X                                                    ;84CE31;
     CLC                                                                  ;84CE35;
     RTS                                                                  ;84CE36;
 
@@ -12276,26 +12275,26 @@ Setup_Collision_RespawningCrumbleBlock:
 ;;     Y: PLM index
 ;; Returns:
 ;;     Carry: Set. Unconditional collision
-    LDA.W $0B02                                                          ;84CE37;
+    LDA.W CollisionMovementDirection                                     ;84CE37;
     AND.W #$000F                                                         ;84CE3A;
     CMP.W #$0003                                                         ;84CE3D;
     BNE .deletePLM                                                       ;84CE40;
-    LDX.W PLM_BlockIndices,Y                                                        ;84CE42;
-    LDA.L LevelData,X                                                      ;84CE45;
+    LDX.W PLM_BlockIndices,Y                                             ;84CE42;
+    LDA.L LevelData,X                                                    ;84CE45;
     AND.W #$F000                                                         ;84CE49;
     ORA.W #$00BC                                                         ;84CE4C;
-    STA.W PLM_Vars,Y                                                        ;84CE4F;
+    STA.W PLM_Vars,Y                                                     ;84CE4F;
     AND.W #$8FFF                                                         ;84CE52;
-    STA.L LevelData,X                                                      ;84CE55;
+    STA.L LevelData,X                                                    ;84CE55;
     TYX                                                                  ;84CE59;
     LDA.W #$0004                                                         ;84CE5A;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84CE5D;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84CE5D;
     SEC                                                                  ;84CE61;
     RTS                                                                  ;84CE62;
 
   .deletePLM:
     LDA.W #$0000                                                         ;84CE63;
-    STA.W PLM_IDs,Y                                                        ;84CE66;
+    STA.W PLM_IDs,Y                                                      ;84CE66;
     SEC                                                                  ;84CE69;
     RTS                                                                  ;84CE6A;
 
@@ -12306,13 +12305,13 @@ Setup_Reaction_RespawningShotBlock:
 ;;     Y: PLM index
 
 ; Note that the PLM respawn block is only used by the 1x1 case
-    LDX.W PLM_BlockIndices,Y                                                        ;84CE6B;
-    LDA.L LevelData,X                                                      ;84CE6E;
+    LDX.W PLM_BlockIndices,Y                                             ;84CE6B;
+    LDA.L LevelData,X                                                    ;84CE6E;
     AND.W #$F000                                                         ;84CE72;
     ORA.W #$0052                                                         ;84CE75;
-    STA.W PLM_Vars,Y                                                        ;84CE78;
+    STA.W PLM_Vars,Y                                                     ;84CE78;
     AND.W #$8FFF                                                         ;84CE7B;
-    STA.L LevelData,X                                                      ;84CE7E;
+    STA.L LevelData,X                                                    ;84CE7E;
     RTS                                                                  ;84CE82;
 
 
@@ -12320,11 +12319,11 @@ Setup_Reaction_RespawningShotBlock:
 Setup_Collision_RespawningBombBlock:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W $0B3E                                                          ;84CE83;
+    LDA.W SamusBoostTimer                                                ;84CE83;
     AND.W #$0F00                                                         ;84CE86;
     CMP.W #$0400                                                         ;84CE89;
     BEQ .screwOrSpeed                                                    ;84CE8C;
-    LDA.W $0A1C                                                          ;84CE8E;
+    LDA.W Pose                                                           ;84CE8E;
     CMP.W #$0081                                                         ;84CE91;
     BEQ .screwOrSpeed                                                    ;84CE94;
     CMP.W #$0082                                                         ;84CE96;
@@ -12342,18 +12341,18 @@ Setup_Collision_RespawningBombBlock:
     CMP.W #$00CE                                                         ;84CEB4;
     BEQ .screwOrSpeed                                                    ;84CEB7;
     LDA.W #$0000                                                         ;84CEB9;
-    STA.W PLM_IDs,Y                                                        ;84CEBC;
+    STA.W PLM_IDs,Y                                                      ;84CEBC;
     SEC                                                                  ;84CEBF;
     RTS                                                                  ;84CEC0;
 
   .screwOrSpeed:
-    LDX.W PLM_BlockIndices,Y                                                        ;84CEC1;
-    LDA.L LevelData,X                                                      ;84CEC4;
+    LDX.W PLM_BlockIndices,Y                                             ;84CEC1;
+    LDA.L LevelData,X                                                    ;84CEC4;
     AND.W #$F000                                                         ;84CEC8;
     ORA.W #$0058                                                         ;84CECB;
-    STA.W PLM_Vars,Y                                                        ;84CECE;
+    STA.W PLM_Vars,Y                                                     ;84CECE;
     AND.W #$0FFF                                                         ;84CED1;
-    STA.L LevelData,X                                                      ;84CED4;
+    STA.L LevelData,X                                                    ;84CED4;
     CLC                                                                  ;84CED8;
     RTS                                                                  ;84CED9;
 
@@ -12362,39 +12361,39 @@ Setup_Collision_RespawningBombBlock:
 Setup_Reaction_RespawningBombBlock:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84CEDA;
-    LDA.W $0C18,X                                                        ;84CEDD;
+    LDX.W ProjectileIndex                                                ;84CEDA;
+    LDA.W SamusProjectile_Types,X                                        ;84CEDD;
     AND.W #$0F00                                                         ;84CEE0;
     CMP.W #$0500                                                         ;84CEE3;
     BEQ .bomb                                                            ;84CEE6;
     CMP.W #$0300                                                         ;84CEE8;
     BEQ .powerBomb                                                       ;84CEEB;
     LDA.W #$0000                                                         ;84CEED;
-    STA.W PLM_IDs,Y                                                        ;84CEF0;
+    STA.W PLM_IDs,Y                                                      ;84CEF0;
     RTS                                                                  ;84CEF3;
 
   .powerBomb:
-    LDX.W PLM_BlockIndices,Y                                                        ;84CEF4;
-    LDA.L LevelData,X                                                      ;84CEF7;
+    LDX.W PLM_BlockIndices,Y                                             ;84CEF4;
+    LDA.L LevelData,X                                                    ;84CEF7;
     AND.W #$F000                                                         ;84CEFB;
     ORA.W #$0058                                                         ;84CEFE;
-    STA.W PLM_Vars,Y                                                        ;84CF01;
+    STA.W PLM_Vars,Y                                                     ;84CF01;
     AND.W #$8FFF                                                         ;84CF04;
-    STA.L LevelData,X                                                      ;84CF07;
+    STA.L LevelData,X                                                    ;84CF07;
     RTS                                                                  ;84CF0B;
 
   .bomb:
-    LDA.W PLM_InstListPointers,Y                                                        ;84CF0C;
+    LDA.W PLM_InstListPointers,Y                                         ;84CF0C;
     CLC                                                                  ;84CF0F;
     ADC.W #$0003                                                         ;84CF10;
-    STA.W PLM_InstListPointers,Y                                                        ;84CF13;
-    LDX.W PLM_BlockIndices,Y                                                        ;84CF16;
-    LDA.L LevelData,X                                                      ;84CF19;
+    STA.W PLM_InstListPointers,Y                                         ;84CF13;
+    LDX.W PLM_BlockIndices,Y                                             ;84CF16;
+    LDA.L LevelData,X                                                    ;84CF19;
     AND.W #$F000                                                         ;84CF1D;
     ORA.W #$0058                                                         ;84CF20;
-    STA.W PLM_Vars,Y                                                        ;84CF23;
+    STA.W PLM_Vars,Y                                                     ;84CF23;
     AND.W #$8FFF                                                         ;84CF26;
-    STA.L LevelData,X                                                      ;84CF29;
+    STA.L LevelData,X                                                    ;84CF29;
     RTS                                                                  ;84CF2D;
 
 
@@ -12402,30 +12401,30 @@ Setup_Reaction_RespawningBombBlock:
 Setup_Reaction_RespawningPowerBombBlock:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84CF2E;
-    LDA.W $0C18,X                                                        ;84CF31;
+    LDX.W ProjectileIndex                                                ;84CF2E;
+    LDA.W SamusProjectile_Types,X                                        ;84CF31;
     AND.W #$0F00                                                         ;84CF34;
     CMP.W #$0500                                                         ;84CF37;
     BEQ .bomb                                                            ;84CF3A;
     CMP.W #$0300                                                         ;84CF3C;
     BEQ .powerBomb                                                       ;84CF3F;
     LDA.W #$0000                                                         ;84CF41;
-    STA.W PLM_IDs,Y                                                        ;84CF44;
+    STA.W PLM_IDs,Y                                                      ;84CF44;
     RTS                                                                  ;84CF47;
 
   .powerBomb:
-    LDX.W PLM_BlockIndices,Y                                                        ;84CF48;
-    LDA.L LevelData,X                                                      ;84CF4B;
+    LDX.W PLM_BlockIndices,Y                                             ;84CF48;
+    LDA.L LevelData,X                                                    ;84CF4B;
     AND.W #$F000                                                         ;84CF4F;
     ORA.W #$0057                                                         ;84CF52;
-    STA.W PLM_Vars,Y                                                        ;84CF55;
+    STA.W PLM_Vars,Y                                                     ;84CF55;
     AND.W #$8FFF                                                         ;84CF58;
-    STA.L LevelData,X                                                      ;84CF5B;
+    STA.L LevelData,X                                                    ;84CF5B;
     RTS                                                                  ;84CF5F;
 
   .bomb:
     LDA.W #UNUSED_InstList_PLM_PowerBombBlockBombed_84C91C               ;84CF60;
-    STA.W PLM_InstListPointers,Y                                                        ;84CF63;
+    STA.W PLM_InstListPointers,Y                                         ;84CF63;
     RTS                                                                  ;84CF66;
 
 
@@ -12433,30 +12432,30 @@ Setup_Reaction_RespawningPowerBombBlock:
 Setup_Reaction_SuperMissileBlock:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84CF67;
-    LDA.W $0C18,X                                                        ;84CF6A;
+    LDX.W ProjectileIndex                                                ;84CF67;
+    LDA.W SamusProjectile_Types,X                                        ;84CF6A;
     AND.W #$0F00                                                         ;84CF6D;
     CMP.W #$0500                                                         ;84CF70;
     BEQ .bomb                                                            ;84CF73;
     CMP.W #$0200                                                         ;84CF75;
     BEQ .superMissile                                                    ;84CF78;
     LDA.W #$0000                                                         ;84CF7A;
-    STA.W PLM_IDs,Y                                                        ;84CF7D;
+    STA.W PLM_IDs,Y                                                      ;84CF7D;
     RTS                                                                  ;84CF80;
 
   .superMissile:
-    LDX.W PLM_BlockIndices,Y                                                        ;84CF81;
-    LDA.L LevelData,X                                                      ;84CF84;
+    LDX.W PLM_BlockIndices,Y                                             ;84CF81;
+    LDA.L LevelData,X                                                    ;84CF84;
     AND.W #$F000                                                         ;84CF88;
     ORA.W #$009F                                                         ;84CF8B;
-    STA.W PLM_Vars,Y                                                        ;84CF8E;
+    STA.W PLM_Vars,Y                                                     ;84CF8E;
     AND.W #$8FFF                                                         ;84CF91;
-    STA.L LevelData,X                                                      ;84CF94;
+    STA.L LevelData,X                                                    ;84CF94;
     RTS                                                                  ;84CF98;
 
   .bomb:
     LDA.W #UNUSED_InstList_PLM_SuperMissileBlockBombed_84C922            ;84CF99;
-    STA.W PLM_InstListPointers,Y                                                        ;84CF9C;
+    STA.W PLM_InstListPointers,Y                                         ;84CF9C;
     RTS                                                                  ;84CF9F;
 
 
@@ -12464,13 +12463,13 @@ Setup_Reaction_SuperMissileBlock:
 Setup_Reaction_SpeedCrumbleBlock:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W $0DDE                                                          ;84CFA0;
-    LDA.W $0C18,X                                                        ;84CFA3;
+    LDX.W ProjectileIndex                                                ;84CFA0;
+    LDA.W SamusProjectile_Types,X                                        ;84CFA3;
     AND.W #$0F00                                                         ;84CFA6;
     CMP.W #$0500                                                         ;84CFA9;
     BEQ .return                                                          ;84CFAC;
     LDA.W #$0000                                                         ;84CFAE;
-    STA.W PLM_IDs,Y                                                        ;84CFB1;
+    STA.W PLM_IDs,Y                                                      ;84CFB1;
 
   .return:
     RTS                                                                  ;84CFB4;
@@ -12483,15 +12482,15 @@ Setup_RespawningBreakableGrappleBlock:
 ;; Returns:
 ;;     Carry: Set. Unconditional collision
 ;;     Overflow: Set. Connect grapple beam
-    LDX.W PLM_BlockIndices,Y                                                        ;84CFB5;
-    LDA.L LevelData,X                                                      ;84CFB8;
-    STA.W PLM_Vars,Y                                                        ;84CFBC;
+    LDX.W PLM_BlockIndices,Y                                             ;84CFB5;
+    LDA.L LevelData,X                                                    ;84CFB8;
+    STA.W PLM_Vars,Y                                                     ;84CFBC;
     TXA                                                                  ;84CFBF;
     LSR                                                                  ;84CFC0;
     TAX                                                                  ;84CFC1;
-    LDA.L BTS,X                                                      ;84CFC2;
+    LDA.L BTS,X                                                          ;84CFC2;
     AND.W #$FF00                                                         ;84CFC6;
-    STA.L BTS,X                                                      ;84CFC9; fallthrough to Setup_GenericGrappleBlock_SetOverflow
+    STA.L BTS,X                                                          ;84CFC9; fallthrough to Setup_GenericGrappleBlock_SetOverflow
 
 
 ;;; $CFCD: Setup - PLM $D0D8 (grappled reaction, grapple block, BTS 0/3. Generic grapple block) ;;;
@@ -12521,13 +12520,13 @@ Setup_DraygonsBrokenTurret:
 ;;     Overflow: Set. Connect grapple beam
 
 ; Deal 1 damage to Samus
-    LDA.W $0A4E                                                          ;84CFD5;
+    LDA.W PeriodicSubDamage                                              ;84CFD5;
     CLC                                                                  ;84CFD8;
     ADC.W #$0000                                                         ;84CFD9;
-    STA.W $0A4E                                                          ;84CFDC;
-    LDA.W $0A50                                                          ;84CFDF;
+    STA.W PeriodicSubDamage                                              ;84CFDC;
+    LDA.W PeriodicDamage                                                 ;84CFDF;
     ADC.W #$0001                                                         ;84CFE2;
-    STA.W $0A50                                                          ;84CFE5;
+    STA.W PeriodicDamage                                                 ;84CFE5;
     SEP #$40                                                             ;84CFE8; >.< SEP #$41
     SEC                                                                  ;84CFEA;
     RTS                                                                  ;84CFEB;
@@ -12889,9 +12888,9 @@ Setup_CrumbleLowerNorfairChozoRoomPlug:
 ;;     Y: PLM index
 
 ; This setup routine fails to set the block to air correctly (missing LDA)
-    LDX.W PLM_BlockIndices,Y                                                        ;84D108;
+    LDX.W PLM_BlockIndices,Y                                             ;84D108;
     AND.W #$0FFF                                                         ;84D10B;
-    STA.L LevelData,X                                                      ;84D10E;
+    STA.L LevelData,X                                                    ;84D10E;
     RTS                                                                  ;84D112;
 
 
@@ -12905,7 +12904,7 @@ PLMEntries_CrumbleLowerNorfairChozoRoomPlug:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $D117: Setup - PLM $D127 (unused. Shot block) ;;;
 Setup_UnusedShotBlock:
-    LDX.W PLM_BlockIndices,Y                                                        ;84D117;
+    LDX.W PLM_BlockIndices,Y                                             ;84D117;
     LDA.W #$C000                                                         ;84D11A;
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D11D;
     RTS                                                                  ;84D120;
@@ -12926,7 +12925,7 @@ PLMEntries_UnusedShotBlock:
 
 ;;; $D12B: Setup - PLM $D13B (unused. Grapple block) ;;;
 Setup_UnusedGrappleBlock:
-    LDX.W PLM_BlockIndices,Y                                                        ;84D12B;
+    LDX.W PLM_BlockIndices,Y                                             ;84D12B;
     LDA.W #$E000                                                         ;84D12E;
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D131;
     RTS                                                                  ;84D134;
@@ -12963,7 +12962,7 @@ InstList_PLM_LowerNorfairChozoHand_1:
 ;;; $D155: Instruction - FX base Y position = 2D2h ;;;
 Instruction_PLM_FXBaseYPosition_2D2:
     LDA.W #$02D2                                                         ;84D155;
-    STA.W $1978                                                          ;84D158;
+    STA.W FX_BaseYPosition                                               ;84D158;
     RTS                                                                  ;84D15B;
 
 
@@ -12975,7 +12974,7 @@ PreInstruction_DeletePLM_SpawnTriggerBlockIf_4_8_IsBlankAir:
     SEP #$20                                                             ;84D15D;
     LDA.B #$08                                                           ;84D15F;
     STA.W $4202                                                          ;84D161;
-    LDA.W RoomWidthBlocks                                                          ;84D164;
+    LDA.W RoomWidthBlocks                                                ;84D164;
     STA.W $4203                                                          ;84D167;
     LDA.B #$04                                                           ;84D16A;
     REP #$20                                                             ;84D16C;
@@ -12984,13 +12983,13 @@ PreInstruction_DeletePLM_SpawnTriggerBlockIf_4_8_IsBlankAir:
     ADC.W $4216                                                          ;84D172;
     ASL                                                                  ;84D175;
     TAX                                                                  ;84D176;
-    LDA.L LevelData,X                                                      ;84D177;
+    LDA.L LevelData,X                                                    ;84D177;
     CMP.W #$00FF                                                         ;84D17B;
     BNE .return                                                          ;84D17E;
-    LDA.W #$B083                                                         ;84D180;
+    LDA.W #$B083                                                         ;84D180; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D183;
-    LDX.W PLM_Index                                                          ;84D186;
-    STZ.W PLM_IDs,X                                                        ;84D189;
+    LDX.W PLM_Index                                                      ;84D186;
+    STZ.W PLM_IDs,X                                                      ;84D189;
 
   .return:
     PLX                                                                  ;84D18C;
@@ -13010,14 +13009,14 @@ Setup_Reaction_LowerNorfairChozoHandTrigger:
 ;;     Carry: Set. Unconditional collision
 
 ; Enemy 0 is presumed to be the chozo statue
-    LDA.W CollectedItems                                                          ;84D18F;
+    LDA.W CollectedItems                                                 ;84D18F;
     AND.W #$0200                                                         ;84D192;
     BEQ .return                                                          ;84D195;
-    LDA.W $0B02                                                          ;84D197;
+    LDA.W CollisionMovementDirection                                     ;84D197;
     AND.W #$000F                                                         ;84D19A;
     CMP.W #$0003                                                         ;84D19D;
     BNE .return                                                          ;84D1A0;
-    LDA.W $0A1C                                                          ;84D1A2;
+    LDA.W Pose                                                           ;84D1A2;
     CMP.W #$001D                                                         ;84D1A5;
     BEQ .react                                                           ;84D1A8;
     CMP.W #$0079                                                         ;84D1AA;
@@ -13029,11 +13028,11 @@ Setup_Reaction_LowerNorfairChozoHandTrigger:
     LDA.W #$000C                                                         ;84D1B4;
     JSL.L MarkEvent_inA                                                  ;84D1B7;
     LDA.W #$0001                                                         ;84D1BB;
-    STA.W $0FB4                                                          ;84D1BE;
-    LDX.W PLM_BlockIndices,Y                                                        ;84D1C1;
-    LDA.L LevelData,X                                                      ;84D1C4;
+    STA.W Enemy.init0                                                    ;84D1BE;
+    LDX.W PLM_BlockIndices,Y                                             ;84D1C1;
+    LDA.L LevelData,X                                                    ;84D1C4;
     AND.W #$0FFF                                                         ;84D1C8;
-    STA.L LevelData,X                                                      ;84D1CB;
+    STA.L LevelData,X                                                    ;84D1CB;
     LDA.W #$0000                                                         ;84D1CF;
     JSL.L Run_Samus_Command                                              ;84D1D2;
     JSL.L Spawn_Hardcoded_PLM                                            ;84D1D6;
@@ -13042,7 +13041,7 @@ Setup_Reaction_LowerNorfairChozoHandTrigger:
 
   .return:
     LDA.W #$0000                                                         ;84D1DE;
-    STA.W PLM_IDs,Y                                                        ;84D1E1;
+    STA.W PLM_IDs,Y                                                      ;84D1E1;
     SEC                                                                  ;84D1E4;
     RTS                                                                  ;84D1E5;
 
@@ -13053,7 +13052,7 @@ PreInstruction_PLM_IncrementPLMRoomArgIfShotByMissile:
 ;;     X: PLM index
 
 ; Used by PLM $D6DE (Mother Brain's glass)
-    LDA.W PLM_Timers,X                                                        ;84D1E6;
+    LDA.W PLM_Timers,X                                                   ;84D1E6;
     BEQ .return                                                          ;84D1E9;
     AND.W #$0F00                                                         ;84D1EB;
     CMP.W #$0200                                                         ;84D1EE;
@@ -13062,11 +13061,11 @@ PreInstruction_PLM_IncrementPLMRoomArgIfShotByMissile:
     BNE .return                                                          ;84D1F6;
 
   .incRoomArg:
-    STZ.W PLM_Timers,X                                                        ;84D1F8;
-    INC.W PLM_RoomArgs,X                                                        ;84D1FB;
+    STZ.W PLM_Timers,X                                                   ;84D1F8;
+    INC.W PLM_RoomArgs,X                                                 ;84D1FB;
 
   .return:
-    STZ.W PLM_Timers,X                                                        ;84D1FE;
+    STZ.W PLM_Timers,X                                                   ;84D1FE;
     RTS                                                                  ;84D201;
 
 
@@ -13172,7 +13171,7 @@ Instruction_PLM_GotoY_IfRoomArgGreaterThanY:
 ;;     Y: Pointer to instruction arguments
 ;; Returns:
 ;;     Y: Pointer to next instruction
-    LDA.W PLM_RoomArgs,X                                                        ;84D2F9;
+    LDA.W PLM_RoomArgs,X                                                 ;84D2F9;
     CMP.W $0000,Y                                                        ;84D2FC;
     BCS .next                                                            ;84D2FF;
     LDA.W $0002,Y                                                        ;84D301;
@@ -13230,15 +13229,15 @@ PreInstruction_PLM_WakePLMIfSamusHasBombs:
 ;;     X: PLM index
 
 ; Used by PLM $D6EA (Bomb Torizo's crumbling chozo)
-    LDA.W CollectedItems                                                          ;84D33B;
+    LDA.W CollectedItems                                                 ;84D33B;
     AND.W #$1000                                                         ;84D33E;
     BEQ .return                                                          ;84D341;
     LDA.W #$0001                                                         ;84D343;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84D346;
-    INC.W PLM_InstListPointers,X                                                        ;84D34A;
-    INC.W PLM_InstListPointers,X                                                        ;84D34D;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84D346;
+    INC.W PLM_InstListPointers,X                                         ;84D34A;
+    INC.W PLM_InstListPointers,X                                         ;84D34D;
     LDA.W #.return                                                       ;84D350;
-    STA.W PLM_PreInstructions,X                                                        ;84D353;
+    STA.W PLM_PreInstructions,X                                          ;84D353;
 
   .return:
     RTS                                                                  ;84D356;
@@ -13312,10 +13311,10 @@ Instruction_PLM_TransformWreckedShipChozosSpikesIntoSlopes:
 ;;     X: PLM index
     PHX                                                                  ;84D3D7;
     LDX.W #$1608                                                         ;84D3D8;
-    LDA.W #$1012                                                         ;84D3DB;
+    LDA.W #$1012                                                         ;84D3DB; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D3DE;
     LDX.W #$160A                                                         ;84D3E1;
-    LDA.W #$1013                                                         ;84D3E4;
+    LDA.W #$1013                                                         ;84D3E4; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D3E7;
     PLX                                                                  ;84D3EA;
     RTS                                                                  ;84D3EB;
@@ -13334,10 +13333,10 @@ Instruction_PLM_RevertWreckedShipChozosSlopesIntoSpikes:
 ;;     X: PLM index
     PHX                                                                  ;84D3F4;
     LDX.W #$1608                                                         ;84D3F5;
-    LDA.W #$A000                                                         ;84D3F8;
+    LDA.W #$A000                                                         ;84D3F8; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D3FB;
     LDX.W #$160A                                                         ;84D3FE;
-    LDA.W #$A000                                                         ;84D401;
+    LDA.W #$A000                                                         ;84D401; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D404;
     PLX                                                                  ;84D407;
     RTS                                                                  ;84D408;
@@ -13350,17 +13349,17 @@ UNUSED_PreInst_PLM_GotoToLinkInstructionIfBombed_84D409:
 ;;     X: PLM index
 
 ; Used PLM $D700 (unused. Wrecked Ship 3x4 chozo bomb block)
-    LDA.W PLM_Timers,X                                                        ;84D409;
+    LDA.W PLM_Timers,X                                                   ;84D409;
     AND.W #$0F00                                                         ;84D40C;
     CMP.W #$0500                                                         ;84D40F;
     BNE .clearShotStatus                                                 ;84D412;
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;84D414;
-    STA.W PLM_InstListPointers,X                                                        ;84D418;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;84D414;
+    STA.W PLM_InstListPointers,X                                         ;84D418;
     LDA.W #$0001                                                         ;84D41B;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84D41E;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84D41E;
 
   .clearShotStatus:
-    STZ.W PLM_Timers,X                                                        ;84D422;
+    STZ.W PLM_Timers,X                                                   ;84D422;
     RTS                                                                  ;84D425;
 
 
@@ -13415,11 +13414,11 @@ UNUSED_InstList_PLM_AlternateLowerNorfairChozoHand_84D46E:
 ;;; $D476: Unused. Instruction - drain acid lake ;;;
 UNUSED_Instruction_PLM_DrainAcidLake_84D476:
     LDA.W #$02D2                                                         ;84D476;
-    STA.W $197A                                                          ;84D479;
+    STA.W FX_TargetYPosition                                             ;84D479;
     LDA.W #$0070                                                         ;84D47C;
-    STA.W $197C                                                          ;84D47F;
+    STA.W FX_YSubVelocity                                                ;84D47F;
     LDA.W #$0020                                                         ;84D482;
-    STA.W $1980                                                          ;84D485;
+    STA.W FX_Timer                                                       ;84D485;
     RTS                                                                  ;84D488;
 
 
@@ -13427,7 +13426,7 @@ UNUSED_Instruction_PLM_DrainAcidLake_84D476:
 UNUSED_Instruction_PLM_FXBaseYPosition_2D2_84D489:
 ; Clone of Instruction_PLM_FXBaseYPosition_2D2
     LDA.W #$02D2                                                         ;84D489;
-    STA.W $1978                                                          ;84D48C;
+    STA.W FX_BaseYPosition                                               ;84D48C;
     RTS                                                                  ;84D48F;
 
 
@@ -13468,13 +13467,13 @@ PreInstruction_PLM_WakePLMIf_A_B_X_Y_Left_Right:
 ;;     X: PLM index
 
 ; Used by PLM $D70C (n00b tube)
-    LDA.B $8F                                                            ;84D4BF;
+    LDA.B DP_Controller1New                                              ;84D4BF;
     AND.W #$C3C0                                                         ;84D4C1;
     BEQ .return                                                          ;84D4C4;
     LDA.W #$0001                                                         ;84D4C6;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84D4C9;
-    INC.W PLM_InstListPointers,X                                                        ;84D4CD;
-    INC.W PLM_InstListPointers,X                                                        ;84D4D0;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84D4C9;
+    INC.W PLM_InstListPointers,X                                         ;84D4CD;
+    INC.W PLM_InstListPointers,X                                         ;84D4D0;
 
   .return:
     RTS                                                                  ;84D4D3;
@@ -13526,7 +13525,7 @@ InstList_PLM_NoobTube_4:
 ;;; $D525: Instruction - enable water physics ;;;
 Instruction_PLM_EnableWaterPhysics:
     LDA.W #$0004                                                         ;84D525;
-    TRB.W $197E                                                          ;84D528;
+    TRB.W FX_LiquidOptions                                               ;84D528;
     RTS                                                                  ;84D52B;
 
 
@@ -13542,9 +13541,9 @@ Instruction_PLM_SpawnNoobTubeCrackEnemyProjectile:
 ;;; $D536: Instruction - trigger n00b tube earthquake ;;;
 Instruction_PLM_TriggerNoobTubeEarthquake:
     LDA.W #$000B                                                         ;84D536;
-    STA.W $183E                                                          ;84D539;
+    STA.W EarthquakeType                                                 ;84D539;
     LDA.W #$0040                                                         ;84D53C;
-    STA.W $1840                                                          ;84D53F;
+    STA.W EarthquakeTimer                                                ;84D53F;
     RTS                                                                  ;84D542;
 
 
@@ -13624,8 +13623,8 @@ Setup_MotherBrainsGlass:
 
 ; A draw instruction changes the PLM block type to shot block, making this a generic shot trigger
     LDA.W #$0000                                                         ;84D5F6;\
-    STA.W PLM_RoomArgs,Y                                                        ;84D5F9;} Clear PLM room argument (used as hit counter)
-    LDX.W PLM_BlockIndices,Y                                                        ;84D5FC;\
+    STA.W PLM_RoomArgs,Y                                                 ;84D5F9;} Clear PLM room argument (used as hit counter)
+    LDX.W PLM_BlockIndices,Y                                             ;84D5FC;\
     LDA.W #$8044                                                         ;84D5FF;} Make PLM solid block with BTS 44h
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D602;/
     RTS                                                                  ;84D605;
@@ -13641,7 +13640,7 @@ Setup_BombTorizosCrumblingChozo:
     JSL.L CheckIfBossBitsForCurrentAreaMatchAnyBitsInA                   ;84D609;
     BCC .return                                                          ;84D60D;
     LDA.W #$0000                                                         ;84D60F;
-    STA.W PLM_IDs,Y                                                        ;84D612;
+    STA.W PLM_IDs,Y                                                      ;84D612;
 
   .return:
     RTS                                                                  ;84D615;
@@ -13653,8 +13652,8 @@ Setup_WreckedShipChozoHand:
 ;;     Y: PLM index
 
 ; Make PLM block a Wrecked Ship chozo hand trigger
-    LDX.W PLM_BlockIndices,Y                                                        ;84D616;
-    LDA.W #$B080                                                         ;84D619;
+    LDX.W PLM_BlockIndices,Y                                             ;84D616;
+    LDA.W #$B080                                                         ;84D619; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D61C;
     RTS                                                                  ;84D61F;
 
@@ -13670,11 +13669,11 @@ Setup_Collision_WreckedShipChozoHandTrigger:
     LDA.W #$0001                                                         ;84D620;
     JSL.L CheckIfBossBitsForCurrentAreaMatchAnyBitsInA                   ;84D623;
     BCC .return                                                          ;84D627;
-    LDA.W $0B02                                                          ;84D629;
+    LDA.W CollisionMovementDirection                                     ;84D629;
     AND.W #$000F                                                         ;84D62C;
     CMP.W #$0003                                                         ;84D62F;
     BNE .return                                                          ;84D632;
-    LDA.W $0A1C                                                          ;84D634;
+    LDA.W Pose                                                           ;84D634;
     CMP.W #$001D                                                         ;84D637;
     BEQ .trigger                                                         ;84D63A;
     CMP.W #$0079                                                         ;84D63C;
@@ -13684,15 +13683,15 @@ Setup_Collision_WreckedShipChozoHandTrigger:
 
   .trigger:
     LDA.W #$0001                                                         ;84D646;
-    STA.W $0FB4                                                          ;84D649;
+    STA.W Enemy.init0                                                    ;84D649;
     LDA.W #$0202                                                         ;84D64C;
-    STA.L $7ECD27                                                        ;84D64F;
+    STA.L Scrolls+7                                                      ;84D64F;
     LDA.W #$0101                                                         ;84D653;
-    STA.L $7ECD2D                                                        ;84D656;
-    LDX.W PLM_BlockIndices,Y                                                        ;84D65A;
-    LDA.L LevelData,X                                                      ;84D65D;
+    STA.L Scrolls+$D                                                     ;84D656;
+    LDX.W PLM_BlockIndices,Y                                             ;84D65A;
+    LDA.L LevelData,X                                                    ;84D65D;
     AND.W #$0FFF                                                         ;84D661;
-    STA.L LevelData,X                                                      ;84D664;
+    STA.L LevelData,X                                                    ;84D664;
     LDA.W #$0000                                                         ;84D668;
     JSL.L Run_Samus_Command                                              ;84D66B;
     JSL.L Spawn_Hardcoded_PLM                                            ;84D66F;
@@ -13701,7 +13700,7 @@ Setup_Collision_WreckedShipChozoHandTrigger:
 
   .return:
     LDA.W #$0000                                                         ;84D677;
-    STA.W PLM_IDs,Y                                                        ;84D67A;
+    STA.W PLM_IDs,Y                                                      ;84D67A;
     SEC                                                                  ;84D67D;
     RTS                                                                  ;84D67E;
 
@@ -13713,7 +13712,7 @@ Setup_UnusedWreckedShip3x4ChozoBombBlock:
 ;;     Y: PLM index
 
 ; Make PLM block an air block with BTS 44h (BTS for generic shot trigger)
-    LDX.W PLM_BlockIndices,Y                                                        ;84D67F;
+    LDX.W PLM_BlockIndices,Y                                             ;84D67F;
     LDA.W #$0044                                                         ;84D682;
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D685;
     RTS                                                                  ;84D688;
@@ -13725,8 +13724,8 @@ Setup_UnusedAlternateLowerNorfairChozoHand:
 ;;     Y: PLM index
 
 ; Make PLM block a solid block with BTS 44h (BTS for generic shot trigger)
-    LDX.W PLM_BlockIndices,Y                                                        ;84D689;
-    LDA.W #$8044                                                         ;84D68C;
+    LDX.W PLM_BlockIndices,Y                                             ;84D689;
+    LDA.W #$8044                                                         ;84D68C; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D68F;
     RTS                                                                  ;84D692;
 
@@ -13737,29 +13736,29 @@ Setup_UnusedLowerNorfair2x2ChozoShotBlock:
 ;;     Y: PLM index
 
 ; Make PLM block a solid block with BTS 44h (BTS for generic shot trigger), extended to the right and down to a 2x2 block
-    LDX.W PLM_BlockIndices,Y                                                        ;84D693;
-    LDA.W #$8044                                                         ;84D696;
+    LDX.W PLM_BlockIndices,Y                                             ;84D693;
+    LDA.W #$8044                                                         ;84D696; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D699;
-    LDX.W PLM_BlockIndices,Y                                                        ;84D69C;
+    LDX.W PLM_BlockIndices,Y                                             ;84D69C;
     INX                                                                  ;84D69F;
     INX                                                                  ;84D6A0;
-    LDA.W #$50FF                                                         ;84D6A1;
+    LDA.W #$50FF                                                         ;84D6A1; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D6A4;
-    LDA.W PLM_BlockIndices,Y                                                        ;84D6A7;
+    LDA.W PLM_BlockIndices,Y                                             ;84D6A7;
     CLC                                                                  ;84D6AA;
-    ADC.W RoomWidthBlocks                                                          ;84D6AB;
-    ADC.W RoomWidthBlocks                                                          ;84D6AE;
+    ADC.W RoomWidthBlocks                                                ;84D6AB;
+    ADC.W RoomWidthBlocks                                                ;84D6AE;
     TAX                                                                  ;84D6B1;
-    LDA.W #$D0FF                                                         ;84D6B2;
+    LDA.W #$D0FF                                                         ;84D6B2; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D6B5;
-    LDA.W PLM_BlockIndices,Y                                                        ;84D6B8;
+    LDA.W PLM_BlockIndices,Y                                             ;84D6B8;
     CLC                                                                  ;84D6BB;
-    ADC.W RoomWidthBlocks                                                          ;84D6BC;
-    ADC.W RoomWidthBlocks                                                          ;84D6BF;
+    ADC.W RoomWidthBlocks                                                ;84D6BC;
+    ADC.W RoomWidthBlocks                                                ;84D6BF;
     TAX                                                                  ;84D6C2;
     INX                                                                  ;84D6C3;
     INX                                                                  ;84D6C4;
-    LDA.W #$D0FF                                                         ;84D6C5;
+    LDA.W #$D0FF                                                         ;84D6C5; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D6C8;
     RTS                                                                  ;84D6CB;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -13771,8 +13770,8 @@ Setup_NoobTube:
 ;;     Y: PLM index
 
 ; Make PLM block a solid block with BTS 44h (BTS for generic shot trigger)
-    LDX.W PLM_BlockIndices,Y                                                        ;84D6CC;
-    LDA.W #$8044                                                         ;84D6CF;
+    LDX.W PLM_BlockIndices,Y                                             ;84D6CC;
+    LDA.W #$8044                                                         ;84D6CF; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D6D2;
     RTS                                                                  ;84D6D5;
 
@@ -13869,13 +13868,13 @@ UNUSED_PreInst_PLM_WakePLMIfSamusIsWithin4Blocks_84D710:
 ;; Parameter:
 ;;     X: PLM index
     JSL.L Calculate_PLM_Block_Coordinates                                ;84D710;
-    LDA.W SamusXPosition                                                          ;84D714;
+    LDA.W SamusXPosition                                                 ;84D714;
     LSR                                                                  ;84D717;
     LSR                                                                  ;84D718;
     LSR                                                                  ;84D719;
     LSR                                                                  ;84D71A;
     SEC                                                                  ;84D71B;
-    SBC.W PLM_XBlock                                                          ;84D71C;
+    SBC.W PLM_XBlock                                                     ;84D71C;
     BPL +                                                                ;84D71F;
     EOR.W #$FFFF                                                         ;84D721;
     INC                                                                  ;84D724;
@@ -13884,13 +13883,13 @@ UNUSED_PreInst_PLM_WakePLMIfSamusIsWithin4Blocks_84D710:
     BEQ +                                                                ;84D728;
     BCS .return                                                          ;84D72A;
 
-+   LDA.W SamusYPosition                                                          ;84D72C;
++   LDA.W SamusYPosition                                                 ;84D72C;
     LSR                                                                  ;84D72F;
     LSR                                                                  ;84D730;
     LSR                                                                  ;84D731;
     LSR                                                                  ;84D732;
     SEC                                                                  ;84D733;
-    SBC.W PLM_YBlock                                                          ;84D734;
+    SBC.W PLM_YBlock                                                     ;84D734;
     BPL +                                                                ;84D737;
     EOR.W #$FFFF                                                         ;84D739;
     INC                                                                  ;84D73C;
@@ -13899,10 +13898,10 @@ UNUSED_PreInst_PLM_WakePLMIfSamusIsWithin4Blocks_84D710:
     BEQ +                                                                ;84D740;
     BCS .return                                                          ;84D742;
 
-+   LDA.L PLMExtra_LinkInstructions,X                                                      ;84D744;
-    STA.W PLM_InstListPointers,X                                                        ;84D748;
++   LDA.L PLMExtra_LinkInstructions,X                                    ;84D744;
+    STA.W PLM_InstListPointers,X                                         ;84D748;
     LDA.W #$0001                                                         ;84D74B;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84D74E;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84D74E;
 
   .return:
     RTS                                                                  ;84D752;
@@ -13914,18 +13913,18 @@ PreInstruction_PLM_WakePLMIfRoomArgDoorIsSet:
 ;; Parameter:
 ;;     X: PLM index
     TXY                                                                  ;84D753;
-    LDA.W PLM_RoomArgs,X                                                        ;84D754;
+    LDA.W PLM_RoomArgs,X                                                 ;84D754;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;84D757;
-    LDA.L SRAMMirror_Doors,X                                                      ;84D75B;
-    AND.W Bitmask                                                          ;84D75F;
+    LDA.L SRAMMirror_Doors,X                                             ;84D75B;
+    AND.W Bitmask                                                        ;84D75F;
     BEQ .return                                                          ;84D762;
     TYX                                                                  ;84D764;
     LDA.W #.return                                                       ;84D765;
-    STA.W PLM_PreInstructions,X                                                        ;84D768;
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;84D76B;
-    STA.W PLM_InstListPointers,X                                                        ;84D76F;
+    STA.W PLM_PreInstructions,X                                          ;84D768;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;84D76B;
+    STA.W PLM_InstListPointers,X                                         ;84D76F;
     LDA.W #$0001                                                         ;84D772;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84D775;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84D775;
 
   .return:
     RTS                                                                  ;84D779;
@@ -13998,13 +13997,13 @@ Instruction_PLM_MovePLMUp1Row_MakeABlueDoorFacingRight:
 ;; Parameters:
 ;;     X: PLM index
     PHX                                                                  ;84D7C3;
-    LDA.W PLM_BlockIndices,X                                                        ;84D7C4;
+    LDA.W PLM_BlockIndices,X                                             ;84D7C4;
     SEC                                                                  ;84D7C7;
-    SBC.W RoomWidthBlocks                                                          ;84D7C8;
-    SBC.W RoomWidthBlocks                                                          ;84D7CB;
-    STA.W PLM_BlockIndices,X                                                        ;84D7CE;
+    SBC.W RoomWidthBlocks                                                ;84D7C8;
+    SBC.W RoomWidthBlocks                                                ;84D7CB;
+    STA.W PLM_BlockIndices,X                                             ;84D7CE;
     TAX                                                                  ;84D7D1;
-    LDA.W #$C041                                                         ;84D7D2;
+    LDA.W #$C041                                                         ;84D7D2; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D7D5;
     BRA Create3BlockVerticalExtension                                    ;84D7D8;
 
@@ -14014,13 +14013,13 @@ Instruction_PLM_MovePLMUp1Row_MakeABlueDoorFacingLeft:
 ;; Parameters:
 ;;     X: PLM index
     PHX                                                                  ;84D7DA;
-    LDA.W PLM_BlockIndices,X                                                        ;84D7DB;
+    LDA.W PLM_BlockIndices,X                                             ;84D7DB;
     SEC                                                                  ;84D7DE;
-    SBC.W RoomWidthBlocks                                                          ;84D7DF;
-    SBC.W RoomWidthBlocks                                                          ;84D7E2;
-    STA.W PLM_BlockIndices,X                                                        ;84D7E5;
+    SBC.W RoomWidthBlocks                                                ;84D7DF;
+    SBC.W RoomWidthBlocks                                                ;84D7E2;
+    STA.W PLM_BlockIndices,X                                             ;84D7E5;
     TAX                                                                  ;84D7E8;
-    LDA.W #$C040                                                         ;84D7E9;
+    LDA.W #$C040                                                         ;84D7E9; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D7EC; fallthrough to Create3BlockVerticalExtension
 
 
@@ -14033,24 +14032,24 @@ Create3BlockVerticalExtension:
 ; Used to make the rest of the blue door the eye door spawns
     TXA                                                                  ;84D7EF;
     CLC                                                                  ;84D7F0;
-    ADC.W RoomWidthBlocks                                                          ;84D7F1;
-    ADC.W RoomWidthBlocks                                                          ;84D7F4;
+    ADC.W RoomWidthBlocks                                                ;84D7F1;
+    ADC.W RoomWidthBlocks                                                ;84D7F4;
     TAX                                                                  ;84D7F7;
-    LDA.W #$D0FF                                                         ;84D7F8;
+    LDA.W #$D0FF                                                         ;84D7F8; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D7FB;
     TXA                                                                  ;84D7FE;
     CLC                                                                  ;84D7FF;
-    ADC.W RoomWidthBlocks                                                          ;84D800;
-    ADC.W RoomWidthBlocks                                                          ;84D803;
+    ADC.W RoomWidthBlocks                                                ;84D800;
+    ADC.W RoomWidthBlocks                                                ;84D803;
     TAX                                                                  ;84D806;
-    LDA.W #$D0FE                                                         ;84D807;
+    LDA.W #$D0FE                                                         ;84D807; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D80A;
     TXA                                                                  ;84D80D;
     CLC                                                                  ;84D80E;
-    ADC.W RoomWidthBlocks                                                          ;84D80F;
-    ADC.W RoomWidthBlocks                                                          ;84D812;
+    ADC.W RoomWidthBlocks                                                ;84D80F;
+    ADC.W RoomWidthBlocks                                                ;84D812;
     TAX                                                                  ;84D815;
-    LDA.W #$D0FD                                                         ;84D816;
+    LDA.W #$D0FD                                                         ;84D816; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84D819;
     PLX                                                                  ;84D81C;
     RTS                                                                  ;84D81D;
@@ -14367,21 +14366,21 @@ Setup_EyeDoorEye:
 ;; Parameters:
 ;;     Y: PLM index
     PHY                                                                  ;84DA8C;
-    LDA.W PLM_RoomArgs,Y                                                        ;84DA8D;
+    LDA.W PLM_RoomArgs,Y                                                 ;84DA8D;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;84DA90;
-    LDA.L SRAMMirror_Doors,X                                                      ;84DA94;
+    LDA.L SRAMMirror_Doors,X                                             ;84DA94;
     PLY                                                                  ;84DA98;
-    AND.W Bitmask                                                          ;84DA99;
+    AND.W Bitmask                                                        ;84DA99;
     BNE .return                                                          ;84DA9C;
-    LDX.W PLM_BlockIndices,Y                                                        ;84DA9E;
-    LDA.W #$C044                                                         ;84DAA1;
+    LDX.W PLM_BlockIndices,Y                                             ;84DA9E;
+    LDA.W #$C044                                                         ;84DAA1; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DAA4;
-    LDA.W PLM_BlockIndices,Y                                                        ;84DAA7;
+    LDA.W PLM_BlockIndices,Y                                             ;84DAA7;
     CLC                                                                  ;84DAAA;
-    ADC.W RoomWidthBlocks                                                          ;84DAAB;
-    ADC.W RoomWidthBlocks                                                          ;84DAAE;
+    ADC.W RoomWidthBlocks                                                ;84DAAB;
+    ADC.W RoomWidthBlocks                                                ;84DAAE;
     TAX                                                                  ;84DAB1;
-    LDA.W #$D0FF                                                         ;84DAB2;
+    LDA.W #$D0FF                                                         ;84DAB2; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DAB5;
 
   .return:
@@ -14393,14 +14392,14 @@ Setup_EyeDoor:
 ;; Parameters:
 ;;     Y: PLM index
     PHY                                                                  ;84DAB9;
-    LDA.W PLM_RoomArgs,Y                                                        ;84DABA;
+    LDA.W PLM_RoomArgs,Y                                                 ;84DABA;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;84DABD;
-    LDA.L SRAMMirror_Doors,X                                                      ;84DAC1;
+    LDA.L SRAMMirror_Doors,X                                             ;84DAC1;
     PLY                                                                  ;84DAC5;
-    AND.W Bitmask                                                          ;84DAC6;
+    AND.W Bitmask                                                        ;84DAC6;
     BNE .return                                                          ;84DAC9;
-    LDX.W PLM_BlockIndices,Y                                                        ;84DACB;
-    LDA.W #$A000                                                         ;84DACE;
+    LDX.W PLM_BlockIndices,Y                                             ;84DACB;
+    LDA.W #$A000                                                         ;84DACE; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DAD1;
 
   .return:
@@ -14454,8 +14453,8 @@ RTS_84DADD:
 
 ;;; $DADE: Pre-instruction - set Metroids cleared state when required - room argument = 12h ;;;
 PreInst_PLM_SetMetroidsClearedStateWhenRequired_RoomArg12:
-    LDA.W $0E50                                                          ;84DADE;
-    CMP.W $0E52                                                          ;84DAE1;
+    LDA.W NumberOfEnemiesKilled                                          ;84DADE;
+    CMP.W NumberOfEnemiesRequiredToKill                                  ;84DAE1;
     BCC .return                                                          ;84DAE4;
     LDA.W #$0010                                                         ;84DAE6;
     JSL.L MarkEvent_inA                                                  ;84DAE9;
@@ -14466,8 +14465,8 @@ PreInst_PLM_SetMetroidsClearedStateWhenRequired_RoomArg12:
 
 ;;; $DAEE: Pre-instruction - set Metroids cleared state when required - room argument = 14h ;;;
 PreInst_PLM_SetMetroidsClearedStateWhenRequired_RoomArg14:
-    LDA.W $0E50                                                          ;84DAEE;
-    CMP.W $0E52                                                          ;84DAF1;
+    LDA.W NumberOfEnemiesKilled                                          ;84DAEE;
+    CMP.W NumberOfEnemiesRequiredToKill                                  ;84DAF1;
     BCC .return                                                          ;84DAF4;
     LDA.W #$0011                                                         ;84DAF6;
     JSL.L MarkEvent_inA                                                  ;84DAF9;
@@ -14478,8 +14477,8 @@ PreInst_PLM_SetMetroidsClearedStateWhenRequired_RoomArg14:
 
 ;;; $DAFE: Pre-instruction - set Metroids cleared state when required - room argument = 16h ;;;
 PreInst_PLM_SetMetroidsClearedStateWhenRequired_RoomArg16:
-    LDA.W $0E50                                                          ;84DAFE;
-    CMP.W $0E52                                                          ;84DB01;
+    LDA.W NumberOfEnemiesKilled                                          ;84DAFE;
+    CMP.W NumberOfEnemiesRequiredToKill                                  ;84DB01;
     BCC .return                                                          ;84DB04;
     LDA.W #$0012                                                         ;84DB06;
     JSL.L MarkEvent_inA                                                  ;84DB09;
@@ -14490,8 +14489,8 @@ PreInst_PLM_SetMetroidsClearedStateWhenRequired_RoomArg16:
 
 ;;; $DB0E: Pre-instruction - set Metroids cleared state when required - room argument = 18h ;;;
 PreInst_PLM_SetMetroidsClearedStateWhenRequired_RoomArg18:
-    LDA.W $0E50                                                          ;84DB0E;
-    CMP.W $0E52                                                          ;84DB11;
+    LDA.W NumberOfEnemiesKilled                                          ;84DB0E;
+    CMP.W NumberOfEnemiesRequiredToKill                                  ;84DB11;
     BCC .return                                                          ;84DB14;
     LDA.W #$0013                                                         ;84DB16;
     JSL.L MarkEvent_inA                                                  ;84DB19;
@@ -14504,9 +14503,9 @@ PreInst_PLM_SetMetroidsClearedStateWhenRequired_RoomArg18:
 PreInstruction_PLM_SetsMetroidsClearedStatesWhenRequired:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_RoomArgs,Y                                                        ;84DB1E;
+    LDX.W PLM_RoomArgs,Y                                                 ;84DB1E;
     LDA.W .pointers,X                                                    ;84DB21;
-    STA.W PLM_PreInstructions,Y                                                        ;84DB24;
+    STA.W PLM_PreInstructions,Y                                          ;84DB24;
     RTS                                                                  ;84DB27;
 
   .pointers:
@@ -14574,7 +14573,7 @@ PreInst_PLM_GotoLinkInstructionIfShotWithAMissile_Draygon:
 ;;     X: PLM index
 
 ; Used by Draygon cannon with shield
-    LDA.W PLM_Timers,X                                                        ;84DB64;
+    LDA.W PLM_Timers,X                                                   ;84DB64;
     AND.W #$0F00                                                         ;84DB67;
     CMP.W #$0200                                                         ;84DB6A;
     BEQ .super                                                           ;84DB6D;
@@ -14582,18 +14581,18 @@ PreInst_PLM_GotoLinkInstructionIfShotWithAMissile_Draygon:
     BNE .return                                                          ;84DB72;
 
   .missile:
-    STZ.W PLM_Timers,X                                                        ;84DB74;
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;84DB77;
-    STA.W PLM_InstListPointers,X                                                        ;84DB7B;
+    STZ.W PLM_Timers,X                                                   ;84DB74;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;84DB77;
+    STA.W PLM_InstListPointers,X                                         ;84DB7B;
     LDA.W #$0001                                                         ;84DB7E;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84DB81;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84DB81;
 
   .return:
     RTS                                                                  ;84DB85;
 
   .super:
     LDA.W #$0077                                                         ;84DB86;
-    STA.W PLM_RoomArgs,X                                                        ;84DB89;
+    STA.W PLM_RoomArgs,X                                                 ;84DB89;
     BRA .missile                                                         ;84DB8C;
 
 
@@ -14602,23 +14601,23 @@ Instruction_PLM_DamageDraygonTurret:
 ;; Parameters:
 ;;     X: PLM index
     PHX                                                                  ;84DB8E;
-    LDA.W PLM_Vars,X                                                        ;84DB8F;
+    LDA.W PLM_Vars,X                                                     ;84DB8F;
     TAX                                                                  ;84DB92;
     LDA.W #$0001                                                         ;84DB93;
     STA.L $7E0000,X                                                      ;84DB96;
     PLX                                                                  ;84DB9A;
-    LDA.W PLM_BlockIndices,X                                                        ;84DB9B;
+    LDA.W PLM_BlockIndices,X                                             ;84DB9B;
     TAX                                                                  ;84DB9E;
-    LDA.W #$A003                                                         ;84DB9F;
+    LDA.W #$A003                                                         ;84DB9F; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DBA2;
     TXA                                                                  ;84DBA5;
     CLC                                                                  ;84DBA6;
-    ADC.W RoomWidthBlocks                                                          ;84DBA7;
-    ADC.W RoomWidthBlocks                                                          ;84DBAA;
+    ADC.W RoomWidthBlocks                                                ;84DBA7;
+    ADC.W RoomWidthBlocks                                                ;84DBAA;
     TAX                                                                  ;84DBAD;
-    LDA.W #$A003                                                         ;84DBAE;
+    LDA.W #$A003                                                         ;84DBAE; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DBB1;
-    LDX.W PLM_Index                                                          ;84DBB4;
+    LDX.W PLM_Index                                                      ;84DBB4;
     RTS                                                                  ;84DBB7;
 
 
@@ -14627,32 +14626,32 @@ Instruction_PLM_DamageDraygonTurretFacingDownRight:
 ;; Parameters:
 ;;     X: PLM index
     PHX                                                                  ;84DBB8;
-    LDA.W PLM_Vars,X                                                        ;84DBB9;
+    LDA.W PLM_Vars,X                                                     ;84DBB9;
     TAX                                                                  ;84DBBC;
     LDA.W #$0001                                                         ;84DBBD;
     STA.L $7E0000,X                                                      ;84DBC0;
     PLX                                                                  ;84DBC4;
-    LDA.W PLM_BlockIndices,X                                                        ;84DBC5;
+    LDA.W PLM_BlockIndices,X                                             ;84DBC5;
     TAX                                                                  ;84DBC8;
-    LDA.W #$A003                                                         ;84DBC9;
+    LDA.W #$A003                                                         ;84DBC9; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DBCC;
     INX                                                                  ;84DBCF;
     INX                                                                  ;84DBD0;
-    LDA.W #$A003                                                         ;84DBD1;
+    LDA.W #$A003                                                         ;84DBD1; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DBD4;
-    LDX.W PLM_Index                                                          ;84DBD7;
-    LDA.W PLM_BlockIndices,X                                                        ;84DBDA;
+    LDX.W PLM_Index                                                      ;84DBD7;
+    LDA.W PLM_BlockIndices,X                                             ;84DBDA;
     CLC                                                                  ;84DBDD;
-    ADC.W RoomWidthBlocks                                                          ;84DBDE;
-    ADC.W RoomWidthBlocks                                                          ;84DBE1;
+    ADC.W RoomWidthBlocks                                                ;84DBDE;
+    ADC.W RoomWidthBlocks                                                ;84DBE1;
     TAX                                                                  ;84DBE4;
-    LDA.W #$A003                                                         ;84DBE5;
+    LDA.W #$A003                                                         ;84DBE5; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DBE8;
     INX                                                                  ;84DBEB;
     INX                                                                  ;84DBEC;
-    LDA.W #$0000                                                         ;84DBED;
+    LDA.W #$0000                                                         ;84DBED; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DBF0;
-    LDX.W PLM_Index                                                          ;84DBF3;
+    LDX.W PLM_Index                                                      ;84DBF3;
     RTS                                                                  ;84DBF6;
 
 
@@ -14661,32 +14660,32 @@ Instruction_PLM_DamageDraygonTurretFacingUpRight:
 ;; Parameters:
 ;;     X: PLM index
     PHX                                                                  ;84DBF7;
-    LDA.W PLM_Vars,X                                                        ;84DBF8;
+    LDA.W PLM_Vars,X                                                     ;84DBF8;
     TAX                                                                  ;84DBFB;
     LDA.W #$0001                                                         ;84DBFC;
     STA.L $7E0000,X                                                      ;84DBFF;
     PLX                                                                  ;84DC03;
-    LDA.W PLM_BlockIndices,X                                                        ;84DC04;
+    LDA.W PLM_BlockIndices,X                                             ;84DC04;
     TAX                                                                  ;84DC07;
-    LDA.W #$A003                                                         ;84DC08;
+    LDA.W #$A003                                                         ;84DC08; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DC0B;
     INX                                                                  ;84DC0E;
     INX                                                                  ;84DC0F;
     LDA.W #$0000                                                         ;84DC10;
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DC13;
-    LDX.W PLM_Index                                                          ;84DC16;
-    LDA.W PLM_BlockIndices,X                                                        ;84DC19;
+    LDX.W PLM_Index                                                      ;84DC16;
+    LDA.W PLM_BlockIndices,X                                             ;84DC19;
     CLC                                                                  ;84DC1C;
-    ADC.W RoomWidthBlocks                                                          ;84DC1D;
-    ADC.W RoomWidthBlocks                                                          ;84DC20;
+    ADC.W RoomWidthBlocks                                                ;84DC1D;
+    ADC.W RoomWidthBlocks                                                ;84DC20;
     TAX                                                                  ;84DC23;
-    LDA.W #$A003                                                         ;84DC24;
+    LDA.W #$A003                                                         ;84DC24; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DC27;
     INX                                                                  ;84DC2A;
     INX                                                                  ;84DC2B;
-    LDA.W #$A003                                                         ;84DC2C;
+    LDA.W #$A003                                                         ;84DC2C; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DC2F;
-    LDX.W PLM_Index                                                          ;84DC32;
+    LDX.W PLM_Index                                                      ;84DC32;
     RTS                                                                  ;84DC35;
 
 
@@ -14697,23 +14696,23 @@ Instruction_PLM_DamageDraygonTurret_duplicate:
 
 ; Clone of Instruction_PLM_DamageDraygonTurret
     PHX                                                                  ;84DC36;
-    LDA.W PLM_Vars,X                                                        ;84DC37;
+    LDA.W PLM_Vars,X                                                     ;84DC37;
     TAX                                                                  ;84DC3A;
     LDA.W #$0001                                                         ;84DC3B;
     STA.L $7E0000,X                                                      ;84DC3E;
     PLX                                                                  ;84DC42;
-    LDA.W PLM_BlockIndices,X                                                        ;84DC43;
+    LDA.W PLM_BlockIndices,X                                             ;84DC43;
     TAX                                                                  ;84DC46;
-    LDA.W #$A003                                                         ;84DC47;
+    LDA.W #$A003                                                         ;84DC47; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DC4A;
     TXA                                                                  ;84DC4D;
     CLC                                                                  ;84DC4E;
-    ADC.W RoomWidthBlocks                                                          ;84DC4F;
-    ADC.W RoomWidthBlocks                                                          ;84DC52;
+    ADC.W RoomWidthBlocks                                                ;84DC4F;
+    ADC.W RoomWidthBlocks                                                ;84DC52;
     TAX                                                                  ;84DC55;
-    LDA.W #$A003                                                         ;84DC56;
+    LDA.W #$A003                                                         ;84DC56; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DC59;
-    LDX.W PLM_Index                                                          ;84DC5C;
+    LDX.W PLM_Index                                                      ;84DC5C;
     RTS                                                                  ;84DC5F;
 
 
@@ -14722,32 +14721,32 @@ Instruction_PLM_DamageDraygonTurretFacingDownLeft:
 ;; Parameters:
 ;;     X: PLM index
     PHX                                                                  ;84DC60;
-    LDA.W PLM_Vars,X                                                        ;84DC61;
+    LDA.W PLM_Vars,X                                                     ;84DC61;
     TAX                                                                  ;84DC64;
     LDA.W #$0001                                                         ;84DC65;
     STA.L $7E0000,X                                                      ;84DC68;
     PLX                                                                  ;84DC6C;
-    LDA.W PLM_BlockIndices,X                                                        ;84DC6D;
+    LDA.W PLM_BlockIndices,X                                             ;84DC6D;
     TAX                                                                  ;84DC70;
-    LDA.W #$A003                                                         ;84DC71;
+    LDA.W #$A003                                                         ;84DC71; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DC74;
     DEX                                                                  ;84DC77;
     DEX                                                                  ;84DC78;
-    LDA.W #$A003                                                         ;84DC79;
+    LDA.W #$A003                                                         ;84DC79; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DC7C;
-    LDX.W PLM_Index                                                          ;84DC7F;
-    LDA.W PLM_BlockIndices,X                                                        ;84DC82;
+    LDX.W PLM_Index                                                      ;84DC7F;
+    LDA.W PLM_BlockIndices,X                                             ;84DC82;
     CLC                                                                  ;84DC85;
-    ADC.W RoomWidthBlocks                                                          ;84DC86;
-    ADC.W RoomWidthBlocks                                                          ;84DC89;
+    ADC.W RoomWidthBlocks                                                ;84DC86;
+    ADC.W RoomWidthBlocks                                                ;84DC89;
     TAX                                                                  ;84DC8C;
-    LDA.W #$A003                                                         ;84DC8D;
+    LDA.W #$A003                                                         ;84DC8D; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DC90;
     DEX                                                                  ;84DC93;
     DEX                                                                  ;84DC94;
-    LDA.W #$0000                                                         ;84DC95;
+    LDA.W #$0000                                                         ;84DC95; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DC98;
-    LDX.W PLM_Index                                                          ;84DC9B;
+    LDX.W PLM_Index                                                      ;84DC9B;
     RTS                                                                  ;84DC9E;
 
 
@@ -14756,32 +14755,32 @@ Instruction_PLM_DamageDraygonTurretFacingUpLeft:
 ;; Parameters:
 ;;     X: PLM index
     PHX                                                                  ;84DC9F;
-    LDA.W PLM_Vars,X                                                        ;84DCA0;
+    LDA.W PLM_Vars,X                                                     ;84DCA0;
     TAX                                                                  ;84DCA3;
     LDA.W #$0001                                                         ;84DCA4;
     STA.L $7E0000,X                                                      ;84DCA7;
     PLX                                                                  ;84DCAB;
-    LDA.W PLM_BlockIndices,X                                                        ;84DCAC;
+    LDA.W PLM_BlockIndices,X                                             ;84DCAC;
     TAX                                                                  ;84DCAF;
-    LDA.W #$A003                                                         ;84DCB0;
+    LDA.W #$A003                                                         ;84DCB0; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DCB3;
     DEX                                                                  ;84DCB6;
     DEX                                                                  ;84DCB7;
     LDA.W #$0000                                                         ;84DCB8;
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DCBB;
-    LDX.W PLM_Index                                                          ;84DCBE;
-    LDA.W PLM_BlockIndices,X                                                        ;84DCC1;
+    LDX.W PLM_Index                                                      ;84DCBE;
+    LDA.W PLM_BlockIndices,X                                             ;84DCC1;
     CLC                                                                  ;84DCC4;
-    ADC.W RoomWidthBlocks                                                          ;84DCC5;
-    ADC.W RoomWidthBlocks                                                          ;84DCC8;
+    ADC.W RoomWidthBlocks                                                ;84DCC5;
+    ADC.W RoomWidthBlocks                                                ;84DCC8;
     TAX                                                                  ;84DCCB;
-    LDA.W #$A003                                                         ;84DCCC;
+    LDA.W #$A003                                                         ;84DCCC; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DCCF;
     DEX                                                                  ;84DCD2;
     DEX                                                                  ;84DCD3;
-    LDA.W #$A003                                                         ;84DCD4;
+    LDA.W #$A003                                                         ;84DCD4; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DCD7;
-    LDX.W PLM_Index                                                          ;84DCDA;
+    LDX.W PLM_Index                                                      ;84DCDA;
     RTS                                                                  ;84DCDD;
 
 
@@ -15027,19 +15026,19 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 Setup_DraygonCannonWithShieldFacingRight:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W PLM_RoomArgs,Y                                                        ;84DE94;
-    STA.W PLM_Vars,Y                                                        ;84DE97;
+    LDA.W PLM_RoomArgs,Y                                                 ;84DE94;
+    STA.W PLM_Vars,Y                                                     ;84DE97;
     LDA.W #$0000                                                         ;84DE9A;
-    STA.W PLM_RoomArgs,Y                                                        ;84DE9D;
-    LDX.W PLM_BlockIndices,Y                                                        ;84DEA0;
-    LDA.W #$C044                                                         ;84DEA3;
+    STA.W PLM_RoomArgs,Y                                                 ;84DE9D;
+    LDX.W PLM_BlockIndices,Y                                             ;84DEA0;
+    LDA.W #$C044                                                         ;84DEA3; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DEA6;
     TXA                                                                  ;84DEA9;
     CLC                                                                  ;84DEAA;
-    ADC.W RoomWidthBlocks                                                          ;84DEAB;
-    ADC.W RoomWidthBlocks                                                          ;84DEAE;
+    ADC.W RoomWidthBlocks                                                ;84DEAB;
+    ADC.W RoomWidthBlocks                                                ;84DEAE;
     TAX                                                                  ;84DEB1;
-    LDA.W #$D0FF                                                         ;84DEB2;
+    LDA.W #$D0FF                                                         ;84DEB2; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DEB5;
     RTS                                                                  ;84DEB8;
 
@@ -15049,27 +15048,27 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Setup_DraygonCannonWithShieldFacingDownUpRight_84DEB9:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W PLM_RoomArgs,Y                                                        ;84DEB9;
-    STA.W PLM_Vars,Y                                                        ;84DEBC;
+    LDA.W PLM_RoomArgs,Y                                                 ;84DEB9;
+    STA.W PLM_Vars,Y                                                     ;84DEBC;
     LDA.W #$0000                                                         ;84DEBF;
-    STA.W PLM_RoomArgs,Y                                                        ;84DEC2;
-    LDX.W PLM_BlockIndices,Y                                                        ;84DEC5;
-    LDA.W #$C044                                                         ;84DEC8;
+    STA.W PLM_RoomArgs,Y                                                 ;84DEC2;
+    LDX.W PLM_BlockIndices,Y                                             ;84DEC5;
+    LDA.W #$C044                                                         ;84DEC8; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DECB;
     INX                                                                  ;84DECE;
     INX                                                                  ;84DECF;
-    LDA.W #$50FF                                                         ;84DED0;
+    LDA.W #$50FF                                                         ;84DED0; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DED3;
-    LDA.W PLM_BlockIndices,Y                                                        ;84DED6;
+    LDA.W PLM_BlockIndices,Y                                             ;84DED6;
     CLC                                                                  ;84DED9;
-    ADC.W RoomWidthBlocks                                                          ;84DEDA;
-    ADC.W RoomWidthBlocks                                                          ;84DEDD;
+    ADC.W RoomWidthBlocks                                                ;84DEDA;
+    ADC.W RoomWidthBlocks                                                ;84DEDD;
     TAX                                                                  ;84DEE0;
-    LDA.W #$D0FF                                                         ;84DEE1;
+    LDA.W #$D0FF                                                         ;84DEE1; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DEE4;
     INX                                                                  ;84DEE7;
     INX                                                                  ;84DEE8;
-    LDA.W #$D0FF                                                         ;84DEE9;
+    LDA.W #$D0FF                                                         ;84DEE9; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DEEC;
     RTS                                                                  ;84DEEF;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -15081,19 +15080,19 @@ Setup_DraygonCannonWithShieldFacingLeft:
 ;;     Y: PLM index
 
 ; Clone of Setup_DraygonCannonWithShieldFacingRight
-    LDA.W PLM_RoomArgs,Y                                                        ;84DEF0;
-    STA.W PLM_Vars,Y                                                        ;84DEF3;
+    LDA.W PLM_RoomArgs,Y                                                 ;84DEF0;
+    STA.W PLM_Vars,Y                                                     ;84DEF3;
     LDA.W #$0000                                                         ;84DEF6;
-    STA.W PLM_RoomArgs,Y                                                        ;84DEF9;
-    LDX.W PLM_BlockIndices,Y                                                        ;84DEFC;
-    LDA.W #$C044                                                         ;84DEFF;
+    STA.W PLM_RoomArgs,Y                                                 ;84DEF9;
+    LDX.W PLM_BlockIndices,Y                                             ;84DEFC;
+    LDA.W #$C044                                                         ;84DEFF; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DF02;
     TXA                                                                  ;84DF05;
     CLC                                                                  ;84DF06;
-    ADC.W RoomWidthBlocks                                                          ;84DF07;
-    ADC.W RoomWidthBlocks                                                          ;84DF0A;
+    ADC.W RoomWidthBlocks                                                ;84DF07;
+    ADC.W RoomWidthBlocks                                                ;84DF0A;
     TAX                                                                  ;84DF0D;
-    LDA.W #$D0FF                                                         ;84DF0E;
+    LDA.W #$D0FF                                                         ;84DF0E; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DF11;
     RTS                                                                  ;84DF14;
 
@@ -15103,27 +15102,27 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Setup_DraygonCannonWithShieldFacingDownUpLeft_84DF15:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W PLM_RoomArgs,Y                                                        ;84DF15;
-    STA.W PLM_Vars,Y                                                        ;84DF18;
+    LDA.W PLM_RoomArgs,Y                                                 ;84DF15;
+    STA.W PLM_Vars,Y                                                     ;84DF18;
     LDA.W #$0000                                                         ;84DF1B;
-    STA.W PLM_RoomArgs,Y                                                        ;84DF1E;
-    LDX.W PLM_BlockIndices,Y                                                        ;84DF21;
-    LDA.W #$C044                                                         ;84DF24;
+    STA.W PLM_RoomArgs,Y                                                 ;84DF1E;
+    LDX.W PLM_BlockIndices,Y                                             ;84DF21;
+    LDA.W #$C044                                                         ;84DF24; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DF27;
     DEX                                                                  ;84DF2A;
     DEX                                                                  ;84DF2B;
-    LDA.W #$5001                                                         ;84DF2C;
+    LDA.W #$5001                                                         ;84DF2C; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DF2F;
-    LDA.W PLM_BlockIndices,Y                                                        ;84DF32;
+    LDA.W PLM_BlockIndices,Y                                             ;84DF32;
     CLC                                                                  ;84DF35;
-    ADC.W RoomWidthBlocks                                                          ;84DF36;
-    ADC.W RoomWidthBlocks                                                          ;84DF39;
+    ADC.W RoomWidthBlocks                                                ;84DF36;
+    ADC.W RoomWidthBlocks                                                ;84DF39;
     TAX                                                                  ;84DF3C;
-    LDA.W #$D0FF                                                         ;84DF3D;
+    LDA.W #$D0FF                                                         ;84DF3D; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DF40;
     DEX                                                                  ;84DF43;
     DEX                                                                  ;84DF44;
-    LDA.W #$D0FF                                                         ;84DF45;
+    LDA.W #$D0FF                                                         ;84DF45; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84DF48;
     RTS                                                                  ;84DF4B;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -15133,10 +15132,10 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 Setup_DraygonCannon:
 ;; Parameters:
 ;;     Y: PLM index
-    LDA.W PLM_RoomArgs,Y                                                        ;84DF4C;
-    STA.W PLM_Vars,Y                                                        ;84DF4F;
+    LDA.W PLM_RoomArgs,Y                                                 ;84DF4C;
+    STA.W PLM_Vars,Y                                                     ;84DF4F;
     LDA.W #$0003                                                         ;84DF52;
-    STA.W PLM_RoomArgs,Y                                                        ;84DF55;
+    STA.W PLM_RoomArgs,Y                                                 ;84DF55;
     RTS                                                                  ;84DF58;
 
 
@@ -15213,16 +15212,16 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 PreInstruction_PLM_GotoLinkInstructionIfTriggered:
 ;; Parameter:
 ;;     X: PLM index
-    LDA.W PLM_Timers,X                                                        ;84DF89;
+    LDA.W PLM_Timers,X                                                   ;84DF89;
     AND.W #$00FF                                                         ;84DF8C;
     CMP.W #$00FF                                                         ;84DF8F;
     BNE .return                                                          ;84DF92;
     LDA.W #.return                                                       ;84DF94;
-    STA.W PLM_PreInstructions,X                                                        ;84DF97;
-    LDA.L PLMExtra_LinkInstructions,X                                                      ;84DF9A;
-    STA.W PLM_InstListPointers,X                                                        ;84DF9E;
+    STA.W PLM_PreInstructions,X                                          ;84DF97;
+    LDA.L PLMExtra_LinkInstructions,X                                    ;84DF9A;
+    STA.W PLM_InstListPointers,X                                         ;84DF9E;
     LDA.W #$0001                                                         ;84DFA1;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84DFA4;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84DFA4;
 
   .return:
     RTS                                                                  ;84DFA8;
@@ -15274,17 +15273,17 @@ InstList_PLM_Callable_EmptyItemOrb_1:
 PreInstruction_PLM_WakePLMIfTriggered_WithDeadCodePBCheck:
 ;; Parameter:
 ;;     X: PLM index
-    LDA.W PLM_Timers,X                                                        ;84DFE6;
+    LDA.W PLM_Timers,X                                                   ;84DFE6;
     CMP.W #$0300                                                         ;84DFE9;
     BEQ .return                                                          ;84DFEC;
     AND.W #$00FF                                                         ;84DFEE;
     CMP.W #$00FF                                                         ;84DFF1;
     BNE .return                                                          ;84DFF4;
-    STZ.W PLM_Timers,X                                                        ;84DFF6;
-    INC.W PLM_InstListPointers,X                                                        ;84DFF9;
-    INC.W PLM_InstListPointers,X                                                        ;84DFFC;
+    STZ.W PLM_Timers,X                                                   ;84DFF6;
+    INC.W PLM_InstListPointers,X                                         ;84DFF9;
+    INC.W PLM_InstListPointers,X                                         ;84DFFC;
     LDA.W #$0001                                                         ;84DFFF;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84E002;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84E002;
 
   .return:
     RTS                                                                  ;84E006;
@@ -15335,10 +15334,10 @@ Instruction_PLM_DrawItemFrame0:
 ;;     X: PLM index
 ;;     Y: Pointer to after this instruction
     PHY                                                                  ;84E04F;
-    LDA.L PLMExtra_Vars,X                                                      ;84E050;
+    LDA.L PLMExtra_Vars,X                                                ;84E050;
     TAY                                                                  ;84E054;
     LDA.W .drawInsts,Y                                                   ;84E055;
-    STA.L PLMExtra_DrawInstructionPointers,X                                                      ;84E058;
+    STA.L PLMExtra_DrawInstructionPointers,X                             ;84E058;
     PLY                                                                  ;84E05C;
     BRA DrawPLM_Wait4Frames                                              ;84E05D;
 
@@ -15355,10 +15354,10 @@ Instruction_PLM_DrawItemFrame1:
 ;;     X: PLM index
 ;;     Y: Pointer to after this instruction
     PHY                                                                  ;84E067;
-    LDA.L PLMExtra_Vars,X                                                      ;84E068;
+    LDA.L PLMExtra_Vars,X                                                ;84E068;
     TAY                                                                  ;84E06C;
     LDA.W .drawInsts,Y                                                   ;84E06D;
-    STA.L PLMExtra_DrawInstructionPointers,X                                                      ;84E070;
+    STA.L PLMExtra_DrawInstructionPointers,X                             ;84E070;
     PLY                                                                  ;84E074;
     BRA DrawPLM_Wait4Frames                                              ;84E075;
 
@@ -15375,11 +15374,11 @@ DrawPLM_Wait4Frames:
 ;;     X: PLM index
 ;;     Y: Pointer to next instruction
     LDA.W #$0004                                                         ;84E07F;
-    STA.L PLMExtra_InstructionTimers,X                                                      ;84E082;
+    STA.L PLMExtra_InstructionTimers,X                                   ;84E082;
     TYA                                                                  ;84E086;
-    STA.W PLM_InstListPointers,X                                                        ;84E087;
+    STA.W PLM_InstListPointers,X                                         ;84E087;
     JSR.W Process_PLM_Draw_Instruction                                   ;84E08A;
-    LDX.W PLM_Index                                                          ;84E08D;
+    LDX.W PLM_Index                                                      ;84E08D;
     JSL.L Calculate_PLM_Block_Coordinates                                ;84E090;
     JSR.W DrawPLM_HardCoded                                              ;84E094;
     PLA                                                                  ;84E097;
@@ -15704,7 +15703,7 @@ InstList_PLM_SpringBall_3:
 
 ;;; $E29D: Instruction - clear charge beam counter ;;;
 Instruction_PLM_ClearChargeBeamCounter:
-    STZ.W $0CD0                                                          ;84E29D;
+    STZ.W SamusProjectile_FlareCounter                                   ;84E29D;
     RTS                                                                  ;84E2A0;
 
 
@@ -16243,7 +16242,7 @@ InstList_PLM_SpeedBoosterChozoOrb_4:
 ;;; $E63B: Instruction - FX Y velocity = FFE0h ;;;
 Instruction_PLM_FXYVelocity_FFE0:
     LDA.W #$FFE0                                                         ;84E63B;
-    STA.W $197C                                                          ;84E63E;
+    STA.W FX_YSubVelocity                                                ;84E63E;
     RTS                                                                  ;84E641;
 
 
@@ -17462,19 +17461,19 @@ SetPLMItemGFXIndex_DoAbilitySetup:
 ;;     A: Item GFX index
 ;;     Y: PLM index
     TYX                                                                  ;84EE5F;
-    STA.L PLMExtra_Vars,X                                                      ;84EE60; fallthrough to Setup_Ability
+    STA.L PLMExtra_Vars,X                                                ;84EE60; fallthrough to Setup_Ability
 
 
 ;;; $EE64: Setup - PLM $EEE7/$EEEB/$EEEF/$EF03/$EF07/$EF0B/$EF0F/$EF13/$EF17/$EF1B/$EF1F/$EF23/$EF27/$EF2B/$EF2F/$EF33/$EF37/$EF3B/$EF3F/$EF43/$EF47/$EF4B/$EF4F/$EF53/$EF57/$EF5B/$EF5F/$EF63/$EF67/$EF6B/$EF6F/$EF73/$EF77/$EF7B (ability) ;;;
 Setup_Ability:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_BlockIndices,Y                                                        ;84EE64;
-    LDA.W #$0045                                                         ;84EE67;
+    LDX.W PLM_BlockIndices,Y                                             ;84EE64;
+    LDA.W #$0045                                                         ;84EE67; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84EE6A;
-    LDA.L $7ED91A                                                        ;84EE6D;
+    LDA.L SRAMMirror_GlobalNumberOfItemsLoadedCounter                    ;84EE6D;
     INC                                                                  ;84EE71;
-    STA.L $7ED91A                                                        ;84EE72;
+    STA.L SRAMMirror_GlobalNumberOfItemsLoadedCounter                    ;84EE72;
     RTS                                                                  ;84EE76;
 
 
@@ -17515,22 +17514,22 @@ SetPLMItemGFXINdex_DoAbilityShotBlockSetup:
 ;;     A: Item GFX index
 ;;     Y: PLM index
     TYX                                                                  ;84EE89;
-    STA.L PLMExtra_Vars,X                                                      ;84EE8A; fallthrough to Setup_AbilityShotBlock
+    STA.L PLMExtra_Vars,X                                                ;84EE8A; fallthrough to Setup_AbilityShotBlock
 
 
 ;;; $EE8E: Setup - PLM $EF8F/$EF93/$EF97/$EF9B/$EF9F/$EFA3/$EFA7/$EFAB/$EFAF/$EFB3/$EFB7/$EFBB/$EFBF/$EFC3/$EFC7/$EFCB/$EFCF (ability shot block) ;;;
 Setup_AbilityShotBlock:
 ;; Parameters:
 ;;     Y: PLM index
-    LDX.W PLM_BlockIndices,Y                                                        ;84EE8E;
-    LDA.W #$C045                                                         ;84EE91;
+    LDX.W PLM_BlockIndices,Y                                             ;84EE8E;
+    LDA.W #$C045                                                         ;84EE91; block type + BTS
     JSR.W Write_Level_Data_Block_Type_and_BTS                            ;84EE94;
-    LDX.W PLM_BlockIndices,Y                                                        ;84EE97;
-    LDA.L LevelData,X                                                      ;84EE9A;
-    STA.W PLM_Vars,Y                                                        ;84EE9E;
-    LDA.L $7ED91A                                                        ;84EEA1;
+    LDX.W PLM_BlockIndices,Y                                             ;84EE97;
+    LDA.L LevelData,X                                                    ;84EE9A;
+    STA.W PLM_Vars,Y                                                     ;84EE9E;
+    LDA.L SRAMMirror_GlobalNumberOfItemsLoadedCounter                    ;84EEA1;
     INC                                                                  ;84EEA5;
-    STA.L $7ED91A                                                        ;84EEA6;
+    STA.L SRAMMirror_GlobalNumberOfItemsLoadedCounter                    ;84EEA6;
     RTS                                                                  ;84EEAA;
 
 
@@ -17540,15 +17539,15 @@ Setup_ItemCollisionDetection:
 ;;     Y: PLM index
 ;; Returns:
 ;;     Carry: Clear (no collision) if time is not frozen, unchanged otherwise
-    LDA.W $0A78                                                          ;84EEAB;
+    LDA.W TimeIsFrozenFlag                                               ;84EEAB;
     BNE .delete                                                          ;84EEAE;
     TYX                                                                  ;84EEB0;
-    LDA.W PLM_BlockIndices,X                                                        ;84EEB1;
-    STZ.W PLM_BlockIndices,X                                                        ;84EEB4;
+    LDA.W PLM_BlockIndices,X                                             ;84EEB1;
+    STZ.W PLM_BlockIndices,X                                             ;84EEB4;
     LDX.W #$004E                                                         ;84EEB7;
 
   .loop:
-    CMP.W PLM_BlockIndices,X                                                        ;84EEBA;
+    CMP.W PLM_BlockIndices,X                                             ;84EEBA;
     BEQ .found                                                           ;84EEBD;
     DEX                                                                  ;84EEBF;
     DEX                                                                  ;84EEC0;
@@ -17557,13 +17556,13 @@ Setup_ItemCollisionDetection:
 
   .found:
     LDA.W #$00FF                                                         ;84EEC4;
-    STA.W PLM_Timers,X                                                        ;84EEC7;
+    STA.W PLM_Timers,X                                                   ;84EEC7;
     CLC                                                                  ;84EECA;
     RTS                                                                  ;84EECB;
 
   .delete:
     LDA.W #$0000                                                         ;84EECC;
-    STA.W PLM_IDs,Y                                                        ;84EECF;
+    STA.W PLM_IDs,Y                                                      ;84EECF;
     RTS                                                                  ;84EED2;
 
 

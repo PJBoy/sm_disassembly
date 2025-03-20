@@ -737,7 +737,8 @@ Temp0B24: skip 2 ; $0B24
 Temp0B26: skip 2 ; $0B26
 Unused0B28: skip 2 ; $0B28
 NeverRead0B2A: skip 2 ; $0B2A
-SamusYSubSpeed: skip 2 ; $0B2C
+SamusYSubSpeed: skip 1 ; $0B2C
+SamusYSpeedCombined: skip 1 ; $0B2D
 SamusYSpeed: skip 2 ; $0B2E
 Unused0B30: skip 2 ; $0B30
 SamusYSubAcceleration: skip 2 ; $0B32
