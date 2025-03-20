@@ -60,14 +60,14 @@ MessageBox_Routine:
     PHY                                                                  ;858083;
     PHK                                                                  ;858084;
     PLB                                                                  ;858085;
-    STA.W $1C1F                                                          ;858086;
+    STA.W MessageBoxIndex                                                ;858086;
     JSL.L Cancel_Sound_Effects                                           ;858089;
     JSR.W Initialise_PPU_for_MessageBoxes                                ;85808D;
     JSR.W Clear_MessageBox_BG3Tilemap                                    ;858090;
     JSR.W Initialise_MessageBox                                          ;858093;
     JSR.W Play_2_Lag_Frames_of_Music_and_Sound_Effects                   ;858096;
     JSR.W Open_MessageBox                                                ;858099;
-    LDA.W $1C1F                                                          ;85809C;
+    LDA.W MessageBoxIndex                                                ;85809C;
     CMP.W #$001C                                                         ;85809F;
     BEQ .gunship                                                         ;8580A2;
     JSR.W Handle_MessageBox_Interaction                                  ;8580A4;
@@ -88,11 +88,11 @@ MessageBox_Routine:
   .gunship:
     JSR.W Handle_MessageBox_Interaction                                  ;8580BF;
     JSR.W Close_MessageBox                                               ;8580C2;
-    LDA.W $05F9                                                          ;8580C5;
+    LDA.W SaveConfirmationSelection                                      ;8580C5;
     CMP.W #$0002                                                         ;8580C8;
     BEQ .no                                                              ;8580CB;
     LDA.W #$0018                                                         ;8580CD;
-    STA.W $1C1F                                                          ;8580D0;
+    STA.W MessageBoxIndex                                                ;8580D0;
     JSR.W Clear_MessageBox_BG3Tilemap                                    ;8580D3;
     JSR.W Play_Saving_Sound_Effect                                       ;8580D6;
     JSR.W Initialise_MessageBox                                          ;8580D9;
@@ -113,11 +113,11 @@ MessageBox_Routine:
 ;;; $80FA: Maybe trigger pause menu or return save confirmation selection ;;;
 MaybeTriggerPauseScreen_or_ReturnSaveConfirmationSelection:
     REP #$30                                                             ;8580FA;
-    LDA.W $1C1F                                                          ;8580FC;
+    LDA.W MessageBoxIndex                                                ;8580FC;
     CMP.W #$0014                                                         ;8580FF;
     BNE .notMapPause                                                     ;858102;
     LDA.W #$000C                                                         ;858104;
-    STA.W $0998                                                          ;858107;
+    STA.W GameState                                                      ;858107;
     RTS                                                                  ;85810A;
 
 
@@ -128,7 +128,7 @@ MaybeTriggerPauseScreen_or_ReturnSaveConfirmationSelection:
     BNE .return                                                          ;858113;
 
   .saveConfirmationSelection:
-    LDA.W $05F9                                                          ;858115;
+    LDA.W SaveConfirmationSelection                                      ;858115;
 
   .return:
     RTS                                                                  ;858118;
@@ -156,10 +156,10 @@ Play_Saving_Sound_Effect:
 Wait_for_Lag_Frame:
     PHP                                                                  ;858136;
     SEP #$20                                                             ;858137;
-    LDA.W $05B8                                                          ;858139;
+    LDA.W NMI_Counter                                                    ;858139;
 
   .wait:
-    CMP.W $05B8                                                          ;85813C;
+    CMP.W NMI_Counter                                                    ;85813C;
     BEQ .wait                                                            ;85813F;
     PLP                                                                  ;858141;
     RTS                                                                  ;858142;
@@ -168,7 +168,7 @@ Wait_for_Lag_Frame:
 ;;; $8143: Initialise PPU for message boxes ;;;
 Initialise_PPU_for_MessageBoxes:
     REP #$20                                                             ;858143;
-    STZ.W $05F9                                                          ;858145;
+    STZ.W SaveConfirmationSelection                                      ;858145;
     JSR.W Wait_for_Lag_Frame                                             ;858148;
     SEP #$20                                                             ;85814B;
     STZ.W $420C                                                          ;85814D;
@@ -184,14 +184,14 @@ Initialise_PPU_for_MessageBoxes:
     STA.W $2122                                                          ;858166;
     LDA.B $85                                                            ;858169;
     STA.L $7E33EA                                                        ;85816B;
-    LDA.B $5B                                                            ;85816F;
+    LDA.B DP_GameplayBG1TilemapAddrSize                                  ;85816F;
     STA.L $7E33EB                                                        ;858171;
     LDA.B #$58                                                           ;858175;
-    STA.B $5B                                                            ;858177;
+    STA.B DP_GameplayBG1TilemapAddrSize                                  ;858177;
     LDA.B #$17                                                           ;858179;
-    STA.B $6A                                                            ;85817B;
-    STZ.B $70                                                            ;85817D;
-    STZ.B $73                                                            ;85817F;
+    STA.B DP_GameplayMainScreenLayers                                    ;85817B;
+    STZ.B DP_GameplayColorMathA                                          ;85817D;
+    STZ.B DP_GameplayColorMathB                                          ;85817F;
     LDA.B #$20                                                           ;858181;
     STA.W $2132                                                          ;858183;
     LDA.B #$40                                                           ;858186;
@@ -278,7 +278,7 @@ Clear_MessageBox_BG3Tilemap:
 ;;; $8241: Initialise message box ;;;
 Initialise_MessageBox:
     REP #$30                                                             ;858241;
-    LDA.W $1C1F                                                          ;858243;
+    LDA.W MessageBoxIndex                                                ;858243;
     DEC                                                                  ;858246;
     ASL                                                                  ;858247;
     STA.B $34                                                            ;858248;
@@ -380,7 +380,7 @@ Write_Message_Tilemap:
     INX                                                                  ;8582DF;
     CPX.W #$00E0                                                         ;8582E0;
     BNE .zeroLoop                                                        ;8582E3;
-    LDA.W $1C1F                                                          ;8582E5;
+    LDA.W MessageBoxIndex                                                ;8582E5;
     DEC                                                                  ;8582E8;
     ASL                                                                  ;8582E9;
     STA.B $34                                                            ;8582EA;
@@ -528,7 +528,7 @@ DrawSpecialButton_SetupPPUForLargeMessageBox:
     LDY.W #$000E                                                         ;858409;
 
   .found:
-    LDA.W $1C1F                                                          ;85840C;
+    LDA.W MessageBoxIndex                                                ;85840C;
     DEC                                                                  ;85840F;
     ASL                                                                  ;858410;
     TAX                                                                  ;858411;
@@ -541,8 +541,8 @@ DrawSpecialButton_SetupPPUForLargeMessageBox:
     JSR.W Setup_PPU_for_Active_MessageBox                                ;858422;
     RTS                                                                  ;858425;
 
-  .buttons:      
-; Tile numbers for button letters                                                          ;858426;
+  .buttons:                                                              ;858426;
+; Tile numbers for button letters
     dw $28E0 ; A
     dw $3CE1 ; B
     dw $2CF7 ; X
@@ -593,13 +593,13 @@ Open_MessageBox:
 ;;; $846D: Handle message box interaction ;;;
 Handle_MessageBox_Interaction:
     SEP #$20                                                             ;85846D;
-    LDA.W $1C1F                                                          ;85846F;
+    LDA.W MessageBoxIndex                                                ;85846F;
     CMP.B #$17                                                           ;858472;
     BEQ .save                                                            ;858474;
     CMP.B #$1C                                                           ;858476;
     BEQ .save                                                            ;858478;
     LDX.W #$000A                                                         ;85847A;
-    LDA.W $1C1F                                                          ;85847D;
+    LDA.W MessageBoxIndex                                                ;85847D;
     CMP.B #$14                                                           ;858480;
     BEQ .lagLoop                                                         ;858482;
     CMP.B #$15                                                           ;858484;
@@ -633,7 +633,7 @@ Handle_MessageBox_Interaction:
 
   .save:
     REP #$30                                                             ;8584B5;
-    STZ.W $05F9                                                          ;8584B7;
+    STZ.W SaveConfirmationSelection                                      ;8584B7;
 
   .saveInput:
     SEP #$30                                                             ;8584BA;
@@ -668,21 +668,21 @@ Handle_MessageBox_Interaction:
     RTS                                                                  ;8584F7;
 
   .inputA:
-    LDA.W $05F9                                                          ;8584F8;
+    LDA.W SaveConfirmationSelection                                      ;8584F8;
     BNE .return                                                          ;8584FB;
     BRA .return                                                          ;8584FD;
 
   .inputB:
     LDA.W #$0002                                                         ;8584FF;
-    STA.W $05F9                                                          ;858502;
+    STA.W SaveConfirmationSelection                                      ;858502;
     BRA .return                                                          ;858505;
 
 
 ;;; $8507: Toggle save confirmation selection ;;;
 Toggle_Save_Confirmation_Selection:
-    LDA.W $05F9                                                          ;858507;
+    LDA.W SaveConfirmationSelection                                      ;858507;
     EOR.W #$0002                                                         ;85850A;
-    STA.W $05F9                                                          ;85850D;
+    STA.W SaveConfirmationSelection                                      ;85850D;
     LDY.W #$0040                                                         ;858510;
     CMP.W #$0002                                                         ;858513;
     BNE +                                                                ;858516;
@@ -861,25 +861,25 @@ Restore_PPU:
     JSR.W Wait_for_Lag_Frame                                             ;858651;
     SEP #$20                                                             ;858654;
     LDA.L $7E33EA                                                        ;858656;
-    STA.B $85                                                            ;85865A;
+    STA.B DP_HDMAEnable                                                  ;85865A;
     STA.W $420C                                                          ;85865C;
     LDA.L $7E33EB                                                        ;85865F;
-    STA.B $5B                                                            ;858663;
-    LDA.B $69                                                            ;858665;
-    STA.B $6A                                                            ;858667;
-    LDA.B $6E                                                            ;858669;
-    STA.B $70                                                            ;85866B;
-    LDA.B $71                                                            ;85866D;
-    STA.B $73                                                            ;85866F;
+    STA.B DP_GameplayBG1TilemapAddrSize                                  ;858663;
+    LDA.B DP_MainScreenLayers                                            ;858665;
+    STA.B DP_GameplayMainScreenLayers                                    ;858667;
+    LDA.B DP_NextGameplayColorMathA                                      ;858669;
+    STA.B DP_GameplayColorMathA                                          ;85866B;
+    LDA.B DP_NextGameplayColorMathB                                      ;85866D;
+    STA.B DP_GameplayColorMathB                                          ;85866F;
     LDA.B #$19                                                           ;858671;
     STA.W $2121                                                          ;858673;
-    LDA.L $7EC032                                                        ;858676;
+    LDA.L Palettes_BG3P6FXPrimary                                        ;858676;
     STA.W $2122                                                          ;85867A;
-    LDA.L $7EC033                                                        ;85867D;
+    LDA.L Palettes_BG3P6FXPrimary+1                                      ;85867D;
     STA.W $2122                                                          ;858681;
-    LDA.L $7EC034                                                        ;858684;
+    LDA.L Palettes_BG3P6FXSecondary                                      ;858684;
     STA.W $2122                                                          ;858688;
-    LDA.L $7EC035                                                        ;85868B;
+    LDA.L Palettes_BG3P6FXSecondary+1                                    ;85868B;
     STA.W $2122                                                          ;85868F;
     JSL.L HDMAObjectHandler_HandleMusicQueue                             ;858692;
     JSL.L HandleSounds                                                   ;858696;
@@ -1385,4 +1385,4 @@ MessageTilemaps_NO:
 
 
 Freespace_Bank85_9643:                                                   ;859643;
-; $69BD bytes
+; DP_MainScreenLayersBD bytes
