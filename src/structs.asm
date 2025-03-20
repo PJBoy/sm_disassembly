@@ -1618,7 +1618,7 @@ EyeBeamWindow1HDMADataTable: ; $7E9100..92FF
 WavyPhantoonBG2XScrollHDMADataTable: ; $7E9100..FF
 skip $600
 MotherBrainCorpseRottingRotTable: ; $7E9700..BF
-skip $DC
+skip $DE
 EnemyProjectileAngles: ; $7E97DC..FF
 
 org $7E9800
@@ -1951,6 +1951,7 @@ SpriteObjects_YPositions: skip $80 ; $7EF1F8..F277
 SpriteObjects_YSubPositions: skip $80 ; $7EF278..F7
 SpriteObjects_DisableFlags: skip $80 ; $7EF2F8..F377
 
+skip $80
 EnemyProcessingStage: skip 2 ; $7EF378
 neverReadF37A: skip 2 ; $7EF37A
 neverReadF37C: skip 2 ; $7EF37C
@@ -3683,7 +3684,8 @@ skip $7DE848
 skip 2
   .turnAroundTimer: skip 2 ; $7E7806
   .animationLockFlag: skip 2 ; $7E7808
-skip 4
+skip 2
+  .eyeBeamExplosionsFlag: skip 2 ; $7E780C
   .spaceJumpCounter: skip 2 ; $7E780E
 skip 2
   .stepCounter: skip 2 ; $7E7812
@@ -3759,7 +3761,11 @@ struct Botwoon $0FA8
   .function: skip 2 ; $0FAE
   .movementFunction: skip 2 ; $0FB0
   .headFunction: skip 2 ; $0FB2
-skip $7DF04C
+skip $7DE84C
+  .projectileIndices: skip 2 ; $7E7800
+skip $1E
+  .bodyHiddenFlag: skip 2 ; $7E7820
+skip $7DE
   .initTimer: skip 2 ; $7E8000
   .spitTimer: skip 2 ; $7E8002
   .preDeathCounter: skip 2 ; $7E8004

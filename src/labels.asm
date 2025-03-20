@@ -64,6 +64,41 @@ org $8F0000
 RoomDoors:
 
 
+ORG $A00000
+EnemyHeaders:
+  .tileDataSize: skip 2 ; 0: Tile data size
+  .palette: skip 2 ; 2: Palette
+  .health: skip 2 ; 4: Health
+  .damage: skip 2 ; 6: Damage
+  .width: skip 2 ; 8: Width
+  .height: skip 2 ; Ah: Height
+  .bank: skip 1 ; Ch: Bank
+  .hurtAITime: skip 1 ; Dh: Hurt AI time
+  .cry: skip 2 ; Eh: Cry
+  .bossID: skip 2 ; 10h: Boss ID
+  .initAI: skip 2 ; 12h: Initialisation AI
+  .numberOfParts: skip 2 ; 14h: Number of parts
+  .unused16: skip 2 ; 16h: Unused. Set to 1 by zoomer, stone zoomer, red ninja space pirate
+  .mainAI: skip 2 ; 18h: Main AI
+  .grappleAI: skip 2 ; 1Ah: Grapple AI
+  .hurtAI: skip 2 ; 1Ch: Hurt AI
+  .frozenAI: skip 2 ; 1Eh: Frozen AI
+  .timeIsFrozenAI: skip 2 ; 20h: Time is frozen AI
+  .deathAnimation: skip 2 ; 22h: Death animation
+  .unused24: skip 4 ; 24h: Unused
+  .powerBombReaction: skip 2 ; 28h: Power bomb reaction
+  .sidehopperVariantIndex: skip 2 ; 2Ah: Sidehopper variant index. Unused proto instruction list (see $A0:AE7C) for flies, (multi)viola, ripper (ii), Ceres door
+  .unused2C: skip 4 ; 2Ch: Unused
+  .enemyTouch: skip 2 ; 30h: Enemy touch
+  .enemyShot: skip 2 ; 32h: Enemy shot
+  .unused34SpritemapPointerTable: skip 2 ; 34h: Unused. Spritemap pointer tables for flies, ripper, skultera, Ceres door (whose table is missing)
+  .tileData: skip 3 ; 36h: Tile data
+  .layer: skip 1 ; 39h: Layer
+  .dropChances: skip 2 ; 3Ah: Drop chances (bank $B4)
+  .vulnerabilities: skip 2 ; 3Ch: Vulnerabilities (bank $B4)
+  .name: skip 2 ; 3Eh: Enemy name (bank $B4)
+
+
 org $B40000
 EnemySetNames:
 

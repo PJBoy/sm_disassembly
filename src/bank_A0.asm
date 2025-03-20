@@ -10279,68 +10279,36 @@ CommonEnemyProjectileSpeeds_QuadraticallyIncreasing:
 
 ;;; $CEBF: Enemy headers ;;;
 EnemyHeaders_Boyon:
-EnemyHeaders:
-  .tileDataSize:
     dw $0400                                                             ;A0CEBF;
-  .palette:
     dw Palette_Boyon                                                     ;A0CEC1;
-  .health:
     dw $03E8                                                             ;A0CEC3;
-  .damage:
     dw $000A                                                             ;A0CEC5;
-  .width:
     dw $0008                                                             ;A0CEC7;
-  .height:
     dw $0008                                                             ;A0CEC9;
-  .bank:
     db $A2                                                               ;A0CECB;
-  .hurtAITime:
     db $00                                                               ;A0CECC;
-  .cry:
     dw $0000                                                             ;A0CECD;
-  .bossID:
     dw $0000                                                             ;A0CECF;
-  .initAI:
     dw InitAI_Boyon                                                      ;A0CED1;
-  .numberOfParts:
     dw $0001                                                             ;A0CED3;
-  .unused16:
     dw $0000                                                             ;A0CED5;
-  .mainAI:
     dw MainAI_Boyon                                                      ;A0CED7;
-  .grappleAI:
     dw CommonA2_GrappleAI_CancelGrappleBeam                              ;A0CED9;
-  .hurtAI:
     dw RTL_A2804C                                                        ;A0CEDB;
-  .frozenAI:
     dw CommonA2_NormalEnemyFrozenAI                                      ;A0CEDD;
-  .timeIsFrozenAI:
     dw $0000                                                             ;A0CEDF;
-  .deathAnimation:
     dw $0000                                                             ;A0CEE1;
-  .unused24:
     dd $00000000                                                         ;A0CEE3;
-  .powerBombReaction:
     dw $0000                                                             ;A0CEE7;
-  .sidehopperVariantIndex:
     dw $0000                                                             ;A0CEE9;
-  .unused2C:
     dd $00000000                                                         ;A0CEEB;
-  .enemyTouch:
     dw Common_NormalEnemyTouchAI                                         ;A0CEEF;
-  .enemyShot:
     dw Common_NormalEnemyShotAI                                          ;A0CEF1;
-  .unused34SpritemapPointerTable:
     dw $0000                                                             ;A0CEF3;
-  .tileData:
     dl Tiles_Boyon                                                       ;A0CEF5;
-  .layer:
     db $05                                                               ;A0CEF8;
-  .dropChances:
     dw EnemyDropChances_Boyon                                            ;A0CEF9;
-  .vulnerabilities:
     dw EnemyVulnerabilities_Boyon                                        ;A0CEFB;
-  .name:
     dw EnemyName_Boyon                                                   ;A0CEFD;
 
 EnemyHeaders_Stoke:
