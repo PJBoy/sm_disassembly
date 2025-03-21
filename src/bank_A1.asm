@@ -3,7 +3,7 @@ org $A18000
 
 
 ;;; $8000: Enemy populations ;;;
-EnemyPopulations:
+; see labels.asm for EnemyPopulations:
 ; Enemy population format is:
 ; ____________________________________________ Enemy ID
 ;        _____________________________________ X position

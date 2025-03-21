@@ -99,6 +99,18 @@ EnemyHeaders:
   .name: skip 2 ; 3Eh: Enemy name (bank $B4)
 
 
+ORG $A10000
+EnemyPopulations:
+  .ID: skip 2 ; 0: Enemy ID
+  .XPosition: skip 2 ; 2: X position
+  .YPosition: skip 2 ; 4: Y position
+  .init: skip 2 ; 6: Initialisation parameter (orientation in SMILE)
+  .properties: skip 2 ; 8: Properties (special in SMILE)
+  .extraProperties: skip 2 ; Ah: Extra properties (special graphics bitset in SMILE)
+  .param1: skip 2 ; Ch: Parameter 1 (speed in SMILE)
+  .param2: skip 2 ; Eh: Parameter 2 (speed2 in SMILE)
+
+
 org $B40000
 EnemySetNames:
 
