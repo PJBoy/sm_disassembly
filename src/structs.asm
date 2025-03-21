@@ -141,6 +141,11 @@ struct VRAMWrite $D0 ; $D0..02CF
   .src: skip 3 ; $D2
   .dest: skip 2 ; $D5
 endstruct
+; delete later
+; D7 D9 DC
+; DE E0 E3
+; E5 E7 EA
+; EC EE F1
 
 struct Mode7Transfer $2D0
   .control: skip 1 ; $02D0
@@ -177,6 +182,7 @@ PowerBombExplosionStatus: skip 2 ; $0592
 skip 2 ; Unused
 BG3XScrollHDMADataTableSize: skip 2 ; $0596
 YPositionOnScreenFX22: skip 2 ; $0598
+ExpandContract_HDMATableUpdateCounter: skip 0 ; $059A
 NeverRead059A: skip 2 ; $059A
 NeverRead059C: skip 2 ; $059C
 HUDBG2XPositionScrollingSky: skip 2 ; $059E
@@ -1132,7 +1138,7 @@ endstruct
 org $1778
 FirefleaFlashing_Timer: skip 2 ; $1778
 FirefleaFlashing_Index: skip 2 ; $177A
-Unused177E: skip 2 ; $177C
+Unused177C: skip 2 ; $177C
 FirefleaFlashing_DarknessLevel: skip 2 ; $177E
 Unused1780: skip 2 ; $1780
 Unused1782: skip 2 ; $1782
@@ -1643,6 +1649,7 @@ org $7E9D00
 MotherBrainRainbowBeamWindow1HDMADataTable: ; $7E9D00..??
 HazeColorMathSubscreenBackdropColorHDMADataTable: ; $7E9D00..0F
 skip $100
+DummyHDMATable: ; $7E9E00
 ExpandingSquareTransitionWindow1LeftIndirectHDMATable: ; $7E9E00..0B
 ExpandingContractingEffectBG2YScrollIndirectHDMATable: ; $7E9E00..07
 TourianStatueBG2YScroll: skip 2 ; $7E9E00
