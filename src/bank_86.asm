@@ -17507,7 +17507,7 @@ Random_Drop_Routine:
     PHX                                                                  ;86F106;
     PHY                                                                  ;86F107;
     PHB                                                                  ;86F108;
-    PEA.W EnemyHeaders>>8&$FF00                                          ;86F109;
+    PEA.W EnemyHeaders>>8                                                ;86F109;
     PLB                                                                  ;86F10C;
     PLB                                                                  ;86F10D;
     LDA.L EnemyProjectileData_KilledEnemyIndex,X                         ;86F10E;
@@ -17516,7 +17516,7 @@ Random_Drop_Routine:
     LDA.L EnemyProjectileData_EnemyHeaderPointer,X                       ;86F118;
     TAX                                                                  ;86F11C;
     STA.W Temp_NeverRead0E28                                             ;86F11D;
-    LDA.L EnemyHeaders_dropChances-(EnemyHeaders&$00FFFF),X              ;86F120;
+    LDA.L EnemyHeaders_dropChances,X                                     ;86F120;
     TAX                                                                  ;86F124;
     BNE .enemyHasDrops                                                   ;86F125;
     JMP.W .returnNothing                                                 ;86F127;
@@ -17546,9 +17546,9 @@ Random_Drop_Routine:
     SEP #$20                                                             ;86F154;
     LDA.W CriticalEnergyFlag                                             ;86F156;
     BEQ .noHealthBomb                                                    ;86F159;
-    LDA.L EnemyDropChances_smallEnergy,X                                 ;86F15B; $B40000
+    LDA.L EnemyDropChances_smallEnergy,X                                 ;86F15B;
     CLC                                                                  ;86F15F;
-    ADC.L EnemyDropChances_bigEnergy,X                                   ;86F160; $B40001
+    ADC.L EnemyDropChances_bigEnergy,X                                   ;86F160;
     STA.B DP_Temp12                                                      ;86F164;
     LDA.B #$03                                                           ;86F166;
     STA.B DP_Temp16                                                      ;86F168;
@@ -17569,8 +17569,8 @@ Random_Drop_Routine:
   .energyAllowed:
     LDA.B DP_Temp12                                                      ;86F187;
     CLC                                                                  ;86F189;
-    ADC.L EnemyDropChances_smallEnergy-(EnemyDropChances&$00FFFF),X      ;86F18A; $B40000
-    ADC.L EnemyDropChances_bigEnergy-(EnemyDropChances&$00FFFF),X        ;86F18E; $B40001
+    ADC.L EnemyDropChances_smallEnergy,X                                 ;86F18A;
+    ADC.L EnemyDropChances_bigEnergy,X                                   ;86F18E;
     STA.B DP_Temp12                                                      ;86F192;
     LDA.B DP_Temp16                                                      ;86F194;
     ORA.B #$03                                                           ;86F196;
@@ -17582,7 +17582,7 @@ Random_Drop_Routine:
     BEQ .checkSuperMissiles                                              ;86F1A0;
     LDA.B DP_Temp12                                                      ;86F1A2;
     CLC                                                                  ;86F1A4;
-    ADC.L EnemyDropChances_missiles-(EnemyDropChances&$00FFFF),X         ;86F1A5; $B40002
+    ADC.L EnemyDropChances_missiles,X                                    ;86F1A5;
     STA.B DP_Temp12                                                      ;86F1A9;
     LDA.B DP_Temp16                                                      ;86F1AB;
     ORA.B #$04                                                           ;86F1AD;
@@ -17594,7 +17594,7 @@ Random_Drop_Routine:
     BEQ .checkPowerBombs                                                 ;86F1B7;
     LDA.B DP_Temp14                                                      ;86F1B9;
     SEC                                                                  ;86F1BB;
-    SBC.L EnemyDropChances_superMissiles-(EnemyDropChances&$00FFFF),X    ;86F1BC; $B40004
+    SBC.L EnemyDropChances_superMissiles,X                               ;86F1BC;
     STA.B DP_Temp14                                                      ;86F1C0;
     LDA.B DP_Temp16                                                      ;86F1C2;
     ORA.B #$10                                                           ;86F1C4;
@@ -17606,7 +17606,7 @@ Random_Drop_Routine:
     BEQ .dropChancesPooled                                               ;86F1CE;
     LDA.B DP_Temp14                                                      ;86F1D0;
     SEC                                                                  ;86F1D2;
-    SBC.L EnemyDropChances_powerBombs-(EnemyDropChances&$00FFFF),X       ;86F1D3; $B40005
+    SBC.L EnemyDropChances_powerBombs,X                                  ;86F1D3;
     STA.B DP_Temp14                                                      ;86F1D7;
     LDA.B DP_Temp16                                                      ;86F1D9;
     ORA.B #$20                                                           ;86F1DB;
@@ -17623,7 +17623,7 @@ Random_Drop_Routine:
     BCC .nextMinorDrop                                                   ;86F1EA;
     LDA.B DP_Temp14                                                      ;86F1EC;
     STA.W $4202                                                          ;86F1EE;
-    LDA.L EnemyDropChances_smallEnergy-(EnemyDropChances&$00FFFF),X      ;86F1F1;
+    LDA.L EnemyDropChances_smallEnergy,X                                 ;86F1F1;
     STA.W $4203                                                          ;86F1F5;
     PHY                                                                  ;86F1F8;
     NOP                                                                  ;86F1F9;
@@ -17667,7 +17667,7 @@ Random_Drop_Routine:
     LSR.B DP_Temp16                                                      ;86F230;
     BCC .nextMajorDrop                                                   ;86F232;
     REP #$20                                                             ;86F234;
-    LDA.L EnemyDropChances_smallEnergy-(EnemyDropChances&$00FFFF),X      ;86F236; $B40000
+    LDA.L EnemyDropChances_smallEnergy,X                                 ;86F236;
     AND.W #$00FF                                                         ;86F23A;
     CLC                                                                  ;86F23D;
     ADC.B DP_Temp18                                                      ;86F23E;
