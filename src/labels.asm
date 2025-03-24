@@ -12,6 +12,10 @@ DoorHeaders:
   .doorASM: skip 2 ; Ah: Custom door ASM to execute (bank $8F)
 
 
+org $830000
+FXHeaders:
+
+
 org $8F0000
 RoomHeaders:
   .room: skip 1 ; 0: Room index
