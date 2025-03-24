@@ -1392,7 +1392,7 @@ CinematicSpriteObject_YPositions: skip $20 ; $1A9D..BC
 CinematicSpriteObject_PaletteIndices: skip $20 ; $1ABD..DC
 CinematicSpriteObject_XSubPosition: skip $20 ; $1ADD..FC
 CinematicSpriteObject_YSubPosition: skip $20 ; $1AFD..1C
-CinematicSpriteObject_InstListPointers: skip $20 ; $1B1B..3C
+CinematicSpriteObject_InstListPointers: skip $20 ; $1B1D..3C
 CinematicSpriteObject_PreInstructions: skip $20 ; $1B3D..5C
 CinematicSpriteObject_InstructionTimers: skip $20 ; $1B5D..7C
 CinematicSpriteObject_Timers: skip $20 ; $1B7D..9C
