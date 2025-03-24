@@ -9,83 +9,83 @@ Setup_PPU_TitleSequence:
     SEP #$30                                                             ;8B8001;
     LDA.B #$80                                                           ;8B8003;
     STA.W $2100                                                          ;8B8005;
-    STA.B $51                                                            ;8B8008;
+    STA.B DP_Brightness                                                            ;8B8008;
     LDA.B #$03                                                           ;8B800A;
     STA.W $2101                                                          ;8B800C;
-    STA.B $52                                                            ;8B800F;
+    STA.B DP_SpriteSizeAddr                                                            ;8B800F;
     LDA.B #$07                                                           ;8B8011;
     STA.W $2105                                                          ;8B8013;
-    STA.B $55                                                            ;8B8016;
+    STA.B DP_BGModeSize                                                            ;8B8016;
     LDA.B #$80                                                           ;8B8018;
     STA.W $211A                                                          ;8B801A;
-    STA.B $5F                                                            ;8B801D;
+    STA.B DP_Mode7Settings                                                            ;8B801D;
     LDA.B #$00                                                           ;8B801F;
-    STA.B $58                                                            ;8B8021;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8B8021;
     STA.W $2107                                                          ;8B8023;
-    STZ.B $59                                                            ;8B8026;
+    STZ.B DP_BG2TilemapAddrSize                                                            ;8B8026;
     STZ.W $2108                                                          ;8B8028;
-    STZ.B $5A                                                            ;8B802B;
+    STZ.B DP_BG3TilemapAddrSize                                                            ;8B802B;
     STZ.W $2109                                                          ;8B802D;
-    STZ.B $5C                                                            ;8B8030;
+    STZ.B DP_BG4TilemapAddrSize                                                            ;8B8030;
     STZ.W $210A                                                          ;8B8032;
-    STZ.B $5D                                                            ;8B8035;
+    STZ.B DP_BGTilesAddr                                                            ;8B8035;
     STZ.W $210B                                                          ;8B8037;
-    STZ.B $5E                                                            ;8B803A;
+    STZ.B DP_BGTilesAddr+1                                                            ;8B803A;
     STZ.W $210C                                                          ;8B803C;
     LDA.B #$10                                                           ;8B803F;
     STA.W $212C                                                          ;8B8041;
-    STA.B $69                                                            ;8B8044;
+    STA.B DP_MainScreenLayers                                                            ;8B8044;
     STZ.W $212D                                                          ;8B8046;
-    STZ.B $6B                                                            ;8B8049;
+    STZ.B DP_SubScreenLayers                                                            ;8B8049;
     STZ.W $212E                                                          ;8B804B;
-    STZ.B $6C                                                            ;8B804E;
+    STZ.B DP_WindowAreaMainScreen                                                            ;8B804E;
     STZ.W $2115                                                          ;8B8050;
     STZ.W $2130                                                          ;8B8053;
-    STZ.B $6E                                                            ;8B8056;
+    STZ.B DP_NextGameplayColorMathA                                                            ;8B8056;
     STZ.W $2131                                                          ;8B8058;
-    STZ.B $71                                                            ;8B805B;
+    STZ.B DP_NextGameplayColorMathB                                                            ;8B805B;
     LDA.B #$E0                                                           ;8B805D;
     STA.W $2132                                                          ;8B805F;
     LDA.B #$00                                                           ;8B8062;
     STA.W $2133                                                          ;8B8064;
-    STA.B $77                                                            ;8B8067;
+    STA.B DP_DisplayResolution                                                            ;8B8067;
     REP #$30                                                             ;8B8069;
     LDA.W #$0000                                                         ;8B806B;
     LDX.W #$3000                                                         ;8B806E;
     LDY.W #$07FE                                                         ;8B8071;
     JSL.L WriteYBytesOfATo_7E0000_X_16bit                                ;8B8074;
-    STZ.W $0590                                                          ;8B8078;
-    STZ.W $099E                                                          ;8B807B;
-    STZ.W $0723                                                          ;8B807E;
-    STZ.W $0725                                                          ;8B8081;
-    STZ.W $0729                                                          ;8B8084;
-    STZ.W $072B                                                          ;8B8087;
-    STZ.W $072D                                                          ;8B808A;
-    STZ.W $072F                                                          ;8B808D;
-    STZ.W $0731                                                          ;8B8090;
-    STZ.W $073D                                                          ;8B8093;
-    STZ.W $073F                                                          ;8B8096;
-    STZ.W $0741                                                          ;8B8099;
-    STZ.W $0743                                                          ;8B809C;
-    STZ.W $0745                                                          ;8B809F;
-    STZ.W $0751                                                          ;8B80A2;
-    STZ.W $0753                                                          ;8B80A5;
-    STZ.W $0755                                                          ;8B80A8;
-    STZ.W $0757                                                          ;8B80AB;
-    STZ.W $0759                                                          ;8B80AE;
-    STZ.W $09D6                                                          ;8B80B1;
-    STZ.W $09D8                                                          ;8B80B4;
-    STZ.W $198D                                                          ;8B80B7;
+    STZ.W OAMStack                                                          ;8B8078;
+    STZ.W MenuOptionIndex                                                          ;8B807B;
+    STZ.W ScreenFadeDelay                                                          ;8B807E;
+    STZ.W ScreenFadeCounter                                                          ;8B8081;
+    STZ.W PauseMenu_ButtonPressedHighlightTimer                                                          ;8B8084;
+    STZ.W PauseMenu_HighlightAnimationTimer                                                          ;8B8087;
+    STZ.W PauseMenu_ItemSelectorAnimationTimer                                                          ;8B808A;
+    STZ.W PauseMenu_ReserveTankAnimationTimer                                                          ;8B808D;
+    STZ.W PauseMenu_UnusedAnimationTimer0731                                                          ;8B8090;
+    STZ.W PauseMenu_UnusedAnimationTimer073D                                                          ;8B8093;
+    STZ.W PauseMenu_HighlightAnimationFrame                                                          ;8B8096;
+    STZ.W PauseMenu_ItemSelectorAnimationFrame                                                          ;8B8099;
+    STZ.W PauseMenu_ReserveTankAnimationFrame                                                          ;8B809C;
+    STZ.W PauseMenu_UnusedAnimationFrame                                                          ;8B809F;
+    STZ.W PauseMenu_ShoulderButtonPressedHighlight                                                          ;8B80A2;
+    STZ.W PauseMenu_ButtonLabelMode                                                          ;8B80A5;
+    STZ.W PauseMenu_EquipmentScreenCategoryIndex                                                          ;8B80A8;
+    STZ.W PauseMenu_ReserveTankSoundDelayCounter                                                          ;8B80AB;
+    STZ.W PauseMenu_UnusedAnimationMode                                                          ;8B80AE;
+    STZ.W ReserveEnergy                                                          ;8B80B1;
+    STZ.W ReserveMissiles                                                          ;8B80B4;
+    STZ.W Mode7TransformationAngle                                                          ;8B80B7;
     LDA.W #$0100                                                         ;8B80BA;
-    STA.W $198F                                                          ;8B80BD;
-    STZ.W $1991                                                          ;8B80C0;
-    STZ.W $1993                                                          ;8B80C3;
-    STZ.W $1995                                                          ;8B80C6;
-    STZ.W $1997                                                          ;8B80C9;
-    STZ.W $1999                                                          ;8B80CC;
-    STZ.W $199B                                                          ;8B80CF;
-    STZ.W $199D                                                          ;8B80D2;
-    STZ.W $199F                                                          ;8B80D5;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B80BD;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B80C0;
+    STZ.W CinematicBG1_XPosition                                                          ;8B80C3;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B80C6;
+    STZ.W CinematicBG1_YPosition                                                          ;8B80C9;
+    STZ.W CinematicBG1_XSubSpeed                                                          ;8B80CC;
+    STZ.W CinematicBG1_XSpeed                                                          ;8B80CF;
+    STZ.W CinematicBG1_YSubSpeed                                                          ;8B80D2;
+    STZ.W CinematicBG1_YSpeed                                                          ;8B80D5;
     PLP                                                                  ;8B80D8;
     RTS                                                                  ;8B80D9;
 
@@ -96,80 +96,80 @@ Setup_PPU_Intro:
     SEP #$30                                                             ;8B80DB;
     LDA.B #$80                                                           ;8B80DD;
     STA.W $2100                                                          ;8B80DF;
-    STA.B $51                                                            ;8B80E2;
+    STA.B DP_Brightness                                                            ;8B80E2;
     LDA.B #$03                                                           ;8B80E4;
     STA.W $2101                                                          ;8B80E6;
-    STA.B $52                                                            ;8B80E9;
+    STA.B DP_SpriteSizeAddr                                                            ;8B80E9;
     LDA.B #$09                                                           ;8B80EB;
     STA.W $2105                                                          ;8B80ED;
-    STA.B $55                                                            ;8B80F0;
+    STA.B DP_BGModeSize                                                            ;8B80F0;
     LDA.B #$00                                                           ;8B80F2;
     STA.W $211A                                                          ;8B80F4;
-    STA.B $5F                                                            ;8B80F7;
+    STA.B DP_Mode7Settings                                                            ;8B80F7;
     LDA.B #$50                                                           ;8B80F9;
-    STA.B $58                                                            ;8B80FB;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8B80FB;
     STA.W $2107                                                          ;8B80FD;
     LDA.B #$48                                                           ;8B8100;
-    STA.B $59                                                            ;8B8102;
+    STA.B DP_BG2TilemapAddrSize                                                            ;8B8102;
     STA.W $2108                                                          ;8B8104;
     LDA.B #$4C                                                           ;8B8107;
-    STA.B $5A                                                            ;8B8109;
+    STA.B DP_BG3TilemapAddrSize                                                            ;8B8109;
     STA.W $2109                                                          ;8B810B;
-    STZ.B $5C                                                            ;8B810E;
+    STZ.B DP_BG4TilemapAddrSize                                                            ;8B810E;
     STZ.W $210A                                                          ;8B8110;
-    STZ.B $5D                                                            ;8B8113;
+    STZ.B DP_BGTilesAddr                                                            ;8B8113;
     STZ.W $210B                                                          ;8B8115;
     LDA.B #$04                                                           ;8B8118;
-    STA.B $5E                                                            ;8B811A;
+    STA.B DP_BGTilesAddr+1                                                            ;8B811A;
     STA.W $210C                                                          ;8B811C;
     LDA.B #$04                                                           ;8B811F;
     STA.W $212C                                                          ;8B8121;
-    STA.B $69                                                            ;8B8124;
+    STA.B DP_MainScreenLayers                                                            ;8B8124;
     STZ.W $212D                                                          ;8B8126;
-    STZ.B $6B                                                            ;8B8129;
+    STZ.B DP_SubScreenLayers                                                            ;8B8129;
     STZ.W $212E                                                          ;8B812B;
-    STZ.B $6C                                                            ;8B812E;
+    STZ.B DP_WindowAreaMainScreen                                                            ;8B812E;
     STZ.W $2115                                                          ;8B8130;
     STZ.W $2130                                                          ;8B8133;
-    STZ.B $6E                                                            ;8B8136;
+    STZ.B DP_NextGameplayColorMathA                                                            ;8B8136;
     STZ.W $2131                                                          ;8B8138;
-    STZ.B $71                                                            ;8B813B;
+    STZ.B DP_NextGameplayColorMathB                                                            ;8B813B;
     LDA.B #$E0                                                           ;8B813D;
     STA.W $2132                                                          ;8B813F;
     LDA.B #$00                                                           ;8B8142;
     STA.W $2133                                                          ;8B8144;
-    STA.B $77                                                            ;8B8147;
-    STZ.B $6F                                                            ;8B8149;
-    STZ.B $72                                                            ;8B814B;
+    STA.B DP_DisplayResolution                                                            ;8B8147;
+    STZ.B DP_ColorMathA                                                            ;8B8149;
+    STZ.B DP_ColorMathB                                                            ;8B814B;
     LDA.B #$20                                                           ;8B814D;
-    STA.B $74                                                            ;8B814F;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8B814F;
     LDA.B #$40                                                           ;8B8151;
-    STA.B $75                                                            ;8B8153;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8B8153;
     LDA.B #$80                                                           ;8B8155;
-    STA.B $76                                                            ;8B8157;
-    STZ.B $57                                                            ;8B8159;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8B8157;
+    STZ.B DP_Mosaic                                                            ;8B8159;
     REP #$30                                                             ;8B815B;
     LDA.W #$002F                                                         ;8B815D;
     LDX.W #$3000                                                         ;8B8160;
     LDY.W #$07FE                                                         ;8B8163;
     JSL.L WriteYBytesOfATo_7E0000_X_16bit                                ;8B8166;
-    STZ.W $0590                                                          ;8B816A;
-    STZ.W $198D                                                          ;8B816D;
+    STZ.W OAMStack                                                          ;8B816A;
+    STZ.W Mode7TransformationAngle                                                          ;8B816D;
     LDA.W #$0100                                                         ;8B8170;
-    STA.W $198F                                                          ;8B8173;
-    STZ.W $1991                                                          ;8B8176;
-    STZ.W $1993                                                          ;8B8179;
-    STZ.W $1995                                                          ;8B817C;
-    STZ.W $1997                                                          ;8B817F;
-    STZ.W $1999                                                          ;8B8182;
-    STZ.W $199B                                                          ;8B8185;
-    STZ.W $199D                                                          ;8B8188;
-    STZ.W $199F                                                          ;8B818B;
-    STZ.W $1982                                                          ;8B818E;
-    STZ.B $B5                                                            ;8B8191;
-    STZ.B $B7                                                            ;8B8193;
-    STZ.B $B9                                                            ;8B8195;
-    STZ.B $BB                                                            ;8B8197;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B8173;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B8176;
+    STZ.W CinematicBG1_XPosition                                                          ;8B8179;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B817C;
+    STZ.W CinematicBG1_YPosition                                                          ;8B817F;
+    STZ.W CinematicBG1_XSubSpeed                                                          ;8B8182;
+    STZ.W CinematicBG1_XSpeed                                                          ;8B8185;
+    STZ.W CinematicBG1_YSubSpeed                                                          ;8B8188;
+    STZ.W CinematicBG1_YSpeed                                                          ;8B818B;
+    STZ.W LayerBlending_DefaultConfig                                                          ;8B818E;
+    STZ.B DP_BG2XScroll                                                            ;8B8191;
+    STZ.B DP_BG2YScroll                                                            ;8B8193;
+    STZ.B DP_BG3XScroll                                                            ;8B8195;
+    STZ.B DP_BG3YScroll                                                            ;8B8197;
     PLP                                                                  ;8B8199;
     RTS                                                                  ;8B819A;
 
@@ -180,63 +180,63 @@ Setup_PPU_CeresCutscene:
     SEP #$30                                                             ;8B819C;
     LDA.B #$80                                                           ;8B819E;
     STA.W $2100                                                          ;8B81A0;
-    STA.B $51                                                            ;8B81A3;
+    STA.B DP_Brightness                                                            ;8B81A3;
     LDA.B #$03                                                           ;8B81A5;
     STA.W $2101                                                          ;8B81A7;
-    STA.B $52                                                            ;8B81AA;
+    STA.B DP_SpriteSizeAddr                                                            ;8B81AA;
     LDA.B #$07                                                           ;8B81AC;
     STA.W $2105                                                          ;8B81AE;
-    STA.B $55                                                            ;8B81B1;
+    STA.B DP_BGModeSize                                                            ;8B81B1;
     LDA.B #$80                                                           ;8B81B3;
     STA.W $211A                                                          ;8B81B5;
-    STA.B $5F                                                            ;8B81B8;
+    STA.B DP_Mode7Settings                                                            ;8B81B8;
     LDA.B #$00                                                           ;8B81BA;
-    STA.B $58                                                            ;8B81BC;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8B81BC;
     STA.W $2107                                                          ;8B81BE;
-    STZ.B $59                                                            ;8B81C1;
+    STZ.B DP_BG2TilemapAddrSize                                                            ;8B81C1;
     STZ.W $2108                                                          ;8B81C3;
-    STZ.B $5A                                                            ;8B81C6;
+    STZ.B DP_BG3TilemapAddrSize                                                            ;8B81C6;
     STZ.W $2109                                                          ;8B81C8;
-    STZ.B $5C                                                            ;8B81CB;
+    STZ.B DP_BG4TilemapAddrSize                                                            ;8B81CB;
     STZ.W $210A                                                          ;8B81CD;
-    STZ.B $5D                                                            ;8B81D0;
+    STZ.B DP_BGTilesAddr                                                            ;8B81D0;
     STZ.W $210B                                                          ;8B81D2;
-    STZ.B $5E                                                            ;8B81D5;
+    STZ.B DP_BGTilesAddr+1                                                            ;8B81D5;
     STZ.W $210C                                                          ;8B81D7;
     LDA.B #$11                                                           ;8B81DA;
     STA.W $212C                                                          ;8B81DC;
-    STA.B $69                                                            ;8B81DF;
+    STA.B DP_MainScreenLayers                                                            ;8B81DF;
     LDA.B #$00                                                           ;8B81E1;
     STA.W $212D                                                          ;8B81E3;
-    STA.B $6B                                                            ;8B81E6;
+    STA.B DP_SubScreenLayers                                                            ;8B81E6;
     STZ.W $212E                                                          ;8B81E8;
-    STZ.B $6C                                                            ;8B81EB;
+    STZ.B DP_WindowAreaMainScreen                                                            ;8B81EB;
     STZ.W $2115                                                          ;8B81ED;
     STZ.W $2130                                                          ;8B81F0;
-    STZ.B $6E                                                            ;8B81F3;
+    STZ.B DP_NextGameplayColorMathA                                                            ;8B81F3;
     STZ.W $2131                                                          ;8B81F5;
-    STZ.B $71                                                            ;8B81F8;
+    STZ.B DP_NextGameplayColorMathB                                                            ;8B81F8;
     LDA.B #$E0                                                           ;8B81FA;
     STA.W $2132                                                          ;8B81FC;
-    STZ.B $6F                                                            ;8B81FF;
-    STZ.B $72                                                            ;8B8201;
+    STZ.B DP_ColorMathA                                                            ;8B81FF;
+    STZ.B DP_ColorMathB                                                            ;8B8201;
     LDA.B #$20                                                           ;8B8203;
-    STA.B $74                                                            ;8B8205;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8B8205;
     LDA.B #$40                                                           ;8B8207;
-    STA.B $75                                                            ;8B8209;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8B8209;
     LDA.B #$80                                                           ;8B820B;
-    STA.B $76                                                            ;8B820D;
-    STZ.B $57                                                            ;8B820F;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8B820D;
+    STZ.B DP_Mosaic                                                            ;8B820F;
     REP #$30                                                             ;8B8211;
-    STZ.W $1991                                                          ;8B8213;
-    STZ.W $1993                                                          ;8B8216;
-    STZ.W $1995                                                          ;8B8219;
-    STZ.W $1997                                                          ;8B821C;
-    STZ.W $1999                                                          ;8B821F;
-    STZ.W $199B                                                          ;8B8222;
-    STZ.W $199D                                                          ;8B8225;
-    STZ.W $199F                                                          ;8B8228;
-    STZ.W $1982                                                          ;8B822B;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B8213;
+    STZ.W CinematicBG1_XPosition                                                          ;8B8216;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B8219;
+    STZ.W CinematicBG1_YPosition                                                          ;8B821C;
+    STZ.W CinematicBG1_XSubSpeed                                                          ;8B821F;
+    STZ.W CinematicBG1_XSpeed                                                          ;8B8222;
+    STZ.W CinematicBG1_YSubSpeed                                                          ;8B8225;
+    STZ.W CinematicBG1_YSpeed                                                          ;8B8228;
+    STZ.W LayerBlending_DefaultConfig                                                          ;8B822B;
     PLP                                                                  ;8B822E;
     RTS                                                                  ;8B822F;
 
@@ -247,42 +247,42 @@ Setup_PPU_SamusGoesToZebesCutscene:
     SEP #$30                                                             ;8B8231;
     LDA.B #$80                                                           ;8B8233;
     STA.W $2100                                                          ;8B8235;
-    STA.B $51                                                            ;8B8238;
+    STA.B DP_Brightness                                                            ;8B8238;
     LDA.B #$03                                                           ;8B823A;
     STA.W $2101                                                          ;8B823C;
-    STA.B $52                                                            ;8B823F;
+    STA.B DP_SpriteSizeAddr                                                            ;8B823F;
     LDA.B #$01                                                           ;8B8241;
     STA.W $2105                                                          ;8B8243;
-    STA.B $55                                                            ;8B8246;
+    STA.B DP_BGModeSize                                                            ;8B8246;
     LDA.B #$00                                                           ;8B8248;
     STA.W $211A                                                          ;8B824A;
-    STA.B $5F                                                            ;8B824D;
+    STA.B DP_Mode7Settings                                                            ;8B824D;
     LDA.B #$5C                                                           ;8B824F;
-    STA.B $58                                                            ;8B8251;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8B8251;
     STA.W $2107                                                          ;8B8253;
-    STZ.B $59                                                            ;8B8256;
+    STZ.B DP_BG2TilemapAddrSize                                                            ;8B8256;
     STZ.W $2108                                                          ;8B8258;
-    STZ.B $5A                                                            ;8B825B;
+    STZ.B DP_BG3TilemapAddrSize                                                            ;8B825B;
     STZ.W $2109                                                          ;8B825D;
-    STZ.B $5C                                                            ;8B8260;
+    STZ.B DP_BG4TilemapAddrSize                                                            ;8B8260;
     STZ.W $210A                                                          ;8B8262;
     LDA.B #$06                                                           ;8B8265;
-    STA.B $5D                                                            ;8B8267;
+    STA.B DP_BGTilesAddr                                                            ;8B8267;
     STA.W $210B                                                          ;8B8269;
-    STZ.B $5E                                                            ;8B826C;
+    STZ.B DP_BGTilesAddr+1                                                            ;8B826C;
     STZ.W $210C                                                          ;8B826E;
     LDA.B #$11                                                           ;8B8271;
     STA.W $212C                                                          ;8B8273;
-    STA.B $69                                                            ;8B8276;
+    STA.B DP_MainScreenLayers                                                            ;8B8276;
     STZ.W $212D                                                          ;8B8278;
-    STZ.B $6B                                                            ;8B827B;
+    STZ.B DP_SubScreenLayers                                                            ;8B827B;
     STZ.B $60                                                            ;8B827D;
     STZ.B $61                                                            ;8B827F;
     STZ.B $62                                                            ;8B8281;
-    STZ.B $6C                                                            ;8B8283;
+    STZ.B DP_WindowAreaMainScreen                                                            ;8B8283;
     STZ.B $6D                                                            ;8B8285;
-    STZ.B $6F                                                            ;8B8287;
-    STZ.B $72                                                            ;8B8289;
+    STZ.B DP_ColorMathA                                                            ;8B8287;
+    STZ.B DP_ColorMathB                                                            ;8B8289;
     REP #$30                                                             ;8B828B;
     STZ.B $B1                                                            ;8B828D;
     STZ.B $B3                                                            ;8B828F;
@@ -296,69 +296,69 @@ Setup_PPU_ZebesDestruction:
     SEP #$30                                                             ;8B8294;
     LDA.B #$80                                                           ;8B8296;
     STA.W $2100                                                          ;8B8298;
-    STA.B $51                                                            ;8B829B;
+    STA.B DP_Brightness                                                            ;8B829B;
     LDA.B #$A3                                                           ;8B829D;
     STA.W $2101                                                          ;8B829F;
-    STA.B $52                                                            ;8B82A2;
+    STA.B DP_SpriteSizeAddr                                                            ;8B82A2;
     LDA.B #$07                                                           ;8B82A4;
     STA.W $2105                                                          ;8B82A6;
-    STA.B $55                                                            ;8B82A9;
+    STA.B DP_BGModeSize                                                            ;8B82A9;
     LDA.B #$00                                                           ;8B82AB;
     STA.W $211A                                                          ;8B82AD;
-    STA.B $5F                                                            ;8B82B0;
+    STA.B DP_Mode7Settings                                                            ;8B82B0;
     LDA.B #$00                                                           ;8B82B2;
-    STA.B $58                                                            ;8B82B4;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8B82B4;
     STA.W $2107                                                          ;8B82B6;
-    STZ.B $59                                                            ;8B82B9;
+    STZ.B DP_BG2TilemapAddrSize                                                            ;8B82B9;
     STZ.W $2108                                                          ;8B82BB;
-    STZ.B $5A                                                            ;8B82BE;
+    STZ.B DP_BG3TilemapAddrSize                                                            ;8B82BE;
     STZ.W $2109                                                          ;8B82C0;
-    STZ.B $5C                                                            ;8B82C3;
+    STZ.B DP_BG4TilemapAddrSize                                                            ;8B82C3;
     STZ.W $210A                                                          ;8B82C5;
-    STZ.B $5D                                                            ;8B82C8;
+    STZ.B DP_BGTilesAddr                                                            ;8B82C8;
     STZ.W $210B                                                          ;8B82CA;
-    STZ.B $5E                                                            ;8B82CD;
+    STZ.B DP_BGTilesAddr+1                                                            ;8B82CD;
     STZ.W $210C                                                          ;8B82CF;
     LDA.B #$11                                                           ;8B82D2;
     STA.W $212C                                                          ;8B82D4;
-    STA.B $69                                                            ;8B82D7;
+    STA.B DP_MainScreenLayers                                                            ;8B82D7;
     STZ.W $212D                                                          ;8B82D9;
-    STZ.B $6B                                                            ;8B82DC;
+    STZ.B DP_SubScreenLayers                                                            ;8B82DC;
     STZ.W $212E                                                          ;8B82DE;
-    STZ.B $6C                                                            ;8B82E1;
+    STZ.B DP_WindowAreaMainScreen                                                            ;8B82E1;
     STZ.W $2115                                                          ;8B82E3;
     STZ.W $2130                                                          ;8B82E6;
-    STZ.B $6E                                                            ;8B82E9;
+    STZ.B DP_NextGameplayColorMathA                                                            ;8B82E9;
     STZ.W $2131                                                          ;8B82EB;
-    STZ.B $71                                                            ;8B82EE;
-    STZ.B $6F                                                            ;8B82F0;
-    STZ.B $72                                                            ;8B82F2;
+    STZ.B DP_NextGameplayColorMathB                                                            ;8B82EE;
+    STZ.B DP_ColorMathA                                                            ;8B82F0;
+    STZ.B DP_ColorMathB                                                            ;8B82F2;
     LDA.B #$E0                                                           ;8B82F4;
     STA.W $2132                                                          ;8B82F6;
     LDA.B #$00                                                           ;8B82F9;
     STA.W $2133                                                          ;8B82FB;
-    STA.B $77                                                            ;8B82FE;
+    STA.B DP_DisplayResolution                                                            ;8B82FE;
     LDA.B #$20                                                           ;8B8300;
-    STA.B $74                                                            ;8B8302;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8B8302;
     LDA.B #$40                                                           ;8B8304;
-    STA.B $75                                                            ;8B8306;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8B8306;
     LDA.B #$80                                                           ;8B8308;
-    STA.B $76                                                            ;8B830A;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8B830A;
     REP #$30                                                             ;8B830C;
-    STZ.W $0590                                                          ;8B830E;
-    STZ.W $0723                                                          ;8B8311;
-    STZ.W $0725                                                          ;8B8314;
-    STZ.W $198D                                                          ;8B8317;
+    STZ.W OAMStack                                                          ;8B830E;
+    STZ.W ScreenFadeDelay                                                          ;8B8311;
+    STZ.W ScreenFadeCounter                                                          ;8B8314;
+    STZ.W Mode7TransformationAngle                                                          ;8B8317;
     LDA.W #$0100                                                         ;8B831A;
-    STA.W $198F                                                          ;8B831D;
-    STZ.W $1991                                                          ;8B8320;
-    STZ.W $1993                                                          ;8B8323;
-    STZ.W $1995                                                          ;8B8326;
-    STZ.W $1997                                                          ;8B8329;
-    STZ.W $1999                                                          ;8B832C;
-    STZ.W $199B                                                          ;8B832F;
-    STZ.W $199D                                                          ;8B8332;
-    STZ.W $199F                                                          ;8B8335;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B831D;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B8320;
+    STZ.W CinematicBG1_XPosition                                                          ;8B8323;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B8326;
+    STZ.W CinematicBG1_YPosition                                                          ;8B8329;
+    STZ.W CinematicBG1_XSubSpeed                                                          ;8B832C;
+    STZ.W CinematicBG1_XSpeed                                                          ;8B832F;
+    STZ.W CinematicBG1_YSubSpeed                                                          ;8B8332;
+    STZ.W CinematicBG1_YSpeed                                                          ;8B8335;
     PLP                                                                  ;8B8338;
     RTS                                                                  ;8B8339;
 
@@ -372,65 +372,65 @@ UNUSED_Setup_PPU_ZebesDestructionSpaceView_8B833A:
     SEP #$30                                                             ;8B833B;
     LDA.B #$80                                                           ;8B833D;
     STA.W $2100                                                          ;8B833F;
-    STA.B $51                                                            ;8B8342;
+    STA.B DP_Brightness                                                            ;8B8342;
     LDA.B #$02                                                           ;8B8344;
     STA.W $2101                                                          ;8B8346;
-    STA.B $52                                                            ;8B8349;
+    STA.B DP_SpriteSizeAddr                                                            ;8B8349;
     LDA.B #$01                                                           ;8B834B;
     STA.W $2105                                                          ;8B834D;
-    STA.B $55                                                            ;8B8350;
+    STA.B DP_BGModeSize                                                            ;8B8350;
     STZ.W $211A                                                          ;8B8352;
-    STZ.B $5F                                                            ;8B8355;
+    STZ.B DP_Mode7Settings                                                            ;8B8355;
     LDA.B #$70                                                           ;8B8357;
-    STA.B $58                                                            ;8B8359;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8B8359;
     STA.W $2107                                                          ;8B835B;
     LDA.B #$78                                                           ;8B835E;
-    STA.B $59                                                            ;8B8360;
+    STA.B DP_BG2TilemapAddrSize                                                            ;8B8360;
     STA.W $2108                                                          ;8B8362;
-    STZ.B $5A                                                            ;8B8365;
+    STZ.B DP_BG3TilemapAddrSize                                                            ;8B8365;
     STZ.W $2109                                                          ;8B8367;
-    STZ.B $5C                                                            ;8B836A;
+    STZ.B DP_BG4TilemapAddrSize                                                            ;8B836A;
     STZ.W $210A                                                          ;8B836C;
     LDA.B #$44                                                           ;8B836F;
-    STA.B $5D                                                            ;8B8371;
+    STA.B DP_BGTilesAddr                                                            ;8B8371;
     STA.W $210B                                                          ;8B8373;
-    STZ.B $5E                                                            ;8B8376;
+    STZ.B DP_BGTilesAddr+1                                                            ;8B8376;
     STZ.W $210C                                                          ;8B8378;
     LDA.B #$10                                                           ;8B837B;
     STA.W $212C                                                          ;8B837D;
-    STA.B $69                                                            ;8B8380;
+    STA.B DP_MainScreenLayers                                                            ;8B8380;
     STZ.W $212D                                                          ;8B8382;
-    STZ.B $6B                                                            ;8B8385;
+    STZ.B DP_SubScreenLayers                                                            ;8B8385;
     STZ.W $212E                                                          ;8B8387;
-    STZ.B $6C                                                            ;8B838A;
+    STZ.B DP_WindowAreaMainScreen                                                            ;8B838A;
     STZ.W $2115                                                          ;8B838C;
     STZ.W $2130                                                          ;8B838F;
-    STZ.B $6E                                                            ;8B8392;
+    STZ.B DP_NextGameplayColorMathA                                                            ;8B8392;
     STZ.W $2131                                                          ;8B8394;
-    STZ.B $71                                                            ;8B8397;
+    STZ.B DP_NextGameplayColorMathB                                                            ;8B8397;
     LDA.B #$E0                                                           ;8B8399;
     STA.W $2132                                                          ;8B839B;
-    STZ.B $6F                                                            ;8B839E;
-    STZ.B $72                                                            ;8B83A0;
+    STZ.B DP_ColorMathA                                                            ;8B839E;
+    STZ.B DP_ColorMathB                                                            ;8B83A0;
     LDA.B #$20                                                           ;8B83A2;
-    STA.B $74                                                            ;8B83A4;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8B83A4;
     LDA.B #$40                                                           ;8B83A6;
-    STA.B $75                                                            ;8B83A8;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8B83A8;
     LDA.B #$80                                                           ;8B83AA;
-    STA.B $76                                                            ;8B83AC;
-    STZ.B $57                                                            ;8B83AE;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8B83AC;
+    STZ.B DP_Mosaic                                                            ;8B83AE;
     REP #$30                                                             ;8B83B0;
-    STZ.W $1991                                                          ;8B83B2;
-    STZ.W $1993                                                          ;8B83B5;
-    STZ.W $1995                                                          ;8B83B8;
-    STZ.W $1997                                                          ;8B83BB;
-    STZ.W $1999                                                          ;8B83BE;
-    STZ.W $199B                                                          ;8B83C1;
-    STZ.W $199D                                                          ;8B83C4;
-    STZ.W $199F                                                          ;8B83C7;
-    STZ.W $1982                                                          ;8B83CA;
-    STZ.B $B5                                                            ;8B83CD;
-    STZ.B $B7                                                            ;8B83CF;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B83B2;
+    STZ.W CinematicBG1_XPosition                                                          ;8B83B5;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B83B8;
+    STZ.W CinematicBG1_YPosition                                                          ;8B83BB;
+    STZ.W CinematicBG1_XSubSpeed                                                          ;8B83BE;
+    STZ.W CinematicBG1_XSpeed                                                          ;8B83C1;
+    STZ.W CinematicBG1_YSubSpeed                                                          ;8B83C4;
+    STZ.W CinematicBG1_YSpeed                                                          ;8B83C7;
+    STZ.W LayerBlending_DefaultConfig                                                          ;8B83CA;
+    STZ.B DP_BG2XScroll                                                            ;8B83CD;
+    STZ.B DP_BG2YScroll                                                            ;8B83CF;
     PLP                                                                  ;8B83D1;
     RTS                                                                  ;8B83D2;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -442,53 +442,53 @@ Setup_PPU_Credits:
     SEP #$30                                                             ;8B83D4;
     LDA.B #$80                                                           ;8B83D6;
     STA.W $2100                                                          ;8B83D8;
-    STA.B $51                                                            ;8B83DB;
+    STA.B DP_Brightness                                                            ;8B83DB;
     LDA.B #$00                                                           ;8B83DD;
     STA.W $2101                                                          ;8B83DF;
-    STA.B $52                                                            ;8B83E2;
+    STA.B DP_SpriteSizeAddr                                                            ;8B83E2;
     LDA.B #$01                                                           ;8B83E4;
     STA.W $2105                                                          ;8B83E6;
-    STA.B $55                                                            ;8B83E9;
+    STA.B DP_BGModeSize                                                            ;8B83E9;
     LDA.B #$00                                                           ;8B83EB;
     STA.W $211A                                                          ;8B83ED;
-    STA.B $5F                                                            ;8B83F0;
+    STA.B DP_Mode7Settings                                                            ;8B83F0;
     LDA.B #$48                                                           ;8B83F2;
-    STA.B $58                                                            ;8B83F4;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8B83F4;
     STA.W $2107                                                          ;8B83F6;
     LDA.B #$4C                                                           ;8B83F9;
-    STA.B $59                                                            ;8B83FB;
+    STA.B DP_BG2TilemapAddrSize                                                            ;8B83FB;
     STA.W $2108                                                          ;8B83FD;
     LDA.B #$24                                                           ;8B8400;
-    STA.B $5A                                                            ;8B8402;
+    STA.B DP_BG3TilemapAddrSize                                                            ;8B8402;
     STA.W $2109                                                          ;8B8404;
-    STZ.B $5C                                                            ;8B8407;
+    STZ.B DP_BG4TilemapAddrSize                                                            ;8B8407;
     STZ.W $210A                                                          ;8B8409;
     LDA.B #$54                                                           ;8B840C;
-    STA.B $5D                                                            ;8B840E;
+    STA.B DP_BGTilesAddr                                                            ;8B840E;
     STA.W $210B                                                          ;8B8410;
     LDA.B #$02                                                           ;8B8413;
-    STA.B $5E                                                            ;8B8415;
+    STA.B DP_BGTilesAddr+1                                                            ;8B8415;
     STA.W $210C                                                          ;8B8417;
     LDA.B #$01                                                           ;8B841A;
     STA.W $212C                                                          ;8B841C;
-    STA.B $69                                                            ;8B841F;
+    STA.B DP_MainScreenLayers                                                            ;8B841F;
     STZ.W $212D                                                          ;8B8421;
-    STZ.B $6B                                                            ;8B8424;
+    STZ.B DP_SubScreenLayers                                                            ;8B8424;
     STZ.B $60                                                            ;8B8426;
     STZ.B $61                                                            ;8B8428;
     STZ.B $62                                                            ;8B842A;
-    STZ.B $6C                                                            ;8B842C;
+    STZ.B DP_WindowAreaMainScreen                                                            ;8B842C;
     STZ.B $6D                                                            ;8B842E;
-    STZ.B $6F                                                            ;8B8430;
-    STZ.B $72                                                            ;8B8432;
+    STZ.B DP_ColorMathA                                                            ;8B8430;
+    STZ.B DP_ColorMathB                                                            ;8B8432;
     LDA.B #$20                                                           ;8B8434;
-    STA.B $74                                                            ;8B8436;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8B8436;
     LDA.B #$40                                                           ;8B8438;
-    STA.B $75                                                            ;8B843A;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8B843A;
     LDA.B #$80                                                           ;8B843C;
-    STA.B $76                                                            ;8B843E;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8B843E;
     REP #$30                                                             ;8B8440;
-    STZ.W $0590                                                          ;8B8442;
+    STZ.W OAMStack                                                          ;8B8442;
     LDA.W #$0100                                                         ;8B8445;
     STA.W $211B                                                          ;8B8448;
     STA.B $78                                                            ;8B844B;
@@ -503,17 +503,17 @@ Setup_PPU_Credits:
     STA.B $80                                                            ;8B8462;
     STA.W $2120                                                          ;8B8464;
     STA.B $82                                                            ;8B8467;
-    STZ.W $198D                                                          ;8B8469;
+    STZ.W Mode7TransformationAngle                                                          ;8B8469;
     LDA.W #$0001                                                         ;8B846C;
-    STA.W $198F                                                          ;8B846F;
-    STZ.B $B1                                                            ;8B8472;
-    STZ.B $B3                                                            ;8B8474;
-    STZ.B $B5                                                            ;8B8476;
-    STZ.B $B7                                                            ;8B8478;
-    STZ.W $1991                                                          ;8B847A;
-    STZ.W $1993                                                          ;8B847D;
-    STZ.W $1995                                                          ;8B8480;
-    STZ.W $1997                                                          ;8B8483;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B846F;
+    STZ.B DP_BG1XScroll                                                            ;8B8472;
+    STZ.B DP_BG1YScroll                                                            ;8B8474;
+    STZ.B DP_BG2XScroll                                                            ;8B8476;
+    STZ.B DP_BG2YScroll                                                            ;8B8478;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B847A;
+    STZ.W CinematicBG1_XPosition                                                          ;8B847D;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B8480;
+    STZ.W CinematicBG1_YPosition                                                          ;8B8483;
     PLP                                                                  ;8B8486;
     RTS                                                                  ;8B8487;
 
@@ -526,37 +526,37 @@ UNUSED_ModifyMode7TransformAndBG1PosWithController_8B8488:
     LDA.B $8B                                                            ;8B848B;
     BIT.W #$0200                                                         ;8B848D;
     BEQ .checkRight                                                      ;8B8490;
-    LDA.W $1993                                                          ;8B8492;
+    LDA.W CinematicBG1_XPosition                                                          ;8B8492;
     CLC                                                                  ;8B8495;
     ADC.W #$0002                                                         ;8B8496;
-    STA.W $1993                                                          ;8B8499;
+    STA.W CinematicBG1_XPosition                                                          ;8B8499;
 
   .checkRight:
     LDA.B $8B                                                            ;8B849C;
     BIT.W #$0100                                                         ;8B849E;
     BEQ .checkUp                                                         ;8B84A1;
-    LDA.W $1993                                                          ;8B84A3;
+    LDA.W CinematicBG1_XPosition                                                          ;8B84A3;
     SEC                                                                  ;8B84A6;
     SBC.W #$0002                                                         ;8B84A7;
-    STA.W $1993                                                          ;8B84AA;
+    STA.W CinematicBG1_XPosition                                                          ;8B84AA;
 
   .checkUp:
     LDA.B $8B                                                            ;8B84AD;
     BIT.W #$0800                                                         ;8B84AF;
     BEQ .checkDown                                                       ;8B84B2;
-    LDA.W $1997                                                          ;8B84B4;
+    LDA.W CinematicBG1_YPosition                                                          ;8B84B4;
     CLC                                                                  ;8B84B7;
     ADC.W #$0002                                                         ;8B84B8;
-    STA.W $1997                                                          ;8B84BB;
+    STA.W CinematicBG1_YPosition                                                          ;8B84BB;
 
   .checkDown:
     LDA.B $8B                                                            ;8B84BE;
     BIT.W #$0400                                                         ;8B84C0;
     BEQ .checkLR                                                         ;8B84C3;
-    LDA.W $1997                                                          ;8B84C5;
+    LDA.W CinematicBG1_YPosition                                                          ;8B84C5;
     SEC                                                                  ;8B84C8;
     SBC.W #$0002                                                         ;8B84C9;
-    STA.W $1997                                                          ;8B84CC;
+    STA.W CinematicBG1_YPosition                                                          ;8B84CC;
 
   .checkLR:
     LDA.B $8B                                                            ;8B84CF;
@@ -564,17 +564,17 @@ UNUSED_ModifyMode7TransformAndBG1PosWithController_8B8488:
     BNE .pressingR                                                       ;8B84D4;
     BIT.W #$0020                                                         ;8B84D6;
     BEQ .checkB                                                          ;8B84D9;
-    LDA.W $198D                                                          ;8B84DB;
+    LDA.W Mode7TransformationAngle                                                          ;8B84DB;
     DEC                                                                  ;8B84DE;
     AND.W #$00FF                                                         ;8B84DF;
-    STA.W $198D                                                          ;8B84E2;
+    STA.W Mode7TransformationAngle                                                          ;8B84E2;
     BRA .checkB                                                          ;8B84E5;
 
   .pressingR:
-    LDA.W $198D                                                          ;8B84E7;
+    LDA.W Mode7TransformationAngle                                                          ;8B84E7;
     INC                                                                  ;8B84EA;
     AND.W #$00FF                                                         ;8B84EB;
-    STA.W $198D                                                          ;8B84EE;
+    STA.W Mode7TransformationAngle                                                          ;8B84EE;
 
   .checkB:
     LDA.B $8B                                                            ;8B84F1;
@@ -586,18 +586,18 @@ UNUSED_ModifyMode7TransformAndBG1PosWithController_8B8488:
     RTS                                                                  ;8B84FE;
 
   .zoomOut:
-    LDA.W $198F                                                          ;8B84FF;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8B84FF;
     CMP.W #$7000                                                         ;8B8502;
     BPL .return                                                          ;8B8505;
     INC                                                                  ;8B8507;
-    STA.W $198F                                                          ;8B8508;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B8508;
     BRA .return                                                          ;8B850B;
 
   .zoomIn:
-    LDA.W $198F                                                          ;8B850D;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8B850D;
     BEQ .return                                                          ;8B8510;
     DEC                                                                  ;8B8512;
-    STA.W $198F                                                          ;8B8513;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B8513;
 
   .return:
     PLP                                                                  ;8B8516;
@@ -609,14 +609,14 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 HandleMode7TransformMatrixAndBG1Position_NoRotation:
     PHP                                                                  ;8B8518;
     REP #$30                                                             ;8B8519;
-    LDA.W $198F                                                          ;8B851B;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8B851B;
     STA.B $78                                                            ;8B851E;
     STA.B $7E                                                            ;8B8520;
     STZ.B $7A                                                            ;8B8522;
     STZ.B $7C                                                            ;8B8524;
-    LDA.W $1993                                                          ;8B8526;
+    LDA.W CinematicBG1_XPosition                                                          ;8B8526;
     STA.B $B1                                                            ;8B8529;
-    LDA.W $1997                                                          ;8B852B;
+    LDA.W CinematicBG1_YPosition                                                          ;8B852B;
     STA.B $B3                                                            ;8B852E;
     PLP                                                                  ;8B8530;
     RTS                                                                  ;8B8531;
@@ -626,7 +626,7 @@ HandleMode7TransformMatrixAndBG1Position_NoRotation:
 HandleMode7TransformMatrixAndBG1Position:
     PHP                                                                  ;8B8532;
     REP #$30                                                             ;8B8533;
-    LDA.W $198D                                                          ;8B8535;
+    LDA.W Mode7TransformationAngle                                                          ;8B8535;
     CLC                                                                  ;8B8538;
     ADC.W #$0040                                                         ;8B8539;
     AND.W #$00FF                                                         ;8B853C;
@@ -634,7 +634,7 @@ HandleMode7TransformMatrixAndBG1Position:
     TAX                                                                  ;8B8540;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;8B8541;
     STA.B $26                                                            ;8B8545;
-    LDA.W $198F                                                          ;8B8547;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8B8547;
     STA.B $28                                                            ;8B854A;
     JSR.W Multiplication_16bitSigned_8B858F                              ;8B854C;
     SEP #$20                                                             ;8B854F;
@@ -644,13 +644,13 @@ HandleMode7TransformMatrixAndBG1Position:
     REP #$20                                                             ;8B8556;
     STA.B $78                                                            ;8B8558;
     STA.B $7E                                                            ;8B855A;
-    LDA.W $198D                                                          ;8B855C;
+    LDA.W Mode7TransformationAngle                                                          ;8B855C;
     AND.W #$00FF                                                         ;8B855F;
     ASL                                                                  ;8B8562;
     TAX                                                                  ;8B8563;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;8B8564;
     STA.B $26                                                            ;8B8568;
-    LDA.W $198F                                                          ;8B856A;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8B856A;
     STA.B $28                                                            ;8B856D;
     JSR.W Multiplication_16bitSigned_8B858F                              ;8B856F;
     SEP #$20                                                             ;8B8572;
@@ -662,9 +662,9 @@ HandleMode7TransformMatrixAndBG1Position:
     EOR.W #$FFFF                                                         ;8B857D;
     INC                                                                  ;8B8580;
     STA.B $7C                                                            ;8B8581;
-    LDA.W $1993                                                          ;8B8583;
+    LDA.W CinematicBG1_XPosition                                                          ;8B8583;
     STA.B $B1                                                            ;8B8586;
-    LDA.W $1997                                                          ;8B8588;
+    LDA.W CinematicBG1_YPosition                                                          ;8B8588;
     STA.B $B3                                                            ;8B858B;
     PLP                                                                  ;8B858D;
     RTS                                                                  ;8B858E;
@@ -822,15 +822,15 @@ Handle_Fading_In_from_Bank8B:
 Activate_TileSequence_BlueLight:
     PHP                                                                  ;8B866B;
     SEP #$20                                                             ;8B866C;
-    STZ.B $6F                                                            ;8B866E;
+    STZ.B DP_ColorMathA                                                            ;8B866E;
     LDA.B #$81                                                           ;8B8670;
-    STA.B $72                                                            ;8B8672;
+    STA.B DP_ColorMathB                                                            ;8B8672;
     LDA.B #$38                                                           ;8B8674;
-    STA.B $74                                                            ;8B8676;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8B8676;
     LDA.B #$58                                                           ;8B8678;
-    STA.B $75                                                            ;8B867A;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8B867A;
     LDA.B #$80                                                           ;8B867C;
-    STA.B $76                                                            ;8B867E;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8B867E;
     PLP                                                                  ;8B8680;
     RTS                                                                  ;8B8681;
 
@@ -839,14 +839,14 @@ Activate_TileSequence_BlueLight:
 Deactivate_TileSequence_BlueLight:
     PHP                                                                  ;8B8682;
     SEP #$20                                                             ;8B8683;
-    STZ.B $6F                                                            ;8B8685;
-    STZ.B $72                                                            ;8B8687;
+    STZ.B DP_ColorMathA                                                            ;8B8685;
+    STZ.B DP_ColorMathB                                                            ;8B8687;
     LDA.B #$20                                                           ;8B8689;
-    STA.B $74                                                            ;8B868B;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8B868B;
     LDA.B #$40                                                           ;8B868D;
-    STA.B $75                                                            ;8B868F;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8B868F;
     LDA.B #$80                                                           ;8B8691;
-    STA.B $76                                                            ;8B8693;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8B8693;
     PLP                                                                  ;8B8695;
     RTS                                                                  ;8B8696;
 
@@ -863,7 +863,7 @@ Debug_DisplayVersionInfo:
 
     PHP                                                                  ;8B8698;
     REP #$30                                                             ;8B8699;
-    LDX.W $0590                                                          ;8B869B;
+    LDX.W OAMStack                                                          ;8B869B;
     LDY.W #$0000                                                         ;8B869E;
 
   .loopVersionString:
@@ -901,7 +901,7 @@ Debug_DisplayVersionInfo:
 
   .done:
     PLY                                                                  ;8B86DC;
-    STX.W $0590                                                          ;8B86DD;
+    STX.W OAMStack                                                          ;8B86DD;
     LDA.L DebugConst_DisableAudio                                        ;8B86E0;
     BEQ .versionNumber                                                   ;8B86E4;
     LDA.W #$00B4                                                         ;8B86E6;
@@ -961,7 +961,7 @@ Debug_DisplayVersionInfo:
     INY                                                                  ;8B8759;
     CPY.W #$0006                                                         ;8B875A;
     BMI .loopVer                                                         ;8B875D;
-    STX.W $0590                                                          ;8B875F;
+    STX.W OAMStack                                                          ;8B875F;
     PLP                                                                  ;8B8762;
     RTS                                                                  ;8B8763;
 
@@ -986,32 +986,32 @@ Debug_DisplayVersionInfo:
 ;;; $87A0: Update 32x30 cinematic BG tilemap ;;;
 CinematicBGObjects_Update32x30CinematicBGTilemap:
 ; If not mode 7:
-;     Queue transfer of 780h bytes from $7E:3000 to VRAM [$19F5]
+;     Queue transfer of 780h bytes from $7E:3000 to VRAM CinematicBGObject_VRAMAddr
     PHP                                                                  ;8B87A0;
     REP #$30                                                             ;8B87A1;
-    LDA.B $55                                                            ;8B87A3;
+    LDA.B DP_BGModeSize                                                            ;8B87A3;
     AND.W #$00FF                                                         ;8B87A5;
     CMP.W #$0007                                                         ;8B87A8;
     BEQ .return                                                          ;8B87AB;
-    LDX.W $0330                                                          ;8B87AD;
+    LDX.W VRAMWriteStack                                                          ;8B87AD;
     LDA.W #$0780                                                         ;8B87B0;
-    STA.B $D0,X                                                          ;8B87B3;
+    STA.B VRAMWrite.size,X                                                          ;8B87B3;
     INX                                                                  ;8B87B5;
     INX                                                                  ;8B87B6;
     LDA.W #$3000                                                         ;8B87B7;
-    STA.B $D0,X                                                          ;8B87BA;
+    STA.B VRAMWrite.size,X                                                          ;8B87BA;
     INX                                                                  ;8B87BC;
     INX                                                                  ;8B87BD;
     SEP #$20                                                             ;8B87BE;
     LDA.B #$7E                                                           ;8B87C0;
-    STA.B $D0,X                                                          ;8B87C2;
+    STA.B VRAMWrite.size,X                                                          ;8B87C2;
     REP #$20                                                             ;8B87C4;
     INX                                                                  ;8B87C6;
-    LDA.W $19F5                                                          ;8B87C7;
-    STA.B $D0,X                                                          ;8B87CA;
+    LDA.W CinematicBGObject_VRAMAddr                                                          ;8B87C7;
+    STA.B VRAMWrite.size,X                                                          ;8B87CA;
     INX                                                                  ;8B87CC;
     INX                                                                  ;8B87CD;
-    STX.W $0330                                                          ;8B87CE;
+    STX.W VRAMWriteStack                                                          ;8B87CE;
 
   .return:
     PLP                                                                  ;8B87D1;
@@ -1024,29 +1024,29 @@ CinematicBGObjects_UpdateSamusEyesTilemap:
 ;     Queue transfer of $7E:3B40..BF to VRAM $49A0..DF (BG2 tilemap rows Dh/Eh)
     PHP                                                                  ;8B87D3;
     REP #$30                                                             ;8B87D4;
-    LDA.B $55                                                            ;8B87D6;
+    LDA.B DP_BGModeSize                                                            ;8B87D6;
     AND.W #$00FF                                                         ;8B87D8;
     CMP.W #$0007                                                         ;8B87DB;
     BEQ .return                                                          ;8B87DE;
-    LDX.W $0330                                                          ;8B87E0;
+    LDX.W VRAMWriteStack                                                          ;8B87E0;
     LDA.W #$0080                                                         ;8B87E3;
-    STA.B $D0,X                                                          ;8B87E6;
+    STA.B VRAMWrite.size,X                                                          ;8B87E6;
     INX                                                                  ;8B87E8;
     INX                                                                  ;8B87E9;
     LDA.W #$3B40                                                         ;8B87EA;
-    STA.B $D0,X                                                          ;8B87ED;
+    STA.B VRAMWrite.size,X                                                          ;8B87ED;
     INX                                                                  ;8B87EF;
     INX                                                                  ;8B87F0;
     SEP #$20                                                             ;8B87F1;
     LDA.B #$7E                                                           ;8B87F3;
-    STA.B $D0,X                                                          ;8B87F5;
+    STA.B VRAMWrite.size,X                                                          ;8B87F5;
     REP #$20                                                             ;8B87F7;
     INX                                                                  ;8B87F9;
     LDA.W #$49A0                                                         ;8B87FA;
-    STA.B $D0,X                                                          ;8B87FD;
+    STA.B VRAMWrite.size,X                                                          ;8B87FD;
     INX                                                                  ;8B87FF;
     INX                                                                  ;8B8800;
-    STX.W $0330                                                          ;8B8801;
+    STX.W VRAMWriteStack                                                          ;8B8801;
 
   .return:
     PLP                                                                  ;8B8804;
@@ -1056,32 +1056,32 @@ CinematicBGObjects_UpdateSamusEyesTilemap:
 ;;; $8806: Update 32x32 cinematic BG tilemap ;;;
 CinematicBGObjects_Update32x32CinematicBGTilemap:
 ; If not mode 7:
-;     Queue transfer of 800h bytes from $7E:3000 to VRAM [$19F5]
+;     Queue transfer of 800h bytes from $7E:3000 to VRAM CinematicBGObject_VRAMAddr
     PHP                                                                  ;8B8806;
     REP #$30                                                             ;8B8807;
-    LDA.B $55                                                            ;8B8809;
+    LDA.B DP_BGModeSize                                                            ;8B8809;
     AND.W #$00FF                                                         ;8B880B;
     CMP.W #$0007                                                         ;8B880E;
     BEQ .return                                                          ;8B8811;
-    LDX.W $0330                                                          ;8B8813;
+    LDX.W VRAMWriteStack                                                          ;8B8813;
     LDA.W #$0800                                                         ;8B8816;
-    STA.B $D0,X                                                          ;8B8819;
+    STA.B VRAMWrite.size,X                                                          ;8B8819;
     INX                                                                  ;8B881B;
     INX                                                                  ;8B881C;
     LDA.W #$3000                                                         ;8B881D;
-    STA.B $D0,X                                                          ;8B8820;
+    STA.B VRAMWrite.size,X                                                          ;8B8820;
     INX                                                                  ;8B8822;
     INX                                                                  ;8B8823;
     SEP #$20                                                             ;8B8824;
     LDA.B #$7E                                                           ;8B8826;
-    STA.B $D0,X                                                          ;8B8828;
+    STA.B VRAMWrite.size,X                                                          ;8B8828;
     REP #$20                                                             ;8B882A;
     INX                                                                  ;8B882C;
-    LDA.W $19F5                                                          ;8B882D;
-    STA.B $D0,X                                                          ;8B8830;
+    LDA.W CinematicBGObject_VRAMAddr                                                          ;8B882D;
+    STA.B VRAMWrite.size,X                                                          ;8B8830;
     INX                                                                  ;8B8832;
     INX                                                                  ;8B8833;
-    STX.W $0330                                                          ;8B8834;
+    STX.W VRAMWriteStack                                                          ;8B8834;
 
   .return:
     PLP                                                                  ;8B8837;
@@ -1143,7 +1143,7 @@ IndirectInstructionFunction_DrawTextCharacter:
     ASL                                                                  ;8B8872;
     ASL                                                                  ;8B8873;
     ASL                                                                  ;8B8874;
-    STA.W $1A7D,X                                                        ;8B8875;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8B8875;
     LDA.W $0009,Y                                                        ;8B8878;
     AND.W #$00FF                                                         ;8B887B;
     ASL                                                                  ;8B887E;
@@ -1151,12 +1151,12 @@ IndirectInstructionFunction_DrawTextCharacter:
     ASL                                                                  ;8B8880;
     SEC                                                                  ;8B8881;
     SBC.W #$0008                                                         ;8B8882;
-    STA.W $1A9D,X                                                        ;8B8885;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8B8885;
     BRA .merge                                                           ;8B8888;
 
   .pointer:
     LDA.W #$0008                                                         ;8B888A;
-    STA.W $1A7D,X                                                        ;8B888D;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8B888D;
     LDA.W $0003,Y                                                        ;8B8890;
     AND.W #$00FF                                                         ;8B8893;
     INC                                                                  ;8B8896;
@@ -1166,7 +1166,7 @@ IndirectInstructionFunction_DrawTextCharacter:
     ASL                                                                  ;8B889A;
     SEC                                                                  ;8B889B;
     SBC.W #$0008                                                         ;8B889C;
-    STA.W $1A9D,X                                                        ;8B889F;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8B889F;
 
   .merge:
     LDA.W $0004,Y                                                        ;8B88A2;
@@ -1200,7 +1200,7 @@ IndirectInstructionFunction_DrawTextToTilemap:
 
   .loop:
     LDA.W $0004,Y                                                        ;8B88CF;
-    STA.L $7E3000,X                                                      ;8B88D2;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8B88D2;
     INY                                                                  ;8B88D6;
     INY                                                                  ;8B88D7;
     INX                                                                  ;8B88D8;
@@ -1246,7 +1246,7 @@ IndirectInstructionFunction_DrawSamusEyesToTilemap:
 
   .loops:
     LDA.W $0004,Y                                                        ;8B8915;
-    STA.L $7E3800,X                                                      ;8B8918;
+    STA.L CinematicBGTilemap,X                                                      ;8B8918;
     INY                                                                  ;8B891C;
     INY                                                                  ;8B891D;
     INX                                                                  ;8B891E;
@@ -1466,7 +1466,7 @@ Calculate_SamusPosition_InRotatingElevatorRoom:
     PHK                                                                  ;8B8A54;
     PLB                                                                  ;8B8A55;
     REP #$30                                                             ;8B8A56;
-    LDA.W $0AF6                                                          ;8B8A58;
+    LDA.W SamusXPosition                                                          ;8B8A58;
     SEC                                                                  ;8B8A5B;
     SBC.B $80                                                            ;8B8A5C;
     STA.B $22                                                            ;8B8A5E;
@@ -1501,7 +1501,7 @@ Calculate_SamusPosition_InRotatingElevatorRoom:
     LDA.B $80                                                            ;8B8A97;
     CLC                                                                  ;8B8A99;
     ADC.B $1A                                                            ;8B8A9A;
-    STA.W $0AF6                                                          ;8B8A9C;
+    STA.W SamusXPosition                                                          ;8B8A9C;
     LDA.B $7C                                                            ;8B8A9F;
     STA.B $26                                                            ;8B8AA1;
     LDA.B $22                                                            ;8B8AA3;
@@ -1583,7 +1583,7 @@ Calculate_ProjectilePosition_InRotatingElevatorRoom:
     CLC                                                                  ;8B8B20;
     ADC.B $1A                                                            ;8B8B21;
     SEC                                                                  ;8B8B23;
-    SBC.W $0911                                                          ;8B8B24;
+    SBC.W Layer1XPosition                                                          ;8B8B24;
     STA.B $14                                                            ;8B8B27;
     LDA.B $7C                                                            ;8B8B29;
     STA.B $26                                                            ;8B8B2B;
@@ -1613,7 +1613,7 @@ Calculate_ProjectilePosition_InRotatingElevatorRoom:
     SEC                                                                  ;8B8B5A;
     SBC.B $1A                                                            ;8B8B5B;
     SEC                                                                  ;8B8B5D;
-    SBC.W $0915                                                          ;8B8B5E;
+    SBC.W Layer1YPosition                                                          ;8B8B5E;
     STA.B $12                                                            ;8B8B61;
     PLB                                                                  ;8B8B63;
     PLP                                                                  ;8B8B64;
@@ -1718,7 +1718,7 @@ PaletteCrossFading_CopyCurrentPalettesToFadingPalettes:
     LDX.W #$0000                                                         ;8B8BF6;
 
   .loop:
-    LDA.L $7EC000,X                                                      ;8B8BF9;
+    LDA.L Palettes,X                                                      ;8B8BF9;
     STA.L $7E2200,X                                                      ;8B8BFD;
     INX                                                                  ;8B8C01;
     INX                                                                  ;8B8C02;
@@ -1893,7 +1893,7 @@ PaletteCrossFading_ComposeFadingPalettes:
     AND.W #$7C00                                                         ;8B8D0F;
     ORA.B $12                                                            ;8B8D12;
     STA.L $7E2000,X                                                      ;8B8D14;
-    STA.L $7EC000,X                                                      ;8B8D18;
+    STA.L Palettes,X                                                      ;8B8D18;
     INX                                                                  ;8B8D1C;
     INX                                                                  ;8B8D1D;
     DEY                                                                  ;8B8D1E;
@@ -1938,7 +1938,7 @@ LoadJapanTextIntroTiles:
     PLB                                                                  ;8B8D41;
     PLB                                                                  ;8B8D42;
     LDA.W $0000,Y                                                        ;8B8D43;
-    STA.L $7E4000,X                                                      ;8B8D46;
+    STA.L IntroBG3JapanTextTiles,X                                                      ;8B8D46;
     LDA.W $0002,Y                                                        ;8B8D4A;
     STA.L $7E4002,X                                                      ;8B8D4D;
     LDA.W $0004,Y                                                        ;8B8D51;
@@ -1971,7 +1971,7 @@ LoadJapanTextIntroTiles:
     PLB                                                                  ;8B8D94;
     PLB                                                                  ;8B8D95;
     LDA.W $0000,Y                                                        ;8B8D96;
-    STA.L $7E4000,X                                                      ;8B8D99;
+    STA.L IntroBG3JapanTextTiles,X                                                      ;8B8D99;
     LDA.W $0002,Y                                                        ;8B8D9D;
     STA.L $7E4002,X                                                      ;8B8DA0;
     LDA.W $0004,Y                                                        ;8B8DA4;
@@ -2010,45 +2010,45 @@ LoadJapanTextIntroTiles:
 TransferJapanTextTilesToVRAM:
 ; Queue transfer of $7E:4000..45FF to VRAM $4180..447F
     PHX                                                                  ;8B8DE6;
-    LDX.W $0330                                                          ;8B8DE7;
+    LDX.W VRAMWriteStack                                                          ;8B8DE7;
     LDA.W #$0600                                                         ;8B8DEA;
-    STA.B $D0,X                                                          ;8B8DED;
+    STA.B VRAMWrite.size,X                                                          ;8B8DED;
     INX                                                                  ;8B8DEF;
     INX                                                                  ;8B8DF0;
     LDA.W #$4000                                                         ;8B8DF1;
-    STA.B $D0,X                                                          ;8B8DF4;
+    STA.B VRAMWrite.size,X                                                          ;8B8DF4;
     INX                                                                  ;8B8DF6;
     INX                                                                  ;8B8DF7;
     SEP #$20                                                             ;8B8DF8;
     LDA.B #$7E                                                           ;8B8DFA;
-    STA.B $D0,X                                                          ;8B8DFC;
+    STA.B VRAMWrite.size,X                                                          ;8B8DFC;
     REP #$20                                                             ;8B8DFE;
     INX                                                                  ;8B8E00;
     LDA.W #$4180                                                         ;8B8E01;
-    STA.B $D0,X                                                          ;8B8E04;
+    STA.B VRAMWrite.size,X                                                          ;8B8E04;
     INX                                                                  ;8B8E06;
     INX                                                                  ;8B8E07;
-    STX.W $0330                                                          ;8B8E08;
+    STX.W VRAMWriteStack                                                          ;8B8E08;
     PLX                                                                  ;8B8E0B;
     RTS                                                                  ;8B8E0C;
 
 
 ;;; $8E0D: Handle Samus during intro ;;;
 HandleSamusDuringIntro:
-    LDA.W $1A57                                                          ;8B8E0D;
+    LDA.W IntroSamusDisplayFlag                                                          ;8B8E0D;
     BEQ .return                                                          ;8B8E10;
     JSL.L SamusCurrentStateHandler                                       ;8B8E12;
     JSL.L SamusNewStateHandler                                           ;8B8E16;
-    LDA.W $18A8                                                          ;8B8E1A;
+    LDA.W SamusInvincibilityTimer                                                          ;8B8E1A;
     BEQ .handleKnockback                                                 ;8B8E1D;
     DEC                                                                  ;8B8E1F;
-    STA.W $18A8                                                          ;8B8E20;
+    STA.W SamusInvincibilityTimer                                                          ;8B8E20;
 
   .handleKnockback:
-    LDA.W $18AA                                                          ;8B8E23;
+    LDA.W SamusKnockbackTimer                                                          ;8B8E23;
     BEQ .return                                                          ;8B8E26;
     DEC                                                                  ;8B8E28;
-    STA.W $18AA                                                          ;8B8E29;
+    STA.W SamusKnockbackTimer                                                          ;8B8E29;
 
   .return:
     RTS                                                                  ;8B8E2C;
@@ -2056,7 +2056,7 @@ HandleSamusDuringIntro:
 
 ;;; $8E2D: Draw intro sprites ;;;
 DrawIntroSprites:
-    LDA.W $1A57                                                          ;8B8E2D;
+    LDA.W IntroSamusDisplayFlag                                                          ;8B8E2D;
     BEQ .noSamus                                                         ;8B8E30;
     BMI .samusPriority                                                   ;8B8E32;
     JSR.W Draw_CinematicSpriteObjects_IntroTitleSequence                 ;8B8E34;
@@ -2185,7 +2185,7 @@ MoveUnusedSpritesOffScreen:
 ; TODO: this might be buggy for [OAM stack pointer] = 1FCh
     PHP                                                                  ;8B8ED9;
     REP #$30                                                             ;8B8EDA;
-    LDA.W $0590                                                          ;8B8EDC;
+    LDA.W OAMStack                                                          ;8B8EDC;
     CMP.W #$0200                                                         ;8B8EDF;
     BPL .return                                                          ;8B8EE2;
     LSR                                                                  ;8B8EE4;
@@ -2215,7 +2215,7 @@ MoveUnusedSpritesOffScreen:
     BMI .loop                                                            ;8B8F0B;
 
   .setXpos:
-    LDA.W $0590                                                          ;8B8F0D;
+    LDA.W OAMStack                                                          ;8B8F0D;
     LSR                                                                  ;8B8F10;
     STA.B $12                                                            ;8B8F11;
     LSR                                                                  ;8B8F13;
@@ -2382,21 +2382,21 @@ AdvanceFastScreenFadeOut:
 ; Screen darkens at rate [screen fade counter] / Fh per frame
     PHP                                                                  ;8B90B8;
     SEP #$30                                                             ;8B90B9;
-    LDA.B $51                                                            ;8B90BB;
+    LDA.B DP_Brightness                                                            ;8B90BB;
     AND.B #$0F                                                           ;8B90BD;
     BEQ .return                                                          ;8B90BF;
     SEC                                                                  ;8B90C1;
-    SBC.W $0725                                                          ;8B90C2;
+    SBC.W ScreenFadeCounter                                                          ;8B90C2;
     BEQ .forcedBlank                                                     ;8B90C5;
     BMI .forcedBlank                                                     ;8B90C7;
-    STA.B $51                                                            ;8B90C9;
+    STA.B DP_Brightness                                                            ;8B90C9;
     PLP                                                                  ;8B90CB;
     CLC                                                                  ;8B90CC;
     RTS                                                                  ;8B90CD;
 
   .forcedBlank:
     LDA.B #$80                                                           ;8B90CE;
-    STA.B $51                                                            ;8B90D0;
+    STA.B DP_Brightness                                                            ;8B90D0;
 
   .return:
     PLP                                                                  ;8B90D2;
@@ -2412,19 +2412,19 @@ AdvanceSlowScreenFadeOut:
 ; Screen darkens at rate 1/Fh per [screen fade counter] frames
     PHP                                                                  ;8B90D5;
     SEP #$30                                                             ;8B90D6;
-    DEC.W $0723                                                          ;8B90D8;
+    DEC.W ScreenFadeDelay                                                          ;8B90D8;
     BEQ .checkBrightness                                                 ;8B90DB;
     BPL .returnFading                                                    ;8B90DD;
 
   .checkBrightness:
-    LDA.B $51                                                            ;8B90DF;
+    LDA.B DP_Brightness                                                            ;8B90DF;
     AND.B #$0F                                                           ;8B90E1;
     BEQ .done                                                            ;8B90E3;
     DEC                                                                  ;8B90E5;
     BEQ .zeroBrightness                                                  ;8B90E6;
-    STA.B $51                                                            ;8B90E8;
-    LDA.W $0725                                                          ;8B90EA;
-    STA.W $0723                                                          ;8B90ED;
+    STA.B DP_Brightness                                                            ;8B90E8;
+    LDA.W ScreenFadeCounter                                                          ;8B90EA;
+    STA.W ScreenFadeDelay                                                          ;8B90ED;
 
   .returnFading:
     PLP                                                                  ;8B90F0;
@@ -2433,9 +2433,9 @@ AdvanceSlowScreenFadeOut:
 
   .zeroBrightness:
     LDA.B #$80                                                           ;8B90F3;
-    STA.B $51                                                            ;8B90F5;
-    STZ.W $0723                                                          ;8B90F7;
-    STZ.W $0725                                                          ;8B90FA;
+    STA.B DP_Brightness                                                            ;8B90F5;
+    STZ.W ScreenFadeDelay                                                          ;8B90F7;
+    STZ.W ScreenFadeCounter                                                          ;8B90FA;
 
   .done:
     PLP                                                                  ;8B90FD;
@@ -2451,20 +2451,20 @@ AdvanceFastScreenFadeIn:
 ; Screen brightens at rate [screen fade counter] / Fh per frame
     PHP                                                                  ;8B9100;
     SEP #$30                                                             ;8B9101;
-    LDA.B $51                                                            ;8B9103;
+    LDA.B DP_Brightness                                                            ;8B9103;
     CLC                                                                  ;8B9105;
-    ADC.W $0725                                                          ;8B9106;
+    ADC.W ScreenFadeCounter                                                          ;8B9106;
     AND.B #$1F                                                           ;8B9109;
     CMP.B #$0F                                                           ;8B910B;
     BPL .disableForcedBlank                                              ;8B910D;
-    STA.B $51                                                            ;8B910F;
+    STA.B DP_Brightness                                                            ;8B910F;
     PLP                                                                  ;8B9111;
     CLC                                                                  ;8B9112;
     RTS                                                                  ;8B9113;
 
   .disableForcedBlank:
     LDA.B #$0F                                                           ;8B9114;
-    STA.B $51                                                            ;8B9116;
+    STA.B DP_Brightness                                                            ;8B9116;
     PLP                                                                  ;8B9118;
     SEC                                                                  ;8B9119;
     RTS                                                                  ;8B911A;
@@ -2478,19 +2478,19 @@ AdvanceSlowScreenFadeIn:
 ; Screen brightens at rate 1/Fh per [screen fade counter] frames
     PHP                                                                  ;8B911B;
     SEP #$30                                                             ;8B911C;
-    DEC.W $0723                                                          ;8B911E;
+    DEC.W ScreenFadeDelay                                                          ;8B911E;
     BEQ .checkBrightness                                                 ;8B9121;
     BPL .fading                                                          ;8B9123;
 
   .checkBrightness:
-    LDA.B $51                                                            ;8B9125;
+    LDA.B DP_Brightness                                                            ;8B9125;
     INC                                                                  ;8B9127;
     AND.B #$1F                                                           ;8B9128;
     CMP.B #$0F                                                           ;8B912A;
     BPL .maxBrightness                                                   ;8B912C;
-    STA.B $51                                                            ;8B912E;
-    LDA.W $0725                                                          ;8B9130;
-    STA.W $0723                                                          ;8B9133;
+    STA.B DP_Brightness                                                            ;8B912E;
+    LDA.W ScreenFadeCounter                                                          ;8B9130;
+    STA.W ScreenFadeDelay                                                          ;8B9133;
 
   .fading:
     PLP                                                                  ;8B9136;
@@ -2499,9 +2499,9 @@ AdvanceSlowScreenFadeIn:
 
   .maxBrightness:
     LDA.B #$0F                                                           ;8B9139;
-    STA.B $51                                                            ;8B913B;
-    STZ.W $0723                                                          ;8B913D;
-    STZ.W $0725                                                          ;8B9140;
+    STA.B DP_Brightness                                                            ;8B913B;
+    STZ.W ScreenFadeDelay                                                          ;8B913D;
+    STZ.W ScreenFadeCounter                                                          ;8B9140;
     PLP                                                                  ;8B9143;
     SEC                                                                  ;8B9144;
     RTS                                                                  ;8B9145;
@@ -2516,9 +2516,9 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     SEP #$30                                                             ;8B914A;
     LDA.B #$8F                                                           ;8B914C;
     STA.W $2100                                                          ;8B914E;
-    STA.B $51                                                            ;8B9151;
+    STA.B DP_Brightness                                                            ;8B9151;
     REP #$30                                                             ;8B9153;
-    STZ.W $0590                                                          ;8B9155;
+    STZ.W OAMStack                                                          ;8B9155;
     JSL.L ClearHighOAM                                                   ;8B9158;
     JSL.L Finalise_OAM                                                   ;8B915C;
     STZ.W $071D                                                          ;8B9160;
@@ -2546,7 +2546,7 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     STA.B $86                                                            ;8B919D;
     LDA.B #$03                                                           ;8B919F;
     STA.W $2101                                                          ;8B91A1;
-    STA.B $52                                                            ;8B91A4;
+    STA.B DP_SpriteSizeAddr                                                            ;8B91A4;
     STZ.W $2102                                                          ;8B91A6;
     STZ.B $53                                                            ;8B91A9;
     LDA.B #$80                                                           ;8B91AB;
@@ -2556,21 +2556,21 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     STZ.W $2104                                                          ;8B91B5;
     LDA.B #$01                                                           ;8B91B8;
     STA.W $2105                                                          ;8B91BA;
-    STA.B $55                                                            ;8B91BD;
+    STA.B DP_BGModeSize                                                            ;8B91BD;
     STZ.W $2106                                                          ;8B91BF;
-    STZ.B $57                                                            ;8B91C2;
+    STZ.B DP_Mosaic                                                            ;8B91C2;
     STZ.W $2107                                                          ;8B91C4;
-    STZ.B $58                                                            ;8B91C7;
+    STZ.B DP_BG1TilemapAddrSize                                                            ;8B91C7;
     STZ.W $2108                                                          ;8B91C9;
-    STZ.B $59                                                            ;8B91CC;
+    STZ.B DP_BG2TilemapAddrSize                                                            ;8B91CC;
     STZ.W $2109                                                          ;8B91CE;
-    STZ.B $5A                                                            ;8B91D1;
+    STZ.B DP_BG3TilemapAddrSize                                                            ;8B91D1;
     STZ.W $210A                                                          ;8B91D3;
-    STZ.B $5C                                                            ;8B91D6;
+    STZ.B DP_BG4TilemapAddrSize                                                            ;8B91D6;
     STZ.W $210B                                                          ;8B91D8;
-    STZ.B $5D                                                            ;8B91DB;
+    STZ.B DP_BGTilesAddr                                                            ;8B91DB;
     STZ.W $210C                                                          ;8B91DD;
-    STZ.B $5E                                                            ;8B91E0;
+    STZ.B DP_BGTilesAddr+1                                                            ;8B91E0;
     STZ.W $210D                                                          ;8B91E2;
     STZ.W $210D                                                          ;8B91E5;
     STZ.W $210E                                                          ;8B91E8;
@@ -2589,7 +2589,7 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     STZ.W $2114                                                          ;8B920F;
     STZ.W $2115                                                          ;8B9212;
     STZ.W $211A                                                          ;8B9215;
-    STZ.B $5F                                                            ;8B9218;
+    STZ.B DP_Mode7Settings                                                            ;8B9218;
     STZ.W $211B                                                          ;8B921A;
     STZ.W $211C                                                          ;8B921D;
     STZ.W $211D                                                          ;8B9220;
@@ -2616,33 +2616,33 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     STZ.B $68                                                            ;8B9257;
     LDA.B #$10                                                           ;8B9259;
     STA.W $212C                                                          ;8B925B;
-    STA.B $69                                                            ;8B925E;
+    STA.B DP_MainScreenLayers                                                            ;8B925E;
     STZ.W $212E                                                          ;8B9260;
-    STZ.B $6C                                                            ;8B9263;
+    STZ.B DP_WindowAreaMainScreen                                                            ;8B9263;
     STZ.W $212D                                                          ;8B9265;
-    STZ.B $6B                                                            ;8B9268;
+    STZ.B DP_SubScreenLayers                                                            ;8B9268;
     STZ.W $212F                                                          ;8B926A;
     STZ.B $6D                                                            ;8B926D;
     STZ.W $2130                                                          ;8B926F;
-    STZ.B $6E                                                            ;8B9272;
+    STZ.B DP_NextGameplayColorMathA                                                            ;8B9272;
     STZ.W $2131                                                          ;8B9274;
-    STZ.B $71                                                            ;8B9277;
+    STZ.B DP_NextGameplayColorMathB                                                            ;8B9277;
     LDA.B #$E0                                                           ;8B9279;
     STA.W $2132                                                          ;8B927B;
     LDA.B #$20                                                           ;8B927E;
-    STA.B $74                                                            ;8B9280;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8B9280;
     LDA.B #$40                                                           ;8B9282;
-    STA.B $75                                                            ;8B9284;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8B9284;
     LDA.B #$80                                                           ;8B9286;
-    STA.B $76                                                            ;8B9288;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8B9288;
     LDA.B #$00                                                           ;8B928A;
     STA.W $2133                                                          ;8B928C;
-    STA.B $77                                                            ;8B928F;
+    STA.B DP_DisplayResolution                                                            ;8B928F;
     REP #$20                                                             ;8B9291;
     LDA.W #Tiles_Title_Sprite>>8&$FF00                                   ;8B9293;
-    STA.B $48                                                            ;8B9296;
+    STA.B DP_DecompSrc+1                                                            ;8B9296;
     LDA.W #Tiles_Title_Sprite                                            ;8B9298;
-    STA.B $47                                                            ;8B929B;
+    STA.B DP_DecompSrc                                                            ;8B929B;
     JSL.L Decompression_HardcodedDestination                             ;8B929D;
     dl $7F5000                                                           ;8B92A1;
     SEP #$30                                                             ;8B92A4;
@@ -2659,25 +2659,25 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     LDA.B #$02                                                           ;8B92C1;
     STA.W $420B                                                          ;8B92C3;
     LDA.B #$80                                                           ;8B92C6;
-    STA.B $51                                                            ;8B92C8;
+    STA.B DP_Brightness                                                            ;8B92C8;
     REP #$30                                                             ;8B92CA;
     LDX.W #$0000                                                         ;8B92CC;
 
   .loop:
     LDA.L Palettes_TitleScreen,X                                         ;8B92CF;
-    STA.L $7EC000,X                                                      ;8B92D3;
+    STA.L Palettes,X                                                      ;8B92D3;
     INX                                                                  ;8B92D7;
     INX                                                                  ;8B92D8;
     CPX.W #$0200                                                         ;8B92D9;
     BMI .loop                                                            ;8B92DC;
     JSL.L EnableNMI                                                      ;8B92DE;
     LDA.W #$0001                                                         ;8B92E2;
-    STA.W $0723                                                          ;8B92E5;
-    STA.W $0725                                                          ;8B92E8;
+    STA.W ScreenFadeDelay                                                          ;8B92E5;
+    STA.W ScreenFadeCounter                                                          ;8B92E8;
 
   .fadeIn:
     JSL.L ClearHighOAM                                                   ;8B92EB;
-    STZ.W $0590                                                          ;8B92EF;
+    STZ.W OAMStack                                                          ;8B92EF;
     JSR.W AddNintendoBootLogoSpritemapToOAM                              ;8B92F2;
     JSR.W AdvanceFastScreenFadeIn                                        ;8B92F5;
     BCS .maxBrightness                                                   ;8B92F8;
@@ -2689,13 +2689,13 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     JSL.L Finalise_OAM                                                   ;8B9304;
     JSL.L WaitForNMI                                                     ;8B9308;
     LDA.W #$0078                                                         ;8B930C;
-    STA.W $0DE2                                                          ;8B930F;
+    STA.W GameOptionsMenuIndex                                                          ;8B930F;
 
   .loopNintendoLogo:
     JSL.L ClearHighOAM                                                   ;8B9312;
-    STZ.W $0590                                                          ;8B9316;
+    STZ.W OAMStack                                                          ;8B9316;
     JSR.W AddNintendoBootLogoSpritemapToOAM                              ;8B9319;
-    DEC.W $0DE2                                                          ;8B931C;
+    DEC.W GameOptionsMenuIndex                                                          ;8B931C;
     BEQ .timerExpired                                                    ;8B931F;
     JSL.L Finalise_OAM                                                   ;8B9321;
     JSL.L WaitForNMI                                                     ;8B9325;
@@ -2705,12 +2705,12 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     JSL.L Finalise_OAM                                                   ;8B932B;
     JSL.L WaitForNMI                                                     ;8B932F;
     LDA.W #$0001                                                         ;8B9333;
-    STA.W $0723                                                          ;8B9336;
-    STA.W $0725                                                          ;8B9339;
+    STA.W ScreenFadeDelay                                                          ;8B9336;
+    STA.W ScreenFadeCounter                                                          ;8B9339;
 
   .loopFadeOut:
     JSL.L ClearHighOAM                                                   ;8B933C;
-    STZ.W $0590                                                          ;8B9340;
+    STZ.W OAMStack                                                          ;8B9340;
     JSR.W AddNintendoBootLogoSpritemapToOAM                              ;8B9343;
     JSR.W AdvanceFastScreenFadeOut                                       ;8B9346;
     BCS .zeroBrightness                                                  ;8B9349;
@@ -2724,7 +2724,7 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     SEP #$30                                                             ;8B935D;
     LDA.B #$8F                                                           ;8B935F;
     STA.W $2100                                                          ;8B9361;
-    STA.B $51                                                            ;8B9364;
+    STA.B DP_Brightness                                                            ;8B9364;
     REP #$30                                                             ;8B9366;
     PLB                                                                  ;8B9368;
     PLP                                                                  ;8B9369;
@@ -2800,7 +2800,7 @@ SpawnCinematicSpriteObject_XToIndexY:
     LDA.W $0004,X                                                        ;8B93B4;
     STA.W $1B1D,Y                                                        ;8B93B7;
     LDA.W #$0001                                                         ;8B93BA;
-    STA.W $1B5D,Y                                                        ;8B93BD;
+    STA.W CinematicSpriteObject_InstructionTimers,Y                                                        ;8B93BD;
     LDA.W #$0000                                                         ;8B93C0;
     STA.W $1A5D,Y                                                        ;8B93C3;
     LDA.W #$0000                                                         ;8B93C6;
@@ -2866,7 +2866,7 @@ Process_CinematicSpriteObjects_InstList:
 ; (marked "terminate processing cinematic sprite object")
     JSR.W ($1B3D,X)                                                      ;8B9409;
     LDX.W $1A59                                                          ;8B940C;
-    DEC.W $1B5D,X                                                        ;8B940F;
+    DEC.W CinematicSpriteObject_InstructionTimers,X                                                        ;8B940F;
     BNE .return                                                          ;8B9412;
     LDY.W $1B1D,X                                                        ;8B9414;
 
@@ -2879,7 +2879,7 @@ Process_CinematicSpriteObjects_InstList:
     PEA.W .loop-1                                                        ;8B9420;
     JMP.W ($0012)                                                        ;8B9423;
 
-+   STA.W $1B5D,X                                                        ;8B9426;
++   STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8B9426;
     LDA.W $0002,Y                                                        ;8B9429;
     STA.W $1A5D,X                                                        ;8B942C;
     TYA                                                                  ;8B942F;
@@ -3297,7 +3297,7 @@ Clear_CinematicBGObjects_CinematicBGTilemap:
     LDX.W #$07FE                                                         ;8B95D2;
 
   .loopTilemap:
-    STA.L $7E3000,X                                                      ;8B95D5;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8B95D5;
     DEX                                                                  ;8B95D9;
     DEX                                                                  ;8B95DA;
     BPL .loopTilemap                                                     ;8B95DB;
@@ -3320,7 +3320,7 @@ Spawn_CinematicBGObject:
     PHP                                                                  ;8B95F0;
     REP #$30                                                             ;8B95F1;
     PHX                                                                  ;8B95F3;
-    STA.W $19F5                                                          ;8B95F4;
+    STA.W CinematicBGObject_VRAMAddr                                                          ;8B95F4;
     TYX                                                                  ;8B95F7;
     LDY.W #$0006                                                         ;8B95F8;
 
@@ -3593,15 +3593,15 @@ Draw_CinematicSpriteObjects_IntroTitleSequence:
     PLB                                                                  ;8B9755;
     PLB                                                                  ;8B9756;
     LDY.W $1A5D,X                                                        ;8B9757;
-    LDA.W $1ABD,X                                                        ;8B975A;
+    LDA.W CinematicSpriteObject_PaletteIndices,X                                                        ;8B975A;
     STA.B $16                                                            ;8B975D;
-    LDA.W $1A7D,X                                                        ;8B975F;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8B975F;
     SEC                                                                  ;8B9762;
-    SBC.W $0911                                                          ;8B9763;
+    SBC.W Layer1XPosition                                                          ;8B9763;
     STA.B $14                                                            ;8B9766;
-    LDA.W $1A9D,X                                                        ;8B9768;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8B9768;
     SEC                                                                  ;8B976B;
-    SBC.W $0915                                                          ;8B976C;
+    SBC.W Layer1YPosition                                                          ;8B976C;
     STA.B $12                                                            ;8B976F;
     BIT.W #$FF00                                                         ;8B9771;
     BNE +                                                                ;8B9774;
@@ -3641,15 +3641,15 @@ Draw_CinematicSpriteObjects_EndingCredits:
     PLB                                                                  ;8B97A8;
     PLB                                                                  ;8B97A9;
     LDY.W $1A5D,X                                                        ;8B97AA;
-    LDA.W $1ABD,X                                                        ;8B97AD;
+    LDA.W CinematicSpriteObject_PaletteIndices,X                                                        ;8B97AD;
     STA.B $16                                                            ;8B97B0;
-    LDA.W $1A7D,X                                                        ;8B97B2;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8B97B2;
     SEC                                                                  ;8B97B5;
-    SBC.W $0911                                                          ;8B97B6;
+    SBC.W Layer1XPosition                                                          ;8B97B6;
     STA.B $14                                                            ;8B97B9;
-    LDA.W $1A9D,X                                                        ;8B97BB;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8B97BB;
     SEC                                                                  ;8B97BE;
-    SBC.W $0915                                                          ;8B97BF;
+    SBC.W Layer1YPosition                                                          ;8B97BF;
     STA.B $12                                                            ;8B97C2;
     BIT.W #$FF00                                                         ;8B97C4;
     BNE +                                                                ;8B97C7;
@@ -3671,7 +3671,7 @@ Draw_CinematicSpriteObjects_EndingCredits:
     DEX                                                                  ;8B97E6;
     BPL .loop                                                            ;8B97E7;
     PLB                                                                  ;8B97E9;
-    LDA.W $1F51                                                          ;8B97EA;
+    LDA.W CinematicFunction                                                          ;8B97EA;
     CMP.W #CinematicFunc_Ending_ZebesDestruction2_CrossFade_FadingIn     ;8B97ED;
     BPL .return                                                          ;8B97F0;
     JSR.W MoveUnusedSpritesOffScreen                                     ;8B97F2;
@@ -3775,10 +3775,10 @@ Process_TextGlowObject:
     STA.W $0014                                                          ;8B9893;
 
   .loop:
-    LDA.L $7E3000,X                                                      ;8B9896;
+    LDA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8B9896;
     AND.W #$E3FF                                                         ;8B989A;
     ORA.B $1C                                                            ;8B989D;
-    STA.L $7E3000,X                                                      ;8B989F;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8B989F;
     INY                                                                  ;8B98A3;
     INY                                                                  ;8B98A4;
     INX                                                                  ;8B98A5;
@@ -3842,7 +3842,7 @@ Clear_CreditsObject_CinematicBGTilemapInA:
     LDX.W #$07FE                                                         ;8B98FD;
 
   .loop:
-    STA.L $7E3000,X                                                      ;8B9900;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8B9900;
     DEX                                                                  ;8B9904;
     DEX                                                                  ;8B9905;
     BPL .loop                                                            ;8B9906;
@@ -3853,12 +3853,12 @@ Clear_CreditsObject_CinematicBGTilemapInA:
     STZ.W $19FB                                                          ;8B9914;
     STZ.W $19FD                                                          ;8B9917;
     LDA.W #$4800                                                         ;8B991A;
-    STA.W $19F5                                                          ;8B991D;
+    STA.W CinematicBGObject_VRAMAddr                                                          ;8B991D;
     STZ.W $1A03                                                          ;8B9920;
-    STZ.W $1991                                                          ;8B9923;
-    STZ.W $1993                                                          ;8B9926;
-    STZ.W $1995                                                          ;8B9929;
-    STZ.W $1997                                                          ;8B992C;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B9923;
+    STZ.W CinematicBG1_XPosition                                                          ;8B9926;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B9929;
+    STZ.W CinematicBG1_YPosition                                                          ;8B992C;
     PLX                                                                  ;8B992F;
     PLP                                                                  ;8B9930;
     RTS                                                                  ;8B9931;
@@ -3912,18 +3912,18 @@ Process_CreditsObject_InstList:
     PEA.W $8C00                                                          ;8B9971;
     PLB                                                                  ;8B9974;
     PLB                                                                  ;8B9975;
-    LDA.W $1995                                                          ;8B9976;
+    LDA.W CinematicBG1_YSubPosition                                                          ;8B9976;
     CLC                                                                  ;8B9979;
     ADC.W #$8000                                                         ;8B997A;
-    STA.W $1995                                                          ;8B997D;
-    LDA.W $1997                                                          ;8B9980;
+    STA.W CinematicBG1_YSubPosition                                                          ;8B997D;
+    LDA.W CinematicBG1_YPosition                                                          ;8B9980;
     ADC.W #$0000                                                         ;8B9983;
-    STA.W $1997                                                          ;8B9986;
+    STA.W CinematicBG1_YPosition                                                          ;8B9986;
     SEC                                                                  ;8B9989;
     SBC.W $1A03                                                          ;8B998A;
     CMP.W #$0008                                                         ;8B998D;
     BMI .return                                                          ;8B9990;
-    LDA.W $1997                                                          ;8B9992;
+    LDA.W CinematicBG1_YPosition                                                          ;8B9992;
     STA.W $1A03                                                          ;8B9995;
     LDY.W $19F7                                                          ;8B9998;
 
@@ -3979,7 +3979,7 @@ Copy_CreditsRow_ToCinematicBGTilemap:
 
   .loop:
     LDA.B [$00],Y                                                        ;8B99EC;
-    STA.L $7E3000,X                                                      ;8B99EE;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8B99EE;
     INX                                                                  ;8B99F2;
     INX                                                                  ;8B99F3;
     INY                                                                  ;8B99F4;
@@ -4036,7 +4036,7 @@ GameState1_TitleSequence:
     PLB                                                                  ;8B9A25;
     REP #$30                                                             ;8B9A26;
     PEA.W .manualReturn-1                                                ;8B9A28;
-    JMP.W ($1F51)                                                        ;8B9A2B;
+    JMP.W (CinematicFunction)                                                        ;8B9A2B;
 
   .manualReturn:
     JSR.W Handle_CinematicSpriteObjects                                  ;8B9A2E;
@@ -4058,7 +4058,7 @@ RTS_8B9A47:
 
 ;;; $9A48: Skip to title screen check ;;;
 SkipToTitleScreenCheck:
-    LDA.W $1F51                                                          ;8B9A48;
+    LDA.W CinematicFunction                                                          ;8B9A48;
     CMP.W #RTS_8B9F28                                                    ;8B9A4B;
     BPL .return                                                          ;8B9A4E;
     LDA.B $8F                                                            ;8B9A50;
@@ -4068,9 +4068,9 @@ SkipToTitleScreenCheck:
     BNE .return                                                          ;8B9A5A;
     LDA.W #$0001                                                         ;8B9A5C;
     STA.W $1A53                                                          ;8B9A5F;
-    STZ.W $0723                                                          ;8B9A62;
+    STZ.W ScreenFadeDelay                                                          ;8B9A62;
     LDA.W #$0002                                                         ;8B9A65;
-    STA.W $0725                                                          ;8B9A68;
+    STA.W ScreenFadeCounter                                                          ;8B9A68;
 
   .return:
     RTS                                                                  ;8B9A6B;
@@ -4104,7 +4104,7 @@ SkipToTitleScreenHandler_1_FadeOut:
     LDA.W #$0002                                                         ;8B9A88;
     STA.W $1A53                                                          ;8B9A8B;
     LDA.W #RTS_8B9F28                                                    ;8B9A8E;
-    STA.W $1F51                                                          ;8B9A91;
+    STA.W CinematicFunction                                                          ;8B9A91;
     LDA.W #$0006                                                         ;8B9A94;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8B9A97;
 
@@ -4119,26 +4119,26 @@ SkipToTitleScreenHandler_2_PrepareTitleScreen:
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8B9AA2;
     LDY.W #CinematicSpriteObjectDefinitions_TitleSequence_NintendoCopyrightImmediate ;8B9AA5;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8B9AA8;
-    STZ.W $0723                                                          ;8B9AAB;
+    STZ.W ScreenFadeDelay                                                          ;8B9AAB;
     LDA.W #$0002                                                         ;8B9AAE;
-    STA.W $0725                                                          ;8B9AB1;
+    STA.W ScreenFadeCounter                                                          ;8B9AB1;
     LDA.W #$0100                                                         ;8B9AB4;
-    STA.W $198F                                                          ;8B9AB7;
-    STZ.W $1993                                                          ;8B9ABA;
-    STZ.W $1991                                                          ;8B9ABD;
-    STZ.W $1997                                                          ;8B9AC0;
-    STZ.W $1995                                                          ;8B9AC3;
-    STZ.W $199B                                                          ;8B9AC6;
-    STZ.W $1999                                                          ;8B9AC9;
-    STZ.W $199F                                                          ;8B9ACC;
-    STZ.W $199D                                                          ;8B9ACF;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B9AB7;
+    STZ.W CinematicBG1_XPosition                                                          ;8B9ABA;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B9ABD;
+    STZ.W CinematicBG1_YPosition                                                          ;8B9AC0;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B9AC3;
+    STZ.W CinematicBG1_XSpeed                                                          ;8B9AC6;
+    STZ.W CinematicBG1_XSubSpeed                                                          ;8B9AC9;
+    STZ.W CinematicBG1_YSpeed                                                          ;8B9ACC;
+    STZ.W CinematicBG1_YSubSpeed                                                          ;8B9ACF;
     LDA.W #$0003                                                         ;8B9AD2;
     STA.W $1A53                                                          ;8B9AD5;
     LDX.W #$0100                                                         ;8B9AD8;
 
   .loop:
     LDA.L Palettes_TitleScreen,X                                         ;8B9ADB;
-    STA.L $7EC000,X                                                      ;8B9ADF;
+    STA.L Palettes,X                                                      ;8B9ADF;
     INX                                                                  ;8B9AE3;
     INX                                                                  ;8B9AE4;
     CPX.W #$0200                                                         ;8B9AE5;
@@ -4155,7 +4155,7 @@ SkipToTitleScreenHandler_2_PrepareTitleScreen:
     JSR.W Deactivate_TileSequence_BlueLight                              ;8B9B0A;
     SEP #$20                                                             ;8B9B0D;
     LDA.B #$11                                                           ;8B9B0F;
-    STA.B $69                                                            ;8B9B11;
+    STA.B DP_MainScreenLayers                                                            ;8B9B11;
     REP #$20                                                             ;8B9B13;
     JSL.L Spawn_TitleSequenceGradient_HDMAObjects                        ;8B9B15;
     RTS                                                                  ;8B9B19;
@@ -4164,11 +4164,11 @@ SkipToTitleScreenHandler_2_PrepareTitleScreen:
 ;;; $9B1A: Initialisation function - cinematic sprite object $A119 (Super Metroid title logo - immediate) ;;;
 InitFunction_CinematicSpriteObject_SuperMetroidLogoImmediate:
     LDA.W #$0080                                                         ;8B9B1A;
-    STA.W $1A7D,Y                                                        ;8B9B1D;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8B9B1D;
     LDA.W #$0030                                                         ;8B9B20;
-    STA.W $1A9D,Y                                                        ;8B9B23;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8B9B23;
     LDA.W #$0400                                                         ;8B9B26;
-    STA.W $1ABD,Y                                                        ;8B9B29;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8B9B29;
     RTS                                                                  ;8B9B2C;
 
 
@@ -4176,11 +4176,11 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $9B2D: Initialisation function - cinematic sprite object $A11F (unused. Nintendo boot logo - immediate) ;;;
 InitFunction_CinematicSpriteObject_UnusedNintendoBootLogoImm:
     LDA.W #$0080                                                         ;8B9B2D;
-    STA.W $1A7D,Y                                                        ;8B9B30;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8B9B30;
     LDA.W #$0051                                                         ;8B9B33;
-    STA.W $1A9D,Y                                                        ;8B9B36;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8B9B36;
     LDA.W #$0000                                                         ;8B9B39;
-    STA.W $1ABD,Y                                                        ;8B9B3C;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8B9B3C;
     RTS                                                                  ;8B9B3F;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
@@ -4188,11 +4188,11 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 ;;; $9B40: Initialisation function - cinematic sprite object $A125 (Nintendo copyright - immediate) ;;;
 InitFunc_CinematicSpriteObject_NintendoCopyrightImmediate:
     LDA.W #$0080                                                         ;8B9B40;
-    STA.W $1A7D,Y                                                        ;8B9B43;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8B9B43;
     LDA.W #$00C4                                                         ;8B9B46;
-    STA.W $1A9D,Y                                                        ;8B9B49;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8B9B49;
     LDA.W #$0800                                                         ;8B9B4C;
-    STA.W $1ABD,Y                                                        ;8B9B4F;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8B9B4F;
     RTS                                                                  ;8B9B52;
 
 
@@ -4204,7 +4204,7 @@ SkipToTitleScreenHandler_3_FadeIn:
     LDA.W #$0384                                                         ;8B9B5B;
     STA.W $1F53                                                          ;8B9B5E;
     LDA.W #CinematicFunction_TitleScreen                                 ;8B9B61;
-    STA.W $1F51                                                          ;8B9B64;
+    STA.W CinematicFunction                                                          ;8B9B64;
 
   .return:
     RTS                                                                  ;8B9B67;
@@ -4216,7 +4216,7 @@ CinematicFunction_LoadTitleSequence:
     LDA.W #$FF03                                                         ;8B9B6C;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8B9B6F;
     LDA.W #RTS_8B9A47                                                    ;8B9B73;
-    STA.W $1F51                                                          ;8B9B76;
+    STA.W CinematicFunction                                                          ;8B9B76;
     LDY.W #CinematicSpriteObjectDefinitions_TitleSequence_1994ScrollingText ;8B9B79;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8B9B7C;
     LDA.W #$0005                                                         ;8B9B7F;
@@ -4235,39 +4235,39 @@ Load_Title_Sequence_Graphics:
     PLB                                                                  ;8B9B8A;
     REP #$30                                                             ;8B9B8B;
     JSR.W Setup_PPU_TitleSequence                                        ;8B9B8D;
-    STZ.B $AB                                                            ;8B9B90;
-    STZ.B $A7                                                            ;8B9B92;
+    STZ.B DP_IRQCmd                                                            ;8B9B90;
+    STZ.B DP_NextIRQCmd                                                            ;8B9B92;
     LDX.W #$0000                                                         ;8B9B94;
 
   .loopTitleScreenPalette:
     LDA.L Palettes_TitleScreen,X                                         ;8B9B97;
-    STA.L $7EC000,X                                                      ;8B9B9B;
+    STA.L Palettes,X                                                      ;8B9B9B;
     INX                                                                  ;8B9B9F;
     INX                                                                  ;8B9BA0;
     CPX.W #$0200                                                         ;8B9BA1;
     BMI .loopTitleScreenPalette                                          ;8B9BA4;
     LDA.W #Tiles_Title_Background_Mode7>>8&$FF00                         ;8B9BA6;
-    STA.B $48                                                            ;8B9BA9;
+    STA.B DP_DecompSrc+1                                                            ;8B9BA9;
     LDA.W #Tiles_Title_Background_Mode7                                  ;8B9BAB;
-    STA.B $47                                                            ;8B9BAE;
+    STA.B DP_DecompSrc                                                            ;8B9BAE;
     JSL.L Decompression_HardcodedDestination                             ;8B9BB0;
     dl $7F0000                                                           ;8B9BB4;
     LDA.W #Title_Mode7_Tilemap>>8&$FF00                                  ;8B9BB7;
-    STA.B $48                                                            ;8B9BBA;
+    STA.B DP_DecompSrc+1                                                            ;8B9BBA;
     LDA.W #Title_Mode7_Tilemap                                           ;8B9BBC;
-    STA.B $47                                                            ;8B9BBF;
+    STA.B DP_DecompSrc                                                            ;8B9BBF;
     JSL.L Decompression_HardcodedDestination                             ;8B9BC1;
     dl $7F4000                                                           ;8B9BC5;
     LDA.W #Tiles_Title_Sprite>>8&$FF00                                   ;8B9BC8;
-    STA.B $48                                                            ;8B9BCB;
+    STA.B DP_DecompSrc+1                                                            ;8B9BCB;
     LDA.W #Tiles_Title_Sprite                                            ;8B9BCD;
-    STA.B $47                                                            ;8B9BD0;
+    STA.B DP_DecompSrc                                                            ;8B9BD0;
     JSL.L Decompression_HardcodedDestination                             ;8B9BD2;
     dl $7F5000                                                           ;8B9BD6;
     LDA.W #Tiles_Baby_Metroid_Mode7>>8&$FF00                             ;8B9BD9;
-    STA.B $48                                                            ;8B9BDC;
+    STA.B DP_DecompSrc+1                                                            ;8B9BDC;
     LDA.W #Tiles_Baby_Metroid_Mode7                                      ;8B9BDE;
-    STA.B $47                                                            ;8B9BE1;
+    STA.B DP_DecompSrc                                                            ;8B9BE1;
     JSL.L Decompression_HardcodedDestination                             ;8B9BE3;
     dl $7F9000                                                           ;8B9BE7;
     SEP #$30                                                             ;8B9BEA;
@@ -4336,12 +4336,12 @@ Load_Title_Sequence_Graphics:
     STA.B $82                                                            ;8B9C88;
     JSL.L EnableNMI                                                      ;8B9C8A;
     LDA.W #$0001                                                         ;8B9C8E;
-    STA.W $0723                                                          ;8B9C91;
-    STA.W $0725                                                          ;8B9C94;
+    STA.W ScreenFadeDelay                                                          ;8B9C91;
+    STA.W ScreenFadeCounter                                                          ;8B9C94;
     JSL.L Enable_HDMAObjects                                             ;8B9C97;
     JSL.L Enable_PaletteFXObjects                                        ;8B9C9B;
     LDA.W #$0000                                                         ;8B9C9F;
-    STA.W $1982                                                          ;8B9CA2;
+    STA.W LayerBlending_DefaultConfig                                                          ;8B9CA2;
     LDY.W #PaletteFXObjects_TitleScreenBabyMetroidTubeLight              ;8B9CA5;
     JSL.L Spawn_PaletteFXObject                                          ;8B9CA8;
     LDY.W #PaletteFXObjects_TitleScreenFlickeringDisplays                ;8B9CAC;
@@ -4356,11 +4356,11 @@ Load_Title_Sequence_Graphics:
 ;;; $9CBC: Initialisation function - cinematic sprite object $A0EF ('1994' scrolling text) ;;;
 InitFunc_CinematicSpriteObject_1994ScrollingText:
     LDA.W #$0081                                                         ;8B9CBC;
-    STA.W $1A7D,Y                                                        ;8B9CBF;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8B9CBF;
     LDA.W #$0070                                                         ;8B9CC2;
-    STA.W $1A9D,Y                                                        ;8B9CC5;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8B9CC5;
     LDA.W #$0200                                                         ;8B9CC8;
-    STA.W $1ABD,Y                                                        ;8B9CCB;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8B9CCB;
     RTS                                                                  ;8B9CCE;
 
 
@@ -4368,7 +4368,7 @@ InitFunc_CinematicSpriteObject_1994ScrollingText:
 PreInstruction_CinematicSpriteObject_1994ScrollingText:
     SEP #$20                                                             ;8B9CCF;
     LDA.B #$0F                                                           ;8B9CD1;
-    STA.B $51                                                            ;8B9CD3;
+    STA.B DP_Brightness                                                            ;8B9CD3;
     REP #$20                                                             ;8B9CD5;
     LDA.W #RTS_8B93D9                                                    ;8B9CD7;
     STA.W $1B3D,X                                                        ;8B9CDA;
@@ -4387,43 +4387,43 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 Instruction_TriggerTitleSequenceScene0:
     SEP #$20                                                             ;8B9CE1;
     LDA.B #$11                                                           ;8B9CE3;
-    STA.B $69                                                            ;8B9CE5;
+    STA.B DP_MainScreenLayers                                                            ;8B9CE5;
     REP #$20                                                             ;8B9CE7;
     LDA.W #CinematicFunction_TitleSequenceScene0_PanningLeft_Lower       ;8B9CE9;
-    STA.W $1F51                                                          ;8B9CEC;
+    STA.W CinematicFunction                                                          ;8B9CEC;
     LDA.W #$0048                                                         ;8B9CEF;
-    STA.W $198F                                                          ;8B9CF2;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B9CF2;
     LDA.W #$013B                                                         ;8B9CF5;
-    STA.W $1993                                                          ;8B9CF8;
-    STZ.W $1991                                                          ;8B9CFB;
+    STA.W CinematicBG1_XPosition                                                          ;8B9CF8;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B9CFB;
     LDA.W #$00E1                                                         ;8B9CFE;
-    STA.W $1997                                                          ;8B9D01;
-    STZ.W $1995                                                          ;8B9D04;
+    STA.W CinematicBG1_YPosition                                                          ;8B9D01;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B9D04;
     LDA.W #$FFFE                                                         ;8B9D07;
-    STA.W $199B                                                          ;8B9D0A;
+    STA.W CinematicBG1_XSpeed                                                          ;8B9D0A;
     LDA.W #$8000                                                         ;8B9D0D;
-    STA.W $1999                                                          ;8B9D10;
+    STA.W CinematicBG1_XSubSpeed                                                          ;8B9D10;
     JSR.W Activate_TileSequence_BlueLight                                ;8B9D13;
     RTS                                                                  ;8B9D16;
 
 
 ;;; $9D17: Cinematic function - title sequence - scene 0 - panning left - lower ;;;
 CinematicFunction_TitleSequenceScene0_PanningLeft_Lower:
-    LDA.W $1991                                                          ;8B9D17;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8B9D17;
     CLC                                                                  ;8B9D1A;
-    ADC.W $1999                                                          ;8B9D1B;
-    STA.W $1991                                                          ;8B9D1E;
-    LDA.W $1993                                                          ;8B9D21;
-    ADC.W $199B                                                          ;8B9D24;
-    STA.W $1993                                                          ;8B9D27;
+    ADC.W CinematicBG1_XSubSpeed                                                          ;8B9D1B;
+    STA.W CinematicBG1_XSubPosition                                                          ;8B9D1E;
+    LDA.W CinematicBG1_XPosition                                                          ;8B9D21;
+    ADC.W CinematicBG1_XSpeed                                                          ;8B9D24;
+    STA.W CinematicBG1_XPosition                                                          ;8B9D27;
     CMP.W #$FFF9                                                         ;8B9D2A;
     BPL .titleScreenCheck                                                ;8B9D2D;
     SEP #$20                                                             ;8B9D2F;
     LDA.B #$10                                                           ;8B9D31;
-    STA.B $69                                                            ;8B9D33;
+    STA.B DP_MainScreenLayers                                                            ;8B9D33;
     REP #$20                                                             ;8B9D35;
     LDA.W #RTS_8B9A47                                                    ;8B9D37;
-    STA.W $1F51                                                          ;8B9D3A;
+    STA.W CinematicFunction                                                          ;8B9D3A;
     LDY.W #CinematicSpriteObjectDefinitions_TitleSequence_NintendoScrollingText ;8B9D3D;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8B9D40;
     JSR.W Deactivate_TileSequence_BlueLight                              ;8B9D43;
@@ -4436,11 +4436,11 @@ CinematicFunction_TitleSequenceScene0_PanningLeft_Lower:
 ;;; $9D4A: Initialisation function - cinematic sprite object $A0F5 ('NINTENDO' scrolling text) ;;;
 InitFunc_CinematicSpriteObject_NintendoScrollingText:
     LDA.W #$0081                                                         ;8B9D4A;
-    STA.W $1A7D,Y                                                        ;8B9D4D;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8B9D4D;
     LDA.W #$0070                                                         ;8B9D50;
-    STA.W $1A9D,Y                                                        ;8B9D53;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8B9D53;
     LDA.W #$0200                                                         ;8B9D56;
-    STA.W $1ABD,Y                                                        ;8B9D59;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8B9D59;
     RTS                                                                  ;8B9D5C;
 
 
@@ -4448,42 +4448,42 @@ InitFunc_CinematicSpriteObject_NintendoScrollingText:
 Instruction_TriggerTitleSequenceScene1:
     SEP #$20                                                             ;8B9D5D;
     LDA.B #$11                                                           ;8B9D5F;
-    STA.B $69                                                            ;8B9D61;
+    STA.B DP_MainScreenLayers                                                            ;8B9D61;
     REP #$20                                                             ;8B9D63;
     LDA.W #CinematicFunction_TitleSequenceScene1_PanningLeft_Upper       ;8B9D65;
-    STA.W $1F51                                                          ;8B9D68;
+    STA.W CinematicFunction                                                          ;8B9D68;
     LDA.W #$0060                                                         ;8B9D6B;
-    STA.W $198F                                                          ;8B9D6E;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B9D6E;
     LDA.W #$002C                                                         ;8B9D71;
-    STA.W $1993                                                          ;8B9D74;
-    STZ.W $1991                                                          ;8B9D77;
+    STA.W CinematicBG1_XPosition                                                          ;8B9D74;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B9D77;
     LDA.W #$FF65                                                         ;8B9D7A;
-    STA.W $1997                                                          ;8B9D7D;
-    STZ.W $1995                                                          ;8B9D80;
+    STA.W CinematicBG1_YPosition                                                          ;8B9D7D;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B9D80;
     LDA.W #$FFFE                                                         ;8B9D83;
-    STA.W $199B                                                          ;8B9D86;
+    STA.W CinematicBG1_XSpeed                                                          ;8B9D86;
     LDA.W #$8000                                                         ;8B9D89;
-    STA.W $1999                                                          ;8B9D8C;
+    STA.W CinematicBG1_XSubSpeed                                                          ;8B9D8C;
     RTS                                                                  ;8B9D8F;
 
 
 ;;; $9D90: Cinematic function - title sequence - scene 1 - panning left - upper ;;;
 CinematicFunction_TitleSequenceScene1_PanningLeft_Upper:
-    LDA.W $1991                                                          ;8B9D90;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8B9D90;
     CLC                                                                  ;8B9D93;
-    ADC.W $1999                                                          ;8B9D94;
-    STA.W $1991                                                          ;8B9D97;
-    LDA.W $1993                                                          ;8B9D9A;
-    ADC.W $199B                                                          ;8B9D9D;
-    STA.W $1993                                                          ;8B9DA0;
+    ADC.W CinematicBG1_XSubSpeed                                                          ;8B9D94;
+    STA.W CinematicBG1_XSubPosition                                                          ;8B9D97;
+    LDA.W CinematicBG1_XPosition                                                          ;8B9D9A;
+    ADC.W CinematicBG1_XSpeed                                                          ;8B9D9D;
+    STA.W CinematicBG1_XPosition                                                          ;8B9DA0;
     CMP.W #$FF50                                                         ;8B9DA3;
     BPL .titleScreenCheck                                                ;8B9DA6;
     SEP #$20                                                             ;8B9DA8;
     LDA.B #$10                                                           ;8B9DAA;
-    STA.B $69                                                            ;8B9DAC;
+    STA.B DP_MainScreenLayers                                                            ;8B9DAC;
     REP #$20                                                             ;8B9DAE;
     LDA.W #RTS_8B9A47                                                    ;8B9DB0;
-    STA.W $1F51                                                          ;8B9DB3;
+    STA.W CinematicFunction                                                          ;8B9DB3;
     LDY.W #CinematicSpriteObjectDefinitions_TitleSequence_PresentsScrollingText ;8B9DB6;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8B9DB9;
     JSR.W Deactivate_TileSequence_BlueLight                              ;8B9DBC;
@@ -4496,11 +4496,11 @@ CinematicFunction_TitleSequenceScene1_PanningLeft_Upper:
 ;;; $9DC3: Initialisation function - cinematic sprite object $A0FB ('PRESENTS' scrolling text) ;;;
 InitFunc_CinematicSpriteObject_PresentsScrollingText:
     LDA.W #$0081                                                         ;8B9DC3;
-    STA.W $1A7D,Y                                                        ;8B9DC6;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8B9DC6;
     LDA.W #$0070                                                         ;8B9DC9;
-    STA.W $1A9D,Y                                                        ;8B9DCC;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8B9DCC;
     LDA.W #$0200                                                         ;8B9DCF;
-    STA.W $1ABD,Y                                                        ;8B9DD2;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8B9DD2;
     RTS                                                                  ;8B9DD5;
 
 
@@ -4508,45 +4508,45 @@ InitFunc_CinematicSpriteObject_PresentsScrollingText:
 Instruction_TriggerTitleSequenceScene2:
     SEP #$20                                                             ;8B9DD6;
     LDA.B #$11                                                           ;8B9DD8;
-    STA.B $69                                                            ;8B9DDA;
+    STA.B DP_MainScreenLayers                                                            ;8B9DDA;
     REP #$20                                                             ;8B9DDC;
     LDA.W #CinematicFunction_TitleSequenceScene2_PanningDown             ;8B9DDE;
-    STA.W $1F51                                                          ;8B9DE1;
+    STA.W CinematicFunction                                                          ;8B9DE1;
     LDA.W #$0060                                                         ;8B9DE4;
-    STA.W $198F                                                          ;8B9DE7;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B9DE7;
     LDA.W #$FF4F                                                         ;8B9DEA;
-    STA.W $1993                                                          ;8B9DED;
-    STZ.W $1991                                                          ;8B9DF0;
+    STA.W CinematicBG1_XPosition                                                          ;8B9DED;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B9DF0;
     LDA.W #$FF60                                                         ;8B9DF3;
-    STA.W $1997                                                          ;8B9DF6;
-    STZ.W $1995                                                          ;8B9DF9;
-    STZ.W $199B                                                          ;8B9DFC;
-    STZ.W $1999                                                          ;8B9DFF;
+    STA.W CinematicBG1_YPosition                                                          ;8B9DF6;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B9DF9;
+    STZ.W CinematicBG1_XSpeed                                                          ;8B9DFC;
+    STZ.W CinematicBG1_XSubSpeed                                                          ;8B9DFF;
     LDA.W #$0001                                                         ;8B9E02;
-    STA.W $199F                                                          ;8B9E05;
+    STA.W CinematicBG1_YSpeed                                                          ;8B9E05;
     LDA.W #$8000                                                         ;8B9E08;
-    STA.W $199D                                                          ;8B9E0B;
+    STA.W CinematicBG1_YSubSpeed                                                          ;8B9E0B;
     JSR.W Activate_TileSequence_BlueLight                                ;8B9E0E;
     RTS                                                                  ;8B9E11;
 
 
 ;;; $9E12: Cinematic function - title sequence - scene 2 - panning down ;;;
 CinematicFunction_TitleSequenceScene2_PanningDown:
-    LDA.W $1995                                                          ;8B9E12;
+    LDA.W CinematicBG1_YSubPosition                                                          ;8B9E12;
     CLC                                                                  ;8B9E15;
-    ADC.W $199D                                                          ;8B9E16;
-    STA.W $1995                                                          ;8B9E19;
-    LDA.W $1997                                                          ;8B9E1C;
-    ADC.W $199F                                                          ;8B9E1F;
-    STA.W $1997                                                          ;8B9E22;
+    ADC.W CinematicBG1_YSubSpeed                                                          ;8B9E16;
+    STA.W CinematicBG1_YSubPosition                                                          ;8B9E19;
+    LDA.W CinematicBG1_YPosition                                                          ;8B9E1C;
+    ADC.W CinematicBG1_YSpeed                                                          ;8B9E1F;
+    STA.W CinematicBG1_YPosition                                                          ;8B9E22;
     CMP.W #$00A3                                                         ;8B9E25;
     BMI .titleScreenCheck                                                ;8B9E28;
     SEP #$20                                                             ;8B9E2A;
     LDA.B #$10                                                           ;8B9E2C;
-    STA.B $69                                                            ;8B9E2E;
+    STA.B DP_MainScreenLayers                                                            ;8B9E2E;
     REP #$20                                                             ;8B9E30;
     LDA.W #RTS_8B9A47                                                    ;8B9E32;
-    STA.W $1F51                                                          ;8B9E35;
+    STA.W CinematicFunction                                                          ;8B9E35;
     LDY.W #CinematicSpriteObjectDefinitions_TitleSequence_Metroid3ScrollingText ;8B9E38;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8B9E3B;
     JSR.W Deactivate_TileSequence_BlueLight                              ;8B9E3E;
@@ -4559,11 +4559,11 @@ CinematicFunction_TitleSequenceScene2_PanningDown:
 ;;; $9E45: Initialisation function - cinematic sprite object $A101 ('METROID 3' scrolling text) ;;;
 InitFunc_CinematicSpriteObject_Metroid3ScrollingText:
     LDA.W #$0081                                                         ;8B9E45;
-    STA.W $1A7D,Y                                                        ;8B9E48;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8B9E48;
     LDA.W #$0070                                                         ;8B9E4B;
-    STA.W $1A9D,Y                                                        ;8B9E4E;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8B9E4E;
     LDA.W #$0200                                                         ;8B9E51;
-    STA.W $1ABD,Y                                                        ;8B9E54;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8B9E54;
     RTS                                                                  ;8B9E57;
 
 
@@ -4571,20 +4571,20 @@ InitFunc_CinematicSpriteObject_Metroid3ScrollingText:
 Instruction_TriggerTitleSequenceScene3:
     SEP #$20                                                             ;8B9E58;
     LDA.B #$11                                                           ;8B9E5A;
-    STA.B $69                                                            ;8B9E5C;
+    STA.B DP_MainScreenLayers                                                            ;8B9E5C;
     REP #$20                                                             ;8B9E5E;
     LDA.W #CinematicFunction_TitleSequenceScene3_ZoomingOut              ;8B9E60;
-    STA.W $1F51                                                          ;8B9E63;
+    STA.W CinematicFunction                                                          ;8B9E63;
     LDA.W #$0043                                                         ;8B9E66;
-    STA.W $198F                                                          ;8B9E69;
-    STZ.W $1993                                                          ;8B9E6C;
-    STZ.W $1991                                                          ;8B9E6F;
-    STZ.W $1997                                                          ;8B9E72;
-    STZ.W $1995                                                          ;8B9E75;
-    STZ.W $199B                                                          ;8B9E78;
-    STZ.W $1999                                                          ;8B9E7B;
-    STZ.W $199F                                                          ;8B9E7E;
-    STZ.W $199D                                                          ;8B9E81;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B9E69;
+    STZ.W CinematicBG1_XPosition                                                          ;8B9E6C;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8B9E6F;
+    STZ.W CinematicBG1_YPosition                                                          ;8B9E72;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8B9E75;
+    STZ.W CinematicBG1_XSpeed                                                          ;8B9E78;
+    STZ.W CinematicBG1_XSubSpeed                                                          ;8B9E7B;
+    STZ.W CinematicBG1_YSpeed                                                          ;8B9E7E;
+    STZ.W CinematicBG1_YSubSpeed                                                          ;8B9E81;
     PHY                                                                  ;8B9E84;
     JSL.L Spawn_TitleSequenceGradient_HDMAObjects                        ;8B9E85;
     PLY                                                                  ;8B9E89;
@@ -4596,20 +4596,20 @@ CinematicFunction_TitleSequenceScene3_ZoomingOut:
     LDA.W $05B6                                                          ;8B9E8B;
     BIT.W #$0001                                                         ;8B9E8E;
     BNE .return                                                          ;8B9E91;
-    LDA.W $198F                                                          ;8B9E93;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8B9E93;
     CMP.W #$0100                                                         ;8B9E96;
     BPL .finish                                                          ;8B9E99;
     INC                                                                  ;8B9E9B;
-    STA.W $198F                                                          ;8B9E9C;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B9E9C;
 
   .return:
     RTS                                                                  ;8B9E9F;
 
   .finish:
     LDA.W #$0100                                                         ;8B9EA0;
-    STA.W $198F                                                          ;8B9EA3;
+    STA.W Mode7TransformationZoomLevel                                                          ;8B9EA3;
     LDA.W #RTS_8B9F28                                                    ;8B9EA6;
-    STA.W $1F51                                                          ;8B9EA9;
+    STA.W CinematicFunction                                                          ;8B9EA9;
     LDY.W #CinematicSpriteObjectDefinitions_TitleSequence_SuperMetroidTitleLogo_FadeIn ;8B9EAC;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8B9EAF;
     RTS                                                                  ;8B9EB2;
@@ -4618,11 +4618,11 @@ CinematicFunction_TitleSequenceScene3_ZoomingOut:
 ;;; $9EB3: Initialisation function - cinematic sprite object $A107 (Super Metroid title logo - fade in) ;;;
 InitFunc_CinematicSpriteObject_SuperMetroidTitleLogo_FadeIn:
     LDA.W #$0080                                                         ;8B9EB3;
-    STA.W $1A7D,Y                                                        ;8B9EB6;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8B9EB6;
     LDA.W #$0030                                                         ;8B9EB9;
-    STA.W $1A9D,Y                                                        ;8B9EBC;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8B9EBC;
     LDA.W #$0400                                                         ;8B9EBF;
-    STA.W $1ABD,Y                                                        ;8B9EC2;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8B9EC2;
     LDY.W #PaletteFXObjects_FadeInSuperMetroidTitleLogo                  ;8B9EC5;
     JSL.L Spawn_PaletteFXObject                                          ;8B9EC8;
     RTS                                                                  ;8B9ECC;
@@ -4641,11 +4641,11 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $9ED6: Initialisation function - cinematic sprite object $A10D (unused. Nintendo boot logo - fade in) ;;;
 InitFunc_CinematicSpriteObject_UnusedNintendoBootLogo_FadeIn:
     LDA.W #$0080                                                         ;8B9ED6;
-    STA.W $1A7D,Y                                                        ;8B9ED9;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8B9ED9;
     LDA.W #$0051                                                         ;8B9EDC;
-    STA.W $1A9D,Y                                                        ;8B9EDF;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8B9EDF;
     LDA.W #$0200                                                         ;8B9EE2;
-    STA.W $1ABD,Y                                                        ;8B9EE5;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8B9EE5;
     LDY.W #PaletteFXObjects_FadeInNintendoBootLogoForUnusedCode          ;8B9EE8;
     JSL.L Spawn_PaletteFXObject                                          ;8B9EEB;
     RTS                                                                  ;8B9EEF;
@@ -4655,7 +4655,7 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 ;;; $9EF0: Instruction - use palette 0 and fade in Nintendo copyright ;;;
 Instruction_UsePalette0_FadeInNintendoCopyright:
     LDA.W #$0000                                                         ;8B9EF0;
-    STA.W $1ABD,X                                                        ;8B9EF3;
+    STA.W CinematicSpriteObject_PaletteIndices,X                                                        ;8B9EF3;
     PHY                                                                  ;8B9EF6;
     LDY.W #CinematicSpriteObjectDefinitions_TitleSequence_NintendoCopyright_FadeIn ;8B9EF7;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8B9EFA;
@@ -4666,11 +4666,11 @@ Instruction_UsePalette0_FadeInNintendoCopyright:
 ;;; $9EFF: Initialisation function - cinematic sprite object $A113 (Nintendo copyright - fade in) ;;;
 InitFunc_CinematicSpriteObject_NintendoCopyright_FadeIn:
     LDA.W #$0080                                                         ;8B9EFF;
-    STA.W $1A7D,Y                                                        ;8B9F02;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8B9F02;
     LDA.W #$00C4                                                         ;8B9F05;
-    STA.W $1A9D,Y                                                        ;8B9F08;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8B9F08;
     LDA.W #$0800                                                         ;8B9F0B;
-    STA.W $1ABD,Y                                                        ;8B9F0E;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8B9F0E;
     LDY.W #PaletteFXObjects_FadeInNintendoCopyright                      ;8B9F11;
     JSL.L Spawn_PaletteFXObject                                          ;8B9F14;
     RTS                                                                  ;8B9F18;
@@ -4682,7 +4682,7 @@ Instruction_StartDemoCountdown:
     LDA.W #$0384                                                         ;8B9F1A;
     STA.W $1F53                                                          ;8B9F1D;
     LDA.W #CinematicFunction_TitleScreen                                 ;8B9F20;
-    STA.W $1F51                                                          ;8B9F23;
+    STA.W CinematicFunction                                                          ;8B9F23;
     PLY                                                                  ;8B9F26;
     RTS                                                                  ;8B9F27;
 
@@ -4700,7 +4700,7 @@ CinematicFunction_TitleScreen:
 
   .demo:
     LDA.W #CinematicFunction_TransitionToDemos                           ;8B9F30;
-    STA.W $1F51                                                          ;8B9F33;
+    STA.W CinematicFunction                                                          ;8B9F33;
     BRA .transition                                                      ;8B9F36;
 
   .notDemo:
@@ -4708,12 +4708,12 @@ CinematicFunction_TitleScreen:
     BIT.W #$9080                                                         ;8B9F3A;
     BEQ .merge                                                           ;8B9F3D;
     LDA.W #CinematicFunction_TransitionToFileSelectMenu                  ;8B9F3F;
-    STA.W $1F51                                                          ;8B9F42;
+    STA.W CinematicFunction                                                          ;8B9F42;
 
   .transition:
     LDA.W #$0002                                                         ;8B9F45;
-    STA.W $0723                                                          ;8B9F48;
-    STA.W $0725                                                          ;8B9F4B;
+    STA.W ScreenFadeDelay                                                          ;8B9F48;
+    STA.W ScreenFadeCounter                                                          ;8B9F4B;
 
   .merge:
     JSR.W Debug_DisplayVersionInfo                                       ;8B9F4E;
@@ -4728,28 +4728,28 @@ CinematicFunction_TransitionToFileSelectMenu:
     JSL.L EnableNMI                                                      ;8B9F5A;
     SEP #$20                                                             ;8B9F5E;
     LDA.B #$01                                                           ;8B9F60;
-    STA.B $55                                                            ;8B9F62;
+    STA.B DP_BGModeSize                                                            ;8B9F62;
     REP #$20                                                             ;8B9F64;
-    STZ.W $0723                                                          ;8B9F66;
-    STZ.W $0725                                                          ;8B9F69;
-    STZ.B $B5                                                            ;8B9F6C;
-    STZ.B $B9                                                            ;8B9F6E;
-    STZ.B $B7                                                            ;8B9F70;
-    STZ.B $BB                                                            ;8B9F72;
-    STZ.W $198D                                                          ;8B9F74;
+    STZ.W ScreenFadeDelay                                                          ;8B9F66;
+    STZ.W ScreenFadeCounter                                                          ;8B9F69;
+    STZ.B DP_BG2XScroll                                                            ;8B9F6C;
+    STZ.B DP_BG3XScroll                                                            ;8B9F6E;
+    STZ.B DP_BG2YScroll                                                            ;8B9F70;
+    STZ.B DP_BG3YScroll                                                            ;8B9F72;
+    STZ.W Mode7TransformationAngle                                                          ;8B9F74;
     LDA.W #CinematicFunction_LoadTitleSequence                           ;8B9F77;
-    STA.W $1F51                                                          ;8B9F7A;
+    STA.W CinematicFunction                                                          ;8B9F7A;
     JSL.L Disable_PaletteFXObjects                                       ;8B9F7D;
     JSL.L Clear_PaletteFXObjects                                         ;8B9F81;
-    LDA.W #$1C1F                                                         ;8B9F85;
+    LDA.W #MessageBoxIndex                                                         ;8B9F85;
     DEC                                                                  ;8B9F88;
     DEC                                                                  ;8B9F89;
     SEC                                                                  ;8B9F8A;
-    SBC.W #$198D                                                         ;8B9F8B;
+    SBC.W #Mode7TransformationAngle                                                         ;8B9F8B;
     TAX                                                                  ;8B9F8E;
 
   .loopClearNonGameplayRAM:
-    STZ.W $198D,X                                                        ;8B9F8F;
+    STZ.W Mode7TransformationAngle,X                                                        ;8B9F8F;
     DEX                                                                  ;8B9F92;
     DEX                                                                  ;8B9F93;
     BPL .loopClearNonGameplayRAM                                         ;8B9F94;
@@ -4757,13 +4757,13 @@ CinematicFunction_TransitionToFileSelectMenu:
     LDA.W #$0000                                                         ;8B9F99;
 
   .loopClearGradient:
-    STA.L $7E9800,X                                                      ;8B9F9C;
+    STA.L TitleScreenGradientColorMathSubScreenBackdropColorHDMATable,X                                                      ;8B9F9C;
     DEX                                                                  ;8B9FA0;
     DEX                                                                  ;8B9FA1;
     BPL .loopClearGradient                                               ;8B9FA2;
     LDA.W #$0004                                                         ;8B9FA4;
-    STA.W $0998                                                          ;8B9FA7;
-    STZ.W $0DE2                                                          ;8B9FAA;
+    STA.W GameState                                                          ;8B9FA7;
+    STZ.W GameOptionsMenuIndex                                                          ;8B9FAA;
 
   .return:
     RTS                                                                  ;8B9FAD;
@@ -4777,28 +4777,28 @@ CinematicFunction_TransitionToDemos:
     JSL.L EnableNMI                                                      ;8B9FB6;
     SEP #$20                                                             ;8B9FBA;
     LDA.B #$01                                                           ;8B9FBC;
-    STA.B $55                                                            ;8B9FBE;
+    STA.B DP_BGModeSize                                                            ;8B9FBE;
     REP #$20                                                             ;8B9FC0;
-    STZ.W $0723                                                          ;8B9FC2;
-    STZ.W $0725                                                          ;8B9FC5;
-    STZ.B $B5                                                            ;8B9FC8;
-    STZ.B $B9                                                            ;8B9FCA;
-    STZ.B $B7                                                            ;8B9FCC;
-    STZ.B $BB                                                            ;8B9FCE;
-    STZ.W $198D                                                          ;8B9FD0;
+    STZ.W ScreenFadeDelay                                                          ;8B9FC2;
+    STZ.W ScreenFadeCounter                                                          ;8B9FC5;
+    STZ.B DP_BG2XScroll                                                            ;8B9FC8;
+    STZ.B DP_BG3XScroll                                                            ;8B9FCA;
+    STZ.B DP_BG2YScroll                                                            ;8B9FCC;
+    STZ.B DP_BG3YScroll                                                            ;8B9FCE;
+    STZ.W Mode7TransformationAngle                                                          ;8B9FD0;
     LDA.W #CinematicFunction_LoadTitleSequence                           ;8B9FD3;
-    STA.W $1F51                                                          ;8B9FD6;
+    STA.W CinematicFunction                                                          ;8B9FD6;
     JSL.L Disable_PaletteFXObjects                                       ;8B9FD9;
     JSL.L Clear_PaletteFXObjects                                         ;8B9FDD;
-    LDA.W #$1C1F                                                         ;8B9FE1;
+    LDA.W #MessageBoxIndex                                                         ;8B9FE1;
     DEC                                                                  ;8B9FE4;
     DEC                                                                  ;8B9FE5;
     SEC                                                                  ;8B9FE6;
-    SBC.W #$198D                                                         ;8B9FE7;
+    SBC.W #Mode7TransformationAngle                                                         ;8B9FE7;
     TAX                                                                  ;8B9FEA;
 
   .loopClearNonGameplayRAM:
-    STZ.W $198D,X                                                        ;8B9FEB;
+    STZ.W Mode7TransformationAngle,X                                                        ;8B9FEB;
     DEX                                                                  ;8B9FEE;
     DEX                                                                  ;8B9FEF;
     BPL .loopClearNonGameplayRAM                                         ;8B9FF0;
@@ -4806,13 +4806,13 @@ CinematicFunction_TransitionToDemos:
     LDA.W #$0000                                                         ;8B9FF5;
 
   .loopClearGradient:
-    STA.L $7E9800,X                                                      ;8B9FF8;
+    STA.L TitleScreenGradientColorMathSubScreenBackdropColorHDMATable,X                                                      ;8B9FF8;
     DEX                                                                  ;8B9FFC;
     DEX                                                                  ;8B9FFD;
     BPL .loopClearGradient                                               ;8B9FFE;
     LDA.W #$0028                                                         ;8BA000;
-    STA.W $0998                                                          ;8BA003;
-    STZ.W $1F57                                                          ;8BA006;
+    STA.W GameState                                                          ;8BA003;
+    STZ.W DemoScene                                                          ;8BA006;
 
   .return:
     RTS                                                                  ;8BA009;
@@ -4825,7 +4825,7 @@ Configure_TitleScreen_GradientHDMATable:
     PHK                                                                  ;8BA00C;
     PLB                                                                  ;8BA00D;
     REP #$30                                                             ;8BA00E;
-    LDA.W $198F                                                          ;8BA010;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BA010;
     AND.W #$00F0                                                         ;8BA013;
     LSR                                                                  ;8BA016;
     LSR                                                                  ;8BA017;
@@ -4834,14 +4834,14 @@ Configure_TitleScreen_GradientHDMATable:
     LDA.L TitleSequenceHDMATables,X                                      ;8BA01A;
     TAY                                                                  ;8BA01E;
     PHB                                                                  ;8BA01F;
-    PEA.W $8C00                                                          ;8BA020;
+    PEA.W TitleSequenceHDMATables>>8                                                          ;8BA020;
     PLB                                                                  ;8BA023;
     PLB                                                                  ;8BA024;
     LDX.W #$0000                                                         ;8BA025;
 
   .loop:
     LDA.W $0000,Y                                                        ;8BA028;
-    STA.L $7E9800,X                                                      ;8BA02B;
+    STA.L TitleScreenGradientColorMathSubScreenBackdropColorHDMATable,X                                                      ;8BA02B;
     BEQ .return                                                          ;8BA02F;
     INY                                                                  ;8BA031;
     INY                                                                  ;8BA032;
@@ -5150,7 +5150,7 @@ Instruction_LoadBabyMetroid_Colors0:
 
   .loop:
     LDA.W TitleSequenceBabyMetroid_Colors_0,X                            ;8BA277;
-    STA.L $7EC060,X                                                      ;8BA27A;
+    STA.L Palettes_BG12P3,X                                                      ;8BA27A;
     DEX                                                                  ;8BA27E;
     DEX                                                                  ;8BA27F;
     BPL .loop                                                            ;8BA280;
@@ -5166,7 +5166,7 @@ Instruction_LoadBabyMetroid_Colors1:
 
   .loop:
     LDA.W TitleSequenceBabyMetroid_Colors_1,X                            ;8BA288;
-    STA.L $7EC060,X                                                      ;8BA28B;
+    STA.L Palettes_BG12P3,X                                                      ;8BA28B;
     DEX                                                                  ;8BA28F;
     DEX                                                                  ;8BA290;
     BPL .loop                                                            ;8BA291;
@@ -5182,7 +5182,7 @@ Instruction_LoadBabyMetroid_Colors2:
 
   .loop:
     LDA.W TitleSequenceBabyMetroid_Colors_2,X                            ;8BA299;
-    STA.L $7EC060,X                                                      ;8BA29C;
+    STA.L Palettes_BG12P3,X                                                      ;8BA29C;
     DEX                                                                  ;8BA2A0;
     DEX                                                                  ;8BA2A1;
     BPL .loop                                                            ;8BA2A2;
@@ -5198,7 +5198,7 @@ Instruction_LoadBabyMetroid_Colors3:
 
   .loop:
     LDA.W TitleSequenceBabyMetroid_Colors_3,X                            ;8BA2AA;
-    STA.L $7EC060,X                                                      ;8BA2AD;
+    STA.L Palettes_BG12P3,X                                                      ;8BA2AD;
     DEX                                                                  ;8BA2B1;
     DEX                                                                  ;8BA2B2;
     BPL .loop                                                            ;8BA2B3;
@@ -5228,19 +5228,19 @@ TitleSequenceBabyMetroid_Colors_3:
 ;;; $A337: Mode 7 transfer data - title sequence baby metroid ;;;
 Mode7TransferData_TitleSequenceBabyMetroid_0:
     db $C0                                                               ;8BA337; Control. C0h = write to VRAM tiles
-    dl $7F9000                                                           ;8BA338; Source address
+    dl TitleBabyMetroidTiles                                             ;8BA338; Source address
     dw $0100,$3800                                                       ;8BA33B; Size, Destination address (VRAM)
     db $80,$00                                                           ;8BA33F; VRAM address increment mode
 
 Mode7TransferData_TitleSequenceBabyMetroid_1:
     db $C0                                                               ;8BA341; Control. C0h = write to VRAM tiles
-    dl $7F9100                                                           ;8BA342; Source address
+    dl TitleBabyMetroidTiles+$100                                        ;8BA342; Source address
     dw $0100,$3800                                                       ;8BA345; Size, Destination address (VRAM)
     db $80,$00                                                           ;8BA349; VRAM address increment mode
 
 Mode7TransferData_TitleSequenceBabyMetroid_2:
     db $C0                                                               ;8BA34B; Control. C0h = write to VRAM tiles
-    dl $7F9200                                                           ;8BA34C; Source address
+    dl TitleBabyMetroidTiles+$200                                        ;8BA34C; Source address
     dw $0100,$3800                                                       ;8BA34F; Size, Destination address (VRAM)
     db $80,$00                                                           ;8BA353; VRAM address increment mode
 
@@ -5260,15 +5260,15 @@ GameState_1E_22_25_Intro_CeresGoesBoom_SamusGoesToZebes_8B:
     PLB                                                                  ;8BA35E;
     REP #$30                                                             ;8BA35F;
     PEA.W .manualReturn-1                                                ;8BA361;
-    JMP.W ($1F51)                                                        ;8BA364;
+    JMP.W (CinematicFunction)                                                        ;8BA364;
 
   .manualReturn:
-    LDA.W $1B9F                                                          ;8BA367;
+    LDA.W CinematicSpriteObject_FrameCounter                                                          ;8BA367;
     BMI +                                                                ;8BA36A;
     INC                                                                  ;8BA36C;
-    STA.W $1B9F                                                          ;8BA36D;
+    STA.W CinematicSpriteObject_FrameCounter                                                          ;8BA36D;
 
-+   INC.W $1A51                                                          ;8BA370;
++   INC.W CinematicFrameCounter                                                          ;8BA370;
     JSR.W HandleSamusDuringIntro                                         ;8BA373;
     JSR.W Handle_CinematicSpriteObjects                                  ;8BA376;
     JSR.W Handle_Mode7Objects                                            ;8BA379;
@@ -5302,32 +5302,32 @@ CinematicFunction_Nothing:
 ;;; $A395: Cinematic function - intro - initial ;;;
 CinematicFunction_Intro_Initial:
     JSR.W Setup_PPU_Intro                                                ;8BA395;
-    STZ.B $AB                                                            ;8BA398;
-    STZ.B $A7                                                            ;8BA39A;
-    STZ.W $079F                                                          ;8BA39C;
+    STZ.B DP_IRQCmd                                                            ;8BA398;
+    STZ.B DP_NextIRQCmd                                                            ;8BA39A;
+    STZ.W AreaIndex                                                          ;8BA39C;
     LDA.W #$0010                                                         ;8BA39F;
-    STA.W $07A5                                                          ;8BA3A2;
-    STA.W $07A7                                                          ;8BA3A5;
+    STA.W RoomWidthBlocks                                                          ;8BA3A2;
+    STA.W RoomHeightBlocks                                                          ;8BA3A5;
     JSL.L InitializeSamus                                                ;8BA3A8;
     JSL.L Update_Beam_Tiles_and_Palette                                  ;8BA3AC;
     LDA.W #$0384                                                         ;8BA3B0;
-    STA.W $09C8                                                          ;8BA3B3;
-    STA.W $09C6                                                          ;8BA3B6;
-    STZ.W $1A57                                                          ;8BA3B9;
+    STA.W MaxMissiles                                                          ;8BA3B3;
+    STA.W Missiles                                                          ;8BA3B6;
+    STZ.W IntroSamusDisplayFlag                                                          ;8BA3B9;
     LDA.W #SamusDrawingHandler_Default                                   ;8BA3BC;
-    STA.W $0A5C                                                          ;8BA3BF;
+    STA.W DrawingHandler                                                          ;8BA3BF;
     JSR.W Reset_Button_Assignments_to_Default                            ;8BA3C2;
-    STZ.W $18A8                                                          ;8BA3C5;
-    STZ.W $18AA                                                          ;8BA3C8;
-    LDA.W #$1C1F                                                         ;8BA3CB;
+    STZ.W SamusInvincibilityTimer                                                          ;8BA3C5;
+    STZ.W SamusKnockbackTimer                                                          ;8BA3C8;
+    LDA.W #MessageBoxIndex                                                         ;8BA3CB;
     DEC                                                                  ;8BA3CE;
     DEC                                                                  ;8BA3CF;
     SEC                                                                  ;8BA3D0;
-    SBC.W #$198D                                                         ;8BA3D1;
+    SBC.W #Mode7TransformationAngle                                                         ;8BA3D1;
     TAX                                                                  ;8BA3D4;
 
   .loopClearNonGameplayRAM:
-    STZ.W $198D,X                                                        ;8BA3D5;
+    STZ.W Mode7TransformationAngle,X                                                        ;8BA3D5;
     DEX                                                                  ;8BA3D8;
     DEX                                                                  ;8BA3D9;
     BPL .loopClearNonGameplayRAM                                         ;8BA3DA;
@@ -5335,45 +5335,45 @@ CinematicFunction_Intro_Initial:
 
   .loopPalettes:
     LDA.L Palettes_Intro,X                                               ;8BA3DF;
-    STA.L $7EC000,X                                                      ;8BA3E3;
+    STA.L Palettes,X                                                      ;8BA3E3;
     INX                                                                  ;8BA3E7;
     INX                                                                  ;8BA3E8;
     CPX.W #$0200                                                         ;8BA3E9;
     BMI .loopPalettes                                                    ;8BA3EC;
     LDA.W #Tiles_Intro_BG1_BG2>>8&$FF00                                  ;8BA3EE;
-    STA.B $48                                                            ;8BA3F1;
+    STA.B DP_DecompSrc+1                                                            ;8BA3F1;
     LDA.W #Tiles_Intro_BG1_BG2                                           ;8BA3F3;
-    STA.B $47                                                            ;8BA3F6;
+    STA.B DP_DecompSrc                                                            ;8BA3F6;
     JSL.L Decompression_HardcodedDestination                             ;8BA3F8;
     dl $7F0000                                                           ;8BA3FC;
     LDA.W #Tiles_Font1_BG3>>8&$FF00                                      ;8BA3FF;
-    STA.B $48                                                            ;8BA402;
+    STA.B DP_DecompSrc+1                                                            ;8BA402;
     LDA.W #Tiles_Font1_BG3                                               ;8BA404;
-    STA.B $47                                                            ;8BA407;
+    STA.B DP_DecompSrc                                                            ;8BA407;
     JSL.L Decompression_HardcodedDestination                             ;8BA409;
-    dl $7F8000                                                           ;8BA40D;
+    dl IntroFont1Tiles                                                           ;8BA40D;
     LDA.W #Intro_BG2_SamusHead_Tilemap>>8&$FF00                          ;8BA410;
-    STA.B $48                                                            ;8BA413;
+    STA.B DP_DecompSrc+1                                                            ;8BA413;
     LDA.W #Intro_BG2_SamusHead_Tilemap                                   ;8BA415;
-    STA.B $47                                                            ;8BA418;
+    STA.B DP_DecompSrc                                                            ;8BA418;
     JSL.L Decompression_HardcodedDestination                             ;8BA41A;
     dl $7F9000                                                           ;8BA41E;
     LDA.W #Intro_BG1_MotherBrainsRoom_Tilemap>>8&$FF00                   ;8BA421;
-    STA.B $48                                                            ;8BA424;
+    STA.B DP_DecompSrc+1                                                            ;8BA424;
     LDA.W #Intro_BG1_MotherBrainsRoom_Tilemap                            ;8BA426;
-    STA.B $47                                                            ;8BA429;
+    STA.B DP_DecompSrc                                                            ;8BA429;
     JSL.L Decompression_HardcodedDestination                             ;8BA42B;
     dl $7F9800                                                           ;8BA42F;
     LDA.W #Tiles_Intro_Sprite>>8&$FF00                                   ;8BA432;
-    STA.B $48                                                            ;8BA435;
+    STA.B DP_DecompSrc+1                                                            ;8BA435;
     LDA.W #Tiles_Intro_Sprite                                            ;8BA437;
-    STA.B $47                                                            ;8BA43A;
+    STA.B DP_DecompSrc                                                            ;8BA43A;
     JSL.L Decompression_HardcodedDestination                             ;8BA43C;
     dl $7FB800                                                           ;8BA440;
     LDA.W #Intro_BG3_TheLastMetroidIsInCaptivity_Tilemap>>8&$FF00        ;8BA443;
-    STA.B $48                                                            ;8BA446;
+    STA.B DP_DecompSrc+1                                                            ;8BA446;
     LDA.W #Intro_BG3_TheLastMetroidIsInCaptivity_Tilemap                 ;8BA448;
-    STA.B $47                                                            ;8BA44B;
+    STA.B DP_DecompSrc                                                            ;8BA44B;
     JSL.L Decompression_HardcodedDestination                             ;8BA44D;
     dl $7FE000                                                           ;8BA451;
     SEP #$30                                                             ;8BA454;
@@ -5397,7 +5397,7 @@ CinematicFunction_Intro_Initial:
     STA.W $2115                                                          ;8BA482;
     JSL.L SetupHDMATransfer                                              ;8BA485;
     db $01,$01,$18                                                       ;8BA489;
-    dl $7F8000                                                           ;8BA48C;
+    dl IntroFont1Tiles                                                           ;8BA48C;
     dw $0900                                                             ;8BA48F;
     LDA.B #$02                                                           ;8BA491;
     STA.W $420B                                                          ;8BA493;
@@ -5463,27 +5463,27 @@ CinematicFunction_Intro_Initial:
     STA.W $420B                                                          ;8BA533;
     REP #$30                                                             ;8BA536;
     LDA.W #Tiles_Font2_BG3>>8&$FF00                                      ;8BA538;
-    STA.B $48                                                            ;8BA53B;
+    STA.B DP_DecompSrc+1                                                            ;8BA53B;
     LDA.W #Tiles_Font2_BG3                                               ;8BA53D;
-    STA.B $47                                                            ;8BA540;
+    STA.B DP_DecompSrc                                                            ;8BA540;
     JSL.L Decompression_HardcodedDestination                             ;8BA542;
-    dl $7FA000                                                           ;8BA546;
+    dl IntroFont2Tiles                                                           ;8BA546;
     JSL.L EnableNMI                                                      ;8BA549;
     LDA.W #$0003                                                         ;8BA54D;
-    STA.W $0723                                                          ;8BA550;
-    STA.W $0725                                                          ;8BA553;
+    STA.W ScreenFadeDelay                                                          ;8BA550;
+    STA.W ScreenFadeCounter                                                          ;8BA553;
     JSL.L Enable_HDMAObjects                                             ;8BA556;
     JSL.L Clear_PaletteFXObjects                                         ;8BA55A;
     JSL.L Enable_PaletteFXObjects                                        ;8BA55E;
-    STZ.W $078D                                                          ;8BA562;
-    STZ.W $0911                                                          ;8BA565;
-    STZ.W $0915                                                          ;8BA568;
-    STZ.W $1BA3                                                          ;8BA56B;
+    STZ.W DoorPointer                                                          ;8BA562;
+    STZ.W Layer1XPosition                                                          ;8BA565;
+    STZ.W Layer1YPosition                                                          ;8BA568;
+    STZ.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BA56B;
     LDX.W #$07FE                                                         ;8BA56E;
 
   .loopSamusHead:
-    LDA.L $7F9000,X                                                      ;8BA571;
-    STA.L $7E3800,X                                                      ;8BA575;
+    LDA.L $7F9000,X                                                      ;8BA571; ?
+    STA.L CinematicBGTilemap,X                                                      ;8BA575;
     DEX                                                                  ;8BA579;
     DEX                                                                  ;8BA57A;
     BPL .loopSamusHead                                                   ;8BA57B;
@@ -5491,14 +5491,14 @@ CinematicFunction_Intro_Initial:
 
   .loopJapanText:
     LDA.L InitialIntroJapanTextTilemap,X                                 ;8BA580;
-    STA.L $7E3000,X                                                      ;8BA584;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8BA584;
     DEX                                                                  ;8BA588;
     DEX                                                                  ;8BA589;
     BPL .loopJapanText                                                   ;8BA58A;
     LDA.W #$FFFF                                                         ;8BA58C;
-    STA.W $1B9F                                                          ;8BA58F;
+    STA.W CinematicSpriteObject_FrameCounter                                                          ;8BA58F;
     LDA.W #CinematicFunction_Intro_WaitForMusicQueue_FadeIn              ;8BA592;
-    STA.W $1F51                                                          ;8BA595;
+    STA.W CinematicFunction                                                          ;8BA595;
     LDA.W #$0000                                                         ;8BA598;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8BA59B;
     LDA.W #$FF3F                                                         ;8BA59F;
@@ -5511,10 +5511,10 @@ CinematicFunction_Intro_WaitForMusicQueue_FadeIn:
     JSL.L CheckIfMusicIsQueued                                           ;8BA5A7;
     BCS .return                                                          ;8BA5AB;
     LDA.W #CinematicFunction_Intro_HandleDrawingInitialJapanText_Wait60f ;8BA5AD;
-    STA.W $1F51                                                          ;8BA5B0;
+    STA.W CinematicFunction                                                          ;8BA5B0;
     LDA.W #$0002                                                         ;8BA5B3;
-    STA.W $0723                                                          ;8BA5B6;
-    STA.W $0725                                                          ;8BA5B9;
+    STA.W ScreenFadeDelay                                                          ;8BA5B6;
+    STA.W ScreenFadeCounter                                                          ;8BA5B9;
 
   .return:
     RTS                                                                  ;8BA5BC;
@@ -5525,30 +5525,30 @@ CinematicFunction_Intro_HandleDrawingInitialJapanText_Wait60f:
     JSR.W AdvanceSlowScreenFadeIn                                        ;8BA5BD;
     BCC .return                                                          ;8BA5C0;
     LDA.W #CinematicFunction_Intro_PlayTheLastMetroidMusicFor200Frames   ;8BA5C2;
-    STA.W $1F51                                                          ;8BA5C5;
+    STA.W CinematicFunction                                                          ;8BA5C5;
     LDA.W #$003C                                                         ;8BA5C8;
-    STA.W $1A49                                                          ;8BA5CB;
-    LDA.W $09E2                                                          ;8BA5CE;
+    STA.W CinematicFunctionTimer                                                          ;8BA5CB;
+    LDA.W JapanText                                                          ;8BA5CE;
     BEQ .return                                                          ;8BA5D1;
-    LDX.W $0330                                                          ;8BA5D3;
+    LDX.W VRAMWriteStack                                                          ;8BA5D3;
     LDA.W #$0100                                                         ;8BA5D6;
-    STA.B $D0,X                                                          ;8BA5D9;
+    STA.B VRAMWrite.size,X                                                          ;8BA5D9;
     INX                                                                  ;8BA5DB;
     INX                                                                  ;8BA5DC;
     LDA.W #$3000                                                         ;8BA5DD;
-    STA.B $D0,X                                                          ;8BA5E0;
+    STA.B VRAMWrite.size,X                                                          ;8BA5E0;
     INX                                                                  ;8BA5E2;
     INX                                                                  ;8BA5E3;
     SEP #$20                                                             ;8BA5E4;
     LDA.B #$7E                                                           ;8BA5E6;
-    STA.B $D0,X                                                          ;8BA5E8;
+    STA.B VRAMWrite.size,X                                                          ;8BA5E8;
     REP #$20                                                             ;8BA5EA;
     INX                                                                  ;8BA5EC;
     LDA.W #$4EE0                                                         ;8BA5ED;
-    STA.B $D0,X                                                          ;8BA5F0;
+    STA.B VRAMWrite.size,X                                                          ;8BA5F0;
     INX                                                                  ;8BA5F2;
     INX                                                                  ;8BA5F3;
-    STX.W $0330                                                          ;8BA5F4;
+    STX.W VRAMWriteStack                                                          ;8BA5F4;
 
   .return:
     RTS                                                                  ;8BA5F7;
@@ -5556,15 +5556,15 @@ CinematicFunction_Intro_HandleDrawingInitialJapanText_Wait60f:
 
 ;;; $A5F8: Cinematic function - intro - play "the last Metroid is in captivity" music for 200 frames ;;;
 CinematicFunction_Intro_PlayTheLastMetroidMusicFor200Frames:
-    DEC.W $1A49                                                          ;8BA5F8;
+    DEC.W CinematicFunctionTimer                                                          ;8BA5F8;
     BEQ .timerExpired                                                    ;8BA5FB;
     BPL .return                                                          ;8BA5FD;
 
   .timerExpired:
     LDA.W #CinematicFunction_Intro_PlayGalaxyIsAtPeaceMusic              ;8BA5FF;
-    STA.W $1F51                                                          ;8BA602;
+    STA.W CinematicFunction                                                          ;8BA602;
     LDA.W #$00C8                                                         ;8BA605;
-    STA.W $1A49                                                          ;8BA608;
+    STA.W CinematicFunctionTimer                                                          ;8BA608;
     LDA.W #$0005                                                         ;8BA60B;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8BA60E;
 
@@ -5574,7 +5574,7 @@ CinematicFunction_Intro_PlayTheLastMetroidMusicFor200Frames:
 
 ;;; $A613: Cinematic function - intro - queue "the galaxy is at peace" music ;;;
 CinematicFunction_Intro_PlayGalaxyIsAtPeaceMusic:
-    DEC.W $1A49                                                          ;8BA613;
+    DEC.W CinematicFunctionTimer                                                          ;8BA613;
     BEQ .timerExpired                                                    ;8BA616;
     BPL .return                                                          ;8BA618;
 
@@ -5587,7 +5587,7 @@ CinematicFunction_Intro_PlayGalaxyIsAtPeaceMusic:
     LDY.W #$000E                                                         ;8BA62B;
     JSL.L QueueMusicDataOrTrack_YFrameDelay                              ;8BA62E;
     LDA.W #CinematicFunction_Intro_WaitForMusicQueue_WaitFor240Frames    ;8BA632;
-    STA.W $1F51                                                          ;8BA635;
+    STA.W CinematicFunction                                                          ;8BA635;
 
   .return:
     RTS                                                                  ;8BA638;
@@ -5598,9 +5598,9 @@ CinematicFunction_Intro_WaitForMusicQueue_WaitFor240Frames:
     JSL.L CheckIfMusicIsQueued                                           ;8BA639;
     BCS .return                                                          ;8BA63D;
     LDA.W #CinematicFunction_Intro_FadeOut                               ;8BA63F;
-    STA.W $1F51                                                          ;8BA642;
+    STA.W CinematicFunction                                                          ;8BA642;
     LDA.W #$00F0                                                         ;8BA645;
-    STA.W $1A49                                                          ;8BA648;
+    STA.W CinematicFunctionTimer                                                          ;8BA648;
 
   .return:
     RTS                                                                  ;8BA64B;
@@ -5608,16 +5608,16 @@ CinematicFunction_Intro_WaitForMusicQueue_WaitFor240Frames:
 
 ;;; $A64C: Cinematic function - intro - fade out ;;;
 CinematicFunction_Intro_FadeOut:
-    DEC.W $1A49                                                          ;8BA64C;
+    DEC.W CinematicFunctionTimer                                                          ;8BA64C;
     BEQ .timerExpired                                                    ;8BA64F;
     BPL .return                                                          ;8BA651;
 
   .timerExpired:
     LDA.W #CinematicFunction_Intro_WaitForFadeOut                        ;8BA653;
-    STA.W $1F51                                                          ;8BA656;
+    STA.W CinematicFunction                                                          ;8BA656;
     LDA.W #$0002                                                         ;8BA659;
-    STA.W $0723                                                          ;8BA65C;
-    STA.W $0725                                                          ;8BA65F;
+    STA.W ScreenFadeDelay                                                          ;8BA65C;
+    STA.W ScreenFadeCounter                                                          ;8BA65F;
 
   .return:
     RTS                                                                  ;8BA662;
@@ -5628,7 +5628,7 @@ CinematicFunction_Intro_WaitForFadeOut:
     JSR.W AdvanceSlowScreenFadeOut                                       ;8BA663;
     BCC .return                                                          ;8BA666;
     LDA.W #CinematicFunction_Intro_SetupIntroTextPage1                   ;8BA668;
-    STA.W $1F51                                                          ;8BA66B;
+    STA.W CinematicFunction                                                          ;8BA66B;
 
   .return:
     RTS                                                                  ;8BA66E;
@@ -5647,26 +5647,26 @@ CinematicFunction_Intro_SetupIntroTextPage1:
     STA.W $2115                                                          ;8BA682;
     JSL.L SetupHDMATransfer                                              ;8BA685;
     db $01,$01,$18                                                       ;8BA689;
-    dl $7E4000                                                           ;8BA68C;
+    dl IntroBG3JapanTextTiles                                                           ;8BA68C;
     dw $0600                                                             ;8BA68F;
     LDA.B #$02                                                           ;8BA691;
     STA.W $420B                                                          ;8BA693;
     LDA.B #$16                                                           ;8BA696;
     STA.W $212C                                                          ;8BA698;
-    STA.B $69                                                            ;8BA69B;
+    STA.B DP_MainScreenLayers                                                            ;8BA69B;
     REP #$30                                                             ;8BA69D;
     LDA.W #$002F                                                         ;8BA69F;
     JSL.L Clear_CinematicBGObjects_CinematicBGTilemap                    ;8BA6A2;
     JSL.L Enable_CinematicBGObjects                                      ;8BA6A6;
     JSL.L Enable_CinematicBGTilemap_Updates                              ;8BA6AA;
     LDA.W #$4C00                                                         ;8BA6AE;
-    STA.W $19F5                                                          ;8BA6B1;
+    STA.W CinematicBGObject_VRAMAddr                                                          ;8BA6B1;
     LDX.W #$00FE                                                         ;8BA6B4;
     LDA.W #$3C29                                                         ;8BA6B7;
 
   .loopTopBottomMargins:
-    STA.L $7E3000,X                                                      ;8BA6BA;
-    STA.L $7E3700,X                                                      ;8BA6BE;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8BA6BA;
+    STA.L CinematicBGTilemap_BottomMargin,X                                                      ;8BA6BE;
     DEX                                                                  ;8BA6C2;
     DEX                                                                  ;8BA6C3;
     BPL .loopTopBottomMargins                                            ;8BA6C4;
@@ -5675,7 +5675,7 @@ CinematicFunction_Intro_SetupIntroTextPage1:
 
   .loopJapanTextTilemap:
     LDA.W .IntroJapanTextTilemap,Y                                       ;8BA6CC;
-    STA.L $7E3000,X                                                      ;8BA6CF;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8BA6CF;
     INY                                                                  ;8BA6D3;
     INY                                                                  ;8BA6D4;
     INX                                                                  ;8BA6D5;
@@ -5683,19 +5683,19 @@ CinematicFunction_Intro_SetupIntroTextPage1:
     CPX.W #$0700                                                         ;8BA6D7;
     BMI .loopJapanTextTilemap                                            ;8BA6DA;
     LDA.W #$1C29                                                         ;8BA6DC;
-    STA.L $7E371E                                                        ;8BA6DF;
-    STA.L $7E3720                                                        ;8BA6E3;
+    STA.L CinematicBGTilemap_BottomMargin+$1E                                                        ;8BA6DF;
+    STA.L CinematicBGTilemap_BottomMargin+$20                                                        ;8BA6E3;
     LDY.W #CinematicSpriteObjectDefinitions_IntroTextCaret               ;8BA6E7;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BA6EA;
     LDA.W #$007F                                                         ;8BA6ED;
-    STA.W $1A49                                                          ;8BA6F0;
+    STA.W CinematicFunctionTimer                                                          ;8BA6F0;
     LDY.W #CinematicSpriteObjectDefinitions_SamusBlinking                ;8BA6F3;
     LDA.W #$4C00                                                         ;8BA6F6;
     JSR.W Spawn_CinematicBGObject                                        ;8BA6F9;
     LDA.W #$0008                                                         ;8BA6FC;
-    STA.W $1997                                                          ;8BA6FF;
-    STA.B $B7                                                            ;8BA702;
-    STA.B $BB                                                            ;8BA704;
+    STA.W CinematicBG1_YPosition                                                          ;8BA6FF;
+    STA.B DP_BG2YScroll                                                            ;8BA702;
+    STA.B DP_BG3YScroll                                                            ;8BA704;
     JSR.W Clear_EnglishText_Tilemap                                      ;8BA706;
     JSR.W RestIntroTextCaret                                             ;8BA709;
     LDA.W #$0000                                                         ;8BA70C;
@@ -5706,7 +5706,7 @@ CinematicFunction_Intro_SetupIntroTextPage1:
     LDY.W #$000E                                                         ;8BA71D;
     JSL.L QueueMusicDataOrTrack_YFrameDelay                              ;8BA720;
     LDA.W #CineFunc_Intro_WaitForMusicQueue_FadeIn_SpawnIntroTextPage1   ;8BA724;
-    STA.W $1F51                                                          ;8BA727;
+    STA.W CinematicFunction                                                          ;8BA727;
     RTS                                                                  ;8BA72A;
 
   .IntroJapanTextTilemap:
@@ -5733,10 +5733,10 @@ CineFunc_Intro_WaitForMusicQueue_FadeIn_SpawnIntroTextPage1:
     JSL.L CheckIfMusicIsQueued                                           ;8BA82B;
     BCS .return                                                          ;8BA82F;
     LDA.W #CinematicFunction_Intro_WaitForFadeIn                         ;8BA831;
-    STA.W $1F51                                                          ;8BA834;
+    STA.W CinematicFunction                                                          ;8BA834;
     LDA.W #$0002                                                         ;8BA837;
-    STA.W $0723                                                          ;8BA83A;
-    STA.W $0725                                                          ;8BA83D;
+    STA.W ScreenFadeDelay                                                          ;8BA83A;
+    STA.W ScreenFadeCounter                                                          ;8BA83D;
     LDY.W #CinematicSpriteObjectDefinitions_IntroTextPage1               ;8BA840;
     LDA.W #$4C00                                                         ;8BA843;
     JSR.W Spawn_CinematicBGObject                                        ;8BA846;
@@ -5750,7 +5750,7 @@ CinematicFunction_Intro_WaitForFadeIn:
     JSR.W AdvanceSlowScreenFadeIn                                        ;8BA84A;
     BCC .return                                                          ;8BA84D;
     LDA.W #CinematicFunction_Nothing                                     ;8BA84F;
-    STA.W $1F51                                                          ;8BA852;
+    STA.W CinematicFunction                                                          ;8BA852;
 
   .return:
     RTS                                                                  ;8BA855;
@@ -5764,7 +5764,7 @@ Clear_EnglishText_Tilemap:
     LDA.W #$002F                                                         ;8BA85A;
 
   .loop:
-    STA.L $7E3000,X                                                      ;8BA85D;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8BA85D;
     INX                                                                  ;8BA861;
     INX                                                                  ;8BA862;
     CPX.W #$0600                                                         ;8BA863;
@@ -5782,22 +5782,22 @@ BlankOut_JapanText_Tiles:
     LDX.W #$0000                                                         ;8BA86F;
 
   .loop:
-    LDA.L $7F8290                                                        ;8BA872;
-    STA.L $7E4000,X                                                      ;8BA876;
-    LDA.L $7F8292                                                        ;8BA87A;
-    STA.L $7E4002,X                                                      ;8BA87E;
-    LDA.L $7F8294                                                        ;8BA882;
-    STA.L $7E4004,X                                                      ;8BA886;
-    LDA.L $7F8296                                                        ;8BA88A;
-    STA.L $7E4006,X                                                      ;8BA88E;
-    LDA.L $7F8298                                                        ;8BA892;
-    STA.L $7E4008,X                                                      ;8BA896;
-    LDA.L $7F829A                                                        ;8BA89A;
-    STA.L $7E400A,X                                                      ;8BA89E;
-    LDA.L $7F829C                                                        ;8BA8A2;
-    STA.L $7E400C,X                                                      ;8BA8A6;
-    LDA.L $7F829E                                                        ;8BA8AA;
-    STA.L $7E400E,X                                                      ;8BA8AE;
+    LDA.L IntroFont1Tiles+$290                                           ;8BA872;
+    STA.L IntroBG3JapanTextTiles,X                                       ;8BA876;
+    LDA.L IntroFont1Tiles+$292                                           ;8BA87A;
+    STA.L IntroBG3JapanTextTiles+2,X                                     ;8BA87E;
+    LDA.L IntroFont1Tiles+$294                                           ;8BA882;
+    STA.L IntroBG3JapanTextTiles+4,X                                     ;8BA886;
+    LDA.L IntroFont1Tiles+$296                                           ;8BA88A;
+    STA.L IntroBG3JapanTextTiles+6,X                                     ;8BA88E;
+    LDA.L IntroFont1Tiles+$298                                           ;8BA892;
+    STA.L IntroBG3JapanTextTiles+8,X                                     ;8BA896;
+    LDA.L IntroFont1Tiles+$29A                                           ;8BA89A;
+    STA.L IntroBG3JapanTextTiles+$A,X                                    ;8BA89E;
+    LDA.L IntroFont1Tiles+$29C                                           ;8BA8A2;
+    STA.L IntroBG3JapanTextTiles+$C,X                                    ;8BA8A6;
+    LDA.L IntroFont1Tiles+$29E                                           ;8BA8AA;
+    STA.L IntroBG3JapanTextTiles+$E,X                                    ;8BA8AE;
     TXA                                                                  ;8BA8B2;
     CLC                                                                  ;8BA8B3;
     ADC.W #$0010                                                         ;8BA8B4;
@@ -5813,11 +5813,11 @@ BlankOut_JapanText_Tiles:
 ;;; $A8C1: Initialisation function - cinematic sprite object $CE6D (intro text caret) ;;;
 InitFunction_CinematicSpriteObject_IntroTextCaret:
     LDA.W #$0008                                                         ;8BA8C1;
-    STA.W $1A7D,Y                                                        ;8BA8C4;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BA8C4;
     LDA.W #$0018                                                         ;8BA8C7;
-    STA.W $1A9D,Y                                                        ;8BA8CA;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BA8CA;
     LDA.W #$0C00                                                         ;8BA8CD;
-    STA.W $1ABD,Y                                                        ;8BA8D0;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BA8D0;
     RTS                                                                  ;8BA8D3;
 
 
@@ -5829,21 +5829,21 @@ RTS_8BA8D4:
 ;;; $A8D5: Initialisation function - cinematic sprite object $CE5B (metroid egg) ;;;
 InitFunction_CinematicSpriteObject_MetroidEgg:
     LDA.W #$0070                                                         ;8BA8D5;
-    STA.W $1A7D,Y                                                        ;8BA8D8;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BA8D8;
     LDA.W #$009B                                                         ;8BA8DB;
-    STA.W $1A9D,Y                                                        ;8BA8DE;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BA8DE;
     LDA.W #$0E00                                                         ;8BA8E1;
-    STA.W $1ABD,Y                                                        ;8BA8E4;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BA8E4;
     RTS                                                                  ;8BA8E7;
 
 
 ;;; $A8E8: Pre-instruction - cinematic sprite object $CE5B (metroid egg) ;;;
 PreInstruction_CinematicSpriteObject_MetroidEgg:
-    LDA.W $0AF6                                                          ;8BA8E8;
+    LDA.W SamusXPosition                                                          ;8BA8E8;
     CMP.W #$00A9                                                         ;8BA8EB;
     BPL .return                                                          ;8BA8EE;
     LDA.W #$0001                                                         ;8BA8F0;
-    STA.W $1B5D,X                                                        ;8BA8F3;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BA8F3;
     LDA.W #InstList_MetroidEggHatching_0                                 ;8BA8F6;
     STA.W $1B1D,X                                                        ;8BA8F9;
     LDA.W #RTS_8B93D9                                                    ;8BA8FC;
@@ -5859,10 +5859,10 @@ PreInstruction_MetroidEgg_DeleteAfterCrossFade:
     LDA.W $1A4B                                                          ;8BA903;
     BNE .return                                                          ;8BA906;
     LDA.W #$0001                                                         ;8BA908;
-    STA.W $1B5D,X                                                        ;8BA90B;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BA90B;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BA90E;
     STA.W $1B1D,X                                                        ;8BA911;
-    STZ.W $1A57                                                          ;8BA914;
+    STZ.W IntroSamusDisplayFlag                                                          ;8BA914;
 
   .return:
     RTS                                                                  ;8BA917;
@@ -5905,13 +5905,13 @@ InitFunction_CinematicSpriteObject_MetroidEggParticles:
     LDA.W .Xposition,X                                                   ;8BA961;
     CLC                                                                  ;8BA964;
     ADC.W #$0010                                                         ;8BA965;
-    STA.W $1A7D,Y                                                        ;8BA968;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BA968;
     LDA.W .Yposition,X                                                   ;8BA96B;
     CLC                                                                  ;8BA96E;
     ADC.W #$003B                                                         ;8BA96F;
-    STA.W $1A9D,Y                                                        ;8BA972;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BA972;
     LDA.W #$0E00                                                         ;8BA975;
-    STA.W $1ABD,Y                                                        ;8BA978;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BA978;
     RTS                                                                  ;8BA97B;
 
 ;        _________ X position - 10h
@@ -5939,9 +5939,9 @@ PreInstruction_CinematicSpriteObject_MetroidEggParticle:
     CLC                                                                  ;8BA9A0;
     ADC.W .Xvelocities+2,Y                                               ;8BA9A1;
     STA.W $1ADD,X                                                        ;8BA9A4;
-    LDA.W $1A7D,X                                                        ;8BA9A7;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BA9A7;
     ADC.W .Xvelocities,Y                                                 ;8BA9AA;
-    STA.W $1A7D,X                                                        ;8BA9AD;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BA9AD;
     LDA.W $1B7D,X                                                        ;8BA9B0;
     XBA                                                                  ;8BA9B3;
     AND.W #$00FF                                                         ;8BA9B4;
@@ -5952,13 +5952,13 @@ PreInstruction_CinematicSpriteObject_MetroidEggParticle:
     CLC                                                                  ;8BA9BD;
     ADC.W .Yvelocities+2,Y                                               ;8BA9BE;
     STA.W $1AFD,X                                                        ;8BA9C1;
-    LDA.W $1A9D,X                                                        ;8BA9C4;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BA9C4;
     ADC.W .Yvelocities,Y                                                 ;8BA9C7;
-    STA.W $1A9D,X                                                        ;8BA9CA;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BA9CA;
     CMP.W #$00A8                                                         ;8BA9CD;
     BMI .lessThanA8                                                      ;8BA9D0;
     LDA.W #$0001                                                         ;8BA9D2;
-    STA.W $1B5D,X                                                        ;8BA9D5;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BA9D5;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BA9D8;
     STA.W $1B1D,X                                                        ;8BA9DB;
     RTS                                                                  ;8BA9DE;
@@ -5995,11 +5995,11 @@ InitFunction_CinematicSpriteObject_MetroidEggSlimeDrops:
     LDA.W $1B9D                                                          ;8BAA9A;
     STA.W $1B7D,Y                                                        ;8BAA9D;
     LDA.W $1A97                                                          ;8BAAA0;
-    STA.W $1A7D,Y                                                        ;8BAAA3;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BAAA3;
     LDA.W $1AB7                                                          ;8BAAA6;
-    STA.W $1A9D,Y                                                        ;8BAAA9;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BAAA9;
     LDA.W #$0E00                                                         ;8BAAAC;
-    STA.W $1ABD,Y                                                        ;8BAAAF;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BAAAF;
     RTS                                                                  ;8BAAB2;
 
 
@@ -6014,9 +6014,9 @@ PreInstruction_CinematicSpriteObject_MetroidEggSlimeDrops:
     CLC                                                                  ;8BAABF;
     ADC.W .Xvelocities+2,Y                                               ;8BAAC0;
     STA.W $1ADD,X                                                        ;8BAAC3;
-    LDA.W $1A7D,X                                                        ;8BAAC6;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BAAC6;
     ADC.W .Xvelocities,Y                                                 ;8BAAC9;
-    STA.W $1A7D,X                                                        ;8BAACC;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BAACC;
     LDA.W $1B7D,X                                                        ;8BAACF;
     BIT.W #$0001                                                         ;8BAAD2;
     BNE .nonZero                                                         ;8BAAD5;
@@ -6029,9 +6029,9 @@ PreInstruction_CinematicSpriteObject_MetroidEggSlimeDrops:
     CLC                                                                  ;8BAAE1;
     ADC.W .YvelocitiesEven+2,Y                                           ;8BAAE2;
     STA.W $1AFD,X                                                        ;8BAAE5;
-    LDA.W $1A9D,X                                                        ;8BAAE8;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BAAE8;
     ADC.W .YvelocitiesEven,Y                                             ;8BAAEB;
-    STA.W $1A9D,X                                                        ;8BAAEE;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BAAEE;
     CMP.W #$00A8                                                         ;8BAAF1;
     BMI .notHitGround                                                    ;8BAAF4;
     BRA +                                                                ;8BAAF6;
@@ -6046,14 +6046,14 @@ PreInstruction_CinematicSpriteObject_MetroidEggSlimeDrops:
     CLC                                                                  ;8BAB02;
     ADC.W .YvelocitiesOdd+2,Y                                            ;8BAB03;
     STA.W $1AFD,X                                                        ;8BAB06;
-    LDA.W $1A9D,X                                                        ;8BAB09;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BAB09;
     ADC.W .YvelocitiesOdd,Y                                              ;8BAB0C;
-    STA.W $1A9D,X                                                        ;8BAB0F;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BAB0F;
     CMP.W #$00A8                                                         ;8BAB12;
     BMI .notHitGround                                                    ;8BAB15;
 
 +   LDA.W #$0001                                                         ;8BAB17;
-    STA.W $1B5D,X                                                        ;8BAB1A;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BAB1A;
     LDA.W #InstList_MetroidEggParticle_HitGround                         ;8BAB1D;
     STA.W $1B1D,X                                                        ;8BAB20;
     LDA.W #RTS_8B93D9                                                    ;8BAB23;
@@ -6116,11 +6116,11 @@ PreInstruction_CinematicSpriteObject_MetroidEggSlimeDrops:
 ;;; $AD55: Initialisation function - cinematic sprite object $CE61 (baby metroid being delivered) ;;;
 InitFunction_CinematicSpriteObject_BabyMetroidBeingDelivered:
     LDA.W #$0054                                                         ;8BAD55;
-    STA.W $1A7D,Y                                                        ;8BAD58;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BAD58;
     LDA.W #$008B                                                         ;8BAD5B;
-    STA.W $1A9D,Y                                                        ;8BAD5E;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BAD5E;
     LDA.W #$0C00                                                         ;8BAD61;
-    STA.W $1ABD,Y                                                        ;8BAD64;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BAD64;
     RTS                                                                  ;8BAD67;
 
 
@@ -6129,22 +6129,22 @@ PreInst_CinematicSpriteObject_BabyMetroidBeingDelivered:
     LDA.W $1A4B                                                          ;8BAD68;
     BNE .crossFading                                                     ;8BAD6B;
     LDA.W #$0001                                                         ;8BAD6D;
-    STA.W $1B5D,X                                                        ;8BAD70;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BAD70;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BAD73;
     STA.W $1B1D,X                                                        ;8BAD76;
     RTS                                                                  ;8BAD79;
 
   .crossFading:
-    LDA.W $1A49                                                          ;8BAD7A;
+    LDA.W CinematicFunctionTimer                                                          ;8BAD7A;
     BIT.W #$0003                                                         ;8BAD7D;
     BNE .return                                                          ;8BAD80;
-    LDA.W $1993                                                          ;8BAD82;
+    LDA.W CinematicBG1_XPosition                                                          ;8BAD82;
     BEQ .return                                                          ;8BAD85;
     DEC                                                                  ;8BAD87;
-    STA.W $1993                                                          ;8BAD88;
-    LDA.W $1A7D,X                                                        ;8BAD8B;
+    STA.W CinematicBG1_XPosition                                                          ;8BAD88;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BAD8B;
     INC                                                                  ;8BAD8E;
-    STA.W $1A7D,X                                                        ;8BAD8F;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BAD8F;
 
   .return:
     RTS                                                                  ;8BAD92;
@@ -6153,11 +6153,11 @@ PreInst_CinematicSpriteObject_BabyMetroidBeingDelivered:
 ;;; $AD93: Initialisation function - cinematic sprite object $CE67 (baby metroid being examined) ;;;
 InitFunction_CinematicSpriteObject_BabyMetroidBeingExamined:
     LDA.W #$0070                                                         ;8BAD93;
-    STA.W $1A7D,Y                                                        ;8BAD96;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BAD96;
     LDA.W #$006F                                                         ;8BAD99;
-    STA.W $1A9D,Y                                                        ;8BAD9C;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BAD9C;
     LDA.W #$0C00                                                         ;8BAD9F;
-    STA.W $1ABD,Y                                                        ;8BADA2;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BADA2;
     RTS                                                                  ;8BADA5;
 
 
@@ -6166,23 +6166,23 @@ PreInst_CinematicSpriteObject_BabyMetroidBeingExamined:
     LDA.W $1A4B                                                          ;8BADA6;
     BNE .crossFading                                                     ;8BADA9;
     LDA.W #$0001                                                         ;8BADAB;
-    STA.W $1B5D,X                                                        ;8BADAE;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BADAE;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BADB1;
     STA.W $1B1D,X                                                        ;8BADB4;
     RTS                                                                  ;8BADB7;
 
   .crossFading:
-    LDA.W $1A49                                                          ;8BADB8;
+    LDA.W CinematicFunctionTimer                                                          ;8BADB8;
     BIT.W #$0003                                                         ;8BADBB;
     BNE .return                                                          ;8BADBE;
-    LDA.W $1997                                                          ;8BADC0;
+    LDA.W CinematicBG1_YPosition                                                          ;8BADC0;
     CMP.W #$0008                                                         ;8BADC3;
     BPL .return                                                          ;8BADC6;
     INC                                                                  ;8BADC8;
-    STA.W $1997                                                          ;8BADC9;
-    LDA.W $1A9D,X                                                        ;8BADCC;
+    STA.W CinematicBG1_YPosition                                                          ;8BADC9;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BADCC;
     DEC                                                                  ;8BADCF;
-    STA.W $1A9D,X                                                        ;8BADD0;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BADD0;
 
   .return:
     RTS                                                                  ;8BADD3;
@@ -6222,21 +6222,21 @@ RestIntroTextCaret:
 ;;; $AE07: Initialisation function - cinematic sprite object $CE73 (intro Japanese text next-page arrow) ;;;
 InitFunc_CinematicSpriteObject_IntroJapanTextNextPageArrow:
     LDA.W #$0080                                                         ;8BAE07;
-    STA.W $1A7D,Y                                                        ;8BAE0A;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BAE0A;
     LDA.W #$00D8                                                         ;8BAE0D;
-    STA.W $1A9D,Y                                                        ;8BAE10;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BAE10;
     LDA.W #$0C00                                                         ;8BAE13;
-    STA.W $1ABD,Y                                                        ;8BAE16;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BAE16;
     RTS                                                                  ;8BAE19;
 
 
 ;;; $AE1A: Pre-instruction - cinematic sprite object $CE73 (intro Japanese text next-page arrow) ;;;
 PreInst_CinematicSpriteObject_IntroJapanTextNextPageArrow:
-    LDA.W $1BA3                                                          ;8BAE1A;
+    LDA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BAE1A;
     CMP.W #$003B                                                         ;8BAE1D;
     BNE +                                                                ;8BAE20;
     LDA.W #$0001                                                         ;8BAE22;
-    STA.W $1B5D,X                                                        ;8BAE25;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BAE25;
     LDA.W #InstList_IntroJapanTextNextPageArrow_Blink                    ;8BAE28;
     STA.W $1B1D,X                                                        ;8BAE2B;
 
@@ -6244,7 +6244,7 @@ PreInst_CinematicSpriteObject_IntroJapanTextNextPageArrow:
     CMP.W #$007F                                                         ;8BAE31;
     BNE .return                                                          ;8BAE34;
     LDA.W #$0001                                                         ;8BAE36;
-    STA.W $1B5D,X                                                        ;8BAE39;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BAE39;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BAE3C;
     STA.W $1B1D,X                                                        ;8BAE3F;
 
@@ -6255,7 +6255,7 @@ PreInst_CinematicSpriteObject_IntroJapanTextNextPageArrow:
 ;;; $AE43: Instruction - handle creating Japanese text - page 1 ;;;
 Instruction_HandleCreatingJapanText_Page1:
     STZ.W $1BA1                                                          ;8BAE43;
-    LDA.W $09E2                                                          ;8BAE46;
+    LDA.W JapanText                                                          ;8BAE46;
     BEQ .return                                                          ;8BAE49;
     PHB                                                                  ;8BAE4B;
     PEA.W $8B00                                                          ;8BAE4C;
@@ -6274,7 +6274,7 @@ Instruction_HandleCreatingJapanText_Page1:
 ;;; $AE5B: Instruction - spawn blinking markers and wait for input - page 1 ;;;
 Instruction_SpawnBlinkingMarkers_WaitForInput_Page1:
     JSR.W Instruction_SetCaretToBlink                                    ;8BAE5B;
-    LDA.W $09E2                                                          ;8BAE5E;
+    LDA.W JapanText                                                          ;8BAE5E;
     BEQ .waitForInput                                                    ;8BAE61;
     PHB                                                                  ;8BAE63;
     PEA.W $8B00                                                          ;8BAE64;
@@ -6288,14 +6288,14 @@ Instruction_SpawnBlinkingMarkers_WaitForInput_Page1:
 
   .waitForInput:
     LDA.W #CinematicFunction_Intro_WaitForInput_SetupMotherBrainFight    ;8BAE72;
-    STA.W $1F51                                                          ;8BAE75;
+    STA.W CinematicFunction                                                          ;8BAE75;
     RTS                                                                  ;8BAE78;
 
 
 ;;; $AE79: Instruction - handle creating Japanese text - page 2 ;;;
 Instruction_HandleCreatingJapanText_Page2:
     STZ.W $1BA1                                                          ;8BAE79;
-    LDA.W $09E2                                                          ;8BAE7C;
+    LDA.W JapanText                                                          ;8BAE7C;
     BEQ .return                                                          ;8BAE7F;
     PHB                                                                  ;8BAE81;
     PEA.W $8B00                                                          ;8BAE82;
@@ -6314,7 +6314,7 @@ Instruction_HandleCreatingJapanText_Page2:
 ;;; $AE91: Instruction - spawn blinking markers and wait for input - page 2 ;;;
 Instruction_SpawnBlinkingMarkers_WaitForInput_Page2:
     JSR.W Instruction_SetCaretToBlink                                    ;8BAE91;
-    LDA.W $09E2                                                          ;8BAE94;
+    LDA.W JapanText                                                          ;8BAE94;
     BEQ .noJapanText                                                     ;8BAE97;
     PHB                                                                  ;8BAE99;
     PEA.W $8B00                                                          ;8BAE9A;
@@ -6333,16 +6333,16 @@ Instruction_SpawnBlinkingMarkers_WaitForInput_Page2:
 
   .noJapanText:
     LDA.W #CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDiscovery    ;8BAEB1;
-    STA.W $1F51                                                          ;8BAEB4;
+    STA.W CinematicFunction                                                          ;8BAEB4;
     RTS                                                                  ;8BAEB7;
 
 
 ;;; $AEB8: Cinematic function - intro - wait for input and set up old Mother Brain fight ;;;
 CinematicFunction_Intro_WaitForInput_SetupMotherBrainFight:
-    LDA.W $1BA3                                                          ;8BAEB8;
+    LDA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BAEB8;
     BEQ .timerExpired                                                    ;8BAEBB;
     DEC                                                                  ;8BAEBD;
-    STA.W $1BA3                                                          ;8BAEBE;
+    STA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BAEBE;
     RTS                                                                  ;8BAEC1;
 
   .timerExpired:
@@ -6353,7 +6353,7 @@ CinematicFunction_Intro_WaitForInput_SetupMotherBrainFight:
   .newInputs:
     SEP #$20                                                             ;8BAEC7;
     LDA.B #$50                                                           ;8BAEC9;
-    STA.B $58                                                            ;8BAECB;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BAECB;
     REP #$20                                                             ;8BAECD;
     LDA.W #$0002                                                         ;8BAECF;
     STA.W $0A1C                                                          ;8BAED2;
@@ -6368,12 +6368,12 @@ CinematicFunction_Intro_WaitForInput_SetupMotherBrainFight:
     LDA.W $0A1E                                                          ;8BAEEF;
     STA.W $0A22                                                          ;8BAEF2;
     LDA.W #$009B                                                         ;8BAEF5;
-    STA.W $0AF6                                                          ;8BAEF8;
+    STA.W SamusXPosition                                                          ;8BAEF8;
     STA.W $0B10                                                          ;8BAEFB;
     LDA.W #$0073                                                         ;8BAEFE;
     STA.W $0AFA                                                          ;8BAF01;
     STA.W $0B14                                                          ;8BAF04;
-    STZ.W $1993                                                          ;8BAF07;
+    STZ.W CinematicBG1_XPosition                                                          ;8BAF07;
     LDA.W #$007F                                                         ;8BAF0A;
     STA.W $1A4B                                                          ;8BAF0D;
     LDY.W #CinematicSpriteObjectDefinitions_IntroMotherBrain             ;8BAF10;
@@ -6410,7 +6410,7 @@ CinematicFunction_Intro_WaitForInput_SetupMotherBrainFight:
     LDY.W #DemoInputObjects_Intro_OldMotherBrainFight                    ;8BAF5B;
     JSL.L Load_DemoInputObject                                           ;8BAF5E;
     LDA.W #$FFFF                                                         ;8BAF62;
-    STA.W $1A57                                                          ;8BAF65;
+    STA.W IntroSamusDisplayFlag                                                          ;8BAF65;
     JMP.W Setup_Intro_CrossFade_Into_SamusGameplay                       ;8BAF68;
 
     RTS                                                                  ;8BAF6B;
@@ -6418,10 +6418,10 @@ CinematicFunction_Intro_WaitForInput_SetupMotherBrainFight:
 
 ;;; $AF6C: Cinematic function - intro - wait for input and set up baby metroid discovery ;;;
 CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDiscovery:
-    LDA.W $1BA3                                                          ;8BAF6C;
+    LDA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BAF6C;
     BEQ .timerExpired                                                    ;8BAF6F;
     DEC                                                                  ;8BAF71;
-    STA.W $1BA3                                                          ;8BAF72;
+    STA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BAF72;
     RTS                                                                  ;8BAF75;
 
   .timerExpired:
@@ -6432,12 +6432,12 @@ CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDiscovery:
   .newInputs:
     SEP #$20                                                             ;8BAF7B;
     LDA.B #$54                                                           ;8BAF7D;
-    STA.B $58                                                            ;8BAF7F;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BAF7F;
     REP #$20                                                             ;8BAF81;
     LDA.W #$0020                                                         ;8BAF83;
-    STA.W $07A5                                                          ;8BAF86;
+    STA.W RoomWidthBlocks                                                          ;8BAF86;
     LDA.W #$0010                                                         ;8BAF89;
-    STA.W $07A7                                                          ;8BAF8C;
+    STA.W RoomHeightBlocks                                                          ;8BAF8C;
     LDA.W #$0002                                                         ;8BAF8F;
     STA.W $0A1C                                                          ;8BAF92;
     JSL.L InitializeSamusPose_1                                          ;8BAF95;
@@ -6451,19 +6451,19 @@ CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDiscovery:
     LDA.W $0A1E                                                          ;8BAFAF;
     STA.W $0A22                                                          ;8BAFB2;
     LDA.W #$0178                                                         ;8BAFB5;
-    STA.W $0AF6                                                          ;8BAFB8;
+    STA.W SamusXPosition                                                          ;8BAFB8;
     STA.W $0B10                                                          ;8BAFBB;
     LDA.W #$0093                                                         ;8BAFBE;
     STA.W $0AFA                                                          ;8BAFC1;
     STA.W $0B14                                                          ;8BAFC4;
-    STZ.W $1993                                                          ;8BAFC7;
+    STZ.W CinematicBG1_XPosition                                                          ;8BAFC7;
     LDA.W #$007F                                                         ;8BAFCA;
     STA.W $1A4B                                                          ;8BAFCD;
     LDY.W #CinematicSpriteObjectDefinitions_MetroidEgg                   ;8BAFD0;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BAFD3;
     LDY.W #CinematicSpriteObjectDefinitions_ConfusedBabyMetroid          ;8BAFD6;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BAFD9;
-    STZ.W $1B9F                                                          ;8BAFDC;
+    STZ.W CinematicSpriteObject_FrameCounter                                                          ;8BAFDC;
     LDX.W #$0000                                                         ;8BAFDF;
 
   .loopLevelData:
@@ -6483,7 +6483,7 @@ CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDiscovery:
     LDY.W #DemoInputObjects_Intro_BabyMetroidDiscovery                   ;8BB008;
     JSL.L Load_DemoInputObject                                           ;8BB00B;
     LDA.W #$0001                                                         ;8BB00F;
-    STA.W $1A57                                                          ;8BB012;
+    STA.W IntroSamusDisplayFlag                                                          ;8BB012;
     BRA Setup_Intro_CrossFade_Into_SamusGameplay                         ;8BB015;
 
     RTS                                                                  ;8BB017;
@@ -6493,17 +6493,17 @@ CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDiscovery:
 Setup_Intro_CrossFade_Into_SamusGameplay:
     SEP #$20                                                             ;8BB018;
     LDA.B #$06                                                           ;8BB01A;
-    STA.B $69                                                            ;8BB01C;
+    STA.B DP_MainScreenLayers                                                            ;8BB01C;
     LDA.B #$11                                                           ;8BB01E;
-    STA.B $6B                                                            ;8BB020;
+    STA.B DP_SubScreenLayers                                                            ;8BB020;
     LDA.B #$02                                                           ;8BB022;
-    STA.B $6F                                                            ;8BB024;
-    STZ.B $72                                                            ;8BB026;
+    STA.B DP_ColorMathA                                                            ;8BB024;
+    STZ.B DP_ColorMathB                                                            ;8BB026;
     JSL.L SpawnIntroCutsceneCrossFade_HDMAObject                         ;8BB028;
     REP #$20                                                             ;8BB02C;
     JSR.W PlaceIntroTextCaretOffScreen                                   ;8BB02E;
     LDA.W #CinematicFunction_Intro_CrossFadeToSamusGameplay              ;8BB031;
-    STA.W $1F51                                                          ;8BB034;
+    STA.W CinematicFunction                                                          ;8BB034;
     LDX.W #$0000                                                         ;8BB037;
 
   .loopPalettes:
@@ -6533,7 +6533,7 @@ Setup_Intro_CrossFade_Into_SamusGameplay:
 ;;; $B074: Instruction - handle creating Japanese text - page 3 ;;;
 Instruction_HandleCreatingJapanText_Page3:
     STZ.W $1BA1                                                          ;8BB074;
-    LDA.W $09E2                                                          ;8BB077;
+    LDA.W JapanText                                                          ;8BB077;
     BEQ .return                                                          ;8BB07A;
     PHB                                                                  ;8BB07C;
     PEA.W $8B00                                                          ;8BB07D;
@@ -6552,7 +6552,7 @@ Instruction_HandleCreatingJapanText_Page3:
 ;;; $B08C: Instruction - spawn blinking markers and wait for input - page 3 ;;;
 Instruction_SpawnBlinkingMarkers_WaitForInput_Page3:
     JSR.W Instruction_SetCaretToBlink                                    ;8BB08C;
-    LDA.W $09E2                                                          ;8BB08F;
+    LDA.W JapanText                                                          ;8BB08F;
     BEQ .waitForInput                                                    ;8BB092;
     PHB                                                                  ;8BB094;
     PEA.W $8B00                                                          ;8BB095;
@@ -6571,14 +6571,14 @@ Instruction_SpawnBlinkingMarkers_WaitForInput_Page3:
 
   .waitForInput:
     LDA.W #CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDelivery     ;8BB0AC;
-    STA.W $1F51                                                          ;8BB0AF;
+    STA.W CinematicFunction                                                          ;8BB0AF;
     RTS                                                                  ;8BB0B2;
 
 
 ;;; $B0B3: Instruction - handle creating Japanese text - page 4 ;;;
 Instruction_HandleCreatingJapanText_Page4:
     STZ.W $1BA1                                                          ;8BB0B3;
-    LDA.W $09E2                                                          ;8BB0B6;
+    LDA.W JapanText                                                          ;8BB0B6;
     BEQ .return                                                          ;8BB0B9;
     PHB                                                                  ;8BB0BB;
     PEA.W $8B00                                                          ;8BB0BC;
@@ -6597,7 +6597,7 @@ Instruction_HandleCreatingJapanText_Page4:
 ;;; $B0CB: Instruction - spawn blinking markers and wait for input - page 4 ;;;
 Instruction_SpawnBlinkingMarkers_WaitForInput_Page4:
     JSR.W Instruction_SetCaretToBlink                                    ;8BB0CB;
-    LDA.W $09E2                                                          ;8BB0CE;
+    LDA.W JapanText                                                          ;8BB0CE;
     BEQ .waitForInput                                                    ;8BB0D1;
     PHB                                                                  ;8BB0D3;
     PEA.W $8B00                                                          ;8BB0D4;
@@ -6616,16 +6616,16 @@ Instruction_SpawnBlinkingMarkers_WaitForInput_Page4:
 
   .waitForInput:
     LDA.W #CinematicFunc_Intro_WaitForInput_SetupBabyMetroidExamined     ;8BB0EB;
-    STA.W $1F51                                                          ;8BB0EE;
+    STA.W CinematicFunction                                                          ;8BB0EE;
     RTS                                                                  ;8BB0F1;
 
 
 ;;; $B0F2: Cinematic function - intro - wait for input and set up baby metroid being delivered ;;;
 CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDelivery:
-    LDA.W $1BA3                                                          ;8BB0F2;
+    LDA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BB0F2;
     BEQ .timerExpired                                                    ;8BB0F5;
     DEC                                                                  ;8BB0F7;
-    STA.W $1BA3                                                          ;8BB0F8;
+    STA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BB0F8;
     RTS                                                                  ;8BB0FB;
 
   .timerExpired:
@@ -6633,12 +6633,12 @@ CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDelivery:
     BEQ .return                                                          ;8BB0FE;
     SEP #$20                                                             ;8BB100;
     LDA.B #$58                                                           ;8BB102;
-    STA.B $58                                                            ;8BB104;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BB104;
     REP #$20                                                             ;8BB106;
     LDA.W #$0020                                                         ;8BB108;
-    STA.W $1993                                                          ;8BB10B;
+    STA.W CinematicBG1_XPosition                                                          ;8BB10B;
     LDA.W #$0008                                                         ;8BB10E;
-    STA.W $1997                                                          ;8BB111;
+    STA.W CinematicBG1_YPosition                                                          ;8BB111;
     LDA.W #$007F                                                         ;8BB114;
     STA.W $1A4B                                                          ;8BB117;
     LDY.W #CinematicSpriteObjectDefinitions_BabyMetroidBeingDelivered    ;8BB11A;
@@ -6651,10 +6651,10 @@ CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDelivery:
 
 ;;; $B123: Cinematic function - intro - wait for input and set up baby metroid being examined ;;;
 CinematicFunc_Intro_WaitForInput_SetupBabyMetroidExamined:
-    LDA.W $1BA3                                                          ;8BB123;
+    LDA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BB123;
     BEQ .timerExpired                                                    ;8BB126;
     DEC                                                                  ;8BB128;
-    STA.W $1BA3                                                          ;8BB129;
+    STA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BB129;
     RTS                                                                  ;8BB12C;
 
   .timerExpired:
@@ -6662,11 +6662,11 @@ CinematicFunc_Intro_WaitForInput_SetupBabyMetroidExamined:
     BEQ .return                                                          ;8BB12F;
     SEP #$20                                                             ;8BB131;
     LDA.B #$5C                                                           ;8BB133;
-    STA.B $58                                                            ;8BB135;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BB135;
     REP #$20                                                             ;8BB137;
-    STZ.W $1993                                                          ;8BB139;
+    STZ.W CinematicBG1_XPosition                                                          ;8BB139;
     LDA.W #$FFE8                                                         ;8BB13C;
-    STA.W $1997                                                          ;8BB13F;
+    STA.W CinematicBG1_YPosition                                                          ;8BB13F;
     LDA.W #$007F                                                         ;8BB142;
     STA.W $1A4B                                                          ;8BB145;
     LDY.W #CinematicSpriteObjectDefinitions_BabyMetroidBeingExamined     ;8BB148;
@@ -6681,17 +6681,17 @@ CinematicFunc_Intro_WaitForInput_SetupBabyMetroidExamined:
 SetupIntroCrossFadeIntoScientistCutscene:
     SEP #$20                                                             ;8BB151;
     LDA.B #$06                                                           ;8BB153;
-    STA.B $69                                                            ;8BB155;
+    STA.B DP_MainScreenLayers                                                            ;8BB155;
     LDA.B #$11                                                           ;8BB157;
-    STA.B $6B                                                            ;8BB159;
+    STA.B DP_SubScreenLayers                                                            ;8BB159;
     LDA.B #$02                                                           ;8BB15B;
-    STA.B $6F                                                            ;8BB15D;
-    STZ.B $72                                                            ;8BB15F;
+    STA.B DP_ColorMathA                                                            ;8BB15D;
+    STZ.B DP_ColorMathB                                                            ;8BB15F;
     JSL.L SpawnIntroCutsceneCrossFade_HDMAObject                         ;8BB161;
     REP #$20                                                             ;8BB165;
     JSR.W PlaceIntroTextCaretOffScreen                                   ;8BB167;
     LDA.W #CinematicFunction_Intro_CrossFadeToScientistCutscene          ;8BB16A;
-    STA.W $1F51                                                          ;8BB16D;
+    STA.W CinematicFunction                                                          ;8BB16D;
     LDX.W #$0000                                                         ;8BB170;
 
   .loop:
@@ -6715,7 +6715,7 @@ SetupIntroCrossFadeIntoScientistCutscene:
 ;;; $B19B: Instruction - handle creating Japanese text - page 5 ;;;
 Instruction_HandleCreatingJapanText_Page5:
     STZ.W $1BA1                                                          ;8BB19B;
-    LDA.W $09E2                                                          ;8BB19E;
+    LDA.W JapanText                                                          ;8BB19E;
     BEQ .return                                                          ;8BB1A1;
     PHB                                                                  ;8BB1A3;
     PEA.W $8B00                                                          ;8BB1A4;
@@ -6734,7 +6734,7 @@ Instruction_HandleCreatingJapanText_Page5:
 ;;; $B1B3: Instruction - spawn blinking markers and wait for input - page 5 ;;;
 Instruction_SpawnBlinkingMarkers_WaitForInput_Page5:
     JSR.W Instruction_SetCaretToBlink                                    ;8BB1B3;
-    LDA.W $09E2                                                          ;8BB1B6;
+    LDA.W JapanText                                                          ;8BB1B6;
     BEQ .waitForInput                                                    ;8BB1B9;
     PHB                                                                  ;8BB1BB;
     PEA.W $8B00                                                          ;8BB1BC;
@@ -6753,17 +6753,17 @@ Instruction_SpawnBlinkingMarkers_WaitForInput_Page5:
 
   .waitForInput:
     LDA.W #CinematicFunction_Intro_WaitForInput_ClearText                ;8BB1D3;
-    STA.W $1F51                                                          ;8BB1D6;
+    STA.W CinematicFunction                                                          ;8BB1D6;
     RTS                                                                  ;8BB1D9;
 
 
 ;;; $B1DA: Cinematic function - intro - wait for input and clear text ;;;
 CinematicFunction_Intro_WaitForInput_ClearText:
     JSR.W RTS_BackgroundFLickeringEffect                                 ;8BB1DA;
-    LDA.W $1BA3                                                          ;8BB1DD;
+    LDA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BB1DD;
     BEQ .timerExpired                                                    ;8BB1E0;
     DEC                                                                  ;8BB1E2;
-    STA.W $1BA3                                                          ;8BB1E3;
+    STA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BB1E3;
     RTS                                                                  ;8BB1E6;
 
   .timerExpired:
@@ -6771,10 +6771,10 @@ CinematicFunction_Intro_WaitForInput_ClearText:
     BEQ .return                                                          ;8BB1E9;
     LDA.W #$007F                                                         ;8BB1EB;
     STA.W $1A4B                                                          ;8BB1EE;
-    LDA.W $09E2                                                          ;8BB1F1;
+    LDA.W JapanText                                                          ;8BB1F1;
     BEQ CinematicFunction_Intro_Page6                                    ;8BB1F4;
     LDA.W #CinematicFunction_Intro_Page6                                 ;8BB1F6;
-    STA.W $1F51                                                          ;8BB1F9;
+    STA.W CinematicFunction                                                          ;8BB1F9;
     JSL.L Disable_CinematicBGTilemap_Updates                             ;8BB1FC;
     JSR.W BlankOut_JapanText_Tiles                                       ;8BB200;
     JSR.W TransferJapanTextTilesToVRAM                                   ;8BB203;
@@ -6791,7 +6791,7 @@ CinematicFunction_Intro_Page6:
     LDA.W #$4C00                                                         ;8BB211;
     JSR.W Spawn_CinematicBGObject                                        ;8BB214;
     LDA.W #RTS_8BA390                                                    ;8BB217;
-    STA.W $1F51                                                          ;8BB21A;
+    STA.W CinematicFunction                                                          ;8BB21A;
     JSR.W RestIntroTextCaret                                             ;8BB21D;
     LDA.W #$0000                                                         ;8BB220;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8BB223;
@@ -6801,7 +6801,7 @@ CinematicFunction_Intro_Page6:
 ;;; $B228: Instruction - handle creating Japanese text - page 6 ;;;
 Instruction_HandleCreatingJapanText_Page6:
     STZ.W $1BA1                                                          ;8BB228;
-    LDA.W $09E2                                                          ;8BB22B;
+    LDA.W JapanText                                                          ;8BB22B;
     BEQ .return                                                          ;8BB22E;
     PHB                                                                  ;8BB230;
     PEA.W $8B00                                                          ;8BB231;
@@ -6820,17 +6820,17 @@ Instruction_HandleCreatingJapanText_Page6:
 ;;; $B240: Instruction - finish intro ;;;
 Instruction_FinishIntro:
     LDA.W #CinematicFunction_Intro_Finish                                ;8BB240;
-    STA.W $1F51                                                          ;8BB243;
+    STA.W CinematicFunction                                                          ;8BB243;
     LDA.W #$0001                                                         ;8BB246;
-    STA.W $0723                                                          ;8BB249;
-    STA.W $0725                                                          ;8BB24C;
+    STA.W ScreenFadeDelay                                                          ;8BB249;
+    STA.W ScreenFadeCounter                                                          ;8BB24C;
     RTS                                                                  ;8BB24F;
 
 
 ;;; $B250: Cinematic function - intro - cross-fade to Samus gameplay ;;;
 CinematicFunction_Intro_CrossFadeToSamusGameplay:
 ; Cinematic function timer for this routine is set all the way up at $A6F0
-    LDA.W $1A49                                                          ;8BB250;
+    LDA.W CinematicFunctionTimer                                                          ;8BB250;
     BIT.W #$0003                                                         ;8BB253;
     BNE .decTimer                                                        ;8BB256;
     LDX.W #$0000                                                         ;8BB258;
@@ -6857,27 +6857,27 @@ CinematicFunction_Intro_CrossFadeToSamusGameplay:
     JSR.W PaletteCrossFading_ComposeFadingPalettes                       ;8BB297;
 
   .decTimer:
-    DEC.W $1A49                                                          ;8BB29A;
+    DEC.W CinematicFunctionTimer                                                          ;8BB29A;
     BPL .return                                                          ;8BB29D;
     SEP #$20                                                             ;8BB29F;
     LDA.B #$15                                                           ;8BB2A1;
-    STA.B $69                                                            ;8BB2A3;
-    STZ.B $6B                                                            ;8BB2A5;
-    STZ.B $6F                                                            ;8BB2A7;
+    STA.B DP_MainScreenLayers                                                            ;8BB2A3;
+    STZ.B DP_SubScreenLayers                                                            ;8BB2A5;
+    STZ.B DP_ColorMathA                                                            ;8BB2A7;
     REP #$20                                                             ;8BB2A9;
     LDX.W #$0100                                                         ;8BB2AB;
     LDA.W #$002F                                                         ;8BB2AE;
 
   .loop:
-    STA.L $7E3000,X                                                      ;8BB2B1;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8BB2B1;
     INX                                                                  ;8BB2B5;
     INX                                                                  ;8BB2B6;
     CPX.W #$0600                                                         ;8BB2B7;
     BMI .loop                                                            ;8BB2BA;
     JSR.W BlankOut_JapanText_Tiles                                       ;8BB2BC;
     LDA.W #CinematicFunction_Nothing                                     ;8BB2BF;
-    STA.W $1F51                                                          ;8BB2C2;
-    LDA.W $1A57                                                          ;8BB2C5;
+    STA.W CinematicFunction                                                          ;8BB2C2;
+    LDA.W IntroSamusDisplayFlag                                                          ;8BB2C5;
     BPL .return                                                          ;8BB2C8;
     LDY.W #PaletteFXObjects_OldMotherBrainFightBackgroundLights          ;8BB2CA;
     JSL.L Spawn_PaletteFXObject                                          ;8BB2CD;
@@ -6888,7 +6888,7 @@ CinematicFunction_Intro_CrossFadeToSamusGameplay:
 
 ;;; $B2D2: Cinematic function - intro - cross-fade to scientist cutscene ;;;
 CinematicFunction_Intro_CrossFadeToScientistCutscene:
-    LDA.W $1A49                                                          ;8BB2D2;
+    LDA.W CinematicFunctionTimer                                                          ;8BB2D2;
     BIT.W #$0003                                                         ;8BB2D5;
     BNE .decTimer                                                        ;8BB2D8;
     LDX.W #$0000                                                         ;8BB2DA;
@@ -6909,26 +6909,26 @@ CinematicFunction_Intro_CrossFadeToScientistCutscene:
     JSR.W PaletteCrossFading_ComposeFadingPalettes                       ;8BB307;
 
   .decTimer:
-    DEC.W $1A49                                                          ;8BB30A;
+    DEC.W CinematicFunctionTimer                                                          ;8BB30A;
     BPL .return                                                          ;8BB30D;
     SEP #$20                                                             ;8BB30F;
     LDA.B #$15                                                           ;8BB311;
-    STA.B $69                                                            ;8BB313;
-    STZ.B $6B                                                            ;8BB315;
-    STZ.B $6F                                                            ;8BB317;
+    STA.B DP_MainScreenLayers                                                            ;8BB313;
+    STZ.B DP_SubScreenLayers                                                            ;8BB315;
+    STZ.B DP_ColorMathA                                                            ;8BB317;
     REP #$20                                                             ;8BB319;
     LDX.W #$0100                                                         ;8BB31B;
     LDA.W #$002F                                                         ;8BB31E;
 
   .loopEnglishText:
-    STA.L $7E3000,X                                                      ;8BB321;
+    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                                                      ;8BB321;
     INX                                                                  ;8BB325;
     INX                                                                  ;8BB326;
     CPX.W #$0600                                                         ;8BB327;
     BMI .loopEnglishText                                                 ;8BB32A;
     JSR.W BlankOut_JapanText_Tiles                                       ;8BB32C;
     LDA.W #CinematicFunction_Nothing                                     ;8BB32F;
-    STA.W $1F51                                                          ;8BB332;
+    STA.W CinematicFunction                                                          ;8BB332;
 
   .return:
     RTS                                                                  ;8BB335;
@@ -6937,28 +6937,28 @@ CinematicFunction_Intro_CrossFadeToScientistCutscene:
 ;;; $B336: Instruction - start intro page 2 ;;;
 Instruction_StartIntroPage2:
     LDA.W #CinematicFunction_Intro_Page2                                 ;8BB336;
-    STA.W $1F51                                                          ;8BB339;
+    STA.W CinematicFunction                                                          ;8BB339;
     BRA ClearJapanTextTiles_DisableCinematicBGTilemapUpdates             ;8BB33C;
 
 
 ;;; $B33E: Instruction - start intro page 3 ;;;
 Instruction_StartIntroPage3:
     LDA.W #CinematicFunction_Intro_Page3                                 ;8BB33E;
-    STA.W $1F51                                                          ;8BB341;
+    STA.W CinematicFunction                                                          ;8BB341;
     BRA ClearJapanTextTiles_DisableCinematicBGTilemapUpdates             ;8BB344;
 
 
 ;;; $B346: Instruction - start intro page 4 ;;;
 Instruction_StartIntroPage4:
     LDA.W #CinematicFunction_Intro_Page4                                 ;8BB346;
-    STA.W $1F51                                                          ;8BB349;
+    STA.W CinematicFunction                                                          ;8BB349;
     BRA ClearJapanTextTiles_DisableCinematicBGTilemapUpdates             ;8BB34C;
 
 
 ;;; $B34E: Instruction - start intro page 5 ;;;
 Instruction_StartIntroPage5:
     LDA.W #CinematicFunction_Intro_Page5                                 ;8BB34E;
-    STA.W $1F51                                                          ;8BB351; fallthrough to ClearJapanTextTiles_DisableCinematicBGTilemapUpdates
+    STA.W CinematicFunction                                                          ;8BB351; fallthrough to ClearJapanTextTiles_DisableCinematicBGTilemapUpdates
 
 
 ;;; $B354: Clear Japanese text tiles and disable cinematic BG tilemap updates ;;;
@@ -6975,7 +6975,7 @@ CinematicFunction_Intro_Page2:
     LDA.W #$4C00                                                         ;8BB362;
     JSR.W Spawn_CinematicBGObject                                        ;8BB365;
     LDA.W #CinematicFunction_Intro_CrossFadeFromSamusGameplay            ;8BB368;
-    STA.W $1F51                                                          ;8BB36B;
+    STA.W CinematicFunction                                                          ;8BB36B;
     BRA Setup_Intro_CrossFade_Into_Text                                  ;8BB36E;
 
 
@@ -6985,7 +6985,7 @@ CinematicFunction_Intro_Page3:
     LDA.W #$4C00                                                         ;8BB373;
     JSR.W Spawn_CinematicBGObject                                        ;8BB376;
     LDA.W #CinematicFunction_Intro_CrossFadeFromSamusGameplay            ;8BB379;
-    STA.W $1F51                                                          ;8BB37C;
+    STA.W CinematicFunction                                                          ;8BB37C;
     BRA Setup_Intro_CrossFade_Into_Text                                  ;8BB37F;
 
 
@@ -6995,7 +6995,7 @@ CinematicFunction_Intro_Page4:
     LDA.W #$4C00                                                         ;8BB384;
     JSR.W Spawn_CinematicBGObject                                        ;8BB387;
     LDA.W #CinematicFunction_Intro_CrossFadeFromScientistCutscene        ;8BB38A;
-    STA.W $1F51                                                          ;8BB38D;
+    STA.W CinematicFunction                                                          ;8BB38D;
     BRA Setup_Intro_CrossFade_Into_Text                                  ;8BB390;
 
 
@@ -7005,19 +7005,19 @@ CinematicFunction_Intro_Page5:
     LDA.W #$4C00                                                         ;8BB395;
     JSR.W Spawn_CinematicBGObject                                        ;8BB398;
     LDA.W #CinematicFunction_Intro_CrossFadeFromScientistCutscene        ;8BB39B;
-    STA.W $1F51                                                          ;8BB39E; fallthrough to Setup_Intro_CrossFade_Into_Text
+    STA.W CinematicFunction                                                          ;8BB39E; fallthrough to Setup_Intro_CrossFade_Into_Text
 
 
 ;;; $B3A1: Set up intro cross-fade into text ;;;
 Setup_Intro_CrossFade_Into_Text:
     SEP #$20                                                             ;8BB3A1;
     LDA.B #$06                                                           ;8BB3A3;
-    STA.B $69                                                            ;8BB3A5;
+    STA.B DP_MainScreenLayers                                                            ;8BB3A5;
     LDA.B #$11                                                           ;8BB3A7;
-    STA.B $6B                                                            ;8BB3A9;
+    STA.B DP_SubScreenLayers                                                            ;8BB3A9;
     LDA.B #$02                                                           ;8BB3AB;
-    STA.B $6F                                                            ;8BB3AD;
-    STZ.B $72                                                            ;8BB3AF;
+    STA.B DP_ColorMathA                                                            ;8BB3AD;
+    STZ.B DP_ColorMathB                                                            ;8BB3AF;
     REP #$20                                                             ;8BB3B1;
     LDX.W #$0000                                                         ;8BB3B3;
 
@@ -7040,7 +7040,7 @@ Setup_Intro_CrossFade_Into_Text:
     JSR.W PaletteCrossFading_ClearYColorsStartingFromColorIndexX         ;8BB3E0;
     JSR.W PaletteCrossFading_ComposeFadingPalettes                       ;8BB3E3;
     LDA.W #$007F                                                         ;8BB3E6;
-    STA.W $1A49                                                          ;8BB3E9;
+    STA.W CinematicFunctionTimer                                                          ;8BB3E9;
     JSL.L Enable_CinematicBGTilemap_Updates                              ;8BB3EC;
     JSR.W RestIntroTextCaret                                             ;8BB3F0;
     RTS                                                                  ;8BB3F3;
@@ -7079,13 +7079,13 @@ CinematicFunction_Intro_CrossFadeFromSamusGameplay:
     BPL .return                                                          ;8BB441;
     SEP #$20                                                             ;8BB443;
     LDA.B #$16                                                           ;8BB445;
-    STA.B $69                                                            ;8BB447;
-    STZ.B $6B                                                            ;8BB449;
-    STZ.B $6F                                                            ;8BB44B;
-    STZ.B $72                                                            ;8BB44D;
+    STA.B DP_MainScreenLayers                                                            ;8BB447;
+    STZ.B DP_SubScreenLayers                                                            ;8BB449;
+    STZ.B DP_ColorMathA                                                            ;8BB44B;
+    STZ.B DP_ColorMathB                                                            ;8BB44D;
     REP #$20                                                             ;8BB44F;
     LDA.W #CinematicFunction_Nothing                                     ;8BB451;
-    STA.W $1F51                                                          ;8BB454;
+    STA.W CinematicFunction                                                          ;8BB454;
 
   .return:
     RTS                                                                  ;8BB457;
@@ -7118,10 +7118,10 @@ CinematicFunction_Intro_CrossFadeFromScientistCutscene:
     BPL .return                                                          ;8BB493;
     SEP #$20                                                             ;8BB495;
     LDA.B #$16                                                           ;8BB497;
-    STA.B $69                                                            ;8BB499;
-    STZ.B $6B                                                            ;8BB49B;
-    STZ.B $6F                                                            ;8BB49D;
-    STZ.B $72                                                            ;8BB49F;
+    STA.B DP_MainScreenLayers                                                            ;8BB499;
+    STZ.B DP_SubScreenLayers                                                            ;8BB49B;
+    STZ.B DP_ColorMathA                                                            ;8BB49D;
+    STZ.B DP_ColorMathB                                                            ;8BB49F;
     REP #$20                                                             ;8BB4A1;
     LDX.W #$0000                                                         ;8BB4A3;
 
@@ -7133,7 +7133,7 @@ CinematicFunction_Intro_CrossFadeFromScientistCutscene:
     CPX.W #$000E                                                         ;8BB4B0;
     BMI .loopPalettes                                                    ;8BB4B3;
     LDA.W #CinematicFunction_Nothing                                     ;8BB4B5;
-    STA.W $1F51                                                          ;8BB4B8;
+    STA.W CinematicFunction                                                          ;8BB4B8;
 
   .return:
     RTS                                                                  ;8BB4BB;
@@ -7142,7 +7142,7 @@ CinematicFunction_Intro_CrossFadeFromScientistCutscene:
 ;;; $B4BC: Pre-instruction - cinematic BG object $CF63 (Samus blinking) ;;;
 PreInstruction_CinematicBGObject_SamusBlinking:
 ; Switches Samus blinking pattern on page 6 to deadpan stare
-    LDA.W $1F51                                                          ;8BB4BC;
+    LDA.W CinematicFunction                                                          ;8BB4BC;
     CMP.W #CinematicFunction_Intro_Page6                                 ;8BB4BF;
     BEQ .notPage6                                                        ;8BB4C2;
     CMP.W #RTS_8BA390                                                    ;8BB4C4;
@@ -7266,7 +7266,7 @@ Instruction_LoadIntroJapanTextPage2_Subpage2:
     JSR.W LoadJapanTextIntroTiles                                        ;8BB5AB;
     JSR.W TransferJapanTextTilesToVRAM                                   ;8BB5AE;
     LDA.W #$003C                                                         ;8BB5B1;
-    STA.W $1BA3                                                          ;8BB5B4;
+    STA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BB5B4;
 
   .return:
     RTS                                                                  ;8BB5B7;
@@ -7276,7 +7276,7 @@ Instruction_LoadIntroJapanTextPage2_Subpage2:
 Instruction_EnableCinematicBGTilemapUpdates_Page2DoneInput:
     JSL.L Enable_CinematicBGTilemap_Updates                              ;8BB5B8;
     LDA.W #CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDiscovery    ;8BB5BC;
-    STA.W $1F51                                                          ;8BB5BF;
+    STA.W CinematicFunction                                                          ;8BB5BF;
     RTS                                                                  ;8BB5C2;
 
 
@@ -7314,7 +7314,7 @@ PreInstruction_LoadIntroJapanTextPage3_Subpage2:
     JSR.W LoadJapanTextIntroTiles                                        ;8BB60E;
     JSR.W TransferJapanTextTilesToVRAM                                   ;8BB611;
     LDA.W #$003C                                                         ;8BB614;
-    STA.W $1BA3                                                          ;8BB617;
+    STA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BB617;
 
   .return:
     RTS                                                                  ;8BB61A;
@@ -7324,7 +7324,7 @@ PreInstruction_LoadIntroJapanTextPage3_Subpage2:
 Instruction_EnableCinematicBGTilemapUpdates_Page3DoneInput:
     JSL.L Enable_CinematicBGTilemap_Updates                              ;8BB61B;
     LDA.W #CinematicFunc_Intro_WaitForInput_SetupBabyMetroidDelivery     ;8BB61F;
-    STA.W $1F51                                                          ;8BB622;
+    STA.W CinematicFunction                                                          ;8BB622;
     RTS                                                                  ;8BB625;
 
 
@@ -7366,7 +7366,7 @@ PreInstruction_LoadIntroJapanTextPage4_Subpage2:
     JSR.W LoadJapanTextIntroTiles                                        ;8BB67D;
     JSR.W TransferJapanTextTilesToVRAM                                   ;8BB680;
     LDA.W #$003C                                                         ;8BB683;
-    STA.W $1BA3                                                          ;8BB686;
+    STA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BB686;
 
   .return:
     RTS                                                                  ;8BB689;
@@ -7376,7 +7376,7 @@ PreInstruction_LoadIntroJapanTextPage4_Subpage2:
 Instruction_EnableCinematicBGTilemapUpdates_Page4DoneInput:
     JSL.L Enable_CinematicBGTilemap_Updates                              ;8BB68A;
     LDA.W #CinematicFunc_Intro_WaitForInput_SetupBabyMetroidExamined     ;8BB68E;
-    STA.W $1F51                                                          ;8BB691;
+    STA.W CinematicFunction                                                          ;8BB691;
     RTS                                                                  ;8BB694;
 
 
@@ -7414,7 +7414,7 @@ PreInstruction_LoadIntroJapanTextPage5_Subpage2:
     JSR.W LoadJapanTextIntroTiles                                        ;8BB6E0;
     JSR.W TransferJapanTextTilesToVRAM                                   ;8BB6E3;
     LDA.W #$003C                                                         ;8BB6E6;
-    STA.W $1BA3                                                          ;8BB6E9;
+    STA.W CinematicSpriteObject_IntroJapanTextTimer                                                          ;8BB6E9;
 
   .return:
     RTS                                                                  ;8BB6EC;
@@ -7424,7 +7424,7 @@ PreInstruction_LoadIntroJapanTextPage5_Subpage2:
 Instruction_EnableCinematicBGTilemapUpdates_Page5DoneInput:
     JSL.L Enable_CinematicBGTilemap_Updates                              ;8BB6ED;
     LDA.W #CinematicFunction_Intro_WaitForInput_ClearText                ;8BB6F1;
-    STA.W $1F51                                                          ;8BB6F4;
+    STA.W CinematicFunction                                                          ;8BB6F4;
     RTS                                                                  ;8BB6F7;
 
 
@@ -7454,17 +7454,17 @@ RTS_BackgroundFLickeringEffect:
     BIT.W #$0001                                                         ;8BB714;
     BEQ .enableBG2                                                       ;8BB717;
     SEP #$20                                                             ;8BB719;
-    LDA.B $69                                                            ;8BB71B;
+    LDA.B DP_MainScreenLayers                                                            ;8BB71B;
     AND.B #$FD                                                           ;8BB71D;
-    STA.B $69                                                            ;8BB71F;
+    STA.B DP_MainScreenLayers                                                            ;8BB71F;
     REP #$20                                                             ;8BB721;
     RTS                                                                  ;8BB723;
 
   .enableBG2:
     SEP #$20                                                             ;8BB724;
-    LDA.B $69                                                            ;8BB726;
+    LDA.B DP_MainScreenLayers                                                            ;8BB726;
     ORA.B #$02                                                           ;8BB728;
-    STA.B $69                                                            ;8BB72A;
+    STA.B DP_MainScreenLayers                                                            ;8BB72A;
     REP #$20                                                             ;8BB72C;
     RTS                                                                  ;8BB72E;
 
@@ -7473,35 +7473,35 @@ RTS_BackgroundFLickeringEffect:
 CinematicFunction_Intro_Finish:
     JSL.L HandleFadingOut                                                ;8BB72F;
     SEP #$20                                                             ;8BB733;
-    LDA.B $51                                                            ;8BB735;
+    LDA.B DP_Brightness                                                            ;8BB735;
     CMP.B #$80                                                           ;8BB737;
     BNE .return                                                          ;8BB739;
     JSL.L EnableNMI                                                      ;8BB73B;
     REP #$20                                                             ;8BB73F;
-    STZ.W $0723                                                          ;8BB741;
-    STZ.W $0725                                                          ;8BB744;
-    STZ.B $B5                                                            ;8BB747;
-    STZ.B $B9                                                            ;8BB749;
+    STZ.W ScreenFadeDelay                                                          ;8BB741;
+    STZ.W ScreenFadeCounter                                                          ;8BB744;
+    STZ.B DP_BG2XScroll                                                            ;8BB747;
+    STZ.B DP_BG3XScroll                                                            ;8BB749;
     STZ.B $B7                                                            ;8BB74B;
-    STZ.B $BB                                                            ;8BB74D;
-    STZ.W $198D                                                          ;8BB74F;
-    LDA.W #$1C1F                                                         ;8BB752;
+    STZ.B DP_BG3YScroll                                                            ;8BB74D;
+    STZ.W Mode7TransformationAngle                                                          ;8BB74F;
+    LDA.W #MessageBoxIndex                                                         ;8BB752;
     DEC                                                                  ;8BB755;
     DEC                                                                  ;8BB756;
     SEC                                                                  ;8BB757;
-    SBC.W #$198D                                                         ;8BB758;
+    SBC.W #Mode7TransformationAngle                                                         ;8BB758;
     TAX                                                                  ;8BB75B;
 
   .loop:
-    STZ.W $198D,X                                                        ;8BB75C;
+    STZ.W Mode7TransformationAngle,X                                                        ;8BB75C;
     DEX                                                                  ;8BB75F;
     DEX                                                                  ;8BB760;
     BPL .loop                                                            ;8BB761;
     LDA.W #CinematicFunction_FlyToCeres_Initial                          ;8BB763;
-    STA.W $1F51                                                          ;8BB766;
+    STA.W CinematicFunction                                                          ;8BB766;
     JSR.W Recover_Previous_Button_Assignments                            ;8BB769;
-    STZ.W $09C8                                                          ;8BB76C;
-    STZ.W $09C6                                                          ;8BB76F;
+    STZ.W MaxMissiles                                                          ;8BB76C;
+    STZ.W Missiles                                                          ;8BB76F;
 
   .return:
     RTS                                                                  ;8BB772;
@@ -7510,11 +7510,11 @@ CinematicFunction_Intro_Finish:
 ;;; $B773: Initialisation function - cinematic sprite object $CE55 (intro Mother Brain) ;;;
 InitFunction_CinematicSpriteObject_IntroMotherBrain:
     LDA.W #$0038                                                         ;8BB773;
-    STA.W $1A7D,Y                                                        ;8BB776;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BB776;
     LDA.W #$006F                                                         ;8BB779;
-    STA.W $1A9D,Y                                                        ;8BB77C;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BB77C;
     LDA.W #$0E00                                                         ;8BB77F;
-    STA.W $1ABD,Y                                                        ;8BB782;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BB782;
     RTS                                                                  ;8BB785;
 
 
@@ -7590,7 +7590,7 @@ PreInstruction_IntroMotherBrain_Exploding:
     CMP.W #$0080                                                         ;8BB81C;
     BMI .return                                                          ;8BB81F;
     LDA.W #$0001                                                         ;8BB821;
-    STA.W $1B5D,X                                                        ;8BB824;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BB824;
     LDA.W #InstList_IntroMotherBrain_StartPage2_0                        ;8BB827;
     STA.W $1B1D,X                                                        ;8BB82A;
 
@@ -7604,10 +7604,10 @@ PreInstruction_IntroMotherBrain_CrossFading:
     LDA.W $1A4B                                                          ;8BB831;
     BNE .return                                                          ;8BB834;
     LDA.W #$0001                                                         ;8BB836;
-    STA.W $1B5D,X                                                        ;8BB839;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BB839;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BB83C;
     STA.W $1B1D,X                                                        ;8BB83F;
-    STZ.W $1A57                                                          ;8BB842;
+    STZ.W IntroSamusDisplayFlag                                                          ;8BB842;
 
   .return:
     RTS                                                                  ;8BB845;
@@ -7651,20 +7651,20 @@ IntroMotherBrain_HurtFlashHandling:
 
 ;;; $B877: Intro Mother Brain screen shaking ;;;
 IntroMotherBrain_ScreenShaking:
-    LDA.W $1A51                                                          ;8BB877;
+    LDA.W CinematicFrameCounter                                                          ;8BB877;
     BIT.W #$0001                                                         ;8BB87A;
     BNE .subtract4                                                       ;8BB87D;
-    LDA.W $1997                                                          ;8BB87F;
+    LDA.W CinematicBG1_YPosition                                                          ;8BB87F;
     CLC                                                                  ;8BB882;
     ADC.W #$0004                                                         ;8BB883;
-    STA.W $1997                                                          ;8BB886;
+    STA.W CinematicBG1_YPosition                                                          ;8BB886;
     BRA .return                                                          ;8BB889;
 
   .subtract4:
-    LDA.W $1997                                                          ;8BB88B;
+    LDA.W CinematicBG1_YPosition                                                          ;8BB88B;
     SEC                                                                  ;8BB88E;
     SBC.W #$0004                                                         ;8BB88F;
-    STA.W $1997                                                          ;8BB892;
+    STA.W CinematicBG1_YPosition                                                          ;8BB892;
 
   .return:
     RTS                                                                  ;8BB895;
@@ -7677,13 +7677,13 @@ InitFunction_CinematicSpriteObject_IntroRinka:
     ASL                                                                  ;8BB89C;
     TAX                                                                  ;8BB89D;
     LDA.W .Xposition,X                                                   ;8BB89E;
-    STA.W $1A7D,Y                                                        ;8BB8A1;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BB8A1;
     LDA.W .Yposition,X                                                   ;8BB8A4;
     SEC                                                                  ;8BB8A7;
     SBC.W #$0008                                                         ;8BB8A8;
-    STA.W $1A9D,Y                                                        ;8BB8AB;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BB8AB;
     LDA.W #$0E00                                                         ;8BB8AE;
-    STA.W $1ABD,Y                                                        ;8BB8B1;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BB8B1;
     RTS                                                                  ;8BB8B4;
 
   .Xposition:
@@ -7714,29 +7714,29 @@ PreInstruction_IntroRinka_Moving_HitsSamus:
     CLC                                                                  ;8BB8DB;
     ADC.W #$8000                                                         ;8BB8DC;
     STA.W $1ADD,X                                                        ;8BB8DF;
-    LDA.W $1A7D,X                                                        ;8BB8E2;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BB8E2;
     ADC.W #$0000                                                         ;8BB8E5;
-    STA.W $1A7D,X                                                        ;8BB8E8;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BB8E8;
     LDA.W $1AFD,X                                                        ;8BB8EB;
     CLC                                                                  ;8BB8EE;
     ADC.W #$8000                                                         ;8BB8EF;
     STA.W $1AFD,X                                                        ;8BB8F2;
-    LDA.W $1A9D,X                                                        ;8BB8F5;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BB8F5;
     ADC.W #$0000                                                         ;8BB8F8;
-    STA.W $1A9D,X                                                        ;8BB8FB;
-    LDA.W $0AF6                                                          ;8BB8FE;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BB8FB;
+    LDA.W SamusXPosition                                                          ;8BB8FE;
     SEC                                                                  ;8BB901;
     SBC.W #$0005                                                         ;8BB902;
     STA.B $12                                                            ;8BB905;
-    LDA.W $1A7D,X                                                        ;8BB907;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BB907;
     CLC                                                                  ;8BB90A;
     ADC.W #$0008                                                         ;8BB90B;
     CMP.B $12                                                            ;8BB90E;
     BMI .exploding                                                       ;8BB910;
     LDA.W #$000B                                                         ;8BB912;
-    STA.W $18A8                                                          ;8BB915;
+    STA.W SamusInvincibilityTimer                                                          ;8BB915;
     LDA.W #$000B                                                         ;8BB918;
-    STA.W $18AA                                                          ;8BB91B;
+    STA.W SamusKnockbackTimer                                                          ;8BB91B;
     LDA.W #$0001                                                         ;8BB91E;
     STA.W $0A54                                                          ;8BB921;
     BRA .delete                                                          ;8BB924;
@@ -7748,7 +7748,7 @@ PreInstruction_IntroRinka_Moving_HitsSamus:
 
   .delete:
     LDA.W #$0001                                                         ;8BB92E;
-    STA.W $1B5D,X                                                        ;8BB931;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BB931;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BB934;
     STA.W $1B1D,X                                                        ;8BB937;
 
@@ -7766,16 +7766,16 @@ PreInstruction_IntroRinka_Moving_MissesSamus:
     CLC                                                                  ;8BB943;
     ADC.W #$8000                                                         ;8BB944;
     STA.W $1ADD,X                                                        ;8BB947;
-    LDA.W $1A7D,X                                                        ;8BB94A;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BB94A;
     ADC.W .Xvelocities,Y                                                 ;8BB94D;
-    STA.W $1A7D,X                                                        ;8BB950;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BB950;
     LDA.W $1AFD,X                                                        ;8BB953;
     CLC                                                                  ;8BB956;
     ADC.W #$8000                                                         ;8BB957;
     STA.W $1AFD,X                                                        ;8BB95A;
-    LDA.W $1A9D,X                                                        ;8BB95D;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BB95D;
     ADC.W #$0000                                                         ;8BB960;
-    STA.W $1A9D,X                                                        ;8BB963;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BB963;
     CMP.W #$0010                                                         ;8BB966;
     BMI .delete                                                          ;8BB969;
     CMP.W #$00D0                                                         ;8BB96B;
@@ -7786,7 +7786,7 @@ PreInstruction_IntroRinka_Moving_MissesSamus:
 
   .delete:
     LDA.W #$0001                                                         ;8BB978;
-    STA.W $1B5D,X                                                        ;8BB97B;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BB97B;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BB97E;
     STA.W $1B1D,X                                                        ;8BB981;
 
@@ -7807,15 +7807,15 @@ InitFunc_CinematicSpriteObject_IntroMotherBrainExplosion_Big:
     LDA.W #$0038                                                         ;8BB995;
     CLC                                                                  ;8BB998;
     ADC.W .Xposition,X                                                   ;8BB999;
-    STA.W $1A7D,Y                                                        ;8BB99C;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BB99C;
     LDA.W #$006F                                                         ;8BB99F;
     CLC                                                                  ;8BB9A2;
     ADC.W .Yposition,X                                                   ;8BB9A3;
-    STA.W $1A9D,Y                                                        ;8BB9A6;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BB9A6;
     LDA.W .instructionTimer,X                                            ;8BB9A9;
-    STA.W $1B5D,Y                                                        ;8BB9AC;
+    STA.W CinematicSpriteObject_InstructionTimers,Y                                                        ;8BB9AC;
     LDA.W #$0A00                                                         ;8BB9AF;
-    STA.W $1ABD,Y                                                        ;8BB9B2;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BB9B2;
     RTS                                                                  ;8BB9B5;
 
   .Xposition:
@@ -7837,15 +7837,15 @@ InitFunc_CineSpriteObject_IntroMotherBrainExplosion_Small:
     LDA.W #$0038                                                         ;8BB9DC;
     CLC                                                                  ;8BB9DF;
     ADC.W .Xposition,X                                                   ;8BB9E0;
-    STA.W $1A7D,Y                                                        ;8BB9E3;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BB9E3;
     LDA.W #$006F                                                         ;8BB9E6;
     CLC                                                                  ;8BB9E9;
     ADC.W .Yposition,X                                                   ;8BB9EA;
-    STA.W $1A9D,Y                                                        ;8BB9ED;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BB9ED;
     LDA.W .instructionTimer,X                                            ;8BB9F0;
-    STA.W $1B5D,Y                                                        ;8BB9F3;
+    STA.W CinematicSpriteObject_InstructionTimers,Y                                                        ;8BB9F3;
     LDA.W #$0A00                                                         ;8BB9F6;
-    STA.W $1ABD,Y                                                        ;8BB9F9;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BB9F9;
     RTS                                                                  ;8BB9FC;
 
   .Xposition:
@@ -7863,7 +7863,7 @@ PreInst_CinematicSpriteObject_IntroMotherBrainExplosion:
     LDA.W $1A4B                                                          ;8BBA0F;
     BNE .return                                                          ;8BBA12;
     LDA.W #$0001                                                         ;8BBA14;
-    STA.W $1B5D,X                                                        ;8BBA17;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BBA17;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BBA1A;
     STA.W $1B1D,X                                                        ;8BBA1D;
 
@@ -7900,11 +7900,11 @@ Instruction_Spawn_IntroRinkas_2_3:
 ;;; $BA4B: Initialisation function - cinematic sprite object $CE79 (confused baby metroid) ;;;
 InitFunction_CinematicSpriteObject_ConfusedBabyMetroid:
     LDA.W #$0070                                                         ;8BBA4B;
-    STA.W $1A7D,Y                                                        ;8BBA4E;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BBA4E;
     LDA.W #$009B                                                         ;8BBA51;
-    STA.W $1A9D,Y                                                        ;8BBA54;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BBA54;
     LDA.W #$0E00                                                         ;8BBA57;
-    STA.W $1ABD,Y                                                        ;8BBA5A;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BBA5A;
     RTS                                                                  ;8BBA5D;
 
 
@@ -7925,7 +7925,7 @@ PreInstruction_CinematicSpriteObject_ConfusedBabyMetroid:
 
 ;;; $BA73: Pre-instruction - confused baby metroid - hatched ;;;
 PreInstruction_ConfusedBabyMetroid_Hatched:
-    LDA.W $1A9D,X                                                        ;8BBA73;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BBA73;
     CMP.W #$0091                                                         ;8BBA76;
     BNE +                                                                ;8BBA79;
     LDA.W #$0000                                                         ;8BBA7B;
@@ -7946,7 +7946,7 @@ PreInstruction_ConfusedBabyMetroid_Hatched:
 +   LDA.W $0AFA                                                          ;8BBAA6;
     SEC                                                                  ;8BBAA9;
     SBC.W #$0020                                                         ;8BBAAA;
-    CMP.W $1A9D,X                                                        ;8BBAAD;
+    CMP.W CinematicSpriteObject_YPositions,X                                                        ;8BBAAD;
     BMI +                                                                ;8BBAB0;
     LDA.W $1A4F                                                          ;8BBAB2;
     CMP.W #$0220                                                         ;8BBAB5;
@@ -7980,9 +7980,9 @@ PreInstruction_ConfusedBabyMetroid_Hatched:
     CLC                                                                  ;8BBAED;
     ADC.B $14                                                            ;8BBAEE;
     STA.W $1AFD,X                                                        ;8BBAF0;
-    LDA.W $1A9D,X                                                        ;8BBAF3;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BBAF3;
     ADC.B $12                                                            ;8BBAF6;
-    STA.W $1A9D,X                                                        ;8BBAF8;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BBAF8;
     LDA.W $1A4F                                                          ;8BBAFB;
     BMI .return                                                          ;8BBAFE;
     LDA.W #$0080                                                         ;8BBB00;
@@ -8016,10 +8016,10 @@ PreInstruction_ConfusedBabyMetroid_Dancing:
     LDA.W $1A4B                                                          ;8BBB24;
     BNE .timerExpired                                                    ;8BBB27;
     LDA.W #$0001                                                         ;8BBB29;
-    STA.W $1B5D,X                                                        ;8BBB2C;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BBB2C;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BBB2F;
     STA.W $1B1D,X                                                        ;8BBB32;
-    STZ.W $1A57                                                          ;8BBB35;
+    STZ.W IntroSamusDisplayFlag                                                          ;8BBB35;
     RTS                                                                  ;8BBB38;
 
   .timerExpired:
@@ -8033,8 +8033,8 @@ PreInstruction_ConfusedBabyMetroid_Dancing:
     LDA.W #$0023                                                         ;8BBB4A;
     JSL.L QueueSound_Lib3_Max6                                           ;8BBB4D;
 
-+   LDA.W $0AF6                                                          ;8BBB51;
-    CMP.W $1A7D,X                                                        ;8BBB54;
++   LDA.W SamusXPosition                                                          ;8BBB51;
+    CMP.W CinematicSpriteObject_XPositions,X                                                        ;8BBB54;
     BMI .checkXposition                                                  ;8BBB57;
     LDA.W $1A4D                                                          ;8BBB59;
     CMP.W #$0280                                                         ;8BBB5C;
@@ -8066,25 +8066,25 @@ PreInstruction_ConfusedBabyMetroid_Dancing:
 +   STA.B $12                                                            ;8BBB8F;
     BPL .positive                                                        ;8BBB91;
     LDA.W #$0001                                                         ;8BBB93;
-    STA.W $1A57                                                          ;8BBB96;
+    STA.W IntroSamusDisplayFlag                                                          ;8BBB96;
     BRA .setXposition                                                    ;8BBB99;
 
   .positive:
     LDA.W #$FFFF                                                         ;8BBB9B;
-    STA.W $1A57                                                          ;8BBB9E;
+    STA.W IntroSamusDisplayFlag                                                          ;8BBB9E;
 
   .setXposition:
     LDA.W $1ADD,X                                                        ;8BBBA1;
     CLC                                                                  ;8BBBA4;
     ADC.B $14                                                            ;8BBBA5;
     STA.W $1ADD,X                                                        ;8BBBA7;
-    LDA.W $1A7D,X                                                        ;8BBBAA;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BBBAA;
     ADC.B $12                                                            ;8BBBAD;
-    STA.W $1A7D,X                                                        ;8BBBAF;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BBBAF;
     LDA.W $0AFA                                                          ;8BBBB2;
     SEC                                                                  ;8BBBB5;
     SBC.W #$0008                                                         ;8BBBB6;
-    CMP.W $1A9D,X                                                        ;8BBBB9;
+    CMP.W CinematicSpriteObject_YPositions,X                                                        ;8BBBB9;
     BMI .checkY                                                          ;8BBBBC;
     LDA.W $1A4F                                                          ;8BBBBE;
     CMP.W #$0220                                                         ;8BBBC1;
@@ -8120,9 +8120,9 @@ PreInstruction_ConfusedBabyMetroid_Dancing:
     CLC                                                                  ;8BBBF9;
     ADC.B $14                                                            ;8BBBFA;
     STA.W $1AFD,X                                                        ;8BBBFC;
-    LDA.W $1A9D,X                                                        ;8BBBFF;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BBBFF;
     ADC.B $12                                                            ;8BBC02;
-    STA.W $1A9D,X                                                        ;8BBC04;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BBC04;
     RTS                                                                  ;8BBC07;
 
 
@@ -8190,33 +8190,33 @@ Recover_Previous_Button_Assignments:
 CinematicFunction_FlyToCeres_Initial:
     JSR.W Setup_PPU_CeresCutscene                                        ;8BBCA0;
     JSR.W Clear_CinematicSpriteObjects                                   ;8BBCA3;
-    STZ.B $AB                                                            ;8BBCA6;
-    STZ.B $A7                                                            ;8BBCA8;
+    STZ.B DP_IRQCmd                                                            ;8BBCA6;
+    STZ.B DP_NextIRQCmd                                                            ;8BBCA8;
     LDX.W #$0000                                                         ;8BBCAA;
 
   .loopPalettes:
     LDA.L Palettes_SpaceGunshipCeres,X                                   ;8BBCAD;
-    STA.L $7EC000,X                                                      ;8BBCB1;
+    STA.L Palettes,X                                                      ;8BBCB1;
     INX                                                                  ;8BBCB5;
     INX                                                                  ;8BBCB6;
     CPX.W #$0200                                                         ;8BBCB7;
     BMI .loopPalettes                                                    ;8BBCBA;
     LDA.W #Tiles_Gunship_Ceres_Mode7>>8&$FF00                            ;8BBCBC;
-    STA.B $48                                                            ;8BBCBF;
+    STA.B DP_DecompSrc+1                                                            ;8BBCBF;
     LDA.W #Tiles_Gunship_Ceres_Mode7                                     ;8BBCC1;
-    STA.B $47                                                            ;8BBCC4;
+    STA.B DP_DecompSrc                                                            ;8BBCC4;
     JSL.L Decompression_HardcodedDestination                             ;8BBCC6;
     dl $7F0000                                                           ;8BBCCA;
     LDA.W #Gunship_Ceres_Tilemap>>8&$FF00                                ;8BBCCD;
-    STA.B $48                                                            ;8BBCD0;
+    STA.B DP_DecompSrc+1                                                            ;8BBCD0;
     LDA.W #Gunship_Ceres_Tilemap                                         ;8BBCD2;
-    STA.B $47                                                            ;8BBCD5;
+    STA.B DP_DecompSrc                                                            ;8BBCD5;
     JSL.L Decompression_HardcodedDestination                             ;8BBCD7;
     dl $7F4000                                                           ;8BBCDB;
     LDA.W #Tiles_Space_Ceres>>8&$FF00                                    ;8BBCDE;
-    STA.B $48                                                            ;8BBCE1;
+    STA.B DP_DecompSrc+1                                                            ;8BBCE1;
     LDA.W #Tiles_Space_Ceres                                             ;8BBCE3;
-    STA.B $47                                                            ;8BBCE6;
+    STA.B DP_DecompSrc                                                            ;8BBCE6;
     JSL.L Decompression_HardcodedDestination                             ;8BBCE8;
     dl $7F5000                                                           ;8BBCEC;
     SEP #$30                                                             ;8BBCEF;
@@ -8285,25 +8285,25 @@ CinematicFunction_FlyToCeres_Initial:
     STA.W $2120                                                          ;8BBD8D;
     STA.B $82                                                            ;8BBD90;
     LDA.W #$FFB8                                                         ;8BBD92;
-    STA.W $1993                                                          ;8BBD95;
+    STA.W CinematicBG1_XPosition                                                          ;8BBD95;
     LDA.W #$FF98                                                         ;8BBD98;
-    STA.W $1997                                                          ;8BBD9B;
+    STA.W CinematicBG1_YPosition                                                          ;8BBD9B;
     LDA.W #$00E0                                                         ;8BBD9E;
-    STA.W $198D                                                          ;8BBDA1;
+    STA.W Mode7TransformationAngle                                                          ;8BBDA1;
     LDA.W #$0200                                                         ;8BBDA4;
-    STA.W $198F                                                          ;8BBDA7;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BBDA7;
     JSL.L Clear_PaletteFXObjects                                         ;8BBDAA;
     JSL.L Enable_PaletteFXObjects                                        ;8BBDAE;
     LDA.W #$0000                                                         ;8BBDB2;
     JSL.L Clear_CinematicBGObjects_CinematicBGTilemap                    ;8BBDB5;
     LDA.W #$5C00                                                         ;8BBDB9;
-    STA.W $19F5                                                          ;8BBDBC;
+    STA.W CinematicBGObject_VRAMAddr                                                          ;8BBDBC;
     JSL.L EnableNMI                                                      ;8BBDBF;
     LDY.W #CinematicSpriteObjectDefinitions_CeresStars                   ;8BBDC3;
     LDA.W #$0000                                                         ;8BBDC6;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BBDC9;
     LDA.W #CinematicFunction_FlyToCeres_WaitForMusicQueue_EnableDisplay  ;8BBDCC;
-    STA.W $1F51                                                          ;8BBDCF;
+    STA.W CinematicFunction                                                          ;8BBDCF;
     LDA.W #$FF2D                                                         ;8BBDD2;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8BBDD5;
     LDA.W #$0005                                                         ;8BBDD9;
@@ -8318,10 +8318,10 @@ CinematicFunction_FlyToCeres_WaitForMusicQueue_EnableDisplay:
     BCS .return                                                          ;8BBDE8;
     SEP #$20                                                             ;8BBDEA;
     LDA.B #$0F                                                           ;8BBDEC;
-    STA.B $51                                                            ;8BBDEE;
+    STA.B DP_Brightness                                                            ;8BBDEE;
     REP #$20                                                             ;8BBDF0;
     LDA.W #CinematicFunction_FlyToCeres_FlyingIntoCamera                 ;8BBDF2;
-    STA.W $1F51                                                          ;8BBDF5;
+    STA.W CinematicFunction                                                          ;8BBDF5;
 
   .return:
     RTS                                                                  ;8BBDF8;
@@ -8329,35 +8329,35 @@ CinematicFunction_FlyToCeres_WaitForMusicQueue_EnableDisplay:
 
 ;;; $BDF9: Cinematic function - fly to Ceres - flying into camera ;;;
 CinematicFunction_FlyToCeres_FlyingIntoCamera:
-    LDA.W $198F                                                          ;8BBDF9;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BBDF9;
     CMP.W #$0020                                                         ;8BBDFC;
     BMI .zoomLessThan20                                                  ;8BBDFF;
     SEC                                                                  ;8BBE01;
     SBC.W #$0010                                                         ;8BBE02;
-    STA.W $198F                                                          ;8BBE05;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BBE05;
     RTS                                                                  ;8BBE08;
 
   .zoomLessThan20:
     SEP #$20                                                             ;8BBE09;
-    STZ.B $6F                                                            ;8BBE0B;
+    STZ.B DP_ColorMathA                                                            ;8BBE0B;
     LDA.B #$31                                                           ;8BBE0D;
-    STA.B $72                                                            ;8BBE0F;
+    STA.B DP_ColorMathB                                                            ;8BBE0F;
     LDA.B #$3F                                                           ;8BBE11;
-    STA.B $74                                                            ;8BBE13;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BBE13;
     LDA.B #$5F                                                           ;8BBE15;
-    STA.B $75                                                            ;8BBE17;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BBE17;
     LDA.B #$9F                                                           ;8BBE19;
-    STA.B $76                                                            ;8BBE1B;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BBE1B;
     REP #$20                                                             ;8BBE1D;
     JSR.W Clear_CinematicSpriteObjects                                   ;8BBE1F;
     LDX.W #.transferData                                                 ;8BBE22;
     JSL.L QueueMode7Transfers                                            ;8BBE25;
     LDA.W #$FFE0                                                         ;8BBE29;
-    STA.W $1993                                                          ;8BBE2C;
+    STA.W CinematicBG1_XPosition                                                          ;8BBE2C;
     LDA.W #$FF80                                                         ;8BBE2F;
-    STA.W $1997                                                          ;8BBE32;
+    STA.W CinematicBG1_YPosition                                                          ;8BBE32;
     LDA.W #$0020                                                         ;8BBE35;
-    STA.W $198D                                                          ;8BBE38;
+    STA.W Mode7TransformationAngle                                                          ;8BBE38;
     LDY.W #CinematicSpriteObjectDefs_CeresExplosionLargeAsteroids        ;8BBE3B;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BBE3E;
     LDY.W #CinematicSpriteObjectDefinitions_CeresUnderAttack             ;8BBE41;
@@ -8371,7 +8371,7 @@ CinematicFunction_FlyToCeres_FlyingIntoCamera:
     LDA.W #$0001                                                         ;8BBE59;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BBE5C;
     LDA.W #CinematicFunction_FlyToCeres_FlyingIntoCeres                  ;8BBE5F;
-    STA.W $1F51                                                          ;8BBE62;
+    STA.W CinematicFunction                                                          ;8BBE62;
     LDY.W #PaletteFXObjects_CutsceneGunshipEngineFlicker                 ;8BBE65;
     JSL.L Spawn_PaletteFXObject                                          ;8BBE68;
     LDY.W #PaletteFXObjects_CutsceneCeresNavigationLights_SpriteCeres    ;8BBE6C;
@@ -8393,28 +8393,28 @@ InitFunction_CinematicSpriteObject_CeresStars:
     LDA.W #$FC00                                                         ;8BBE83;
     STA.W $1B7D,Y                                                        ;8BBE86;
     LDA.W #$0070                                                         ;8BBE89;
-    STA.W $1A7D,Y                                                        ;8BBE8C;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BBE8C;
     LDA.W #$0057                                                         ;8BBE8F;
-    STA.W $1A9D,Y                                                        ;8BBE92;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BBE92;
     LDA.W #$0800                                                         ;8BBE95;
-    STA.W $1ABD,Y                                                        ;8BBE98;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BBE98;
     RTS                                                                  ;8BBE9B;
 
   .nonZero:
     LDA.W #PreInstruction_CinematicSpriteObject_CeresPurpleSpaceVortex   ;8BBE9C;
     STA.W $1B3D,Y                                                        ;8BBE9F;
     LDA.W #$FFE0                                                         ;8BBEA2;
-    STA.W $1A7D,Y                                                        ;8BBEA5;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BBEA5;
     LDA.W #$0057                                                         ;8BBEA8;
-    STA.W $1A9D,Y                                                        ;8BBEAB;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BBEAB;
     LDA.W #$0800                                                         ;8BBEAE;
-    STA.W $1ABD,Y                                                        ;8BBEB1;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BBEB1;
     RTS                                                                  ;8BBEB4;
 
 
 ;;; $BEB5: Pre-instruction - cinematic sprite object $CF0F (Ceres stars) ;;;
 PreInstruction_CinematicSpriteObject_CeresStars:
-    LDA.W $1F51                                                          ;8BBEB5;
+    LDA.W CinematicFunction                                                          ;8BBEB5;
     CMP.W #CinematicFunction_FlyToCeres_FlyingIntoCamera                 ;8BBEB8;
     BEQ .flyingIntoCamera                                                ;8BBEBB;
     RTS                                                                  ;8BBEBD;
@@ -8439,41 +8439,41 @@ PreInstruction_CinematicSpriteObject_CeresStars:
     CLC                                                                  ;8BBEE0;
     ADC.B $14                                                            ;8BBEE1;
     STA.W $1AFD,X                                                        ;8BBEE3;
-    LDA.W $1A9D,X                                                        ;8BBEE6;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BBEE6;
     ADC.B $12                                                            ;8BBEE9;
-    STA.W $1A9D,X                                                        ;8BBEEB;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BBEEB;
     LDA.W $1ADD,X                                                        ;8BBEEE;
     CLC                                                                  ;8BBEF1;
     ADC.B $14                                                            ;8BBEF2;
     STA.W $1ADD,X                                                        ;8BBEF4;
-    LDA.W $1A7D,X                                                        ;8BBEF7;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BBEF7;
     ADC.B $12                                                            ;8BBEFA;
-    STA.W $1A7D,X                                                        ;8BBEFC;
-    LDA.W $1991                                                          ;8BBEFF;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BBEFC;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BBEFF;
     CLC                                                                  ;8BBF02;
     ADC.B $14                                                            ;8BBF03;
-    STA.W $1991                                                          ;8BBF05;
-    LDA.W $1993                                                          ;8BBF08;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BBF05;
+    LDA.W CinematicBG1_XPosition                                                          ;8BBF08;
     ADC.B $12                                                            ;8BBF0B;
-    STA.W $1993                                                          ;8BBF0D;
-    LDA.W $1995                                                          ;8BBF10;
+    STA.W CinematicBG1_XPosition                                                          ;8BBF0D;
+    LDA.W CinematicBG1_YSubPosition                                                          ;8BBF10;
     CLC                                                                  ;8BBF13;
     ADC.B $14                                                            ;8BBF14;
-    STA.W $1995                                                          ;8BBF16;
-    LDA.W $1997                                                          ;8BBF19;
+    STA.W CinematicBG1_YSubPosition                                                          ;8BBF16;
+    LDA.W CinematicBG1_YPosition                                                          ;8BBF19;
     ADC.B $12                                                            ;8BBF1C;
-    STA.W $1997                                                          ;8BBF1E;
+    STA.W CinematicBG1_YPosition                                                          ;8BBF1E;
     RTS                                                                  ;8BBF21;
 
 
 ;;; $BF22: Initialisation function - cinematic sprite object $CF39 (Ceres explosion large asteroids) ;;;
 InitFunc_CinematicSpriteObject_CeresExplosionLargeAsteroids:
     LDA.W #$0050                                                         ;8BBF22;
-    STA.W $1A7D,Y                                                        ;8BBF25;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BBF25;
     LDA.W #$009F                                                         ;8BBF28;
-    STA.W $1A9D,Y                                                        ;8BBF2B;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BBF2B;
     LDA.W #$0800                                                         ;8BBF2E;
-    STA.W $1ABD,Y                                                        ;8BBF31;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BBF31;
     RTS                                                                  ;8BBF34;
 
 
@@ -8483,21 +8483,21 @@ PreInst_CinematicSpriteObject_CeresExplosionLargeAsteroids:
     CLC                                                                  ;8BBF38;
     ADC.W #$4000                                                         ;8BBF39;
     STA.W $1ADD,X                                                        ;8BBF3C;
-    LDA.W $1A7D,X                                                        ;8BBF3F;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BBF3F;
     ADC.W #$0000                                                         ;8BBF42;
     AND.W #$01FF                                                         ;8BBF45;
-    STA.W $1A7D,X                                                        ;8BBF48;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BBF48;
     RTS                                                                  ;8BBF4B;
 
 
 ;;; $BF4C: Initialisation function - cinematic sprite object $CE85 (Ceres under attack) ;;;
 InitFunction_CinematicSpriteObject_CeresUnderAttack:
     LDA.W #$0074                                                         ;8BBF4C;
-    STA.W $1A7D,Y                                                        ;8BBF4F;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BBF4F;
     LDA.W #$00A0                                                         ;8BBF52;
-    STA.W $1A9D,Y                                                        ;8BBF55;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BBF55;
     LDA.W #$0C00                                                         ;8BBF58;
-    STA.W $1ABD,Y                                                        ;8BBF5B;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BBF5B;
     RTS                                                                  ;8BBF5E;
 
 
@@ -8507,21 +8507,21 @@ PreInstruction_CinematicSpriteObject_CeresUnderAttack:
     CLC                                                                  ;8BBF62;
     ADC.W #$1000                                                         ;8BBF63;
     STA.W $1ADD,X                                                        ;8BBF66;
-    LDA.W $1A7D,X                                                        ;8BBF69;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BBF69;
     ADC.W #$0000                                                         ;8BBF6C;
     AND.W #$01FF                                                         ;8BBF6F;
-    STA.W $1A7D,X                                                        ;8BBF72;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BBF72;
     RTS                                                                  ;8BBF75;
 
 
 ;;; $BF76: Initialisation function - cinematic sprite object $CE8B (Ceres small asteroids) ;;;
 InitFunction_CinematicSpriteObject_CeresSmallAsteroid:
     LDA.W #$0080                                                         ;8BBF76;
-    STA.W $1A7D,Y                                                        ;8BBF79;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BBF79;
     LDA.W #$0060                                                         ;8BBF7C;
-    STA.W $1A9D,Y                                                        ;8BBF7F;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BBF7F;
     LDA.W #$0800                                                         ;8BBF82;
-    STA.W $1ABD,Y                                                        ;8BBF85;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BBF85;
     RTS                                                                  ;8BBF88;
 
 
@@ -8531,10 +8531,10 @@ PreInstruction_CinematicSpriteObject_CeresSmallAsteroid:
     CLC                                                                  ;8BBF8C;
     ADC.W #$0800                                                         ;8BBF8D;
     STA.W $1ADD,X                                                        ;8BBF90;
-    LDA.W $1A7D,X                                                        ;8BBF93;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BBF93;
     ADC.W #$0000                                                         ;8BBF96;
     AND.W #$01FF                                                         ;8BBF99;
-    STA.W $1A7D,X                                                        ;8BBF9C;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BBF9C;
     RTS                                                                  ;8BBF9F;
 
 
@@ -8543,19 +8543,19 @@ InitFunction_CinematicSpriteObject_CeresPurpleSpaceVortex:
     LDA.W $1B9D                                                          ;8BBFA0;
     BNE .nonZero                                                         ;8BBFA3;
     LDA.W #$0070                                                         ;8BBFA5;
-    STA.W $1A7D,Y                                                        ;8BBFA8;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BBFA8;
     LDA.W #RTS_8BBFD9                                                    ;8BBFAB;
     STA.W $1B3D,Y                                                        ;8BBFAE;
     BRA +                                                                ;8BBFB1;
 
   .nonZero:
     LDA.W #$00E0                                                         ;8BBFB3;
-    STA.W $1A7D,Y                                                        ;8BBFB6;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BBFB6;
 
 +   LDA.W #$0057                                                         ;8BBFB9;
-    STA.W $1A9D,Y                                                        ;8BBFBC;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BBFBC;
     LDA.W #$0800                                                         ;8BBFBF;
-    STA.W $1ABD,Y                                                        ;8BBFC2;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BBFC2;
     RTS                                                                  ;8BBFC5;
 
 
@@ -8565,9 +8565,9 @@ PreInstruction_CinematicSpriteObject_CeresPurpleSpaceVortex:
     SEC                                                                  ;8BBFC9;
     SBC.W #$2000                                                         ;8BBFCA;
     STA.W $1ADD,X                                                        ;8BBFCD;
-    LDA.W $1A7D,X                                                        ;8BBFD0;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BBFD0;
     SBC.W #$0000                                                         ;8BBFD3;
-    STA.W $1A7D,X                                                        ;8BBFD6; fallthrough to RTS_8BBFD9
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BBFD6; fallthrough to RTS_8BBFD9
 
 
 RTS_8BBFD9:
@@ -8577,87 +8577,87 @@ RTS_8BBFD9:
 ;;; $BFDA: Cinematic function - fly to Ceres - flying into Ceres ;;;
 CinematicFunction_FlyToCeres_FlyingIntoCeres:
     SEP #$20                                                             ;8BBFDA;
-    LDA.B $74                                                            ;8BBFDC;
+    LDA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BBFDC;
     SEC                                                                  ;8BBFDE;
     SBC.B #$01                                                           ;8BBFDF;
-    STA.B $74                                                            ;8BBFE1;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BBFE1;
     CMP.B #$20                                                           ;8BBFE3;
     BPL .color1                                                          ;8BBFE5;
     LDA.B #$20                                                           ;8BBFE7;
-    STA.B $74                                                            ;8BBFE9;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BBFE9;
 
   .color1:
-    LDA.B $75                                                            ;8BBFEB;
+    LDA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BBFEB;
     SEC                                                                  ;8BBFED;
     SBC.B #$01                                                           ;8BBFEE;
-    STA.B $75                                                            ;8BBFF0;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BBFF0;
     CMP.B #$40                                                           ;8BBFF2;
     BPL .color2                                                          ;8BBFF4;
     LDA.B #$40                                                           ;8BBFF6;
-    STA.B $75                                                            ;8BBFF8;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BBFF8;
 
   .color2:
-    LDA.B $76                                                            ;8BBFFA;
+    LDA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BBFFA;
     SEC                                                                  ;8BBFFC;
     SBC.B #$01                                                           ;8BBFFD;
-    STA.B $76                                                            ;8BBFFF;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BBFFF;
     CMP.B #$80                                                           ;8BC001;
     BPL .zoomLessThanC00                                                 ;8BC003;
     LDA.B #$80                                                           ;8BC005;
-    STA.B $76                                                            ;8BC007;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BC007;
 
   .zoomLessThanC00:
     REP #$20                                                             ;8BC009;
-    LDA.W $1991                                                          ;8BC00B;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BC00B;
     SEC                                                                  ;8BC00E;
     SBC.W #$2000                                                         ;8BC00F;
-    STA.W $1991                                                          ;8BC012;
-    LDA.W $1993                                                          ;8BC015;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BC012;
+    LDA.W CinematicBG1_XPosition                                                          ;8BC015;
     SBC.W #$0000                                                         ;8BC018;
-    STA.W $1993                                                          ;8BC01B;
-    LDA.W $198F                                                          ;8BC01E;
+    STA.W CinematicBG1_XPosition                                                          ;8BC01B;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BC01E;
     CMP.W #$0C00                                                         ;8BC021;
     BPL .zoomLessThan2000                                                ;8BC024;
     CLC                                                                  ;8BC026;
     ADC.W #$0010                                                         ;8BC027;
-    STA.W $198F                                                          ;8BC02A;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC02A;
     RTS                                                                  ;8BC02D;
 
   .zoomLessThan2000:
-    LDA.W $198F                                                          ;8BC02E;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BC02E;
     CMP.W #$2000                                                         ;8BC031;
     BPL +                                                                ;8BC034;
     CLC                                                                  ;8BC036;
     ADC.W #$0020                                                         ;8BC037;
-    STA.W $198F                                                          ;8BC03A;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC03A;
     RTS                                                                  ;8BC03D;
 
 +   SEP #$20                                                             ;8BC03E;
     LDA.B #$11                                                           ;8BC040;
-    STA.B $69                                                            ;8BC042;
+    STA.B DP_MainScreenLayers                                                            ;8BC042;
     LDA.B #$01                                                           ;8BC044;
-    STA.B $55                                                            ;8BC046;
+    STA.B DP_BGModeSize                                                            ;8BC046;
     LDA.B #$00                                                           ;8BC048;
-    STA.B $5F                                                            ;8BC04A;
+    STA.B DP_Mode7Settings                                                            ;8BC04A;
     LDA.B #$5C                                                           ;8BC04C;
-    STA.B $58                                                            ;8BC04E;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BC04E;
     LDA.B #$06                                                           ;8BC050;
-    STA.B $5D                                                            ;8BC052;
+    STA.B DP_BGTilesAddr                                                            ;8BC052;
     REP #$20                                                             ;8BC054;
     LDA.W #$0100                                                         ;8BC056;
-    STA.W $198F                                                          ;8BC059;
-    STZ.W $198D                                                          ;8BC05C;
-    STZ.W $1991                                                          ;8BC05F;
-    STZ.W $1993                                                          ;8BC062;
-    STZ.W $1995                                                          ;8BC065;
-    STZ.W $1997                                                          ;8BC068;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC059;
+    STZ.W Mode7TransformationAngle                                                          ;8BC05C;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8BC05F;
+    STZ.W CinematicBG1_XPosition                                                          ;8BC062;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8BC065;
+    STZ.W CinematicBG1_YPosition                                                          ;8BC068;
     JSL.L Enable_CinematicBGObjects                                      ;8BC06B;
     JSL.L Enable_CinematicBGTilemap_Updates                              ;8BC06F;
     LDY.W #CinematicSpriteObjectDefinitions_SpaceColony                  ;8BC073;
     LDA.W #$5C00                                                         ;8BC076;
     JSR.W Spawn_CinematicBGObject                                        ;8BC079;
     LDA.W #RTS_8BA38F                                                    ;8BC07C;
-    STA.W $1F51                                                          ;8BC07F;
+    STA.W CinematicFunction                                                          ;8BC07F;
     RTS                                                                  ;8BC082;
 
 
@@ -8665,18 +8665,18 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $C083: Initialisation function - cinematic sprite object $CE97 (unused. Space colony text) ;;;
 UNUSED_InitFunc_CinematicSpriteObject_SpaceColonyText_8BC083:
     LDA.W #$007C                                                         ;8BC083;
-    STA.W $1A7D,Y                                                        ;8BC086;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC086;
     LDA.W #$00BA                                                         ;8BC089;
-    STA.W $1A9D,Y                                                        ;8BC08C;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC08C;
     LDA.W #$0000                                                         ;8BC08F;
-    STA.W $1ABD,Y                                                        ;8BC092;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC092;
     RTS                                                                  ;8BC095;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
 ;;; $C096: Instruction - skip next instruction if English text ;;;
 Instruction_SkipNextInstructionIfEnglishText:
-    LDA.W $09E2                                                          ;8BC096;
+    LDA.W JapanText                                                          ;8BC096;
     BNE .return                                                          ;8BC099;
     TYA                                                                  ;8BC09B;
     CLC                                                                  ;8BC09C;
@@ -8690,10 +8690,10 @@ Instruction_SkipNextInstructionIfEnglishText:
 ;;; $C0A2: Instruction - finish fly to Ceres ;;;
 Instruction_FinishFlyToCeres:
     LDA.W #CinematicFunction_FlyToCeres_Finish                           ;8BC0A2;
-    STA.W $1F51                                                          ;8BC0A5;
+    STA.W CinematicFunction                                                          ;8BC0A5;
     LDA.W #$0001                                                         ;8BC0A8;
-    STA.W $0723                                                          ;8BC0AB;
-    STA.W $0725                                                          ;8BC0AE;
+    STA.W ScreenFadeDelay                                                          ;8BC0AB;
+    STA.W ScreenFadeCounter                                                          ;8BC0AE;
     RTS                                                                  ;8BC0B1;
 
 
@@ -8701,11 +8701,11 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $C0B2: Initialisation function - cinematic sprite object $CE9D (unused. Space colony Japanese text) ;;;
 UNUSED_InitFunc_CineSpriteObject_SpaceColonyJapanText_8BC0B2:
     LDA.W #$007C                                                         ;8BC0B2;
-    STA.W $1A7D,Y                                                        ;8BC0B5;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC0B5;
     LDA.W #$00CC                                                         ;8BC0B8;
-    STA.W $1A9D,Y                                                        ;8BC0BB;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC0BB;
     LDA.W #$0000                                                         ;8BC0BE;
-    STA.W $1ABD,Y                                                        ;8BC0C1;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC0C1;
     RTS                                                                  ;8BC0C4;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
@@ -8714,32 +8714,32 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 CinematicFunction_FlyToCeres_Finish:
     JSL.L HandleFadingOut                                                ;8BC0C5;
     SEP #$20                                                             ;8BC0C9;
-    LDA.B $51                                                            ;8BC0CB;
+    LDA.B DP_Brightness                                                            ;8BC0CB;
     CMP.B #$80                                                           ;8BC0CD;
     BNE .return                                                          ;8BC0CF;
     JSL.L EnableNMI                                                      ;8BC0D1;
     REP #$20                                                             ;8BC0D5;
-    STZ.W $0723                                                          ;8BC0D7;
-    STZ.W $0725                                                          ;8BC0DA;
-    STZ.B $B5                                                            ;8BC0DD;
-    STZ.B $B9                                                            ;8BC0DF;
-    STZ.B $B7                                                            ;8BC0E1;
-    STZ.B $BB                                                            ;8BC0E3;
-    STZ.W $198D                                                          ;8BC0E5;
-    LDA.W #$1C1F                                                         ;8BC0E8;
+    STZ.W ScreenFadeDelay                                                          ;8BC0D7;
+    STZ.W ScreenFadeCounter                                                          ;8BC0DA;
+    STZ.B DP_BG2XScroll                                                            ;8BC0DD;
+    STZ.B DP_BG3XScroll                                                            ;8BC0DF;
+    STZ.B DP_BG2YScroll                                                            ;8BC0E1;
+    STZ.B DP_BG3YScroll                                                            ;8BC0E3;
+    STZ.W Mode7TransformationAngle                                                          ;8BC0E5;
+    LDA.W #MessageBoxIndex                                                         ;8BC0E8;
     DEC                                                                  ;8BC0EB;
     DEC                                                                  ;8BC0EC;
     SEC                                                                  ;8BC0ED;
-    SBC.W #$198D                                                         ;8BC0EE;
+    SBC.W #Mode7TransformationAngle                                                         ;8BC0EE;
     TAX                                                                  ;8BC0F1;
 
   .loop:
-    STZ.W $198D,X                                                        ;8BC0F2;
+    STZ.W Mode7TransformationAngle,X                                                        ;8BC0F2;
     DEX                                                                  ;8BC0F5;
     DEX                                                                  ;8BC0F6;
     BPL .loop                                                            ;8BC0F7;
     LDA.W #CinematicFunction_FlyToCeres_StartGameAtCeres                 ;8BC0F9;
-    STA.W $1F51                                                          ;8BC0FC;
+    STA.W CinematicFunction                                                          ;8BC0FC;
 
   .return:
     RTS                                                                  ;8BC0FF;
@@ -8749,9 +8749,9 @@ CinematicFunction_FlyToCeres_Finish:
 CinematicFunction_FlyToCeres_StartGameAtCeres:
     LDA.W #$001F                                                         ;8BC100;
     STA.L $7ED914                                                        ;8BC103;
-    STA.W $0998                                                          ;8BC107;
+    STA.W GameState                                                          ;8BC107;
     LDA.W #$0006                                                         ;8BC10A;
-    STA.W $079F                                                          ;8BC10D;
+    STA.W AreaIndex                                                          ;8BC10D;
     STZ.W $078B                                                          ;8BC110;
     LDA.W $0952                                                          ;8BC113;
     JSL.L SaveToSRAM                                                     ;8BC116;
@@ -8767,46 +8767,46 @@ CinematicFunction_CeresGoesBoom_Initial:
     DEX                                                                  ;8BC122;
     BPL .wait                                                            ;8BC123;
     JSR.W Setup_PPU_CeresCutscene                                        ;8BC125;
-    LDA.W #$1C1F                                                         ;8BC128;
+    LDA.W #MessageBoxIndex                                                         ;8BC128;
     DEC                                                                  ;8BC12B;
     DEC                                                                  ;8BC12C;
     SEC                                                                  ;8BC12D;
-    SBC.W #$198D                                                         ;8BC12E;
+    SBC.W #Mode7TransformationAngle                                                         ;8BC12E;
     TAX                                                                  ;8BC131;
 
   .loop:
-    STZ.W $198D,X                                                        ;8BC132;
+    STZ.W Mode7TransformationAngle,X                                                        ;8BC132;
     DEX                                                                  ;8BC135;
     DEX                                                                  ;8BC136;
     BPL .loop                                                            ;8BC137;
-    STZ.W $078D                                                          ;8BC139;
-    STZ.W $0911                                                          ;8BC13C;
-    STZ.W $0915                                                          ;8BC13F;
+    STZ.W DoorPointer                                                          ;8BC139;
+    STZ.W Layer1XPosition                                                          ;8BC13C;
+    STZ.W Layer1YPosition                                                          ;8BC13F;
     LDX.W #$0000                                                         ;8BC142;
 
   .loopPalettes:
     LDA.L Palettes_SpaceGunshipCeres,X                                   ;8BC145;
-    STA.L $7EC000,X                                                      ;8BC149;
+    STA.L Palettes,X                                                      ;8BC149;
     INX                                                                  ;8BC14D;
     INX                                                                  ;8BC14E;
     CPX.W #$0200                                                         ;8BC14F;
     BMI .loopPalettes                                                    ;8BC152;
     LDA.W #Tiles_Gunship_Ceres_Mode7>>8&$FF00                            ;8BC154;
-    STA.B $48                                                            ;8BC157;
+    STA.B DP_DecompSrc+1                                                            ;8BC157;
     LDA.W #Tiles_Gunship_Ceres_Mode7                                     ;8BC159;
-    STA.B $47                                                            ;8BC15C;
+    STA.B DP_DecompSrc                                                            ;8BC15C;
     JSL.L Decompression_HardcodedDestination                             ;8BC15E;
     dl $7F0000                                                           ;8BC162;
     LDA.W #Gunship_Ceres_Tilemap>>8&$FF00                                ;8BC165;
-    STA.B $48                                                            ;8BC168;
+    STA.B DP_DecompSrc+1                                                            ;8BC168;
     LDA.W #Gunship_Ceres_Tilemap                                         ;8BC16A;
-    STA.B $47                                                            ;8BC16D;
+    STA.B DP_DecompSrc                                                            ;8BC16D;
     JSL.L Decompression_HardcodedDestination                             ;8BC16F;
     dl $7F4000                                                           ;8BC173;
     LDA.W #Tiles_Space_Ceres>>8&$FF00                                    ;8BC176;
-    STA.B $48                                                            ;8BC179;
+    STA.B DP_DecompSrc+1                                                            ;8BC179;
     LDA.W #Tiles_Space_Ceres                                             ;8BC17B;
-    STA.B $47                                                            ;8BC17E;
+    STA.B DP_DecompSrc                                                            ;8BC17E;
     JSL.L Decompression_HardcodedDestination                             ;8BC180;
     dl $7F5000                                                           ;8BC184;
     SEP #$30                                                             ;8BC187;
@@ -8887,12 +8887,12 @@ CinematicFunction_CeresGoesBoom_Initial:
     STA.W $2120                                                          ;8BC245;
     STA.B $82                                                            ;8BC248;
     LDA.W #$FFD4                                                         ;8BC24A;
-    STA.W $1993                                                          ;8BC24D;
+    STA.W CinematicBG1_XPosition                                                          ;8BC24D;
     LDA.W #$FF90                                                         ;8BC250;
-    STA.W $1997                                                          ;8BC253;
-    STZ.W $198D                                                          ;8BC256;
+    STA.W CinematicBG1_YPosition                                                          ;8BC253;
+    STZ.W Mode7TransformationAngle                                                          ;8BC256;
     LDA.W #$0100                                                         ;8BC259;
-    STA.W $198F                                                          ;8BC25C;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC25C;
     JSL.L Disable_HDMAObjects                                            ;8BC25F;
     JSL.L Wait_End_VBlank_Clear_HDMA                                     ;8BC263;
     JSL.L Clear_PaletteFXObjects                                         ;8BC267;
@@ -8900,7 +8900,7 @@ CinematicFunction_CeresGoesBoom_Initial:
     LDA.W #$002F                                                         ;8BC26F;
     JSL.L Clear_CinematicBGObjects_CinematicBGTilemap                    ;8BC272;
     LDA.W #$0000                                                         ;8BC276;
-    STA.W $19F5                                                          ;8BC279;
+    STA.W CinematicBGObject_VRAMAddr                                                          ;8BC279;
     LDY.W #CinematicSpriteObjectDefs_CeresUnderAttackLargeAsteroids      ;8BC27C;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BC27F;
     LDY.W #CinematicSpriteObjectDefinitions_CeresSmallAsteroids          ;8BC282;
@@ -8917,15 +8917,15 @@ CinematicFunction_CeresGoesBoom_Initial:
     JSL.L Spawn_PaletteFXObject                                          ;8BC2A1;
     JSL.L EnableNMI                                                      ;8BC2A5;
     LDA.W #$0001                                                         ;8BC2A9;
-    STA.W $0723                                                          ;8BC2AC;
-    STA.W $0725                                                          ;8BC2AF;
+    STA.W ScreenFadeDelay                                                          ;8BC2AC;
+    STA.W ScreenFadeCounter                                                          ;8BC2AF;
     LDA.W #CinematicFunction_CeresGoesBoom_WaitForMusicQueue             ;8BC2B2;
-    STA.W $1F51                                                          ;8BC2B5;
+    STA.W CinematicFunction                                                          ;8BC2B5;
     LDA.W #$0000                                                         ;8BC2B8;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8BC2BB;
     LDA.W #$FF2D                                                         ;8BC2BF;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8BC2C2;
-    LDA.W $0998                                                          ;8BC2C6;
+    LDA.W GameState                                                          ;8BC2C6;
     CMP.W #$0025                                                         ;8BC2C9;
     BNE .notState25                                                      ;8BC2CC;
     LDA.W #$0008                                                         ;8BC2CE;
@@ -8945,7 +8945,7 @@ CinematicFunction_CeresGoesBoom_WaitForMusicQueue:
     JSL.L CheckIfMusicIsQueued                                           ;8BC2E4;
     BCS .return                                                          ;8BC2E8;
     LDA.W #CinematicFunction_CeresGoesBoom_SmallCeresExplosion_FadingIn  ;8BC2EA;
-    STA.W $1F51                                                          ;8BC2ED;
+    STA.W CinematicFunction                                                          ;8BC2ED;
 
   .return:
     RTS                                                                  ;8BC2F0;
@@ -8953,36 +8953,36 @@ CinematicFunction_CeresGoesBoom_WaitForMusicQueue:
 
 ;;; $C2F1: Cinematic function - Ceres goes boom - small Ceres explosions - fading in ;;;
 CinematicFunction_CeresGoesBoom_SmallCeresExplosion_FadingIn:
-    LDA.W $1995                                                          ;8BC2F1;
+    LDA.W CinematicBG1_YSubPosition                                                          ;8BC2F1;
     CLC                                                                  ;8BC2F4;
     ADC.W #$1000                                                         ;8BC2F5;
-    STA.W $1995                                                          ;8BC2F8;
-    LDA.W $1997                                                          ;8BC2FB;
+    STA.W CinematicBG1_YSubPosition                                                          ;8BC2F8;
+    LDA.W CinematicBG1_YPosition                                                          ;8BC2FB;
     ADC.W #$0000                                                         ;8BC2FE;
-    STA.W $1997                                                          ;8BC301;
-    LDA.W $1991                                                          ;8BC304;
+    STA.W CinematicBG1_YPosition                                                          ;8BC301;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BC304;
     SEC                                                                  ;8BC307;
     SBC.W #$4000                                                         ;8BC308;
-    STA.W $1991                                                          ;8BC30B;
-    LDA.W $1993                                                          ;8BC30E;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BC30B;
+    LDA.W CinematicBG1_XPosition                                                          ;8BC30E;
     SBC.W #$0000                                                         ;8BC311;
-    STA.W $1993                                                          ;8BC314;
-    LDA.W $198F                                                          ;8BC317;
+    STA.W CinematicBG1_XPosition                                                          ;8BC314;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BC317;
     CLC                                                                  ;8BC31A;
     ADC.W #$0001                                                         ;8BC31B;
-    STA.W $198F                                                          ;8BC31E;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC31E;
     JSL.L HandleFadingIn                                                 ;8BC321;
     SEP #$20                                                             ;8BC325;
-    LDA.B $51                                                            ;8BC327;
+    LDA.B DP_Brightness                                                            ;8BC327;
     CMP.B #$0F                                                           ;8BC329;
     BNE .return                                                          ;8BC32B;
     REP #$20                                                             ;8BC32D;
-    STZ.W $0723                                                          ;8BC32F;
-    STZ.W $0725                                                          ;8BC332;
+    STZ.W ScreenFadeDelay                                                          ;8BC32F;
+    STZ.W ScreenFadeCounter                                                          ;8BC332;
     LDA.W #CinematicFunction_CeresGoesBoom_CeresExplosions               ;8BC335;
-    STA.W $1F51                                                          ;8BC338;
+    STA.W CinematicFunction                                                          ;8BC338;
     LDA.W #$0001                                                         ;8BC33B;
-    STA.W $1A49                                                          ;8BC33E;
+    STA.W CinematicFunctionTimer                                                          ;8BC33E;
     STZ.W $1A4B                                                          ;8BC341;
 
   .return:
@@ -8991,35 +8991,35 @@ CinematicFunction_CeresGoesBoom_SmallCeresExplosion_FadingIn:
 
 ;;; $C345: Cinematic function - Ceres goes boom - Ceres explosions ;;;
 CinematicFunction_CeresGoesBoom_CeresExplosions:
-    LDA.W $1995                                                          ;8BC345;
+    LDA.W CinematicBG1_YSubPosition                                                          ;8BC345;
     CLC                                                                  ;8BC348;
     ADC.W #$1000                                                         ;8BC349;
-    STA.W $1995                                                          ;8BC34C;
-    LDA.W $1997                                                          ;8BC34F;
+    STA.W CinematicBG1_YSubPosition                                                          ;8BC34C;
+    LDA.W CinematicBG1_YPosition                                                          ;8BC34F;
     ADC.W #$0000                                                         ;8BC352;
-    STA.W $1997                                                          ;8BC355;
-    LDA.W $1991                                                          ;8BC358;
+    STA.W CinematicBG1_YPosition                                                          ;8BC355;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BC358;
     SEC                                                                  ;8BC35B;
     SBC.W #$4000                                                         ;8BC35C;
-    STA.W $1991                                                          ;8BC35F;
-    LDA.W $1993                                                          ;8BC362;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BC35F;
+    LDA.W CinematicBG1_XPosition                                                          ;8BC362;
     SBC.W #$0000                                                         ;8BC365;
-    STA.W $1993                                                          ;8BC368;
-    LDA.W $198F                                                          ;8BC36B;
+    STA.W CinematicBG1_XPosition                                                          ;8BC368;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BC36B;
     CMP.W #$0280                                                         ;8BC36E;
     BPL +                                                                ;8BC371;
     CLC                                                                  ;8BC373;
     ADC.W #$0001                                                         ;8BC374;
-    STA.W $198F                                                          ;8BC377;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC377;
     RTS                                                                  ;8BC37A;
 
-+   LDA.W $1993                                                          ;8BC37B;
++   LDA.W CinematicBG1_XPosition                                                          ;8BC37B;
     EOR.W #$FFFF                                                         ;8BC37E;
     INC                                                                  ;8BC381;
     CLC                                                                  ;8BC382;
     ADC.B $80                                                            ;8BC383;
     STA.W $0CE2                                                          ;8BC385;
-    LDA.W $1997                                                          ;8BC388;
+    LDA.W CinematicBG1_YPosition                                                          ;8BC388;
     EOR.W #$FFFF                                                         ;8BC38B;
     INC                                                                  ;8BC38E;
     CLC                                                                  ;8BC38F;
@@ -9037,16 +9037,16 @@ CinematicFunction_CeresGoesBoom_CeresExplosions:
     PLX                                                                  ;8BC3A4;
     SEP #$20                                                             ;8BC3A5;
     LDA.B #$10                                                           ;8BC3A7;
-    STA.B $6F                                                            ;8BC3A9;
+    STA.B DP_ColorMathA                                                            ;8BC3A9;
     LDA.B #$37                                                           ;8BC3AB;
-    STA.B $72                                                            ;8BC3AD;
+    STA.B DP_ColorMathB                                                            ;8BC3AD;
     REP #$20                                                             ;8BC3AF;
     LDA.W #$0300                                                         ;8BC3B1;
-    STA.W $198F                                                          ;8BC3B4;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC3B4;
     LDA.W #$0000                                                         ;8BC3B7;
     LDY.W #CinematicSpriteObjectDefinitions_CeresFinalExplosion          ;8BC3BA;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BC3BD;
-    LDA.W $0998                                                          ;8BC3C0;
+    LDA.W GameState                                                          ;8BC3C0;
     CMP.W #$0025                                                         ;8BC3C3;
     BNE .notState25                                                      ;8BC3C6;
     LDX.W #.mode7TransferData_clearCeresUpperHalf                        ;8BC3C8;
@@ -9061,7 +9061,7 @@ CinematicFunction_CeresGoesBoom_CeresExplosions:
     LDX.W #.mode7TransferData_clearCeresLowerHalf                        ;8BC3D8;
     JSL.L QueueMode7Transfers                                            ;8BC3DB;
     LDA.W #CinematicFunction_CeresGoesBoom_GunshipFlyingAway             ;8BC3DF;
-    STA.W $1F51                                                          ;8BC3E2;
+    STA.W CinematicFunction                                                          ;8BC3E2;
     RTS                                                                  ;8BC3E5;
 
 ; Mode 7 transfers data
@@ -9113,25 +9113,25 @@ InitFunction_CinematicSpriteObject_CeresExplosion1:
     ASL                                                                  ;8BC43A;
     TAX                                                                  ;8BC43B;
     LDA.W .timer,X                                                       ;8BC43C;
-    STA.W $1B5D,Y                                                        ;8BC43F;
-    LDA.W $1993                                                          ;8BC442;
+    STA.W CinematicSpriteObject_InstructionTimers,Y                                                        ;8BC43F;
+    LDA.W CinematicBG1_XPosition                                                          ;8BC442;
     EOR.W #$FFFF                                                         ;8BC445;
     INC                                                                  ;8BC448;
     CLC                                                                  ;8BC449;
     ADC.B $80                                                            ;8BC44A;
     CLC                                                                  ;8BC44C;
     ADC.W .Xoffset,X                                                     ;8BC44D;
-    STA.W $1A7D,Y                                                        ;8BC450;
-    LDA.W $1997                                                          ;8BC453;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC450;
+    LDA.W CinematicBG1_YPosition                                                          ;8BC453;
     EOR.W #$FFFF                                                         ;8BC456;
     INC                                                                  ;8BC459;
     CLC                                                                  ;8BC45A;
     ADC.B $82                                                            ;8BC45B;
     CLC                                                                  ;8BC45D;
     ADC.W .Yoffset,X                                                     ;8BC45E;
-    STA.W $1A9D,Y                                                        ;8BC461;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC461;
     LDA.W #$0A00                                                         ;8BC464;
-    STA.W $1ABD,Y                                                        ;8BC467;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC467;
     RTS                                                                  ;8BC46A;
 
   .timer:
@@ -9144,7 +9144,7 @@ InitFunction_CinematicSpriteObject_CeresExplosion1:
 
 ;;; $C489: Pre-instruction - Ceres explosion spawner - spawn Ceres explosion 2 every Ch frames ;;;
 PreInst_CeresExplosionSpawner_SpawnExplosion2EveryCFrames:
-    LDA.W $1F51                                                          ;8BC489;
+    LDA.W CinematicFunction                                                          ;8BC489;
     CMP.W #CinematicFunction_CeresGoesBoom_GunshipFlyingAway             ;8BC48C;
     BNE .notGunshipFlyingAway                                            ;8BC48F;
     LDA.W #RTS_8B93D9                                                    ;8BC491;
@@ -9152,7 +9152,7 @@ PreInst_CeresExplosionSpawner_SpawnExplosion2EveryCFrames:
     RTS                                                                  ;8BC497;
 
   .notGunshipFlyingAway:
-    DEC.W $1A49                                                          ;8BC498;
+    DEC.W CinematicFunctionTimer                                                          ;8BC498;
     BEQ .spawn                                                           ;8BC49B;
     BPL .return                                                          ;8BC49D;
 
@@ -9161,7 +9161,7 @@ PreInst_CeresExplosionSpawner_SpawnExplosion2EveryCFrames:
     LDY.W #CinematicSpriteObjectDefinitions_CeresExplosion2              ;8BC4A2;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BC4A5;
     LDA.W #$000C                                                         ;8BC4A8;
-    STA.W $1A49                                                          ;8BC4AB;
+    STA.W CinematicFunctionTimer                                                          ;8BC4AB;
     LDA.W $1A4B                                                          ;8BC4AE;
     INC                                                                  ;8BC4B1;
     AND.W #$0007                                                         ;8BC4B2;
@@ -9178,24 +9178,24 @@ InitFunction_CinematicSpriteObject_CeresExplosion2:
     ASL                                                                  ;8BC4BF;
     ASL                                                                  ;8BC4C0;
     TAX                                                                  ;8BC4C1;
-    LDA.W $1993                                                          ;8BC4C2;
+    LDA.W CinematicBG1_XPosition                                                          ;8BC4C2;
     EOR.W #$FFFF                                                         ;8BC4C5;
     INC                                                                  ;8BC4C8;
     CLC                                                                  ;8BC4C9;
     ADC.B $80                                                            ;8BC4CA;
     CLC                                                                  ;8BC4CC;
     ADC.W .Xoffset,X                                                     ;8BC4CD;
-    STA.W $1A7D,Y                                                        ;8BC4D0;
-    LDA.W $1997                                                          ;8BC4D3;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC4D0;
+    LDA.W CinematicBG1_YPosition                                                          ;8BC4D3;
     EOR.W #$FFFF                                                         ;8BC4D6;
     INC                                                                  ;8BC4D9;
     CLC                                                                  ;8BC4DA;
     ADC.B $82                                                            ;8BC4DB;
     CLC                                                                  ;8BC4DD;
     ADC.W .Yoffset,X                                                     ;8BC4DE;
-    STA.W $1A9D,Y                                                        ;8BC4E1;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC4E1;
     LDA.W #$0A00                                                         ;8BC4E4;
-    STA.W $1ABD,Y                                                        ;8BC4E7;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC4E7;
     RTS                                                                  ;8BC4EA;
 
   .Xoffset:
@@ -9242,25 +9242,25 @@ InitFunction_CinematicSpriteObject_CeresExplosion3:
     ASL                                                                  ;8BC539;
     TAX                                                                  ;8BC53A;
     LDA.W .timer,X                                                       ;8BC53B;
-    STA.W $1B5D,Y                                                        ;8BC53E;
-    LDA.W $1993                                                          ;8BC541;
+    STA.W CinematicSpriteObject_InstructionTimers,Y                                                        ;8BC53E;
+    LDA.W CinematicBG1_XPosition                                                          ;8BC541;
     EOR.W #$FFFF                                                         ;8BC544;
     INC                                                                  ;8BC547;
     CLC                                                                  ;8BC548;
     ADC.B $80                                                            ;8BC549;
     CLC                                                                  ;8BC54B;
     ADC.W .Xoffset,X                                                     ;8BC54C;
-    STA.W $1A7D,Y                                                        ;8BC54F;
-    LDA.W $1997                                                          ;8BC552;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC54F;
+    LDA.W CinematicBG1_YPosition                                                          ;8BC552;
     EOR.W #$FFFF                                                         ;8BC555;
     INC                                                                  ;8BC558;
     CLC                                                                  ;8BC559;
     ADC.B $82                                                            ;8BC55A;
     CLC                                                                  ;8BC55C;
     ADC.W .Yoffset,X                                                     ;8BC55D;
-    STA.W $1A9D,Y                                                        ;8BC560;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC560;
     LDA.W #$0A00                                                         ;8BC563;
-    STA.W $1ABD,Y                                                        ;8BC566;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC566;
     RTS                                                                  ;8BC569;
 
   .timer:
@@ -9277,35 +9277,35 @@ PreInstruction_CinematicSpriteObject_CeresExplosion:
     SEC                                                                  ;8BC585;
     SBC.W #$1000                                                         ;8BC586;
     STA.W $1AFD,X                                                        ;8BC589;
-    LDA.W $1A9D,X                                                        ;8BC58C;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BC58C;
     SBC.W #$0000                                                         ;8BC58F;
-    STA.W $1A9D,X                                                        ;8BC592;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BC592;
     LDA.W $1ADD,X                                                        ;8BC595;
     CLC                                                                  ;8BC598;
     ADC.W #$4000                                                         ;8BC599;
     STA.W $1ADD,X                                                        ;8BC59C;
-    LDA.W $1A7D,X                                                        ;8BC59F;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BC59F;
     ADC.W #$0000                                                         ;8BC5A2;
-    STA.W $1A7D,X                                                        ;8BC5A5;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BC5A5;
     RTS                                                                  ;8BC5A8;
 
 
 ;;; $C5A9: Initialisation function - cinematic sprite object $CF2D (Ceres final explosion) ;;;
 InitFunction_CinematicSpriteObject_CeresFinalExplosion:
-    LDA.W $1993                                                          ;8BC5A9;
+    LDA.W CinematicBG1_XPosition                                                          ;8BC5A9;
     EOR.W #$FFFF                                                         ;8BC5AC;
     INC                                                                  ;8BC5AF;
     CLC                                                                  ;8BC5B0;
     ADC.B $80                                                            ;8BC5B1;
-    STA.W $1A7D,Y                                                        ;8BC5B3;
-    LDA.W $1997                                                          ;8BC5B6;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC5B3;
+    LDA.W CinematicBG1_YPosition                                                          ;8BC5B6;
     EOR.W #$FFFF                                                         ;8BC5B9;
     INC                                                                  ;8BC5BC;
     CLC                                                                  ;8BC5BD;
     ADC.B $82                                                            ;8BC5BE;
-    STA.W $1A9D,Y                                                        ;8BC5C0;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC5C0;
     LDA.W #$0A00                                                         ;8BC5C3;
-    STA.W $1ABD,Y                                                        ;8BC5C6;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC5C6;
     RTS                                                                  ;8BC5C9;
 
 
@@ -9314,49 +9314,49 @@ CinematicFunction_CeresGoesBoom_GunshipFlyingAway:
 ; This cinematic function is used even if Samus doesn't get away, just with the gunship tilemap unloaded ^_^;
     SEP #$20                                                             ;8BC5CA;
     LDA.B #$10                                                           ;8BC5CC;
-    STA.B $6F                                                            ;8BC5CE;
+    STA.B DP_ColorMathA                                                            ;8BC5CE;
     LDA.B #$37                                                           ;8BC5D0;
-    STA.B $72                                                            ;8BC5D2;
+    STA.B DP_ColorMathB                                                            ;8BC5D2;
     REP #$20                                                             ;8BC5D4;
-    LDA.W $1991                                                          ;8BC5D6;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BC5D6;
     CLC                                                                  ;8BC5D9;
     ADC.W #$0000                                                         ;8BC5DA;
-    STA.W $1991                                                          ;8BC5DD;
-    LDA.W $1993                                                          ;8BC5E0;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BC5DD;
+    LDA.W CinematicBG1_XPosition                                                          ;8BC5E0;
     ADC.W #$0002                                                         ;8BC5E3;
-    STA.W $1993                                                          ;8BC5E6;
-    LDA.W $198D                                                          ;8BC5E9;
+    STA.W CinematicBG1_XPosition                                                          ;8BC5E6;
+    LDA.W Mode7TransformationAngle                                                          ;8BC5E9;
     DEC                                                                  ;8BC5EC;
     AND.W #$00FF                                                         ;8BC5ED;
-    STA.W $198D                                                          ;8BC5F0;
-    LDA.W $198F                                                          ;8BC5F3;
+    STA.W Mode7TransformationAngle                                                          ;8BC5F0;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BC5F3;
     CMP.W #$0010                                                         ;8BC5F6;
     BMI .zoomLessThan10                                                  ;8BC5F9;
     SEC                                                                  ;8BC5FB;
     SBC.W #$0010                                                         ;8BC5FC;
-    STA.W $198F                                                          ;8BC5FF;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC5FF;
     RTS                                                                  ;8BC602;
 
   .zoomLessThan10:
     LDA.W #CinematicFunction_CeresGoesBoom_WaitC0Frames                  ;8BC603;
-    STA.W $1F51                                                          ;8BC606;
+    STA.W CinematicFunction                                                          ;8BC606;
     LDA.W #$00C0                                                         ;8BC609;
-    STA.W $1A49                                                          ;8BC60C;
+    STA.W CinematicFunctionTimer                                                          ;8BC60C;
     RTS                                                                  ;8BC60F;
 
 
 ;;; $C610: Cinematic function - Ceres goes boom - wait C0h frames ;;;
 CinematicFunction_CeresGoesBoom_WaitC0Frames:
-    DEC.W $1A49                                                          ;8BC610;
+    DEC.W CinematicFunctionTimer                                                          ;8BC610;
     BEQ .timerExpired                                                    ;8BC613;
     BPL .return                                                          ;8BC615;
 
   .timerExpired:
     LDA.W #$0001                                                         ;8BC617;
-    STA.W $0723                                                          ;8BC61A;
-    STA.W $0725                                                          ;8BC61D;
+    STA.W ScreenFadeDelay                                                          ;8BC61A;
+    STA.W ScreenFadeCounter                                                          ;8BC61D;
     LDA.W #CinematicFunction_CeresGoesBoom_FadeOut                       ;8BC620;
-    STA.W $1F51                                                          ;8BC623;
+    STA.W CinematicFunction                                                          ;8BC623;
 
   .return:
     RTS                                                                  ;8BC626;
@@ -9367,18 +9367,18 @@ CinematicFunction_CeresGoesBoom_FadeOut:
 ; Similar to $82:8431/DCE0
     JSL.L HandleFadingOut                                                ;8BC627;
     SEP #$20                                                             ;8BC62B;
-    LDA.B $51                                                            ;8BC62D;
+    LDA.B DP_Brightness                                                            ;8BC62D;
     CMP.B #$80                                                           ;8BC62F;
     BNE .return                                                          ;8BC631;
     JSL.L EnableNMI                                                      ;8BC633;
     REP #$20                                                             ;8BC637;
-    STZ.W $0723                                                          ;8BC639;
-    STZ.W $0725                                                          ;8BC63C;
-    LDA.W $0998                                                          ;8BC63F;
+    STZ.W ScreenFadeDelay                                                          ;8BC639;
+    STZ.W ScreenFadeCounter                                                          ;8BC63C;
+    LDA.W GameState                                                          ;8BC63F;
     CMP.W #$0025                                                         ;8BC642;
     BEQ .gameState25                                                     ;8BC645;
     LDA.W #CinematicFunction_FlyToZebes_Initial                          ;8BC647;
-    STA.W $1F51                                                          ;8BC64A;
+    STA.W CinematicFunction                                                          ;8BC64A;
     RTS                                                                  ;8BC64D;
 
   .gameState25:
@@ -9386,23 +9386,23 @@ CinematicFunction_CeresGoesBoom_FadeOut:
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8BC651;
     STZ.W $09D2                                                          ;8BC655;
     STZ.W $0A04                                                          ;8BC658;
-    STZ.W $18A8                                                          ;8BC65B;
-    STZ.W $18AA                                                          ;8BC65E;
+    STZ.W SamusInvincibilityTimer                                                          ;8BC65B;
+    STZ.W SamusKnockbackTimer                                                          ;8BC65E;
     JSL.L Wait_End_VBlank_Clear_HDMA                                     ;8BC661;
     JSL.L DisableHVCounterInterrupts                                     ;8BC665;
-    STZ.W $1982                                                          ;8BC669;
+    STZ.W LayerBlending_DefaultConfig                                                          ;8BC669;
     SEP #$20                                                             ;8BC66C;
-    STZ.B $6E                                                            ;8BC66E;
-    STZ.B $71                                                            ;8BC670;
+    STZ.B DP_NextGameplayColorMathA                                                            ;8BC66E;
+    STZ.B DP_NextGameplayColorMathB                                                            ;8BC670;
     LDA.B #$10                                                           ;8BC672;
-    STA.B $69                                                            ;8BC674;
-    STZ.B $6B                                                            ;8BC676;
-    STZ.B $6C                                                            ;8BC678;
+    STA.B DP_MainScreenLayers                                                            ;8BC674;
+    STZ.B DP_SubScreenLayers                                                            ;8BC676;
+    STZ.B DP_WindowAreaMainScreen                                                            ;8BC678;
     STZ.B $6D                                                            ;8BC67A;
     LDA.B #$09                                                           ;8BC67C;
-    STA.B $55                                                            ;8BC67E;
+    STA.B DP_BGModeSize                                                            ;8BC67E;
     REP #$20                                                             ;8BC680;
-    STZ.W $0DE2                                                          ;8BC682;
+    STZ.W GameOptionsMenuIndex                                                          ;8BC682;
     STZ.W $0727                                                          ;8BC685;
     LDX.W #$00FE                                                         ;8BC688;
 
@@ -9412,7 +9412,7 @@ CinematicFunction_CeresGoesBoom_FadeOut:
     DEX                                                                  ;8BC68F;
     BPL .loop                                                            ;8BC690;
     LDA.W #$0019                                                         ;8BC692;
-    STA.W $0998                                                          ;8BC695;
+    STA.W GameState                                                          ;8BC695;
 
   .return:
     RTS                                                                  ;8BC698;
@@ -9421,28 +9421,28 @@ CinematicFunction_CeresGoesBoom_FadeOut:
 ;;; $C699: Cinematic function - fly to Zebes - initial ;;;
 CinematicFunction_FlyToZebes_Initial:
     JSR.W Setup_PPU_SamusGoesToZebesCutscene                             ;8BC699;
-    LDA.W #$1C1F                                                         ;8BC69C;
+    LDA.W #MessageBoxIndex                                                         ;8BC69C;
     DEC                                                                  ;8BC69F;
     DEC                                                                  ;8BC6A0;
     SEC                                                                  ;8BC6A1;
-    SBC.W #$198D                                                         ;8BC6A2;
+    SBC.W #Mode7TransformationAngle                                                         ;8BC6A2;
     TAX                                                                  ;8BC6A5;
 
   .loop:
-    STZ.W $198D,X                                                        ;8BC6A6;
+    STZ.W Mode7TransformationAngle,X                                                        ;8BC6A6;
     DEX                                                                  ;8BC6A9;
     DEX                                                                  ;8BC6AA;
     BPL .loop                                                            ;8BC6AB;
     LDA.W #Zebes_Tilemap>>8&$FF00                                        ;8BC6AD;
-    STA.B $48                                                            ;8BC6B0;
+    STA.B DP_DecompSrc+1                                                            ;8BC6B0;
     LDA.W #Zebes_Tilemap                                                 ;8BC6B2;
-    STA.B $47                                                            ;8BC6B5;
+    STA.B DP_DecompSrc                                                            ;8BC6B5;
     JSL.L Decompression_HardcodedDestination                             ;8BC6B7;
     dl $7F9000                                                           ;8BC6BB;
     LDA.W #Tiles_Zebes>>8&$FF00                                          ;8BC6BE;
-    STA.B $48                                                            ;8BC6C1;
+    STA.B DP_DecompSrc+1                                                            ;8BC6C1;
     LDA.W #Tiles_Zebes                                                   ;8BC6C3;
-    STA.B $47                                                            ;8BC6C6;
+    STA.B DP_DecompSrc                                                            ;8BC6C6;
     JSL.L Decompression_HardcodedDestination                             ;8BC6C8;
     dl $7F5000                                                           ;8BC6CC;
     SEP #$30                                                             ;8BC6CF;
@@ -9498,53 +9498,53 @@ CinematicFunction_FlyToZebes_Initial:
     LDA.W #$0018                                                         ;8BC752;
     STA.W $2120                                                          ;8BC755;
     STA.B $82                                                            ;8BC758;
-    STZ.W $1993                                                          ;8BC75A;
-    STZ.W $1997                                                          ;8BC75D;
-    STZ.W $198D                                                          ;8BC760;
+    STZ.W CinematicBG1_XPosition                                                          ;8BC75A;
+    STZ.W CinematicBG1_YPosition                                                          ;8BC75D;
+    STZ.W Mode7TransformationAngle                                                          ;8BC760;
     LDA.W #$0100                                                         ;8BC763;
-    STA.W $198F                                                          ;8BC766;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC766;
     JSL.L Disable_HDMAObjects                                            ;8BC769;
     JSL.L Wait_End_VBlank_Clear_HDMA                                     ;8BC76D;
     JSL.L Clear_PaletteFXObjects                                         ;8BC771;
     JSL.L Enable_PaletteFXObjects                                        ;8BC775;
     SEP #$20                                                             ;8BC779;
     LDA.B #$81                                                           ;8BC77B;
-    STA.B $57                                                            ;8BC77D;
+    STA.B DP_Mosaic                                                            ;8BC77D;
     REP #$20                                                             ;8BC77F;
     LDY.W #PaletteFXObjects_CutsceneGunshipEngineFlicker                 ;8BC781;
     JSL.L Spawn_PaletteFXObject                                          ;8BC784;
     LDA.W #CinematicFunction_FlyToZebes_FadingIn                         ;8BC788;
-    STA.W $1F51                                                          ;8BC78B;
+    STA.W CinematicFunction                                                          ;8BC78B;
     JSL.L EnableNMI                                                      ;8BC78E;
     LDA.W #$0001                                                         ;8BC792;
-    STA.W $0723                                                          ;8BC795;
-    STA.W $0725                                                          ;8BC798;
+    STA.W ScreenFadeDelay                                                          ;8BC795;
+    STA.W ScreenFadeCounter                                                          ;8BC798;
     RTS                                                                  ;8BC79B;
 
 
 ;;; $C79C: Cinematic function - fly to Zebes - fading in ;;;
 CinematicFunction_FlyToZebes_FadingIn:
-    LDA.W $1A51                                                          ;8BC79C;
+    LDA.W CinematicFrameCounter                                                          ;8BC79C;
     BIT.W #$0003                                                         ;8BC79F;
     BNE .fadeIn                                                          ;8BC7A2;
     SEP #$20                                                             ;8BC7A4;
-    LDA.B $57                                                            ;8BC7A6;
+    LDA.B DP_Mosaic                                                            ;8BC7A6;
     SEC                                                                  ;8BC7A8;
     SBC.B #$10                                                           ;8BC7A9;
-    STA.B $57                                                            ;8BC7AB;
+    STA.B DP_Mosaic                                                            ;8BC7AB;
     REP #$20                                                             ;8BC7AD;
 
   .fadeIn:
     JSL.L HandleFadingIn                                                 ;8BC7AF;
     SEP #$20                                                             ;8BC7B3;
-    LDA.B $51                                                            ;8BC7B5;
+    LDA.B DP_Brightness                                                            ;8BC7B5;
     CMP.B #$0F                                                           ;8BC7B7;
     BNE .return                                                          ;8BC7B9;
     REP #$20                                                             ;8BC7BB;
-    STZ.W $0723                                                          ;8BC7BD;
-    STZ.W $0725                                                          ;8BC7C0;
+    STZ.W ScreenFadeDelay                                                          ;8BC7BD;
+    STZ.W ScreenFadeCounter                                                          ;8BC7C0;
     LDA.W #CinematicFunction_FlyToZebes_MosaicTransition                 ;8BC7C3;
-    STA.W $1F51                                                          ;8BC7C6;
+    STA.W CinematicFunction                                                          ;8BC7C6;
 
   .return:
     RTS                                                                  ;8BC7C9;
@@ -9552,14 +9552,14 @@ CinematicFunction_FlyToZebes_FadingIn:
 
 ;;; $C7CA: Cinematic function - fly to Zebes - mosaic transition ;;;
 CinematicFunction_FlyToZebes_MosaicTransition:
-    LDA.W $1A51                                                          ;8BC7CA;
+    LDA.W CinematicFrameCounter                                                          ;8BC7CA;
     BIT.W #$0003                                                         ;8BC7CD;
     BNE .return                                                          ;8BC7D0;
     SEP #$20                                                             ;8BC7D2;
-    LDA.B $57                                                            ;8BC7D4;
+    LDA.B DP_Mosaic                                                            ;8BC7D4;
     SEC                                                                  ;8BC7D6;
     SBC.B #$10                                                           ;8BC7D7;
-    STA.B $57                                                            ;8BC7D9;
+    STA.B DP_Mosaic                                                            ;8BC7D9;
     BIT.B #$F0                                                           ;8BC7DB;
     BEQ .nonZeroMosaicBlockSize                                          ;8BC7DD;
     REP #$20                                                             ;8BC7DF;
@@ -9568,23 +9568,23 @@ CinematicFunction_FlyToZebes_MosaicTransition:
   .nonZeroMosaicBlockSize:
     SEP #$20                                                             ;8BC7E2;
     LDA.B #$07                                                           ;8BC7E4;
-    STA.B $55                                                            ;8BC7E6;
+    STA.B DP_BGModeSize                                                            ;8BC7E6;
     LDA.B #$80                                                           ;8BC7E8;
-    STA.B $5F                                                            ;8BC7EA;
+    STA.B DP_Mode7Settings                                                            ;8BC7EA;
     LDA.B #$00                                                           ;8BC7EC;
-    STA.B $58                                                            ;8BC7EE;
-    STZ.B $5D                                                            ;8BC7F0;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BC7EE;
+    STZ.B DP_BGTilesAddr                                                            ;8BC7F0;
     LDA.B #$11                                                           ;8BC7F2;
-    STA.B $69                                                            ;8BC7F4;
+    STA.B DP_MainScreenLayers                                                            ;8BC7F4;
     REP #$20                                                             ;8BC7F6;
     LDA.W #$0080                                                         ;8BC7F8;
-    STA.W $1993                                                          ;8BC7FB;
+    STA.W CinematicBG1_XPosition                                                          ;8BC7FB;
     LDA.W #$FF98                                                         ;8BC7FE;
-    STA.W $1997                                                          ;8BC801;
+    STA.W CinematicBG1_YPosition                                                          ;8BC801;
     LDA.W #$0020                                                         ;8BC804;
-    STA.W $198D                                                          ;8BC807;
+    STA.W Mode7TransformationAngle                                                          ;8BC807;
     LDA.W #$0100                                                         ;8BC80A;
-    STA.W $198F                                                          ;8BC80D;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC80D;
     LDY.W #CinematicSpriteObjectDefinitions_Zebes                        ;8BC810;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BC813;
     LDY.W #CinematicSpriteObjectDefinitions_ZebesStars2                  ;8BC816;
@@ -9598,7 +9598,7 @@ CinematicFunction_FlyToZebes_MosaicTransition:
     LDY.W #CinematicSpriteObjectDefinitions_PlanetZebesText              ;8BC82E;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BC831;
     LDA.W #RTS_8BA38F                                                    ;8BC834;
-    STA.W $1F51                                                          ;8BC837;
+    STA.W CinematicFunction                                                          ;8BC837;
 
   .return:
     RTS                                                                  ;8BC83A;
@@ -9607,17 +9607,17 @@ CinematicFunction_FlyToZebes_MosaicTransition:
 ;;; $C83B: Initialisation function - cinematic sprite object $CEA3 (Zebes) ;;;
 InitFunction_CinematicSpriteObject_Zebes:
     LDA.W #$0088                                                         ;8BC83B;
-    STA.W $1A7D,Y                                                        ;8BC83E;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC83E;
     LDA.W #$006F                                                         ;8BC841;
-    STA.W $1A9D,Y                                                        ;8BC844;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC844;
     LDA.W #$0E00                                                         ;8BC847;
-    STA.W $1ABD,Y                                                        ;8BC84A;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC84A;
     RTS                                                                  ;8BC84D;
 
 
 ;;; $C84E: Pre-instruction - cinematic sprite object $CEA3 (Zebes) ;;;
 PreInstruction_CinematicSpriteObject_Zebes:
-    LDA.W $1F51                                                          ;8BC84E;
+    LDA.W CinematicFunction                                                          ;8BC84E;
     CMP.W #RTS_8BCADE                                                    ;8BC851;
     BNE .return                                                          ;8BC854;
     LDA.W #PreInstruction_Zebes_SlideSceneAway                           ;8BC856;
@@ -9644,13 +9644,13 @@ PreInstruction_Zebes_SlideSceneAway:
     SEC                                                                  ;8BC877;
     SBC.B $14                                                            ;8BC878;
     STA.W $1AFD,X                                                        ;8BC87A;
-    LDA.W $1A9D,X                                                        ;8BC87D;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BC87D;
     SBC.B $12                                                            ;8BC880;
-    STA.W $1A9D,X                                                        ;8BC882;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BC882;
     CMP.W #$FF80                                                         ;8BC885;
     BPL .return                                                          ;8BC888;
     LDA.W #$0001                                                         ;8BC88A;
-    STA.W $1B5D,X                                                        ;8BC88D;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BC88D;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BC890;
     STA.W $1B1D,X                                                        ;8BC893;
 
@@ -9662,18 +9662,18 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $C897: Initialisation function - cinematic sprite object $CEA9 (unused. Zebes stars 1) ;;;
 UNUSED_InitFunction_CinematicSpriteObject_ZebesStars1_8BC897:
     LDA.W #$0080                                                         ;8BC897;
-    STA.W $1A7D,Y                                                        ;8BC89A;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC89A;
     LDA.W #$007F                                                         ;8BC89D;
-    STA.W $1A9D,Y                                                        ;8BC8A0;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC8A0;
     LDA.W #$0800                                                         ;8BC8A3;
-    STA.W $1ABD,Y                                                        ;8BC8A6;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC8A6;
     RTS                                                                  ;8BC8A9;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
 ;;; $C8AA: Pre-instruction - cinematic sprite object $CEA9/$CF09 (Zebes stars 5) ;;;
 PreInstruction_CinematicSpriteObject_ZebesStars5:
-    LDA.W $1F51                                                          ;8BC8AA;
+    LDA.W CinematicFunction                                                          ;8BC8AA;
     CMP.W #RTS_8BCADE                                                    ;8BC8AD;
     BNE .return                                                          ;8BC8B0;
     LDA.W #PreInstruction_ZebesStars5_SlideSceneAway                     ;8BC8B2;
@@ -9700,17 +9700,17 @@ PreInstruction_ZebesStars5_SlideSceneAway:
     SEC                                                                  ;8BC8D3;
     SBC.B $14                                                            ;8BC8D4;
     STA.W $1AFD,X                                                        ;8BC8D6;
-    LDA.W $1A9D,X                                                        ;8BC8D9;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BC8D9;
     SBC.B $12                                                            ;8BC8DC;
-    STA.W $1A9D,X                                                        ;8BC8DE;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BC8DE;
     CMP.W #$FF80                                                         ;8BC8E1;
     BPL .return                                                          ;8BC8E4;
     LDA.W #$0001                                                         ;8BC8E6;
-    STA.W $1B5D,X                                                        ;8BC8E9;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BC8E9;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BC8EC;
     STA.W $1B1D,X                                                        ;8BC8EF;
     LDA.W #CinematicFunction_FlyToZebes_LoadGameData                     ;8BC8F2;
-    STA.W $1F51                                                          ;8BC8F5;
+    STA.W CinematicFunction                                                          ;8BC8F5;
 
   .return:
     RTS                                                                  ;8BC8F8;
@@ -9718,7 +9718,7 @@ PreInstruction_ZebesStars5_SlideSceneAway:
 
 ;;; $C8F9: Pre-instruction - cinematic sprite object $CEF7/$CEFD/$CF03 (Zebes stars 2/3/4) ;;;
 PreInstruction_CinematicSpriteObject_ZebesStars_2_3_4:
-    LDA.W $1F51                                                          ;8BC8F9;
+    LDA.W CinematicFunction                                                          ;8BC8F9;
     CMP.W #RTS_8BCADE                                                    ;8BC8FC;
     BNE .return                                                          ;8BC8FF;
     LDA.W #PreInstruction_ZebesStars_2_3_4_SlideSceneAway                ;8BC901;
@@ -9745,13 +9745,13 @@ PreInstruction_ZebesStars_2_3_4_SlideSceneAway:
     SEC                                                                  ;8BC922;
     SBC.B $14                                                            ;8BC923;
     STA.W $1AFD,X                                                        ;8BC925;
-    LDA.W $1A9D,X                                                        ;8BC928;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BC928;
     SBC.B $12                                                            ;8BC92B;
-    STA.W $1A9D,X                                                        ;8BC92D;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BC92D;
     CMP.W #$FF80                                                         ;8BC930;
     BPL .return                                                          ;8BC933;
     LDA.W #$0001                                                         ;8BC935;
-    STA.W $1B5D,X                                                        ;8BC938;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BC938;
     LDA.W #InstList_CinematicSpriteObject_Delete                         ;8BC93B;
     STA.W $1B1D,X                                                        ;8BC93E;
 
@@ -9763,11 +9763,11 @@ PreInstruction_ZebesStars_2_3_4_SlideSceneAway:
 InitFunction_CinematicSpriteObject_ZebesStars2:
     NOP                                                                  ;8BC942; >_<
     LDA.W #$0030                                                         ;8BC943;
-    STA.W $1A7D,Y                                                        ;8BC946;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC946;
     LDA.W #$002F                                                         ;8BC949;
-    STA.W $1A9D,Y                                                        ;8BC94C;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC94C;
     LDA.W #$0800                                                         ;8BC94F;
-    STA.W $1ABD,Y                                                        ;8BC952;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC952;
     RTS                                                                  ;8BC955;
 
 
@@ -9775,11 +9775,11 @@ InitFunction_CinematicSpriteObject_ZebesStars2:
 InitFunction_CinematicSpriteObject_ZebesStars3:
     NOP                                                                  ;8BC956; >_<
     LDA.W #$00D0                                                         ;8BC957;
-    STA.W $1A7D,Y                                                        ;8BC95A;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC95A;
     LDA.W #$002F                                                         ;8BC95D;
-    STA.W $1A9D,Y                                                        ;8BC960;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC960;
     LDA.W #$0800                                                         ;8BC963;
-    STA.W $1ABD,Y                                                        ;8BC966;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC966;
     RTS                                                                  ;8BC969;
 
 
@@ -9787,11 +9787,11 @@ InitFunction_CinematicSpriteObject_ZebesStars3:
 InitFunction_CinematicSpriteObject_ZebesStars4:
     NOP                                                                  ;8BC96A; >_<
     LDA.W #$0030                                                         ;8BC96B;
-    STA.W $1A7D,Y                                                        ;8BC96E;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC96E;
     LDA.W #$00CF                                                         ;8BC971;
-    STA.W $1A9D,Y                                                        ;8BC974;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC974;
     LDA.W #$0800                                                         ;8BC977;
-    STA.W $1ABD,Y                                                        ;8BC97A;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC97A;
     RTS                                                                  ;8BC97D;
 
 
@@ -9799,22 +9799,22 @@ InitFunction_CinematicSpriteObject_ZebesStars4:
 InitFunction_CinematicSpriteObject_ZebesStars5:
     NOP                                                                  ;8BC97E; >_<
     LDA.W #$00D0                                                         ;8BC97F;
-    STA.W $1A7D,Y                                                        ;8BC982;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC982;
     LDA.W #$00CF                                                         ;8BC985;
-    STA.W $1A9D,Y                                                        ;8BC988;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC988;
     LDA.W #$0800                                                         ;8BC98B;
-    STA.W $1ABD,Y                                                        ;8BC98E;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC98E;
     RTS                                                                  ;8BC991;
 
 
 ;;; $C992: Initialisation function - cinematic sprite object $CEAF (Planet Zebes text) ;;;
 InitFunction_CinematicSpriteObject_PlanetZebesText:
     LDA.W #$0080                                                         ;8BC992;
-    STA.W $1A7D,Y                                                        ;8BC995;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC995;
     LDA.W #$00BA                                                         ;8BC998;
-    STA.W $1A9D,Y                                                        ;8BC99B;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC99B;
     LDA.W #$0000                                                         ;8BC99E;
-    STA.W $1ABD,Y                                                        ;8BC9A1;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC9A1;
     RTS                                                                  ;8BC9A4;
 
 
@@ -9829,7 +9829,7 @@ Instruction_FadeInPlanetZebesText:
 
 ;;; $C9AF: Instruction - spawn planet Zebes Japanese text if enabled ;;;
 Instruction_SpawnPlanetZebesJapanTextIfNeeded:
-    LDA.W $09E2                                                          ;8BC9AF;
+    LDA.W JapanText                                                          ;8BC9AF;
     BEQ .return                                                          ;8BC9B2;
     PHY                                                                  ;8BC9B4;
     LDY.W #CinematicSpriteObjectDefinitions_PlanetZebesJapanText         ;8BC9B5;
@@ -9852,143 +9852,143 @@ Instruction_FadeOutPlanetZebesText:
 ;;; $C9C7: Instruction - start flying to Zebes ;;;
 Instruction_StartFlyingToZebes:
     LDA.W #$003E                                                         ;8BC9C7;
-    STA.W $1993                                                          ;8BC9CA;
+    STA.W CinematicBG1_XPosition                                                          ;8BC9CA;
     LDA.W #$FF90                                                         ;8BC9CD;
-    STA.W $1997                                                          ;8BC9D0;
+    STA.W CinematicBG1_YPosition                                                          ;8BC9D0;
     LDA.W #$0020                                                         ;8BC9D3;
-    STA.W $198D                                                          ;8BC9D6;
+    STA.W Mode7TransformationAngle                                                          ;8BC9D6;
     LDA.W #$0010                                                         ;8BC9D9;
-    STA.W $198F                                                          ;8BC9DC;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BC9DC;
     LDA.W #CinematicFunction_FlyToZebes_FlyingToZebes_DriftingRight      ;8BC9DF;
-    STA.W $1F51                                                          ;8BC9E2;
+    STA.W CinematicFunction                                                          ;8BC9E2;
     RTS                                                                  ;8BC9E5;
 
 
 ;;; $C9E6: Initialisation function - cinematic sprite object $CEB5 (planet Zebes Japanese text) ;;;
 InitFunction_CinematicSpriteObject_PlanetZebesJapanText:
     LDA.W #$0080                                                         ;8BC9E6;
-    STA.W $1A7D,Y                                                        ;8BC9E9;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BC9E9;
     LDA.W #$00CC                                                         ;8BC9EC;
-    STA.W $1A9D,Y                                                        ;8BC9EF;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BC9EF;
     LDA.W #$0000                                                         ;8BC9F2;
-    STA.W $1ABD,Y                                                        ;8BC9F5;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BC9F5;
     RTS                                                                  ;8BC9F8;
 
 
 ;;; $C9F9: Cinematic function - fly to Zebes - flying to Zebes - drifting right ;;;
 CinematicFunction_FlyToZebes_FlyingToZebes_DriftingRight:
-    LDA.W $1995                                                          ;8BC9F9;
+    LDA.W CinematicBG1_YSubPosition                                                          ;8BC9F9;
     CLC                                                                  ;8BC9FC;
     ADC.W #$2000                                                         ;8BC9FD;
-    STA.W $1995                                                          ;8BCA00;
-    LDA.W $1997                                                          ;8BCA03;
+    STA.W CinematicBG1_YSubPosition                                                          ;8BCA00;
+    LDA.W CinematicBG1_YPosition                                                          ;8BCA03;
     ADC.W #$0000                                                         ;8BCA06;
-    STA.W $1997                                                          ;8BCA09;
-    LDA.W $1991                                                          ;8BCA0C;
+    STA.W CinematicBG1_YPosition                                                          ;8BCA09;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BCA0C;
     SEC                                                                  ;8BCA0F;
     SBC.W #$8000                                                         ;8BCA10;
-    STA.W $1991                                                          ;8BCA13;
-    LDA.W $1993                                                          ;8BCA16;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BCA13;
+    LDA.W CinematicBG1_XPosition                                                          ;8BCA16;
     SBC.W #$0000                                                         ;8BCA19;
-    STA.W $1993                                                          ;8BCA1C;
-    LDA.W $198F                                                          ;8BCA1F;
+    STA.W CinematicBG1_XPosition                                                          ;8BCA1C;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BCA1F;
     CMP.W #$0480                                                         ;8BCA22;
     BPL .zoomLessThan480                                                 ;8BCA25;
     CLC                                                                  ;8BCA27;
     ADC.W #$0004                                                         ;8BCA28;
-    STA.W $198F                                                          ;8BCA2B;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BCA2B;
     RTS                                                                  ;8BCA2E;
 
   .zoomLessThan480:
     LDA.W #CinematicFunction_FlyToZebes_FlyingToZebes_TurningLeft        ;8BCA2F;
-    STA.W $1F51                                                          ;8BCA32;
+    STA.W CinematicFunction                                                          ;8BCA32;
     RTS                                                                  ;8BCA35;
 
 
 ;;; $CA36: Cinematic function - fly to Zebes - flying to Zebes - turning left ;;;
 CinematicFunction_FlyToZebes_FlyingToZebes_TurningLeft:
-    LDA.W $1995                                                          ;8BCA36;
+    LDA.W CinematicBG1_YSubPosition                                                          ;8BCA36;
     CLC                                                                  ;8BCA39;
     ADC.W #$2000                                                         ;8BCA3A;
-    STA.W $1995                                                          ;8BCA3D;
-    LDA.W $1997                                                          ;8BCA40;
+    STA.W CinematicBG1_YSubPosition                                                          ;8BCA3D;
+    LDA.W CinematicBG1_YPosition                                                          ;8BCA40;
     ADC.W #$0000                                                         ;8BCA43;
-    STA.W $1997                                                          ;8BCA46;
-    LDA.W $1991                                                          ;8BCA49;
+    STA.W CinematicBG1_YPosition                                                          ;8BCA46;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BCA49;
     SEC                                                                  ;8BCA4C;
     SBC.W #$8000                                                         ;8BCA4D;
-    STA.W $1991                                                          ;8BCA50;
-    LDA.W $1993                                                          ;8BCA53;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BCA50;
+    LDA.W CinematicBG1_XPosition                                                          ;8BCA53;
     SBC.W #$0000                                                         ;8BCA56;
-    STA.W $1993                                                          ;8BCA59;
+    STA.W CinematicBG1_XPosition                                                          ;8BCA59;
     CMP.W #$FF80                                                         ;8BCA5C;
     BMI .finished                                                        ;8BCA5F;
-    LDA.W $198F                                                          ;8BCA61;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BCA61;
     CLC                                                                  ;8BCA64;
     ADC.W #$0010                                                         ;8BCA65;
-    STA.W $198F                                                          ;8BCA68;
-    LDA.W $198D                                                          ;8BCA6B;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BCA68;
+    LDA.W Mode7TransformationAngle                                                          ;8BCA6B;
     CMP.W #$00E0                                                         ;8BCA6E;
     BEQ .return                                                          ;8BCA71;
     SEC                                                                  ;8BCA73;
     SBC.W #$0001                                                         ;8BCA74;
     AND.W #$00FF                                                         ;8BCA77;
-    STA.W $198D                                                          ;8BCA7A;
+    STA.W Mode7TransformationAngle                                                          ;8BCA7A;
 
   .return:
     RTS                                                                  ;8BCA7D;
 
   .finished:
     LDA.W #CinematicFunction_FlyToZebes_FlyingToZebes_DriftingLeft       ;8BCA7E;
-    STA.W $1F51                                                          ;8BCA81;
+    STA.W CinematicFunction                                                          ;8BCA81;
     RTS                                                                  ;8BCA84;
 
 
 ;;; $CA85: Cinematic function - fly to Zebes - flying to Zebes - drifting left ;;;
 CinematicFunction_FlyToZebes_FlyingToZebes_DriftingLeft:
-    LDA.W $1995                                                          ;8BCA85;
+    LDA.W CinematicBG1_YSubPosition                                                          ;8BCA85;
     CLC                                                                  ;8BCA88;
     ADC.W #$2000                                                         ;8BCA89;
-    STA.W $1995                                                          ;8BCA8C;
-    LDA.W $1997                                                          ;8BCA8F;
+    STA.W CinematicBG1_YSubPosition                                                          ;8BCA8C;
+    LDA.W CinematicBG1_YPosition                                                          ;8BCA8F;
     ADC.W #$0000                                                         ;8BCA92;
-    STA.W $1997                                                          ;8BCA95;
-    LDA.W $1991                                                          ;8BCA98;
+    STA.W CinematicBG1_YPosition                                                          ;8BCA95;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BCA98;
     CLC                                                                  ;8BCA9B;
     ADC.W #$2000                                                         ;8BCA9C;
-    STA.W $1991                                                          ;8BCA9F;
-    LDA.W $1993                                                          ;8BCAA2;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BCA9F;
+    LDA.W CinematicBG1_XPosition                                                          ;8BCAA2;
     ADC.W #$0000                                                         ;8BCAA5;
-    STA.W $1993                                                          ;8BCAA8;
-    LDA.W $198F                                                          ;8BCAAB;
+    STA.W CinematicBG1_XPosition                                                          ;8BCAA8;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BCAAB;
     CMP.W #$2000                                                         ;8BCAAE;
     BPL .zoomLessThan2000                                                ;8BCAB1;
     CLC                                                                  ;8BCAB3;
     ADC.W #$0020                                                         ;8BCAB4;
-    STA.W $198F                                                          ;8BCAB7;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BCAB7;
     RTS                                                                  ;8BCABA;
 
   .zoomLessThan2000:
     SEP #$20                                                             ;8BCABB;
     LDA.B #$10                                                           ;8BCABD;
-    STA.B $69                                                            ;8BCABF;
+    STA.B DP_MainScreenLayers                                                            ;8BCABF;
     REP #$20                                                             ;8BCAC1;
     LDA.W #CinematicFunction_FlyToZebes_HoldOnSceneFor40Frames           ;8BCAC3;
-    STA.W $1F51                                                          ;8BCAC6;
+    STA.W CinematicFunction                                                          ;8BCAC6;
     LDA.W #$0040                                                         ;8BCAC9;
-    STA.W $1A49                                                          ;8BCACC;
+    STA.W CinematicFunctionTimer                                                          ;8BCACC;
     RTS                                                                  ;8BCACF;
 
 
 ;;; $CAD0: Cinematic function - fly to Zebes - hold on scene for 40h frames ;;;
 CinematicFunction_FlyToZebes_HoldOnSceneFor40Frames:
-    DEC.W $1A49                                                          ;8BCAD0;
+    DEC.W CinematicFunctionTimer                                                          ;8BCAD0;
     BEQ .timerExpired                                                    ;8BCAD3;
     BPL .return                                                          ;8BCAD5;
 
   .timerExpired:
     LDA.W #RTS_8BCADE                                                    ;8BCAD7;
-    STA.W $1F51                                                          ;8BCADA;
+    STA.W CinematicFunction                                                          ;8BCADA;
 
   .return:
     RTS                                                                  ;8BCADD;
@@ -10003,22 +10003,22 @@ RTS_8BCADE:
 CinematicFunction_FlyToZebes_LoadGameData:
     SEP #$20                                                             ;8BCADF;
     LDA.B #$80                                                           ;8BCAE1;
-    STA.B $51                                                            ;8BCAE3;
+    STA.B DP_Brightness                                                            ;8BCAE3;
     REP #$20                                                             ;8BCAE5;
-    LDA.W #$1C1F                                                         ;8BCAE7;
+    LDA.W #MessageBoxIndex                                                         ;8BCAE7;
     DEC                                                                  ;8BCAEA;
     DEC                                                                  ;8BCAEB;
     SEC                                                                  ;8BCAEC;
-    SBC.W #$198D                                                         ;8BCAED;
+    SBC.W #Mode7TransformationAngle                                                         ;8BCAED;
     TAX                                                                  ;8BCAF0;
 
   .loop:
-    STZ.W $198D,X                                                        ;8BCAF1;
+    STZ.W Mode7TransformationAngle,X                                                        ;8BCAF1;
     DEX                                                                  ;8BCAF4;
     DEX                                                                  ;8BCAF5;
     BPL .loop                                                            ;8BCAF6;
     LDA.W #$0006                                                         ;8BCAF8;
-    STA.W $0998                                                          ;8BCAFB;
+    STA.W GameState                                                          ;8BCAFB;
     LDA.W $09C4                                                          ;8BCAFE;
     STA.W $09C2                                                          ;8BCB01;
     RTS                                                                  ;8BCB04;
@@ -11280,16 +11280,16 @@ GameState27_EndingAndCredits:
     PLB                                                                  ;8BD446;
     REP #$30                                                             ;8BD447;
     PEA.W .manualReturn-1                                                ;8BD449;
-    JMP.W ($1F51)                                                        ;8BD44C;
+    JMP.W (CinematicFunction)                                                        ;8BD44C;
 
   .manualReturn:
-    LDA.W $1B9F                                                          ;8BD44F;
+    LDA.W CinematicSpriteObject_FrameCounter                                                          ;8BD44F;
     BMI .zeroTimer                                                       ;8BD452;
     INC                                                                  ;8BD454;
-    STA.W $1B9F                                                          ;8BD455;
+    STA.W CinematicSpriteObject_FrameCounter                                                          ;8BD455;
 
   .zeroTimer:
-    INC.W $1A51                                                          ;8BD458;
+    INC.W CinematicFrameCounter                                                          ;8BD458;
     JSR.W Handle_CinematicSpriteObjects                                  ;8BD45B;
     JSR.W HandleFinalScreen_CinematicBGObjects                           ;8BD45E;
     JSR.W Handle_CreditsObject                                           ;8BD461;
@@ -11305,7 +11305,7 @@ GameState27_EndingAndCredits:
 ;;; $D474: Handle final screen cinematic BG objects ;;;
 HandleFinalScreen_CinematicBGObjects:
 ; Used for "see you next mission" and item percentage
-    LDA.W $1F51                                                          ;8BD474;
+    LDA.W CinematicFunction                                                          ;8BD474;
     CMP.W #CinematicFunction_PostCredits_FadeFromWhite                   ;8BD477;
     BMI .return                                                          ;8BD47A;
     JSR.W Handle_CinematicBGObjects                                      ;8BD47C;
@@ -11316,8 +11316,8 @@ HandleFinalScreen_CinematicBGObjects:
 
 ;;; $D480: Cinematic function - ending - setup ;;;
 CinematicFunction_Ending_Setup:
-    STZ.B $AB                                                            ;8BD480;
-    STZ.B $A7                                                            ;8BD482;
+    STZ.B DP_IRQCmd                                                            ;8BD480;
+    STZ.B DP_NextIRQCmd                                                            ;8BD482;
     LDX.W #$0008                                                         ;8BD484;
 
   .wait8Frames:
@@ -11325,15 +11325,15 @@ CinematicFunction_Ending_Setup:
     DEX                                                                  ;8BD48B;
     BPL .wait8Frames                                                     ;8BD48C;
     JSR.W Setup_PPU_ZebesDestruction                                     ;8BD48E;
-    LDA.W #$1C1F                                                         ;8BD491;
+    LDA.W #MessageBoxIndex                                                         ;8BD491;
     DEC                                                                  ;8BD494;
     DEC                                                                  ;8BD495;
     SEC                                                                  ;8BD496;
-    SBC.W #$198D                                                         ;8BD497;
+    SBC.W #Mode7TransformationAngle                                                         ;8BD497;
     TAX                                                                  ;8BD49A;
 
   .loopClearRAM:
-    STZ.W $198D,X                                                        ;8BD49B;
+    STZ.W Mode7TransformationAngle,X                                                        ;8BD49B;
     DEX                                                                  ;8BD49E;
     DEX                                                                  ;8BD49F;
     BPL .loopClearRAM                                                    ;8BD4A0;
@@ -11341,27 +11341,27 @@ CinematicFunction_Ending_Setup:
 
   .loopPalettes:
     LDA.L Palettes_CloudSpritesInZebesExplosionScene,X                   ;8BD4A5;
-    STA.L $7EC000,X                                                      ;8BD4A9;
+    STA.L Palettes,X                                                      ;8BD4A9;
     INX                                                                  ;8BD4AD;
     INX                                                                  ;8BD4AE;
     CPX.W #$0200                                                         ;8BD4AF;
     BMI .loopPalettes                                                    ;8BD4B2;
     LDA.W #Tiles_Zebes_Being_Zoomed_Out_during_Zebes_Explosion_Mode7>>8&$FF00 ;8BD4B4;
-    STA.B $48                                                            ;8BD4B7;
+    STA.B DP_DecompSrc+1                                                            ;8BD4B7;
     LDA.W #Tiles_Zebes_Being_Zoomed_Out_during_Zebes_Explosion_Mode7     ;8BD4B9;
-    STA.B $47                                                            ;8BD4BC;
+    STA.B DP_DecompSrc                                                            ;8BD4BC;
     JSL.L Decompression_HardcodedDestination                             ;8BD4BE;
     dl $7F0000                                                           ;8BD4C2;
     LDA.W #Tiles_Yellow_Clouds_during_Zebes_Explosion>>8&$FF00           ;8BD4C5;
-    STA.B $48                                                            ;8BD4C8;
+    STA.B DP_DecompSrc+1                                                            ;8BD4C8;
     LDA.W #Tiles_Yellow_Clouds_during_Zebes_Explosion                    ;8BD4CA;
-    STA.B $47                                                            ;8BD4CD;
+    STA.B DP_DecompSrc                                                            ;8BD4CD;
     JSL.L Decompression_HardcodedDestination                             ;8BD4CF;
     dl $7F4000                                                           ;8BD4D3;
     LDA.W #InterleavedTilesTilemap_ZebesBeingZoomedOutExplosion_Mode7>>8&$FF00 ;8BD4D6;
-    STA.B $48                                                            ;8BD4D9;
+    STA.B DP_DecompSrc+1                                                            ;8BD4D9;
     LDA.W #InterleavedTilesTilemap_ZebesBeingZoomedOutExplosion_Mode7    ;8BD4DB;
-    STA.B $47                                                            ;8BD4DE;
+    STA.B DP_DecompSrc                                                            ;8BD4DE;
     JSL.L Decompression_HardcodedDestination                             ;8BD4E0;
     dl $7F8000                                                           ;8BD4E4;
     SEP #$30                                                             ;8BD4E7;
@@ -11415,21 +11415,21 @@ CinematicFunction_Ending_Setup:
     STA.W $420B                                                          ;8BD566;
     REP #$30                                                             ;8BD569;
     LDA.W #Tiles_Zebes_Explosion>>8&$FF00                                ;8BD56B;
-    STA.B $48                                                            ;8BD56E;
+    STA.B DP_DecompSrc+1                                                            ;8BD56E;
     LDA.W #Tiles_Zebes_Explosion                                         ;8BD570;
-    STA.B $47                                                            ;8BD573;
+    STA.B DP_DecompSrc                                                            ;8BD573;
     JSL.L Decompression_HardcodedDestination                             ;8BD575;
     dl $7F8000                                                           ;8BD579;
     LDA.W #Tiles_Gunship_Ceres_Mode7>>8&$FF00                            ;8BD57C;
-    STA.B $48                                                            ;8BD57F;
+    STA.B DP_DecompSrc+1                                                            ;8BD57F;
     LDA.W #Tiles_Gunship_Ceres_Mode7                                     ;8BD581;
-    STA.B $47                                                            ;8BD584;
+    STA.B DP_DecompSrc                                                            ;8BD584;
     JSL.L Decompression_HardcodedDestination                             ;8BD586;
     dl $7F0000                                                           ;8BD58A;
     LDA.W #Gunship_Ceres_Tilemap>>8&$FF00                                ;8BD58D;
-    STA.B $48                                                            ;8BD590;
+    STA.B DP_DecompSrc+1                                                            ;8BD590;
     LDA.W #Gunship_Ceres_Tilemap                                         ;8BD592;
-    STA.B $47                                                            ;8BD595;
+    STA.B DP_DecompSrc                                                            ;8BD595;
     JSL.L Decompression_HardcodedDestination                             ;8BD597;
     dl $7F4000                                                           ;8BD59B;
     LDX.W #$0300                                                         ;8BD59E;
@@ -11442,45 +11442,45 @@ CinematicFunction_Ending_Setup:
     CPX.W #$4000                                                         ;8BD5AA;
     BMI .loopTilemap                                                     ;8BD5AD;
     LDA.W #Wide_Part_of_Zebes_Explosion_Tilemap>>8&$FF00                 ;8BD5AF;
-    STA.B $48                                                            ;8BD5B2;
+    STA.B DP_DecompSrc+1                                                            ;8BD5B2;
     LDA.W #Wide_Part_of_Zebes_Explosion_Tilemap                          ;8BD5B4;
-    STA.B $47                                                            ;8BD5B7;
+    STA.B DP_DecompSrc                                                            ;8BD5B7;
     JSL.L Decompression_HardcodedDestination                             ;8BD5B9;
     dl $7FE000                                                           ;8BD5BD;
     LDA.W #Concentric_Wide_Part_of_Zebes_Explosion_Tilemap>>8&$FF00      ;8BD5C0;
-    STA.B $48                                                            ;8BD5C3;
+    STA.B DP_DecompSrc+1                                                            ;8BD5C3;
     LDA.W #Concentric_Wide_Part_of_Zebes_Explosion_Tilemap               ;8BD5C5;
-    STA.B $47                                                            ;8BD5C8;
+    STA.B DP_DecompSrc                                                            ;8BD5C8;
     JSL.L Decompression_HardcodedDestination                             ;8BD5CA;
     dl $7FE800                                                           ;8BD5CE;
     LDA.W #Eclipse_of_Zebes_during_Explosion_Tilemap>>8&$FF00            ;8BD5D1;
-    STA.B $48                                                            ;8BD5D4;
+    STA.B DP_DecompSrc+1                                                            ;8BD5D4;
     LDA.W #Eclipse_of_Zebes_during_Explosion_Tilemap                     ;8BD5D6;
-    STA.B $47                                                            ;8BD5D9;
+    STA.B DP_DecompSrc                                                            ;8BD5D9;
     JSL.L Decompression_HardcodedDestination                             ;8BD5DB;
     dl $7FF000                                                           ;8BD5DF;
     LDA.W #Blank_BG2_Tilemap>>8&$FF00                                    ;8BD5E2;
-    STA.B $48                                                            ;8BD5E5;
+    STA.B DP_DecompSrc+1                                                            ;8BD5E5;
     LDA.W #Blank_BG2_Tilemap                                             ;8BD5E7;
-    STA.B $47                                                            ;8BD5EA;
+    STA.B DP_DecompSrc                                                            ;8BD5EA;
     JSL.L Decompression_HardcodedDestination                             ;8BD5EC;
     dl $7FF800                                                           ;8BD5F0;
     LDA.W #Tiles_Font3_Background>>8&$FF00                               ;8BD5F3;
-    STA.B $48                                                            ;8BD5F6;
+    STA.B DP_DecompSrc+1                                                            ;8BD5F6;
     LDA.W #Tiles_Font3_Background                                        ;8BD5F8;
-    STA.B $47                                                            ;8BD5FB;
+    STA.B DP_DecompSrc                                                            ;8BD5FB;
     JSL.L Decompression_HardcodedDestination                             ;8BD5FD;
     dl $7EA000                                                           ;8BD601;
     LDA.W #InterleavedTilesTilemap_GreyCloudsDuringZebesExplosion_Mode7>>8&$FF00 ;8BD604;
-    STA.B $48                                                            ;8BD607;
+    STA.B DP_DecompSrc+1                                                            ;8BD607;
     LDA.W #InterleavedTilesTilemap_GreyCloudsDuringZebesExplosion_Mode7  ;8BD609;
-    STA.B $47                                                            ;8BD60C;
+    STA.B DP_DecompSrc                                                            ;8BD60C;
     JSL.L Decompression_HardcodedDestination                             ;8BD60E;
     dl $7E2000                                                           ;8BD612;
     LDA.W #InterleavedTilesTilemap_BigZebesDuringZebesExplosion_Mode7>>8&$FF00 ;8BD615;
-    STA.B $48                                                            ;8BD618;
+    STA.B DP_DecompSrc+1                                                            ;8BD618;
     LDA.W #InterleavedTilesTilemap_BigZebesDuringZebesExplosion_Mode7    ;8BD61A;
-    STA.B $47                                                            ;8BD61D;
+    STA.B DP_DecompSrc                                                            ;8BD61D;
     JSL.L Decompression_HardcodedDestination                             ;8BD61F;
     dl $7E6000                                                           ;8BD623;
     LDA.W #$0100                                                         ;8BD626;
@@ -11498,28 +11498,28 @@ CinematicFunction_Ending_Setup:
     STA.W $2120                                                          ;8BD645;
     STA.B $82                                                            ;8BD648;
     LDA.W #$0020                                                         ;8BD64A;
-    STA.W $198D                                                          ;8BD64D;
+    STA.W Mode7TransformationAngle                                                          ;8BD64D;
     LDA.W #$0040                                                         ;8BD650;
-    STA.W $198F                                                          ;8BD653;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BD653;
     LDA.W #$0000                                                         ;8BD656;
-    STA.W $1993                                                          ;8BD659;
-    STA.W $1997                                                          ;8BD65C;
-    STZ.W $078D                                                          ;8BD65F;
-    STZ.W $0911                                                          ;8BD662;
-    STZ.W $0915                                                          ;8BD665;
+    STA.W CinematicBG1_XPosition                                                          ;8BD659;
+    STA.W CinematicBG1_YPosition                                                          ;8BD65C;
+    STZ.W DoorPointer                                                          ;8BD65F;
+    STZ.W Layer1XPosition                                                          ;8BD662;
+    STZ.W Layer1YPosition                                                          ;8BD665;
     JSL.L Clear_PaletteFXObjects                                         ;8BD668;
     JSL.L Enable_PaletteFXObjects                                        ;8BD66C;
     JSL.L EnableNMI                                                      ;8BD670;
     STZ.W $1A05                                                          ;8BD674;
     SEP #$20                                                             ;8BD677;
     LDA.B #$11                                                           ;8BD679;
-    STA.B $69                                                            ;8BD67B;
+    STA.B DP_MainScreenLayers                                                            ;8BD67B;
     LDA.B #$01                                                           ;8BD67D;
-    STA.B $6B                                                            ;8BD67F;
+    STA.B DP_SubScreenLayers                                                            ;8BD67F;
     LDA.B #$02                                                           ;8BD681;
-    STA.B $6F                                                            ;8BD683;
+    STA.B DP_ColorMathA                                                            ;8BD683;
     LDA.B #$11                                                           ;8BD685;
-    STA.B $72                                                            ;8BD687;
+    STA.B DP_ColorMathB                                                            ;8BD687;
     REP #$20                                                             ;8BD689;
     LDA.W #$0000                                                         ;8BD68B;
     LDY.W #CinematicSpriteObjectDefinitions_Right                        ;8BD68E;
@@ -11533,11 +11533,11 @@ CinematicFunction_Ending_Setup:
     LDA.W #$0001                                                         ;8BD6A6;
     LDY.W #CinematicSpriteObjectDefinitions_Left                         ;8BD6A9;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BD6AC;
-    STZ.W $0723                                                          ;8BD6AF;
+    STZ.W ScreenFadeDelay                                                          ;8BD6AF;
     LDA.W #$0002                                                         ;8BD6B2;
-    STA.W $0725                                                          ;8BD6B5;
+    STA.W ScreenFadeCounter                                                          ;8BD6B5;
     LDA.W #CinematicFunction_Ending_WaitForMusicToChange                 ;8BD6B8;
-    STA.W $1F51                                                          ;8BD6BB;
+    STA.W CinematicFunction                                                          ;8BD6BB;
     LDA.W #$0000                                                         ;8BD6BE;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;8BD6C1;
     LDA.W #$FF33                                                         ;8BD6C5;
@@ -11557,7 +11557,7 @@ CinematicFunction_Ending_WaitForMusicToChange:
     LDY.W #PaletteFXObjects_FadeOutExplodingZebesCrust                   ;8BD6E4;
     JSL.L Spawn_PaletteFXObject                                          ;8BD6E7;
     LDA.W #CinematicFunc_Ending_ZebesDestruction0_CloudsOnSide_FadingIn  ;8BD6EB;
-    STA.W $1F51                                                          ;8BD6EE;
+    STA.W CinematicFunction                                                          ;8BD6EE;
 
   .return:
     RTS                                                                  ;8BD6F1;
@@ -11569,7 +11569,7 @@ CinematicFunc_Ending_ZebesDestruction0_CloudsOnSide_FadingIn:
     JSR.W AdvanceFastScreenFadeIn                                        ;8BD6F5;
     BCC .return                                                          ;8BD6F8;
     LDA.W #CinematicFunction_Ending_ZebesDestruction0_CloudsOnSide       ;8BD6FA;
-    STA.W $1F51                                                          ;8BD6FD;
+    STA.W CinematicFunction                                                          ;8BD6FD;
 
   .return:
     RTS                                                                  ;8BD700;
@@ -11577,26 +11577,26 @@ CinematicFunc_Ending_ZebesDestruction0_CloudsOnSide_FadingIn:
 
 ;;; $D701: Cinematic function - ending - Zebes destruction scene 0 - zooming out, clouds on left/right ;;;
 CinematicFunction_Ending_ZebesDestruction0_CloudsOnSide:
-    LDA.W $1A51                                                          ;8BD701;
+    LDA.W CinematicFrameCounter                                                          ;8BD701;
     BIT.W #$0001                                                         ;8BD704;
     BNE .zoomOut                                                         ;8BD707;
-    LDA.W $198D                                                          ;8BD709;
+    LDA.W Mode7TransformationAngle                                                          ;8BD709;
     SEC                                                                  ;8BD70C;
     SBC.W #$0001                                                         ;8BD70D;
     AND.W #$00FF                                                         ;8BD710;
-    STA.W $198D                                                          ;8BD713;
+    STA.W Mode7TransformationAngle                                                          ;8BD713;
 
   .zoomOut:
-    LDA.W $198F                                                          ;8BD716;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BD716;
     CLC                                                                  ;8BD719;
     ADC.W #$0002                                                         ;8BD71A;
-    STA.W $198F                                                          ;8BD71D;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BD71D;
     CMP.W #$0180                                                         ;8BD720;
     BMI .return                                                          ;8BD723;
     JSR.W AdvanceFastScreenFadeOut                                       ;8BD725;
     BCC .return                                                          ;8BD728;
     LDA.W #CineFunc_Ending_ZebesDestruction1_CloudsOnTopBottom_Setup     ;8BD72A;
-    STA.W $1F51                                                          ;8BD72D;
+    STA.W CinematicFunction                                                          ;8BD72D;
 
   .return:
     RTS                                                                  ;8BD730;
@@ -11631,9 +11631,9 @@ CineFunc_Ending_ZebesDestruction1_CloudsOnTopBottom_Setup:
     STA.W $420B                                                          ;8BD770;
     REP #$30                                                             ;8BD773;
     LDA.W #Tiles_Grey_Clouds_during_Zebes_Explosion_Mode7>>8&$FF00       ;8BD775;
-    STA.B $48                                                            ;8BD778;
+    STA.B DP_DecompSrc+1                                                            ;8BD778;
     LDA.W #Tiles_Grey_Clouds_during_Zebes_Explosion_Mode7                ;8BD77A;
-    STA.B $47                                                            ;8BD77D;
+    STA.B DP_DecompSrc                                                            ;8BD77D;
     JSL.L Decompression_HardcodedDestination                             ;8BD77F;
     dl $7E2000                                                           ;8BD783;
     SEP #$30                                                             ;8BD786;
@@ -11667,14 +11667,14 @@ CineFunc_Ending_ZebesDestruction1_CloudsOnTopBottom_Setup:
     LDY.W #CinematicSpriteObjectDefinitions_Bottom_BottomHalf            ;8BD7D6;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BD7D9;
     LDA.W #$0020                                                         ;8BD7DC;
-    STA.W $198D                                                          ;8BD7DF;
+    STA.W Mode7TransformationAngle                                                          ;8BD7DF;
     LDA.W #$0040                                                         ;8BD7E2;
-    STA.W $198F                                                          ;8BD7E5;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BD7E5;
     LDA.W #$0000                                                         ;8BD7E8;
-    STA.W $1993                                                          ;8BD7EB;
-    STA.W $1997                                                          ;8BD7EE;
+    STA.W CinematicBG1_XPosition                                                          ;8BD7EB;
+    STA.W CinematicBG1_YPosition                                                          ;8BD7EE;
     LDA.W #CineFunc_Ending_ZebesDestruction1_CloudsOnTopBottom_FadingIn  ;8BD7F1;
-    STA.W $1F51                                                          ;8BD7F4;
+    STA.W CinematicFunction                                                          ;8BD7F4;
     RTS                                                                  ;8BD7F7;
 
 
@@ -11684,7 +11684,7 @@ CineFunc_Ending_ZebesDestruction1_CloudsOnTopBottom_FadingIn:
     JSR.W AdvanceFastScreenFadeIn                                        ;8BD7FB;
     BCC .return                                                          ;8BD7FE;
     LDA.W #CinematicFunction_Ending_ZebesDestruction1_CloudsOnTopBottom  ;8BD800;
-    STA.W $1F51                                                          ;8BD803;
+    STA.W CinematicFunction                                                          ;8BD803;
 
   .return:
     RTS                                                                  ;8BD806;
@@ -11692,25 +11692,25 @@ CineFunc_Ending_ZebesDestruction1_CloudsOnTopBottom_FadingIn:
 
 ;;; $D807: Cinematic function - ending - Zebes destruction scene 1 - zooming out, clouds on top/bottom ;;;
 CinematicFunction_Ending_ZebesDestruction1_CloudsOnTopBottom:
-    LDA.W $1A51                                                          ;8BD807;
+    LDA.W CinematicFrameCounter                                                          ;8BD807;
     BIT.W #$0001                                                         ;8BD80A;
     BNE +                                                                ;8BD80D;
-    LDA.W $198D                                                          ;8BD80F;
+    LDA.W Mode7TransformationAngle                                                          ;8BD80F;
     SEC                                                                  ;8BD812;
     SBC.W #$0001                                                         ;8BD813;
     AND.W #$00FF                                                         ;8BD816;
-    STA.W $198D                                                          ;8BD819;
+    STA.W Mode7TransformationAngle                                                          ;8BD819;
 
-+   LDA.W $198F                                                          ;8BD81C;
++   LDA.W Mode7TransformationZoomLevel                                                          ;8BD81C;
     CLC                                                                  ;8BD81F;
     ADC.W #$0003                                                         ;8BD820;
-    STA.W $198F                                                          ;8BD823;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BD823;
     CMP.W #$0180                                                         ;8BD826;
     BMI .return                                                          ;8BD829;
     JSR.W AdvanceFastScreenFadeOut                                       ;8BD82B;
     BCC .return                                                          ;8BD82E;
     LDA.W #CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup        ;8BD830;
-    STA.W $1F51                                                          ;8BD833;
+    STA.W CinematicFunction                                                          ;8BD833;
 
   .return:
     RTS                                                                  ;8BD836;
@@ -11745,9 +11745,9 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     STA.W $420B                                                          ;8BD876;
     REP #$30                                                             ;8BD879;
     LDA.W #Tiles_Big_Zebes_during_Zebes_Explosion>>8&$FF00               ;8BD87B;
-    STA.B $48                                                            ;8BD87E;
+    STA.B DP_DecompSrc+1                                                            ;8BD87E;
     LDA.W #Tiles_Big_Zebes_during_Zebes_Explosion                        ;8BD880;
-    STA.B $47                                                            ;8BD883;
+    STA.B DP_DecompSrc                                                            ;8BD883;
     JSL.L Decompression_HardcodedDestination                             ;8BD885;
     dl $7E6000                                                           ;8BD889;
     SEP #$30                                                             ;8BD88C;
@@ -11836,7 +11836,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     LDA.B #$02                                                           ;8BD969;
     STA.W $420B                                                          ;8BD96B;
     LDA.B #$02                                                           ;8BD96E;
-    STA.B $52                                                            ;8BD970;
+    STA.B DP_SpriteSizeAddr                                                            ;8BD970;
     REP #$30                                                             ;8BD972;
     JSL.L Clear_PaletteFXObjects                                         ;8BD974;
     JSR.W Clear_CinematicSpriteObjects                                   ;8BD978;
@@ -11844,7 +11844,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
 
   .loopPalettes:
     LDA.L Palettes_ZebesExplosionScene,X                                 ;8BD97E;
-    STA.L $7EC000,X                                                      ;8BD982;
+    STA.L Palettes,X                                                      ;8BD982;
     INX                                                                  ;8BD986;
     INX                                                                  ;8BD987;
     CPX.W #$0200                                                         ;8BD988;
@@ -11857,9 +11857,9 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BD99C;
     LDY.W #CinematicSpriteObjectDefinitions_ExplodingZebes_Stars         ;8BD99F;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BD9A2;
-    STZ.W $198D                                                          ;8BD9A5;
+    STZ.W Mode7TransformationAngle                                                          ;8BD9A5;
     LDA.W #$0040                                                         ;8BD9A8;
-    STA.W $198F                                                          ;8BD9AB;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BD9AB;
     LDA.W #$0100                                                         ;8BD9AE;
     STA.B $78                                                            ;8BD9B1;
     STZ.B $7A                                                            ;8BD9B3;
@@ -11868,17 +11868,17 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     LDA.W #$0080                                                         ;8BD9B9;
     STA.B $80                                                            ;8BD9BC;
     STA.B $82                                                            ;8BD9BE;
-    STZ.W $1993                                                          ;8BD9C0;
-    STZ.W $1997                                                          ;8BD9C3;
+    STZ.W CinematicBG1_XPosition                                                          ;8BD9C0;
+    STZ.W CinematicBG1_YPosition                                                          ;8BD9C3;
     SEP #$20                                                             ;8BD9C6;
     LDA.B #$01                                                           ;8BD9C8;
-    STA.B $69                                                            ;8BD9CA;
+    STA.B DP_MainScreenLayers                                                            ;8BD9CA;
     LDA.B #$10                                                           ;8BD9CC;
-    STA.B $6B                                                            ;8BD9CE;
+    STA.B DP_SubScreenLayers                                                            ;8BD9CE;
     LDA.B #$02                                                           ;8BD9D0;
-    STA.B $6F                                                            ;8BD9D2;
+    STA.B DP_ColorMathA                                                            ;8BD9D2;
     LDA.B #$21                                                           ;8BD9D4;
-    STA.B $72                                                            ;8BD9D6;
+    STA.B DP_ColorMathB                                                            ;8BD9D6;
     REP #$20                                                             ;8BD9D8;
     JSR.W PaletteCrossFading_CopyCurrentPalettesToFadingPalettes         ;8BD9DA;
     JSR.W PaletteCrossFading_DecomposePaletteDataForFading               ;8BD9DD;
@@ -11890,9 +11890,9 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     JSR.W PaletteCrossFading_ClearYColorsStartingFromColorIndexX         ;8BD9EF;
     JSR.W PaletteCrossFading_ComposeFadingPalettes                       ;8BD9F2;
     LDA.W #$003F                                                         ;8BD9F5;
-    STA.W $1A49                                                          ;8BD9F8;
+    STA.W CinematicFunctionTimer                                                          ;8BD9F8;
     LDA.W #CinematicFunc_Ending_ZebesDestruction2_CrossFade_FadingIn     ;8BD9FB;
-    STA.W $1F51                                                          ;8BD9FE;
+    STA.W CinematicFunction                                                          ;8BD9FE;
     RTS                                                                  ;8BDA01;
 
 
@@ -11902,10 +11902,10 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_FadingIn:
     JSR.W AdvanceFastScreenFadeIn                                        ;8BDA05;
     BCC .return                                                          ;8BDA08;
     LDA.W #$0002                                                         ;8BDA0A;
-    STA.W $0723                                                          ;8BDA0D;
-    STA.W $0725                                                          ;8BDA10;
+    STA.W ScreenFadeDelay                                                          ;8BDA0D;
+    STA.W ScreenFadeCounter                                                          ;8BDA10;
     LDA.W #CinematicFunction_Ending_ZebesDestruction2_CrossFade          ;8BDA13;
-    STA.W $1F51                                                          ;8BDA16;
+    STA.W CinematicFunction                                                          ;8BDA16;
 
   .return:
     RTS                                                                  ;8BDA19;
@@ -11913,11 +11913,11 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_FadingIn:
 
 ;;; $DA1A: Cinematic function - ending - Zebes destruction scene 2 - cross-fade to space view ;;;
 CinematicFunction_Ending_ZebesDestruction2_CrossFade:
-    LDA.W $198F                                                          ;8BDA1A;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BDA1A;
     CLC                                                                  ;8BDA1D;
     ADC.W #$0004                                                         ;8BDA1E;
-    STA.W $198F                                                          ;8BDA21;
-    LDA.W $1A49                                                          ;8BDA24;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BDA21;
+    LDA.W CinematicFunctionTimer                                                          ;8BDA24;
     BIT.W #$0001                                                         ;8BDA27;
     BNE .decTimer                                                        ;8BDA2A;
     LDX.W #$00E0                                                         ;8BDA2C;
@@ -11932,7 +11932,7 @@ CinematicFunction_Ending_ZebesDestruction2_CrossFade:
     JSR.W PaletteCrossFading_ComposeFadingPalettes                       ;8BDA47;
 
   .decTimer:
-    DEC.W $1A49                                                          ;8BDA4A;
+    DEC.W CinematicFunctionTimer                                                          ;8BDA4A;
     BMI .setupLoop                                                       ;8BDA4D;
     JMP.W .return                                                        ;8BDA4F;
 
@@ -11941,58 +11941,58 @@ CinematicFunction_Ending_ZebesDestruction2_CrossFade:
 
   .loopPalettes:
     LDA.L Palettes_ZebesExplosionScene,X                                 ;8BDA55;
-    STA.L $7EC000,X                                                      ;8BDA59;
+    STA.L Palettes,X                                                      ;8BDA59;
     INX                                                                  ;8BDA5D;
     INX                                                                  ;8BDA5E;
     CPX.W #$0100                                                         ;8BDA5F;
     BMI .loopPalettes                                                    ;8BDA62;
     SEP #$20                                                             ;8BDA64;
-    STZ.B $5F                                                            ;8BDA66;
+    STZ.B DP_Mode7Settings                                                            ;8BDA66;
     LDA.B #$70                                                           ;8BDA68;
-    STA.B $58                                                            ;8BDA6A;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BDA6A;
     LDA.B #$78                                                           ;8BDA6C;
-    STA.B $59                                                            ;8BDA6E;
-    STZ.B $5A                                                            ;8BDA70;
-    STZ.B $5C                                                            ;8BDA72;
+    STA.B DP_BG2TilemapAddrSize                                                            ;8BDA6E;
+    STZ.B DP_BG3TilemapAddrSize                                                            ;8BDA70;
+    STZ.B DP_BG4TilemapAddrSize                                                            ;8BDA72;
     LDA.B #$44                                                           ;8BDA74;
-    STA.B $5D                                                            ;8BDA76;
-    STZ.B $5E                                                            ;8BDA78;
+    STA.B DP_BGTilesAddr                                                            ;8BDA76;
+    STZ.B DP_BGTilesAddr+1                                                            ;8BDA78;
     LDA.B #$10                                                           ;8BDA7A;
-    STA.B $69                                                            ;8BDA7C;
-    STZ.B $6B                                                            ;8BDA7E;
-    STZ.B $6C                                                            ;8BDA80;
+    STA.B DP_MainScreenLayers                                                            ;8BDA7C;
+    STZ.B DP_SubScreenLayers                                                            ;8BDA7E;
+    STZ.B DP_WindowAreaMainScreen                                                            ;8BDA80;
     STZ.B $6D                                                            ;8BDA82;
-    STZ.B $6E                                                            ;8BDA84;
-    STZ.B $71                                                            ;8BDA86;
-    STZ.B $6F                                                            ;8BDA88;
-    STZ.B $72                                                            ;8BDA8A;
+    STZ.B DP_NextGameplayColorMathA                                                            ;8BDA84;
+    STZ.B DP_NextGameplayColorMathB                                                            ;8BDA86;
+    STZ.B DP_ColorMathA                                                            ;8BDA88;
+    STZ.B DP_ColorMathB                                                            ;8BDA8A;
     LDA.B #$E0                                                           ;8BDA8C;
     STA.W $2132                                                          ;8BDA8E;
     LDA.B #$20                                                           ;8BDA91;
-    STA.B $74                                                            ;8BDA93;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BDA93;
     LDA.B #$40                                                           ;8BDA95;
-    STA.B $75                                                            ;8BDA97;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BDA97;
     LDA.B #$80                                                           ;8BDA99;
-    STA.B $76                                                            ;8BDA9B;
-    STZ.B $57                                                            ;8BDA9D;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BDA9B;
+    STZ.B DP_Mosaic                                                            ;8BDA9D;
     REP #$20                                                             ;8BDA9F;
-    STZ.W $1991                                                          ;8BDAA1;
-    STZ.W $1993                                                          ;8BDAA4;
-    STZ.W $1995                                                          ;8BDAA7;
-    STZ.W $1997                                                          ;8BDAAA;
-    STZ.W $1999                                                          ;8BDAAD;
-    STZ.W $199B                                                          ;8BDAB0;
-    STZ.W $199D                                                          ;8BDAB3;
-    STZ.W $199F                                                          ;8BDAB6;
-    STZ.W $1982                                                          ;8BDAB9;
-    STZ.B $B5                                                            ;8BDABC;
-    STZ.B $B7                                                            ;8BDABE;
-    STZ.W $0723                                                          ;8BDAC0;
+    STZ.W CinematicBG1_XSubPosition                                                          ;8BDAA1;
+    STZ.W CinematicBG1_XPosition                                                          ;8BDAA4;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8BDAA7;
+    STZ.W CinematicBG1_YPosition                                                          ;8BDAAA;
+    STZ.W CinematicBG1_XSubSpeed                                                          ;8BDAAD;
+    STZ.W CinematicBG1_XSpeed                                                          ;8BDAB0;
+    STZ.W CinematicBG1_YSubSpeed                                                          ;8BDAB3;
+    STZ.W CinematicBG1_YSpeed                                                          ;8BDAB6;
+    STZ.W LayerBlending_DefaultConfig                                                          ;8BDAB9;
+    STZ.B DP_BG2XScroll                                                            ;8BDABC;
+    STZ.B DP_BG2YScroll                                                            ;8BDABE;
+    STZ.W ScreenFadeDelay                                                          ;8BDAC0;
     LDA.W #$0002                                                         ;8BDAC3;
-    STA.W $0725                                                          ;8BDAC6;
+    STA.W ScreenFadeCounter                                                          ;8BDAC6;
     LDA.W #CinematicFunc_Ending_SpaceView_LoadGunshipBG                  ;8BDAC9;
-    STA.W $1F51                                                          ;8BDACC;
-    STZ.W $1A49                                                          ;8BDACF;
+    STA.W CinematicFunction                                                          ;8BDACC;
+    STZ.W CinematicFunctionTimer                                                          ;8BDACF;
 
   .return:
     RTS                                                                  ;8BDAD2;
@@ -12000,7 +12000,7 @@ CinematicFunction_Ending_ZebesDestruction2_CrossFade:
 
 ;;; $DAD3: Cinematic function - ending - space view - load gunship BG ;;;
 CinematicFunc_Ending_SpaceView_LoadGunshipBG:
-    LDA.W $1A49                                                          ;8BDAD3;
+    LDA.W CinematicFunctionTimer                                                          ;8BDAD3;
     CMP.W #$0008                                                         ;8BDAD6;
     BPL .timerGreaterThan7                                               ;8BDAD9;
     ASL                                                                  ;8BDADB;
@@ -12045,18 +12045,18 @@ CinematicFunc_Ending_SpaceView_LoadGunshipBG:
     ADC.W #$0009                                                         ;8BDB39;
     STA.W $0334                                                          ;8BDB3C;
 
-+   LDA.W $1A49                                                          ;8BDB3F;
++   LDA.W CinematicFunctionTimer                                                          ;8BDB3F;
     INC                                                                  ;8BDB42;
-    STA.W $1A49                                                          ;8BDB43;
+    STA.W CinematicFunctionTimer                                                          ;8BDB43;
     CMP.W #$0010                                                         ;8BDB46;
     BMI .return                                                          ;8BDB49;
     SEP #$20                                                             ;8BDB4B;
     LDA.B #$01                                                           ;8BDB4D;
-    STA.B $55                                                            ;8BDB4F;
+    STA.B DP_BGModeSize                                                            ;8BDB4F;
     REP #$20                                                             ;8BDB51;
-    STZ.W $1A49                                                          ;8BDB53;
+    STZ.W CinematicFunctionTimer                                                          ;8BDB53;
     LDA.W #RTS_8BDB9D                                                    ;8BDB56;
-    STA.W $1F51                                                          ;8BDB59;
+    STA.W CinematicFunction                                                          ;8BDB59;
 
   .return:
     RTS                                                                  ;8BDB5C;
@@ -12076,7 +12076,7 @@ RTS_8BDB9D:
 
 ;;; $DB9E: Cinematic function - ending - space view - change music ;;;
 CinematicFunc_Ending_SpaceView_ChangeMusic:
-    DEC.W $1A49                                                          ;8BDB9E;
+    DEC.W CinematicFunctionTimer                                                          ;8BDB9E;
     BEQ .changeMusic                                                     ;8BDBA1;
     BPL .return                                                          ;8BDBA3;
 
@@ -12089,7 +12089,7 @@ CinematicFunc_Ending_SpaceView_ChangeMusic:
     LDY.W #$000E                                                         ;8BDBB6;
     JSL.L QueueMusicDataOrTrack_YFrameDelay                              ;8BDBB9;
     LDA.W #CinematicFunc_Ending_SpaceView_GunshipEmergence_Setup         ;8BDBBD;
-    STA.W $1F51                                                          ;8BDBC0;
+    STA.W CinematicFunction                                                          ;8BDBC0;
 
   .return:
     RTS                                                                  ;8BDBC3;
@@ -12104,28 +12104,28 @@ CinematicFunc_Ending_SpaceView_GunshipEmergence_Setup:
   .noMusicQueued:
     SEP #$20                                                             ;8BDBCB;
     LDA.B #$07                                                           ;8BDBCD;
-    STA.B $55                                                            ;8BDBCF;
+    STA.B DP_BGModeSize                                                            ;8BDBCF;
     LDA.B #$80                                                           ;8BDBD1;
-    STA.B $5F                                                            ;8BDBD3;
+    STA.B DP_Mode7Settings                                                            ;8BDBD3;
     LDA.B #$11                                                           ;8BDBD5;
-    STA.B $69                                                            ;8BDBD7;
-    STZ.B $6B                                                            ;8BDBD9;
-    STZ.B $6F                                                            ;8BDBDB;
+    STA.B DP_MainScreenLayers                                                            ;8BDBD7;
+    STZ.B DP_SubScreenLayers                                                            ;8BDBD9;
+    STZ.B DP_ColorMathA                                                            ;8BDBDB;
     LDA.B #$30                                                           ;8BDBDD;
-    STA.B $72                                                            ;8BDBDF;
+    STA.B DP_ColorMathB                                                            ;8BDBDF;
     LDA.B #$3F                                                           ;8BDBE1;
-    STA.B $74                                                            ;8BDBE3;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BDBE3;
     LDA.B #$5F                                                           ;8BDBE5;
-    STA.B $75                                                            ;8BDBE7;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BDBE7;
     LDA.B #$9F                                                           ;8BDBE9;
-    STA.B $76                                                            ;8BDBEB;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BDBEB;
     LDA.B #$00                                                           ;8BDBED;
-    STA.B $58                                                            ;8BDBEF;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BDBEF;
     LDA.B #$00                                                           ;8BDBF1;
-    STA.B $5D                                                            ;8BDBF3;
+    STA.B DP_BGTilesAddr                                                            ;8BDBF3;
     REP #$20                                                             ;8BDBF5;
     LDA.W #$0000                                                         ;8BDBF7;
-    STA.L $7EC000                                                        ;8BDBFA;
+    STA.L Palettes                                                        ;8BDBFA;
     STA.L $7EC020                                                        ;8BDBFE;
     STA.L $7EC100                                                        ;8BDC02;
     LDY.W #PaletteFXObjects_ZebesExplosionPlanetAfterglow                ;8BDC06;
@@ -12137,20 +12137,20 @@ CinematicFunc_Ending_SpaceView_GunshipEmergence_Setup:
     LDA.W #$0018                                                         ;8BDC19;
     STA.B $82                                                            ;8BDC1C;
     LDA.W #$FFB8                                                         ;8BDC1E;
-    STA.W $1993                                                          ;8BDC21;
+    STA.W CinematicBG1_XPosition                                                          ;8BDC21;
     LDA.W #$FF98                                                         ;8BDC24;
-    STA.W $1997                                                          ;8BDC27;
+    STA.W CinematicBG1_YPosition                                                          ;8BDC27;
     LDA.W #$0C00                                                         ;8BDC2A;
-    STA.W $198F                                                          ;8BDC2D;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BDC2D;
     LDA.W #$FF90                                                         ;8BDC30;
-    STA.W $198D                                                          ;8BDC33;
+    STA.W Mode7TransformationAngle                                                          ;8BDC33;
     LDA.W #$0001                                                         ;8BDC36;
-    STA.W $1A49                                                          ;8BDC39;
+    STA.W CinematicFunctionTimer                                                          ;8BDC39;
     LDA.W #$00C0                                                         ;8BDC3C;
     STA.W $1A4B                                                          ;8BDC3F;
     STZ.W $1A4D                                                          ;8BDC42;
     LDA.W #CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningFast  ;8BDC45;
-    STA.W $1F51                                                          ;8BDC48;
+    STA.W CinematicFunction                                                          ;8BDC48;
     RTS                                                                  ;8BDC4B;
 
 
@@ -12158,56 +12158,56 @@ CinematicFunc_Ending_SpaceView_GunshipEmergence_Setup:
 FadeOut_ZebesExplosion_AfterGlow:
     PHP                                                                  ;8BDC4C;
     REP #$30                                                             ;8BDC4D;
-    DEC.W $1A49                                                          ;8BDC4F;
+    DEC.W CinematicFunctionTimer                                                          ;8BDC4F;
     BEQ .timerExpired                                                    ;8BDC52;
     BPL .return                                                          ;8BDC54;
 
   .timerExpired:
     SEP #$20                                                             ;8BDC56;
-    LDA.B $74                                                            ;8BDC58;
+    LDA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BDC58;
     SEC                                                                  ;8BDC5A;
     SBC.B #$01                                                           ;8BDC5B;
-    STA.B $74                                                            ;8BDC5D;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BDC5D;
     CMP.B #$20                                                           ;8BDC5F;
     BPL +                                                                ;8BDC61;
     LDA.B #$20                                                           ;8BDC63;
-    STA.B $74                                                            ;8BDC65;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BDC65;
 
-+   LDA.B $75                                                            ;8BDC67;
++   LDA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BDC67;
     SEC                                                                  ;8BDC69;
     SBC.B #$01                                                           ;8BDC6A;
-    STA.B $75                                                            ;8BDC6C;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BDC6C;
     CMP.B #$40                                                           ;8BDC6E;
     BPL +                                                                ;8BDC70;
     LDA.B #$40                                                           ;8BDC72;
-    STA.B $75                                                            ;8BDC74;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BDC74;
 
-+   LDA.B $76                                                            ;8BDC76;
++   LDA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BDC76;
     SEC                                                                  ;8BDC78;
     SBC.B #$01                                                           ;8BDC79;
-    STA.B $76                                                            ;8BDC7B;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BDC7B;
     CMP.B #$80                                                           ;8BDC7D;
     BPL .checkColors                                                     ;8BDC7F;
     LDA.B #$80                                                           ;8BDC81;
-    STA.B $76                                                            ;8BDC83;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BDC83;
 
   .checkColors:
-    LDA.B $74                                                            ;8BDC85;
+    LDA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BDC85;
     CMP.B #$20                                                           ;8BDC87;
     BNE .setTimer                                                        ;8BDC89;
-    LDA.B $75                                                            ;8BDC8B;
+    LDA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BDC8B;
     CMP.B #$40                                                           ;8BDC8D;
     BNE .setTimer                                                        ;8BDC8F;
-    LDA.B $76                                                            ;8BDC91;
+    LDA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BDC91;
     CMP.B #$80                                                           ;8BDC93;
     BNE .setTimer                                                        ;8BDC95;
-    STZ.B $6F                                                            ;8BDC97;
-    STZ.B $72                                                            ;8BDC99;
+    STZ.B DP_ColorMathA                                                            ;8BDC97;
+    STZ.B DP_ColorMathB                                                            ;8BDC99;
 
   .setTimer:
     REP #$20                                                             ;8BDC9B;
     LDA.W #$0008                                                         ;8BDC9D;
-    STA.W $1A49                                                          ;8BDCA0;
+    STA.W CinematicFunctionTimer                                                          ;8BDCA0;
 
   .return:
     PLP                                                                  ;8BDCA3;
@@ -12226,37 +12226,37 @@ CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningFast:
     JSR.W FadeOut_ZebesExplosion_AfterGlow                               ;8BDCB0;
 
   .timerExpired:
-    LDA.W $198D                                                          ;8BDCB3;
+    LDA.W Mode7TransformationAngle                                                          ;8BDCB3;
     SEC                                                                  ;8BDCB6;
     SBC.W #$0004                                                         ;8BDCB7;
     AND.W #$00FF                                                         ;8BDCBA;
-    STA.W $198D                                                          ;8BDCBD;
+    STA.W Mode7TransformationAngle                                                          ;8BDCBD;
     LDA.W $1A4D                                                          ;8BDCC0;
     ASL                                                                  ;8BDCC3;
     ASL                                                                  ;8BDCC4;
     TAX                                                                  ;8BDCC5;
-    LDA.W $1991                                                          ;8BDCC6;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BDCC6;
     CLC                                                                  ;8BDCC9;
     ADC.W .shakingXVelocities+2,X                                        ;8BDCCA;
-    STA.W $1991                                                          ;8BDCCD;
-    LDA.W $1993                                                          ;8BDCD0;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BDCCD;
+    LDA.W CinematicBG1_XPosition                                                          ;8BDCD0;
     ADC.W .shakingXVelocities,X                                          ;8BDCD3;
-    STA.W $1993                                                          ;8BDCD6;
+    STA.W CinematicBG1_XPosition                                                          ;8BDCD6;
     LDA.W $1A4D                                                          ;8BDCD9;
     INC                                                                  ;8BDCDC;
     AND.W #$000F                                                         ;8BDCDD;
     STA.W $1A4D                                                          ;8BDCE0;
-    LDA.W $198F                                                          ;8BDCE3;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BDCE3;
     SEC                                                                  ;8BDCE6;
     SBC.W #$0008                                                         ;8BDCE7;
-    STA.W $198F                                                          ;8BDCEA;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BDCEA;
     CMP.W #$05B0                                                         ;8BDCED;
     BPL .return                                                          ;8BDCF0;
     LDA.W #$0001                                                         ;8BDCF2;
     STA.W $1A4B                                                          ;8BDCF5;
     STZ.W $1A4D                                                          ;8BDCF8;
     LDA.W #CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningSlow  ;8BDCFB;
-    STA.W $1F51                                                          ;8BDCFE;
+    STA.W CinematicFunction                                                          ;8BDCFE;
 
   .return:
     RTS                                                                  ;8BDD01;
@@ -12271,38 +12271,38 @@ CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningFast:
 ;;; $DD42: Cinematic function - ending - space view - gunship emergence - spinning slow ;;;
 CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningSlow:
     JSR.W FadeOut_ZebesExplosion_AfterGlow                               ;8BDD42;
-    LDA.W $198D                                                          ;8BDD45;
+    LDA.W Mode7TransformationAngle                                                          ;8BDD45;
     CMP.W #$00E0                                                         ;8BDD48;
     BEQ .notE0                                                           ;8BDD4B;
     SEC                                                                  ;8BDD4D;
     SBC.W #$0001                                                         ;8BDD4E;
     AND.W #$00FF                                                         ;8BDD51;
-    STA.W $198D                                                          ;8BDD54;
+    STA.W Mode7TransformationAngle                                                          ;8BDD54;
 
   .notE0:
     LDA.W $1A4D                                                          ;8BDD57;
     ASL                                                                  ;8BDD5A;
     ASL                                                                  ;8BDD5B;
     TAX                                                                  ;8BDD5C;
-    LDA.W $1991                                                          ;8BDD5D;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BDD5D;
     CLC                                                                  ;8BDD60;
     ADC.W .shakingXVelocities+2,X                                        ;8BDD61;
-    STA.W $1991                                                          ;8BDD64;
-    LDA.W $1993                                                          ;8BDD67;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BDD64;
+    LDA.W CinematicBG1_XPosition                                                          ;8BDD67;
     ADC.W .shakingXVelocities,X                                          ;8BDD6A;
-    STA.W $1993                                                          ;8BDD6D;
+    STA.W CinematicBG1_XPosition                                                          ;8BDD6D;
     LDA.W $1A4D                                                          ;8BDD70;
     INC                                                                  ;8BDD73;
     AND.W #$0007                                                         ;8BDD74;
     STA.W $1A4D                                                          ;8BDD77;
-    LDA.W $198F                                                          ;8BDD7A;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BDD7A;
     SEC                                                                  ;8BDD7D;
     SBC.W #$0002                                                         ;8BDD7E;
-    STA.W $198F                                                          ;8BDD81;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BDD81;
     CMP.W #$04A0                                                         ;8BDD84;
     BPL .return                                                          ;8BDD87;
     LDA.W #CinematicFunc_Ending_SpaceView_GunshipEmergence_FlyToCamera   ;8BDD89;
-    STA.W $1F51                                                          ;8BDD8C;
+    STA.W CinematicFunction                                                          ;8BDD8C;
     LDA.W #$8000                                                         ;8BDD8F;
     STA.W $1A4D                                                          ;8BDD92;
     STZ.W $1A4B                                                          ;8BDD95;
@@ -12332,40 +12332,40 @@ CinematicFunc_Ending_SpaceView_GunshipEmergence_FlyToCamera:
     LDA.W $1A4B                                                          ;8BDDDA;
     SBC.W #$0000                                                         ;8BDDDD;
     STA.W $1A4B                                                          ;8BDDE0;
-    LDA.W $1991                                                          ;8BDDE3;
+    LDA.W CinematicBG1_XSubPosition                                                          ;8BDDE3;
     CLC                                                                  ;8BDDE6;
     ADC.W $1A4D                                                          ;8BDDE7;
-    STA.W $1991                                                          ;8BDDEA;
-    LDA.W $1993                                                          ;8BDDED;
+    STA.W CinematicBG1_XSubPosition                                                          ;8BDDEA;
+    LDA.W CinematicBG1_XPosition                                                          ;8BDDED;
     ADC.W $1A4B                                                          ;8BDDF0;
-    STA.W $1993                                                          ;8BDDF3;
-    LDA.W $198F                                                          ;8BDDF6;
+    STA.W CinematicBG1_XPosition                                                          ;8BDDF3;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BDDF6;
     CMP.W #$0180                                                         ;8BDDF9;
     BPL +                                                                ;8BDDFC;
-    LDA.W $1A51                                                          ;8BDDFE;
+    LDA.W CinematicFrameCounter                                                          ;8BDDFE;
     BIT.W #$0003                                                         ;8BDE01;
     BNE +                                                                ;8BDE04;
-    LDA.W $198D                                                          ;8BDE06;
+    LDA.W Mode7TransformationAngle                                                          ;8BDE06;
     CMP.W #$0010                                                         ;8BDE09;
     BEQ +                                                                ;8BDE0C;
     CLC                                                                  ;8BDE0E;
     ADC.W #$0002                                                         ;8BDE0F;
     AND.W #$00FF                                                         ;8BDE12;
-    STA.W $198D                                                          ;8BDE15;
+    STA.W Mode7TransformationAngle                                                          ;8BDE15;
 
-+   LDA.W $198F                                                          ;8BDE18;
++   LDA.W Mode7TransformationZoomLevel                                                          ;8BDE18;
     CMP.W #$0020                                                         ;8BDE1B;
     BMI .zoomLessThan20                                                  ;8BDE1E;
     SEC                                                                  ;8BDE20;
     SBC.W #$0004                                                         ;8BDE21;
-    STA.W $198F                                                          ;8BDE24;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BDE24;
     RTS                                                                  ;8BDE27;
 
   .zoomLessThan20:
     LDY.W #CinematicSpriteObjectDefinitions_TheOperationWas              ;8BDE28;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BDE2B;
     LDA.W #RTS_8BDE63                                                    ;8BDE2E;
-    STA.W $1F51                                                          ;8BDE31;
+    STA.W CinematicFunction                                                          ;8BDE31;
     LDX.W #$001E                                                         ;8BDE34;
 
   .loopPalette:
@@ -12389,14 +12389,14 @@ RTS_8BDE63:
 ;;; $DE64: Cinematic function - ending - space view - transition to credits ;;;
 CinematicFunction_Ending_SpaceView_GunshipEmergence_Credits:
     LDA.W #$0001                                                         ;8BDE64;
-    STA.W $0725                                                          ;8BDE67;
+    STA.W ScreenFadeCounter                                                          ;8BDE67;
     JSR.W AdvanceFastScreenFadeOut                                       ;8BDE6A;
     BCC .return                                                          ;8BDE6D;
     JSL.L EnableNMI                                                      ;8BDE6F;
-    STZ.W $0723                                                          ;8BDE73;
-    STZ.W $0725                                                          ;8BDE76;
+    STZ.W ScreenFadeDelay                                                          ;8BDE73;
+    STZ.W ScreenFadeCounter                                                          ;8BDE76;
     LDA.W #CinematicFunction_Credits_Setup                               ;8BDE79;
-    STA.W $1F51                                                          ;8BDE7C;
+    STA.W CinematicFunction                                                          ;8BDE7C;
 
   .return:
     RTS                                                                  ;8BDE7F;
@@ -12411,57 +12411,57 @@ CinematicFunction_Credits_Setup:
 
   .loopPalettes:
     LDA.L Palettes_Credits,X                                             ;8BDE8D;
-    STA.L $7EC000,X                                                      ;8BDE91;
+    STA.L Palettes,X                                                      ;8BDE91;
     INX                                                                  ;8BDE95;
     INX                                                                  ;8BDE96;
     CPX.W #$0100                                                         ;8BDE97;
     BMI .loopPalettes                                                    ;8BDE9A;
     LDA.W #Tiles_Samus_Waiting_for_Credits_to_End>>8&$FF00               ;8BDE9C;
-    STA.B $48                                                            ;8BDE9F;
+    STA.B DP_DecompSrc+1                                                            ;8BDE9F;
     LDA.W #Tiles_Samus_Waiting_for_Credits_to_End                        ;8BDEA1;
-    STA.B $47                                                            ;8BDEA4;
+    STA.B DP_DecompSrc                                                            ;8BDEA4;
     JSL.L Decompression_HardcodedDestination                             ;8BDEA6;
     dl $7F0000                                                           ;8BDEAA;
     LDA.W #Tiles_PostCredits_SuitlessSamus>>8&$FF00                      ;8BDEAD;
-    STA.B $48                                                            ;8BDEB0;
+    STA.B DP_DecompSrc+1                                                            ;8BDEB0;
     LDA.W #Tiles_PostCredits_SuitlessSamus                               ;8BDEB2;
-    STA.B $47                                                            ;8BDEB5;
+    STA.B DP_DecompSrc                                                            ;8BDEB5;
     JSL.L Decompression_HardcodedDestination                             ;8BDEB7;
     dl $7E2000                                                           ;8BDEBB;
     LDA.W #Tiles_PostCredits_Samus_Shooting_the_Screen>>8&$FF00          ;8BDEBE;
-    STA.B $48                                                            ;8BDEC1;
+    STA.B DP_DecompSrc+1                                                            ;8BDEC1;
     LDA.W #Tiles_PostCredits_Samus_Shooting_the_Screen                   ;8BDEC3;
-    STA.B $47                                                            ;8BDEC6;
+    STA.B DP_DecompSrc                                                            ;8BDEC6;
     JSL.L Decompression_HardcodedDestination                             ;8BDEC8;
     dl $7E6000                                                           ;8BDECC;
     LDA.W #Tiles_Font3_Background>>8&$FF00                               ;8BDECF;
-    STA.B $48                                                            ;8BDED2;
+    STA.B DP_DecompSrc+1                                                            ;8BDED2;
     LDA.W #Tiles_Font3_Background                                        ;8BDED4;
-    STA.B $47                                                            ;8BDED7;
+    STA.B DP_DecompSrc                                                            ;8BDED7;
     JSL.L Decompression_HardcodedDestination                             ;8BDED9;
     dl $7FC000                                                           ;8BDEDD;
     LDA.W #Samus_Waiting_for_Credits_to_End_Tilemap>>8&$FF00             ;8BDEE0;
-    STA.B $48                                                            ;8BDEE3;
+    STA.B DP_DecompSrc+1                                                            ;8BDEE3;
     LDA.W #Samus_Waiting_for_Credits_to_End_Tilemap                      ;8BDEE5;
-    STA.B $47                                                            ;8BDEE8;
+    STA.B DP_DecompSrc                                                            ;8BDEE8;
     JSL.L Decompression_HardcodedDestination                             ;8BDEEA;
     dl $7FE000                                                           ;8BDEEE;
     LDA.W #InterleavedTilesTilemapPostCreditsSamusBeamMode7>>8&$FF00     ;8BDEF1;
-    STA.B $48                                                            ;8BDEF4;
+    STA.B DP_DecompSrc+1                                                            ;8BDEF4;
     LDA.W #InterleavedTilesTilemapPostCreditsSamusBeamMode7              ;8BDEF6;
-    STA.B $47                                                            ;8BDEF9;
+    STA.B DP_DecompSrc                                                            ;8BDEF9;
     JSL.L Decompression_HardcodedDestination                             ;8BDEFB;
     dl $7F4000                                                           ;8BDEFF;
     LDA.W #Tiles_PostCredits_Samus_Transformation_Effect>>8&$FF00        ;8BDF02;
-    STA.B $48                                                            ;8BDF05;
+    STA.B DP_DecompSrc+1                                                            ;8BDF05;
     LDA.W #Tiles_PostCredits_Samus_Transformation_Effect                 ;8BDF07;
-    STA.B $47                                                            ;8BDF0A;
+    STA.B DP_DecompSrc                                                            ;8BDF0A;
     JSL.L Decompression_HardcodedDestination                             ;8BDF0C;
     dl $7FE800                                                           ;8BDF10;
     LDA.W #PostCredits_Samus_Transformation_Effect_Tilemap>>8&$FF00      ;8BDF13;
-    STA.B $48                                                            ;8BDF16;
+    STA.B DP_DecompSrc+1                                                            ;8BDF16;
     LDA.W #PostCredits_Samus_Transformation_Effect_Tilemap               ;8BDF18;
-    STA.B $47                                                            ;8BDF1B;
+    STA.B DP_DecompSrc                                                            ;8BDF1B;
     JSL.L Decompression_HardcodedDestination                             ;8BDF1D;
     dl $7FF000                                                           ;8BDF21;
     SEP #$30                                                             ;8BDF24;
@@ -12539,15 +12539,15 @@ CinematicFunction_Credits_Setup:
     STA.W $420B                                                          ;8BDFE3;
     REP #$30                                                             ;8BDFE6;
     LDA.W #Tiles_PostCredits_SuperMetroid_Icon>>8&$FF00                  ;8BDFE8;
-    STA.B $48                                                            ;8BDFEB;
+    STA.B DP_DecompSrc+1                                                            ;8BDFEB;
     LDA.W #Tiles_PostCredits_SuperMetroid_Icon                           ;8BDFED;
-    STA.B $47                                                            ;8BDFF0;
+    STA.B DP_DecompSrc                                                            ;8BDFF0;
     JSL.L Decompression_HardcodedDestination                             ;8BDFF2;
     dl $7E6000                                                           ;8BDFF6;
     LDA.W #PostCredits_SuperMetroid_Icon_Tilemap>>8&$FF00                ;8BDFF9;
-    STA.B $48                                                            ;8BDFFC;
+    STA.B DP_DecompSrc+1                                                            ;8BDFFC;
     LDA.W #PostCredits_SuperMetroid_Icon_Tilemap                         ;8BDFFE;
-    STA.B $47                                                            ;8BE001;
+    STA.B DP_DecompSrc                                                            ;8BE001;
     JSL.L Decompression_HardcodedDestination                             ;8BE003;
     dl $7E8000                                                           ;8BE007;
     LDA.W $09E0                                                          ;8BE00A;
@@ -12600,33 +12600,33 @@ CinematicFunction_Credits_Setup:
     STA.W $2120                                                          ;8BE07C;
     STA.B $82                                                            ;8BE07F;
     LDA.W #$FFF8                                                         ;8BE081;
-    STA.W $1993                                                          ;8BE084;
+    STA.W CinematicBG1_XPosition                                                          ;8BE084;
     LDA.W #$FFE8                                                         ;8BE087;
-    STA.W $1997                                                          ;8BE08A;
-    STZ.W $198D                                                          ;8BE08D;
+    STA.W CinematicBG1_YPosition                                                          ;8BE08A;
+    STZ.W Mode7TransformationAngle                                                          ;8BE08D;
     LDA.W #$0900                                                         ;8BE090;
-    STA.W $198F                                                          ;8BE093;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BE093;
     JSL.L EnableNMI                                                      ;8BE096;
     SEP #$20                                                             ;8BE09A;
     LDA.B #$0F                                                           ;8BE09C;
-    STA.B $51                                                            ;8BE09E;
+    STA.B DP_Brightness                                                            ;8BE09E;
     REP #$20                                                             ;8BE0A0;
-    STZ.W $0911                                                          ;8BE0A2;
-    STZ.W $0915                                                          ;8BE0A5;
+    STZ.W Layer1XPosition                                                          ;8BE0A2;
+    STZ.W Layer1YPosition                                                          ;8BE0A5;
     JSL.L Enable_HDMAObjects                                             ;8BE0A8;
     LDX.W #$01FE                                                         ;8BE0AC;
     LDA.W #$0000                                                         ;8BE0AF;
 
   .loop:
-    STA.L $7E9800,X                                                      ;8BE0B2;
+    STA.L TitleScreenGradientColorMathSubScreenBackdropColorHDMATable,X                                                      ;8BE0B2;
     DEX                                                                  ;8BE0B6;
     DEX                                                                  ;8BE0B7;
     BPL .loop                                                            ;8BE0B8;
     JSR.W Initialize_ShootingStars                                       ;8BE0BA;
     LDA.W #Credits_Tilemap>>8&$FF00                                      ;8BE0BD;
-    STA.B $48                                                            ;8BE0C0;
+    STA.B DP_DecompSrc+1                                                            ;8BE0C0;
     LDA.W #Credits_Tilemap                                               ;8BE0C2;
-    STA.B $47                                                            ;8BE0C5;
+    STA.B DP_DecompSrc                                                            ;8BE0C5;
     JSL.L Decompression_HardcodedDestination                             ;8BE0C7;
     dl $7F0000                                                           ;8BE0CB;
     LDA.W #$007F                                                         ;8BE0CE;
@@ -12635,29 +12635,29 @@ CinematicFunction_Credits_Setup:
     JSR.W Clear_CreditsObject_CinematicBGTilemapInA                      ;8BE0D8;
     JSR.W Enable_CreditsObject                                           ;8BE0DB;
     LDA.W #$0003                                                         ;8BE0DE;
-    STA.W $0723                                                          ;8BE0E1;
-    STA.W $0725                                                          ;8BE0E4;
+    STA.W ScreenFadeDelay                                                          ;8BE0E1;
+    STA.W ScreenFadeCounter                                                          ;8BE0E4;
     LDY.W #CreditsObjectDefinition                                       ;8BE0E7;
     JSR.W Spawn_CreditsObject                                            ;8BE0EA;
     LDA.W #RTS_8BDB9D                                                    ;8BE0ED;
-    STA.W $1F51                                                          ;8BE0F0;
+    STA.W CinematicFunction                                                          ;8BE0F0;
     RTS                                                                  ;8BE0F3;
 
 
 ;;; $E0F4: Cinematic function - post-credits - blank screen ;;;
 CinematicFunction_PostCredits_BlankScreen:
-    DEC.W $1A49                                                          ;8BE0F4;
+    DEC.W CinematicFunctionTimer                                                          ;8BE0F4;
     BEQ .timerExpired                                                    ;8BE0F7;
     BPL .return                                                          ;8BE0F9;
 
   .timerExpired:
     LDA.W #CinematicFunction_PostCredits_FadeInShootingStars             ;8BE0FB;
-    STA.W $1F51                                                          ;8BE0FE;
+    STA.W CinematicFunction                                                          ;8BE0FE;
     LDA.W #$0078                                                         ;8BE101;
-    STA.W $1A49                                                          ;8BE104;
+    STA.W CinematicFunctionTimer                                                          ;8BE104;
     SEP #$20                                                             ;8BE107;
     LDA.B #$10                                                           ;8BE109;
-    STA.B $69                                                            ;8BE10B;
+    STA.B DP_MainScreenLayers                                                            ;8BE10B;
     REP #$20                                                             ;8BE10D;
 
   .return:
@@ -12668,7 +12668,7 @@ CinematicFunction_PostCredits_BlankScreen:
 CinematicFunction_PostCredits_FadeInShootingStars:
     JSL.L HandleFadingIn                                                 ;8BE110;
     SEP #$20                                                             ;8BE114;
-    LDA.B $51                                                            ;8BE116;
+    LDA.B DP_Brightness                                                            ;8BE116;
     CMP.B #$0F                                                           ;8BE118;
     BEQ .fadedIn                                                         ;8BE11A;
     REP #$20                                                             ;8BE11C;
@@ -12677,16 +12677,16 @@ CinematicFunction_PostCredits_FadeInShootingStars:
   .fadedIn:
     SEP #$20                                                             ;8BE11F;
     LDA.B #$02                                                           ;8BE121;
-    STA.B $69                                                            ;8BE123;
+    STA.B DP_MainScreenLayers                                                            ;8BE123;
     LDA.B #$10                                                           ;8BE125;
-    STA.B $6B                                                            ;8BE127;
+    STA.B DP_SubScreenLayers                                                            ;8BE127;
     LDA.B #$02                                                           ;8BE129;
-    STA.B $6F                                                            ;8BE12B;
+    STA.B DP_ColorMathA                                                            ;8BE12B;
     LDA.B #$22                                                           ;8BE12D;
-    STA.B $72                                                            ;8BE12F;
+    STA.B DP_ColorMathB                                                            ;8BE12F;
     REP #$20                                                             ;8BE131;
-    STZ.W $0723                                                          ;8BE133;
-    STZ.W $0725                                                          ;8BE136;
+    STZ.W ScreenFadeDelay                                                          ;8BE133;
+    STZ.W ScreenFadeCounter                                                          ;8BE136;
     JSR.W PaletteCrossFading_CopyCurrentPalettesToFadingPalettes         ;8BE139;
     JSR.W PaletteCrossFading_DecomposePaletteDataForFading               ;8BE13C;
     LDX.W #$0040                                                         ;8BE13F;
@@ -12694,9 +12694,9 @@ CinematicFunction_PostCredits_FadeInShootingStars:
     JSR.W PaletteCrossFading_ClearYColorsStartingFromColorIndexX         ;8BE145;
     JSR.W PaletteCrossFading_ComposeFadingPalettes                       ;8BE148;
     LDA.W #$0020                                                         ;8BE14B;
-    STA.W $1A49                                                          ;8BE14E;
+    STA.W CinematicFunctionTimer                                                          ;8BE14E;
     LDA.W #CinematicFunction_PostCredits_FadeInSamus                     ;8BE151;
-    STA.W $1F51                                                          ;8BE154;
+    STA.W CinematicFunction                                                          ;8BE154;
     RTS                                                                  ;8BE157;
 
 
@@ -12706,25 +12706,25 @@ CinematicFunction_PostCredits_FadeInSamus:
     LDY.W #$0010                                                         ;8BE15B;
     JSR.W PaletteCrossFading_FadeInYColorsStartingFromColorIndexX        ;8BE15E;
     JSR.W PaletteCrossFading_ComposeFadingPalettes                       ;8BE161;
-    DEC.W $1A49                                                          ;8BE164;
+    DEC.W CinematicFunctionTimer                                                          ;8BE164;
     BEQ .timerExpired                                                    ;8BE167;
     BPL .return                                                          ;8BE169;
 
   .timerExpired:
     SEP #$20                                                             ;8BE16B;
     LDA.B #$12                                                           ;8BE16D;
-    STA.B $69                                                            ;8BE16F;
+    STA.B DP_MainScreenLayers                                                            ;8BE16F;
     LDA.B #$04                                                           ;8BE171;
-    STA.B $6B                                                            ;8BE173;
+    STA.B DP_SubScreenLayers                                                            ;8BE173;
     LDA.B #$02                                                           ;8BE175;
-    STA.B $6F                                                            ;8BE177;
+    STA.B DP_ColorMathA                                                            ;8BE177;
     LDA.B #$02                                                           ;8BE179;
-    STA.B $72                                                            ;8BE17B;
+    STA.B DP_ColorMathB                                                            ;8BE17B;
     REP #$20                                                             ;8BE17D;
     LDA.W #$00B4                                                         ;8BE17F;
-    STA.W $1A49                                                          ;8BE182;
+    STA.W CinematicFunctionTimer                                                          ;8BE182;
     LDA.W #CinematicFunction_PostCredits_WavySamus                       ;8BE185;
-    STA.W $1F51                                                          ;8BE188;
+    STA.W CinematicFunction                                                          ;8BE188;
     JSL.L Spawn_WavySamus_HDMAObject                                     ;8BE18B;
 
   .return:
@@ -12733,11 +12733,11 @@ CinematicFunction_PostCredits_FadeInSamus:
 
 ;;; $E190: Cinematic function - post-credits - wavy Samus ;;;
 CinematicFunction_PostCredits_WavySamus:
-    LDA.B $BB                                                            ;8BE190;
+    LDA.B DP_BG3YScroll                                                            ;8BE190;
     CLC                                                                  ;8BE192;
     ADC.W #$0002                                                         ;8BE193;
-    STA.B $BB                                                            ;8BE196;
-    DEC.W $1A49                                                          ;8BE198;
+    STA.B DP_BG3YScroll                                                            ;8BE196;
+    DEC.W CinematicFunctionTimer                                                          ;8BE198;
     BEQ .timerExpired                                                    ;8BE19B;
     BPL .return                                                          ;8BE19D;
 
@@ -12754,15 +12754,15 @@ CinematicFunction_PostCredits_WavySamus:
     JSR.W CinematicBGObjects_Update32x32CinematicBGTilemap               ;8BE1B1;
     SEP #$20                                                             ;8BE1B4;
     LDA.B #$01                                                           ;8BE1B6;
-    STA.B $69                                                            ;8BE1B8;
-    STZ.B $6B                                                            ;8BE1BA;
-    STZ.B $6F                                                            ;8BE1BC;
-    STZ.B $72                                                            ;8BE1BE;
+    STA.B DP_MainScreenLayers                                                            ;8BE1B8;
+    STZ.B DP_SubScreenLayers                                                            ;8BE1BA;
+    STZ.B DP_ColorMathA                                                            ;8BE1BC;
+    STZ.B DP_ColorMathB                                                            ;8BE1BE;
     REP #$20                                                             ;8BE1C0;
     LDA.W #$00B4                                                         ;8BE1C2;
-    STA.W $1A49                                                          ;8BE1C5;
+    STA.W CinematicFunctionTimer                                                          ;8BE1C5;
     LDA.W #CinematicFunction_PostCredits_DeerForce                       ;8BE1C8;
-    STA.W $1F51                                                          ;8BE1CB;
+    STA.W CinematicFunction                                                          ;8BE1CB;
     STZ.W $0D9C                                                          ;8BE1CE;
 
   .return:
@@ -12771,13 +12771,13 @@ CinematicFunction_PostCredits_WavySamus:
 
 ;;; $E1D2: Cinematic function - post-credits - Deer Force ;;;
 CinematicFunction_PostCredits_DeerForce:
-    DEC.W $1A49                                                          ;8BE1D2;
+    DEC.W CinematicFunctionTimer                                                          ;8BE1D2;
     BEQ .decTimer                                                        ;8BE1D5;
     JMP.W .return                                                        ;8BE1D7;
 
   .decTimer:
     LDA.W #$007F                                                         ;8BE1DA;
-    STA.W $1A49                                                          ;8BE1DD;
+    STA.W CinematicFunctionTimer                                                          ;8BE1DD;
     LDA.W $09E0                                                          ;8BE1E0;
     CMP.W #$0003                                                         ;8BE1E3;
     BMI .bestEnding                                                      ;8BE1E6;
@@ -12788,13 +12788,13 @@ CinematicFunction_PostCredits_DeerForce:
     LDY.W #CinematicSpriteObjectDefinitions_SuitedSamus_Idle_Body        ;8BE1F3;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BE1F6;
     LDA.W #CinematicFunction_PostCredits_IdleSamus1                      ;8BE1F9;
-    STA.W $1F51                                                          ;8BE1FC;
+    STA.W CinematicFunction                                                          ;8BE1FC;
     SEP #$20                                                             ;8BE1FF;
     LDA.B #$10                                                           ;8BE201;
-    STA.B $69                                                            ;8BE203;
-    STZ.B $6B                                                            ;8BE205;
-    STZ.B $6F                                                            ;8BE207;
-    STZ.B $72                                                            ;8BE209;
+    STA.B DP_MainScreenLayers                                                            ;8BE203;
+    STZ.B DP_SubScreenLayers                                                            ;8BE205;
+    STZ.B DP_ColorMathA                                                            ;8BE207;
+    STZ.B DP_ColorMathB                                                            ;8BE209;
     REP #$20                                                             ;8BE20B;
     BRA .return                                                          ;8BE20D;
 
@@ -12825,16 +12825,16 @@ CinematicFunction_PostCredits_DeerForce:
     JSR.W PaletteCrossFading_ComposeFadingPalettes                       ;8BE247;
     SEP #$20                                                             ;8BE24A;
     LDA.B #$02                                                           ;8BE24C;
-    STA.B $69                                                            ;8BE24E;
+    STA.B DP_MainScreenLayers                                                            ;8BE24E;
     LDA.B #$10                                                           ;8BE250;
-    STA.B $6B                                                            ;8BE252;
+    STA.B DP_SubScreenLayers                                                            ;8BE252;
     LDA.B #$02                                                           ;8BE254;
-    STA.B $6F                                                            ;8BE256;
+    STA.B DP_ColorMathA                                                            ;8BE256;
     LDA.B #$22                                                           ;8BE258;
-    STA.B $72                                                            ;8BE25A;
+    STA.B DP_ColorMathB                                                            ;8BE25A;
     REP #$20                                                             ;8BE25C;
     LDA.W #CinematicFunc_PostCredits_IdleSamus_1_CrossFadeOutSamusSuit   ;8BE25E;
-    STA.W $1F51                                                          ;8BE261;
+    STA.W CinematicFunction                                                          ;8BE261;
 
   .return:
     RTS                                                                  ;8BE264;
@@ -12842,7 +12842,7 @@ CinematicFunction_PostCredits_DeerForce:
 
 ;;; $E265: Cinematic function - post-credits - idle Samus 1/2 - cross-fade out Samus suit ;;;
 CinematicFunc_PostCredits_IdleSamus_1_CrossFadeOutSamusSuit:
-    LDA.W $1A49                                                          ;8BE265;
+    LDA.W CinematicFunctionTimer                                                          ;8BE265;
     BIT.W #$0003                                                         ;8BE268;
     BNE CinematicFunction_PostCredits_IdleSamus1                         ;8BE26B;
     LDX.W #$0040                                                         ;8BE26D;
@@ -12864,9 +12864,9 @@ CinematicFunc_PostCredits_IdleSamus_1_CrossFadeOutSamusSuit:
 
 ;;; $E293: Cinematic function - post-credits - idle Samus 1/2 ;;;
 CinematicFunction_PostCredits_IdleSamus1:
-    LDA.W $1A49                                                          ;8BE293;
+    LDA.W CinematicFunctionTimer                                                          ;8BE293;
     DEC                                                                  ;8BE296;
-    STA.W $1A49                                                          ;8BE297;
+    STA.W CinematicFunctionTimer                                                          ;8BE297;
     CMP.W #$0041                                                         ;8BE29A;
     BPL .return                                                          ;8BE29D;
     LDX.W #$023E                                                         ;8BE29F;
@@ -12889,15 +12889,15 @@ CinematicFunction_PostCredits_IdleSamus1:
     JSR.W CinematicBGObjects_Update32x32CinematicBGTilemap               ;8BE2BF;
     SEP #$20                                                             ;8BE2C2;
     LDA.B #$01                                                           ;8BE2C4;
-    STA.B $69                                                            ;8BE2C6;
-    STZ.B $6B                                                            ;8BE2C8;
-    STZ.B $6F                                                            ;8BE2CA;
-    STZ.B $72                                                            ;8BE2CC;
+    STA.B DP_MainScreenLayers                                                            ;8BE2C6;
+    STZ.B DP_SubScreenLayers                                                            ;8BE2C8;
+    STZ.B DP_ColorMathA                                                            ;8BE2CA;
+    STZ.B DP_ColorMathB                                                            ;8BE2CC;
     REP #$20                                                             ;8BE2CE;
     LDA.W #$00B4                                                         ;8BE2D0;
     STA.W $1A4B                                                          ;8BE2D3;
     LDA.W #CinematicFunction_PostCredits_1994Nintendo                    ;8BE2D6;
-    STA.W $1F51                                                          ;8BE2D9;
+    STA.W CinematicFunction                                                          ;8BE2D9;
 
   .return:
     RTS                                                                  ;8BE2DC;
@@ -12916,22 +12916,22 @@ CinematicFunction_PostCredits_1994Nintendo:
     CMP.W #$000A                                                         ;8BE2EC;
     BMI .gameTimeOver10                                                  ;8BE2EF;
     LDA.W #CinematicFunction_PostCredits_IdleSamus2                      ;8BE2F1;
-    STA.W $1F51                                                          ;8BE2F4;
+    STA.W CinematicFunction                                                          ;8BE2F4;
     BRA .return                                                          ;8BE2F7;
 
   .gameTimeOver10:
     SEP #$20                                                             ;8BE2F9;
     LDA.B #$02                                                           ;8BE2FB;
-    STA.B $69                                                            ;8BE2FD;
+    STA.B DP_MainScreenLayers                                                            ;8BE2FD;
     LDA.B #$10                                                           ;8BE2FF;
-    STA.B $6B                                                            ;8BE301;
+    STA.B DP_SubScreenLayers                                                            ;8BE301;
     LDA.B #$02                                                           ;8BE303;
-    STA.B $6F                                                            ;8BE305;
+    STA.B DP_ColorMathA                                                            ;8BE305;
     LDA.B #$22                                                           ;8BE307;
-    STA.B $72                                                            ;8BE309;
+    STA.B DP_ColorMathB                                                            ;8BE309;
     REP #$20                                                             ;8BE30B;
     LDA.W #CinematicFunc_PostCredits_IdleSamus2_CrossFadeOutSamusSuit    ;8BE30D;
-    STA.W $1F51                                                          ;8BE310;
+    STA.W CinematicFunction                                                          ;8BE310;
 
   .return:
     RTS                                                                  ;8BE313;
@@ -12939,7 +12939,7 @@ CinematicFunction_PostCredits_1994Nintendo:
 
 ;;; $E314: Cinematic function - post-credits - idle Samus 2/2 - cross-fade out Samus suit ;;;
 CinematicFunc_PostCredits_IdleSamus2_CrossFadeOutSamusSuit:
-    LDA.W $1A49                                                          ;8BE314;
+    LDA.W CinematicFunctionTimer                                                          ;8BE314;
     BIT.W #$0003                                                         ;8BE317;
     BNE CinematicFunction_PostCredits_IdleSamus2                         ;8BE31A;
     LDX.W #$0040                                                         ;8BE31C;
@@ -12961,24 +12961,24 @@ CinematicFunc_PostCredits_IdleSamus2_CrossFadeOutSamusSuit:
 
 ;;; $E342: Cinematic function - post-credits - idle Samus 2/2 ;;;
 CinematicFunction_PostCredits_IdleSamus2:
-    DEC.W $1A49                                                          ;8BE342;
+    DEC.W CinematicFunctionTimer                                                          ;8BE342;
     BPL .return                                                          ;8BE345;
     SEP #$20                                                             ;8BE347;
     LDA.B #$10                                                           ;8BE349;
-    STA.B $69                                                            ;8BE34B;
-    STZ.B $6B                                                            ;8BE34D;
-    STZ.B $6F                                                            ;8BE34F;
-    STZ.B $72                                                            ;8BE351;
+    STA.B DP_MainScreenLayers                                                            ;8BE34B;
+    STZ.B DP_SubScreenLayers                                                            ;8BE34D;
+    STZ.B DP_ColorMathA                                                            ;8BE34F;
+    STZ.B DP_ColorMathB                                                            ;8BE351;
     LDA.B #$07                                                           ;8BE353;
-    STA.B $55                                                            ;8BE355;
+    STA.B DP_BGModeSize                                                            ;8BE355;
     LDA.B #$80                                                           ;8BE357;
-    STA.B $5F                                                            ;8BE359;
+    STA.B DP_Mode7Settings                                                            ;8BE359;
     LDA.B #$00                                                           ;8BE35B;
-    STA.B $58                                                            ;8BE35D;
-    STZ.B $5D                                                            ;8BE35F;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BE35D;
+    STZ.B DP_BGTilesAddr                                                            ;8BE35F;
     REP #$20                                                             ;8BE361;
     LDA.W #RTS_8BDB9D                                                    ;8BE363;
-    STA.W $1F51                                                          ;8BE366;
+    STA.W CinematicFunction                                                          ;8BE366;
     STZ.W $1A4D                                                          ;8BE369;
     LDA.W $09E0                                                          ;8BE36C;
     CMP.W #$0003                                                         ;8BE36F;
@@ -13021,40 +13021,40 @@ CinematicFunction_PostCredits_SamusShootsScreen:
     LDX.W #$0180                                                         ;8BE3B7;
     LDY.W #$0010                                                         ;8BE3BA;
     JSR.W PaletteCrossFading_FadeOutYColorsStartingFromColorIndexX       ;8BE3BD;
-    LDA.W $1A49                                                          ;8BE3C0;
+    LDA.W CinematicFunctionTimer                                                          ;8BE3C0;
     BEQ .timerExpired                                                    ;8BE3C3;
     JSR.W PaletteCrossFading_ComposeFadingPalettes                       ;8BE3C5;
 
   .timerExpired:
-    LDA.W $1A49                                                          ;8BE3C8;
+    LDA.W CinematicFunctionTimer                                                          ;8BE3C8;
     BEQ .transitionPalette                                               ;8BE3CB;
     DEC                                                                  ;8BE3CD;
-    STA.W $1A49                                                          ;8BE3CE;
+    STA.W CinematicFunctionTimer                                                          ;8BE3CE;
     BRA +                                                                ;8BE3D1;
 
   .transitionPalette:
     JSR.W TransitionSamusPaletteToBlack                                  ;8BE3D3;
 
-+   LDA.W $198D                                                          ;8BE3D6;
++   LDA.W Mode7TransformationAngle                                                          ;8BE3D6;
     SEC                                                                  ;8BE3D9;
     SBC.W #$0008                                                         ;8BE3DA;
     AND.W #$00FF                                                         ;8BE3DD;
-    STA.W $198D                                                          ;8BE3E0;
-    LDA.W $198F                                                          ;8BE3E3;
+    STA.W Mode7TransformationAngle                                                          ;8BE3E0;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BE3E3;
     SEC                                                                  ;8BE3E6;
     SBC.W #$0040                                                         ;8BE3E7;
-    STA.W $198F                                                          ;8BE3EA;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BE3EA;
     CMP.W #$0018                                                         ;8BE3ED;
     BMI .zoomGreaterThan18                                               ;8BE3F0;
     RTS                                                                  ;8BE3F2;
 
   .zoomGreaterThan18:
     LDA.W #$0018                                                         ;8BE3F3;
-    STA.W $198F                                                          ;8BE3F6;
+    STA.W Mode7TransformationZoomLevel                                                          ;8BE3F6;
     LDA.W #CinematicFunction_PostCredits_FadeToWhite                     ;8BE3F9;
-    STA.W $1F51                                                          ;8BE3FC;
+    STA.W CinematicFunction                                                          ;8BE3FC;
     LDA.W #$00B4                                                         ;8BE3FF;
-    STA.W $1A49                                                          ;8BE402;
+    STA.W CinematicFunctionTimer                                                          ;8BE402;
     STZ.W $1A4D                                                          ;8BE405;
     RTS                                                                  ;8BE408;
 
@@ -13090,25 +13090,25 @@ TransferPostCreditsSuperMetroidIconToVRAM:
     ASL                                                                  ;8BE42E;
     ASL                                                                  ;8BE42F;
     TAY                                                                  ;8BE430;
-    LDX.W $0330                                                          ;8BE431;
+    LDX.W VRAMWriteStack                                                          ;8BE431;
     LDA.W .size,Y                                                        ;8BE434;
-    STA.B $D0,X                                                          ;8BE437;
+    STA.B VRAMWrite.size,X                                                          ;8BE437;
     INX                                                                  ;8BE439;
     INX                                                                  ;8BE43A;
     LDA.W .source,Y                                                      ;8BE43B;
-    STA.B $D0,X                                                          ;8BE43E;
+    STA.B VRAMWrite.size,X                                                          ;8BE43E;
     INX                                                                  ;8BE440;
     INX                                                                  ;8BE441;
     SEP #$20                                                             ;8BE442;
     LDA.W .source+2,Y                                                    ;8BE444;
-    STA.B $D0,X                                                          ;8BE447;
+    STA.B VRAMWrite.size,X                                                          ;8BE447;
     REP #$20                                                             ;8BE449;
     INX                                                                  ;8BE44B;
     LDA.W .destination,Y                                                 ;8BE44C;
-    STA.B $D0,X                                                          ;8BE44F;
+    STA.B VRAMWrite.size,X                                                          ;8BE44F;
     INX                                                                  ;8BE451;
     INX                                                                  ;8BE452;
-    STX.W $0330                                                          ;8BE453;
+    STX.W VRAMWriteStack                                                          ;8BE453;
     INC.W $1A4D                                                          ;8BE456;
     RTS                                                                  ;8BE459;
 
@@ -13150,51 +13150,51 @@ TransferPostCreditsSuperMetroidIconToVRAM:
 CinematicFunction_PostCredits_FadeToWhite:
     JSR.W TransitionSamusPaletteToBlack                                  ;8BE48A;
     JSR.W TransferPostCreditsSuperMetroidIconToVRAM                      ;8BE48D;
-    DEC.W $1A49                                                          ;8BE490;
+    DEC.W CinematicFunctionTimer                                                          ;8BE490;
     BEQ .timerExpired                                                    ;8BE493;
     RTS                                                                  ;8BE495;
 
   .timerExpired:
     SEP #$20                                                             ;8BE496;
     LDA.B #$01                                                           ;8BE498;
-    STA.B $55                                                            ;8BE49A;
+    STA.B DP_BGModeSize                                                            ;8BE49A;
     LDA.B #$11                                                           ;8BE49C;
-    STA.B $69                                                            ;8BE49E;
-    STZ.B $6B                                                            ;8BE4A0;
-    STZ.B $6F                                                            ;8BE4A2;
+    STA.B DP_MainScreenLayers                                                            ;8BE49E;
+    STZ.B DP_SubScreenLayers                                                            ;8BE4A0;
+    STZ.B DP_ColorMathA                                                            ;8BE4A2;
     LDA.B #$31                                                           ;8BE4A4;
-    STA.B $72                                                            ;8BE4A6;
+    STA.B DP_ColorMathB                                                            ;8BE4A6;
     LDA.B #$3F                                                           ;8BE4A8;
-    STA.B $74                                                            ;8BE4AA;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BE4AA;
     LDA.B #$5F                                                           ;8BE4AC;
-    STA.B $75                                                            ;8BE4AE;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BE4AE;
     LDA.B #$9F                                                           ;8BE4B0;
-    STA.B $76                                                            ;8BE4B2;
-    STZ.B $5F                                                            ;8BE4B4;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BE4B2;
+    STZ.B DP_Mode7Settings                                                            ;8BE4B4;
     LDA.B #$4E                                                           ;8BE4B6;
-    STA.B $58                                                            ;8BE4B8;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BE4B8;
     LDA.B #$54                                                           ;8BE4BA;
-    STA.B $5D                                                            ;8BE4BC;
+    STA.B DP_BGTilesAddr                                                            ;8BE4BC;
     REP #$20                                                             ;8BE4BE;
     LDX.W #$0180                                                         ;8BE4C0;
 
   .loopPalettes:
     LDA.L Palettes_PostCredits,X                                         ;8BE4C3;
-    STA.L $7EC000,X                                                      ;8BE4C7;
+    STA.L Palettes,X                                                      ;8BE4C7;
     INX                                                                  ;8BE4CB;
     INX                                                                  ;8BE4CC;
     CPX.W #$01A0                                                         ;8BE4CD;
     BMI .loopPalettes                                                    ;8BE4D0;
-    STZ.W $1993                                                          ;8BE4D2;
-    STZ.W $1997                                                          ;8BE4D5;
+    STZ.W CinematicBG1_XPosition                                                          ;8BE4D2;
+    STZ.W CinematicBG1_YPosition                                                          ;8BE4D5;
     LDA.W #CinematicFunction_PostCredits_FadeFromWhite                   ;8BE4D8;
-    STA.W $1F51                                                          ;8BE4DB;
+    STA.W CinematicFunction                                                          ;8BE4DB;
     LDA.W #$0020                                                         ;8BE4DE;
-    STA.W $1A49                                                          ;8BE4E1;
+    STA.W CinematicFunctionTimer                                                          ;8BE4E1;
     JSL.L Enable_CinematicBGObjects                                      ;8BE4E4;
     JSL.L Enable_CinematicBGTilemap_Updates                              ;8BE4E8;
     LDA.W #$4C00                                                         ;8BE4EC;
-    STA.W $19F5                                                          ;8BE4EF;
+    STA.W CinematicBGObject_VRAMAddr                                                          ;8BE4EF;
     LDX.W #$007E                                                         ;8BE4F2;
     LDA.W #$007F                                                         ;8BE4F5;
 
@@ -13210,47 +13210,47 @@ CinematicFunction_PostCredits_FadeToWhite:
 ;;; $E504: Cinematic function - post-credits - fade from white ;;;
 CinematicFunction_PostCredits_FadeFromWhite:
     SEP #$20                                                             ;8BE504;
-    LDA.B $74                                                            ;8BE506;
+    LDA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BE506;
     SEC                                                                  ;8BE508;
     SBC.B #$01                                                           ;8BE509;
-    STA.B $74                                                            ;8BE50B;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BE50B;
     CMP.B #$20                                                           ;8BE50D;
     BPL +                                                                ;8BE50F;
     LDA.B #$20                                                           ;8BE511;
-    STA.B $74                                                            ;8BE513;
+    STA.B DP_ColorMathSubScreenBackdropColor0                                                            ;8BE513;
 
-+   LDA.B $75                                                            ;8BE515;
++   LDA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BE515;
     SEC                                                                  ;8BE517;
     SBC.B #$01                                                           ;8BE518;
-    STA.B $75                                                            ;8BE51A;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BE51A;
     CMP.B #$40                                                           ;8BE51C;
     BPL +                                                                ;8BE51E;
     LDA.B #$40                                                           ;8BE520;
-    STA.B $75                                                            ;8BE522;
+    STA.B DP_ColorMathSubScreenBackdropColor1                                                            ;8BE522;
 
-+   LDA.B $76                                                            ;8BE524;
++   LDA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BE524;
     SEC                                                                  ;8BE526;
     SBC.B #$01                                                           ;8BE527;
-    STA.B $76                                                            ;8BE529;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BE529;
     CMP.B #$80                                                           ;8BE52B;
     BPL +                                                                ;8BE52D;
     LDA.B #$80                                                           ;8BE52F;
-    STA.B $76                                                            ;8BE531;
+    STA.B DP_ColorMathSubScreenBackdropColor2                                                            ;8BE531;
 
 +   REP #$20                                                             ;8BE533;
-    DEC.W $1A49                                                          ;8BE535;
+    DEC.W CinematicFunctionTimer                                                          ;8BE535;
     BEQ .timerExpired                                                    ;8BE538;
     BPL .return                                                          ;8BE53A;
 
   .timerExpired:
     LDA.W #RTS_8BE7BA                                                    ;8BE53C;
-    STA.W $1F51                                                          ;8BE53F;
+    STA.W CinematicFunction                                                          ;8BE53F;
     LDA.W #$5000                                                         ;8BE542;
-    STA.W $19F5                                                          ;8BE545;
+    STA.W CinematicBGObject_VRAMAddr                                                          ;8BE545;
     JSR.W CinematicBGObjects_Update32x32CinematicBGTilemap               ;8BE548;
     LDA.W #$0100                                                         ;8BE54B;
-    STA.W $0911                                                          ;8BE54E;
-    STA.W $0915                                                          ;8BE551;
+    STA.W Layer1XPosition                                                          ;8BE54E;
+    STA.W Layer1YPosition                                                          ;8BE551;
     LDY.W #CinematicSpriteObjectDefinitions_SuperMetroidIcon_S_TopHalf   ;8BE554;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BE557;
     LDY.W #CinematicSpriteObjectDefs_SuperMetroidIcon_S_BottomHalf       ;8BE55A;
@@ -13288,7 +13288,7 @@ CinematicFunction_PostCredits_GreyOutSuperMetroidIcon:
     PHX                                                                  ;8BE58A;
     PHY                                                                  ;8BE58B;
     PHB                                                                  ;8BE58C;
-    LDA.W $1A49                                                          ;8BE58D;
+    LDA.W CinematicFunctionTimer                                                          ;8BE58D;
     ASL                                                                  ;8BE590;
     ASL                                                                  ;8BE591;
     TAX                                                                  ;8BE592;
@@ -13320,13 +13320,13 @@ CinematicFunction_PostCredits_GreyOutSuperMetroidIcon:
     DEX                                                                  ;8BE5BD;
     DEX                                                                  ;8BE5BE;
     BPL .loopSpritePalette                                               ;8BE5BF;
-    LDA.W $1A49                                                          ;8BE5C1;
+    LDA.W CinematicFunctionTimer                                                          ;8BE5C1;
     INC                                                                  ;8BE5C4;
-    STA.W $1A49                                                          ;8BE5C5;
+    STA.W CinematicFunctionTimer                                                          ;8BE5C5;
     CMP.W #$0010                                                         ;8BE5C8;
     BMI .return                                                          ;8BE5CB;
     LDA.W #RTS_8BE7BA                                                    ;8BE5CD;
-    STA.W $1F51                                                          ;8BE5D0;
+    STA.W CinematicFunction                                                          ;8BE5D0;
     JSR.W Clear_CinematicSpriteObjects                                   ;8BE5D3;
     PLB                                                                  ;8BE5D6;
     LDY.W #CinematicBGObjectDefinitions_PostCredits_ItemPercentage       ;8BE5D7;
@@ -13519,7 +13519,7 @@ Instruction_DrawItemPercentageCount:
   .tankValuesReserve:
     dw $09D4                                                             ;8BE70F;
   .tankValuesMissiles:
-    dw $09C8                                                             ;8BE711;
+    dw MaxMissiles                                                             ;8BE711;
   .tankValuesSuperMissiles:
     dw $09CC                                                             ;8BE713;
   .tankValuesPowerBombs:
@@ -13564,7 +13564,7 @@ TilemapValuesForDecimalDigits:
 ;;; $E769: Instruction - draw item percentage Japanese text ;;;
 Instruction_DrawItemPercentageJapanText:
     PHX                                                                  ;8BE769;
-    LDA.W $09E2                                                          ;8BE76A;
+    LDA.W JapanText                                                          ;8BE76A;
     BEQ .return                                                          ;8BE76D;
     LDX.W #$007E                                                         ;8BE76F;
 
@@ -13592,7 +13592,7 @@ Instruction_ClearItemPercentageJapanText:
     DEX                                                                  ;8BE78C;
     BPL .loop                                                            ;8BE78D;
     LDA.W #CinematicFunction_PostCredits_ScrollItemPercentageDown        ;8BE78F;
-    STA.W $1F51                                                          ;8BE792;
+    STA.W CinematicFunction                                                          ;8BE792;
     PLX                                                                  ;8BE795;
     RTS                                                                  ;8BE796;
 
@@ -13600,17 +13600,17 @@ Instruction_ClearItemPercentageJapanText:
 ;;; $E797: Cinematic function - post-credits - scroll item percentage down ;;;
 CinematicFunction_PostCredits_ScrollItemPercentageDown:
 ; This is the end. Once the cinematic function is set to RTS, the game logic never progresses any further
-    LDA.W $1997                                                          ;8BE797;
+    LDA.W CinematicBG1_YPosition                                                          ;8BE797;
     SEC                                                                  ;8BE79A;
     SBC.W #$0002                                                         ;8BE79B;
-    STA.W $1997                                                          ;8BE79E;
+    STA.W CinematicBG1_YPosition                                                          ;8BE79E;
     CMP.W #$FFB1                                                         ;8BE7A1;
     BPL .return                                                          ;8BE7A4;
     LDY.W #CinematicBGObjectDefinitions_PostCredits_SeeYouNextMission    ;8BE7A6;
     LDA.W #$4C00                                                         ;8BE7A9;
     JSR.W Spawn_CinematicBGObject                                        ;8BE7AC;
     LDA.W #RTS_8BE7BA                                                    ;8BE7AF;
-    STA.W $1F51                                                          ;8BE7B2;
+    STA.W CinematicFunction                                                          ;8BE7B2;
     JSL.L Write_supermetroid_ToSRAM                                      ;8BE7B5;
 
   .return:
@@ -13796,7 +13796,7 @@ Handle_ShootingStars:
   .loopDrawSetup:
     LDA.W #$0028                                                         ;8BE8F2;
     STA.B $16                                                            ;8BE8F5;
-    LDX.W $0590                                                          ;8BE8F7;
+    LDX.W OAMStack                                                          ;8BE8F7;
     LDY.W #$0E0C                                                         ;8BE8FA;
 
   .loopDraw:
@@ -13867,7 +13867,7 @@ Handle_ShootingStars:
     JMP.W .loopDraw                                                      ;8BE975;
 
   .return:
-    STX.W $0590                                                          ;8BE978;
+    STX.W OAMStack                                                          ;8BE978;
     PLP                                                                  ;8BE97B;
     RTS                                                                  ;8BE97C;
 
@@ -14658,11 +14658,11 @@ CinematicSpriteObjectDefs_SuperMetroidIcon_Circle_BottomHalf:
 ;;; $EF99: Initialisation function - cinematic sprite object $EF21 (critters escape) ;;;
 InitFunction_CinematicSpriteObject_CrittersEscape:
     LDA.W #$0080                                                         ;8BEF99;
-    STA.W $1A9D,Y                                                        ;8BEF9C;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BEF9C;
     LDA.W #$0080                                                         ;8BEF9F;
-    STA.W $1A7D,Y                                                        ;8BEFA2;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BEFA2;
     LDA.W #$0E00                                                         ;8BEFA5;
-    STA.W $1ABD,Y                                                        ;8BEFA8;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BEFA8;
     LDA.W #$0104                                                         ;8BEFAB;
     STA.W $1B7D,Y                                                        ;8BEFAE;
     RTS                                                                  ;8BEFB1;
@@ -14674,20 +14674,20 @@ PreInstruction_CinematicSpriteObject_CrittersEscape:
     CLC                                                                  ;8BEFB5;
     ADC.W #$0080                                                         ;8BEFB6;
     STA.W $1AFD,X                                                        ;8BEFB9;
-    LDA.W $1A9D,X                                                        ;8BEFBC;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BEFBC;
     ADC.W #$0000                                                         ;8BEFBF;
-    STA.W $1A9D,X                                                        ;8BEFC2;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BEFC2;
     LDA.W $1ADD,X                                                        ;8BEFC5;
     CLC                                                                  ;8BEFC8;
     ADC.W #$0000                                                         ;8BEFC9;
     STA.W $1ADD,X                                                        ;8BEFCC;
-    LDA.W $1A7D,X                                                        ;8BEFCF;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BEFCF;
     ADC.W #$0001                                                         ;8BEFD2;
-    STA.W $1A7D,X                                                        ;8BEFD5;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BEFD5;
     CMP.W #$0110                                                         ;8BEFD8;
     BMI .return                                                          ;8BEFDB;
     LDA.W #$0001                                                         ;8BEFDD;
-    STA.W $1B5D,X                                                        ;8BEFE0;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BEFE0;
     LDA.W #InstList_CinematicSpriteObject_Delete_duplicate               ;8BEFE3;
     STA.W $1B1D,X                                                        ;8BEFE6;
 
@@ -14698,75 +14698,75 @@ PreInstruction_CinematicSpriteObject_CrittersEscape:
 ;;; $EFEA: Initialisation function - cinematic sprite object $EE9D/$EEA3/$EEA9/$EEBB (exploding Zebes - palette 7) ;;;
 InitFunction_CinematicSpriteObject_ExplodingZebes_Palette7:
     LDA.W #$0080                                                         ;8BEFEA;
-    STA.W $1A7D,Y                                                        ;8BEFED; fallthrough to CommonInit_ExplodingZebes_Palette7
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BEFED; fallthrough to CommonInit_ExplodingZebes_Palette7
 
 
 ;;; $EFF0: Palette 7 exploding Zebes common initialisation ;;;
 CommonInit_ExplodingZebes_Palette7:
     LDA.W #$0080                                                         ;8BEFF0;
-    STA.W $1A9D,Y                                                        ;8BEFF3;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BEFF3;
     LDA.W #$0E00                                                         ;8BEFF6;
-    STA.W $1ABD,Y                                                        ;8BEFF9;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BEFF9;
     RTS                                                                  ;8BEFFC;
 
 
 ;;; $EFFD: Initialisation function - cinematic sprite object $EEF7 (Zebes explosion - stars - left) ;;;
 InitFunction_CinematicSpriteObject_ZebesExplosion_Stars_Left:
     LDA.W #$FF80                                                         ;8BEFFD;
-    STA.W $1A7D,Y                                                        ;8BF000;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF000;
     BRA CommonInit_ExplodingZebes_Palette7                               ;8BF003;
 
 
 ;;; $F005: Initialisation function - cinematic sprite object $EEAF/$EEB5 (exploding Zebes - palette 5) ;;;
 InitFunction_CinematicSpriteObject_ExplodingZebes_Palette5:
     LDA.W #$0080                                                         ;8BF005;
-    STA.W $1A7D,Y                                                        ;8BF008;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF008;
     LDA.W #$0080                                                         ;8BF00B;
-    STA.W $1A9D,Y                                                        ;8BF00E;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF00E;
     LDA.W #$0A00                                                         ;8BF011;
-    STA.W $1ABD,Y                                                        ;8BF014;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF014;
     RTS                                                                  ;8BF017;
 
 
 ;;; $F018: Initialisation function - cinematic sprite object $EEC1 (Zebes explosion - afterglow) ;;;
 InitFunction_CinematicSpriteObject_ZebesExplosion_AfterGlow:
     LDA.W #$0080                                                         ;8BF018;
-    STA.W $1A7D,Y                                                        ;8BF01B;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF01B;
     LDA.W #$0080                                                         ;8BF01E;
-    STA.W $1A9D,Y                                                        ;8BF021;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF021;
     LDA.W #$0C00                                                         ;8BF024;
-    STA.W $1ABD,Y                                                        ;8BF027;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF027;
     RTS                                                                  ;8BF02A;
 
 
 ;;; $F02B: Initialisation function - cinematic sprite object $EEC7/$EECD ('THE OPERATION WAS' / 'COMPLETED SUCCESSFULLY') ;;;
 InitFunc_CineSpriteObj_TheOperationWasCompletedSuccessfully:
     LDA.W #$0080                                                         ;8BF02B;
-    STA.W $1A7D,Y                                                        ;8BF02E;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF02E;
     LDA.W #$0060                                                         ;8BF031;
-    STA.W $1A9D,Y                                                        ;8BF034;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF034;
     LDA.W #$0400                                                         ;8BF037;
-    STA.W $1ABD,Y                                                        ;8BF03A;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF03A;
     RTS                                                                  ;8BF03D;
 
 
 ;;; $F03E: Initialisation function - cinematic sprite object $EEFD (clear time) ;;;
 InitFunction_CinematicSpriteObject_ClearTime:
     LDA.W #$0080                                                         ;8BF03E;
-    STA.W $1A7D,Y                                                        ;8BF041;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF041;
     LDA.W #$00A0                                                         ;8BF044;
-    STA.W $1A9D,Y                                                        ;8BF047;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF047;
     LDA.W #$0200                                                         ;8BF04A;
-    STA.W $1ABD,Y                                                        ;8BF04D;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF04D;
     RTS                                                                  ;8BF050;
 
 
 ;;; $F051: Clear time result common initialisation ;;;
 CommonInit_ClearTime:
     LDA.W #$00A0                                                         ;8BF051;
-    STA.W $1A9D,Y                                                        ;8BF054;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF054;
     LDA.W #$0000                                                         ;8BF057;
-    STA.W $1ABD,Y                                                        ;8BF05A;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF05A;
     RTS                                                                  ;8BF05D;
 
 
@@ -14775,7 +14775,7 @@ InitFunction_CinematicSpriteObject_ClearTime_Hours_TensDigit:
     LDA.W $0DEC                                                          ;8BF05E;
     JSR.W CinematicSpriteObject_InstListPointer_PlusA_Times8             ;8BF061;
     LDA.W #$009C                                                         ;8BF064;
-    STA.W $1A7D,Y                                                        ;8BF067;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF067;
     JMP.W CommonInit_ClearTime                                           ;8BF06A;
 
 
@@ -14784,14 +14784,14 @@ InitFunction_CinematicSpriteObject_ClearTime_Hours_OnesDigit:
     LDA.W $0DEE                                                          ;8BF06D;
     JSR.W CinematicSpriteObject_InstListPointer_PlusA_Times8             ;8BF070;
     LDA.W #$00A4                                                         ;8BF073;
-    STA.W $1A7D,Y                                                        ;8BF076;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF076;
     JMP.W CommonInit_ClearTime                                           ;8BF079;
 
 
 ;;; $F07C: Initialisation function - cinematic sprite object $EF0F (clear time - colon) ;;;
 InitFunction_CinematicSpriteObject_ClearTime_Colon:
     LDA.W #$00AC                                                         ;8BF07C;
-    STA.W $1A7D,Y                                                        ;8BF07F;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF07F;
     JMP.W CommonInit_ClearTime                                           ;8BF082;
 
 
@@ -14800,7 +14800,7 @@ InitFunction_CineSpriteObject_ClearTime_Minutes_TensDigit:
     LDA.W $0DF0                                                          ;8BF085;
     JSR.W CinematicSpriteObject_InstListPointer_PlusA_Times8             ;8BF088;
     LDA.W #$00B4                                                         ;8BF08B;
-    STA.W $1A7D,Y                                                        ;8BF08E;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF08E;
     JMP.W CommonInit_ClearTime                                           ;8BF091;
 
 
@@ -14809,7 +14809,7 @@ InitFunction_CineSpriteObject_ClearTime_Minutes_OnesDigit:
     LDA.W $0DF2                                                          ;8BF094;
     JSR.W CinematicSpriteObject_InstListPointer_PlusA_Times8             ;8BF097;
     LDA.W #$00BC                                                         ;8BF09A;
-    STA.W $1A7D,Y                                                        ;8BF09D;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF09D;
     JMP.W CommonInit_ClearTime                                           ;8BF0A0;
 
 
@@ -14829,7 +14829,7 @@ CinematicSpriteObject_InstListPointer_PlusA_Times8:
 ;;; $F0B2: Initialisation function - cinematic sprite object $EED3 (yellow clouds - top - top half) ;;;
 InitFunction_CinematicSpriteObject_YellowClouds_Top_TopHalf:
     LDA.W #$FFA0                                                         ;8BF0B2;
-    STA.W $1A9D,Y                                                        ;8BF0B5; fallthrough to CommonInit_YellowClouds_TopBottom
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF0B5; fallthrough to CommonInit_YellowClouds_TopBottom
 
 
 ;;; $F0B8: Top/bottom yellow clouds common initialisation ;;;
@@ -14837,9 +14837,9 @@ CommonInit_YellowClouds_TopBottom:
     LDA.W $1B9D                                                          ;8BF0B8;
     BEQ .noInitParam                                                     ;8BF0BB;
     LDA.W #$0180                                                         ;8BF0BD;
-    STA.W $1A7D,Y                                                        ;8BF0C0;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF0C0;
     LDA.W #$0A00                                                         ;8BF0C3;
-    STA.W $1ABD,Y                                                        ;8BF0C6;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF0C6;
     LDA.W $1B1D,Y                                                        ;8BF0C9;
     CLC                                                                  ;8BF0CC;
     ADC.W #$0004                                                         ;8BF0CD;
@@ -14848,125 +14848,125 @@ CommonInit_YellowClouds_TopBottom:
 
   .noInitParam:
     LDA.W #$0080                                                         ;8BF0D4;
-    STA.W $1A7D,Y                                                        ;8BF0D7;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF0D7;
     LDA.W #$0A00                                                         ;8BF0DA;
-    STA.W $1ABD,Y                                                        ;8BF0DD;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF0DD;
     RTS                                                                  ;8BF0E0;
 
 
 ;;; $F0E1: Initialisation function - cinematic sprite object $EED9 (yellow clouds - top - bottom half) ;;;
 InitFunction_CineSpriteObject_YellowClouds_Top_BottomHalf:
     LDA.W #$FFE0                                                         ;8BF0E1;
-    STA.W $1A9D,Y                                                        ;8BF0E4;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF0E4;
     BRA CommonInit_YellowClouds_TopBottom                                ;8BF0E7;
 
 
 ;;; $F0E9: Initialisation function - cinematic sprite object $EEDF (yellow clouds - bottom - top half) ;;;
 InitFunction_CineSpriteObject_YellowClouds_Bottom_TopHalf:
     LDA.W #$0120                                                         ;8BF0E9;
-    STA.W $1A9D,Y                                                        ;8BF0EC;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF0EC;
     BRA CommonInit_YellowClouds_TopBottom                                ;8BF0EF;
 
 
 ;;; $F0F1: Initialisation function - cinematic sprite object $EEE5 (yellow clouds - bottom - bottom half) ;;;
 InitFunction_CineSpriteObject_YellowClouds_Bottom_BottomHalf:
     LDA.W #$0160                                                         ;8BF0F1;
-    STA.W $1A9D,Y                                                        ;8BF0F4;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF0F4;
     BRA CommonInit_YellowClouds_TopBottom                                ;8BF0F7;
 
 
 ;;; $F0F9: Initialisation function - cinematic sprite object $EEEB (yellow clouds - right) ;;;
 InitFunction_CinematicSpriteObject_YellowClouds_Right:
     LDA.W #$0140                                                         ;8BF0F9;
-    STA.W $1A7D,Y                                                        ;8BF0FC;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF0FC;
     LDA.W $1B9D                                                          ;8BF0FF;
     BEQ .noInitParam                                                     ;8BF102;
     LDA.W #$01C0                                                         ;8BF104;
-    STA.W $1A9D,Y                                                        ;8BF107;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF107;
     LDA.W #$0A00                                                         ;8BF10A;
-    STA.W $1ABD,Y                                                        ;8BF10D;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF10D;
     RTS                                                                  ;8BF110;
 
   .noInitParam:
     LDA.W #$00C0                                                         ;8BF111;
-    STA.W $1A9D,Y                                                        ;8BF114;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF114;
     LDA.W #$0A00                                                         ;8BF117;
-    STA.W $1ABD,Y                                                        ;8BF11A;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF11A;
     RTS                                                                  ;8BF11D;
 
 
 ;;; $F11E: Initialisation function - cinematic sprite object $EEF1 (yellow clouds - left) ;;;
 InitFunction_CinematicSpriteObject_YellowClouds_Left:
     LDA.W #$FFC0                                                         ;8BF11E;
-    STA.W $1A7D,Y                                                        ;8BF121;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF121;
     LDA.W $1B9D                                                          ;8BF124;
     BEQ .noInitParam                                                     ;8BF127;
     LDA.W #$FF40                                                         ;8BF129;
-    STA.W $1A9D,Y                                                        ;8BF12C;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF12C;
     LDA.W #$0A00                                                         ;8BF12F;
-    STA.W $1ABD,Y                                                        ;8BF132;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF132;
     RTS                                                                  ;8BF135;
 
   .noInitParam:
     LDA.W #$0040                                                         ;8BF136;
-    STA.W $1A9D,Y                                                        ;8BF139;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF139;
     LDA.W #$0A00                                                         ;8BF13C;
-    STA.W $1ABD,Y                                                        ;8BF13F;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF13F;
     RTS                                                                  ;8BF142;
 
 
 ;;; $F143: Initialisation function - cinematic sprite object $EF27/$EF2D/$EF33/$EF39/$EF3F (suitless Samus) ;;;
 InitFunction_CinematicSpriteObject_SuitlessSamus:
     LDA.W #$0078                                                         ;8BF143;
-    STA.W $1A7D,Y                                                        ;8BF146;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF146;
     LDA.W #$0088                                                         ;8BF149;
-    STA.W $1A9D,Y                                                        ;8BF14C;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF14C;
     LDA.W #$0A00                                                         ;8BF14F;
-    STA.W $1ABD,Y                                                        ;8BF152;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF152;
     RTS                                                                  ;8BF155;
 
 
 ;;; $F156: Initialisation function - cinematic sprite object $EF45/$EF57/$EF5D/$EF6F (suited Samus body / arm) ;;;
 InitFunction_CinematicSpriteObject_SuitedSamus_Body_Arm:
     LDA.W #$0078                                                         ;8BF156;
-    STA.W $1A7D,Y                                                        ;8BF159;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF159;
     LDA.W #$0098                                                         ;8BF15C;
-    STA.W $1A9D,Y                                                        ;8BF15F;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF15F;
     LDA.W #$0C00                                                         ;8BF162;
-    STA.W $1ABD,Y                                                        ;8BF165;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF165;
     RTS                                                                  ;8BF168;
 
 
 ;;; $F169: Initialisation function - cinematic sprite object $EF4B/$EF63/$EF75 (suited Samus head - with helmet) ;;;
 InitFunction_CinematicSpriteObject_SuitedSamus_Head_Helmet:
     LDA.W #$007C                                                         ;8BF169;
-    STA.W $1A7D,Y                                                        ;8BF16C;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF16C;
     LDA.W #$006C                                                         ;8BF16F;
-    STA.W $1A9D,Y                                                        ;8BF172;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF172;
     LDA.W #$0C00                                                         ;8BF175;
-    STA.W $1ABD,Y                                                        ;8BF178;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF178;
     RTS                                                                  ;8BF17B;
 
 
 ;;; $F17C: Initialisation function - cinematic sprite object $EF51/$EF69/$EF7B (suited Samus head - without helmet) ;;;
 InitFunction_CinematicSpriteObject_SuitedSamus_Head:
     LDA.W #$0079                                                         ;8BF17C;
-    STA.W $1A7D,Y                                                        ;8BF17F;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF17F;
     LDA.W #$006B                                                         ;8BF182;
-    STA.W $1A9D,Y                                                        ;8BF185;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF185;
     LDA.W #$0A00                                                         ;8BF188;
-    STA.W $1ABD,Y                                                        ;8BF18B;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF18B;
     RTS                                                                  ;8BF18E;
 
 
 ;;; $F18F: Initialisation function - cinematic sprite object $EF81 (Super Metroid icon - S - top half) ;;;
 InitFunction_CineSpriteObject_SuperMetroidIcon_S_TopHalf:
     LDA.W #$0212                                                         ;8BF18F;
-    STA.W $1A7D,Y                                                        ;8BF192;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF192;
     LDA.W #$00E7                                                         ;8BF195;
-    STA.W $1A9D,Y                                                        ;8BF198;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF198;
     LDA.W #$0E00                                                         ;8BF19B;
-    STA.W $1ABD,Y                                                        ;8BF19E;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF19E;
     LDA.W #$0008                                                         ;8BF1A1;
     STA.W $1B7D,Y                                                        ;8BF1A4;
     RTS                                                                  ;8BF1A7;
@@ -14975,11 +14975,11 @@ InitFunction_CineSpriteObject_SuperMetroidIcon_S_TopHalf:
 ;;; $F1A8: Initialisation function - cinematic sprite object $EF87 (Super Metroid icon - S - bottom half) ;;;
 InitFunction_CineSpriteObject_SuperMetroidIcon_S_BottomHalf:
     LDA.W #$00F6                                                         ;8BF1A8;
-    STA.W $1A7D,Y                                                        ;8BF1AB;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF1AB;
     LDA.W #$0207                                                         ;8BF1AE;
-    STA.W $1A9D,Y                                                        ;8BF1B1;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF1B1;
     LDA.W #$0E00                                                         ;8BF1B4;
-    STA.W $1ABD,Y                                                        ;8BF1B7;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF1B7;
     LDA.W #$0008                                                         ;8BF1BA;
     STA.W $1B7D,Y                                                        ;8BF1BD;
     RTS                                                                  ;8BF1C0;
@@ -14988,41 +14988,41 @@ InitFunction_CineSpriteObject_SuperMetroidIcon_S_BottomHalf:
 ;;; $F1C1: Initialisation function - cinematic sprite object $EF8D (Super Metroid icon - circle - top half) ;;;
 InitFunc_CineSpriteObject_SuperMetroidIcon_Circle_TopHalf:
     LDA.W #$0181                                                         ;8BF1C1;
-    STA.W $1A7D,Y                                                        ;8BF1C4;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF1C4;
     LDA.W #$016E                                                         ;8BF1C7;
-    STA.W $1A9D,Y                                                        ;8BF1CA;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF1CA;
     LDA.W #$0E00                                                         ;8BF1CD;
-    STA.W $1ABD,Y                                                        ;8BF1D0;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF1D0;
     RTS                                                                  ;8BF1D3;
 
 
 ;;; $F1D4: Initialisation function - cinematic sprite object $EF93 (Super Metroid icon - circle - bottom half) ;;;
 InitFunc_CineSpriteObject_SuperMetroidIcon_Circle_BottomHalf:
     LDA.W #$0187                                                         ;8BF1D4;
-    STA.W $1A7D,Y                                                        ;8BF1D7;
+    STA.W CinematicSpriteObject_XPositions,Y                                                        ;8BF1D7;
     LDA.W #$0180                                                         ;8BF1DA;
-    STA.W $1A9D,Y                                                        ;8BF1DD;
+    STA.W CinematicSpriteObject_YPositions,Y                                                        ;8BF1DD;
     LDA.W #$0E00                                                         ;8BF1E0;
-    STA.W $1ABD,Y                                                        ;8BF1E3;
+    STA.W CinematicSpriteObject_PaletteIndices,Y                                                        ;8BF1E3;
     RTS                                                                  ;8BF1E6;
 
 
 ;;; $F1E7: Pre-instruction - cinematic sprite object $EF81 (Super Metroid icon - S - top half) ;;;
 PreInstruction_CineSpriteObject_SuperMetroidIcon_S_TopHalf:
-    LDA.W $1A9D,X                                                        ;8BF1E7;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BF1E7;
     CLC                                                                  ;8BF1EA;
     ADC.W $1B7D,X                                                        ;8BF1EB;
-    STA.W $1A9D,X                                                        ;8BF1EE;
-    LDA.W $1A7D,X                                                        ;8BF1F1;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BF1EE;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BF1F1;
     SEC                                                                  ;8BF1F4;
     SBC.W $1B7D,X                                                        ;8BF1F5;
-    STA.W $1A7D,X                                                        ;8BF1F8;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BF1F8;
     CMP.W #$018B                                                         ;8BF1FB;
     BPL +                                                                ;8BF1FE;
     LDA.W #$018A                                                         ;8BF200;
-    STA.W $1A7D,X                                                        ;8BF203;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BF203;
     LDA.W #$016F                                                         ;8BF206;
-    STA.W $1A9D,X                                                        ;8BF209;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BF209;
     LDA.W #RTS_8B93D9                                                    ;8BF20C;
     STA.W $1B3D,X                                                        ;8BF20F;
     PHY                                                                  ;8BF212;
@@ -15040,20 +15040,20 @@ PreInstruction_CineSpriteObject_SuperMetroidIcon_S_TopHalf:
 
 ;;; $F227: Pre-instruction - cinematic sprite object $EF87 (Super Metroid icon - S - bottom half) ;;;
 Instruction_CineSpriteObject_SuperMetroidIcon_S_BottomHalf:
-    LDA.W $1A9D,X                                                        ;8BF227;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BF227;
     SEC                                                                  ;8BF22A;
     SBC.W $1B7D,X                                                        ;8BF22B;
-    STA.W $1A9D,X                                                        ;8BF22E;
-    LDA.W $1A7D,X                                                        ;8BF231;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BF22E;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BF231;
     CLC                                                                  ;8BF234;
     ADC.W $1B7D,X                                                        ;8BF235;
-    STA.W $1A7D,X                                                        ;8BF238;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BF238;
     CMP.W #$017E                                                         ;8BF23B;
     BMI +                                                                ;8BF23E;
     LDA.W #$017E                                                         ;8BF240;
-    STA.W $1A7D,X                                                        ;8BF243;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BF243;
     LDA.W #$017F                                                         ;8BF246;
-    STA.W $1A9D,X                                                        ;8BF249;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BF249;
     LDA.W #RTS_8B93D9                                                    ;8BF24C;
     STA.W $1B3D,X                                                        ;8BF24F;
     RTS                                                                  ;8BF252;
@@ -15069,21 +15069,21 @@ Instruction_CineSpriteObject_SuperMetroidIcon_S_BottomHalf:
 Instruction_GreyOutSuperMetroidIcon:
     SEP #$20                                                             ;8BF25E;
     LDA.B #$03                                                           ;8BF260;
-    STA.B $69                                                            ;8BF262;
+    STA.B DP_MainScreenLayers                                                            ;8BF262;
     LDA.B #$10                                                           ;8BF264;
-    STA.B $6B                                                            ;8BF266;
+    STA.B DP_SubScreenLayers                                                            ;8BF266;
     LDA.B #$02                                                           ;8BF268;
-    STA.B $6F                                                            ;8BF26A;
+    STA.B DP_ColorMathA                                                            ;8BF26A;
     LDA.B #$22                                                           ;8BF26C;
-    STA.B $72                                                            ;8BF26E;
+    STA.B DP_ColorMathB                                                            ;8BF26E;
     LDA.B #$64                                                           ;8BF270;
-    STA.B $5D                                                            ;8BF272;
+    STA.B DP_BGTilesAddr                                                            ;8BF272;
     LDA.B #$54                                                           ;8BF274;
-    STA.B $59                                                            ;8BF276;
+    STA.B DP_BG2TilemapAddrSize                                                            ;8BF276;
     REP #$20                                                             ;8BF278;
-    STZ.W $1A49                                                          ;8BF27A;
+    STZ.W CinematicFunctionTimer                                                          ;8BF27A;
     LDA.W #CinematicFunction_PostCredits_GreyOutSuperMetroidIcon         ;8BF27D;
-    STA.W $1F51                                                          ;8BF280;
+    STA.W CinematicFunction                                                          ;8BF280;
     RTS                                                                  ;8BF283;
 
 
@@ -15104,7 +15104,7 @@ Instruction_CineSpriteObjectSpawnZebesExplosionSilhouette:
     LDY.W #CinematicSpriteObjectDefinitions_ZebesExplosion_Silhouette    ;8BF296;
     JSR.W Spawn_CinematicSpriteObject_Y                                  ;8BF299;
     LDA.W #$7FFF                                                         ;8BF29C;
-    STA.L $7EC000                                                        ;8BF29F;
+    STA.L Palettes                                                        ;8BF29F;
     PLY                                                                  ;8BF2A3;
     RTS                                                                  ;8BF2A4;
 
@@ -15114,7 +15114,7 @@ PreInst_CineSpriteObj_ExplodingZebes_PurpleGlow_Stars_Lava:
     LDA.W $1B3B                                                          ;8BF2A5;
     BNE .return                                                          ;8BF2A8;
     LDA.W #$0001                                                         ;8BF2AA;
-    STA.W $1B5D,X                                                        ;8BF2AD;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BF2AD;
     LDA.W #InstList_CinematicSpriteObject_Delete_duplicate               ;8BF2B0;
     STA.W $1B1D,X                                                        ;8BF2B3;
 
@@ -15127,15 +15127,15 @@ Instruction_CinematicSpriteObject_StartZebesExplosion:
     PHY                                                                  ;8BF2B7;
     SEP #$20                                                             ;8BF2B8;
     LDA.B #$11                                                           ;8BF2BA;
-    STA.B $69                                                            ;8BF2BC;
+    STA.B DP_MainScreenLayers                                                            ;8BF2BC;
     LDA.B #$02                                                           ;8BF2BE;
-    STA.B $6B                                                            ;8BF2C0;
+    STA.B DP_SubScreenLayers                                                            ;8BF2C0;
     LDA.B #$02                                                           ;8BF2C2;
-    STA.B $6F                                                            ;8BF2C4;
+    STA.B DP_ColorMathA                                                            ;8BF2C4;
     LDA.B #$11                                                           ;8BF2C6;
-    STA.B $72                                                            ;8BF2C8;
+    STA.B DP_ColorMathB                                                            ;8BF2C8;
     LDA.B #$7C                                                           ;8BF2CA;
-    STA.B $59                                                            ;8BF2CC;
+    STA.B DP_BG2TilemapAddrSize                                                            ;8BF2CC;
     REP #$20                                                             ;8BF2CE;
     LDY.W #CinematicSpriteObjectDefinitions_ZebesExplosion_Stars_Right   ;8BF2D0;
     STZ.B $12                                                            ;8BF2D3;
@@ -15159,17 +15159,17 @@ Instruction_ZebesExplosionFinale:
     PHY                                                                  ;8BF2FA;
     SEP #$20                                                             ;8BF2FB;
     LDA.B #$03                                                           ;8BF2FD;
-    STA.B $69                                                            ;8BF2FF;
+    STA.B DP_MainScreenLayers                                                            ;8BF2FF;
     LDA.B #$12                                                           ;8BF301;
-    STA.B $6B                                                            ;8BF303;
+    STA.B DP_SubScreenLayers                                                            ;8BF303;
     LDA.B #$02                                                           ;8BF305;
-    STA.B $6F                                                            ;8BF307;
+    STA.B DP_ColorMathA                                                            ;8BF307;
     LDA.B #$33                                                           ;8BF309;
-    STA.B $72                                                            ;8BF30B;
+    STA.B DP_ColorMathB                                                            ;8BF30B;
     LDA.B #$74                                                           ;8BF30D;
-    STA.B $58                                                            ;8BF30F;
+    STA.B DP_BG1TilemapAddrSize                                                            ;8BF30F;
     LDA.B #$78                                                           ;8BF311;
-    STA.B $59                                                            ;8BF313;
+    STA.B DP_BG2TilemapAddrSize                                                            ;8BF313;
     REP #$20                                                             ;8BF315;
     LDY.W #PaletteFXObjects_ZebesExplosionFinale                         ;8BF317;
     JSL.L Spawn_PaletteFXObject                                          ;8BF31A;
@@ -15185,11 +15185,11 @@ Instruction_ZebesExplosionFinale:
 Instruction_EndZebesExplosion:
     PHY                                                                  ;8BF32B;
     SEP #$20                                                             ;8BF32C;
-    STZ.B $69                                                            ;8BF32E;
-    STZ.B $6B                                                            ;8BF330;
+    STZ.B DP_MainScreenLayers                                                            ;8BF32E;
+    STZ.B DP_SubScreenLayers                                                            ;8BF330;
     REP #$20                                                             ;8BF332;
     LDA.W #$7FFF                                                         ;8BF334;
-    STA.L $7EC000                                                        ;8BF337;
+    STA.L Palettes                                                        ;8BF337;
     STA.L $7EC100                                                        ;8BF33B;
     PHX                                                                  ;8BF33F;
     LDX.W #$001E                                                         ;8BF340;
@@ -15201,16 +15201,16 @@ Instruction_EndZebesExplosion:
     BPL .loop                                                            ;8BF349;
     PLX                                                                  ;8BF34B;
     LDA.W #CinematicFunc_Ending_SpaceView_ChangeMusic                    ;8BF34C;
-    STA.W $1F51                                                          ;8BF34F;
+    STA.W CinematicFunction                                                          ;8BF34F;
     LDA.W #$0078                                                         ;8BF352;
-    STA.W $1A49                                                          ;8BF355;
+    STA.W CinematicFunctionTimer                                                          ;8BF355;
     PLY                                                                  ;8BF358;
     RTS                                                                  ;8BF359;
 
 
 ;;; $F35A: Pre-instruction - cinematic sprite object $EEF7 (Zebes explosion - stars - left) ;;;
 Instruction_CinematicSpriteObject_ZebesExplosion_Stars_Left:
-    LDA.W $1F51                                                          ;8BF35A;
+    LDA.W CinematicFunction                                                          ;8BF35A;
     CMP.W #CinematicFunc_Ending_SpaceView_GunshipEmergence_SpinningFast  ;8BF35D;
     BNE .return                                                          ;8BF360;
     LDA.W #PreInst_CineSpriteObject_ZebesExplosion_Stars_Left_Moving     ;8BF362;
@@ -15237,18 +15237,18 @@ PreInst_CineSpriteObject_ZebesExplosion_Stars_Left_Moving:
     CLC                                                                  ;8BF38B;
     ADC.W $1AFD,X                                                        ;8BF38C;
     STA.W $1ADD,X                                                        ;8BF38F;
-    LDA.W $1A7D,X                                                        ;8BF392;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BF392;
     ADC.W $1B7D,X                                                        ;8BF395;
-    STA.W $1A7D,X                                                        ;8BF398; fallthrough to PreInstruction_CineSpriteObject_ZebesExplosion_AfterGlow
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BF398; fallthrough to PreInstruction_CineSpriteObject_ZebesExplosion_AfterGlow
 
 
 ;;; $F39B: Pre-instruction - cinematic sprite object $EEC1 (Zebes explosion - afterglow) ;;;
 PreInstruction_CineSpriteObject_ZebesExplosion_AfterGlow:
-    LDA.W $1F51                                                          ;8BF39B;
+    LDA.W CinematicFunction                                                          ;8BF39B;
     CMP.W #RTS_8BDE63                                                    ;8BF39E;
     BNE .return                                                          ;8BF3A1;
     LDA.W #$0001                                                         ;8BF3A3;
-    STA.W $1B5D,X                                                        ;8BF3A6;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BF3A6;
     LDA.W #InstList_CinematicSpriteObject_Delete_duplicate               ;8BF3A9;
     STA.W $1B1D,X                                                        ;8BF3AC;
 
@@ -15267,11 +15267,11 @@ Instruction_CinematicSpriteObject_SpawnCompletedSuccessfully:
 
 ;;; $F3B9: Pre-instruction - cinematic sprite object $EEC7/$EECD/$EEFD/$EF03/$EF09/$EF0F/$EF15/$EF1B (text) ;;;
 PreInstruction_CinematicSpriteObject_Text:
-    LDA.W $1F51                                                          ;8BF3B9;
+    LDA.W CinematicFunction                                                          ;8BF3B9;
     CMP.W #CinematicFunction_Credits_Setup                               ;8BF3BC;
     BNE .return                                                          ;8BF3BF;
     LDA.W #$0001                                                         ;8BF3C1;
-    STA.W $1B5D,X                                                        ;8BF3C4;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BF3C4;
     LDA.W #InstList_CinematicSpriteObject_Delete_duplicate               ;8BF3C7;
     STA.W $1B1D,X                                                        ;8BF3CA;
 
@@ -15369,16 +15369,16 @@ Inst_CineSpriteObject_SpawnClearTime_Minutes_OnesDigit:
 
 ;;; $F448: Instruction - transition to credits ;;;
 Instruction_CinematicSpriteObject_TransitionToCredits:
-    STZ.W $0723                                                          ;8BF448;
-    STZ.W $0725                                                          ;8BF44B;
+    STZ.W ScreenFadeDelay                                                          ;8BF448;
+    STZ.W ScreenFadeCounter                                                          ;8BF44B;
     LDA.W #CinematicFunction_Ending_SpaceView_GunshipEmergence_Credits   ;8BF44E;
-    STA.W $1F51                                                          ;8BF451;
+    STA.W CinematicFunction                                                          ;8BF451;
     RTS                                                                  ;8BF454;
 
 
 ;;; $F455: Pre-instruction - cinematic sprite object $EED3/$EED9 (yellow clouds - top) ;;;
 PreInstruction_CinematicSpriteObject_YellowClouds_Top:
-    LDA.W $198F                                                          ;8BF455;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BF455;
     CMP.W #$00B0                                                         ;8BF458;
     BPL .return                                                          ;8BF45B;
     LDA.W #PreInstruction_CinematicSpriteObject_YellowClouds_Top_Moving  ;8BF45D;
@@ -15394,15 +15394,15 @@ PreInstruction_CinematicSpriteObject_YellowClouds_Top_Moving:
     CLC                                                                  ;8BF467;
     ADC.W #$0000                                                         ;8BF468;
     STA.W $1AFD,X                                                        ;8BF46B;
-    LDA.W $1A9D,X                                                        ;8BF46E;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BF46E;
     ADC.W #$0001                                                         ;8BF471;
-    STA.W $1A9D,X                                                        ;8BF474;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BF474;
     RTS                                                                  ;8BF477;
 
 
 ;;; $F478: Pre-instruction - cinematic sprite object $EEDF/$EEE5 (yellow clouds - bottom) ;;;
 PreInstruction_CinematicSpriteObject_YellowClouds_Bottom:
-    LDA.W $198F                                                          ;8BF478;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BF478;
     CMP.W #$00B0                                                         ;8BF47B;
     BPL .return                                                          ;8BF47E;
     LDA.W #PreInstruction_CineSpriteObject_YellowClouds_Bottom_Moving    ;8BF480;
@@ -15418,15 +15418,15 @@ PreInstruction_CineSpriteObject_YellowClouds_Bottom_Moving:
     SEC                                                                  ;8BF48A;
     SBC.W #$0000                                                         ;8BF48B;
     STA.W $1AFD,X                                                        ;8BF48E;
-    LDA.W $1A9D,X                                                        ;8BF491;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BF491;
     SBC.W #$0001                                                         ;8BF494;
-    STA.W $1A9D,X                                                        ;8BF497;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BF497;
     RTS                                                                  ;8BF49A;
 
 
 ;;; $F49B: Pre-instruction - cinematic sprite object $EEEB (yellow clouds - right) ;;;
 PreInstruction_CinematicSpriteObject_YellowClouds_Right:
-    LDA.W $198F                                                          ;8BF49B;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BF49B;
     CMP.W #$0060                                                         ;8BF49E;
     BMI .return                                                          ;8BF4A1;
     LDA.W #PreInstruction_CineSpriteObject_YellowClouds_Right_Moving     ;8BF4A3;
@@ -15442,22 +15442,22 @@ PreInstruction_CineSpriteObject_YellowClouds_Right_Moving:
     SEC                                                                  ;8BF4AD;
     SBC.W #$0000                                                         ;8BF4AE;
     STA.W $1AFD,X                                                        ;8BF4B1;
-    LDA.W $1A9D,X                                                        ;8BF4B4;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BF4B4;
     SBC.W #$0002                                                         ;8BF4B7;
-    STA.W $1A9D,X                                                        ;8BF4BA;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BF4BA;
     LDA.W $1ADD,X                                                        ;8BF4BD;
     SEC                                                                  ;8BF4C0;
     SBC.W #$0000                                                         ;8BF4C1;
     STA.W $1ADD,X                                                        ;8BF4C4;
-    LDA.W $1A7D,X                                                        ;8BF4C7;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BF4C7;
     SBC.W #$0001                                                         ;8BF4CA;
-    STA.W $1A7D,X                                                        ;8BF4CD;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BF4CD;
     RTS                                                                  ;8BF4D0;
 
 
 ;;; $F4D1: Pre-instruction - cinematic sprite object $EEF1 (yellow clouds - left) ;;;
 PreInstruction_CinematicSpriteObject_YellowClouds_Left:
-    LDA.W $198F                                                          ;8BF4D1;
+    LDA.W Mode7TransformationZoomLevel                                                          ;8BF4D1;
     CMP.W #$0060                                                         ;8BF4D4;
     BMI .return                                                          ;8BF4D7;
     LDA.W #PreInstruction_CineSpriteObject_YellowClouds_Left_Moving      ;8BF4D9;
@@ -15473,26 +15473,26 @@ PreInstruction_CineSpriteObject_YellowClouds_Left_Moving:
     CLC                                                                  ;8BF4E3;
     ADC.W #$0000                                                         ;8BF4E4;
     STA.W $1AFD,X                                                        ;8BF4E7;
-    LDA.W $1A9D,X                                                        ;8BF4EA;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BF4EA;
     ADC.W #$0002                                                         ;8BF4ED;
-    STA.W $1A9D,X                                                        ;8BF4F0;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BF4F0;
     LDA.W $1ADD,X                                                        ;8BF4F3;
     CLC                                                                  ;8BF4F6;
     ADC.W #$0000                                                         ;8BF4F7;
     STA.W $1ADD,X                                                        ;8BF4FA;
-    LDA.W $1A7D,X                                                        ;8BF4FD;
+    LDA.W CinematicSpriteObject_XPositions,X                                                        ;8BF4FD;
     ADC.W #$0001                                                         ;8BF500;
-    STA.W $1A7D,X                                                        ;8BF503;
+    STA.W CinematicSpriteObject_XPositions,X                                                        ;8BF503;
     RTS                                                                  ;8BF506;
 
 
 ;;; $F507: Pre-instruction - cinematic sprite object $EF27/$EF2D/$EF45/$EF4B/$EF51 (Samus - idle) ;;;
 PreInstruction_CinematicSpriteObject_Samus_Idle:
-    LDA.W $1F51                                                          ;8BF507;
+    LDA.W CinematicFunction                                                          ;8BF507;
     CMP.W #RTS_8BDB9D                                                    ;8BF50A;
     BNE .return                                                          ;8BF50D;
     LDA.W #$0001                                                         ;8BF50F;
-    STA.W $1B5D,X                                                        ;8BF512;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BF512;
     LDA.W #InstList_CinematicSpriteObject_Delete_duplicate               ;8BF515;
     STA.W $1B1D,X                                                        ;8BF518;
 
@@ -15518,21 +15518,21 @@ Instruction_CinematicSpriteObject_SpawnSuitlessSamusJump:
 ;;; $F528: Pre-instruction - Samus - jump - jumping ;;;
 Inst_CineSpriteObject_SpawnSuitlessSamus_LettingHairDown:
     JSR.W MoveJumpingEndingSamus                                         ;8BF528;
-    LDA.W $1A9D,X                                                        ;8BF52B;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BF52B;
     CMP.W #$FFB0                                                         ;8BF52E;
     BPL .return                                                          ;8BF531;
     SEP #$20                                                             ;8BF533;
     LDA.B #$03                                                           ;8BF535;
-    STA.B $52                                                            ;8BF537;
+    STA.B DP_SpriteSizeAddr                                                            ;8BF537;
     REP #$20                                                             ;8BF539;
     LDA.W #$0001                                                         ;8BF53B;
-    STA.W $1B5D,X                                                        ;8BF53E;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BF53E;
     LDA.W #InstList_Samus_Jump_Falling                                   ;8BF541;
     STA.W $1B1D,X                                                        ;8BF544;
     LDA.W #PreInstruction_CinematicSpriteObject_Samus_Jump_Falling       ;8BF547;
     STA.W $1B3D,X                                                        ;8BF54A;
     LDA.W #$0C00                                                         ;8BF54D;
-    STA.W $1ABD,X                                                        ;8BF550;
+    STA.W CinematicSpriteObject_PaletteIndices,X                                                        ;8BF550;
 
   .return:
     RTS                                                                  ;8BF553;
@@ -15566,11 +15566,11 @@ Instruction_CinematicSpriteObject_SpawnSuitedSamusJump:
 ;;; $F57F: Pre-instruction - suited Samus - jump - head - jumping ;;;
 PreInst_CinematicSpriteObject_SuitedSamus_Jump_Head_Jumping:
     JSR.W MoveJumpingEndingSamus                                         ;8BF57F;
-    LDA.W $1A9D,X                                                        ;8BF582;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BF582;
     CMP.W #$FFB0                                                         ;8BF585;
     BPL .return                                                          ;8BF588;
     LDA.W #$0001                                                         ;8BF58A;
-    STA.W $1B5D,X                                                        ;8BF58D;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BF58D;
     LDA.W #InstList_CinematicSpriteObject_Delete_duplicate               ;8BF590;
     STA.W $1B1D,X                                                        ;8BF593;
 
@@ -15624,13 +15624,13 @@ Instruction_CinematicSpriteObject_PositionSamusHeadToJump:
 PreInstruction_CinematicSpriteObject_Samus_Jump_Falling:
     JSR.W TransferPostCreditsSamusBeamToVRAM                             ;8BF5DD;
     JSR.W MoveJumpingEndingSamus                                         ;8BF5E0;
-    LDA.W $1A9D,X                                                        ;8BF5E3;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BF5E3;
     CMP.W #$0088                                                         ;8BF5E6;
     BMI .return                                                          ;8BF5E9;
     LDA.W #$0088                                                         ;8BF5EB;
-    STA.W $1A9D,X                                                        ;8BF5EE;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BF5EE;
     LDA.W #$0001                                                         ;8BF5F1;
-    STA.W $1B5D,X                                                        ;8BF5F4;
+    STA.W CinematicSpriteObject_InstructionTimers,X                                                        ;8BF5F4;
     LDA.W #InstList_Samus_Jump_Landed                                    ;8BF5F7;
     STA.W $1B1D,X                                                        ;8BF5FA;
     LDA.W #RTS_8B93D9                                                    ;8BF5FD;
@@ -15645,25 +15645,25 @@ Instruction_CinematicSpriteObject_SamusShootsScreen:
     PHX                                                                  ;8BF604;
     PHY                                                                  ;8BF605;
     LDA.W #$0E00                                                         ;8BF606;
-    STA.W $1ABD,X                                                        ;8BF609;
+    STA.W CinematicSpriteObject_PaletteIndices,X                                                        ;8BF609;
     LDA.W #CinematicFunction_PostCredits_SamusShootsScreen               ;8BF60C;
-    STA.W $1F51                                                          ;8BF60F;
+    STA.W CinematicFunction                                                          ;8BF60F;
     SEP #$20                                                             ;8BF612;
     LDA.B #$11                                                           ;8BF614;
-    STA.B $69                                                            ;8BF616;
+    STA.B DP_MainScreenLayers                                                            ;8BF616;
     LDA.B #$10                                                           ;8BF618;
-    STA.B $6B                                                            ;8BF61A;
+    STA.B DP_SubScreenLayers                                                            ;8BF61A;
     LDA.B #$02                                                           ;8BF61C;
-    STA.B $6F                                                            ;8BF61E;
+    STA.B DP_ColorMathA                                                            ;8BF61E;
     LDA.B #$81                                                           ;8BF620;
-    STA.B $72                                                            ;8BF622;
+    STA.B DP_ColorMathB                                                            ;8BF622;
     REP #$20                                                             ;8BF624;
     LDA.W #$FFFC                                                         ;8BF626;
-    STA.W $1993                                                          ;8BF629;
+    STA.W CinematicBG1_XPosition                                                          ;8BF629;
     LDA.W #$FFF8                                                         ;8BF62C;
-    STA.W $1997                                                          ;8BF62F;
+    STA.W CinematicBG1_YPosition                                                          ;8BF62F;
     LDA.W #$0010                                                         ;8BF632;
-    STA.W $1A49                                                          ;8BF635;
+    STA.W CinematicFunctionTimer                                                          ;8BF635;
     LDA.W #$0020                                                         ;8BF638;
     STA.W $1A4D                                                          ;8BF63B;
     STA.W $1A4F                                                          ;8BF63E;
@@ -15697,9 +15697,9 @@ MoveJumpingEndingSamus:
     CLC                                                                  ;8BF671;
     ADC.W $0B2C                                                          ;8BF672;
     STA.W $1AFD,X                                                        ;8BF675;
-    LDA.W $1A9D,X                                                        ;8BF678;
+    LDA.W CinematicSpriteObject_YPositions,X                                                        ;8BF678;
     ADC.W $0B2E                                                          ;8BF67B;
-    STA.W $1A9D,X                                                        ;8BF67E;
+    STA.W CinematicSpriteObject_YPositions,X                                                        ;8BF67E;
     RTS                                                                  ;8BF681;
 
 
@@ -15712,25 +15712,25 @@ TransferPostCreditsSamusBeamToVRAM:
     BPL .return                                                          ;8BF68A;
     ASL                                                                  ;8BF68C;
     TAY                                                                  ;8BF68D;
-    LDX.W $0330                                                          ;8BF68E;
+    LDX.W VRAMWriteStack                                                          ;8BF68E;
     LDA.W #$0800                                                         ;8BF691;
-    STA.B $D0,X                                                          ;8BF694;
+    STA.B VRAMWrite.size,X                                                          ;8BF694;
     INX                                                                  ;8BF696;
     INX                                                                  ;8BF697;
     LDA.W .sourceAddresses,Y                                             ;8BF698;
-    STA.B $D0,X                                                          ;8BF69B;
+    STA.B VRAMWrite.size,X                                                          ;8BF69B;
     INX                                                                  ;8BF69D;
     INX                                                                  ;8BF69E;
     SEP #$20                                                             ;8BF69F;
     LDA.B #$7F                                                           ;8BF6A1;
-    STA.B $D0,X                                                          ;8BF6A3;
+    STA.B VRAMWrite.size,X                                                          ;8BF6A3;
     REP #$20                                                             ;8BF6A5;
     INX                                                                  ;8BF6A7;
     LDA.W .VRAMAddresses,Y                                               ;8BF6A8;
-    STA.B $D0,X                                                          ;8BF6AB;
+    STA.B VRAMWrite.size,X                                                          ;8BF6AB;
     INX                                                                  ;8BF6AD;
     INX                                                                  ;8BF6AE;
-    STX.W $0330                                                          ;8BF6AF;
+    STX.W VRAMWriteStack                                                          ;8BF6AF;
     INC.W $1A4D                                                          ;8BF6B2;
 
   .return:
@@ -15768,26 +15768,26 @@ Instruction_EndCredits:
 
   .loop:
     LDA.L Palettes_PostCredits,X                                         ;8BF70C;
-    STA.L $7EC000,X                                                      ;8BF710;
+    STA.L Palettes,X                                                      ;8BF710;
     INX                                                                  ;8BF714;
     INX                                                                  ;8BF715;
     CPX.W #$0200                                                         ;8BF716;
     BMI .loop                                                            ;8BF719;
     SEP #$20                                                             ;8BF71B;
-    STZ.B $69                                                            ;8BF71D;
+    STZ.B DP_MainScreenLayers                                                            ;8BF71D;
     LDA.B #$80                                                           ;8BF71F;
-    STA.B $51                                                            ;8BF721;
+    STA.B DP_Brightness                                                            ;8BF721;
     REP #$20                                                             ;8BF723;
-    STZ.W $0723                                                          ;8BF725;
-    STZ.W $0725                                                          ;8BF728;
-    STZ.W $1995                                                          ;8BF72B;
-    STZ.W $1997                                                          ;8BF72E;
+    STZ.W ScreenFadeDelay                                                          ;8BF725;
+    STZ.W ScreenFadeCounter                                                          ;8BF728;
+    STZ.W CinematicBG1_YSubPosition                                                          ;8BF72B;
+    STZ.W CinematicBG1_YPosition                                                          ;8BF72E;
     LDA.W #$0001                                                         ;8BF731;
     STA.W $1A05                                                          ;8BF734;
     LDA.W #CinematicFunction_PostCredits_BlankScreen                     ;8BF737;
-    STA.W $1F51                                                          ;8BF73A;
+    STA.W CinematicFunction                                                          ;8BF73A;
     LDA.W #$003C                                                         ;8BF73D;
-    STA.W $1A49                                                          ;8BF740;
+    STA.W CinematicFunctionTimer                                                          ;8BF740;
     PLY                                                                  ;8BF743;
     PLX                                                                  ;8BF744;
     PLB                                                                  ;8BF745;
