@@ -940,8 +940,9 @@ EndingClearTime_MinutesUnits: skip 2 ; $0DF2
 
 org $0DEC
 SuitPickup_Stage: skip 2 ; $0DEC
-SuitPickup_LightBeamHeight: skip 2 ; $0DEE
-SuitPickup_LightBeamLeftRightPositions: skip 2 ; $0DEE
+SuitPickup_Var: skip 0 ; $0DEE
+SuitPickup_LightBeamHeight: skip 0 ; $0DEE
+SuitPickup_LightBeamLeftRightPositions: skip 0 ; $0DEE
 SuitPickup_LightBeamTopPosition: skip 2 ; $0DEE
 SuitPickup_ColorMathRed: skip 1 ; $0DF0
 SuitPickup_ColorMathGreen: skip 1 ; $0DF1
@@ -1615,7 +1616,7 @@ org $7E9032
 PhantoonMaterializationSFXIndex: ; $7E9032
 
 org $7E9080
-EyeBeamAngularWidthDelta: ; $7E9080
+EyeBeamAngularWidthDelta: skip 2 ; $7E9080
 EyeBeamAngularSubWidthDelta: ; $7E9082
 skip 14
 EyeBeamColorIndex: ; $7E9090
@@ -1624,7 +1625,7 @@ EyeBeamWindow1HDMADataTable: ; $7E9100..92FF
 WavyPhantoonBG2XScrollHDMADataTable: ; $7E9100..FF
 skip $600
 MotherBrainCorpseRottingRotTable: ; $7E9700..BF
-skip $DE
+skip $DC
 EnemyProjectileAngles: ; $7E97DC..FF
 
 org $7E9800
