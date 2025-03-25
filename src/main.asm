@@ -79,6 +79,6 @@ incsrc "bank_B9..CE.asm"
 incsrc "bank_CF..DE.asm"
 incsrc "bank_DF.asm"
 incsrc "labels.asm"
-incsrc "structs.asm"
+incsrc "memory.asm"
 
 print "Assembly complete. Total bytes written: ", bytes

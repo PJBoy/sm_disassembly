@@ -1386,6 +1386,7 @@ skip 2
 IntroSamusDisplayFlag: skip 2 ; $1A57
 
 CinematicSpriteObject_Index: skip 2 ; $1A59
+skip 2
 CinematicSpriteObject_SpritemapPointers: skip $20 ; $1A5D..7C
 CinematicSpriteObject_XPositions: skip $20 ; $1A7D..9C
 CinematicSpriteObject_YPositions: skip $20 ; $1A9D..BC
