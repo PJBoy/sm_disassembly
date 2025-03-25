@@ -4806,13 +4806,13 @@ CinematicFunction_TransitionToDemos:
     LDA.W #$0000                                                         ;8B9FF5;
 
   .loopClearGradient:
-    STA.L TitleScreenGradientColorMathSubScreenBackdropColorHDMATable,X                                                      ;8B9FF8;
+    STA.L TitleScreenGradientColorMathSubScreenBackdropColorHDMATable,X  ;8B9FF8;
     DEX                                                                  ;8B9FFC;
     DEX                                                                  ;8B9FFD;
     BPL .loopClearGradient                                               ;8B9FFE;
     LDA.W #$0028                                                         ;8BA000;
-    STA.W GameState                                                          ;8BA003;
-    STZ.W DemoScene                                                          ;8BA006;
+    STA.W GameState                                                      ;8BA003;
+    STZ.W DemoScene                                                      ;8BA006;
 
   .return:
     RTS                                                                  ;8BA009;
@@ -4825,7 +4825,7 @@ Configure_TitleScreen_GradientHDMATable:
     PHK                                                                  ;8BA00C;
     PLB                                                                  ;8BA00D;
     REP #$30                                                             ;8BA00E;
-    LDA.W Mode7TransformationZoomLevel                                                          ;8BA010;
+    LDA.W Mode7TransformationZoomLevel                                   ;8BA010;
     AND.W #$00F0                                                         ;8BA013;
     LSR                                                                  ;8BA016;
     LSR                                                                  ;8BA017;
@@ -4834,14 +4834,14 @@ Configure_TitleScreen_GradientHDMATable:
     LDA.L TitleSequenceHDMATables,X                                      ;8BA01A;
     TAY                                                                  ;8BA01E;
     PHB                                                                  ;8BA01F;
-    PEA.W TitleSequenceHDMATables>>8                                                          ;8BA020;
+    PEA.W TitleSequenceHDMATables>>8&$FF00                               ;8BA020;
     PLB                                                                  ;8BA023;
     PLB                                                                  ;8BA024;
     LDX.W #$0000                                                         ;8BA025;
 
   .loop:
     LDA.W $0000,Y                                                        ;8BA028;
-    STA.L TitleScreenGradientColorMathSubScreenBackdropColorHDMATable,X                                                      ;8BA02B;
+    STA.L TitleScreenGradientColorMathSubScreenBackdropColorHDMATable,X  ;8BA02B;
     BEQ .return                                                          ;8BA02F;
     INY                                                                  ;8BA031;
     INY                                                                  ;8BA032;
