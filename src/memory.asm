@@ -977,8 +977,8 @@ DistanceToEjectSamusRightDueToPostGrappleCollision: skip 2 ; $0E06
 DistanceToEjectSamusUpDueToPostGrappleCollision: skip 2 ; $0E08
 DistanceToEjectSamusDownDueToPostGrappleCollision: skip 2 ; $0E0A
 
-ShootingStars_StarIndex: skip 2 ; $0E0C
-ShootingStars_AnimationFrame: skip 2 ; $0E0D
+ShootingStars_StarIndex: skip 1 ; $0E0C
+ShootingStars_AnimationFrame: skip 1 ; $0E0D
 ShootingStars_XPosition: skip 2 ; $0E0E
 ShootingStars_XSubPosition: skip 2 ; $0E10
 ShootingStars_YPosition: skip 2 ; $0E12
@@ -1312,13 +1312,13 @@ Mode7Object_Index: skip 2 ; $19B1
 NeverRead19B3: skip 2 ; $19B3
 
 CinematicBGObject_IndirectInstructionPointers: skip 8 ; $19B5..BC
-CinematicBGObject_Index: skip 2 ; $19BD
-skip 14
+skip $10
 CinematicBGObject_InstListPointers: skip 8 ; $19CD..D4
 CinematicBGObject_PreInstructions: skip 8 ; $19D5..DC
 CinematicBGObject_InstructionTimers: skip 8 ; $19DD..E4
 CinematicBGObject_Timers: skip 8 ; $19E5..EC
-skip 4
+CinematicBGObject_Index: skip 2 ; $19ED
+skip 2
 CinematicBGObject_Enable: skip 2 ; $19F1
 CinematicBGObject_TilemapUpdateFlag: skip 2 ; $19F3
 CinematicBGObject_VRAMAddr: skip 2 ; $19F5
@@ -1372,6 +1372,7 @@ CeresExplosion2OffsetIndex: skip 0 ; $1A4B
 ZebesExplosionAfterglowTimer: skip 0 ; $1A4B
 EndingShipXVelocity: skip 0 ; $1A4B
 PostCreditsSamusBeamVRAMTransferIndex: skip 2 ; $1A4B
+neverRead1A4D: skip 0 ; $1A4D
 IntroBabyMetroidXVelocity: skip 0 ; $1A4D
 IntroBabyMetroidIdleTimer: skip 0 ; $1A4D
 EndingShipShakeIndex: skip 0 ; $1A4D
