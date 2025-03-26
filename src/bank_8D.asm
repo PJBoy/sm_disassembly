@@ -6395,7 +6395,7 @@ Enable_PaletteFXObjects:
     PHP                                                                  ;8DC4C2;
     REP #$20                                                             ;8DC4C3;
     LDA.W #$8000                                                         ;8DC4C5;
-    TSB.W $1E79                                                          ;8DC4C8;
+    TSB.W PaletteFXObject_Enable                                                          ;8DC4C8;
     PLP                                                                  ;8DC4CB;
     RTL                                                                  ;8DC4CC;
 
@@ -6405,7 +6405,7 @@ Disable_PaletteFXObjects:
     PHP                                                                  ;8DC4CD;
     REP #$20                                                             ;8DC4CE;
     LDA.W #$8000                                                         ;8DC4D0;
-    TRB.W $1E79                                                          ;8DC4D3;
+    TRB.W PaletteFXObject_Enable                                                          ;8DC4D3;
     PLP                                                                  ;8DC4D6;
     RTL                                                                  ;8DC4D7;
 
@@ -6418,7 +6418,7 @@ Clear_PaletteFXObjects:
     LDX.W #$000E                                                         ;8DC4DC;
 
   .loop:
-    STZ.W $1E7D,X                                                        ;8DC4DF;
+    STZ.W PaletteFXObject_IDs,X                                                        ;8DC4DF;
     DEX                                                                  ;8DC4E2;
     DEX                                                                  ;8DC4E3;
     BPL .loop                                                            ;8DC4E4;
@@ -6442,7 +6442,7 @@ Spawn_PaletteFXObject:
     LDX.W #$000E                                                         ;8DC4EE;
 
   .loop:
-    LDA.W $1E7D,X                                                        ;8DC4F1;
+    LDA.W PaletteFXObject_IDs,X                                                        ;8DC4F1;
     BEQ .zero                                                            ;8DC4F4;
     DEX                                                                  ;8DC4F6;
     DEX                                                                  ;8DC4F7;
@@ -6455,15 +6455,15 @@ Spawn_PaletteFXObject:
 
   .zero:
     TYA                                                                  ;8DC4FF;
-    STA.W $1E7D,X                                                        ;8DC500;
-    STZ.W $1E8D,X                                                        ;8DC503;
+    STA.W PaletteFXObject_IDs,X                                                        ;8DC500;
+    STZ.W PaletteFXObject_ColorIndices,X                                                        ;8DC503;
     LDA.W #RTS_8DC526                                                    ;8DC506;
-    STA.W $1EAD,X                                                        ;8DC509;
+    STA.W PaletteFXObject_PreInstructions,X                                                        ;8DC509;
     LDA.W $0002,Y                                                        ;8DC50C;
-    STA.W $1EBD,X                                                        ;8DC50F;
+    STA.W PaletteFXObject_InstListPointers,X                                                        ;8DC50F;
     LDA.W #$0001                                                         ;8DC512;
-    STA.W $1ECD,X                                                        ;8DC515;
-    STZ.W $1EDD,X                                                        ;8DC518;
+    STA.W PaletteFXObject_InstructionTimers,X                                                        ;8DC515;
+    STZ.W PaletteFXObject_Timers,X                                                        ;8DC518;
     TXA                                                                  ;8DC51B;
     TYX                                                                  ;8DC51C;
     TAY                                                                  ;8DC51D;
@@ -6487,16 +6487,16 @@ PaletteFXObject_Handler:
     PHK                                                                  ;8DC529;
     PLB                                                                  ;8DC52A;
     REP #$30                                                             ;8DC52B;
-    BIT.W $1E79                                                          ;8DC52D;
+    BIT.W PaletteFXObject_Enable                                                          ;8DC52D;
     BPL .return                                                          ;8DC530;
     LDX.W #$000E                                                         ;8DC532;
 
   .loop:
-    STX.W $1E7B                                                          ;8DC535;
-    LDA.W $1E7D,X                                                        ;8DC538;
+    STX.W PaletteFXObject_Index                                                          ;8DC535;
+    LDA.W PaletteFXObject_IDs,X                                                        ;8DC538;
     BEQ .next                                                            ;8DC53B;
     JSR.W Process_PaleteFXObject                                         ;8DC53D;
-    LDX.W $1E7B                                                          ;8DC540;
+    LDX.W PaletteFXObject_Index                                                          ;8DC540;
 
   .next:
     DEX                                                                  ;8DC543;
@@ -6512,36 +6512,36 @@ PaletteFXObject_Handler:
 ;;; $C54A: Process palette FX object ;;;
 Process_PaleteFXObject:
     REP #$30                                                             ;8DC54A;
-    JSR.W ($1EAD,X)                                                      ;8DC54C;
-    LDX.W $1E7B                                                          ;8DC54F;
-    DEC.W $1ECD,X                                                        ;8DC552;
+    JSR.W (PaletteFXObject_PreInstructions,X)                                                      ;8DC54C;
+    LDX.W PaletteFXObject_Index                                                          ;8DC54F;
+    DEC.W PaletteFXObject_InstructionTimers,X                                                        ;8DC552;
     BNE Process_PaleteFXObject_return                                    ;8DC555;
-    LDA.W $1EBD,X                                                        ;8DC557;
+    LDA.W PaletteFXObject_InstListPointers,X                                                        ;8DC557;
     TAY                                                                  ;8DC55A;
 
   .loopDetermineColorIndex:
     LDA.W $0000,Y                                                        ;8DC55B;
     BPL .timer                                                           ;8DC55E;
-    STA.B $12                                                            ;8DC560;
+    STA.B DP_Temp12                                                            ;8DC560;
     INY                                                                  ;8DC562;
     INY                                                                  ;8DC563;
     PEA.W .loopDetermineColorIndex-1                                     ;8DC564;
-    JMP.W ($0012)                                                        ;8DC567;
+    JMP.W (DP_Temp12)                                                        ;8DC567;
 
   .timer:
-    STA.W $1ECD,X                                                        ;8DC56A;
-    LDA.W $1E8D,X                                                        ;8DC56D;
+    STA.W PaletteFXObject_InstructionTimers,X                                                        ;8DC56A;
+    LDA.W PaletteFXObject_ColorIndices,X                                                        ;8DC56D;
     TAX                                                                  ;8DC570;
 
   .loopWriteColors:
     LDA.W $0002,Y                                                        ;8DC571;
     BPL .storeColor                                                      ;8DC574;
-    STA.B $12                                                            ;8DC576;
+    STA.B DP_Temp12                                                            ;8DC576;
     PEA.W .loopWriteColors-1                                             ;8DC578;
-    JMP.W ($0012)                                                        ;8DC57B;
+    JMP.W (DP_Temp12)                                                        ;8DC57B;
 
   .storeColor:
-    STA.L $7EC000,X                                                      ;8DC57E;
+    STA.L Palettes,X                                                      ;8DC57E;
     INX                                                                  ;8DC582;
     INX                                                                  ;8DC583;
     INY                                                                  ;8DC584;
@@ -6550,11 +6550,11 @@ Process_PaleteFXObject:
 
   .done:
 ; Eventually, the ASM processing will jump here (via $C595)
-    LDX.W $1E7B                                                          ;8DC589;
+    LDX.W PaletteFXObject_Index                                                          ;8DC589;
     TYA                                                                  ;8DC58C;
     CLC                                                                  ;8DC58D;
     ADC.W #$0004                                                         ;8DC58E;
-    STA.W $1EBD,X                                                        ;8DC591;
+    STA.W PaletteFXObject_InstListPointers,X                                                        ;8DC591;
 
   .return:
     RTS                                                                  ;8DC594;
@@ -6636,7 +6636,7 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 ;;; $C5CF: Instruction - delete ;;;
 Instruction_Delete_8DC5CF:
-    STZ.W $1E7D,X                                                        ;8DC5CF;
+    STZ.W PaletteFXObject_IDs,X                                                        ;8DC5CF;
     PLA                                                                  ;8DC5D2;
     RTS                                                                  ;8DC5D3;
 
@@ -6644,7 +6644,7 @@ Instruction_Delete_8DC5CF:
 ;;; $C5D4: Instruction - pre-instruction = [[Y]] ;;;
 Instruction_PaletteFXObject_PreInstructionInY:
     LDA.W $0000,Y                                                        ;8DC5D4;
-    STA.W $1EAD,X                                                        ;8DC5D7;
+    STA.W PaletteFXObject_PreInstructions,X                                                        ;8DC5D7;
     INY                                                                  ;8DC5DA;
     INY                                                                  ;8DC5DB;
     RTS                                                                  ;8DC5DC;
@@ -6654,7 +6654,7 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $C5DD: Unused. Instruction - clear pre-instruction ;;;
 UNUSED_Inst_PaletteFXObject_ClearPreInstruction_8DC5DD:
     LDA.W #.return                                                       ;8DC5DD;
-    STA.W $1EAD,X                                                        ;8DC5E0;
+    STA.W PaletteFXObject_PreInstructions,X                                                        ;8DC5E0;
 
   .return:
     RTS                                                                  ;8DC5E3;
@@ -6665,33 +6665,33 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $C5E4: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Inst_PaletteFXObject_CallExternalFunctionInY_8DC5E4:
     LDA.W $0000,Y                                                        ;8DC5E4;
-    STA.B $12                                                            ;8DC5E7;
+    STA.B DP_Temp12                                                            ;8DC5E7;
     LDA.W $0001,Y                                                        ;8DC5E9;
-    STA.B $13                                                            ;8DC5EC;
+    STA.B DP_Temp13                                                            ;8DC5EC;
     PHY                                                                  ;8DC5EE;
     JSL.L .externalFunction                                              ;8DC5EF;
     PLY                                                                  ;8DC5F3;
-    LDX.W $1E7B                                                          ;8DC5F4;
+    LDX.W PaletteFXObject_Index                                                          ;8DC5F4;
     INY                                                                  ;8DC5F7;
     INY                                                                  ;8DC5F8;
     INY                                                                  ;8DC5F9;
     RTS                                                                  ;8DC5FA;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;8DC5FB;
+    JML.W [DP_Temp12]                                                        ;8DC5FB;
 
 
 ;;; $C5FE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_PaletteFXObject_CallExternalFuncInYWithA_8DC5FE:
     LDA.W $0000,Y                                                        ;8DC5FE;
-    STA.B $12                                                            ;8DC601;
+    STA.B DP_Temp12                                                            ;8DC601;
     LDA.W $0001,Y                                                        ;8DC603;
-    STA.B $13                                                            ;8DC606;
+    STA.B DP_Temp13                                                            ;8DC606;
     LDA.W $0003,Y                                                        ;8DC608;
     PHY                                                                  ;8DC60B;
     JSL.L .externalFunction                                              ;8DC60C;
     PLY                                                                  ;8DC610;
-    LDX.W $1E7B                                                          ;8DC611;
+    LDX.W PaletteFXObject_Index                                                          ;8DC611;
     TYA                                                                  ;8DC614;
     CLC                                                                  ;8DC615;
     ADC.W #$0005                                                         ;8DC616;
@@ -6699,7 +6699,7 @@ UNUSED_Inst_PaletteFXObject_CallExternalFuncInYWithA_8DC5FE:
     RTS                                                                  ;8DC61A;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;8DC61B;
+    JML.W [DP_Temp12]                                                        ;8DC61B;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -6713,7 +6713,7 @@ Instruction_PaletteFXObject_GotoY:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $C623: Unused. Instruction - go to [Y] + ±[[Y]] ;;;
 UNUSED_Instruction_PaletteFXObject_GotoYPlusY_8DC623:
-    STY.B $12                                                            ;8DC623;
+    STY.B DP_Temp12                                                            ;8DC623;
     DEY                                                                  ;8DC625;
     LDA.W $0000,Y                                                        ;8DC626;
     XBA                                                                  ;8DC629;
@@ -6725,7 +6725,7 @@ UNUSED_Instruction_PaletteFXObject_GotoYPlusY_8DC623:
     ORA.W #$FF00                                                         ;8DC631;
 
 +   CLC                                                                  ;8DC634;
-    ADC.B $12                                                            ;8DC635;
+    ADC.B DP_Temp12                                                            ;8DC635;
     TAY                                                                  ;8DC637;
     RTS                                                                  ;8DC638;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -6733,7 +6733,7 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 ;;; $C639: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_PaletteFXObject_DecrementTimer_GotoYIfNonZero:
-    DEC.W $1EDD,X                                                        ;8DC639;
+    DEC.W PaletteFXObject_Timers,X                                                        ;8DC639;
     BNE Instruction_PaletteFXObject_GotoY                                ;8DC63C;
     INY                                                                  ;8DC63E;
     INY                                                                  ;8DC63F;
@@ -6743,7 +6743,7 @@ Instruction_PaletteFXObject_DecrementTimer_GotoYIfNonZero:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $C641: Unused. Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 UNUSED_Inst_PaletteFXObject_DecTimer_GotoYIfNonZero_8DC641:
-    DEC.W $1EDD,X                                                        ;8DC641;
+    DEC.W PaletteFXObject_Timers,X                                                        ;8DC641;
     BNE UNUSED_Instruction_PaletteFXObject_GotoYPlusY_8DC623             ;8DC644;
     INY                                                                  ;8DC646;
     RTS                                                                  ;8DC647;
@@ -6754,7 +6754,7 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 Instruction_PaletteFXObject_TimerInY:
     SEP #$20                                                             ;8DC648;
     LDA.W $0000,Y                                                        ;8DC64A;
-    STA.W $1EDD,X                                                        ;8DC64D;
+    STA.W PaletteFXObject_Timers,X                                                        ;8DC64D;
     REP #$20                                                             ;8DC650;
     INY                                                                  ;8DC652;
     RTS                                                                  ;8DC653;
@@ -6768,7 +6768,7 @@ RTS_8DC654:
 ;;; $C655: Instruction - palette FX object colour index = [[Y]] ;;;
 Instruction_PaletteFXObject_ColorIndexInY:
     LDA.W $0000,Y                                                        ;8DC655;
-    STA.W $1E8D,X                                                        ;8DC658;
+    STA.W PaletteFXObject_ColorIndices,X                                                        ;8DC658;
     INY                                                                  ;8DC65B;
     INY                                                                  ;8DC65C;
     RTS                                                                  ;8DC65D;
@@ -8085,19 +8085,19 @@ PaletteFXObjects_PostCreditsSuperMetroidIcon:
 ;;; $E204: Setup - palette FX object $E1BC (old Mother Brain fight background lights) ;;;
 Setup_PaletteFXObject_OldMotherBrainFightBackgroundLights:
     LDA.W #PreInstruction_PaletteFXObject_DeleteIfIntroPage2IsActive     ;8DE204;
-    STA.W $1EAD,Y                                                        ;8DE207;
+    STA.W PaletteFXObject_PreInstructions,Y                                                        ;8DE207;
     RTS                                                                  ;8DE20A;
 
 
 ;;; $E20B: Pre-instruction - delete if intro page 2 is active ;;;
 PreInstruction_PaletteFXObject_DeleteIfIntroPage2IsActive:
-    LDA.W $1F51                                                          ;8DE20B;
+    LDA.W CinematicFunction                                                          ;8DE20B;
     CMP.W #CinematicFunction_Intro_Page2                                 ;8DE20E;
     BNE .return                                                          ;8DE211;
     LDA.W #InstList_PaletteFXObject_Delete                               ;8DE213;
-    STA.W $1EBD,X                                                        ;8DE216;
+    STA.W PaletteFXObject_InstListPointers,X                                                        ;8DE216;
     LDA.W #$0001                                                         ;8DE219;
-    STA.W $1ECD,X                                                        ;8DE21C;
+    STA.W PaletteFXObject_InstructionTimers,X                                                        ;8DE21C;
 
   .return:
     RTS                                                                  ;8DE21F;
@@ -8165,9 +8165,9 @@ InstList_PaletteFXObject_Common_GreyOutTourianStatue:
 
 ;;; $E2E0: Pre-instruction - delete if enemy 0 died ;;;
 PreInstruction_PaletteFXObject_DeleteIfEnemy0Died:
-    LDA.W $0F8C                                                          ;8DE2E0;
+    LDA.W Enemy.health                                                          ;8DE2E0;
     BNE .return                                                          ;8DE2E3;
-    STZ.W $1E7D,X                                                        ;8DE2E5;
+    STZ.W PaletteFXObject_IDs,X                                                        ;8DE2E5;
 
   .return:
     RTS                                                                  ;8DE2E8;
@@ -8234,34 +8234,34 @@ InstList_PaletteFXObject_GoldenTorizoBelly_1:
 ;;; $E379: Pre-instruction - Samus in heat ;;;
 PreInstruction_PaletteFXObject_SamusInHeat:
 ; Contains heat damage check
-    LDA.W $09A2                                                          ;8DE379;
+    LDA.W EquippedItems                                                          ;8DE379;
     AND.W #$0021                                                         ;8DE37C;
     BNE +                                                                ;8DE37F;
-    LDA.W $0A4E                                                          ;8DE381;
+    LDA.W PeriodicSubDamage                                                          ;8DE381;
     CLC                                                                  ;8DE384;
     ADC.W #$4000                                                         ;8DE385;
-    STA.W $0A4E                                                          ;8DE388;
-    LDA.W $0A50                                                          ;8DE38B;
+    STA.W PeriodicSubDamage                                                          ;8DE388;
+    LDA.W PeriodicDamage                                                          ;8DE38B;
     ADC.W #$0000                                                         ;8DE38E;
-    STA.W $0A50                                                          ;8DE391;
-    LDA.W $05B6                                                          ;8DE394;
+    STA.W PeriodicDamage                                                          ;8DE391;
+    LDA.W NMI_FrameCounter                                                          ;8DE394;
     BIT.W #$0007                                                         ;8DE397;
     BNE +                                                                ;8DE39A;
     LDA.W #$0046                                                         ;8DE39C;
-    CMP.W $09C2                                                          ;8DE39F;
+    CMP.W Energy                                                          ;8DE39F;
     BCS +                                                                ;8DE3A2;
     LDA.W #$002D                                                         ;8DE3A4;
     JSL.L QueueSound_Lib3_Max6                                           ;8DE3A7;
 
-+   LDA.W $1EED                                                          ;8DE3AB;
-    CMP.W $1EEF                                                          ;8DE3AE;
++   LDA.W PaletteFXObject_SamusInHeatIndex                                                          ;8DE3AB;
+    CMP.W PaletteFXObject_PreviousSamusInHeatIndex                                                          ;8DE3AE;
     BEQ .return                                                          ;8DE3B1;
-    STA.W $1EEF                                                          ;8DE3B3;
+    STA.W PaletteFXObject_PreviousSamusInHeatIndex                                                          ;8DE3B3;
     ASL                                                                  ;8DE3B6;
     TAY                                                                  ;8DE3B7;
     LDA.W #$0001                                                         ;8DE3B8;
-    STA.W $1ECD,X                                                        ;8DE3BB;
-    LDA.W $09A2                                                          ;8DE3BE;
+    STA.W PaletteFXObject_InstructionTimers,X                                                        ;8DE3BB;
+    LDA.W EquippedItems                                                          ;8DE3BE;
     BIT.W #$0020                                                         ;8DE3C1;
     BEQ .checkVaria                                                      ;8DE3C4;
     LDA.W #.InstListPointers_gravity                                     ;8DE3C6;
@@ -8277,9 +8277,9 @@ PreInstruction_PaletteFXObject_SamusInHeat:
     LDA.W #.InstListPointers_power                                        ;8DE3D5;
 
   .setInstListPointer:
-    STA.B $12                                                            ;8DE3D8;
-    LDA.B ($12),Y                                                        ;8DE3DA;
-    STA.W $1EBD,X                                                        ;8DE3DC;
+    STA.B DP_Temp12                                                            ;8DE3D8;
+    LDA.B (DP_Temp12),Y                                                        ;8DE3DA;
+    STA.W PaletteFXObject_InstListPointers,X                                                        ;8DE3DC;
 
   .return:
     RTS                                                                  ;8DE3DF;
@@ -8342,7 +8342,7 @@ PreInstruction_PaletteFXObject_SamusInHeat:
 
 ;;; $E440: Setup - palette FX object $F761 (Norfair 1 / Tourian 1) ;;;
 Setup_PaletteFXObject_Norfair1_Tourian1:
-    LDA.W $09A2                                                          ;8DE440;
+    LDA.W EquippedItems                                                          ;8DE440;
     BIT.W #$0020                                                         ;8DE443;
     BEQ .checkVaria                                                      ;8DE446;
     LDA.W #InstList_PaletteFXObject_SamusInHeat_GravitySuit_0            ;8DE448;
@@ -8357,7 +8357,7 @@ Setup_PaletteFXObject_Norfair1_Tourian1:
   .powerSuit:
     LDA.W #InstList_PaletteFXObject_SamusInHeat_PowerSuit_0              ;8DE457;
 
-+   STA.W $1EBD,Y                                                        ;8DE45A;
++   STA.W PaletteFXObject_InstListPointers,Y                                                        ;8DE45A;
     RTS                                                                  ;8DE45D;
 
 
@@ -8679,7 +8679,7 @@ UNUSED_PreInstruction_PaletteFXObject_WaitUntilAreBossIsDead:
     BCS .return                                                          ;8DEB31;
     PLA                                                                  ;8DEB33;
     LDA.W #$0001                                                         ;8DEB34;
-    STA.W $1ECD,X                                                        ;8DEB37;
+    STA.W PaletteFXObject_InstructionTimers,X                                                        ;8DEB37;
 
   .return:
     RTS                                                                  ;8DEB3A;
@@ -8750,13 +8750,13 @@ InstList_PaletteFXObject_Crateria1_3:
 
 ;;; $EC59: Pre-instruction - restart Crateria 1 instruction list if Samus isn't low enough ;;;
 PreInst_PaletteFXObject_RestartCrateria1IfSamusIsntLowEnough:
-    LDA.W $0AFA                                                          ;8DEC59;
+    LDA.W SamusYPosition                                                          ;8DEC59;
     CMP.W #$0380                                                         ;8DEC5C;
     BCS .return                                                          ;8DEC5F;
     LDA.W #$0001                                                         ;8DEC61;
-    STA.W $1ECD,X                                                        ;8DEC64;
+    STA.W PaletteFXObject_InstructionTimers,X                                                        ;8DEC64;
     LDA.W #InstList_PaletteFXObject_Crateria1_1                          ;8DEC67;
-    STA.W $1EBD,X                                                        ;8DEC6A;
+    STA.W PaletteFXObject_InstListPointers,X                                                        ;8DEC6A;
 
   .return:
     RTS                                                                  ;8DEC6D;
@@ -8828,13 +8828,13 @@ UNUSED_InstList_PaletteFXObject_DarkLightning_3_8DED34:
 
 ;;; $ED84: Pre-instruction - restart dark lightning instruction list if Samus isn't low enough ;;;
 UNUSED_PreInst_PalFXObj_RestartDarkLightningIfSamus_8DED84:
-    LDA.W $0AFA                                                          ;8DED84;
+    LDA.W SamusYPosition                                                          ;8DED84;
     CMP.W #$0380                                                         ;8DED87;
     BCS .return                                                          ;8DED8A;
     LDA.W #$0001                                                         ;8DED8C;
-    STA.W $1ECD,X                                                        ;8DED8F;
+    STA.W PaletteFXObject_InstructionTimers,X                                                        ;8DED8F;
     LDA.W #UNUSED_InstList_PaletteFXObject_DarkLightning_1_8DEC76        ;8DED92;
-    STA.W $1EBD,X                                                        ;8DED95;
+    STA.W PaletteFXObject_InstListPointers,X                                                        ;8DED95;
 
   .return:
     RTS                                                                  ;8DED98;
@@ -8939,12 +8939,12 @@ InstList_PaletteFXObject_Brinstar8_1:
 ;;; $EEC5: Pre-instruction - delete palette FX object if area mini-boss is dead ;;;
 PreInstruction_PaletteFXObject_DeleteIfAreaMiniBossIsDead:
     PHX                                                                  ;8DEEC5;
-    LDX.W $079F                                                          ;8DEEC6;
-    LDA.L $7ED828,X                                                      ;8DEEC9;
+    LDX.W AreaIndex                                                          ;8DEEC6;
+    LDA.L SRAMMirror_Boss,X                                                      ;8DEEC9;
     PLX                                                                  ;8DEECD;
     AND.W #$0002                                                         ;8DEECE;
     BEQ .return                                                          ;8DEED1;
-    STZ.W $1E7D,X                                                        ;8DEED3;
+    STZ.W PaletteFXObject_IDs,X                                                        ;8DEED3;
 
   .return:
     RTS                                                                  ;8DEED6;
@@ -9170,11 +9170,11 @@ InstList_PaletteFXObject_Norfair2_1:
     dw InstList_PaletteFXObject_Norfair2_1
 
 
-;;; $F1C6: Instruction - $1EED = [[Y]] ;;;
+;;; $F1C6: Instruction - PaletteFXObject_SamusInHeatIndex = [[Y]] ;;;
 Instruction_PaletteFXObject_1EED_InY:
     LDA.W $0000,Y                                                        ;8DF1C6;
     AND.W #$00FF                                                         ;8DF1C9;
-    STA.W $1EED                                                          ;8DF1CC;
+    STA.W PaletteFXObject_SamusInHeatIndex                                                          ;8DF1CC;
     INY                                                                  ;8DF1CF;
     RTS                                                                  ;8DF1D0;
 
@@ -9530,9 +9530,9 @@ InstList_PaletteFXObject_Maridia4_1:
 ;;; $F621: Pre-instruction - delete if two more palette FX objects are spawned ;;;
 PreInstruction_PaletteFXObject_DeleteIf2MoreObjectsSpawned:
 ; Huh. Weird...
-    LDA.W $1E79,X                                                        ;8DF621;
+    LDA.W PaletteFXObject_Enable,X                                                        ;8DF621;
     BEQ .return                                                          ;8DF624;
-    STZ.W $1E7D,X                                                        ;8DF626;
+    STZ.W PaletteFXObject_IDs,X                                                        ;8DF626;
 
   .return:
     RTS                                                                  ;8DF629;
@@ -9621,13 +9621,13 @@ InstList_PaletteFXObject_Common_Tourian2_Tourian4_1:
 ;;; $F730: Setup - palette FX object $F779 (Brinstar 8) ;;;
 Setup_PaletteFXObject_Brinstar8:
     PHX                                                                  ;8DF730;
-    LDX.W $079F                                                          ;8DF731;
-    LDA.L $7ED828,X                                                      ;8DF734;
+    LDX.W AreaIndex                                                          ;8DF731;
+    LDA.L SRAMMirror_Boss,X                                                      ;8DF734;
     PLX                                                                  ;8DF738;
     AND.W #$0002                                                         ;8DF739;
     BEQ .return                                                          ;8DF73C;
     LDA.W #$0000                                                         ;8DF73E;
-    STA.W $1E7D,Y                                                        ;8DF741;
+    STA.W PaletteFXObject_IDs,Y                                                        ;8DF741;
 
   .return:
     RTS                                                                  ;8DF744;
