@@ -1417,9 +1417,9 @@ SetupASM_ClearBlocksAfterSavingAnimalsAndShakeScreen:
     db $3D,$0B                                                           ;8F9198;
     dw PLMEntries_ClearCrateriaMainstreetEscapePassageIfCrittersEsc      ;8F919A;
     LDA.W #$0018                                                         ;8F919C;
-    STA.W $183E                                                          ;8F919F;
+    STA.W EarthquakeType                                                 ;8F919F;
     LDA.W #$FFFF                                                         ;8F91A2;
-    STA.W $1840                                                          ;8F91A5;
+    STA.W EarthquakeTimer                                                ;8F91A5;
     RTS                                                                  ;8F91A8;
 
 
@@ -1463,9 +1463,9 @@ RTS_8F91BC:
 SetupASM_ShakeScreenAndCall88A7D8DuringEscape:
 ; Room $91F8, state $9261. Landing site, Zebes timebomb set
     LDA.W #$0006                                                         ;8F91BD;
-    STA.W $183E                                                          ;8F91C0;
+    STA.W EarthquakeType                                                 ;8F91C0;
     LDA.W #$FFFF                                                         ;8F91C3;
-    STA.W $1840                                                          ;8F91C6; fallthrough to SetupASM_ScrollingSkyLand
+    STA.W EarthquakeTimer                                                ;8F91C6; fallthrough to SetupASM_ScrollingSkyLand
 
 
 ;;; $91C9: Setup ASM: scrolling sky land ;;;
@@ -6836,7 +6836,7 @@ DoorASM_Scroll_6_Green:
     PHP                                                                  ;8FB981;
     SEP #$20                                                             ;8FB982;
     LDA.B #$02                                                           ;8FB984;
-    STA.L $7ECD26                                                        ;8FB986;
+    STA.L Scrolls+6                                                      ;8FB986;
     PLP                                                                  ;8FB98A;
     RTS                                                                  ;8FB98B;
 
@@ -6847,7 +6847,7 @@ DoorASM_Scroll_0_Blue:
     PHP                                                                  ;8FB98C;
     SEP #$20                                                             ;8FB98D;
     LDA.B #$01                                                           ;8FB98F;
-    STA.L $7ECD20                                                        ;8FB991;
+    STA.L Scrolls                                                        ;8FB991;
     PLP                                                                  ;8FB995;
     RTS                                                                  ;8FB996;
 
@@ -6858,7 +6858,7 @@ DoorASM_Scroll_13_Blue:
     PHP                                                                  ;8FB997;
     SEP #$20                                                             ;8FB998;
     LDA.B #$01                                                           ;8FB99A;
-    STA.L $7ECD33                                                        ;8FB99C;
+    STA.L Scrolls+$13                                                    ;8FB99C;
     PLP                                                                  ;8FB9A0;
     RTS                                                                  ;8FB9A1;
 
@@ -6869,9 +6869,9 @@ DoorASM_Scroll_4_Red_8_Green:
     PHP                                                                  ;8FB9A2;
     SEP #$20                                                             ;8FB9A3;
     LDA.B #$00                                                           ;8FB9A5;
-    STA.L $7ECD24                                                        ;8FB9A7;
+    STA.L Scrolls+4                                                      ;8FB9A7;
     LDA.B #$02                                                           ;8FB9AB;
-    STA.L $7ECD28                                                        ;8FB9AD;
+    STA.L Scrolls+8                                                      ;8FB9AD;
     PLP                                                                  ;8FB9B1;
     RTS                                                                  ;8FB9B2;
 
@@ -6882,10 +6882,10 @@ DoorASM_Scroll_8_9_A_B_Red:
     PHP                                                                  ;8FB9B3;
     SEP #$20                                                             ;8FB9B4;
     LDA.B #$00                                                           ;8FB9B6;
-    STA.L $7ECD28                                                        ;8FB9B8;
-    STA.L $7ECD29                                                        ;8FB9BC;
-    STA.L $7ECD2A                                                        ;8FB9C0;
-    STA.L $7ECD2B                                                        ;8FB9C4;
+    STA.L Scrolls+8                                                      ;8FB9B8;
+    STA.L Scrolls+9                                                      ;8FB9BC;
+    STA.L Scrolls+$A                                                     ;8FB9C0;
+    STA.L Scrolls+$B                                                     ;8FB9C4;
     PLP                                                                  ;8FB9C8;
     RTS                                                                  ;8FB9C9;
 
@@ -6896,14 +6896,14 @@ DoorASM_Scroll_2_3_4_5_B_C_D_11_Red:
     PHP                                                                  ;8FB9CA;
     SEP #$20                                                             ;8FB9CB;
     LDA.B #$00                                                           ;8FB9CD;
-    STA.L $7ECD22                                                        ;8FB9CF;
-    STA.L $7ECD23                                                        ;8FB9D3;
-    STA.L $7ECD24                                                        ;8FB9D7;
-    STA.L $7ECD25                                                        ;8FB9DB;
-    STA.L $7ECD2B                                                        ;8FB9DF;
-    STA.L $7ECD2C                                                        ;8FB9E3;
-    STA.L $7ECD2D                                                        ;8FB9E7;
-    STA.L $7ECD31                                                        ;8FB9EB;
+    STA.L Scrolls+2                                                      ;8FB9CF;
+    STA.L Scrolls+3                                                      ;8FB9D3;
+    STA.L Scrolls+4                                                      ;8FB9D7;
+    STA.L Scrolls+5                                                      ;8FB9DB;
+    STA.L Scrolls+$B                                                     ;8FB9DF;
+    STA.L Scrolls+$C                                                     ;8FB9E3;
+    STA.L Scrolls+$D                                                     ;8FB9E7;
+    STA.L Scrolls+$11                                                    ;8FB9EB;
     PLP                                                                  ;8FB9EF;
     RTS                                                                  ;8FB9F0;
 
@@ -6914,8 +6914,8 @@ DoorASM_Scroll_1_4_Green:
     PHP                                                                  ;8FB9F1;
     SEP #$20                                                             ;8FB9F2;
     LDA.B #$02                                                           ;8FB9F4;
-    STA.L $7ECD21                                                        ;8FB9F6;
-    STA.L $7ECD24                                                        ;8FB9FA;
+    STA.L Scrolls+1                                                      ;8FB9F6;
+    STA.L Scrolls+4                                                      ;8FB9FA;
     PLP                                                                  ;8FB9FE;
     RTS                                                                  ;8FB9FF;
 
@@ -6926,7 +6926,7 @@ DoorASM_Scroll_2_Blue:
     PHP                                                                  ;8FBA00;
     SEP #$20                                                             ;8FBA01;
     LDA.B #$01                                                           ;8FBA03;
-    STA.L $7ECD22                                                        ;8FBA05;
+    STA.L Scrolls+2                                                      ;8FBA05;
     PLP                                                                  ;8FBA09;
     RTS                                                                  ;8FBA0A;
 
@@ -6937,7 +6937,7 @@ DoorASM_Scroll_17_Blue:
     PHP                                                                  ;8FBA0B;
     SEP #$20                                                             ;8FBA0C;
     LDA.B #$01                                                           ;8FBA0E;
-    STA.L $7ECD37                                                        ;8FBA10;
+    STA.L Scrolls+$17                                                    ;8FBA10;
     PLP                                                                  ;8FBA14;
     RTS                                                                  ;8FBA15;
 
@@ -6948,7 +6948,7 @@ DoorASM_Scroll_4_Blue:
     PHP                                                                  ;8FBA16;
     SEP #$20                                                             ;8FBA17;
     LDA.B #$01                                                           ;8FBA19;
-    STA.L $7ECD24                                                        ;8FBA1B;
+    STA.L Scrolls+4                                                      ;8FBA1B;
     PLP                                                                  ;8FBA1F;
     RTS                                                                  ;8FBA20;
 
@@ -6959,7 +6959,7 @@ DoorASM_Scroll_6_Green_duplicate:
     PHP                                                                  ;8FBA21;
     SEP #$20                                                             ;8FBA22;
     LDA.B #$02                                                           ;8FBA24;
-    STA.L $7ECD26                                                        ;8FBA26;
+    STA.L Scrolls+6                                                      ;8FBA26;
     PLP                                                                  ;8FBA2A;
     RTS                                                                  ;8FBA2B;
 
@@ -6970,7 +6970,7 @@ DoorASM_Scroll_3_Green:
     PHP                                                                  ;8FBA2C;
     SEP #$20                                                             ;8FBA2D;
     LDA.B #$02                                                           ;8FBA2F;
-    STA.L $7ECD23                                                        ;8FBA31;
+    STA.L Scrolls+3                                                      ;8FBA31;
     PLP                                                                  ;8FBA35;
     RTS                                                                  ;8FBA36;
 
@@ -7155,8 +7155,8 @@ DoorASM_Scroll_18_1C_Green:
     PHP                                                                  ;8FBD07;
     SEP #$20                                                             ;8FBD08;
     LDA.B #$02                                                           ;8FBD0A;
-    STA.L $7ECD38                                                        ;8FBD0C;
-    STA.L $7ECD3C                                                        ;8FBD10;
+    STA.L Scrolls+$18                                                    ;8FBD0C;
+    STA.L Scrolls+$1C                                                    ;8FBD10;
     PLP                                                                  ;8FBD14;
     RTS                                                                  ;8FBD15;
 
@@ -7168,8 +7168,8 @@ DoorASM_Scroll_5_6_Blue:
     PHP                                                                  ;8FBD16;
     SEP #$20                                                             ;8FBD17;
     LDA.B #$01                                                           ;8FBD19;
-    STA.L $7ECD25                                                        ;8FBD1B;
-    STA.L $7ECD26                                                        ;8FBD1F;
+    STA.L Scrolls+5                                                      ;8FBD1B;
+    STA.L Scrolls+6                                                      ;8FBD1F;
     PLP                                                                  ;8FBD23;
     RTS                                                                  ;8FBD24;
 
@@ -7182,7 +7182,7 @@ DoorASM_Scroll_1D_Blue:
     PHP                                                                  ;8FBD25;
     SEP #$20                                                             ;8FBD26;
     LDA.B #$01                                                           ;8FBD28;
-    STA.L $7ECD3D                                                        ;8FBD2A;
+    STA.L Scrolls+$1D                                                    ;8FBD2A;
     PLP                                                                  ;8FBD2E;
     RTS                                                                  ;8FBD2F;
 
@@ -7193,8 +7193,8 @@ DoorASM_Scroll_2_3_Green:
     PHP                                                                  ;8FBD30;
     SEP #$20                                                             ;8FBD31;
     LDA.B #$02                                                           ;8FBD33;
-    STA.L $7ECD22                                                        ;8FBD35;
-    STA.L $7ECD23                                                        ;8FBD39;
+    STA.L Scrolls+2                                                      ;8FBD35;
+    STA.L Scrolls+3                                                      ;8FBD39;
     PLP                                                                  ;8FBD3D;
     RTS                                                                  ;8FBD3E;
 
@@ -7205,9 +7205,9 @@ DoorASM_Scroll_0_Red_1_Green:
     PHP                                                                  ;8FBD3F;
     SEP #$20                                                             ;8FBD40;
     LDA.B #$00                                                           ;8FBD42;
-    STA.L $7ECD20                                                        ;8FBD44;
+    STA.L Scrolls                                                        ;8FBD44;
     LDA.B #$02                                                           ;8FBD48;
-    STA.L $7ECD21                                                        ;8FBD4A;
+    STA.L Scrolls+1                                                      ;8FBD4A;
     PLP                                                                  ;8FBD4E;
     RTS                                                                  ;8FBD4F;
 
@@ -7218,7 +7218,7 @@ DoorASM_Scroll_B_Green:
     PHP                                                                  ;8FBD50;
     SEP #$20                                                             ;8FBD51;
     LDA.B #$02                                                           ;8FBD53;
-    STA.L $7ECD2B                                                        ;8FBD55;
+    STA.L Scrolls+$B                                                     ;8FBD55;
     PLP                                                                  ;8FBD59;
     RTS                                                                  ;8FBD5A;
 
@@ -7229,9 +7229,9 @@ DoorASM_Scroll_Scroll_1C_Red_1D_Blue:
     PHP                                                                  ;8FBD5B;
     SEP #$20                                                             ;8FBD5C;
     LDA.B #$00                                                           ;8FBD5E;
-    STA.L $7ECD3C                                                        ;8FBD60;
+    STA.L Scrolls+$1C                                                    ;8FBD60;
     LDA.B #$01                                                           ;8FBD64;
-    STA.L $7ECD3D                                                        ;8FBD66;
+    STA.L Scrolls+$1D                                                    ;8FBD66;
     PLP                                                                  ;8FBD6A;
     RTS                                                                  ;8FBD6B;
 
@@ -7242,7 +7242,7 @@ DoorASM_Scroll_4_Red:
     PHP                                                                  ;8FBD6C;
     SEP #$20                                                             ;8FBD6D;
     LDA.B #$00                                                           ;8FBD6F;
-    STA.L $7ECD24                                                        ;8FBD71;
+    STA.L Scrolls+4                                                      ;8FBD71;
     PLP                                                                  ;8FBD75;
     RTS                                                                  ;8FBD76;
 
@@ -7253,9 +7253,9 @@ DoorASM_Scroll_20_24_25_Green:
     PHP                                                                  ;8FBD77;
     SEP #$20                                                             ;8FBD78;
     LDA.B #$02                                                           ;8FBD7A;
-    STA.L $7ECD40                                                        ;8FBD7C;
-    STA.L $7ECD44                                                        ;8FBD80;
-    STA.L $7ECD45                                                        ;8FBD84;
+    STA.L Scrolls+$20                                                    ;8FBD7C;
+    STA.L Scrolls+$24                                                    ;8FBD80;
+    STA.L Scrolls+$25                                                    ;8FBD84;
     PLP                                                                  ;8FBD88;
     RTS                                                                  ;8FBD89;
 
@@ -7266,7 +7266,7 @@ DoorASM_Scroll_2_Blue_duplicate:
     PHP                                                                  ;8FBD8A;
     SEP #$20                                                             ;8FBD8B;
     LDA.B #$01                                                           ;8FBD8D;
-    STA.L $7ECD22                                                        ;8FBD8F;
+    STA.L Scrolls+2                                                      ;8FBD8F;
     PLP                                                                  ;8FBD93;
     RTS                                                                  ;8FBD94;
 
@@ -7277,7 +7277,7 @@ DoorASM_Scroll_0_Green:
     PHP                                                                  ;8FBD95;
     SEP #$20                                                             ;8FBD96;
     LDA.B #$02                                                           ;8FBD98;
-    STA.L $7ECD20                                                        ;8FBD9A;
+    STA.L Scrolls                                                        ;8FBD9A;
     PLP                                                                  ;8FBD9E;
     RTS                                                                  ;8FBD9F;
 
@@ -7289,8 +7289,8 @@ DoorASM_Scroll_6_7_Green:
     PHP                                                                  ;8FBDA0;
     SEP #$20                                                             ;8FBDA1;
     LDA.B #$02                                                           ;8FBDA3;
-    STA.L $7ECD26                                                        ;8FBDA5;
-    STA.L $7ECD27                                                        ;8FBDA9;
+    STA.L Scrolls+6                                                      ;8FBDA5;
+    STA.L Scrolls+7                                                      ;8FBDA9;
     PLP                                                                  ;8FBDAD;
     RTS                                                                  ;8FBDAE;
 
@@ -7301,9 +7301,9 @@ DoorASM_Scroll_1_Blue_2_Red:
     PHP                                                                  ;8FBDAF;
     SEP #$20                                                             ;8FBDB0;
     LDA.B #$01                                                           ;8FBDB2;
-    STA.L $7ECD21                                                        ;8FBDB4;
+    STA.L Scrolls+1                                                      ;8FBDB4;
     LDA.B #$00                                                           ;8FBDB8;
-    STA.L $7ECD22                                                        ;8FBDBA;
+    STA.L Scrolls+2                                                      ;8FBDBA;
     PLP                                                                  ;8FBDBE;
     RTS                                                                  ;8FBDBF;
 
@@ -7314,9 +7314,9 @@ DoorASM_Scroll_1_Blue_3_Red:
     PHP                                                                  ;8FBDC0;
     SEP #$20                                                             ;8FBDC1;
     LDA.B #$01                                                           ;8FBDC3;
-    STA.L $7ECD21                                                        ;8FBDC5;
+    STA.L Scrolls+1                                                      ;8FBDC5;
     LDA.B #$00                                                           ;8FBDC9;
-    STA.L $7ECD23                                                        ;8FBDCB;
+    STA.L Scrolls+3                                                      ;8FBDCB;
     PLP                                                                  ;8FBDCF;
     RTS                                                                  ;8FBDD0;
 
@@ -7327,9 +7327,9 @@ DoorASM_Scroll_0_Red_4_Blue:
     PHP                                                                  ;8FBDD1;
     SEP #$20                                                             ;8FBDD2;
     LDA.B #$00                                                           ;8FBDD4;
-    STA.L $7ECD20                                                        ;8FBDD6;
+    STA.L Scrolls                                                        ;8FBDD6;
     LDA.B #$01                                                           ;8FBDDA;
-    STA.L $7ECD24                                                        ;8FBDDC;
+    STA.L Scrolls+4                                                      ;8FBDDC;
     PLP                                                                  ;8FBDE0;
     RTS                                                                  ;8FBDE1;
 
@@ -7340,8 +7340,8 @@ DoorASM_Scroll_2_3_Blue:
     PHP                                                                  ;8FBDE2;
     SEP #$20                                                             ;8FBDE3;
     LDA.B #$01                                                           ;8FBDE5;
-    STA.L $7ECD22                                                        ;8FBDE7;
-    STA.L $7ECD23                                                        ;8FBDEB;
+    STA.L Scrolls+2                                                      ;8FBDE7;
+    STA.L Scrolls+3                                                      ;8FBDEB;
     PLP                                                                  ;8FBDEF;
     RTS                                                                  ;8FBDF0;
 
@@ -7352,8 +7352,8 @@ DoorASM_Scroll_0_1_Green:
     PHP                                                                  ;8FBDF1;
     SEP #$20                                                             ;8FBDF2;
     LDA.B #$02                                                           ;8FBDF4;
-    STA.L $7ECD20                                                        ;8FBDF6;
-    STA.L $7ECD21                                                        ;8FBDFA;
+    STA.L Scrolls                                                        ;8FBDF6;
+    STA.L Scrolls+1                                                      ;8FBDFA;
     PLP                                                                  ;8FBDFE;
     RTS                                                                  ;8FBDFF;
 
@@ -7364,7 +7364,7 @@ DoorASM_Scroll_1_Green:
     PHP                                                                  ;8FBE00;
     SEP #$20                                                             ;8FBE01;
     LDA.B #$02                                                           ;8FBE03;
-    STA.L $7ECD21                                                        ;8FBE05;
+    STA.L Scrolls+1                                                      ;8FBE05;
     PLP                                                                  ;8FBE09;
     RTS                                                                  ;8FBE0A;
 
@@ -7375,8 +7375,8 @@ DoorASM_Scroll_F_12_Green:
     PHP                                                                  ;8FBE0B;
     SEP #$20                                                             ;8FBE0C;
     LDA.B #$02                                                           ;8FBE0E;
-    STA.L $7ECD2F                                                        ;8FBE10;
-    STA.L $7ECD32                                                        ;8FBE14;
+    STA.L Scrolls+$F                                                     ;8FBE10;
+    STA.L Scrolls+$12                                                    ;8FBE14;
     PLP                                                                  ;8FBE18;
     RTS                                                                  ;8FBE19;
 
@@ -7387,7 +7387,7 @@ DoorASM_Scroll_6_Green_duplicate_again:
     PHP                                                                  ;8FBE1A;
     SEP #$20                                                             ;8FBE1B;
     LDA.B #$02                                                           ;8FBE1D;
-    STA.L $7ECD26                                                        ;8FBE1F;
+    STA.L Scrolls+6                                                      ;8FBE1F;
     PLP                                                                  ;8FBE23;
     RTS                                                                  ;8FBE24;
 
@@ -7398,9 +7398,9 @@ DoorASM_Scroll_0_Green_1_Blue:
     PHP                                                                  ;8FBE25;
     SEP #$20                                                             ;8FBE26;
     LDA.B #$02                                                           ;8FBE28;
-    STA.L $7ECD20                                                        ;8FBE2A;
+    STA.L Scrolls                                                        ;8FBE2A;
     LDA.B #$01                                                           ;8FBE2E;
-    STA.L $7ECD21                                                        ;8FBE30;
+    STA.L Scrolls+1                                                      ;8FBE30;
     PLP                                                                  ;8FBE34;
     RTS                                                                  ;8FBE35;
 
@@ -7410,7 +7410,7 @@ DoorASM_Scroll_2_Green:
 ; Room $9AD9, door list index 0: Door
     SEP #$20                                                             ;8FBE36;
     LDA.B #$02                                                           ;8FBE38;
-    STA.L $7ECD22                                                        ;8FBE3A;
+    STA.L Scrolls+2                                                      ;8FBE3A;
     RTS                                                                  ;8FBE3E;
 
 
@@ -7556,12 +7556,12 @@ DoorASM_Scroll_3_4_Red_6_7_8_Blue:
     PHP                                                                  ;8FBF9E;
     SEP #$20                                                             ;8FBF9F;
     LDA.B #$00                                                           ;8FBFA1;
-    STA.L $7ECD23                                                        ;8FBFA3;
-    STA.L $7ECD24                                                        ;8FBFA7;
+    STA.L Scrolls+3                                                      ;8FBFA3;
+    STA.L Scrolls+4                                                      ;8FBFA7;
     LDA.B #$01                                                           ;8FBFAB;
-    STA.L $7ECD26                                                        ;8FBFAD;
-    STA.L $7ECD27                                                        ;8FBFB1;
-    STA.L $7ECD28                                                        ;8FBFB5;
+    STA.L Scrolls+6                                                      ;8FBFAD;
+    STA.L Scrolls+7                                                      ;8FBFB1;
+    STA.L Scrolls+8                                                      ;8FBFB5;
     PLP                                                                  ;8FBFB9;
     RTS                                                                  ;8FBFBA;
 
@@ -7572,13 +7572,13 @@ DoorASM_Scroll_1_2_3_Blue_4_Green_6_Red:
     PHP                                                                  ;8FBFBB;
     SEP #$20                                                             ;8FBFBC;
     LDA.B #$01                                                           ;8FBFBE;
-    STA.L $7ECD21                                                        ;8FBFC0;
-    STA.L $7ECD22                                                        ;8FBFC4;
-    STA.L $7ECD23                                                        ;8FBFC8;
+    STA.L Scrolls+1                                                      ;8FBFC0;
+    STA.L Scrolls+2                                                      ;8FBFC4;
+    STA.L Scrolls+3                                                      ;8FBFC8;
     LDA.B #$02                                                           ;8FBFCC;
-    STA.L $7ECD24                                                        ;8FBFCE;
+    STA.L Scrolls+4                                                      ;8FBFCE;
     LDA.B #$00                                                           ;8FBFD2;
-    STA.L $7ECD26                                                        ;8FBFD4;
+    STA.L Scrolls+6                                                      ;8FBFD4;
     PLP                                                                  ;8FBFD8;
     RTS                                                                  ;8FBFD9;
 
@@ -7589,8 +7589,8 @@ DoorASM_Scroll_0_1_Blue:
     PHP                                                                  ;8FBFDA;
     SEP #$20                                                             ;8FBFDB;
     LDA.B #$01                                                           ;8FBFDD;
-    STA.L $7ECD20                                                        ;8FBFDF;
-    STA.L $7ECD21                                                        ;8FBFE3;
+    STA.L Scrolls                                                        ;8FBFDF;
+    STA.L Scrolls+1                                                      ;8FBFE3;
     PLP                                                                  ;8FBFE7;
     RTS                                                                  ;8FBFE8;
 
@@ -7601,9 +7601,9 @@ DoorASM_Scroll_0_Blue_1_Red:
     PHP                                                                  ;8FBFE9;
     SEP #$20                                                             ;8FBFEA;
     LDA.B #$00                                                           ;8FBFEC;
-    STA.L $7ECD21                                                        ;8FBFEE;
+    STA.L Scrolls+1                                                      ;8FBFEE;
     LDA.B #$01                                                           ;8FBFF2;
-    STA.L $7ECD20                                                        ;8FBFF4;
+    STA.L Scrolls                                                        ;8FBFF4;
     PLP                                                                  ;8FBFF8;
     RTS                                                                  ;8FBFF9;
 
@@ -7614,7 +7614,7 @@ DoorASM_Scroll_A_Green:
     PHP                                                                  ;8FBFFA;
     SEP #$20                                                             ;8FBFFB;
     LDA.B #$02                                                           ;8FBFFD;
-    STA.L $7ECD2A                                                        ;8FBFFF;
+    STA.L Scrolls+$A                                                     ;8FBFFF;
     PLP                                                                  ;8FC003;
     RTS                                                                  ;8FC004;
 
@@ -7625,9 +7625,9 @@ UNUSED_DoorASM_Scroll_0_Blue_2_Red_8FC005:
     PHP                                                                  ;8FC005;
     SEP #$20                                                             ;8FC006;
     LDA.B #$01                                                           ;8FC008;
-    STA.L $7ECD20                                                        ;8FC00A;
+    STA.L Scrolls                                                        ;8FC00A;
     LDA.B #$00                                                           ;8FC00E;
-    STA.L $7ECD22                                                        ;8FC010;
+    STA.L Scrolls+2                                                      ;8FC010;
     PLP                                                                  ;8FC014;
     RTS                                                                  ;8FC015;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -7639,8 +7639,8 @@ DoorASM_Scroll_0_2_Green:
     PHP                                                                  ;8FC016;
     SEP #$20                                                             ;8FC017;
     LDA.B #$02                                                           ;8FC019;
-    STA.L $7ECD20                                                        ;8FC01B;
-    STA.L $7ECD22                                                        ;8FC01F;
+    STA.L Scrolls                                                        ;8FC01B;
+    STA.L Scrolls+2                                                      ;8FC01F;
     PLP                                                                  ;8FC023;
     RTS                                                                  ;8FC024;
 
@@ -7651,10 +7651,10 @@ DoorASM_Scroll_6_7_Blue_8_Red:
     PHP                                                                  ;8FC025;
     SEP #$20                                                             ;8FC026;
     LDA.B #$01                                                           ;8FC028;
-    STA.L $7ECD26                                                        ;8FC02A;
-    STA.L $7ECD27                                                        ;8FC02E;
+    STA.L Scrolls+6                                                      ;8FC02A;
+    STA.L Scrolls+7                                                      ;8FC02E;
     LDA.B #$00                                                           ;8FC032;
-    STA.L $7ECD28                                                        ;8FC034;
+    STA.L Scrolls+8                                                      ;8FC034;
     PLP                                                                  ;8FC038;
     RTS                                                                  ;8FC039;
 
@@ -7665,9 +7665,9 @@ DoorASM_Scroll_2_Red_3_Blue:
     PHP                                                                  ;8FC03A;
     SEP #$20                                                             ;8FC03B;
     LDA.B #$00                                                           ;8FC03D;
-    STA.L $7ECD22                                                        ;8FC03F;
+    STA.L Scrolls+2                                                      ;8FC03F;
     LDA.B #$01                                                           ;8FC043;
-    STA.L $7ECD23                                                        ;8FC045;
+    STA.L Scrolls+3                                                      ;8FC045;
     PLP                                                                  ;8FC049;
     RTS                                                                  ;8FC04A;
 
@@ -7678,7 +7678,7 @@ DoorASM_Scroll_7_Green:
     PHP                                                                  ;8FC04B;
     SEP #$20                                                             ;8FC04C;
     LDA.B #$02                                                           ;8FC04E;
-    STA.L $7ECD27                                                        ;8FC050;
+    STA.L Scrolls+7                                                      ;8FC050;
     PLP                                                                  ;8FC054;
     RTS                                                                  ;8FC055;
 
@@ -7690,9 +7690,9 @@ DoorASM_Scroll_1_Red_2_Blue:
     PHP                                                                  ;8FC056;
     SEP #$20                                                             ;8FC057;
     LDA.B #$00                                                           ;8FC059;
-    STA.L $7ECD21                                                        ;8FC05B;
+    STA.L Scrolls+1                                                      ;8FC05B;
     LDA.B #$01                                                           ;8FC05F;
-    STA.L $7ECD22                                                        ;8FC061;
+    STA.L Scrolls+2                                                      ;8FC061;
     PLP                                                                  ;8FC065;
     RTS                                                                  ;8FC066;
 
@@ -7703,9 +7703,9 @@ DoorASM_Scroll_0_Blue_3_Red:
     PHP                                                                  ;8FC067;
     SEP #$20                                                             ;8FC068;
     LDA.B #$00                                                           ;8FC06A;
-    STA.L $7ECD23                                                        ;8FC06C;
+    STA.L Scrolls+3                                                      ;8FC06C;
     LDA.B #$01                                                           ;8FC070;
-    STA.L $7ECD20                                                        ;8FC072;
+    STA.L Scrolls                                                        ;8FC072;
     PLP                                                                  ;8FC076;
     RTS                                                                  ;8FC077;
 
@@ -7716,9 +7716,9 @@ DoorASM_Scroll_1_Blue_4_Red:
     PHP                                                                  ;8FC078;
     SEP #$20                                                             ;8FC079;
     LDA.B #$01                                                           ;8FC07B;
-    STA.L $7ECD21                                                        ;8FC07D;
+    STA.L Scrolls+1                                                      ;8FC07D;
     LDA.B #$00                                                           ;8FC081;
-    STA.L $7ECD24                                                        ;8FC083;
+    STA.L Scrolls+4                                                      ;8FC083;
     PLP                                                                  ;8FC087;
     RTS                                                                  ;8FC088;
 
@@ -7729,11 +7729,11 @@ DoorASM_Scroll_0_Blue_1_2_3_Red:
     PHP                                                                  ;8FC089;
     SEP #$20                                                             ;8FC08A;
     LDA.B #$01                                                           ;8FC08C;
-    STA.L $7ECD20                                                        ;8FC08E;
+    STA.L Scrolls                                                        ;8FC08E;
     LDA.B #$00                                                           ;8FC092;
-    STA.L $7ECD21                                                        ;8FC094;
-    STA.L $7ECD22                                                        ;8FC098;
-    STA.L $7ECD23                                                        ;8FC09C;
+    STA.L Scrolls+1                                                      ;8FC094;
+    STA.L Scrolls+2                                                      ;8FC098;
+    STA.L Scrolls+3                                                      ;8FC09C;
     PLP                                                                  ;8FC0A0;
     RTS                                                                  ;8FC0A1;
 
@@ -7744,7 +7744,7 @@ DoorASM_Scroll_0_Green_duplicate:
     PHP                                                                  ;8FC0A2;
     SEP #$20                                                             ;8FC0A3;
     LDA.B #$02                                                           ;8FC0A5;
-    STA.L $7ECD20                                                        ;8FC0A7;
+    STA.L Scrolls                                                        ;8FC0A7;
     PLP                                                                  ;8FC0AB;
     RTS                                                                  ;8FC0AC;
 
@@ -7755,10 +7755,10 @@ DoorASM_Scroll_0_1_Blue_4_Red:
     PHP                                                                  ;8FC0AD;
     SEP #$20                                                             ;8FC0AE;
     LDA.B #$01                                                           ;8FC0B0;
-    STA.L $7ECD20                                                        ;8FC0B2;
-    STA.L $7ECD21                                                        ;8FC0B6;
+    STA.L Scrolls                                                        ;8FC0B2;
+    STA.L Scrolls+1                                                      ;8FC0B6;
     LDA.B #$00                                                           ;8FC0BA;
-    STA.L $7ECD24                                                        ;8FC0BC;
+    STA.L Scrolls+4                                                      ;8FC0BC;
     PLP                                                                  ;8FC0C0;
     RTS                                                                  ;8FC0C1;
 
@@ -7769,9 +7769,9 @@ DoorASM_Scroll_0_Blue_3_Red_duplicate:
     PHP                                                                  ;8FC0C2;
     SEP #$20                                                             ;8FC0C3;
     LDA.B #$01                                                           ;8FC0C5;
-    STA.L $7ECD20                                                        ;8FC0C7;
+    STA.L Scrolls                                                        ;8FC0C7;
     LDA.B #$00                                                           ;8FC0CB;
-    STA.L $7ECD23                                                        ;8FC0CD;
+    STA.L Scrolls+3                                                      ;8FC0CD;
     PLP                                                                  ;8FC0D1;
     RTS                                                                  ;8FC0D2;
 
@@ -7782,7 +7782,7 @@ DoorASM_Scroll_0_Blue_duplicate:
     PHP                                                                  ;8FC0D3;
     SEP #$20                                                             ;8FC0D4;
     LDA.B #$01                                                           ;8FC0D6;
-    STA.L $7ECD20                                                        ;8FC0D8;
+    STA.L Scrolls                                                        ;8FC0D8;
     PLP                                                                  ;8FC0DC;
     RTS                                                                  ;8FC0DD;
 
@@ -7793,9 +7793,9 @@ DoorASM_Scroll_0_Blue_1_Red_duplicate:
     PHP                                                                  ;8FC0DE;
     SEP #$20                                                             ;8FC0DF;
     LDA.B #$01                                                           ;8FC0E1;
-    STA.L $7ECD20                                                        ;8FC0E3;
+    STA.L Scrolls                                                        ;8FC0E3;
     LDA.B #$00                                                           ;8FC0E7;
-    STA.L $7ECD21                                                        ;8FC0E9;
+    STA.L Scrolls+1                                                      ;8FC0E9;
     PLP                                                                  ;8FC0ED;
     RTS                                                                  ;8FC0EE;
 
@@ -7806,7 +7806,7 @@ DoorASM_Scroll_18_Blue:
     PHP                                                                  ;8FC0EF;
     SEP #$20                                                             ;8FC0F0;
     LDA.B #$01                                                           ;8FC0F2;
-    STA.L $7ECD38                                                        ;8FC0F4;
+    STA.L Scrolls+$18                                                    ;8FC0F4;
     PLP                                                                  ;8FC0F8;
     RTS                                                                  ;8FC0F9;
 
@@ -7817,9 +7817,9 @@ DoorASM_Scroll_2_Blue_3_Red:
     PHP                                                                  ;8FC0FA;
     SEP #$20                                                             ;8FC0FB;
     LDA.B #$00                                                           ;8FC0FD;
-    STA.L $7ECD23                                                        ;8FC0FF;
+    STA.L Scrolls+3                                                      ;8FC0FF;
     LDA.B #$01                                                           ;8FC103;
-    STA.L $7ECD22                                                        ;8FC105;
+    STA.L Scrolls+2                                                      ;8FC105;
     PLP                                                                  ;8FC109;
     RTS                                                                  ;8FC10A;
 
@@ -7830,7 +7830,7 @@ DoorASM_Scroll_E_Red:
     PHP                                                                  ;8FC10B;
     SEP #$20                                                             ;8FC10C;
     LDA.B #$00                                                           ;8FC10E;
-    STA.L $7ECD2E                                                        ;8FC110;
+    STA.L Scrolls+$E                                                     ;8FC110;
     PLP                                                                  ;8FC114;
     RTS                                                                  ;8FC115;
 
@@ -7867,43 +7867,43 @@ MainASM_SetScreenShaking_GenerateRandomExplosions:
 ; Room $9804, state $984F. Bomb Torizo's room, Zebes timebomb set
 ; Room $9879, state $98C4. Pre Bomb Torizo room, Zebes timebomb set
     JSR.W GenerateRandomExplosionOnEvenFramesOnRandomNonBlankTile        ;8FC124;
-    LDA.W $1840                                                          ;8FC127;
+    LDA.W EarthquakeTimer                                                ;8FC127;
     ORA.W #$8000                                                         ;8FC12A;
-    STA.W $1840                                                          ;8FC12D;
+    STA.W EarthquakeTimer                                                ;8FC12D;
     RTS                                                                  ;8FC130;
 
 
 ;;; $C131: Generate random explosion on even frames on random non-blank tile ;;;
 GenerateRandomExplosionOnEvenFramesOnRandomNonBlankTile:
-    LDA.W $0A78                                                          ;8FC131;
+    LDA.W TimeIsFrozenFlag                                               ;8FC131;
     BNE .return                                                          ;8FC134;
-    LDA.W $05B6                                                          ;8FC136;
+    LDA.W NMI_FrameCounter                                               ;8FC136;
     AND.W #$0001                                                         ;8FC139;
     BNE .return                                                          ;8FC13C;
     JSL.L GenerateRandomNumber                                           ;8FC13E;
     PHA                                                                  ;8FC142;
     AND.W #$00FF                                                         ;8FC143;
     CLC                                                                  ;8FC146;
-    ADC.W $0911                                                          ;8FC147;
-    STA.B $12                                                            ;8FC14A;
+    ADC.W Layer1XPosition                                                ;8FC147;
+    STA.B DP_Temp12                                                      ;8FC14A;
     PLA                                                                  ;8FC14C;
     XBA                                                                  ;8FC14D;
     AND.W #$00FF                                                         ;8FC14E;
     CLC                                                                  ;8FC151;
-    ADC.W $0915                                                          ;8FC152;
-    STA.B $14                                                            ;8FC155;
+    ADC.W Layer1YPosition                                                ;8FC152;
+    STA.B DP_Temp14                                                      ;8FC155;
     LSR                                                                  ;8FC157;
     LSR                                                                  ;8FC158;
     LSR                                                                  ;8FC159;
     LSR                                                                  ;8FC15A;
     SEP #$20                                                             ;8FC15B;
     PHA                                                                  ;8FC15D;
-    LDA.W $07A5                                                          ;8FC15E;
+    LDA.W RoomWidthBlocks                                                ;8FC15E;
     STA.W $4202                                                          ;8FC161;
     PLA                                                                  ;8FC164;
     STA.W $4203                                                          ;8FC165;
     REP #$20                                                             ;8FC168;
-    LDA.B $12                                                            ;8FC16A;
+    LDA.B DP_Temp12                                                      ;8FC16A;
     LSR                                                                  ;8FC16C;
     LSR                                                                  ;8FC16D;
     LSR                                                                  ;8FC16E;
@@ -7912,7 +7912,7 @@ GenerateRandomExplosionOnEvenFramesOnRandomNonBlankTile:
     ADC.W $4216                                                          ;8FC171;
     ASL                                                                  ;8FC174;
     TAX                                                                  ;8FC175;
-    LDA.L $7F0002,X                                                      ;8FC176;
+    LDA.L LevelData,X                                                    ;8FC176;
     AND.W #$03FF                                                         ;8FC17A;
     CMP.W #$00FF                                                         ;8FC17D;
     BNE GenerateRandomExplosionAt_12_14                                  ;8FC180;
@@ -7923,23 +7923,23 @@ GenerateRandomExplosionOnEvenFramesOnRandomNonBlankTile:
 
 ;;; $C183: Generate random explosion on every fourth frame ;;;
 GenerateRandomExplosionOnEveryFourthFrame:
-    LDA.W $0A78                                                          ;8FC183;
+    LDA.W TimeIsFrozenFlag                                               ;8FC183;
     BNE GenerateRandomExplosionAt_12_14_return                           ;8FC186;
-    LDA.W $05B6                                                          ;8FC188;
+    LDA.W NMI_FrameCounter                                               ;8FC188;
     AND.W #$0003                                                         ;8FC18B;
     BNE GenerateRandomExplosionAt_12_14_return                           ;8FC18E;
     JSL.L GenerateRandomNumber                                           ;8FC190;
     PHA                                                                  ;8FC194;
     AND.W #$00FF                                                         ;8FC195;
     CLC                                                                  ;8FC198;
-    ADC.W $0911                                                          ;8FC199;
-    STA.B $12                                                            ;8FC19C;
+    ADC.W Layer1XPosition                                                ;8FC199;
+    STA.B DP_Temp12                                                      ;8FC19C;
     PLA                                                                  ;8FC19E;
     XBA                                                                  ;8FC19F;
     AND.W #$00FF                                                         ;8FC1A0;
     CLC                                                                  ;8FC1A3;
-    ADC.W $0915                                                          ;8FC1A4;
-    STA.B $14                                                            ;8FC1A7; fallthrough to GenerateRandomExplosionAt_12_14
+    ADC.W Layer1YPosition                                                ;8FC1A4;
+    STA.B DP_Temp14                                                      ;8FC1A7; fallthrough to GenerateRandomExplosionAt_12_14
 
 
 ;;; $C1A9: Generate random explosion at ([$12], [$14]) ;;;
@@ -7960,8 +7960,8 @@ GenerateRandomExplosionAt_12_14:
     TAX                                                                  ;8FC1C6;
     LDA.W ExplosionSpriteObjectIDs,X                                     ;8FC1C7;
     AND.W #$00FF                                                         ;8FC1CA;
-    STA.B $16                                                            ;8FC1CD;
-    STZ.B $18                                                            ;8FC1CF;
+    STA.B DP_Temp16                                                      ;8FC1CD;
+    STZ.B DP_Temp18                                                      ;8FC1CF;
     JSL.L Create_Sprite_Object                                           ;8FC1D1;
 
   .return:
@@ -7980,18 +7980,18 @@ MainASM_ScrollScreenRightInDachoraRoom:
 ; Room $9CB3. Dachora room
 ; The intent of the code is probably to scroll the screen so that it's centred when falling down the shaft;
 ; in practice, the conditions for the scrolling never occur
-    LDA.L $7ECD2B                                                        ;8FC1E6;
+    LDA.L Scrolls+$B                                                     ;8FC1E6;
     AND.W #$00FF                                                         ;8FC1EA;
     CMP.W #$0002                                                         ;8FC1ED;
     BNE .return                                                          ;8FC1F0;
-    LDA.W $0915                                                          ;8FC1F2;
+    LDA.W Layer1YPosition                                                ;8FC1F2;
     CMP.W #$0500                                                         ;8FC1F5;
     BCS .return                                                          ;8FC1F8;
-    LDA.W $0911                                                          ;8FC1FA;
+    LDA.W Layer1XPosition                                                ;8FC1FA;
     CMP.W #$0380                                                         ;8FC1FD;
     BCS .return                                                          ;8FC200;
     ADC.W #$0003                                                         ;8FC202;
-    STA.W $0911                                                          ;8FC205;
+    STA.W Layer1XPosition                                                ;8FC205;
 
   .return:
     RTS                                                                  ;8FC208;
@@ -8703,13 +8703,13 @@ RTS_8FC8DC:
 SetupASM_SetPausingCodeForDraygon:
 ; Room $DA60. Draygon's room
     LDA.W #PauseHook_Draygon>>8&$FF00                                    ;8FC8DD;
-    STA.W $0602                                                          ;8FC8E0;
+    STA.W PauseHook_Pause+1                                              ;8FC8E0;
     LDA.W #PauseHook_Draygon                                             ;8FC8E3;
-    STA.W $0601                                                          ;8FC8E6;
+    STA.W PauseHook_Pause                                                ;8FC8E6;
     LDA.W #UnpauseHook_Draygon>>8&$FF00                                  ;8FC8E9;
-    STA.W $0605                                                          ;8FC8EC;
+    STA.W PauseHook_Unpause+1                                            ;8FC8EC;
     LDA.W #UnpauseHook_Draygon                                           ;8FC8EF;
-    STA.W $0604                                                          ;8FC8F2;
+    STA.W PauseHook_Unpause                                              ;8FC8F2;
     RTS                                                                  ;8FC8F5;
 
 
@@ -8717,17 +8717,17 @@ SetupASM_SetPausingCodeForDraygon:
 PauseHook_Draygon:
 ; Set interrupt handler to main gameplay
     LDA.W #$0004                                                         ;8FC8F6;
-    STA.B $A7                                                            ;8FC8F9;
+    STA.B DP_NextIRQCmd                                                  ;8FC8F9;
     RTL                                                                  ;8FC8FB;
 
 
 ;;; $C8FC: Unpause hook - Draygon ;;;
 UnpauseHook_Draygon:
-    LDA.W $18B6                                                          ;8FC8FC;
+    LDA.W HDMAObject_ChannelBitflags+2                                   ;8FC8FC;
     CMP.W #$0008                                                         ;8FC8FF;
     BNE .return                                                          ;8FC902;
     LDA.W #$000C                                                         ;8FC904;
-    STA.B $A7                                                            ;8FC907;
+    STA.B DP_NextIRQCmd                                                  ;8FC907;
 
   .return:
     RTL                                                                  ;8FC909;
@@ -8737,11 +8737,11 @@ UnpauseHook_Draygon:
 SetupASM_SetCollectedMap:
 ; Room $DAAE. Tourian -> Crateria
     REP #$30                                                             ;8FC90A;
-    LDX.W $079F                                                          ;8FC90C;
-    LDA.L $7ED908,X                                                      ;8FC90F;
+    LDX.W AreaIndex                                                      ;8FC90C;
+    LDA.L SRAMMirror_MapStations,X                                       ;8FC90F;
     ORA.W #$0001                                                         ;8FC913;
-    STA.L $7ED908,X                                                      ;8FC916;
-    STA.W $0789                                                          ;8FC91A;
+    STA.L SRAMMirror_MapStations,X                                       ;8FC916;
+    STA.W CurrentAreaMapCollectedFlag                                    ;8FC91A;
     RTS                                                                  ;8FC91D;
 
 
@@ -8771,9 +8771,9 @@ SetupASM_SetZebesTimebombEvent_SetLightHorizontalRoomShaking:
     LDA.W #$000E                                                         ;8FC91F;
     JSL.L MarkEvent_inA                                                  ;8FC922;
     LDA.W #$0012                                                         ;8FC926;
-    STA.W $183E                                                          ;8FC929;
+    STA.W EarthquakeType                                                 ;8FC929;
     LDA.W #$FFFF                                                         ;8FC92C;
-    STA.W $1840                                                          ;8FC92F;
+    STA.W EarthquakeTimer                                                ;8FC92F;
     RTS                                                                  ;8FC932;
 
 
@@ -8781,11 +8781,11 @@ SetupASM_SetZebesTimebombEvent_SetLightHorizontalRoomShaking:
 SetupASM_SetLightHorizontalRoomShaking:
 ; Room $DE7A. Escape room 2
     LDA.W #$0012                                                         ;8FC933;
-    STA.W $183E                                                          ;8FC936;
-    STA.W $07E3                                                          ;8FC939;
-    STZ.W $07E1                                                          ;8FC93C;
+    STA.W EarthquakeType                                                 ;8FC936;
+    STA.W RoomMainASMVar2                                                ;8FC939;
+    STZ.W RoomMainASMVar1                                                ;8FC93C;
     LDA.W #$FFFF                                                         ;8FC93F;
-    STA.W $1840                                                          ;8FC942;
+    STA.W EarthquakeTimer                                                ;8FC942;
     RTS                                                                  ;8FC945;
 
 
@@ -8793,9 +8793,9 @@ SetupASM_SetLightHorizontalRoomShaking:
 SetupASM_SetMediumHorizontalRoomShaking:
 ; Room $DEA7. Escape room 3
     LDA.W #$0015                                                         ;8FC946;
-    STA.W $183E                                                          ;8FC949;
+    STA.W EarthquakeType                                                 ;8FC949;
     LDA.W #$FFFF                                                         ;8FC94C;
-    STA.W $1840                                                          ;8FC94F;
+    STA.W EarthquakeTimer                                                ;8FC94F;
     RTS                                                                  ;8FC952;
 
 
@@ -8806,11 +8806,11 @@ SetupASM_SetupEscapeRoom4sPLM_SetMediumHorizontalRoomShaking:
     db $10,$10                                                           ;8FC957;
     dw PLMEntries_RaiseAcidInEscapeRoomBeforeOldTourianEscapeShaft       ;8FC959;
     LDA.W #$0015                                                         ;8FC95B;
-    STA.W $183E                                                          ;8FC95E;
-    STA.W $07E3                                                          ;8FC961;
-    STZ.W $07E1                                                          ;8FC964;
+    STA.W EarthquakeType                                                 ;8FC95E;
+    STA.W RoomMainASMVar2                                                ;8FC961;
+    STZ.W RoomMainASMVar1                                                ;8FC964;
     LDA.W #$FFFF                                                         ;8FC967;
-    STA.W $1840                                                          ;8FC96A;
+    STA.W EarthquakeTimer                                                ;8FC96A;
     RTS                                                                  ;8FC96D;
 
 
@@ -8839,11 +8839,11 @@ SetupASM_SetBG1_2_TilesBaseAddress_SpawnCeresHaze:
     PHP                                                                  ;8FC97B;
     SEP #$20                                                             ;8FC97C;
     LDA.B #$66                                                           ;8FC97E;
-    STA.B $5D                                                            ;8FC980;
+    STA.B DP_BGTilesAddr                                                 ;8FC980;
     PLP                                                                  ;8FC982;
     JSL.L FXType_2C_CeresHaze                                            ;8FC983;
     LDA.W #$0009                                                         ;8FC987;
-    STA.W $07EB                                                          ;8FC98A;
+    STA.W CeresMode7HDMATables                                           ;8FC98A;
     RTS                                                                  ;8FC98D;
 
 
@@ -10758,7 +10758,7 @@ RoomHeader_ThePrecious:
     dw Use_StatePointer_inX                                              ;8FD79F;
 
 RoomState_ThePrecious_0:
-    dl LevelData_ThePrecious                                             ;8FD7A1; _0
+    dl LevelData_ThePrecious                                             ;8FD7A1;
     db $0C,$00,$00                                                       ;8FD7A4;
     dw FXHeader_ThePrecious_State0_1                                     ;8FD7A7;
     dw EnemyPopulations_ThePrecious                                      ;8FD7A9;
@@ -12165,7 +12165,7 @@ DoorASM_Scroll_1_Blue:
     PHP                                                                  ;8FE1E8;
     SEP #$20                                                             ;8FE1E9;
     LDA.B #$01                                                           ;8FE1EB;
-    STA.L $7ECD21                                                        ;8FE1ED;
+    STA.L Scrolls+1                                                      ;8FE1ED;
     PLP                                                                  ;8FE1F1;
     RTS                                                                  ;8FE1F2;
 
@@ -12176,7 +12176,7 @@ DoorASM_Scroll_0_Green_duplicate_again:
     PHP                                                                  ;8FE1F3;
     SEP #$20                                                             ;8FE1F4;
     LDA.B #$02                                                           ;8FE1F6;
-    STA.L $7ECD20                                                        ;8FE1F8;
+    STA.L Scrolls                                                        ;8FE1F8;
     PLP                                                                  ;8FE1FC;
     RTS                                                                  ;8FE1FD;
 
@@ -12187,9 +12187,9 @@ DoorASM_Scroll_3_Red_4_Blue:
     PHP                                                                  ;8FE1FE;
     SEP #$20                                                             ;8FE1FF;
     LDA.B #$00                                                           ;8FE201;
-    STA.L $7ECD23                                                        ;8FE203;
+    STA.L Scrolls+3                                                      ;8FE203;
     LDA.B #$01                                                           ;8FE207;
-    STA.L $7ECD24                                                        ;8FE209;
+    STA.L Scrolls+4                                                      ;8FE209;
     PLP                                                                  ;8FE20D;
     RTS                                                                  ;8FE20E;
 
@@ -12200,7 +12200,7 @@ DoorASM_Scroll_29_Blue:
     PHP                                                                  ;8FE20F;
     SEP #$20                                                             ;8FE210;
     LDA.B #$01                                                           ;8FE212;
-    STA.L $7ECD49                                                        ;8FE214;
+    STA.L Scrolls+$29                                                    ;8FE214;
     PLP                                                                  ;8FE218;
     RTS                                                                  ;8FE219;
 
@@ -12211,8 +12211,8 @@ DoorASM_Scroll_28_2E_Green:
     PHP                                                                  ;8FE21A;
     SEP #$20                                                             ;8FE21B;
     LDA.B #$02                                                           ;8FE21D;
-    STA.L $7ECD48                                                        ;8FE21F;
-    STA.L $7ECD4E                                                        ;8FE223;
+    STA.L Scrolls+$28                                                    ;8FE21F;
+    STA.L Scrolls+$2E                                                    ;8FE223;
     PLP                                                                  ;8FE227;
     RTS                                                                  ;8FE228;
 
@@ -12223,12 +12223,12 @@ DoorASM_Scroll_6_7_8_9_A_B_Red:
     PHP                                                                  ;8FE229;
     SEP #$20                                                             ;8FE22A;
     LDA.B #$00                                                           ;8FE22C;
-    STA.L $7ECD26                                                        ;8FE22E;
-    STA.L $7ECD27                                                        ;8FE232;
-    STA.L $7ECD28                                                        ;8FE236;
-    STA.L $7ECD29                                                        ;8FE23A;
-    STA.L $7ECD2A                                                        ;8FE23E;
-    STA.L $7ECD2B                                                        ;8FE242;
+    STA.L Scrolls+6                                                      ;8FE22E;
+    STA.L Scrolls+7                                                      ;8FE232;
+    STA.L Scrolls+8                                                      ;8FE236;
+    STA.L Scrolls+9                                                      ;8FE23A;
+    STA.L Scrolls+$A                                                     ;8FE23E;
+    STA.L Scrolls+$B                                                     ;8FE242;
     PLP                                                                  ;8FE246;
     RTS                                                                  ;8FE247;
 
@@ -12252,12 +12252,12 @@ LibBG_Maridia_C_GreenWall:                                               ;8FE25A
 DoorASM_SetupElevatubeFromSouth:
 ; Room $D48E, door list index 2: Door
     LDA.W #$FF00                                                         ;8FE26C;
-    STA.W $07E5                                                          ;8FE26F;
-    STZ.W $07E3                                                          ;8FE272;
+    STA.W RoomMainASMVar3                                                ;8FE26F;
+    STZ.W RoomMainASMVar2                                                ;8FE272;
     LDA.W #$09C0                                                         ;8FE275;
-    STA.W $07E3                                                          ;8FE278;
+    STA.W RoomMainASMVar2                                                ;8FE278;
     LDA.W #$FFE0                                                         ;8FE27B;
-    STA.W $07E7                                                          ;8FE27E;
+    STA.W RoomMainASMVar4                                                ;8FE27E;
     LDA.W #$0000                                                         ;8FE281;
     JSL.L Run_Samus_Command                                              ;8FE284;
     JSL.L Spawn_Hardcoded_PLM                                            ;8FE288;
@@ -12270,12 +12270,12 @@ DoorASM_SetupElevatubeFromSouth:
 DoorASM_SetupElevatubeFromNorth:
 ; Room $D340, door list index 1: Door
     LDA.W #$0100                                                         ;8FE291;
-    STA.W $07E5                                                          ;8FE294;
-    STZ.W $07E3                                                          ;8FE297;
+    STA.W RoomMainASMVar3                                                ;8FE294;
+    STZ.W RoomMainASMVar2                                                ;8FE297;
     LDA.W #$0040                                                         ;8FE29A;
-    STA.W $07E3                                                          ;8FE29D;
+    STA.W RoomMainASMVar2                                                ;8FE29D;
     LDA.W #$0020                                                         ;8FE2A0;
-    STA.W $07E7                                                          ;8FE2A3;
+    STA.W RoomMainASMVar4                                                ;8FE2A3;
     LDA.W #$0000                                                         ;8FE2A6;
     JSL.L Run_Samus_Command                                              ;8FE2A9;
     JSL.L Spawn_Hardcoded_PLM                                            ;8FE2AD;
@@ -12288,37 +12288,37 @@ DoorASM_SetupElevatubeFromNorth:
 MainASM_Elevatube:
 ; Room $D408. Maridia elevatube
     LDA.W #$0080                                                         ;8FE2B6;
-    STA.W $0AF6                                                          ;8FE2B9;
-    STZ.W $0AF8                                                          ;8FE2BC;
-    STZ.B $12                                                            ;8FE2BF;
-    STZ.B $14                                                            ;8FE2C1;
-    LDA.W $07E5                                                          ;8FE2C3;
+    STA.W SamusXPosition                                                 ;8FE2B9;
+    STZ.W SamusXSubPosition                                              ;8FE2BC;
+    STZ.B DP_Temp12                                                      ;8FE2BF;
+    STZ.B DP_Temp14                                                      ;8FE2C1;
+    LDA.W RoomMainASMVar3                                                ;8FE2C3;
     BPL +                                                                ;8FE2C6;
-    DEC.B $14                                                            ;8FE2C8;
+    DEC.B DP_Temp14                                                      ;8FE2C8;
 
-+   STA.B $13                                                            ;8FE2CA;
-    LDA.W $07E1                                                          ;8FE2CC;
++   STA.B DP_Temp13                                                      ;8FE2CA;
+    LDA.W RoomMainASMVar1                                                ;8FE2CC;
     CLC                                                                  ;8FE2CF;
-    ADC.B $12                                                            ;8FE2D0;
-    STA.W $07E1                                                          ;8FE2D2;
-    LDA.W $07E3                                                          ;8FE2D5;
-    ADC.B $14                                                            ;8FE2D8;
-    STA.W $07E3                                                          ;8FE2DA;
-    LDA.B $12                                                            ;8FE2DD;
-    LDX.B $14                                                            ;8FE2DF;
-    STX.B $12                                                            ;8FE2E1;
-    STA.B $14                                                            ;8FE2E3;
+    ADC.B DP_Temp12                                                      ;8FE2D0;
+    STA.W RoomMainASMVar1                                                ;8FE2D2;
+    LDA.W RoomMainASMVar2                                                ;8FE2D5;
+    ADC.B DP_Temp14                                                      ;8FE2D8;
+    STA.W RoomMainASMVar2                                                ;8FE2DA;
+    LDA.B DP_Temp12                                                      ;8FE2DD;
+    LDX.B DP_Temp14                                                      ;8FE2DF;
+    STX.B DP_Temp12                                                      ;8FE2E1;
+    STA.B DP_Temp14                                                      ;8FE2E3;
     JSL.L MoveSamusDown_NoSolidEnemyCollision                            ;8FE2E5;
-    LDA.W $07E5                                                          ;8FE2E9;
+    LDA.W RoomMainASMVar3                                                ;8FE2E9;
     CLC                                                                  ;8FE2EC;
-    ADC.W $07E7                                                          ;8FE2ED;
+    ADC.W RoomMainASMVar4                                                ;8FE2ED;
     CLC                                                                  ;8FE2F0;
     ADC.W #$0E20                                                         ;8FE2F1;
     CMP.W #$1C41                                                         ;8FE2F4;
     BCS .return                                                          ;8FE2F7;
     SEC                                                                  ;8FE2F9;
     SBC.W #$0E20                                                         ;8FE2FA;
-    STA.W $07E5                                                          ;8FE2FD;
+    STA.W RoomMainASMVar3                                                ;8FE2FD;
 
   .return:
     RTS                                                                  ;8FE300;
@@ -12336,7 +12336,7 @@ DoorASM_ResetElevatubeOnNorthExit:
 DoorASM_ResetElevatubeOnSouthExit:
 ; Room $D408, door list index 0: Door
     LDA.W #$0202                                                         ;8FE309;
-    STA.L $7ECD20                                                        ;8FE30C;
+    STA.L Scrolls                                                        ;8FE30C;
     LDA.W #$0001                                                         ;8FE310;
     JSL.L Run_Samus_Command                                              ;8FE313;
     RTS                                                                  ;8FE317;
@@ -12348,9 +12348,9 @@ DoorASM_Scroll_A_Red_B_Blue:
     PHP                                                                  ;8FE318;
     SEP #$20                                                             ;8FE319;
     LDA.B #$00                                                           ;8FE31B;
-    STA.L $7ECD2A                                                        ;8FE31D;
+    STA.L Scrolls+$A                                                     ;8FE31D;
     LDA.B #$01                                                           ;8FE321;
-    STA.L $7ECD2B                                                        ;8FE323;
+    STA.L Scrolls+$B                                                     ;8FE323;
     PLP                                                                  ;8FE327;
     RTS                                                                  ;8FE328;
 
@@ -12361,9 +12361,9 @@ UNUSED_DoorASM_Scroll_4_Green_8FE329:
     PHP                                                                  ;8FE329;
     SEP #$20                                                             ;8FE32A;
     LDA.B #$00                                                           ;8FE32C;
-    STA.L $7ECD31                                                        ;8FE32E;
+    STA.L Scrolls+$11                                                    ;8FE32E;
     LDA.B #$01                                                           ;8FE332;
-    STA.L $7ECD30                                                        ;8FE334;
+    STA.L Scrolls+$10                                                    ;8FE334;
     PLP                                                                  ;8FE338;
     RTS                                                                  ;8FE339;
 
@@ -12373,7 +12373,7 @@ UNUSED_DoorASM_Scroll_4_Green_8FE33A:
     PHP                                                                  ;8FE33A;
     SEP #$20                                                             ;8FE33B;
     LDA.B #$02                                                           ;8FE33D;
-    STA.L $7ECD24                                                        ;8FE33F;
+    STA.L Scrolls+4                                                      ;8FE33F;
     PLP                                                                  ;8FE343;
     RTS                                                                  ;8FE344;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -12385,9 +12385,9 @@ DoorASM_Scroll_0_Red_4_Blue_duplicate:
     PHP                                                                  ;8FE345;
     SEP #$20                                                             ;8FE346;
     LDA.B #$00                                                           ;8FE348;
-    STA.L $7ECD20                                                        ;8FE34A;
+    STA.L Scrolls                                                        ;8FE34A;
     LDA.B #$01                                                           ;8FE34E;
-    STA.L $7ECD24                                                        ;8FE350;
+    STA.L Scrolls+4                                                      ;8FE350;
     PLP                                                                  ;8FE354;
     RTS                                                                  ;8FE355;
 
@@ -12399,9 +12399,9 @@ DoorASM_Scroll_0_Red_1_Blue:
     PHP                                                                  ;8FE356;
     SEP #$20                                                             ;8FE357;
     LDA.B #$00                                                           ;8FE359;
-    STA.L $7ECD20                                                        ;8FE35B;
+    STA.L Scrolls                                                        ;8FE35B;
     LDA.B #$01                                                           ;8FE35F;
-    STA.L $7ECD21                                                        ;8FE361;
+    STA.L Scrolls+1                                                      ;8FE361;
     PLP                                                                  ;8FE365;
     RTS                                                                  ;8FE366;
 
@@ -12412,9 +12412,9 @@ DoorASM_Scroll_9_Red_A_Blue:
     PHP                                                                  ;8FE367;
     SEP #$20                                                             ;8FE368;
     LDA.B #$00                                                           ;8FE36A;
-    STA.L $7ECD29                                                        ;8FE36C;
+    STA.L Scrolls+9                                                      ;8FE36C;
     LDA.B #$01                                                           ;8FE370;
-    STA.L $7ECD2A                                                        ;8FE372;
+    STA.L Scrolls+$A                                                     ;8FE372;
     PLP                                                                  ;8FE376;
     RTS                                                                  ;8FE377;
 
@@ -12426,10 +12426,10 @@ DoorASM_Scroll_0_2_Red_1_Blue:
     PHP                                                                  ;8FE378;
     SEP #$20                                                             ;8FE379;
     LDA.B #$00                                                           ;8FE37B;
-    STA.L $7ECD20                                                        ;8FE37D;
-    STA.L $7ECD22                                                        ;8FE381;
+    STA.L Scrolls                                                        ;8FE37D;
+    STA.L Scrolls+2                                                      ;8FE381;
     LDA.B #$01                                                           ;8FE385;
-    STA.L $7ECD21                                                        ;8FE387;
+    STA.L Scrolls+1                                                      ;8FE387;
     PLP                                                                  ;8FE38B;
     RTS                                                                  ;8FE38C;
 
@@ -12440,7 +12440,7 @@ DoorASM_Scroll_1_Blue_duplicate:
     PHP                                                                  ;8FE38D;
     SEP #$20                                                             ;8FE38E;
     LDA.B #$01                                                           ;8FE390;
-    STA.L $7ECD21                                                        ;8FE392;
+    STA.L Scrolls+1                                                      ;8FE392;
     PLP                                                                  ;8FE396;
     RTS                                                                  ;8FE397;
 
@@ -12451,7 +12451,7 @@ DoorASM_Scroll_6_Blue:
     PHP                                                                  ;8FE398;
     SEP #$20                                                             ;8FE399;
     LDA.B #$01                                                           ;8FE39B;
-    STA.L $7ECD26                                                        ;8FE39D;
+    STA.L Scrolls+6                                                      ;8FE39D;
     PLP                                                                  ;8FE3A1;
     RTS                                                                  ;8FE3A2;
 
@@ -12463,7 +12463,7 @@ DoorASM_Scroll_4_Red_duplicate:
     PHP                                                                  ;8FE3A3;
     SEP #$20                                                             ;8FE3A4;
     LDA.B #$00                                                           ;8FE3A6;
-    STA.L $7ECD24                                                        ;8FE3A8;
+    STA.L Scrolls+4                                                      ;8FE3A8;
     PLP                                                                  ;8FE3AC;
     RTS                                                                  ;8FE3AD;
 
@@ -12474,7 +12474,7 @@ UNUSED_DoorASM_Scroll_1_Red_8FE3AE:
     PHP                                                                  ;8FE3AE;
     SEP #$20                                                             ;8FE3AF;
     LDA.B #$00                                                           ;8FE3B1;
-    STA.L $7ECD21                                                        ;8FE3B3;
+    STA.L Scrolls+1                                                      ;8FE3B3;
     PLP                                                                  ;8FE3B7;
     RTS                                                                  ;8FE3B8;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -12486,8 +12486,8 @@ DoorASM_Scroll_4_7_Red:
     PHP                                                                  ;8FE3B9;
     SEP #$20                                                             ;8FE3BA;
     LDA.B #$00                                                           ;8FE3BC;
-    STA.L $7ECD24                                                        ;8FE3BE;
-    STA.L $7ECD27                                                        ;8FE3C2;
+    STA.L Scrolls+4                                                      ;8FE3BE;
+    STA.L Scrolls+7                                                      ;8FE3C2;
     PLP                                                                  ;8FE3C6;
     RTS                                                                  ;8FE3C7;
 
@@ -12498,9 +12498,9 @@ DoorASM_Scroll_1_Blue_2_Red_duplicate:
     PHP                                                                  ;8FE3C8;
     SEP #$20                                                             ;8FE3C9;
     LDA.B #$00                                                           ;8FE3CB;
-    STA.L $7ECD22                                                        ;8FE3CD;
+    STA.L Scrolls+2                                                      ;8FE3CD;
     LDA.B #$01                                                           ;8FE3D1;
-    STA.L $7ECD21                                                        ;8FE3D3;
+    STA.L Scrolls+1                                                      ;8FE3D3;
     PLP                                                                  ;8FE3D7;
     RTS                                                                  ;8FE3D8;
 
@@ -12511,8 +12511,8 @@ DoorASM_Scroll_0_2_Green_duplicate:
     PHP                                                                  ;8FE3D9;
     SEP #$20                                                             ;8FE3DA;
     LDA.B #$02                                                           ;8FE3DC;
-    STA.L $7ECD20                                                        ;8FE3DE;
-    STA.L $7ECD22                                                        ;8FE3E2;
+    STA.L Scrolls                                                        ;8FE3DE;
+    STA.L Scrolls+2                                                      ;8FE3E2;
     PLP                                                                  ;8FE3E6;
     RTS                                                                  ;8FE3E7;
 
@@ -12604,8 +12604,8 @@ DoorASM_Scroll_0_1_Green_duplicate:
     PHP                                                                  ;8FE4C0;
     SEP #$20                                                             ;8FE4C1;
     LDA.B #$02                                                           ;8FE4C3;
-    STA.L $7ECD20                                                        ;8FE4C5;
-    STA.L $7ECD21                                                        ;8FE4C9;
+    STA.L Scrolls                                                        ;8FE4C5;
+    STA.L Scrolls+1                                                      ;8FE4C9;
     PLP                                                                  ;8FE4CD;
     RTS                                                                  ;8FE4CE;
 
@@ -12616,9 +12616,9 @@ DoorASM_Scroll_8_Blue_9_Red:
     PHP                                                                  ;8FE4CF;
     SEP #$20                                                             ;8FE4D0;
     LDA.B #$01                                                           ;8FE4D2;
-    STA.L $7ECD38                                                        ;8FE4D4;
+    STA.L Scrolls+$18                                                    ;8FE4D4;
     LDA.B #$00                                                           ;8FE4D8;
-    STA.L $7ECD39                                                        ;8FE4DA;
+    STA.L Scrolls+$19                                                    ;8FE4DA;
     PLP                                                                  ;8FE4DE;
     RTS                                                                  ;8FE4DF;
 
@@ -12628,24 +12628,24 @@ DoorASM_ToCeresElevatorShaft:
 ; Room $DF8D, door list index 0: Door
     SEP #$20                                                             ;8FE4E0;
     LDA.B #$07                                                           ;8FE4E2;
-    STA.B $56                                                            ;8FE4E4;
+    STA.B DP_FakeBGModeSize                                              ;8FE4E4;
     STA.W $2105                                                          ;8FE4E6;
     REP #$20                                                             ;8FE4E9;
     LDA.W #$0100                                                         ;8FE4EB;
-    STA.B $78                                                            ;8FE4EE;
-    STA.B $7E                                                            ;8FE4F0;
-    STZ.B $7A                                                            ;8FE4F2;
-    STZ.B $7C                                                            ;8FE4F4;
+    STA.B DP_Mode7TransMatrixA                                           ;8FE4EE;
+    STA.B DP_Mode7TransMatrixD                                           ;8FE4F0;
+    STZ.B DP_Mode7TransMatrixB                                           ;8FE4F2;
+    STZ.B DP_Mode7TransMatrixC                                           ;8FE4F4;
     LDA.W #$0080                                                         ;8FE4F6;
-    STA.B $80                                                            ;8FE4F9;
+    STA.B DP_Mode7TransOriginX                                           ;8FE4F9;
     LDA.W #$03F0                                                         ;8FE4FB;
-    STA.B $82                                                            ;8FE4FE;
+    STA.B DP_Mode7TransOriginY                                           ;8FE4FE;
     LDA.W #$0001                                                         ;8FE500;
-    STA.W $0783                                                          ;8FE503;
+    STA.W Mode7Flag                                                      ;8FE503;
     LDA.W #$0022                                                         ;8FE506;
-    STA.W $07E1                                                          ;8FE509;
+    STA.W RoomMainASMVar1                                                ;8FE509;
     LDA.W #$003C                                                         ;8FE50C;
-    STA.W $07E3                                                          ;8FE50F;
+    STA.W RoomMainASMVar2                                                ;8FE50F;
     RTS                                                                  ;8FE512;
 
 
@@ -12654,9 +12654,9 @@ DoorASM_FromCeresElevatorShaft:
 ; Room $DF45, door list index 0: Door
     SEP #$20                                                             ;8FE513;
     LDA.B #$09                                                           ;8FE515;
-    STA.B $56                                                            ;8FE517;
+    STA.B DP_FakeBGModeSize                                              ;8FE517;
     REP #$20                                                             ;8FE519;
-    STZ.W $0783                                                          ;8FE51B;
+    STZ.W Mode7Flag                                                      ;8FE51B;
     RTS                                                                  ;8FE51E;
 
 
@@ -12679,19 +12679,19 @@ RTS_8FE524:
 ;;; $E525: Main ASM: spawn Ceres pre elevator hall falling debris ;;;
 MainASM_SpawnCeresPreElevatorHallFallingDebris:
 ; Room $DF8D. Ceres pre elevator hall
-    LDA.W $093F                                                          ;8FE525;
+    LDA.W CeresStatus                                                    ;8FE525;
     BEQ RTS_8FE524                                                       ;8FE528;
-    DEC.W $07E1                                                          ;8FE52A;
+    DEC.W RoomMainASMVar1                                                ;8FE52A;
     BPL RTS_8FE524                                                       ;8FE52D;
     LDA.W #$0008                                                         ;8FE52F;
-    STA.W $07E1                                                          ;8FE532;
+    STA.W RoomMainASMVar1                                                ;8FE532;
     LDY.W #EnemyProjectile_CeresFallingTile_Light                        ;8FE535;
-    LDA.W $05E5                                                          ;8FE538;
+    LDA.W RandomNumberSeed                                               ;8FE538;
     ASL                                                                  ;8FE53B;
     BCC +                                                                ;8FE53C;
     LDY.W #EnemyProjectile_CeresFallingTile_Dark                         ;8FE53E;
 
-+   LDA.W $05E5                                                          ;8FE541;
++   LDA.W RandomNumberSeed                                               ;8FE541;
     AND.W #$000F                                                         ;8FE544;
     ASL                                                                  ;8FE547;
     TAX                                                                  ;8FE548;
@@ -12707,7 +12707,7 @@ MainASM_SpawnCeresPreElevatorHallFallingDebris:
 ;;; $E571: Main ASM: handle Ceres Ridley getaway cutscene ;;;
 MainASM_HandleCeresRidleyGetawayCutscene:
 ; Room $E0B5. Ceres Ridley's room
-    LDA.W $093F                                                          ;8FE571;
+    LDA.W CeresStatus                                                    ;8FE571;
     LSR                                                                  ;8FE574;
     BCC .return                                                          ;8FE575;
     JSL.L HandleCeresRidleyGetawayCutscene                               ;8FE577;
@@ -12720,9 +12720,9 @@ MainASM_HandleCeresRidleyGetawayCutscene:
 MainASM_ShakeScreenSwitchingBetweenLightHorizAndMediumDiag:
 ; Room $DE7A. Escape room 2
 ; Horizontal screen shaking with a 1/80h chance of becoming medium diagonal for 2Ah frames
-    LDA.W $07E1                                                          ;8FE57C;
+    LDA.W RoomMainASMVar1                                                ;8FE57C;
     BEQ .resetQuakeTimer                                                 ;8FE57F;
-    DEC.W $07E1                                                          ;8FE581;
+    DEC.W RoomMainASMVar1                                                ;8FE581;
     BNE MainASM_GenerateRandomExplosionOnEveryFourthFrame                ;8FE584;
     LDA.W #$0012                                                         ;8FE586;
     BRA +                                                                ;8FE589;
@@ -12732,10 +12732,10 @@ MainASM_ShakeScreenSwitchingBetweenLightHorizAndMediumDiag:
     CMP.W #$0200                                                         ;8FE58F;
     BCS MainASM_GenerateRandomExplosionOnEveryFourthFrame                ;8FE592;
     LDA.W #$002A                                                         ;8FE594;
-    STA.W $07E1                                                          ;8FE597;
+    STA.W RoomMainASMVar1                                                ;8FE597;
     LDA.W #$0017                                                         ;8FE59A;
 
-+   STA.W $183E                                                          ;8FE59D; fallthrough to MainASM_GenerateRandomExplosionOnEveryFourthFrame
++   STA.W EarthquakeType                                                 ;8FE59D; fallthrough to MainASM_GenerateRandomExplosionOnEveryFourthFrame
 
 
 ;;; $E5A0: Main ASM: generate random explosion on every fourth frame ;;;
@@ -12750,9 +12750,9 @@ MainASM_GenerateRandomExplosionOnEveryFourthFrame:
 MainASM_ShakeScreenSwitchingBetweenMediumHorizAndStrongDiag:
 ; Room $DEDE. Escape room 4
 ; Horizontal screen shaking with a 3/200h chance of becoming strong diagonal for 2Ah frames
-    LDA.W $07E1                                                          ;8FE5A4;
+    LDA.W RoomMainASMVar1                                                ;8FE5A4;
     BEQ .resetQuakeTimer                                                 ;8FE5A7;
-    DEC.W $07E1                                                          ;8FE5A9;
+    DEC.W RoomMainASMVar1                                                ;8FE5A9;
     BNE .noEarthquakeChange                                              ;8FE5AC;
     LDA.W #$0015                                                         ;8FE5AE;
     BRA +                                                                ;8FE5B1;
@@ -12762,14 +12762,14 @@ MainASM_ShakeScreenSwitchingBetweenMediumHorizAndStrongDiag:
     CMP.W #$0180                                                         ;8FE5B7;
     BCS .noEarthquakeChange                                              ;8FE5BA;
     LDA.W #$002A                                                         ;8FE5BC;
-    STA.W $07E1                                                          ;8FE5BF;
+    STA.W RoomMainASMVar1                                                ;8FE5BF;
     LDA.W #$001A                                                         ;8FE5C2;
 
-+   STA.W $07E3                                                          ;8FE5C5;
++   STA.W RoomMainASMVar2                                                ;8FE5C5;
 
   .noEarthquakeChange:
-    LDA.W $07E3                                                          ;8FE5C8;
-    STA.W $183E                                                          ;8FE5CB;
+    LDA.W RoomMainASMVar2                                                ;8FE5C8;
+    STA.W EarthquakeType                                                 ;8FE5CB;
     JSR.W GenerateRandomExplosionOnEveryFourthFrame                      ;8FE5CE;
     RTS                                                                  ;8FE5D1;
 
@@ -12783,17 +12783,17 @@ Room_State_Checking_Handler:
 
   .loop:
     LDA.W $0000,X                                                        ;8FE5D8;
-    STA.W $07B7                                                          ;8FE5DB;
+    STA.W EventPointer                                                   ;8FE5DB;
     INX                                                                  ;8FE5DE;
     INX                                                                  ;8FE5DF;
     PEA.W .loop-1                                                        ;8FE5E0;
-    JMP.W ($07B7)                                                        ;8FE5E3;
+    JMP.W (EventPointer)                                                 ;8FE5E3;
 
 
 ;;; $E5E6: Use state pointer [X] ;;;
 Use_StatePointer_inX:
 ; Room state check: default
-    STX.W $07BB                                                          ;8FE5E6;
+    STX.W RoomStatePointer                                               ;8FE5E6;
     PLA                                                                  ;8FE5E9;
     RTL                                                                  ;8FE5EA;
 
@@ -12802,7 +12802,7 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $E5EB: Unused. Room state check: door ;;;
 UNUSED_RoomStateCheck_Door_8FE5EB:
     LDA.W $0000,X                                                        ;8FE5EB;
-    CMP.W $078D                                                          ;8FE5EE;
+    CMP.W DoorPointer                                                    ;8FE5EE;
     BNE +                                                                ;8FE5F1;
     LDA.W $0002,X                                                        ;8FE5F3;
     TAX                                                                  ;8FE5F6;
@@ -12865,7 +12865,7 @@ RoomStateCheck_BossIsDead:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $E640: Unused. Room state check: morphball ;;;
 UNUSED_RoomStateCheck_Morphball_8FE640:
-    LDA.W $09A4                                                          ;8FE640;
+    LDA.W CollectedItems                                                 ;8FE640;
     AND.W #$0004                                                         ;8FE643;
     BEQ +                                                                ;8FE646;
     LDA.W $0000,X                                                        ;8FE648;
@@ -12880,10 +12880,10 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 ;;; $E652: Room state check: morphball and missiles ;;;
 RoomStateCheck_MorphballAndMissiles:
-    LDA.W $09A4                                                          ;8FE652;
+    LDA.W CollectedItems                                                 ;8FE652;
     BIT.W #$0004                                                         ;8FE655;
     BEQ +                                                                ;8FE658;
-    LDA.W $09C8                                                          ;8FE65A;
+    LDA.W MaxMissiles                                                    ;8FE65A;
     BEQ +                                                                ;8FE65D;
     LDA.W $0000,X                                                        ;8FE65F;
     TAX                                                                  ;8FE662;
@@ -12896,7 +12896,7 @@ RoomStateCheck_MorphballAndMissiles:
 
 ;;; $E669: Room state check: power bombs ;;;
 RoomStateCheck_PowerBombs:
-    LDA.W $09D0                                                          ;8FE669;
+    LDA.W MaxPowerBombs                                                  ;8FE669;
     BEQ +                                                                ;8FE66C;
     LDA.W $0000,X                                                        ;8FE66E;
     TAX                                                                  ;8FE671;
@@ -12910,7 +12910,7 @@ RoomStateCheck_PowerBombs:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $E678: Unused. Room state check: speed booster ;;;
 UNUSED_RoomStateCheck_SpeedBooster_8FE678:
-    LDA.W $09A4                                                          ;8FE678;
+    LDA.W CollectedItems                                                 ;8FE678;
     AND.W #$2000                                                         ;8FE67B;
     BEQ +                                                                ;8FE67E;
     LDA.W $0000,X                                                        ;8FE680;
@@ -13241,7 +13241,7 @@ Execute_Room_Setup_ASM:
     PHP                                                                  ;8FE88F;
     PHB                                                                  ;8FE890;
     REP #$30                                                             ;8FE891;
-    LDX.W $07BB                                                          ;8FE893;
+    LDX.W RoomStatePointer                                               ;8FE893;
     LDA.W $0018,X                                                        ;8FE896;
     BEQ .return                                                          ;8FE899;
     PHK                                                                  ;8FE89B;
@@ -13259,14 +13259,14 @@ Execute_Door_ASM:
     PHP                                                                  ;8FE8A3;
     PHB                                                                  ;8FE8A4;
     REP #$30                                                             ;8FE8A5;
-    LDX.W $078D                                                          ;8FE8A7;
+    LDX.W DoorPointer                                                    ;8FE8A7;
     LDA.L DoorHeaders_doorASM,X                                          ;8FE8AA;
     BEQ .return                                                          ;8FE8AE;
-    STA.B $12                                                            ;8FE8B0;
+    STA.B DP_Temp12                                                      ;8FE8B0;
     PHK                                                                  ;8FE8B2;
     PLB                                                                  ;8FE8B3;
     PEA.W .return-1                                                      ;8FE8B4;
-    JMP.W ($0012)                                                        ;8FE8B7;
+    JMP.W (DP_Temp12)                                                    ;8FE8B7;
 
   .return:
     PLB                                                                  ;8FE8BA;
@@ -13276,13 +13276,13 @@ Execute_Door_ASM:
 
 ;;; $E8BD: Execute room main ASM ;;;
 Execute_Room_Main_ASM:
-    LDX.W $07DF                                                          ;8FE8BD;
+    LDX.W RoomMainASMPointer                                             ;8FE8BD;
     BEQ .return                                                          ;8FE8C0;
     PHB                                                                  ;8FE8C2;
     PHK                                                                  ;8FE8C3;
     PLB                                                                  ;8FE8C4;
     LDX.W #$0000                                                         ;8FE8C5;
-    JSR.W ($07DF,X)                                                      ;8FE8C8;
+    JSR.W (RoomMainASMPointer,X)                                         ;8FE8C8;
     PLB                                                                  ;8FE8CB;
 
   .return:
@@ -13292,103 +13292,103 @@ Execute_Room_Main_ASM:
 ;;; $E8CD: Main ASM: Crocomire's room shaking ;;;
 MainASM_CrocomiresRoomShaking:
 ; Room $A98D. Crocomire's room
-    LDA.W $0F86                                                          ;8FE8CD;
+    LDA.W Enemy.properties                                               ;8FE8CD;
     BIT.W #$0200                                                         ;8FE8D0;
     BNE .return                                                          ;8FE8D3;
-    LDA.W $0FA8                                                          ;8FE8D5;
+    LDA.W Enemy.var0                                                     ;8FE8D5;
     CMP.W #$0040                                                         ;8FE8D8;
     BEQ .behindWallRumbling                                              ;8FE8DB;
-    LDA.W $0FAA                                                          ;8FE8DD;
+    LDA.W Enemy.var1                                                     ;8FE8DD;
     BIT.W #$0400                                                         ;8FE8E0;
     BEQ .branch                                                          ;8FE8E3;
-    LDA.W $0FEE                                                          ;8FE8E5;
+    LDA.W Enemy[1].var3                                                  ;8FE8E5;
     DEC                                                                  ;8FE8E8;
-    STA.W $0FEE                                                          ;8FE8E9;
+    STA.W Enemy[1].var3                                                  ;8FE8E9;
     CMP.W #$FFF9                                                         ;8FE8EC;
     BMI +                                                                ;8FE8EF;
-    LDA.W $0FEE                                                          ;8FE8F1;
+    LDA.W Enemy[1].var3                                                  ;8FE8F1;
     BRA .scroll                                                          ;8FE8F4;
 
 +   LDA.W #$0007                                                         ;8FE8F6;
     CLC                                                                  ;8FE8F9;
-    ADC.W $0FEE                                                          ;8FE8FA;
+    ADC.W Enemy[1].var3                                                  ;8FE8FA;
     ASL                                                                  ;8FE8FD;
-    STA.B $12                                                            ;8FE8FE;
-    LDA.W $0FEE                                                          ;8FE900;
+    STA.B DP_Temp12                                                      ;8FE8FE;
+    LDA.W Enemy[1].var3                                                  ;8FE900;
     SEC                                                                  ;8FE903;
-    SBC.B $12                                                            ;8FE904;
+    SBC.B DP_Temp12                                                      ;8FE904;
 
   .scroll:
-    STA.B $12                                                            ;8FE906;
+    STA.B DP_Temp12                                                      ;8FE906;
     CLC                                                                  ;8FE908;
-    ADC.B $B3                                                            ;8FE909;
-    STA.B $B3                                                            ;8FE90B;
+    ADC.B DP_BG1YScroll                                                  ;8FE909;
+    STA.B DP_BG1YScroll                                                  ;8FE90B;
     LDA.W #$FFD0                                                         ;8FE90D;
     CLC                                                                  ;8FE910;
-    ADC.B $12                                                            ;8FE911;
-    STA.B $B7                                                            ;8FE913;
+    ADC.B DP_Temp12                                                      ;8FE911;
+    STA.B DP_BG2YScroll                                                  ;8FE913;
 
   .return:
     RTS                                                                  ;8FE915;
 
   .branch:
-    LDA.W $0FAC                                                          ;8FE916;
+    LDA.W Enemy.var2                                                     ;8FE916;
     CMP.W #$0022                                                         ;8FE919;
     BNE .return                                                          ;8FE91C;
-    LDA.W $0FAE                                                          ;8FE91E;
+    LDA.W Enemy.var3                                                     ;8FE91E;
     BEQ .return                                                          ;8FE921;
     DEC                                                                  ;8FE923;
-    STA.W $0FAE                                                          ;8FE924;
+    STA.W Enemy.var3                                                     ;8FE924;
     BIT.W #$0001                                                         ;8FE927;
     BNE +                                                                ;8FE92A;
-    LDA.W $0911                                                          ;8FE92C;
+    LDA.W Layer1XPosition                                                ;8FE92C;
     CLC                                                                  ;8FE92F;
     ADC.W #$0004                                                         ;8FE930;
-    STA.W $0911                                                          ;8FE933;
+    STA.W Layer1XPosition                                                ;8FE933;
     RTS                                                                  ;8FE936;
 
-+   LDA.W $0911                                                          ;8FE937;
++   LDA.W Layer1XPosition                                                ;8FE937;
     SEC                                                                  ;8FE93A;
     SBC.W #$0004                                                         ;8FE93B;
-    STA.W $0911                                                          ;8FE93E;
+    STA.W Layer1XPosition                                                ;8FE93E;
     RTS                                                                  ;8FE941;
 
   .behindWallRumbling:
-    LDA.W $0915                                                          ;8FE942;
+    LDA.W Layer1YPosition                                                ;8FE942;
     CLC                                                                  ;8FE945;
-    ADC.W $091F                                                          ;8FE946;
+    ADC.W BG1YOffset                                                     ;8FE946;
     CLC                                                                  ;8FE949;
-    ADC.W $0FEE                                                          ;8FE94A;
-    STA.B $B3                                                            ;8FE94D;
+    ADC.W Enemy[1].var3                                                  ;8FE94A;
+    STA.B DP_BG1YScroll                                                  ;8FE94D;
     RTS                                                                  ;8FE94F;
 
 
 ;;; $E950: Main ASM: Ridley's room shaking ;;;
 MainASM_RidleysRoomShaking:
 ; Room $B32E. Ridley's room
-; Scrolls background in circle when Ridley's tail explosion sets $10A8 (when? Doesn't seem to ever happen)
+; Scrolls background in circle when Ridley's tail explosion sets Enemy[4].var0 (when? Doesn't seem to ever happen)
 ; It's actually probably a good thing if this never happens, messing with the BG scroll registers can break scrolling
-    LDA.W $10A8                                                          ;8FE950;
+    LDA.W Enemy[4].var0                                                  ;8FE950;
     BEQ .return                                                          ;8FE953;
     DEC                                                                  ;8FE955;
-    STA.W $10A8                                                          ;8FE956;
+    STA.W Enemy[4].var0                                                  ;8FE956;
     ASL                                                                  ;8FE959;
     TAX                                                                  ;8FE95A;
-    LDA.B $B1                                                            ;8FE95B;
+    LDA.B DP_BG1XScroll                                                  ;8FE95B;
     ADC.W .Xspeeds,X                                                     ;8FE95D;
-    STA.B $B1                                                            ;8FE960;
-    LDA.B $B5                                                            ;8FE962;
+    STA.B DP_BG1XScroll                                                  ;8FE960;
+    LDA.B DP_BG2XScroll                                                  ;8FE962;
     CLC                                                                  ;8FE964;
     ADC.W .Xspeeds,X                                                     ;8FE965;
-    STA.B $B5                                                            ;8FE968;
-    LDA.B $B3                                                            ;8FE96A;
+    STA.B DP_BG2XScroll                                                  ;8FE968;
+    LDA.B DP_BG1YScroll                                                  ;8FE96A;
     CLC                                                                  ;8FE96C;
     ADC.W .Yspeeds,X                                                     ;8FE96D;
-    STA.B $B3                                                            ;8FE970;
-    LDA.B $B7                                                            ;8FE972;
+    STA.B DP_BG1YScroll                                                  ;8FE970;
+    LDA.B DP_BG2YScroll                                                  ;8FE972;
     CLC                                                                  ;8FE974;
     ADC.W .Yspeeds,X                                                     ;8FE975;
-    STA.B $B7                                                            ;8FE978;
+    STA.B DP_BG2YScroll                                                  ;8FE978;
 
   .return:
     RTS                                                                  ;8FE97A;
