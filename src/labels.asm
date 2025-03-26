@@ -68,6 +68,12 @@ org $8F0000
 RoomDoors:
 
 
+org $900000
+BeamTrailInstLists:
+  .timer: skip 2 ; 0: Timer
+  .data: skip 2 ; 2: Data
+
+
 ORG $A00000
 EnemyHeaders:
   .tileDataSize: skip 2 ; 0: Tile data size

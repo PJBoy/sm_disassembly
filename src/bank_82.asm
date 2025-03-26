@@ -1423,8 +1423,8 @@ ShowSpareCPUDebug_UpdatePrevCtrl1Input:
 ;;; $8AE4: Game state 0 (reset/start) ;;;
 GameState_0_ResetStart:
     STZ.W Unknown0DF8                                                    ;828AE4;
-    STZ.W NeverRead0DFA                                                  ;828AE7;
-    STZ.W NeverRead0DFC                                                  ;828AEA;
+    STZ.W neverRead0DFA                                                  ;828AE7;
+    STZ.W neverRead0DFC                                                  ;828AEA;
     LDA.W #CinematicFunction_LoadTitleSequence                           ;828AED;
     STA.W CinematicFunction                                              ;828AF0;
     STZ.W DemoSet                                                        ;828AF3;

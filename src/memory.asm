@@ -576,7 +576,7 @@ PreviousMissiles: skip 2 ; $0A08
 PreviousSuperMissiles: skip 2 ; $0A0A
 PreviousPowerBombs: skip 2 ; $0A0C
 PreviousHUDItemIndex: skip 2 ; $0A0E
-NeverRead0A10: skip 1 ; $0A10
+neverRead0A10: skip 1 ; $0A10
 PreviousMovementTypeXray: skip 1 ; $0A11
 PreviousEnergyHurtCheck: skip 2 ; $0A12
 BackupController1InputDemo: skip 2 ; $0A14
@@ -670,7 +670,7 @@ SamusAnimationFrameBuffer: skip 2 ; $0A9C
 GrappleWalljumpTimer: skip 2 ; $0A9E
 CeresElevatorFadeTimer: skip 2 ; $0AA0
 ShinesparkWindupCrashTimer: skip 2 ; $0AA2
-skip 2 ; $0AA4
+neverRead0AA4: skip 2 ; $0AA4
 ArmCannonOpenFlag: skip 1 ; $0AA6
 ArmCannonCloseFlag: skip 1 ; $0AA7
 ArmCannonFrame: skip 2 ; $0AA8
@@ -735,14 +735,14 @@ SamusPreviousXSubPosition: skip 2 ; $0B12
 SamusPreviousYPosition: skip 2 ; $0B14
 SamusPreviousYSubPosition: skip 2 ; $0B16
 ChargedShotGlowTimer: skip 2 ; $0B18
-NeverRead0B1A: skip 2 ; $0B1A
-Unused0B1C: skip 4 ; $0B1C
+neverRead0B1A: skip 2 ; $0B1A
+unused0B1C: skip 4 ; $0B1C
 MorphBallBounceState: skip 2 ; $0B20
 SamusIsFallingFlag: skip 2 ; $0B22
 Temp0B24: skip 2 ; $0B24
 Temp0B26: skip 2 ; $0B26
-Unused0B28: skip 2 ; $0B28
-NeverRead0B2A: skip 2 ; $0B2A
+unused0B28: skip 2 ; $0B28
+neverRead0B2A: skip 2 ; $0B2A
 SamusYSubSpeed: skip 1 ; $0B2C
 SamusYSpeedCombined: skip 1 ; $0B2D
 SamusYSpeed: skip 2 ; $0B2E
@@ -750,8 +750,8 @@ Unused0B30: skip 2 ; $0B30
 SamusYSubAcceleration: skip 2 ; $0B32
 SamusYAcceleration: skip 2 ; $0B34
 SamusYDirection: skip 2 ; $0B36
-NeverRead0B38: skip 2 ; $0B38
-Unused0B3A: skip 2 ; $0B3A
+neverRead0B38: skip 2 ; $0B38
+unused0B3A: skip 2 ; $0B3A
 SamusRunningMomentumFlag: skip 2 ; $0B3C
 SamusBoostTimer: skip 1 ; $0B3E
 SamusBoostCounter: skip 1 ; $0B3F
@@ -837,8 +837,8 @@ GrappleBeam_StartXPosition: skip 2 ; $0D16
 GrappleBeam_StartYPosition: skip 2 ; $0D18
 GrappleBeam_FlareXPosition: skip 2 ; $0D1A
 GrappleBeam_FlareYPosition: skip 2 ; $0D1C
-GrappleBeam_NeverRead0D1E: skip 2 ; $0D1E
-GrappleBeam_NeverRead0D20: skip 2 ; $0D20
+GrappleBeam_neverRead0D1E: skip 2 ; $0D1E
+GrappleBeam_neverRead0D20: skip 2 ; $0D20
 GrappleBeam_ExtensionXSubVelocity: skip 1 ; $0D22
 GrappleBeam_ExtensionXVelocity: skip 1 ; $0D23
 GrappleBeam_ExtensionYSubVelocity: skip 1 ; $0D24
@@ -967,8 +967,8 @@ skip 4
 DebugSpareCPUDisplayFlag: skip 2 ; $0DF4
 DebugSamusTileViewerFlag: skip 2 ; $0DF6
 Unknown0DF8: skip 2 ; $0DF8
-NeverRead0DFA: skip 2 ; $0DFA
-NeverRead0DFC: skip 2 ; $0DFC
+neverRead0DFA: skip 2 ; $0DFA
+neverRead0DFC: skip 2 ; $0DFC
 PreviousController1InputDrawing: skip 2 ; $0DFE
 PreviousController1NewDrawing: skip 2 ; $0E00
 SamusBottomBoundaryPosition: skip 2 ; $0E02
@@ -1848,7 +1848,8 @@ HUDTilemap_Row3AutoReserve: skip 4 ; $7EC698..9B
 HUDTilemap_Row3MissileCount: skip 6 ; $7EC69C..A1
 HUDTilemap_Row3SuperMissileCount: skip 4 ; $7EC6A4..A7
 HUDTilemap_Row3DebugExtraDigit: skip 2 ; $7EC6A8
-HUDTilemap_Row3PowerBombCount: skip 2 ; $7EC6AA..AD
+HUDTilemap_Row3PowerBombCount: skip 4 ; $7EC6AA..AD
+skip $10
 HUDTilemap_Row3Minimap: skip 10 ; $7EC6BC..C5
 
 org $7EC6C8
