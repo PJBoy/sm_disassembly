@@ -34,8 +34,10 @@ DP_Temp1D: skip 1 ; $1D
 DP_Temp1E: skip 1 ; $1E
 DP_Temp1F: skip 1 ; $1F
 DP_Temp20: skip 2 ; $20
-DP_Temp22: skip 2 ; $22
-DP_Temp24: skip 2 ; $24
+DP_Temp22: skip 1 ; $22
+DP_Temp23: skip 1 ; $25
+DP_Temp24: skip 1 ; $24
+DP_Temp25: skip 1 ; $25
 DP_Temp26: skip 1 ; $26
 DP_Temp27: skip 1 ; $27
 DP_Temp28: skip 1 ; $28
@@ -569,7 +571,7 @@ NeverRead09E8: skip 2 ; $09E8
 IconCancel: skip 2 ; $09EA
 Unused09EC: skip $16 ; $09EC..0A01
 
-Unused0A02: skip 2 ; $0A02
+unused0A02: skip 2 ; $0A02
 AutoCancelHUDItemIndex: skip 2 ; $0A04
 PreviousEnergy: skip 2 ; $0A06
 PreviousMissiles: skip 2 ; $0A08
@@ -581,7 +583,7 @@ PreviousMovementTypeXray: skip 1 ; $0A11
 PreviousEnergyHurtCheck: skip 2 ; $0A12
 BackupController1InputDemo: skip 2 ; $0A14
 BackupController1NewDemo: skip 2 ; $0A16
-NeverRead0A18: skip 2 ; $0A18
+neverRead0A18: skip 2 ; $0A18
 Unused0A1A: skip 2 ; $0A1A
 Pose: skip 2 ; $0A1C
 PoseXDirection: skip 1 ; $0A1E
@@ -837,6 +839,7 @@ GrappleBeam_StartXPosition: skip 2 ; $0D16
 GrappleBeam_StartYPosition: skip 2 ; $0D18
 GrappleBeam_FlareXPosition: skip 2 ; $0D1A
 GrappleBeam_FlareYPosition: skip 2 ; $0D1C
+OffScreenBeamHDMADataTableIndex: skip 0 ; $0D1E
 GrappleBeam_neverRead0D1E: skip 2 ; $0D1E
 GrappleBeam_neverRead0D20: skip 2 ; $0D20
 GrappleBeam_ExtensionXSubVelocity: skip 1 ; $0D22
@@ -966,7 +969,7 @@ DraygonEscapePreviousDpadInput: skip 2 ; $0DEE
 skip 4
 DebugSpareCPUDisplayFlag: skip 2 ; $0DF4
 DebugSamusTileViewerFlag: skip 2 ; $0DF6
-Unknown0DF8: skip 2 ; $0DF8
+unknown0DF8: skip 2 ; $0DF8
 neverRead0DFA: skip 2 ; $0DFA
 neverRead0DFC: skip 2 ; $0DFC
 PreviousController1InputDrawing: skip 2 ; $0DFE

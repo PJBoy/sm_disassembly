@@ -10,7 +10,7 @@ NormalSamusPoseInputHandler:
     PHK                                                                  ;918002;
     PLB                                                                  ;918003;
     REP #$30                                                             ;918004;
-    LDA.W $0A1F                                                          ;918006;
+    LDA.W MovementType                                                   ;918006;
     AND.W #$00FF                                                         ;918009;
     ASL                                                                  ;91800C;
     TAX                                                                  ;91800D;
@@ -59,14 +59,14 @@ RTS_91804C:
 NormalSamusPoseInputHandler_Standing:
     PHP                                                                  ;91804D;
     REP #$30                                                             ;91804E;
-    LDA.W $0A1C                                                          ;918050;
+    LDA.W Pose                                                           ;918050;
     BEQ .facingForward                                                   ;918053;
     CMP.W #$009B                                                         ;918055;
     BEQ .facingForward                                                   ;918058;
     BRA .notFacingForward                                                ;91805A;
 
   .facingForward:
-    LDA.W $0E18                                                          ;91805C;
+    LDA.W ElevatorStatus                                                 ;91805C;
     BNE .return                                                          ;91805F;
 
   .notFacingForward:
@@ -120,26 +120,26 @@ RTS_918086:
 
 ;;; $8087: Normal Samus pose input handler - [Samus movement type] = crouching ;;;
 NormalSamusPoseInputHandler_Crouching:
-; Note that this routine is not called when time is frozen ([$0A42] = $E713 during reserve tanks, [$0A60] = $E918 during x-ray),
+; Note that this routine is not called when time is frozen (CurrentStateHandler = $E713 during reserve tanks, PoseInputHandler = $E918 during x-ray),
 ; so the call to XraySamusPoseInputHandler is dead code.
 ; I also don't think there's any way to transition directly from crouching to standing, (actually: check x-ray stand up)
 ; so the Y position adjustment is dead code too.
     PHP                                                                  ;918087;
     REP #$30                                                             ;918088;
-    LDA.W $0A78                                                          ;91808A;
+    LDA.W TimeIsFrozenFlag                                               ;91808A;
     BNE .timeIsFrozen                                                    ;91808D;
     JSR.W DetermineProspectivePoseFromTransitionTable                    ;91808F;
-    LDA.W $0A1F                                                          ;918092;
+    LDA.W MovementType                                                   ;918092;
     AND.W #$00FF                                                         ;918095;
     BNE .return                                                          ;918098;
-    LDA.W $0AFA                                                          ;91809A;
+    LDA.W SamusYPosition                                                 ;91809A;
     SEC                                                                  ;91809D;
     SBC.W #$0005                                                         ;91809E;
-    STA.W $0AFA                                                          ;9180A1;
-    LDA.W $0B14                                                          ;9180A4;
+    STA.W SamusYPosition                                                 ;9180A1;
+    LDA.W SamusPreviousYPosition                                         ;9180A4;
     SEC                                                                  ;9180A7;
     SBC.W #$0005                                                         ;9180A8;
-    STA.W $0B14                                                          ;9180AB;
+    STA.W SamusPreviousYPosition                                         ;9180AB;
     BRA .return                                                          ;9180AE;
 
   .timeIsFrozen:
@@ -164,40 +164,40 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_AutoJumpFromCrouchFall_9180BE:
 ; Tries to make Samus jump if pressing jump and she's falling straight down but has zero Y speed and she wasn't crouching before she fell...?
 ; Perhaps an earlier attempt at auto-jump
-    LDA.W $0A1C                                                          ;9180BE;
+    LDA.W Pose                                                           ;9180BE;
     CMP.W #$0029                                                         ;9180C1;
     BEQ .fallingNotAiming                                                ;9180C4;
     CMP.W #$002A                                                         ;9180C6;
     BNE .return                                                          ;9180C9;
 
   .fallingNotAiming:
-    LDA.W $0A27                                                          ;9180CB;
+    LDA.W LastDifferentPoseMovementType                                  ;9180CB;
     AND.W #$00FF                                                         ;9180CE;
     CMP.W #$0005                                                         ;9180D1;
     BEQ .return                                                          ;9180D4;
-    LDA.B $8B                                                            ;9180D6;
+    LDA.B DP_Controller1Input                                            ;9180D6;
     BIT.W #$0300                                                         ;9180D8;
     BNE .return                                                          ;9180DB;
-    LDA.W $0B2E                                                          ;9180DD;
+    LDA.W SamusYSpeed                                                    ;9180DD;
     BNE .return                                                          ;9180E0;
-    LDA.B $8F                                                            ;9180E2;
-    BIT.W $09B4                                                          ;9180E4;
+    LDA.B DP_Controller1New                                              ;9180E2;
+    BIT.W JumpBinding                                                    ;9180E4;
     BEQ .return                                                          ;9180E7;
-    LDA.W $0A1E                                                          ;9180E9;
+    LDA.W PoseXDirection                                                 ;9180E9;
     AND.W #$00FF                                                         ;9180EC;
     CMP.W #$0004                                                         ;9180EF;
     BEQ .facingLeft                                                      ;9180F2;
     LDA.W #$004D                                                         ;9180F4;
-    STA.W $0A2A                                                          ;9180F7;
+    STA.W SpecialProspectivePose                                         ;9180F7;
     BRA .command4                                                        ;9180FA;
 
   .facingLeft:
     LDA.W #$004E                                                         ;9180FC;
-    STA.W $0A2A                                                          ;9180FF;
+    STA.W SpecialProspectivePose                                         ;9180FF;
 
   .command4:
     LDA.W #$0004                                                         ;918102;
-    STA.W $0A30                                                          ;918105;
+    STA.W SpecialProspectivePoseChangeCommand                            ;918105;
 
   .return:
     PLP                                                                  ;918108;
@@ -221,17 +221,17 @@ RTS_918112:
 
 ;;; $8113: Normal Samus pose input handler - [Samus movement type] = knockback / crystal flash ending ;;;
 NormalSamusPoseInputHandler_Knockback_CrystalFlashEnding:
-; Only processes knockback in practice as [$0A60] = RTS during crystal flash, so this function never gets called.
+; Only processes knockback in practice as PoseInputHandler = RTS during crystal flash, so this function never gets called.
 ; Samus movement type cannot be changed via DetermineProspectivePoseFromTransitionTable... but if it did then Samus would jump(?!).
     PHP                                                                  ;918113;
     REP #$30                                                             ;918114;
     JSR.W DetermineProspectivePoseFromTransitionTable                    ;918116;
-    LDA.W $0A1F                                                          ;918119;
+    LDA.W MovementType                                                   ;918119;
     AND.W #$00FF                                                         ;91811C;
     CMP.W #$000A                                                         ;91811F;
     BEQ .return                                                          ;918122;
     JSL.L Make_Samus_Jump                                                ;918124;
-    STZ.W $18AA                                                          ;918128;
+    STZ.W SamusKnockbackTimer                                            ;918128;
 
   .return:
     PLP                                                                  ;91812B;
@@ -322,11 +322,11 @@ NormalSamusPoseInputHandler_WallJumping:
 
 ;;; $816F: Normal Samus pose input handler - [Samus movement type] = ran into a wall ;;;
 NormalSamusPoseInputHandler_RanIntoAWall:
-; Note that this routine is not called when time is frozen ([$0A42] = $E713 during reserve tanks, [$0A60] = $E918 during x-ray),
+; Note that this routine is not called when time is frozen (CurrentStateHandler = $E713 during reserve tanks, PoseInputHandler = $E918 during x-ray),
 ; so the broken call to XraySamusPoseInputHandler is dead code.
     PHP                                                                  ;91816F;
     REP #$30                                                             ;918170;
-    LDA.W $0A78                                                          ;918172;
+    LDA.W TimeIsFrozenFlag                                               ;918172;
     BNE .timeIsFrozen                                                    ;918175;
     JSR.W DetermineProspectivePoseFromTransitionTable                    ;918177;
     BRA .return                                                          ;91817A;
@@ -413,10 +413,10 @@ DetermineProspectivePoseFromTransitionTable:
 ; [[Y]]: Required newly pressed input
 ; [[Y] + 2]: Required input
 ; If [[Y]] & [$12/14] != 0 then there were some buttons specified in [[Y]] that are not being pressed
-    LDA.B $8B                                                            ;9181A9;
+    LDA.B DP_Controller1Input                                            ;9181A9;
     BEQ .noInput                                                         ;9181AB;
     JSR.W TranslateCustomControllerBindingsToDefaultBindings             ;9181AD;
-    LDA.W $0A1C                                                          ;9181B0;
+    LDA.W Pose                                                           ;9181B0;
     ASL                                                                  ;9181B3;
     TAX                                                                  ;9181B4;
     LDA.W TransitionTable,X                                              ;9181B5;
@@ -428,13 +428,13 @@ DetermineProspectivePoseFromTransitionTable:
   .loop:
     DEC                                                                  ;9181BF;
     BEQ .input                                                           ;9181C0;
-    AND.B $12                                                            ;9181C2;
+    AND.B DP_Temp12                                                      ;9181C2;
     BNE .next                                                            ;9181C4;
 
   .input:
     LDA.W $0002,Y                                                        ;9181C6;
     BEQ .foundTransition                                                 ;9181C9;
-    AND.B $14                                                            ;9181CB;
+    AND.B DP_Temp14                                                      ;9181CB;
     BEQ .foundTransition                                                 ;9181CD;
 
   .next:
@@ -447,7 +447,7 @@ DetermineProspectivePoseFromTransitionTable:
     BNE .loop                                                            ;9181D9;
 
   .noInput:
-    STZ.W $0A18                                                          ;9181DB;
+    STZ.W neverRead0A18                                                  ;9181DB;
     JSL.L HandleTransitionTableLookupFailure                             ;9181DE;
 
   .notFound:
@@ -456,10 +456,10 @@ DetermineProspectivePoseFromTransitionTable:
 
   .foundTransition:
     LDA.W $0004,Y                                                        ;9181E4;
-    CMP.W $0A1C                                                          ;9181E7;
+    CMP.W Pose                                                           ;9181E7;
     BEQ .notFound                                                        ;9181EA;
-    STA.W $0A28                                                          ;9181EC;
-    STZ.W $0A56                                                          ;9181EF;
+    STA.W ProspectivePose                                                ;9181EC;
+    STZ.W BombJumpDirection                                              ;9181EF;
     SEC                                                                  ;9181F2;
     RTS                                                                  ;9181F3;
 
@@ -472,130 +472,130 @@ TranslateCustomControllerBindingsToDefaultBindings:
 
 ; This contains the evil code that disallows aiming to not be L and R
 ; $82:F587 handles the graphical part of the controller settings menu
-    LDA.B $8F                                                            ;9181F4;
+    LDA.B DP_Controller1New                                              ;9181F4;
     AND.W #$0F00                                                         ;9181F6;
-    STA.B $12                                                            ;9181F9;
-    LDA.B $8B                                                            ;9181FB;
+    STA.B DP_Temp12                                                      ;9181F9;
+    LDA.B DP_Controller1Input                                            ;9181FB;
     AND.W #$0F00                                                         ;9181FD;
-    STA.B $14                                                            ;918200;
-    LDA.B $8F                                                            ;918202;
-    BIT.W $09B2                                                          ;918204;
+    STA.B DP_Temp14                                                      ;918200;
+    LDA.B DP_Controller1New                                              ;918202;
+    BIT.W ShotBinding                                                    ;918204;
     BEQ .checkJump12                                                     ;918207;
-    LDA.B $12                                                            ;918209;
+    LDA.B DP_Temp12                                                      ;918209;
     ORA.W #$0040                                                         ;91820B;
-    STA.B $12                                                            ;91820E;
-    LDA.B $8F                                                            ;918210;
+    STA.B DP_Temp12                                                      ;91820E;
+    LDA.B DP_Controller1New                                              ;918210;
 
   .checkJump12:
-    BIT.W $09B4                                                          ;918212;
+    BIT.W JumpBinding                                                    ;918212;
     BEQ .checkRun12                                                      ;918215;
-    LDA.B $12                                                            ;918217;
+    LDA.B DP_Temp12                                                      ;918217;
     ORA.W #$0080                                                         ;918219;
-    STA.B $12                                                            ;91821C;
-    LDA.B $8F                                                            ;91821E;
+    STA.B DP_Temp12                                                      ;91821C;
+    LDA.B DP_Controller1New                                              ;91821E;
 
   .checkRun12:
-    BIT.W $09B6                                                          ;918220;
+    BIT.W DashBinding                                                    ;918220;
     BEQ .checkItemCancel12                                               ;918223;
-    LDA.B $12                                                            ;918225;
+    LDA.B DP_Temp12                                                      ;918225;
     ORA.W #$8000                                                         ;918227;
-    STA.B $12                                                            ;91822A;
-    LDA.B $8F                                                            ;91822C;
+    STA.B DP_Temp12                                                      ;91822A;
+    LDA.B DP_Controller1New                                              ;91822C;
 
   .checkItemCancel12:
-    BIT.W $09B8                                                          ;91822E;
+    BIT.W ItemCancelBinding                                              ;91822E;
     BEQ .checkAimUp12                                                    ;918231;
-    LDA.B $12                                                            ;918233;
+    LDA.B DP_Temp12                                                      ;918233;
     ORA.W #$4000                                                         ;918235;
-    STA.B $12                                                            ;918238;
-    LDA.B $8F                                                            ;91823A;
+    STA.B DP_Temp12                                                      ;918238;
+    LDA.B DP_Controller1New                                              ;91823A;
 
   .checkAimUp12:
-    BIT.W $09BE                                                          ;91823C;
+    BIT.W AimUpBinding                                                   ;91823C;
     BEQ .checkAimDown12                                                  ;91823F;
-    LDA.W $09BE                                                          ;918241;
+    LDA.W AimUpBinding                                                   ;918241;
     BIT.W #$0030                                                         ;918244;
     BEQ .reloadNewInputs                                                 ;918247;
-    LDA.B $12                                                            ;918249;
+    LDA.B DP_Temp12                                                      ;918249;
     ORA.W #$0010                                                         ;91824B;
-    STA.B $12                                                            ;91824E;
+    STA.B DP_Temp12                                                      ;91824E;
 
   .reloadNewInputs:
-    LDA.B $8F                                                            ;918250;
+    LDA.B DP_Controller1New                                              ;918250;
 
   .checkAimDown12:
-    BIT.W $09BC                                                          ;918252;
+    BIT.W AimDownBinding                                                 ;918252;
     BEQ .checkShot14                                                     ;918255;
-    LDA.W $09BC                                                          ;918257;
+    LDA.W AimDownBinding                                                 ;918257;
     BIT.W #$0030                                                         ;91825A;
     BEQ .checkShot14                                                     ;91825D;
-    LDA.B $12                                                            ;91825F;
+    LDA.B DP_Temp12                                                      ;91825F;
     ORA.W #$0020                                                         ;918261;
-    STA.B $12                                                            ;918264;
+    STA.B DP_Temp12                                                      ;918264;
 
   .checkShot14:
-    LDA.B $12                                                            ;918266;
+    LDA.B DP_Temp12                                                      ;918266;
     EOR.W #$FFFF                                                         ;918268;
-    STA.B $12                                                            ;91826B;
-    LDA.B $8B                                                            ;91826D;
-    BIT.W $09B2                                                          ;91826F;
+    STA.B DP_Temp12                                                      ;91826B;
+    LDA.B DP_Controller1Input                                            ;91826D;
+    BIT.W ShotBinding                                                    ;91826F;
     BEQ .checkJump14                                                     ;918272;
-    LDA.B $14                                                            ;918274;
+    LDA.B DP_Temp14                                                      ;918274;
     ORA.W #$0040                                                         ;918276;
-    STA.B $14                                                            ;918279;
-    LDA.B $8B                                                            ;91827B;
+    STA.B DP_Temp14                                                      ;918279;
+    LDA.B DP_Controller1Input                                            ;91827B;
 
   .checkJump14:
-    BIT.W $09B4                                                          ;91827D;
+    BIT.W JumpBinding                                                    ;91827D;
     BEQ .checkRun14                                                      ;918280;
-    LDA.B $14                                                            ;918282;
+    LDA.B DP_Temp14                                                      ;918282;
     ORA.W #$0080                                                         ;918284;
-    STA.B $14                                                            ;918287;
-    LDA.B $8B                                                            ;918289;
+    STA.B DP_Temp14                                                      ;918287;
+    LDA.B DP_Controller1Input                                            ;918289;
 
   .checkRun14:
-    BIT.W $09B6                                                          ;91828B;
+    BIT.W DashBinding                                                    ;91828B;
     BEQ .checkItemCancel14                                               ;91828E;
-    LDA.B $14                                                            ;918290;
+    LDA.B DP_Temp14                                                      ;918290;
     ORA.W #$8000                                                         ;918292;
-    STA.B $14                                                            ;918295;
-    LDA.B $8B                                                            ;918297;
+    STA.B DP_Temp14                                                      ;918295;
+    LDA.B DP_Controller1Input                                            ;918297;
 
   .checkItemCancel14:
-    BIT.W $09B8                                                          ;918299;
+    BIT.W ItemCancelBinding                                              ;918299;
     BEQ .checkAimUp14                                                    ;91829C;
-    LDA.B $14                                                            ;91829E;
+    LDA.B DP_Temp14                                                      ;91829E;
     ORA.W #$4000                                                         ;9182A0;
-    STA.B $14                                                            ;9182A3;
-    LDA.B $8B                                                            ;9182A5;
+    STA.B DP_Temp14                                                      ;9182A3;
+    LDA.B DP_Controller1Input                                            ;9182A5;
 
   .checkAimUp14:
-    BIT.W $09BE                                                          ;9182A7;
+    BIT.W AimUpBinding                                                   ;9182A7;
     BEQ .checkAimDown14                                                  ;9182AA;
-    LDA.W $09BE                                                          ;9182AC;
+    LDA.W AimUpBinding                                                   ;9182AC;
     BIT.W #$0030                                                         ;9182AF;
     BEQ .reloadPressedInputs                                             ;9182B2;
-    LDA.B $14                                                            ;9182B4;
+    LDA.B DP_Temp14                                                      ;9182B4;
     ORA.W #$0010                                                         ;9182B6;
-    STA.B $14                                                            ;9182B9;
+    STA.B DP_Temp14                                                      ;9182B9;
 
   .reloadPressedInputs:
-    LDA.B $8B                                                            ;9182BB;
+    LDA.B DP_Controller1Input                                            ;9182BB;
 
   .checkAimDown14:
-    BIT.W $09BC                                                          ;9182BD;
+    BIT.W AimDownBinding                                                 ;9182BD;
     BEQ .done                                                            ;9182C0;
-    LDA.W $09BC                                                          ;9182C2;
+    LDA.W AimDownBinding                                                 ;9182C2;
     BIT.W #$0030                                                         ;9182C5;
     BEQ .done                                                            ;9182C8;
-    LDA.B $14                                                            ;9182CA;
+    LDA.B DP_Temp14                                                      ;9182CA;
     ORA.W #$0020                                                         ;9182CC;
-    STA.B $14                                                            ;9182CF;
+    STA.B DP_Temp14                                                      ;9182CF;
 
   .done:
-    LDA.B $14                                                            ;9182D1;
+    LDA.B DP_Temp14                                                      ;9182D1;
     EOR.W #$FFFF                                                         ;9182D3;
-    STA.B $14                                                            ;9182D6;
+    STA.B DP_Temp14                                                      ;9182D6;
     RTS                                                                  ;9182D8;
 
 
@@ -611,12 +611,12 @@ HandleTransitionTableLookupFailure:
     BCC .consultPoseDefinition                                           ;9182E2;
 
   .retainCurrentPose:
-    LDA.W $0A1C                                                          ;9182E4;
-    STA.W $0A28                                                          ;9182E7;
+    LDA.W Pose                                                           ;9182E4;
+    STA.W ProspectivePose                                                ;9182E7;
     BRA .return                                                          ;9182EA;
 
   .consultPoseDefinition:
-    LDA.W $0A1C                                                          ;9182EC;
+    LDA.W Pose                                                           ;9182EC;
     ASL                                                                  ;9182EF;
     ASL                                                                  ;9182F0;
     ASL                                                                  ;9182F1;
@@ -625,7 +625,7 @@ HandleTransitionTableLookupFailure:
     AND.W #$00FF                                                         ;9182F6;
     CMP.W #$00FF                                                         ;9182F9;
     BEQ .retainCurrentPose                                               ;9182FC;
-    STA.W $0A28                                                          ;9182FE;
+    STA.W ProspectivePose                                                ;9182FE;
 
   .return:
     PLB                                                                  ;918301;
@@ -637,7 +637,7 @@ HandleTransitionTableLookupFailure:
 Set_ProspectivePoseChangeCommand:
 ;; Returns:
 ;;     Carry: Set if retaining current pose (i.e. command = decelerate), clear otherwise
-    LDA.W $0A1F                                                          ;918304;
+    LDA.W MovementType                                                   ;918304;
     AND.W #$00FF                                                         ;918307;
     TAX                                                                  ;91830A;
     LDA.W .poseChangeCommands,X                                          ;91830B;
@@ -646,25 +646,25 @@ Set_ProspectivePoseChangeCommand:
     BEQ .decelerate                                                      ;918314;
 
   .notRetaining:
-    STA.W $0A2E                                                          ;918316;
+    STA.W ProspectivePoseChangeCommand                                   ;918316;
     CLC                                                                  ;918319;
     RTS                                                                  ;91831A;
 
   .decelerate:
-    LDA.W $0B46                                                          ;91831B;
+    LDA.W SamusXBaseSpeed                                                ;91831B;
     BNE .done                                                            ;91831E;
-    LDA.W $0B48                                                          ;918320;
+    LDA.W SamusXBaseSubSpeed                                             ;918320;
     BNE .done                                                            ;918323;
     LDA.W #$0002                                                         ;918325;
     BRA .notRetaining                                                    ;918328;
 
   .done:
     LDA.W #$0001                                                         ;91832A;
-    STA.W $0A2E                                                          ;91832D;
+    STA.W ProspectivePoseChangeCommand                                   ;91832D;
     SEC                                                                  ;918330;
     RTS                                                                  ;918331;
 
-  .poseChangeCommands:                                                     ;918332;
+  .poseChangeCommands:                                                   ;918332;
 ; Value for prospective pose change command. If 1 and [Samus X base speed] = 0, use 2 instead
     db $02 ; 0: Standing
     db $01 ; 1: Running
@@ -701,9 +701,9 @@ Enable_DemoInput:
     PHP                                                                  ;91834E;
     REP #$30                                                             ;91834F;
     LDA.W #SamusPoseInputHandler_Demo                                    ;918351;
-    STA.W $0A60                                                          ;918354;
+    STA.W PoseInputHandler                                               ;918354;
     LDA.W #$8000                                                         ;918357;
-    TSB.W $0A88                                                          ;91835A;
+    TSB.W DemoInput_Enable                                               ;91835A;
     PLP                                                                  ;91835D;
     RTL                                                                  ;91835E;
 
@@ -713,9 +713,9 @@ Disable_DemoInput:
     PHP                                                                  ;91835F;
     REP #$30                                                             ;918360;
     LDA.W #SamusPoseInputHandler_Normal                                  ;918362;
-    STA.W $0A60                                                          ;918365;
+    STA.W PoseInputHandler                                               ;918365;
     LDA.W #$8000                                                         ;918368;
-    TRB.W $0A88                                                          ;91836B;
+    TRB.W DemoInput_Enable                                               ;91836B;
     PLP                                                                  ;91836E;
     RTL                                                                  ;91836F;
 
@@ -726,16 +726,16 @@ Clear_DemoInput_RAM:
     PHP                                                                  ;918370;
     REP #$30                                                             ;918371;
     PHX                                                                  ;918373;
-    STZ.W $0A7A                                                          ;918374;
-    STZ.W $0A7C                                                          ;918377;
-    STZ.W $0A7E                                                          ;91837A;
-    STZ.W $0A80                                                          ;91837D;
-    STZ.W $0A82                                                          ;918380;
-    STZ.W $0A84                                                          ;918383;
-    STZ.W $0A86                                                          ;918386;
-    STZ.W $0A8C                                                          ;918389;
-    STZ.W $0A8E                                                          ;91838C;
-    STZ.W $0A88                                                          ;91838F;
+    STZ.W DemoInput_PreInstruction                                       ;918374;
+    STZ.W DemoInput_InstructionTimer                                     ;918377;
+    STZ.W DemoInput_InstListPointer                                      ;91837A;
+    STZ.W DemoInput_Timer                                                ;91837D;
+    STZ.W DemoInput_InitParam                                            ;918380;
+    STZ.W DemoInput_Input                                                ;918383;
+    STZ.W DemoInput_New                                                  ;918386;
+    STZ.W DemoInput_PreviousInput                                        ;918389;
+    STZ.W DemoInput_PreviousNew                                          ;91838C;
+    STZ.W DemoInput_Enable                                               ;91838F;
     PLX                                                                  ;918392;
     PLP                                                                  ;918393;
     RTL                                                                  ;918394;
@@ -752,16 +752,16 @@ Load_DemoInputObject:
     PLB                                                                  ;918398;
     REP #$30                                                             ;918399;
     PHX                                                                  ;91839B;
-    STA.W $0A82                                                          ;91839C;
+    STA.W DemoInput_InitParam                                            ;91839C;
     TYX                                                                  ;91839F;
     LDA.W $0002,X                                                        ;9183A0;
-    STA.W $0A7A                                                          ;9183A3;
+    STA.W DemoInput_PreInstruction                                       ;9183A3;
     LDA.W $0004,X                                                        ;9183A6;
-    STA.W $0A7E                                                          ;9183A9;
+    STA.W DemoInput_InstListPointer                                      ;9183A9;
     LDA.W #$0001                                                         ;9183AC;
-    STA.W $0A7C                                                          ;9183AF;
+    STA.W DemoInput_InstructionTimer                                     ;9183AF;
     LDA.W #$0000                                                         ;9183B2;
-    STA.W $0A80                                                          ;9183B5;
+    STA.W DemoInput_Timer                                                ;9183B5;
     JSR.W ($0000,X)                                                      ;9183B8;
     PLX                                                                  ;9183BB;
     PLB                                                                  ;9183BC;
@@ -781,21 +781,21 @@ DemoInputObjectHandler:
     PHK                                                                  ;9183C2;
     PLB                                                                  ;9183C3;
     REP #$30                                                             ;9183C4;
-    BIT.W $0A88                                                          ;9183C6;
+    BIT.W DemoInput_Enable                                               ;9183C6;
     BPL .return                                                          ;9183C9;
-    LDA.W $0A7E                                                          ;9183CB;
+    LDA.W DemoInput_InstListPointer                                      ;9183CB;
     BEQ .return                                                          ;9183CE;
     JSR.W ProcessDemoInputObject                                         ;9183D0;
-    LDA.W $0A8C                                                          ;9183D3;
-    STA.W $0DFE                                                          ;9183D6;
-    LDA.W $0A8E                                                          ;9183D9;
-    STA.W $0E00                                                          ;9183DC;
-    LDA.W $0A84                                                          ;9183DF;
-    STA.B $8B                                                            ;9183E2;
-    STA.W $0A8C                                                          ;9183E4;
-    LDA.W $0A86                                                          ;9183E7;
-    STA.B $8F                                                            ;9183EA;
-    STA.W $0A8E                                                          ;9183EC;
+    LDA.W DemoInput_PreviousInput                                        ;9183D3;
+    STA.W PreviousController1InputDrawing                                ;9183D6;
+    LDA.W DemoInput_PreviousNew                                          ;9183D9;
+    STA.W PreviousController1NewDrawing                                  ;9183DC;
+    LDA.W DemoInput_Input                                                ;9183DF;
+    STA.B DP_Controller1Input                                            ;9183E2;
+    STA.W DemoInput_PreviousInput                                        ;9183E4;
+    LDA.W DemoInput_New                                                  ;9183E7;
+    STA.B DP_Controller1New                                              ;9183EA;
+    STA.W DemoInput_PreviousNew                                          ;9183EC;
 
   .return:
     PLB                                                                  ;9183EF;
@@ -806,30 +806,30 @@ DemoInputObjectHandler:
 ;;; $83F2: Process demo input object ;;;
 ProcessDemoInputObject:
     LDX.W #$0000                                                         ;9183F2;
-    JSR.W ($0A7A,X)                                                      ;9183F5;
-    DEC.W $0A7C                                                          ;9183F8;
+    JSR.W (DemoInput_PreInstruction,X)                                   ;9183F5;
+    DEC.W DemoInput_InstructionTimer                                     ;9183F8;
     BNE .return                                                          ;9183FB;
-    LDY.W $0A7E                                                          ;9183FD;
+    LDY.W DemoInput_InstListPointer                                      ;9183FD;
 
   .loop:
     LDA.W $0000,Y                                                        ;918400;
     BPL .processInput                                                    ;918403;
-    STA.B $12                                                            ;918405;
+    STA.B DP_Temp12                                                      ;918405;
     INY                                                                  ;918407;
     INY                                                                  ;918408;
     PEA.W .loop-1                                                        ;918409;
-    JMP.W ($0012)                                                        ;91840C;
+    JMP.W (DP_Temp12)                                                    ;91840C;
 
   .processInput:
-    STA.W $0A7C                                                          ;91840F;
+    STA.W DemoInput_InstructionTimer                                     ;91840F;
     LDA.W $0002,Y                                                        ;918412;
-    STA.W $0A84                                                          ;918415;
+    STA.W DemoInput_Input                                                ;918415;
     LDA.W $0004,Y                                                        ;918418;
-    STA.W $0A86                                                          ;91841B;
+    STA.W DemoInput_New                                                  ;91841B;
     TYA                                                                  ;91841E;
     CLC                                                                  ;91841F;
     ADC.W #$0006                                                         ;918420;
-    STA.W $0A7E                                                          ;918423;
+    STA.W DemoInput_InstListPointer                                      ;918423;
 
   .return:
     RTS                                                                  ;918426;
@@ -838,9 +838,9 @@ ProcessDemoInputObject:
 ;;; $8427: Instruction - delete ;;;
 Instruction_DemoInputObject_Delete:
     REP #$30                                                             ;918427;
-    STZ.W $0A7E                                                          ;918429;
-    STZ.W $0A84                                                          ;91842C;
-    STZ.W $0A86                                                          ;91842F;
+    STZ.W DemoInput_InstListPointer                                      ;918429;
+    STZ.W DemoInput_Input                                                ;91842C;
+    STZ.W DemoInput_New                                                  ;91842F;
     PLA                                                                  ;918432;
     RTS                                                                  ;918433;
 
@@ -849,7 +849,7 @@ Instruction_DemoInputObject_Delete:
 Instruction_DemoInputObject_PreInstructionInY:
     REP #$30                                                             ;918434;
     LDA.W $0000,Y                                                        ;918436;
-    STA.W $0A7A                                                          ;918439;
+    STA.W DemoInput_PreInstruction                                       ;918439;
     INY                                                                  ;91843C;
     INY                                                                  ;91843D;
     RTS                                                                  ;91843E;
@@ -859,7 +859,7 @@ Instruction_DemoInputObject_PreInstructionInY:
 Instruction_DemoInputObject_ClearPreInstruction:
     REP #$30                                                             ;91843F;
     LDA.W #.return                                                       ;918441;
-    STA.W $0A7A                                                          ;918444;
+    STA.W DemoInput_PreInstruction                                       ;918444;
 
   .return:
     RTS                                                                  ;918447;
@@ -876,7 +876,7 @@ Instruction_DemoInputObject_GotoY:
 ;;; $844F: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_DemoInputObject_DecrementTimer_GotoYIfNonZero:
     REP #$30                                                             ;91844F;
-    DEC.W $0A80                                                          ;918451;
+    DEC.W DemoInput_Timer                                                ;918451;
     BNE Instruction_DemoInputObject_GotoY                                ;918454;
     INY                                                                  ;918456;
     INY                                                                  ;918457;
@@ -887,7 +887,7 @@ Instruction_DemoInputObject_DecrementTimer_GotoYIfNonZero:
 Instruction_DemoInputObject_TimerInY:
     REP #$30                                                             ;918459;
     LDA.W $0000,Y                                                        ;91845B;
-    STA.W $0A80                                                          ;91845E;
+    STA.W DemoInput_Timer                                                ;91845E;
     INY                                                                  ;918461;
     INY                                                                  ;918462;
     RTS                                                                  ;918463;
@@ -901,49 +901,49 @@ RecordDemoInputFrame:
     PHK                                                                  ;918466;
     PLB                                                                  ;918467;
     REP #$30                                                             ;918468;
-    LDA.W $0A8A                                                          ;91846A;
+    LDA.W DemoInput_RecordedDuration                                     ;91846A;
     AND.W #$7FFF                                                         ;91846D;
-    STA.W $0E24                                                          ;918470;
+    STA.W Temp_DemoRecorderFrameCounter                                  ;918470;
     LDA.W #$00E0                                                         ;918473;
-    STA.W $0E20                                                          ;918476;
+    STA.W Temp_DemoRecorderFrameCounterXPosition                         ;918476;
     LDA.W #$0038                                                         ;918479;
-    STA.W $0E22                                                          ;91847C;
+    STA.W Temp_DemoRecorderFrameCounterYPosition                         ;91847C;
     JSR.W Draw_RecordedDemoDuration                                      ;91847F;
-    LDA.W $0A8A                                                          ;918482;
+    LDA.W DemoInput_RecordedDuration                                     ;918482;
     BMI .return                                                          ;918485;
     BNE .record                                                          ;918487;
-    LDA.B $91                                                            ;918489;
+    LDA.B DP_Controller2New                                              ;918489;
     BIT.W #$4000                                                         ;91848B;
     BEQ .return                                                          ;91848E;
 
   .record:
-    LDA.W $0A8A                                                          ;918490;
+    LDA.W DemoInput_RecordedDuration                                     ;918490;
     ASL                                                                  ;918493;
     ASL                                                                  ;918494;
-    STA.B $12                                                            ;918495;
+    STA.B DP_Temp12                                                      ;918495;
     ASL                                                                  ;918497;
-    ADC.B $12                                                            ;918498;
+    ADC.B DP_Temp12                                                      ;918498;
     TAX                                                                  ;91849A;
-    LDA.B $8B                                                            ;91849B;
-    STA.L $B88000,X                                                      ;91849D;
-    LDA.B $8F                                                            ;9184A1;
-    STA.L $B88002,X                                                      ;9184A3;
-    LDA.W $0911                                                          ;9184A7;
-    STA.L $B88004,X                                                      ;9184AA;
-    LDA.W $0915                                                          ;9184AE;
-    STA.L $B88006,X                                                      ;9184B1;
-    LDA.W $0AF6                                                          ;9184B5;
-    STA.L $B88008,X                                                      ;9184B8;
-    LDA.W $0AFA                                                          ;9184BC;
-    STA.L $B8800A,X                                                      ;9184BF;
-    LDA.W $0A8A                                                          ;9184C3;
+    LDA.B DP_Controller1Input                                            ;91849B;
+    STA.L DemoRecorder_input,X                                           ;91849D;
+    LDA.B DP_Controller1New                                              ;9184A1;
+    STA.L DemoRecorder_new,X                                             ;9184A3;
+    LDA.W Layer1XPosition                                                ;9184A7;
+    STA.L DemoRecorder_layer1X,X                                         ;9184AA;
+    LDA.W Layer1YPosition                                                ;9184AE;
+    STA.L DemoRecorder_layer1Y,X                                         ;9184B1;
+    LDA.W SamusXPosition                                                 ;9184B5;
+    STA.L DemoRecorder_SamusX,X                                          ;9184B8;
+    LDA.W SamusYPosition                                                 ;9184BC;
+    STA.L DemoRecorder_SamusY,X                                          ;9184BF;
+    LDA.W DemoInput_RecordedDuration                                     ;9184C3;
     INC                                                                  ;9184C6;
     CMP.W #$0A00                                                         ;9184C7;
     BNE .cappedAtA00                                                     ;9184CA;
     LDA.W #$0000                                                         ;9184CC;
 
   .cappedAtA00:
-    STA.W $0A8A                                                          ;9184CF;
+    STA.W DemoInput_RecordedDuration                                     ;9184CF;
 
   .return:
     PLB                                                                  ;9184D2;
@@ -960,37 +960,37 @@ Pause_Terminate_Reset_DemoRecorder:
     PHK                                                                  ;9184D7;
     PLB                                                                  ;9184D8;
     REP #$30                                                             ;9184D9;
-    LDA.B $91                                                            ;9184DB;
+    LDA.B DP_Controller2New                                              ;9184DB;
     BIT.W #$0040                                                         ;9184DD;
     BEQ .checkA                                                          ;9184E0;
-    LDA.W $0A8A                                                          ;9184E2;
+    LDA.W DemoInput_RecordedDuration                                     ;9184E2;
     ASL                                                                  ;9184E5;
     ASL                                                                  ;9184E6;
-    STA.B $12                                                            ;9184E7;
+    STA.B DP_Temp12                                                      ;9184E7;
     ASL                                                                  ;9184E9;
-    ADC.B $12                                                            ;9184EA;
+    ADC.B DP_Temp12                                                      ;9184EA;
     TAX                                                                  ;9184EC;
     LDA.W #$FFFF                                                         ;9184ED;
-    STA.L $B88000,X                                                      ;9184F0;
-    STA.L $B88002,X                                                      ;9184F4;
-    STA.L $B88004,X                                                      ;9184F8;
-    STA.L $B88006,X                                                      ;9184FC;
-    STA.L $B88008,X                                                      ;918500;
-    STA.L $B8800A,X                                                      ;918504;
-    LDA.W $078F                                                          ;918508;
-    STA.L $B8FF00                                                       ;91850B;
-    LDA.W $079F                                                          ;91850F;
-    STA.L $B8FF02                                                       ;918512;
-    LDA.W $0A8A                                                          ;918516;
+    STA.L DemoRecorder_input,X                                           ;9184F0;
+    STA.L DemoRecorder_new,X                                             ;9184F4;
+    STA.L DemoRecorder_layer1X,X                                         ;9184F8;
+    STA.L DemoRecorder_layer1Y,X                                         ;9184FC;
+    STA.L DemoRecorder_SamusX,X                                          ;918500;
+    STA.L DemoRecorder_SamusY,X                                          ;918504;
+    LDA.W DoorBTS                                                        ;918508;
+    STA.L DemoRecorder_doorBTS                                           ;91850B;
+    LDA.W AreaIndex                                                      ;91850F;
+    STA.L DemoRecorder_area                                              ;918512;
+    LDA.W DemoInput_RecordedDuration                                     ;918516;
     ORA.W #$8000                                                         ;918519;
-    STA.W $0A8A                                                          ;91851C;
+    STA.W DemoInput_RecordedDuration                                     ;91851C;
 
   .checkA:
-    LDA.B $91                                                            ;91851F;
+    LDA.B DP_Controller2New                                              ;91851F;
     BIT.W #$0080                                                         ;918521;
     BEQ .return                                                          ;918524;
     LDA.W #$0000                                                         ;918526;
-    STA.W $0A8A                                                          ;918529;
+    STA.W DemoInput_RecordedDuration                                     ;918529;
 
   .return:
     PLB                                                                  ;91852C;
@@ -1001,20 +1001,20 @@ Pause_Terminate_Reset_DemoRecorder:
 ;;; $852F: Draw recorded demo duration ;;;
 Draw_RecordedDemoDuration:
 ;; Parameters:
-;;     $0E20: X position
-;;     $0E22: Y position
-;;     $0E24: Recorded demo duration
-    LDA.W $0E20                                                          ;91852F;
+;;     Temp_DemoRecorderFrameCounterXPosition: X position
+;;     Temp_DemoRecorderFrameCounterYPosition: Y position
+;;     Temp_DemoRecorderFrameCounter: Recorded demo duration
+    LDA.W Temp_DemoRecorderFrameCounterXPosition                         ;91852F;
     CLC                                                                  ;918532;
     ADC.W #$0000                                                         ;918533;
-    STA.B $14                                                            ;918536;
-    LDA.W $0E22                                                          ;918538;
+    STA.B DP_Temp14                                                      ;918536;
+    LDA.W Temp_DemoRecorderFrameCounterYPosition                         ;918538;
     CLC                                                                  ;91853B;
     ADC.W #$0000                                                         ;91853C;
-    STA.B $12                                                            ;91853F;
+    STA.B DP_Temp12                                                      ;91853F;
     LDA.W #$0A00                                                         ;918541;
-    STA.B $26                                                            ;918544;
-    LDA.W $0E24                                                          ;918546;
+    STA.B DP_Temp26                                                      ;918544;
+    LDA.W Temp_DemoRecorderFrameCounter                                  ;918546;
     AND.W #$F000                                                         ;918549;
     XBA                                                                  ;91854C;
     LSR                                                                  ;91854D;
@@ -1024,33 +1024,33 @@ Draw_RecordedDemoDuration:
     CLC                                                                  ;918551;
     ADC.W #$0004                                                         ;918552;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;918555;
-    LDA.W $0E20                                                          ;918559;
+    LDA.W Temp_DemoRecorderFrameCounterXPosition                         ;918559;
     CLC                                                                  ;91855C;
     ADC.W #$0008                                                         ;91855D;
-    STA.B $14                                                            ;918560;
-    LDA.W $0E22                                                          ;918562;
+    STA.B DP_Temp14                                                      ;918560;
+    LDA.W Temp_DemoRecorderFrameCounterYPosition                         ;918562;
     CLC                                                                  ;918565;
     ADC.W #$0000                                                         ;918566;
-    STA.B $12                                                            ;918569;
+    STA.B DP_Temp12                                                      ;918569;
     LDA.W #$0A00                                                         ;91856B;
-    STA.B $26                                                            ;91856E;
-    LDA.W $0E24                                                          ;918570;
+    STA.B DP_Temp26                                                      ;91856E;
+    LDA.W Temp_DemoRecorderFrameCounter                                  ;918570;
     AND.W #$0F00                                                         ;918573;
     XBA                                                                  ;918576;
     CLC                                                                  ;918577;
     ADC.W #$0004                                                         ;918578;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;91857B;
-    LDA.W $0E20                                                          ;91857F;
+    LDA.W Temp_DemoRecorderFrameCounterXPosition                         ;91857F;
     CLC                                                                  ;918582;
     ADC.W #$0010                                                         ;918583;
-    STA.B $14                                                            ;918586;
-    LDA.W $0E22                                                          ;918588;
+    STA.B DP_Temp14                                                      ;918586;
+    LDA.W Temp_DemoRecorderFrameCounterYPosition                         ;918588;
     CLC                                                                  ;91858B;
     ADC.W #$0000                                                         ;91858C;
-    STA.B $12                                                            ;91858F;
+    STA.B DP_Temp12                                                      ;91858F;
     LDA.W #$0A00                                                         ;918591;
-    STA.B $26                                                            ;918594;
-    LDA.W $0E24                                                          ;918596;
+    STA.B DP_Temp26                                                      ;918594;
+    LDA.W Temp_DemoRecorderFrameCounter                                  ;918596;
     AND.W #$00F0                                                         ;918599;
     LSR                                                                  ;91859C;
     LSR                                                                  ;91859D;
@@ -1059,17 +1059,17 @@ Draw_RecordedDemoDuration:
     CLC                                                                  ;9185A0;
     ADC.W #$0004                                                         ;9185A1;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;9185A4;
-    LDA.W $0E20                                                          ;9185A8;
+    LDA.W Temp_DemoRecorderFrameCounterXPosition                         ;9185A8;
     CLC                                                                  ;9185AB;
     ADC.W #$0018                                                         ;9185AC;
-    STA.B $14                                                            ;9185AF;
+    STA.B DP_Temp14                                                      ;9185AF;
     LDA.W #$0A00                                                         ;9185B1;
-    STA.B $26                                                            ;9185B4;
-    LDA.W $0E22                                                          ;9185B6;
+    STA.B DP_Temp26                                                      ;9185B4;
+    LDA.W Temp_DemoRecorderFrameCounterYPosition                         ;9185B6;
     CLC                                                                  ;9185B9;
     ADC.W #$0000                                                         ;9185BA;
-    STA.B $12                                                            ;9185BD;
-    LDA.W $0E24                                                          ;9185BF;
+    STA.B DP_Temp12                                                      ;9185BD;
+    LDA.W Temp_DemoRecorderFrameCounter                                  ;9185BF;
     AND.W #$000F                                                         ;9185C2;
     CLC                                                                  ;9185C5;
     ADC.W #$0004                                                         ;9185C6;
@@ -1095,9 +1095,9 @@ UNUSED_InstList_DemoInput_JumpLeft_GiveControlBack_9185CE:               ;9185CE
 ;;; $85FC: Instruction - end demo input and give control back to player ;;;
 Instruction_EndDemoInput_GiveControlBackToPlayer:
     LDA.W #SamusCurrentStateHandler_Normal                               ;9185FC;
-    STA.W $0A42                                                          ;9185FF;
+    STA.W CurrentStateHandler                                            ;9185FF;
     LDA.W #SamusNewStateHandler_Normal                                   ;918602;
-    STA.W $0A44                                                          ;918605;
+    STA.W NewStateHandler                                                ;918605;
     JSL.L Disable_DemoInput                                              ;918608;
     RTS                                                                  ;91860C;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -1136,15 +1136,15 @@ InstList_DemoInput_BabyMetroidDiscovery_End:                             ;91864B
 
 ;;; $864F: Pre-instruction - demo input - baby metroid discovery - running left ;;;
 PreInstruction_DemoInput_BabyMetroidDiscovery_RunningLeft:
-    LDA.W $0AF6                                                          ;91864F;
+    LDA.W SamusXPosition                                                 ;91864F;
     CMP.W #$00B2                                                         ;918652;
     BPL .return                                                          ;918655;
     LDA.W #PreInstruction_DemoInput_BabyMetroidDiscovery_StopAndLook     ;918657;
-    STA.W $0A7A                                                          ;91865A;
+    STA.W DemoInput_PreInstruction                                       ;91865A;
     LDA.W #InstList_DemoInput_BabyMetroidDiscovery_StopAndLook_0         ;91865D;
-    STA.W $0A7E                                                          ;918660;
+    STA.W DemoInput_InstListPointer                                      ;918660;
     LDA.W #$0001                                                         ;918663;
-    STA.W $0A7C                                                          ;918666;
+    STA.W DemoInput_InstructionTimer                                     ;918666;
 
   .return:
     RTS                                                                  ;918669;
@@ -1155,11 +1155,11 @@ PreInstruction_DemoInput_BabyMetroidDiscovery_StopAndLook:
     LDA.W $1A4B                                                          ;91866A;
     BNE .return                                                          ;91866D;
     LDA.W #RTS_9183BF                                                    ;91866F;
-    STA.W $0A7A                                                          ;918672;
+    STA.W DemoInput_PreInstruction                                       ;918672;
     LDA.W #InstList_DemoInput_BabyMetroidDiscovery_End                   ;918675;
-    STA.W $0A7E                                                          ;918678;
+    STA.W DemoInput_InstListPointer                                      ;918678;
     LDA.W #$0001                                                         ;91867B;
-    STA.W $0A7C                                                          ;91867E;
+    STA.W DemoInput_InstructionTimer                                     ;91867E;
 
   .return:
     RTS                                                                  ;918681;
@@ -1170,8 +1170,8 @@ Instruction_EndDemoInput:
     PHX                                                                  ;918682;
     PHY                                                                  ;918683;
     LDA.W #RTL_90E8CD                                                    ;918684;
-    STA.W $0A42                                                          ;918687;
-    STA.W $0A44                                                          ;91868A;
+    STA.W CurrentStateHandler                                            ;918687;
+    STA.W NewStateHandler                                                ;91868A;
     JSL.L Disable_DemoInput                                              ;91868D;
     PLY                                                                  ;918691;
     PLX                                                                  ;918692;
@@ -1212,22 +1212,22 @@ UNUSED_Instruction_EndDemoInputWithSamusFacingLeft_9186FE:
     PHX                                                                  ;9186FE;
     PHY                                                                  ;9186FF;
     LDA.W #SamusCurrentStateHandler_SamusIsLocked                        ;918700;
-    STA.W $0A42                                                          ;918703;
+    STA.W CurrentStateHandler                                            ;918703;
     LDA.W #$0002                                                         ;918706;
-    STA.W $0A1C                                                          ;918709;
+    STA.W Pose                                                           ;918709;
     JSL.L InitializeSamusPose_1                                          ;91870C;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;918710;
-    LDA.W $0A20                                                          ;918714;
-    STA.W $0A24                                                          ;918717;
-    LDA.W $0A22                                                          ;91871A;
-    STA.W $0A26                                                          ;91871D;
-    LDA.W $0A1C                                                          ;918720;
-    STA.W $0A20                                                          ;918723;
-    LDA.W $0A1E                                                          ;918726;
-    STA.W $0A22                                                          ;918729;
+    LDA.W PreviousPose                                                   ;918714;
+    STA.W LastDifferentPose                                              ;918717;
+    LDA.W PreviousPoseXDirection                                         ;91871A;
+    STA.W LastDifferentPoseXDirection                                    ;91871D;
+    LDA.W Pose                                                           ;918720;
+    STA.W PreviousPose                                                   ;918723;
+    LDA.W PoseXDirection                                                 ;918726;
+    STA.W PreviousPoseXDirection                                         ;918729;
     JSL.L Disable_DemoInput                                              ;91872C;
     LDA.W #RTS_90E90E                                                    ;918730;
-    STA.W $0A60                                                          ;918733;
+    STA.W PoseInputHandler                                               ;918733;
     PLY                                                                  ;918736;
     PLX                                                                  ;918737;
     RTS                                                                  ;918738;
@@ -1239,22 +1239,22 @@ Instruction_EndDemoInputWithSamusFacingLeft:
     PHX                                                                  ;918739;
     PHY                                                                  ;91873A;
     LDA.W #SamusCurrentStateHandler_SamusIsLocked                        ;91873B;
-    STA.W $0A42                                                          ;91873E;
+    STA.W CurrentStateHandler                                            ;91873E;
     LDA.W #$0002                                                         ;918741;
-    STA.W $0A1C                                                          ;918744;
+    STA.W Pose                                                           ;918744;
     JSL.L InitializeSamusPose_1                                          ;918747;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91874B;
-    LDA.W $0A20                                                          ;91874F;
-    STA.W $0A24                                                          ;918752;
-    LDA.W $0A22                                                          ;918755;
-    STA.W $0A26                                                          ;918758;
-    LDA.W $0A1C                                                          ;91875B;
-    STA.W $0A20                                                          ;91875E;
-    LDA.W $0A1E                                                          ;918761;
-    STA.W $0A22                                                          ;918764;
+    LDA.W PreviousPose                                                   ;91874F;
+    STA.W LastDifferentPose                                              ;918752;
+    LDA.W PreviousPoseXDirection                                         ;918755;
+    STA.W LastDifferentPoseXDirection                                    ;918758;
+    LDA.W Pose                                                           ;91875B;
+    STA.W PreviousPose                                                   ;91875E;
+    LDA.W PoseXDirection                                                 ;918761;
+    STA.W PreviousPoseXDirection                                         ;918764;
     JSL.L Disable_DemoInput                                              ;918767;
     LDA.W #RTS_90E90E                                                    ;91876B;
-    STA.W $0A60                                                          ;91876E;
+    STA.W PoseInputHandler                                               ;91876E;
     PLY                                                                  ;918771;
     PLX                                                                  ;918772;
     RTS                                                                  ;918773;
@@ -1300,39 +1300,39 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 ;;; $8790: Load demo data ;;;
 LoadDemoData:
-    LDA.W $1F57                                                          ;918790;
+    LDA.W DemoScene                                                      ;918790;
     ASL                                                                  ;918793;
     ASL                                                                  ;918794;
     ASL                                                                  ;918795;
     ASL                                                                  ;918796;
-    STA.B $12                                                            ;918797;
-    LDA.W $1F55                                                          ;918799;
+    STA.B DP_Temp12                                                      ;918797;
+    LDA.W DemoSet                                                        ;918799;
     ASL                                                                  ;91879C;
     TAX                                                                  ;91879D;
     LDA.W DemoData_Pointers,X                                            ;91879E;
     CLC                                                                  ;9187A1;
-    ADC.B $12                                                            ;9187A2;
+    ADC.B DP_Temp12                                                      ;9187A2;
     TAX                                                                  ;9187A4;
     LDA.W $0000,X                                                        ;9187A5;
-    STA.W $09A4                                                          ;9187A8;
-    STA.W $09A2                                                          ;9187AB;
+    STA.W CollectedItems                                                 ;9187A8;
+    STA.W EquippedItems                                                  ;9187AB;
     LDA.W $0002,X                                                        ;9187AE;
-    STA.W $09C8                                                          ;9187B1;
-    STA.W $09C6                                                          ;9187B4;
+    STA.W MaxMissiles                                                    ;9187B1;
+    STA.W Missiles                                                       ;9187B4;
     LDA.W $0004,X                                                        ;9187B7;
-    STA.W $09CC                                                          ;9187BA;
-    STA.W $09CA                                                          ;9187BD;
+    STA.W MaxSuperMissiles                                               ;9187BA;
+    STA.W SuperMissiles                                                  ;9187BD;
     LDA.W $0006,X                                                        ;9187C0;
-    STA.W $09D0                                                          ;9187C3;
-    STA.W $09CE                                                          ;9187C6;
+    STA.W MaxPowerBombs                                                  ;9187C3;
+    STA.W PowerBombs                                                     ;9187C6;
     LDA.W $0008,X                                                        ;9187C9;
-    STA.W $09C4                                                          ;9187CC;
-    STA.W $09C2                                                          ;9187CF;
+    STA.W MaxEnergy                                                      ;9187CC;
+    STA.W Energy                                                         ;9187CF;
     LDA.W $000A,X                                                        ;9187D2;
-    STA.W $09A8                                                          ;9187D5;
+    STA.W CollectedBeams                                                 ;9187D5;
     LDA.W $000C,X                                                        ;9187D8;
-    STA.W $09A6                                                          ;9187DB;
-    STZ.W $09D6                                                          ;9187DE;
+    STA.W EquippedBeams                                                  ;9187DB;
+    STZ.W ReserveEnergy                                                  ;9187DE;
     PHX                                                                  ;9187E1;
     JSL.L Clear_DemoInput_RAM                                            ;9187E2;
     JSL.L Enable_DemoInput                                               ;9187E6;
@@ -1340,60 +1340,60 @@ LoadDemoData:
     LDA.W $000E,X                                                        ;9187EB;
     TAY                                                                  ;9187EE;
     JSL.L Load_DemoInputObject                                           ;9187EF;
-    LDA.W $1F57                                                          ;9187F3;
+    LDA.W DemoScene                                                      ;9187F3;
     ASL                                                                  ;9187F6;
-    STA.B $12                                                            ;9187F7;
-    LDA.W $1F55                                                          ;9187F9;
+    STA.B DP_Temp12                                                      ;9187F7;
+    LDA.W DemoSet                                                        ;9187F9;
     ASL                                                                  ;9187FC;
     TAX                                                                  ;9187FD;
     LDA.W DemoSamusSetup_Pointers,X                                      ;9187FE;
     CLC                                                                  ;918801;
-    ADC.B $12                                                            ;918802;
+    ADC.B DP_Temp12                                                      ;918802;
     TAX                                                                  ;918804;
     LDA.W $0000,X                                                        ;918805;
-    STA.B $12                                                            ;918808;
+    STA.B DP_Temp12                                                      ;918808;
     PEA.W .manualReturn-1                                                ;91880A;
-    JMP.W ($0012)                                                        ;91880D;
+    JMP.W (DP_Temp12)                                                    ;91880D;
 
   .manualReturn:
     LDA.W #SamusCurrentStateHandler_Demo                                 ;918810;
-    STA.W $0A42                                                          ;918813;
+    STA.W CurrentStateHandler                                            ;918813;
     LDA.W #SamusNewStateHandler_TitleDemo                                ;918816;
-    STA.W $0A44                                                          ;918819;
-    STZ.W $0A2E                                                          ;91881C;
-    STZ.W $0A30                                                          ;91881F;
-    STZ.W $0A32                                                          ;918822;
+    STA.W NewStateHandler                                                ;918819;
+    STZ.W ProspectivePoseChangeCommand                                   ;91881C;
+    STZ.W SpecialProspectivePoseChangeCommand                            ;91881F;
+    STZ.W SuperSpecialProspectivePoseChangeCommand                       ;918822;
     JSL.L LoadSamusSuitPalette                                           ;918825;
     JSL.L Update_Beam_Tiles_and_Palette                                  ;918829;
     LDA.W #$0800                                                         ;91882D;
-    STA.W $09AA                                                          ;918830;
+    STA.W UpBinding                                                      ;918830;
     LDA.W #$0400                                                         ;918833;
-    STA.W $09AC                                                          ;918836;
+    STA.W DownBinding                                                    ;918836;
     LDA.W #$0200                                                         ;918839;
-    STA.W $09AE                                                          ;91883C;
+    STA.W LeftBinding                                                    ;91883C;
     LDA.W #$0100                                                         ;91883F;
-    STA.W $09B0                                                          ;918842;
+    STA.W RightBinding                                                   ;918842;
     LDA.W #$0040                                                         ;918845;
-    STA.W $09B2                                                          ;918848;
+    STA.W ShotBinding                                                    ;918848;
     LDA.W #$0080                                                         ;91884B;
-    STA.W $09B4                                                          ;91884E;
+    STA.W JumpBinding                                                    ;91884E;
     LDA.W #$8000                                                         ;918851;
-    STA.W $09B6                                                          ;918854;
+    STA.W DashBinding                                                    ;918854;
     LDA.W #$4000                                                         ;918857;
-    STA.W $09B8                                                          ;91885A;
+    STA.W ItemCancelBinding                                              ;91885A;
     LDA.W #$2000                                                         ;91885D;
-    STA.W $09BA                                                          ;918860;
+    STA.W ItemSelectBinding                                              ;918860;
     LDA.W #$0010                                                         ;918863;
-    STA.W $09BE                                                          ;918866;
+    STA.W AimUpBinding                                                   ;918866;
     LDA.W #$0020                                                         ;918869;
-    STA.W $09BC                                                          ;91886C;
+    STA.W AimDownBinding                                                 ;91886C;
     LDA.W #$0001                                                         ;91886F;
-    STA.W $09E8                                                          ;918872;
-    STA.W $09E6                                                          ;918875;
-    STZ.W $09E4                                                          ;918878;
-    STZ.W $0DF8                                                          ;91887B;
-    STZ.W $0DFA                                                          ;91887E;
-    STZ.W $0DFC                                                          ;918881;
+    STA.W NeverRead09E8                                                  ;918872;
+    STA.W SamusPlacementMode                                             ;918875;
+    STZ.W Moonwalk                                                       ;918878;
+    STZ.W unknown0DF8                                                    ;91887B;
+    STZ.W neverRead0DFA                                                  ;91887E;
+    STZ.W neverRead0DFC                                                  ;918881;
     RTS                                                                  ;918884;
 
 
@@ -1529,7 +1529,7 @@ DemoSamusSetup_Set3:
 DemoSamusSetup_LandingSite:
     JSL.L MakeSamusFaceForward                                           ;918A33;
     LDA.W #SamusDrawingHandler_Default                                   ;918A37;
-    STA.W $0A5C                                                          ;918A3A;
+    STA.W DrawingHandler                                                 ;918A3A;
     RTS                                                                  ;918A3D;
 
 
@@ -1542,7 +1542,7 @@ DemoSamusSetup_MorphBallFacingLeft:
 ;;; $8A43: Demo Samus setup - standing facing left - low health ;;;
 DemoSamusSetup_StandingFacingLeft_LowEnergy:
     LDA.W #$0014                                                         ;918A43;
-    STA.W $09C2                                                          ;918A46; fallthrough to DemoSamusSetup_StandingFacingLeft
+    STA.W Energy                                                         ;918A46; fallthrough to DemoSamusSetup_StandingFacingLeft
 
 
 ;;; $8A49: Demo Samus setup - standing facing left ;;;
@@ -1564,21 +1564,21 @@ DemoSamusSetup_StandingFacingRight:
 
 ;;; $8A56: Initialise Samus with pose = [A] ;;;
 InitializeSamusWithPoseInA:
-    STA.W $0A1C                                                          ;918A56;
+    STA.W Pose                                                           ;918A56;
     JSL.L InitializeSamusPose_1                                          ;918A59;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;918A5D;
     LDA.W #SamusDrawingHandler_Default                                   ;918A61;
-    STA.W $0A5C                                                          ;918A64;
+    STA.W DrawingHandler                                                 ;918A64;
     RTS                                                                  ;918A67;
 
 
 ;;; $8A68: Demo Samus setup - shinespark ;;;
 DemoSamusSetup_Shinespark:
     LDA.W #SamusDrawingHandler_Default                                   ;918A68;
-    STA.W $0A5C                                                          ;918A6B;
+    STA.W DrawingHandler                                                 ;918A6B;
     JSL.L TriggerShinesparkWindup                                        ;918A6E;
     LDA.W #$00CD                                                         ;918A72;
-    STA.W $0A1C                                                          ;918A75;
+    STA.W Pose                                                           ;918A75;
     JSL.L InitializeSamusPose_1                                          ;918A78;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;918A7C;
     RTS                                                                  ;918A80;
@@ -1587,10 +1587,10 @@ DemoSamusSetup_Shinespark:
 ;;; $8A81: Demo Samus setup - gauntlet entrance ;;;
 DemoSamusSetup_GauntletEntrance:
     LDA.W #SamusDrawingHandler_Default                                   ;918A81;
-    STA.W $0A5C                                                          ;918A84;
+    STA.W DrawingHandler                                                 ;918A84;
     JSL.L TriggerShinesparkWindup                                        ;918A87;
     LDA.W #$00CA                                                         ;918A8B;
-    STA.W $0A1C                                                          ;918A8E;
+    STA.W Pose                                                           ;918A8E;
     JSL.L InitializeSamusPose_1                                          ;918A91;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;918A95;
     RTS                                                                  ;918A99;
@@ -1603,13 +1603,13 @@ RTS_918A9A:
 
 ;;; $8A9B: Pre-instruction - demo input - normal ;;;
 PreInstruction_DemoInput_Normal:
-    LDA.W $0998                                                          ;918A9B;
+    LDA.W GameState                                                      ;918A9B;
     CMP.W #$002C                                                         ;918A9E;
     BNE .return                                                          ;918AA1;
     LDA.W #InstList_DemoInput_Delete                                     ;918AA3;
-    STA.W $0A7E                                                          ;918AA6;
+    STA.W DemoInput_InstListPointer                                      ;918AA6;
     LDA.W #$0001                                                         ;918AA9;
-    STA.W $0A7C                                                          ;918AAC;
+    STA.W DemoInput_InstructionTimer                                     ;918AAC;
 
   .return:
     RTS                                                                  ;918AAF;
@@ -1617,16 +1617,16 @@ PreInstruction_DemoInput_Normal:
 
 ;;; $8AB0: Pre-instruction - demo input - shinespark ;;;
 PreInstruction_DemoInput_Shinespark:
-    LDA.W $0A1F                                                          ;918AB0;
+    LDA.W MovementType                                                   ;918AB0;
     AND.W #$00FF                                                         ;918AB3;
     CMP.W #$001A                                                         ;918AB6;
     BEQ .return                                                          ;918AB9;
     LDA.W #PreInstruction_DemoInput_Normal                               ;918ABB;
-    STA.W $0A7A                                                          ;918ABE;
+    STA.W DemoInput_PreInstruction                                       ;918ABE;
     LDA.W #UNUSED_InstList_DemoInput_Shinespark_Unseen_919346            ;918AC1;
-    STA.W $0A7E                                                          ;918AC4;
+    STA.W DemoInput_InstListPointer                                      ;918AC4;
     LDA.W #$0001                                                         ;918AC7;
-    STA.W $0A7C                                                          ;918ACA;
+    STA.W DemoInput_InstructionTimer                                     ;918ACA;
 
   .return:
     RTS                                                                  ;918ACD;
@@ -6270,49 +6270,49 @@ Calc_Xray_HDMADataTable_OffScreen:
     TXA                                                                  ;91BE17;
     XBA                                                                  ;91BE18;
     AND.W #$FF00                                                         ;91BE19;
-    STA.B $16                                                            ;91BE1C;
-    STY.B $18                                                            ;91BE1E;
-    LDA.B $12                                                            ;91BE20;
+    STA.B DP_Temp16                                                      ;91BE1C;
+    STY.B DP_Temp18                                                      ;91BE1E;
+    LDA.B DP_Temp12                                                      ;91BE20;
     SEC                                                                  ;91BE22;
-    SBC.B $14                                                            ;91BE23;
-    STA.B $1A                                                            ;91BE25;
+    SBC.B DP_Temp14                                                      ;91BE23;
+    STA.B DP_Temp1A                                                      ;91BE25;
     BPL +                                                                ;91BE27;
     LDA.W #$0100                                                         ;91BE29;
     CLC                                                                  ;91BE2C;
-    ADC.B $1A                                                            ;91BE2D;
-    STA.B $1A                                                            ;91BE2F;
+    ADC.B DP_Temp1A                                                      ;91BE2D;
+    STA.B DP_Temp1A                                                      ;91BE2F;
 
-+   LDA.B $12                                                            ;91BE31;
++   LDA.B DP_Temp12                                                      ;91BE31;
     CLC                                                                  ;91BE33;
-    ADC.B $14                                                            ;91BE34;
-    STA.B $1C                                                            ;91BE36;
+    ADC.B DP_Temp14                                                      ;91BE34;
+    STA.B DP_Temp1C                                                      ;91BE36;
     CMP.W #$0101                                                         ;91BE38;
     BMI +                                                                ;91BE3B;
     SEC                                                                  ;91BE3D;
     SBC.W #$0100                                                         ;91BE3E;
-    STA.B $1C                                                            ;91BE41;
+    STA.B DP_Temp1C                                                      ;91BE41;
 
-+   LDA.B $14                                                            ;91BE43;
++   LDA.B DP_Temp14                                                      ;91BE43;
     BNE +                                                                ;91BE45;
-    LDA.B $12                                                            ;91BE47;
+    LDA.B DP_Temp12                                                      ;91BE47;
     CMP.W #$0040                                                         ;91BE49;
     BEQ .strictlyHorizontal                                              ;91BE4C;
     CMP.W #$00C0                                                         ;91BE4E;
     BEQ .strictlyHorizontal                                              ;91BE51;
 
-+   LDA.B $1A                                                            ;91BE53;
++   LDA.B DP_Temp1A                                                      ;91BE53;
     CMP.W #$0080                                                         ;91BE55;
     BPL +                                                                ;91BE58;
     CMP.W #$0040                                                         ;91BE5A;
     BPL .bottomHalf                                                      ;91BE5D;
-    LDA.B $1C                                                            ;91BE5F;
+    LDA.B DP_Temp1C                                                      ;91BE5F;
     CMP.W #$0040                                                         ;91BE61;
     BMI .topHalf                                                         ;91BE64;
     BRA .right                                                           ;91BE66;
 
 +   CMP.W #$00C0                                                         ;91BE68;
     BPL .topHalf                                                         ;91BE6B;
-    LDA.B $1C                                                            ;91BE6D;
+    LDA.B DP_Temp1C                                                      ;91BE6D;
     CMP.W #$00C0                                                         ;91BE6F;
     BMI .bottomHalf                                                      ;91BE72;
     BRA .left                                                            ;91BE74;
@@ -6342,7 +6342,7 @@ Calc_Xray_HDMADataTable_OffScreen:
     LDY.W #$0008                                                         ;91BE8A;
 
   .merge:
-    LDA.B $1A                                                            ;91BE8D;
+    LDA.B DP_Temp1A                                                      ;91BE8D;
     CMP.W #$0080                                                         ;91BE8F;
     BMI +                                                                ;91BE92;
     SEC                                                                  ;91BE94;
@@ -6351,8 +6351,8 @@ Calc_Xray_HDMADataTable_OffScreen:
 +   ASL                                                                  ;91BE98;
     TAX                                                                  ;91BE99;
     LDA.W AbsoluteTangentTable,X                                         ;91BE9A;
-    STA.B $1E                                                            ;91BE9D;
-    LDA.B $1C                                                            ;91BE9F;
+    STA.B DP_Temp1E                                                      ;91BE9D;
+    LDA.B DP_Temp1C                                                      ;91BE9F;
     CMP.W #$0080                                                         ;91BEA1;
     BMI +                                                                ;91BEA4;
     SEC                                                                  ;91BEA6;
@@ -6361,7 +6361,7 @@ Calc_Xray_HDMADataTable_OffScreen:
 +   ASL                                                                  ;91BEAA;
     TAX                                                                  ;91BEAB;
     LDA.W AbsoluteTangentTable,X                                         ;91BEAC;
-    STA.B $20                                                            ;91BEAF;
+    STA.B DP_Temp20                                                      ;91BEAF;
     TYX                                                                  ;91BEB1;
     JSR.W (.pointers,X)                                                  ;91BEB2;
     PLB                                                                  ;91BEB5;
@@ -6390,46 +6390,46 @@ Calc_Xray_HDMADataTable_OffScreen_AimedRight:
 ; [$12]/2 and [$14]/2 become the top and bottom Y positions of the largest rectangular region of the beam
     PHP                                                                  ;91BEC2;
     REP #$30                                                             ;91BEC3;
-    LDA.B $18                                                            ;91BEC5;
+    LDA.B DP_Temp18                                                      ;91BEC5;
     DEC                                                                  ;91BEC7;
     ASL                                                                  ;91BEC8;
     TAY                                                                  ;91BEC9;
-    LDA.B $16                                                            ;91BECA;
-    STA.B $22                                                            ;91BECC;
-    STA.B $24                                                            ;91BECE;
+    LDA.B DP_Temp16                                                      ;91BECA;
+    STA.B DP_Temp22                                                      ;91BECC;
+    STA.B DP_Temp24                                                      ;91BECE;
 
   .loopLeftOffScreen:
-    LDA.B $22                                                            ;91BED0;
+    LDA.B DP_Temp22                                                      ;91BED0;
     CLC                                                                  ;91BED2;
-    ADC.B $1E                                                            ;91BED3;
-    STA.B $22                                                            ;91BED5;
+    ADC.B DP_Temp1E                                                      ;91BED3;
+    STA.B DP_Temp22                                                      ;91BED5;
     BCS +                                                                ;91BED7;
     DEY                                                                  ;91BED9;
     DEY                                                                  ;91BEDA;
     BPL .loopLeftOffScreen                                               ;91BEDB;
-    STZ.B $12                                                            ;91BEDD;
+    STZ.B DP_Temp12                                                      ;91BEDD;
     JMP.W .leftEdgeEnd                                                   ;91BEDF;
 
-+   LDA.B $23                                                            ;91BEE2;
++   LDA.B DP_Temp23                                                      ;91BEE2;
     ORA.W #$FF00                                                         ;91BEE4;
-    STA.B [$00],Y                                                        ;91BEE7;
+    STA.B [DP_Temp00],Y                                                  ;91BEE7;
     INY                                                                  ;91BEE9;
     INY                                                                  ;91BEEA;
-    STY.B $12                                                            ;91BEEB;
+    STY.B DP_Temp12                                                      ;91BEEB;
     TYA                                                                  ;91BEED;
     SEC                                                                  ;91BEEE;
     SBC.W #$0004                                                         ;91BEEF;
     TAY                                                                  ;91BEF2;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91BEF3;
+    LDA.B DP_Temp22                                                      ;91BEF3;
     CLC                                                                  ;91BEF5;
-    ADC.B $1E                                                            ;91BEF6;
-    STA.B $22                                                            ;91BEF8;
+    ADC.B DP_Temp1E                                                      ;91BEF6;
+    STA.B DP_Temp22                                                      ;91BEF8;
     BCS ..loop                                                           ;91BEFA;
-    LDA.B $23                                                            ;91BEFC;
+    LDA.B DP_Temp23                                                      ;91BEFC;
     ORA.W #$FF00                                                         ;91BEFE;
-    STA.B [$00],Y                                                        ;91BF01;
+    STA.B [DP_Temp00],Y                                                  ;91BF01;
     DEY                                                                  ;91BF03;
     DEY                                                                  ;91BF04;
     BPL .loopLeftOnScreen                                                ;91BF05;
@@ -6437,49 +6437,49 @@ Calc_Xray_HDMADataTable_OffScreen_AimedRight:
 
   ..loop:
     LDA.W #$00FF                                                         ;91BF09;
-    STA.B [$00],Y                                                        ;91BF0C;
+    STA.B [DP_Temp00],Y                                                  ;91BF0C;
     DEY                                                                  ;91BF0E;
     DEY                                                                  ;91BF0F;
     BPL ..loop                                                           ;91BF10;
 
   .leftEdgeEnd:
-    LDA.B $18                                                            ;91BF12;
+    LDA.B DP_Temp18                                                      ;91BF12;
     ASL                                                                  ;91BF14;
     TAY                                                                  ;91BF15;
 
   .loopRightOffScreen:
-    LDA.B $24                                                            ;91BF16;
+    LDA.B DP_Temp24                                                      ;91BF16;
     CLC                                                                  ;91BF18;
-    ADC.B $20                                                            ;91BF19;
-    STA.B $24                                                            ;91BF1B;
+    ADC.B DP_Temp20                                                      ;91BF19;
+    STA.B DP_Temp24                                                      ;91BF1B;
     BCS +                                                                ;91BF1D;
     INY                                                                  ;91BF1F;
     INY                                                                  ;91BF20;
     CPY.W #$01CC                                                         ;91BF21;
     BMI .loopRightOffScreen                                              ;91BF24;
-    STY.B $14                                                            ;91BF26;
+    STY.B DP_Temp14                                                      ;91BF26;
     JMP.W .rightEdgeEnd                                                  ;91BF28;
 
-+   LDA.B $25                                                            ;91BF2B;
++   LDA.B DP_Temp25                                                      ;91BF2B;
     ORA.W #$FF00                                                         ;91BF2D;
-    STA.B [$00],Y                                                        ;91BF30;
+    STA.B [DP_Temp00],Y                                                  ;91BF30;
     DEY                                                                  ;91BF32;
     DEY                                                                  ;91BF33;
-    STY.B $14                                                            ;91BF34;
+    STY.B DP_Temp14                                                      ;91BF34;
     TYA                                                                  ;91BF36;
     CLC                                                                  ;91BF37;
     ADC.W #$0004                                                         ;91BF38;
     TAY                                                                  ;91BF3B;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91BF3C;
+    LDA.B DP_Temp24                                                      ;91BF3C;
     CLC                                                                  ;91BF3E;
-    ADC.B $20                                                            ;91BF3F;
-    STA.B $24                                                            ;91BF41;
+    ADC.B DP_Temp20                                                      ;91BF3F;
+    STA.B DP_Temp24                                                      ;91BF41;
     BCS ..loop                                                           ;91BF43;
-    LDA.B $25                                                            ;91BF45;
+    LDA.B DP_Temp25                                                      ;91BF45;
     ORA.W #$FF00                                                         ;91BF47;
-    STA.B [$00],Y                                                        ;91BF4A;
+    STA.B [DP_Temp00],Y                                                  ;91BF4A;
     INY                                                                  ;91BF4C;
     INY                                                                  ;91BF4D;
     CPY.W #$01CC                                                         ;91BF4E;
@@ -6488,21 +6488,21 @@ Calc_Xray_HDMADataTable_OffScreen_AimedRight:
 
   ..loop:
     LDA.W #$00FF                                                         ;91BF55;
-    STA.B [$00],Y                                                        ;91BF58;
+    STA.B [DP_Temp00],Y                                                  ;91BF58;
     INY                                                                  ;91BF5A;
     INY                                                                  ;91BF5B;
     CPY.W #$01CC                                                         ;91BF5C;
     BMI ..loop                                                           ;91BF5F;
 
   .rightEdgeEnd:
-    LDY.B $12                                                            ;91BF61;
+    LDY.B DP_Temp12                                                      ;91BF61;
 
   ..loop:
     LDA.W #$FF00                                                         ;91BF63;
-    STA.B [$00],Y                                                        ;91BF66;
+    STA.B [DP_Temp00],Y                                                  ;91BF66;
     INY                                                                  ;91BF68;
     INY                                                                  ;91BF69;
-    CPY.B $14                                                            ;91BF6A;
+    CPY.B DP_Temp14                                                      ;91BF6A;
     BMI ..loop                                                           ;91BF6C;
     BEQ ..loop                                                           ;91BF6E;
     PLP                                                                  ;91BF70;
@@ -6523,46 +6523,46 @@ Calc_Xray_HDMADataTable_OffScreen_AimedLeft:
 ; [$12]/2 and [$14]/2 become the top and bottom Y positions of the largest rectangular region of the beam
     PHP                                                                  ;91BF72;
     REP #$30                                                             ;91BF73;
-    LDA.B $18                                                            ;91BF75;
+    LDA.B DP_Temp18                                                      ;91BF75;
     DEC                                                                  ;91BF77;
     ASL                                                                  ;91BF78;
     TAY                                                                  ;91BF79;
-    LDA.B $16                                                            ;91BF7A;
-    STA.B $22                                                            ;91BF7C;
-    STA.B $24                                                            ;91BF7E;
+    LDA.B DP_Temp16                                                      ;91BF7A;
+    STA.B DP_Temp22                                                      ;91BF7C;
+    STA.B DP_Temp24                                                      ;91BF7E;
 
   .loopRightOffScreen:
-    LDA.B $24                                                            ;91BF80;
+    LDA.B DP_Temp24                                                      ;91BF80;
     SEC                                                                  ;91BF82;
-    SBC.B $20                                                            ;91BF83;
-    STA.B $24                                                            ;91BF85;
+    SBC.B DP_Temp20                                                      ;91BF83;
+    STA.B DP_Temp24                                                      ;91BF85;
     BCC +                                                                ;91BF87;
     DEY                                                                  ;91BF89;
     DEY                                                                  ;91BF8A;
     BPL .loopRightOffScreen                                              ;91BF8B;
-    STZ.B $12                                                            ;91BF8D;
+    STZ.B DP_Temp12                                                      ;91BF8D;
     JMP.W .rightEdgeEnd                                                  ;91BF8F;
 
-+   LDA.B $24                                                            ;91BF92;
++   LDA.B DP_Temp24                                                      ;91BF92;
     AND.W #$FF00                                                         ;91BF94;
-    STA.B [$00],Y                                                        ;91BF97;
+    STA.B [DP_Temp00],Y                                                  ;91BF97;
     INY                                                                  ;91BF99;
     INY                                                                  ;91BF9A;
-    STY.B $12                                                            ;91BF9B;
+    STY.B DP_Temp12                                                      ;91BF9B;
     TYA                                                                  ;91BF9D;
     SEC                                                                  ;91BF9E;
     SBC.W #$0004                                                         ;91BF9F;
     TAY                                                                  ;91BFA2;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91BFA3;
+    LDA.B DP_Temp24                                                      ;91BFA3;
     SEC                                                                  ;91BFA5;
-    SBC.B $20                                                            ;91BFA6;
-    STA.B $24                                                            ;91BFA8;
+    SBC.B DP_Temp20                                                      ;91BFA6;
+    STA.B DP_Temp24                                                      ;91BFA8;
     BCC ..loop                                                           ;91BFAA;
-    LDA.B $24                                                            ;91BFAC;
+    LDA.B DP_Temp24                                                      ;91BFAC;
     AND.W #$FF00                                                         ;91BFAE;
-    STA.B [$00],Y                                                        ;91BFB1;
+    STA.B [DP_Temp00],Y                                                  ;91BFB1;
     DEY                                                                  ;91BFB3;
     DEY                                                                  ;91BFB4;
     BPL .loopRightOnScreen                                               ;91BFB5;
@@ -6570,49 +6570,49 @@ Calc_Xray_HDMADataTable_OffScreen_AimedLeft:
 
   ..loop:
     LDA.W #$00FF                                                         ;91BFB9;
-    STA.B [$00],Y                                                        ;91BFBC;
+    STA.B [DP_Temp00],Y                                                  ;91BFBC;
     DEY                                                                  ;91BFBE;
     DEY                                                                  ;91BFBF;
     BPL ..loop                                                           ;91BFC0;
 
   .rightEdgeEnd:
-    LDA.B $18                                                            ;91BFC2;
+    LDA.B DP_Temp18                                                      ;91BFC2;
     ASL                                                                  ;91BFC4;
     TAY                                                                  ;91BFC5;
 
   .loopLeftOffScreen:
-    LDA.B $22                                                            ;91BFC6;
+    LDA.B DP_Temp22                                                      ;91BFC6;
     SEC                                                                  ;91BFC8;
-    SBC.B $1E                                                            ;91BFC9;
-    STA.B $22                                                            ;91BFCB;
+    SBC.B DP_Temp1E                                                      ;91BFC9;
+    STA.B DP_Temp22                                                      ;91BFCB;
     BCC +                                                                ;91BFCD;
     INY                                                                  ;91BFCF;
     INY                                                                  ;91BFD0;
     CPY.W #$01CC                                                         ;91BFD1;
     BMI .loopLeftOffScreen                                               ;91BFD4;
-    STY.B $14                                                            ;91BFD6;
+    STY.B DP_Temp14                                                      ;91BFD6;
     JMP.W .leftEdgeEnd                                                   ;91BFD8;
 
-+   LDA.B $22                                                            ;91BFDB;
++   LDA.B DP_Temp22                                                      ;91BFDB;
     AND.W #$FF00                                                         ;91BFDD;
-    STA.B [$00],Y                                                        ;91BFE0;
+    STA.B [DP_Temp00],Y                                                  ;91BFE0;
     DEY                                                                  ;91BFE2;
     DEY                                                                  ;91BFE3;
-    STY.B $14                                                            ;91BFE4;
+    STY.B DP_Temp14                                                      ;91BFE4;
     TYA                                                                  ;91BFE6;
     CLC                                                                  ;91BFE7;
     ADC.W #$0004                                                         ;91BFE8;
     TAY                                                                  ;91BFEB;
 
   .leftOnScreen:
-    LDA.B $22                                                            ;91BFEC;
+    LDA.B DP_Temp22                                                      ;91BFEC;
     SEC                                                                  ;91BFEE;
-    SBC.B $1E                                                            ;91BFEF;
-    STA.B $22                                                            ;91BFF1;
+    SBC.B DP_Temp1E                                                      ;91BFEF;
+    STA.B DP_Temp22                                                      ;91BFF1;
     BCC ..loop                                                           ;91BFF3;
-    LDA.B $22                                                            ;91BFF5;
+    LDA.B DP_Temp22                                                      ;91BFF5;
     AND.W #$FF00                                                         ;91BFF7;
-    STA.B [$00],Y                                                        ;91BFFA;
+    STA.B [DP_Temp00],Y                                                  ;91BFFA;
     INY                                                                  ;91BFFC;
     INY                                                                  ;91BFFD;
     CPY.W #$01CC                                                         ;91BFFE;
@@ -6621,21 +6621,21 @@ Calc_Xray_HDMADataTable_OffScreen_AimedLeft:
 
   ..loop:
     LDA.W #$00FF                                                         ;91C005;
-    STA.B [$00],Y                                                        ;91C008;
+    STA.B [DP_Temp00],Y                                                  ;91C008;
     INY                                                                  ;91C00A;
     INY                                                                  ;91C00B;
     CPY.W #$01CC                                                         ;91C00C;
     BMI ..loop                                                           ;91C00F;
 
   .leftEdgeEnd:
-    LDY.B $12                                                            ;91C011;
+    LDY.B DP_Temp12                                                      ;91C011;
 
   .leftHighByteFF:
     LDA.W #$FF00                                                         ;91C013;
-    STA.B [$00],Y                                                        ;91C016;
+    STA.B [DP_Temp00],Y                                                  ;91C016;
     INY                                                                  ;91C018;
     INY                                                                  ;91C019;
-    CPY.B $14                                                            ;91C01A;
+    CPY.B DP_Temp14                                                      ;91C01A;
     BMI .leftHighByteFF                                                  ;91C01C;
     BEQ .leftHighByteFF                                                  ;91C01E;
     PLP                                                                  ;91C020;
@@ -6654,20 +6654,20 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards:
 ;;     $20: Beam right edge gradient * 100h (dx/dy)
     PHP                                                                  ;91C022;
     REP #$30                                                             ;91C023;
-    LDA.B $18                                                            ;91C025;
+    LDA.B DP_Temp18                                                      ;91C025;
     DEC                                                                  ;91C027;
     ASL                                                                  ;91C028;
     TAY                                                                  ;91C029;
-    LDA.B $16                                                            ;91C02A;
-    STA.B $22                                                            ;91C02C;
-    STA.B $24                                                            ;91C02E;
-    LDA.B $1A                                                            ;91C030;
+    LDA.B DP_Temp16                                                      ;91C02A;
+    STA.B DP_Temp22                                                      ;91C02C;
+    STA.B DP_Temp24                                                      ;91C02E;
+    LDA.B DP_Temp1A                                                      ;91C030;
     CMP.W #$00C0                                                         ;91C032;
     BPL +                                                                ;91C035;
     LDX.W #$0000                                                         ;91C037;
     BRA .merge                                                           ;91C03A;
 
-+   LDA.B $1C                                                            ;91C03C;
++   LDA.B DP_Temp1C                                                      ;91C03C;
     CMP.W #$00C0                                                         ;91C03E;
     BPL +                                                                ;91C041;
     LDX.W #$0002                                                         ;91C043;
@@ -6676,15 +6676,15 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards:
 +   LDX.W #$0004                                                         ;91C048;
 
   .merge:
-    LDA.B $18                                                            ;91C04B;
+    LDA.B DP_Temp18                                                      ;91C04B;
     ASL                                                                  ;91C04D;
-    STA.B $1A                                                            ;91C04E;
+    STA.B DP_Temp1A                                                      ;91C04E;
     JSR.W (.pointers,X)                                                  ;91C050;
-    LDY.B $12                                                            ;91C053;
+    LDY.B DP_Temp12                                                      ;91C053;
 
   .loop:
     LDA.W #$00FF                                                         ;91C055;
-    STA.B [$00],Y                                                        ;91C058;
+    STA.B [DP_Temp00],Y                                                  ;91C058;
     INY                                                                  ;91C05A;
     INY                                                                  ;91C05B;
     CPY.W #$01CC                                                         ;91C05C;
@@ -6719,42 +6719,42 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_UpRight:
     PHY                                                                  ;91C06C;
 
   .loopLeftOffScreen:
-    LDA.B $22                                                            ;91C06D;
+    LDA.B DP_Temp22                                                      ;91C06D;
     CLC                                                                  ;91C06F;
-    ADC.B $1E                                                            ;91C070;
-    STA.B $22                                                            ;91C072;
+    ADC.B DP_Temp1E                                                      ;91C070;
+    STA.B DP_Temp22                                                      ;91C072;
     BCS +                                                                ;91C074;
     DEY                                                                  ;91C076;
     DEY                                                                  ;91C077;
     BPL .loopLeftOffScreen                                               ;91C078;
-    STZ.B $12                                                            ;91C07A;
+    STZ.B DP_Temp12                                                      ;91C07A;
     BRA .leftEdgeEnd                                                     ;91C07C;
 
 +   SEP #$20                                                             ;91C07E;
-    LDA.B $23                                                            ;91C080;
-    STA.B [$00],Y                                                        ;91C082;
+    LDA.B DP_Temp23                                                      ;91C080;
+    STA.B [DP_Temp00],Y                                                  ;91C082;
     REP #$20                                                             ;91C084;
     DEY                                                                  ;91C086;
     DEY                                                                  ;91C087;
     BPL +                                                                ;91C088;
     LDA.W #$0002                                                         ;91C08A;
-    STA.B $12                                                            ;91C08D;
+    STA.B DP_Temp12                                                      ;91C08D;
     BRA .leftEdgeEnd                                                     ;91C08F;
 
 +   TYA                                                                  ;91C091;
     CLC                                                                  ;91C092;
     ADC.W #$0004                                                         ;91C093;
-    STA.B $12                                                            ;91C096;
+    STA.B DP_Temp12                                                      ;91C096;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C098;
+    LDA.B DP_Temp22                                                      ;91C098;
     CLC                                                                  ;91C09A;
-    ADC.B $1E                                                            ;91C09B;
-    STA.B $22                                                            ;91C09D;
+    ADC.B DP_Temp1E                                                      ;91C09B;
+    STA.B DP_Temp22                                                      ;91C09D;
     BCS .left8Bit                                                        ;91C09F;
     SEP #$20                                                             ;91C0A1;
-    LDA.B $23                                                            ;91C0A3;
-    STA.B [$00],Y                                                        ;91C0A5;
+    LDA.B DP_Temp23                                                      ;91C0A3;
+    STA.B [DP_Temp00],Y                                                  ;91C0A5;
     REP #$20                                                             ;91C0A7;
     DEY                                                                  ;91C0A9;
     DEY                                                                  ;91C0AA;
@@ -6766,7 +6766,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_UpRight:
 
   .loopLeft:
     LDA.B #$FF                                                           ;91C0B1;
-    STA.B [$00],Y                                                        ;91C0B3;
+    STA.B [DP_Temp00],Y                                                  ;91C0B3;
     DEY                                                                  ;91C0B5;
     DEY                                                                  ;91C0B6;
     BPL .loopLeft                                                        ;91C0B7;
@@ -6777,43 +6777,43 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_UpRight:
     INY                                                                  ;91C0BC;
 
   .loopRightOffScreen:
-    LDA.B $24                                                            ;91C0BD;
+    LDA.B DP_Temp24                                                      ;91C0BD;
     CLC                                                                  ;91C0BF;
-    ADC.B $20                                                            ;91C0C0;
-    STA.B $24                                                            ;91C0C2;
+    ADC.B DP_Temp20                                                      ;91C0C0;
+    STA.B DP_Temp24                                                      ;91C0C2;
     BCS +                                                                ;91C0C4;
     DEY                                                                  ;91C0C6;
     DEY                                                                  ;91C0C7;
     BPL .loopRightOffScreen                                              ;91C0C8;
     LDA.W #$0001                                                         ;91C0CA;
-    STA.B $14                                                            ;91C0CD;
+    STA.B DP_Temp14                                                      ;91C0CD;
     BRA .rightEdgeEnd                                                    ;91C0CF;
 
 +   SEP #$20                                                             ;91C0D1;
-    LDA.B $25                                                            ;91C0D3;
-    STA.B [$00],Y                                                        ;91C0D5;
+    LDA.B DP_Temp25                                                      ;91C0D3;
+    STA.B [DP_Temp00],Y                                                  ;91C0D5;
     REP #$20                                                             ;91C0D7;
     DEY                                                                  ;91C0D9;
     DEY                                                                  ;91C0DA;
     BPL +                                                                ;91C0DB;
     LDA.W #$0003                                                         ;91C0DD;
-    STA.B $14                                                            ;91C0E0;
+    STA.B DP_Temp14                                                      ;91C0E0;
     BRA .rightEdgeEnd                                                    ;91C0E2;
 
 +   TYA                                                                  ;91C0E4;
     CLC                                                                  ;91C0E5;
     ADC.W #$0004                                                         ;91C0E6;
-    STA.B $14                                                            ;91C0E9;
+    STA.B DP_Temp14                                                      ;91C0E9;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C0EB;
+    LDA.B DP_Temp24                                                      ;91C0EB;
     CLC                                                                  ;91C0ED;
-    ADC.B $20                                                            ;91C0EE;
-    STA.B $24                                                            ;91C0F0;
+    ADC.B DP_Temp20                                                      ;91C0EE;
+    STA.B DP_Temp24                                                      ;91C0F0;
     BCS .right8Bit                                                       ;91C0F2;
     SEP #$20                                                             ;91C0F4;
-    LDA.B $25                                                            ;91C0F6;
-    STA.B [$00],Y                                                        ;91C0F8;
+    LDA.B DP_Temp25                                                      ;91C0F6;
+    STA.B [DP_Temp00],Y                                                  ;91C0F8;
     REP #$20                                                             ;91C0FA;
     DEY                                                                  ;91C0FC;
     DEY                                                                  ;91C0FD;
@@ -6825,26 +6825,26 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_UpRight:
 
   .loopFF:
     LDA.B #$FF                                                           ;91C104;
-    STA.B [$00],Y                                                        ;91C106;
+    STA.B [DP_Temp00],Y                                                  ;91C106;
     DEY                                                                  ;91C108;
     DEY                                                                  ;91C109;
     BPL .loopFF                                                          ;91C10A;
 
   .rightEdgeEnd:
     SEP #$20                                                             ;91C10C;
-    LDY.B $12                                                            ;91C10E;
+    LDY.B DP_Temp12                                                      ;91C10E;
 
   .loop00:
     LDA.B #$00                                                           ;91C110;
-    STA.B [$00],Y                                                        ;91C112;
+    STA.B [DP_Temp00],Y                                                  ;91C112;
     INY                                                                  ;91C114;
     INY                                                                  ;91C115;
-    CPY.B $14                                                            ;91C116;
+    CPY.B DP_Temp14                                                      ;91C116;
     BMI .loop00                                                          ;91C118;
     REP #$20                                                             ;91C11A;
-    LDA.B $14                                                            ;91C11C;
+    LDA.B DP_Temp14                                                      ;91C11C;
     DEC                                                                  ;91C11E;
-    STA.B $12                                                            ;91C11F;
+    STA.B DP_Temp12                                                      ;91C11F;
     PLP                                                                  ;91C121;
     RTS                                                                  ;91C122;
 
@@ -6879,42 +6879,42 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_Up:
     PHY                                                                  ;91C126;
 
   .loopLeftOffScreen:
-    LDA.B $22                                                            ;91C127;
+    LDA.B DP_Temp22                                                      ;91C127;
     SEC                                                                  ;91C129;
-    SBC.B $1E                                                            ;91C12A;
-    STA.B $22                                                            ;91C12C;
+    SBC.B DP_Temp1E                                                      ;91C12A;
+    STA.B DP_Temp22                                                      ;91C12C;
     BCC +                                                                ;91C12E;
     DEY                                                                  ;91C130;
     DEY                                                                  ;91C131;
     BPL .loopLeftOffScreen                                               ;91C132;
-    STZ.B $12                                                            ;91C134;
+    STZ.B DP_Temp12                                                      ;91C134;
     BRA .leftEdgeEnd                                                     ;91C136;
 
 +   SEP #$20                                                             ;91C138;
-    LDA.B $23                                                            ;91C13A;
-    STA.B [$00],Y                                                        ;91C13C;
+    LDA.B DP_Temp23                                                      ;91C13A;
+    STA.B [DP_Temp00],Y                                                  ;91C13C;
     REP #$20                                                             ;91C13E;
     DEY                                                                  ;91C140;
     DEY                                                                  ;91C141;
     BPL +                                                                ;91C142;
     LDA.W #$0002                                                         ;91C144;
-    STA.B $12                                                            ;91C147;
+    STA.B DP_Temp12                                                      ;91C147;
     BRA .leftEdgeEnd                                                     ;91C149;
 
 +   TYA                                                                  ;91C14B;
     CLC                                                                  ;91C14C;
     ADC.W #$0004                                                         ;91C14D;
-    STA.B $12                                                            ;91C150;
+    STA.B DP_Temp12                                                      ;91C150;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C152;
+    LDA.B DP_Temp22                                                      ;91C152;
     SEC                                                                  ;91C154;
-    SBC.B $1E                                                            ;91C155;
-    STA.B $22                                                            ;91C157;
+    SBC.B DP_Temp1E                                                      ;91C155;
+    STA.B DP_Temp22                                                      ;91C157;
     BCC +                                                                ;91C159;
     SEP #$20                                                             ;91C15B;
-    LDA.B $23                                                            ;91C15D;
-    STA.B [$00],Y                                                        ;91C15F;
+    LDA.B DP_Temp23                                                      ;91C15D;
+    STA.B [DP_Temp00],Y                                                  ;91C15F;
     REP #$20                                                             ;91C161;
     DEY                                                                  ;91C163;
     DEY                                                                  ;91C164;
@@ -6925,7 +6925,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_Up:
 
   .loopLeft:
     LDA.B #$00                                                           ;91C16B;
-    STA.B [$00],Y                                                        ;91C16D;
+    STA.B [DP_Temp00],Y                                                  ;91C16D;
     DEY                                                                  ;91C16F;
     DEY                                                                  ;91C170;
     BPL .loopLeft                                                        ;91C171;
@@ -6936,43 +6936,43 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_Up:
     INY                                                                  ;91C176;
 
   .loopRightOffScreen:
-    LDA.B $24                                                            ;91C177;
+    LDA.B DP_Temp24                                                      ;91C177;
     CLC                                                                  ;91C179;
-    ADC.B $20                                                            ;91C17A;
-    STA.B $24                                                            ;91C17C;
+    ADC.B DP_Temp20                                                      ;91C17A;
+    STA.B DP_Temp24                                                      ;91C17C;
     BCS +                                                                ;91C17E;
     DEY                                                                  ;91C180;
     DEY                                                                  ;91C181;
     BPL .loopRightOffScreen                                              ;91C182;
     LDA.W #$0001                                                         ;91C184;
-    STA.B $14                                                            ;91C187;
+    STA.B DP_Temp14                                                      ;91C187;
     BRA .return                                                          ;91C189;
 
 +   SEP #$20                                                             ;91C18B;
-    LDA.B $25                                                            ;91C18D;
-    STA.B [$00],Y                                                        ;91C18F;
+    LDA.B DP_Temp25                                                      ;91C18D;
+    STA.B [DP_Temp00],Y                                                  ;91C18F;
     REP #$20                                                             ;91C191;
     DEY                                                                  ;91C193;
     DEY                                                                  ;91C194;
     BPL +                                                                ;91C195;
     LDA.W #$0003                                                         ;91C197;
-    STA.B $14                                                            ;91C19A;
+    STA.B DP_Temp14                                                      ;91C19A;
     BRA .return                                                          ;91C19C;
 
 +   TYA                                                                  ;91C19E;
     CLC                                                                  ;91C19F;
     ADC.W #$0004                                                         ;91C1A0;
-    STA.B $14                                                            ;91C1A3;
+    STA.B DP_Temp14                                                      ;91C1A3;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C1A5;
+    LDA.B DP_Temp24                                                      ;91C1A5;
     CLC                                                                  ;91C1A7;
-    ADC.B $20                                                            ;91C1A8;
-    STA.B $24                                                            ;91C1AA;
+    ADC.B DP_Temp20                                                      ;91C1A8;
+    STA.B DP_Temp24                                                      ;91C1AA;
     BCS +                                                                ;91C1AC;
     SEP #$20                                                             ;91C1AE;
-    LDA.B $25                                                            ;91C1B0;
-    STA.B [$00],Y                                                        ;91C1B2;
+    LDA.B DP_Temp25                                                      ;91C1B0;
+    STA.B [DP_Temp00],Y                                                  ;91C1B2;
     REP #$20                                                             ;91C1B4;
     DEY                                                                  ;91C1B6;
     DEY                                                                  ;91C1B7;
@@ -6983,7 +6983,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_Up:
 
   .loopRight:
     LDA.B #$FF                                                           ;91C1BE;
-    STA.B [$00],Y                                                        ;91C1C0;
+    STA.B [DP_Temp00],Y                                                  ;91C1C0;
     DEY                                                                  ;91C1C2;
     DEY                                                                  ;91C1C3;
     BPL .loopRight                                                       ;91C1C4;
@@ -7015,42 +7015,42 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_UpLeft:
     PHY                                                                  ;91C1CD;
 
   .loopLeftOffScreen:
-    LDA.B $22                                                            ;91C1CE;
+    LDA.B DP_Temp22                                                      ;91C1CE;
     SEC                                                                  ;91C1D0;
-    SBC.B $1E                                                            ;91C1D1;
-    STA.B $22                                                            ;91C1D3;
+    SBC.B DP_Temp1E                                                      ;91C1D1;
+    STA.B DP_Temp22                                                      ;91C1D3;
     BCC +                                                                ;91C1D5;
     DEY                                                                  ;91C1D7;
     DEY                                                                  ;91C1D8;
     BPL .loopLeftOffScreen                                               ;91C1D9;
-    STZ.B $12                                                            ;91C1DB;
+    STZ.B DP_Temp12                                                      ;91C1DB;
     BRA .leftEdgeEnd                                                     ;91C1DD;
 
 +   SEP #$20                                                             ;91C1DF;
-    LDA.B $23                                                            ;91C1E1;
-    STA.B [$00],Y                                                        ;91C1E3;
+    LDA.B DP_Temp23                                                      ;91C1E1;
+    STA.B [DP_Temp00],Y                                                  ;91C1E3;
     REP #$20                                                             ;91C1E5;
     DEY                                                                  ;91C1E7;
     DEY                                                                  ;91C1E8;
     BPL +                                                                ;91C1E9;
     LDA.W #$0002                                                         ;91C1EB;
-    STA.B $12                                                            ;91C1EE;
+    STA.B DP_Temp12                                                      ;91C1EE;
     BRA .leftEdgeEnd                                                     ;91C1F0;
 
 +   TYA                                                                  ;91C1F2;
     CLC                                                                  ;91C1F3;
     ADC.W #$0004                                                         ;91C1F4;
-    STA.B $12                                                            ;91C1F7;
+    STA.B DP_Temp12                                                      ;91C1F7;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C1F9;
+    LDA.B DP_Temp22                                                      ;91C1F9;
     SEC                                                                  ;91C1FB;
-    SBC.B $1E                                                            ;91C1FC;
-    STA.B $22                                                            ;91C1FE;
+    SBC.B DP_Temp1E                                                      ;91C1FC;
+    STA.B DP_Temp22                                                      ;91C1FE;
     BCC +                                                                ;91C200;
     SEP #$20                                                             ;91C202;
-    LDA.B $23                                                            ;91C204;
-    STA.B [$00],Y                                                        ;91C206;
+    LDA.B DP_Temp23                                                      ;91C204;
+    STA.B [DP_Temp00],Y                                                  ;91C206;
     REP #$20                                                             ;91C208;
     DEY                                                                  ;91C20A;
     DEY                                                                  ;91C20B;
@@ -7061,7 +7061,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_UpLeft:
 
   .loopLeft:
     LDA.B #$00                                                           ;91C212;
-    STA.B [$00],Y                                                        ;91C214;
+    STA.B [DP_Temp00],Y                                                  ;91C214;
     DEY                                                                  ;91C216;
     DEY                                                                  ;91C217;
     BPL .loopLeft                                                        ;91C218;
@@ -7072,43 +7072,43 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_UpLeft:
     INY                                                                  ;91C21D;
 
   .loopRightOffScreen:
-    LDA.B $24                                                            ;91C21E;
+    LDA.B DP_Temp24                                                      ;91C21E;
     SEC                                                                  ;91C220;
-    SBC.B $20                                                            ;91C221;
-    STA.B $24                                                            ;91C223;
+    SBC.B DP_Temp20                                                      ;91C221;
+    STA.B DP_Temp24                                                      ;91C223;
     BCC +                                                                ;91C225;
     DEY                                                                  ;91C227;
     DEY                                                                  ;91C228;
     BPL .loopRightOffScreen                                              ;91C229;
     LDA.W #$0001                                                         ;91C22B;
-    STA.B $14                                                            ;91C22E;
+    STA.B DP_Temp14                                                      ;91C22E;
     BRA .rightEdgeEnd                                                    ;91C230;
 
 +   SEP #$20                                                             ;91C232;
-    LDA.B $23                                                            ;91C234;
-    STA.B [$00],Y                                                        ;91C236;
+    LDA.B DP_Temp23                                                      ;91C234;
+    STA.B [DP_Temp00],Y                                                  ;91C236;
     REP #$20                                                             ;91C238;
     DEY                                                                  ;91C23A;
     DEY                                                                  ;91C23B;
     BPL +                                                                ;91C23C;
     LDA.W #$0003                                                         ;91C23E;
-    STA.B $14                                                            ;91C241;
+    STA.B DP_Temp14                                                      ;91C241;
     BRA .rightEdgeEnd                                                    ;91C243;
 
 +   TYA                                                                  ;91C245;
     CLC                                                                  ;91C246;
     ADC.W #$0004                                                         ;91C247;
-    STA.B $14                                                            ;91C24A;
+    STA.B DP_Temp14                                                      ;91C24A;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C24C;
+    LDA.B DP_Temp24                                                      ;91C24C;
     SEC                                                                  ;91C24E;
-    SBC.B $20                                                            ;91C24F;
-    STA.B $24                                                            ;91C251;
+    SBC.B DP_Temp20                                                      ;91C24F;
+    STA.B DP_Temp24                                                      ;91C251;
     BCC +                                                                ;91C253;
     SEP #$20                                                             ;91C255;
-    LDA.B $25                                                            ;91C257;
-    STA.B [$00],Y                                                        ;91C259;
+    LDA.B DP_Temp25                                                      ;91C257;
+    STA.B [DP_Temp00],Y                                                  ;91C259;
     REP #$20                                                             ;91C25B;
     DEY                                                                  ;91C25D;
     DEY                                                                  ;91C25E;
@@ -7119,21 +7119,21 @@ Calc_Xray_HDMADataTable_OffScreen_AimedUpwards_UpLeft:
 
   .loopRight:
     LDA.B #$00                                                           ;91C265;
-    STA.B [$00],Y                                                        ;91C267;
+    STA.B [DP_Temp00],Y                                                  ;91C267;
     DEY                                                                  ;91C269;
     DEY                                                                  ;91C26A;
     BPL .loopRight                                                       ;91C26B;
 
   .rightEdgeEnd:
     SEP #$20                                                             ;91C26D;
-    LDY.B $14                                                            ;91C26F;
+    LDY.B DP_Temp14                                                      ;91C26F;
 
   .endLoop:
     LDA.B #$FF                                                           ;91C271;
-    STA.B [$00],Y                                                        ;91C273;
+    STA.B [DP_Temp00],Y                                                  ;91C273;
     INY                                                                  ;91C275;
     INY                                                                  ;91C276;
-    CPY.B $12                                                            ;91C277;
+    CPY.B DP_Temp12                                                      ;91C277;
     BMI .endLoop                                                         ;91C279;
     REP #$20                                                             ;91C27B;
     PLP                                                                  ;91C27D;
@@ -7152,19 +7152,19 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards:
 ;;     $20: Beam right edge gradient * 100h (dx/dy)
     PHP                                                                  ;91C27F;
     REP #$30                                                             ;91C280;
-    LDA.B $18                                                            ;91C282;
+    LDA.B DP_Temp18                                                      ;91C282;
     ASL                                                                  ;91C284;
     TAY                                                                  ;91C285;
-    LDA.B $16                                                            ;91C286;
-    STA.B $22                                                            ;91C288;
-    STA.B $24                                                            ;91C28A;
-    LDA.B $1C                                                            ;91C28C;
+    LDA.B DP_Temp16                                                      ;91C286;
+    STA.B DP_Temp22                                                      ;91C288;
+    STA.B DP_Temp24                                                      ;91C28A;
+    LDA.B DP_Temp1C                                                      ;91C28C;
     CMP.W #$0080                                                         ;91C28E;
     BPL +                                                                ;91C291;
     LDX.W #$0000                                                         ;91C293;
     BRA .merge                                                           ;91C296;
 
-+   LDA.B $1A                                                            ;91C298;
++   LDA.B DP_Temp1A                                                      ;91C298;
     CMP.W #$0080                                                         ;91C29A;
     BPL .index4                                                          ;91C29D;
     LDX.W #$0002                                                         ;91C29F;
@@ -7175,11 +7175,11 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards:
 
   .merge:
     JSR.W (.pointers,X)                                                  ;91C2A7;
-    LDY.B $12                                                            ;91C2AA;
+    LDY.B DP_Temp12                                                      ;91C2AA;
     LDA.W #$00FF                                                         ;91C2AC;
 
   .loop:
-    STA.B [$00],Y                                                        ;91C2AF;
+    STA.B [DP_Temp00],Y                                                  ;91C2AF;
     DEY                                                                  ;91C2B1;
     DEY                                                                  ;91C2B2;
     BPL .loop                                                            ;91C2B3;
@@ -7213,41 +7213,41 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownRight:
     PHY                                                                  ;91C2C0;
 
   .loopRightOffScreen:
-    LDA.B $24                                                            ;91C2C1;
+    LDA.B DP_Temp24                                                      ;91C2C1;
     CLC                                                                  ;91C2C3;
-    ADC.B $20                                                            ;91C2C4;
-    STA.B $24                                                            ;91C2C6;
+    ADC.B DP_Temp20                                                      ;91C2C4;
+    STA.B DP_Temp24                                                      ;91C2C6;
     BCS +                                                                ;91C2C8;
     INY                                                                  ;91C2CA;
     INY                                                                  ;91C2CB;
     CPY.W #$01CC                                                         ;91C2CC;
     BMI .loopRightOffScreen                                              ;91C2CF;
-    STY.B $12                                                            ;91C2D1;
+    STY.B DP_Temp12                                                      ;91C2D1;
     BRA .rightEdgeEnd                                                    ;91C2D3;
 
-+   LDA.B $25                                                            ;91C2D5;
-    STA.B [$00],Y                                                        ;91C2D7;
++   LDA.B DP_Temp25                                                      ;91C2D5;
+    STA.B [DP_Temp00],Y                                                  ;91C2D7;
     INY                                                                  ;91C2D9;
     INY                                                                  ;91C2DA;
     CPY.W #$01CC                                                         ;91C2DB;
     BMI +                                                                ;91C2DE;
     LDA.W #$01CA                                                         ;91C2E0;
-    STA.B $12                                                            ;91C2E3;
+    STA.B DP_Temp12                                                      ;91C2E3;
     BRA .rightEdgeEnd                                                    ;91C2E5;
 
 +   TYA                                                                  ;91C2E7;
     SEC                                                                  ;91C2E8;
     SBC.W #$0004                                                         ;91C2E9;
-    STA.B $12                                                            ;91C2EC;
+    STA.B DP_Temp12                                                      ;91C2EC;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C2EE;
+    LDA.B DP_Temp24                                                      ;91C2EE;
     CLC                                                                  ;91C2F0;
-    ADC.B $20                                                            ;91C2F1;
-    STA.B $24                                                            ;91C2F3;
+    ADC.B DP_Temp20                                                      ;91C2F1;
+    STA.B DP_Temp24                                                      ;91C2F3;
     BCS .loopRight                                                       ;91C2F5;
-    LDA.B $25                                                            ;91C2F7;
-    STA.B [$00],Y                                                        ;91C2F9;
+    LDA.B DP_Temp25                                                      ;91C2F7;
+    STA.B [DP_Temp00],Y                                                  ;91C2F9;
     INY                                                                  ;91C2FB;
     INY                                                                  ;91C2FC;
     CPY.W #$01CC                                                         ;91C2FD;
@@ -7256,7 +7256,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownRight:
 
   .loopRight:
     LDA.W #$00FF                                                         ;91C304;
-    STA.B [$00],Y                                                        ;91C307;
+    STA.B [DP_Temp00],Y                                                  ;91C307;
     INY                                                                  ;91C309;
     INY                                                                  ;91C30A;
     CPY.W #$01CC                                                         ;91C30B;
@@ -7267,44 +7267,44 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownRight:
     INY                                                                  ;91C311;
 
   .loopLeftOffScreen:
-    LDA.B $22                                                            ;91C312;
+    LDA.B DP_Temp22                                                      ;91C312;
     CLC                                                                  ;91C314;
-    ADC.B $1E                                                            ;91C315;
-    STA.B $22                                                            ;91C317;
+    ADC.B DP_Temp1E                                                      ;91C315;
+    STA.B DP_Temp22                                                      ;91C317;
     BCS +                                                                ;91C319;
     INY                                                                  ;91C31B;
     INY                                                                  ;91C31C;
     CPY.W #$01CC                                                         ;91C31D;
     BMI .loopLeftOffScreen                                               ;91C320;
-    STY.B $14                                                            ;91C322;
+    STY.B DP_Temp14                                                      ;91C322;
     BRA .leftEdgeEnd                                                     ;91C324;
 
 +   SEP #$20                                                             ;91C326;
-    LDA.B $23                                                            ;91C328;
-    STA.B [$00],Y                                                        ;91C32A;
+    LDA.B DP_Temp23                                                      ;91C328;
+    STA.B [DP_Temp00],Y                                                  ;91C32A;
     REP #$20                                                             ;91C32C;
     INY                                                                  ;91C32E;
     INY                                                                  ;91C32F;
     CPY.W #$01CC                                                         ;91C330;
     BMI +                                                                ;91C333;
     LDA.W #$01CB                                                         ;91C335;
-    STA.B $14                                                            ;91C338;
+    STA.B DP_Temp14                                                      ;91C338;
     BRA .leftEdgeEnd                                                     ;91C33A;
 
 +   TYA                                                                  ;91C33C;
     SEC                                                                  ;91C33D;
     SBC.W #$0004                                                         ;91C33E;
-    STA.B $14                                                            ;91C341;
+    STA.B DP_Temp14                                                      ;91C341;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C343;
+    LDA.B DP_Temp22                                                      ;91C343;
     CLC                                                                  ;91C345;
-    ADC.B $1E                                                            ;91C346;
-    STA.B $22                                                            ;91C348;
+    ADC.B DP_Temp1E                                                      ;91C346;
+    STA.B DP_Temp22                                                      ;91C348;
     BCS +                                                                ;91C34A;
     SEP #$20                                                             ;91C34C;
-    LDA.B $23                                                            ;91C34E;
-    STA.B [$00],Y                                                        ;91C350;
+    LDA.B DP_Temp23                                                      ;91C34E;
+    STA.B [DP_Temp00],Y                                                  ;91C350;
     REP #$20                                                             ;91C352;
     INY                                                                  ;91C354;
     INY                                                                  ;91C355;
@@ -7316,7 +7316,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownRight:
 
   .loopLeft:
     LDA.B #$FF                                                           ;91C35F;
-    STA.B [$00],Y                                                        ;91C361;
+    STA.B [DP_Temp00],Y                                                  ;91C361;
     INY                                                                  ;91C363;
     INY                                                                  ;91C364;
     CPY.W #$01CC                                                         ;91C365;
@@ -7324,19 +7324,19 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownRight:
 
   .leftEdgeEnd:
     SEP #$20                                                             ;91C36A;
-    LDY.B $12                                                            ;91C36C;
+    LDY.B DP_Temp12                                                      ;91C36C;
 
   .loopEnd:
     LDA.B #$00                                                           ;91C36E;
-    STA.B [$00],Y                                                        ;91C370;
+    STA.B [DP_Temp00],Y                                                  ;91C370;
     DEY                                                                  ;91C372;
     DEY                                                                  ;91C373;
-    CPY.B $14                                                            ;91C374;
+    CPY.B DP_Temp14                                                      ;91C374;
     BPL .loopEnd                                                         ;91C376;
     REP #$20                                                             ;91C378;
-    LDA.B $14                                                            ;91C37A;
+    LDA.B DP_Temp14                                                      ;91C37A;
     DEC                                                                  ;91C37C;
-    STA.B $12                                                            ;91C37D;
+    STA.B DP_Temp12                                                      ;91C37D;
     PLP                                                                  ;91C37F;
     RTS                                                                  ;91C380;
 
@@ -7359,13 +7359,13 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_Down:
     PHP                                                                  ;91C381;
     REP #$30                                                             ;91C382;
     PHY                                                                  ;91C384;
-    LDA.B $20                                                            ;91C385;
+    LDA.B DP_Temp20                                                      ;91C385;
     BNE .loopRightOffScreen                                              ;91C387;
-    STY.B $12                                                            ;91C389;
+    STY.B DP_Temp12                                                      ;91C389;
     LDA.W #$0000                                                         ;91C38B;
 
   .loopClear:
-    STA.B [$00],Y                                                        ;91C38E;
+    STA.B [DP_Temp00],Y                                                  ;91C38E;
     INY                                                                  ;91C390;
     INY                                                                  ;91C391;
     CPY.W #$01CC                                                         ;91C392;
@@ -7373,41 +7373,41 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_Down:
     BRA .rightEdgeEnd                                                    ;91C397;
 
   .loopRightOffScreen:
-    LDA.B $24                                                            ;91C399;
+    LDA.B DP_Temp24                                                      ;91C399;
     SEC                                                                  ;91C39B;
-    SBC.B $20                                                            ;91C39C;
-    STA.B $24                                                            ;91C39E;
+    SBC.B DP_Temp20                                                      ;91C39C;
+    STA.B DP_Temp24                                                      ;91C39E;
     BCC +                                                                ;91C3A0;
     INY                                                                  ;91C3A2;
     INY                                                                  ;91C3A3;
     CPY.W #$01CC                                                         ;91C3A4;
     BMI .loopRightOffScreen                                              ;91C3A7;
-    STY.B $12                                                            ;91C3A9;
+    STY.B DP_Temp12                                                      ;91C3A9;
     BRA .rightEdgeEnd                                                    ;91C3AB;
 
-+   LDA.B $25                                                            ;91C3AD;
-    STA.B [$00],Y                                                        ;91C3AF;
++   LDA.B DP_Temp25                                                      ;91C3AD;
+    STA.B [DP_Temp00],Y                                                  ;91C3AF;
     INY                                                                  ;91C3B1;
     INY                                                                  ;91C3B2;
     CPY.W #$01CC                                                         ;91C3B3;
     BMI +                                                                ;91C3B6;
     LDA.W #$01CA                                                         ;91C3B8;
-    STA.B $12                                                            ;91C3BB;
+    STA.B DP_Temp12                                                      ;91C3BB;
     BRA .rightEdgeEnd                                                    ;91C3BD;
 
 +   TYA                                                                  ;91C3BF;
     SEC                                                                  ;91C3C0;
     SBC.W #$0004                                                         ;91C3C1;
-    STA.B $12                                                            ;91C3C4;
+    STA.B DP_Temp12                                                      ;91C3C4;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C3C6;
+    LDA.B DP_Temp24                                                      ;91C3C6;
     SEC                                                                  ;91C3C8;
-    SBC.B $20                                                            ;91C3C9;
-    STA.B $24                                                            ;91C3CB;
+    SBC.B DP_Temp20                                                      ;91C3C9;
+    STA.B DP_Temp24                                                      ;91C3CB;
     BCC ..loop                                                           ;91C3CD;
-    LDA.B $25                                                            ;91C3CF;
-    STA.B [$00],Y                                                        ;91C3D1;
+    LDA.B DP_Temp25                                                      ;91C3CF;
+    STA.B [DP_Temp00],Y                                                  ;91C3D1;
     INY                                                                  ;91C3D3;
     INY                                                                  ;91C3D4;
     CPY.W #$01CC                                                         ;91C3D5;
@@ -7416,7 +7416,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_Down:
 
   ..loop:
     LDA.W #$0000                                                         ;91C3DC;
-    STA.B [$00],Y                                                        ;91C3DF;
+    STA.B [DP_Temp00],Y                                                  ;91C3DF;
     INY                                                                  ;91C3E1;
     INY                                                                  ;91C3E2;
     CPY.W #$01CC                                                         ;91C3E3;
@@ -7427,44 +7427,44 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_Down:
     INY                                                                  ;91C3E9;
 
   .loopLeftOffScreen:
-    LDA.B $22                                                            ;91C3EA;
+    LDA.B DP_Temp22                                                      ;91C3EA;
     CLC                                                                  ;91C3EC;
-    ADC.B $1E                                                            ;91C3ED;
-    STA.B $22                                                            ;91C3EF;
+    ADC.B DP_Temp1E                                                      ;91C3ED;
+    STA.B DP_Temp22                                                      ;91C3EF;
     BCS +                                                                ;91C3F1;
     INY                                                                  ;91C3F3;
     INY                                                                  ;91C3F4;
     CPY.W #$01CC                                                         ;91C3F5;
     BMI .loopLeftOffScreen                                               ;91C3F8;
-    STY.B $14                                                            ;91C3FA;
+    STY.B DP_Temp14                                                      ;91C3FA;
     BRA .return                                                          ;91C3FC;
 
 +   SEP #$20                                                             ;91C3FE;
-    LDA.B $23                                                            ;91C400;
-    STA.B [$00],Y                                                        ;91C402;
+    LDA.B DP_Temp23                                                      ;91C400;
+    STA.B [DP_Temp00],Y                                                  ;91C402;
     REP #$20                                                             ;91C404;
     INY                                                                  ;91C406;
     INY                                                                  ;91C407;
     CPY.W #$01CC                                                         ;91C408;
     BMI +                                                                ;91C40B;
     LDA.W #$01CB                                                         ;91C40D;
-    STA.B $14                                                            ;91C410;
+    STA.B DP_Temp14                                                      ;91C410;
     BRA .return                                                          ;91C412;
 
 +   TYA                                                                  ;91C414;
     SEC                                                                  ;91C415;
     SBC.W #$0004                                                         ;91C416;
-    STA.B $14                                                            ;91C419;
+    STA.B DP_Temp14                                                      ;91C419;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C41B;
+    LDA.B DP_Temp22                                                      ;91C41B;
     CLC                                                                  ;91C41D;
-    ADC.B $1E                                                            ;91C41E;
-    STA.B $22                                                            ;91C420;
+    ADC.B DP_Temp1E                                                      ;91C41E;
+    STA.B DP_Temp22                                                      ;91C420;
     BCS +                                                                ;91C422;
     SEP #$20                                                             ;91C424;
-    LDA.B $23                                                            ;91C426;
-    STA.B [$00],Y                                                        ;91C428;
+    LDA.B DP_Temp23                                                      ;91C426;
+    STA.B [DP_Temp00],Y                                                  ;91C428;
     REP #$20                                                             ;91C42A;
     INY                                                                  ;91C42C;
     INY                                                                  ;91C42D;
@@ -7476,7 +7476,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_Down:
     LDA.B #$FF                                                           ;91C437;
 
   ..loop:
-    STA.B [$00],Y                                                        ;91C439;
+    STA.B [DP_Temp00],Y                                                  ;91C439;
     INY                                                                  ;91C43B;
     INY                                                                  ;91C43C;
     CPY.W #$01CC                                                         ;91C43D;
@@ -7509,41 +7509,41 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownLeft:
     PHY                                                                  ;91C449;
 
   .loopRightOffScreen:
-    LDA.B $24                                                            ;91C44A;
+    LDA.B DP_Temp24                                                      ;91C44A;
     SEC                                                                  ;91C44C;
-    SBC.B $20                                                            ;91C44D;
-    STA.B $24                                                            ;91C44F;
+    SBC.B DP_Temp20                                                      ;91C44D;
+    STA.B DP_Temp24                                                      ;91C44F;
     BCC +                                                                ;91C451;
     INY                                                                  ;91C453;
     INY                                                                  ;91C454;
     CPY.W #$01CC                                                         ;91C455;
     BMI .loopRightOffScreen                                              ;91C458;
-    STY.B $12                                                            ;91C45A;
+    STY.B DP_Temp12                                                      ;91C45A;
     BRA .rightEdgeEnd                                                    ;91C45C;
 
-+   LDA.B $25                                                            ;91C45E;
-    STA.B [$00],Y                                                        ;91C460;
++   LDA.B DP_Temp25                                                      ;91C45E;
+    STA.B [DP_Temp00],Y                                                  ;91C460;
     INY                                                                  ;91C462;
     INY                                                                  ;91C463;
     CPY.W #$01CC                                                         ;91C464;
     BMI +                                                                ;91C467;
     LDA.W #$01CA                                                         ;91C469;
-    STA.B $12                                                            ;91C46C;
+    STA.B DP_Temp12                                                      ;91C46C;
     BRA .rightEdgeEnd                                                    ;91C46E;
 
 +   TYA                                                                  ;91C470;
     SEC                                                                  ;91C471;
     SBC.W #$0004                                                         ;91C472;
-    STA.B $12                                                            ;91C475;
+    STA.B DP_Temp12                                                      ;91C475;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C477;
+    LDA.B DP_Temp24                                                      ;91C477;
     SEC                                                                  ;91C479;
-    SBC.B $20                                                            ;91C47A;
-    STA.B $24                                                            ;91C47C;
+    SBC.B DP_Temp20                                                      ;91C47A;
+    STA.B DP_Temp24                                                      ;91C47C;
     BCC .loopRight                                                       ;91C47E;
-    LDA.B $25                                                            ;91C480;
-    STA.B [$00],Y                                                        ;91C482;
+    LDA.B DP_Temp25                                                      ;91C480;
+    STA.B [DP_Temp00],Y                                                  ;91C482;
     INY                                                                  ;91C484;
     INY                                                                  ;91C485;
     CPY.W #$01CC                                                         ;91C486;
@@ -7552,7 +7552,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownLeft:
 
   .loopRight:
     LDA.W #$0000                                                         ;91C48D;
-    STA.B [$00],Y                                                        ;91C490;
+    STA.B [DP_Temp00],Y                                                  ;91C490;
     INY                                                                  ;91C492;
     INY                                                                  ;91C493;
     CPY.W #$01CC                                                         ;91C494;
@@ -7563,44 +7563,44 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownLeft:
     INY                                                                  ;91C49A;
 
   .loopLeftOffScreen:
-    LDA.B $22                                                            ;91C49B;
+    LDA.B DP_Temp22                                                      ;91C49B;
     SEC                                                                  ;91C49D;
-    SBC.B $1E                                                            ;91C49E;
-    STA.B $22                                                            ;91C4A0;
+    SBC.B DP_Temp1E                                                      ;91C49E;
+    STA.B DP_Temp22                                                      ;91C4A0;
     BCC +                                                                ;91C4A2;
     INY                                                                  ;91C4A4;
     INY                                                                  ;91C4A5;
     CPY.W #$01CC                                                         ;91C4A6;
     BMI .loopLeftOffScreen                                               ;91C4A9;
-    STY.B $14                                                            ;91C4AB;
+    STY.B DP_Temp14                                                      ;91C4AB;
     BRA .leftEdgeEnd                                                     ;91C4AD;
 
 +   SEP #$20                                                             ;91C4AF;
-    LDA.B $23                                                            ;91C4B1;
-    STA.B [$00],Y                                                        ;91C4B3;
+    LDA.B DP_Temp23                                                      ;91C4B1;
+    STA.B [DP_Temp00],Y                                                  ;91C4B3;
     REP #$20                                                             ;91C4B5;
     INY                                                                  ;91C4B7;
     INY                                                                  ;91C4B8;
     CPY.W #$01CC                                                         ;91C4B9;
     BMI +                                                                ;91C4BC;
     LDA.W #$01CB                                                         ;91C4BE;
-    STA.B $14                                                            ;91C4C1;
+    STA.B DP_Temp14                                                      ;91C4C1;
     BRA .leftEdgeEnd                                                     ;91C4C3;
 
 +   TYA                                                                  ;91C4C5;
     SEC                                                                  ;91C4C6;
     SBC.W #$0004                                                         ;91C4C7;
-    STA.B $14                                                            ;91C4CA;
+    STA.B DP_Temp14                                                      ;91C4CA;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C4CC;
+    LDA.B DP_Temp22                                                      ;91C4CC;
     SEC                                                                  ;91C4CE;
-    SBC.B $1E                                                            ;91C4CF;
-    STA.B $22                                                            ;91C4D1;
+    SBC.B DP_Temp1E                                                      ;91C4CF;
+    STA.B DP_Temp22                                                      ;91C4D1;
     BCC +                                                                ;91C4D3;
     SEP #$20                                                             ;91C4D5;
-    LDA.B $23                                                            ;91C4D7;
-    STA.B [$00],Y                                                        ;91C4D9;
+    LDA.B DP_Temp23                                                      ;91C4D7;
+    STA.B [DP_Temp00],Y                                                  ;91C4D9;
     REP #$20                                                             ;91C4DB;
     INY                                                                  ;91C4DD;
     INY                                                                  ;91C4DE;
@@ -7612,7 +7612,7 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownLeft:
 
   .loopLeft:
     LDA.B #$00                                                           ;91C4E8;
-    STA.B [$00],Y                                                        ;91C4EA;
+    STA.B [DP_Temp00],Y                                                  ;91C4EA;
     INY                                                                  ;91C4EC;
     INY                                                                  ;91C4ED;
     CPY.W #$01CC                                                         ;91C4EE;
@@ -7620,14 +7620,14 @@ Calc_Xray_HDMADataTable_OffScreen_AimedDownwards_DownLeft:
 
   .leftEdgeEnd:
     SEP #$20                                                             ;91C4F3;
-    LDY.B $14                                                            ;91C4F5;
+    LDY.B DP_Temp14                                                      ;91C4F5;
 
   .loopEnd:
     LDA.B #$FF                                                           ;91C4F7;
-    STA.B [$00],Y                                                        ;91C4F9;
+    STA.B [DP_Temp00],Y                                                  ;91C4F9;
     DEY                                                                  ;91C4FB;
     DEY                                                                  ;91C4FC;
-    CPY.B $12                                                            ;91C4FD;
+    CPY.B DP_Temp12                                                      ;91C4FD;
     BPL .loopEnd                                                         ;91C4FF;
     REP #$20                                                             ;91C501;
     PLP                                                                  ;91C503;
@@ -7642,45 +7642,45 @@ Calc_Xray_HDMADataTable_OffScreen_HorizontalLine:
 ;;     $18: Beam origin Y position
     PHP                                                                  ;91C505;
     REP #$30                                                             ;91C506;
-    LDA.B $18                                                            ;91C508;
+    LDA.B DP_Temp18                                                      ;91C508;
     DEC                                                                  ;91C50A;
     ASL                                                                  ;91C50B;
     TAY                                                                  ;91C50C;
-    LDA.B $12                                                            ;91C50D;
+    LDA.B DP_Temp12                                                      ;91C50D;
     CMP.W #$0040                                                         ;91C50F;
     BNE +                                                                ;91C512;
     LDA.W #$FF00                                                         ;91C514;
-    STA.B [$00],Y                                                        ;91C517;
+    STA.B [DP_Temp00],Y                                                  ;91C517;
     BRA .next                                                            ;91C519;
 
 +   LDA.W #$FF00                                                         ;91C51B;
-    STA.B [$00],Y                                                        ;91C51E;
+    STA.B [DP_Temp00],Y                                                  ;91C51E;
 
   .next:
     DEY                                                                  ;91C520;
     DEY                                                                  ;91C521;
 
   .loopTop:
-    LDA.B [$00],Y                                                        ;91C522;
+    LDA.B [DP_Temp00],Y                                                  ;91C522;
     CMP.W #$00FF                                                         ;91C524;
     BEQ .loopBottom                                                      ;91C527;
     LDA.W #$00FF                                                         ;91C529;
-    STA.B [$00],Y                                                        ;91C52C;
+    STA.B [DP_Temp00],Y                                                  ;91C52C;
     DEY                                                                  ;91C52E;
     DEY                                                                  ;91C52F;
     BPL .loopTop                                                         ;91C530;
 
   .loopBottom:
-    LDA.B $18                                                            ;91C532;
+    LDA.B DP_Temp18                                                      ;91C532;
     ASL                                                                  ;91C534;
     TAY                                                                  ;91C535;
 
   .loop:
-    LDA.B [$00],Y                                                        ;91C536;
+    LDA.B [DP_Temp00],Y                                                  ;91C536;
     CMP.W #$00FF                                                         ;91C538;
     BEQ .return                                                          ;91C53B;
     LDA.W #$00FF                                                         ;91C53D;
-    STA.B [$00],Y                                                        ;91C540;
+    STA.B [DP_Temp00],Y                                                  ;91C540;
     INY                                                                  ;91C542;
     INY                                                                  ;91C543;
     CPY.W #$01CC                                                         ;91C544;
@@ -7707,49 +7707,49 @@ Calc_Xray_HDMADataTable_OnScreen:
     TXA                                                                  ;91C551;
     XBA                                                                  ;91C552;
     AND.W #$FF00                                                         ;91C553;
-    STA.B $16                                                            ;91C556;
-    STY.B $18                                                            ;91C558;
-    LDA.B $12                                                            ;91C55A;
+    STA.B DP_Temp16                                                      ;91C556;
+    STY.B DP_Temp18                                                      ;91C558;
+    LDA.B DP_Temp12                                                      ;91C55A;
     SEC                                                                  ;91C55C;
-    SBC.B $14                                                            ;91C55D;
-    STA.B $1A                                                            ;91C55F;
+    SBC.B DP_Temp14                                                      ;91C55D;
+    STA.B DP_Temp1A                                                      ;91C55F;
     BPL +                                                                ;91C561;
     LDA.W #$0100                                                         ;91C563;
     CLC                                                                  ;91C566;
-    ADC.B $1A                                                            ;91C567;
-    STA.B $1A                                                            ;91C569;
+    ADC.B DP_Temp1A                                                      ;91C567;
+    STA.B DP_Temp1A                                                      ;91C569;
 
-+   LDA.B $12                                                            ;91C56B;
++   LDA.B DP_Temp12                                                      ;91C56B;
     CLC                                                                  ;91C56D;
-    ADC.B $14                                                            ;91C56E;
-    STA.B $1C                                                            ;91C570;
+    ADC.B DP_Temp14                                                      ;91C56E;
+    STA.B DP_Temp1C                                                      ;91C570;
     CMP.W #$0101                                                         ;91C572;
     BMI +                                                                ;91C575;
     SEC                                                                  ;91C577;
     SBC.W #$0100                                                         ;91C578;
-    STA.B $1C                                                            ;91C57B;
+    STA.B DP_Temp1C                                                      ;91C57B;
 
-+   LDA.B $14                                                            ;91C57D;
++   LDA.B DP_Temp14                                                      ;91C57D;
     BNE +                                                                ;91C57F;
-    LDA.B $12                                                            ;91C581;
+    LDA.B DP_Temp12                                                      ;91C581;
     CMP.W #$0040                                                         ;91C583;
     BEQ .strictlyHorizontal                                              ;91C586;
     CMP.W #$00C0                                                         ;91C588;
     BEQ .strictlyHorizontal                                              ;91C58B;
 
-+   LDA.B $1A                                                            ;91C58D;
++   LDA.B DP_Temp1A                                                      ;91C58D;
     CMP.W #$0080                                                         ;91C58F;
     BPL +                                                                ;91C592;
     CMP.W #$0040                                                         ;91C594;
     BPL .bottomHalf                                                      ;91C597;
-    LDA.B $1C                                                            ;91C599;
+    LDA.B DP_Temp1C                                                      ;91C599;
     CMP.W #$0040                                                         ;91C59B;
     BMI .topHalf                                                         ;91C59E;
     BRA .right                                                           ;91C5A0;
 
 +   CMP.W #$00C0                                                         ;91C5A2;
     BPL .topHalf                                                         ;91C5A5;
-    LDA.B $1C                                                            ;91C5A7;
+    LDA.B DP_Temp1C                                                      ;91C5A7;
     CMP.W #$00C0                                                         ;91C5A9;
     BMI .bottomHalf                                                      ;91C5AC;
     BRA .left                                                            ;91C5AE;
@@ -7779,7 +7779,7 @@ Calc_Xray_HDMADataTable_OnScreen:
     LDY.W #$0008                                                         ;91C5C4;
 
   .merge:
-    LDA.B $1A                                                            ;91C5C7;
+    LDA.B DP_Temp1A                                                      ;91C5C7;
     CMP.W #$0080                                                         ;91C5C9;
     BMI +                                                                ;91C5CC;
     SEC                                                                  ;91C5CE;
@@ -7788,8 +7788,8 @@ Calc_Xray_HDMADataTable_OnScreen:
 +   ASL                                                                  ;91C5D2;
     TAX                                                                  ;91C5D3;
     LDA.W AbsoluteTangentTable,X                                         ;91C5D4;
-    STA.B $1E                                                            ;91C5D7;
-    LDA.B $1C                                                            ;91C5D9;
+    STA.B DP_Temp1E                                                      ;91C5D7;
+    LDA.B DP_Temp1C                                                      ;91C5D9;
     CMP.W #$0080                                                         ;91C5DB;
     BMI +                                                                ;91C5DE;
     SEC                                                                  ;91C5E0;
@@ -7798,9 +7798,9 @@ Calc_Xray_HDMADataTable_OnScreen:
 +   ASL                                                                  ;91C5E4;
     TAX                                                                  ;91C5E5;
     LDA.W AbsoluteTangentTable,X                                         ;91C5E6;
-    STA.B $20                                                            ;91C5E9;
+    STA.B DP_Temp20                                                      ;91C5E9;
     TYX                                                                  ;91C5EB;
-    STZ.W $0D1E                                                          ;91C5EC;
+    STZ.W OffScreenBeamHDMADataTableIndex                                ;91C5EC;
     JSR.W (.pointers,X)                                                  ;91C5EF;
     PLB                                                                  ;91C5F2;
     PLP                                                                  ;91C5F3;
@@ -7827,28 +7827,28 @@ Calc_Xray_HDMADataTable_OnScreen_AimedRight:
 ; Current right line co-ordinates = ([$24], [Y] / 2)
     PHP                                                                  ;91C5FF;
     REP #$30                                                             ;91C600;
-    LDA.B $18                                                            ;91C602;
+    LDA.B DP_Temp18                                                      ;91C602;
     DEC                                                                  ;91C604;
     ASL                                                                  ;91C605;
     TAY                                                                  ;91C606;
-    LDA.B $17                                                            ;91C607;
+    LDA.B DP_Temp17                                                      ;91C607;
     ORA.W #$FF00                                                         ;91C609;
-    STA.B [$00],Y                                                        ;91C60C;
+    STA.B [DP_Temp00],Y                                                  ;91C60C;
     DEY                                                                  ;91C60E;
     DEY                                                                  ;91C60F;
-    LDA.B $16                                                            ;91C610;
-    STA.B $22                                                            ;91C612;
-    STA.B $24                                                            ;91C614;
+    LDA.B DP_Temp16                                                      ;91C610;
+    STA.B DP_Temp22                                                      ;91C612;
+    STA.B DP_Temp24                                                      ;91C614;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C616;
+    LDA.B DP_Temp22                                                      ;91C616;
     CLC                                                                  ;91C618;
-    ADC.B $1E                                                            ;91C619;
-    STA.B $22                                                            ;91C61B;
+    ADC.B DP_Temp1E                                                      ;91C619;
+    STA.B DP_Temp22                                                      ;91C61B;
     BCS .loopLeft                                                        ;91C61D;
-    LDA.B $23                                                            ;91C61F;
+    LDA.B DP_Temp23                                                      ;91C61F;
     ORA.W #$FF00                                                         ;91C621;
-    STA.B [$00],Y                                                        ;91C624;
+    STA.B [DP_Temp00],Y                                                  ;91C624;
     DEY                                                                  ;91C626;
     DEY                                                                  ;91C627;
     BPL .loopLeftOnScreen                                                ;91C628;
@@ -7856,25 +7856,25 @@ Calc_Xray_HDMADataTable_OnScreen_AimedRight:
 
   .loopLeft:
     LDA.W #$00FF                                                         ;91C62C;
-    STA.B [$00],Y                                                        ;91C62F;
+    STA.B [DP_Temp00],Y                                                  ;91C62F;
     DEY                                                                  ;91C631;
     DEY                                                                  ;91C632;
     BPL .loopLeft                                                        ;91C633;
 
   .leftEdgeEnd:
-    LDA.B $18                                                            ;91C635;
+    LDA.B DP_Temp18                                                      ;91C635;
     ASL                                                                  ;91C637;
     TAY                                                                  ;91C638;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C639;
+    LDA.B DP_Temp24                                                      ;91C639;
     CLC                                                                  ;91C63B;
-    ADC.B $20                                                            ;91C63C;
-    STA.B $24                                                            ;91C63E;
+    ADC.B DP_Temp20                                                      ;91C63C;
+    STA.B DP_Temp24                                                      ;91C63E;
     BCS .loopRight                                                       ;91C640;
-    LDA.B $25                                                            ;91C642;
+    LDA.B DP_Temp25                                                      ;91C642;
     ORA.W #$FF00                                                         ;91C644;
-    STA.B [$00],Y                                                        ;91C647;
+    STA.B [DP_Temp00],Y                                                  ;91C647;
     INY                                                                  ;91C649;
     INY                                                                  ;91C64A;
     CPY.W #$01CC                                                         ;91C64B;
@@ -7883,7 +7883,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedRight:
 
   .loopRight:
     LDA.W #$00FF                                                         ;91C652;
-    STA.B [$00],Y                                                        ;91C655;
+    STA.B [DP_Temp00],Y                                                  ;91C655;
     INY                                                                  ;91C657;
     INY                                                                  ;91C658;
     CPY.W #$01CC                                                         ;91C659;
@@ -7907,28 +7907,28 @@ Calc_Xray_HDMADataTable_OnScreen_AimedLeft:
 ; Current right line co-ordinates = ([$24], [Y] / 2)
     PHP                                                                  ;91C660;
     REP #$30                                                             ;91C661;
-    LDA.B $18                                                            ;91C663;
+    LDA.B DP_Temp18                                                      ;91C663;
     DEC                                                                  ;91C665;
     ASL                                                                  ;91C666;
     TAY                                                                  ;91C667;
-    LDA.B $16                                                            ;91C668;
+    LDA.B DP_Temp16                                                      ;91C668;
     AND.W #$FF00                                                         ;91C66A;
-    STA.B [$00],Y                                                        ;91C66D;
+    STA.B [DP_Temp00],Y                                                  ;91C66D;
     DEY                                                                  ;91C66F;
     DEY                                                                  ;91C670;
-    LDA.B $16                                                            ;91C671;
-    STA.B $22                                                            ;91C673;
-    STA.B $24                                                            ;91C675;
+    LDA.B DP_Temp16                                                      ;91C671;
+    STA.B DP_Temp22                                                      ;91C673;
+    STA.B DP_Temp24                                                      ;91C675;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C677;
+    LDA.B DP_Temp24                                                      ;91C677;
     SEC                                                                  ;91C679;
-    SBC.B $20                                                            ;91C67A;
-    STA.B $24                                                            ;91C67C;
+    SBC.B DP_Temp20                                                      ;91C67A;
+    STA.B DP_Temp24                                                      ;91C67C;
     BCC .loopRight                                                       ;91C67E;
-    LDA.B $24                                                            ;91C680;
+    LDA.B DP_Temp24                                                      ;91C680;
     AND.W #$FF00                                                         ;91C682;
-    STA.B [$00],Y                                                        ;91C685;
+    STA.B [DP_Temp00],Y                                                  ;91C685;
     DEY                                                                  ;91C687;
     DEY                                                                  ;91C688;
     BPL .loopRightOnScreen                                               ;91C689;
@@ -7936,25 +7936,25 @@ Calc_Xray_HDMADataTable_OnScreen_AimedLeft:
 
   .loopRight:
     LDA.W #$00FF                                                         ;91C68D;
-    STA.B [$00],Y                                                        ;91C690;
+    STA.B [DP_Temp00],Y                                                  ;91C690;
     DEY                                                                  ;91C692;
     DEY                                                                  ;91C693;
     BPL .loopRight                                                       ;91C694;
 
   .rightEdgeEnd:
-    LDA.B $18                                                            ;91C696;
+    LDA.B DP_Temp18                                                      ;91C696;
     ASL                                                                  ;91C698;
     TAY                                                                  ;91C699;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C69A;
+    LDA.B DP_Temp22                                                      ;91C69A;
     SEC                                                                  ;91C69C;
-    SBC.B $1E                                                            ;91C69D;
-    STA.B $22                                                            ;91C69F;
+    SBC.B DP_Temp1E                                                      ;91C69D;
+    STA.B DP_Temp22                                                      ;91C69F;
     BCC .loopLeft                                                        ;91C6A1;
-    LDA.B $22                                                            ;91C6A3;
+    LDA.B DP_Temp22                                                      ;91C6A3;
     AND.W #$FF00                                                         ;91C6A5;
-    STA.B [$00],Y                                                        ;91C6A8;
+    STA.B [DP_Temp00],Y                                                  ;91C6A8;
     INY                                                                  ;91C6AA;
     INY                                                                  ;91C6AB;
     CPY.W #$01CC                                                         ;91C6AC;
@@ -7963,7 +7963,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedLeft:
 
   .loopLeft:
     LDA.W #$00FF                                                         ;91C6B3;
-    STA.B [$00],Y                                                        ;91C6B6;
+    STA.B [DP_Temp00],Y                                                  ;91C6B6;
     INY                                                                  ;91C6B8;
     INY                                                                  ;91C6B9;
     CPY.W #$01CC                                                         ;91C6BA;
@@ -7986,30 +7986,30 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards:
 ;;     $20: Beam right edge gradient * 100h (dx/dy)
     PHP                                                                  ;91C6C1;
     REP #$30                                                             ;91C6C2;
-    LDA.B $18                                                            ;91C6C4;
+    LDA.B DP_Temp18                                                      ;91C6C4;
     DEC                                                                  ;91C6C6;
     ASL                                                                  ;91C6C7;
     TAY                                                                  ;91C6C8;
     SEP #$20                                                             ;91C6C9;
-    LDA.B $17                                                            ;91C6CB;
-    STA.B [$00],Y                                                        ;91C6CD;
+    LDA.B DP_Temp17                                                      ;91C6CB;
+    STA.B [DP_Temp00],Y                                                  ;91C6CD;
     INY                                                                  ;91C6CF;
-    LDA.B $17                                                            ;91C6D0;
-    STA.B [$00],Y                                                        ;91C6D2;
+    LDA.B DP_Temp17                                                      ;91C6D0;
+    STA.B [DP_Temp00],Y                                                  ;91C6D2;
     REP #$20                                                             ;91C6D4;
     DEY                                                                  ;91C6D6;
     DEY                                                                  ;91C6D7;
     DEY                                                                  ;91C6D8;
-    LDA.B $16                                                            ;91C6D9;
-    STA.B $22                                                            ;91C6DB;
-    STA.B $24                                                            ;91C6DD;
-    LDA.B $1A                                                            ;91C6DF;
+    LDA.B DP_Temp16                                                      ;91C6D9;
+    STA.B DP_Temp22                                                      ;91C6DB;
+    STA.B DP_Temp24                                                      ;91C6DD;
+    LDA.B DP_Temp1A                                                      ;91C6DF;
     CMP.W #$00C0                                                         ;91C6E1;
     BPL +                                                                ;91C6E4;
     LDX.W #$0000                                                         ;91C6E6;
     BRA .merge                                                           ;91C6E9;
 
-+   LDA.B $1C                                                            ;91C6EB;
++   LDA.B DP_Temp1C                                                      ;91C6EB;
     CMP.W #$00C0                                                         ;91C6ED;
     BPL +                                                                ;91C6F0;
     LDX.W #$0002                                                         ;91C6F2;
@@ -8019,16 +8019,16 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards:
 
   .merge:
     JSR.W (.pointers,X)                                                  ;91C6FA;
-    LDA.B $18                                                            ;91C6FD;
+    LDA.B DP_Temp18                                                      ;91C6FD;
     ASL                                                                  ;91C6FF;
     TAY                                                                  ;91C700;
 
   .loop:
-    LDA.B [$00],Y                                                        ;91C701;
+    LDA.B [DP_Temp00],Y                                                  ;91C701;
     CMP.W #$00FF                                                         ;91C703;
     BEQ .return                                                          ;91C706;
     LDA.W #$00FF                                                         ;91C708;
-    STA.B [$00],Y                                                        ;91C70B;
+    STA.B [DP_Temp00],Y                                                  ;91C70B;
     INY                                                                  ;91C70D;
     INY                                                                  ;91C70E;
     CPY.W #$01CC                                                         ;91C70F;
@@ -8061,26 +8061,26 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_UpRight:
     PHY                                                                  ;91C71F;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C720;
+    LDA.B DP_Temp22                                                      ;91C720;
     CLC                                                                  ;91C722;
-    ADC.B $1E                                                            ;91C723;
-    STA.B $22                                                            ;91C725;
+    ADC.B DP_Temp1E                                                      ;91C723;
+    STA.B DP_Temp22                                                      ;91C725;
     BCS +                                                                ;91C727;
     SEP #$20                                                             ;91C729;
-    LDA.B $23                                                            ;91C72B;
-    STA.B [$00],Y                                                        ;91C72D;
+    LDA.B DP_Temp23                                                      ;91C72B;
+    STA.B [DP_Temp00],Y                                                  ;91C72D;
     REP #$20                                                             ;91C72F;
     DEY                                                                  ;91C731;
     DEY                                                                  ;91C732;
     BPL .loopLeftOnScreen                                                ;91C733;
     BRA .leftEdgeEnd                                                     ;91C735;
 
-+   STY.W $0D1E                                                          ;91C737;
++   STY.W OffScreenBeamHDMADataTableIndex                                ;91C737;
     SEP #$20                                                             ;91C73A;
     LDA.B #$FF                                                           ;91C73C;
 
   .loopLeft:
-    STA.B [$00],Y                                                        ;91C73E;
+    STA.B [DP_Temp00],Y                                                  ;91C73E;
     DEY                                                                  ;91C740;
     DEY                                                                  ;91C741;
     BPL .loopLeft                                                        ;91C742;
@@ -8091,14 +8091,14 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_UpRight:
     INY                                                                  ;91C747;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C748;
+    LDA.B DP_Temp24                                                      ;91C748;
     CLC                                                                  ;91C74A;
-    ADC.B $20                                                            ;91C74B;
-    STA.B $24                                                            ;91C74D;
+    ADC.B DP_Temp20                                                      ;91C74B;
+    STA.B DP_Temp24                                                      ;91C74D;
     BCS +                                                                ;91C74F;
     SEP #$20                                                             ;91C751;
-    LDA.B $25                                                            ;91C753;
-    STA.B [$00],Y                                                        ;91C755;
+    LDA.B DP_Temp25                                                      ;91C753;
+    STA.B [DP_Temp00],Y                                                  ;91C755;
     REP #$20                                                             ;91C757;
     DEY                                                                  ;91C759;
     DEY                                                                  ;91C75A;
@@ -8109,12 +8109,12 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_UpRight:
 
   .loopRight:
     LDA.B #$FF                                                           ;91C761;
-    STA.B [$00],Y                                                        ;91C763;
+    STA.B [DP_Temp00],Y                                                  ;91C763;
     DEY                                                                  ;91C765;
     DEY                                                                  ;91C766;
     BPL .loopRight                                                       ;91C767;
     REP #$20                                                             ;91C769;
-    LDY.W $0D1E                                                          ;91C76B;
+    LDY.W OffScreenBeamHDMADataTableIndex                                ;91C76B;
     BEQ .return                                                          ;91C76E;
     DEY                                                                  ;91C770;
     DEY                                                                  ;91C771;
@@ -8122,7 +8122,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_UpRight:
     LDA.W #$00FF                                                         ;91C774;
 
   .loopEnd:
-    STA.B [$00],Y                                                        ;91C777;
+    STA.B [DP_Temp00],Y                                                  ;91C777;
     DEY                                                                  ;91C779;
     DEY                                                                  ;91C77A;
     BPL .loopEnd                                                         ;91C77B;
@@ -8151,14 +8151,14 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_Up:
     PHY                                                                  ;91C782;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C783;
+    LDA.B DP_Temp22                                                      ;91C783;
     SEC                                                                  ;91C785;
-    SBC.B $1E                                                            ;91C786;
-    STA.B $22                                                            ;91C788;
+    SBC.B DP_Temp1E                                                      ;91C786;
+    STA.B DP_Temp22                                                      ;91C788;
     BCC +                                                                ;91C78A;
     SEP #$20                                                             ;91C78C;
-    LDA.B $23                                                            ;91C78E;
-    STA.B [$00],Y                                                        ;91C790;
+    LDA.B DP_Temp23                                                      ;91C78E;
+    STA.B [DP_Temp00],Y                                                  ;91C790;
     REP #$20                                                             ;91C792;
     DEY                                                                  ;91C794;
     DEY                                                                  ;91C795;
@@ -8169,7 +8169,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_Up:
 
   .loopLeft:
     LDA.B #$00                                                           ;91C79C;
-    STA.B [$00],Y                                                        ;91C79E;
+    STA.B [DP_Temp00],Y                                                  ;91C79E;
     DEY                                                                  ;91C7A0;
     DEY                                                                  ;91C7A1;
     BPL .loopLeft                                                        ;91C7A2;
@@ -8180,14 +8180,14 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_Up:
     INY                                                                  ;91C7A7;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C7A8;
+    LDA.B DP_Temp24                                                      ;91C7A8;
     CLC                                                                  ;91C7AA;
-    ADC.B $20                                                            ;91C7AB;
-    STA.B $24                                                            ;91C7AD;
+    ADC.B DP_Temp20                                                      ;91C7AB;
+    STA.B DP_Temp24                                                      ;91C7AD;
     BCS +                                                                ;91C7AF;
     SEP #$20                                                             ;91C7B1;
-    LDA.B $25                                                            ;91C7B3;
-    STA.B [$00],Y                                                        ;91C7B5;
+    LDA.B DP_Temp25                                                      ;91C7B3;
+    STA.B [DP_Temp00],Y                                                  ;91C7B5;
     REP #$20                                                             ;91C7B7;
     DEY                                                                  ;91C7B9;
     DEY                                                                  ;91C7BA;
@@ -8198,7 +8198,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_Up:
 
   .loopRight:
     LDA.B #$FF                                                           ;91C7C1;
-    STA.B [$00],Y                                                        ;91C7C3;
+    STA.B [DP_Temp00],Y                                                  ;91C7C3;
     DEY                                                                  ;91C7C5;
     DEY                                                                  ;91C7C6;
     BPL .loopRight                                                       ;91C7C7;
@@ -8225,14 +8225,14 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_UpLeft:
     PHY                                                                  ;91C7CE;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C7CF;
+    LDA.B DP_Temp22                                                      ;91C7CF;
     SEC                                                                  ;91C7D1;
-    SBC.B $1E                                                            ;91C7D2;
-    STA.B $22                                                            ;91C7D4;
+    SBC.B DP_Temp1E                                                      ;91C7D2;
+    STA.B DP_Temp22                                                      ;91C7D4;
     BCC +                                                                ;91C7D6;
     SEP #$20                                                             ;91C7D8;
-    LDA.B $23                                                            ;91C7DA;
-    STA.B [$00],Y                                                        ;91C7DC;
+    LDA.B DP_Temp23                                                      ;91C7DA;
+    STA.B [DP_Temp00],Y                                                  ;91C7DC;
     REP #$20                                                             ;91C7DE;
     DEY                                                                  ;91C7E0;
     DEY                                                                  ;91C7E1;
@@ -8243,7 +8243,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_UpLeft:
     LDA.B #$00                                                           ;91C7E8;
 
   .loopLeft:
-    STA.B [$00],Y                                                        ;91C7EA;
+    STA.B [DP_Temp00],Y                                                  ;91C7EA;
     DEY                                                                  ;91C7EC;
     DEY                                                                  ;91C7ED;
     BPL .loopLeft                                                        ;91C7EE;
@@ -8254,14 +8254,14 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_UpLeft:
     INY                                                                  ;91C7F3;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C7F4;
+    LDA.B DP_Temp24                                                      ;91C7F4;
     SEC                                                                  ;91C7F6;
-    SBC.B $20                                                            ;91C7F7;
-    STA.B $24                                                            ;91C7F9;
+    SBC.B DP_Temp20                                                      ;91C7F7;
+    STA.B DP_Temp24                                                      ;91C7F9;
     BCC +                                                                ;91C7FB;
     SEP #$20                                                             ;91C7FD;
-    LDA.B $25                                                            ;91C7FF;
-    STA.B [$00],Y                                                        ;91C801;
+    LDA.B DP_Temp25                                                      ;91C7FF;
+    STA.B [DP_Temp00],Y                                                  ;91C801;
     REP #$20                                                             ;91C803;
     DEY                                                                  ;91C805;
     DEY                                                                  ;91C806;
@@ -8273,7 +8273,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_UpLeft:
     LDA.B #$00                                                           ;91C80E;
 
   .loopRight:
-    STA.B [$00],Y                                                        ;91C810;
+    STA.B [DP_Temp00],Y                                                  ;91C810;
     DEY                                                                  ;91C812;
     DEY                                                                  ;91C813;
     BPL .loopRight                                                       ;91C814;
@@ -8282,7 +8282,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedUpwards_UpLeft:
     LDA.B #$FF                                                           ;91C818;
 
   .loopEnd:
-    STA.B [$00],Y                                                        ;91C81A;
+    STA.B [DP_Temp00],Y                                                  ;91C81A;
     DEY                                                                  ;91C81C;
     DEY                                                                  ;91C81D;
     BPL .loopEnd                                                         ;91C81E;
@@ -8304,28 +8304,28 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards:
 ;;     $20: Beam right edge gradient * 100h (dx/dy)
     PHP                                                                  ;91C822;
     REP #$30                                                             ;91C823;
-    LDA.B $18                                                            ;91C825;
+    LDA.B DP_Temp18                                                      ;91C825;
     DEC                                                                  ;91C827;
     ASL                                                                  ;91C828;
     TAY                                                                  ;91C829;
     SEP #$20                                                             ;91C82A;
-    LDA.B $17                                                            ;91C82C;
-    STA.B [$00],Y                                                        ;91C82E;
+    LDA.B DP_Temp17                                                      ;91C82C;
+    STA.B [DP_Temp00],Y                                                  ;91C82E;
     INY                                                                  ;91C830;
-    LDA.B $17                                                            ;91C831;
-    STA.B [$00],Y                                                        ;91C833;
+    LDA.B DP_Temp17                                                      ;91C831;
+    STA.B [DP_Temp00],Y                                                  ;91C833;
     REP #$20                                                             ;91C835;
     INY                                                                  ;91C837;
-    LDA.B $16                                                            ;91C838;
-    STA.B $22                                                            ;91C83A;
-    STA.B $24                                                            ;91C83C;
-    LDA.B $1C                                                            ;91C83E;
+    LDA.B DP_Temp16                                                      ;91C838;
+    STA.B DP_Temp22                                                      ;91C83A;
+    STA.B DP_Temp24                                                      ;91C83C;
+    LDA.B DP_Temp1C                                                      ;91C83E;
     CMP.W #$0080                                                         ;91C840;
     BPL +                                                                ;91C843;
     LDX.W #$0000                                                         ;91C845;
     BRA .merge                                                           ;91C848;
 
-+   LDA.B $1A                                                            ;91C84A;
++   LDA.B DP_Temp1A                                                      ;91C84A;
     CMP.W #$0080                                                         ;91C84C;
     BPL +                                                                ;91C84F;
     LDX.W #$0002                                                         ;91C851;
@@ -8335,18 +8335,18 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards:
 
   .merge:
     JSR.W (.pointers,X)                                                  ;91C859;
-    LDA.B $18                                                            ;91C85C;
+    LDA.B DP_Temp18                                                      ;91C85C;
     DEC                                                                  ;91C85E;
     DEC                                                                  ;91C85F;
     ASL                                                                  ;91C860;
     TAY                                                                  ;91C861;
 
   .loop:
-    LDA.B [$00],Y                                                        ;91C862;
+    LDA.B [DP_Temp00],Y                                                  ;91C862;
     CMP.W #$00FF                                                         ;91C864;
     BEQ .return                                                          ;91C867;
     LDA.W #$00FF                                                         ;91C869;
-    STA.B [$00],Y                                                        ;91C86C;
+    STA.B [DP_Temp00],Y                                                  ;91C86C;
     DEY                                                                  ;91C86E;
     DEY                                                                  ;91C86F;
     BPL .loop                                                            ;91C870;
@@ -8378,24 +8378,24 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_DownRight:
     PHY                                                                  ;91C87D;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C87E;
+    LDA.B DP_Temp24                                                      ;91C87E;
     CLC                                                                  ;91C880;
-    ADC.B $20                                                            ;91C881;
-    STA.B $24                                                            ;91C883;
+    ADC.B DP_Temp20                                                      ;91C881;
+    STA.B DP_Temp24                                                      ;91C883;
     BCS +                                                                ;91C885;
-    LDA.B $25                                                            ;91C887;
-    STA.B [$00],Y                                                        ;91C889;
+    LDA.B DP_Temp25                                                      ;91C887;
+    STA.B [DP_Temp00],Y                                                  ;91C889;
     INY                                                                  ;91C88B;
     INY                                                                  ;91C88C;
     CPY.W #$01CC                                                         ;91C88D;
     BMI .loopRightOnScreen                                               ;91C890;
     BRA .rightEdgeEnd                                                    ;91C892;
 
-+   STY.W $0D1E                                                          ;91C894;
++   STY.W OffScreenBeamHDMADataTableIndex                                ;91C894;
     LDA.W #$00FF                                                         ;91C897;
 
   .loopRight:
-    STA.B [$00],Y                                                        ;91C89A;
+    STA.B [DP_Temp00],Y                                                  ;91C89A;
     INY                                                                  ;91C89C;
     INY                                                                  ;91C89D;
     CPY.W #$01CC                                                         ;91C89E;
@@ -8406,14 +8406,14 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_DownRight:
     INY                                                                  ;91C8A4;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C8A5;
+    LDA.B DP_Temp22                                                      ;91C8A5;
     CLC                                                                  ;91C8A7;
-    ADC.B $1E                                                            ;91C8A8;
-    STA.B $22                                                            ;91C8AA;
+    ADC.B DP_Temp1E                                                      ;91C8A8;
+    STA.B DP_Temp22                                                      ;91C8AA;
     BCS +                                                                ;91C8AC;
     SEP #$20                                                             ;91C8AE;
-    LDA.B $23                                                            ;91C8B0;
-    STA.B [$00],Y                                                        ;91C8B2;
+    LDA.B DP_Temp23                                                      ;91C8B0;
+    STA.B [DP_Temp00],Y                                                  ;91C8B2;
     REP #$20                                                             ;91C8B4;
     INY                                                                  ;91C8B6;
     INY                                                                  ;91C8B7;
@@ -8425,13 +8425,13 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_DownRight:
 
   .loopLeft:
     LDA.B #$FF                                                           ;91C8C1;
-    STA.B [$00],Y                                                        ;91C8C3;
+    STA.B [DP_Temp00],Y                                                  ;91C8C3;
     INY                                                                  ;91C8C5;
     INY                                                                  ;91C8C6;
     CPY.W #$01CC                                                         ;91C8C7;
     BMI .loopLeft                                                        ;91C8CA;
     REP #$20                                                             ;91C8CC;
-    LDY.W $0D1E                                                          ;91C8CE;
+    LDY.W OffScreenBeamHDMADataTableIndex                                ;91C8CE;
     BEQ .return                                                          ;91C8D1;
     INY                                                                  ;91C8D3;
     INY                                                                  ;91C8D4;
@@ -8440,7 +8440,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_DownRight:
     LDA.W #$00FF                                                         ;91C8DA;
 
   .loopEnd:
-    STA.B [$00],Y                                                        ;91C8DD;
+    STA.B [DP_Temp00],Y                                                  ;91C8DD;
     INY                                                                  ;91C8DF;
     INY                                                                  ;91C8E0;
     CPY.W #$01CC                                                         ;91C8E1;
@@ -8468,13 +8468,13 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_Down:
     PHY                                                                  ;91C8EB;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C8EC;
+    LDA.B DP_Temp24                                                      ;91C8EC;
     SEC                                                                  ;91C8EE;
-    SBC.B $20                                                            ;91C8EF;
-    STA.B $24                                                            ;91C8F1;
+    SBC.B DP_Temp20                                                      ;91C8EF;
+    STA.B DP_Temp24                                                      ;91C8F1;
     BCC .loopRight                                                       ;91C8F3;
-    LDA.B $25                                                            ;91C8F5;
-    STA.B [$00],Y                                                        ;91C8F7;
+    LDA.B DP_Temp25                                                      ;91C8F5;
+    STA.B [DP_Temp00],Y                                                  ;91C8F7;
     INY                                                                  ;91C8F9;
     INY                                                                  ;91C8FA;
     CPY.W #$01CC                                                         ;91C8FB;
@@ -8483,7 +8483,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_Down:
 
   .loopRight:
     LDA.W #$0000                                                         ;91C902;
-    STA.B [$00],Y                                                        ;91C905;
+    STA.B [DP_Temp00],Y                                                  ;91C905;
     INY                                                                  ;91C907;
     INY                                                                  ;91C908;
     CPY.W #$01CC                                                         ;91C909;
@@ -8494,14 +8494,14 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_Down:
     INY                                                                  ;91C90F;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C910;
+    LDA.B DP_Temp22                                                      ;91C910;
     CLC                                                                  ;91C912;
-    ADC.B $1E                                                            ;91C913;
-    STA.B $22                                                            ;91C915;
+    ADC.B DP_Temp1E                                                      ;91C913;
+    STA.B DP_Temp22                                                      ;91C915;
     BCS +                                                                ;91C917;
     SEP #$20                                                             ;91C919;
-    LDA.B $23                                                            ;91C91B;
-    STA.B [$00],Y                                                        ;91C91D;
+    LDA.B DP_Temp23                                                      ;91C91B;
+    STA.B [DP_Temp00],Y                                                  ;91C91D;
     REP #$20                                                             ;91C91F;
     INY                                                                  ;91C921;
     INY                                                                  ;91C922;
@@ -8513,7 +8513,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_Down:
 
   .loopLeft:
     LDA.B #$FF                                                           ;91C92C;
-    STA.B [$00],Y                                                        ;91C92E;
+    STA.B [DP_Temp00],Y                                                  ;91C92E;
     INY                                                                  ;91C930;
     INY                                                                  ;91C931;
     CPY.W #$01CC                                                         ;91C932;
@@ -8541,13 +8541,13 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_DownLeft:
     PHY                                                                  ;91C93C;
 
   .loopRightOnScreen:
-    LDA.B $24                                                            ;91C93D;
+    LDA.B DP_Temp24                                                      ;91C93D;
     SEC                                                                  ;91C93F;
-    SBC.B $20                                                            ;91C940;
-    STA.B $24                                                            ;91C942;
+    SBC.B DP_Temp20                                                      ;91C940;
+    STA.B DP_Temp24                                                      ;91C942;
     BCC .loopRight                                                       ;91C944;
-    LDA.B $25                                                            ;91C946;
-    STA.B [$00],Y                                                        ;91C948;
+    LDA.B DP_Temp25                                                      ;91C946;
+    STA.B [DP_Temp00],Y                                                  ;91C948;
     INY                                                                  ;91C94A;
     INY                                                                  ;91C94B;
     CPY.W #$01CC                                                         ;91C94C;
@@ -8556,7 +8556,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_DownLeft:
 
   .loopRight:
     LDA.W #$0000                                                         ;91C953;
-    STA.B [$00],Y                                                        ;91C956;
+    STA.B [DP_Temp00],Y                                                  ;91C956;
     INY                                                                  ;91C958;
     INY                                                                  ;91C959;
     CPY.W #$01CC                                                         ;91C95A;
@@ -8567,14 +8567,14 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_DownLeft:
     INY                                                                  ;91C960;
 
   .loopLeftOnScreen:
-    LDA.B $22                                                            ;91C961;
+    LDA.B DP_Temp22                                                      ;91C961;
     SEC                                                                  ;91C963;
-    SBC.B $1E                                                            ;91C964;
-    STA.B $22                                                            ;91C966;
+    SBC.B DP_Temp1E                                                      ;91C964;
+    STA.B DP_Temp22                                                      ;91C966;
     BCC +                                                                ;91C968;
     SEP #$20                                                             ;91C96A;
-    LDA.B $23                                                            ;91C96C;
-    STA.B [$00],Y                                                        ;91C96E;
+    LDA.B DP_Temp23                                                      ;91C96C;
+    STA.B [DP_Temp00],Y                                                  ;91C96E;
     REP #$20                                                             ;91C970;
     INY                                                                  ;91C972;
     INY                                                                  ;91C973;
@@ -8587,7 +8587,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_DownLeft:
     LDA.B #$00                                                           ;91C97E;
 
   .loopLeft:
-    STA.B [$00],Y                                                        ;91C980;
+    STA.B [DP_Temp00],Y                                                  ;91C980;
     INY                                                                  ;91C982;
     INY                                                                  ;91C983;
     CPY.W #$01CC                                                         ;91C984;
@@ -8597,7 +8597,7 @@ Calc_Xray_HDMADataTable_OnScreen_AimedDownwards_DownLeft:
     LDA.B #$FF                                                           ;91C98B;
 
   .loopEnd:
-    STA.B [$00],Y                                                        ;91C98D;
+    STA.B [DP_Temp00],Y                                                  ;91C98D;
     INY                                                                  ;91C98F;
     INY                                                                  ;91C990;
     CPY.W #$01CC                                                         ;91C991;
@@ -8617,39 +8617,39 @@ Calc_Xray_HDMADataTable_OnScreen_HorizontalLine:
 ;;     $18: Beam origin Y position
     PHP                                                                  ;91C998;
     REP #$30                                                             ;91C999;
-    LDA.B $18                                                            ;91C99B;
+    LDA.B DP_Temp18                                                      ;91C99B;
     DEC                                                                  ;91C99D;
     ASL                                                                  ;91C99E;
     TAY                                                                  ;91C99F;
-    LDA.B $12                                                            ;91C9A0;
+    LDA.B DP_Temp12                                                      ;91C9A0;
     CMP.W #$0040                                                         ;91C9A2;
     BNE .not40                                                           ;91C9A5;
-    LDA.B $17                                                            ;91C9A7;
+    LDA.B DP_Temp17                                                      ;91C9A7;
     ORA.W #$FF00                                                         ;91C9A9;
-    STA.B [$00],Y                                                        ;91C9AC;
+    STA.B [DP_Temp00],Y                                                  ;91C9AC;
     BRA +                                                                ;91C9AE;
 
   .not40:
-    LDA.B $16                                                            ;91C9B0;
+    LDA.B DP_Temp16                                                      ;91C9B0;
     AND.W #$FF00                                                         ;91C9B2;
-    STA.B [$00],Y                                                        ;91C9B5;
+    STA.B [DP_Temp00],Y                                                  ;91C9B5;
 
 +   DEY                                                                  ;91C9B7;
     DEY                                                                  ;91C9B8;
     LDA.W #$00FF                                                         ;91C9B9;
 
   .loopUpper:
-    STA.B [$00],Y                                                        ;91C9BC;
+    STA.B [DP_Temp00],Y                                                  ;91C9BC;
     DEY                                                                  ;91C9BE;
     DEY                                                                  ;91C9BF;
     BPL .loopUpper                                                       ;91C9C0;
-    LDA.B $18                                                            ;91C9C2;
+    LDA.B DP_Temp18                                                      ;91C9C2;
     ASL                                                                  ;91C9C4;
     TAY                                                                  ;91C9C5;
     LDA.W #$00FF                                                         ;91C9C6;
 
   .loopLower:
-    STA.B [$00],Y                                                        ;91C9C9;
+    STA.B [DP_Temp00],Y                                                  ;91C9C9;
     INY                                                                  ;91C9CB;
     INY                                                                  ;91C9CC;
     CPY.W #$01CC                                                         ;91C9CD;
@@ -8689,10 +8689,10 @@ XrayHandler:
     PHK                                                                  ;91CAD8;
     PLB                                                                  ;91CAD9;
     REP #$30                                                             ;91CADA;
-    LDA.W $0A78                                                          ;91CADC;
+    LDA.W TimeIsFrozenFlag                                               ;91CADC;
     BNE .return                                                          ;91CADF;
-    LDA.B $8B                                                            ;91CAE1;
-    BIT.W $09B6                                                          ;91CAE3;
+    LDA.B DP_Controller1Input                                            ;91CAE1;
+    BIT.W DashBinding                                                    ;91CAE3;
     BEQ .return                                                          ;91CAE6;
     JSL.L XraySetup                                                      ;91CAE8;
     BCC .return                                                          ;91CAEC;
@@ -8711,17 +8711,17 @@ XraySetup_1_FreezeTime_BackupBG2Registers:
     PHP                                                                  ;91CAF9;
     SEP #$30                                                             ;91CAFA;
     LDA.B #$01                                                           ;91CAFC;
-    STA.W $0A78                                                          ;91CAFE;
-    LDA.B $B5                                                            ;91CB01;
-    STA.W $1914,X                                                        ;91CB03;
-    LDA.B $B6                                                            ;91CB06;
-    STA.W $1915,X                                                        ;91CB08;
-    LDA.B $B7                                                            ;91CB0B;
-    STA.W $1920,X                                                        ;91CB0D;
-    LDA.B $B8                                                            ;91CB10;
-    STA.W $1921,X                                                        ;91CB12;
-    LDA.B $59                                                            ;91CB15;
-    STA.W $192C,X                                                        ;91CB17;
+    STA.W TimeIsFrozenFlag                                               ;91CAFE;
+    LDA.B DP_BG2XScroll                                                  ;91CB01;
+    STA.W HDMAObject_Var0,X                                              ;91CB03;
+    LDA.B DP_BG2XScroll+1                                                ;91CB06;
+    STA.W HDMAObject_Var0+1,X                                            ;91CB08;
+    LDA.B DP_BG2YScroll                                                  ;91CB0B;
+    STA.W HDMAObject_Var1,X                                              ;91CB0D;
+    LDA.B DP_BG2YScroll+1                                                ;91CB10;
+    STA.W HDMAObject_Var1+1,X                                            ;91CB12;
+    LDA.B DP_BG2TilemapAddrSize                                          ;91CB15;
+    STA.W HDMAObject_Var2,X                                              ;91CB17;
     PLP                                                                  ;91CB1A;
     RTL                                                                  ;91CB1B;
 
@@ -8731,27 +8731,27 @@ XraySetup_2_ReadBG1Tilemap_2ndScreen:
 ; Queue transfer of 800h bytes from VRAM BG1 tilemap base + 400h to $7E:6800
     PHP                                                                  ;91CB1C;
     REP #$30                                                             ;91CB1D;
-    LDX.W $0360                                                          ;91CB1F;
-    LDA.B $58                                                            ;91CB22;
+    LDX.W VRAMReadStack                                                  ;91CB1F;
+    LDA.B DP_BG1TilemapAddrSize                                          ;91CB22;
     AND.W #$00FC                                                         ;91CB24;
     XBA                                                                  ;91CB27;
     CLC                                                                  ;91CB28;
     ADC.W #$0400                                                         ;91CB29;
-    STA.W $0340,X                                                        ;91CB2C;
+    STA.W VRAMRead.src,X                                                 ;91CB2C;
     LDA.W #$0081                                                         ;91CB2F;
-    STA.W $0342,X                                                        ;91CB32;
+    STA.W VRAMRead.control,X                                             ;91CB32;
     LDA.W #$0039                                                         ;91CB35;
-    STA.W $0343,X                                                        ;91CB38;
-    LDA.W #$6800                                                         ;91CB3B;
-    STA.W $0344,X                                                        ;91CB3E;
-    LDA.W #$007E                                                         ;91CB41;
-    STA.W $0346,X                                                        ;91CB44;
+    STA.W VRAMRead.target,X                                              ;91CB38;
+    LDA.W #XrayTilemaps_BackupBG1+$800                                   ;91CB3B;
+    STA.W VRAMRead.dest,X                                                ;91CB3E;
+    LDA.W #XrayTilemaps_BackupBG1>>16                                    ;91CB41;
+    STA.W VRAMRead.dest+2,X                                              ;91CB44;
     LDA.W #$0800                                                         ;91CB47;
-    STA.W $0347,X                                                        ;91CB4A;
+    STA.W VRAMRead.size,X                                                ;91CB4A;
     TXA                                                                  ;91CB4D;
     CLC                                                                  ;91CB4E;
     ADC.W #$0009                                                         ;91CB4F;
-    STA.W $0360                                                          ;91CB52;
+    STA.W VRAMReadStack                                                  ;91CB52;
     PLP                                                                  ;91CB55;
     RTL                                                                  ;91CB56;
 
@@ -8761,25 +8761,25 @@ XraySetup_3_ReadBG1Tilemap_1stScreen:
 ; Queue transfer of 800h bytes from VRAM BG1 tilemap base to $7E:6000
     PHP                                                                  ;91CB57;
     REP #$30                                                             ;91CB58;
-    LDX.W $0360                                                          ;91CB5A;
-    LDA.B $58                                                            ;91CB5D;
+    LDX.W VRAMReadStack                                                  ;91CB5A;
+    LDA.B DP_BG1TilemapAddrSize                                          ;91CB5D;
     AND.W #$00FC                                                         ;91CB5F;
     XBA                                                                  ;91CB62;
-    STA.W $0340,X                                                        ;91CB63;
+    STA.W VRAMRead.src,X                                                 ;91CB63;
     LDA.W #$0081                                                         ;91CB66;
-    STA.W $0342,X                                                        ;91CB69;
+    STA.W VRAMRead.control,X                                             ;91CB69;
     LDA.W #$0039                                                         ;91CB6C;
-    STA.W $0343,X                                                        ;91CB6F;
-    LDA.W #$6000                                                         ;91CB72;
-    STA.W $0344,X                                                        ;91CB75;
-    LDA.W #$007E                                                         ;91CB78;
-    STA.W $0346,X                                                        ;91CB7B;
+    STA.W VRAMRead.target,X                                              ;91CB6F;
+    LDA.W #XrayTilemaps_BackupBG1                                        ;91CB72;
+    STA.W VRAMRead.dest,X                                                ;91CB75;
+    LDA.W #XrayTilemaps_BackupBG1>>16                                    ;91CB78;
+    STA.W VRAMRead.dest+2,X                                              ;91CB7B;
     LDA.W #$0800                                                         ;91CB7E;
-    STA.W $0347,X                                                        ;91CB81;
+    STA.W VRAMRead.size,X                                                ;91CB81;
     TXA                                                                  ;91CB84;
     CLC                                                                  ;91CB85;
     ADC.W #$0009                                                         ;91CB86;
-    STA.W $0360                                                          ;91CB89;
+    STA.W VRAMReadStack                                                  ;91CB89;
     PLP                                                                  ;91CB8C;
     RTL                                                                  ;91CB8D;
 
@@ -8789,178 +8789,178 @@ XraySetup_4_BuildBG2Tilemap_ReadBG2Tilemap_1stScreen:
 ; Calls the $84 X-ray block graphics lookup
     PHP                                                                  ;91CB8E;
     REP #$30                                                             ;91CB8F;
-    LDA.W $091F                                                          ;91CB91;
+    LDA.W BG1YOffset                                                     ;91CB91;
     CLC                                                                  ;91CB94;
-    ADC.W $0915                                                          ;91CB95;
+    ADC.W Layer1YPosition                                                ;91CB95;
     AND.W #$00F0                                                         ;91CB98;
     ASL                                                                  ;91CB9B;
     ASL                                                                  ;91CB9C;
-    STA.B $18                                                            ;91CB9D;
-    LDA.W $091D                                                          ;91CB9F;
+    STA.B DP_Temp18                                                      ;91CB9D;
+    LDA.W BG1XOffset                                                     ;91CB9F;
     CLC                                                                  ;91CBA2;
-    ADC.W $0911                                                          ;91CBA3;
+    ADC.W Layer1XPosition                                                ;91CBA3;
     AND.W #$00F0                                                         ;91CBA6;
     LSR                                                                  ;91CBA9;
     LSR                                                                  ;91CBAA;
     LSR                                                                  ;91CBAB;
     CLC                                                                  ;91CBAC;
-    ADC.B $18                                                            ;91CBAD;
-    STA.B $18                                                            ;91CBAF;
-    LDA.W $091D                                                          ;91CBB1;
+    ADC.B DP_Temp18                                                      ;91CBAD;
+    STA.B DP_Temp18                                                      ;91CBAF;
+    LDA.W BG1XOffset                                                     ;91CBB1;
     CLC                                                                  ;91CBB4;
-    ADC.W $0911                                                          ;91CBB5;
+    ADC.W Layer1XPosition                                                ;91CBB5;
     AND.W #$0100                                                         ;91CBB8;
     ASL                                                                  ;91CBBB;
     ASL                                                                  ;91CBBC;
     CLC                                                                  ;91CBBD;
-    ADC.B $18                                                            ;91CBBE;
-    STA.B $18                                                            ;91CBC0;
-    STZ.B $16                                                            ;91CBC2;
+    ADC.B DP_Temp18                                                      ;91CBBE;
+    STA.B DP_Temp18                                                      ;91CBC0;
+    STZ.B DP_Temp16                                                      ;91CBC2;
     LDA.W #$0010                                                         ;91CBC4;
-    STA.B $14                                                            ;91CBC7;
+    STA.B DP_Temp14                                                      ;91CBC7;
 
   .loopCopyBG1Row:
     LDA.W #$0010                                                         ;91CBC9;
-    STA.B $12                                                            ;91CBCC;
-    LDA.B $18                                                            ;91CBCE;
+    STA.B DP_Temp12                                                      ;91CBCC;
+    LDA.B DP_Temp18                                                      ;91CBCE;
     AND.W #$07E0                                                         ;91CBD0;
-    STA.B $1A                                                            ;91CBD3;
-    LDA.B $18                                                            ;91CBD5;
+    STA.B DP_Temp1A                                                      ;91CBD3;
+    LDA.B DP_Temp18                                                      ;91CBD5;
     AND.W #$001F                                                         ;91CBD7;
-    STA.B $1C                                                            ;91CBDA;
-    STZ.B $1E                                                            ;91CBDC;
+    STA.B DP_Temp1C                                                      ;91CBDA;
+    STZ.B DP_Temp1E                                                      ;91CBDC;
 
   .loopCopyBG1Column:
-    LDA.B $1C                                                            ;91CBDE;
+    LDA.B DP_Temp1C                                                      ;91CBDE;
     CLC                                                                  ;91CBE0;
-    ADC.B $1E                                                            ;91CBE1;
+    ADC.B DP_Temp1E                                                      ;91CBE1;
     CMP.W #$0020                                                         ;91CBE3;
     BMI +                                                                ;91CBE6;
-    LDA.B $1A                                                            ;91CBE8;
+    LDA.B DP_Temp1A                                                      ;91CBE8;
     CLC                                                                  ;91CBEA;
     ADC.W #$0400                                                         ;91CBEB;
     AND.W #$07E0                                                         ;91CBEE;
-    STA.B $1A                                                            ;91CBF1;
+    STA.B DP_Temp1A                                                      ;91CBF1;
     LDA.W #$0000                                                         ;91CBF3;
-    STA.B $1C                                                            ;91CBF6;
-    STA.B $1E                                                            ;91CBF8;
+    STA.B DP_Temp1C                                                      ;91CBF6;
+    STA.B DP_Temp1E                                                      ;91CBF8;
 
-+   LDA.B $1A                                                            ;91CBFA;
++   LDA.B DP_Temp1A                                                      ;91CBFA;
     CLC                                                                  ;91CBFC;
-    ADC.B $1C                                                            ;91CBFD;
-    ADC.B $1E                                                            ;91CBFF;
+    ADC.B DP_Temp1C                                                      ;91CBFD;
+    ADC.B DP_Temp1E                                                      ;91CBFF;
     ASL                                                                  ;91CC01;
     TAX                                                                  ;91CC02;
-    LDA.L $7E6000,X                                                      ;91CC03;
+    LDA.L XrayTilemaps_BackupBG1,X                                       ;91CC03;
     PHA                                                                  ;91CC07;
-    LDA.L $7E6002,X                                                      ;91CC08;
+    LDA.L XrayTilemaps_BackupBG1+2,X                                     ;91CC08;
     PHA                                                                  ;91CC0C;
-    LDA.L $7E6040,X                                                      ;91CC0D;
+    LDA.L XrayTilemaps_BackupBG1+$40,X                                   ;91CC0D;
     PHA                                                                  ;91CC11;
-    LDA.L $7E6042,X                                                      ;91CC12;
-    LDX.B $16                                                            ;91CC16;
-    STA.L $7E4042,X                                                      ;91CC18;
+    LDA.L XrayTilemaps_BackupBG1+$42,X                                   ;91CC12;
+    LDX.B DP_Temp16                                                      ;91CC16;
+    STA.L XrayTilemaps_BG2+$42,X                                         ;91CC18;
     PLA                                                                  ;91CC1C;
-    STA.L $7E4040,X                                                      ;91CC1D;
+    STA.L XrayTilemaps_BG2+$40,X                                         ;91CC1D;
     PLA                                                                  ;91CC21;
-    STA.L $7E4002,X                                                      ;91CC22;
+    STA.L XrayTilemaps_BG2+2,X                                           ;91CC22;
     PLA                                                                  ;91CC26;
-    STA.L $7E4000,X                                                      ;91CC27;
-    LDA.B $16                                                            ;91CC2B;
+    STA.L XrayTilemaps_BG2,X                                             ;91CC27;
+    LDA.B DP_Temp16                                                      ;91CC2B;
     CLC                                                                  ;91CC2D;
     ADC.W #$0004                                                         ;91CC2E;
-    STA.B $16                                                            ;91CC31;
-    LDA.B $1E                                                            ;91CC33;
+    STA.B DP_Temp16                                                      ;91CC31;
+    LDA.B DP_Temp1E                                                      ;91CC33;
     ADC.W #$0002                                                         ;91CC35;
-    STA.B $1E                                                            ;91CC38;
-    DEC.B $12                                                            ;91CC3A;
+    STA.B DP_Temp1E                                                      ;91CC38;
+    DEC.B DP_Temp12                                                      ;91CC3A;
     BNE .loopCopyBG1Column                                               ;91CC3C;
     JSR.W CopyLastBG1BlockOfRowToXrayBG2Tilemap                          ;91CC3E;
-    LDA.B $18                                                            ;91CC41;
+    LDA.B DP_Temp18                                                      ;91CC41;
     AND.W #$0400                                                         ;91CC43;
-    STA.B $20                                                            ;91CC46;
-    LDA.B $18                                                            ;91CC48;
+    STA.B DP_Temp20                                                      ;91CC46;
+    LDA.B DP_Temp18                                                      ;91CC48;
     CLC                                                                  ;91CC4A;
     ADC.W #$0040                                                         ;91CC4B;
     AND.W #$03FF                                                         ;91CC4E;
     CLC                                                                  ;91CC51;
-    ADC.B $20                                                            ;91CC52;
-    STA.B $18                                                            ;91CC54;
-    LDA.B $16                                                            ;91CC56;
+    ADC.B DP_Temp20                                                      ;91CC52;
+    STA.B DP_Temp18                                                      ;91CC54;
+    LDA.B DP_Temp16                                                      ;91CC56;
     CLC                                                                  ;91CC58;
     ADC.W #$0040                                                         ;91CC59;
-    STA.B $16                                                            ;91CC5C;
-    DEC.B $14                                                            ;91CC5E;
+    STA.B DP_Temp16                                                      ;91CC5C;
+    DEC.B DP_Temp14                                                      ;91CC5E;
     BEQ +                                                                ;91CC60;
     JMP.W .loopCopyBG1Row                                                ;91CC62;
 
-+   LDA.W $0915                                                          ;91CC65;
++   LDA.W Layer1YPosition                                                ;91CC65;
     LSR                                                                  ;91CC68;
     LSR                                                                  ;91CC69;
     LSR                                                                  ;91CC6A;
     LSR                                                                  ;91CC6B;
     XBA                                                                  ;91CC6C;
-    ORA.W $07A5                                                          ;91CC6D;
+    ORA.W RoomWidthBlocks                                                ;91CC6D;
     STA.W $4202                                                          ;91CC70;
-    LDA.W $0911                                                          ;91CC73;
+    LDA.W Layer1XPosition                                                ;91CC73;
     LSR                                                                  ;91CC76;
     LSR                                                                  ;91CC77;
     LSR                                                                  ;91CC78;
     LSR                                                                  ;91CC79;
     CLC                                                                  ;91CC7A;
     ADC.W $4216                                                          ;91CC7B;
-    STA.B $22                                                            ;91CC7E;
-    STZ.B $16                                                            ;91CC80;
+    STA.B DP_Temp22                                                      ;91CC7E;
+    STZ.B DP_Temp16                                                      ;91CC80;
     LDA.W #$0010                                                         ;91CC82;
-    STA.B $14                                                            ;91CC85;
+    STA.B DP_Temp14                                                      ;91CC85;
 
   .loopRevealedRow:
     JSR.W LoadRightHalfOfRevealed2xNBlock                                ;91CC87;
     LDA.W #$0010                                                         ;91CC8A;
-    STA.B $12                                                            ;91CC8D;
-    LDA.B $22                                                            ;91CC8F;
-    STA.B $24                                                            ;91CC91;
+    STA.B DP_Temp12                                                      ;91CC8D;
+    LDA.B DP_Temp22                                                      ;91CC8F;
+    STA.B DP_Temp24                                                      ;91CC91;
 
   .loopRevealedColumn:
     JSR.W LoadRevealedBlock                                              ;91CC93;
-    DEC.B $12                                                            ;91CC96;
+    DEC.B DP_Temp12                                                      ;91CC96;
     BNE .loopRevealedColumn                                              ;91CC98;
-    LDA.B $16                                                            ;91CC9A;
+    LDA.B DP_Temp16                                                      ;91CC9A;
     PHA                                                                  ;91CC9C;
     CLC                                                                  ;91CC9D;
     ADC.W #$07C0                                                         ;91CC9E;
-    STA.B $16                                                            ;91CCA1;
+    STA.B DP_Temp16                                                      ;91CCA1;
     JSR.W LoadRevealedBlock                                              ;91CCA3;
     PLA                                                                  ;91CCA6;
     CLC                                                                  ;91CCA7;
     ADC.W #$0040                                                         ;91CCA8;
-    STA.B $16                                                            ;91CCAB;
-    LDA.B $22                                                            ;91CCAD;
+    STA.B DP_Temp16                                                      ;91CCAB;
+    LDA.B DP_Temp22                                                      ;91CCAD;
     CLC                                                                  ;91CCAF;
-    ADC.W $07A5                                                          ;91CCB0;
-    STA.B $22                                                            ;91CCB3;
-    DEC.B $14                                                            ;91CCB5;
+    ADC.W RoomWidthBlocks                                                ;91CCB0;
+    STA.B DP_Temp22                                                      ;91CCB3;
+    DEC.B DP_Temp14                                                      ;91CCB5;
     BNE .loopRevealedRow                                                 ;91CCB7;
     JSL.L Load_Item_and_Room_Special_Xray_Blocks                         ;91CCB9;
-    LDX.W $0360                                                          ;91CCBD;
-    LDA.B $59                                                            ;91CCC0;
+    LDX.W VRAMReadStack                                                  ;91CCBD;
+    LDA.B DP_BG2TilemapAddrSize                                          ;91CCC0;
     AND.W #$00FC                                                         ;91CCC2;
     XBA                                                                  ;91CCC5;
-    STA.W $0340,X                                                        ;91CCC6;
+    STA.W VRAMRead.src,X                                                 ;91CCC6;
     LDA.W #$0081                                                         ;91CCC9;
-    STA.W $0342,X                                                        ;91CCCC;
+    STA.W VRAMRead.control,X                                             ;91CCCC;
     LDA.W #$0039                                                         ;91CCCF;
-    STA.W $0343,X                                                        ;91CCD2;
-    LDA.W #$5000                                                         ;91CCD5;
-    STA.W $0344,X                                                        ;91CCD8;
-    LDA.W #$007E                                                         ;91CCDB;
-    STA.W $0346,X                                                        ;91CCDE;
+    STA.W VRAMRead.target,X                                              ;91CCD2;
+    LDA.W #XrayTilemaps_BackupBG2                                        ;91CCD5;
+    STA.W VRAMRead.dest,X                                                ;91CCD8;
+    LDA.W #XrayTilemaps_BackupBG2>>16                                    ;91CCDB;
+    STA.W VRAMRead.dest+2,X                                              ;91CCDE;
     LDA.W #$0800                                                         ;91CCE1;
-    STA.W $0347,X                                                        ;91CCE4;
+    STA.W VRAMRead.size,X                                                ;91CCE4;
     TXA                                                                  ;91CCE7;
     CLC                                                                  ;91CCE8;
     ADC.W #$0009                                                         ;91CCE9;
-    STA.W $0360                                                          ;91CCEC;
+    STA.W VRAMReadStack                                                  ;91CCEC;
     PLP                                                                  ;91CCEF;
     RTL                                                                  ;91CCF0;
 
@@ -8974,44 +8974,44 @@ CopyLastBG1BlockOfRowToXrayBG2Tilemap:
 ;;     $1E: BG1 block X offset
 
 ; The last BG1 column is written to the first column of the second screen of BG2
-    LDA.B $1A                                                            ;91CCF1;
-    STA.B $20                                                            ;91CCF3;
-    LDA.B $1C                                                            ;91CCF5;
+    LDA.B DP_Temp1A                                                      ;91CCF1;
+    STA.B DP_Temp20                                                      ;91CCF3;
+    LDA.B DP_Temp1C                                                      ;91CCF5;
     CLC                                                                  ;91CCF7;
-    ADC.B $1E                                                            ;91CCF8;
+    ADC.B DP_Temp1E                                                      ;91CCF8;
     CMP.W #$0020                                                         ;91CCFA;
     BMI +                                                                ;91CCFD;
-    LDA.B $20                                                            ;91CCFF;
+    LDA.B DP_Temp20                                                      ;91CCFF;
     CLC                                                                  ;91CD01;
     ADC.W #$0400                                                         ;91CD02;
     AND.W #$07E0                                                         ;91CD05;
-    STA.B $20                                                            ;91CD08;
+    STA.B DP_Temp20                                                      ;91CD08;
     LDA.W #$0000                                                         ;91CD0A;
 
 +   CLC                                                                  ;91CD0D;
-    ADC.B $20                                                            ;91CD0E;
+    ADC.B DP_Temp20                                                      ;91CD0E;
     ASL                                                                  ;91CD10;
     TAX                                                                  ;91CD11;
-    LDA.L $7E6000,X                                                      ;91CD12;
+    LDA.L XrayTilemaps_BackupBG1,X                                       ;91CD12;
     PHA                                                                  ;91CD16;
-    LDA.L $7E6002,X                                                      ;91CD17;
+    LDA.L XrayTilemaps_BackupBG1+2,X                                     ;91CD17;
     PHA                                                                  ;91CD1B;
-    LDA.L $7E6040,X                                                      ;91CD1C;
+    LDA.L XrayTilemaps_BackupBG1+$40,X                                   ;91CD1C;
     PHA                                                                  ;91CD20;
-    LDA.L $7E6042,X                                                      ;91CD21;
+    LDA.L XrayTilemaps_BackupBG1+$42,X                                   ;91CD21;
     PHA                                                                  ;91CD25;
-    LDA.B $16                                                            ;91CD26;
+    LDA.B DP_Temp16                                                      ;91CD26;
     CLC                                                                  ;91CD28;
     ADC.W #$07C0                                                         ;91CD29;
     TAX                                                                  ;91CD2C;
     PLA                                                                  ;91CD2D;
-    STA.L $7E4042,X                                                      ;91CD2E;
+    STA.L XrayTilemaps_BG2+$42,X                                         ;91CD2E;
     PLA                                                                  ;91CD32;
-    STA.L $7E4040,X                                                      ;91CD33;
+    STA.L XrayTilemaps_BG2+$40,X                                         ;91CD33;
     PLA                                                                  ;91CD37;
-    STA.L $7E4002,X                                                      ;91CD38;
+    STA.L XrayTilemaps_BG2+2,X                                           ;91CD38;
     PLA                                                                  ;91CD3C;
-    STA.L $7E4000,X                                                      ;91CD3D;
+    STA.L XrayTilemaps_BG2,X                                             ;91CD3D;
     RTS                                                                  ;91CD41;
 
 
@@ -9020,7 +9020,7 @@ LoadRightHalfOfRevealed2xNBlock:
 ;; Parameters:
 ;;     $16: X-ray BG2 tilemap index
 ;;     $22: Block index
-    LDX.B $22                                                            ;91CD42;
+    LDX.B DP_Temp22                                                      ;91CD42;
     DEX                                                                  ;91CD44;
     JSR.W LoadRevealedBlockCommand                                       ;91CD45;
     CMP.W #RevealedBlockCommand_Copy2x1BlockToXrayBG2Tilemap             ;91CD48;
@@ -9035,7 +9035,7 @@ LoadRightHalfOfRevealed2xNBlock:
     CLC                                                                  ;91CD55;
     ADC.W #$0008                                                         ;91CD56;
     TAY                                                                  ;91CD59;
-    LDA.B ($03),Y                                                        ;91CD5A;
+    LDA.B (DP_Temp03),Y                                                  ;91CD5A;
     ASL                                                                  ;91CD5C;
     ASL                                                                  ;91CD5D;
     ASL                                                                  ;91CD5E;
@@ -9047,14 +9047,14 @@ LoadRightHalfOfRevealed2xNBlock:
     LDA.L $7EA004,X                                                      ;91CD6A;
     PHA                                                                  ;91CD6E;
     LDA.L $7EA006,X                                                      ;91CD6F;
-    LDX.B $16                                                            ;91CD73;
-    STA.L $7E40C2,X                                                      ;91CD75;
+    LDX.B DP_Temp16                                                      ;91CD73;
+    STA.L XrayTilemaps_BG2+$C2,X                                         ;91CD75;
     PLA                                                                  ;91CD79;
-    STA.L $7E40C0,X                                                      ;91CD7A;
+    STA.L XrayTilemaps_BG2+$C0,X                                         ;91CD7A;
     PLA                                                                  ;91CD7E;
-    STA.L $7E4082,X                                                      ;91CD7F;
+    STA.L XrayTilemaps_BG2+$82,X                                         ;91CD7F;
     PLA                                                                  ;91CD83;
-    STA.L $7E4080,X                                                      ;91CD84;
+    STA.L XrayTilemaps_BG2+$80,X                                         ;91CD84;
     PLY                                                                  ;91CD88;
 
   .2x1:
@@ -9062,7 +9062,7 @@ LoadRightHalfOfRevealed2xNBlock:
     CLC                                                                  ;91CD8A;
     ADC.W #$0004                                                         ;91CD8B;
     TAY                                                                  ;91CD8E;
-    LDA.B ($03),Y                                                        ;91CD8F;
+    LDA.B (DP_Temp03),Y                                                  ;91CD8F;
     ASL                                                                  ;91CD91;
     ASL                                                                  ;91CD92;
     ASL                                                                  ;91CD93;
@@ -9074,14 +9074,14 @@ LoadRightHalfOfRevealed2xNBlock:
     LDA.L $7EA004,X                                                      ;91CD9F;
     PHA                                                                  ;91CDA3;
     LDA.L $7EA006,X                                                      ;91CDA4;
-    LDX.B $16                                                            ;91CDA8;
-    STA.L $7E4042,X                                                      ;91CDAA;
+    LDX.B DP_Temp16                                                      ;91CDA8;
+    STA.L XrayTilemaps_BG2+$42,X                                         ;91CDAA;
     PLA                                                                  ;91CDAE;
-    STA.L $7E4040,X                                                      ;91CDAF;
+    STA.L XrayTilemaps_BG2+$40,X                                         ;91CDAF;
     PLA                                                                  ;91CDB3;
-    STA.L $7E4002,X                                                      ;91CDB4;
+    STA.L XrayTilemaps_BG2+2,X                                           ;91CDB4;
     PLA                                                                  ;91CDB8;
-    STA.L $7E4000,X                                                      ;91CDB9;
+    STA.L XrayTilemaps_BG2,X                                             ;91CDB9;
     RTS                                                                  ;91CDBD;
 
 
@@ -9091,7 +9091,7 @@ LoadRevealedBlock:
 ;;     $12: Tilemap column loop counter
 ;;     $16: X-ray BG2 tilemap index
 ;;     $24: Block index
-    LDX.B $24                                                            ;91CDBE;
+    LDX.B DP_Temp24                                                      ;91CDBE;
     JSR.W LoadRevealedBlockCommand                                       ;91CDC0;
     CMP.W #$FFFF                                                         ;91CDC3;
     BEQ LoadRevealedBlock_Done                                           ;91CDC6;
@@ -9103,11 +9103,11 @@ LoadRevealedBlock_Done:
 ;; Parameters:
 ;;     $16: X-ray BG2 tilemap index
 ;;     $24: Block index
-    LDA.B $16                                                            ;91CDCB;
+    LDA.B DP_Temp16                                                      ;91CDCB;
     CLC                                                                  ;91CDCD;
     ADC.W #$0004                                                         ;91CDCE;
-    STA.B $16                                                            ;91CDD1;
-    INC.B $24                                                            ;91CDD3;
+    STA.B DP_Temp16                                                      ;91CDD1;
+    INC.B DP_Temp24                                                      ;91CDD3;
     RTS                                                                  ;91CDD5;
 
 
@@ -9121,22 +9121,22 @@ LoadRevealedBlockCommand:
 ;;     $03: Revealed block command pointer if [A] != FFFFh
 ;;     $26: Block BTS
 ;;     $28: Block type
-    LDA.L $7F6402,X                                                      ;91CDD6;
+    LDA.L BTS,X                                                          ;91CDD6;
     AND.W #$00FF                                                         ;91CDDA;
-    STA.B $26                                                            ;91CDDD;
+    STA.B DP_Temp26                                                      ;91CDDD;
     TXA                                                                  ;91CDDF;
     ASL                                                                  ;91CDE0;
     TAX                                                                  ;91CDE1;
-    LDA.L $7F0002,X                                                      ;91CDE2;
+    LDA.L LevelData,X                                                    ;91CDE2;
     AND.W #$F000                                                         ;91CDE6;
-    STA.B $28                                                            ;91CDE9;
+    STA.B DP_Temp28                                                      ;91CDE9;
     LDX.W #$0000                                                         ;91CDEB;
 
   .loopBlockType:
     LDA.W RevealedBlockTable_0_blockType,X                               ;91CDEE;
     CMP.W #$FFFF                                                         ;91CDF1;
     BEQ .return                                                          ;91CDF4;
-    CMP.B $28                                                            ;91CDF6;
+    CMP.B DP_Temp28                                                      ;91CDF6;
     BEQ +                                                                ;91CDF8;
     INX                                                                  ;91CDFA;
     INX                                                                  ;91CDFB;
@@ -9145,16 +9145,16 @@ LoadRevealedBlockCommand:
     BRA .loopBlockType                                                   ;91CDFE;
 
 +   LDA.W RevealedBlockTable_0_pointers,X                                ;91CE00;
-    STA.B $00                                                            ;91CE03;
+    STA.B DP_Temp00                                                      ;91CE03;
     LDY.W #$0000                                                         ;91CE05;
 
   .loopBTS:
-    LDA.B ($00),Y                                                        ;91CE08;
+    LDA.B (DP_Temp00),Y                                                  ;91CE08;
     CMP.W #$FFFF                                                         ;91CE0A;
     BEQ .return                                                          ;91CE0D;
     CMP.W #$FF00                                                         ;91CE0F;
     BEQ +                                                                ;91CE12;
-    CMP.B $26                                                            ;91CE14;
+    CMP.B DP_Temp26                                                      ;91CE14;
     BEQ +                                                                ;91CE16;
     INY                                                                  ;91CE18;
     INY                                                                  ;91CE19;
@@ -9164,11 +9164,11 @@ LoadRevealedBlockCommand:
 
 +   INY                                                                  ;91CE1E;
     INY                                                                  ;91CE1F;
-    LDA.B ($00),Y                                                        ;91CE20;
-    STA.B $03                                                            ;91CE22;
+    LDA.B (DP_Temp00),Y                                                  ;91CE20;
+    STA.B DP_Temp03                                                      ;91CE22;
     LDY.W #$0000                                                         ;91CE24;
-    LDA.B ($03),Y                                                        ;91CE27;
-    STA.B $00                                                            ;91CE29;
+    LDA.B (DP_Temp03),Y                                                  ;91CE27;
+    STA.B DP_Temp00                                                      ;91CE29;
 
   .return:
     RTS                                                                  ;91CE2B;
@@ -9185,11 +9185,11 @@ CalculateBlockCoordinates:
 ; $2C = [$24] / [room width in blocks]
 ; $2A = [$24] % [room width in blocks]
     SEP #$20                                                             ;91CE2C;
-    LDA.B $24                                                            ;91CE2E;
+    LDA.B DP_Temp24                                                      ;91CE2E;
     STA.W $4204                                                          ;91CE30;
-    LDA.B $25                                                            ;91CE33;
+    LDA.B DP_Temp25                                                      ;91CE33;
     STA.W $4205                                                          ;91CE35;
-    LDA.W $07A5                                                          ;91CE38;
+    LDA.W RoomWidthBlocks                                                ;91CE38;
     STA.W $4206                                                          ;91CE3B;
     REP #$20                                                             ;91CE3E;
     NOP                                                                  ;91CE40;
@@ -9199,9 +9199,9 @@ CalculateBlockCoordinates:
     NOP                                                                  ;91CE44;
     NOP                                                                  ;91CE45;
     LDA.W $4214                                                          ;91CE46;
-    STA.B $2C                                                            ;91CE49;
+    STA.B DP_Temp2C                                                      ;91CE49;
     LDA.W $4216                                                          ;91CE4B;
-    STA.B $2A                                                            ;91CE4E;
+    STA.B DP_Temp2A                                                      ;91CE4E;
     RTS                                                                  ;91CE50;
 
 
@@ -9213,25 +9213,25 @@ GetBlockTypeAndBTS:
 ;; Returns:
 ;;     A/$30: Block type
 ;;     $2E: Block BTS
-    LDA.B $2C                                                            ;91CE51;
+    LDA.B DP_Temp2C                                                      ;91CE51;
     XBA                                                                  ;91CE53;
-    ORA.W $07A5                                                          ;91CE54;
+    ORA.W RoomWidthBlocks                                                ;91CE54;
     STA.W $4202                                                          ;91CE57;
     NOP                                                                  ;91CE5A;
     NOP                                                                  ;91CE5B;
-    LDA.B $2A                                                            ;91CE5C;
+    LDA.B DP_Temp2A                                                      ;91CE5C;
     CLC                                                                  ;91CE5E;
     ADC.W $4216                                                          ;91CE5F;
     TAX                                                                  ;91CE62;
-    LDA.L $7F6402,X                                                      ;91CE63;
+    LDA.L BTS,X                                                          ;91CE63;
     AND.W #$00FF                                                         ;91CE67;
-    STA.B $2E                                                            ;91CE6A;
+    STA.B DP_Temp2E                                                      ;91CE6A;
     TXA                                                                  ;91CE6C;
     ASL                                                                  ;91CE6D;
     TAX                                                                  ;91CE6E;
-    LDA.L $7F0002,X                                                      ;91CE6F;
+    LDA.L LevelData,X                                                    ;91CE6F;
     AND.W #$F000                                                         ;91CE73;
-    STA.B $30                                                            ;91CE76;
+    STA.B DP_Temp30                                                      ;91CE76;
     RTS                                                                  ;91CE78;
 
 
@@ -9244,15 +9244,15 @@ RevealedBlockCommand_VerticalExtension:
 ;;     $26: Block BTS
 ;;     $28: Block type
     JSR.W CalculateBlockCoordinates                                      ;91CE79;
-    LDA.B $28                                                            ;91CE7C;
-    STA.B $30                                                            ;91CE7E;
-    LDA.B $26                                                            ;91CE80;
+    LDA.B DP_Temp28                                                      ;91CE7C;
+    STA.B DP_Temp30                                                      ;91CE7E;
+    LDA.B DP_Temp26                                                      ;91CE80;
     BEQ Copy1x1BlockToXrayBG2TilemapIfScrollPLMTrigger                   ;91CE82;
     BIT.W #$0080                                                         ;91CE84;
     BEQ +                                                                ;91CE87;
     ORA.W #$FF00                                                         ;91CE89;
 
-+   STA.B $2E                                                            ;91CE8C; fallthrough to RevealedBlockExtensionLoop_Vertical
++   STA.B DP_Temp2E                                                      ;91CE8C; fallthrough to RevealedBlockExtensionLoop_Vertical
 
 
 ;;; $CE8E: Revealed block extension loop - vertical ;;;
@@ -9263,25 +9263,25 @@ RevealedBlockExtensionLoop_Vertical:
 ;;     $2A: X block co-ordinate
 ;;     $2C: Y block co-ordinate
 ;;     $2E: Block BTS (sign extended)
-    LDA.B $2C                                                            ;91CE8E;
+    LDA.B DP_Temp2C                                                      ;91CE8E;
     CLC                                                                  ;91CE90;
-    ADC.B $2E                                                            ;91CE91;
+    ADC.B DP_Temp2E                                                      ;91CE91;
     BPL +                                                                ;91CE93;
     LDA.W #$00FF                                                         ;91CE95;
     JSR.W CopyBlockToXrayBG2Tilemap                                      ;91CE98;
     JMP.W LoadRevealedBlock_Done                                         ;91CE9B;
 
-+   STA.B $2C                                                            ;91CE9E;
++   STA.B DP_Temp2C                                                      ;91CE9E;
     JSR.W GetBlockTypeAndBTS                                             ;91CEA0;
     CMP.W #$D000                                                         ;91CEA3;
     BEQ RevealedBlockExtensionLoop_Vertical                              ;91CEA6;
     CMP.W #$5000                                                         ;91CEA8;
     BNE Copy1x1BlockToXrayBG2TilemapIfScrollPLMTrigger                   ;91CEAB;
-    LDA.B $2E                                                            ;91CEAD;
+    LDA.B DP_Temp2E                                                      ;91CEAD;
     BIT.W #$0080                                                         ;91CEAF;
     BEQ RevealedBlockExtensionLoop_Vertical                              ;91CEB2;
     EOR.W #$FF00                                                         ;91CEB4;
-    STA.B $2E                                                            ;91CEB7;
+    STA.B DP_Temp2E                                                      ;91CEB7;
     BRA RevealedBlockExtensionLoop_Horizontal                            ;91CEB9;
 
 
@@ -9294,15 +9294,15 @@ RevealedBlockCommand_HorizontalExtension:
 ;;     $26: Block BTS
 ;;     $28: Block type
     JSR.W CalculateBlockCoordinates                                      ;91CEBB;
-    LDA.B $28                                                            ;91CEBE;
-    STA.B $30                                                            ;91CEC0;
-    LDA.B $26                                                            ;91CEC2;
+    LDA.B DP_Temp28                                                      ;91CEBE;
+    STA.B DP_Temp30                                                      ;91CEC0;
+    LDA.B DP_Temp26                                                      ;91CEC2;
     BEQ Copy1x1BlockToXrayBG2TilemapIfScrollPLMTrigger                   ;91CEC4;
     BIT.W #$0080                                                         ;91CEC6;
     BEQ +                                                                ;91CEC9;
     ORA.W #$FF00                                                         ;91CECB;
 
-+   STA.B $2E                                                            ;91CECE; fallthrough to RevealedBlockExtensionLoop_Horizontal
++   STA.B DP_Temp2E                                                      ;91CECE; fallthrough to RevealedBlockExtensionLoop_Horizontal
 
 
 ;;; $CED0: Revealed block extension loop - horizontal ;;;
@@ -9315,25 +9315,25 @@ RevealedBlockExtensionLoop_Horizontal:
 ;;     $2A: X block co-ordinate
 ;;     $2C: Y block co-ordinate
 ;;     $2E: Block BTS (sign extended)
-    LDA.B $2A                                                            ;91CED0;
+    LDA.B DP_Temp2A                                                      ;91CED0;
     CLC                                                                  ;91CED2;
-    ADC.B $2E                                                            ;91CED3;
+    ADC.B DP_Temp2E                                                      ;91CED3;
     BPL +                                                                ;91CED5;
     LDA.W #$00FF                                                         ;91CED7;
     JSR.W CopyBlockToXrayBG2Tilemap                                      ;91CEDA;
     JMP.W LoadRevealedBlock_Done                                         ;91CEDD;
 
-+   STA.B $2A                                                            ;91CEE0;
++   STA.B DP_Temp2A                                                      ;91CEE0;
     JSR.W GetBlockTypeAndBTS                                             ;91CEE2;
     CMP.W #$D000                                                         ;91CEE5;
     BEQ RevealedBlockExtensionLoop_Vertical                              ;91CEE8;
     CMP.W #$5000                                                         ;91CEEA;
     BNE Copy1x1BlockToXrayBG2TilemapIfScrollPLMTrigger                   ;91CEED;
-    LDA.B $2E                                                            ;91CEEF;
+    LDA.B DP_Temp2E                                                      ;91CEEF;
     BIT.W #$0080                                                         ;91CEF1;
     BEQ RevealedBlockExtensionLoop_Horizontal                            ;91CEF4;
     EOR.W #$FF00                                                         ;91CEF6;
-    STA.B $2E                                                            ;91CEF9;
+    STA.B DP_Temp2E                                                      ;91CEF9;
     BRA RevealedBlockExtensionLoop_Horizontal                            ;91CEFB;
 
 
@@ -9345,19 +9345,19 @@ Copy1x1BlockToXrayBG2TilemapIfScrollPLMTrigger:
 ;;     $2E: Block BTS
 ;;     $30: Block type
     LDA.W RevealedBlockTable_1_blockType                                 ;91CEFD;
-    CMP.B $30                                                            ;91CF00;
+    CMP.B DP_Temp30                                                      ;91CF00;
     BNE .gotoDone                                                        ;91CF02;
     LDA.W RevealedBlockTable_1_pointers                                  ;91CF04;
-    STA.B $00                                                            ;91CF07;
+    STA.B DP_Temp00                                                      ;91CF07;
     LDY.W #$0000                                                         ;91CF09;
 
   .loop:
-    LDA.B ($00),Y                                                        ;91CF0C;
+    LDA.B (DP_Temp00),Y                                                  ;91CF0C;
     CMP.W #$FFFF                                                         ;91CF0E;
     BEQ .gotoDone                                                        ;91CF11;
     CMP.W #$FF00                                                         ;91CF13;
     BEQ +                                                                ;91CF16;
-    CMP.B $2E                                                            ;91CF18;
+    CMP.B DP_Temp2E                                                      ;91CF18;
     BEQ +                                                                ;91CF1A;
     INY                                                                  ;91CF1C;
     INY                                                                  ;91CF1D;
@@ -9367,10 +9367,10 @@ Copy1x1BlockToXrayBG2TilemapIfScrollPLMTrigger:
 
 +   INY                                                                  ;91CF22;
     INY                                                                  ;91CF23;
-    LDA.B ($00),Y                                                        ;91CF24;
+    LDA.B (DP_Temp00),Y                                                  ;91CF24;
     INC                                                                  ;91CF26;
     INC                                                                  ;91CF27;
-    STA.B $03                                                            ;91CF28;
+    STA.B DP_Temp03                                                      ;91CF28;
     LDY.W #$0000                                                         ;91CF2A;
     JSR.W CopyRevealedBlockCommandArgumentToXrayBG2Tilemap               ;91CF2D;
     JMP.W LoadRevealedBlock_Done                                         ;91CF30;
@@ -9401,7 +9401,7 @@ RevealedBlockCommand_Copy1x1BlockToXrayBG2TilemapIfBrinstar:
 ;;     $24: Block index
     INY                                                                  ;91CF3E;
     INY                                                                  ;91CF3F;
-    LDA.W $079F                                                          ;91CF40;
+    LDA.W AreaIndex                                                      ;91CF40;
     CMP.W #$0001                                                         ;91CF43;
     BNE .gotoDone                                                        ;91CF46;
     JSR.W CopyRevealedBlockCommandArgumentToXrayBG2Tilemap               ;91CF48;
@@ -9421,7 +9421,7 @@ RevealedBlockCommand_Copy2x1BlockToXrayBG2Tilemap:
     INY                                                                  ;91CF4E;
     INY                                                                  ;91CF4F;
     JSR.W CopyRevealedBlockCommandArgumentToXrayBG2Tilemap               ;91CF50;
-    LDA.B $12                                                            ;91CF53;
+    LDA.B DP_Temp12                                                      ;91CF53;
     CMP.W #$0001                                                         ;91CF55;
     BEQ .gotoDone                                                        ;91CF58;
     INY                                                                  ;91CF5A;
@@ -9461,7 +9461,7 @@ RevealedBlockCommand_Copy2x2BlockToXrayBG2Tilemap:
     JSR.W CopyRevealedBlockCommandArgumentToXrayBG2Tilemap               ;91CF71;
     INY                                                                  ;91CF74;
     INY                                                                  ;91CF75;
-    LDA.B $12                                                            ;91CF76;
+    LDA.B DP_Temp12                                                      ;91CF76;
     CMP.W #$0001                                                         ;91CF78;
     BEQ +                                                                ;91CF7B;
     JSR.W CopyRevealedBlockCommandArgumentToXrayBG2Tilemap_1BlockRight   ;91CF7D;
@@ -9471,10 +9471,10 @@ RevealedBlockCommand_Copy2x2BlockToXrayBG2Tilemap:
     JSR.W CopyRevealedBlockCommandArgumentToXrayBG2Tilemap_1BlockDown    ;91CF82;
     INY                                                                  ;91CF85;
     INY                                                                  ;91CF86;
-    LDA.B $12                                                            ;91CF87;
+    LDA.B DP_Temp12                                                      ;91CF87;
     CMP.W #$0001                                                         ;91CF89;
     BEQ .gotoDone                                                        ;91CF8C;
-    LDA.B ($03),Y                                                        ;91CF8E;
+    LDA.B (DP_Temp03),Y                                                  ;91CF8E;
     ASL                                                                  ;91CF90;
     ASL                                                                  ;91CF91;
     ASL                                                                  ;91CF92;
@@ -9486,14 +9486,14 @@ RevealedBlockCommand_Copy2x2BlockToXrayBG2Tilemap:
     LDA.L $7EA004,X                                                      ;91CF9E;
     PHA                                                                  ;91CFA2;
     LDA.L $7EA006,X                                                      ;91CFA3;
-    LDX.B $16                                                            ;91CFA7;
-    STA.L $7E40C6,X                                                      ;91CFA9;
+    LDX.B DP_Temp16                                                      ;91CFA7;
+    STA.L XrayTilemaps_BG2+$C6,X                                         ;91CFA9;
     PLA                                                                  ;91CFAD;
-    STA.L $7E40C4,X                                                      ;91CFAE;
+    STA.L XrayTilemaps_BG2+$C4,X                                         ;91CFAE;
     PLA                                                                  ;91CFB2;
-    STA.L $7E4086,X                                                      ;91CFB3;
+    STA.L XrayTilemaps_BG2+$86,X                                         ;91CFB3;
     PLA                                                                  ;91CFB7;
-    STA.L $7E4084,X                                                      ;91CFB8;
+    STA.L XrayTilemaps_BG2+$84,X                                         ;91CFB8;
 
   .gotoDone:
     JMP.W LoadRevealedBlock_Done                                         ;91CFBC;
@@ -9505,7 +9505,7 @@ CopyRevealedBlockCommandArgumentToXrayBG2Tilemap:
 ;;     Y: Revealed block command argument offset
 ;;     $03: Revealed block command pointer
 ;;     $16: X-ray BG2 tilemap index
-    LDA.B ($03),Y                                                        ;91CFBF; fallthrough to CopyBlockToXrayBG2Tilemap
+    LDA.B (DP_Temp03),Y                                                  ;91CFBF; fallthrough to CopyBlockToXrayBG2Tilemap
 
 
 ;;; $CFC1: Copy block to x-ray BG2 tilemap ;;;
@@ -9525,13 +9525,13 @@ CopyBlockToXrayBG2Tilemap:
     PHA                                                                  ;91CFD3;
     LDA.L $7EA006,X                                                      ;91CFD4;
     LDX.B $16                                                            ;91CFD8;
-    STA.L $7E4042,X                                                      ;91CFDA;
+    STA.L XrayTilemaps_BG2+$42,X                                         ;91CFDA;
     PLA                                                                  ;91CFDE;
-    STA.L $7E4040,X                                                      ;91CFDF;
+    STA.L XrayTilemaps_BG2+$40,X                                         ;91CFDF;
     PLA                                                                  ;91CFE3;
-    STA.L $7E4002,X                                                      ;91CFE4;
+    STA.L XrayTilemaps_BG2+2,X                                           ;91CFE4;
     PLA                                                                  ;91CFE8;
-    STA.L $7E4000,X                                                      ;91CFE9;
+    STA.L XrayTilemaps_BG2,X                                             ;91CFE9;
     RTS                                                                  ;91CFED;
 
 
@@ -9541,7 +9541,7 @@ CopyRevealedBlockCommandArgumentToXrayBG2Tilemap_1BlockRight:
 ;;     Y: Revealed block command argument offset
 ;;     $03: Revealed block command pointer
 ;;     $16: X-ray BG2 tilemap index
-    LDA.B ($03),Y                                                        ;91CFEE;
+    LDA.B (DP_Temp03),Y                                                  ;91CFEE;
     ASL                                                                  ;91CFF0;
     ASL                                                                  ;91CFF1;
     ASL                                                                  ;91CFF2;
@@ -9553,14 +9553,14 @@ CopyRevealedBlockCommandArgumentToXrayBG2Tilemap_1BlockRight:
     LDA.L $7EA004,X                                                      ;91CFFE;
     PHA                                                                  ;91D002;
     LDA.L $7EA006,X                                                      ;91D003;
-    LDX.B $16                                                            ;91D007;
-    STA.L $7E4046,X                                                      ;91D009;
+    LDX.B DP_Temp16                                                      ;91D007;
+    STA.L XrayTilemaps_BG2+$46,X                                         ;91D009;
     PLA                                                                  ;91D00D;
-    STA.L $7E4044,X                                                      ;91D00E;
+    STA.L XrayTilemaps_BG2+$44,X                                         ;91D00E;
     PLA                                                                  ;91D012;
-    STA.L $7E4006,X                                                      ;91D013;
+    STA.L XrayTilemaps_BG2+6,X                                           ;91D013;
     PLA                                                                  ;91D017;
-    STA.L $7E4004,X                                                      ;91D018;
+    STA.L XrayTilemaps_BG2+4,X                                           ;91D018;
     RTS                                                                  ;91D01C;
 
 
@@ -9570,7 +9570,7 @@ CopyRevealedBlockCommandArgumentToXrayBG2Tilemap_1BlockDown:
 ;;     Y: Revealed block command argument offset
 ;;     $03: Revealed block command pointer
 ;;     $16: X-ray BG2 tilemap index
-    LDA.B ($03),Y                                                        ;91D01D;
+    LDA.B (DP_Temp03),Y                                                  ;91D01D;
     ASL                                                                  ;91D01F;
     ASL                                                                  ;91D020;
     ASL                                                                  ;91D021;
@@ -9582,14 +9582,14 @@ CopyRevealedBlockCommandArgumentToXrayBG2Tilemap_1BlockDown:
     LDA.L $7EA004,X                                                      ;91D02D;
     PHA                                                                  ;91D031;
     LDA.L $7EA006,X                                                      ;91D032;
-    LDX.B $16                                                            ;91D036;
-    STA.L $7E40C2,X                                                      ;91D038;
+    LDX.B DP_Temp16                                                      ;91D036;
+    STA.L XrayTilemaps_BG2+$C2,X                                         ;91D038;
     PLA                                                                  ;91D03C;
-    STA.L $7E40C0,X                                                      ;91D03D;
+    STA.L XrayTilemaps_BG2+$C0,X                                         ;91D03D;
     PLA                                                                  ;91D041;
-    STA.L $7E4082,X                                                      ;91D042;
+    STA.L XrayTilemaps_BG2+$82,X                                         ;91D042;
     PLA                                                                  ;91D046;
-    STA.L $7E4080,X                                                      ;91D047;
+    STA.L XrayTilemaps_BG2+$80,X                                         ;91D047;
     RTS                                                                  ;91D04B;
 
 
@@ -9606,45 +9606,45 @@ LoadBlockToXrayBG2Tilemap:
     PHX                                                                  ;91D04D;
     PHY                                                                  ;91D04E;
     REP #$30                                                             ;91D04F;
-    STA.B $28                                                            ;91D051;
-    LDA.W $0911                                                          ;91D053;
+    STA.B DP_Temp28                                                      ;91D051;
+    LDA.W Layer1XPosition                                                ;91D053;
     LSR                                                                  ;91D056;
     LSR                                                                  ;91D057;
     LSR                                                                  ;91D058;
     LSR                                                                  ;91D059;
-    STA.B $18                                                            ;91D05A;
+    STA.B DP_Temp18                                                      ;91D05A;
     TXA                                                                  ;91D05C;
     SEC                                                                  ;91D05D;
-    SBC.B $18                                                            ;91D05E;
+    SBC.B DP_Temp18                                                      ;91D05E;
     BMI .return                                                          ;91D060;
-    STA.B $18                                                            ;91D062;
+    STA.B DP_Temp18                                                      ;91D062;
     SBC.W #$0010                                                         ;91D064;
     BPL .return                                                          ;91D067;
-    LDA.W $0915                                                          ;91D069;
+    LDA.W Layer1YPosition                                                ;91D069;
     LSR                                                                  ;91D06C;
     LSR                                                                  ;91D06D;
     LSR                                                                  ;91D06E;
     LSR                                                                  ;91D06F;
-    STA.B $1A                                                            ;91D070;
+    STA.B DP_Temp1A                                                      ;91D070;
     TYA                                                                  ;91D072;
     SEC                                                                  ;91D073;
-    SBC.B $1A                                                            ;91D074;
+    SBC.B DP_Temp1A                                                      ;91D074;
     BMI .return                                                          ;91D076;
-    STA.B $1A                                                            ;91D078;
+    STA.B DP_Temp1A                                                      ;91D078;
     SBC.W #$0010                                                         ;91D07A;
     BPL .return                                                          ;91D07D;
-    LDA.B $1A                                                            ;91D07F;
+    LDA.B DP_Temp1A                                                      ;91D07F;
     ASL                                                                  ;91D081;
     ASL                                                                  ;91D082;
     ASL                                                                  ;91D083;
     ASL                                                                  ;91D084;
     ASL                                                                  ;91D085;
     CLC                                                                  ;91D086;
-    ADC.B $18                                                            ;91D087;
+    ADC.B DP_Temp18                                                      ;91D087;
     ASL                                                                  ;91D089;
     ASL                                                                  ;91D08A;
-    STA.B $16                                                            ;91D08B;
-    LDA.B $28                                                            ;91D08D;
+    STA.B DP_Temp16                                                      ;91D08B;
+    LDA.B DP_Temp28                                                      ;91D08D;
     BIT.W #$0800                                                         ;91D08F;
     BNE .YFlipped                                                        ;91D092;
     AND.W #$03FF                                                         ;91D094;
@@ -9678,14 +9678,14 @@ CopyYFlippedBlockToXrayBG2Tilemap:
     LDA.L $7EA004,X                                                      ;91D0B4;
     PHA                                                                  ;91D0B8;
     LDA.L $7EA006,X                                                      ;91D0B9;
-    LDX.B $16                                                            ;91D0BD;
-    STA.L $7E4002,X                                                      ;91D0BF;
+    LDX.B DP_Temp16                                                      ;91D0BD;
+    STA.L XrayTilemaps_BG2+2,X                                           ;91D0BF;
     PLA                                                                  ;91D0C3;
-    STA.L $7E4000,X                                                      ;91D0C4;
+    STA.L XrayTilemaps_BG2,X                                             ;91D0C4;
     PLA                                                                  ;91D0C8;
-    STA.L $7E4042,X                                                      ;91D0C9;
+    STA.L XrayTilemaps_BG2+$42,X                                         ;91D0C9;
     PLA                                                                  ;91D0CD;
-    STA.L $7E4040,X                                                      ;91D0CE;
+    STA.L XrayTilemaps_BG2+$40,X                                         ;91D0CE;
     RTS                                                                  ;91D0D2;
 
 
@@ -9695,50 +9695,50 @@ XraySetup_5_ReadBG2Tilemap_2ndScreen:
     REP #$30                                                             ;91D0D4;
     JSL.L CheckIfXrayShouldShowAnyBlocks                                 ;91D0D6;
     BEQ .noReveal                                                        ;91D0DA;
-    LDA.W $1840                                                          ;91D0DC;
+    LDA.W EarthquakeTimer                                                ;91D0DC;
     BEQ +                                                                ;91D0DF;
-    LDA.W $091D                                                          ;91D0E1;
+    LDA.W BG1XOffset                                                     ;91D0E1;
     CLC                                                                  ;91D0E4;
-    ADC.W $0911                                                          ;91D0E5;
-    STA.B $B1                                                            ;91D0E8;
-    LDA.W $091F                                                          ;91D0EA;
+    ADC.W Layer1XPosition                                                ;91D0E5;
+    STA.B DP_BG1XScroll                                                  ;91D0E8;
+    LDA.W BG1YOffset                                                     ;91D0EA;
     CLC                                                                  ;91D0ED;
-    ADC.W $0915                                                          ;91D0EE;
-    STA.B $B3                                                            ;91D0F1;
+    ADC.W Layer1YPosition                                                ;91D0EE;
+    STA.B DP_BG1YScroll                                                  ;91D0F1;
 
-+   LDA.B $B1                                                            ;91D0F3;
++   LDA.B DP_BG1XScroll                                                  ;91D0F3;
     AND.W #$000F                                                         ;91D0F5;
-    STA.B $B5                                                            ;91D0F8;
-    LDA.B $B3                                                            ;91D0FA;
+    STA.B DP_BG2XScroll                                                  ;91D0F8;
+    LDA.B DP_BG1YScroll                                                  ;91D0FA;
     AND.W #$000F                                                         ;91D0FC;
-    STA.B $B7                                                            ;91D0FF;
+    STA.B DP_BG2YScroll                                                  ;91D0FF;
     SEP #$20                                                             ;91D101;
     LDA.B #$49                                                           ;91D103;
-    STA.B $59                                                            ;91D105;
+    STA.B DP_BG2TilemapAddrSize                                          ;91D105;
     REP #$20                                                             ;91D107;
 
   .noReveal:
-    LDX.W $0360                                                          ;91D109;
-    LDA.B $59                                                            ;91D10C;
+    LDX.W VRAMReadStack                                                  ;91D109;
+    LDA.B DP_BG2TilemapAddrSize                                          ;91D10C;
     AND.W #$00FC                                                         ;91D10E;
     XBA                                                                  ;91D111;
     CLC                                                                  ;91D112;
     ADC.W #$0400                                                         ;91D113;
-    STA.W $0340,X                                                        ;91D116;
+    STA.W VRAMRead.src,X                                                 ;91D116;
     LDA.W #$0081                                                         ;91D119;
-    STA.W $0342,X                                                        ;91D11C;
+    STA.W VRAMRead.control,X                                             ;91D11C;
     LDA.W #$0039                                                         ;91D11F;
-    STA.W $0343,X                                                        ;91D122;
-    LDA.W #$5800                                                         ;91D125;
-    STA.W $0344,X                                                        ;91D128;
-    LDA.W #$007E                                                         ;91D12B;
-    STA.W $0346,X                                                        ;91D12E;
+    STA.W VRAMRead.target,X                                              ;91D122;
+    LDA.W #XrayTilemaps_BackupBG2+$800                                   ;91D125;
+    STA.W VRAMRead.dest,X                                                ;91D128;
+    LDA.W #XrayTilemaps_BackupBG2>>16                                    ;91D12B;
+    STA.W VRAMRead.dest+2,X                                              ;91D12E;
     LDA.W #$0800                                                         ;91D131;
-    STA.W $0347,X                                                        ;91D134;
+    STA.W VRAMRead.size,X                                                ;91D134;
     TXA                                                                  ;91D137;
     CLC                                                                  ;91D138;
     ADC.W #$0009                                                         ;91D139;
-    STA.W $0360                                                          ;91D13C;
+    STA.W VRAMReadStack                                                  ;91D13C;
     PLP                                                                  ;91D13F;
     RTL                                                                  ;91D140;
 
@@ -9751,15 +9751,15 @@ REP30_91D141:
 
 ;;; $D143: Check if x-ray should show any blocks ;;;
 CheckIfXrayShouldShowAnyBlocks:
-    LDA.W $079B                                                          ;91D143;
+    LDA.W RoomPointer                                                    ;91D143;
     CMP.W #RoomHeader_Statues                                            ;91D146;
     BEQ .return                                                          ;91D149;
     CMP.W #RoomHeader_GlassTunnel                                        ;91D14B;
     BEQ .return                                                          ;91D14E;
-    LDA.W $196E                                                          ;91D150;
+    LDA.W FX_Type                                                        ;91D150;
     CMP.W #$0024                                                         ;91D153;
     BEQ .return                                                          ;91D156;
-    LDA.W $179C                                                          ;91D158;
+    LDA.W BossID                                                         ;91D158;
     CMP.W #$0003                                                         ;91D15B;
     BEQ .return                                                          ;91D15E;
     CMP.W #$0006                                                         ;91D160;
@@ -9780,21 +9780,21 @@ XraySetup_6_TransferXrayTilemap_1stScreen:
     REP #$30                                                             ;91D174;
     JSL.L CheckIfXrayShouldShowAnyBlocks                                 ;91D176;
     BEQ .return                                                          ;91D17A;
-    LDX.W $0330                                                          ;91D17C;
+    LDX.W VRAMWriteStack                                                 ;91D17C;
     LDA.W #$0800                                                         ;91D17F;
-    STA.B $D0,X                                                          ;91D182;
-    LDA.W #$4000                                                         ;91D184;
-    STA.B $D2,X                                                          ;91D187;
-    LDA.W #$007E                                                         ;91D189;
-    STA.B $D4,X                                                          ;91D18C;
-    LDA.B $59                                                            ;91D18E;
+    STA.B VRAMWrite.size,X                                               ;91D182;
+    LDA.W #XrayTilemaps_BG2                                              ;91D184;
+    STA.B VRAMWrite.src,X                                                ;91D187;
+    LDA.W #XrayTilemaps_BG2>>16                                          ;91D189;
+    STA.B VRAMWrite.src+2,X                                              ;91D18C;
+    LDA.B DP_BG2TilemapAddrSize                                          ;91D18E;
     AND.W #$00FC                                                         ;91D190;
     XBA                                                                  ;91D193;
-    STA.B $D5,X                                                          ;91D194;
+    STA.B VRAMWrite.dest,X                                               ;91D194;
     TXA                                                                  ;91D196;
     CLC                                                                  ;91D197;
     ADC.W #$0007                                                         ;91D198;
-    STA.W $0330                                                          ;91D19B;
+    STA.W VRAMWriteStack                                                 ;91D19B;
 
   .return:
     PLP                                                                  ;91D19E;
@@ -9807,55 +9807,55 @@ XraySetup_7_InitializeXray_TransferXrayTilemap_2ndScreen:
     REP #$30                                                             ;91D1A1;
     JSL.L CheckIfXrayShouldShowAnyBlocks                                 ;91D1A3;
     BEQ .dontShowBlocks                                                  ;91D1A7;
-    LDX.W $0330                                                          ;91D1A9;
+    LDX.W VRAMWriteStack                                                 ;91D1A9;
     LDA.W #$0800                                                         ;91D1AC;
-    STA.B $D0,X                                                          ;91D1AF;
-    LDA.W #$4800                                                         ;91D1B1;
-    STA.B $D2,X                                                          ;91D1B4;
-    LDA.W #$007E                                                         ;91D1B6;
-    STA.B $D4,X                                                          ;91D1B9;
-    LDA.B $59                                                            ;91D1BB;
+    STA.B VRAMWrite.size,X                                               ;91D1AF;
+    LDA.W #XrayTilemaps_BG2+$800                                         ;91D1B1;
+    STA.B VRAMWrite.src,X                                                ;91D1B4;
+    LDA.W #XrayTilemaps_BG2>>16                                          ;91D1B6;
+    STA.B VRAMWrite.src+2,X                                              ;91D1B9;
+    LDA.B DP_BG2TilemapAddrSize                                          ;91D1BB;
     AND.W #$00FC                                                         ;91D1BD;
     XBA                                                                  ;91D1C0;
     CLC                                                                  ;91D1C1;
     ADC.W #$0400                                                         ;91D1C2;
-    STA.B $D5,X                                                          ;91D1C5;
+    STA.B VRAMWrite.dest,X                                               ;91D1C5;
     TXA                                                                  ;91D1C7;
     CLC                                                                  ;91D1C8;
     ADC.W #$0007                                                         ;91D1C9;
-    STA.W $0330                                                          ;91D1CC;
+    STA.W VRAMWriteStack                                                 ;91D1CC;
 
   .dontShowBlocks:
     LDA.W #$00E4                                                         ;91D1CF;
-    STA.W $0A88                                                          ;91D1D2;
-    LDA.W #$9800                                                         ;91D1D5; $7E
-    STA.W $0A89                                                          ;91D1D8;
+    STA.W Xray_IndirectHDMATable                                         ;91D1D2;
+    LDA.W #XrayWindow2HDMADataTable                                      ;91D1D5;
+    STA.W Xray_IndirectHDMATable+1                                       ;91D1D8;
     LDA.W #$00E4                                                         ;91D1DB;
-    STA.W $0A8B                                                          ;91D1DE;
-    LDA.W #$98C8                                                         ;91D1E1; $7E
-    STA.W $0A8C                                                          ;91D1E4;
+    STA.W Xray_IndirectHDMATable+3                                       ;91D1DE;
+    LDA.W #XrayWindow2HDMADataTable+$C8                                  ;91D1E1;
+    STA.W Xray_IndirectHDMATable+4                                       ;91D1E4;
     LDA.W #$0098                                                         ;91D1E7;
-    STA.W $0A8E                                                          ;91D1EA;
-    LDA.W #$9990                                                         ;91D1ED; $7E
-    STA.W $0A8F                                                          ;91D1F0;
-    STZ.W $0A91                                                          ;91D1F3;
-    STZ.W $0A7A                                                          ;91D1F6;
-    STZ.W $0A7C                                                          ;91D1F9;
-    STZ.W $0A7E                                                          ;91D1FC;
+    STA.W Xray_IndirectHDMATable+6                                       ;91D1EA;
+    LDA.W #XrayWindow2HDMADataTable+$190                                 ;91D1ED;
+    STA.W Xray_IndirectHDMATable+7                                       ;91D1F0;
+    STZ.W Xray_IndirectHDMATable+9                                       ;91D1F3;
+    STZ.W Xray_State                                                     ;91D1F6;
+    STZ.W Xray_AngularWidthDelta                                         ;91D1F9;
+    STZ.W Xray_AngularSubWidthDelta                                      ;91D1FC;
     LDA.W #$0000                                                         ;91D1FF;
-    STA.W $0A84                                                          ;91D202;
-    STZ.W $0A86                                                          ;91D205;
-    LDA.W $0A1E                                                          ;91D208;
+    STA.W Xray_AngularWidth                                              ;91D202;
+    STZ.W Xray_AngularSubWidth                                           ;91D205;
+    LDA.W PoseXDirection                                                 ;91D208;
     AND.W #$00FF                                                         ;91D20B;
     CMP.W #$0004                                                         ;91D20E;
     BEQ .facingLeft                                                      ;91D211;
     LDA.W #$0040                                                         ;91D213;
-    STA.W $0A82                                                          ;91D216;
+    STA.W Xray_Angle                                                     ;91D216;
     BRA .return                                                          ;91D219;
 
   .facingLeft:
     LDA.W #$00C0                                                         ;91D21B;
-    STA.W $0A82                                                          ;91D21E;
+    STA.W Xray_Angle                                                     ;91D21E;
 
   .return:
     PLP                                                                  ;91D221;
@@ -9870,32 +9870,32 @@ InstList_HDMAObject_Xray_0:
     dl PreInstruction_HDMAObject_XraySetup                               ;91D22B;
     dw Instruction_HDMAObject_CallExternalFunctionInY                    ;91D22E;
     dl XraySetup_1_FreezeTime_BackupBG2Registers                         ;91D230;
-    dw $0001,$0A88                                                       ;91D233;
+    dw $0001,Xray_IndirectHDMATable                                      ;91D233;
     dw Instruction_HDMAObject_CallExternalFunctionInY                    ;91D237;
     dl XraySetup_2_ReadBG1Tilemap_2ndScreen                              ;91D239;
-    dw $0001,$0A88                                                       ;91D23C;
+    dw $0001,Xray_IndirectHDMATable                                      ;91D23C;
     dw Instruction_HDMAObject_CallExternalFunctionInY                    ;91D240;
     dl XraySetup_3_ReadBG1Tilemap_1stScreen                              ;91D242;
-    dw $0001,$0A88                                                       ;91D245;
+    dw $0001,Xray_IndirectHDMATable                                      ;91D245;
     dw Instruction_HDMAObject_CallExternalFunctionInY                    ;91D249;
     dl XraySetup_4_BuildBG2Tilemap_ReadBG2Tilemap_1stScreen              ;91D24B;
-    dw $0001,$0A88                                                       ;91D24E;
+    dw $0001,Xray_IndirectHDMATable                                      ;91D24E;
     dw Instruction_HDMAObject_CallExternalFunctionInY                    ;91D252;
     dl XraySetup_5_ReadBG2Tilemap_2ndScreen                              ;91D254;
-    dw $0001,$0A88                                                       ;91D257;
+    dw $0001,Xray_IndirectHDMATable                                      ;91D257;
     dw Instruction_HDMAObject_CallExternalFunctionInY                    ;91D25B;
     dl XraySetup_6_TransferXrayTilemap_1stScreen                         ;91D25D;
-    dw $0001,$0A88                                                       ;91D260;
+    dw $0001,Xray_IndirectHDMATable                                      ;91D260;
     dw Instruction_HDMAObject_CallExternalFunctionInY                    ;91D264;
     dl XraySetup_7_InitializeXray_TransferXrayTilemap_2ndScreen          ;91D266;
-    dw $0001,$0A88                                                       ;91D269;
+    dw $0001,Xray_IndirectHDMATable                                      ;91D269;
     dw Instruction_HDMAObject_CallExternalFunctionInY                    ;91D26D;
     dl XraySetup_8_BackdropColor                                         ;91D26F;
     dw Instruction_HDMAObject_PreInstructionInY                          ;91D272;
     dl PreInstruction_Xray_Main                                          ;91D274;
 
 InstList_HDMAObject_Xray_1:
-    dw $0001,$0A88                                                       ;91D277;
+    dw $0001,Xray_IndirectHDMATable                                      ;91D277;
     dw Instruction_HDMAObject_GotoY                                      ;91D27B;
     dw InstList_HDMAObject_Xray_1                                        ;91D27D;
 
@@ -9906,7 +9906,7 @@ PreInstruction_HDMAObject_XraySetup:
     REP #$30                                                             ;91D280;
     PHX                                                                  ;91D282;
     LDX.W #$1000                                                         ;91D283;
-    LDA.W $196E                                                          ;91D286;
+    LDA.W FX_Type                                                        ;91D286;
     CMP.W #$0024                                                         ;91D289;
     BEQ .fireflea                                                        ;91D28C;
     LDX.W #$2000                                                         ;91D28E;
@@ -9916,21 +9916,21 @@ PreInstruction_HDMAObject_XraySetup:
 
   .setBackdropColor:
     LDA.W #$0027                                                         ;91D29A;
-    STA.B $74                                                            ;91D29D;
+    STA.B DP_ColorMathSubScreenBackdropColor0                            ;91D29D;
     LDA.W #$0047                                                         ;91D29F;
-    STA.B $75                                                            ;91D2A2;
+    STA.B DP_ColorMathSubScreenBackdropColor1                            ;91D2A2;
     LDA.W #$0087                                                         ;91D2A4;
-    STA.B $76                                                            ;91D2A7;
+    STA.B DP_ColorMathSubScreenBackdropColor2                            ;91D2A7;
 
   .setBackdropColorEnd:
     TXA                                                                  ;91D2A9;
-    TSB.W $1986                                                          ;91D2AA;
+    TSB.W LayerBlending_Config                                           ;91D2AA;
     PLX                                                                  ;91D2AD;
     PLP                                                                  ;91D2AE;
     RTL                                                                  ;91D2AF;
 
   .fireflea:
-    LDA.B $74                                                            ;91D2B0;
+    LDA.B DP_ColorMathSubScreenBackdropColor0                            ;91D2B0;
     AND.W #$001F                                                         ;91D2B2;
     CMP.W #$0007                                                         ;91D2B5;
     BPL .setBackdropColorEnd                                             ;91D2B8;
@@ -9944,9 +9944,9 @@ XraySetup_8_BackdropColor:
     PHY                                                                  ;91D2BE;
     SEP #$20                                                             ;91D2BF;
     LDA.B #$63                                                           ;91D2C1;
-    STA.L $7EC000                                                        ;91D2C3;
+    STA.L Palettes_MainBackdrop                                          ;91D2C3;
     LDA.B #$0C                                                           ;91D2C7;
-    STA.L $7EC001                                                        ;91D2C9;
+    STA.L Palettes_MainBackdrop+1                                        ;91D2C9;
     PLY                                                                  ;91D2CD;
     PLX                                                                  ;91D2CE;
     PLP                                                                  ;91D2CF;
@@ -10234,10 +10234,10 @@ RevealedBlockTable_BombableBlock_7:
 
 ;;; $D4DA: Game state 1Ch (unused) ;;;
 UNUSED_GameState1C_91D4DA:
-; $0DEA is never set to a pointer
+; CrystalFlashAmmoDecrementingIndex is never set to a pointer
     PHP                                                                  ;91D4DA;
     REP #$30                                                             ;91D4DB;
-    JMP.W ($0DEA)                                                        ;91D4DD;
+    JMP.W (CrystalFlashAmmoDecrementingIndex)                            ;91D4DD;
 
 
 ;;; $D4E0: Unused. PLP : RTL ;;;
@@ -10260,37 +10260,37 @@ VariaSuit_Pickup:
     PLB                                                                  ;91D4E7;
     SEP #$30                                                             ;91D4E8;
     LDA.B #$30                                                           ;91D4EA;
-    STA.W $0DF0                                                          ;91D4EC;
+    STA.W SuitPickup_ColorMathRed                                        ;91D4EC;
     LDA.B #$50                                                           ;91D4EF;
-    STA.W $0DF1                                                          ;91D4F1;
+    STA.W SuitPickup_ColorMathGreen                                      ;91D4F1;
     LDA.B #$80                                                           ;91D4F4;
-    STA.W $0DF2                                                          ;91D4F6;
-    STZ.W $0DF3                                                          ;91D4F9;
+    STA.W SuitPickup_ColorMathBlue                                       ;91D4F6;
+    STZ.W SuitPickup_PaletteTransitionColor                              ;91D4F9;
     REP #$30                                                             ;91D4FC;
     JSL.L Cancel_SpeedBoosting                                           ;91D4FE;
-    STZ.W $0B42                                                          ;91D502;
-    STZ.W $0B44                                                          ;91D505;
-    STZ.W $0B46                                                          ;91D508;
-    STZ.W $0B48                                                          ;91D50B;
-    STZ.W $0B2C                                                          ;91D50E;
-    STZ.W $0B2E                                                          ;91D511;
-    STZ.W $0B36                                                          ;91D514;
-    STZ.W $0B20                                                          ;91D517;
-    STZ.W $0B4A                                                          ;91D51A;
-    STZ.W $0E18                                                          ;91D51D;
-    STZ.W $0DEC                                                          ;91D520;
-    STZ.W $0DEE                                                          ;91D523;
+    STZ.W SamusXExtraRunSpeed                                            ;91D502;
+    STZ.W SamusXExtraRunSubSpeed                                         ;91D505;
+    STZ.W SamusXBaseSpeed                                                ;91D508;
+    STZ.W SamusXBaseSubSpeed                                             ;91D50B;
+    STZ.W SamusYSubSpeed                                                 ;91D50E;
+    STZ.W SamusYSpeed                                                    ;91D511;
+    STZ.W SamusYDirection                                                ;91D514;
+    STZ.W MorphBallBounceState                                           ;91D517;
+    STZ.W SamusXAccelerationMode                                         ;91D51A;
+    STZ.W ElevatorStatus                                                 ;91D51D;
+    STZ.W SuitPickup_Stage                                               ;91D520;
+    STZ.W SuitPickup_Var                                                 ;91D523;
     LDA.W #$0100                                                         ;91D526;
-    STA.W $0DDC                                                          ;91D529;
+    STA.W SuitPickupLightBeamWideningSpeed                               ;91D529;
     LDX.W #$01FE                                                         ;91D52C;
     LDA.W #$00FF                                                         ;91D52F;
 
   .loop:
-    STA.L $7E9800,X                                                      ;91D532;
+    STA.L SuitPickupWindow1HDMADataTable,X                               ;91D532;
     DEX                                                                  ;91D536;
     DEX                                                                  ;91D537;
     BPL .loop                                                            ;91D538;
-    LDA.W $0A1F                                                          ;91D53A;
+    LDA.W MovementType                                                   ;91D53A;
     AND.W #$00FF                                                         ;91D53D;
     CMP.W #$0003                                                         ;91D540;
     BEQ .playSFX                                                         ;91D543;
@@ -10302,32 +10302,32 @@ VariaSuit_Pickup:
     JSL.L QueueSound_Lib1_Max9                                           ;91D54D;
 
   .notSpinning:
-    LDA.W $09A2                                                          ;91D551;
+    LDA.W EquippedItems                                                  ;91D551;
     BIT.W #$0020                                                         ;91D554;
     BNE .gravitySuitEquipped                                             ;91D557;
     LDA.W #$0000                                                         ;91D559;
-    STA.W $0A1C                                                          ;91D55C;
+    STA.W Pose                                                           ;91D55C;
     BRA .initSamus                                                       ;91D55F;
 
   .gravitySuitEquipped:
     LDA.W #$009B                                                         ;91D561;
-    STA.W $0A1C                                                          ;91D564;
+    STA.W Pose                                                           ;91D564;
 
   .initSamus:
     JSL.L InitializeSamusPose_1                                          ;91D567;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91D56B;
     LDA.W #$0015                                                         ;91D56F;
     JSL.L Run_Samus_Command                                              ;91D572;
-    LDA.W $0911                                                          ;91D576;
+    LDA.W Layer1XPosition                                                ;91D576;
     CLC                                                                  ;91D579;
     ADC.W #$0078                                                         ;91D57A;
-    STA.W $0AF6                                                          ;91D57D;
-    STA.W $0B10                                                          ;91D580;
-    LDA.W $0915                                                          ;91D583;
+    STA.W SamusXPosition                                                 ;91D57D;
+    STA.W SamusPreviousXPosition                                         ;91D580;
+    LDA.W Layer1YPosition                                                ;91D583;
     CLC                                                                  ;91D586;
     ADC.W #$0088                                                         ;91D587;
-    STA.W $0AFA                                                          ;91D58A;
-    STA.W $0B14                                                          ;91D58D;
+    STA.W SamusYPosition                                                 ;91D58A;
+    STA.W SamusPreviousYPosition                                         ;91D58D;
     LDA.W #$0056                                                         ;91D590;
     JSL.L QueueSound_Lib2_Max6                                           ;91D593;
     JSL.L Spawn_HDMAObject                                               ;91D597;
@@ -10344,7 +10344,7 @@ InstList_HDMAObject_Window1Position_VariaSuitPickup:
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;91D5A5;
     dw Instruction_HDMAObject_CallExternalFunctionInY                    ;91D5A8;
     dl InitializeSuitPickupHDMA                                          ;91D5AA;
-    dw $0001,$0A88                                                       ;91D5AD;
+    dw $0001,SuitPickupIndirectHDMATable                                 ;91D5AD;
     dw Instruction_HDMAObject_PreInstructionInY                          ;91D5B1;
     dl PreInstruction_VariaSuitPickup                                    ;91D5B3;
     dw Instruction_HDMAObject_Sleep                                      ;91D5B6;
@@ -10359,38 +10359,38 @@ GravitySuit_Pickup:
     PLB                                                                  ;91D5BD;
     SEP #$30                                                             ;91D5BE;
     LDA.B #$30                                                           ;91D5C0;
-    STA.W $0DF0                                                          ;91D5C2;
+    STA.W SuitPickup_ColorMathRed                                        ;91D5C2;
     LDA.B #$49                                                           ;91D5C5;
-    STA.W $0DF1                                                          ;91D5C7;
+    STA.W SuitPickup_ColorMathGreen                                      ;91D5C7;
     LDA.B #$90                                                           ;91D5CA;
-    STA.W $0DF2                                                          ;91D5CC;
+    STA.W SuitPickup_ColorMathBlue                                       ;91D5CC;
     LDA.B #$01                                                           ;91D5CF;
-    STA.W $0DF3                                                          ;91D5D1;
+    STA.W SuitPickup_PaletteTransitionColor                              ;91D5D1;
     REP #$30                                                             ;91D5D4;
     JSL.L Cancel_SpeedBoosting                                           ;91D5D6;
-    STZ.W $0B42                                                          ;91D5DA;
-    STZ.W $0B44                                                          ;91D5DD;
-    STZ.W $0B46                                                          ;91D5E0;
-    STZ.W $0B48                                                          ;91D5E3;
-    STZ.W $0B2C                                                          ;91D5E6;
-    STZ.W $0B2E                                                          ;91D5E9;
-    STZ.W $0B36                                                          ;91D5EC;
-    STZ.W $0B20                                                          ;91D5EF;
-    STZ.W $0B4A                                                          ;91D5F2;
-    STZ.W $0E18                                                          ;91D5F5;
-    STZ.W $0DEC                                                          ;91D5F8;
-    STZ.W $0DEE                                                          ;91D5FB;
+    STZ.W SamusXExtraRunSpeed                                            ;91D5DA;
+    STZ.W SamusXExtraRunSubSpeed                                         ;91D5DD;
+    STZ.W SamusXBaseSpeed                                                ;91D5E0;
+    STZ.W SamusXBaseSubSpeed                                             ;91D5E3;
+    STZ.W SamusYSubSpeed                                                 ;91D5E6;
+    STZ.W SamusYSpeed                                                    ;91D5E9;
+    STZ.W SamusYDirection                                                ;91D5EC;
+    STZ.W MorphBallBounceState                                           ;91D5EF;
+    STZ.W SamusXAccelerationMode                                         ;91D5F2;
+    STZ.W ElevatorStatus                                                 ;91D5F5;
+    STZ.W SuitPickup_Stage                                               ;91D5F8;
+    STZ.W SuitPickup_Var                                                 ;91D5FB;
     LDA.W #$0100                                                         ;91D5FE;
-    STA.W $0DDC                                                          ;91D601;
+    STA.W SuitPickupLightBeamWideningSpeed                               ;91D601;
     LDX.W #$01FE                                                         ;91D604;
     LDA.W #$00FF                                                         ;91D607;
 
   .loop:
-    STA.L $7E9800,X                                                      ;91D60A;
+    STA.L SuitPickupWindow1HDMADataTable,X                               ;91D60A;
     DEX                                                                  ;91D60E;
     DEX                                                                  ;91D60F;
     BPL .loop                                                            ;91D610;
-    LDA.W $0A1F                                                          ;91D612;
+    LDA.W MovementType                                                   ;91D612;
     AND.W #$00FF                                                         ;91D615;
     CMP.W #$0003                                                         ;91D618;
     BEQ .playSFX                                                         ;91D61B;
@@ -10402,32 +10402,32 @@ GravitySuit_Pickup:
     JSL.L QueueSound_Lib1_Max9                                           ;91D625;
 
   .notSpinning:
-    LDA.W $09A2                                                          ;91D629;
+    LDA.W EquippedItems                                                  ;91D629;
     BIT.W #$0001                                                         ;91D62C;
     BNE .gravitySuitEquipped                                             ;91D62F;
     LDA.W #$0000                                                         ;91D631;
-    STA.W $0A1C                                                          ;91D634;
+    STA.W Pose                                                           ;91D634;
     BRA .initSamus                                                       ;91D637;
 
   .gravitySuitEquipped:
     LDA.W #$009B                                                         ;91D639;
-    STA.W $0A1C                                                          ;91D63C;
+    STA.W Pose                                                           ;91D63C;
 
   .initSamus:
     JSL.L InitializeSamusPose_1                                          ;91D63F;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91D643;
     LDA.W #$0015                                                         ;91D647;
     JSL.L Run_Samus_Command                                              ;91D64A;
-    LDA.W $0911                                                          ;91D64E;
+    LDA.W Layer1XPosition                                                ;91D64E;
     CLC                                                                  ;91D651;
     ADC.W #$0078                                                         ;91D652;
-    STA.W $0AF6                                                          ;91D655;
-    STA.W $0B10                                                          ;91D658;
-    LDA.W $0915                                                          ;91D65B;
+    STA.W SamusXPosition                                                 ;91D655;
+    STA.W SamusPreviousXPosition                                         ;91D658;
+    LDA.W Layer1YPosition                                                ;91D65B;
     CLC                                                                  ;91D65E;
     ADC.W #$0088                                                         ;91D65F;
-    STA.W $0AFA                                                          ;91D662;
-    STA.W $0B14                                                          ;91D665;
+    STA.W SamusYPosition                                                 ;91D662;
+    STA.W SamusPreviousYPosition                                         ;91D665;
     LDA.W #$0056                                                         ;91D668;
     JSL.L QueueSound_Lib2_Max6                                           ;91D66B;
     JSL.L Spawn_HDMAObject                                               ;91D66F;
@@ -10444,7 +10444,7 @@ InstList_HDMAObject_Window1Position_GravitySuitPickup:
     dw Instruction_HDMAObject_IndirectHDMATableBank : db $7E             ;91D67D;
     dw Instruction_HDMAObject_CallExternalFunctionInY                    ;91D680;
     dl InitializeSuitPickupHDMA                                          ;91D682;
-    dw $0001,$0A88                                                       ;91D685;
+    dw $0001,SuitPickupIndirectHDMATable                                 ;91D685;
     dw Instruction_HDMAObject_PreInstructionInY                          ;91D689;
     dl PreInstruction_GravitySuitPickup                                  ;91D68B;
     dw Instruction_HDMAObject_Sleep                                      ;91D68E;
@@ -10459,43 +10459,43 @@ InitializeSuitPickupHDMA:
     PLB                                                                  ;91D695;
     SEP #$30                                                             ;91D696;
     LDA.B #$13                                                           ;91D698;
-    STA.B $69                                                            ;91D69A;
+    STA.B DP_MainScreenLayers                                            ;91D69A;
     LDA.B #$13                                                           ;91D69C;
-    STA.B $6C                                                            ;91D69E;
+    STA.B DP_WindowAreaMainScreen                                        ;91D69E;
     LDA.B #$04                                                           ;91D6A0;
-    STA.B $6B                                                            ;91D6A2;
+    STA.B DP_SubScreenLayers                                             ;91D6A2;
     LDA.B #$04                                                           ;91D6A4;
-    STA.B $6D                                                            ;91D6A6;
+    STA.B DP_WindowAreaSubScreen                                         ;91D6A6;
     LDA.B #$10                                                           ;91D6A8;
-    STA.B $6E                                                            ;91D6AA;
+    STA.B DP_NextGameplayColorMathA                                      ;91D6AA;
     LDA.B #$00                                                           ;91D6AC;
-    STA.B $60                                                            ;91D6AE;
+    STA.B DP_WindowMaskBG12                                              ;91D6AE;
     LDA.B #$02                                                           ;91D6B0;
-    STA.B $61                                                            ;91D6B2;
+    STA.B DP_WindowMaskBG34                                              ;91D6B2;
     LDA.B #$20                                                           ;91D6B4;
-    STA.B $62                                                            ;91D6B6;
+    STA.B DP_WindowMaskSprite                                            ;91D6B6;
     LDA.B #$33                                                           ;91D6B8;
-    STA.B $71                                                            ;91D6BA;
-    LDA.W $0DF0                                                          ;91D6BC;
-    STA.B $74                                                            ;91D6BF;
-    LDA.W $0DF1                                                          ;91D6C1;
-    STA.B $75                                                            ;91D6C4;
-    LDA.W $0DF2                                                          ;91D6C6;
-    STA.B $76                                                            ;91D6C9;
+    STA.B DP_NextGameplayColorMathB                                      ;91D6BA;
+    LDA.W SuitPickup_ColorMathRed                                        ;91D6BC;
+    STA.B DP_ColorMathSubScreenBackdropColor0                            ;91D6BF;
+    LDA.W SuitPickup_ColorMathGreen                                      ;91D6C1;
+    STA.B DP_ColorMathSubScreenBackdropColor1                            ;91D6C4;
+    LDA.W SuitPickup_ColorMathBlue                                       ;91D6C6;
+    STA.B DP_ColorMathSubScreenBackdropColor2                            ;91D6C9;
     REP #$30                                                             ;91D6CB;
     LDA.W #$00E4                                                         ;91D6CD;
-    STA.W $0A88                                                          ;91D6D0;
-    LDA.W #$9800                                                         ;91D6D3; $7E
-    STA.W $0A89                                                          ;91D6D6;
+    STA.W SuitPickupIndirectHDMATable                                    ;91D6D0;
+    LDA.W #SuitPickupWindow1HDMADataTable                                ;91D6D3;
+    STA.W SuitPickupIndirectHDMATable+1                                  ;91D6D6;
     LDA.W #$00E4                                                         ;91D6D9;
-    STA.W $0A8B                                                          ;91D6DC;
-    LDA.W #$98C8                                                         ;91D6DF; $7E
-    STA.W $0A8C                                                          ;91D6E2;
+    STA.W SuitPickupIndirectHDMATable+3                                  ;91D6DC;
+    LDA.W #SuitPickupWindow1HDMADataTable+$C8                            ;91D6DF;
+    STA.W SuitPickupIndirectHDMATable+4                                  ;91D6E2;
     LDA.W #$0098                                                         ;91D6E5;
-    STA.W $0A8E                                                          ;91D6E8;
-    LDA.W #$9990                                                         ;91D6EB; $7E
-    STA.W $0A8F                                                          ;91D6EE;
-    STZ.W $0A91                                                          ;91D6F1;
+    STA.W SuitPickupIndirectHDMATable+6                                  ;91D6E8;
+    LDA.W #SuitPickupWindow1HDMADataTable+$190                           ;91D6EB;
+    STA.W SuitPickupIndirectHDMATable+7                                  ;91D6EE;
+    STZ.W SuitPickupIndirectHDMATable+9                                  ;91D6F1;
     PLB                                                                  ;91D6F4;
     PLP                                                                  ;91D6F5;
     RTL                                                                  ;91D6F6;
@@ -10509,7 +10509,7 @@ HandleSamusPalette:
     PHK                                                                  ;91D6F9;
     PLB                                                                  ;91D6FA;
     REP #$30                                                             ;91D6FB;
-    LDA.W $0A4A                                                          ;91D6FD;
+    LDA.W SuperSpecialPaletteFlags                                                          ;91D6FD;
     BPL .notHyper                                                        ;91D700;
     JSR.W HandleMiscSamusPalette                                         ;91D702;
     PLB                                                                  ;91D705;
@@ -10519,14 +10519,14 @@ HandleSamusPalette:
   .notHyper:
     JSR.W HandleBeamChargePalettes                                       ;91D708;
     BCS .glowEnded                                                       ;91D70B;
-    LDA.W $0ACC                                                          ;91D70D;
+    LDA.W SpecialSamusPaletteType                                                          ;91D70D;
     ASL                                                                  ;91D710;
     TAX                                                                  ;91D711;
     JSR.W (.special,X)                                                   ;91D712;
     BCS .return                                                          ;91D715;
 
   .glowEnded:
-    LDX.W $0A74                                                          ;91D717;
+    LDX.W SuitPaletteIndex                                                          ;91D717;
     LDA.W .suits,X                                                       ;91D71A;
     TAX                                                                  ;91D71D;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91D71E;
@@ -10563,36 +10563,36 @@ HandleBeamChargePalettes:
 ;;     Carry: Set if charged shot glow has ended, clear otherwise
 
 ; Including beam charging, charged shot / grapple glow, pseudo screw attack, also calls visor palette handler
-    LDA.W $0B18                                                          ;91D743;
+    LDA.W ChargedShotGlowTimer                                           ;91D743;
     BNE .chargedShotGlow                                                 ;91D746;
-    LDA.W $0D32                                                          ;91D748;
+    LDA.W GrappleBeam_Function                                           ;91D748;
     CMP.W #GrappleBeamFunction_Inactive                                  ;91D74B;
     BNE .noChargeGlow                                                    ;91D74E;
-    LDA.W $0CD0                                                          ;91D750;
+    LDA.W SamusProjectile_FlareCounter                                   ;91D750;
     BEQ .noChargeGlow                                                    ;91D753;
     CMP.W #$003C                                                         ;91D755;
     BMI .noChargeGlow                                                    ;91D758;
-    LDA.W $0A6E                                                          ;91D75A;
+    LDA.W ContactDamageIndex                                             ;91D75A;
     CMP.W #$0004                                                         ;91D75D;
     BNE .notPseudoScrew                                                  ;91D760;
-    LDX.W $0A74                                                          ;91D762;
+    LDX.W SuitPaletteIndex                                               ;91D762;
     LDA.W SamusPaletteTable_PseudoScrewAttack_pointers,X                 ;91D765;
-    STA.B $24                                                            ;91D768;
+    STA.B DP_Temp24                                                      ;91D768;
     BRA +                                                                ;91D76A;
 
   .notPseudoScrew:
-    LDX.W $0A74                                                          ;91D76C;
+    LDX.W SuitPaletteIndex                                               ;91D76C;
     LDA.W SamusPaletteTable_BeamCharge_pointers,X                        ;91D76F;
-    STA.B $24                                                            ;91D772;
+    STA.B DP_Temp24                                                      ;91D772;
 
-+   LDA.W $0B62                                                          ;91D774;
++   LDA.W SamusChargePaletteIndex                                        ;91D774;
     CLC                                                                  ;91D777;
-    ADC.B $24                                                            ;91D778;
+    ADC.B DP_Temp24                                                      ;91D778;
     TAX                                                                  ;91D77A;
     LDA.W $0000,X                                                        ;91D77B;
     TAX                                                                  ;91D77E;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91D77F;
-    LDA.W $0B62                                                          ;91D782;
+    LDA.W SamusChargePaletteIndex                                                          ;91D782;
     INC                                                                  ;91D785;
     INC                                                                  ;91D786;
     CMP.W #$000C                                                         ;91D787;
@@ -10600,20 +10600,20 @@ HandleBeamChargePalettes:
     LDA.W #$0000                                                         ;91D78C;
 
   .setPaletteIndex:
-    STA.W $0B62                                                          ;91D78F;
+    STA.W SamusChargePaletteIndex                                                          ;91D78F;
     CLC                                                                  ;91D792;
     RTS                                                                  ;91D793;
 
   .chargedShotGlow:
-    LDA.W $0A76                                                          ;91D794;
+    LDA.W HyperBeam                                                          ;91D794;
     BNE .hyperBeam                                                       ;91D797;
-    DEC.W $0B18                                                          ;91D799;
+    DEC.W ChargedShotGlowTimer                                                          ;91D799;
     BEQ .returnCarrySet                                                  ;91D79C;
     LDX.W #$001C                                                         ;91D79E;
     LDA.W #$03FF                                                         ;91D7A1;
 
   .loop:
-    STA.L $7EC182,X                                                      ;91D7A4;
+    STA.L Palettes_SpriteP4C1,X                                                      ;91D7A4;
     DEX                                                                  ;91D7A8;
     DEX                                                                  ;91D7A9;
     BPL .loop                                                            ;91D7AA;
@@ -10625,11 +10625,11 @@ HandleBeamChargePalettes:
     RTS                                                                  ;91D7AF;
 
   .noChargeGlow:
-    STZ.W $0B62                                                          ;91D7B0;
+    STZ.W SamusChargePaletteIndex                                                          ;91D7B0;
     JMP.W HandleVisorPalette                                             ;91D7B3;
 
   .hyperBeam:
-    LDA.W $0B18                                                          ;91D7B6;
+    LDA.W ChargedShotGlowTimer                                                          ;91D7B6;
     BIT.W #$0001                                                         ;91D7B9;
     BNE .decGlowTimer                                                    ;91D7BC;
     AND.W #$001E                                                         ;91D7BE;
@@ -10640,12 +10640,12 @@ HandleBeamChargePalettes:
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91D7C8;
 
   .decGlowTimer:
-    DEC.W $0B18                                                          ;91D7CB;
+    DEC.W ChargedShotGlowTimer                                                          ;91D7CB;
     CLC                                                                  ;91D7CE;
     RTS                                                                  ;91D7CF;
 
   .endGlow:
-    STZ.W $0B18                                                          ;91D7D0;
+    STZ.W ChargedShotGlowTimer                                                          ;91D7D0;
     SEC                                                                  ;91D7D3;
     RTS                                                                  ;91D7D4;
 
@@ -10731,7 +10731,7 @@ HandleVisorPalette:
 ;;     Carry: Clear
 
 ; For colour math backdrop rooms. Does not handle x-ray
-    LDA.W $0ACC                                                          ;91D83F;
+    LDA.W SpecialSamusPaletteType                                                          ;91D83F;
     CMP.W #$0008                                                         ;91D842;
     BNE +                                                                ;91D845;
 
@@ -10739,50 +10739,50 @@ HandleVisorPalette:
     CLC                                                                  ;91D847;
     RTS                                                                  ;91D848;
 
-+   LDA.W $1982                                                          ;91D849;
++   LDA.W LayerBlending_DefaultConfig                                                          ;91D849;
     CMP.W #$0028                                                         ;91D84C;
     BEQ +                                                                ;91D84F;
     CMP.W #$002A                                                         ;91D851;
     BNE .normal                                                          ;91D854;
 
-+   LDA.W $0A72                                                          ;91D856;
++   LDA.W VisorPaletteTimer                                                          ;91D856;
     DEC                                                                  ;91D859;
-    STA.W $0A72                                                          ;91D85A;
+    STA.W VisorPaletteTimer                                                          ;91D85A;
     BIT.W #$00FF                                                         ;91D85D;
     BEQ +                                                                ;91D860;
     BNE .return                                                          ;91D862;
 
 +   ORA.W #$0005                                                         ;91D864;
-    STA.W $0A72                                                          ;91D867;
+    STA.W VisorPaletteTimer                                                          ;91D867;
     XBA                                                                  ;91D86A;
     AND.W #$00FF                                                         ;91D86B;
     TAX                                                                  ;91D86E;
     LDA.L SamusPalettes_Visor,X                                          ;91D86F;
-    STA.L $7EC188                                                        ;91D873;
+    STA.L Palettes_SpriteP4C4                                                        ;91D873;
     TXA                                                                  ;91D877;
     INC                                                                  ;91D878;
     INC                                                                  ;91D879;
     CMP.W #$000C                                                         ;91D87A;
     BMI +                                                                ;91D87D;
-    LDA.W $0A72                                                          ;91D87F;
+    LDA.W VisorPaletteTimer                                                          ;91D87F;
     AND.W #$00FF                                                         ;91D882;
     ORA.W #$0600                                                         ;91D885;
-    STA.W $0A72                                                          ;91D888;
+    STA.W VisorPaletteTimer                                                          ;91D888;
     CLC                                                                  ;91D88B;
     RTS                                                                  ;91D88C;
 
 +   XBA                                                                  ;91D88D;
-    STA.B $12                                                            ;91D88E;
-    LDA.W $0A72                                                          ;91D890;
+    STA.B DP_Temp12                                                            ;91D88E;
+    LDA.W VisorPaletteTimer                                                          ;91D890;
     AND.W #$00FF                                                         ;91D893;
-    ORA.B $12                                                            ;91D896;
-    STA.W $0A72                                                          ;91D898;
+    ORA.B DP_Temp12                                                            ;91D896;
+    STA.W VisorPaletteTimer                                                          ;91D898;
     CLC                                                                  ;91D89B;
     RTS                                                                  ;91D89C;
 
   .normal:
     LDA.W #$0601                                                         ;91D89D;
-    STA.W $0A72                                                          ;91D8A0;
+    STA.W VisorPaletteTimer                                                          ;91D8A0;
     CLC                                                                  ;91D8A3;
     RTS                                                                  ;91D8A4;
 
@@ -10793,9 +10793,9 @@ HandleMiscSamusPalette:
 ; so takes priority
 
 ; In the PAL version, there's a time is frozen check at BRANCH_NON_HURT_SFX to prevent spin jump sound playing through reserve tank activation
-    LDA.W $0A4A                                                          ;91D8A5;
+    LDA.W SuperSpecialPaletteFlags                                                          ;91D8A5;
     BNE .gotoSuperSpecial                                                ;91D8A8;
-    LDA.W $0A48                                                          ;91D8AA;
+    LDA.W HurtFlashCounter                                                          ;91D8AA;
     BNE .timerNotExpired                                                 ;91D8AD;
     RTS                                                                  ;91D8AF;
 
@@ -10805,12 +10805,12 @@ HandleMiscSamusPalette:
   .timerNotExpired:
     CMP.W #$0002                                                         ;91D8B3;
     BNE .notHurtFrame2                                                   ;91D8B6;
-    LDA.W $1F51                                                          ;91D8B8;
+    LDA.W CinematicFunction                                                          ;91D8B8;
     BNE .noSFX                                                           ;91D8BB;
-    LDA.W $0A44                                                          ;91D8BD;
+    LDA.W NewStateHandler                                                          ;91D8BD;
     CMP.W #RTL_90E8D9                                                    ;91D8C0;
     BNE .notDrained                                                      ;91D8C3;
-    LDA.W $0A1C                                                          ;91D8C5;
+    LDA.W Pose                                                           ;91D8C5;
     CMP.W #$0054                                                         ;91D8C8;
     BEQ .noSFX                                                           ;91D8CB;
 
@@ -10820,7 +10820,7 @@ HandleMiscSamusPalette:
     BRA .notHurtFlash                                                    ;91D8D4;
 
   .noSFX:
-    LDA.W $0A48                                                          ;91D8D6;
+    LDA.W HurtFlashCounter                                                          ;91D8D6;
 
   .notHurtFrame2:
     CMP.W #$0007                                                         ;91D8D9;
@@ -10832,7 +10832,7 @@ HandleMiscSamusPalette:
     BRA .hurtFlashDone                                                   ;91D8E9;
 
   .notHurtFlash:
-    LDA.W $1F51                                                          ;91D8EB;
+    LDA.W CinematicFunction                                                          ;91D8EB;
     BEQ .loadPalette                                                     ;91D8EE;
     LDX.W #SamusPalettes_Intro                                           ;91D8F0;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91D8F3;
@@ -10842,36 +10842,36 @@ HandleMiscSamusPalette:
     JSL.L LoadSamusSuitPalette                                           ;91D8F8;
 
   .hurtFlashDone:
-    LDA.W $0A48                                                          ;91D8FC;
+    LDA.W HurtFlashCounter                                                          ;91D8FC;
     INC                                                                  ;91D8FF;
-    STA.W $0A48                                                          ;91D900;
+    STA.W HurtFlashCounter                                                          ;91D900;
     CMP.W #$0028                                                         ;91D903;
     BEQ .nonHurtSFX                                                      ;91D906;
     CMP.W #$003C                                                         ;91D908;
     BMI .returnUpper                                                     ;91D90B;
-    STZ.W $0A48                                                          ;91D90D;
+    STZ.W HurtFlashCounter                                                          ;91D90D;
 
   .returnUpper:
     RTS                                                                  ;91D910;
 
   .nonHurtSFX:
-    LDA.W $0D32                                                          ;91D911;
+    LDA.W GrappleBeam_Function                                                          ;91D911;
     CMP.W #GrappleBeamFunction_Inactive                                  ;91D914;
     BNE .grappleActive                                                   ;91D917;
-    LDA.W $0A1F                                                          ;91D919;
+    LDA.W MovementType                                                          ;91D919;
     AND.W #$00FF                                                         ;91D91C;
     CMP.W #$0003                                                         ;91D91F;
     BEQ .spinning                                                        ;91D922;
     CMP.W #$0014                                                         ;91D924;
     BEQ .spinning                                                        ;91D927;
-    LDA.W $0CD0                                                          ;91D929;
+    LDA.W SamusProjectile_FlareCounter                                                          ;91D929;
     CMP.W #$0010                                                         ;91D92C;
     BMI .returnUpper                                                     ;91D92F;
-    LDA.B $8B                                                            ;91D931;
-    BIT.W $09B2                                                          ;91D933;
+    LDA.B DP_Controller1Input                                                            ;91D931;
+    BIT.W ShotBinding                                                          ;91D933;
     BEQ .returnUpper                                                     ;91D936;
     LDA.W #$0001                                                         ;91D938;
-    STA.W $0DC0                                                          ;91D93B;
+    STA.W ResumeChargingBeamSFXFlag                                                          ;91D93B;
     RTS                                                                  ;91D93E;
 
   .grappleActive:
@@ -10890,7 +10890,7 @@ HandleMiscSamusPalette:
     BMI .acquiringHyperBeam                                              ;91D954;
     BIT.W #$0001                                                         ;91D956;
     BEQ .loadPalette2                                                    ;91D959;
-    LDX.W $0A74                                                          ;91D95B;
+    LDX.W SuitPaletteIndex                                                          ;91D95B;
     LDA.W .pointers,X                                                    ;91D95E;
     TAX                                                                  ;91D961;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91D962;
@@ -10900,29 +10900,29 @@ HandleMiscSamusPalette:
     JSL.L LoadSamusSuitPalette                                           ;91D967;
 
   .incSuperSpecialFlags:
-    INC.W $0A4A                                                          ;91D96B;
+    INC.W SuperSpecialPaletteFlags                                                          ;91D96B;
     RTS                                                                  ;91D96E;
 
   .acquiringHyperBeam:
-    LDA.W $0B62                                                          ;91D96F;
+    LDA.W SamusChargePaletteIndex                                                          ;91D96F;
     ASL                                                                  ;91D972;
     TAY                                                                  ;91D973;
     LDA.W .hyperBeamPalettes,Y                                           ;91D974;
     TAX                                                                  ;91D977;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91D978;
-    DEC.W $0AD0                                                          ;91D97B;
+    DEC.W CommonPaletteTimer                                                          ;91D97B;
     BEQ .timerExpired                                                    ;91D97E;
     BPL .returnLower                                                     ;91D980;
 
   .timerExpired:
-    LDA.W $0ACE                                                          ;91D982;
-    STA.W $0AD0                                                          ;91D985;
-    LDA.W $0B62                                                          ;91D988;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91D982;
+    STA.W CommonPaletteTimer                                                          ;91D985;
+    LDA.W SamusChargePaletteIndex                                                          ;91D988;
     INC                                                                  ;91D98B;
-    STA.W $0B62                                                          ;91D98C;
+    STA.W SamusChargePaletteIndex                                                          ;91D98C;
     CMP.W #$000A                                                         ;91D98F;
     BMI .returnLower                                                     ;91D992;
-    STZ.W $0B62                                                          ;91D994;
+    STZ.W SamusChargePaletteIndex                                                          ;91D994;
 
   .returnLower:
     RTS                                                                  ;91D997;
@@ -10951,27 +10951,27 @@ HandleMiscSamusPalette:
 Handle_ScrewAttack_SpeedBoosting_Palette:
 ;; Returns:
 ;;     Carry: Clear to use normal suit palette, set otherwise
-    LDA.W $0A74                                                          ;91D9B2;
+    LDA.W SuitPaletteIndex                                                          ;91D9B2;
     BIT.W #$0004                                                         ;91D9B5;
     BNE .nonLiquidPhysics                                                ;91D9B8;
     JSL.L Get_Samus_BottomTop_Boundary                                   ;91D9BA;
-    LDA.W $195E                                                          ;91D9BE;
+    LDA.W FX_YPosition                                                          ;91D9BE;
     BMI .negativeYPosition                                               ;91D9C1;
-    CMP.B $14                                                            ;91D9C3;
+    CMP.B DP_Temp14                                                            ;91D9C3;
     BPL .nonLiquidPhysics                                                ;91D9C5;
-    LDA.W $197E                                                          ;91D9C7;
+    LDA.W FX_LiquidOptions                                                          ;91D9C7;
     BIT.W #$0004                                                         ;91D9CA;
     BNE .nonLiquidPhysics                                                ;91D9CD;
     BRA .whyAreWeHere                                                    ;91D9CF;
 
   .negativeYPosition:
-    LDA.W $1962                                                          ;91D9D1;
+    LDA.W FX_LavaAcidYPosition                                                          ;91D9D1;
     BMI .nonLiquidPhysics                                                ;91D9D4;
-    CMP.B $14                                                            ;91D9D6;
+    CMP.B DP_Temp14                                                            ;91D9D6;
     BMI .whyAreWeHere                                                    ;91D9D8;
 
   .nonLiquidPhysics:
-    LDA.W $0A1F                                                          ;91D9DA;
+    LDA.W MovementType                                                          ;91D9DA;
     AND.W #$00FF                                                         ;91D9DD;
     CMP.W #$0003                                                         ;91D9E0;
     BEQ .spinJumping                                                     ;91D9E3;
@@ -10979,7 +10979,7 @@ Handle_ScrewAttack_SpeedBoosting_Palette:
     BEQ .wallJumping                                                     ;91D9E8;
 
   .notScrewAttacking:
-    LDA.W $0B3E                                                          ;91D9EA;
+    LDA.W SamusBoostTimer                                                          ;91D9EA;
     AND.W #$FF00                                                         ;91D9ED;
     CMP.W #$0400                                                         ;91D9F0;
     BEQ .speedBoosting                                                   ;91D9F3;
@@ -10989,35 +10989,35 @@ Handle_ScrewAttack_SpeedBoosting_Palette:
     RTS                                                                  ;91D9F6;
 
   .spinJumping:
-    LDA.W $09A2                                                          ;91D9F7;
+    LDA.W EquippedItems                                                          ;91D9F7;
     BIT.W #$0008                                                         ;91D9FA;
     BEQ .notScrewAttacking                                               ;91D9FD;
-    LDA.W $0A96                                                          ;91D9FF;
+    LDA.W SamusAnimationFrame                                                          ;91D9FF;
     BEQ .resetIndex                                                      ;91DA02;
     CMP.W #$001B                                                         ;91DA04;
     BPL .returnNormalPalette                                             ;91DA07;
     BRA .merge                                                           ;91DA09;
 
   .wallJumping:
-    LDA.W $09A2                                                          ;91DA0B;
+    LDA.W EquippedItems                                                          ;91DA0B;
     BIT.W #$0008                                                         ;91DA0E;
     BEQ .returnWallJump                                                  ;91DA11;
-    LDA.W $0A96                                                          ;91DA13;
+    LDA.W SamusAnimationFrame                                                          ;91DA13;
     CMP.W #$0003                                                         ;91DA16;
     BMI .resetIndex                                                      ;91DA19;
 
   .merge:
-    LDX.W $0A74                                                          ;91DA1B;
+    LDX.W SuitPaletteIndex                                                          ;91DA1B;
     LDA.W .screwAttackPaletteTablePointers,X                             ;91DA1E;
-    STA.B $24                                                            ;91DA21;
-    LDA.W $0ACE                                                          ;91DA23;
+    STA.B DP_Temp24                                                            ;91DA21;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DA23;
     CLC                                                                  ;91DA26;
-    ADC.B $24                                                            ;91DA27;
+    ADC.B DP_Temp24                                                            ;91DA27;
     TAX                                                                  ;91DA29;
     LDA.W $0000,X                                                        ;91DA2A;
     TAX                                                                  ;91DA2D;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91DA2E;
-    LDA.W $0ACE                                                          ;91DA31;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DA31;
     INC                                                                  ;91DA34;
     INC                                                                  ;91DA35;
     CMP.W #$000C                                                         ;91DA36;
@@ -11025,12 +11025,12 @@ Handle_ScrewAttack_SpeedBoosting_Palette:
     LDA.W #$0000                                                         ;91DA3B;
 
   .storeIndex:
-    STA.W $0ACE                                                          ;91DA3E;
+    STA.W SpecialSamusPaletteFrame                                                          ;91DA3E;
     SEC                                                                  ;91DA41;
     RTS                                                                  ;91DA42;
 
   .resetIndex:
-    STZ.W $0ACE                                                          ;91DA43;
+    STZ.W SpecialSamusPaletteFrame                                                          ;91DA43;
 
   .returnWallJump:
     SEC                                                                  ;91DA46;
@@ -11072,24 +11072,24 @@ Handle_ScrewAttack_SpeedBoosting_Palette:
     dw SamusPalettes_GravitySuit_ScrewAttack_1                           ;91DA72;
 
   .speedBoosting:
-    DEC.W $0AD0                                                          ;91DA74;
+    DEC.W CommonPaletteTimer                                                          ;91DA74;
     BEQ .timerExpired                                                    ;91DA77;
     BPL .returnSpeedBooster                                              ;91DA79;
 
   .timerExpired:
     LDA.W #$0004                                                         ;91DA7B;
-    STA.W $0AD0                                                          ;91DA7E;
-    LDX.W $0A74                                                          ;91DA81;
+    STA.W CommonPaletteTimer                                                          ;91DA7E;
+    LDX.W SuitPaletteIndex                                                          ;91DA81;
     LDA.W .speedBoosterPaletteTablePointers,X                            ;91DA84;
-    STA.B $24                                                            ;91DA87;
-    LDA.W $0ACE                                                          ;91DA89;
+    STA.B DP_Temp24                                                            ;91DA87;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DA89;
     CLC                                                                  ;91DA8C;
-    ADC.B $24                                                            ;91DA8D;
+    ADC.B DP_Temp24                                                            ;91DA8D;
     TAX                                                                  ;91DA8F;
     LDA.W $0000,X                                                        ;91DA90;
     TAX                                                                  ;91DA93;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91DA94;
-    LDA.W $0ACE                                                          ;91DA97;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DA97;
     INC                                                                  ;91DA9A;
     INC                                                                  ;91DA9B;
     CMP.W #$0008                                                         ;91DA9C;
@@ -11097,7 +11097,7 @@ Handle_ScrewAttack_SpeedBoosting_Palette:
     LDA.W #$0006                                                         ;91DAA1;
 
   .storeIndexSpeedBooster:
-    STA.W $0ACE                                                          ;91DAA4;
+    STA.W SpecialSamusPaletteFrame                                                          ;91DAA4;
 
   .returnSpeedBooster:
     SEC                                                                  ;91DAA7;
@@ -11132,7 +11132,7 @@ Handle_ScrewAttack_SpeedBoosting_Palette:
 HandleSpeedBoosterShinePalette:
 ;; Returns:
 ;;     Carry: Clear to use normal suit palette, set otherwise
-    LDA.W $0A68                                                          ;91DAC7;
+    LDA.W SpecialPaletteTimer                                                          ;91DAC7;
     CMP.W #$00AA                                                         ;91DACA;
     BNE .notAA                                                           ;91DACD;
     PHA                                                                  ;91DACF;
@@ -11142,20 +11142,20 @@ HandleSpeedBoosterShinePalette:
 
   .notAA:
     DEC                                                                  ;91DAD8;
-    STA.W $0A68                                                          ;91DAD9;
+    STA.W SpecialPaletteTimer                                                          ;91DAD9;
     BEQ .finish                                                          ;91DADC;
     BMI .finish                                                          ;91DADE;
-    LDX.W $0A74                                                          ;91DAE0;
+    LDX.W SuitPaletteIndex                                                          ;91DAE0;
     LDA.W .speedBoosterShinePaletteTablePointers,X                       ;91DAE3;
-    STA.B $24                                                            ;91DAE6;
-    LDA.W $0ACE                                                          ;91DAE8;
+    STA.B DP_Temp24                                                            ;91DAE6;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DAE8;
     CLC                                                                  ;91DAEB;
-    ADC.B $24                                                            ;91DAEC;
+    ADC.B DP_Temp24                                                            ;91DAEC;
     TAX                                                                  ;91DAEE;
     LDA.W $0000,X                                                        ;91DAEF;
     TAX                                                                  ;91DAF2;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91DAF3;
-    LDA.W $0ACE                                                          ;91DAF6;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DAF6;
     INC                                                                  ;91DAF9;
     INC                                                                  ;91DAFA;
     CMP.W #$000C                                                         ;91DAFB;
@@ -11163,13 +11163,13 @@ HandleSpeedBoosterShinePalette:
     LDA.W #$0000                                                         ;91DB00;
 
   .storeIndex:
-    STA.W $0ACE                                                          ;91DB03;
+    STA.W SpecialSamusPaletteFrame                                                          ;91DB03;
     SEC                                                                  ;91DB06;
     RTS                                                                  ;91DB07;
 
   .finish:
-    STZ.W $0ACE                                                          ;91DB08;
-    STZ.W $0ACC                                                          ;91DB0B;
+    STZ.W SpecialSamusPaletteFrame                                                          ;91DB08;
+    STZ.W SpecialSamusPaletteType                                                          ;91DB0B;
     CLC                                                                  ;91DB0E;
     RTS                                                                  ;91DB0F;
 
@@ -11209,22 +11209,22 @@ HandleSpeedBoosterShinePalette:
 HandleShinesparkingPalette:
 ;; Returns:
 ;;     Carry: Clear to use normal suit palette, set otherwise
-    LDA.W $0A68                                                          ;91DB3A;
+    LDA.W SpecialPaletteTimer                                                          ;91DB3A;
     DEC                                                                  ;91DB3D;
-    STA.W $0A68                                                          ;91DB3E;
+    STA.W SpecialPaletteTimer                                                          ;91DB3E;
     BEQ .finish                                                          ;91DB41;
     BMI .finish                                                          ;91DB43;
-    LDX.W $0A74                                                          ;91DB45;
+    LDX.W SuitPaletteIndex                                                          ;91DB45;
     LDA.W .shinesparkPaletteTablePointers,X                              ;91DB48;
-    STA.B $24                                                            ;91DB4B;
-    LDA.W $0ACE                                                          ;91DB4D;
+    STA.B DP_Temp24                                                            ;91DB4B;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DB4D;
     CLC                                                                  ;91DB50;
-    ADC.B $24                                                            ;91DB51;
+    ADC.B DP_Temp24                                                            ;91DB51;
     TAX                                                                  ;91DB53;
     LDA.W $0000,X                                                        ;91DB54;
     TAX                                                                  ;91DB57;
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91DB58;
-    LDA.W $0ACE                                                          ;91DB5B;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DB5B;
     INC                                                                  ;91DB5E;
     INC                                                                  ;91DB5F;
     CMP.W #$0008                                                         ;91DB60;
@@ -11232,13 +11232,13 @@ HandleShinesparkingPalette:
     LDA.W #$0000                                                         ;91DB65;
 
   .storeIndex:
-    STA.W $0ACE                                                          ;91DB68;
+    STA.W SpecialSamusPaletteFrame                                                          ;91DB68;
     SEC                                                                  ;91DB6B;
     RTS                                                                  ;91DB6C;
 
   .finish:
-    STZ.W $0ACC                                                          ;91DB6D;
-    STZ.W $0ACE                                                          ;91DB70;
+    STZ.W SpecialSamusPaletteType                                                          ;91DB6D;
+    STZ.W SpecialSamusPaletteFrame                                                          ;91DB70;
     CLC                                                                  ;91DB73;
     RTS                                                                  ;91DB74;
 
@@ -11272,21 +11272,21 @@ HandleShinesparkingPalette:
 HandleCrystalFlashPalette:
 ;; Returns:
 ;;     Carry: Clear to use normal suit palette, set otherwise
-    LDA.W $0A68                                                          ;91DB93;
+    LDA.W SpecialPaletteTimer                                                          ;91DB93;
     BMI .finish                                                          ;91DB96;
     DEC                                                                  ;91DB98;
-    STA.W $0A68                                                          ;91DB99;
+    STA.W SpecialPaletteTimer                                                          ;91DB99;
     BEQ .specialPaletteTimerExpired                                      ;91DB9C;
     BPL .bubbleEnd                                                       ;91DB9E;
 
   .specialPaletteTimerExpired:
     LDA.W #$0005                                                         ;91DBA0;
-    STA.W $0A68                                                          ;91DBA3;
-    LDX.W $0ACE                                                          ;91DBA6;
+    STA.W SpecialPaletteTimer                                                          ;91DBA3;
+    LDX.W SpecialSamusPaletteFrame                                                          ;91DBA6;
     LDA.W .bubblePaletteTablePointers,X                                  ;91DBA9;
     TAY                                                                  ;91DBAC;
     JSR.W SetCrystalFlashBubbleColors                                    ;91DBAD;
-    LDA.W $0ACE                                                          ;91DBB0;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DBB0;
     INC                                                                  ;91DBB3;
     INC                                                                  ;91DBB4;
     CMP.W #$000C                                                         ;91DBB5;
@@ -11294,21 +11294,21 @@ HandleCrystalFlashPalette:
     LDA.W #$0000                                                         ;91DBBA;
 
   .storeIndex:
-    STA.W $0ACE                                                          ;91DBBD;
+    STA.W SpecialSamusPaletteFrame                                                          ;91DBBD;
 
   .bubbleEnd:
-    DEC.W $0DF2                                                          ;91DBC0;
+    DEC.W CrystalFlash_PaletteTimer                                                          ;91DBC0;
     BEQ .CFPaletteTimerExpired                                           ;91DBC3;
     BPL .returnCarrySet                                                  ;91DBC5;
 
   .CFPaletteTimerExpired:
-    LDX.W $0AD0                                                          ;91DBC7;
+    LDX.W CommonPaletteTimer                                                          ;91DBC7;
     LDA.W .crystalFlashPaletteTable_timers,X                             ;91DBCA;
-    STA.W $0DF2                                                          ;91DBCD;
+    STA.W CrystalFlash_PaletteTimer                                                          ;91DBCD;
     LDA.W .crystalFlashPaletteTable_pointers,X                           ;91DBD0;
     TAY                                                                  ;91DBD3;
     JSR.W SetCrystalFlashSamusColors                                     ;91DBD4;
-    LDA.W $0AD0                                                          ;91DBD7;
+    LDA.W CommonPaletteTimer                                                          ;91DBD7;
     CLC                                                                  ;91DBDA;
     ADC.W #$0004                                                         ;91DBDB;
     CMP.W #$0028                                                         ;91DBDE;
@@ -11316,19 +11316,19 @@ HandleCrystalFlashPalette:
     LDA.W #$0000                                                         ;91DBE3;
 
   .storeTimer:
-    STA.W $0AD0                                                          ;91DBE6;
+    STA.W CommonPaletteTimer                                                          ;91DBE6;
 
   .returnCarrySet:
     SEC                                                                  ;91DBE9;
     RTS                                                                  ;91DBEA;
 
   .finish:
-    LDA.W $09A6                                                          ;91DBEB;
+    LDA.W EquippedBeams                                                          ;91DBEB;
     JSL.L Load_Beam_Palette_Setup                                        ;91DBEE;
-    STZ.W $0ACC                                                          ;91DBF2;
-    STZ.W $0ACE                                                          ;91DBF5;
-    STZ.W $0AD0                                                          ;91DBF8;
-    STZ.W $0A68                                                          ;91DBFB;
+    STZ.W SpecialSamusPaletteType                                                          ;91DBF2;
+    STZ.W SpecialSamusPaletteFrame                                                          ;91DBF5;
+    STZ.W CommonPaletteTimer                                                          ;91DBF8;
+    STZ.W SpecialPaletteTimer                                                          ;91DBFB;
     CLC                                                                  ;91DBFE;
     RTS                                                                  ;91DBFF;
 
@@ -11366,25 +11366,25 @@ SetCrystalFlashSamusColors:
     PLB                                                                  ;91DC38;
     PLB                                                                  ;91DC39;
     LDA.W $0000,Y                                                        ;91DC3A;
-    STA.L $7EC1C0                                                        ;91DC3D;
+    STA.L Palettes_SpriteP6                                                        ;91DC3D;
     LDA.W $0002,Y                                                        ;91DC41;
-    STA.L $7EC1C2                                                        ;91DC44;
+    STA.L Palettes_SpriteP6+2                                                        ;91DC44;
     LDA.W $0004,Y                                                        ;91DC48;
-    STA.L $7EC1C4                                                        ;91DC4B;
+    STA.L Palettes_SpriteP6+4                                                        ;91DC4B;
     LDA.W $0006,Y                                                        ;91DC4F;
-    STA.L $7EC1C6                                                        ;91DC52;
+    STA.L Palettes_SpriteP6+6                                                        ;91DC52;
     LDA.W $0008,Y                                                        ;91DC56;
-    STA.L $7EC1C8                                                        ;91DC59;
+    STA.L Palettes_SpriteP6+8                                                        ;91DC59;
     LDA.W $000A,Y                                                        ;91DC5D;
-    STA.L $7EC1CA                                                        ;91DC60;
+    STA.L Palettes_SpriteP6+$A                                                        ;91DC60;
     LDA.W $000C,Y                                                        ;91DC64;
-    STA.L $7EC1CC                                                        ;91DC67;
+    STA.L Palettes_SpriteP6+$C                                                        ;91DC67;
     LDA.W $000E,Y                                                        ;91DC6B;
-    STA.L $7EC1CE                                                        ;91DC6E;
+    STA.L Palettes_SpriteP6+$E                                                        ;91DC6E;
     LDA.W $0010,Y                                                        ;91DC72;
-    STA.L $7EC1D0                                                        ;91DC75;
+    STA.L Palettes_SpriteP6+$10                                                        ;91DC75;
     LDA.W $0012,Y                                                        ;91DC79;
-    STA.L $7EC1D2                                                        ;91DC7C;
+    STA.L Palettes_SpriteP6+$12                                                        ;91DC7C;
     PLB                                                                  ;91DC80;
     RTS                                                                  ;91DC81;
 
@@ -11397,17 +11397,17 @@ SetCrystalFlashBubbleColors:
     PLB                                                                  ;91DC86;
     PLB                                                                  ;91DC87;
     LDA.W $0000,Y                                                        ;91DC88;
-    STA.L $7EC1D4                                                        ;91DC8B;
+    STA.L Palettes_SpriteP6+$14                                                        ;91DC8B;
     LDA.W $0002,Y                                                        ;91DC8F;
-    STA.L $7EC1D6                                                        ;91DC92;
+    STA.L Palettes_SpriteP6+$16                                                        ;91DC92;
     LDA.W $0004,Y                                                        ;91DC96;
-    STA.L $7EC1D8                                                        ;91DC99;
+    STA.L Palettes_SpriteP6+$18                                                        ;91DC99;
     LDA.W $0006,Y                                                        ;91DC9D;
-    STA.L $7EC1DA                                                        ;91DCA0;
+    STA.L Palettes_SpriteP6+$1A                                                        ;91DCA0;
     LDA.W $0008,Y                                                        ;91DCA4;
-    STA.L $7EC1DC                                                        ;91DCA7;
+    STA.L Palettes_SpriteP6+$1C                                                        ;91DCA7;
     LDA.W $000A,Y                                                        ;91DCAB;
-    STA.L $7EC1DE                                                        ;91DCAE;
+    STA.L Palettes_SpriteP6+$1E                                                        ;91DCAE;
     PLB                                                                  ;91DCB2;
     RTS                                                                  ;91DCB3;
 
@@ -11416,28 +11416,28 @@ SetCrystalFlashBubbleColors:
 HandleXrayPalette:
 ;; Returns:
 ;;     Carry: Clear to use normal suit palette, set otherwise
-    LDA.W $0A80                                                          ;91DCB4;
+    LDA.W Xray_BeamSizeFlag                                                          ;91DCB4;
     BMI .finish                                                          ;91DCB7;
     BNE .paletteSet                                                      ;91DCB9;
-    LDA.W $0A7A                                                          ;91DCBB;
+    LDA.W Xray_State                                                          ;91DCBB;
     CMP.W #$0002                                                         ;91DCBE;
     BPL .notWidening                                                     ;91DCC1;
-    DEC.W $0AD0                                                          ;91DCC3;
+    DEC.W CommonPaletteTimer                                                          ;91DCC3;
     BEQ .timerExpired                                                    ;91DCC6;
     BPL .returnCarrySet                                                  ;91DCC8;
 
   .timerExpired:
     LDA.W #$0005                                                         ;91DCCA;
-    STA.W $0AD0                                                          ;91DCCD;
-    LDX.W $0ACE                                                          ;91DCD0;
+    STA.W CommonPaletteTimer                                                          ;91DCCD;
+    LDX.W SpecialSamusPaletteFrame                                                          ;91DCD0;
     LDA.L SamusPalettes_Visor,X                                          ;91DCD3;
-    STA.L $7EC188                                                        ;91DCD7;
-    LDA.W $0ACE                                                          ;91DCDB;
+    STA.L Palettes_SpriteP4C4                                                        ;91DCD7;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DCDB;
     CMP.W #$0004                                                         ;91DCDE;
     BPL .returnCarrySet                                                  ;91DCE1;
     INC                                                                  ;91DCE3;
     INC                                                                  ;91DCE4;
-    STA.W $0ACE                                                          ;91DCE5;
+    STA.W SpecialSamusPaletteFrame                                                          ;91DCE5;
 
   .returnCarrySet:
     SEC                                                                  ;91DCE8;
@@ -11445,23 +11445,23 @@ HandleXrayPalette:
 
   .notWidening:
     LDA.W #$0006                                                         ;91DCEA;
-    STA.W $0ACE                                                          ;91DCED;
+    STA.W SpecialSamusPaletteFrame                                                          ;91DCED;
     LDA.W #$0001                                                         ;91DCF0;
-    STA.W $0AD0                                                          ;91DCF3;
-    STA.W $0A80                                                          ;91DCF6;
+    STA.W CommonPaletteTimer                                                          ;91DCF3;
+    STA.W Xray_BeamSizeFlag                                                          ;91DCF6;
 
   .paletteSet:
-    DEC.W $0AD0                                                          ;91DCF9;
+    DEC.W CommonPaletteTimer                                                          ;91DCF9;
     BEQ .resetTimer                                                      ;91DCFC;
     BPL .returnCarrySet                                                  ;91DCFE;
 
   .resetTimer:
     LDA.W #$0005                                                         ;91DD00;
-    STA.W $0AD0                                                          ;91DD03;
-    LDX.W $0ACE                                                          ;91DD06;
+    STA.W CommonPaletteTimer                                                          ;91DD03;
+    LDX.W SpecialSamusPaletteFrame                                                          ;91DD06;
     LDA.L SamusPalettes_Visor,X                                          ;91DD09;
-    STA.L $7EC188                                                        ;91DD0D;
-    LDA.W $0ACE                                                          ;91DD11;
+    STA.L Palettes_SpriteP4C4                                                        ;91DD0D;
+    LDA.W SpecialSamusPaletteFrame                                                          ;91DD11;
     INC                                                                  ;91DD14;
     INC                                                                  ;91DD15;
     CMP.W #$000C                                                         ;91DD16;
@@ -11469,15 +11469,15 @@ HandleXrayPalette:
     LDA.W #$0006                                                         ;91DD1B;
 
   .storeIndex:
-    STA.W $0ACE                                                          ;91DD1E;
+    STA.W SpecialSamusPaletteFrame                                                          ;91DD1E;
     SEC                                                                  ;91DD21;
     RTS                                                                  ;91DD22;
 
   .finish:
-    STZ.W $0ACC                                                          ;91DD23;
-    STZ.W $0ACE                                                          ;91DD26;
-    STZ.W $0AD0                                                          ;91DD29;
-    STZ.W $0A80                                                          ;91DD2C;
+    STZ.W SpecialSamusPaletteType                                                          ;91DD23;
+    STZ.W SpecialSamusPaletteFrame                                                          ;91DD26;
+    STZ.W CommonPaletteTimer                                                          ;91DD29;
+    STZ.W Xray_BeamSizeFlag                                                          ;91DD2C;
     CLC                                                                  ;91DD2F;
     RTS                                                                  ;91DD30;
 
@@ -11520,37 +11520,37 @@ Load20BytesOfSamusPaletteInX:
     PLB                                                                  ;91DD62;
     PLB                                                                  ;91DD63;
     LDA.W $0000,X                                                        ;91DD64;
-    STA.L $7EC180                                                        ;91DD67;
+    STA.L Palettes_SpriteP4C0                                                        ;91DD67;
     LDA.W $0002,X                                                        ;91DD6B;
-    STA.L $7EC182                                                        ;91DD6E;
+    STA.L Palettes_SpriteP4C1                                                        ;91DD6E;
     LDA.W $0004,X                                                        ;91DD72;
-    STA.L $7EC184                                                        ;91DD75;
+    STA.L Palettes_SpriteP4C2                                                        ;91DD75;
     LDA.W $0006,X                                                        ;91DD79;
-    STA.L $7EC186                                                        ;91DD7C;
+    STA.L Palettes_SpriteP4C3                                                        ;91DD7C;
     LDA.W $0008,X                                                        ;91DD80;
-    STA.L $7EC188                                                        ;91DD83;
+    STA.L Palettes_SpriteP4C4                                                        ;91DD83;
     LDA.W $000A,X                                                        ;91DD87;
-    STA.L $7EC18A                                                        ;91DD8A;
+    STA.L Palettes_SpriteP4C5                                                        ;91DD8A;
     LDA.W $000C,X                                                        ;91DD8E;
-    STA.L $7EC18C                                                        ;91DD91;
+    STA.L Palettes_SpriteP4C6                                                        ;91DD91;
     LDA.W $000E,X                                                        ;91DD95;
-    STA.L $7EC18E                                                        ;91DD98;
+    STA.L Palettes_SpriteP4C7                                                        ;91DD98;
     LDA.W $0010,X                                                        ;91DD9C;
-    STA.L $7EC190                                                        ;91DD9F;
+    STA.L Palettes_SpriteP4C8                                                        ;91DD9F;
     LDA.W $0012,X                                                        ;91DDA3;
-    STA.L $7EC192                                                        ;91DDA6;
+    STA.L Palettes_SpriteP4C9                                                        ;91DDA6;
     LDA.W $0014,X                                                        ;91DDAA;
-    STA.L $7EC194                                                        ;91DDAD;
+    STA.L Palettes_SpriteP4CA                                                        ;91DDAD;
     LDA.W $0016,X                                                        ;91DDB1;
-    STA.L $7EC196                                                        ;91DDB4;
+    STA.L Palettes_SpriteP4CB                                                        ;91DDB4;
     LDA.W $0018,X                                                        ;91DDB8;
-    STA.L $7EC198                                                        ;91DDBB;
+    STA.L Palettes_SpriteP4CC                                                        ;91DDBB;
     LDA.W $001A,X                                                        ;91DDBF;
-    STA.L $7EC19A                                                        ;91DDC2;
+    STA.L Palettes_SpriteP4CD                                                        ;91DDC2;
     LDA.W $001C,X                                                        ;91DDC6;
-    STA.L $7EC19C                                                        ;91DDC9;
+    STA.L Palettes_SpriteP4CE                                                        ;91DDC9;
     LDA.W $001E,X                                                        ;91DDCD;
-    STA.L $7EC19E                                                        ;91DDD0;
+    STA.L Palettes_SpriteP4CF                                                        ;91DDD0;
     PLB                                                                  ;91DDD4;
     PLP                                                                  ;91DDD5;
     RTS                                                                  ;91DDD6;
@@ -11566,37 +11566,37 @@ Load20BytesOfSamusTargetPaletteInX:
     PLB                                                                  ;91DDDE;
     PLB                                                                  ;91DDDF;
     LDA.W $0000,X                                                        ;91DDE0;
-    STA.L $7EC380                                                        ;91DDE3;
+    STA.L TargetPalettes_SpriteP4                                                        ;91DDE3;
     LDA.W $0002,X                                                        ;91DDE7;
-    STA.L $7EC382                                                        ;91DDEA;
+    STA.L TargetPalettes_SpriteP4+2                                                        ;91DDEA;
     LDA.W $0004,X                                                        ;91DDEE;
-    STA.L $7EC384                                                        ;91DDF1;
+    STA.L TargetPalettes_SpriteP4+4                                                        ;91DDF1;
     LDA.W $0006,X                                                        ;91DDF5;
-    STA.L $7EC386                                                        ;91DDF8;
+    STA.L TargetPalettes_SpriteP4+6                                                        ;91DDF8;
     LDA.W $0008,X                                                        ;91DDFC;
-    STA.L $7EC388                                                        ;91DDFF;
+    STA.L TargetPalettes_SpriteP4+8                                                        ;91DDFF;
     LDA.W $000A,X                                                        ;91DE03;
-    STA.L $7EC38A                                                        ;91DE06;
+    STA.L TargetPalettes_SpriteP4+$A                                                        ;91DE06;
     LDA.W $000C,X                                                        ;91DE0A;
-    STA.L $7EC38C                                                        ;91DE0D;
+    STA.L TargetPalettes_SpriteP4+$C                                                        ;91DE0D;
     LDA.W $000E,X                                                        ;91DE11;
-    STA.L $7EC38E                                                        ;91DE14;
+    STA.L TargetPalettes_SpriteP4+$E                                                        ;91DE14;
     LDA.W $0010,X                                                        ;91DE18;
-    STA.L $7EC390                                                        ;91DE1B;
+    STA.L TargetPalettes_SpriteP4+$10                                                        ;91DE1B;
     LDA.W $0012,X                                                        ;91DE1F;
-    STA.L $7EC392                                                        ;91DE22;
+    STA.L TargetPalettes_SpriteP4+$12                                                        ;91DE22;
     LDA.W $0014,X                                                        ;91DE26;
-    STA.L $7EC394                                                        ;91DE29;
+    STA.L TargetPalettes_SpriteP4+$14                                                        ;91DE29;
     LDA.W $0016,X                                                        ;91DE2D;
-    STA.L $7EC396                                                        ;91DE30;
+    STA.L TargetPalettes_SpriteP4+$16                                                        ;91DE30;
     LDA.W $0018,X                                                        ;91DE34;
-    STA.L $7EC398                                                        ;91DE37;
+    STA.L TargetPalettes_SpriteP4+$18                                                        ;91DE37;
     LDA.W $001A,X                                                        ;91DE3B;
-    STA.L $7EC39A                                                        ;91DE3E;
+    STA.L TargetPalettes_SpriteP4+$1A                                                        ;91DE3E;
     LDA.W $001C,X                                                        ;91DE42;
-    STA.L $7EC39C                                                        ;91DE45;
+    STA.L TargetPalettes_SpriteP4+$1C                                                        ;91DE45;
     LDA.W $001E,X                                                        ;91DE49;
-    STA.L $7EC39E                                                        ;91DE4C;
+    STA.L TargetPalettes_SpriteP4+$1E                                                        ;91DE4C;
     PLB                                                                  ;91DE50;
     PLP                                                                  ;91DE51;
     RTS                                                                  ;91DE52;
@@ -11609,13 +11609,13 @@ Cancel_SpeedBoosting:
     PHK                                                                  ;91DE55;
     PLB                                                                  ;91DE56;
     REP #$30                                                             ;91DE57;
-    LDA.W $0B3C                                                          ;91DE59;
+    LDA.W SamusRunningMomentumFlag                                                          ;91DE59;
     BEQ .merge                                                           ;91DE5C;
-    STZ.W $0B3C                                                          ;91DE5E;
-    STZ.W $0B3E                                                          ;91DE61;
-    STZ.W $0ACE                                                          ;91DE64;
-    STZ.W $0AD0                                                          ;91DE67;
-    LDA.W $09A2                                                          ;91DE6A;
+    STZ.W SamusRunningMomentumFlag                                                          ;91DE5E;
+    STZ.W SamusBoostTimer                                                          ;91DE61;
+    STZ.W SpecialSamusPaletteFrame                                                          ;91DE64;
+    STZ.W CommonPaletteTimer                                                          ;91DE67;
+    LDA.W EquippedItems                                                          ;91DE6A;
     BIT.W #$0020                                                         ;91DE6D;
     BNE .gravity                                                         ;91DE70;
     BIT.W #$0001                                                         ;91DE72;
@@ -11634,23 +11634,23 @@ Cancel_SpeedBoosting:
     JSR.W Load20BytesOfSamusPaletteInX                                   ;91DE8A;
 
   .merge:
-    LDA.W $0AAE                                                          ;91DE8D;
+    LDA.W SpeedEcho_Index                                                          ;91DE8D;
     BMI .return                                                          ;91DE90;
     LDA.W #$FFFF                                                         ;91DE92;
-    STA.W $0AAE                                                          ;91DE95;
-    LDA.W $0A1E                                                          ;91DE98;
+    STA.W SpeedEcho_Index                                                          ;91DE95;
+    LDA.W PoseXDirection                                                          ;91DE98;
     AND.W #$00FF                                                         ;91DE9B;
     CMP.W #$0004                                                         ;91DE9E;
     BEQ .negative8                                                       ;91DEA1;
     LDA.W #$0008                                                         ;91DEA3;
-    STA.W $0AC0                                                          ;91DEA6;
-    STA.W $0AC2                                                          ;91DEA9;
+    STA.W SpeedEcho_XSpeed0                                                          ;91DEA6;
+    STA.W SpeedEcho_XSpeed1                                                          ;91DEA9;
     BRA .return                                                          ;91DEAC;
 
   .negative8:
     LDA.W #$FFF8                                                         ;91DEAE;
-    STA.W $0AC0                                                          ;91DEB1;
-    STA.W $0AC2                                                          ;91DEB4;
+    STA.W SpeedEcho_XSpeed0                                                          ;91DEB1;
+    STA.W SpeedEcho_XSpeed1                                                          ;91DEB4;
 
   .return:
     PLB                                                                  ;91DEB7;
@@ -11665,7 +11665,7 @@ LoadSamusSuitPalette:
     PHK                                                                  ;91DEBC;
     PLB                                                                  ;91DEBD;
     REP #$30                                                             ;91DEBE;
-    LDA.W $09A2                                                          ;91DEC0;
+    LDA.W EquippedItems                                                          ;91DEC0;
     BIT.W #$0020                                                         ;91DEC3;
     BNE .gravitySuit                                                     ;91DEC6;
     BIT.W #$0001                                                         ;91DEC8;
@@ -11696,7 +11696,7 @@ LoadSamusSuitTargetPalette:
     PHK                                                                  ;91DEE8;
     PLB                                                                  ;91DEE9;
     REP #$30                                                             ;91DEEA;
-    LDA.W $09A2                                                          ;91DEEC;
+    LDA.W EquippedItems                                                          ;91DEEC;
     BIT.W #$0020                                                         ;91DEEF;
     BNE .gravitySuit                                                     ;91DEF2;
     BIT.W #$0001                                                         ;91DEF4;
@@ -11727,32 +11727,32 @@ Restore_A_Energy_ToSamus:
     PHK                                                                  ;91DF14;
     PLB                                                                  ;91DF15;
     REP #$30                                                             ;91DF16;
-    STA.B $12                                                            ;91DF18;
-    LDA.W $09C2                                                          ;91DF1A;
+    STA.B DP_Temp12                                                            ;91DF18;
+    LDA.W Energy                                                          ;91DF1A;
     CLC                                                                  ;91DF1D;
-    ADC.B $12                                                            ;91DF1E;
-    STA.W $09C2                                                          ;91DF20;
-    CMP.W $09C4                                                          ;91DF23;
+    ADC.B DP_Temp12                                                            ;91DF1E;
+    STA.W Energy                                                          ;91DF20;
+    CMP.W MaxEnergy                                                          ;91DF23;
     BMI .return                                                          ;91DF26;
     SEC                                                                  ;91DF28;
-    SBC.W $09C4                                                          ;91DF29;
+    SBC.W MaxEnergy                                                          ;91DF29;
     CLC                                                                  ;91DF2C;
-    ADC.W $09D6                                                          ;91DF2D;
-    CMP.W $09D4                                                          ;91DF30;
+    ADC.W ReserveEnergy                                                          ;91DF2D;
+    CMP.W MaxReserveEnergy                                                          ;91DF30;
     BMI .maxReserve                                                      ;91DF33;
-    LDA.W $09D4                                                          ;91DF35;
+    LDA.W MaxReserveEnergy                                                          ;91DF35;
 
   .maxReserve:
-    STA.W $09D6                                                          ;91DF38;
+    STA.W ReserveEnergy                                                          ;91DF38;
     BEQ .maxEnergy                                                       ;91DF3B;
-    LDA.W $09C0                                                          ;91DF3D;
+    LDA.W ReserveTankMode                                                          ;91DF3D;
     BNE .maxEnergy                                                       ;91DF40;
     LDA.W #$0001                                                         ;91DF42;
-    STA.W $09C0                                                          ;91DF45;
+    STA.W ReserveTankMode                                                          ;91DF45;
 
   .maxEnergy:
-    LDA.W $09C4                                                          ;91DF48;
-    STA.W $09C2                                                          ;91DF4B;
+    LDA.W MaxEnergy                                                          ;91DF48;
+    STA.W Energy                                                          ;91DF4B;
 
   .return:
     PLB                                                                  ;91DF4E;
@@ -11770,7 +11770,7 @@ Deal_A_Damage_to_Samus:
     PLB                                                                  ;91DF54;
     REP #$30                                                             ;91DF55;
     PHX                                                                  ;91DF57;
-    STA.B $12                                                            ;91DF58;
+    STA.B DP_Temp12                                                            ;91DF58;
     TAX                                                                  ;91DF5A;
     BPL .noCrash                                                         ;91DF5B;
     JML.L Crash_Handler                                                  ;91DF5D;
@@ -11778,14 +11778,14 @@ Deal_A_Damage_to_Samus:
   .noCrash:
     CMP.W #$012C                                                         ;91DF61;
     BEQ .noDamage                                                        ;91DF64;
-    LDA.W $0A78                                                          ;91DF66;
+    LDA.W TimeIsFrozenFlag                                                          ;91DF66;
     BNE .return                                                          ;91DF69;
-    LDA.W $09C2                                                          ;91DF6B;
+    LDA.W Energy                                                          ;91DF6B;
     SEC                                                                  ;91DF6E;
-    SBC.B $12                                                            ;91DF6F;
-    STA.W $09C2                                                          ;91DF71;
+    SBC.B DP_Temp12                                                            ;91DF6F;
+    STA.W Energy                                                          ;91DF71;
     BPL .return                                                          ;91DF74;
-    STZ.W $09C2                                                          ;91DF76;
+    STZ.W Energy                                                          ;91DF76;
 
   .return:
     PLX                                                                  ;91DF79;
@@ -11810,39 +11810,39 @@ Restore_A_Missiles_ToSamus:
     PLB                                                                  ;91DF83;
     REP #$30                                                             ;91DF84;
     CLC                                                                  ;91DF86;
-    ADC.W $09C6                                                          ;91DF87;
-    STA.W $09C6                                                          ;91DF8A;
-    CMP.W $09C8                                                          ;91DF8D;
+    ADC.W Missiles                                                          ;91DF87;
+    STA.W Missiles                                                          ;91DF8A;
+    CMP.W MaxMissiles                                                          ;91DF8D;
     BMI .return                                                          ;91DF90;
     SEC                                                                  ;91DF92;
-    SBC.W $09C8                                                          ;91DF93;
-    STA.B $12                                                            ;91DF96;
-    LDA.W $09C8                                                          ;91DF98;
+    SBC.W MaxMissiles                                                          ;91DF93;
+    STA.B DP_Temp12                                                            ;91DF96;
+    LDA.W MaxMissiles                                                          ;91DF98;
     CMP.W #$0063                                                         ;91DF9B;
     BMI .lessThan99                                                      ;91DF9E;
-    LDA.B $12                                                            ;91DFA0;
+    LDA.B DP_Temp12                                                            ;91DFA0;
     CLC                                                                  ;91DFA2;
-    ADC.W $09D8                                                          ;91DFA3;
-    STA.W $09D8                                                          ;91DFA6;
+    ADC.W ReserveMissiles                                                          ;91DFA3;
+    STA.W ReserveMissiles                                                          ;91DFA6;
     CMP.W #$0063                                                         ;91DFA9;
     BMI .maxMissiles                                                     ;91DFAC;
     LDA.W #$0063                                                         ;91DFAE;
-    STA.W $09D8                                                          ;91DFB1;
+    STA.W ReserveMissiles                                                          ;91DFB1;
     BRA .maxMissiles                                                     ;91DFB4;
 
   .lessThan99:
-    LDA.B $12                                                            ;91DFB6;
+    LDA.B DP_Temp12                                                            ;91DFB6;
     CLC                                                                  ;91DFB8;
-    ADC.W $09D8                                                          ;91DFB9;
-    STA.W $09D8                                                          ;91DFBC;
-    CMP.W $09C8                                                          ;91DFBF;
+    ADC.W ReserveMissiles                                                          ;91DFB9;
+    STA.W ReserveMissiles                                                          ;91DFBC;
+    CMP.W MaxMissiles                                                          ;91DFBF;
     BMI .maxMissiles                                                     ;91DFC2;
-    LDA.W $09C8                                                          ;91DFC4;
-    STA.W $09D8                                                          ;91DFC7;
+    LDA.W MaxMissiles                                                          ;91DFC4;
+    STA.W ReserveMissiles                                                          ;91DFC7;
 
   .maxMissiles:
-    LDA.W $09C8                                                          ;91DFCA;
-    STA.W $09C6                                                          ;91DFCD;
+    LDA.W MaxMissiles                                                          ;91DFCA;
+    STA.W Missiles                                                          ;91DFCD;
 
   .return:
     PLB                                                                  ;91DFD0;
@@ -11858,13 +11858,13 @@ Restore_A_SuperMissiles_ToSamus:
     PLB                                                                  ;91DFD6;
     REP #$30                                                             ;91DFD7;
     CLC                                                                  ;91DFD9;
-    ADC.W $09CA                                                          ;91DFDA;
-    STA.W $09CA                                                          ;91DFDD;
-    CMP.W $09CC                                                          ;91DFE0;
+    ADC.W SuperMissiles                                                          ;91DFDA;
+    STA.W SuperMissiles                                                          ;91DFDD;
+    CMP.W MaxSuperMissiles                                                          ;91DFE0;
     BMI .return                                                          ;91DFE3;
     BEQ .return                                                          ;91DFE5;
-    LDA.W $09CC                                                          ;91DFE7;
-    STA.W $09CA                                                          ;91DFEA;
+    LDA.W MaxSuperMissiles                                                          ;91DFE7;
+    STA.W SuperMissiles                                                          ;91DFEA;
 
   .return:
     PLB                                                                  ;91DFED;
@@ -11880,13 +11880,13 @@ Restore_A_PowerBombs_ToSamus:
     PLB                                                                  ;91DFF3;
     REP #$30                                                             ;91DFF4;
     CLC                                                                  ;91DFF6;
-    ADC.W $09CE                                                          ;91DFF7;
-    STA.W $09CE                                                          ;91DFFA;
-    CMP.W $09D0                                                          ;91DFFD;
+    ADC.W PowerBombs                                                          ;91DFF7;
+    STA.W PowerBombs                                                          ;91DFFA;
+    CMP.W MaxPowerBombs                                                          ;91DFFD;
     BMI .return                                                          ;91E000;
     BEQ .return                                                          ;91E002;
-    LDA.W $09D0                                                          ;91E004;
-    STA.W $09CE                                                          ;91E007;
+    LDA.W MaxPowerBombs                                                          ;91E004;
+    STA.W PowerBombs                                                          ;91E007;
 
   .return:
     PLB                                                                  ;91E00A;
@@ -11902,140 +11902,140 @@ InitializeSamus:
     PHK                                                                  ;91E00F;
     PLB                                                                  ;91E010;
     REP #$30                                                             ;91E011;
-    LDA.W $0DE0                                                          ;91E013;
-    STA.B $12                                                            ;91E016;
-    LDX.W #$0E0B                                                         ;91E018;
+    LDA.W DebugInvincibility                                                          ;91E013;
+    STA.B DP_Temp12                                                            ;91E016;
+    LDX.W #DistanceToEjectSamusDownDueToPostGrappleCollision+1                                                         ;91E018;
     SEP #$20                                                             ;91E01B;
     LDA.B #$00                                                           ;91E01D;
 
   .loopClearSamusRAM:
     STA.W $0000,X                                                        ;91E01F;
     DEX                                                                  ;91E022;
-    CPX.W #$0A02                                                         ;91E023;
+    CPX.W #unused0A02                                                         ;91E023;
     BPL .loopClearSamusRAM                                               ;91E026;
     REP #$20                                                             ;91E028;
-    LDA.W $0998                                                          ;91E02A;
+    LDA.W GameState                                                          ;91E02A;
     CMP.W #$0028                                                         ;91E02D;
     BEQ .demo                                                            ;91E030;
-    LDA.L $7ED914                                                        ;91E032;
+    LDA.L SRAMMirror_LoadingGameState                                                        ;91E032;
     CMP.W #$0022                                                         ;91E036;
     BNE .notZebesLanding                                                 ;91E039;
     LDA.W #RTL_90E8CD                                                    ;91E03B;
-    STA.W $0A42                                                          ;91E03E;
+    STA.W CurrentStateHandler                                                          ;91E03E;
     LDA.W #SamusNewStateHandler_SamusIsLocked                            ;91E041;
-    STA.W $0A44                                                          ;91E044;
+    STA.W NewStateHandler                                                          ;91E044;
     LDA.W #SamusDrawingHandler_Default                                   ;91E047;
-    STA.W $0A5C                                                          ;91E04A;
+    STA.W DrawingHandler                                                          ;91E04A;
     LDA.W #$FFFF                                                         ;91E04D;
-    STA.W $0A2E                                                          ;91E050;
-    STZ.W $0A30                                                          ;91E053;
-    STZ.W $0A32                                                          ;91E056;
+    STA.W ProspectivePoseChangeCommand                                                          ;91E050;
+    STZ.W SpecialProspectivePoseChangeCommand                                                          ;91E053;
+    STZ.W SuperSpecialProspectivePoseChangeCommand                                                          ;91E056;
     JSL.L LoadSamusSuitPalette                                           ;91E059;
     LDA.W #SamusPoseInputHandler_Normal                                  ;91E05D;
-    STA.W $0A60                                                          ;91E060;
+    STA.W PoseInputHandler                                                          ;91E060;
     BRA .demo                                                            ;91E063;
 
   .notZebesLanding:
     LDA.W #RTL_90E8CD                                                    ;91E065;
-    STA.W $0A42                                                          ;91E068;
+    STA.W CurrentStateHandler                                                          ;91E068;
     LDA.W #SamusNewStateHandler_SamusAppearance                          ;91E06B;
-    STA.W $0A44                                                          ;91E06E;
+    STA.W NewStateHandler                                                          ;91E06E;
     LDA.W #SamusDrawingHandler_Default                                   ;91E071;
-    STA.W $0A5C                                                          ;91E074;
-    STZ.W $0A2E                                                          ;91E077;
-    STZ.W $0A30                                                          ;91E07A;
-    STZ.W $0A32                                                          ;91E07D;
+    STA.W DrawingHandler                                                          ;91E074;
+    STZ.W ProspectivePoseChangeCommand                                                          ;91E077;
+    STZ.W SpecialProspectivePoseChangeCommand                                                          ;91E07A;
+    STZ.W SuperSpecialProspectivePoseChangeCommand                                                          ;91E07D;
     LDA.W #SamusPoseInputHandler_Normal                                  ;91E080;
-    STA.W $0A60                                                          ;91E083;
-    LDA.B $12                                                            ;91E086;
-    STA.W $0DE0                                                          ;91E088;
+    STA.W PoseInputHandler                                                          ;91E083;
+    LDA.B DP_Temp12                                                            ;91E086;
+    STA.W DebugInvincibility                                                          ;91E088;
 
   .demo:
     LDA.W #$FFFF                                                         ;91E08B;
-    STA.W $0A28                                                          ;91E08E;
-    STA.W $0A2A                                                          ;91E091;
-    STA.W $0A2C                                                          ;91E094;
-    LDA.W $079F                                                          ;91E097;
+    STA.W ProspectivePose                                                          ;91E08E;
+    STA.W SpecialProspectivePose                                                          ;91E091;
+    STA.W SuperSpecialProspectivePose                                                          ;91E094;
+    LDA.W AreaIndex                                                          ;91E097;
     CMP.W #$0006                                                         ;91E09A;
     BNE .notCeres                                                        ;91E09D;
     LDA.W #SamusTimerHackHandler_HandleTimer                             ;91E09F;
-    STA.W $0A5A                                                          ;91E0A2;
+    STA.W HackHandler                                                          ;91E0A2;
     BRA +                                                                ;91E0A5;
 
   .notCeres:
     LDA.W #RTS_90E90E                                                    ;91E0A7;
-    STA.W $0A5A                                                          ;91E0AA;
+    STA.W HackHandler                                                          ;91E0AA;
 
 +   LDA.W #SamusMovementHandler_Normal                                   ;91E0AD;
-    STA.W $0A58                                                          ;91E0B0;
+    STA.W MovementHandler                                                          ;91E0B0;
     LDA.W #RTS_90F534                                                    ;91E0B3;
-    STA.W $0A5E                                                          ;91E0B6;
+    STA.W DebugCommandPointer                                                          ;91E0B6;
     LDA.W #$0032                                                         ;91E0B9;
-    STA.W $0A12                                                          ;91E0BC;
+    STA.W PreviousEnergyHurtCheck                                                          ;91E0BC;
     LDA.W #$0601                                                         ;91E0BF;
-    STA.W $0A72                                                          ;91E0C2;
+    STA.W VisorPaletteTimer                                                          ;91E0C2;
     LDX.W #$0000                                                         ;91E0C5;
 
   .loopProjectilePreInstructions:
     LDA.W #RTS_90B169                                                    ;91E0C8;
-    STA.W $0C68,X                                                        ;91E0CB;
+    STA.W SamusProjectile_PreInstructions,X                                                        ;91E0CB;
     INX                                                                  ;91E0CE;
     INX                                                                  ;91E0CF;
     CPX.W #$0014                                                         ;91E0D0;
     BMI .loopProjectilePreInstructions                                   ;91E0D3;
     LDA.W #GrappleBeamFunction_Inactive                                  ;91E0D5;
-    STA.W $0D32                                                          ;91E0D8;
+    STA.W GrappleBeam_Function                                                          ;91E0D8;
     LDA.W #$0003                                                         ;91E0DB;
-    STA.W $0A46                                                          ;91E0DE;
-    STZ.W $0A48                                                          ;91E0E1;
-    STZ.W $0A4A                                                          ;91E0E4;
+    STA.W HorizontalSlopeCollision                                                          ;91E0DE;
+    STZ.W HurtFlashCounter                                                          ;91E0E1;
+    STZ.W SuperSpecialPaletteFlags                                                          ;91E0E4;
     LDA.L SamusPhysicsConstants_CameraXSubOffsetFromSamusWhenTurning     ;91E0E7;
-    STA.W $0DA4                                                          ;91E0EB;
+    STA.W CameraXSubSpeed                                                          ;91E0EB;
     LDA.L SamusPhysicsConstants_CameraXOffsetFromSamusWhenTurning        ;91E0EE;
-    STA.W $0DA2                                                          ;91E0F2;
+    STA.W CameraXSpeed                                                          ;91E0F2;
     LDA.L SamusPhysicsConstants_CameraYSubOffsetFromSamusWhenTurning     ;91E0F5;
-    STA.W $0DA8                                                          ;91E0F9;
+    STA.W CameraYSubSpeed                                                          ;91E0F9;
     LDA.L SamusPhysicsConstants_CameraYOffsetFromSamusWhenTurning        ;91E0FC;
-    STA.W $0DA6                                                          ;91E100;
+    STA.W CameraYSpeed                                                          ;91E100;
     LDX.W #$01FE                                                         ;91E103;
     LDA.W #$00FF                                                         ;91E106;
 
   .loopSamusHDMATables:
-    STA.L $7E9800,X                                                      ;91E109;
+    STA.L SuitPickupWindow1HDMADataTable,X                                                      ;91E109;
     DEX                                                                  ;91E10D;
     DEX                                                                  ;91E10E;
     BPL .loopSamusHDMATables                                             ;91E10F;
     LDA.L SamusPhysicsConstants_YSubAccelerationInAir                    ;91E111;
-    STA.W $0B32                                                          ;91E115;
+    STA.W SamusYSubAcceleration                                                          ;91E115;
     LDA.L SamusPhysicsConstants_YAccelerationInAir                       ;91E118;
-    STA.W $0B34                                                          ;91E11C;
+    STA.W SamusYAcceleration                                                          ;91E11C;
     LDA.W #$FFFF                                                         ;91E11F;
-    STA.W $195E                                                          ;91E122;
-    STA.W $1962                                                          ;91E125;
+    STA.W FX_YPosition                                                          ;91E122;
+    STA.W FX_LavaAcidYPosition                                                          ;91E125;
     JSL.L Update_Beam_Tiles_and_Palette                                  ;91E128;
-    STZ.W $1F51                                                          ;91E12C;
-    STZ.W $0A1C                                                          ;91E12F;
-    STZ.W $0A1E                                                          ;91E132;
-    STZ.W $0A20                                                          ;91E135;
-    STZ.W $0A22                                                          ;91E138;
-    STZ.W $0A24                                                          ;91E13B;
-    STZ.W $0A26                                                          ;91E13E;
+    STZ.W CinematicFunction                                                          ;91E12C;
+    STZ.W Pose                                                           ;91E12F;
+    STZ.W PoseXDirection                                                          ;91E132;
+    STZ.W PreviousPose                                                          ;91E135;
+    STZ.W PreviousPoseXDirection                                                          ;91E138;
+    STZ.W LastDifferentPose                                                          ;91E13B;
+    STZ.W LastDifferentPoseXDirection                                                          ;91E13E;
     LDA.W #$FFFF                                                         ;91E141;
-    STA.W $0E1C                                                          ;91E144;
-    STZ.W $09D2                                                          ;91E147;
-    STZ.W $0A04                                                          ;91E14A;
-    STZ.W $18A8                                                          ;91E14D;
-    STZ.W $18AA                                                          ;91E150;
-    STZ.W $0A48                                                          ;91E153;
-    STZ.W $0DE0                                                          ;91E156;
-    LDA.W $0998                                                          ;91E159;
+    STA.W EnemyIndexToShake                                                          ;91E144;
+    STZ.W SelectedHUDItem                                                          ;91E147;
+    STZ.W AutoCancelHUDItemIndex                                                          ;91E14A;
+    STZ.W SamusInvincibilityTimer                                                          ;91E14D;
+    STZ.W SamusKnockbackTimer                                                          ;91E150;
+    STZ.W HurtFlashCounter                                                          ;91E153;
+    STZ.W DebugInvincibility                                                          ;91E156;
+    LDA.W GameState                                                          ;91E159;
     CMP.W #$0028                                                         ;91E15C;
     BNE .notDemo                                                         ;91E15F;
     JSR.W LoadDemoData                                                   ;91E161;
 
   .notDemo:
-    LDA.W $09C2                                                          ;91E164;
-    STA.W $0A12                                                          ;91E167;
+    LDA.W Energy                                                          ;91E164;
+    STA.W PreviousEnergyHurtCheck                                                          ;91E167;
     PLB                                                                  ;91E16A;
     PLP                                                                  ;91E16B;
     RTL                                                                  ;91E16C;
@@ -12050,17 +12050,17 @@ XraySetup:
     PHK                                                                  ;91E16F;
     PLB                                                                  ;91E170;
     REP #$30                                                             ;91E171;
-    LDA.W $0CCC                                                          ;91E173;
+    LDA.W SamusProjectile_CooldownTimer                                                          ;91E173;
     CMP.W #$0007                                                         ;91E176;
     BNE +                                                                ;91E179;
-    LDA.W $0CD2                                                          ;91E17B;
+    LDA.W SamusProjectile_BombCounter                                                          ;91E17B;
     CMP.W #$0005                                                         ;91E17E;
     BNE +                                                                ;91E181;
-    LDA.W $0A66                                                          ;91E183;
+    LDA.W XSpeedDivisor                                                          ;91E183;
     CMP.W #$0002                                                         ;91E186;
     BEQ .returnCarryClear                                                ;91E189;
 
-+   LDA.W $0A1C                                                          ;91E18B;
++   LDA.W Pose                                                           ;91E18B;
     CMP.W #$00A4                                                         ;91E18E;
     BMI .notLanding                                                      ;91E191;
     CMP.W #$00A8                                                         ;91E193;
@@ -12071,22 +12071,22 @@ XraySetup:
     BMI .returnCarryClear                                                ;91E1A0;
 
   .notLanding:
-    LDA.W $0998                                                          ;91E1A2;
+    LDA.W GameState                                                          ;91E1A2;
     CMP.W #$0008                                                         ;91E1A5;
     BNE .returnCarryClear                                                ;91E1A8;
-    LDA.W $0592                                                          ;91E1AA;
+    LDA.W PowerBombExplosionStatus                                                          ;91E1AA;
     BNE .returnCarryClear                                                ;91E1AD;
-    LDA.W $0B2E                                                          ;91E1AF;
+    LDA.W SamusYSpeed                                                          ;91E1AF;
     BNE .returnCarryClear                                                ;91E1B2;
-    LDA.W $0B2C                                                          ;91E1B4;
+    LDA.W SamusYSubSpeed                                                          ;91E1B4;
     BNE .returnCarryClear                                                ;91E1B7;
-    LDA.W $0A11                                                          ;91E1B9;
+    LDA.W PreviousMovementTypeXray                                                          ;91E1B9;
     AND.W #$00FF                                                         ;91E1BC;
     TAX                                                                  ;91E1BF;
     LDA.W .allowedPoses,X                                                ;91E1C0;
     AND.W #$00FF                                                         ;91E1C3;
     BEQ .returnCarryClear                                                ;91E1C6;
-    LDA.W $0A1F                                                          ;91E1C8;
+    LDA.W MovementType                                                          ;91E1C8;
     AND.W #$00FF                                                         ;91E1CB;
     TAX                                                                  ;91E1CE;
     LDA.W .allowedPoses,X                                                ;91E1CF;
@@ -12103,42 +12103,42 @@ XraySetup:
     RTL                                                                  ;91E1E2;
 
   .standing:
-    LDA.W $0A1E                                                          ;91E1E3;
+    LDA.W PoseXDirection                                                          ;91E1E3;
     AND.W #$00FF                                                         ;91E1E6;
     CMP.W #$0004                                                         ;91E1E9;
     BEQ .standingLeft                                                    ;91E1EC;
     LDA.W #$00D5                                                         ;91E1EE;
-    STA.W $0A2A                                                          ;91E1F1;
+    STA.W SpecialProspectivePose                                                          ;91E1F1;
     BRA .merge                                                           ;91E1F4;
 
   .standingLeft:
     LDA.W #$00D6                                                         ;91E1F6;
-    STA.W $0A2A                                                          ;91E1F9;
+    STA.W SpecialProspectivePose                                                          ;91E1F9;
     BRA .merge                                                           ;91E1FC;
 
   .crouching:
-    LDA.W $0A1E                                                          ;91E1FE;
+    LDA.W PoseXDirection                                                          ;91E1FE;
     AND.W #$00FF                                                         ;91E201;
     CMP.W #$0004                                                         ;91E204;
     BEQ .crouchingLeft                                                   ;91E207;
     LDA.W #$00D9                                                         ;91E209;
-    STA.W $0A2A                                                          ;91E20C;
+    STA.W SpecialProspectivePose                                                          ;91E20C;
     BRA .merge                                                           ;91E20F;
 
   .crouchingLeft:
     LDA.W #$00DA                                                         ;91E211;
-    STA.W $0A2A                                                          ;91E214;
+    STA.W SpecialProspectivePose                                                          ;91E214;
 
   .merge:
     LDA.W #$0001                                                         ;91E217;
-    STA.W $0A78                                                          ;91E21A;
+    STA.W TimeIsFrozenFlag                                                          ;91E21A;
     LDA.W #$0005                                                         ;91E21D;
-    STA.W $0A30                                                          ;91E220;
+    STA.W SpecialProspectivePoseChangeCommand                                                          ;91E220;
     LDX.W #$01FE                                                         ;91E223;
 
   .loop:
     LDA.W #$00FF                                                         ;91E226;
-    STA.L $7E9800,X                                                      ;91E229;
+    STA.L XrayWindow2HDMADataTable,X                                                      ;91E229;
     DEX                                                                  ;91E22D;
     DEX                                                                  ;91E22E;
     BPL .loop                                                            ;91E22F;
@@ -12147,34 +12147,34 @@ XraySetup:
     JSL.L Disable_AnimatedTilesObjects                                   ;91E239;
     JSL.L Disable_PaletteFXObjects                                       ;91E23D;
     LDA.W #$0001                                                         ;91E241;
-    STA.W $0A88                                                          ;91E244;
-    LDA.W #$9800                                                         ;91E247; $7E
-    STA.W $0A89                                                          ;91E24A;
-    STZ.W $0A8B                                                          ;91E24D;
-    LDA.W #$98C8                                                         ;91E250; $7E
-    STA.W $0A8C                                                          ;91E253;
+    STA.W Xray_IndirectHDMATable                                                          ;91E244;
+    LDA.W #XrayWindow2HDMADataTable                                                         ;91E247; $7E
+    STA.W Xray_IndirectHDMATable+1                                                          ;91E24A;
+    STZ.W Xray_IndirectHDMATable+3                                                          ;91E24D;
+    LDA.W #XrayWindow2HDMADataTable+$C8                                                         ;91E250; $7E
+    STA.W Xray_IndirectHDMATable+4                                                          ;91E253;
     LDA.W #$0098                                                         ;91E256;
-    STA.W $0A8E                                                          ;91E259;
-    LDA.W #$9990                                                         ;91E25C; $7E
-    STA.W $0A8F                                                          ;91E25F;
-    STZ.W $0A91                                                          ;91E262;
-    STZ.W $0A7A                                                          ;91E265;
-    STZ.W $0A7C                                                          ;91E268;
-    STZ.W $0A7E                                                          ;91E26B;
-    STZ.W $0A84                                                          ;91E26E;
-    STZ.W $0A86                                                          ;91E271;
-    LDA.W $0A1E                                                          ;91E274;
+    STA.W Xray_IndirectHDMATable+6                                                          ;91E259;
+    LDA.W #XrayWindow2HDMADataTable+$190                                                         ;91E25C; $7E
+    STA.W Xray_IndirectHDMATable+7                                                          ;91E25F;
+    STZ.W Xray_IndirectHDMATable+9                                                          ;91E262;
+    STZ.W Xray_State                                                          ;91E265;
+    STZ.W Xray_AngularWidthDelta                                                          ;91E268;
+    STZ.W Xray_AngularSubWidthDelta                                                          ;91E26B;
+    STZ.W Xray_AngularWidth                                                          ;91E26E;
+    STZ.W Xray_AngularSubWidth                                                          ;91E271;
+    LDA.W PoseXDirection                                                          ;91E274;
     AND.W #$00FF                                                         ;91E277;
     CMP.W #$0004                                                         ;91E27A;
     BEQ +                                                                ;91E27D;
     LDA.W #$0040                                                         ;91E27F;
-    STA.W $0A82                                                          ;91E282;
+    STA.W Xray_Angle                                                          ;91E282;
     BRA .returnCarrySet                                                  ;91E285;
 
 +   LDA.W #$00C0                                                         ;91E287;
 
   .facingLeft:
-    STA.W $0A82                                                          ;91E28A;
+    STA.W Xray_Angle                                                          ;91E28A;
 
   .returnCarrySet:
     PLB                                                                  ;91E28D;
@@ -12220,54 +12220,54 @@ Set_NonXray_SamusPose:
 ; even if she was crouched whilst turning
     PHP                                                                  ;91E2AD;
     REP #$30                                                             ;91E2AE;
-    LDA.W $0A1F                                                          ;91E2B0;
+    LDA.W MovementType                                                          ;91E2B0;
     AND.W #$00FF                                                         ;91E2B3;
     CMP.W #$0005                                                         ;91E2B6;
     BEQ .crouching                                                       ;91E2B9;
-    LDA.W $0A1E                                                          ;91E2BB;
+    LDA.W PoseXDirection                                                          ;91E2BB;
     AND.W #$00FF                                                         ;91E2BE;
     CMP.W #$0004                                                         ;91E2C1;
     BEQ .facingLeft                                                      ;91E2C4;
     LDA.W #$0001                                                         ;91E2C6;
-    STA.W $0A1C                                                          ;91E2C9;
+    STA.W Pose                                                           ;91E2C9;
     BRA .merge                                                           ;91E2CC;
 
   .facingLeft:
     LDA.W #$0002                                                         ;91E2CE;
-    STA.W $0A1C                                                          ;91E2D1;
+    STA.W Pose                                                           ;91E2D1;
     BRA .merge                                                           ;91E2D4;
 
   .crouching:
-    LDA.W $0A1E                                                          ;91E2D6;
+    LDA.W PoseXDirection                                                          ;91E2D6;
     AND.W #$00FF                                                         ;91E2D9;
     CMP.W #$0004                                                         ;91E2DC;
     BEQ .crouchingFacingLeft                                             ;91E2DF;
     LDA.W #$0027                                                         ;91E2E1;
-    STA.W $0A1C                                                          ;91E2E4;
+    STA.W Pose                                                           ;91E2E4;
     BRA .merge                                                           ;91E2E7;
 
   .crouchingFacingLeft:
     LDA.W #$0028                                                         ;91E2E9;
-    STA.W $0A1C                                                          ;91E2EC;
+    STA.W Pose                                                           ;91E2EC;
 
   .merge:
     JSL.L InitializeSamusPose_1                                          ;91E2EF;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91E2F3;
-    LDA.W $0A20                                                          ;91E2F7;
-    STA.W $0A24                                                          ;91E2FA;
-    LDA.W $0A22                                                          ;91E2FD;
-    STA.W $0A26                                                          ;91E300;
-    LDA.W $0A1C                                                          ;91E303;
-    STA.W $0A20                                                          ;91E306;
-    LDA.W $0A1E                                                          ;91E309;
-    STA.W $0A22                                                          ;91E30C;
+    LDA.W PreviousPose                                                          ;91E2F7;
+    STA.W LastDifferentPose                                                          ;91E2FA;
+    LDA.W PreviousPoseXDirection                                                          ;91E2FD;
+    STA.W LastDifferentPoseXDirection                                                          ;91E300;
+    LDA.W Pose                                                           ;91E303;
+    STA.W PreviousPose                                                          ;91E306;
+    LDA.W PoseXDirection                                                          ;91E309;
+    STA.W PreviousPoseXDirection                                                          ;91E30C;
     LDA.W #SamusMovementHandler_Normal                                   ;91E30F;
-    STA.W $0A58                                                          ;91E312;
+    STA.W MovementHandler                                                          ;91E312;
     LDA.W #SamusPoseInputHandler_Normal                                  ;91E315;
-    STA.W $0A60                                                          ;91E318;
+    STA.W PoseInputHandler                                                          ;91E318;
     LDA.W #$FFFF                                                         ;91E31B;
-    STA.W $0A80                                                          ;91E31E;
-    LDA.W $0A1C                                                          ;91E321;
+    STA.W Xray_BeamSizeFlag                                                          ;91E31E;
+    LDA.W Pose                                                           ;91E321;
     ASL                                                                  ;91E324;
     ASL                                                                  ;91E325;
     ASL                                                                  ;91E326;
@@ -12275,14 +12275,14 @@ Set_NonXray_SamusPose:
     LDA.L PoseDefinitions_YRadius,X                                      ;91E328;
     AND.W #$00FF                                                         ;91E32C;
     SEC                                                                  ;91E32F;
-    SBC.W $0B00                                                          ;91E330;
-    STA.B $12                                                            ;91E333;
+    SBC.W SamusYRadius                                                          ;91E330;
+    STA.B DP_Temp12                                                            ;91E333;
     BMI .unfreezeEnvironment                                             ;91E335;
-    LDA.W $0AFA                                                          ;91E337;
+    LDA.W SamusYPosition                                                          ;91E337;
     SEC                                                                  ;91E33A;
-    SBC.B $12                                                            ;91E33B;
-    STA.W $0AFA                                                          ;91E33D;
-    STA.W $0B14                                                          ;91E340;
+    SBC.B DP_Temp12                                                            ;91E33B;
+    STA.W SamusYPosition                                                          ;91E33D;
+    STA.W SamusPreviousYPosition                                                          ;91E340;
 
   .unfreezeEnvironment:
     JSL.L Enable_Enemy_Projectiles                                       ;91E343;
@@ -12298,53 +12298,53 @@ Debug_HandleSelectL_B:
 ; Give ammo, all items, switch to next beam configuration, toggle Samus tile viewer
     PHP                                                                  ;91E355;
     REP #$30                                                             ;91E356;
-    LDA.W $05C5                                                          ;91E358;
+    LDA.W Debug_InputL                                                          ;91E358;
     AND.W #$8000                                                         ;91E35B;
     BNE .checkTileViewer                                                 ;91E35E;
     JMP.W .handledInput                                                  ;91E360;
 
   .checkTileViewer:
-    LDA.W $0DF6                                                          ;91E363;
+    LDA.W DebugSamusTileViewerFlag                                                          ;91E363;
     BEQ .toggleOn                                                        ;91E366;
     JMP.W .toggleOff                                                     ;91E368;
 
   .toggleOn:
     LDA.W #$0001                                                         ;91E36B;
-    STA.W $0DF6                                                          ;91E36E;
-    LDA.W $09A6                                                          ;91E371;
+    STA.W DebugSamusTileViewerFlag                                                          ;91E36E;
+    LDA.W EquippedBeams                                                          ;91E371;
     INC                                                                  ;91E374;
-    STA.W $09A6                                                          ;91E375;
+    STA.W EquippedBeams                                                          ;91E375;
     AND.W #$0FFF                                                         ;91E378;
     CMP.W #$000C                                                         ;91E37B;
     BMI +                                                                ;91E37E;
-    LDA.W $09A6                                                          ;91E380;
+    LDA.W EquippedBeams                                                          ;91E380;
     AND.W #$F000                                                         ;91E383;
-    STA.W $09A6                                                          ;91E386;
+    STA.W EquippedBeams                                                          ;91E386;
 
 +   JSL.L Update_Beam_Tiles_and_Palette                                  ;91E389;
     LDA.W #$F33F                                                         ;91E38D; Same extra bit (10) as GT Code
-    STA.W $09A4                                                          ;91E390;
-    STA.W $09A2                                                          ;91E393;
+    STA.W CollectedItems                                                          ;91E390;
+    STA.W EquippedItems                                                          ;91E393;
     LDA.W #$0384                                                         ;91E396;
-    STA.W $09C8                                                          ;91E399;
-    STA.W $09C6                                                          ;91E39C;
+    STA.W MaxMissiles                                                          ;91E399;
+    STA.W Missiles                                                          ;91E39C;
     LDA.W #$005A                                                         ;91E39F;
-    STA.W $09CC                                                          ;91E3A2;
-    STA.W $09CA                                                          ;91E3A5;
+    STA.W MaxSuperMissiles                                                          ;91E3A2;
+    STA.W SuperMissiles                                                          ;91E3A5;
     LDA.W #$005A                                                         ;91E3A8;
-    STA.W $09D0                                                          ;91E3AB;
-    STA.W $09CE                                                          ;91E3AE;
+    STA.W MaxPowerBombs                                                          ;91E3AB;
+    STA.W PowerBombs                                                          ;91E3AE;
     LDA.W #$044B                                                         ;91E3B1;
-    STA.W $09C4                                                          ;91E3B4;
-    STA.W $09C2                                                          ;91E3B7;
+    STA.W MaxEnergy                                                          ;91E3B4;
+    STA.W Energy                                                          ;91E3B7;
     LDA.W #$01F3                                                         ;91E3BA;
-    STA.W $09D6                                                          ;91E3BD;
-    STZ.W $09D8                                                          ;91E3C0;
+    STA.W ReserveEnergy                                                          ;91E3BD;
+    STZ.W ReserveMissiles                                                          ;91E3C0;
     LDA.W #$100F                                                         ;91E3C3;
-    STA.W $09A8                                                          ;91E3C6;
-    LDA.W $09A6                                                          ;91E3C9;
+    STA.W CollectedBeams                                                          ;91E3C6;
+    LDA.W EquippedBeams                                                          ;91E3C9;
     ORA.W #$1000                                                         ;91E3CC;
-    STA.W $09A6                                                          ;91E3CF;
+    STA.W EquippedBeams                                                          ;91E3CF;
     JSL.L AddGrappleToHUDTilemap                                         ;91E3D2;
     JSL.L AddXrayToHUDTilemap                                            ;91E3D6;
     JSL.L AddMissilesToHUDTilemap                                        ;91E3DA;
@@ -12353,10 +12353,10 @@ Debug_HandleSelectL_B:
     BRA .handledInput                                                    ;91E3E6;
 
   .toggleOff:
-    STZ.W $0DF6                                                          ;91E3E8;
+    STZ.W DebugSamusTileViewerFlag                                                          ;91E3E8;
 
   .handledInput:
-    LDA.W $0DF6                                                          ;91E3EB;
+    LDA.W DebugSamusTileViewerFlag                                                          ;91E3EB;
     BEQ .return                                                          ;91E3EE;
     JSL.L Debug_SamusTileViewer                                          ;91E3F0;
 
@@ -12373,69 +12373,69 @@ MakeSamusFaceForward:
     PLB                                                                  ;91E3F9;
     REP #$30                                                             ;91E3FA;
     PHX                                                                  ;91E3FC;
-    LDA.W $09A2                                                          ;91E3FD;
+    LDA.W EquippedItems                                                          ;91E3FD;
     BIT.W #$0020                                                         ;91E400;
     BNE .suited                                                          ;91E403;
     BIT.W #$0001                                                         ;91E405;
     BNE .suited                                                          ;91E408;
     LDA.W #$0000                                                         ;91E40A;
-    STA.W $0A1C                                                          ;91E40D;
+    STA.W Pose                                                           ;91E40D;
     BRA .initSamus                                                       ;91E410;
 
   .suited:
     LDA.W #$009B                                                         ;91E412;
-    STA.W $0A1C                                                          ;91E415;
+    STA.W Pose                                                           ;91E415;
 
   .initSamus:
     JSL.L InitializeSamusPose_1                                          ;91E418;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91E41C;
-    LDA.W $0A20                                                          ;91E420;
-    STA.W $0A24                                                          ;91E423;
-    LDA.W $0A22                                                          ;91E426;
-    STA.W $0A26                                                          ;91E429;
-    LDA.W $0A1C                                                          ;91E42C;
-    STA.W $0A20                                                          ;91E42F;
-    LDA.W $0A1E                                                          ;91E432;
-    STA.W $0A22                                                          ;91E435;
-    LDA.W $0B00                                                          ;91E438;
+    LDA.W PreviousPose                                                          ;91E420;
+    STA.W LastDifferentPose                                                          ;91E423;
+    LDA.W PreviousPoseXDirection                                                          ;91E426;
+    STA.W LastDifferentPoseXDirection                                                          ;91E429;
+    LDA.W Pose                                                           ;91E42C;
+    STA.W PreviousPose                                                          ;91E42F;
+    LDA.W PoseXDirection                                                          ;91E432;
+    STA.W PreviousPoseXDirection                                                          ;91E435;
+    LDA.W SamusYRadius                                                          ;91E438;
     CMP.W #$0018                                                         ;91E43B;
     BEQ .facingForwardRadius18                                           ;91E43E;
-    LDA.W $0AFA                                                          ;91E440;
+    LDA.W SamusYPosition                                                          ;91E440;
     SEC                                                                  ;91E443;
     SBC.W #$0003                                                         ;91E444;
-    STA.W $0AFA                                                          ;91E447;
-    STA.W $0B14                                                          ;91E44A;
+    STA.W SamusYPosition                                                          ;91E447;
+    STA.W SamusPreviousYPosition                                                          ;91E44A;
 
   .facingForwardRadius18:
     LDA.W #SamusCurrentStateHandler_SamusIsLocked                        ;91E44D;
-    STA.W $0A42                                                          ;91E450;
+    STA.W CurrentStateHandler                                                          ;91E450;
     LDA.W #SamusNewStateHandler_SamusIsLocked                            ;91E453;
-    STA.W $0A44                                                          ;91E456;
+    STA.W NewStateHandler                                                          ;91E456;
     LDA.W #$FFFF                                                         ;91E459;
-    STA.W $0A28                                                          ;91E45C;
-    STA.W $0A2A                                                          ;91E45F;
-    STA.W $0A2C                                                          ;91E462;
-    STZ.W $0A2E                                                          ;91E465;
-    STZ.W $0A30                                                          ;91E468;
-    STZ.W $0A32                                                          ;91E46B;
+    STA.W ProspectivePose                                                          ;91E45C;
+    STA.W SpecialProspectivePose                                                          ;91E45F;
+    STA.W SuperSpecialProspectivePose                                                          ;91E462;
+    STZ.W ProspectivePoseChangeCommand                                                          ;91E465;
+    STZ.W SpecialProspectivePoseChangeCommand                                                          ;91E468;
+    STZ.W SuperSpecialProspectivePoseChangeCommand                                                          ;91E46B;
     LDA.W #$001F                                                         ;91E46E;
     JSL.L Run_Samus_Command                                              ;91E471;
-    STZ.W $0B42                                                          ;91E475;
-    STZ.W $0B44                                                          ;91E478;
-    STZ.W $0B46                                                          ;91E47B;
-    STZ.W $0B48                                                          ;91E47E;
-    STZ.W $0B2C                                                          ;91E481;
-    STZ.W $0B2E                                                          ;91E484;
-    STZ.W $0B36                                                          ;91E487;
-    STZ.W $0B20                                                          ;91E48A;
-    STZ.W $0B4A                                                          ;91E48D;
-    STZ.W $0CD0                                                          ;91E490;
-    STZ.W $0CD6                                                          ;91E493;
-    STZ.W $0CD8                                                          ;91E496;
-    STZ.W $0CDA                                                          ;91E499;
-    STZ.W $0CDC                                                          ;91E49C;
-    STZ.W $0CDE                                                          ;91E49F;
-    STZ.W $0CE0                                                          ;91E4A2;
+    STZ.W SamusXExtraRunSpeed                                                          ;91E475;
+    STZ.W SamusXExtraRunSubSpeed                                                          ;91E478;
+    STZ.W SamusXBaseSpeed                                                          ;91E47B;
+    STZ.W SamusXBaseSubSpeed                                                          ;91E47E;
+    STZ.W SamusYSubSpeed                                                          ;91E481;
+    STZ.W SamusYSpeed                                                          ;91E484;
+    STZ.W SamusYDirection                                                          ;91E487;
+    STZ.W MorphBallBounceState                                                          ;91E48A;
+    STZ.W SamusXAccelerationMode                                                          ;91E48D;
+    STZ.W SamusProjectile_FlareCounter                                                          ;91E490;
+    STZ.W SamusProjectile_FlareAnimationFrame                                                          ;91E493;
+    STZ.W SamusProjectile_FlareSlowSparksAnimationFrame0CD8                                                          ;91E496;
+    STZ.W SamusProjectile_FlareFastSparksAnimationFrame0CDA                                                          ;91E499;
+    STZ.W SamusProjectile_FlareAnimationTimer                                                          ;91E49C;
+    STZ.W SamusProjectile_FlareSlowSparksAnimationFrame0CDE                                                          ;91E49F;
+    STZ.W SamusProjectile_FlareFastSparksAnimationFrame0CE0                                                          ;91E4A2;
     JSL.L LoadSamusSuitPalette                                           ;91E4A5;
     PLX                                                                  ;91E4A9;
     PLB                                                                  ;91E4AA;
@@ -12465,21 +12465,21 @@ DrainedSamusController:
     TAX                                                                  ;91E4B6;
     JSR.W (.pointers,X)                                                  ;91E4B7;
     BCC .return                                                          ;91E4BA;
-    LDA.W $0A20                                                          ;91E4BC;
-    STA.W $0A24                                                          ;91E4BF;
-    LDA.W $0A22                                                          ;91E4C2;
-    STA.W $0A26                                                          ;91E4C5;
-    LDA.W $0A1C                                                          ;91E4C8;
-    STA.W $0A20                                                          ;91E4CB;
-    LDA.W $0A1E                                                          ;91E4CE;
-    STA.W $0A22                                                          ;91E4D1;
+    LDA.W PreviousPose                                                          ;91E4BC;
+    STA.W LastDifferentPose                                                          ;91E4BF;
+    LDA.W PreviousPoseXDirection                                                          ;91E4C2;
+    STA.W LastDifferentPoseXDirection                                                          ;91E4C5;
+    LDA.W Pose                                                           ;91E4C8;
+    STA.W PreviousPose                                                          ;91E4CB;
+    LDA.W PoseXDirection                                                          ;91E4CE;
+    STA.W PreviousPoseXDirection                                                          ;91E4D1;
     LDA.W #$FFFF                                                         ;91E4D4;
-    STA.W $0A28                                                          ;91E4D7;
-    STA.W $0A2A                                                          ;91E4DA;
-    STA.W $0A2C                                                          ;91E4DD;
-    STZ.W $0A2E                                                          ;91E4E0;
-    STZ.W $0A30                                                          ;91E4E3;
-    STZ.W $0A32                                                          ;91E4E6;
+    STA.W ProspectivePose                                                          ;91E4D7;
+    STA.W SpecialProspectivePose                                                          ;91E4DA;
+    STA.W SuperSpecialProspectivePose                                                          ;91E4DD;
+    STZ.W ProspectivePoseChangeCommand                                                          ;91E4E0;
+    STZ.W SpecialProspectivePoseChangeCommand                                                          ;91E4E3;
+    STZ.W SuperSpecialProspectivePoseChangeCommand                                                          ;91E4E6;
 
   .return:
     PLY                                                                  ;91E4E9;
@@ -12500,50 +12500,50 @@ DrainedSamusController:
 DrainedSamusController_0_LetDrainedSamusFall:
     LDA.W #$0015                                                         ;91E4F8;
     SEC                                                                  ;91E4FB;
-    SBC.W $0B00                                                          ;91E4FC;
-    STA.B $12                                                            ;91E4FF;
-    LDA.W $0AFA                                                          ;91E501;
+    SBC.W SamusYRadius                                                          ;91E4FC;
+    STA.B DP_Temp12                                                            ;91E4FF;
+    LDA.W SamusYPosition                                                          ;91E501;
     SEC                                                                  ;91E504;
-    SBC.B $12                                                            ;91E505;
-    STA.W $0AFA                                                          ;91E507;
-    STA.W $0B14                                                          ;91E50A;
-    LDA.W $0A1E                                                          ;91E50D;
+    SBC.B DP_Temp12                                                            ;91E505;
+    STA.W SamusYPosition                                                          ;91E507;
+    STA.W SamusPreviousYPosition                                                          ;91E50A;
+    LDA.W PoseXDirection                                                          ;91E50D;
     AND.W #$00FF                                                         ;91E510;
     CMP.W #$0004                                                         ;91E513;
     BEQ .facingLeft                                                      ;91E516;
     LDA.W #$00E8                                                         ;91E518;
-    STA.W $0A1C                                                          ;91E51B;
+    STA.W Pose                                                           ;91E51B;
     BRA +                                                                ;91E51E;
 
   .facingLeft:
     LDA.W #$00E9                                                         ;91E520;
-    STA.W $0A1C                                                          ;91E523;
+    STA.W Pose                                                           ;91E523;
 
 +   LDA.W #$0002                                                         ;91E526;
-    STA.W $0A9A                                                          ;91E529;
+    STA.W NewPoseSamusAnimationFrame                                                          ;91E529;
     JSL.L InitializeSamusPose_1                                          ;91E52C;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91E530;
-    LDA.W $0A1C                                                          ;91E534;
+    LDA.W Pose                                                           ;91E534;
     ASL                                                                  ;91E537;
     ASL                                                                  ;91E538;
     ASL                                                                  ;91E539;
     TAX                                                                  ;91E53A;
     LDA.W PoseDefinitions_YRadius,X                                      ;91E53B;
     AND.W #$00FF                                                         ;91E53E;
-    STA.W $0B00                                                          ;91E541;
-    STZ.W $0B46                                                          ;91E544;
-    STZ.W $0B48                                                          ;91E547;
-    STZ.W $0B2C                                                          ;91E54A;
-    STZ.W $0B2E                                                          ;91E54D;
+    STA.W SamusYRadius                                                          ;91E541;
+    STZ.W SamusXBaseSpeed                                                          ;91E544;
+    STZ.W SamusXBaseSubSpeed                                                          ;91E547;
+    STZ.W SamusYSubSpeed                                                          ;91E54A;
+    STZ.W SamusYSpeed                                                          ;91E54D;
     LDA.W #$0002                                                         ;91E550;
-    STA.W $0B36                                                          ;91E553;
-    STZ.W $0CD0                                                          ;91E556;
-    STZ.W $0CD6                                                          ;91E559;
-    STZ.W $0CD8                                                          ;91E55C;
-    STZ.W $0CDA                                                          ;91E55F;
-    STZ.W $0CDC                                                          ;91E562;
-    STZ.W $0CDE                                                          ;91E565;
-    STZ.W $0CE0                                                          ;91E568;
+    STA.W SamusYDirection                                                          ;91E553;
+    STZ.W SamusProjectile_FlareCounter                                                          ;91E556;
+    STZ.W SamusProjectile_FlareAnimationFrame                                                          ;91E559;
+    STZ.W SamusProjectile_FlareSlowSparksAnimationFrame0CD8                                                          ;91E55C;
+    STZ.W SamusProjectile_FlareFastSparksAnimationFrame0CDA                                                          ;91E55F;
+    STZ.W SamusProjectile_FlareAnimationTimer                                                          ;91E562;
+    STZ.W SamusProjectile_FlareSlowSparksAnimationFrame0CDE                                                          ;91E565;
+    STZ.W SamusProjectile_FlareFastSparksAnimationFrame0CE0                                                          ;91E568;
     JSL.L LoadSamusSuitPalette                                           ;91E56B;
     SEC                                                                  ;91E56F;
     RTS                                                                  ;91E570;
@@ -12553,29 +12553,29 @@ DrainedSamusController_0_LetDrainedSamusFall:
 DrainedSamusController_1_PutSamusIntoStandingDrainedPose:
 ; Put Samus into standing drained pose
     LDA.W #$0010                                                         ;91E571;
-    STA.W $0A94                                                          ;91E574;
-    STZ.W $0A96                                                          ;91E577;
-    LDA.W $0A1E                                                          ;91E57A;
+    STA.W SamusAnimationFrameTimer                                                          ;91E574;
+    STZ.W SamusAnimationFrame                                                          ;91E577;
+    LDA.W PoseXDirection                                                          ;91E57A;
     AND.W #$00FF                                                         ;91E57D;
     CMP.W #$0004                                                         ;91E580;
     BEQ .facingLeft                                                      ;91E583;
     LDA.W #$00EA                                                         ;91E585;
-    STA.W $0A1C                                                          ;91E588;
+    STA.W Pose                                                           ;91E588;
     BRA +                                                                ;91E58B;
 
   .facingLeft:
     LDA.W #$00EB                                                         ;91E58D;
-    STA.W $0A1C                                                          ;91E590;
+    STA.W Pose                                                           ;91E590;
 
 +   LDA.W #RTS_90E90E                                                    ;91E593;
-    STA.W $0A5A                                                          ;91E596;
+    STA.W HackHandler                                                          ;91E596;
     SEC                                                                  ;91E599;
     RTS                                                                  ;91E59A;
 
 
 ;;; $E59B: Drained Samus controller - 2: release Samus from drained pose ;;;
 DrainedSamusController_2_ReleaseSamusFromDrainedPose:
-    LDA.W $0A1C                                                          ;91E59B;
+    LDA.W Pose                                                           ;91E59B;
     CMP.W #$00E8                                                         ;91E59E;
     BEQ .crouchingFalling                                                ;91E5A1;
     CMP.W #$00E9                                                         ;91E5A3;
@@ -12587,32 +12587,32 @@ DrainedSamusController_2_ReleaseSamusFromDrainedPose:
 
   .drainedStanding:
     LDA.W #$0001                                                         ;91E5B2;
-    STA.W $0A94                                                          ;91E5B5;
+    STA.W SamusAnimationFrameTimer                                                          ;91E5B5;
     LDA.W #$0004                                                         ;91E5B8;
-    STA.W $0A96                                                          ;91E5BB;
+    STA.W SamusAnimationFrame                                                          ;91E5BB;
     BRA .merge                                                           ;91E5BE;
 
   .crouchingFalling:
     LDA.W #$0001                                                         ;91E5C0;
-    STA.W $0A94                                                          ;91E5C3;
+    STA.W SamusAnimationFrameTimer                                                          ;91E5C3;
     LDA.W #$000D                                                         ;91E5C6;
-    STA.W $0A96                                                          ;91E5C9;
+    STA.W SamusAnimationFrame                                                          ;91E5C9;
 
   .merge:
-    LDA.W $0A1C                                                          ;91E5CC;
+    LDA.W Pose                                                           ;91E5CC;
     ASL                                                                  ;91E5CF;
     ASL                                                                  ;91E5D0;
     ASL                                                                  ;91E5D1;
     TAX                                                                  ;91E5D2;
     LDA.W PoseDefinitions_YRadius,X                                      ;91E5D3;
     AND.W #$00FF                                                         ;91E5D6;
-    STA.W $0B00                                                          ;91E5D9;
-    STZ.W $0B46                                                          ;91E5DC;
-    STZ.W $0B48                                                          ;91E5DF;
-    STZ.W $0B2C                                                          ;91E5E2;
-    STZ.W $0B2E                                                          ;91E5E5;
+    STA.W SamusYRadius                                                          ;91E5D9;
+    STZ.W SamusXBaseSpeed                                                          ;91E5DC;
+    STZ.W SamusXBaseSubSpeed                                                          ;91E5DF;
+    STZ.W SamusYSubSpeed                                                          ;91E5E2;
+    STZ.W SamusYSpeed                                                          ;91E5E5;
     LDA.W #$0002                                                         ;91E5E8;
-    STA.W $0B36                                                          ;91E5EB;
+    STA.W SamusYDirection                                                          ;91E5EB;
     SEC                                                                  ;91E5EE;
     RTS                                                                  ;91E5EF;
 
@@ -12620,13 +12620,13 @@ DrainedSamusController_2_ReleaseSamusFromDrainedPose:
 ;;; $E5F0: Drained Samus controller - 3: enable hyper beam ;;;
 DrainedSamusController_3_EnableHyperBeam:
     LDA.W #$1009                                                         ;91E5F0;
-    STA.W $09A6                                                          ;91E5F3;
+    STA.W EquippedBeams                                                          ;91E5F3;
     JSL.L Update_Beam_Tiles_and_Palette                                  ;91E5F6;
     LDY.W #PaletteFXObjects_HyperBeam                                    ;91E5FA;
     JSL.L Spawn_PaletteFXObject                                          ;91E5FD;
     LDA.W #$8000                                                         ;91E601;
-    STA.W $0A76                                                          ;91E604;
-    STZ.W $0DC0                                                          ;91E607;
+    STA.W HyperBeam                                                          ;91E604;
+    STZ.W ResumeChargingBeamSFXFlag                                                          ;91E607;
     CLC                                                                  ;91E60A;
     RTS                                                                  ;91E60B;
 
@@ -12634,21 +12634,21 @@ DrainedSamusController_3_EnableHyperBeam:
 ;;; $E60C: Drained Samus controller - 4: put Samus into crouching/falling drained pose ;;;
 DrainedSamusController_4_SetSamusCrouchingFallingDrainedPose:
     LDA.W #$0010                                                         ;91E60C;
-    STA.W $0A94                                                          ;91E60F;
+    STA.W SamusAnimationFrameTimer                                                          ;91E60F;
     LDA.W #$0008                                                         ;91E612;
-    STA.W $0A96                                                          ;91E615;
-    LDA.W $0A1E                                                          ;91E618;
+    STA.W SamusAnimationFrame                                                          ;91E615;
+    LDA.W PoseXDirection                                                          ;91E618;
     AND.W #$00FF                                                         ;91E61B;
     CMP.W #$0004                                                         ;91E61E;
     BEQ .facingLeft                                                      ;91E621;
     LDA.W #$00E8                                                         ;91E623;
-    STA.W $0A1C                                                          ;91E626;
+    STA.W Pose                                                           ;91E626;
     SEC                                                                  ;91E629;
     RTS                                                                  ;91E62A;
 
   .facingLeft:
     LDA.W #$00E9                                                         ;91E62B;
-    STA.W $0A1C                                                          ;91E62E;
+    STA.W Pose                                                           ;91E62E;
     SEC                                                                  ;91E631;
     RTS                                                                  ;91E632;
 
@@ -12665,38 +12665,38 @@ UpdateSamusPoseDueToChangeOfEquipment:
     PHK                                                                  ;91E635;
     PLB                                                                  ;91E636;
     REP #$30                                                             ;91E637;
-    LDA.W $0A1F                                                          ;91E639;
+    LDA.W MovementType                                                          ;91E639;
     AND.W #$00FF                                                         ;91E63C;
     ASL                                                                  ;91E63F;
     TAX                                                                  ;91E640;
     JSR.W (.pointers,X)                                                  ;91E641;
-    LDA.W $09A2                                                          ;91E644;
+    LDA.W EquippedItems                                                          ;91E644;
     BIT.W #$2000                                                         ;91E647;
     BNE .speedBoosterEquipped                                            ;91E64A;
-    STZ.W $0AAE                                                          ;91E64C;
-    STZ.W $0AC0                                                          ;91E64F;
-    STZ.W $0AC2                                                          ;91E652;
-    STZ.W $0B3C                                                          ;91E655;
-    STZ.W $0B3E                                                          ;91E658;
-    STZ.W $0ACE                                                          ;91E65B;
-    STZ.W $0AD0                                                          ;91E65E;
-    STZ.W $0AB0                                                          ;91E661;
-    STZ.W $0AB2                                                          ;91E664;
-    STZ.W $0AB8                                                          ;91E667;
-    STZ.W $0ABA                                                          ;91E66A;
+    STZ.W SpeedEcho_Index                                                          ;91E64C;
+    STZ.W SpeedEcho_XSpeed0                                                          ;91E64F;
+    STZ.W SpeedEcho_XSpeed1                                                          ;91E652;
+    STZ.W SamusRunningMomentumFlag                                                          ;91E655;
+    STZ.W SamusBoostTimer                                                          ;91E658;
+    STZ.W SpecialSamusPaletteFrame                                                          ;91E65B;
+    STZ.W CommonPaletteTimer                                                          ;91E65E;
+    STZ.W SpeedEcho_XPosition0                                                          ;91E661;
+    STZ.W SpeedEcho_XPosition1                                                          ;91E664;
+    STZ.W SpeedEcho_YPosition0                                                          ;91E667;
+    STZ.W SpeedEcho_YPosition1                                                          ;91E66A;
     BRA +                                                                ;91E66D;
 
   .speedBoosterEquipped:
-    LDA.W $0B3C                                                          ;91E66F;
+    LDA.W SamusRunningMomentumFlag                                                          ;91E66F;
     BEQ +                                                                ;91E672;
-    LDA.W $0B3E                                                          ;91E674;
+    LDA.W SamusBoostTimer                                                          ;91E674;
     BNE +                                                                ;91E677;
-    STA.W $0AD0                                                          ;91E679;
-    STZ.W $0ACE                                                          ;91E67C;
+    STA.W CommonPaletteTimer                                                          ;91E679;
+    STZ.W SpecialSamusPaletteFrame                                                          ;91E67C;
     LDA.W SpeedBoostTimerResetValues                                     ;91E67F;
-    STA.W $0B3E                                                          ;91E682;
+    STA.W SamusBoostTimer                                                          ;91E682;
 
-+   LDA.W $0D32                                                          ;91E685;
++   LDA.W GrappleBeam_Function                                                          ;91E685;
     CMP.W #GrappleBeamFunction_Inactive                                  ;91E688;
     BEQ .checkCharge                                                     ;91E68B;
     LDA.W #$0002                                                         ;91E68D;
@@ -12706,20 +12706,20 @@ UpdateSamusPoseDueToChangeOfEquipment:
     BRA .playedSFX                                                       ;91E69B;
 
   .checkCharge:
-    LDA.W $09A6                                                          ;91E69D;
+    LDA.W EquippedBeams                                                          ;91E69D;
     BIT.W #$1000                                                         ;91E6A0;
     BNE .chargeEquipped                                                  ;91E6A3;
-    STZ.W $0CD0                                                          ;91E6A5;
-    STZ.W $0CD6                                                          ;91E6A8;
-    STZ.W $0CD8                                                          ;91E6AB;
-    STZ.W $0CDA                                                          ;91E6AE;
-    STZ.W $0CDC                                                          ;91E6B1;
-    STZ.W $0CDE                                                          ;91E6B4;
-    STZ.W $0CE0                                                          ;91E6B7;
+    STZ.W SamusProjectile_FlareCounter                                                          ;91E6A5;
+    STZ.W SamusProjectile_FlareAnimationFrame                                                          ;91E6A8;
+    STZ.W SamusProjectile_FlareSlowSparksAnimationFrame0CD8                                                          ;91E6AB;
+    STZ.W SamusProjectile_FlareFastSparksAnimationFrame0CDA                                                          ;91E6AE;
+    STZ.W SamusProjectile_FlareAnimationTimer                                                          ;91E6B1;
+    STZ.W SamusProjectile_FlareSlowSparksAnimationFrame0CDE                                                          ;91E6B4;
+    STZ.W SamusProjectile_FlareFastSparksAnimationFrame0CE0                                                          ;91E6B7;
     BRA .playedSFX                                                       ;91E6BA;
 
   .chargeEquipped:
-    LDA.W $0CD0                                                          ;91E6BC;
+    LDA.W SamusProjectile_FlareCounter                                                          ;91E6BC;
     CMP.W #$0010                                                         ;91E6BF;
     BMI .playedSFX                                                       ;91E6C2;
     LDA.W #$0041                                                         ;91E6C4;
@@ -12727,7 +12727,7 @@ UpdateSamusPoseDueToChangeOfEquipment:
 
   .playedSFX:
     JSL.L LoadSamusSuitPalette                                           ;91E6CB;
-    LDA.W $09C2                                                          ;91E6CF;
+    LDA.W Energy                                                          ;91E6CF;
     CMP.W #$001F                                                         ;91E6D2;
     BPL .return                                                          ;91E6D5;
     LDA.W #$0002                                                         ;91E6D7;
@@ -12771,14 +12771,14 @@ UpdateSamusPoseDueToChangeOfEquipment:
 
 ;;; $E719: Update Samus previous pose ;;;
 UpdateSamusPreviousPose:
-    LDA.W $0A20                                                          ;91E719;
-    STA.W $0A24                                                          ;91E71C;
-    LDA.W $0A22                                                          ;91E71F;
-    STA.W $0A26                                                          ;91E722;
-    LDA.W $0A1C                                                          ;91E725;
-    STA.W $0A20                                                          ;91E728;
-    LDA.W $0A1E                                                          ;91E72B;
-    STA.W $0A22                                                          ;91E72E;
+    LDA.W PreviousPose                                                          ;91E719;
+    STA.W LastDifferentPose                                                          ;91E71C;
+    LDA.W PreviousPoseXDirection                                                          ;91E71F;
+    STA.W LastDifferentPoseXDirection                                                          ;91E722;
+    LDA.W Pose                                                           ;91E725;
+    STA.W PreviousPose                                                          ;91E728;
+    LDA.W PoseXDirection                                                          ;91E72B;
+    STA.W PreviousPoseXDirection                                                          ;91E72E;
     RTS                                                                  ;91E731;
 
 
@@ -12789,7 +12789,7 @@ RTS_91E732:
 
 ;;; $E733: Update Samus pose due to change of equipment - standing ;;;
 UpdateSamusPoseEquipment_Standing:
-    LDA.W $0A1C                                                          ;91E733;
+    LDA.W Pose                                                           ;91E733;
     CMP.W #$0000                                                         ;91E736; >.<
     BEQ .facingForward                                                   ;91E739;
     CMP.W #$009B                                                         ;91E73B;
@@ -12797,7 +12797,7 @@ UpdateSamusPoseEquipment_Standing:
     RTS                                                                  ;91E740;
 
   .facingForward:
-    LDA.W $09A2                                                          ;91E741;
+    LDA.W EquippedItems                                                          ;91E741;
     BIT.W #$0001                                                         ;91E744;
     BNE .upgradeSuit                                                     ;91E747;
     BIT.W #$0020                                                         ;91E749;
@@ -12806,17 +12806,17 @@ UpdateSamusPoseEquipment_Standing:
 
   .upgradeSuit:
     LDA.W #$009B                                                         ;91E74F;
-    STA.W $0A1C                                                          ;91E752;
+    STA.W Pose                                                           ;91E752;
     BRA .poseChanged                                                     ;91E755;
 
   .suited:
-    LDA.W $09A2                                                          ;91E757;
+    LDA.W EquippedItems                                                          ;91E757;
     BIT.W #$0001                                                         ;91E75A;
     BNE .return                                                          ;91E75D;
     BIT.W #$0020                                                         ;91E75F;
     BNE .return                                                          ;91E762;
     LDA.W #$0000                                                         ;91E764;
-    STA.W $0A1C                                                          ;91E767;
+    STA.W Pose                                                           ;91E767;
 
   .poseChanged:
     JSL.L InitializeSamusPose_1                                          ;91E76A;
@@ -12829,20 +12829,20 @@ UpdateSamusPoseEquipment_Standing:
 
 ;;; $E776: Update Samus pose due to change of equipment - spin jumping ;;;
 UpdateSamusPoseEquipment_SpinJumping:
-    LDA.W $0A1E                                                          ;91E776;
+    LDA.W PoseXDirection                                                          ;91E776;
     AND.W #$00FF                                                         ;91E779;
     CMP.W #$0004                                                         ;91E77C;
     BEQ .facingLeft                                                      ;91E77F;
     LDA.W #$0108                                                         ;91E781;
-    STA.W $0A22                                                          ;91E784;
+    STA.W PreviousPoseXDirection                                                          ;91E784;
     BRA .checkSpaceScrew                                                 ;91E787;
 
   .facingLeft:
     LDA.W #$0104                                                         ;91E789;
-    STA.W $0A22                                                          ;91E78C;
+    STA.W PreviousPoseXDirection                                                          ;91E78C;
 
   .checkSpaceScrew:
-    LDA.W $0A1C                                                          ;91E78F;
+    LDA.W Pose                                                           ;91E78F;
     CMP.W #$0081                                                         ;91E792;
     BEQ .screwAttack                                                     ;91E795;
     CMP.W #$0082                                                         ;91E797;
@@ -12854,7 +12854,7 @@ UpdateSamusPoseEquipment_SpinJumping:
     BRA .merge                                                           ;91E7A6;
 
   .spaceJump:
-    LDA.W $09A2                                                          ;91E7A8;
+    LDA.W EquippedItems                                                          ;91E7A8;
     BIT.W #$0008                                                         ;91E7AB;
     BNE .changeToScrewAttack                                             ;91E7AE;
     BIT.W #$0200                                                         ;91E7B0;
@@ -12862,7 +12862,7 @@ UpdateSamusPoseEquipment_SpinJumping:
     BRA .merge                                                           ;91E7B5;
 
   .screwAttack:
-    LDA.W $09A2                                                          ;91E7B7;
+    LDA.W EquippedItems                                                          ;91E7B7;
     BIT.W #$0008                                                         ;91E7BA;
     BNE .merge                                                           ;91E7BD;
     BIT.W #$0200                                                         ;91E7BF;
@@ -12870,60 +12870,60 @@ UpdateSamusPoseEquipment_SpinJumping:
     BRA .changeToSpinJump                                                ;91E7C4;
 
   .changeToScrewAttack:
-    LDA.W $0A1E                                                          ;91E7C6;
+    LDA.W PoseXDirection                                                          ;91E7C6;
     AND.W #$00FF                                                         ;91E7C9;
     CMP.W #$0004                                                         ;91E7CC;
     BEQ ..facingLeft                                                     ;91E7CF;
     LDA.W #$0081                                                         ;91E7D1;
-    STA.W $0A1C                                                          ;91E7D4;
+    STA.W Pose                                                           ;91E7D4;
     BRA .merge                                                           ;91E7D7;
 
   ..facingLeft:
     LDA.W #$0082                                                         ;91E7D9;
-    STA.W $0A1C                                                          ;91E7DC;
+    STA.W Pose                                                           ;91E7DC;
     BRA .merge                                                           ;91E7DF;
 
   .changeToSpaceJump:
-    LDA.W $0A1E                                                          ;91E7E1;
+    LDA.W PoseXDirection                                                          ;91E7E1;
     AND.W #$00FF                                                         ;91E7E4;
     CMP.W #$0004                                                         ;91E7E7;
     BEQ ..facingLeft                                                     ;91E7EA;
     LDA.W #$001B                                                         ;91E7EC;
-    STA.W $0A1C                                                          ;91E7EF;
+    STA.W Pose                                                           ;91E7EF;
     BRA .merge                                                           ;91E7F2;
 
   ..facingLeft:
     LDA.W #$001C                                                         ;91E7F4;
-    STA.W $0A1C                                                          ;91E7F7;
+    STA.W Pose                                                           ;91E7F7;
     BRA .merge                                                           ;91E7FA;
 
   .changeToSpinJump:
-    LDA.W $0A1E                                                          ;91E7FC;
+    LDA.W PoseXDirection                                                          ;91E7FC;
     AND.W #$00FF                                                         ;91E7FF;
     CMP.W #$0004                                                         ;91E802;
     BEQ ..facingLeft                                                     ;91E805;
     LDA.W #$0019                                                         ;91E807;
-    STA.W $0A1C                                                          ;91E80A;
+    STA.W Pose                                                           ;91E80A;
     BRA .merge                                                           ;91E80D;
 
   ..facingLeft:
     LDA.W #$001A                                                         ;91E80F;
-    STA.W $0A1C                                                          ;91E812;
+    STA.W Pose                                                           ;91E812;
 
   .merge:
     JSL.L InitializeSamusPose_1                                          ;91E815;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91E819;
-    LDA.W $0A1E                                                          ;91E81D;
+    LDA.W PoseXDirection                                                          ;91E81D;
     AND.W #$00FF                                                         ;91E820;
     CMP.W #$0004                                                         ;91E823;
     BEQ ..facingLeft                                                     ;91E826;
     LDA.W #$0308                                                         ;91E828;
-    STA.W $0A22                                                          ;91E82B;
+    STA.W PreviousPoseXDirection                                                          ;91E82B;
     BRA +                                                                ;91E82E;
 
   ..facingLeft:
     LDA.W #$0304                                                         ;91E830;
-    STA.W $0A22                                                          ;91E833;
+    STA.W PreviousPoseXDirection                                                          ;91E833;
 
 +   JSR.W UpdateSamusPreviousPose                                        ;91E836;
     RTS                                                                  ;91E839;
@@ -12931,20 +12931,20 @@ UpdateSamusPoseEquipment_SpinJumping:
 
 ;;; $E83A: Update Samus pose due to change of equipment - morph ball ;;;
 UpdateSamusPoseEquipment_MorphBall:
-    LDA.W $09A2                                                          ;91E83A;
+    LDA.W EquippedItems                                                          ;91E83A;
     BIT.W #$0002                                                         ;91E83D;
     BEQ .return                                                          ;91E840;
-    LDA.W $0A1E                                                          ;91E842;
+    LDA.W PoseXDirection                                                          ;91E842;
     AND.W #$00FF                                                         ;91E845;
     CMP.W #$0004                                                         ;91E848;
     BEQ .facingLeft                                                      ;91E84B;
     LDA.W #$0079                                                         ;91E84D;
-    STA.W $0A1C                                                          ;91E850;
+    STA.W Pose                                                           ;91E850;
     BRA +                                                                ;91E853;
 
   .facingLeft:
     LDA.W #$007A                                                         ;91E855;
-    STA.W $0A1C                                                          ;91E858;
+    STA.W Pose                                                           ;91E858;
 
 +   JSL.L InitializeSamusPose_1                                          ;91E85B;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91E85F;
@@ -12956,20 +12956,20 @@ UpdateSamusPoseEquipment_MorphBall:
 
 ;;; $E867: Update Samus pose due to change of equipment - spring ball ;;;
 UpdateSamusPoseEquipment_SpringBall:
-    LDA.W $09A2                                                          ;91E867;
+    LDA.W EquippedItems                                                          ;91E867;
     BIT.W #$0002                                                         ;91E86A;
     BNE .return                                                          ;91E86D;
-    LDA.W $0A1E                                                          ;91E86F;
+    LDA.W PoseXDirection                                                          ;91E86F;
     AND.W #$00FF                                                         ;91E872;
     CMP.W #$0004                                                         ;91E875;
     BEQ .facingLeft                                                      ;91E878;
     LDA.W #$001D                                                         ;91E87A;
-    STA.W $0A1C                                                          ;91E87D;
+    STA.W Pose                                                           ;91E87D;
     BRA +                                                                ;91E880;
 
   .facingLeft:
     LDA.W #$0041                                                         ;91E882;
-    STA.W $0A1C                                                          ;91E885;
+    STA.W Pose                                                           ;91E885;
 
 +   JSL.L InitializeSamusPose_1                                          ;91E888;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91E88C;
@@ -12981,35 +12981,35 @@ UpdateSamusPoseEquipment_SpringBall:
 
 ;;; $E894: Update Samus pose due to change of equipment - wall jumping ;;;
 UpdateSamusPoseEquipment_WallJumping:
-    LDA.W $09A2                                                          ;91E894;
+    LDA.W EquippedItems                                                          ;91E894;
     BIT.W #$0008                                                         ;91E897;
     BNE .screwAttack                                                     ;91E89A;
     BIT.W #$0200                                                         ;91E89C;
     BNE .spaceJump                                                       ;91E89F;
     LDA.W #$0003                                                         ;91E8A1;
-    STA.W $0A96                                                          ;91E8A4;
+    STA.W SamusAnimationFrame                                                          ;91E8A4;
     RTS                                                                  ;91E8A7;
 
   .spaceJump:
     LDA.W #$000D                                                         ;91E8A8;
-    STA.W $0A96                                                          ;91E8AB;
+    STA.W SamusAnimationFrame                                                          ;91E8AB;
     RTS                                                                  ;91E8AE;
 
   .screwAttack:
     LDA.W #$0017                                                         ;91E8AF;
-    STA.W $0A96                                                          ;91E8B2;
+    STA.W SamusAnimationFrame                                                          ;91E8B2;
     RTS                                                                  ;91E8B5;
 
 
 ;;; $E8B6: Set prospective Samus pose according to solid vertical collision result ;;;
 SetProspectiveSamusPoseAccordingToSolidVerticalCollision_PSP:
-; Called by "active" $0A44 handlers (where active = normal or title/intro demo)
+; Called by "active" NewStateHandler handlers (where active = normal or title/intro demo)
     PHP                                                                  ;91E8B6;
     PHB                                                                  ;91E8B7;
     PHK                                                                  ;91E8B8;
     PLB                                                                  ;91E8B9;
     REP #$30                                                             ;91E8BA;
-    LDA.W $0DC6                                                          ;91E8BC;
+    LDA.W SamusSolidVerticalCollisionResult                                                          ;91E8BC;
     BEQ .return                                                          ;91E8BF;
     AND.W #$00FF                                                         ;91E8C1;
     ASL                                                                  ;91E8C4;
@@ -13034,26 +13034,26 @@ SetProspectiveSamusPoseAccordingToSolidVerticalCollision_PSP:
 UNUSED_PSP_91E8D8:
 ; Set pose for unwritten Samus movement
 ; Clone of PSP_HitCeiling
-    LDA.W $0A1C                                                          ;91E8D8;
-    STA.W $0A28                                                          ;91E8DB;
+    LDA.W Pose                                                           ;91E8D8;
+    STA.W ProspectivePose                                                          ;91E8DB;
     LDA.W #$0005                                                         ;91E8DE;
-    STA.W $0A2E                                                          ;91E8E1;
+    STA.W ProspectivePoseChangeCommand                                                          ;91E8E1;
     RTS                                                                  ;91E8E4;
 
 
 ;;; $E8E5: Set prospective Samus pose according to solid vertical collision result - hit ceiling ;;;
 PSP_HitCeiling:
 ; Set pose for Samus upward movement after collision with block or solid enemy
-    LDA.W $0A1C                                                          ;91E8E5;
-    STA.W $0A28                                                          ;91E8E8;
+    LDA.W Pose                                                           ;91E8E5;
+    STA.W ProspectivePose                                                          ;91E8E8;
     LDA.W #$0005                                                         ;91E8EB;
-    STA.W $0A2E                                                          ;91E8EE;
+    STA.W ProspectivePoseChangeCommand                                                          ;91E8EE;
     RTS                                                                  ;91E8F1;
 
 
 ;;; $E8F2: Set prospective Samus pose according to solid vertical collision result - falling ;;;
 PSP_Falling:
-    LDA.W $0DC7                                                          ;91E8F2;
+    LDA.W SamusDownwardsMovementSolidCollisionResult                                                          ;91E8F2;
     AND.W #$00FF                                                         ;91E8F5;
     CMP.W #$0004                                                         ;91E8F8;
     BNE .changed                                                         ;91E8FB;
@@ -13063,20 +13063,20 @@ PSP_Falling:
     ASL                                                                  ;91E8FE;
     ASL                                                                  ;91E8FF;
     TAX                                                                  ;91E900;
-    LDA.W $0A1E                                                          ;91E901;
+    LDA.W PoseXDirection                                                          ;91E901;
     AND.W #$00FF                                                         ;91E904;
     CMP.W #$0004                                                         ;91E907;
     BEQ .facingLeft                                                      ;91E90A;
     LDA.W .right,X                                                       ;91E90C;
-    STA.W $0A28                                                          ;91E90F;
+    STA.W ProspectivePose                                                          ;91E90F;
     BRA +                                                                ;91E912;
 
   .facingLeft:
     LDA.W .left,X                                                        ;91E914;
-    STA.W $0A28                                                          ;91E917;
+    STA.W ProspectivePose                                                          ;91E917;
 
 +   LDA.W #$0005                                                         ;91E91A;
-    STA.W $0A2E                                                          ;91E91D;
+    STA.W ProspectivePoseChangeCommand                                                          ;91E91D;
     RTS                                                                  ;91E920;
 
 ;        _________ Facing right
@@ -13093,7 +13093,7 @@ PSP_Falling:
 
 ;;; $E931: Set prospective Samus pose according to solid vertical collision result - landed ;;;
 PSP_Landed:
-    LDA.W $0DC7                                                          ;91E931;
+    LDA.W SamusDownwardsMovementSolidCollisionResult                                                          ;91E931;
     AND.W #$00FF                                                         ;91E934;
     CMP.W #$0004                                                         ;91E937;
     BEQ .return                                                          ;91E93A;
@@ -13102,12 +13102,12 @@ PSP_Landed:
     JSR.W (.pointers,X)                                                  ;91E93E;
     BCC .solidVerticalCollision                                          ;91E941;
     LDA.W #$0000                                                         ;91E943;
-    STA.W $0A2E                                                          ;91E946;
+    STA.W ProspectivePoseChangeCommand                                                          ;91E946;
     RTS                                                                  ;91E949;
 
   .solidVerticalCollision:
     LDA.W #$0005                                                         ;91E94A;
-    STA.W $0A2E                                                          ;91E94D;
+    STA.W ProspectivePoseChangeCommand                                                          ;91E94D;
 
   .return:
     RTS                                                                  ;91E950;
@@ -13125,13 +13125,13 @@ PSP_Landed:
 PSP_Landed_Grounded:
 ;; Returns:
 ;;     Carry: clear
-    LDA.W $0A23                                                          ;91E95D;
+    LDA.W PreviousMovementType                                                          ;91E95D;
     AND.W #$00FF                                                         ;91E960;
     CMP.W #$0003                                                         ;91E963;
     BEQ .wasSpinning                                                     ;91E966;
     CMP.W #$0014                                                         ;91E968;
     BEQ .wasSpinning                                                     ;91E96B;
-    LDA.W $0A1C                                                          ;91E96D;
+    LDA.W Pose                                                           ;91E96D;
     ASL                                                                  ;91E970;
     ASL                                                                  ;91E971;
     ASL                                                                  ;91E972;
@@ -13149,7 +13149,7 @@ PSP_Landed_Grounded:
     ASL                                                                  ;91E989;
     TAX                                                                  ;91E98A;
     LDA.W .directions,X                                                  ;91E98B;
-    STA.W $0A28                                                          ;91E98E;
+    STA.W ProspectivePose                                                          ;91E98E;
     CLC                                                                  ;91E991;
     RTS                                                                  ;91E992;
 
@@ -13159,53 +13159,53 @@ PSP_Landed_Grounded:
     BRA .landingFromNormalJumpNoFire                                     ;91E999;
 
   .aimHorizontal:
-    LDA.B $8B                                                            ;91E99B;
-    BIT.W $09B2                                                          ;91E99D;
+    LDA.B DP_Controller1Input                                                            ;91E99B;
+    BIT.W ShotBinding                                                          ;91E99D;
     BEQ .landingFromNormalJumpNoShot                                     ;91E9A0;
-    LDA.W $0A1E                                                          ;91E9A2;
+    LDA.W PoseXDirection                                                          ;91E9A2;
     AND.W #$00FF                                                         ;91E9A5;
     CMP.W #$0004                                                         ;91E9A8;
     BEQ ..facingLeft                                                     ;91E9AB;
     LDA.W #$00E6                                                         ;91E9AD;
-    STA.W $0A28                                                          ;91E9B0;
+    STA.W ProspectivePose                                                          ;91E9B0;
     CLC                                                                  ;91E9B3;
     RTS                                                                  ;91E9B4;
 
   ..facingLeft:
     LDA.W #$00E7                                                         ;91E9B5;
-    STA.W $0A28                                                          ;91E9B8;
+    STA.W ProspectivePose                                                          ;91E9B8;
     CLC                                                                  ;91E9BB;
     RTS                                                                  ;91E9BC;
 
   .noAim:
-    LDA.W $0A1E                                                          ;91E9BD;
+    LDA.W PoseXDirection                                                          ;91E9BD;
     AND.W #$00FF                                                         ;91E9C0;
     CMP.W #$0004                                                         ;91E9C3;
     BEQ ..facingLeft                                                     ;91E9C6;
     LDA.W #$00A4                                                         ;91E9C8;
-    STA.W $0A28                                                          ;91E9CB;
+    STA.W ProspectivePose                                                          ;91E9CB;
     CLC                                                                  ;91E9CE;
     RTS                                                                  ;91E9CF;
 
   ..facingLeft:
     LDA.W #$00A5                                                         ;91E9D0;
-    STA.W $0A28                                                          ;91E9D3;
+    STA.W ProspectivePose                                                          ;91E9D3;
     CLC                                                                  ;91E9D6;
     RTS                                                                  ;91E9D7;
 
   .wasSpinning:
-    LDA.W $0A1E                                                          ;91E9D8;
+    LDA.W PoseXDirection                                                          ;91E9D8;
     AND.W #$00FF                                                         ;91E9DB;
     CMP.W #$0004                                                         ;91E9DE;
     BEQ ..facingLeft                                                     ;91E9E1;
     LDA.W #$00A6                                                         ;91E9E3;
-    STA.W $0A28                                                          ;91E9E6;
+    STA.W ProspectivePose                                                          ;91E9E6;
     CLC                                                                  ;91E9E9;
     RTS                                                                  ;91E9EA;
 
   ..facingLeft:
     LDA.W #$00A7                                                         ;91E9EB;
-    STA.W $0A28                                                          ;91E9EE;
+    STA.W ProspectivePose                                                          ;91E9EE;
     CLC                                                                  ;91E9F1;
     RTS                                                                  ;91E9F2;
 
@@ -13227,9 +13227,9 @@ PSP_Landed_MorphBallGrounded:
 ;; Returns:
 ;;     Carry: clear
 
-; TODO: talk about how dequipping spring ball during bounce causes jump table overflow here due to [$0B20] >= 600h
+; TODO: talk about how dequipping spring ball during bounce causes jump table overflow here due to MorphBallBounceState >= 600h
 ;       need to check other places like SolidVerticalCollision_Landed_MorphBallGrounded too
-    LDA.W $0B20                                                          ;91EA07;
+    LDA.W MorphBallBounceState                                                          ;91EA07;
     ASL                                                                  ;91EA0A;
     TAX                                                                  ;91EA0B;
     JMP.W (.pointers,X)                                                  ;91EA0C;
@@ -13242,36 +13242,36 @@ PSP_Landed_MorphBallGrounded:
 
 ;;; $EA15: Set prospective Samus pose according to solid vertical collision result - landed - morph ball grounded - not bouncing ;;;
 PSP_Landed_MorphBallGrounded_NotBouncing:
-    LDA.W $0B2E                                                          ;91EA15;
+    LDA.W SamusYSpeed                                                          ;91EA15;
     CMP.W #$0003                                                         ;91EA18;
     BMI PSP_Landed_MorphBallGrounded_SecondBounce                        ;91EA1B;
-    LDA.W $0A1C                                                          ;91EA1D;
-    STA.W $0A28                                                          ;91EA20;
+    LDA.W Pose                                                           ;91EA1D;
+    STA.W ProspectivePose                                                          ;91EA20;
     CLC                                                                  ;91EA23;
     RTS                                                                  ;91EA24;
 
 
 ;;; $EA25: Set prospective Samus pose according to solid vertical collision result - landed - morph ball grounded - first bounce ;;;
 PSP_Landed_MorphBallGrounded_FirstBounce:
-    LDA.W $0A1C                                                          ;91EA25;
-    STA.W $0A28                                                          ;91EA28;
+    LDA.W Pose                                                           ;91EA25;
+    STA.W ProspectivePose                                                          ;91EA28;
     CLC                                                                  ;91EA2B;
     RTS                                                                  ;91EA2C;
 
 
 ;;; $EA2D: Set prospective Samus pose according to solid vertical collision result - landed - morph ball grounded - second bounce ;;;
 PSP_Landed_MorphBallGrounded_SecondBounce:
-    LDA.W $0A1E                                                          ;91EA2D;
+    LDA.W PoseXDirection                                                          ;91EA2D;
     AND.W #$00FF                                                         ;91EA30;
     CMP.W #$0004                                                         ;91EA33;
     BEQ .facingLeft                                                      ;91EA36;
     LDA.W #$001D                                                         ;91EA38;
-    STA.W $0A28                                                          ;91EA3B;
+    STA.W ProspectivePose                                                          ;91EA3B;
     BRA .return                                                          ;91EA3E;
 
   .facingLeft:
     LDA.W #$0041                                                         ;91EA40;
-    STA.W $0A28                                                          ;91EA43;
+    STA.W ProspectivePose                                                          ;91EA43;
 
   .return:
     CLC                                                                  ;91EA46;
@@ -13280,17 +13280,17 @@ PSP_Landed_MorphBallGrounded_SecondBounce:
 
 ;;; $EA48: Set prospective Samus pose according to solid vertical collision result - landed - unused ;;;
 UNUSED_PSP_Landed_91EA48:
-    LDA.W $0A1E                                                          ;91EA48;
+    LDA.W PoseXDirection                                                          ;91EA48;
     AND.W #$00FF                                                         ;91EA4B;
     CMP.W #$0004                                                         ;91EA4E;
     BEQ .facingLeft                                                      ;91EA51;
     LDA.W #$0020                                                         ;91EA53;
-    STA.W $0A28                                                          ;91EA56;
+    STA.W ProspectivePose                                                          ;91EA56;
     BRA .return                                                          ;91EA59;
 
   .facingLeft:
     LDA.W #$0042                                                         ;91EA5B;
-    STA.W $0A28                                                          ;91EA5E;
+    STA.W ProspectivePose                                                          ;91EA5E;
 
   .return:
     CLC                                                                  ;91EA61;
@@ -13301,16 +13301,16 @@ UNUSED_PSP_Landed_91EA48:
 PSP_Landed_SpringBallGrounded:
 ;; Returns:
 ;;     Carry: clear
-    LDA.B $8B                                                            ;91EA63;
-    BIT.W $09B4                                                          ;91EA65;
+    LDA.B DP_Controller1Input                                                            ;91EA63;
+    BIT.W JumpBinding                                                          ;91EA65;
     BEQ .pressingJump                                                    ;91EA68;
-    LDA.W $0A1C                                                          ;91EA6A;
-    STA.W $0A28                                                          ;91EA6D;
+    LDA.W Pose                                                           ;91EA6A;
+    STA.W ProspectivePose                                                          ;91EA6D;
     CLC                                                                  ;91EA70;
     RTS                                                                  ;91EA71;
 
   .pressingJump:
-    LDA.W $0B20                                                          ;91EA72;
+    LDA.W MorphBallBounceState                                                          ;91EA72;
     AND.W #$00FF                                                         ;91EA75;
     ASL                                                                  ;91EA78;
     TAX                                                                  ;91EA79;
@@ -13324,67 +13324,67 @@ PSP_Landed_SpringBallGrounded:
 
 ;;; $EA83: Set prospective Samus pose according to solid vertical collision result - landed - spring ball grounded - not bouncing ;;;
 PSP_Landed_SpringBallGrounded_NotBouncing:
-    LDA.W $0B2E                                                          ;91EA83;
+    LDA.W SamusYSpeed                                                          ;91EA83;
     CMP.W #$0003                                                         ;91EA86;
     BMI PSP_Landed_SpringBallGrounded_SecondBounce                       ;91EA89;
-    LDA.W $0A1C                                                          ;91EA8B;
-    STA.W $0A28                                                          ;91EA8E;
+    LDA.W Pose                                                           ;91EA8B;
+    STA.W ProspectivePose                                                          ;91EA8E;
     CLC                                                                  ;91EA91;
     RTS                                                                  ;91EA92;
 
 
 ;;; $EA93: Set prospective Samus pose according to solid vertical collision result - landed - spring ball grounded - first bounce ;;;
 PSP_Landed_SpringBallGrounded_FirstBounce:
-    LDA.W $0A1C                                                          ;91EA93;
-    STA.W $0A28                                                          ;91EA96;
+    LDA.W Pose                                                           ;91EA93;
+    STA.W ProspectivePose                                                          ;91EA96;
     CLC                                                                  ;91EA99;
     RTS                                                                  ;91EA9A;
 
 
 ;;; $EA9B: Set prospective Samus pose according to solid vertical collision result - landed - spring ball grounded - second bounce ;;;
 PSP_Landed_SpringBallGrounded_SecondBounce:
-    LDA.W $0A1E                                                          ;91EA9B;
+    LDA.W PoseXDirection                                                          ;91EA9B;
     AND.W #$00FF                                                         ;91EA9E;
     CMP.W #$0004                                                         ;91EAA1;
     BEQ .facingLeft                                                      ;91EAA4;
     LDA.W #$0079                                                         ;91EAA6;
-    STA.W $0A28                                                          ;91EAA9;
+    STA.W ProspectivePose                                                          ;91EAA9;
     BRA .return                                                          ;91EAAC;
 
   .facingLeft:
     LDA.W #$007A                                                         ;91EAAE;
-    STA.W $0A28                                                          ;91EAB1;
+    STA.W ProspectivePose                                                          ;91EAB1;
 
   .return:
     CLC                                                                  ;91EAB4;
     RTS                                                                  ;91EAB5;
 
 
-;;; $EAB6: Set prospective Samus pose according to solid vertical collision result - landed - [$0DC7] = 5 ;;;
+;;; $EAB6: Set prospective Samus pose according to solid vertical collision result - landed - SamusDownwardsMovementSolidCollisionResult = 5 ;;;
 UNUSED_PSP_Landed_5_91EAB6:
-; AFAIK, $0DC7 is never 5
-    LDA.W $0A1C                                                          ;91EAB6;
-    STA.W $0A28                                                          ;91EAB9;
+; AFAIK, SamusDownwardsMovementSolidCollisionResult is never 5
+    LDA.W Pose                                                           ;91EAB6;
+    STA.W ProspectivePose                                                          ;91EAB9;
     CLC                                                                  ;91EABC;
     RTS                                                                  ;91EABD;
 
 
 ;;; $EABE: Set prospective Samus pose according to solid vertical collision result - wall jump triggered ;;;
 PSP_WallJumpTriggered:
-    LDA.W $0A1E                                                          ;91EABE;
+    LDA.W PoseXDirection                                                          ;91EABE;
     AND.W #$00FF                                                         ;91EAC1;
     CMP.W #$0004                                                         ;91EAC4;
     BEQ .facingLeft                                                      ;91EAC7;
     LDA.W #$0083                                                         ;91EAC9;
-    STA.W $0A28                                                          ;91EACC;
+    STA.W ProspectivePose                                                          ;91EACC;
     BRA +                                                                ;91EACF;
 
   .facingLeft:
     LDA.W #$0084                                                         ;91EAD1;
-    STA.W $0A28                                                          ;91EAD4;
+    STA.W ProspectivePose                                                          ;91EAD4;
 
 +   LDA.W #$0005                                                         ;91EAD7;
-    STA.W $0A2E                                                          ;91EADA;
+    STA.W ProspectivePoseChangeCommand                                                          ;91EADA;
     RTS                                                                  ;91EADD;
 
 
@@ -13402,15 +13402,15 @@ CheckIfProspectivePoseRunsIntoAWall:
 ; If Samus pose changes from a running pose to another running pose (changing arm cannon aim),
 ; Samus is moved one pixel horizontally forwards,
 ; the fact that it's pure horizontal movement causes Samus to sometimes lose contact with downwards slopes
-    LDA.W $0DCE                                                          ;91EADE;
+    LDA.W SamusXSpeedKilledDueToCollisionFlag                                                          ;91EADE;
     BEQ .notKilledBySolidCollision                                       ;91EAE1;
-    LDA.W $0A1F                                                          ;91EAE3;
+    LDA.W MovementType                                                          ;91EAE3;
     AND.W #$00FF                                                         ;91EAE6;
     CMP.W #$0001                                                         ;91EAE9;
     BEQ .ranIntoWall                                                     ;91EAEC;
 
   .notKilledBySolidCollision:
-    LDA.W $0A28                                                          ;91EAEE;
+    LDA.W ProspectivePose                                                          ;91EAEE;
     CMP.W #$FFFF                                                         ;91EAF1;
     BEQ .returnPoseUnchanged                                             ;91EAF4;
     ASL                                                                  ;91EAF6;
@@ -13421,46 +13421,46 @@ CheckIfProspectivePoseRunsIntoAWall:
     AND.W #$00FF                                                         ;91EAFD;
     CMP.W #$0001                                                         ;91EB00;
     BNE .returnPoseUnchanged                                             ;91EB03;
-    LDA.W $0A1E                                                          ;91EB05;
+    LDA.W PoseXDirection                                                          ;91EB05;
     AND.W #$00FF                                                         ;91EB08;
     CMP.W #$0004                                                         ;91EB0B;
     BEQ .facingLeft                                                      ;91EB0E;
     LDA.W #$0001                                                         ;91EB10;
-    STA.B $12                                                            ;91EB13;
-    STA.W $0B02                                                          ;91EB15;
-    STZ.B $14                                                            ;91EB18;
+    STA.B DP_Temp12                                                            ;91EB13;
+    STA.W CollisionMovementDirection                                                          ;91EB15;
+    STZ.B DP_Temp14                                                            ;91EB18;
     JSL.L Samus_vs_SolidEnemy_CollisionDetection                         ;91EB1A;
     TAX                                                                  ;91EB1E;
     BNE .prospectivePoseRanIntoWall                                      ;91EB1F;
     LDA.W #$0001                                                         ;91EB21;
-    STA.B $12                                                            ;91EB24;
-    STA.W $0B02                                                          ;91EB26;
-    STZ.B $14                                                            ;91EB29;
+    STA.B DP_Temp12                                                            ;91EB24;
+    STA.W CollisionMovementDirection                                                          ;91EB26;
+    STZ.B DP_Temp14                                                            ;91EB29;
     BRA .moveSamus                                                       ;91EB2B;
 
   .facingLeft:
     LDA.W #$0001                                                         ;91EB2D;
-    STA.B $12                                                            ;91EB30;
-    STZ.B $14                                                            ;91EB32;
-    STZ.W $0B02                                                          ;91EB34;
+    STA.B DP_Temp12                                                            ;91EB30;
+    STZ.B DP_Temp14                                                            ;91EB32;
+    STZ.W CollisionMovementDirection                                                          ;91EB34;
     JSL.L Samus_vs_SolidEnemy_CollisionDetection                         ;91EB37;
     TAX                                                                  ;91EB3B;
     BNE .prospectivePoseRanIntoWall                                      ;91EB3C;
     LDA.W #$FFFF                                                         ;91EB3E;
-    STA.B $12                                                            ;91EB41;
-    STZ.B $14                                                            ;91EB43;
-    STZ.W $0B02                                                          ;91EB45;
+    STA.B DP_Temp12                                                            ;91EB41;
+    STZ.B DP_Temp14                                                            ;91EB43;
+    STZ.W CollisionMovementDirection                                                          ;91EB45;
 
   .moveSamus:
     JSL.L MoveSamusRight_NoSolidEnemyCollision                           ;91EB48;
     BCC .returnPoseUnchanged                                             ;91EB4C;
 
   .prospectivePoseRanIntoWall:
-    LDA.W $0A28                                                          ;91EB4E;
+    LDA.W ProspectivePose                                                          ;91EB4E;
     BRA .setRanIntoWallPose                                              ;91EB51;
 
   .ranIntoWall:
-    LDA.W $0A1C                                                          ;91EB53;
+    LDA.W Pose                                                           ;91EB53;
 
   .setRanIntoWallPose:
     ASL                                                                  ;91EB56;
@@ -13472,16 +13472,16 @@ CheckIfProspectivePoseRunsIntoAWall:
     ASL                                                                  ;91EB60;
     TAX                                                                  ;91EB61;
     LDA.W .poses,X                                                       ;91EB62;
-    STA.W $0A28                                                          ;91EB65;
+    STA.W ProspectivePose                                                          ;91EB65;
     BRA .returnPoseChanged                                               ;91EB68;
 
   .returnPoseUnchanged:
-    STZ.W $0DCE                                                          ;91EB6A;
+    STZ.W SamusXSpeedKilledDueToCollisionFlag                                                          ;91EB6A;
     CLC                                                                  ;91EB6D;
     RTS                                                                  ;91EB6E;
 
   .returnPoseChanged:
-    STZ.W $0DCE                                                          ;91EB6F;
+    STZ.W SamusXSpeedKilledDueToCollisionFlag                                                          ;91EB6F;
     SEC                                                                  ;91EB72;
     RTS                                                                  ;91EB73;
 
@@ -13506,10 +13506,10 @@ UpdateSamusPose:
     PHK                                                                  ;91EB8A;
     PLB                                                                  ;91EB8B;
     REP #$30                                                             ;91EB8C;
-    LDA.W $0A2C                                                          ;91EB8E;
+    LDA.W SuperSpecialProspectivePose                                                          ;91EB8E;
     BMI .notSuperSpecialProspectivePose                                  ;91EB91;
     PHA                                                                  ;91EB93;
-    LDA.W $0A32                                                          ;91EB94;
+    LDA.W SuperSpecialProspectivePoseChangeCommand                                                          ;91EB94;
     CMP.W #$0003                                                         ;91EB97;
     BEQ .animationFinished                                               ;91EB9A;
     CMP.W #$0001                                                         ;91EB9C;
@@ -13518,7 +13518,7 @@ UpdateSamusPose:
     BRA .knockbackFinished                                               ;91EBA2;
 
   .animationFinished:
-    LDA.W $0A30                                                          ;91EBA4;
+    LDA.W SpecialProspectivePoseChangeCommand                                                          ;91EBA4;
     CMP.W #$0009                                                         ;91EBA7;
     BNE .superSpecialProspectivePose                                     ;91EBAA;
     PLA                                                                  ;91EBAC;
@@ -13526,56 +13526,56 @@ UpdateSamusPose:
 
   .superSpecialProspectivePose:
     PLA                                                                  ;91EBAF;
-    STA.W $0A1C                                                          ;91EBB0;
+    STA.W Pose                                                           ;91EBB0;
     JSL.L InitializeSamusPose_1                                          ;91EBB3;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91EBB7;
 
   .knockbackFinished:
-    LDA.W $0A32                                                          ;91EBBB;
+    LDA.W SuperSpecialProspectivePoseChangeCommand                                                          ;91EBBB;
     ASL                                                                  ;91EBBE;
     TAX                                                                  ;91EBBF;
     JSR.W (.superSpecialProspectivePoseChangeCommand,X)                  ;91EBC0;
     BRA .poseChanged                                                     ;91EBC3;
 
   .notSuperSpecialProspectivePose:
-    LDA.W $0A2A                                                          ;91EBC5;
+    LDA.W SpecialProspectivePose                                                          ;91EBC5;
     BPL .specialProspectivePose                                          ;91EBC8;
     JSR.W CheckIfProspectivePoseRunsIntoAWall                            ;91EBCA;
-    LDA.W $0A28                                                          ;91EBCD;
+    LDA.W ProspectivePose                                                          ;91EBCD;
     BMI .return                                                          ;91EBD0;
     BRA .prospectivePose                                                 ;91EBD2;
 
   .specialProspectivePose:
-    STA.W $0A1C                                                          ;91EBD4;
+    STA.W Pose                                                           ;91EBD4;
     JSL.L HandleSamusPoseChange                                          ;91EBD7;
     BCS .poseChanged                                                     ;91EBDB;
-    LDA.W $0A30                                                          ;91EBDD;
+    LDA.W SpecialProspectivePoseChangeCommand                                                          ;91EBDD;
     ASL                                                                  ;91EBE0;
     TAX                                                                  ;91EBE1;
     JSR.W (.specialProspectivePoseChangeCommand,X)                       ;91EBE2;
     BRA .poseChanged                                                     ;91EBE5;
 
   .prospectivePose:
-    STA.W $0A1C                                                          ;91EBE7;
+    STA.W Pose                                                           ;91EBE7;
     JSL.L HandleSamusPoseChange                                          ;91EBEA;
     BCS .poseChanged                                                     ;91EBEE;
-    LDA.W $0A2E                                                          ;91EBF0;
+    LDA.W ProspectivePoseChangeCommand                                                          ;91EBF0;
     ASL                                                                  ;91EBF3;
     TAX                                                                  ;91EBF4;
     JSR.W (.prospectivePoseChangeCommand,X)                              ;91EBF5;
 
   .poseChanged:
-    LDA.W $0A20                                                          ;91EBF8;
-    STA.W $0A24                                                          ;91EBFB;
-    LDA.W $0A22                                                          ;91EBFE;
-    STA.W $0A26                                                          ;91EC01;
-    LDA.W $0A1C                                                          ;91EC04;
-    STA.W $0A20                                                          ;91EC07;
-    LDA.W $0A1E                                                          ;91EC0A;
-    STA.W $0A22                                                          ;91EC0D;
+    LDA.W PreviousPose                                                          ;91EBF8;
+    STA.W LastDifferentPose                                                          ;91EBFB;
+    LDA.W PreviousPoseXDirection                                                          ;91EBFE;
+    STA.W LastDifferentPoseXDirection                                                          ;91EC01;
+    LDA.W Pose                                                           ;91EC04;
+    STA.W PreviousPose                                                          ;91EC07;
+    LDA.W PoseXDirection                                                          ;91EC0A;
+    STA.W PreviousPoseXDirection                                                          ;91EC0D;
 
   .return:
-    STZ.W $0DC6                                                          ;91EC10;
+    STZ.W SamusSolidVerticalCollisionResult                                                          ;91EC10;
     PLB                                                                  ;91EC13;
     PLP                                                                  ;91EC14;
     RTL                                                                  ;91EC15;
@@ -13623,25 +13623,25 @@ UpdateSamusPose:
 ProspectivePoseCmd_1_Decelerate:
 ; Running / normal jumping / morph ball in air and [Samus X base speed] != 0.0
 ; Samus X base speed *can* be 0.0 coming into this function
-    LDA.W $0B46                                                          ;91EC50;
+    LDA.W SamusXBaseSpeed                                                          ;91EC50;
     BNE .nonZeroXSpeed                                                   ;91EC53;
-    LDA.W $0B48                                                          ;91EC55;
+    LDA.W SamusXBaseSubSpeed                                                          ;91EC55;
     BNE .nonZeroXSpeed                                                   ;91EC58;
     JMP.W ProspectivePoseCmd_2_Stop                                      ;91EC5A;
 
   .nonZeroXSpeed:
-    LDA.W $0B44                                                          ;91EC5D;
+    LDA.W SamusXExtraRunSubSpeed                                                          ;91EC5D;
     CLC                                                                  ;91EC60;
-    ADC.W $0B48                                                          ;91EC61;
-    STA.W $0B48                                                          ;91EC64;
-    LDA.W $0B42                                                          ;91EC67;
-    ADC.W $0B46                                                          ;91EC6A;
-    STA.W $0B46                                                          ;91EC6D;
+    ADC.W SamusXBaseSubSpeed                                                          ;91EC61;
+    STA.W SamusXBaseSubSpeed                                                          ;91EC64;
+    LDA.W SamusXExtraRunSpeed                                                          ;91EC67;
+    ADC.W SamusXBaseSpeed                                                          ;91EC6A;
+    STA.W SamusXBaseSpeed                                                          ;91EC6D;
     LDA.W #$0002                                                         ;91EC70;
-    STA.W $0B4A                                                          ;91EC73;
+    STA.W SamusXAccelerationMode                                                          ;91EC73;
     JSL.L Cancel_SpeedBoosting                                           ;91EC76;
-    STZ.W $0B44                                                          ;91EC7A;
-    STZ.W $0B42                                                          ;91EC7D;
+    STZ.W SamusXExtraRunSubSpeed                                                          ;91EC7A;
+    STZ.W SamusXExtraRunSpeed                                                          ;91EC7D;
     JSL.L PossiblyNoPurpose_91FB8E                                       ;91EC80;
     RTS                                                                  ;91EC84;
 
@@ -13649,17 +13649,17 @@ ProspectivePoseCmd_1_Decelerate:
 ;;; $EC85: Prospective pose change command 6 - kill X speed ;;;
 ProspectivePoseCmd_6_KillXSpeed:
 ; Morph ball on ground / spring ball / wall jumping / grappling
-    STZ.W $0B4A                                                          ;91EC85;
-    STZ.W $0B46                                                          ;91EC88;
-    STZ.W $0B48                                                          ;91EC8B; fallthrough to ProspectivePoseCmd_8_KillRunSpeed
+    STZ.W SamusXAccelerationMode                                                          ;91EC85;
+    STZ.W SamusXBaseSpeed                                                          ;91EC88;
+    STZ.W SamusXBaseSubSpeed                                                          ;91EC8B; fallthrough to ProspectivePoseCmd_8_KillRunSpeed
 
 
 ;;; $EC8E: Prospective pose change command 8 - kill run speed ;;;
 ProspectivePoseCmd_8_KillRunSpeed:
 ; Falling
     JSL.L Cancel_SpeedBoosting                                           ;91EC8E;
-    STZ.W $0B44                                                          ;91EC92;
-    STZ.W $0B42                                                          ;91EC95;
+    STZ.W SamusXExtraRunSubSpeed                                                          ;91EC92;
+    STZ.W SamusXExtraRunSpeed                                                          ;91EC95;
     JSL.L PossiblyNoPurpose_91FB8E                                       ;91EC98;
     RTS                                                                  ;91EC9C;
 
@@ -13667,7 +13667,7 @@ ProspectivePoseCmd_8_KillRunSpeed:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $EC9D: Unused ;;;
 UNUSED_91EC9D:
-    LDA.W $0A1F                                                          ;91EC9D;
+    LDA.W MovementType                                                          ;91EC9D;
     AND.W #$00FF                                                         ;91ECA0;
     TAX                                                                  ;91ECA3;
     LDA.W .data,X                                                        ;91ECA4;
@@ -13676,7 +13676,7 @@ UNUSED_91EC9D:
     RTS                                                                  ;91ECAC;
 
 +   LDA.W #$0004                                                         ;91ECAD;
-    STA.W $0A94                                                          ;91ECB0;
+    STA.W SamusAnimationFrameTimer                                                          ;91ECB0;
     RTS                                                                  ;91ECB3;
 
   .data:
@@ -13689,7 +13689,7 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 ProspectivePoseCmd_2_Stop:
 ; Default: not running / jumping / wall jumping / falling / morph ball / spring ball / grappling
 ; or running / normal jumping / morph ball in air and [Samus X momentum] = 0.0
-    STZ.W $0B4A                                                          ;91ECD0;
+    STZ.W SamusXAccelerationMode                                                          ;91ECD0;
     JSL.L Cancel_SpeedBoosting                                           ;91ECD3;
     RTS                                                                  ;91ECD7;
 
@@ -13709,7 +13709,7 @@ ProspectivePoseCmd_7_StartTransitionAnimation:
 ; Run during start of transition animations.
 ; Corrects Samus height so crouching/morphing ends on ground instead of in the air
 ; Doesn't kill Samus' X speed or cancel speed boosting (because transition animations are a hack)
-    LDA.W $0A1C                                                          ;91ECDA;
+    LDA.W Pose                                                           ;91ECDA;
     CMP.W #$00DB                                                         ;91ECDD;
     BPL .aiming                                                          ;91ECE0;
     SEC                                                                  ;91ECE2;
@@ -13717,33 +13717,33 @@ ProspectivePoseCmd_7_StartTransitionAnimation:
     ASL                                                                  ;91ECE6;
     TAX                                                                  ;91ECE7;
     LDA.W .YRadii,X                                                      ;91ECE8;
-    STA.B $12                                                            ;91ECEB;
+    STA.B DP_Temp12                                                            ;91ECEB;
     BEQ .notShrinking                                                    ;91ECED;
-    STZ.B $14                                                            ;91ECEF;
+    STZ.B DP_Temp14                                                            ;91ECEF;
 
   .shrinking:
-    LDA.W $0A1C                                                          ;91ECF1;
+    LDA.W Pose                                                           ;91ECF1;
     ASL                                                                  ;91ECF4;
     ASL                                                                  ;91ECF5;
     ASL                                                                  ;91ECF6;
     TAX                                                                  ;91ECF7;
     LDA.W PoseDefinitions_YRadius,X                                      ;91ECF8;
     AND.W #$00FF                                                         ;91ECFB;
-    STA.W $0B00                                                          ;91ECFE;
+    STA.W SamusYRadius                                                          ;91ECFE;
     JSL.L BlockCollisionDetectionDueToChangeOfPose                       ;91ED01;
 
   .notShrinking:
-    LDA.W $0AFA                                                          ;91ED05;
+    LDA.W SamusYPosition                                                          ;91ED05;
     CLC                                                                  ;91ED08;
-    ADC.B $12                                                            ;91ED09;
-    STA.W $0AFA                                                          ;91ED0B;
-    STA.W $0B14                                                          ;91ED0E;
-    LDA.W $0B20                                                          ;91ED11;
+    ADC.B DP_Temp12                                                            ;91ED09;
+    STA.W SamusYPosition                                                          ;91ED0B;
+    STA.W SamusPreviousYPosition                                                          ;91ED0E;
+    LDA.W MorphBallBounceState                                                          ;91ED11;
     BEQ .return                                                          ;91ED14;
-    STZ.W $0B20                                                          ;91ED16;
-    STZ.W $0B2C                                                          ;91ED19;
-    STZ.W $0B2E                                                          ;91ED1C;
-    STZ.W $0B36                                                          ;91ED1F;
+    STZ.W MorphBallBounceState                                                          ;91ED16;
+    STZ.W SamusYSubSpeed                                                          ;91ED19;
+    STZ.W SamusYSpeed                                                          ;91ED1C;
+    STZ.W SamusYDirection                                                          ;91ED1F;
 
   .return:
     RTS                                                                  ;91ED22;
@@ -13754,8 +13754,8 @@ ProspectivePoseCmd_7_StartTransitionAnimation:
     CMP.W #$00F7                                                         ;91ED28;
     BPL .return                                                          ;91ED2B;
     LDA.W #$0005                                                         ;91ED2D;
-    STA.B $12                                                            ;91ED30;
-    STZ.B $14                                                            ;91ED32;
+    STA.B DP_Temp12                                                            ;91ED30;
+    STZ.B DP_Temp14                                                            ;91ED32;
     BRA .shrinking                                                       ;91ED34;
 
   .YRadii:                                                                 ;91ED36;
@@ -13775,16 +13775,16 @@ ProspectivePoseCmd_7_StartTransitionAnimation:
 
 ;;; $ED4E: Special prospective pose change command 1 - start knockback ;;;
 SpecialProspectivePoseCmd_1_StartKnockback:
-    LDA.W $0A23                                                          ;91ED4E;
+    LDA.W PreviousMovementType                                                          ;91ED4E;
     AND.W #$00FF                                                         ;91ED51;
     ASL                                                                  ;91ED54;
     TAX                                                                  ;91ED55;
     JSR.W (.pointers,X)                                                  ;91ED56;
     JSL.L SetSamusYSpeedForKnockback                                     ;91ED59;
-    STZ.W $0A56                                                          ;91ED5D;
-    STZ.W $0A6E                                                          ;91ED60;
+    STZ.W BombJumpDirection                                                          ;91ED5D;
+    STZ.W ContactDamageIndex                                                          ;91ED60;
     LDA.W #$0001                                                         ;91ED63;
-    STA.W $0A48                                                          ;91ED66;
+    STA.W HurtFlashCounter                                                          ;91ED66;
     RTS                                                                  ;91ED69;
 
   .pointers:
@@ -13833,7 +13833,7 @@ CLCRTS_91EDA4:
 ;;; $EDA6: Determine knockback direction - falling ;;;
 DetermineKnockbackDirection_Falling:
 ; Falling
-    LDA.W $0A5A                                                          ;91EDA6;
+    LDA.W HackHandler                                                          ;91EDA6;
     CMP.W #UNUSED_SamusTimerHackHandler_SpecialFalling_90E41B            ;91EDA9;
     BNE DetermineKnockbackDirection_Normal                               ;91EDAC;
     CLC                                                                  ;91EDAE;
@@ -13847,66 +13847,66 @@ DetermineKnockbackDirection_Normal:
 ; If [knockback X direction] = right and not pressing forward: knockback direction = 2 (up right)
 ; If [knockback X direction] = left  and     pressing forward: knockback direction = 4 (down left)
 ; If [knockback X direction] = right and     pressing forward: knockback direction = 5 (down right)
-    LDA.W $0A1E                                                          ;91EDB0;
+    LDA.W PoseXDirection                                                          ;91EDB0;
     AND.W #$00FF                                                         ;91EDB3;
     CMP.W #$0004                                                         ;91EDB6;
     BEQ .facingLeft                                                      ;91EDB9;
-    LDA.W $0A54                                                          ;91EDBB;
+    LDA.W KnockbackXDirection                                                          ;91EDBB;
     BEQ .facingRightKnockbackLeft                                        ;91EDBE;
-    LDA.B $8B                                                            ;91EDC0;
+    LDA.B DP_Controller1Input                                                            ;91EDC0;
     BIT.W #$0100                                                         ;91EDC2;
     BNE .pressingRight                                                   ;91EDC5;
     LDA.W #$0002                                                         ;91EDC7;
-    STA.W $0A52                                                          ;91EDCA;
+    STA.W KnockbackDirection                                                          ;91EDCA;
     BRA +                                                                ;91EDCD;
 
   .pressingRight:
     LDA.W #$0005                                                         ;91EDCF;
-    STA.W $0A52                                                          ;91EDD2;
+    STA.W KnockbackDirection                                                          ;91EDD2;
     BRA +                                                                ;91EDD5;
 
   .facingRightKnockbackLeft:
-    LDA.B $8B                                                            ;91EDD7;
+    LDA.B DP_Controller1Input                                                            ;91EDD7;
     BIT.W #$0100                                                         ;91EDD9;
     BNE ..pressingRight                                                  ;91EDDC;
     LDA.W #$0001                                                         ;91EDDE;
-    STA.W $0A52                                                          ;91EDE1;
+    STA.W KnockbackDirection                                                          ;91EDE1;
     BRA +                                                                ;91EDE4;
 
   ..pressingRight:
     LDA.W #$0004                                                         ;91EDE6;
-    STA.W $0A52                                                          ;91EDE9;
+    STA.W KnockbackDirection                                                          ;91EDE9;
     BRA +                                                                ;91EDEC;
 
   .facingLeft:
-    LDA.W $0A54                                                          ;91EDEE;
+    LDA.W KnockbackXDirection                                                          ;91EDEE;
     BEQ .facingLeftKnockbackLeft                                         ;91EDF1;
-    LDA.B $8B                                                            ;91EDF3;
+    LDA.B DP_Controller1Input                                                            ;91EDF3;
     BIT.W #$0200                                                         ;91EDF5;
     BNE ..pressingLeft                                                   ;91EDF8;
     LDA.W #$0002                                                         ;91EDFA;
-    STA.W $0A52                                                          ;91EDFD;
+    STA.W KnockbackDirection                                                          ;91EDFD;
     BRA +                                                                ;91EE00;
 
   ..pressingLeft:
     LDA.W #$0005                                                         ;91EE02;
-    STA.W $0A52                                                          ;91EE05;
+    STA.W KnockbackDirection                                                          ;91EE05;
     BRA +                                                                ;91EE08;
 
   .facingLeftKnockbackLeft:
-    LDA.B $8B                                                            ;91EE0A;
+    LDA.B DP_Controller1Input                                                            ;91EE0A;
     BIT.W #$0200                                                         ;91EE0C;
     BNE ..pressingLeft                                                   ;91EE0F;
     LDA.W #$0001                                                         ;91EE11;
-    STA.W $0A52                                                          ;91EE14;
+    STA.W KnockbackDirection                                                          ;91EE14;
     BRA +                                                                ;91EE17;
 
   ..pressingLeft:
     LDA.W #$0004                                                         ;91EE19;
-    STA.W $0A52                                                          ;91EE1C;
+    STA.W KnockbackDirection                                                          ;91EE1C;
 
 +   LDA.W #SamusMovementHandler_Knockback                                ;91EE1F;
-    STA.W $0A58                                                          ;91EE22;
+    STA.W MovementHandler                                                          ;91EE22;
     SEC                                                                  ;91EE25;
     RTS                                                                  ;91EE26;
 
@@ -13914,20 +13914,20 @@ DetermineKnockbackDirection_Normal:
 ;;; $EE27: Determine knockback direction - morphed ;;;
 DetermineKnockbackDirection_Morphed:
 ; Morph ball / spring ball
-    LDA.W $0A1E                                                          ;91EE27;
+    LDA.W PoseXDirection                                                          ;91EE27;
     AND.W #$00FF                                                         ;91EE2A;
     CMP.W #$0004                                                         ;91EE2D;
     BEQ .facingLeft                                                      ;91EE30;
     LDA.W #$0002                                                         ;91EE32;
-    STA.W $0A52                                                          ;91EE35;
+    STA.W KnockbackDirection                                                          ;91EE35;
     BRA +                                                                ;91EE38;
 
   .facingLeft:
     LDA.W #$0001                                                         ;91EE3A;
-    STA.W $0A52                                                          ;91EE3D;
+    STA.W KnockbackDirection                                                          ;91EE3D;
 
 +   LDA.W #SamusMovementHandler_Knockback                                ;91EE40;
-    STA.W $0A58                                                          ;91EE43;
+    STA.W MovementHandler                                                          ;91EE43;
     CLC                                                                  ;91EE46;
     RTS                                                                  ;91EE47;
 
@@ -13936,49 +13936,49 @@ DetermineKnockbackDirection_Morphed:
 UNUSED_DetermineKnockbackDirection_MovementType7_91EE48:
 ; 7: Unused
 ; Clone of $EE27 except that the (ignored) carry return is set
-    LDA.W $0A1E                                                          ;91EE48;
+    LDA.W PoseXDirection                                                          ;91EE48;
     AND.W #$00FF                                                         ;91EE4B;
     CMP.W #$0004                                                         ;91EE4E;
     BEQ .facingLeft                                                      ;91EE51;
     LDA.W #$0002                                                         ;91EE53;
-    STA.W $0A52                                                          ;91EE56;
+    STA.W KnockbackDirection                                                          ;91EE56;
     BRA +                                                                ;91EE59;
 
   .facingLeft:
     LDA.W #$0001                                                         ;91EE5B;
-    STA.W $0A52                                                          ;91EE5E;
+    STA.W KnockbackDirection                                                          ;91EE5E;
 
 +   LDA.W #SamusMovementHandler_Knockback                                ;91EE61;
-    STA.W $0A58                                                          ;91EE64;
+    STA.W MovementHandler                                                          ;91EE64;
     SEC                                                                  ;91EE67;
     RTS                                                                  ;91EE68;
 
 
 ;;; $EE69: Special prospective pose change command 2 - unused ;;;
 UNUSED_SpecialProspectivePoseCmd_2_91EE69:
-    STZ.W $0A52                                                          ;91EE69;
+    STZ.W KnockbackDirection                                                          ;91EE69;
     LDA.W #SamusMovementHandler_Normal                                   ;91EE6C;
-    STA.W $0A58                                                          ;91EE6F;
-    STZ.W $0B2E                                                          ;91EE72;
-    STZ.W $0B2C                                                          ;91EE75;
-    STZ.W $0B36                                                          ;91EE78;
+    STA.W MovementHandler                                                          ;91EE6F;
+    STZ.W SamusYSpeed                                                          ;91EE72;
+    STZ.W SamusYSubSpeed                                                          ;91EE75;
+    STZ.W SamusYDirection                                                          ;91EE78;
     JSL.L AlignSamusBottomPositionWithPreviousPose                       ;91EE7B;
     RTS                                                                  ;91EE7F;
 
 
 ;;; $EE80: Special prospective pose change command 3 - start bomb jump ;;;
 SpecialProspectivePoseCmd_3_StartBombJump:
-    LDA.W $0A56                                                          ;91EE80;
+    LDA.W BombJumpDirection                                                          ;91EE80;
     AND.W #$00FF                                                         ;91EE83;
     ORA.W #$0800                                                         ;91EE86;
-    STA.W $0A56                                                          ;91EE89;
+    STA.W BombJumpDirection                                                          ;91EE89;
     LDA.W #SamusMovementHandler_BombJump_Start                           ;91EE8C;
-    STA.W $0A58                                                          ;91EE8F;
-    LDA.W $0A60                                                          ;91EE92;
+    STA.W MovementHandler                                                          ;91EE8F;
+    LDA.W PoseInputHandler                                                          ;91EE92;
     CMP.W #SamusPoseInputHandler_Demo                                    ;91EE95;
     BEQ .return                                                          ;91EE98;
     LDA.W #RTS_90E90E                                                    ;91EE9A;
-    STA.W $0A60                                                          ;91EE9D;
+    STA.W PoseInputHandler                                                          ;91EE9D;
 
   .return:
     RTS                                                                  ;91EEA0;
@@ -13992,7 +13992,7 @@ UNUSED_SpecialProspectivePoseCmd_4_91EEA1:
 
 ;;; $EEA6: Special prospective pose change command 5 - x-ray ;;;
 SpecialProspectivePoseCmd_5_Xray:
-    LDA.W $0A1F                                                          ;91EEA6;
+    LDA.W MovementType                                                          ;91EEA6;
     AND.W #$00FF                                                         ;91EEA9;
     BEQ .standing                                                        ;91EEAC;
     CMP.W #$0005                                                         ;91EEAE;
@@ -14004,54 +14004,54 @@ SpecialProspectivePoseCmd_5_Xray:
     RTS                                                                  ;91EEBD;
 
   .standing:
-    LDA.W $0A1E                                                          ;91EEBE;
+    LDA.W PoseXDirection                                                          ;91EEBE;
     AND.W #$00FF                                                         ;91EEC1;
     CMP.W #$0004                                                         ;91EEC4;
     BEQ ..facingLeft                                                     ;91EEC7;
     LDA.W #$0040                                                         ;91EEC9;
-    STA.W $0A82                                                          ;91EECC;
+    STA.W Xray_Angle                                                          ;91EECC;
     BRA .merge                                                           ;91EECF;
 
   ..facingLeft:
     LDA.W #$00C0                                                         ;91EED1;
-    STA.W $0A82                                                          ;91EED4;
+    STA.W Xray_Angle                                                          ;91EED4;
     BRA .merge                                                           ;91EED7;
 
   .crouching:
-    LDA.W $0A1E                                                          ;91EED9;
+    LDA.W PoseXDirection                                                          ;91EED9;
     AND.W #$00FF                                                         ;91EEDC;
     CMP.W #$0004                                                         ;91EEDF;
     BEQ ..facingLeft                                                     ;91EEE2;
     LDA.W #$0040                                                         ;91EEE4;
-    STA.W $0A82                                                          ;91EEE7;
+    STA.W Xray_Angle                                                          ;91EEE7;
     BRA .merge                                                           ;91EEEA;
 
   ..facingLeft:
     LDA.W #$00C0                                                         ;91EEEC;
-    STA.W $0A82                                                          ;91EEEF;
+    STA.W Xray_Angle                                                          ;91EEEF;
 
   .merge:
     LDA.W #$0002                                                         ;91EEF2;
-    STA.W $0A96                                                          ;91EEF5;
+    STA.W SamusAnimationFrame                                                          ;91EEF5;
     LDA.W #$003F                                                         ;91EEF8;
-    STA.W $0A94                                                          ;91EEFB;
+    STA.W SamusAnimationFrameTimer                                                          ;91EEFB;
     LDA.W #SamusMovementHandler_Xray                                     ;91EEFE;
-    STA.W $0A58                                                          ;91EF01;
+    STA.W MovementHandler                                                          ;91EF01;
     LDA.W #SamusPoseInputHandler_Xray                                    ;91EF04;
-    STA.W $0A60                                                          ;91EF07;
+    STA.W PoseInputHandler                                                          ;91EF07;
     LDA.W #$0008                                                         ;91EF0A;
-    STA.W $0ACC                                                          ;91EF0D;
+    STA.W SpecialSamusPaletteType                                                          ;91EF0D;
     LDA.W #$0001                                                         ;91EF10;
-    STA.W $0AD0                                                          ;91EF13;
-    STZ.W $0ACE                                                          ;91EF16;
-    STZ.W $0A68                                                          ;91EF19;
-    STZ.W $0CD0                                                          ;91EF1C;
-    STZ.W $0CD6                                                          ;91EF1F;
-    STZ.W $0CD8                                                          ;91EF22;
-    STZ.W $0CDA                                                          ;91EF25;
-    STZ.W $0CDC                                                          ;91EF28;
-    STZ.W $0CDE                                                          ;91EF2B;
-    STZ.W $0CE0                                                          ;91EF2E;
+    STA.W CommonPaletteTimer                                                          ;91EF13;
+    STZ.W SpecialSamusPaletteFrame                                                          ;91EF16;
+    STZ.W SpecialPaletteTimer                                                          ;91EF19;
+    STZ.W SamusProjectile_FlareCounter                                                          ;91EF1C;
+    STZ.W SamusProjectile_FlareAnimationFrame                                                          ;91EF1F;
+    STZ.W SamusProjectile_FlareSlowSparksAnimationFrame0CD8                                                          ;91EF22;
+    STZ.W SamusProjectile_FlareFastSparksAnimationFrame0CDA                                                          ;91EF25;
+    STZ.W SamusProjectile_FlareAnimationTimer                                                          ;91EF28;
+    STZ.W SamusProjectile_FlareSlowSparksAnimationFrame0CDE                                                          ;91EF2B;
+    STZ.W SamusProjectile_FlareFastSparksAnimationFrame0CE0                                                          ;91EF2E;
     LDA.W #$0009                                                         ;91EF31;
     JSL.L QueueSound_Lib1_Max6                                           ;91EF34;
     RTS                                                                  ;91EF38;
@@ -14069,13 +14069,13 @@ RTS_91EF3A:
 
 ;;; $EF3B: Special prospective pose change command 8 - unused ;;;
 UNUSED_SpecialProspectivePoseCmd_8_91EF3B:
-    LDA.W $0AFA                                                          ;91EF3B;
+    LDA.W SamusYPosition                                                          ;91EF3B;
     SEC                                                                  ;91EF3E;
     SBC.W #$0005                                                         ;91EF3F;
-    STA.W $0AFA                                                          ;91EF42;
-    STA.W $0B14                                                          ;91EF45;
+    STA.W SamusYPosition                                                          ;91EF42;
+    STA.W SamusPreviousYPosition                                                          ;91EF45;
     LDA.W #RTL_90E8CD                                                    ;91EF48;
-    STA.W $0A42                                                          ;91EF4B;
+    STA.W CurrentStateHandler                                                          ;91EF4B;
     RTS                                                                  ;91EF4E;
 
 
@@ -14087,53 +14087,53 @@ SpecialProspectivePoseCmd_9_ConnectingGrapple_Swinging:
 
 ;;; $EF53: Connecting grapple - kill speed and clamp scrolling speed ;;;
 ConnectingGrapple_KillSpeed_ClampScrollingSpeed:
-    LDA.W $0AF6                                                          ;91EF53;
+    LDA.W SamusXPosition                                                          ;91EF53;
     SEC                                                                  ;91EF56;
-    SBC.W $0B10                                                          ;91EF57;
+    SBC.W SamusPreviousXPosition                                                          ;91EF57;
     BMI +                                                                ;91EF5A;
     CMP.W #$000D                                                         ;91EF5C;
     BMI .YPosition                                                       ;91EF5F;
-    LDA.W $0AF6                                                          ;91EF61;
+    LDA.W SamusXPosition                                                          ;91EF61;
     SEC                                                                  ;91EF64;
     SBC.W #$000C                                                         ;91EF65;
-    STA.W $0B10                                                          ;91EF68;
+    STA.W SamusPreviousXPosition                                                          ;91EF68;
     BRA .YPosition                                                       ;91EF6B;
 
 +   CMP.W #$FFF4                                                         ;91EF6D;
     BPL .YPosition                                                       ;91EF70;
-    LDA.W $0AF6                                                          ;91EF72;
+    LDA.W SamusXPosition                                                          ;91EF72;
     CLC                                                                  ;91EF75;
     ADC.W #$000C                                                         ;91EF76;
-    STA.W $0B10                                                          ;91EF79;
+    STA.W SamusPreviousXPosition                                                          ;91EF79;
 
   .YPosition:
-    LDA.W $0AFA                                                          ;91EF7C;
+    LDA.W SamusYPosition                                                          ;91EF7C;
     SEC                                                                  ;91EF7F;
-    SBC.W $0B14                                                          ;91EF80;
+    SBC.W SamusPreviousYPosition                                                          ;91EF80;
     BMI +                                                                ;91EF83;
     CMP.W #$000D                                                         ;91EF85;
     BMI .killSpeed                                                       ;91EF88;
-    LDA.W $0AFA                                                          ;91EF8A;
+    LDA.W SamusYPosition                                                          ;91EF8A;
     SEC                                                                  ;91EF8D;
     SBC.W #$000C                                                         ;91EF8E;
-    STA.W $0B14                                                          ;91EF91;
+    STA.W SamusPreviousYPosition                                                          ;91EF91;
     BRA .killSpeed                                                       ;91EF94;
 
 +   CMP.W #$FFF4                                                         ;91EF96;
     BPL .killSpeed                                                       ;91EF99;
-    LDA.W $0AFA                                                          ;91EF9B;
+    LDA.W SamusYPosition                                                          ;91EF9B;
     CLC                                                                  ;91EF9E;
     ADC.W #$000C                                                         ;91EF9F;
-    STA.W $0B14                                                          ;91EFA2;
+    STA.W SamusPreviousYPosition                                                          ;91EFA2;
 
   .killSpeed:
     JSL.L Cancel_SpeedBoosting                                           ;91EFA5;
-    STZ.W $0B46                                                          ;91EFA9;
-    STZ.W $0B48                                                          ;91EFAC;
-    STZ.W $0B2C                                                          ;91EFAF;
-    STZ.W $0B2E                                                          ;91EFB2;
-    STZ.W $0B42                                                          ;91EFB5;
-    STZ.W $0B44                                                          ;91EFB8;
+    STZ.W SamusXBaseSpeed                                                          ;91EFA9;
+    STZ.W SamusXBaseSubSpeed                                                          ;91EFAC;
+    STZ.W SamusYSubSpeed                                                          ;91EFAF;
+    STZ.W SamusYSpeed                                                          ;91EFB2;
+    STZ.W SamusXExtraRunSpeed                                                          ;91EFB5;
+    STZ.W SamusXExtraRunSubSpeed                                                          ;91EFB8;
     RTS                                                                  ;91EFBB;
 
 
@@ -14150,7 +14150,7 @@ RTS_91EFC3:
 
 ;;; $EFC4: Prospective pose change command 5 - solid vertical collision ;;;
 SpecialProspectivePoseCmd_5_SolidVerticalCollision:
-    LDA.W $0DC6                                                          ;91EFC4;
+    LDA.W SamusSolidVerticalCollisionResult                                                          ;91EFC4;
     AND.W #$00FF                                                         ;91EFC7;
     ASL                                                                  ;91EFCA;
     TAX                                                                  ;91EFCB;
@@ -14174,36 +14174,36 @@ RTS_91EFDE:
 
 ;;; $EFDF: Solid vertical collision - [Samus solid vertical collision result] = hit ceiling ;;;
 SolidVerticalCollision_HitCeiling:
-    STZ.W $0B2C                                                          ;91EFDF;
-    STZ.W $0B2E                                                          ;91EFE2;
-    STZ.W $0B1A                                                          ;91EFE5;
+    STZ.W SamusYSubSpeed                                                          ;91EFDF;
+    STZ.W SamusYSpeed                                                          ;91EFE2;
+    STZ.W neverRead0B1A                                                          ;91EFE5;
     LDA.W #$0002                                                         ;91EFE8;
-    STA.W $0B36                                                          ;91EFEB;
+    STA.W SamusYDirection                                                          ;91EFEB;
     RTS                                                                  ;91EFEE;
 
 
 ;;; $EFEF: Solid vertical collision - [Samus solid vertical collision result] = falling ;;;
 SolidVerticalCollision_Falling:
-    LDA.W $0B36                                                          ;91EFEF;
+    LDA.W SamusYDirection                                                          ;91EFEF;
     CMP.W #$0001                                                         ;91EFF2;
     BEQ .fallingUp                                                       ;91EFF5;
-    STZ.W $0B20                                                          ;91EFF7;
-    STZ.W $0B2C                                                          ;91EFFA;
-    STZ.W $0B2E                                                          ;91EFFD;
+    STZ.W MorphBallBounceState                                                          ;91EFF7;
+    STZ.W SamusYSubSpeed                                                          ;91EFFA;
+    STZ.W SamusYSpeed                                                          ;91EFFD;
     LDA.W #$0001                                                         ;91F000;
-    STA.W $0B22                                                          ;91F003;
+    STA.W SamusIsFallingFlag                                                          ;91F003;
     LDA.W #$0002                                                         ;91F006;
-    STA.W $0B36                                                          ;91F009;
+    STA.W SamusYDirection                                                          ;91F009;
 
   .fallingUp:
-    STZ.W $0A18                                                          ;91F00C;
+    STZ.W neverRead0A18                                                          ;91F00C;
     RTS                                                                  ;91F00F;
 
 
 ;;; $F010: Solid vertical collision - [Samus solid vertical collision result] = landed ;;;
 SolidVerticalCollision_Landed:
     JSR.W HandleLandingSoundEffectsAndGraphics                           ;91F010;
-    LDA.W $0DC7                                                          ;91F013;
+    LDA.W SamusDownwardsMovementSolidCollisionResult                                                          ;91F013;
     AND.W #$00FF                                                         ;91F016;
     CMP.W #$0004                                                         ;91F019;
     BNE .change                                                          ;91F01C;
@@ -14218,10 +14218,10 @@ SolidVerticalCollision_Landed:
     RTS                                                                  ;91F029;
 
   .carryClear:
-    STZ.W $0A18                                                          ;91F02A;
-    STZ.W $0B4A                                                          ;91F02D;
-    STZ.W $0B46                                                          ;91F030;
-    STZ.W $0B48                                                          ;91F033;
+    STZ.W neverRead0A18                                                          ;91F02A;
+    STZ.W SamusXAccelerationMode                                                          ;91F02D;
+    STZ.W SamusXBaseSpeed                                                          ;91F030;
+    STZ.W SamusXBaseSubSpeed                                                          ;91F033;
     JSR.W SolidVerticalCollision_Landed_SetSamusAsNotBouncing            ;91F036;
     RTS                                                                  ;91F039;
 
@@ -14238,7 +14238,7 @@ SolidVerticalCollision_Landed:
 HandleLandingSoundEffectsAndGraphics:
 ; The playing of the end spin jump / screw attack sound effect is done more generally by Handle_UnspinSFX_CancellingEchoSound_SettingTimeUpGameState
 ; and doesn't really need to be here
-    LDA.W $0A23                                                          ;91F046;
+    LDA.W PreviousMovementType                                                          ;91F046;
     AND.W #$00FF                                                         ;91F049;
     CMP.W #$0003                                                         ;91F04C;
     BEQ .spinJumping                                                     ;91F04F;
@@ -14246,9 +14246,9 @@ HandleLandingSoundEffectsAndGraphics:
     BNE .notEndingSFX                                                    ;91F054;
 
   .spinJumping:
-    LDA.W $1F51                                                          ;91F056;
+    LDA.W CinematicFunction                                                          ;91F056;
     BNE .notEndingSFX                                                    ;91F059;
-    LDA.W $0A20                                                          ;91F05B;
+    LDA.W PreviousPose                                                          ;91F05B;
     CMP.W #$0081                                                         ;91F05E;
     BEQ .screwAttack                                                     ;91F061;
     CMP.W #$0082                                                         ;91F063;
@@ -14262,22 +14262,22 @@ HandleLandingSoundEffectsAndGraphics:
     JSL.L QueueSound_Lib1_Max6                                           ;91F074;
 
   .notEndingSFX:
-    LDA.W $0B2E                                                          ;91F078;
+    LDA.W SamusYSpeed                                                          ;91F078;
     BEQ .zeroYSpeed                                                      ;91F07B;
     CMP.W #$0005                                                         ;91F07D;
     BPL .hardLanding                                                     ;91F080;
 
   .zeroYSpeed:
-    LDA.W $0B2C                                                          ;91F082;
+    LDA.W SamusYSubSpeed                                                          ;91F082;
     BEQ .return                                                          ;91F085;
-    LDA.W $1F51                                                          ;91F087;
+    LDA.W CinematicFunction                                                          ;91F087;
     BNE .merge                                                           ;91F08A;
     LDA.W #$0005                                                         ;91F08C;
     JSL.L QueueSound_Lib3_Max6                                           ;91F08F;
     BRA .merge                                                           ;91F093;
 
   .hardLanding:
-    LDA.W $1F51                                                          ;91F095;
+    LDA.W CinematicFunction                                                          ;91F095;
     BNE .merge                                                           ;91F098;
     LDA.W #$0004                                                         ;91F09A;
     JSL.L QueueSound_Lib3_Max6                                           ;91F09D;
@@ -14291,7 +14291,7 @@ HandleLandingSoundEffectsAndGraphics:
 
 ;;; $F0A5: Handle landing graphics ;;;
 HandleLandingGraphics:
-    LDA.W $079F                                                          ;91F0A5;
+    LDA.W AreaIndex                                                          ;91F0A5;
     ASL                                                                  ;91F0A8;
     TAX                                                                  ;91F0A9;
     JSR.W (.areaPointers,X)                                              ;91F0AA;
@@ -14310,16 +14310,16 @@ HandleLandingGraphics:
 
 ;;; $F0BE: Delete landing atmospheric graphics ;;;
 DeleteLandingAtmosphericGraphics:
-    STZ.W $0AF0                                                          ;91F0BE;
-    STZ.W $0AF2                                                          ;91F0C1;
+    STZ.W AtmosphericGraphicsAnimFramesGraphicsTypes+4                   ;91F0BE;
+    STZ.W AtmosphericGraphicsAnimFramesGraphicsTypes+6                   ;91F0C1;
     RTS                                                                  ;91F0C4;
 
 
 ;;; $F0C5: Handle landing graphics - Crateria ;;;
 HandleLandingGraphics_Crateria:
-    LDA.W $1F51                                                          ;91F0C5;
+    LDA.W CinematicFunction                                                          ;91F0C5;
     BNE DeleteLandingAtmosphericGraphics                                 ;91F0C8;
-    LDA.W $079D                                                          ;91F0CA;
+    LDA.W RoomIndex                                                          ;91F0CA;
     CMP.W #$001C                                                         ;91F0CD;
     BEQ .crateriaSpacePirateShaft                                        ;91F0D0;
     TAX                                                                  ;91F0D2;
@@ -14360,13 +14360,13 @@ HandleLandingGraphics_Crateria:
     db $00
 
   .wreckedShipEntrance:
-    LDA.W $0AFA                                                          ;91F104;
+    LDA.W SamusYPosition                                                          ;91F104;
     CMP.W #$03B0                                                         ;91F107;
     BPL HandleLandingGraphics_Maridia_HandleLandingFootstepSplashes      ;91F10A;
     BRA DeleteLandingAtmosphericGraphics                                 ;91F10C;
 
   .landingSite:
-    LDA.W $196E                                                          ;91F10E;
+    LDA.W FX_Type                                                          ;91F10E;
     CMP.W #$000A                                                         ;91F111;
     BNE DeleteLandingAtmosphericGraphics                                 ;91F114; fallthrough to HandleLandingGraphics_Maridia_HandleLandingFootstepSplashes
 
@@ -14374,40 +14374,40 @@ HandleLandingGraphics_Crateria:
 ;;; $F116: Handle landing graphics - Maridia / handle landing footstep splashes ;;;
 HandleLandingGraphics_Maridia_HandleLandingFootstepSplashes:
     JSL.L Get_Samus_Bottom_Boundary                                      ;91F116;
-    LDA.W $195E                                                          ;91F11A;
+    LDA.W FX_YPosition                                                          ;91F11A;
     BMI .negativeYPosition                                               ;91F11D;
-    CMP.B $12                                                            ;91F11F;
+    CMP.B DP_Temp12                                                            ;91F11F;
     BPL .nonLiquidPhysics                                                ;91F121;
-    LDA.W $197E                                                          ;91F123;
+    LDA.W FX_LiquidOptions                                                          ;91F123;
     BIT.W #$0004                                                         ;91F126;
     BNE .nonLiquidPhysics                                                ;91F129;
     BRA .return                                                          ;91F12B;
 
   .negativeYPosition:
-    LDA.W $1962                                                          ;91F12D;
+    LDA.W FX_LavaAcidYPosition                                                          ;91F12D;
     BMI .nonLiquidPhysics                                                ;91F130;
-    CMP.B $12                                                            ;91F132;
+    CMP.B DP_Temp12                                                            ;91F132;
     BMI .return                                                          ;91F134;
 
   .nonLiquidPhysics:
     LDA.W #$0100                                                         ;91F136;
-    STA.W $0AF0                                                          ;91F139;
-    STA.W $0AF2                                                          ;91F13C;
+    STA.W AtmosphericGraphicsAnimFramesGraphicsTypes+4                                                          ;91F139;
+    STA.W AtmosphericGraphicsAnimFramesGraphicsTypes+6                                                          ;91F13C;
     LDA.W #$0003                                                         ;91F13F;
-    STA.W $0AD8                                                          ;91F142;
-    STA.W $0ADA                                                          ;91F145;
-    LDA.W $0AF6                                                          ;91F148;
+    STA.W AtmosphericGraphicsAnimationTimers+4                                                          ;91F142;
+    STA.W AtmosphericGraphicsAnimationTimers+6                                                          ;91F145;
+    LDA.W SamusXPosition                                                          ;91F148;
     CLC                                                                  ;91F14B;
     ADC.W #$0004                                                         ;91F14C;
-    STA.W $0AE0                                                          ;91F14F;
+    STA.W AtmosphericGraphicsXPositions+4                                                          ;91F14F;
     SEC                                                                  ;91F152;
     SBC.W #$0007                                                         ;91F153;
-    STA.W $0AE2                                                          ;91F156;
-    LDA.B $12                                                            ;91F159;
+    STA.W AtmosphericGraphicsXPositions+6                                                          ;91F156;
+    LDA.B DP_Temp12                                                            ;91F159;
     SEC                                                                  ;91F15B;
     SBC.W #$0004                                                         ;91F15C;
-    STA.W $0AE8                                                          ;91F15F;
-    STA.W $0AEA                                                          ;91F162;
+    STA.W AtmosphericGraphicsYPositions+4                                                          ;91F15F;
+    STA.W AtmosphericGraphicsYPositions+6                                                          ;91F162;
 
   .return:
     RTS                                                                  ;91F165;
@@ -14416,38 +14416,38 @@ HandleLandingGraphics_Maridia_HandleLandingFootstepSplashes:
 ;;; $F166: Handle landing graphics - Norfair / Wrecked Ship / handle landing dust ;;;
 HandleLandingGraphics_Norfair_WreckedShip_HandleLandingDust:
     JSL.L Get_Samus_Bottom_Boundary                                      ;91F166;
-    LDA.W $195E                                                          ;91F16A;
+    LDA.W FX_YPosition                                                          ;91F16A;
     BMI .negativeYPosition                                               ;91F16D;
-    CMP.B $12                                                            ;91F16F;
+    CMP.B DP_Temp12                                                            ;91F16F;
     BPL .nonLiquidPhysics                                                ;91F171;
-    LDA.W $197E                                                          ;91F173;
+    LDA.W FX_LiquidOptions                                                          ;91F173;
     BIT.W #$0004                                                         ;91F176;
     BNE .nonLiquidPhysics                                                ;91F179;
     BRA .return                                                          ;91F17B;
 
   .negativeYPosition:
-    LDA.W $1962                                                          ;91F17D;
+    LDA.W FX_LavaAcidYPosition                                                          ;91F17D;
     BMI .nonLiquidPhysics                                                ;91F180;
-    CMP.B $12                                                            ;91F182;
+    CMP.B DP_Temp12                                                            ;91F182;
     BMI .return                                                          ;91F184;
 
   .nonLiquidPhysics:
     LDA.W #$0600                                                         ;91F186;
-    STA.W $0AF0                                                          ;91F189;
-    STA.W $0AF2                                                          ;91F18C;
+    STA.W AtmosphericGraphicsAnimFramesGraphicsTypes+4                                                          ;91F189;
+    STA.W AtmosphericGraphicsAnimFramesGraphicsTypes+6                                                          ;91F18C;
     LDA.W #$0003                                                         ;91F18F;
-    STA.W $0AD8                                                          ;91F192;
-    STA.W $0ADA                                                          ;91F195;
-    LDA.W $0AF6                                                          ;91F198;
+    STA.W AtmosphericGraphicsAnimationTimers+4                                                          ;91F192;
+    STA.W AtmosphericGraphicsAnimationTimers+6                                                          ;91F195;
+    LDA.W SamusXPosition                                                          ;91F198;
     CLC                                                                  ;91F19B;
     ADC.W #$0008                                                         ;91F19C;
-    STA.W $0AE0                                                          ;91F19F;
+    STA.W AtmosphericGraphicsXPositions+4                                                          ;91F19F;
     SEC                                                                  ;91F1A2;
     SBC.W #$0010                                                         ;91F1A3;
-    STA.W $0AE2                                                          ;91F1A6;
-    LDA.B $12                                                            ;91F1A9;
-    STA.W $0AE8                                                          ;91F1AB;
-    STA.W $0AEA                                                          ;91F1AE;
+    STA.W AtmosphericGraphicsXPositions+6                                                          ;91F1A6;
+    LDA.B DP_Temp12                                                            ;91F1A9;
+    STA.W AtmosphericGraphicsYPositions+4                                                          ;91F1AB;
+    STA.W AtmosphericGraphicsYPositions+6                                                          ;91F1AE;
 
   .return:
     RTS                                                                  ;91F1B1;
@@ -14456,7 +14456,7 @@ HandleLandingGraphics_Norfair_WreckedShip_HandleLandingDust:
 ;;; $F1B2: Handle landing graphics - Brinstar ;;;
 HandleLandingGraphics_Brinstar:
 ; Seem to be missing an RTS (fallthrough doesn't look intentional)
-    LDA.W $079D                                                          ;91F1B2;
+    LDA.W RoomIndex                                                          ;91F1B2;
     CMP.W #$0008                                                         ;91F1B5;
     BEQ HandleLandingGraphics_Norfair_WreckedShip_HandleLandingDust      ;91F1B8; fallthrough to HandleLandingGraphics_Tourian
 
@@ -14474,7 +14474,7 @@ HandleLandingGraphics_Tourian:
 ;     7: Shitroid room
 ;     8: Post Shitroid room
 ;     Bh: Tourian eye-door room
-    LDA.W $079D                                                          ;91F1BA;
+    LDA.W RoomIndex                                                          ;91F1BA;
     CMP.W #$0005                                                         ;91F1BD;
     BMI .greaterThan4                                                    ;91F1C0;
     CMP.W #$0009                                                         ;91F1C2;
@@ -14483,31 +14483,31 @@ HandleLandingGraphics_Tourian:
     BEQ HandleLandingGraphics_Norfair_WreckedShip_HandleLandingDust      ;91F1CA;
 
   .greaterThan4:
-    STZ.W $0AF0                                                          ;91F1CC;
-    STZ.W $0AF2                                                          ;91F1CF;
+    STZ.W AtmosphericGraphicsAnimFramesGraphicsTypes+4                                                          ;91F1CC;
+    STZ.W AtmosphericGraphicsAnimFramesGraphicsTypes+6                                                          ;91F1CF;
     RTS                                                                  ;91F1D2;
 
 
 ;;; $F1D3: Solid vertical collision - landed - set Samus as not bouncing ;;;
 SolidVerticalCollision_Landed_SetSamusAsNotBouncing:
-    STZ.W $0B22                                                          ;91F1D3;
-    STZ.W $0B1A                                                          ;91F1D6;
-    STZ.W $0B2A                                                          ;91F1D9;
-    STZ.W $0B2C                                                          ;91F1DC;
-    STZ.W $0B2E                                                          ;91F1DF;
-    STZ.W $0B36                                                          ;91F1E2;
-    STZ.W $0B38                                                          ;91F1E5;
-    STZ.W $0B20                                                          ;91F1E8;
+    STZ.W SamusIsFallingFlag                                                          ;91F1D3;
+    STZ.W neverRead0B1A                                                          ;91F1D6;
+    STZ.W neverRead0B2A                                                          ;91F1D9;
+    STZ.W SamusYSubSpeed                                                          ;91F1DC;
+    STZ.W SamusYSpeed                                                          ;91F1DF;
+    STZ.W SamusYDirection                                                          ;91F1E2;
+    STZ.W neverRead0B38                                                          ;91F1E5;
+    STZ.W MorphBallBounceState                                                          ;91F1E8;
     RTS                                                                  ;91F1EB;
 
 
 ;;; $F1EC: Solid vertical collision - landed - [Samus downwards movement solid collision result] = grounded ;;;
 SolidVerticalCollision_Landed_Grounded:
-    LDA.W $0A60                                                          ;91F1EC;
+    LDA.W PoseInputHandler                                                          ;91F1EC;
     CMP.W #SamusPoseInputHandler_Demo                                    ;91F1EF;
     BEQ .return                                                          ;91F1F2;
     LDA.W #SamusPoseInputHandler_AutoJumpHack                            ;91F1F4;
-    STA.W $0A60                                                          ;91F1F7;
+    STA.W PoseInputHandler                                                          ;91F1F7;
 
   .return:
     CLC                                                                  ;91F1FA;
@@ -14517,7 +14517,7 @@ SolidVerticalCollision_Landed_Grounded:
 ;;; $F1FC: Solid vertical collision - landed - [Samus downwards movement solid collision result] = morph ball grounded ;;;
 SolidVerticalCollision_Landed_MorphBallGrounded:
 ; Morph ball bounce - no springball
-    LDA.W $0B20                                                          ;91F1FC;
+    LDA.W MorphBallBounceState                                                          ;91F1FC;
     ASL                                                                  ;91F1FF;
     TAX                                                                  ;91F200;
     JMP.W (.pointers,X)                                                  ;91F201;
@@ -14530,49 +14530,49 @@ SolidVerticalCollision_Landed_MorphBallGrounded:
 
 ;;; $F20A: Morph ball bounce - morph ball - not bouncing ;;;
 MorphBallBounce_MorphBall_NotBouncing:
-    LDA.W $0B2E                                                          ;91F20A;
+    LDA.W SamusYSpeed                                                          ;91F20A;
     CMP.W #$0003                                                         ;91F20D;
     BMI MorphBallBounce_MorphBall_SecondBounce                           ;91F210;
-    INC.W $0B20                                                          ;91F212;
+    INC.W MorphBallBounceState                                                          ;91F212;
     LDA.W #$0001                                                         ;91F215;
-    STA.W $0B36                                                          ;91F218;
+    STA.W SamusYDirection                                                          ;91F218;
     LDA.L SamusPhysicsConstants_YSubSpeedWhenBouncingInMorphBall         ;91F21B;
-    STA.W $0B2C                                                          ;91F21F;
+    STA.W SamusYSubSpeed                                                          ;91F21F;
     LDA.L SamusPhysicsConstants_YSpeedWhenBouncingInMorphBall            ;91F222;
-    STA.W $0B2E                                                          ;91F226;
+    STA.W SamusYSpeed                                                          ;91F226;
     SEC                                                                  ;91F229;
     RTS                                                                  ;91F22A;
 
 
 ;;; $F22B: Morph ball bounce - morph ball - first bounce ;;;
 MorphBallBounce_MorphBall_FirstBounce:
-    INC.W $0B20                                                          ;91F22B;
+    INC.W MorphBallBounceState                                                          ;91F22B;
     LDA.W #$0001                                                         ;91F22E;
-    STA.W $0B36                                                          ;91F231;
+    STA.W SamusYDirection                                                          ;91F231;
     LDA.L SamusPhysicsConstants_YSubSpeedWhenBouncingInMorphBall         ;91F234;
-    STA.W $0B2C                                                          ;91F238;
+    STA.W SamusYSubSpeed                                                          ;91F238;
     LDA.L SamusPhysicsConstants_YSpeedWhenBouncingInMorphBall            ;91F23B;
     DEC                                                                  ;91F23F;
-    STA.W $0B2E                                                          ;91F240;
+    STA.W SamusYSpeed                                                          ;91F240;
     SEC                                                                  ;91F243;
     RTS                                                                  ;91F244;
 
 
 ;;; $F245: Morph ball bounce - morph ball - second bounce ;;;
 MorphBallBounce_MorphBall_SecondBounce:
-    STZ.W $0B20                                                          ;91F245;
-    STZ.W $0B36                                                          ;91F248;
-    STZ.W $0B2C                                                          ;91F24B;
-    STZ.W $0B2E                                                          ;91F24E;
+    STZ.W MorphBallBounceState                                                          ;91F245;
+    STZ.W SamusYDirection                                                          ;91F248;
+    STZ.W SamusYSubSpeed                                                          ;91F24B;
+    STZ.W SamusYSpeed                                                          ;91F24E;
     CLC                                                                  ;91F251;
     RTS                                                                  ;91F252;
 
 
 ;;; $F253: Solid vertical collision - landed - [Samus downwards movement solid collision result] = 2 ;;;
 SolidVerticalCollision_Landed_2:
-    STZ.W $0B20                                                          ;91F253;
+    STZ.W MorphBallBounceState                                                          ;91F253;
     LDA.W #$0003                                                         ;91F256;
-    STA.W $0A46                                                          ;91F259;
+    STA.W HorizontalSlopeCollision                                                          ;91F259;
     CLC                                                                  ;91F25C;
     RTS                                                                  ;91F25D;
 
@@ -14580,16 +14580,16 @@ SolidVerticalCollision_Landed_2:
 ;;; $F25E: Solid vertical collision - landed - [Samus downwards movement solid collision result] = spring ball grounded ;;;
 SolidVerticalCollision_Landed_SpringBallGrounded:
 ; Morph ball bounce - springball
-    LDA.B $8B                                                            ;91F25E;
-    BIT.W $09B4                                                          ;91F260;
+    LDA.B DP_Controller1Input                                                            ;91F25E;
+    BIT.W JumpBinding                                                          ;91F260;
     BEQ .notPressingJump                                                 ;91F263;
-    STZ.W $0B20                                                          ;91F265;
+    STZ.W MorphBallBounceState                                                          ;91F265;
     JSL.L Make_Samus_Jump                                                ;91F268;
     SEC                                                                  ;91F26C;
     RTS                                                                  ;91F26D;
 
   .notPressingJump:
-    LDA.W $0B20                                                          ;91F26E;
+    LDA.W MorphBallBounceState                                                          ;91F26E;
     AND.W #$00FF                                                         ;91F271;
     ASL                                                                  ;91F274;
     TAX                                                                  ;91F275;
@@ -14603,17 +14603,17 @@ SolidVerticalCollision_Landed_SpringBallGrounded:
 
 ;;; $F27F: Morph ball bounce - spring ball - not bouncing ;;;
 MorphBallBounce_SpringBall_NotBouncing:
-    LDA.W $0B2E                                                          ;91F27F;
+    LDA.W SamusYSpeed                                                          ;91F27F;
     CMP.W #$0003                                                         ;91F282;
     BMI MorphBallBounce_SpringBall_SecondBounce                          ;91F285;
     LDA.W #$0601                                                         ;91F287;
-    STA.W $0B20                                                          ;91F28A;
+    STA.W MorphBallBounceState                                                          ;91F28A;
     LDA.W #$0001                                                         ;91F28D;
-    STA.W $0B36                                                          ;91F290;
+    STA.W SamusYDirection                                                          ;91F290;
     LDA.L SamusPhysicsConstants_YSubSpeedWhenBouncingInMorphBall         ;91F293;
-    STA.W $0B2C                                                          ;91F297;
+    STA.W SamusYSubSpeed                                                          ;91F297;
     LDA.L SamusPhysicsConstants_YSpeedWhenBouncingInMorphBall            ;91F29A;
-    STA.W $0B2E                                                          ;91F29E;
+    STA.W SamusYSpeed                                                          ;91F29E;
     SEC                                                                  ;91F2A1;
     RTS                                                                  ;91F2A2;
 
@@ -14621,44 +14621,44 @@ MorphBallBounce_SpringBall_NotBouncing:
 ;;; $F2A3: Morph ball bounce - spring ball - first bounce ;;;
 MorphBallBounce_SpringBall_FirstBounce:
     LDA.W #$0602                                                         ;91F2A3;
-    STA.W $0B20                                                          ;91F2A6;
+    STA.W MorphBallBounceState                                                          ;91F2A6;
     LDA.W #$0001                                                         ;91F2A9;
-    STA.W $0B36                                                          ;91F2AC;
+    STA.W SamusYDirection                                                          ;91F2AC;
     LDA.L SamusPhysicsConstants_YSubSpeedWhenBouncingInMorphBall         ;91F2AF;
-    STA.W $0B2C                                                          ;91F2B3;
+    STA.W SamusYSubSpeed                                                          ;91F2B3;
     LDA.L SamusPhysicsConstants_YSpeedWhenBouncingInMorphBall            ;91F2B6;
     DEC                                                                  ;91F2BA;
-    STA.W $0B2E                                                          ;91F2BB;
+    STA.W SamusYSpeed                                                          ;91F2BB;
     SEC                                                                  ;91F2BE;
     RTS                                                                  ;91F2BF;
 
 
 ;;; $F2C0: Morph ball bounce - spring ball - second bounce ;;;
 MorphBallBounce_SpringBall_SecondBounce:
-    STZ.W $0B20                                                          ;91F2C0;
-    STZ.W $0B36                                                          ;91F2C3;
-    STZ.W $0B2C                                                          ;91F2C6;
-    STZ.W $0B2E                                                          ;91F2C9;
+    STZ.W MorphBallBounceState                                                          ;91F2C0;
+    STZ.W SamusYDirection                                                          ;91F2C3;
+    STZ.W SamusYSubSpeed                                                          ;91F2C6;
+    STZ.W SamusYSpeed                                                          ;91F2C9;
     CLC                                                                  ;91F2CC;
     RTS                                                                  ;91F2CD;
 
 
 ;;; $F2CE: Solid vertical collision - landed - [Samus downwards movement solid collision result] = 5 ;;;
 SolidVerticalCollision_5:
-    STZ.W $0B20                                                          ;91F2CE;
+    STZ.W MorphBallBounceState                                                          ;91F2CE;
     CLC                                                                  ;91F2D1;
     RTS                                                                  ;91F2D2;
 
 
 ;;; $F2D3: Solid vertical collision - [Samus solid vertical collision result] = wall jump triggered ;;;
 SolidVerticalCollision_WallJumpTriggered:
-    STZ.W $0B4A                                                          ;91F2D3;
-    STZ.W $0DCE                                                          ;91F2D6;
-    STZ.W $0B22                                                          ;91F2D9;
-    STZ.W $0B1A                                                          ;91F2DC;
-    STZ.W $0B46                                                          ;91F2DF;
-    STZ.W $0B48                                                          ;91F2E2;
-    STZ.W $0A18                                                          ;91F2E5;
+    STZ.W SamusXAccelerationMode                                                          ;91F2D3;
+    STZ.W SamusXSpeedKilledDueToCollisionFlag                                                          ;91F2D6;
+    STZ.W SamusIsFallingFlag                                                          ;91F2D9;
+    STZ.W neverRead0B1A                                                          ;91F2DC;
+    STZ.W SamusXBaseSpeed                                                          ;91F2DF;
+    STZ.W SamusXBaseSubSpeed                                                          ;91F2E2;
+    STZ.W neverRead0A18                                                          ;91F2E5;
     LDA.W #$0005                                                         ;91F2E8;
     JSL.L QueueSound_Lib3_Max6                                           ;91F2EB;
     RTS                                                                  ;91F2EF;
@@ -14666,53 +14666,53 @@ SolidVerticalCollision_WallJumpTriggered:
 
 ;;; $F2F0: Solid vertical collision - [Samus solid vertical collision result] = 6 ;;;
 SolidVerticalCollision_6:
-; Only code in the game that sets $0A46 to a non-3 value,
+; Only code in the game that sets HorizontalSlopeCollision to a non-3 value,
 ; the only code in the game that checks this variable only cares if the 2 bit is set or not,
 ; so it's not known what the intended difference between 0 and 1 is here
-    LDA.W $0DCE                                                          ;91F2F0;
+    LDA.W SamusXSpeedKilledDueToCollisionFlag                                                          ;91F2F0;
     BEQ .return                                                          ;91F2F3;
-    LDA.W $0A23                                                          ;91F2F5;
+    LDA.W PreviousMovementType                                                          ;91F2F5;
     AND.W #$00FF                                                         ;91F2F8;
     CMP.W #$0009                                                         ;91F2FB;
     BNE .return                                                          ;91F2FE;
-    LDA.W $0A1E                                                          ;91F300;
+    LDA.W PoseXDirection                                                          ;91F300;
     AND.W #$00FF                                                         ;91F303;
     CMP.W #$0004                                                         ;91F306;
     BEQ .disableHorizontalSlopeDetection                                 ;91F309;
     LDA.W #$0001                                                         ;91F30B;
-    STA.W $0A46                                                          ;91F30E;
+    STA.W HorizontalSlopeCollision                                                          ;91F30E;
     BRA .returnClear0A18                                                 ;91F311;
 
   .disableHorizontalSlopeDetection:
-    STZ.W $0A46                                                          ;91F313;
+    STZ.W HorizontalSlopeCollision                                                          ;91F313;
     BRA .returnClear0A18                                                 ;91F316;
 
   .return:
     RTS                                                                  ;91F318;
 
   .returnClear0A18:
-    STZ.W $0A18                                                          ;91F319;
+    STZ.W neverRead0A18                                                          ;91F319;
     RTS                                                                  ;91F31C;
 
 
 ;;; $F31D: Super special prospective pose change command 1 - knockback finished ;;;
 SuperSpecialProspectivePoseCmd_1_KnockbackFinished:
-    STZ.W $0A52                                                          ;91F31D;
+    STZ.W KnockbackDirection                                                          ;91F31D;
     LDA.W #SamusMovementHandler_Normal                                   ;91F320;
-    STA.W $0A58                                                          ;91F323;
-    STZ.W $0B20                                                          ;91F326;
-    STZ.W $0B2C                                                          ;91F329;
-    STZ.W $0B2E                                                          ;91F32C;
+    STA.W MovementHandler                                                          ;91F323;
+    STZ.W MorphBallBounceState                                                          ;91F326;
+    STZ.W SamusYSubSpeed                                                          ;91F329;
+    STZ.W SamusYSpeed                                                          ;91F32C;
     LDA.W #$0001                                                         ;91F32F;
-    STA.W $0B22                                                          ;91F332;
+    STA.W SamusIsFallingFlag                                                          ;91F332;
     LDA.W #$0002                                                         ;91F335;
-    STA.W $0B36                                                          ;91F338;
+    STA.W SamusYDirection                                                          ;91F338;
     JSL.L AlignSamusBottomPositionWithPreviousPose                       ;91F33B;
-    LDA.W $0A60                                                          ;91F33F;
+    LDA.W PoseInputHandler                                                          ;91F33F;
     CMP.W #SamusPoseInputHandler_Demo                                    ;91F342;
     BEQ .return                                                          ;91F345;
     LDA.W #SamusPoseInputHandler_Normal                                  ;91F347;
-    STA.W $0A60                                                          ;91F34A;
+    STA.W PoseInputHandler                                                          ;91F34A;
 
   .return:
     RTS                                                                  ;91F34D;
@@ -14722,52 +14722,52 @@ SuperSpecialProspectivePoseCmd_1_KnockbackFinished:
 SuperSpecialProspectivePoseCmd_2_ShinesparkFinished:
     JSL.L AlignSamusBottomPositionWithPreviousPose                       ;91F34E;
     LDA.W #SamusMovementHandler_Normal                                   ;91F352;
-    STA.W $0A58                                                          ;91F355;
-    LDA.W $0998                                                          ;91F358;
+    STA.W MovementHandler                                                          ;91F355;
+    LDA.W GameState                                                          ;91F358;
     CMP.W #$002A                                                         ;91F35B;
     BEQ .demo                                                            ;91F35E;
     LDA.W #SamusPoseInputHandler_Normal                                  ;91F360;
-    STA.W $0A60                                                          ;91F363;
+    STA.W PoseInputHandler                                                          ;91F363;
     RTS                                                                  ;91F366;
 
   .demo:
     LDA.W #SamusPoseInputHandler_Demo                                    ;91F367;
-    STA.W $0A60                                                          ;91F36A;
+    STA.W PoseInputHandler                                                          ;91F36A;
     RTS                                                                  ;91F36D;
 
 
 ;;; $F36E: Super special prospective pose change command 3 - transition animation finished ;;;
 SuperSpecialProspectivePoseCmd_3_TransitionAnimationFinished:
-    STZ.W $0B20                                                          ;91F36E;
-    LDA.W $0A94                                                          ;91F371;
+    STZ.W MorphBallBounceState                                                          ;91F36E;
+    LDA.W SamusAnimationFrameTimer                                                          ;91F371;
     CLC                                                                  ;91F374;
-    ADC.W $0A9C                                                          ;91F375;
-    STA.W $0A94                                                          ;91F378;
+    ADC.W SamusAnimationFrameBuffer                                                          ;91F375;
+    STA.W SamusAnimationFrameTimer                                                          ;91F378;
     RTS                                                                  ;91F37B;
 
 
 ;;; $F37C: Super special prospective pose change command 4 ;;;
 SuperSpecialProspectivePoseCmd_4:
-    LDA.W $0911                                                          ;91F37C;
+    LDA.W Layer1XPosition                                                          ;91F37C;
     CLC                                                                  ;91F37F;
     ADC.W #$0080                                                         ;91F380;
-    STA.W $0AF6                                                          ;91F383;
-    STA.W $0B10                                                          ;91F386;
-    LDA.W $0915                                                          ;91F389;
+    STA.W SamusXPosition                                                          ;91F383;
+    STA.W SamusPreviousXPosition                                                          ;91F386;
+    LDA.W Layer1YPosition                                                          ;91F389;
     CLC                                                                  ;91F38C;
     ADC.W #$0080                                                         ;91F38D;
-    STA.W $0AFA                                                          ;91F390;
-    STA.W $0B14                                                          ;91F393;
+    STA.W SamusYPosition                                                          ;91F390;
+    STA.W SamusPreviousYPosition                                                          ;91F393;
     RTS                                                                  ;91F396;
 
 
 ;;; $F397: Super special prospective pose change command 5 ;;;
 SuperSpecialProspectivePoseCmd_5:
-    LDA.W $0AFA                                                          ;91F397;
+    LDA.W SamusYPosition                                                          ;91F397;
     CLC                                                                  ;91F39A;
     ADC.W #$0005                                                         ;91F39B;
-    STA.W $0AFA                                                          ;91F39E;
-    STA.W $0B14                                                          ;91F3A1;
+    STA.W SamusYPosition                                                          ;91F39E;
+    STA.W SamusPreviousYPosition                                                          ;91F3A1;
     RTS                                                                  ;91F3A4;
 
 
@@ -14780,44 +14780,44 @@ SuperSpecialProspectivePoseCmd_6_StartGrappleWallJump:
 ;;; $F3AA: Super special prospective pose change command 7 - start release from grapple swing ;;;
 SuperSpecialProspectivePoseCmd_7_StartReleaseGrappleSwing:
 ; Clamps scrolling speed. I guess the idea is that Samus might have moved too far due to the pose change
-    LDA.W $0AF6                                                          ;91F3AA;
+    LDA.W SamusXPosition                                                          ;91F3AA;
     SEC                                                                  ;91F3AD;
-    SBC.W $0B10                                                          ;91F3AE;
+    SBC.W SamusPreviousXPosition                                                          ;91F3AE;
     BMI +                                                                ;91F3B1;
     CMP.W #$000D                                                         ;91F3B3;
     BMI .YPosition                                                       ;91F3B6;
-    LDA.W $0AF6                                                          ;91F3B8;
+    LDA.W SamusXPosition                                                          ;91F3B8;
     SEC                                                                  ;91F3BB;
     SBC.W #$000C                                                         ;91F3BC;
-    STA.W $0B10                                                          ;91F3BF;
+    STA.W SamusPreviousXPosition                                                          ;91F3BF;
     BRA .YPosition                                                       ;91F3C2;
 
 +   CMP.W #$FFF4                                                         ;91F3C4;
     BPL .YPosition                                                       ;91F3C7;
-    LDA.W $0AF6                                                          ;91F3C9;
+    LDA.W SamusXPosition                                                          ;91F3C9;
     CLC                                                                  ;91F3CC;
     ADC.W #$000C                                                         ;91F3CD;
-    STA.W $0B10                                                          ;91F3D0;
+    STA.W SamusPreviousXPosition                                                          ;91F3D0;
 
   .YPosition:
-    LDA.W $0AFA                                                          ;91F3D3;
+    LDA.W SamusYPosition                                                          ;91F3D3;
     SEC                                                                  ;91F3D6;
-    SBC.W $0B14                                                          ;91F3D7;
+    SBC.W SamusPreviousYPosition                                                          ;91F3D7;
     BMI +                                                                ;91F3DA;
     CMP.W #$000D                                                         ;91F3DC;
     BMI .return                                                          ;91F3DF;
-    LDA.W $0AFA                                                          ;91F3E1;
+    LDA.W SamusYPosition                                                          ;91F3E1;
     SEC                                                                  ;91F3E4;
     SBC.W #$000C                                                         ;91F3E5;
-    STA.W $0B14                                                          ;91F3E8;
+    STA.W SamusPreviousYPosition                                                          ;91F3E8;
     BRA .return                                                          ;91F3EB;
 
 +   CMP.W #$FFF4                                                         ;91F3ED;
     BPL .return                                                          ;91F3F0;
-    LDA.W $0AFA                                                          ;91F3F2;
+    LDA.W SamusYPosition                                                          ;91F3F2;
     CLC                                                                  ;91F3F5;
     ADC.W #$000C                                                         ;91F3F6;
-    STA.W $0B14                                                          ;91F3F9;
+    STA.W SamusPreviousYPosition                                                          ;91F3F9;
 
   .return:
     RTS                                                                  ;91F3FC;
@@ -14839,19 +14839,19 @@ HandleSamusPoseChange:
     PHK                                                                  ;91F406;
     PLB                                                                  ;91F407;
     REP #$30                                                             ;91F408;
-    LDA.W $0A1C                                                          ;91F40A;
+    LDA.W Pose                                                           ;91F40A;
     PHA                                                                  ;91F40D;
-    CMP.W $0A20                                                          ;91F40E;
+    CMP.W PreviousPose                                                          ;91F40E;
     BEQ .noChange                                                        ;91F411;
     JSR.W HandlePoseChangeCollision                                      ;91F413;
     JSL.L InitializeSamusPose_1                                          ;91F416;
     JSL.L HandleJumpTransition                                           ;91F41A;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91F41E;
-    STZ.W $0A9A                                                          ;91F422;
+    STZ.W NewPoseSamusAnimationFrame                                                          ;91F422;
 
   .noChange:
     PLA                                                                  ;91F425;
-    CMP.W $0A1C                                                          ;91F426;
+    CMP.W Pose                                                           ;91F426;
     BNE .poseChange                                                      ;91F429;
     PLB                                                                  ;91F42B;
     PLP                                                                  ;91F42C;
@@ -14872,15 +14872,15 @@ InitializeSamusPose_1:
     PHK                                                                  ;91F435;
     PLB                                                                  ;91F436;
     REP #$30                                                             ;91F437;
-    LDA.W $0A1C                                                          ;91F439;
+    LDA.W Pose                                                           ;91F439;
     ASL                                                                  ;91F43C;
     ASL                                                                  ;91F43D;
     ASL                                                                  ;91F43E;
     TAX                                                                  ;91F43F;
     LDA.W PoseDefinitions_XDirection,X                                   ;91F440;
-    STA.W $0A1E                                                          ;91F443;
+    STA.W PoseXDirection                                                          ;91F443;
     JSR.W InitializeSamusPose_2                                          ;91F446;
-    LDA.W $0A23                                                          ;91F449;
+    LDA.W PreviousMovementType                                                          ;91F449;
     AND.W #$00FF                                                         ;91F44C;
     CMP.W #$0003                                                         ;91F44F;
     BEQ .spinJumping                                                     ;91F452;
@@ -14888,7 +14888,7 @@ InitializeSamusPose_1:
     BNE .return                                                          ;91F457;
 
   .spinJumping:
-    LDA.W $09A2                                                          ;91F459;
+    LDA.W EquippedItems                                                          ;91F459;
     BIT.W #$0008                                                         ;91F45C;
     BEQ .return                                                          ;91F45F;
     JSL.L LoadSamusSuitPalette                                           ;91F461;
@@ -14903,19 +14903,19 @@ InitializeSamusPose_1:
 InitializeSamusPose_2:
     PHP                                                                  ;91F468;
     REP #$30                                                             ;91F469;
-    LDA.W $0A1F                                                          ;91F46B;
+    LDA.W MovementType                                                          ;91F46B;
     AND.W #$00FF                                                         ;91F46E;
     ASL                                                                  ;91F471;
     TAX                                                                  ;91F472;
     JSR.W (.pointers,X)                                                  ;91F473;
     BCC .return                                                          ;91F476;
-    LDA.W $0A1C                                                          ;91F478;
+    LDA.W Pose                                                           ;91F478;
     ASL                                                                  ;91F47B;
     ASL                                                                  ;91F47C;
     ASL                                                                  ;91F47D;
     TAX                                                                  ;91F47E;
     LDA.W PoseDefinitions_XDirection,X                                   ;91F47F;
-    STA.W $0A1E                                                          ;91F482;
+    STA.W PoseXDirection                                                          ;91F482;
     AND.W #$FF00                                                         ;91F485;
     CMP.W #$0E00                                                         ;91F488;
     BNE .return                                                          ;91F48B;
@@ -14923,13 +14923,13 @@ InitializeSamusPose_2:
     ASL                                                                  ;91F48E;
     TAX                                                                  ;91F48F;
     JSR.W (.pointers,X)                                                  ;91F490;
-    LDA.W $0A1C                                                          ;91F493;
+    LDA.W Pose                                                           ;91F493;
     ASL                                                                  ;91F496;
     ASL                                                                  ;91F497;
     ASL                                                                  ;91F498;
     TAX                                                                  ;91F499;
     LDA.W PoseDefinitions_XDirection,X                                   ;91F49A;
-    STA.W $0A1E                                                          ;91F49D;
+    STA.W PoseXDirection                                                          ;91F49D;
 
   .return:
     PLP                                                                  ;91F4A0;
@@ -14974,7 +14974,7 @@ CLCRTS_91F4DA:
 
 ;;; $F4DC: Initialise Samus pose - standing ;;;
 InitializeSamusPose_Standing:
-    LDA.W $0A1C                                                          ;91F4DC;
+    LDA.W Pose                                                           ;91F4DC;
     ASL                                                                  ;91F4DF;
     ASL                                                                  ;91F4E0;
     ASL                                                                  ;91F4E1;
@@ -14985,7 +14985,7 @@ InitializeSamusPose_Standing:
     CMP.W #$0009                                                         ;91F4EB;
     BNE .returnCarryClear                                                ;91F4EE;
 
-+   LDA.W $0A20                                                          ;91F4F0;
++   LDA.W PreviousPose                                                          ;91F4F0;
     ASL                                                                  ;91F4F3;
     ASL                                                                  ;91F4F4;
     ASL                                                                  ;91F4F5;
@@ -14998,7 +14998,7 @@ InitializeSamusPose_Standing:
 
   .up:
     LDA.W #$0001                                                         ;91F504;
-    STA.W $0A9A                                                          ;91F507;
+    STA.W NewPoseSamusAnimationFrame                                                          ;91F507;
 
   .returnCarryClear:
     CLC                                                                  ;91F50A;
@@ -15007,17 +15007,17 @@ InitializeSamusPose_Standing:
 
 ;;; $F50C: Initialise Samus pose - running ;;;
 InitializeSamusPose_Running:
-    LDA.W $0A23                                                          ;91F50C;
+    LDA.W PreviousMovementType                                                          ;91F50C;
     AND.W #$00FF                                                         ;91F50F;
     CMP.W #$0001                                                         ;91F512;
     BNE .notRunning                                                      ;91F515;
     LDA.W #$8000                                                         ;91F517;
-    STA.W $0A9A                                                          ;91F51A;
+    STA.W NewPoseSamusAnimationFrame                                                          ;91F51A;
 
   .notRunning:
-    LDA.W $0DF8                                                          ;91F51D;
+    LDA.W unknown0DF8                                                          ;91F51D;
     BEQ .returnCarryClear                                                ;91F520;
-    LDA.W $0A1C                                                          ;91F522;
+    LDA.W Pose                                                           ;91F522;
     CMP.W #$0045                                                         ;91F525;
     BEQ .turnLeft                                                        ;91F528;
     CMP.W #$0046                                                         ;91F52A;
@@ -15026,12 +15026,12 @@ InitializeSamusPose_Running:
 
   .turnLeft:
     LDA.W #$0025                                                         ;91F531;
-    STA.W $0A1C                                                          ;91F534;
+    STA.W Pose                                                           ;91F534;
     BRA .returnCarrySet                                                  ;91F537;
 
   .turnRight:
     LDA.W #$0026                                                         ;91F539;
-    STA.W $0A1C                                                          ;91F53C;
+    STA.W Pose                                                           ;91F53C;
 
   .returnCarrySet:
     SEC                                                                  ;91F53F;
@@ -15051,7 +15051,7 @@ InitializeSamusPose_NormalJumping:
 ; regardless of whether this section is NOPed or not
 
 ; This checklist of poses notably excludes the two gun extended poses 13h/14h
-    LDA.W $0A1C                                                          ;91F543;
+    LDA.W Pose                                                           ;91F543;
     CMP.W #$004E                                                         ;91F546;
     BEQ .shinesparkFacingLeft                                            ;91F549;
     CMP.W #$004D                                                         ;91F54B;
@@ -15066,54 +15066,54 @@ InitializeSamusPose_NormalJumping:
     BNE .notShinespark                                                   ;91F562;
 
   .shinesparkFacingRight:
-    LDA.W $0A68                                                          ;91F564;
+    LDA.W SpecialPaletteTimer                                                          ;91F564;
     BEQ .notShinespark                                                   ;91F567;
     LDA.W #$00C7                                                         ;91F569;
-    STA.W $0A1C                                                          ;91F56C;
+    STA.W Pose                                                           ;91F56C;
     BRA .shinesparkMerge                                                 ;91F56F;
 
   .shinesparkFacingLeft:
-    LDA.W $0A68                                                          ;91F571;
+    LDA.W SpecialPaletteTimer                                                          ;91F571;
     BEQ .notShinespark                                                   ;91F574;
     LDA.W #$00C8                                                         ;91F576;
-    STA.W $0A1C                                                          ;91F579;
+    STA.W Pose                                                           ;91F579;
 
   .shinesparkMerge:
     JSL.L TriggerShinesparkWindup                                        ;91F57C;
-    LDA.W $0A23                                                          ;91F580;
+    LDA.W PreviousMovementType                                                          ;91F580;
     AND.W #$00FF                                                         ;91F583;
     CMP.W #$0002                                                         ;91F586;
     BNE .returnCarrySet                                                  ;91F589;
-    LDA.W $0AFA                                                          ;91F58B;
+    LDA.W SamusYPosition                                                          ;91F58B;
     SEC                                                                  ;91F58E;
     SBC.W #$0001                                                         ;91F58F;
-    STA.W $0AFA                                                          ;91F592;
-    STA.W $0B14                                                          ;91F595;
+    STA.W SamusYPosition                                                          ;91F592;
+    STA.W SamusPreviousYPosition                                                          ;91F595;
 
   .returnCarrySet:
     SEC                                                                  ;91F598;
     RTS                                                                  ;91F599;
 
   .notShinespark:
-    LDA.W $0B42                                                          ;91F59A;
+    LDA.W SamusXExtraRunSpeed                                                          ;91F59A;
     BNE .nonZeroExtraRunSpeed                                            ;91F59D;
-    LDA.W $0B44                                                          ;91F59F;
+    LDA.W SamusXExtraRunSubSpeed                                                          ;91F59F;
     BNE .nonZeroExtraRunSpeed                                            ;91F5A2;
-    STZ.W $0B4A                                                          ;91F5A4;
+    STZ.W SamusXAccelerationMode                                                          ;91F5A4;
     BRA +                                                                ;91F5A7;
 
   .nonZeroExtraRunSpeed:
     LDA.W #$0002                                                         ;91F5A9;
-    STA.W $0B4A                                                          ;91F5AC;
+    STA.W SamusXAccelerationMode                                                          ;91F5AC;
 
-+   LDA.W $0A1C                                                          ;91F5AF;
++   LDA.W Pose                                                           ;91F5AF;
     CMP.W #$0015                                                         ;91F5B2;
     BEQ .normalJump                                                      ;91F5B5;
     CMP.W #$0016                                                         ;91F5B7;
     BNE .noAnimationSkip                                                 ;91F5BA;
 
   .normalJump:
-    LDA.W $0A20                                                          ;91F5BC;
+    LDA.W PreviousPose                                                          ;91F5BC;
     CMP.W #$0055                                                         ;91F5BF;
     BEQ .skipArmCannonMovingUp                                           ;91F5C2;
     CMP.W #$0056                                                         ;91F5C4;
@@ -15121,13 +15121,13 @@ InitializeSamusPose_NormalJumping:
 
   .skipArmCannonMovingUp:
     LDA.W #$0001                                                         ;91F5C9;
-    STA.W $0A9A                                                          ;91F5CC;
+    STA.W NewPoseSamusAnimationFrame                                                          ;91F5CC;
 
   .noAnimationSkip:
-    LDA.B $8F                                                            ;91F5CF;
-    BIT.W $09B2                                                          ;91F5D1;
+    LDA.B DP_Controller1New                                                            ;91F5CF;
+    BIT.W ShotBinding                                                          ;91F5D1;
     BEQ .returnCarryClear                                                ;91F5D4;
-    LDA.W $0A1C                                                          ;91F5D6;
+    LDA.W Pose                                                           ;91F5D6;
     ASL                                                                  ;91F5D9;
     ASL                                                                  ;91F5DA;
     ASL                                                                  ;91F5DB;
@@ -15135,7 +15135,7 @@ InitializeSamusPose_NormalJumping:
     LDA.W PoseDefinitions_directionShotsFired,X                          ;91F5DD;
     AND.W #$00FF                                                         ;91F5E0;
     ORA.W #$8000                                                         ;91F5E3;
-    STA.W $0B5E                                                          ;91F5E6;
+    STA.W PoseTransitionShotDirection                                                          ;91F5E6;
 
   .returnCarryClear:
     CLC                                                                  ;91F5E9;
@@ -15144,14 +15144,14 @@ InitializeSamusPose_NormalJumping:
 
 ;;; $F5EB: Initialise Samus pose - crouching ;;;
 InitializeSamusPose_Crouching:
-    LDA.W $0A1C                                                          ;91F5EB;
+    LDA.W Pose                                                           ;91F5EB;
     CMP.W #$0085                                                         ;91F5EE;
     BEQ .crouchingAimingUp                                               ;91F5F1;
     CMP.W #$0086                                                         ;91F5F3;
     BNE .returnCarryClear                                                ;91F5F6;
 
   .crouchingAimingUp:
-    LDA.W $0A20                                                          ;91F5F8;
+    LDA.W PreviousPose                                                          ;91F5F8;
     CMP.W #$00F1                                                         ;91F5FB;
     BEQ .skipArmCannonMovingUp                                           ;91F5FE;
     CMP.W #$00F2                                                         ;91F600;
@@ -15159,7 +15159,7 @@ InitializeSamusPose_Crouching:
 
   .skipArmCannonMovingUp:
     LDA.W #$0001                                                         ;91F605;
-    STA.W $0A9A                                                          ;91F608;
+    STA.W NewPoseSamusAnimationFrame                                                          ;91F608;
 
   .returnCarryClear:
     CLC                                                                  ;91F60B;
@@ -15168,16 +15168,16 @@ InitializeSamusPose_Crouching:
 
 ;;; $F60D: Initialise Samus pose - falling ;;;
 InitializeSamusPose_Falling:
-    LDA.W $0B42                                                          ;91F60D;
+    LDA.W SamusXExtraRunSpeed                                                          ;91F60D;
     BNE .nonZeroExtraRunSpeed                                            ;91F610;
-    LDA.W $0B44                                                          ;91F612;
+    LDA.W SamusXExtraRunSubSpeed                                                          ;91F612;
     BNE .nonZeroExtraRunSpeed                                            ;91F615;
-    STZ.W $0B4A                                                          ;91F617;
+    STZ.W SamusXAccelerationMode                                                          ;91F617;
     BRA .returnCarryClear                                                ;91F61A;
 
   .nonZeroExtraRunSpeed:
     LDA.W #$0002                                                         ;91F61C;
-    STA.W $0B4A                                                          ;91F61F;
+    STA.W SamusXAccelerationMode                                                          ;91F61F;
 
   .returnCarryClear:
     CLC                                                                  ;91F622;
@@ -15186,7 +15186,7 @@ InitializeSamusPose_Falling:
 
 ;;; $F624: Initialise Samus pose - spin jumping ;;;
 InitializeSamusPose_SpinJumping:
-    LDA.W $0A23                                                          ;91F624;
+    LDA.W PreviousMovementType                                                          ;91F624;
     AND.W #$00FF                                                         ;91F627;
     CMP.W #$0003                                                         ;91F62A;
     BEQ .spinJumping                                                     ;91F62D;
@@ -15195,67 +15195,67 @@ InitializeSamusPose_SpinJumping:
 
   .spinJumping:
     LDA.W #$0001                                                         ;91F634;
-    STA.W $0A9A                                                          ;91F637;
-    LDA.W $0A22                                                          ;91F63A;
+    STA.W NewPoseSamusAnimationFrame                                                          ;91F637;
+    LDA.W PreviousPoseXDirection                                                          ;91F63A;
     AND.W #$000F                                                         ;91F63D;
     CMP.W #$0008                                                         ;91F640;
     BEQ +                                                                ;91F643;
     CMP.W #$0004                                                         ;91F645;
     BNE .notTurningAround                                                ;91F648;
-    LDA.W $0A1E                                                          ;91F64A;
+    LDA.W PoseXDirection                                                          ;91F64A;
     CMP.W #$0308                                                         ;91F64D;
     BEQ .speed                                                           ;91F650;
     BRA .notTurningAround                                                ;91F652;
 
-+   LDA.W $0A1E                                                          ;91F654;
++   LDA.W PoseXDirection                                                          ;91F654;
     CMP.W #$0304                                                         ;91F657;
     BNE .notTurningAround                                                ;91F65A;
 
   .speed:
-    LDA.W $0B44                                                          ;91F65C;
+    LDA.W SamusXExtraRunSubSpeed                                                          ;91F65C;
     CLC                                                                  ;91F65F;
-    ADC.W $0B48                                                          ;91F660;
-    STA.W $0B48                                                          ;91F663;
-    LDA.W $0B42                                                          ;91F666;
-    ADC.W $0B46                                                          ;91F669;
-    STA.W $0B46                                                          ;91F66C;
+    ADC.W SamusXBaseSubSpeed                                                          ;91F660;
+    STA.W SamusXBaseSubSpeed                                                          ;91F663;
+    LDA.W SamusXExtraRunSpeed                                                          ;91F666;
+    ADC.W SamusXBaseSpeed                                                          ;91F669;
+    STA.W SamusXBaseSpeed                                                          ;91F66C;
     JSL.L Cancel_SpeedBoosting                                           ;91F66F;
-    STZ.W $0B44                                                          ;91F673;
-    STZ.W $0B42                                                          ;91F676;
+    STZ.W SamusXExtraRunSubSpeed                                                          ;91F673;
+    STZ.W SamusXExtraRunSpeed                                                          ;91F676;
     LDA.W #$0001                                                         ;91F679;
-    STA.W $0B4A                                                          ;91F67C;
+    STA.W SamusXAccelerationMode                                                          ;91F67C;
 
   .notTurningAround:
-    LDA.W $0A1E                                                          ;91F67F;
+    LDA.W PoseXDirection                                                          ;91F67F;
     AND.W #$00FF                                                         ;91F682;
     CMP.W #$0004                                                         ;91F685;
     BEQ .facingLeft                                                      ;91F688;
-    LDA.W $09A2                                                          ;91F68A;
+    LDA.W EquippedItems                                                          ;91F68A;
     BIT.W #$0020                                                         ;91F68D;
     BNE .nonLiquidPhysicsRight                                           ;91F690;
     JSL.L Get_Samus_BottomTop_Boundary                                   ;91F692;
-    LDA.W $195E                                                          ;91F696;
+    LDA.W FX_YPosition                                                          ;91F696;
     BMI .negativeYPosition                                               ;91F699;
-    CMP.B $14                                                            ;91F69B;
+    CMP.B DP_Temp14                                                            ;91F69B;
     BPL .nonLiquidPhysicsRight                                           ;91F69D;
-    LDA.W $197E                                                          ;91F69F;
+    LDA.W FX_LiquidOptions                                                          ;91F69F;
     BIT.W #$0004                                                         ;91F6A2;
     BNE .nonLiquidPhysicsRight                                           ;91F6A5;
     BRA .returnUpperCarryClear                                           ;91F6A7;
 
   .negativeYPosition:
-    LDA.W $1962                                                          ;91F6A9;
+    LDA.W FX_LavaAcidYPosition                                                          ;91F6A9;
     BMI .nonLiquidPhysicsRight                                           ;91F6AC;
-    CMP.B $14                                                            ;91F6AE;
+    CMP.B DP_Temp14                                                            ;91F6AE;
     BMI .returnUpperCarryClear                                           ;91F6B0;
 
   .nonLiquidPhysicsRight:
-    LDA.W $09A2                                                          ;91F6B2;
+    LDA.W EquippedItems                                                          ;91F6B2;
     BIT.W #$0008                                                         ;91F6B5;
     BNE .screwAttackRight                                                ;91F6B8;
     BIT.W #$0200                                                         ;91F6BA;
     BNE .spaceJumpRight                                                  ;91F6BD;
-    LDA.W $0A9A                                                          ;91F6BF;
+    LDA.W NewPoseSamusAnimationFrame                                                          ;91F6BF;
     BEQ .spinJumpRight                                                   ;91F6C2;
 
   .returnUpperCarryClear:
@@ -15263,7 +15263,7 @@ InitializeSamusPose_SpinJumping:
     RTS                                                                  ;91F6C5;
 
   .spinJumpRight:
-    LDA.W $1F51                                                          ;91F6C6;
+    LDA.W CinematicFunction                                                          ;91F6C6;
     BNE .returnUpperCarryClear                                           ;91F6C9;
     LDA.W #$0031                                                         ;91F6CB;
     JSL.L QueueSound_Lib1_Max6                                           ;91F6CE;
@@ -15274,42 +15274,42 @@ InitializeSamusPose_SpinJumping:
     LDA.W #$003E                                                         ;91F6D4;
     JSL.L QueueSound_Lib1_Max6                                           ;91F6D7;
     LDA.W #$001B                                                         ;91F6DB;
-    STA.W $0A1C                                                          ;91F6DE;
+    STA.W Pose                                                           ;91F6DE;
     CLC                                                                  ;91F6E1;
     RTS                                                                  ;91F6E2;
 
   .screwAttackRight:
     LDA.W #$0081                                                         ;91F6E3;
-    STA.W $0A1C                                                          ;91F6E6;
+    STA.W Pose                                                           ;91F6E6;
     BRA .screwAttackSFX                                                  ;91F6E9;
 
   .facingLeft:
-    LDA.W $09A2                                                          ;91F6EB;
+    LDA.W EquippedItems                                                          ;91F6EB;
     BIT.W #$0020                                                         ;91F6EE;
     BNE .nonLiquidPhysicsLeft                                            ;91F6F1;
     JSL.L Get_Samus_BottomTop_Boundary                                   ;91F6F3;
-    LDA.W $195E                                                          ;91F6F7;
+    LDA.W FX_YPosition                                                          ;91F6F7;
     BMI .negativeYPosition2                                              ;91F6FA;
-    CMP.B $14                                                            ;91F6FC;
+    CMP.B DP_Temp14                                                            ;91F6FC;
     BPL .nonLiquidPhysicsLeft                                            ;91F6FE;
-    LDA.W $197E                                                          ;91F700;
+    LDA.W FX_LiquidOptions                                                          ;91F700;
     BIT.W #$0004                                                         ;91F703;
     BNE .nonLiquidPhysicsLeft                                            ;91F706;
     BRA .returnMiddleCarryClear                                          ;91F708;
 
   .negativeYPosition2:
-    LDA.W $1962                                                          ;91F70A;
+    LDA.W FX_LavaAcidYPosition                                                          ;91F70A;
     BMI .nonLiquidPhysicsLeft                                            ;91F70D;
-    CMP.B $14                                                            ;91F70F;
+    CMP.B DP_Temp14                                                            ;91F70F;
     BMI .returnMiddleCarryClear                                          ;91F711;
 
   .nonLiquidPhysicsLeft:
-    LDA.W $09A2                                                          ;91F713;
+    LDA.W EquippedItems                                                          ;91F713;
     BIT.W #$0008                                                         ;91F716;
     BNE .screwAttackLeft                                                 ;91F719;
     BIT.W #$0200                                                         ;91F71B;
     BNE .spaceJumpLeft                                                   ;91F71E;
-    LDA.W $0A9A                                                          ;91F720;
+    LDA.W NewPoseSamusAnimationFrame                                                          ;91F720;
     BEQ .spinJumpLeft                                                    ;91F723;
 
   .returnMiddleCarryClear:
@@ -15317,7 +15317,7 @@ InitializeSamusPose_SpinJumping:
     RTS                                                                  ;91F726;
 
   .spinJumpLeft:
-    LDA.W $1F51                                                          ;91F727;
+    LDA.W CinematicFunction                                                          ;91F727;
     BNE .returnMiddleCarryClear                                          ;91F72A;
     LDA.W #$0031                                                         ;91F72C;
     JSL.L QueueSound_Lib1_Max6                                           ;91F72F;
@@ -15328,16 +15328,16 @@ InitializeSamusPose_SpinJumping:
     LDA.W #$003E                                                         ;91F735;
     JSL.L QueueSound_Lib1_Max6                                           ;91F738;
     LDA.W #$001C                                                         ;91F73C;
-    STA.W $0A1C                                                          ;91F73F;
+    STA.W Pose                                                           ;91F73F;
     CLC                                                                  ;91F742;
     RTS                                                                  ;91F743;
 
   .screwAttackLeft:
     LDA.W #$0082                                                         ;91F744;
-    STA.W $0A1C                                                          ;91F747;
+    STA.W Pose                                                           ;91F747;
 
   .screwAttackSFX:
-    LDA.W $0A9A                                                          ;91F74A;
+    LDA.W NewPoseSamusAnimationFrame                                                          ;91F74A;
     BNE .returnLowerCarryClear                                           ;91F74D;
     LDA.W #$0033                                                         ;91F74F;
     JSL.L QueueSound_Lib1_Max6                                           ;91F752;
@@ -15349,7 +15349,7 @@ InitializeSamusPose_SpinJumping:
 
 ;;; $F758: Initialise Samus pose - crouching/standing/morphing/unmorphing transition ;;;
 InitializeSamusPose_TransitionPoses:
-    LDA.W $0A1C                                                          ;91F758;
+    LDA.W Pose                                                           ;91F758;
     CMP.W #$00F1                                                         ;91F75B;
     BPL .aiming                                                          ;91F75E;
     CMP.W #$00DB                                                         ;91F760;
@@ -15360,7 +15360,7 @@ InitializeSamusPose_TransitionPoses:
     TAX                                                                  ;91F76A;
 
 -   LDA.W #$0007                                                         ;91F76B;
-    STA.W $0A2E                                                          ;91F76E;
+    STA.W ProspectivePoseChangeCommand                                                          ;91F76E;
     JSR.W (.pointers,X)                                                  ;91F771;
     RTS                                                                  ;91F774;
 
@@ -15380,7 +15380,7 @@ InitializeSamusPose_TransitionPoses:
 
   .startTransition:
     LDA.W #$0007                                                         ;91F789;
-    STA.W $0A2E                                                          ;91F78C;
+    STA.W ProspectivePoseChangeCommand                                                          ;91F78C;
     RTS                                                                  ;91F78F;
 
   .pointers:
@@ -15408,15 +15408,15 @@ InitializeSamusPose_TransitionPoses:
 ;;; $F7B0: Initialise Samus pose - crouching transition ;;;
 InitializeSamusPose_CrouchingTransition:
 ; Gives Samus shinespark
-    LDA.W $0B3E                                                          ;91F7B0;
+    LDA.W SamusBoostTimer                                                          ;91F7B0;
     AND.W #$FF00                                                         ;91F7B3;
     CMP.W #$0400                                                         ;91F7B6;
     BMI .returnCarryClear                                                ;91F7B9;
     LDA.W #$00B4                                                         ;91F7BB;
-    STA.W $0A68                                                          ;91F7BE;
+    STA.W SpecialPaletteTimer                                                          ;91F7BE;
     LDA.W #$0001                                                         ;91F7C1;
-    STA.W $0ACC                                                          ;91F7C4;
-    STZ.W $0ACE                                                          ;91F7C7;
+    STA.W SpecialSamusPaletteType                                                          ;91F7C4;
+    STZ.W SpecialSamusPaletteFrame                                                          ;91F7C7;
 
   .returnCarryClear:
     CLC                                                                  ;91F7CA;
@@ -15431,63 +15431,63 @@ CLCRTS_91F7CC:
 
 ;;; $F7CE: Initialise Samus pose - morphing transition ;;;
 InitializeSamusPose_MorphingTransition:
-    LDA.W $09A2                                                          ;91F7CE;
+    LDA.W EquippedItems                                                          ;91F7CE;
     BIT.W #$0004                                                         ;91F7D1;
     BEQ .noMorphBall                                                     ;91F7D4;
-    LDA.W $0A23                                                          ;91F7D6;
+    LDA.W PreviousMovementType                                                          ;91F7D6;
     AND.W #$00FF                                                         ;91F7D9;
     CMP.W #$0003                                                         ;91F7DC;
     BNE .spinJumping                                                     ;91F7DF;
     LDA.W #$0002                                                         ;91F7E1;
-    STA.W $0B4A                                                          ;91F7E4;
+    STA.W SamusXAccelerationMode                                                          ;91F7E4;
 
   .spinJumping:
-    STZ.W $0CD4                                                          ;91F7E7;
+    STZ.W SamusProjectile_BombSpreadChargeTimeoutCounter                                                          ;91F7E7;
     CLC                                                                  ;91F7EA;
     RTS                                                                  ;91F7EB;
 
   .noMorphBall:
-    LDA.W $0A20                                                          ;91F7EC;
-    STA.W $0A1C                                                          ;91F7EF;
+    LDA.W PreviousPose                                                          ;91F7EC;
+    STA.W Pose                                                           ;91F7EF;
     SEC                                                                  ;91F7F2;
     RTS                                                                  ;91F7F3;
 
 
 ;;; $F7F4: Initialise Samus pose - unused pose 39h ;;;
 UNUSED_InitializeSamusPose_UnusedPose39_91F7F4:
-    LDA.W $0A23                                                          ;91F7F4;
+    LDA.W PreviousMovementType                                                          ;91F7F4;
     AND.W #$00FF                                                         ;91F7F7;
     CMP.W #$0008                                                         ;91F7FA;
     BEQ .wasFalling                                                      ;91F7FD;
     CMP.W #$0013                                                         ;91F7FF;
     BEQ .wasFalling                                                      ;91F802;
-    LDA.W $09A2                                                          ;91F804;
+    LDA.W EquippedItems                                                          ;91F804;
     BIT.W #$0000                                                         ;91F807;
     BNE .returnCarryClear                                                ;91F80A;
     BIT.W #$0002                                                         ;91F80C;
     BNE .facingRight                                                     ;91F80F;
     LDA.W #$001D                                                         ;91F811;
-    STA.W $0A1C                                                          ;91F814;
+    STA.W Pose                                                           ;91F814;
     BRA .returnCarrySet                                                  ;91F817;
 
   .facingRight:
     LDA.W #$0079                                                         ;91F819;
-    STA.W $0A1C                                                          ;91F81C;
+    STA.W Pose                                                           ;91F81C;
     BRA .returnCarrySet                                                  ;91F81F;
 
   .wasFalling:
-    LDA.W $09A2                                                          ;91F821;
+    LDA.W EquippedItems                                                          ;91F821;
     BIT.W #$0000                                                         ;91F824;
     BNE .returnCarryClear                                                ;91F827;
     BIT.W #$0002                                                         ;91F829;
     BNE ..facingRight                                                    ;91F82C;
     LDA.W #$0031                                                         ;91F82E;
-    STA.W $0A1C                                                          ;91F831;
+    STA.W Pose                                                           ;91F831;
     BRA .returnCarrySet                                                  ;91F834;
 
   ..facingRight:
     LDA.W #$007D                                                         ;91F836;
-    STA.W $0A1C                                                          ;91F839;
+    STA.W Pose                                                           ;91F839;
 
   .returnCarrySet:
     SEC                                                                  ;91F83C;
@@ -15500,39 +15500,39 @@ UNUSED_InitializeSamusPose_UnusedPose39_91F7F4:
 
 ;;; $F840: Initialise Samus pose - unused pose 3Ah ;;;
 UNUSED_InitializeSamusPose_UnusedPose3A_91F840:
-    LDA.W $0A23                                                          ;91F840;
+    LDA.W PreviousMovementType                                                          ;91F840;
     AND.W #$00FF                                                         ;91F843;
     CMP.W #$0008                                                         ;91F846;
     BEQ .wasFalling                                                      ;91F849;
     CMP.W #$0013                                                         ;91F84B;
     BEQ .wasFalling                                                      ;91F84E;
-    LDA.W $09A2                                                          ;91F850;
+    LDA.W EquippedItems                                                          ;91F850;
     BIT.W #$0000                                                         ;91F853;
     BNE .returnCarryClear                                                ;91F856;
     BIT.W #$0002                                                         ;91F858;
     BNE .springBall                                                      ;91F85B;
     LDA.W #$0041                                                         ;91F85D;
-    STA.W $0A1C                                                          ;91F860;
+    STA.W Pose                                                           ;91F860;
     BRA .returnCarrySet                                                  ;91F863;
 
   .springBall:
     LDA.W #$007A                                                         ;91F865;
-    STA.W $0A1C                                                          ;91F868;
+    STA.W Pose                                                           ;91F868;
     BRA .returnCarrySet                                                  ;91F86B;
 
   .wasFalling:
-    LDA.W $09A2                                                          ;91F86D;
+    LDA.W EquippedItems                                                          ;91F86D;
     BIT.W #$0000                                                         ;91F870;
     BNE .returnCarryClear                                                ;91F873;
     BIT.W #$0002                                                         ;91F875;
     BNE ..springBall                                                     ;91F878;
     LDA.W #$0032                                                         ;91F87A;
-    STA.W $0A1C                                                          ;91F87D;
+    STA.W Pose                                                           ;91F87D;
     BRA .returnCarrySet                                                  ;91F880;
 
   ..springBall:
     LDA.W #$007E                                                         ;91F882;
-    STA.W $0A1C                                                          ;91F885;
+    STA.W Pose                                                           ;91F885;
 
   .returnCarrySet:
     SEC                                                                  ;91F888;
@@ -15545,23 +15545,23 @@ UNUSED_InitializeSamusPose_UnusedPose3A_91F840:
 
 ;;; $F88C: Initialise Samus pose - moonwalking ;;;
 InitializeSamusPose_Moonwalking:
-    LDA.W $09E4                                                          ;91F88C;
+    LDA.W Moonwalk                                                          ;91F88C;
     BEQ .enabled                                                         ;91F88F;
     CLC                                                                  ;91F891;
     RTS                                                                  ;91F892;
 
   .enabled:
-    LDA.W $0A1E                                                          ;91F893;
+    LDA.W PoseXDirection                                                          ;91F893;
     AND.W #$00FF                                                         ;91F896;
     CMP.W #$0004                                                         ;91F899;
     BEQ .facingLeft                                                      ;91F89C;
     LDA.W #$0026                                                         ;91F89E;
-    STA.W $0A1C                                                          ;91F8A1;
+    STA.W Pose                                                           ;91F8A1;
     BRA .returnCarrySet                                                  ;91F8A4;
 
   .facingLeft:
     LDA.W #$0025                                                         ;91F8A6;
-    STA.W $0A1C                                                          ;91F8A9;
+    STA.W Pose                                                           ;91F8A9;
 
   .returnCarrySet:
     SEC                                                                  ;91F8AC;
@@ -15573,17 +15573,17 @@ InitializeSamusPose_DamageBoost:
 ; Looks like a BRA past leftover code to me
     BRA .nonDeadCode                                                     ;91F8AE;
 
-    LDA.W $0A1E                                                          ;91F8B0;
+    LDA.W PoseXDirection                                                          ;91F8B0;
     AND.W #$00FF                                                         ;91F8B3;
     CMP.W #$0004                                                         ;91F8B6;
     BEQ .facingLeft                                                      ;91F8B9;
     LDA.W #$0053                                                         ;91F8BB;
-    STA.W $0A1C                                                          ;91F8BE;
+    STA.W Pose                                                           ;91F8BE;
     BRA .returnCarrySet                                                  ;91F8C1;
 
   .facingLeft:
     LDA.W #$0054                                                         ;91F8C3;
-    STA.W $0A1C                                                          ;91F8C6;
+    STA.W Pose                                                           ;91F8C6;
 
   .returnCarrySet:
     SEC                                                                  ;91F8C9;
@@ -15591,14 +15591,14 @@ InitializeSamusPose_DamageBoost:
 
   .nonDeadCode:
     LDA.W #SamusMovementHandler_Normal                                   ;91F8CB;
-    STA.W $0A58                                                          ;91F8CE;
+    STA.W MovementHandler                                                          ;91F8CE;
     CLC                                                                  ;91F8D1;
     RTS                                                                  ;91F8D2;
 
 
 ;;; $F8D3: Initialise Samus pose - turning around - on ground ;;;
 InitializeSamusPose_TurningAround_OnGround:
-    LDA.W $0A20                                                          ;91F8D3;
+    LDA.W PreviousPose                                                          ;91F8D3;
     BEQ .done                                                            ;91F8D6;
     CMP.W #$009B                                                         ;91F8D8;
     BEQ .done                                                            ;91F8DB;
@@ -15609,11 +15609,11 @@ InitializeSamusPose_TurningAround_OnGround:
     LDA.W PoseDefinitions_directionShotsFired,X                          ;91F8E1;
     AND.W #$00FF                                                         ;91F8E4;
     TAX                                                                  ;91F8E7;
-    LDA.W $0A23                                                          ;91F8E8;
+    LDA.W PreviousMovementType                                                          ;91F8E8;
     AND.W #$00FF                                                         ;91F8EB;
     CMP.W #$0010                                                         ;91F8EE;
     BNE .notMoonwalking                                                  ;91F8F1;
-    LDA.W $0A20                                                          ;91F8F3;
+    LDA.W PreviousPose                                                          ;91F8F3;
     ASL                                                                  ;91F8F6;
     ASL                                                                  ;91F8F7;
     ASL                                                                  ;91F8F8;
@@ -15621,13 +15621,13 @@ InitializeSamusPose_TurningAround_OnGround:
     LDA.W PoseDefinitions_directionShotsFired,Y                          ;91F8FA;
     AND.W #$00FF                                                         ;91F8FD;
     ORA.W #$0100                                                         ;91F900;
-    STA.W $0B5E                                                          ;91F903;
-    LDA.B $8B                                                            ;91F906;
-    BIT.W $09B4                                                          ;91F908;
+    STA.W PoseTransitionShotDirection                                                          ;91F903;
+    LDA.B DP_Controller1Input                                                            ;91F906;
+    BIT.W JumpBinding                                                          ;91F908;
     BEQ .standing                                                        ;91F90B;
     LDA.W TurningSamusPoses_moonwalk,X                                   ;91F90D;
     AND.W #$00FF                                                         ;91F910;
-    STA.W $0A1C                                                          ;91F913;
+    STA.W Pose                                                           ;91F913;
     BRA .done                                                            ;91F916;
 
   .notMoonwalking:
@@ -15637,33 +15637,33 @@ InitializeSamusPose_TurningAround_OnGround:
   .standing:
     LDA.W TurningSamusPoses_standing,X                                   ;91F91D;
     AND.W #$00FF                                                         ;91F920;
-    STA.W $0A1C                                                          ;91F923;
+    STA.W Pose                                                           ;91F923;
     BRA .done                                                            ;91F926;
 
   .crouching:
     LDA.W TurningSamusPoses_crouching,X                                  ;91F928;
     AND.W #$00FF                                                         ;91F92B;
-    STA.W $0A1C                                                          ;91F92E;
+    STA.W Pose                                                           ;91F92E;
 
   .done:
-    LDA.W $0B44                                                          ;91F931;
+    LDA.W SamusXExtraRunSubSpeed                                                          ;91F931;
     CLC                                                                  ;91F934;
-    ADC.W $0B48                                                          ;91F935;
-    STA.W $0B48                                                          ;91F938;
-    LDA.W $0B42                                                          ;91F93B;
-    ADC.W $0B46                                                          ;91F93E;
-    STA.W $0B46                                                          ;91F941;
-    STZ.W $0B44                                                          ;91F944;
-    STZ.W $0B42                                                          ;91F947;
+    ADC.W SamusXBaseSubSpeed                                                          ;91F935;
+    STA.W SamusXBaseSubSpeed                                                          ;91F938;
+    LDA.W SamusXExtraRunSpeed                                                          ;91F93B;
+    ADC.W SamusXBaseSpeed                                                          ;91F93E;
+    STA.W SamusXBaseSpeed                                                          ;91F941;
+    STZ.W SamusXExtraRunSubSpeed                                                          ;91F944;
+    STZ.W SamusXExtraRunSpeed                                                          ;91F947;
     LDA.W #$0001                                                         ;91F94A;
-    STA.W $0B4A                                                          ;91F94D;
+    STA.W SamusXAccelerationMode                                                          ;91F94D;
     SEC                                                                  ;91F950;
     RTS                                                                  ;91F951;
 
 
 ;;; $F952: Initialise Samus pose - turning around - jumping ;;;
 InitializeSamusPose_TurningAround_Jumping:
-    LDA.W $0A20                                                          ;91F952;
+    LDA.W PreviousPose                                                          ;91F952;
     ASL                                                                  ;91F955;
     ASL                                                                  ;91F956;
     ASL                                                                  ;91F957;
@@ -15673,25 +15673,25 @@ InitializeSamusPose_TurningAround_Jumping:
     TAX                                                                  ;91F95F;
     LDA.W TurningSamusPoses_jumpingInAir,X                               ;91F960;
     AND.W #$00FF                                                         ;91F963;
-    STA.W $0A1C                                                          ;91F966;
-    LDA.W $0B44                                                          ;91F969;
+    STA.W Pose                                                           ;91F966;
+    LDA.W SamusXExtraRunSubSpeed                                                          ;91F969;
     CLC                                                                  ;91F96C;
-    ADC.W $0B48                                                          ;91F96D;
-    STA.W $0B48                                                          ;91F970;
-    LDA.W $0B42                                                          ;91F973;
-    ADC.W $0B46                                                          ;91F976;
-    STA.W $0B46                                                          ;91F979;
-    STZ.W $0B44                                                          ;91F97C;
-    STZ.W $0B42                                                          ;91F97F;
+    ADC.W SamusXBaseSubSpeed                                                          ;91F96D;
+    STA.W SamusXBaseSubSpeed                                                          ;91F970;
+    LDA.W SamusXExtraRunSpeed                                                          ;91F973;
+    ADC.W SamusXBaseSpeed                                                          ;91F976;
+    STA.W SamusXBaseSpeed                                                          ;91F979;
+    STZ.W SamusXExtraRunSubSpeed                                                          ;91F97C;
+    STZ.W SamusXExtraRunSpeed                                                          ;91F97F;
     LDA.W #$0001                                                         ;91F982;
-    STA.W $0B4A                                                          ;91F985;
+    STA.W SamusXAccelerationMode                                                          ;91F985;
     SEC                                                                  ;91F988;
     RTS                                                                  ;91F989;
 
 
 ;;; $F98A: Initialise Samus pose - turning around - falling ;;;
 InitializeSamusPose_TurningAround_Falling:
-    LDA.W $0A20                                                          ;91F98A;
+    LDA.W PreviousPose                                                          ;91F98A;
     ASL                                                                  ;91F98D;
     ASL                                                                  ;91F98E;
     ASL                                                                  ;91F98F;
@@ -15701,18 +15701,18 @@ InitializeSamusPose_TurningAround_Falling:
     TAX                                                                  ;91F997;
     LDA.W TurningSamusPoses_falling,X                                    ;91F998;
     AND.W #$00FF                                                         ;91F99B;
-    STA.W $0A1C                                                          ;91F99E;
-    LDA.W $0B44                                                          ;91F9A1;
+    STA.W Pose                                                           ;91F99E;
+    LDA.W SamusXExtraRunSubSpeed                                                          ;91F9A1;
     CLC                                                                  ;91F9A4;
-    ADC.W $0B48                                                          ;91F9A5;
-    STA.W $0B48                                                          ;91F9A8;
-    LDA.W $0B42                                                          ;91F9AB;
-    ADC.W $0B46                                                          ;91F9AE;
-    STA.W $0B46                                                          ;91F9B1;
-    STZ.W $0B44                                                          ;91F9B4;
-    STZ.W $0B42                                                          ;91F9B7;
+    ADC.W SamusXBaseSubSpeed                                                          ;91F9A5;
+    STA.W SamusXBaseSubSpeed                                                          ;91F9A8;
+    LDA.W SamusXExtraRunSpeed                                                          ;91F9AB;
+    ADC.W SamusXBaseSpeed                                                          ;91F9AE;
+    STA.W SamusXBaseSpeed                                                          ;91F9B1;
+    STZ.W SamusXExtraRunSubSpeed                                                          ;91F9B4;
+    STZ.W SamusXExtraRunSpeed                                                          ;91F9B7;
     LDA.W #$0001                                                         ;91F9BA;
-    STA.W $0B4A                                                          ;91F9BD;
+    STA.W SamusXAccelerationMode                                                          ;91F9BD;
     SEC                                                                  ;91F9C0;
     RTS                                                                  ;91F9C1;
 
@@ -15744,7 +15744,7 @@ TurningSamusPoses:
 
 ;;; $F9F4: Initialise Samus pose - morph ball ;;;
 InitializeSamusPose_MorphBall:
-    LDA.W $0A23                                                          ;91F9F4;
+    LDA.W PreviousMovementType                                                          ;91F9F4;
     AND.W #$00FF                                                         ;91F9F7;
     CMP.W #$0004                                                         ;91F9FA;
     BEQ .preserveAnimationFrame                                          ;91F9FD;
@@ -15753,7 +15753,7 @@ InitializeSamusPose_MorphBall:
 
   .preserveAnimationFrame:
     LDA.W #$8000                                                         ;91FA04;
-    STA.W $0A9A                                                          ;91FA07;
+    STA.W NewPoseSamusAnimationFrame                                                          ;91FA07;
 
   .wasNotMorphBall:
     JSR.W ApplyMomentumIfTurningInMorphBall                              ;91FA0A;
@@ -15763,35 +15763,35 @@ InitializeSamusPose_MorphBall:
 
 ;;; $FA0F: Apply momentum if turning in morph ball ;;;
 ApplyMomentumIfTurningInMorphBall:
-    LDA.W $0A22                                                          ;91FA0F;
+    LDA.W PreviousPoseXDirection                                                          ;91FA0F;
     AND.W #$00FF                                                         ;91FA12;
     CMP.W #$0008                                                         ;91FA15;
     BEQ .directionChanged                                                ;91FA18;
-    LDA.W $0A1E                                                          ;91FA1A;
+    LDA.W PoseXDirection                                                          ;91FA1A;
     AND.W #$00FF                                                         ;91FA1D;
     CMP.W #$0008                                                         ;91FA20;
     BEQ .speed                                                           ;91FA23;
     BRA .return                                                          ;91FA25;
 
   .directionChanged:
-    LDA.W $0A1E                                                          ;91FA27;
+    LDA.W PoseXDirection                                                          ;91FA27;
     AND.W #$00FF                                                         ;91FA2A;
     CMP.W #$0004                                                         ;91FA2D;
     BNE .return                                                          ;91FA30;
 
   .speed:
-    LDA.W $0B44                                                          ;91FA32;
+    LDA.W SamusXExtraRunSubSpeed                                                          ;91FA32;
     CLC                                                                  ;91FA35;
-    ADC.W $0B48                                                          ;91FA36;
-    STA.W $0B48                                                          ;91FA39;
-    LDA.W $0B42                                                          ;91FA3C;
-    ADC.W $0B46                                                          ;91FA3F;
-    STA.W $0B46                                                          ;91FA42;
+    ADC.W SamusXBaseSubSpeed                                                          ;91FA36;
+    STA.W SamusXBaseSubSpeed                                                          ;91FA39;
+    LDA.W SamusXExtraRunSpeed                                                          ;91FA3C;
+    ADC.W SamusXBaseSpeed                                                          ;91FA3F;
+    STA.W SamusXBaseSpeed                                                          ;91FA42;
     JSL.L Cancel_SpeedBoosting                                           ;91FA45;
-    STZ.W $0B44                                                          ;91FA49;
-    STZ.W $0B42                                                          ;91FA4C;
+    STZ.W SamusXExtraRunSubSpeed                                                          ;91FA49;
+    STZ.W SamusXExtraRunSpeed                                                          ;91FA4C;
     LDA.W #$0001                                                         ;91FA4F;
-    STA.W $0B4A                                                          ;91FA52;
+    STA.W SamusXAccelerationMode                                                          ;91FA52;
 
   .return:
     RTS                                                                  ;91FA55;
@@ -15799,7 +15799,7 @@ ApplyMomentumIfTurningInMorphBall:
 
 ;;; $FA56: Initialise Samus pose - spring ball ;;;
 InitializeSamusPose_SpringBall:
-    LDA.W $0A23                                                          ;91FA56;
+    LDA.W PreviousMovementType                                                          ;91FA56;
     AND.W #$00FF                                                         ;91FA59;
     CMP.W #$0011                                                         ;91FA5C;
     BEQ .preserveAnimationFrame                                          ;91FA5F;
@@ -15810,7 +15810,7 @@ InitializeSamusPose_SpringBall:
 
   .preserveAnimationFrame:
     LDA.W #$8000                                                         ;91FA6B;
-    STA.W $0A9A                                                          ;91FA6E;
+    STA.W NewPoseSamusAnimationFrame                                                          ;91FA6E;
 
   .wasNotSpringBall:
     JSR.W ApplyMomentumIfTurningInMorphBall                              ;91FA71;
@@ -15821,44 +15821,44 @@ InitializeSamusPose_SpringBall:
 ;;; $FA76: Initialise Samus pose - wall jumping ;;;
 InitializeSamusPose_WallJumping:
     JSL.L Get_Samus_Bottom_Boundary                                      ;91FA76;
-    LDA.W $195E                                                          ;91FA7A;
+    LDA.W FX_YPosition                                                          ;91FA7A;
     BMI .negativeYPosition                                               ;91FA7D;
-    CMP.B $12                                                            ;91FA7F;
+    CMP.B DP_Temp12                                                            ;91FA7F;
     BPL .nonLiquidPhysics                                                ;91FA81;
-    LDA.W $197E                                                          ;91FA83;
+    LDA.W FX_LiquidOptions                                                          ;91FA83;
     BIT.W #$0004                                                         ;91FA86;
     BNE .nonLiquidPhysics                                                ;91FA89;
     BRA .returnCarryClear                                                ;91FA8B;
 
   .negativeYPosition:
-    LDA.W $1962                                                          ;91FA8D;
+    LDA.W FX_LavaAcidYPosition                                                          ;91FA8D;
     BMI .nonLiquidPhysics                                                ;91FA90;
-    CMP.B $12                                                            ;91FA92;
+    CMP.B DP_Temp12                                                            ;91FA92;
     BMI .returnCarryClear                                                ;91FA94;
 
   .nonLiquidPhysics:
     LDA.W #$0600                                                         ;91FA96;
-    STA.W $0AF2                                                          ;91FA99;
+    STA.W AtmosphericGraphicsAnimFramesGraphicsTypes+6                                                          ;91FA99;
     LDA.W #$0003                                                         ;91FA9C;
-    STA.W $0ADA                                                          ;91FA9F;
-    LDA.B $12                                                            ;91FAA2;
-    STA.W $0AEA                                                          ;91FAA4;
-    LDA.W $0A1E                                                          ;91FAA7;
+    STA.W AtmosphericGraphicsAnimationTimers+6                                                          ;91FA9F;
+    LDA.B DP_Temp12                                                            ;91FAA2;
+    STA.W AtmosphericGraphicsYPositions+6                                                          ;91FAA4;
+    LDA.W PoseXDirection                                                          ;91FAA7;
     AND.W #$00FF                                                         ;91FAAA;
     CMP.W #$0008                                                         ;91FAAD;
     BEQ .facingRight                                                     ;91FAB0;
-    LDA.W $0AF6                                                          ;91FAB2;
+    LDA.W SamusXPosition                                                          ;91FAB2;
     CLC                                                                  ;91FAB5;
     ADC.W #$0006                                                         ;91FAB6;
-    STA.W $0AE2                                                          ;91FAB9;
+    STA.W AtmosphericGraphicsXPositions+6                                                          ;91FAB9;
     CLC                                                                  ;91FABC;
     RTS                                                                  ;91FABD;
 
   .facingRight:
-    LDA.W $0AF6                                                          ;91FABE;
+    LDA.W SamusXPosition                                                          ;91FABE;
     SEC                                                                  ;91FAC1;
     SBC.W #$0006                                                         ;91FAC2;
-    STA.W $0AE2                                                          ;91FAC5;
+    STA.W AtmosphericGraphicsXPositions+6                                                          ;91FAC5;
 
   .returnCarryClear:
     CLC                                                                  ;91FAC8;
@@ -15868,7 +15868,7 @@ InitializeSamusPose_WallJumping:
 ;;; $FACA: Initialise Samus pose - shinespark / crystal flash / drained by metroid / damaged by MB's attacks ;;;
 InitializeSamusPose_Shinespark_CF_Drained_DamagedMB:
 ; Need to check what happens with poses C7h/C8h (vertical shinespark windup)
-    LDA.W $0A1C                                                          ;91FACA;
+    LDA.W Pose                                                           ;91FACA;
     CMP.W #$00CF                                                         ;91FACD;
     BPL .returnCarryClear                                                ;91FAD0;
     SEC                                                                  ;91FAD2;
@@ -15876,14 +15876,14 @@ InitializeSamusPose_Shinespark_CF_Drained_DamagedMB:
     ASL                                                                  ;91FAD6;
     TAX                                                                  ;91FAD7;
     LDA.W .pointers,X                                                    ;91FAD8;
-    STA.W $0A58                                                          ;91FADB;
+    STA.W MovementHandler                                                          ;91FADB;
     LDA.W #RTS_90E90E                                                    ;91FADE;
-    STA.W $0A60                                                          ;91FAE1;
-    STZ.W $0AAE                                                          ;91FAE4;
-    STZ.W $0AC0                                                          ;91FAE7;
-    STZ.W $0AC2                                                          ;91FAEA;
-    STZ.W $0AB0                                                          ;91FAED;
-    STZ.W $0AB2                                                          ;91FAF0;
+    STA.W PoseInputHandler                                                          ;91FAE1;
+    STZ.W SpeedEcho_Index                                                          ;91FAE4;
+    STZ.W SpeedEcho_XSpeed0                                                          ;91FAE7;
+    STZ.W SpeedEcho_XSpeed1                                                          ;91FAEA;
+    STZ.W SpeedEcho_XPosition0                                                          ;91FAED;
+    STZ.W SpeedEcho_XPosition1                                                          ;91FAF0;
     LDA.W #$000F                                                         ;91FAF3;
     JSL.L QueueSound_Lib3_Max9                                           ;91FAF6;
 
@@ -15907,10 +15907,10 @@ Set_Samus_AnimationFrame_if_PoseChanged:
     PHK                                                                  ;91FB0A;
     PLB                                                                  ;91FB0B;
     REP #$30                                                             ;91FB0C;
-    LDA.W $09A2                                                          ;91FB0E;
+    LDA.W EquippedItems                                                          ;91FB0E;
     BIT.W #$0020                                                         ;91FB11;
     BNE .normalGravity                                                   ;91FB14;
-    LDA.W $0A1C                                                          ;91FB16;
+    LDA.W Pose                                                           ;91FB16;
     ASL                                                                  ;91FB19;
     ASL                                                                  ;91FB1A;
     ASL                                                                  ;91FB1B;
@@ -15918,50 +15918,50 @@ Set_Samus_AnimationFrame_if_PoseChanged:
     LDA.L PoseDefinitions_YRadius,X                                      ;91FB1D;
     AND.W #$00FF                                                         ;91FB21;
     CLC                                                                  ;91FB24;
-    ADC.W $0AFA                                                          ;91FB25;
+    ADC.W SamusYPosition                                                          ;91FB25;
     DEC                                                                  ;91FB28;
-    STA.B $12                                                            ;91FB29;
-    LDA.W $195E                                                          ;91FB2B;
+    STA.B DP_Temp12                                                            ;91FB29;
+    LDA.W FX_YPosition                                                          ;91FB2B;
     BMI .negativeYPosition                                               ;91FB2E;
-    CMP.B $12                                                            ;91FB30;
+    CMP.B DP_Temp12                                                            ;91FB30;
     BMI .submergedInWater                                                ;91FB32;
     BRA .normalGravity                                                   ;91FB34;
 
   .negativeYPosition:
-    LDA.W $1962                                                          ;91FB36;
+    LDA.W FX_LavaAcidYPosition                                                          ;91FB36;
     BMI .normalGravity                                                   ;91FB39;
-    CMP.B $12                                                            ;91FB3B;
+    CMP.B DP_Temp12                                                            ;91FB3B;
     BMI .submergedInAcidLava                                             ;91FB3D;
 
   .normalGravity:
-    LDA.W $0A66                                                          ;91FB3F;
-    STA.B $12                                                            ;91FB42;
+    LDA.W XSpeedDivisor                                                          ;91FB3F;
+    STA.B DP_Temp12                                                            ;91FB42;
     BRA .merge                                                           ;91FB44;
 
   .submergedInWater:
-    LDA.W $197E                                                          ;91FB46;
+    LDA.W FX_LiquidOptions                                                          ;91FB46;
     BIT.W #$0004                                                         ;91FB49;
     BNE .normalGravity                                                   ;91FB4C;
     LDA.L SamusPhysicsConstants_AnimationDelayInWater                    ;91FB4E;
-    STA.B $12                                                            ;91FB52;
+    STA.B DP_Temp12                                                            ;91FB52;
     BRA .merge                                                           ;91FB54;
 
   .submergedInAcidLava:
     LDA.L SamusPhysicsConstants_AnimationDelayInLavaAcid                 ;91FB56;
-    STA.B $12                                                            ;91FB5A;
+    STA.B DP_Temp12                                                            ;91FB5A;
 
   .merge:
-    LDA.W $0A9A                                                          ;91FB5C;
+    LDA.W NewPoseSamusAnimationFrame                                                          ;91FB5C;
     BMI .return                                                          ;91FB5F;
-    LDA.W $0A1C                                                          ;91FB61;
-    CMP.W $0A20                                                          ;91FB64;
+    LDA.W Pose                                                           ;91FB61;
+    CMP.W PreviousPose                                                          ;91FB64;
     BEQ .return                                                          ;91FB67;
     LDA.W #$0000                                                         ;91FB69;
     CLC                                                                  ;91FB6C;
-    ADC.W $0A9A                                                          ;91FB6D;
-    STA.W $0A96                                                          ;91FB70;
+    ADC.W NewPoseSamusAnimationFrame                                                          ;91FB6D;
+    STA.W SamusAnimationFrame                                                          ;91FB70;
     TAY                                                                  ;91FB73;
-    LDA.W $0A1C                                                          ;91FB74;
+    LDA.W Pose                                                           ;91FB74;
     ASL                                                                  ;91FB77;
     TAX                                                                  ;91FB78;
     TYA                                                                  ;91FB79;
@@ -15971,8 +15971,8 @@ Set_Samus_AnimationFrame_if_PoseChanged:
     LDA.W $0000,Y                                                        ;91FB7F;
     AND.W #$00FF                                                         ;91FB82;
     CLC                                                                  ;91FB85;
-    ADC.B $12                                                            ;91FB86;
-    STA.W $0A94                                                          ;91FB88;
+    ADC.B DP_Temp12                                                            ;91FB86;
+    STA.W SamusAnimationFrameTimer                                                          ;91FB88;
 
   .return:
     PLB                                                                  ;91FB8B;
@@ -15988,21 +15988,21 @@ PossiblyNoPurpose_91FB8E:
     PHK                                                                  ;91FB90;
     PLB                                                                  ;91FB91;
     REP #$30                                                             ;91FB92;
-    LDA.W $0A23                                                          ;91FB94;
+    LDA.W PreviousMovementType                                                          ;91FB94;
     AND.W #$00FF                                                         ;91FB97;
     CMP.W #$0006                                                         ;91FB9A;
     BEQ .return                                                          ;91FB9D;
-    LDA.W $0A1F                                                          ;91FB9F;
+    LDA.W MovementType                                                          ;91FB9F;
     AND.W #$00FF                                                         ;91FBA2;
     CMP.W #$0006                                                         ;91FBA5;
     BEQ .falling                                                         ;91FBA8;
     BRA .return                                                          ;91FBAA;
 
   .falling:
-    STZ.W $0B2C                                                          ;91FBAC;
-    STZ.W $0B2E                                                          ;91FBAF;
+    STZ.W SamusYSubSpeed                                                          ;91FBAC;
+    STZ.W SamusYSpeed                                                          ;91FBAF;
     LDA.W #$0002                                                         ;91FBB2;
-    STA.W $0B36                                                          ;91FBB5;
+    STA.W SamusYDirection                                                          ;91FBB5;
 
   .return:
     PLB                                                                  ;91FBB8;
@@ -16017,7 +16017,7 @@ HandleJumpTransition:
     PHK                                                                  ;91FBBD;
     PLB                                                                  ;91FBBE;
     REP #$30                                                             ;91FBBF;
-    LDA.W $0A1F                                                          ;91FBC1;
+    LDA.W MovementType                                                          ;91FBC1;
     AND.W #$00FF                                                         ;91FBC4;
     ASL                                                                  ;91FBC7;
     TAX                                                                  ;91FBC8;
@@ -16064,7 +16064,7 @@ RTS_91FC07:
 
 ;;; $FC08: Handle jump transition - wall jumping ;;;
 HandleJumpTransition_WallJumping:
-    LDA.W $0A23                                                          ;91FC08;
+    LDA.W PreviousMovementType                                                          ;91FC08;
     AND.W #$00FF                                                         ;91FC0B;
     CMP.W #$0014                                                         ;91FC0E;
     BEQ .return                                                          ;91FC11;
@@ -16076,10 +16076,10 @@ HandleJumpTransition_WallJumping:
 
 ;;; $FC18: Handle jump transition - spring ball - in air ;;;
 HandleJumpTransition_SpringBall_InAir:
-    LDA.W $0A1C                                                          ;91FC18;
+    LDA.W Pose                                                           ;91FC18;
     CMP.W #$007F                                                         ;91FC1B;
     BNE .facingLeft                                                      ;91FC1E;
-    LDA.W $0A23                                                          ;91FC20;
+    LDA.W PreviousMovementType                                                          ;91FC20;
     AND.W #$00FF                                                         ;91FC23;
     CMP.W #$0011                                                         ;91FC26;
     BEQ .jump                                                            ;91FC29;
@@ -16088,7 +16088,7 @@ HandleJumpTransition_SpringBall_InAir:
   .facingLeft:
     CMP.W #$0080                                                         ;91FC2D;
     BNE .return                                                          ;91FC30;
-    LDA.W $0A23                                                          ;91FC32;
+    LDA.W PreviousMovementType                                                          ;91FC32;
     AND.W #$00FF                                                         ;91FC35;
     CMP.W #$0011                                                         ;91FC38;
     BNE .return                                                          ;91FC3B;
@@ -16102,10 +16102,10 @@ HandleJumpTransition_SpringBall_InAir:
 
 ;;; $FC42: Handle jump transition - Samus movement type Dh (unused) ;;;
 UNUSED_HandleJumpTransition_MovementTypeD_91FC42:
-    LDA.W $0A1C                                                          ;91FC42;
+    LDA.W Pose                                                           ;91FC42;
     CMP.W #$0065                                                         ;91FC45;
     BNE .notPose65                                                       ;91FC48;
-    LDA.W $0A20                                                          ;91FC4A;
+    LDA.W PreviousPose                                                          ;91FC4A;
     CMP.W #$0064                                                         ;91FC4D;
     BEQ .jump                                                            ;91FC50;
     BRA .return                                                          ;91FC52;
@@ -16113,7 +16113,7 @@ UNUSED_HandleJumpTransition_MovementTypeD_91FC42:
   .notPose65:
     CMP.W #$0066                                                         ;91FC54;
     BNE .return                                                          ;91FC57;
-    LDA.W $0A20                                                          ;91FC59;
+    LDA.W PreviousPose                                                          ;91FC59;
     CMP.W #$0063                                                         ;91FC5C;
     BNE .return                                                          ;91FC5F;
 
@@ -16126,7 +16126,7 @@ UNUSED_HandleJumpTransition_MovementTypeD_91FC42:
 
 ;;; $FC66: Handle jump transition - normal jumping ;;;
 HandleJumpTransition_NormalJumping:
-    LDA.W $0A1C                                                          ;91FC66;
+    LDA.W Pose                                                           ;91FC66;
     CMP.W #$004B                                                         ;91FC69;
     BEQ .normalJump                                                      ;91FC6C;
     CMP.W #$004C                                                         ;91FC6E;
@@ -16137,17 +16137,17 @@ HandleJumpTransition_NormalJumping:
     BPL .return                                                          ;91FC7B;
 
   .normalJump:
-    LDA.W $0A20                                                          ;91FC7D;
+    LDA.W PreviousPose                                                          ;91FC7D;
     CMP.W #$0027                                                         ;91FC80;
     BEQ .crouchJump                                                      ;91FC83;
     CMP.W #$0028                                                         ;91FC85;
     BNE .jump                                                            ;91FC88;
 
   .crouchJump:
-    LDA.W $0AFA                                                          ;91FC8A;
+    LDA.W SamusYPosition                                                          ;91FC8A;
     SEC                                                                  ;91FC8D;
     SBC.W #$000A                                                         ;91FC8E;
-    STA.W $0AFA                                                          ;91FC91;
+    STA.W SamusYPosition                                                          ;91FC91;
 
   .jump:
     JSL.L Make_Samus_Jump                                                ;91FC94;
@@ -16158,7 +16158,7 @@ HandleJumpTransition_NormalJumping:
 
 ;;; $FC99: Handle jump transition - spin jumping ;;;
 HandleJumpTransition_SpinJumping:
-    LDA.W $0A23                                                          ;91FC99;
+    LDA.W PreviousMovementType                                                          ;91FC99;
     AND.W #$00FF                                                         ;91FC9C;
     CMP.W #$0003                                                         ;91FC9F;
     BEQ .return                                                          ;91FCA2;
@@ -16179,119 +16179,119 @@ RTS_91FCAE:
 XraySamusPoseInputHandler:
     PHP                                                                  ;91FCAF;
     REP #$30                                                             ;91FCB0;
-    LDA.W $0A1F                                                          ;91FCB2;
+    LDA.W MovementType                                                          ;91FCB2;
     AND.W #$00FF                                                         ;91FCB5;
     CMP.W #$000E                                                         ;91FCB8;
     BNE .notTurningOnGround                                              ;91FCBB;
     JMP.W .turningOnGround                                               ;91FCBD;
 
   .notTurningOnGround:
-    LDA.W $0A1E                                                          ;91FCC0;
+    LDA.W PoseXDirection                                                          ;91FCC0;
     AND.W #$00FF                                                         ;91FCC3;
     CMP.W #$0004                                                         ;91FCC6;
     BEQ .notTurningFacingLeft                                            ;91FCC9;
-    LDA.B $8B                                                            ;91FCCB;
-    BIT.W $09AE                                                          ;91FCCD;
+    LDA.B DP_Controller1Input                                                            ;91FCCB;
+    BIT.W LeftBinding                                                          ;91FCCD;
     BEQ .returnMiddle                                                    ;91FCD0;
     LDA.W #$0100                                                         ;91FCD2;
     SEC                                                                  ;91FCD5;
-    SBC.W $0A82                                                          ;91FCD6;
-    STA.W $0A82                                                          ;91FCD9;
-    LDA.W $0A1F                                                          ;91FCDC;
+    SBC.W Xray_Angle                                                          ;91FCD6;
+    STA.W Xray_Angle                                                          ;91FCD9;
+    LDA.W MovementType                                                          ;91FCDC;
     AND.W #$00FF                                                         ;91FCDF;
     CMP.W #$0005                                                         ;91FCE2;
     BEQ ..crouching                                                      ;91FCE5;
     LDA.W #$0025                                                         ;91FCE7;
-    STA.W $0A1C                                                          ;91FCEA;
+    STA.W Pose                                                           ;91FCEA;
     BRA .notTurningMerge                                                 ;91FCED;
 
   ..crouching:
     LDA.W #$0043                                                         ;91FCEF;
-    STA.W $0A1C                                                          ;91FCF2;
+    STA.W Pose                                                           ;91FCF2;
     BRA .notTurningMerge                                                 ;91FCF5;
 
   .notTurningFacingLeft:
-    LDA.B $8B                                                            ;91FCF7;
-    BIT.W $09B0                                                          ;91FCF9;
+    LDA.B DP_Controller1Input                                                            ;91FCF7;
+    BIT.W RightBinding                                                          ;91FCF9;
     BEQ .returnMiddle                                                    ;91FCFC;
     LDA.W #$0100                                                         ;91FCFE;
     SEC                                                                  ;91FD01;
-    SBC.W $0A82                                                          ;91FD02;
-    STA.W $0A82                                                          ;91FD05;
-    LDA.W $0A1F                                                          ;91FD08;
+    SBC.W Xray_Angle                                                          ;91FD02;
+    STA.W Xray_Angle                                                          ;91FD05;
+    LDA.W MovementType                                                          ;91FD08;
     AND.W #$00FF                                                         ;91FD0B;
     CMP.W #$0005                                                         ;91FD0E;
     BEQ ..crouching                                                      ;91FD11;
     LDA.W #$0026                                                         ;91FD13;
-    STA.W $0A1C                                                          ;91FD16;
+    STA.W Pose                                                           ;91FD16;
     BRA .notTurningMerge                                                 ;91FD19;
 
   ..crouching:
     LDA.W #$0044                                                         ;91FD1B;
-    STA.W $0A1C                                                          ;91FD1E;
+    STA.W Pose                                                           ;91FD1E;
 
   .notTurningMerge:
     JSL.L InitializeSamusPose_1                                          ;91FD21;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91FD25;
-    LDA.W $0A20                                                          ;91FD29;
-    STA.W $0A24                                                          ;91FD2C;
-    LDA.W $0A22                                                          ;91FD2F;
-    STA.W $0A26                                                          ;91FD32;
-    LDA.W $0A1C                                                          ;91FD35;
-    STA.W $0A20                                                          ;91FD38;
-    LDA.W $0A1E                                                          ;91FD3B;
-    STA.W $0A22                                                          ;91FD3E;
+    LDA.W PreviousPose                                                          ;91FD29;
+    STA.W LastDifferentPose                                                          ;91FD2C;
+    LDA.W PreviousPoseXDirection                                                          ;91FD2F;
+    STA.W LastDifferentPoseXDirection                                                          ;91FD32;
+    LDA.W Pose                                                           ;91FD35;
+    STA.W PreviousPose                                                          ;91FD38;
+    LDA.W PoseXDirection                                                          ;91FD3B;
+    STA.W PreviousPoseXDirection                                                          ;91FD3E;
 
   .returnMiddle:
     PLP                                                                  ;91FD41;
     RTL                                                                  ;91FD42;
 
   .turningOnGround:
-    LDA.W $0A96                                                          ;91FD43;
+    LDA.W SamusAnimationFrame                                                          ;91FD43;
     CMP.W #$0002                                                         ;91FD46;
     BNE .returnLower                                                     ;91FD49;
-    LDA.W $0A94                                                          ;91FD4B;
+    LDA.W SamusAnimationFrameTimer                                                          ;91FD4B;
     CMP.W #$0001                                                         ;91FD4E;
     BNE .returnLower                                                     ;91FD51;
-    LDA.W $0A1E                                                          ;91FD53;
+    LDA.W PoseXDirection                                                          ;91FD53;
     AND.W #$00FF                                                         ;91FD56;
     CMP.W #$0004                                                         ;91FD59;
     BEQ .turningFacingLeft                                               ;91FD5C;
-    LDA.W $0A1C                                                          ;91FD5E;
+    LDA.W Pose                                                           ;91FD5E;
     CMP.W #$0026                                                         ;91FD61;
     BNE ..crouching                                                      ;91FD64;
     LDA.W #$00D5                                                         ;91FD66;
-    STA.W $0A1C                                                          ;91FD69;
+    STA.W Pose                                                           ;91FD69;
     BRA .turningMerge                                                    ;91FD6C;
 
   ..crouching:
     LDA.W #$00D9                                                         ;91FD6E;
-    STA.W $0A1C                                                          ;91FD71;
+    STA.W Pose                                                           ;91FD71;
     BRA .turningMerge                                                    ;91FD74;
 
   .turningFacingLeft:
-    LDA.W $0A1C                                                          ;91FD76;
+    LDA.W Pose                                                           ;91FD76;
     CMP.W #$0025                                                         ;91FD79;
     BNE ..XrayCrouching                                                  ;91FD7C;
     LDA.W #$00D6                                                         ;91FD7E;
-    STA.W $0A1C                                                          ;91FD81;
+    STA.W Pose                                                           ;91FD81;
     BRA .turningMerge                                                    ;91FD84;
 
   ..XrayCrouching:
     LDA.W #$00DA                                                         ;91FD86;
-    STA.W $0A1C                                                          ;91FD89;
+    STA.W Pose                                                           ;91FD89;
 
   .turningMerge:
     JSL.L InitializeSamusPose_1                                          ;91FD8C;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;91FD90;
-    LDA.W $0A20                                                          ;91FD94;
-    STA.W $0A24                                                          ;91FD97;
-    LDA.W $0A22                                                          ;91FD9A;
-    STA.W $0A26                                                          ;91FD9D;
-    LDA.W $0A1C                                                          ;91FDA0;
-    STA.W $0A20                                                          ;91FDA3;
-    LDA.W $0A1E                                                          ;91FDA6;
-    STA.W $0A22                                                          ;91FDA9;
+    LDA.W PreviousPose                                                          ;91FD94;
+    STA.W LastDifferentPose                                                          ;91FD97;
+    LDA.W PreviousPoseXDirection                                                          ;91FD9A;
+    STA.W LastDifferentPoseXDirection                                                          ;91FD9D;
+    LDA.W Pose                                                           ;91FDA0;
+    STA.W PreviousPose                                                          ;91FDA3;
+    LDA.W PoseXDirection                                                          ;91FDA6;
+    STA.W PreviousPoseXDirection                                                          ;91FDA9;
 
   .returnLower:
     PLP                                                                  ;91FDAC;
@@ -16313,10 +16313,10 @@ HandlePoseChangeCollision:
 ; and Samus would collide with opposite surface due to position adjustment,
 ; new pose is disallowed.
 
-; The result stored to $0DD0 is unused
+; The result stored to SamusSolidCollisionFlag is unused
     PHP                                                                  ;91FDAE;
     REP #$30                                                             ;91FDAF;
-    LDA.W $0A1C                                                          ;91FDB1;
+    LDA.W Pose                                                           ;91FDB1;
     BEQ .returnUpper                                                     ;91FDB4;
     CMP.W #$009B                                                         ;91FDB6;
     BNE .notFacingForward                                                ;91FDB9;
@@ -16326,103 +16326,103 @@ HandlePoseChangeCollision:
     RTS                                                                  ;91FDBC;
 
   .notFacingForward:
-    STZ.W $0A34                                                          ;91FDBD;
-    STZ.W $0A36                                                          ;91FDC0;
-    LDA.W $0A1C                                                          ;91FDC3;
+    STZ.W SolidEnemyCollisionFlags                                                          ;91FDBD;
+    STZ.W BlockCollisionFlags                                                          ;91FDC0;
+    LDA.W Pose                                                           ;91FDC3;
     ASL                                                                  ;91FDC6;
     ASL                                                                  ;91FDC7;
     ASL                                                                  ;91FDC8;
     TAX                                                                  ;91FDC9;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FDCA;
     AND.W #$00FF                                                         ;91FDCE;
-    STA.B $12                                                            ;91FDD1;
-    LDA.W $0A20                                                          ;91FDD3;
+    STA.B DP_Temp12                                                            ;91FDD1;
+    LDA.W PreviousPose                                                          ;91FDD3;
     ASL                                                                  ;91FDD6;
     ASL                                                                  ;91FDD7;
     ASL                                                                  ;91FDD8;
     TAX                                                                  ;91FDD9;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FDDA;
     AND.W #$00FF                                                         ;91FDDE;
-    CMP.B $12                                                            ;91FDE1;
+    CMP.B DP_Temp12                                                            ;91FDE1;
     BMI .larger                                                          ;91FDE3;
     PLP                                                                  ;91FDE5;
     RTS                                                                  ;91FDE6;
 
   .larger:
-    STA.W $0B00                                                          ;91FDE7;
-    LDA.B $12                                                            ;91FDEA;
+    STA.W SamusYRadius                                                          ;91FDE7;
+    LDA.B DP_Temp12                                                            ;91FDEA;
     SEC                                                                  ;91FDEC;
-    SBC.W $0B00                                                          ;91FDED;
-    STA.W $0A3A                                                          ;91FDF0;
-    STA.B $12                                                            ;91FDF3;
-    STZ.B $14                                                            ;91FDF5;
+    SBC.W SamusYRadius                                                          ;91FDED;
+    STA.W YRadiusDifference                                                          ;91FDF0;
+    STA.B DP_Temp12                                                            ;91FDF3;
+    STZ.B DP_Temp14                                                            ;91FDF5;
     LDA.W #$0002                                                         ;91FDF7;
-    STA.W $0B02                                                          ;91FDFA;
+    STA.W CollisionMovementDirection                                                          ;91FDFA;
     JSL.L Samus_vs_SolidEnemy_CollisionDetection                         ;91FDFD;
-    STA.W $0DD0                                                          ;91FE01;
+    STA.W SamusSolidCollisionFlag                                                          ;91FE01;
     TAX                                                                  ;91FE04;
     BEQ .noCollision                                                     ;91FE05;
     LDA.W #$0001                                                         ;91FE07;
-    STA.W $0A34                                                          ;91FE0A;
+    STA.W SolidEnemyCollisionFlags                                                          ;91FE0A;
 
   .noCollision:
-    LDA.B $12                                                            ;91FE0D;
-    STA.W $0A3E                                                          ;91FE0F;
-    LDA.W $0A3A                                                          ;91FE12;
-    STA.B $12                                                            ;91FE15;
-    STZ.B $14                                                            ;91FE17;
+    LDA.B DP_Temp12                                                            ;91FE0D;
+    STA.W SpaceToMoveUpEnemy                                                          ;91FE0F;
+    LDA.W YRadiusDifference                                                          ;91FE12;
+    STA.B DP_Temp12                                                            ;91FE15;
+    STZ.B DP_Temp14                                                            ;91FE17;
     LDA.W #$0003                                                         ;91FE19;
-    STA.W $0B02                                                          ;91FE1C;
+    STA.W CollisionMovementDirection                                                          ;91FE1C;
     JSL.L Samus_vs_SolidEnemy_CollisionDetection                         ;91FE1F;
-    STA.W $0DD0                                                          ;91FE23;
+    STA.W SamusSolidCollisionFlag                                                          ;91FE23;
     TAX                                                                  ;91FE26;
     BEQ .stillNoCollision                                                ;91FE27;
-    LDA.W $0A34                                                          ;91FE29;
+    LDA.W SolidEnemyCollisionFlags                                                          ;91FE29;
     ORA.W #$0002                                                         ;91FE2C;
-    STA.W $0A34                                                          ;91FE2F;
+    STA.W SolidEnemyCollisionFlags                                                          ;91FE2F;
 
   .stillNoCollision:
-    LDA.B $12                                                            ;91FE32;
-    STA.W $0A40                                                          ;91FE34;
-    LDA.W $0A34                                                          ;91FE37;
+    LDA.B DP_Temp12                                                            ;91FE32;
+    STA.W SpaceToMoveDownEnemy                                                          ;91FE34;
+    LDA.W SolidEnemyCollisionFlags                                                          ;91FE37;
     ASL                                                                  ;91FE3A;
     TAX                                                                  ;91FE3B;
     JSR.W (.solidEnemyPointers,X)                                        ;91FE3C;
     BCS .revertPose                                                      ;91FE3F;
-    LDA.W $0A3A                                                          ;91FE41;
+    LDA.W YRadiusDifference                                                          ;91FE41;
     EOR.W #$FFFF                                                         ;91FE44;
     INC                                                                  ;91FE47;
-    STA.B $12                                                            ;91FE48;
-    STZ.B $14                                                            ;91FE4A;
+    STA.B DP_Temp12                                                            ;91FE48;
+    STZ.B DP_Temp14                                                            ;91FE4A;
     JSL.L BlockCollisionDetectionDueToChangeOfPose                       ;91FE4C;
     BCC .noCollisionAgain                                                ;91FE50;
     LDA.W #$0001                                                         ;91FE52;
-    STA.W $0A36                                                          ;91FE55;
+    STA.W BlockCollisionFlags                                                          ;91FE55;
 
   .noCollisionAgain:
-    LDA.B $12                                                            ;91FE58;
-    STA.W $0A38                                                          ;91FE5A;
-    LDA.W $0A3A                                                          ;91FE5D;
-    STA.B $12                                                            ;91FE60;
-    STZ.B $14                                                            ;91FE62;
+    LDA.B DP_Temp12                                                            ;91FE58;
+    STA.W SpaceToMoveUpBlock                                                          ;91FE5A;
+    LDA.W YRadiusDifference                                                          ;91FE5D;
+    STA.B DP_Temp12                                                            ;91FE60;
+    STZ.B DP_Temp14                                                            ;91FE62;
     JSL.L BlockCollisionDetectionDueToChangeOfPose                       ;91FE64;
     BCC .noCollisionFinal                                                ;91FE68;
-    LDA.W $0A36                                                          ;91FE6A;
+    LDA.W BlockCollisionFlags                                                          ;91FE6A;
     ORA.W #$0002                                                         ;91FE6D;
-    STA.W $0A36                                                          ;91FE70;
+    STA.W BlockCollisionFlags                                                          ;91FE70;
 
   .noCollisionFinal:
-    LDA.B $12                                                            ;91FE73;
-    STA.W $0A3C                                                          ;91FE75;
-    LDA.W $0A36                                                          ;91FE78;
+    LDA.B DP_Temp12                                                            ;91FE73;
+    STA.W SpaceToMoveDownBlock                                                          ;91FE75;
+    LDA.W BlockCollisionFlags                                                          ;91FE78;
     ASL                                                                  ;91FE7B;
     TAX                                                                  ;91FE7C;
     JSR.W (.blockPointers,X)                                             ;91FE7D;
     BCC .return                                                          ;91FE80;
 
   .revertPose:
-    LDA.W $0A20                                                          ;91FE82;
-    STA.W $0A1C                                                          ;91FE85;
+    LDA.W PreviousPose                                                          ;91FE82;
+    STA.W Pose                                                           ;91FE85;
 
   .return:
     PLP                                                                  ;91FE88;
@@ -16458,38 +16458,38 @@ PoseChangeCollision_SolidEnemy_FromAbove:
 ;; Returns:
 ;;     Carry: Set if there's no space for Samus pose, clear otherwise
 
-; The result stored to $0DD0 is unused
-    LDA.W $0A3A                                                          ;91FE9E;
+; The result stored to SamusSolidCollisionFlag is unused
+    LDA.W YRadiusDifference                                                          ;91FE9E;
     SEC                                                                  ;91FEA1;
-    SBC.W $0A3E                                                          ;91FEA2;
-    STA.B $12                                                            ;91FEA5;
-    STZ.B $14                                                            ;91FEA7;
-    LDA.W $0B00                                                          ;91FEA9;
+    SBC.W SpaceToMoveUpEnemy                                                          ;91FEA2;
+    STA.B DP_Temp12                                                            ;91FEA5;
+    STZ.B DP_Temp14                                                            ;91FEA7;
+    LDA.W SamusYRadius                                                          ;91FEA9;
     PHA                                                                  ;91FEAC;
-    LDA.W $0A1C                                                          ;91FEAD;
+    LDA.W Pose                                                           ;91FEAD;
     ASL                                                                  ;91FEB0;
     ASL                                                                  ;91FEB1;
     ASL                                                                  ;91FEB2;
     TAX                                                                  ;91FEB3;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FEB4;
     AND.W #$00FF                                                         ;91FEB8;
-    STA.W $0B00                                                          ;91FEBB;
+    STA.W SamusYRadius                                                          ;91FEBB;
     LDA.W #$0003                                                         ;91FEBE;
-    STA.W $0B02                                                          ;91FEC1;
+    STA.W CollisionMovementDirection                                                          ;91FEC1;
     JSL.L Samus_vs_SolidEnemy_CollisionDetection                         ;91FEC4;
-    STA.W $0DD0                                                          ;91FEC8;
+    STA.W SamusSolidCollisionFlag                                                          ;91FEC8;
     TAX                                                                  ;91FECB;
     BNE .collision                                                       ;91FECC;
-    LDA.B $12                                                            ;91FECE;
-    STA.W $0A3E                                                          ;91FED0;
+    LDA.B DP_Temp12                                                            ;91FECE;
+    STA.W SpaceToMoveUpEnemy                                                          ;91FED0;
     PLA                                                                  ;91FED3;
-    STA.W $0B00                                                          ;91FED4;
+    STA.W SamusYRadius                                                          ;91FED4;
     CLC                                                                  ;91FED7;
     RTS                                                                  ;91FED8;
 
   .collision:
     PLA                                                                  ;91FED9;
-    STA.W $0B00                                                          ;91FEDA;
+    STA.W SamusYRadius                                                          ;91FEDA;
     SEC                                                                  ;91FEDD;
     RTS                                                                  ;91FEDE;
 
@@ -16499,59 +16499,59 @@ PoseChangeCollision_SolidEnemy_FromBelow:
 ;; Returns:
 ;;     Carry: Set if there's no space for Samus pose, clear otherwise
 
-; The result stored to $0DD0 is unused
-    LDA.W $0A3A                                                          ;91FEDF;
+; The result stored to SamusSolidCollisionFlag is unused
+    LDA.W YRadiusDifference                                                          ;91FEDF;
     SEC                                                                  ;91FEE2;
-    SBC.W $0A40                                                          ;91FEE3;
-    STA.B $12                                                            ;91FEE6;
-    STZ.B $14                                                            ;91FEE8;
-    LDA.W $0B00                                                          ;91FEEA;
+    SBC.W SpaceToMoveDownEnemy                                                          ;91FEE3;
+    STA.B DP_Temp12                                                            ;91FEE6;
+    STZ.B DP_Temp14                                                            ;91FEE8;
+    LDA.W SamusYRadius                                                          ;91FEEA;
     PHA                                                                  ;91FEED;
-    LDA.W $0A1C                                                          ;91FEEE;
+    LDA.W Pose                                                           ;91FEEE;
     ASL                                                                  ;91FEF1;
     ASL                                                                  ;91FEF2;
     ASL                                                                  ;91FEF3;
     TAX                                                                  ;91FEF4;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FEF5;
     AND.W #$00FF                                                         ;91FEF9;
-    STA.W $0B00                                                          ;91FEFC;
+    STA.W SamusYRadius                                                          ;91FEFC;
     LDA.W #$0002                                                         ;91FEFF;
-    STA.W $0B02                                                          ;91FF02;
+    STA.W CollisionMovementDirection                                                          ;91FF02;
     JSL.L Samus_vs_SolidEnemy_CollisionDetection                         ;91FF05;
-    STA.W $0DD0                                                          ;91FF09;
+    STA.W SamusSolidCollisionFlag                                                          ;91FF09;
     TAX                                                                  ;91FF0C;
     BNE .collision                                                       ;91FF0D;
-    LDA.B $12                                                            ;91FF0F;
-    STA.W $0A40                                                          ;91FF11;
+    LDA.B DP_Temp12                                                            ;91FF0F;
+    STA.W SpaceToMoveDownEnemy                                                          ;91FF11;
     PLA                                                                  ;91FF14;
-    STA.W $0B00                                                          ;91FF15;
+    STA.W SamusYRadius                                                          ;91FF15;
     CLC                                                                  ;91FF18;
     RTS                                                                  ;91FF19;
 
   .collision:
     PLA                                                                  ;91FF1A;
-    STA.W $0B00                                                          ;91FF1B;
+    STA.W SamusYRadius                                                          ;91FF1B;
     SEC                                                                  ;91FF1E;
     RTS                                                                  ;91FF1F;
 
 
 ;;; $FF20: Handle block collision due to pose change - collision from above ;;;
 PoseChangeCollision_Block_FromAbove:
-    LDA.W $0A3A                                                          ;91FF20;
+    LDA.W YRadiusDifference                                                          ;91FF20;
     SEC                                                                  ;91FF23;
-    SBC.W $0A38                                                          ;91FF24;
-    STA.B $12                                                            ;91FF27;
-    STZ.B $14                                                            ;91FF29;
+    SBC.W SpaceToMoveUpBlock                                                          ;91FF24;
+    STA.B DP_Temp12                                                            ;91FF27;
+    STZ.B DP_Temp14                                                            ;91FF29;
     JSL.L BlockCollisionDetectionDueToChangeOfPose                       ;91FF2B;
     BCS .returnCarrySet                                                  ;91FF2F;
-    LDA.W $0A34                                                          ;91FF31;
+    LDA.W SolidEnemyCollisionFlags                                                          ;91FF31;
     BIT.W #$0002                                                         ;91FF34;
     BNE HandleCollisionFromBothSidesDueToPoseChange                      ;91FF37;
-    LDA.W $0AFA                                                          ;91FF39;
+    LDA.W SamusYPosition                                                          ;91FF39;
     CLC                                                                  ;91FF3C;
-    ADC.B $12                                                            ;91FF3D;
-    STA.W $0AFA                                                          ;91FF3F;
-    STA.W $0B14                                                          ;91FF42;
+    ADC.B DP_Temp12                                                            ;91FF3D;
+    STA.W SamusYPosition                                                          ;91FF3F;
+    STA.W SamusPreviousYPosition                                                          ;91FF42;
     CLC                                                                  ;91FF45;
     RTS                                                                  ;91FF46;
 
@@ -16562,23 +16562,23 @@ PoseChangeCollision_Block_FromAbove:
 
 ;;; $FF49: Handle block collision due to pose change - collision from below ;;;
 PoseChangeCollision_Block_FromBelow:
-    LDA.W $0A3A                                                          ;91FF49;
+    LDA.W YRadiusDifference                                                          ;91FF49;
     SEC                                                                  ;91FF4C;
-    SBC.W $0A3C                                                          ;91FF4D;
+    SBC.W SpaceToMoveDownBlock                                                          ;91FF4D;
     EOR.W #$FFFF                                                         ;91FF50;
     INC                                                                  ;91FF53;
-    STA.B $12                                                            ;91FF54;
-    STZ.B $14                                                            ;91FF56;
+    STA.B DP_Temp12                                                            ;91FF54;
+    STZ.B DP_Temp14                                                            ;91FF56;
     JSL.L BlockCollisionDetectionDueToChangeOfPose                       ;91FF58;
     BCS .returnCarrySet                                                  ;91FF5C;
-    LDA.W $0A34                                                          ;91FF5E;
+    LDA.W SolidEnemyCollisionFlags                                                          ;91FF5E;
     BIT.W #$0001                                                         ;91FF61;
     BNE HandleCollisionFromBothSidesDueToPoseChange                      ;91FF64;
-    LDA.W $0AFA                                                          ;91FF66;
+    LDA.W SamusYPosition                                                          ;91FF66;
     SEC                                                                  ;91FF69;
-    SBC.B $12                                                            ;91FF6A;
-    STA.W $0AFA                                                          ;91FF6C;
-    STA.W $0B14                                                          ;91FF6F;
+    SBC.B DP_Temp12                                                            ;91FF6A;
+    STA.W SamusYPosition                                                          ;91FF6C;
+    STA.W SamusPreviousYPosition                                                          ;91FF6F;
     CLC                                                                  ;91FF72;
     RTS                                                                  ;91FF73;
 
@@ -16589,7 +16589,7 @@ PoseChangeCollision_Block_FromBelow:
 
 ;;; $FF76: Handle block collision due to pose change - no collision ;;;
 PoseChangeCollision_NoCollision:
-    LDA.W $0A34                                                          ;91FF76;
+    LDA.W SolidEnemyCollisionFlags                                                          ;91FF76;
     ASL                                                                  ;91FF79;
     TAX                                                                  ;91FF7A;
     JMP.W (.pointers,X)                                                  ;91FF7B;
@@ -16610,36 +16610,36 @@ CLCRTS_91FF87:
 
 ;;; $FF89: Handle block collision to pose change - no collision - solid enemy collision from above ;;;
 HandleBlockCollisionToPoseChange_NoCollision_Enemy_FromAbove:
-    LDA.W $0AFA                                                          ;91FF89;
+    LDA.W SamusYPosition                                                          ;91FF89;
     CLC                                                                  ;91FF8C;
-    ADC.W $0A3E                                                          ;91FF8D;
-    STA.W $0AFA                                                          ;91FF90;
-    STA.W $0B14                                                          ;91FF93;
+    ADC.W SpaceToMoveUpEnemy                                                          ;91FF8D;
+    STA.W SamusYPosition                                                          ;91FF90;
+    STA.W SamusPreviousYPosition                                                          ;91FF93;
     CLC                                                                  ;91FF96;
     RTS                                                                  ;91FF97;
 
 
 ;;; $FF98: Handle block collision to pose change - no collision - solid enemy collision from below ;;;
 HandleBlockCollisionToPoseChange_NoCollision_Enemy_FromBelow:
-    LDA.W $0AFA                                                          ;91FF98;
+    LDA.W SamusYPosition                                                          ;91FF98;
     SEC                                                                  ;91FF9B;
-    SBC.W $0A40                                                          ;91FF9C;
-    STA.W $0AFA                                                          ;91FF9F;
-    STA.W $0B14                                                          ;91FFA2;
+    SBC.W SpaceToMoveDownEnemy                                                          ;91FF9C;
+    STA.W SamusYPosition                                                          ;91FF9F;
+    STA.W SamusPreviousYPosition                                                          ;91FFA2;
     CLC                                                                  ;91FFA5;
     RTS                                                                  ;91FFA6;
 
 
 ;;; $FFA7: Handle collision from both sides due to pose change ;;;
 HandleCollisionFromBothSidesDueToPoseChange:
-    LDA.W $0B00                                                          ;91FFA7;
+    LDA.W SamusYRadius                                                          ;91FFA7;
     CMP.W #$0008                                                         ;91FFAA;
     BPL .notMorphBall                                                    ;91FFAD;
     SEC                                                                  ;91FFAF;
     RTS                                                                  ;91FFB0;
 
   .notMorphBall:
-    LDA.W $0A1E                                                          ;91FFB1;
+    LDA.W PoseXDirection                                                          ;91FFB1;
     AND.W #$00FF                                                         ;91FFB4;
     CMP.W #$0004                                                         ;91FFB7;
     BEQ .facingLeft                                                      ;91FFBA;
@@ -16649,25 +16649,25 @@ HandleCollisionFromBothSidesDueToPoseChange:
   .facingLeft:
     LDA.W #$0028                                                         ;91FFC1;
 
-+   STA.W $0A1C                                                          ;91FFC4;
++   STA.W Pose                                                           ;91FFC4;
     ASL                                                                  ;91FFC7;
     ASL                                                                  ;91FFC8;
     ASL                                                                  ;91FFC9;
     TAX                                                                  ;91FFCA;
     LDA.L PoseDefinitions_YRadius,X                                      ;91FFCB;
     AND.W #$00FF                                                         ;91FFCF;
-    STA.B $12                                                            ;91FFD2;
-    LDA.W $0B00                                                          ;91FFD4;
-    CMP.B $12                                                            ;91FFD7;
+    STA.B DP_Temp12                                                            ;91FFD2;
+    LDA.W SamusYRadius                                                          ;91FFD4;
+    CMP.B DP_Temp12                                                            ;91FFD7;
     BPL .returnCarryClear                                                ;91FFD9;
     SEC                                                                  ;91FFDB;
-    SBC.B $12                                                            ;91FFDC;
-    STA.B $12                                                            ;91FFDE;
-    LDA.W $0AFA                                                          ;91FFE0;
+    SBC.B DP_Temp12                                                            ;91FFDC;
+    STA.B DP_Temp12                                                            ;91FFDE;
+    LDA.W SamusYPosition                                                          ;91FFE0;
     CLC                                                                  ;91FFE3;
-    ADC.B $12                                                            ;91FFE4;
-    STA.W $0AFA                                                          ;91FFE6;
-    STA.W $0B14                                                          ;91FFE9;
+    ADC.B DP_Temp12                                                            ;91FFE4;
+    STA.W SamusYPosition                                                          ;91FFE6;
+    STA.W SamusPreviousYPosition                                                          ;91FFE9;
 
   .returnCarryClear:
     CLC                                                                  ;91FFEC;

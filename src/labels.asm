@@ -74,6 +74,19 @@ BeamTrailInstLists:
   .data: skip 2 ; 2: Data
 
 
+org $B88000
+DemoRecorder:
+  .input: skip 2 ; 0: Controller 1 input
+  .new: skip 2 ; 2: Newly pressed controller 1 input
+  .layer1X: skip 2 ; 4: Layer 1 X position
+  .layer1Y: skip 2 ; 6: Layer 1 Y position
+  .SamusX: skip 2 ; 8: Samus X position
+  .SamusY: skip 2 ; Ah: Samus Y position
+skip $7EF4
+  .doorBTS: skip 2 ; FF00h: Door BTS
+  .area: skip 2 ; FF02h: Area index
+
+
 ORG $A00000
 EnemyHeaders:
   .tileDataSize: skip 2 ; 0: Tile data size
