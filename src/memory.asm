@@ -1082,13 +1082,13 @@ Temp_YDistanceFromEnemyToSamus: skip 2 ; $0E3E
 Temp_BeamVulnerability: skip 0 ; $0E40
 Temp_ContactVulnerability: skip 2 ; $0E40
 
-Unused0E42: skip 2 ; $0E42
+unused0E42: skip 2 ; $0E42
 NumberOfTimesMainEnemyRoutineExecuted: skip 2 ; $0E44
-NeverRead0E46: skip 2 ; $0E46
-NeverRead0E48: skip 2 ; $0E48
+neverRead0E46: skip 2 ; $0E46
+neverRead0E48: skip 2 ; $0E48
 NewEnemyIndex: skip 2 ; $0E4A
 FirstFreeEnemyIndex: skip 2 ; $0E4C
-NeverRead0E4E: skip 2 ; $0E4E
+neverRead0E4E: skip 2 ; $0E4E
 NumberOfEnemiesKilled: skip 2 ; $0E50
 NumberOfEnemiesRequiredToKill: skip 2 ; $0E52
 EnemyIndex: skip 2 ; $0E54
@@ -1161,7 +1161,7 @@ Unused1782: skip 2 ; $1782
 EnemyAIPointer: skip 4 ; $1784
 BackupEnemyAIPointer: skip 4 ; $1788
 EnemyGraphicsDrawnHook: skip 4 ; $178C
-Unused1790: skip 4 ; $1790
+unused1790: skip 4 ; $1790
 
 EnemyPaletteCycle_PaletteIndex: skip 2 ; $1794
 EnemyPaletteCycle_ColorSetIndex: skip 2 ; $1796
@@ -1169,8 +1169,8 @@ EnemyPaletteCycle_Timer: skip 2 ; $1798
 
 EnemyBG2TilemapSize: skip 2 ; $179A
 BossID: skip 2 ; $179C
-Unused179E: skip 2 ; $179E
-Unused17A0: skip 2 ; $17A0
+unused179E: skip 2 ; $179E
+unused17A0: skip 2 ; $17A0
 DisableDrawingOfEnemies: skip 2 ; $17A2
 ActiveEnemyIndicesStackPointer: skip 2 ; $17A4
 InteractiveEnemyIndicesStackPointer: skip 2 ; $17A6
@@ -1182,10 +1182,10 @@ EnemyIndexSamusCollidesLeft: skip 2 ; $182C
 EnemyIndexSamusCollidesRight: skip 2 ; $182E
 EnemyIndexSamusCollidesUp: skip 2 ; $1830
 EnemyIndexSamusCollidesDown: skip 2 ; $1832
-NeverRead1834: skip 2 ; $1834
-NeverRead1836: skip 2 ; $1836
-NeverRead1838: skip 2 ; $1838
-NeverRead183A: skip 2 ; $183A
+neverRead1834: skip 2 ; $1834
+neverRead1836: skip 2 ; $1836
+neverRead1838: skip 2 ; $1838
+neverRead183A: skip 2 ; $183A
 GlobalOffScreenEnemyProcessingFlag: skip 2 ; $183C
 EarthquakeType: skip 2 ; $183E
 EarthquakeTimer: skip 2 ; $1840
