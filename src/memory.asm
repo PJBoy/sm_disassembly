@@ -826,7 +826,7 @@ GrappleBeam_EndAngleMirror: skip 2 ; $0CFC
 GrappleBeam_Length: skip 2 ; $0CFE
 GrappleBeam_LengthDelta: skip 2 ; $0D00
 GrappleBeam_OriginXOffset: skip 2 ; $0D02
-GrappleBeam_OriginTOffset: skip 2 ; $0D04
+GrappleBeam_OriginYOffset: skip 2 ; $0D04
 GrappleBeam_EndXSubPosition: skip 2 ; $0D06
 GrappleBeam_EndXPosition: skip 2 ; $0D08
 GrappleBeam_EndYSubPosition: skip 2 ; $0D0A
@@ -874,6 +874,15 @@ GrappleCollision_YQuarterVelocity: skip 0 ; $0D88
 GrappleCollision_TargetEndAngle: skip 2 ; $0D88
 GrappleCollision_LoopCounter: skip 0 ; $0D8A
 GrappleCollision_NewBeamLength: skip 2 ; $0D8A
+GrappleCollision_TargetLength: skip 2 ; $0D8C
+GrappleCollision_SamusFrontBoundaryOffset: skip 2 ; $0D8E
+GrappleCollision_XPosition: skip 2 ; $0D90
+GrappleCollision_YPosition: skip 2 ; $0D92
+GrappleCollision_XBlock: skip 2 ; $0D94
+GrappleCollision_YBlock: skip 2 ; $0D96
+GrappleCollision_DistanceFromSamusFeet: skip 2 ; $0D98
+skip 2
+GrappleCollision_TotalSwingAngularVelocity: skip 2 ; $0D9C
 
 org $0D82
 WavySamusBG3XScrollIndirectHDMATable: ; $0D82..8F
@@ -915,12 +924,14 @@ ProjectileProtoType: skip 2 ; $0DD2
 SolidSlopeDefinitionTableBaseIndex: skip 0 ; $0DD4
 SamusLeftRightXOffset: skip 0 ; $0DD4
 SamusBottomTopYOffset: skip 0 ; $0DD4
+TargetLeftRightYOffset: skip 0 ; $0DD4
 TargetBottomTopYOffset: skip 0 ; $0DD4
 YDistanceIntoSlope: skip 0 ; $0DD4
 CollisionMultiplicationCounter: skip 0 ; $0DD4
-CollisionProjectileYOffset: skip 2 ; $0DD4
+CollisionProjectileYOffset: skip 0 ; $0DD4
+CollisionVariable: skip 2 ; $0DD4
 SlopeCollisionFlipFlags: skip 0 ; $0DD6
-SlopeCOllisionDefinitionTableBaseIndex: skip 2 ; $0DD6
+SlopeCollisionDefinitionTableBaseIndex: skip 2 ; $0DD6
 unused0DD8: skip 4 ; $0DD8
 SuitPickupLightBeamWideningSpeed: skip 2 ; $0DDC
 ProjectileIndex: skip 2 ; $0DDE
