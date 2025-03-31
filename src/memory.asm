@@ -13,7 +13,8 @@ DP_Temp04: skip 1 ; $04
 DP_Temp05: skip 1 ; $05
 DP_Temp06: skip 2 ; $06
 DP_Temp08: skip 1 ; $08
-DP_Temp09: skip 2 ; $09
+DP_Temp09: skip 1 ; $09
+DP_Temp0A: skip 1 ; $0A
 DP_Temp0B: skip 1 ; $0B
 DP_Temp0C: skip 2 ; $0C
 DP_Unused0E: skip 1 ; $0E
@@ -266,6 +267,7 @@ EarthquakeSFX_Timer: skip 2 ; $0609
 RemainingEnemySpritemapEntries: ; $060B
 LoopCounterEnemyDeath: ; $060B
 BotwoonSpitAngleParam: ; $060B
+NumberOfDrops: ; $060B
 skip 2
 RemainingEnemyHitboxEntries: ; $060D
 NumberOfExtendedTilemapTiles: ; $060D
@@ -1011,6 +1013,7 @@ CriticalEnergyFlag: skip 2 ; $0E1A
 EnemyIndexToShake: skip 2 ; $0E1C
 RequestEnemyBG2TilemapTransferFlag: skip 2 ; $0E1E
 
+Temp_EnemyProjectileInitParam: skip 0 ; $0E20
 Temp_DemoRecorderFrameCounterXPosition: skip 0 ; $0E20
 Temp_ProjectilePositionOnScreen: skip 0 ; $0E20
 Temp_ProjectileXRadius: skip 0 ; $0E20
@@ -1021,7 +1024,8 @@ Temp_DeathExplosionType: skip 0 ; $0E20
 Temp_AbsoluteXDistanceFromEnemyToSamus: skip 0 ; $0E20
 Temp_Threshold: skip 0 ; $0E20
 Temp_AngleToMove: skip 0 ; $0E20
-Temp_DebuggerHexValueXPosition: skip 2 ; $0E20
+Temp_DebuggerHexValueXPosition: skip 0 ; $0E20
+Temp_InstListIndex: skip 2 ; $0E20
 Temp_DemoRecorderFrameCounterYPosition: skip 0 ; $0E22
 Temp_ProjectileYRadius: skip 0 ; $0E22
 Temp_SpawnEnemyLoopCounter: skip 0 ; $0E22
@@ -1067,7 +1071,9 @@ Temp_SpitProjectileSpeed: skip 2 ; $0E32
 Temp_DrawingQueueIndex0E34: skip 0 ; $0E34
 Temp_YPosition: skip 0 ; $0E34
 Temp_AbsoluteDifference: skip 0 ; $0E34
-Temp_Angle: skip 2 ; $0E34
+Temp_Angle: skip 0 ; $0E34
+Temp_SwapNybbles: skip 0 ; $0E34
+Temp_Unknown0E34: skip 2 ; $0E34
 Temp_DrawingQueueSizeBackup: skip 0 ; $0E36
 Temp_SamusXPosition: skip 0 ; $0E36
 Temp_SineProduct: skip 0 ; $0E36
@@ -1110,7 +1116,7 @@ EnemyDrawingQueues_Layer1: skip 2 ; $0EA4
 EnemyDrawingQueues_Layer2: skip $20 ; $0EA6..C5
 EnemyDrawingQueues_Layer3: skip 2 ; $0EC6
 EnemyDrawingQueues_Layer4: skip $20 ; $0EC8..E7
-EnemyDrawingQueues_Layer5: skip $44 ; $0EE4..0F27
+EnemyDrawingQueues_Layer5: skip $40 ; $0EE8..0F27
 EnemyDrawingQueues_Layer6: skip $20 ; $0F28..47
 EnemyDrawingQueues_Layer7: skip $20 ; $0F48..67
 EnemyDrawingQueues_Sizes: skip $10 ; $0F68..77
@@ -1193,15 +1199,15 @@ NumberOfTimesRoomShakingExecuted: skip 2 ; $1842
 SpriteObjectIndex: skip 2 ; $1844
 DebugEnemyIndex: skip 2 ; $1846
 LogIndex: skip 2 ; $1848
-NeverRead184A: skip 2 ; $184A
-NeverRead184C: skip 2 ; $184C
-NeverRead184E: skip 2 ; $184E
-NeverRead1850: skip 2 ; $1850
-NeverRead1852: skip 2 ; $1852
-NeverRead1854: skip 2 ; $1854
-NeverRead1856: skip 2 ; $1856
-NeverRead1858: skip 2 ; $1858
-NeverRead185A: skip 2 ; $185A
+neverRead184A: skip 2 ; $184A
+neverRead184C: skip 2 ; $184C
+neverRead184E: skip 2 ; $184E
+neverRead1850: skip 2 ; $1850
+neverRead1852: skip 2 ; $1852
+neverRead1854: skip 2 ; $1854
+neverRead1856: skip 2 ; $1856
+neverRead1858: skip 2 ; $1858
+neverRead185A: skip 2 ; $185A
 DebugIndex: skip 2 ; $185C
 DebugTimeIsFrozenForEnemies: skip 2 ; $185E
 DebugTextCursorXPosition: skip 2 ; $1860
@@ -1589,25 +1595,47 @@ org $7E7000
 EnemyTileData: ; $7E7000..97FF
 CRETiles: ; $7E7000..9FFF
 
-Unused7000: skip 2 ; $7E7000
-NeverRead7002: skip 2 ; $7E7002
-skip 2
-EnemySpawnData_VRAMTilesIndex: skip 2 ; $7E7006
-EnemySpawnData_PaletteIndex: skip 2 ; $7E7008
-EnemySpawnData_GraphicalXOffset: skip 2 ; $7E7010
-EnemySpawnData_GraphicalYOffset: skip 2 ; $7E7012
-skip 8
-EnemySpawnData_ID: skip 2 ; $7E701E
-EnemySpawnData_XPosition: skip 2 ; $7E7020
-EnemySpawnData_YPosition: skip 2 ; $7E7022
-EnemySpawnData_InitParam: skip 2 ; $7E7024
-EnemySpawnData_Properties: skip 2 ; $7E7026
-EnemySpawnData_ExtraProperties: skip 2 ; $7E7028
-EnemySpawnData_Param1: skip 2 ; $7E702A
-EnemySpawnData_Param2: skip 2 ; $7E702C
-EnemySpawnData_Name: skip 12 ; $7E702E..39
+struct EnemySpawnData $7E7000
+  .unused7000: skip 2 ; $7E7000
+  .neverRead7002: skip 2 ; $7E7002
+  .unknown7004: skip 2 ; $7E7004
+  .VRAMTilesIndex: skip 2 ; $7E7006
+  .PaletteIndex: skip 2 ; $7E7008
+skip 6
+  .GraphicalXOffset: skip 2 ; $7E7010
+  .GraphicalYOffset: skip 2 ; $7E7012
+skip 10
+  .ID: skip 2 ; $7E701E
+  .XPosition: skip 2 ; $7E7020
+  .YPosition: skip 2 ; $7E7022
+  .InitParam: skip 2 ; $7E7024
+  .Properties: skip 2 ; $7E7026
+  .ExtraProperties: skip 2 ; $7E7028
+  .Param1: skip 2 ; $7E702A
+  .Param2: skip 2 ; $7E702C
+  .Name: skip 12 ; $7E702E..39
+endstruct
 
 ; see "ENEMY RAM" section below for extra enemy RAM ($7800, $8000, $8800)
+
+struct EnemyLogging $7E9000 ; $7E9000..97FF
+  .executionCount: skip 2 ; $7E9000
+  .enemy2YPosition: skip 2 ; $7E9002
+  .enemy2YSubPosition: skip 2 ; $7E9004
+  .extraSamusYDisplacement: skip 2 ; $7E9006
+  .decreasingMomentumFlag: skip 2 ; $7E9008
+  .SamusYPosition: skip 2 ; $7E900A
+  .SamusYSubPosition: skip 2 ; $7E900C
+  .SamusYSpeed: skip 2 ; $7E900E
+  .SamusYSubSpeed: skip 2 ; $7E9010
+  .SamusYRadius: skip 2 ; $7E9012
+  .SamusPose: skip 2 ; $7E9014
+  .SamusMovementTypeXDirection: skip 2 ; $7E9016
+  .unknown18: skip 2 ; $7E9018
+  .unknown1A: skip 2 ; $7E901A
+  .unknown1C: skip 2 ; $7E901C
+  .unknown1E: skip 2 ; $7E901E
+endstruct
 
 org $7E9000
 MotherBrainCorpseRottingGFX: ; $7E9000..953F
@@ -1963,7 +1991,7 @@ EnemyGFXData_IDs: skip 8 ; $7EEF5C..63
 EnemyGFXData_TilesIndex: skip 8 ; $7EDE64..6B
 EnemyGFXData_PaletteIndices: skip 8 ; $7EDE6C..73
 EnemyGFXData_StackPointer: skip 2 ; $7EDE74
-EnemyGFXData_NexttilesIndex: skip 2 ; $7EDE76
+EnemyGFXData_NextTilesIndex: skip 2 ; $7EDE76
 
 SpriteObjects_InstListPointers: skip $40 ; $7EEF78..F7
 SpriteObjects_Instructions: skip 0 ; $7EEFF8..F077

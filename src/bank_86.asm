@@ -17739,9 +17739,9 @@ Respawn_Enemy:
     STA.W Enemy.init1,Y                                                  ;86F2B0;
     PHX                                                                  ;86F2B3;
     TYX                                                                  ;86F2B4;
-    LDA.L EnemySpawnData_PaletteIndex,X                                  ;86F2B5;
+    LDA.L EnemySpawnData.PaletteIndex,X                                  ;86F2B5;
     STA.W Enemy.palette,X                                                ;86F2B9;
-    LDA.L EnemySpawnData_VRAMTilesIndex,X                                ;86F2BC;
+    LDA.L EnemySpawnData.VRAMTilesIndex,X                                ;86F2BC;
     STA.W Enemy.GFXOffset,X                                              ;86F2C0;
     PLX                                                                  ;86F2C3;
     LDA.W #$0000                                                         ;86F2C4;

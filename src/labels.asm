@@ -15,6 +15,17 @@ DoorHeaders:
 org $830000
 FXHeaders:
 
+org $860000
+EnemyProjectiles:
+  .initAI: skip 2 ; 0: Initialisation AI
+  .initialPreInstruction: skip 2 ; 2: Initial pre-instruction
+  .initialInstList: skip 2 ; 4: Initial instruction list
+  .XRadius: skip 2 ; 6: X radius
+  .YRadius: skip 2 ; 8: Y radius
+  .properties: skip 2 ; Ah: Properties 
+  .hitInstList: skip 2 ; Ch: Hit instruction list 
+  .shotInstList: skip 2 ; Eh: Shot instruction list 
+
 
 org $8F0000
 RoomHeaders:
@@ -87,7 +98,7 @@ skip $7EF4
   .area: skip 2 ; FF02h: Area index
 
 
-ORG $A00000
+org $A00000
 EnemyHeaders:
   .tileDataSize: skip 2 ; 0: Tile data size
   .palette: skip 2 ; 2: Palette
