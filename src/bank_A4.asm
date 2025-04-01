@@ -4509,13 +4509,13 @@ InstList_Crocomire_Melting1_Top2Rows:
 ;;; $BF72: Instruction list - Crocomire - melting 1 - top 3 rows ;;;
 InstList_Crocomire_Melting1_Top3Rows:
     dw $7FFF,ExtendedSpritemap_Crocomire_27                              ;A4BF72;
-    dw Instruction_CommonA4_Sleep                                        ;A4BF76;
+    dw Instruction_Common_Sleep                                        ;A4BF76;
 
 
 ;;; $BF78: Instruction list - Crocomire - melting 1 - top 4 rows ;;;
 InstList_Crocomire_Melting1_Top4Rows:
     dw $7FFF,ExtendedSpritemap_Crocomire_28                              ;A4BF78;
-    dw Instruction_CommonA4_Sleep                                        ;A4BF7C;
+    dw Instruction_Common_Sleep                                        ;A4BF7C;
 
 
 ;;; $BF7E: Instruction list - Crocomire - melting 2 - top row ;;;
@@ -4540,7 +4540,7 @@ InstList_Crocomire_Melting2_Top3Rows:
 ;;; $BF92: Instruction list - Crocomire - melting 2 - top 4 rows ;;;
 InstList_Crocomire_Melting2_Top4Rows:
     dw $7FFF,ExtendedSpritemap_Crocomire_2C                              ;A4BF92;
-    dw Instruction_CommonA4_Sleep                                        ;A4BF96;
+    dw Instruction_Common_Sleep                                        ;A4BF96;
 
 
 ;;; $BF98: Instruction list - Crocomire tongue - melting ;;;
@@ -5931,32 +5931,32 @@ Hitbox_Crocomire_B:
 Hitbox_Crocomire_C:
     dw $0003                                                             ;A4CBC5;
     dw $FFCE,$FFDB,$0028,$FFF0
-    dw CommonA4_NormalEnemyTouchAI                                       ;A4CBCF;
+    dw Common_NormalEnemyTouchAI                                       ;A4CBCF;
     dw EnemyShot_Crocomire_OpenMouth                                     ;A4CBD1;
     dw $FFCC,$FFC6,$002A,$FFDA                                           ;A4CBD3;
-    dw CommonA4_NormalEnemyTouchAI                                       ;A4CBDB;
-    dw CommonA4_NormalEnemyShotAI                                        ;A4CBDD;
+    dw Common_NormalEnemyTouchAI                                       ;A4CBDB;
+    dw Common_NormalEnemyShotAI                                        ;A4CBDD;
     dw $FFE0,$FFF3,$0028,$0000                                           ;A4CBDF;
-    dw CommonA4_NormalEnemyTouchAI                                       ;A4CBE7;
-    dw CommonA4_NormalEnemyShotAI                                        ;A4CBE9;
+    dw Common_NormalEnemyTouchAI                                       ;A4CBE7;
+    dw Common_NormalEnemyShotAI                                        ;A4CBE9;
 
 Hitbox_Crocomire_D:
     dw $0003                                                             ;A4CBEB;
     dw $FFD2,$FFCB,$000D,$FFF0
-    dw CommonA4_NormalEnemyTouchAI                                       ;A4CBF5;
+    dw Common_NormalEnemyTouchAI                                       ;A4CBF5;
     dw EnemyShot_Crocomire_OpenMouth                                     ;A4CBF7;
     dw $FFD7,$FFB6,$0010,$FFC7                                           ;A4CBF9;
-    dw CommonA4_NormalEnemyTouchAI                                       ;A4CC01;
-    dw CommonA4_NormalEnemyShotAI                                        ;A4CC03;
+    dw Common_NormalEnemyTouchAI                                       ;A4CC01;
+    dw Common_NormalEnemyShotAI                                        ;A4CC03;
     dw $FFDB,$FFF0,$0010,$FFFD                                           ;A4CC05;
-    dw CommonA4_NormalEnemyTouchAI                                       ;A4CC0D;
-    dw CommonA4_NormalEnemyShotAI                                        ;A4CC0F;
+    dw Common_NormalEnemyTouchAI                                       ;A4CC0D;
+    dw Common_NormalEnemyShotAI                                        ;A4CC0F;
 
 Hitbox_Crocomire_E:
     dw $0001                                                             ;A4CC11;
     dw $FFDB,$FFCE,$0026,$FFFC
     dw EnemyTouch_Crocomire_Claws                                        ;A4CC1B;
-    dw CommonA4_NormalEnemyShotAI                                        ;A4CC1D;
+    dw Common_NormalEnemyShotAI                                        ;A4CC1D;
 
 Hitbox_Crocomire_F:
     dw $0001                                                             ;A4CC1F;
@@ -7102,7 +7102,7 @@ InstList_CrocomireCorpse_Skeleton_1:
 ;;; $E1CC: Instruction list - Crocomire - dead ;;;
 InstList_CrocomireCorpse_Skeleton_Dead:
     dw $7FFF,ExtendedSpritemap_CrocomireCorpse_16                        ;A4E1CC;
-    dw Instruction_CommonA4_Sleep                                        ;A4E1D0;
+    dw Instruction_Common_Sleep                                        ;A4E1D0;
 
 
 ;;; $E1D2: Instruction list - Crocomire - skeleton - flowing down the river ;;;

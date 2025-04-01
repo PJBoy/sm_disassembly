@@ -6024,7 +6024,7 @@ InitAI_DachoraEscape:
     LDA.W Enemy.properties,X                                                        ;B3EAFB;
     ORA.W #$2000                                                         ;B3EAFE;
     STA.W Enemy.properties,X                                                        ;B3EB01;
-    LDA.W #Spritemap_CommonB3_Nothing                                    ;B3EB04;
+    LDA.W #Spritemap_Common_Nothing                                    ;B3EB04;
     STA.W $0F8E,X                                                        ;B3EB07;
     LDA.W #$0001                                                         ;B3EB0A;
     STA.W Enemy.instTimer,X                                                        ;B3EB0D;

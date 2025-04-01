@@ -9586,7 +9586,7 @@ InitAI_Chozo:
     LDA.W Enemy.properties,X                                                        ;AAE728;
     ORA.W #$A800                                                         ;AAE72B;
     STA.W Enemy.properties,X                                                        ;AAE72E;
-    LDA.W #Spritemap_CommonAA_Nothing                                    ;AAE731;
+    LDA.W #Spritemap_Common_Nothing                                    ;AAE731;
     STA.W $0F8E,X                                                        ;AAE734;
     LDA.W #$0001                                                         ;AAE737;
     STA.W Enemy.instTimer,X                                                        ;AAE73A;

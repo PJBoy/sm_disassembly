@@ -9833,7 +9833,7 @@ InstList_PirateNinja_Initial_FacingLeft_1:
     dw $0020,ExtendedSpritemaps_PirateNinja_46                           ;B2F2EE;
     dw Instruction_Common_GotoY                                          ;B2F2F2;
     dw InstList_PirateNinja_Initial_FacingLeft_1                         ;B2F2F4;
-    dw Instruction_CommonB2_Sleep                                        ;B2F2F6;
+    dw Instruction_Common_Sleep                                        ;B2F2F6;
 
 
 ;;; $F2F8: Instruction list - land - facing left ;;;

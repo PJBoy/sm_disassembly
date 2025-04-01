@@ -605,7 +605,7 @@ InstList_Boyon_Idle_1:
     dw $000A,Spritemap_Boyon_Idle_1                                      ;A286AF;
     dw $000A,Spritemap_Boyon_Idle_2                                      ;A286B3;
     dw $000A,Spritemap_Boyon_Idle_1                                      ;A286B7;
-    dw Instruction_CommonA2_GotoY                                        ;A286BB;
+    dw Instruction_Common_GotoY                                        ;A286BB;
     dw InstList_Boyon_Idle_1                                             ;A286BD;
 
 
@@ -650,7 +650,7 @@ BoyonData:
 ;;; $871C: Initialisation AI - enemy $CEBF (boyon) ;;;
 InitAI_Boyon:
     LDX.W $0E54                                                          ;A2871C;
-    LDA.W #Spritemap_CommonA2_Nothing                                    ;A2871F;
+    LDA.W #Spritemap_Common_Nothing                                    ;A2871F;
     STA.W $0F8E,X                                                        ;A28722;
     JSR.W SetBoyonInstList                                               ;A28725;
     LDA.W #$0001                                                         ;A28728;
@@ -1012,7 +1012,7 @@ Instruction_Stoke_SetMovingRight:
 ;;; $89AD: Initialisation AI - enemy $CEFF (mini-Crocomire) ;;;
 InitAI_Stoke:
     LDX.W $0E54                                                          ;A289AD;
-    LDA.W #Spritemap_CommonA2_Nothing                                    ;A289B0;
+    LDA.W #Spritemap_Common_Nothing                                    ;A289B0;
     STA.W $0F8E,X                                                        ;A289B3;
     LDA.W $0FB6,X                                                        ;A289B6;
     ASL                                                                  ;A289B9;
@@ -1324,7 +1324,7 @@ InstList_MamaTurtle_Spinning:
     dw $0005,Spritemap_MamaTurtle_FacingLeft_8                           ;A28C0C;
     dw $0005,Spritemap_MamaTurtle_FacingLeft_7                           ;A28C10;
     dw $0005,Spritemap_MamaTurtle_FacingLeft_8                           ;A28C14;
-    dw Instruction_CommonA2_GotoY                                        ;A28C18;
+    dw Instruction_Common_GotoY                                        ;A28C18;
     dw InstList_MamaTurtle_Spinning                                      ;A28C1A;
 
 
@@ -1430,7 +1430,7 @@ UNUSED_InstList_A28CEC:
     dw $0005,Spritemap_MamaTurtle_FacingRight_11                         ;A28CF0;
     dw $0005,Spritemap_MamaTurtle_FacingRight_10                         ;A28CF4;
     dw $0005,Spritemap_MamaTurtle_FacingRight_11                         ;A28CF8;
-    dw Instruction_CommonA2_GotoY                                        ;A28CFC;
+    dw Instruction_Common_GotoY                                        ;A28CFC;
     dw UNUSED_InstList_A28CEC                                            ;A28CFE;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
@@ -1513,7 +1513,7 @@ InitAI_MamaTurtle:
     LDA.W Enemy.properties,X                                                        ;A28D6F;
     ORA.W #$2000                                                         ;A28D72;
     STA.W Enemy.properties,X                                                        ;A28D75;
-    LDA.W #Spritemap_CommonA2_Nothing                                    ;A28D78;
+    LDA.W #Spritemap_Common_Nothing                                    ;A28D78;
     STA.W $0F8E,X                                                        ;A28D7B;
     LDA.W #$0001                                                         ;A28D7E;
     STA.W Enemy.instTimer,X                                                        ;A28D81;
@@ -2901,19 +2901,19 @@ InstList_Puyo_HoppingRight_0_HoppingLeft_4:
 ;;; $99EF: Instruction list - hopping right frame 1 / hopping left frame 3 ;;;
 InstList_Puyo_HoppingRight_1_HoppingLeft_3:
     dw $0001,Spritemap_Puyo_6                                            ;A299EF;
-    dw Instruction_CommonA2_Sleep                                        ;A299F3;
+    dw Instruction_Common_Sleep                                        ;A299F3;
 
 
 ;;; $99F5: Instruction list - hopping frame 2 ;;;
 InstList_Puyo_Hopping_2:
     dw $0001,Spritemap_Puyo_5                                            ;A299F5;
-    dw Instruction_CommonA2_Sleep                                        ;A299F9;
+    dw Instruction_Common_Sleep                                        ;A299F9;
 
 
 ;;; $99FB: Instruction list - hopping right frame 3 / hopping left frame 1 ;;;
 InstList_Puyo_HoppingRight_3_HoppingLeft_1:
     dw $0001,Spritemap_Puyo_4                                            ;A299FB;
-    dw Instruction_CommonA2_Sleep                                        ;A299FF;
+    dw Instruction_Common_Sleep                                        ;A299FF;
 
 
 ;;; $9A01: Instruction list - hopping right frame 4 / hopping left frame 0 ;;;
@@ -2954,7 +2954,7 @@ PuyoHopTable:
 ;;; $9A3F: Initialisation AI - enemy $CFBF (puyo) ;;;
 InitAI_Puyo:
     LDX.W $0E54                                                          ;A29A3F;
-    LDA.W #Spritemap_CommonA2_Nothing                                    ;A29A42;
+    LDA.W #Spritemap_Common_Nothing                                    ;A29A42;
     STA.W $0F8E,X                                                        ;A29A45;
     STZ.W $0FA8,X                                                        ;A29A48;
     LDA.W #InstList_Puyo_GroundedDropping_Fast                           ;A29A4B;
@@ -3561,7 +3561,7 @@ InstList_Cacatac_UpsideUp_Attacking:
     dw Instruction_Cacatac_SpawnSpikeProjectileWithParameterInY,$0002    ;A29ECA;
     dw Instruction_Cacatac_SpawnSpikeProjectileWithParameterInY,$000E    ;A29ECE;
     dw Instruction_Cacatac_SpawnSpikeProjectileWithParameterInY,$0004    ;A29ED2;
-    dw Instruction_CommonA2_GotoY                                        ;A29ED6;
+    dw Instruction_Common_GotoY                                        ;A29ED6;
     dw InstList_Cacatac_UpsideUp_Idling                                  ;A29ED8;
 
 
@@ -3594,7 +3594,7 @@ InstList_Cacatac_UpsideDown_Attacking:
     dw Instruction_Cacatac_SpawnSpikeProjectileWithParameterInY,$0008    ;A29F1A;
     dw Instruction_Cacatac_SpawnSpikeProjectileWithParameterInY,$0012    ;A29F1E;
     dw Instruction_Cacatac_SpawnSpikeProjectileWithParameterInY,$000A    ;A29F22;
-    dw Instruction_CommonA2_GotoY                                        ;A29F26;
+    dw Instruction_Common_GotoY                                        ;A29F26;
     dw InstList_Cacatac_UpsideDown_Idling_0                              ;A29F28;
 
 
@@ -3626,7 +3626,7 @@ CacatacFunctionPointers:
 ;;; $9F48: Initialisation AI - enemy $CFFF (cacatac) ;;;
 InitAI_Cacatac:
     LDX.W $0E54                                                          ;A29F48;
-    LDA.W #Spritemap_CommonA2_Nothing                                    ;A29F4B;
+    LDA.W #Spritemap_Common_Nothing                                    ;A29F4B;
     STA.W $0F8E,X                                                        ;A29F4E;
     LDA.W $0FB5,X                                                        ;A29F51;
     AND.W #$00FF                                                         ;A29F54;
@@ -4096,7 +4096,7 @@ OwtchConstants:
 ;;; $A3F9: Initialisation AI - enemy $D03F (owtch) ;;;
 InitAI_Owtch:
     LDX.W $0E54                                                          ;A2A3F9;
-    LDA.W #Spritemap_CommonA2_Nothing                                    ;A2A3FC;
+    LDA.W #Spritemap_Common_Nothing                                    ;A2A3FC;
     STA.W $0F8E,X                                                        ;A2A3FF;
     LDA.W $0FB4,X                                                        ;A2A402;
     AND.W #$00FF                                                         ;A2A405;
@@ -4393,7 +4393,7 @@ InstList_ShipTop:
 ;;; $A61C: Instruction list - gunship bottom ;;;
 InstList_ShipBottom:
     dw $0001,Spritemap_Ship_1                                            ;A2A61C;
-    dw Instruction_CommonA2_Sleep                                        ;A2A620;
+    dw Instruction_Common_Sleep                                        ;A2A620;
 
 
 ;;; $A622: Gunship brakes movement data ;;;
@@ -5542,11 +5542,11 @@ InitAI_Mellow_Mella_Menu:
     STA.W Flies.function,X                                               ;A2B074;
     LDA.W #InstList_Mellow_Mella_Menu                                    ;A2B077;
     STA.W Enemy.instList,X                                                        ;A2B07A;
-    LDA.W #Spritemap_CommonA2_Nothing                                    ;A2B07D;
+    LDA.W #Spritemap_Common_Nothing                                    ;A2B07D;
     STA.W $0F8E,X                                                        ;A2B080;
     LDA.W #$0001                                                         ;A2B083;
     STA.W Enemy.instTimer,X                                                        ;A2B086;
-    LDA.W #Spritemap_CommonA2_Nothing                                    ;A2B089;
+    LDA.W #Spritemap_Common_Nothing                                    ;A2B089;
     STA.W $0F8E,X                                                        ;A2B08C;
     RTL                                                                  ;A2B08F;
 
@@ -7331,14 +7331,14 @@ InstList_Squeept_Flipping_Falling:
 ;;; $BE62: Instruction list - flame ;;;
 InstList_Squeept_Flame_0:
     dw $0001,Spritemap_Squeept_7                                         ;A2BE62;
-    dw $0001,Spritemap_CommonA2_Nothing                                  ;A2BE66;
+    dw $0001,Spritemap_Common_Nothing                                  ;A2BE66;
     dw Instruction_Common_TimerInY,$0001                                 ;A2BE6A;
 
 InstList_Squeept_Flame_1:
     dw $0001,Spritemap_Squeept_9                                         ;A2BE6E;
-    dw $0001,Spritemap_CommonA2_Nothing                                  ;A2BE72;
+    dw $0001,Spritemap_Common_Nothing                                  ;A2BE72;
     dw $0001,Spritemap_Squeept_8                                         ;A2BE76;
-    dw $0001,Spritemap_CommonA2_Nothing                                  ;A2BE7A;
+    dw $0001,Spritemap_Common_Nothing                                  ;A2BE7A;
     dw Instruction_Common_DecrementTimer_GotoYIfNonZero_duplicate        ;A2BE7E;
     dw InstList_Squeept_Flame_1                                          ;A2BE80;
     dw Instruction_Common_GotoY                                          ;A2BE82;
@@ -8782,7 +8782,7 @@ InstList_Oum_FacingLeft_Attacking:
     dw $0001,ExtendedSpritemap_Oum_FacingLeft_3                          ;A2CA7F;
     dw $0012,ExtendedSpritemap_Oum_FacingLeft_2                          ;A2CA83;
     dw Instruction_Oum_SetAnimationFinishedFlag                          ;A2CA87;
-    dw Instruction_CommonA2_Sleep                                        ;A2CA89;
+    dw Instruction_Common_Sleep                                        ;A2CA89;
 
 
 ;;; $CA8B: Instruction list - facing left - rolling forwards ;;;
@@ -8840,7 +8840,7 @@ InstList_Oum_FacingRight_Attacking:
     dw $0001,ExtendedSpritemap_Oum_FacingRight_3                         ;A2CB0F;
     dw $0012,ExtendedSpritemap_Oum_FacingRight_2                         ;A2CB13;
     dw Instruction_Oum_SetAnimationFinishedFlag                          ;A2CB17;
-    dw Instruction_CommonA2_Sleep                                        ;A2CB19;
+    dw Instruction_Common_Sleep                                        ;A2CB19;
 
 
 ;;; $CB1B: Instruction list - facing right - rolling forwards ;;;
@@ -10193,7 +10193,7 @@ InstList_Choot_Falling:
     dw Instruction_Common_EnableOffScreenProcessing                      ;A2D840;
     dw $0008,Spritemap_Choot_1                                           ;A2D842;
     dw $0001,Spritemap_Choot_3                                           ;A2D846;
-    dw Instruction_CommonA2_Sleep                                        ;A2D84A;
+    dw Instruction_Common_Sleep                                        ;A2D84A;
 
 
 ;;; $D84C: Falling pattern data ;;;
@@ -10675,7 +10675,7 @@ UNUSED_InstList_GRipper_FacingLeft_A2E1C3:
 ;;; $E1CB: Unused. Instruction list - frozen - facing right ;;;
 UNUSED_InstList_GRipper_FacingRight_A2E1CB:
     dw $0010,Spritemap_GRipper_Ripper2_Frozen_FacingRight                ;A2E1CB;
-    dw Instruction_CommonA2_GotoY                                        ;A2E1CF;
+    dw Instruction_Common_GotoY                                        ;A2E1CF;
     dw UNUSED_InstList_GRipper_FacingRight_A2E1CB                        ;A2E1D1;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
@@ -10841,7 +10841,7 @@ InstList_Ripper2_MovingRight:
     dw $0007,Spritemap_GRipper_Ripper2_MovingLeft_1                      ;A2E2E4;
     dw $0008,Spritemap_GRipper_Ripper2_MovingLeft_0                      ;A2E2E8;
     dw $0007,Spritemap_GRipper_Ripper2_MovingLeft_2                      ;A2E2EC;
-    dw Instruction_CommonA2_GotoY                                        ;A2E2F0;
+    dw Instruction_Common_GotoY                                        ;A2E2F0;
     dw InstList_Ripper2_MovingRight                                      ;A2E2F2;
 
 
@@ -10851,7 +10851,7 @@ InstList_Ripper2_MovingLeft:
     dw $0007,Spritemap_GRipper_Ripper2_MovingRight_1                     ;A2E2F8;
     dw $0008,Spritemap_GRipper_Ripper2_MovingRight_0                     ;A2E2FC;
     dw $0007,Spritemap_GRipper_Ripper2_MovingRight_2                     ;A2E300;
-    dw Instruction_CommonA2_GotoY                                        ;A2E304;
+    dw Instruction_Common_GotoY                                        ;A2E304;
     dw InstList_Ripper2_MovingLeft                                       ;A2E306;
 
 
@@ -11173,7 +11173,7 @@ Palette_Dragon:
 ;;; $E59B: Instruction list - idle - facing left ;;;
 InstList_Dragon_Idle_FacingLeft:
     dw $0001,Spritemap_Dragon_0                                          ;A2E59B;
-    dw Instruction_CommonA2_Sleep                                        ;A2E59F;
+    dw Instruction_Common_Sleep                                        ;A2E59F;
 
 
 ;;; $E5A1: Instruction list - wings - facing left ;;;
@@ -11206,7 +11206,7 @@ InstList_Dragon_Attacking_FacingLeft:
     dw $0003,Spritemap_Dragon_2                                          ;A2E5CB;
     dw $0001,Spritemap_Dragon_1                                          ;A2E5CF;
     dw Instruction_Dragon_SetAnimationFinishedFlag                       ;A2E5D3;
-    dw Instruction_CommonA2_Sleep                                        ;A2E5D5;
+    dw Instruction_Common_Sleep                                        ;A2E5D5;
 
 
 ;;; $E5D7: Instruction list - attacking - facing right ;;;
@@ -11217,7 +11217,7 @@ InstList_Dragon_Attacking_FacingRight:
     dw $0003,Spritemap_Dragon_8                                          ;A2E5E3;
     dw $0001,Spritemap_Dragon_7                                          ;A2E5E7;
     dw Instruction_Dragon_SetAnimationFinishedFlag                       ;A2E5EB;
-    dw Instruction_CommonA2_Sleep                                        ;A2E5ED;
+    dw Instruction_Common_Sleep                                        ;A2E5ED;
 
 
 ;;; $E5EF: Instruction list pointers ;;;
@@ -11631,13 +11631,13 @@ InstList_Shutter_GrowthLevel1:
 ;;; $E9A4: Instruction list - shutter - growth level 2 ;;;
 InstList_Shutter_GrowthLevel2:
     dw $0001,Spritemap_Shutters_30px                                     ;A2E9A4;
-    dw Instruction_CommonA2_Sleep                                        ;A2E9A8;
+    dw Instruction_Common_Sleep                                        ;A2E9A8;
 
 
 ;;; $E9AA: Instruction list - shutter - growth level 3 ;;;
 InstList_Shutter_GrowthLevel3:
     dw $0001,Spritemap_Shutters_40px                                     ;A2E9AA;
-    dw Instruction_CommonA2_Sleep                                        ;A2E9AE;
+    dw Instruction_Common_Sleep                                        ;A2E9AE;
 
 
 if !FEATURE_KEEP_UNREFERENCED

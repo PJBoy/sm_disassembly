@@ -1013,14 +1013,14 @@ MoveBoulderHorizontally:
     LDX.W $0E54                                                          ;A68A00;
     LDA.W $0F7C,X                                                        ;A68A03;
     CLC                                                                  ;A68A06;
-    ADC.W CommonA6EnemySpeeds_QuadraticallyIncreasing,Y                  ;A68A07;
+    ADC.W CommonEnemySpeeds_QuadraticallyIncreasing,Y                  ;A68A07;
     BCC +                                                                ;A68A0A;
     INC.W $0F7A,X                                                        ;A68A0C;
 
 +   STA.W $0F7C,X                                                        ;A68A0F;
     LDA.W $0F7A,X                                                        ;A68A12;
     CLC                                                                  ;A68A15;
-    ADC.W CommonA6EnemySpeeds_QuadraticallyIncreasing+2,Y                ;A68A16;
+    ADC.W CommonEnemySpeeds_QuadraticallyIncreasing+2,Y                ;A68A16;
     STA.W $0F7A,X                                                        ;A68A19;
     RTS                                                                  ;A68A1C;
 
@@ -2846,7 +2846,7 @@ InstList_MiniKraid_StepBackwards_FacingLeft:
     dw $000C,Spritemap_MiniKraid_Stepping_FacingLeft_3                   ;A699CC;
     dw $0008,Spritemap_MiniKraid_Stepping_FacingLeft_2                   ;A699D0;
     dw $000C,Spritemap_MiniKraid_Stepping_FacingLeft_1                   ;A699D4;
-    dw Instruction_CommonA6_GotoY                                        ;A699D8;
+    dw Instruction_Common_GotoY                                        ;A699D8;
     dw InstList_MiniKraid_ChooseAction_duplicate                         ;A699DA;
 
 
@@ -8386,7 +8386,7 @@ InstList_RidleyTail_Small:
 ;;; $CA59: Instruction list -  ;;;
 InstList_RidleyWings_FullyRaised_FacingLeft:
     dw $0001,Spritemap_RidleyWings_FacingLeft_FullyRaised                ;A6CA59;
-    dw Instruction_CommonA6_Sleep                                        ;A6CA5D;
+    dw Instruction_Common_Sleep                                        ;A6CA5D;
 
 
 ;;; $CA5F: Instruction list -  ;;;
@@ -8398,13 +8398,13 @@ InstList_RidleyWings_FullyRaised_FacingRight:
 ;;; $CA65: Instruction list -  ;;;
 InstList_RidleyLegs_PulledUp_FacingLeft:
     dw $0001,Spritemap_Ridley_FacingLeft_Legs_PulledUp                   ;A6CA65;
-    dw Instruction_CommonA6_Sleep                                        ;A6CA69;
+    dw Instruction_Common_Sleep                                        ;A6CA69;
 
 
 ;;; $CA6B: Instruction list -  ;;;
 InstList_RidleyLegs_PulledUp_FacingRight:
     dw $0001,Spritemap_Ridley_FacingRight_Legs_PulledUp                  ;A6CA6B;
-    dw Instruction_CommonA6_Sleep                                        ;A6CA6F;
+    dw Instruction_Common_Sleep                                        ;A6CA6F;
 
 
 ;;; $CA71: Instruction list -  ;;;
@@ -8422,31 +8422,31 @@ InstList_RidleyHead_MouthOpen_FacingRight:
 ;;; $CA7D: Instruction list -  ;;;
 InstList_RidleyTorso_FacingLeft:
     dw $0001,Spritemap_Ridley_FacingLeft_Torso                           ;A6CA7D;
-    dw Instruction_CommonA6_Sleep                                        ;A6CA81;
+    dw Instruction_Common_Sleep                                        ;A6CA81;
 
 
 ;;; $CA83: Instruction list -  ;;;
 InstList_RidleyTorso_FacingRight:
     dw $0001,Spritemap_Ridley_FacingRight_Torso                          ;A6CA83;
-    dw Instruction_CommonA6_Sleep                                        ;A6CA87;
+    dw Instruction_Common_Sleep                                        ;A6CA87;
 
 
 ;;; $CA89: Instruction list -  ;;;
 InstList_RidleyClaw_FacingLeft:
     dw $0001,Spritemap_Ridley_FacingLeft_Claws                           ;A6CA89;
-    dw Instruction_CommonA6_Sleep                                        ;A6CA8D;
+    dw Instruction_Common_Sleep                                        ;A6CA8D;
 
 
 ;;; $CA8F: Instruction list -  ;;;
 InstList_RidleyClaw_FacingRight:
     dw $0001,Spritemap_Ridley_FacingRight_Claws                          ;A6CA8F;
-    dw Instruction_CommonA6_Sleep                                        ;A6CA93;
+    dw Instruction_Common_Sleep                                        ;A6CA93;
 
 
 ;;; $CA95: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingDown:
     dw $0001,Spritemap_RidleyTailTip_PointingDown                        ;A6CA95;
-    dw Instruction_CommonA6_Sleep                                        ;A6CA99;
+    dw Instruction_Common_Sleep                                        ;A6CA99;
 
 
 ;;; $CA9B: Instruction list -  ;;;
@@ -8458,13 +8458,13 @@ InstList_RidleyTailTip_PointingDownDownRight:
 ;;; $CAA1: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingDownRight:
     dw $0001,Spritemap_RidleyTailTip_PointingDownRight                   ;A6CAA1;
-    dw Instruction_CommonA6_Sleep                                        ;A6CAA5;
+    dw Instruction_Common_Sleep                                        ;A6CAA5;
 
 
 ;;; $CAA7: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingRightDownRight:
     dw $0001,Spritemap_RidleyTailTip_PointingRightDownRight              ;A6CAA7;
-    dw Instruction_CommonA6_Sleep                                        ;A6CAAB;
+    dw Instruction_Common_Sleep                                        ;A6CAAB;
 
 
 ;;; $CAAD: Instruction list -  ;;;
@@ -8476,37 +8476,37 @@ InstList_RidleyTailTip_PointingRight:
 ;;; $CAB3: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingRightUpRight:
     dw $0001,Spritemap_RidleyTailTip_PointingRightUpRight                ;A6CAB3;
-    dw Instruction_CommonA6_Sleep                                        ;A6CAB7;
+    dw Instruction_Common_Sleep                                        ;A6CAB7;
 
 
 ;;; $CAB9: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingUpRight:
     dw $0001,Spritemap_RidleyTailTip_PointingUpRight                     ;A6CAB9;
-    dw Instruction_CommonA6_Sleep                                        ;A6CABD;
+    dw Instruction_Common_Sleep                                        ;A6CABD;
 
 
 ;;; $CABF: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingUpUpRight:
     dw $0001,Spritemap_RidleyTailTip_PointingUpUpRight                   ;A6CABF;
-    dw Instruction_CommonA6_Sleep                                        ;A6CAC3;
+    dw Instruction_Common_Sleep                                        ;A6CAC3;
 
 
 ;;; $CAC5: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingUp:
     dw $0001,Spritemap_RidleyTailTip_PointingUp                          ;A6CAC5;
-    dw Instruction_CommonA6_Sleep                                        ;A6CAC9;
+    dw Instruction_Common_Sleep                                        ;A6CAC9;
 
 
 ;;; $CACB: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingUpUpLeft:
     dw $0001,Spritemap_RidleyTailTip_PointingUpUpLeft                    ;A6CACB;
-    dw Instruction_CommonA6_Sleep                                        ;A6CACF;
+    dw Instruction_Common_Sleep                                        ;A6CACF;
 
 
 ;;; $CAD1: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingUpLeft:
     dw $0001,Spritemap_RidleyTailTip_PointingUpLeft                      ;A6CAD1;
-    dw Instruction_CommonA6_Sleep                                        ;A6CAD5;
+    dw Instruction_Common_Sleep                                        ;A6CAD5;
 
 
 ;;; $CAD7: Instruction list -  ;;;
@@ -8530,13 +8530,13 @@ InstList_RidleyTailTip_PointingLeftDownLeft:
 ;;; $CAE9: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingDownLeft:
     dw $0001,Spritemap_RidleyTailTip_PointingDownLeft                    ;A6CAE9;
-    dw Instruction_CommonA6_Sleep                                        ;A6CAED;
+    dw Instruction_Common_Sleep                                        ;A6CAED;
 
 
 ;;; $CAEF: Instruction list -  ;;;
 InstList_RidleyTailTip_PointingDownDownLeft:
     dw $0001,Spritemap_RidleyTailTip_PointingDownDownLeft                ;A6CAEF;
-    dw Instruction_CommonA6_Sleep                                        ;A6CAF3;
+    dw Instruction_Common_Sleep                                        ;A6CAF3;
 
 
 ;;; $CAF5:  ;;;
@@ -11927,7 +11927,7 @@ InstList_Ridley_FacingLeft_Initial:
 ;;; $E542: Instruction list -  ;;;
 InstList_Ridley_FacingRight_Initial:
     dw $000C,ExtendedSpritemap_Ridley_FacingRight                        ;A6E542;
-    dw Instruction_CommonA6_Sleep                                        ;A6E546;
+    dw Instruction_Common_Sleep                                        ;A6E546;
 
 
 ;;; $E548: Instruction list -  ;;;
@@ -11971,7 +11971,7 @@ UNUSED_InstList_RidleyCeres_FacingLeft_A6E5A0:
     dw $0002,ExtendedSpritemap_Ridley_FacingLeft                         ;A6E5A6;
     dw UNUSED_Instruction_RidleyCeres_GotoYIfHoldingBaby_A6E4F8          ;A6E5AC;
     dw UNUSED_InstList_RidleyCeres_FacingLeft_HoldingBaby_A6E5B2         ;A6E5AE;
-    dw Instruction_CommonA6_Sleep                                        ;A6E5B0;
+    dw Instruction_Common_Sleep                                        ;A6E5B0;
 
 
 ;;; $E5B2: Instruction list -  ;;;
@@ -12023,7 +12023,7 @@ UNUSED_InstList_RidleyCeres_FacingRight_A6E5FE:
     dw $0002,ExtendedSpritemap_Ridley_FacingRight                        ;A6E600;
     dw UNUSED_Instruction_RidleyCeres_GotoYIfHoldingBaby_A6E4F8          ;A6E606;
     dw UNUSED_InstList_RidleyCeres_FacingRight_HoldingBaby_A6E60C        ;A6E608;
-    dw Instruction_CommonA6_Sleep                                        ;A6E60A;
+    dw Instruction_Common_Sleep                                        ;A6E60A;
 
 
 ;;; $E60C: Instruction list -  ;;;
@@ -12106,7 +12106,7 @@ InstList_Ridley_FacingLeft_OpeningRoar:
     dw $0008,ExtendedSpritemap_Ridley_FacingLeft_MouthHalfOpen           ;A6E6A2;
     dw Instruction_Ridley_ResetRoarFlag                                  ;A6E6A6;
     dw $0001,ExtendedSpritemap_Ridley_FacingLeft                         ;A6E6A8;
-    dw Instruction_CommonA6_Sleep                                        ;A6E6AC;
+    dw Instruction_Common_Sleep                                        ;A6E6AC;
 
 
 ;;; $E6AE: Instruction list -  ;;;
@@ -12152,7 +12152,7 @@ InstList_Ridley_TurnFromLeftToRight:
     dw Instruction_Ridley_SetDirectionToRight_UpdateTailParts            ;A6E6FA;
     dw $0001,ExtendedSpritemap_Ridley_FacingForward                      ;A6E6FC;
     dw $0001,ExtendedSpritemap_Ridley_FacingRight                        ;A6E700;
-    dw Instruction_CommonA6_Sleep                                        ;A6E704;
+    dw Instruction_Common_Sleep                                        ;A6E704;
 
 
 ;;; $E706: Instruction list -  ;;;
@@ -14775,42 +14775,42 @@ InstList_Big_HealthGreaterThanEqualTo800:
 InstList_Big_HealthLessThan800:
     dw $0001                                                             ;A6FDD2;
     dw SpritemapZebetite_Big_HealthLessThan800                           ;A6FDD4;
-    dw Instruction_CommonA6_Sleep                                        ;A6FDD6;
+    dw Instruction_Common_Sleep                                        ;A6FDD6;
 
 
 ;;; $FDD8: Instruction list - big zebetite - HP < 600 ;;;
 InstList_Big_HealthLessThan600:
     dw $0001                                                             ;A6FDD8;
     dw SpritemapZebetite_Big_HealthLessThan600                           ;A6FDDA;
-    dw Instruction_CommonA6_Sleep                                        ;A6FDDC;
+    dw Instruction_Common_Sleep                                        ;A6FDDC;
 
 
 ;;; $FDDE: Instruction list - big zebetite - HP < 400 ;;;
 InstList_Big_HealthLessThan400:
     dw $0001                                                             ;A6FDDE;
     dw SpritemapZebetite_Big_HealthLessThan400                           ;A6FDE0;
-    dw Instruction_CommonA6_Sleep                                        ;A6FDE2;
+    dw Instruction_Common_Sleep                                        ;A6FDE2;
 
 
 ;;; $FDE4: Instruction list - big zebetite - HP < 200 ;;;
 InstList_Big_HealthLessThan200:
     dw $0001                                                             ;A6FDE4;
     dw SpritemapZebetite_Big_HealthLessThan200                           ;A6FDE6;
-    dw Instruction_CommonA6_Sleep                                        ;A6FDE8;
+    dw Instruction_Common_Sleep                                        ;A6FDE8;
 
 
 ;;; $FDEA: Instruction list - small zebetite pair - HP >= 800 ;;;
 InstList_Small_HealthGreaterThanEqualTo800:
     dw $0001                                                             ;A6FDEA;
     dw Spritemap_Zebetite_Small_HealthGreaterThanEqualTo800              ;A6FDEC;
-    dw Instruction_CommonA6_Sleep                                        ;A6FDEE;
+    dw Instruction_Common_Sleep                                        ;A6FDEE;
 
 
 ;;; $FDF0: Instruction list - small zebetite pair - HP < 800 ;;;
 InstList_Small_HealthLessThan800:
     dw $0001                                                             ;A6FDF0;
     dw SpritemapZebetite_Small_HealthLessThan800                         ;A6FDF2;
-    dw Instruction_CommonA6_Sleep                                        ;A6FDF4;
+    dw Instruction_Common_Sleep                                        ;A6FDF4;
 
 
 ;;; $FDF6: Instruction list - small zebetite pair - HP < 600 ;;;
@@ -14824,14 +14824,14 @@ InstList_Small_HealthLessThan600:
 InstList_Small_HealthLessThan400:
     dw $0001                                                             ;A6FDFC;
     dw SpritemapZebetite_Small_HealthLessThan400                         ;A6FDFE;
-    dw Instruction_CommonA6_Sleep                                        ;A6FE00;
+    dw Instruction_Common_Sleep                                        ;A6FE00;
 
 
 ;;; $FE02: Instruction list - small zebetite pair - HP < 200 ;;;
 InstList_Small_HealthLessThan200:
     dw $0001                                                             ;A6FE02;
     dw SpritemapZebetite_Small_HealthLessThan200                         ;A6FE04;
-    dw Instruction_CommonA6_Sleep                                        ;A6FE06;
+    dw Instruction_Common_Sleep                                        ;A6FE06;
 
 
 ;;; $FE08: Spritemaps - zebetites ;;;

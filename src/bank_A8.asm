@@ -639,7 +639,7 @@ InstList_Evir_Body_FacingRight:
     dw $000A,Spritemap_Evir_10                                           ;A88717;
     dw $000A,Spritemap_Evir_11                                           ;A8871B;
     dw $000A,Spritemap_Evir_12                                           ;A8871F;
-    dw Instruction_CommonA8_GotoY                                        ;A88723;
+    dw Instruction_Common_GotoY                                        ;A88723;
     dw InstList_Evir_Body_FacingRight                                    ;A88725;
 
 
@@ -1587,13 +1587,13 @@ InstList_Eye_Mount_FacingDown:
 ;;; $9044: Instruction list - mount - facing left ;;;
 InstList_Eye_Mount_FacingLeft:
     dw $0001,Spritemap_Eye_14                                            ;A89044;
-    dw Instruction_CommonA8_Sleep                                        ;A89048;
+    dw Instruction_Common_Sleep                                        ;A89048;
 
 
 ;;; $904A: Instruction list - mount - facing up ;;;
 InstList_Eye_Mount_FacingUp:
     dw $0001,Spritemap_Eye_15                                            ;A8904A;
-    dw Instruction_CommonA8_Sleep                                        ;A8904E;
+    dw Instruction_Common_Sleep                                        ;A8904E;
 
 
 ;;; $9050: Morph ball eye proximities ;;;
@@ -1617,7 +1617,7 @@ InitAI_Eye:
     LDA.W Enemy.properties,X                                                        ;A8905B;
     ORA.W #$2000                                                         ;A8905E;
     STA.W Enemy.properties,X                                                        ;A89061;
-    LDA.W #Spritemap_CommonA8_Nothing                                    ;A89064;
+    LDA.W #Spritemap_Common_Nothing                                    ;A89064;
     STA.W $0F8E,X                                                        ;A89067;
     LDA.W #$0001                                                         ;A8906A;
     STA.W Enemy.instTimer,X                                                        ;A8906D;
@@ -3398,7 +3398,7 @@ InstList_YappingMaw_Cooldown_FacingUpLeft_1:
     dw $0005,Spritemap_YappingMaw_0                                      ;A8A04D;
     dw $0003,Spritemap_YappingMaw_1                                      ;A8A051;
     dw Instruction_YappingMaw_QueueSFXIfOnScreen                         ;A8A055;
-    dw Instruction_CommonA8_GotoY                                        ;A8A057;
+    dw Instruction_Common_GotoY                                        ;A8A057;
     dw InstList_YappingMaw_Cooldown_FacingUpLeft_1                       ;A8A059;
 
 
@@ -4764,7 +4764,7 @@ InstList_Magdollite_Idling_FacingLeft:
     dw $000D,Spritemap_Magdollite_FacingLeft_Head_1                      ;A8ACA0;
     dw $000D,Spritemap_Magdollite_FacingLeft_Head_2                      ;A8ACA4;
     dw $000D,Spritemap_Magdollite_FacingLeft_Head_1                      ;A8ACA8;
-    dw Instruction_CommonA8_GotoY                                        ;A8ACAC;
+    dw Instruction_Common_GotoY                                        ;A8ACAC;
     dw InstList_Magdollite_Idling_FacingLeft                             ;A8ACAE;
 
 
@@ -4965,7 +4965,7 @@ InstList_Magdollite_Slave1_8xPillarStack:
 ;;; $AE0C: Instruction list - hand - stub ;;;
 InstList_Magdollite_Slave2_PillarCap:
     dw $0001,Spritemap_Magdollite_FacingLeft_PillarCap                   ;A8AE0C;
-    dw Instruction_CommonA8_Sleep                                        ;A8AE10;
+    dw Instruction_Common_Sleep                                        ;A8AE10;
 
 
 ;;; $AE12: Instruction - queue sound [[Y]], sound library 2, max queued sounds allowed = 6, if enemy is on-screen ;;;
@@ -6100,7 +6100,7 @@ UNUSED_InstList_Beetom_SmallHop_FacingRight_A8B71C:
     dw Instruction_Common_EnableOffScreenProcessing                      ;A8B71C;
     dw $0004,Spritemap_Beetom_E                                          ;A8B71E;
     dw $0001,Spritemap_Beetom_B                                          ;A8B722;
-    dw Instruction_CommonA8_Sleep                                        ;A8B726;
+    dw Instruction_Common_Sleep                                        ;A8B726;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -7400,7 +7400,7 @@ InitAI_Powamp:
     LDA.W Enemy.properties,X                                                        ;A8C1CC;
     ORA.W #$2000                                                         ;A8C1CF;
     STA.W Enemy.properties,X                                                        ;A8C1D2;
-    LDA.W #Spritemap_CommonA8_Nothing                                    ;A8C1D5;
+    LDA.W #Spritemap_Common_Nothing                                    ;A8C1D5;
     STA.W $0F8E,X                                                        ;A8C1D8;
     LDA.W #$0001                                                         ;A8C1DB;
     STA.W Enemy.instTimer,X                                                        ;A8C1DE;
@@ -8097,7 +8097,7 @@ InstList_RobotNoPower_LeaningLeft:
 ;;; $C6DF: Instruction list - work robot deactivated - leaning right ;;;
 InstList_RobotNoPower_LeaningRight:
     dw $7FFF,Spritemap_Robot_1A                                          ;A8C6DF;
-    dw Instruction_CommonA8_Sleep                                        ;A8C6E3;
+    dw Instruction_Common_Sleep                                        ;A8C6E3;
 
 
 ;;; $C6E5: Instruction list - initial ;;;
@@ -8308,7 +8308,7 @@ InstList_Robot_FacingLeft_LaserShotRecoil:
     dw $000A,Spritemap_Robot_3                                           ;A8C90D;
     dw $0060,Spritemap_Robot_2                                           ;A8C911;
     dw Instruction_Robot_DecrementLaserCooldown                          ;A8C915;
-    dw Instruction_CommonA8_GotoY                                        ;A8C917;
+    dw Instruction_Common_GotoY                                        ;A8C917;
     dw InstList_Robot_FacingLeft_WalkingForwards_0                       ;A8C919;
 
 
@@ -11365,13 +11365,13 @@ Palette_Spark:
 InstList_Spark_FlickerOn:
     dw Instruction_Spark_SetAsTangible                                   ;A8E5A7;
     dw $0001,Spritemap_Spark_Flickering_0                                ;A8E5A9;
-    dw $0002,Spritemap_CommonA8_Nothing                                  ;A8E5AD;
+    dw $0002,Spritemap_Common_Nothing                                  ;A8E5AD;
     dw $0001,Spritemap_Spark_Flickering_0                                ;A8E5B1;
-    dw $0002,Spritemap_CommonA8_Nothing                                  ;A8E5B5;
+    dw $0002,Spritemap_Common_Nothing                                  ;A8E5B5;
     dw $0001,Spritemap_Spark_Flickering_1                                ;A8E5B9;
-    dw $0002,Spritemap_CommonA8_Nothing                                  ;A8E5BD;
+    dw $0002,Spritemap_Common_Nothing                                  ;A8E5BD;
     dw $0001,Spritemap_Spark_Flickering_1                                ;A8E5C1;
-    dw $0001,Spritemap_CommonA8_Nothing                                  ;A8E5C5;
+    dw $0001,Spritemap_Common_Nothing                                  ;A8E5C5;
     dw $0002,Spritemap_Spark_Flickering_2                                ;A8E5C9;
     dw $0002,Spritemap_Spark_Flickering_3                                ;A8E5CD;
 
@@ -11393,11 +11393,11 @@ InstList_Spark_FlickerOut:
     dw $0001,Spritemap_Spark_Flickering_1                                ;A8E5ED;
     dw $0001,Spritemap_Spark_Flickering_1                                ;A8E5F1;
     dw $0001,Spritemap_Spark_Flickering_2                                ;A8E5F5;
-    dw $0001,Spritemap_CommonA8_Nothing                                  ;A8E5F9;
+    dw $0001,Spritemap_Common_Nothing                                  ;A8E5F9;
     dw $0001,Spritemap_Spark_Flickering_2                                ;A8E5FD;
-    dw $0001,Spritemap_CommonA8_Nothing                                  ;A8E601;
+    dw $0001,Spritemap_Common_Nothing                                  ;A8E601;
     dw Instruction_Spark_SetAsIntangible                                 ;A8E605;
-    dw Instruction_CommonA8_Sleep                                        ;A8E607;
+    dw Instruction_Common_Sleep                                        ;A8E607;
 
 
 ;;; $E609: Instruction list - emit falling sparks ;;;
@@ -11911,7 +11911,7 @@ InstList_KihunterWings_FacingLeft:
     dw $0002,Spritemap_KihunterWings_FacingLeft_0                        ;A8EA4E;
     dw $0002,Spritemap_KihunterWings_FacingLeft_1                        ;A8EA52;
     dw $0001,Spritemap_KihunterWings_FacingLeft_2                        ;A8EA56;
-    dw Instruction_CommonA8_GotoY                                        ;A8EA5A;
+    dw Instruction_Common_GotoY                                        ;A8EA5A;
     dw InstList_KihunterWings_FacingLeft                                 ;A8EA5C;
 
 
@@ -13198,7 +13198,7 @@ EnemyShot_Kihunter:
     STA.W KihunterWings.speedTableIndex,X                                ;A8F7A9;
     LDA.W #InstList_KihunterWings_Falling                                ;A8F7AC;
     STA.W Enemy.instList,X                                                        ;A8F7AF;
-    LDA.W #Spritemap_CommonA8_Nothing                                    ;A8F7B2;
+    LDA.W #Spritemap_Common_Nothing                                    ;A8F7B2;
     STA.W $0F8E,X                                                        ;A8F7B5;
     LDA.W #$0001                                                         ;A8F7B8;
     STA.W Enemy.instTimer,X                                                        ;A8F7BB;

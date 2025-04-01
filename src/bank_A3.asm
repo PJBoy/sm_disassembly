@@ -2173,7 +2173,7 @@ ElevatorControllerInputs:
 ;;; $94E6: Initialisation AI - enemy $D73F (elevator) ;;;
 InitAI_Elevator:
     LDX.W $0E54                                                          ;A394E6;
-    LDA.W #Spritemap_CommonA3_Nothing                                    ;A394E9;
+    LDA.W #Spritemap_Common_Nothing                                    ;A394E9;
     STA.W $0F8E,X                                                        ;A394EC;
     LDA.W #$0001                                                         ;A394EF;
     STA.W Enemy.instTimer,X                                                        ;A394F2;
@@ -5778,7 +5778,7 @@ Palette_DessgeegaLarge:
 InstList_DessgeegaLarge_Hopping_UpsideUp:
     dw Instruction_Common_EnableOffScreenProcessing                      ;A3B237;
     dw $0001,Spritemap_DessgeegaLarge_2                                  ;A3B239;
-    dw Instruction_CommonA3_Sleep                                        ;A3B23D;
+    dw Instruction_Common_Sleep                                        ;A3B23D;
 
 
 ;;; $B23F: Instruction list - super-desgeega - landed - upside up ;;;
@@ -6554,9 +6554,9 @@ InstList_Bang_Shell_Growth0_Idling:
 ;;; $B8C0: Instruction list - shell - growth level 0 - growing ;;;
 InstList_Bang_Shell_Growth0_Growing:
     dw Instruction_Bang_PlayAcquiredSuitSFX                              ;A3B8C0;
-    dw $0004,Spritemap_CommonA3_Nothing                                  ;A3B8C2;
-    dw $0008,Spritemap_CommonA3_Nothing                                  ;A3B8C6;
-    dw $0004,Spritemap_CommonA3_Nothing                                  ;A3B8CA;
+    dw $0004,Spritemap_Common_Nothing                                  ;A3B8C2;
+    dw $0008,Spritemap_Common_Nothing                                  ;A3B8C6;
+    dw $0004,Spritemap_Common_Nothing                                  ;A3B8CA;
     dw $0002,Spritemap_Bang_Growth0_Growing_3                            ;A3B8CE;
     dw $0004,Spritemap_Bang_Growth0_Growing_5                            ;A3B8D2;
     dw $0010,Spritemap_Bang_Growth0_Growing_7                            ;A3B8D6;
@@ -6577,9 +6577,9 @@ InstList_Bang_Shell_Growth1_Idling:
 ;;; $B8F2: Instruction list - shell - growth level 1 - growing ;;;
 InstList_Bang_Shell_Growth1_Growing:
     dw Instruction_Bang_PlayAcquiredSuitSFX                              ;A3B8F2;
-    dw $0004,Spritemap_CommonA3_Nothing                                  ;A3B8F4;
-    dw $0008,Spritemap_CommonA3_Nothing                                  ;A3B8F8;
-    dw $0004,Spritemap_CommonA3_Nothing                                  ;A3B8FC;
+    dw $0004,Spritemap_Common_Nothing                                  ;A3B8F4;
+    dw $0008,Spritemap_Common_Nothing                                  ;A3B8F8;
+    dw $0004,Spritemap_Common_Nothing                                  ;A3B8FC;
     dw $0002,Spritemap_Bang_Growth1_Growing_3                            ;A3B900;
     dw $0004,Spritemap_Bang_Growth1_Growing_5                            ;A3B904;
     dw $0010,Spritemap_Bang_Growth1_Growing_7                            ;A3B908;
@@ -6672,14 +6672,14 @@ InstList_Bang_Shell_Growth4_Growing:
     dw $0002,Spritemap_Bang_Growth4_Growing_5                            ;A3B9E6;
     dw $0004,Spritemap_Bang_Growth4_Growing_7                            ;A3B9EA;
     dw $0004,Spritemap_Bang_Growth4_Growing_9                            ;A3B9EE;
-    dw $0010,Spritemap_CommonA3_Nothing                                  ;A3B9F2;
+    dw $0010,Spritemap_Common_Nothing                                  ;A3B9F2;
     dw Instruction_Bang_SetFinishedGrowingFlagTo1                        ;A3B9F6;
     dw Instruction_Common_Sleep                                          ;A3B9F8;
 
 
 ;;; $B9FA: Instruction list - electricity - none ;;;
 InstList_Bang_Electricity_None:
-    dw $0001,Spritemap_CommonA3_Nothing                                  ;A3B9FA;
+    dw $0001,Spritemap_Common_Nothing                                  ;A3B9FA;
     dw Instruction_Common_Sleep                                          ;A3B9FE;
 
 
@@ -6688,14 +6688,14 @@ InstList_Bang_Electricity_Growth3_4_Growing:
     dw $0002,Spritemap_Bang_Electricity_Growth3_4_Growing_0              ;A3BA00;
     dw $0003,Spritemap_Bang_Electricity_Growth3_4_Growing_1              ;A3BA04;
     dw $0004,Spritemap_Bang_Electricity_Growth3_4_Growing_2              ;A3BA08;
-    dw $0002,Spritemap_CommonA3_Nothing                                  ;A3BA0C;
+    dw $0002,Spritemap_Common_Nothing                                  ;A3BA0C;
     dw $0004,Spritemap_Bang_Electricity_Growth3_4_Growing_3              ;A3BA10;
     dw $0002,Spritemap_Bang_Electricity_Growth3_4_Growing_4              ;A3BA14;
     dw $0003,Spritemap_Bang_Electricity_Growth3_4_Growing_5              ;A3BA18;
     dw $0002,Spritemap_Bang_Electricity_Growth3_4_Growing_6              ;A3BA1C;
     dw $0004,Spritemap_Bang_Electricity_Growth3_4_Growing_7              ;A3BA20;
     dw $0003,Spritemap_Bang_Electricity_Growth3_4_Growing_8              ;A3BA24;
-    dw $000A,Spritemap_CommonA3_Nothing                                  ;A3BA28;
+    dw $000A,Spritemap_Common_Nothing                                  ;A3BA28;
     dw $0003,Spritemap_Bang_Electricity_Growth3_4_Growing_9              ;A3BA2C;
     dw $0002,Spritemap_Bang_Electricity_Growth3_4_Growing_A              ;A3BA30;
     dw $0004,Spritemap_Bang_Electricity_Growth3_4_Growing_B              ;A3BA34;
@@ -6710,14 +6710,14 @@ UNSUED_InstList_Bang_Electricity_Growing_A3BA3C:
     dw $0002,UNUSED_Spritemap_Bang_Electricity_A3C5AE                    ;A3BA3C;
     dw $0003,UNUSED_Spritemap_Bang_Electricity_A3C5BA                    ;A3BA40;
     dw $0004,UNUSED_Spritemap_Bang_Electricity_A3C5C6                    ;A3BA44;
-    dw $0002,Spritemap_CommonA3_Nothing                                  ;A3BA48;
+    dw $0002,Spritemap_Common_Nothing                                  ;A3BA48;
     dw $0004,UNUSED_Spritemap_Bang_Electricity_A3C5D2                    ;A3BA4C;
     dw $0002,UNUSED_Spritemap_Bang_Electricity_A3C5DE                    ;A3BA50;
     dw $0003,UNUSED_Spritemap_Bang_Electricity_A3C5EA                    ;A3BA54;
     dw $0002,UNUSED_Spritemap_Bang_Electricity_A3C5F6                    ;A3BA58;
     dw $0004,UNUSED_Spritemap_Bang_Electricity_A3C602                    ;A3BA5C;
     dw $0003,UNUSED_Spritemap_Bang_Electricity_A3C60E                    ;A3BA60;
-    dw $000A,Spritemap_CommonA3_Nothing                                  ;A3BA64;
+    dw $000A,Spritemap_Common_Nothing                                  ;A3BA64;
     dw $0003,UNUSED_Spritemap_Bang_Electricity_A3C61A                    ;A3BA68;
     dw $0002,UNUSED_Spritemap_Bang_Electricity_A3C626                    ;A3BA6C;
     dw $0004,UNUSED_Spritemap_Bang_Electricity_A3C632                    ;A3BA70;
@@ -9089,7 +9089,7 @@ InitAI_Yard:
     LDX.W $0E54                                                          ;A3CDE2;
     LDA.W #RTL_A3CF5F                                                    ;A3CDE5;
     STA.W Yard.movementFunction,X                                        ;A3CDE8;
-    LDA.W #Spritemap_CommonA3_Nothing                                    ;A3CDEB;
+    LDA.W #Spritemap_Common_Nothing                                    ;A3CDEB;
     STA.W $0F8E,X                                                        ;A3CDEE;
     LDA.W #$0001                                                         ;A3CDF1;
     STA.W Enemy.instTimer,X                                                        ;A3CDF4;
@@ -9219,7 +9219,7 @@ HandleYardHiding:
     CMP.W #RTL_A3CF5F                                                    ;A3CEEA;
     BEQ .crawl                                                           ;A3CEED;
     STA.W Enemy.instList,X                                                        ;A3CEEF;
-    LDA.W #Spritemap_CommonA3_Nothing                                    ;A3CEF2;
+    LDA.W #Spritemap_Common_Nothing                                    ;A3CEF2;
     STA.W $0F8E,X                                                        ;A3CEF5;
     LDA.W #$0001                                                         ;A3CEF8;
     STA.W Enemy.instTimer,X                                                        ;A3CEFB;
@@ -12085,7 +12085,7 @@ InitAI_Zoomer_MZoomer:
 ;;; $E67A: Creepy crawly common initialisation AI ;;;
 InitAI_Crawlers_Common:
 ; Used by: sciser, zero, viola, yard, zeela, zoomer, sova, stone zoomer
-    LDA.W #Spritemap_CommonA3_Nothing                                    ;A3E67A;
+    LDA.W #Spritemap_Common_Nothing                                    ;A3E67A;
     STA.W $0F8E,X                                                        ;A3E67D;
     LDA.W #$0001                                                         ;A3E680;
     STA.W Enemy.instTimer,X                                                        ;A3E683;

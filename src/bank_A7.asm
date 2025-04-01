@@ -7390,13 +7390,13 @@ InstList_Phantoon_Body_Invulnerable:
 ;;; $CC47: Instruction list - body - full hitbox ;;;
 InstList_Phantoon_Body_FullHitbox:
     dw $0001,ExtendedSpritemap_Phantoon_Body_FullHitbox                  ;A7CC47;
-    dw Instruction_CommonA7_Sleep                                        ;A7CC4B;
+    dw Instruction_Common_Sleep                                        ;A7CC4B;
 
 
 ;;; $CC4D: Instruction list - body - eye hitbox only ;;;
 InstList_Phantoon_Body_EyeHitboxOnly:
     dw $0001,ExtendedSpritemap_Phantoon_Body_EyeHitbox                   ;A7CC4D;
-    dw Instruction_CommonA7_Sleep                                        ;A7CC51;
+    dw Instruction_Common_Sleep                                        ;A7CC51;
 
 
 ;;; $CC53: Instruction list - eye - open ;;;
@@ -7419,7 +7419,7 @@ UNUSED_InstList_Phantoon_Eye_Open_IgnoringSamus_A7CC69:
     dw $0001,ExtendedSpritemap_Phantoon_Eye_Open                         ;A7CC71;
     dw Instruction_Common_CallFunctionInY                                ;A7CC75;
     dw PlayPhantoonMaterializationSFX                                    ;A7CC77;
-    dw Instruction_CommonA7_Sleep                                        ;A7CC79;
+    dw Instruction_Common_Sleep                                        ;A7CC79;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -7464,13 +7464,13 @@ InstList_Phantoon_Eyeball_LookingUp:
 ;;; $CCAD: Instruction list - eyeball - looking up-right ;;;
 InstList_Phantoon_Eyeball_LookingUpRight:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingUpRight           ;A7CCAD;
-    dw Instruction_CommonA7_Sleep                                        ;A7CCB1;
+    dw Instruction_Common_Sleep                                        ;A7CCB1;
 
 
 ;;; $CCB3: Instruction list - eyeball - looking right ;;;
 InstList_Phantoon_Eyeball_LookingRight:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingRight             ;A7CCB3;
-    dw Instruction_CommonA7_Sleep                                        ;A7CCB7;
+    dw Instruction_Common_Sleep                                        ;A7CCB7;
 
 
 ;;; $CCB9: Instruction list - eyeball - looking down-right ;;;
@@ -7488,19 +7488,19 @@ InstList_Phantoon_Eyeball_LookingDown:
 ;;; $CCC5: Instruction list - eyeball - looking down-left ;;;
 InstList_Phantoon_Eyeball_LookingDownLeft:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingDownLeft          ;A7CCC5;
-    dw Instruction_CommonA7_Sleep                                        ;A7CCC9;
+    dw Instruction_Common_Sleep                                        ;A7CCC9;
 
 
 ;;; $CCCB: Instruction list - eyeball - looking left ;;;
 InstList_Phantoon_Eyeball_LookingLeft:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingLeft              ;A7CCCB;
-    dw Instruction_CommonA7_Sleep                                        ;A7CCCF;
+    dw Instruction_Common_Sleep                                        ;A7CCCF;
 
 
 ;;; $CCD1: Instruction list - eyeball - looking up-left ;;;
 InstList_Phantoon_Eyeball_LookingUpLeft:
     dw $0001,ExtendedSpritemap_Phantoon_Eyeball_LookingUpLeft            ;A7CCD1;
-    dw Instruction_CommonA7_Sleep                                        ;A7CCD5;
+    dw Instruction_Common_Sleep                                        ;A7CCD5;
 
 
 ;;; $CCD7: Instruction list - tentacles ;;;
@@ -7524,7 +7524,7 @@ InstList_Phantoon_Mouth_SpawnFlame:
 ;;; $CCF7: Instruction list - mouth - initial ;;;
 InstList_Phantoon_Mouth_Initial:
     dw $0001,ExtendedSpritemap_Phantoon_Mouth_Normal                     ;A7CCF7;
-    dw Instruction_CommonA7_Sleep                                        ;A7CCFB;
+    dw Instruction_Common_Sleep                                        ;A7CCFB;
 
 
 ;;; $CCFD: Casual flame timers ;;;
@@ -7723,7 +7723,7 @@ InitAI_PhantoonBody:
 InitAI_Phantoon_Eye_Tentacles_Mouth:
 ; Phantoon body also executes this as part of initialisation AI, so all Phantoon parts are doing this
     LDX.W $0E54                                                          ;A7CE55;
-    LDA.W #Spritemap_CommonA7_Nothing                                    ;A7CE58;
+    LDA.W #Spritemap_Common_Nothing                                    ;A7CE58;
     STA.W $0F8E,X                                                        ;A7CE5B;
     LDA.W #$0001                                                         ;A7CE5E;
     STA.W Enemy.instTimer,X                                                        ;A7CE61;
@@ -10640,7 +10640,7 @@ InstList_Etecoon_WallJumpLeftEligible:
 ;;; $E876: Instruction list - look left at Samus and run right ;;;
 InstList_Etecoon_LookLeftAtSamusAndRunRight:
     dw $0005,Spritemap_Etecoon_1E                                        ;A7E876;
-    dw Instruction_CommonA7_Sleep                                        ;A7E87A;
+    dw Instruction_Common_Sleep                                        ;A7E87A;
     dw $0001,Spritemap_Etecoon_1D                                        ;A7E87C;
 
 
@@ -10678,7 +10678,7 @@ InstList_Etecoon_Hopping_FacingRight:
     dw $0006,Spritemap_Etecoon_1B                                        ;A7E8BA;
     dw $000C,Spritemap_Etecoon_1A                                        ;A7E8BE;
     dw $000C,Spritemap_Etecoon_19                                        ;A7E8C2;
-    dw Instruction_CommonA7_Sleep                                        ;A7E8C6;
+    dw Instruction_Common_Sleep                                        ;A7E8C6;
 
 
 ;;; $E8C8: Instruction list - wall-jump right eligible ;;;
@@ -10742,7 +10742,7 @@ InitAI_Etecoon:
     LDA.W Enemy.properties,X                                                        ;A7E915;
     ORA.W #$2000                                                         ;A7E918;
     STA.W Enemy.properties,X                                                        ;A7E91B;
-    LDA.W #Spritemap_CommonA7_Nothing                                    ;A7E91E;
+    LDA.W #Spritemap_Common_Nothing                                    ;A7E91E;
     STA.W $0F8E,X                                                        ;A7E921;
     LDA.W #$0001                                                         ;A7E924;
     STA.W Enemy.instTimer,X                                                        ;A7E927;
@@ -12031,7 +12031,7 @@ InitAI_Dachora:
     LDA.W Enemy.properties,X                                                        ;A7F4E0;
     ORA.W #$2000                                                         ;A7F4E3;
     STA.W Enemy.properties,X                                                        ;A7F4E6;
-    LDA.W #Spritemap_CommonA7_Nothing                                    ;A7F4E9;
+    LDA.W #Spritemap_Common_Nothing                                    ;A7F4E9;
     STA.W $0F8E,X                                                        ;A7F4EC;
     LDA.W #$0001                                                         ;A7F4EF;
     STA.W Enemy.instTimer,X                                                        ;A7F4F2;

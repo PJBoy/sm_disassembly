@@ -9737,7 +9737,7 @@ Instruction_BabyMetroid_GotoDrainingMotherBrain:
 ;;; $CFCE: Instruction list - Shitroid - took fatal blow ;;;
 InstList_BabyMetroid_TookFatalBlow:
     dw $0080,Spritemap_BabyMetroid_2                                     ;A9CFCE;
-    dw Instruction_CommonA9_Sleep                                        ;A9CFD2;
+    dw Instruction_Common_Sleep                                        ;A9CFD2;
 
 
 ;;; $CFD4: Process Mother Brain invincibility palette ;;;
