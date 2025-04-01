@@ -146,20 +146,20 @@ NOPNOP_B38069:
     NOP                                                                  ;B3806A;
 
 
-;;; $806B: Instruction - enemy $0FB2 = [[Y]] ;;;
+;;; $806B: Instruction - Enemy.var5 = [[Y]] ;;;
 Instruction_CommonB3_Enemy0FB2_InY:
 ; Used only by torizos (for enemy movement function) and escape etecoon (for enemy function)
     LDA.W $0000,Y                                                        ;B3806B;
-    STA.W $0FB2,X                                                        ;B3806E;
+    STA.W Enemy.var5,X                                                        ;B3806E;
     INY                                                                  ;B38071;
     INY                                                                  ;B38072;
     RTL                                                                  ;B38073;
 
 
-;;; $8074: Instruction - enemy $0FB2 = RTS ;;;
+;;; $8074: Instruction - Enemy.var5 = RTS ;;;
 Instruction_CommonB3_SetEnemy0FB2ToRTS:
     LDA.W #RTS_B3807B                                                    ;B38074;
-    STA.W $0FB2,X                                                        ;B38077;
+    STA.W Enemy.var5,X                                                        ;B38077;
     RTL                                                                  ;B3807A;
 
 
@@ -169,9 +169,9 @@ RTS_B3807B:
 
 ;;; $807C: Instruction - delete enemy ;;;
 Instruction_CommonB3_DeleteEnemy:
-    LDA.W $0F86,X                                                        ;B3807C;
+    LDA.W Enemy.properties,X                                                        ;B3807C;
     ORA.W #$0200                                                         ;B3807F;
-    STA.W $0F86,X                                                        ;B38082;
+    STA.W Enemy.properties,X                                                        ;B38082;
     PLA                                                                  ;B38085;
     PEA.W ProcessEnemyInstructions_return-1                              ;B38086;
     RTL                                                                  ;B38089;
@@ -180,11 +180,11 @@ Instruction_CommonB3_DeleteEnemy:
 ;;; $808A: Instruction - call function [[Y]] ;;;
 Instruction_CommonB3_CallFunctionInY:
     LDA.W $0000,Y                                                        ;B3808A;
-    STA.B $12                                                            ;B3808D;
+    STA.B DP_Temp12                                                            ;B3808D;
     PHY                                                                  ;B3808F;
     PHX                                                                  ;B38090;
     PEA.W .manualReturn-1                                                ;B38091;
-    JMP.W ($0012)                                                        ;B38094;
+    JMP.W (DP_Temp12)                                                        ;B38094;
 
   .manualReturn:
     PLX                                                                  ;B38097;
@@ -197,12 +197,12 @@ Instruction_CommonB3_CallFunctionInY:
 ;;; $809C: Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 Instruction_CommonB3_CallFunctionInY_WithA:
     LDA.W $0000,Y                                                        ;B3809C;
-    STA.B $12                                                            ;B3809F;
+    STA.B DP_Temp12                                                            ;B3809F;
     LDA.W $0002,Y                                                        ;B380A1;
     PHY                                                                  ;B380A4;
     PHX                                                                  ;B380A5;
     PEA.W .manualReturn-1                                                ;B380A6;
-    JMP.W ($0012)                                                        ;B380A9;
+    JMP.W (DP_Temp12)                                                        ;B380A9;
 
   .manualReturn:
     PLX                                                                  ;B380AC;
@@ -218,9 +218,9 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $80B5: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Instruction_CommonB3_CallExternalFunctionInY_B380B5:
     LDA.W $0000,Y                                                        ;B380B5;
-    STA.B $12                                                            ;B380B8;
+    STA.B DP_Temp12                                                            ;B380B8;
     LDA.W $0001,Y                                                        ;B380BA;
-    STA.B $13                                                            ;B380BD;
+    STA.B DP_Temp13                                                            ;B380BD;
     PHX                                                                  ;B380BF;
     PHY                                                                  ;B380C0;
     JSL.L .externalFunction                                              ;B380C1;
@@ -232,15 +232,15 @@ UNUSED_Instruction_CommonB3_CallExternalFunctionInY_B380B5:
     RTL                                                                  ;B380CA;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;B380CB;
+    JML.W [DP_Temp12]                                                        ;B380CB;
 
 
 ;;; $80CE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_CommonB3_CallExternalFunctionInY_WithA_B380CE:
     LDA.W $0000,Y                                                        ;B380CE;
-    STA.B $12                                                            ;B380D1;
+    STA.B DP_Temp12                                                            ;B380D1;
     LDA.W $0001,Y                                                        ;B380D3;
-    STA.B $13                                                            ;B380D6;
+    STA.B DP_Temp13                                                            ;B380D6;
     LDA.W $0003,Y                                                        ;B380D8;
     PHX                                                                  ;B380DB;
     PHY                                                                  ;B380DC;
@@ -254,7 +254,7 @@ UNUSED_Inst_CommonB3_CallExternalFunctionInY_WithA_B380CE:
     RTL                                                                  ;B380E9;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;B380EA;
+    JML.W [DP_Temp12]                                                        ;B380EA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -267,7 +267,7 @@ Instruction_CommonB3_GotoY:
 
 ;;; $80F2: Instruction - go to [[Y]] + ±[[Y]] ;;;
 Instruction_CommonB3_GotoY_PlusY:
-    STY.B $12                                                            ;B380F2;
+    STY.B DP_Temp12                                                            ;B380F2;
     DEY                                                                  ;B380F4;
     LDA.W $0000,Y                                                        ;B380F5;
     XBA                                                                  ;B380F8;
@@ -279,14 +279,14 @@ Instruction_CommonB3_GotoY_PlusY:
     ORA.W #$FF00                                                         ;B38100;
 
 +   CLC                                                                  ;B38103;
-    ADC.B $12                                                            ;B38104;
+    ADC.B DP_Temp12                                                            ;B38104;
     TAY                                                                  ;B38106;
     RTL                                                                  ;B38107;
 
 
 ;;; $8108: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonB3_DecrementTimer_GotoYIfNonZero:
-    DEC.W $0F90,X                                                        ;B38108;
+    DEC.W Enemy.loopCounter,X                                                        ;B38108;
     BNE Instruction_CommonB3_GotoY                                       ;B3810B;
     INY                                                                  ;B3810D;
     INY                                                                  ;B3810E;
@@ -295,7 +295,7 @@ Instruction_CommonB3_DecrementTimer_GotoYIfNonZero:
 
 ;;; $8110: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonB3_DecrementTimer_GotoYIfNonZero_duplicate:
-    DEC.W $0F90,X                                                        ;B38110;
+    DEC.W Enemy.loopCounter,X                                                        ;B38110;
     BNE Instruction_CommonB3_GotoY                                       ;B38113;
     INY                                                                  ;B38115;
     INY                                                                  ;B38116;
@@ -305,7 +305,7 @@ Instruction_CommonB3_DecrementTimer_GotoYIfNonZero_duplicate:
 ;;; $8118: Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 Instruction_CommonB3_DecrementTimer_GotoY_PlusY_IfNonZero:
     SEP #$20                                                             ;B38118;
-    DEC.W $0F90,X                                                        ;B3811A;
+    DEC.W Enemy.loopCounter,X                                                        ;B3811A;
     REP #$20                                                             ;B3811D;
     BNE Instruction_CommonB3_GotoY_PlusY                                 ;B3811F;
     INY                                                                  ;B38121;
@@ -315,7 +315,7 @@ Instruction_CommonB3_DecrementTimer_GotoY_PlusY_IfNonZero:
 ;;; $8123: Instruction - timer = [[Y]] ;;;
 Instruction_CommonB3_TimerInY:
     LDA.W $0000,Y                                                        ;B38123;
-    STA.W $0F90,X                                                        ;B38126;
+    STA.W Enemy.loopCounter,X                                                        ;B38126;
     INY                                                                  ;B38129;
     INY                                                                  ;B3812A;
     RTL                                                                  ;B3812B;
@@ -333,7 +333,7 @@ Instruction_CommonB3_Sleep:
     DEY                                                                  ;B3812F;
     DEY                                                                  ;B38130;
     TYA                                                                  ;B38131;
-    STA.W $0F92,X                                                        ;B38132;
+    STA.W Enemy.instList,X                                                        ;B38132;
     PLA                                                                  ;B38135;
     PEA.W ProcessEnemyInstructions_return-1                              ;B38136;
     RTL                                                                  ;B38139;
@@ -346,11 +346,11 @@ Instruction_CommonB3_WaitYFrames:
 ; useful for e.g. GT eye beam attack ($AA:D10D), implemented by an instruction list that has no graphical instructions,
 ; which allows it to be called from multiple different poses
     LDA.W $0000,Y                                                        ;B3813A;
-    STA.W $0F94,X                                                        ;B3813D;
+    STA.W Enemy.instTimer,X                                                        ;B3813D;
     INY                                                                  ;B38140;
     INY                                                                  ;B38141;
     TYA                                                                  ;B38142;
-    STA.W $0F92,X                                                        ;B38143;
+    STA.W Enemy.instList,X                                                        ;B38143;
     PLA                                                                  ;B38146;
     PEA.W ProcessEnemyInstructions_return-1                              ;B38147;
     RTL                                                                  ;B3814A;
@@ -359,19 +359,19 @@ Instruction_CommonB3_WaitYFrames:
 ;;; $814B: Instruction - transfer [[Y]] bytes from [[Y] + 2] to VRAM [[Y] + 5] ;;;
 Instruction_CommonB3_TransferYBytesInYToVRAM:
     PHX                                                                  ;B3814B;
-    LDX.W $0330                                                          ;B3814C;
+    LDX.W VRAMWriteStack                                                          ;B3814C;
     LDA.W $0000,Y                                                        ;B3814F;
-    STA.B $D0,X                                                          ;B38152;
+    STA.B VRAMWrite.size,X                                                          ;B38152;
     LDA.W $0002,Y                                                        ;B38154;
-    STA.B $D2,X                                                          ;B38157;
+    STA.B VRAMWrite.src,X                                                          ;B38157;
     LDA.W $0003,Y                                                        ;B38159;
-    STA.B $D3,X                                                          ;B3815C;
+    STA.B VRAMWrite.src+1,X                                                          ;B3815C;
     LDA.W $0005,Y                                                        ;B3815E;
-    STA.B $D5,X                                                          ;B38161;
+    STA.B VRAMWrite.dest,X                                                          ;B38161;
     TXA                                                                  ;B38163;
     CLC                                                                  ;B38164;
     ADC.W #$0007                                                         ;B38165;
-    STA.W $0330                                                          ;B38168;
+    STA.W VRAMWriteStack                                                          ;B38168;
     TYA                                                                  ;B3816B;
     CLC                                                                  ;B3816C;
     ADC.W #$0007                                                         ;B3816D;
@@ -382,17 +382,17 @@ Instruction_CommonB3_TransferYBytesInYToVRAM:
 
 ;;; $8173: Instruction - enable off-screen processing ;;;
 Instruction_CommonB3_EnableOffScreenProcessing:
-    LDA.W $0F86,X                                                        ;B38173;
+    LDA.W Enemy.properties,X                                                        ;B38173;
     ORA.W #$0800                                                         ;B38176;
-    STA.W $0F86,X                                                        ;B38179;
+    STA.W Enemy.properties,X                                                        ;B38179;
     RTL                                                                  ;B3817C;
 
 
 ;;; $817D: Instruction - disable off-screen processing ;;;
 Instruction_CommonB3_DisableOffScreenProcessing:
-    LDA.W $0F86,X                                                        ;B3817D;
+    LDA.W Enemy.properties,X                                                        ;B3817D;
     AND.W #$F7FF                                                         ;B38180;
-    STA.W $0F86,X                                                        ;B38183;
+    STA.W Enemy.properties,X                                                        ;B38183;
     RTL                                                                  ;B38186;
 
 
@@ -642,11 +642,11 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 ;;; $86FB: Initialisation AI - enemy $F153 (unused spinning turtle eye) ;;;
 UNUSED_InitAI_SpinningTurtleEye_B386FB:
     LDX.W $0E54                                                          ;B386FB;
-    LDA.W $0F86,X                                                        ;B386FE;
+    LDA.W Enemy.properties,X                                                        ;B386FE;
     ORA.W #$2000                                                         ;B38701;
-    STA.W $0F86,X                                                        ;B38704;
+    STA.W Enemy.properties,X                                                        ;B38704;
     LDA.W #UNUSED_InstList_SpinningTurtleEye_Initial_B386A7              ;B38707;
-    STA.W $0F92,X                                                        ;B3870A;
+    STA.W Enemy.instList,X                                                        ;B3870A;
     RTL                                                                  ;B3870D;
 
 
@@ -830,11 +830,11 @@ InitAI_Zeb_Zebbo:
     STA.W Zeb.instListTableIndex,X                                       ;B38861;
     STA.L Zeb.previousInstListTableIndex,X                               ;B38864;
     LDA.W #InstList_Zeb_FacingLeft_Rising                                ;B38868;
-    STA.W $0F92,X                                                        ;B3886B;
+    STA.W Enemy.instList,X                                                        ;B3886B;
     LDA.W $0FB4,X                                                        ;B3886E;
     BEQ .return                                                          ;B38871;
     LDA.W #InstList_Zebbo_FacingLeft_Rising                              ;B38873;
-    STA.W $0F92,X                                                        ;B38876;
+    STA.W Enemy.instList,X                                                        ;B38876;
 
   .return:
     RTL                                                                  ;B38879;
@@ -885,11 +885,11 @@ Function_Zeb_Zebbo_WaitForSamusToGetNear:
   .close:
     LDA.W #Function_Zeb_Zebbo_Rising                                     ;B388BA;
     STA.W Zeb.function,X                                                 ;B388BD;
-    LDA.W $0F86,X                                                        ;B388C0;
+    LDA.W Enemy.properties,X                                                        ;B388C0;
     AND.W #$FEFF                                                         ;B388C3;
-    STA.W $0F86,X                                                        ;B388C6;
+    STA.W Enemy.properties,X                                                        ;B388C6;
     LDA.W #$0000                                                         ;B388C9;
-    STA.W $0F90,X                                                        ;B388CC;
+    STA.W Enemy.loopCounter,X                                                        ;B388CC;
     BIT.W Zeb.direction,X                                                ;B388CF;
     BMI .left                                                            ;B388D2;
     LDA.W #$0002                                                         ;B388D4;
@@ -968,9 +968,9 @@ Function_Zeb_Zebbo_Shooting:
     STA.W $0F80,X                                                        ;B3895F;
     STZ.W Zeb.instListTableIndex,X                                       ;B38962;
     JSR.W Set_Zeb_Zebbo_InstList                                         ;B38965;
-    LDA.W $0F86,X                                                        ;B38968;
+    LDA.W Enemy.properties,X                                                        ;B38968;
     ORA.W #$0100                                                         ;B3896B;
-    STA.W $0F86,X                                                        ;B3896E;
+    STA.W Enemy.properties,X                                                        ;B3896E;
     LDA.W #$0030                                                         ;B38971;
     STA.W Zeb.spawnDelayTimer,X                                          ;B38974;
     LDA.W #Function_Zeb_Zebbo_SpawnDelay                                 ;B38977;
@@ -1007,10 +1007,10 @@ Set_Zeb_Zebbo_InstList:
   .zebbo:
     LDA.W InstListPointers_Zebbo,Y                                       ;B389A7;
 
-+   STA.W $0F92,X                                                        ;B389AA;
++   STA.W Enemy.instList,X                                                        ;B389AA;
     LDA.W #$0001                                                         ;B389AD;
-    STA.W $0F94,X                                                        ;B389B0;
-    STZ.W $0F90,X                                                        ;B389B3;
+    STA.W Enemy.instTimer,X                                                        ;B389B0;
+    STZ.W Enemy.loopCounter,X                                                        ;B389B3;
 
   .return:
     RTS                                                                  ;B389B6;
@@ -1219,9 +1219,9 @@ InitAI_Gamet:
     STA.W Gamet.spawnXPosition,X                                         ;B38B67;
     LDA.W $0F7E,X                                                        ;B38B6A;
     STA.W Gamet.spawnYPosition,X                                         ;B38B6D;
-    LDA.W $0F86,X                                                        ;B38B70;
+    LDA.W Enemy.properties,X                                                        ;B38B70;
     ORA.W #$0100                                                         ;B38B73;
-    STA.W $0F86,X                                                        ;B38B76;
+    STA.W Enemy.properties,X                                                        ;B38B76;
     LDA.W $0FB7,X                                                        ;B38B79;
     AND.W #$00FF                                                         ;B38B7C;
     ASL                                                                  ;B38B7F;
@@ -1230,10 +1230,10 @@ InitAI_Gamet:
     STA.W Gamet.XSpeedTableIndex,X                                       ;B38B82;
     STZ.W Gamet.shootDelayTimer,X                                        ;B38B85;
     LDA.W #$0001                                                         ;B38B88;
-    STA.W $0F94,X                                                        ;B38B8B;
-    STZ.W $0F90,X                                                        ;B38B8E;
+    STA.W Enemy.instTimer,X                                                        ;B38B8B;
+    STZ.W Enemy.loopCounter,X                                                        ;B38B8E;
     LDA.W #InstList_Gamet_FacingLeft_Rising                              ;B38B91;
-    STA.W $0F92,X                                                        ;B38B94;
+    STA.W Enemy.instList,X                                                        ;B38B94;
     LDA.W #Function_Gamet_WaitUntilAllReady                              ;B38B97;
     STA.W Gamet.function,X                                               ;B38B9A;
     RTL                                                                  ;B38B9D;
@@ -1252,9 +1252,9 @@ ResetEnemyIfOffScreen:
     LDX.W $0E54                                                          ;B38BA8;
     JSL.L CheckIfEnemyCenterIsOnScreen                                   ;B38BAB;
     BEQ .return                                                          ;B38BAF;
-    LDA.W $0F86,X                                                        ;B38BB1;
+    LDA.W Enemy.properties,X                                                        ;B38BB1;
     ORA.W #$0100                                                         ;B38BB4;
-    STA.W $0F86,X                                                        ;B38BB7;
+    STA.W Enemy.properties,X                                                        ;B38BB7;
     LDA.W #Function_Gamet_WaitUntilAllReady                              ;B38BBA;
     STA.W Gamet.function,X                                               ;B38BBD;
     LDA.W Gamet.spawnXPosition,X                                         ;B38BC0;
@@ -1303,12 +1303,12 @@ Function_Gamet_WaitForSamusToGetNear:
     BMI .return                                                          ;B38C14;
     INC.W Gamet.shootDelayTimer,X                                        ;B38C16;
     LDA.W #$0001                                                         ;B38C19;
-    STA.W $0F94,X                                                        ;B38C1C;
-    STZ.W $0F90,X                                                        ;B38C1F;
+    STA.W Enemy.instTimer,X                                                        ;B38C1C;
+    STZ.W Enemy.loopCounter,X                                                        ;B38C1F;
     JSL.L Get_SamusX_minus_EnemyX                                        ;B38C22;
     BPL .facingRight                                                     ;B38C26;
     LDA.W #InstList_Gamet_FacingLeft_Rising                              ;B38C28;
-    STA.W $0F92,X                                                        ;B38C2B;
+    STA.W Enemy.instList,X                                                        ;B38C2B;
     STA.W $0FD2,X                                                        ;B38C2E;
     STA.W $1012,X                                                        ;B38C31;
     STA.W $1052,X                                                        ;B38C34;
@@ -1317,7 +1317,7 @@ Function_Gamet_WaitForSamusToGetNear:
 
   .facingRight:
     LDA.W #InstList_Gamet_FacingRight_Rising                             ;B38C3C;
-    STA.W $0F92,X                                                        ;B38C3F;
+    STA.W Enemy.instList,X                                                        ;B38C3F;
     STA.W $0FD2,X                                                        ;B38C42;
     STA.W $1012,X                                                        ;B38C45;
     STA.W $1052,X                                                        ;B38C48;
@@ -1364,9 +1364,9 @@ SetupGametFormation:
 ;;; $8CA6: Gamet function - rising ;;;
 Function_Gamet_Rising:
     LDX.W $0E54                                                          ;B38CA6;
-    LDA.W $0F86,X                                                        ;B38CA9;
+    LDA.W Enemy.properties,X                                                        ;B38CA9;
     AND.W #$FEFF                                                         ;B38CAC;
-    STA.W $0F86,X                                                        ;B38CAF;
+    STA.W Enemy.properties,X                                                        ;B38CAF;
     LDA.W #$0080                                                         ;B38CB2;
     TAY                                                                  ;B38CB5;
     LDA.W $0F80,X                                                        ;B38CB6;
@@ -1387,17 +1387,17 @@ Function_Gamet_Rising:
     LDA.W $0F7E,X                                                        ;B38CDA;
     STA.L Gamet.formationCenterYPosition,X                               ;B38CDD;
     LDA.W #$0001                                                         ;B38CE1;
-    STA.W $0F94,X                                                        ;B38CE4;
-    STZ.W $0F90,X                                                        ;B38CE7;
+    STA.W Enemy.instTimer,X                                                        ;B38CE4;
+    STZ.W Enemy.loopCounter,X                                                        ;B38CE7;
     JSL.L Get_SamusX_minus_EnemyX                                        ;B38CEA;
     BPL .facingRight                                                     ;B38CEE;
     LDA.W #InstList_Gamet_FacingLeft_Rising                              ;B38CF0;
-    STA.W $0F92,X                                                        ;B38CF3;
+    STA.W Enemy.instList,X                                                        ;B38CF3;
     BRA .return                                                          ;B38CF6;
 
   .facingRight:
     LDA.W #InstList_Gamet_FacingRight_Rising                             ;B38CF8;
-    STA.W $0F92,X                                                        ;B38CFB;
+    STA.W Enemy.instList,X                                                        ;B38CFB;
 
   .return:
     RTS                                                                  ;B38CFE;
@@ -1599,18 +1599,18 @@ Function_Gamet_ShootDelay:
     BMI .return                                                          ;B38E67;
     STZ.W Gamet.shootDelayTimer,X                                        ;B38E69;
     LDA.W #$0001                                                         ;B38E6C;
-    STA.W $0F94,X                                                        ;B38E6F;
-    STZ.W $0F90,X                                                        ;B38E72;
+    STA.W Enemy.instTimer,X                                                        ;B38E6F;
+    STZ.W Enemy.loopCounter,X                                                        ;B38E72;
     LDA.W #Function_Gamet_ShootingLeft                                   ;B38E75;
     STA.W Gamet.function,X                                               ;B38E78;
     LDA.W #InstList_Gamet_FacingLeft_Shooting                            ;B38E7B;
-    STA.W $0F92,X                                                        ;B38E7E;
+    STA.W Enemy.instList,X                                                        ;B38E7E;
     JSL.L Get_SamusX_minus_EnemyX                                        ;B38E81;
     BMI .return                                                          ;B38E85;
     LDA.W #Function_Gamet_ShootingRight                                  ;B38E87;
     STA.W Gamet.function,X                                               ;B38E8A;
     LDA.W #InstList_Gamet_FacingRight_Shooting                           ;B38E8D;
-    STA.W $0F92,X                                                        ;B38E90;
+    STA.W Enemy.instList,X                                                        ;B38E90;
 
   .return:
     RTS                                                                  ;B38E93;
@@ -1724,14 +1724,14 @@ InitAI_Geega:
     STZ.W $0F7C,X                                                        ;B38F5D;
     STZ.W $0F80,X                                                        ;B38F60;
     LDA.W #$0001                                                         ;B38F63;
-    STA.W $0F94,X                                                        ;B38F66;
-    STZ.W $0F90,X                                                        ;B38F69;
+    STA.W Enemy.instTimer,X                                                        ;B38F66;
+    STZ.W Enemy.loopCounter,X                                                        ;B38F69;
     LDA.W #InstList_Geega_FacingLeft_Rising                              ;B38F6C;
-    STA.W $0F92,X                                                        ;B38F6F;
+    STA.W Enemy.instList,X                                                        ;B38F6F;
     LDA.W $0FB4,X                                                        ;B38F72;
     BNE +                                                                ;B38F75;
     LDA.W #InstList_Geega_FacingRight_Rising                             ;B38F77;
-    STA.W $0F92,X                                                        ;B38F7A;
+    STA.W Enemy.instList,X                                                        ;B38F7A;
 
 +   LDA.W $0FB6,X                                                        ;B38F7D;
     ASL                                                                  ;B38F80;
@@ -1780,9 +1780,9 @@ Function_Geega_WaitForSamusToGetNear:
 +   LDA.W #$0030                                                         ;B38FD5;
     JSL.L IsSamusWithingAPixelRowsOfEnemy                                ;B38FD8;
     BEQ .return                                                          ;B38FDC;
-    LDA.W $0F86,X                                                        ;B38FDE;
+    LDA.W Enemy.properties,X                                                        ;B38FDE;
     AND.W #$FEFF                                                         ;B38FE1;
-    STA.W $0F86,X                                                        ;B38FE4;
+    STA.W Enemy.properties,X                                                        ;B38FE4;
     LDA.W #$0018                                                         ;B38FE7;
     STA.L Geega.shootDelayTimer,X                                        ;B38FEA;
     LDA.W #Function_Geega_ShootDelay                                     ;B38FEE;
@@ -1802,16 +1802,16 @@ Function_Geega_ShootDelay:
 
   .timerExpired:
     LDA.W #$0001                                                         ;B39001;
-    STA.W $0F94,X                                                        ;B39004;
-    STZ.W $0F90,X                                                        ;B39007;
+    STA.W Enemy.instTimer,X                                                        ;B39004;
+    STZ.W Enemy.loopCounter,X                                                        ;B39007;
     LDA.W #InstList_Geega_FacingLeft_Rising                              ;B3900A;
-    STA.W $0F92,X                                                        ;B3900D;
+    STA.W Enemy.instList,X                                                        ;B3900D;
     LDA.W #Function_Geega_ShootingLeft                                   ;B39010;
     STA.W Geega.function,X                                               ;B39013;
     LDA.W $0FB4,X                                                        ;B39016;
     BNE .return                                                          ;B39019;
     LDA.W #InstList_Geega_FacingRight_Rising                             ;B3901B;
-    STA.W $0F92,X                                                        ;B3901E;
+    STA.W Enemy.instList,X                                                        ;B3901E;
     LDA.W #Function_Geega_ShootingRight                                  ;B39021;
     STA.W Geega.function,X                                               ;B39024;
 
@@ -1835,9 +1835,9 @@ Function_Geega_ShootingLeft:
     STA.W Geega.function,X                                               ;B3904B;
     LDA.W #$0000                                                         ;B3904E;
     STA.L Geega.dipDisableFlag,X                                         ;B39051;
-    LDA.W $0F86,X                                                        ;B39055;
+    LDA.W Enemy.properties,X                                                        ;B39055;
     ORA.W #$0100                                                         ;B39058;
-    STA.W $0F86,X                                                        ;B3905B;
+    STA.W Enemy.properties,X                                                        ;B3905B;
     BRA .return                                                          ;B3905E;
 
   .onScreen:
@@ -1859,10 +1859,10 @@ Function_Geega_ShootingLeft:
     LDA.W $0F7A,X                                                        ;B3908A;
     STA.L $7E7808,X                                                      ;B3908D;
     LDA.W #$0001                                                         ;B39091;
-    STA.W $0F94,X                                                        ;B39094;
-    STZ.W $0F90,X                                                        ;B39097;
+    STA.W Enemy.instTimer,X                                                        ;B39094;
+    STZ.W Enemy.loopCounter,X                                                        ;B39097;
     LDA.W #InstList_Geega_FacingLeft_Shooting                            ;B3909A;
-    STA.W $0F92,X                                                        ;B3909D;
+    STA.W Enemy.instList,X                                                        ;B3909D;
 
   .return:
     RTS                                                                  ;B390A0;
@@ -1900,9 +1900,9 @@ Function_Geega_ShootingRight:
     STA.W Geega.function,X                                               ;B390E0;
     LDA.W #$0000                                                         ;B390E3;
     STA.L Geega.dipDisableFlag,X                                         ;B390E6;
-    LDA.W $0F86,X                                                        ;B390EA;
+    LDA.W Enemy.properties,X                                                        ;B390EA;
     ORA.W #$0100                                                         ;B390ED;
-    STA.W $0F86,X                                                        ;B390F0;
+    STA.W Enemy.properties,X                                                        ;B390F0;
     BRA .return                                                          ;B390F3;
 
   .onScreen:
@@ -1926,10 +1926,10 @@ Function_Geega_ShootingRight:
     LDA.W $0F7A,X                                                        ;B39123;
     STA.L $7E7808,X                                                      ;B39126;
     LDA.W #$0001                                                         ;B3912A;
-    STA.W $0F94,X                                                        ;B3912D;
-    STZ.W $0F90,X                                                        ;B39130;
+    STA.W Enemy.instTimer,X                                                        ;B3912D;
+    STZ.W Enemy.loopCounter,X                                                        ;B39130;
     LDA.W #InstList_Geega_FacingRight_Shooting                           ;B39133;
-    STA.W $0F92,X                                                        ;B39136;
+    STA.W Enemy.instList,X                                                        ;B39136;
 
   .return:
     RTS                                                                  ;B39139;
@@ -1969,13 +1969,13 @@ Function_Geega_DippingLeft:
     LDA.W #$0000                                                         ;B3917D;
     STA.L Geega.dipDisableFlag,X                                         ;B39180;
     LDA.W #$0001                                                         ;B39184;
-    STA.W $0F94,X                                                        ;B39187;
-    STZ.W $0F90,X                                                        ;B3918A;
+    STA.W Enemy.instTimer,X                                                        ;B39187;
+    STZ.W Enemy.loopCounter,X                                                        ;B3918A;
     LDA.W #InstList_Geega_FacingLeft_Rising                              ;B3918D;
-    STA.W $0F92,X                                                        ;B39190;
-    LDA.W $0F86,X                                                        ;B39193;
+    STA.W Enemy.instList,X                                                        ;B39190;
+    LDA.W Enemy.properties,X                                                        ;B39193;
     ORA.W #$0100                                                         ;B39196;
-    STA.W $0F86,X                                                        ;B39199;
+    STA.W Enemy.properties,X                                                        ;B39199;
     JMP.W .return                                                        ;B3919C;
 
   .onScreen:
@@ -1992,10 +1992,10 @@ Function_Geega_DippingLeft:
     LDA.W #Function_Geega_ShootingLeft                                   ;B391BD;
     STA.W Geega.function,X                                               ;B391C0;
     LDA.W #$0001                                                         ;B391C3;
-    STA.W $0F94,X                                                        ;B391C6;
-    STZ.W $0F90,X                                                        ;B391C9;
+    STA.W Enemy.instTimer,X                                                        ;B391C6;
+    STZ.W Enemy.loopCounter,X                                                        ;B391C9;
     LDA.W #InstList_Geega_FacingLeft_Rising                              ;B391CC;
-    STA.W $0F92,X                                                        ;B391CF;
+    STA.W Enemy.instList,X                                                        ;B391CF;
     BRA .return                                                          ;B391D2;
 
   .moveDown:
@@ -2021,13 +2021,13 @@ Function_Geega_DippingRight:
     LDA.W #$0000                                                         ;B391FB;
     STA.L Geega.dipDisableFlag,X                                         ;B391FE;
     LDA.W #$0001                                                         ;B39202;
-    STA.W $0F94,X                                                        ;B39205;
-    STZ.W $0F90,X                                                        ;B39208;
+    STA.W Enemy.instTimer,X                                                        ;B39205;
+    STZ.W Enemy.loopCounter,X                                                        ;B39208;
     LDA.W #InstList_Geega_FacingRight_Rising                             ;B3920B;
-    STA.W $0F92,X                                                        ;B3920E;
-    LDA.W $0F86,X                                                        ;B39211;
+    STA.W Enemy.instList,X                                                        ;B3920E;
+    LDA.W Enemy.properties,X                                                        ;B39211;
     ORA.W #$0100                                                         ;B39214;
-    STA.W $0F86,X                                                        ;B39217;
+    STA.W Enemy.properties,X                                                        ;B39217;
     JMP.W .return                                                        ;B3921A;
 
   .onScreen:
@@ -2042,10 +2042,10 @@ Function_Geega_DippingRight:
     STA.L Geega.dipDisableFlag,X                                         ;B39234;
     STA.W Geega.dipDirection,X                                           ;B39238;
     LDA.W #$0001                                                         ;B3923B;
-    STA.W $0F94,X                                                        ;B3923E;
-    STZ.W $0F90,X                                                        ;B39241;
+    STA.W Enemy.instTimer,X                                                        ;B3923E;
+    STZ.W Enemy.loopCounter,X                                                        ;B39241;
     LDA.W #InstList_Geega_FacingRight_Rising                             ;B39244;
-    STA.W $0F92,X                                                        ;B39247;
+    STA.W Enemy.instList,X                                                        ;B39247;
     LDA.W #Function_Geega_ShootingRight                                  ;B3924A;
     STA.W Geega.function,X                                               ;B3924D;
     BRA .return                                                          ;B39250;
@@ -2639,10 +2639,10 @@ InitAI_Botwoon:
     LDA.W #$0101                                                         ;B39597;
     STA.L $7ECD20                                                        ;B3959A;
     LDA.W #InstList_Botwoon_Hide                                         ;B3959E;
-    STA.W $0F92,X                                                        ;B395A1;
-    LDA.W $0F86,X                                                        ;B395A4;
+    STA.W Enemy.instList,X                                                        ;B395A1;
+    LDA.W Enemy.properties,X                                                        ;B395A4;
     ORA.W #$0200                                                         ;B395A7;
-    STA.W $0F86,X                                                        ;B395AA;
+    STA.W Enemy.properties,X                                                        ;B395AA;
     JMP.W .return                                                        ;B395AD;
 
   .notDead:
@@ -2658,7 +2658,7 @@ InitAI_Botwoon:
     DEC.W Botwoon.bodyProjectileIndex,X                                  ;B395C6;
     BPL .loop                                                            ;B395C9;
     LDA.W #InstList_Botwoon_Hide                                         ;B395CB;
-    STA.W $0F92,X                                                        ;B395CE;
+    STA.W Enemy.instList,X                                                        ;B395CE;
     STA.L Botwoon.instList,X                                             ;B395D1;
     LDA.W #Function_Botwoon_Initial                                      ;B395D5;
     STA.W Botwoon.function,X                                             ;B395D8;
@@ -2680,9 +2680,9 @@ InitAI_Botwoon:
     STA.L Botwoon.targetPositionHistoryIndex,X                           ;B3960D;
     LDA.W #$0000                                                         ;B39611;
     STA.L Botwoon.targetHoleIndex,X                                      ;B39614;
-    LDA.W $0F86,X                                                        ;B39618;
+    LDA.W Enemy.properties,X                                                        ;B39618;
     ORA.W #$0400                                                         ;B3961B;
-    STA.W $0F86,X                                                        ;B3961E;
+    STA.W Enemy.properties,X                                                        ;B3961E;
     LDA.W $0F8C,X                                                        ;B39621;
     STA.L Botwoon.maxHealth,X                                            ;B39624;
     LSR                                                                  ;B39628;
@@ -2789,9 +2789,9 @@ BotwoonDeathCheck:
 
 ;;; $96F5: Set Botwoon as intangible ;;;
 SetBotwoonAsIntangible:
-    LDA.W $0F86                                                          ;B396F5;
+    LDA.W Enemy.properties                                                          ;B396F5;
     ORA.W #$0400                                                         ;B396F8;
-    STA.W $0F86                                                          ;B396FB;
+    STA.W Enemy.properties                                                          ;B396FB;
     RTS                                                                  ;B396FE;
 
 
@@ -2969,9 +2969,9 @@ SetupBotwoonSpitting:
     STA.W Botwoon.headFunction,X                                         ;B3991F;
     LDA.W #$0030                                                         ;B39922;
     STA.L Botwoon.spitTimer,X                                            ;B39925;
-    LDA.W $0F86,X                                                        ;B39929;
+    LDA.W Enemy.properties,X                                                        ;B39929;
     AND.W #$FBFF                                                         ;B3992C;
-    STA.W $0F86,X                                                        ;B3992F;
+    STA.W Enemy.properties,X                                                        ;B3992F;
     RTS                                                                  ;B39932;
 
 
@@ -3161,10 +3161,10 @@ Function_Botwoon_DeathSequence_FallingToGround:
     LDY.W #EnemyProjectile_MiscDust                                      ;B39AA4;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;B39AA7;
     JSL.L QueueSmallExplosionSFX                                         ;B39AAB;
-    LDA.W $0F86,X                                                        ;B39AAF;
+    LDA.W Enemy.properties,X                                                        ;B39AAF;
     ORA.W #$0400                                                         ;B39AB2;
     ORA.W #$0100                                                         ;B39AB5;
-    STA.W $0F86,X                                                        ;B39AB8;
+    STA.W Enemy.properties,X                                                        ;B39AB8;
     BRA .return                                                          ;B39ABB;
 
   .lessThanC8:
@@ -3213,9 +3213,9 @@ Function_Botwoon_DeathSequence_CrumblingWall:
     JMP.W .return                                                        ;B39B07;
 
   .end:
-    LDA.W $0F86,X                                                        ;B39B0A;
+    LDA.W Enemy.properties,X                                                        ;B39B0A;
     ORA.W #$0200                                                         ;B39B0D;
-    STA.W $0F86,X                                                        ;B39B10;
+    STA.W Enemy.properties,X                                                        ;B39B10;
     LDA.W #$0002                                                         ;B39B13;
     JSL.L SetBossBitsInAForCurrentArea                                   ;B39B16;
     LDA.W #$0003                                                         ;B39B1A;
@@ -3585,9 +3585,9 @@ Function_Botwoon_Head_MovingAround:
     BEQ .notHidden                                                       ;B39DEC;
     LDA.W #$0007                                                         ;B39DEE;
     STA.W $0F9A,X                                                        ;B39DF1;
-    LDA.W $0F86,X                                                        ;B39DF4;
+    LDA.W Enemy.properties,X                                                        ;B39DF4;
     ORA.W #$0400                                                         ;B39DF7;
-    STA.W $0F86,X                                                        ;B39DFA;
+    STA.W Enemy.properties,X                                                        ;B39DFA;
     LDA.B $16                                                            ;B39DFD;
     CLC                                                                  ;B39DFF;
     ADC.W #$0100                                                         ;B39E00;
@@ -3597,9 +3597,9 @@ Function_Botwoon_Head_MovingAround:
   .notHidden:
     LDA.W #$0002                                                         ;B39E07;
     STA.W $0F9A,X                                                        ;B39E0A;
-    LDA.W $0F86,X                                                        ;B39E0D;
+    LDA.W Enemy.properties,X                                                        ;B39E0D;
     AND.W #$FBFF                                                         ;B39E10;
-    STA.W $0F86,X                                                        ;B39E13;
+    STA.W Enemy.properties,X                                                        ;B39E13;
 
 +   LDA.B $16                                                            ;B39E16;
     LSR                                                                  ;B39E18;
@@ -3612,11 +3612,11 @@ Function_Botwoon_Head_MovingAround:
     LDA.W InstListPointers_Botwoon,Y                                     ;B39E1F;
     CMP.L Botwoon.instList,X                                             ;B39E22;
     BEQ .noHeadUpdate                                                    ;B39E26;
-    STA.W $0F92,X                                                        ;B39E28;
+    STA.W Enemy.instList,X                                                        ;B39E28;
     STA.L Botwoon.instList,X                                             ;B39E2B;
     LDA.W #$0001                                                         ;B39E2F;
-    STA.W $0F94,X                                                        ;B39E32;
-    STZ.W $0F90,X                                                        ;B39E35;
+    STA.W Enemy.instTimer,X                                                        ;B39E32;
+    STZ.W Enemy.loopCounter,X                                                        ;B39E35;
 
   .noHeadUpdate:
     LDA.L Botwoon.XPosition3FramesAgo,X                                  ;B39E38;
@@ -3661,11 +3661,11 @@ Function_Botwoon_Head_Spitting_SetAngleAndShow:
     ASL                                                                  ;B39E9A;
     TAY                                                                  ;B39E9B;
     LDA.W InstListPointers_Botwoon_spit,Y                                ;B39E9C;
-    STA.W $0F92,X                                                        ;B39E9F;
+    STA.W Enemy.instList,X                                                        ;B39E9F;
     STA.L Botwoon.instList,X                                             ;B39EA2;
     LDA.W #$0001                                                         ;B39EA6;
-    STA.W $0F94,X                                                        ;B39EA9;
-    STZ.W $0F90,X                                                        ;B39EAC;
+    STA.W Enemy.instTimer,X                                                        ;B39EA9;
+    STZ.W Enemy.loopCounter,X                                                        ;B39EAC;
     LDA.L Botwoon.spitAngle,X                                            ;B39EAF;
     SEC                                                                  ;B39EB3;
     SBC.W #$0040                                                         ;B39EB4;
@@ -5556,7 +5556,7 @@ Function_EtecoonEscape_StationaryWaitingToExpressGratitude:
     JSL.L CheckIfEvent_inA_HasHappened                                   ;B3E673;
     BCC .return                                                          ;B3E677;
     LDA.W #InstList_EtecoonEscape_ExpressGratitudeThenEscape_0           ;B3E679;
-    STA.W $0F92,X                                                        ;B3E67C;
+    STA.W Enemy.instList,X                                                        ;B3E67C;
 
   .return:
     RTS                                                                  ;B3E67F;
@@ -5574,7 +5574,7 @@ Function_EtecoonEscape_RunningAroundAimlessly:
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;B3E68D;
     BCC .noCollision                                                     ;B3E691;
     LDA.W #$0001                                                         ;B3E693;
-    STA.W $0F94,X                                                        ;B3E696;
+    STA.W Enemy.instTimer,X                                                        ;B3E696;
     LDA.W EtecoonEscape.XVelocity,X                                      ;B3E699;
     EOR.W #$FFFF                                                         ;B3E69C;
     INC                                                                  ;B3E69F;
@@ -5586,12 +5586,12 @@ Function_EtecoonEscape_RunningAroundAimlessly:
   .greaterThan0:
     LDA.W #InstList_EtecoonEscape_RunningRight_LowTide_0                 ;B3E6AA;
 
-+   STA.W $0F92,X                                                        ;B3E6AD;
++   STA.W Enemy.instList,X                                                        ;B3E6AD;
     LDA.W #$000F                                                         ;B3E6B0;
     JSL.L CheckIfEvent_inA_HasHappened                                   ;B3E6B3;
     BCC .noCollision                                                     ;B3E6B7;
     LDA.W #InstList_EtecoonEscape_RunningForEscape_0                     ;B3E6B9;
-    STA.W $0F92,X                                                        ;B3E6BC;
+    STA.W Enemy.instList,X                                                        ;B3E6BC;
 
   .noCollision:
     STZ.B $12                                                            ;B3E6BF;
@@ -5607,18 +5607,18 @@ InitAI_EtecoonEscape:
     LDA.W #$000F                                                         ;B3E6CE;
     JSL.L CheckIfEvent_inA_HasHappened                                   ;B3E6D1;
     BCC .notEscaped                                                      ;B3E6D5;
-    LDA.W $0F86,X                                                        ;B3E6D7;
+    LDA.W Enemy.properties,X                                                        ;B3E6D7;
     ORA.W #$0200                                                         ;B3E6DA;
-    STA.W $0F86,X                                                        ;B3E6DD;
+    STA.W Enemy.properties,X                                                        ;B3E6DD;
     RTL                                                                  ;B3E6E0;
 
   .notEscaped:
-    LDA.W $0F86,X                                                        ;B3E6E1;
+    LDA.W Enemy.properties,X                                                        ;B3E6E1;
     ORA.W #$A400                                                         ;B3E6E4;
-    STA.W $0F86,X                                                        ;B3E6E7;
+    STA.W Enemy.properties,X                                                        ;B3E6E7;
     LDA.W #$0001                                                         ;B3E6EA;
-    STA.W $0F94,X                                                        ;B3E6ED;
-    STZ.W $0F90,X                                                        ;B3E6F0;
+    STA.W Enemy.instTimer,X                                                        ;B3E6ED;
+    STZ.W Enemy.loopCounter,X                                                        ;B3E6F0;
     STZ.W $0F96,X                                                        ;B3E6F3;
     LDY.W $0FB4,X                                                        ;B3E6F6;
     LDA.W .XPosition,Y                                                   ;B3E6F9;
@@ -5628,7 +5628,7 @@ InitAI_EtecoonEscape:
     LDA.W .functionPointer,Y                                             ;B3E705;
     STA.W EtecoonEscape.function,X                                       ;B3E708;
     LDA.W .instListPointer,Y                                             ;B3E70B;
-    STA.W $0F92,X                                                        ;B3E70E;
+    STA.W Enemy.instList,X                                                        ;B3E70E;
     LDA.W .XVelocity,Y                                                   ;B3E711;
     STA.W EtecoonEscape.XVelocity,X                                      ;B3E714;
     RTL                                                                  ;B3E717;
@@ -6015,22 +6015,22 @@ InitAI_DachoraEscape:
     LDA.W #$000F                                                         ;B3EAE8;
     JSL.L CheckIfEvent_inA_HasHappened                                   ;B3EAEB;
     BCC .notEscaped                                                      ;B3EAEF;
-    LDA.W $0F86,X                                                        ;B3EAF1;
+    LDA.W Enemy.properties,X                                                        ;B3EAF1;
     ORA.W #$0200                                                         ;B3EAF4;
-    STA.W $0F86,X                                                        ;B3EAF7;
+    STA.W Enemy.properties,X                                                        ;B3EAF7;
     RTL                                                                  ;B3EAFA;
 
   .notEscaped:
-    LDA.W $0F86,X                                                        ;B3EAFB;
+    LDA.W Enemy.properties,X                                                        ;B3EAFB;
     ORA.W #$2000                                                         ;B3EAFE;
-    STA.W $0F86,X                                                        ;B3EB01;
+    STA.W Enemy.properties,X                                                        ;B3EB01;
     LDA.W #Spritemap_CommonB3_Nothing                                    ;B3EB04;
     STA.W $0F8E,X                                                        ;B3EB07;
     LDA.W #$0001                                                         ;B3EB0A;
-    STA.W $0F94,X                                                        ;B3EB0D;
-    STZ.W $0F90,X                                                        ;B3EB10;
+    STA.W Enemy.instTimer,X                                                        ;B3EB0D;
+    STZ.W Enemy.loopCounter,X                                                        ;B3EB10;
     LDA.W #InstList_DachoraEscape_RunningAroundAimlessly_LowTide_0       ;B3EB13;
-    STA.W $0F92,X                                                        ;B3EB16;
+    STA.W Enemy.instList,X                                                        ;B3EB16;
     RTL                                                                  ;B3EB19;
 
 

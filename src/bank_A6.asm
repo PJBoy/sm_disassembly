@@ -146,20 +146,20 @@ NOPNOP_A68069:
     NOP                                                                  ;A6806A;
 
 
-;;; $806B: Instruction - enemy $0FB2 = [[Y]] ;;;
+;;; $806B: Instruction - Enemy.var5 = [[Y]] ;;;
 Instruction_CommonA6_Enemy0FB2_InY:
 ; Used only by torizos (for enemy movement function) and escape etecoon (for enemy function)
     LDA.W $0000,Y                                                        ;A6806B;
-    STA.W $0FB2,X                                                        ;A6806E;
+    STA.W Enemy.var5,X                                                        ;A6806E;
     INY                                                                  ;A68071;
     INY                                                                  ;A68072;
     RTL                                                                  ;A68073;
 
 
-;;; $8074: Instruction - enemy $0FB2 = RTS ;;;
+;;; $8074: Instruction - Enemy.var5 = RTS ;;;
 Instruction_CommonA6_SetEnemy0FB2ToRTS:
     LDA.W #RTS_A6807B                                                    ;A68074;
-    STA.W $0FB2,X                                                        ;A68077;
+    STA.W Enemy.var5,X                                                        ;A68077;
     RTL                                                                  ;A6807A;
 
 
@@ -169,9 +169,9 @@ RTS_A6807B:
 
 ;;; $807C: Instruction - delete enemy ;;;
 Instruction_CommonA6_DeleteEnemy:
-    LDA.W $0F86,X                                                        ;A6807C;
+    LDA.W Enemy.properties,X                                                        ;A6807C;
     ORA.W #$0200                                                         ;A6807F;
-    STA.W $0F86,X                                                        ;A68082;
+    STA.W Enemy.properties,X                                                        ;A68082;
     PLA                                                                  ;A68085;
     PEA.W ProcessEnemyInstructions_return-1                              ;A68086;
     RTL                                                                  ;A68089;
@@ -180,11 +180,11 @@ Instruction_CommonA6_DeleteEnemy:
 ;;; $808A: Instruction - call function [[Y]] ;;;
 Instruction_CommonA6_CallFunctionInY:
     LDA.W $0000,Y                                                        ;A6808A;
-    STA.B $12                                                            ;A6808D;
+    STA.B DP_Temp12                                                            ;A6808D;
     PHY                                                                  ;A6808F;
     PHX                                                                  ;A68090;
     PEA.W .manualReturn-1                                                ;A68091;
-    JMP.W ($0012)                                                        ;A68094;
+    JMP.W (DP_Temp12)                                                        ;A68094;
 
   .manualReturn:
     PLX                                                                  ;A68097;
@@ -197,12 +197,12 @@ Instruction_CommonA6_CallFunctionInY:
 ;;; $809C: Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 Instruction_CommonA6_CallFunctionInY_WithA:
     LDA.W $0000,Y                                                        ;A6809C;
-    STA.B $12                                                            ;A6809F;
+    STA.B DP_Temp12                                                            ;A6809F;
     LDA.W $0002,Y                                                        ;A680A1;
     PHY                                                                  ;A680A4;
     PHX                                                                  ;A680A5;
     PEA.W .manualReturn-1                                                ;A680A6;
-    JMP.W ($0012)                                                        ;A680A9;
+    JMP.W (DP_Temp12)                                                        ;A680A9;
 
   .manualReturn:
     PLX                                                                  ;A680AC;
@@ -218,9 +218,9 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $80B5: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Instruction_CommonA6_CallExternalFunctionInY_A680B5:
     LDA.W $0000,Y                                                        ;A680B5;
-    STA.B $12                                                            ;A680B8;
+    STA.B DP_Temp12                                                            ;A680B8;
     LDA.W $0001,Y                                                        ;A680BA;
-    STA.B $13                                                            ;A680BD;
+    STA.B DP_Temp13                                                            ;A680BD;
     PHX                                                                  ;A680BF;
     PHY                                                                  ;A680C0;
     JSL.L .externalFunction                                              ;A680C1;
@@ -232,15 +232,15 @@ UNUSED_Instruction_CommonA6_CallExternalFunctionInY_A680B5:
     RTL                                                                  ;A680CA;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;A680CB;
+    JML.W [DP_Temp12]                                                        ;A680CB;
 
 
 ;;; $80CE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_CommonA6_CallExternalFunctionInY_WithA_A680CE:
     LDA.W $0000,Y                                                        ;A680CE;
-    STA.B $12                                                            ;A680D1;
+    STA.B DP_Temp12                                                            ;A680D1;
     LDA.W $0001,Y                                                        ;A680D3;
-    STA.B $13                                                            ;A680D6;
+    STA.B DP_Temp13                                                            ;A680D6;
     LDA.W $0003,Y                                                        ;A680D8;
     PHX                                                                  ;A680DB;
     PHY                                                                  ;A680DC;
@@ -254,7 +254,7 @@ UNUSED_Inst_CommonA6_CallExternalFunctionInY_WithA_A680CE:
     RTL                                                                  ;A680E9;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;A680EA;
+    JML.W [DP_Temp12]                                                        ;A680EA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -267,7 +267,7 @@ Instruction_CommonA6_GotoY:
 
 ;;; $80F2: Instruction - go to [[Y]] + ±[[Y]] ;;;
 Instruction_CommonA6_GotoY_PlusY:
-    STY.B $12                                                            ;A680F2;
+    STY.B DP_Temp12                                                            ;A680F2;
     DEY                                                                  ;A680F4;
     LDA.W $0000,Y                                                        ;A680F5;
     XBA                                                                  ;A680F8;
@@ -279,14 +279,14 @@ Instruction_CommonA6_GotoY_PlusY:
     ORA.W #$FF00                                                         ;A68100;
 
 +   CLC                                                                  ;A68103;
-    ADC.B $12                                                            ;A68104;
+    ADC.B DP_Temp12                                                            ;A68104;
     TAY                                                                  ;A68106;
     RTL                                                                  ;A68107;
 
 
 ;;; $8108: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA6_DecrementTimer_GotoYIfNonZero:
-    DEC.W $0F90,X                                                        ;A68108;
+    DEC.W Enemy.loopCounter,X                                                        ;A68108;
     BNE Instruction_CommonA6_GotoY                                       ;A6810B;
     INY                                                                  ;A6810D;
     INY                                                                  ;A6810E;
@@ -295,7 +295,7 @@ Instruction_CommonA6_DecrementTimer_GotoYIfNonZero:
 
 ;;; $8110: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA6_DecrementTimer_GotoYIfNonZero_duplicate:
-    DEC.W $0F90,X                                                        ;A68110;
+    DEC.W Enemy.loopCounter,X                                                        ;A68110;
     BNE Instruction_CommonA6_GotoY                                       ;A68113;
     INY                                                                  ;A68115;
     INY                                                                  ;A68116;
@@ -305,7 +305,7 @@ Instruction_CommonA6_DecrementTimer_GotoYIfNonZero_duplicate:
 ;;; $8118: Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 Instruction_CommonA6_DecrementTimer_GotoY_PlusY_IfNonZero:
     SEP #$20                                                             ;A68118;
-    DEC.W $0F90,X                                                        ;A6811A;
+    DEC.W Enemy.loopCounter,X                                                        ;A6811A;
     REP #$20                                                             ;A6811D;
     BNE Instruction_CommonA6_GotoY_PlusY                                 ;A6811F;
     INY                                                                  ;A68121;
@@ -315,7 +315,7 @@ Instruction_CommonA6_DecrementTimer_GotoY_PlusY_IfNonZero:
 ;;; $8123: Instruction - timer = [[Y]] ;;;
 Instruction_CommonA6_TimerInY:
     LDA.W $0000,Y                                                        ;A68123;
-    STA.W $0F90,X                                                        ;A68126;
+    STA.W Enemy.loopCounter,X                                                        ;A68126;
     INY                                                                  ;A68129;
     INY                                                                  ;A6812A;
     RTL                                                                  ;A6812B;
@@ -333,7 +333,7 @@ Instruction_CommonA6_Sleep:
     DEY                                                                  ;A6812F;
     DEY                                                                  ;A68130;
     TYA                                                                  ;A68131;
-    STA.W $0F92,X                                                        ;A68132;
+    STA.W Enemy.instList,X                                                        ;A68132;
     PLA                                                                  ;A68135;
     PEA.W ProcessEnemyInstructions_return-1                              ;A68136;
     RTL                                                                  ;A68139;
@@ -346,11 +346,11 @@ Instruction_CommonA6_WaitYFrames:
 ; useful for e.g. GT eye beam attack ($AA:D10D), implemented by an instruction list that has no graphical instructions,
 ; which allows it to be called from multiple different poses
     LDA.W $0000,Y                                                        ;A6813A;
-    STA.W $0F94,X                                                        ;A6813D;
+    STA.W Enemy.instTimer,X                                                        ;A6813D;
     INY                                                                  ;A68140;
     INY                                                                  ;A68141;
     TYA                                                                  ;A68142;
-    STA.W $0F92,X                                                        ;A68143;
+    STA.W Enemy.instList,X                                                        ;A68143;
     PLA                                                                  ;A68146;
     PEA.W ProcessEnemyInstructions_return-1                              ;A68147;
     RTL                                                                  ;A6814A;
@@ -359,19 +359,19 @@ Instruction_CommonA6_WaitYFrames:
 ;;; $814B: Instruction - transfer [[Y]] bytes from [[Y] + 2] to VRAM [[Y] + 5] ;;;
 Instruction_CommonA6_TransferYBytesInYToVRAM:
     PHX                                                                  ;A6814B;
-    LDX.W $0330                                                          ;A6814C;
+    LDX.W VRAMWriteStack                                                          ;A6814C;
     LDA.W $0000,Y                                                        ;A6814F;
-    STA.B $D0,X                                                          ;A68152;
+    STA.B VRAMWrite.size,X                                                          ;A68152;
     LDA.W $0002,Y                                                        ;A68154;
-    STA.B $D2,X                                                          ;A68157;
+    STA.B VRAMWrite.src,X                                                          ;A68157;
     LDA.W $0003,Y                                                        ;A68159;
-    STA.B $D3,X                                                          ;A6815C;
+    STA.B VRAMWrite.src+1,X                                                          ;A6815C;
     LDA.W $0005,Y                                                        ;A6815E;
     STA.B $D5,X                                                          ;A68161;
     TXA                                                                  ;A68163;
     CLC                                                                  ;A68164;
     ADC.W #$0007                                                         ;A68165;
-    STA.W $0330                                                          ;A68168;
+    STA.W VRAMWriteStack                                                          ;A68168;
     TYA                                                                  ;A6816B;
     CLC                                                                  ;A6816C;
     ADC.W #$0007                                                         ;A6816D;
@@ -382,17 +382,17 @@ Instruction_CommonA6_TransferYBytesInYToVRAM:
 
 ;;; $8173: Instruction - enable off-screen processing ;;;
 Instruction_CommonA6_EnableOffScreenProcessing:
-    LDA.W $0F86,X                                                        ;A68173;
+    LDA.W Enemy.properties,X                                                        ;A68173;
     ORA.W #$0800                                                         ;A68176;
-    STA.W $0F86,X                                                        ;A68179;
+    STA.W Enemy.properties,X                                                        ;A68179;
     RTL                                                                  ;A6817C;
 
 
 ;;; $817D: Instruction - disable off-screen processing ;;;
 Instruction_CommonA6_DisableOffScreenProcessing:
-    LDA.W $0F86,X                                                        ;A6817D;
+    LDA.W Enemy.properties,X                                                        ;A6817D;
     AND.W #$F7FF                                                         ;A68180;
-    STA.W $0F86,X                                                        ;A68183;
+    STA.W Enemy.properties,X                                                        ;A68183;
     RTL                                                                  ;A68186;
 
 
@@ -664,11 +664,11 @@ InitAI_Boulder:
     EOR.W #$FFFF                                                         ;A68747;
     INC                                                                  ;A6874A;
     STA.L $7E7800,X                                                      ;A6874B;
-    LDA.W $0F92,X                                                        ;A6874F;
+    LDA.W Enemy.instList,X                                                        ;A6874F;
     AND.W #$00FF                                                         ;A68752;
     STA.L $7E780C,X                                                      ;A68755;
     LDA.W #InstList_Boulder_FacingLeft                                   ;A68759;
-    STA.W $0F92,X                                                        ;A6875C;
+    STA.W Enemy.instList,X                                                        ;A6875C;
     LDA.W $0FB5,X                                                        ;A6875F;
     AND.W #$00FF                                                         ;A68762;
     STA.W $0FB0,X                                                        ;A68765;
@@ -678,7 +678,7 @@ InitAI_Boulder:
     INC                                                                  ;A68771;
     STA.L $7E7800,X                                                      ;A68772;
     LDA.W #InstList_Boulder_FacingRight                                  ;A68776;
-    STA.W $0F92,X                                                        ;A68779;
+    STA.W Enemy.instList,X                                                        ;A68779;
 
   .left:
     LDA.W #$0002                                                         ;A6877C;
@@ -850,9 +850,9 @@ Function_Boulder_Bounce_Falling:
     LDA.W $0FB0,X                                                        ;A688B0;
     CMP.W #$0002                                                         ;A688B3;
     BNE .right                                                           ;A688B6;
-    LDA.W $0F86,X                                                        ;A688B8;
+    LDA.W Enemy.properties,X                                                        ;A688B8;
     ORA.W #$0200                                                         ;A688BB;
-    STA.W $0F86,X                                                        ;A688BE;
+    STA.W Enemy.properties,X                                                        ;A688BE;
     LDA.W $0F7A,X                                                        ;A688C1;
     STA.B $12                                                            ;A688C4;
     LDA.W $0F7E,X                                                        ;A688C6;
@@ -954,10 +954,10 @@ Function_Boulder_Rolling:
     STA.B $14                                                            ;A68981;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A68983;
     BCC .notCollidedWithWall                                             ;A68987;
-    LDA.W $0F86,X                                                        ;A68989;
+    LDA.W Enemy.properties,X                                                        ;A68989;
     ORA.W #$0100                                                         ;A6898C;
     ORA.W #$0200                                                         ;A6898F;
-    STA.W $0F86,X                                                        ;A68992;
+    STA.W Enemy.properties,X                                                        ;A68992;
     LDA.W #Function_Boulder_LoadEnemyIndex                               ;A68995;
     STA.W $0FA8,X                                                        ;A68998;
     LDA.W #$0042                                                         ;A6899B;
@@ -1149,7 +1149,7 @@ InstList_Kzan:
 InitAI_KzanTop:
     LDX.W $0E54                                                          ;A68B2F;
     LDA.W #InstList_Kzan                                                 ;A68B32;
-    STA.W $0F92,X                                                        ;A68B35;
+    STA.W Enemy.instList,X                                                        ;A68B35;
     LDA.W #Function_Kzan_WaitingToFall                                   ;A68B38;
     STA.W $0FA8,X                                                        ;A68B3B;
     LDA.W $0FB4,X                                                        ;A68B3E;
@@ -1167,7 +1167,7 @@ InitAI_KzanTop:
     LDA.B $14                                                            ;A68B59;
     STA.W $0FB0,X                                                        ;A68B5B;
     LDA.B $12                                                            ;A68B5E;
-    STA.W $0FB2,X                                                        ;A68B60;
+    STA.W Enemy.var5,X                                                        ;A68B60;
     LDA.W $0FB6,X                                                        ;A68B63;
     AND.W #$FF00                                                         ;A68B66;
     XBA                                                                  ;A68B69;
@@ -1844,9 +1844,9 @@ Instruction_Hibashi_FinishActivity:
     STA.W $0FC4,X                                                        ;A68FE0;
     LDA.W $0FAE,X                                                        ;A68FE3;
     STA.W $0F7E,X                                                        ;A68FE6;
-    LDA.W $0F86,X                                                        ;A68FE9;
+    LDA.W Enemy.properties,X                                                        ;A68FE9;
     ORA.W #$0100                                                         ;A68FEC;
-    STA.W $0F86,X                                                        ;A68FEF;
+    STA.W Enemy.properties,X                                                        ;A68FEF;
     LDA.W $0FC6,X                                                        ;A68FF2;
     ORA.W #$0400                                                         ;A68FF5;
     STA.W $0FC6,X                                                        ;A68FF8;
@@ -1857,11 +1857,11 @@ Instruction_Hibashi_FinishActivity:
 InitAI_Hibashi:
     LDX.W $0E54                                                          ;A68FFC;
     LDA.W #InstList_Hibashi_HitboxPart                                   ;A68FFF;
-    STA.W $0F92,X                                                        ;A69002;
+    STA.W Enemy.instList,X                                                        ;A69002;
     LDA.W $0FB6,X                                                        ;A69005;
     BNE .return                                                          ;A69008;
     LDA.W #InstList_Hibashi_GraphicsPart                                 ;A6900A;
-    STA.W $0F92,X                                                        ;A6900D;
+    STA.W Enemy.instList,X                                                        ;A6900D;
     LDA.W #Function_Hibashi_Inactive                                     ;A69010;
     STA.W $0FA8,X                                                        ;A69013;
     LDA.W $0F7E,X                                                        ;A69016;
@@ -1893,13 +1893,13 @@ Function_Hibashi_Inactive:
     STA.W $0FA8,X                                                        ;A6903A;
     STZ.W $0FAC,X                                                        ;A6903D;
     LDA.W #$0001                                                         ;A69040;
-    STA.W $0F94,X                                                        ;A69043;
-    STZ.W $0F90,X                                                        ;A69046;
+    STA.W Enemy.instTimer,X                                                        ;A69043;
+    STZ.W Enemy.loopCounter,X                                                        ;A69046;
     LDA.W #InstList_Hibashi_GraphicsPart                                 ;A69049;
-    STA.W $0F92,X                                                        ;A6904C;
-    LDA.W $0F86,X                                                        ;A6904F;
+    STA.W Enemy.instList,X                                                        ;A6904C;
+    LDA.W Enemy.properties,X                                                        ;A6904F;
     AND.W #$FEFF                                                         ;A69052;
-    STA.W $0F86,X                                                        ;A69055;
+    STA.W Enemy.properties,X                                                        ;A69055;
     LDA.W $0FC6,X                                                        ;A69058;
     AND.W #$FBFF                                                         ;A6905B;
     STA.W $0FC6,X                                                        ;A6905E;
@@ -1915,9 +1915,9 @@ Function_Hibashi_Active:
     BEQ .return                                                          ;A69068;
     LDA.W $0FB4,X                                                        ;A6906A;
     STA.W $0FAA,X                                                        ;A6906D;
-    LDA.W $0F86,X                                                        ;A69070;
+    LDA.W Enemy.properties,X                                                        ;A69070;
     ORA.W #$0100                                                         ;A69073;
-    STA.W $0F86,X                                                        ;A69076;
+    STA.W Enemy.properties,X                                                        ;A69076;
     LDA.W #Function_Hibashi_Inactive                                     ;A69079;
     STA.W $0FA8,X                                                        ;A6907C;
 
@@ -2226,7 +2226,7 @@ InstList_Puromi:
 InitAI_Puromi:
     LDX.W $0E54                                                          ;A694C4;
     LDA.W #InstList_Puromi                                               ;A694C7;
-    STA.W $0F92,X                                                        ;A694CA;
+    STA.W Enemy.instList,X                                                        ;A694CA;
     LDA.W $0FB4,X                                                        ;A694CD;
     AND.W #$00FF                                                         ;A694D0;
     STA.W $0FAC,X                                                        ;A694D3;
@@ -2238,7 +2238,7 @@ InitAI_Puromi:
     STA.W $0FB0,X                                                        ;A694E5;
     LDA.W $0FB7,X                                                        ;A694E8;
     AND.W #$00FF                                                         ;A694EB;
-    STA.W $0FB2,X                                                        ;A694EE;
+    STA.W Enemy.var5,X                                                        ;A694EE;
     STA.W $0FAA,X                                                        ;A694F1;
     LDA.W #Function_Puromi_Inactive                                      ;A694F4;
     STA.W $0FA8,X                                                        ;A694F7;
@@ -2379,7 +2379,7 @@ Function_Puromi_Inactive:
     LDX.W $0E54                                                          ;A69615;
     DEC.W $0FAA,X                                                        ;A69618;
     BPL .return                                                          ;A6961B;
-    LDA.W $0FB2,X                                                        ;A6961D;
+    LDA.W Enemy.var5,X                                                        ;A6961D;
     STA.W $0FAA,X                                                        ;A69620;
     LDA.L $7E8006,X                                                      ;A69623;
     STA.L $7E8002,X                                                      ;A69627;
@@ -2403,9 +2403,9 @@ Function_Puromi_Inactive:
     STA.L $7E783A,X                                                      ;A6966C;
     STA.L $7E783C,X                                                      ;A69670;
     STA.L $7E783E,X                                                      ;A69674;
-    LDA.W $0F86,X                                                        ;A69678;
+    LDA.W Enemy.properties,X                                                        ;A69678;
     ORA.W #$0800                                                         ;A6967B;
-    STA.W $0F86,X                                                        ;A6967E;
+    STA.W Enemy.properties,X                                                        ;A6967E;
 
   .return:
     RTS                                                                  ;A69681;
@@ -2553,9 +2553,9 @@ HandlePuromiProjectiles:
     BEQ .return                                                          ;A697D7;
     LDA.W #Function_Puromi_Inactive                                      ;A697D9;
     STA.W $0FA8,X                                                        ;A697DC;
-    LDA.W $0F86,X                                                        ;A697DF;
+    LDA.W Enemy.properties,X                                                        ;A697DF;
     AND.W #$F7FF                                                         ;A697E2;
-    STA.W $0F86,X                                                        ;A697E5;
+    STA.W Enemy.properties,X                                                        ;A697E5;
 
   .return:
     RTS                                                                  ;A697E8;
@@ -2962,12 +2962,12 @@ InitAI_MiniKraid:
     STA.L $7E780A,X                                                      ;A69A7F;
     LDA.W #$0000                                                         ;A69A83;
     STA.L $7E780E,X                                                      ;A69A86;
-    LDA.W $0F86,X                                                        ;A69A8A;
+    LDA.W Enemy.properties,X                                                        ;A69A8A;
     ORA.W #$2000                                                         ;A69A8D;
-    STA.W $0F86,X                                                        ;A69A90;
+    STA.W Enemy.properties,X                                                        ;A69A90;
     LDA.W #$0001                                                         ;A69A93;
-    STA.W $0F94,X                                                        ;A69A96;
-    STZ.W $0F90,X                                                        ;A69A99;
+    STA.W Enemy.instTimer,X                                                        ;A69A96;
+    STZ.W Enemy.loopCounter,X                                                        ;A69A99;
     LDA.W #$FFFC                                                         ;A69A9C;
     STA.W $0FAA,X                                                        ;A69A9F;
     STA.W $0FAC,X                                                        ;A69AA2;
@@ -2983,7 +2983,7 @@ InitAI_MiniKraid:
 
   .keepLeft:
     TYA                                                                  ;A69ABD;
-    STA.W $0F92,X                                                        ;A69ABE;
+    STA.W Enemy.instList,X                                                        ;A69ABE;
     RTL                                                                  ;A69AC1;
 
 
@@ -7274,19 +7274,19 @@ PostGetawayFunction_CycleEmergencyTextColors_StartEscape:
 DrawEmergencyText:
 ; Display 'EMERGENCY' text
     LDX.W #.tilemapEntry                                                 ;A6C136;
-    LDY.W $0330                                                          ;A6C139;
+    LDY.W VRAMWriteStack                                                          ;A6C139;
     LDA.W $0000,X                                                        ;A6C13C;
-    STA.W $00D0,Y                                                        ;A6C13F;
+    STA.W $00D0,Y                                                        ;A6C13F; >.<
     LDA.W $0003,X                                                        ;A6C142;
-    STA.W $00D3,Y                                                        ;A6C145;
+    STA.W $00D3,Y                                                        ;A6C145; >.<
     LDA.W $0002,X                                                        ;A6C148;
-    STA.W $00D2,Y                                                        ;A6C14B;
+    STA.W $00D2,Y                                                        ;A6C14B; >.<
     LDA.W $0005,X                                                        ;A6C14E;
-    STA.W $00D5,Y                                                        ;A6C151;
+    STA.W $00D5,Y                                                        ;A6C151; >.<
     TYA                                                                  ;A6C154;
     CLC                                                                  ;A6C155;
     ADC.W #$0007                                                         ;A6C156;
-    STA.W $0330                                                          ;A6C159;
+    STA.W VRAMWriteStack                                                          ;A6C159;
     RTS                                                                  ;A6C15C;
 
   .tilemapEntry:
@@ -7402,20 +7402,20 @@ SetupZebesEscapeTypewriter:
 ;;; $C26E: Process escape timer tile transfers ;;;
 ProcessEscapeTimerTileTransfers:
     LDX.W $0FB0                                                          ;A6C26E;
-    LDY.W $0330                                                          ;A6C271;
+    LDY.W VRAMWriteStack                                                          ;A6C271;
     LDA.W $0000,X                                                        ;A6C274;
     BEQ .returnCarrySet                                                  ;A6C277;
-    STA.W $00D0,Y                                                        ;A6C279;
+    STA.W $00D0,Y                                                        ;A6C279; >.<
     LDA.W $0003,X                                                        ;A6C27C;
-    STA.W $00D3,Y                                                        ;A6C27F;
+    STA.W $00D3,Y                                                        ;A6C27F; >.<
     LDA.W $0002,X                                                        ;A6C282;
-    STA.W $00D2,Y                                                        ;A6C285;
+    STA.W $00D2,Y                                                        ;A6C285; >.<
     LDA.W $0005,X                                                        ;A6C288;
-    STA.W $00D5,Y                                                        ;A6C28B;
+    STA.W $00D5,Y                                                        ;A6C28B; >.<
     TYA                                                                  ;A6C28E;
     CLC                                                                  ;A6C28F;
     ADC.W #$0007                                                         ;A6C290;
-    STA.W $0330                                                          ;A6C293;
+    STA.W VRAMWriteStack                                                          ;A6C293;
     TXA                                                                  ;A6C296;
     ADC.W #$0007                                                         ;A6C297;
     STA.W $0FB0                                                          ;A6C29A;
@@ -7505,11 +7505,11 @@ HandleTypewriterText:
     TXA                                                                  ;A6C319;
     INC                                                                  ;A6C31A;
     STA.L $7E8036                                                        ;A6C31B;
-    LDY.W $0330                                                          ;A6C31F;
+    LDY.W VRAMWriteStack                                                          ;A6C31F;
     LDA.W #$0002                                                         ;A6C322;
-    STA.W $00D0,Y                                                        ;A6C325;
+    STA.W $00D0,Y                                                        ;A6C325; >.<
     LDA.W #$7E00                                                         ;A6C328;
-    STA.W $00D3,Y                                                        ;A6C32B;
+    STA.W $00D3,Y                                                        ;A6C32B; >.<
     PLA                                                                  ;A6C32E;
     SEC                                                                  ;A6C32F;
     SBC.W #$0041                                                         ;A6C330;
@@ -7517,15 +7517,15 @@ HandleTypewriterText:
     ADC.B $12                                                            ;A6C334;
     STA.L $7E8034                                                        ;A6C336;
     LDA.W #$8034                                                         ;A6C33A; $7E
-    STA.W $00D2,Y                                                        ;A6C33D;
+    STA.W $00D2,Y                                                        ;A6C33D; >.<
     LDA.L $7E8038                                                        ;A6C340;
-    STA.W $00D5,Y                                                        ;A6C344;
+    STA.W $00D5,Y                                                        ;A6C344; >.<
     INC                                                                  ;A6C347;
     STA.L $7E8038                                                        ;A6C348;
     TYA                                                                  ;A6C34C;
     CLC                                                                  ;A6C34D;
     ADC.W #$0007                                                         ;A6C34E;
-    STA.W $0330                                                          ;A6C351;
+    STA.W VRAMWriteStack                                                          ;A6C351;
     LDA.L $7E803E                                                        ;A6C354;
     INC                                                                  ;A6C358;
     STA.L $7E803E                                                        ;A6C359;
@@ -7555,18 +7555,18 @@ QueueCeresEscapeJapaneseTextTilemapTransfers:
     PHB                                                                  ;A6C386;
     PHK                                                                  ;A6C387;
     PLB                                                                  ;A6C388;
-    LDY.W $0330                                                          ;A6C389;
+    LDY.W VRAMWriteStack                                                          ;A6C389;
 
   .loop:
     LDA.W $0000,X                                                        ;A6C38C;
     BEQ .done                                                            ;A6C38F;
-    STA.W $00D0,Y                                                        ;A6C391;
+    STA.W $00D0,Y                                                        ;A6C391; >.<
     LDA.W $0003,X                                                        ;A6C394;
-    STA.W $00D3,Y                                                        ;A6C397;
+    STA.W $00D3,Y                                                        ;A6C397; >.<
     LDA.W $0002,X                                                        ;A6C39A;
-    STA.W $00D2,Y                                                        ;A6C39D;
+    STA.W $00D2,Y                                                        ;A6C39D; >.<
     LDA.W $0005,X                                                        ;A6C3A0;
-    STA.W $00D5,Y                                                        ;A6C3A3;
+    STA.W $00D5,Y                                                        ;A6C3A3; >.<
     TYA                                                                  ;A6C3A6;
     CLC                                                                  ;A6C3A7;
     ADC.W #$0007                                                         ;A6C3A8;
@@ -7577,7 +7577,7 @@ QueueCeresEscapeJapaneseTextTilemapTransfers:
     BRA .loop                                                            ;A6C3B1;
 
   .done:
-    STY.W $0330                                                          ;A6C3B3;
+    STY.W VRAMWriteStack                                                          ;A6C3B3;
     PLB                                                                  ;A6C3B6;
     RTL                                                                  ;A6C3B7;
 
@@ -10702,26 +10702,26 @@ AnimateRidleysRibs:
 
   .timer:
     STA.L $7E780C                                                        ;A6DA27;
-    LDY.W $0330                                                          ;A6DA2B;
+    LDY.W VRAMWriteStack                                                          ;A6DA2B;
     LDA.W #Tiles_RidleysRibsAndClaws_0>>8&$FF00                          ;A6DA2E;
-    STA.W $00D3,Y                                                        ;A6DA31;
-    STA.W $00DA,Y                                                        ;A6DA34;
+    STA.W $00D3,Y                                                        ;A6DA31; >.<
+    STA.W $00DA,Y                                                        ;A6DA34; >.<
     LDA.W $0002,X                                                        ;A6DA37;
-    STA.W $00D2,Y                                                        ;A6DA3A;
+    STA.W $00D2,Y                                                        ;A6DA3A; >.<
     LDA.W $0004,X                                                        ;A6DA3D;
-    STA.W $00D9,Y                                                        ;A6DA40;
+    STA.W $00D9,Y                                                        ;A6DA40; >.<
     LDA.W #$7220                                                         ;A6DA43;
-    STA.W $00D5,Y                                                        ;A6DA46;
+    STA.W $00D5,Y                                                        ;A6DA46; >.<
     LDA.W #$7320                                                         ;A6DA49;
-    STA.W $00DC,Y                                                        ;A6DA4C;
+    STA.W $00DC,Y                                                        ;A6DA4C; >.<
     LDA.W #$0040                                                         ;A6DA4F;
-    STA.W $00D0,Y                                                        ;A6DA52;
-    STA.W $00D7,Y                                                        ;A6DA55;
+    STA.W $00D0,Y                                                        ;A6DA52; >.<
+    STA.W $00D7,Y                                                        ;A6DA55; >.<
     TYA                                                                  ;A6DA58;
     CLC                                                                  ;A6DA59;
     ADC.W #$000E                                                         ;A6DA5A;
     TAY                                                                  ;A6DA5D;
-    STY.W $0330                                                          ;A6DA5E;
+    STY.W VRAMWriteStack                                                          ;A6DA5E;
     LDA.W #$0000                                                         ;A6DA61;
     STA.W $00D0,Y                                                        ;A6DA64;
     TXA                                                                  ;A6DA67;
@@ -10764,26 +10764,26 @@ TransferGraphicsForRidleysClawsHoldingSamusOrBabyMetroid:
     LDX.W #RidleyClawGraphicsPointers_holding                            ;A6DA90;
 
   .notHolding:
-    LDY.W $0330                                                          ;A6DA93;
+    LDY.W VRAMWriteStack                                                          ;A6DA93;
     LDA.W #Tiles_RidleysRibsAndClaws_0>>8&$FF00                          ;A6DA96;
-    STA.W $00D3,Y                                                        ;A6DA99;
-    STA.W $00DA,Y                                                        ;A6DA9C;
+    STA.W $00D3,Y                                                        ;A6DA99; >.<
+    STA.W $00DA,Y                                                        ;A6DA9C; >.<
     LDA.W $0000,X                                                        ;A6DA9F;
-    STA.W $00D2,Y                                                        ;A6DAA2;
+    STA.W $00D2,Y                                                        ;A6DAA2; >.<
     LDA.W $0002,X                                                        ;A6DAA5;
-    STA.W $00D9,Y                                                        ;A6DAA8;
+    STA.W $00D9,Y                                                        ;A6DAA8; >.<
     LDA.W #$7AC0                                                         ;A6DAAB;
-    STA.W $00D5,Y                                                        ;A6DAAE;
+    STA.W $00D5,Y                                                        ;A6DAAE; >.<
     LDA.W #$7BC0                                                         ;A6DAB1;
-    STA.W $00DC,Y                                                        ;A6DAB4;
+    STA.W $00DC,Y                                                        ;A6DAB4; >.<
     LDA.W #$0080                                                         ;A6DAB7;
-    STA.W $00D0,Y                                                        ;A6DABA;
-    STA.W $00D7,Y                                                        ;A6DABD;
+    STA.W $00D0,Y                                                        ;A6DABA; >.<
+    STA.W $00D7,Y                                                        ;A6DABD; >.<
     TYA                                                                  ;A6DAC0;
     CLC                                                                  ;A6DAC1;
     ADC.W #$000E                                                         ;A6DAC2;
     TAY                                                                  ;A6DAC5;
-    STY.W $0330                                                          ;A6DAC6;
+    STY.W VRAMWriteStack                                                          ;A6DAC6;
     LDA.W #$0000                                                         ;A6DAC9;
     STA.W $00D0,Y                                                        ;A6DACC;
     RTS                                                                  ;A6DACF;
@@ -13018,15 +13018,15 @@ Spritemap_Ridley_FacingRight_Torso:
 InitAI_CeresSteam:
     LDX.W $0E54                                                          ;A6EFB1;
     STZ.W $0F98,X                                                        ;A6EFB4;
-    LDA.W $0F86,X                                                        ;A6EFB7;
+    LDA.W Enemy.properties,X                                                        ;A6EFB7;
     ORA.W #$2000                                                         ;A6EFBA;
-    STA.W $0F86,X                                                        ;A6EFBD;
+    STA.W Enemy.properties,X                                                        ;A6EFBD;
     LDA.W $0F88,X                                                        ;A6EFC0;
     ORA.W #$0004                                                         ;A6EFC3;
     STA.W $0F88,X                                                        ;A6EFC6;
     LDA.W #$0001                                                         ;A6EFC9;
-    STA.W $0F94,X                                                        ;A6EFCC;
-    STZ.W $0F90,X                                                        ;A6EFCF;
+    STA.W Enemy.instTimer,X                                                        ;A6EFCC;
+    STZ.W Enemy.loopCounter,X                                                        ;A6EFCF;
     LDA.W #$0A00                                                         ;A6EFD2;
     STA.W $0F96,X                                                        ;A6EFD5;
     JSL.L GenerateRandomNumber                                           ;A6EFD8;
@@ -13037,7 +13037,7 @@ InitAI_CeresSteam:
     ASL                                                                  ;A6EFE6;
     TAY                                                                  ;A6EFE7;
     LDA.W InitAI_CeresSteam_instListPointers,Y                           ;A6EFE8;
-    STA.W $0F92,X                                                        ;A6EFEB;
+    STA.W Enemy.instList,X                                                        ;A6EFEB;
     LDA.W InitAI_CeresSteam_initialFunctionPointers,Y                    ;A6EFEE;
     STA.W $0FA8,X                                                        ;A6EFF1;
 
@@ -13201,9 +13201,9 @@ InstList_CeresSteam_Right_2:
 
 ;;; $F11D: Instruction - hide enemy ;;;
 Instruction_CeresSteam_SetToIntangibleAndInvisible:
-    LDA.W $0F86,X                                                        ;A6F11D;
+    LDA.W Enemy.properties,X                                                        ;A6F11D;
     ORA.W #$0500                                                         ;A6F120;
-    STA.W $0F86,X                                                        ;A6F123;
+    STA.W Enemy.properties,X                                                        ;A6F123;
     RTL                                                                  ;A6F126;
 
 
@@ -13222,10 +13222,10 @@ Instruction_CeresSteam_DecActivationTimer_Decide_GotoYOrY2:
 
 ;;; $F135: Instruction - show enemy ;;;
 Instruction_CeresSteam_SetToTangibleAndVisible:
-    LDA.W $0F86,X                                                        ;A6F135;
+    LDA.W Enemy.properties,X                                                        ;A6F135;
     AND.W #$FBFF                                                         ;A6F138; >.< #$FAFF
     AND.W #$FEFF                                                         ;A6F13B;
-    STA.W $0F86,X                                                        ;A6F13E;
+    STA.W Enemy.properties,X                                                        ;A6F13E;
     RTL                                                                  ;A6F141;
 
 
@@ -13920,17 +13920,17 @@ SetElevatorRoomToRotateIfRidleyHasEscaped:
 
 ;;; $F68B: Instruction - set enemy as intangible ;;;
 Instruction_CeresDoor_SetAsIntangible:
-    LDA.W $0F86,X                                                        ;A6F68B;
+    LDA.W Enemy.properties,X                                                        ;A6F68B;
     ORA.W #$0400                                                         ;A6F68E;
-    STA.W $0F86,X                                                        ;A6F691;
+    STA.W Enemy.properties,X                                                        ;A6F691;
     RTL                                                                  ;A6F694;
 
 
 ;;; $F695: Instruction - set enemy as tangible ;;;
 Instruction_CeresDoor_SetAsTangible:
-    LDA.W $0F86,X                                                        ;A6F695;
+    LDA.W Enemy.properties,X                                                        ;A6F695;
     AND.W #$FBFF                                                         ;A6F698;
-    STA.W $0F86,X                                                        ;A6F69B;
+    STA.W Enemy.properties,X                                                        ;A6F69B;
     RTL                                                                  ;A6F69E;
 
 
@@ -13943,9 +13943,9 @@ Instruction_CeresDoor_SetDrawnByRidleyFlag:
 
 ;;; $F6A6: Instruction - set enemy as invisible ;;;
 Instruction_CeresDoor_SetAsInvisible:
-    LDA.W $0F86,X                                                        ;A6F6A6;
+    LDA.W Enemy.properties,X                                                        ;A6F6A6;
     ORA.W #$0100                                                         ;A6F6A9;
-    STA.W $0F86,X                                                        ;A6F6AC;
+    STA.W Enemy.properties,X                                                        ;A6F6AC;
     RTL                                                                  ;A6F6AF;
 
 
@@ -13956,9 +13956,9 @@ Instruction_CeresDoor_SetAsVisible_ClearDrawnByRidleyFlag:
 
 ;;; $F6B3: Instruction - set enemy as visible ;;;
 Instruction_CeresDoor_SetAsVisible:
-    LDA.W $0F86,X                                                        ;A6F6B3;
+    LDA.W Enemy.properties,X                                                        ;A6F6B3;
     AND.W #$FEFF                                                         ;A6F6B6;
-    STA.W $0F86,X                                                        ;A6F6B9;
+    STA.W Enemy.properties,X                                                        ;A6F6B9;
     RTL                                                                  ;A6F6BC;
 
 
@@ -13975,8 +13975,8 @@ InitAI_CeresDoor:
     LDA.W #Spritemap_CeresDoor_Placeholder                               ;A6F6C8;
     STA.W $0F8E,X                                                        ;A6F6CB;
     LDA.W #$0001                                                         ;A6F6CE;
-    STA.W $0F94,X                                                        ;A6F6D1;
-    STZ.W $0F90,X                                                        ;A6F6D4;
+    STA.W Enemy.instTimer,X                                                        ;A6F6D1;
+    STZ.W Enemy.loopCounter,X                                                        ;A6F6D4;
     STZ.W $0F98,X                                                        ;A6F6D7;
     LDA.W #$0400                                                         ;A6F6DA;
     STA.W $0F96,X                                                        ;A6F6DD;
@@ -13986,7 +13986,7 @@ InitAI_CeresDoor:
     LDA.W .functionPointers,Y                                            ;A6F6E5;
     STA.W $0FA8,X                                                        ;A6F6E8;
     LDA.W InstListPointers_CeresDoor,Y                                   ;A6F6EB;
-    STA.W $0F92,X                                                        ;A6F6EE;
+    STA.W Enemy.instList,X                                                        ;A6F6EE;
     STZ.W $0FAA,X                                                        ;A6F6F1;
     JSR.W LoadRotatingElevatorRoomPreExplosioNDoorOverlayTilesIfNeeded   ;A6F6F4;
     LDA.W $093F                                                          ;A6F6F7;
@@ -14031,19 +14031,19 @@ LoadRotatingElevatorRoomPreExplosioNDoorOverlayTilesIfNeeded:
     LDA.W $0FB4,X                                                        ;A6F739;
     CMP.W #$0002                                                         ;A6F73C;
     BNE .return                                                          ;A6F73F;
-    LDY.W $0330                                                          ;A6F741;
+    LDY.W VRAMWriteStack                                                          ;A6F741;
     LDA.W #$0400                                                         ;A6F744;
-    STA.W $00D0,Y                                                        ;A6F747;
+    STA.W $00D0,Y                                                        ;A6F747; >.<
     LDA.W #Tiles_CeresElevatorRoomDoor>>8&$FF00                          ;A6F74A;
-    STA.W $00D3,Y                                                        ;A6F74D;
+    STA.W $00D3,Y                                                        ;A6F74D; >.<
     LDA.W #Tiles_CeresElevatorRoomDoor                                   ;A6F750;
-    STA.W $00D2,Y                                                        ;A6F753;
+    STA.W $00D2,Y                                                        ;A6F753; >.<
     LDA.W #$7000                                                         ;A6F756;
-    STA.W $00D5,Y                                                        ;A6F759;
+    STA.W $00D5,Y                                                        ;A6F759; >.<
     TYA                                                                  ;A6F75C;
     CLC                                                                  ;A6F75D;
     ADC.W #$0007                                                         ;A6F75E;
-    STA.W $0330                                                          ;A6F761;
+    STA.W VRAMWriteStack                                                          ;A6F761;
 
   .return:
     RTS                                                                  ;A6F764;
@@ -14123,7 +14123,7 @@ Function_CeresDoor_RotatingElevatorRoom_Default:
     LDA.W #$0030                                                         ;A6F7CF;
     STA.W $0FAE,X                                                        ;A6F7D2;
     STZ.W $0FB0                                                          ;A6F7D5;
-    STZ.W $0FB2                                                          ;A6F7D8;
+    STZ.W Enemy.var5                                                          ;A6F7D8;
 
   .return:
     RTL                                                                  ;A6F7DB;
@@ -14133,9 +14133,9 @@ Function_CeresDoor_RotatingElevatorRoom_Default:
 Function_CeresDoor_RotatingElevatorRoom_Rumbling_Explosions:
     DEC.W $0FAE,X                                                        ;A6F7DC;
     BPL .enemyRumbleTimerNotExpired                                      ;A6F7DF;
-    LDA.W $0F86,X                                                        ;A6F7E1;
+    LDA.W Enemy.properties,X                                                        ;A6F7E1;
     ORA.W #$0100                                                         ;A6F7E4;
-    STA.W $0F86,X                                                        ;A6F7E7;
+    STA.W Enemy.properties,X                                                        ;A6F7E7;
     LDA.W #Function_CeresDoor_RotatingElevatorRoom_ElevatorAnimations    ;A6F7EA;
     STA.W $0FA8,X                                                        ;A6F7ED;
     JMP.W SetElevatorRoomToRotateIfRidleyHasEscaped                      ;A6F7F0;
@@ -14145,13 +14145,13 @@ Function_CeresDoor_RotatingElevatorRoom_Rumbling_Explosions:
     BPL .return                                                          ;A6F7F6;
     LDA.W #$0004                                                         ;A6F7F8;
     STA.W $0FB0                                                          ;A6F7FB;
-    DEC.W $0FB2                                                          ;A6F7FE;
+    DEC.W Enemy.var5                                                          ;A6F7FE;
     BPL .ceresDoorTimerNotExpired                                        ;A6F801;
     LDA.W #$0003                                                         ;A6F803;
-    STA.W $0FB2                                                          ;A6F806;
+    STA.W Enemy.var5                                                          ;A6F806;
 
   .ceresDoorTimerNotExpired:
-    LDA.W $0FB2                                                          ;A6F809;
+    LDA.W Enemy.var5                                                          ;A6F809;
     ASL                                                                  ;A6F80C;
     ASL                                                                  ;A6F80D;
     TAY                                                                  ;A6F80E;
@@ -14421,12 +14421,12 @@ Spritemap_CeresDoor_RidleyEscapeMode7RightWall:
 ;;; $FB72: Initialisation AI - enemy $E27F (zebetites) ;;;
 InitAI_Zebetite:
     LDX.W $0E54                                                          ;A6FB72;
-    LDA.W $0F86,X                                                        ;A6FB75;
+    LDA.W Enemy.properties,X                                                        ;A6FB75;
     ORA.W #$A000                                                         ;A6FB78;
-    STA.W $0F86,X                                                        ;A6FB7B;
+    STA.W Enemy.properties,X                                                        ;A6FB7B;
     LDA.W #$0001                                                         ;A6FB7E;
-    STA.W $0F94,X                                                        ;A6FB81;
-    STZ.W $0F90,X                                                        ;A6FB84;
+    STA.W Enemy.instTimer,X                                                        ;A6FB81;
+    STZ.W Enemy.loopCounter,X                                                        ;A6FB84;
     LDA.W #$0400                                                         ;A6FB87;
     STA.W $0F96,X                                                        ;A6FB8A;
     LDA.W #$0080                                                         ;A6FB8D;
@@ -14454,20 +14454,20 @@ InitAI_Zebetite:
     STA.W $0FAE,X                                                        ;A6FBC4;
     CMP.W #$0004                                                         ;A6FBC7;
     BMI .notAllDestroyed                                                 ;A6FBCA;
-    LDA.W $0F86,X                                                        ;A6FBCC;
+    LDA.W Enemy.properties,X                                                        ;A6FBCC;
     ORA.W #$0200                                                         ;A6FBCF;
-    STA.W $0F86,X                                                        ;A6FBD2;
+    STA.W Enemy.properties,X                                                        ;A6FBD2;
     RTL                                                                  ;A6FBD5;
 
   .notAllDestroyed:
     ASL                                                                  ;A6FBD6;
     TAY                                                                  ;A6FBD7;
     LDA.W .multipartFlag,Y                                               ;A6FBD8;
-    STA.W $0FB2,X                                                        ;A6FBDB;
+    STA.W Enemy.var5,X                                                        ;A6FBDB;
     LDA.W .height,Y                                                      ;A6FBDE;
     STA.W $0F84,X                                                        ;A6FBE1;
     LDA.W .instListPointer,Y                                             ;A6FBE4;
-    STA.W $0F92,X                                                        ;A6FBE7;
+    STA.W Enemy.instList,X                                                        ;A6FBE7;
     LDA.W .XPosition,Y                                                   ;A6FBEA;
     STA.W $0F7A,X                                                        ;A6FBED;
     LDA.W $0FB4,X                                                        ;A6FBF0;
@@ -14520,7 +14520,7 @@ MainAI_Zebetite:
 
 ;;; $FC41: Zebetites function - spawn bottom zebetite if needed ;;;
 Function_Zebetite_SpawnBottomZebetiteIfNeeded:
-    LDA.W $0FB2,X                                                        ;A6FC41;
+    LDA.W Enemy.var5,X                                                        ;A6FC41;
     BPL .notNeeded                                                       ;A6FC44;
     JSR.W SpawnBottomZebetite                                            ;A6FC46;
     LDA.W $0E54                                                          ;A6FC49;
@@ -14679,15 +14679,15 @@ SetZebetiteInstList:
 
   .indexInY:
     LDA.W .bigZebetite,Y                                                 ;A6FD32;
-    BIT.W $0FB2,X                                                        ;A6FD35;
+    BIT.W Enemy.var5,X                                                        ;A6FD35;
     BPL .keepBig                                                         ;A6FD38;
     LDA.W .smallZebetite,Y                                               ;A6FD3A;
 
   .keepBig:
-    STA.W $0F92,X                                                        ;A6FD3D;
+    STA.W Enemy.instList,X                                                        ;A6FD3D;
     LDA.W #$0001                                                         ;A6FD40;
-    STA.W $0F94,X                                                        ;A6FD43;
-    STZ.W $0F90,X                                                        ;A6FD46;
+    STA.W Enemy.instTimer,X                                                        ;A6FD43;
+    STZ.W Enemy.loopCounter,X                                                        ;A6FD46;
     RTS                                                                  ;A6FD49;
 
   .bigZebetite:

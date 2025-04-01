@@ -146,20 +146,20 @@ NOPNOP_AA8069:
     NOP                                                                  ;AA806A;
 
 
-;;; $806B: Instruction - enemy $0FB2 = [[Y]] ;;;
+;;; $806B: Instruction - Enemy.var5 = [[Y]] ;;;
 Instruction_CommonAA_Enemy0FB2_InY:
 ; Used only by torizos (for enemy movement function) and escape etecoon (for enemy function)
     LDA.W $0000,Y                                                        ;AA806B;
-    STA.W $0FB2,X                                                        ;AA806E;
+    STA.W Enemy.var5,X                                                        ;AA806E;
     INY                                                                  ;AA8071;
     INY                                                                  ;AA8072;
     RTL                                                                  ;AA8073;
 
 
-;;; $8074: Instruction - enemy $0FB2 = RTS ;;;
+;;; $8074: Instruction - Enemy.var5 = RTS ;;;
 Instruction_CommonAA_SetEnemy0FB2ToRTS:
     LDA.W #RTS_AA807B                                                    ;AA8074;
-    STA.W $0FB2,X                                                        ;AA8077;
+    STA.W Enemy.var5,X                                                        ;AA8077;
     RTL                                                                  ;AA807A;
 
 
@@ -169,9 +169,9 @@ RTS_AA807B:
 
 ;;; $807C: Instruction - delete enemy ;;;
 Instruction_CommonAA_DeleteEnemy:
-    LDA.W $0F86,X                                                        ;AA807C;
+    LDA.W Enemy.properties,X                                                        ;AA807C;
     ORA.W #$0200                                                         ;AA807F;
-    STA.W $0F86,X                                                        ;AA8082;
+    STA.W Enemy.properties,X                                                        ;AA8082;
     PLA                                                                  ;AA8085;
     PEA.W ProcessEnemyInstructions_return-1                              ;AA8086;
     RTL                                                                  ;AA8089;
@@ -180,11 +180,11 @@ Instruction_CommonAA_DeleteEnemy:
 ;;; $808A: Instruction - call function [[Y]] ;;;
 Instruction_CommonAA_CallFunctionInY:
     LDA.W $0000,Y                                                        ;AA808A;
-    STA.B $12                                                            ;AA808D;
+    STA.B DP_Temp12                                                            ;AA808D;
     PHY                                                                  ;AA808F;
     PHX                                                                  ;AA8090;
     PEA.W .manualReturn-1                                                ;AA8091;
-    JMP.W ($0012)                                                        ;AA8094;
+    JMP.W (DP_Temp12)                                                        ;AA8094;
 
   .manualReturn:
     PLX                                                                  ;AA8097;
@@ -197,12 +197,12 @@ Instruction_CommonAA_CallFunctionInY:
 ;;; $809C: Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 Instruction_CommonAA_CallFunctionInY_WithA:
     LDA.W $0000,Y                                                        ;AA809C;
-    STA.B $12                                                            ;AA809F;
+    STA.B DP_Temp12                                                            ;AA809F;
     LDA.W $0002,Y                                                        ;AA80A1;
     PHY                                                                  ;AA80A4;
     PHX                                                                  ;AA80A5;
     PEA.W .manualReturn-1                                                ;AA80A6;
-    JMP.W ($0012)                                                        ;AA80A9;
+    JMP.W (DP_Temp12)                                                        ;AA80A9;
 
   .manualReturn:
     PLX                                                                  ;AA80AC;
@@ -218,9 +218,9 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $80B5: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Instruction_CommonAA_CallExternalFunctionInY_AA80B5:
     LDA.W $0000,Y                                                        ;AA80B5;
-    STA.B $12                                                            ;AA80B8;
+    STA.B DP_Temp12                                                            ;AA80B8;
     LDA.W $0001,Y                                                        ;AA80BA;
-    STA.B $13                                                            ;AA80BD;
+    STA.B DP_Temp13                                                            ;AA80BD;
     PHX                                                                  ;AA80BF;
     PHY                                                                  ;AA80C0;
     JSL.L .externalFunction                                              ;AA80C1;
@@ -232,15 +232,15 @@ UNUSED_Instruction_CommonAA_CallExternalFunctionInY_AA80B5:
     RTL                                                                  ;AA80CA;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;AA80CB;
+    JML.W [DP_Temp12]                                                        ;AA80CB;
 
 
 ;;; $80CE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_CommonAA_CallExternalFunctionInY_WithA_AA80CE:
     LDA.W $0000,Y                                                        ;AA80CE;
-    STA.B $12                                                            ;AA80D1;
+    STA.B DP_Temp12                                                            ;AA80D1;
     LDA.W $0001,Y                                                        ;AA80D3;
-    STA.B $13                                                            ;AA80D6;
+    STA.B DP_Temp13                                                            ;AA80D6;
     LDA.W $0003,Y                                                        ;AA80D8;
     PHX                                                                  ;AA80DB;
     PHY                                                                  ;AA80DC;
@@ -254,7 +254,7 @@ UNUSED_Inst_CommonAA_CallExternalFunctionInY_WithA_AA80CE:
     RTL                                                                  ;AA80E9;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;AA80EA;
+    JML.W [DP_Temp12]                                                        ;AA80EA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -267,7 +267,7 @@ Instruction_CommonAA_GotoY:
 
 ;;; $80F2: Instruction - go to [[Y]] + ±[[Y]] ;;;
 Instruction_CommonAA_GotoY_PlusY:
-    STY.B $12                                                            ;AA80F2;
+    STY.B DP_Temp12                                                            ;AA80F2;
     DEY                                                                  ;AA80F4;
     LDA.W $0000,Y                                                        ;AA80F5;
     XBA                                                                  ;AA80F8;
@@ -279,14 +279,14 @@ Instruction_CommonAA_GotoY_PlusY:
     ORA.W #$FF00                                                         ;AA8100;
 
 +   CLC                                                                  ;AA8103;
-    ADC.B $12                                                            ;AA8104;
+    ADC.B DP_Temp12                                                            ;AA8104;
     TAY                                                                  ;AA8106;
     RTL                                                                  ;AA8107;
 
 
 ;;; $8108: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonAA_DecrementTimer_GotoYIfNonZero:
-    DEC.W $0F90,X                                                        ;AA8108;
+    DEC.W Enemy.loopCounter,X                                                        ;AA8108;
     BNE Instruction_CommonAA_GotoY                                       ;AA810B;
     INY                                                                  ;AA810D;
     INY                                                                  ;AA810E;
@@ -295,7 +295,7 @@ Instruction_CommonAA_DecrementTimer_GotoYIfNonZero:
 
 ;;; $8110: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonAA_DecrementTimer_GotoYIfNonZero_duplicate:
-    DEC.W $0F90,X                                                        ;AA8110;
+    DEC.W Enemy.loopCounter,X                                                        ;AA8110;
     BNE Instruction_CommonAA_GotoY                                       ;AA8113;
     INY                                                                  ;AA8115;
     INY                                                                  ;AA8116;
@@ -305,7 +305,7 @@ Instruction_CommonAA_DecrementTimer_GotoYIfNonZero_duplicate:
 ;;; $8118: Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 Instruction_CommonAA_DecrementTimer_GotoY_PlusY_IfNonZero:
     SEP #$20                                                             ;AA8118;
-    DEC.W $0F90,X                                                        ;AA811A;
+    DEC.W Enemy.loopCounter,X                                                        ;AA811A;
     REP #$20                                                             ;AA811D;
     BNE Instruction_CommonAA_GotoY_PlusY                                 ;AA811F;
     INY                                                                  ;AA8121;
@@ -315,7 +315,7 @@ Instruction_CommonAA_DecrementTimer_GotoY_PlusY_IfNonZero:
 ;;; $8123: Instruction - timer = [[Y]] ;;;
 Instruction_CommonAA_TimerInY:
     LDA.W $0000,Y                                                        ;AA8123;
-    STA.W $0F90,X                                                        ;AA8126;
+    STA.W Enemy.loopCounter,X                                                        ;AA8126;
     INY                                                                  ;AA8129;
     INY                                                                  ;AA812A;
     RTL                                                                  ;AA812B;
@@ -333,7 +333,7 @@ Instruction_CommonAA_Sleep:
     DEY                                                                  ;AA812F;
     DEY                                                                  ;AA8130;
     TYA                                                                  ;AA8131;
-    STA.W $0F92,X                                                        ;AA8132;
+    STA.W Enemy.instList,X                                                        ;AA8132;
     PLA                                                                  ;AA8135;
     PEA.W ProcessEnemyInstructions_return-1                              ;AA8136;
     RTL                                                                  ;AA8139;
@@ -346,11 +346,11 @@ Instruction_CommonAA_WaitYFrames:
 ; useful for e.g. GT eye beam attack ($AA:D10D), implemented by an instruction list that has no graphical instructions,
 ; which allows it to be called from multiple different poses
     LDA.W $0000,Y                                                        ;AA813A;
-    STA.W $0F94,X                                                        ;AA813D;
+    STA.W Enemy.instTimer,X                                                        ;AA813D;
     INY                                                                  ;AA8140;
     INY                                                                  ;AA8141;
     TYA                                                                  ;AA8142;
-    STA.W $0F92,X                                                        ;AA8143;
+    STA.W Enemy.instList,X                                                        ;AA8143;
     PLA                                                                  ;AA8146;
     PEA.W ProcessEnemyInstructions_return-1                              ;AA8147;
     RTL                                                                  ;AA814A;
@@ -359,19 +359,19 @@ Instruction_CommonAA_WaitYFrames:
 ;;; $814B: Instruction - transfer [[Y]] bytes from [[Y] + 2] to VRAM [[Y] + 5] ;;;
 Instruction_CommonAA_TransferYBytesInYToVRAM:
     PHX                                                                  ;AA814B;
-    LDX.W $0330                                                          ;AA814C;
+    LDX.W VRAMWriteStack                                                          ;AA814C;
     LDA.W $0000,Y                                                        ;AA814F;
-    STA.B $D0,X                                                          ;AA8152;
+    STA.B VRAMWrite.size,X                                                          ;AA8152;
     LDA.W $0002,Y                                                        ;AA8154;
-    STA.B $D2,X                                                          ;AA8157;
+    STA.B VRAMWrite.src,X                                                          ;AA8157;
     LDA.W $0003,Y                                                        ;AA8159;
-    STA.B $D3,X                                                          ;AA815C;
+    STA.B VRAMWrite.src+1,X                                                          ;AA815C;
     LDA.W $0005,Y                                                        ;AA815E;
-    STA.B $D5,X                                                          ;AA8161;
+    STA.B VRAMWrite.dest,X                                                          ;AA8161;
     TXA                                                                  ;AA8163;
     CLC                                                                  ;AA8164;
     ADC.W #$0007                                                         ;AA8165;
-    STA.W $0330                                                          ;AA8168;
+    STA.W VRAMWriteStack                                                          ;AA8168;
     TYA                                                                  ;AA816B;
     CLC                                                                  ;AA816C;
     ADC.W #$0007                                                         ;AA816D;
@@ -382,17 +382,17 @@ Instruction_CommonAA_TransferYBytesInYToVRAM:
 
 ;;; $8173: Instruction - enable off-screen processing ;;;
 Instruction_CommonAA_EnableOffScreenProcessing:
-    LDA.W $0F86,X                                                        ;AA8173;
+    LDA.W Enemy.properties,X                                                        ;AA8173;
     ORA.W #$0800                                                         ;AA8176;
-    STA.W $0F86,X                                                        ;AA8179;
+    STA.W Enemy.properties,X                                                        ;AA8179;
     RTL                                                                  ;AA817C;
 
 
 ;;; $817D: Instruction - disable off-screen processing ;;;
 Instruction_CommonAA_DisableOffScreenProcessing:
-    LDA.W $0F86,X                                                        ;AA817D;
+    LDA.W Enemy.properties,X                                                        ;AA817D;
     AND.W #$F7FF                                                         ;AA8180;
-    STA.W $0F86,X                                                        ;AA8183;
+    STA.W Enemy.properties,X                                                        ;AA8183;
     RTL                                                                  ;AA8186;
 
 
@@ -4234,17 +4234,17 @@ InstList_Torizo_DeathSequence_2:
 
 ;;; $B224: Instruction - set enemy as visible ;;;
 Instruction_Torizo_SetAsVisible:
-    LDA.W $0F86,X                                                        ;AAB224;
+    LDA.W Enemy.properties,X                                                        ;AAB224;
     AND.W #$FEFF                                                         ;AAB227;
-    STA.W $0F86,X                                                        ;AAB22A;
+    STA.W Enemy.properties,X                                                        ;AAB22A;
     RTL                                                                  ;AAB22D;
 
 
 ;;; $B22E: Instruction - set enemy as invisible ;;;
 Instruction_Torizo_SetAsInvisible:
-    LDA.W $0F86,X                                                        ;AAB22E;
+    LDA.W Enemy.properties,X                                                        ;AAB22E;
     ORA.W #$0100                                                         ;AAB231;
-    STA.W $0F86,X                                                        ;AAB234;
+    STA.W Enemy.properties,X                                                        ;AAB234;
     RTL                                                                  ;AAB237;
 
 
@@ -5327,7 +5327,7 @@ MakeTorizoJumpForwards:
     LDA.W #$0028                                                         ;AAC220;
     STA.W Torizo.YAcceleration,X                                         ;AAC223;
     LDA.W #$0001                                                         ;AAC226;
-    STA.W $0F94,X                                                        ;AAC229;
+    STA.W Enemy.instTimer,X                                                        ;AAC229;
     RTS                                                                  ;AAC22C;
 
 
@@ -5347,7 +5347,7 @@ MakeTorizoJumpBackwards:
     LDA.W #$0028                                                         ;AAC243;
     STA.W Torizo.YAcceleration,X                                         ;AAC246;
     LDA.W #$0001                                                         ;AAC249;
-    STA.W $0F94,X                                                        ;AAC24C;
+    STA.W Enemy.instTimer,X                                                        ;AAC24C;
     RTS                                                                  ;AAC24F;
 
 
@@ -5516,10 +5516,10 @@ Instruction_Torizo_Spawn5LowHealthExplosion_SleepFor28Frames:
     INY                                                                  ;AAC31B;
     INY                                                                  ;AAC31C;
     TYA                                                                  ;AAC31D;
-    STA.W $0F92,X                                                        ;AAC31E;
+    STA.W Enemy.instList,X                                                        ;AAC31E;
     LDA.W #$0028                                                         ;AAC321;
     STA.W $0F9C,X                                                        ;AAC324;
-    STA.W $0F94,X                                                        ;AAC327;
+    STA.W Enemy.instTimer,X                                                        ;AAC327;
     PLA                                                                  ;AAC32A;
     PEA.W ProcessEnemyInstructions_return-1                              ;AAC32B;
     RTL                                                                  ;AAC32E;
@@ -5532,10 +5532,10 @@ Instruction_Torizo_SpawnTorizoDeathExplosion_SleepFor1IFrame:
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;AAC333;
     PLY                                                                  ;AAC337;
     TYA                                                                  ;AAC338;
-    STA.W $0F92,X                                                        ;AAC339;
+    STA.W Enemy.instList,X                                                        ;AAC339;
     LDA.W #$0001                                                         ;AAC33C;
     STA.W $0F9C,X                                                        ;AAC33F;
-    STA.W $0F94,X                                                        ;AAC342;
+    STA.W Enemy.instTimer,X                                                        ;AAC342;
     PLA                                                                  ;AAC345;
     PEA.W ProcessEnemyInstructions_return-1                              ;AAC346;
     RTL                                                                  ;AAC349;
@@ -6054,9 +6054,9 @@ Function_Torizo_SimpleMovement:
 
 ;;; $C6C6: Torizo function - wake enemy when Bomb Torizo chozo finishes crumbling ;;;
 Function_Torizo_WakeWhenBombTorizoChozoFinishesCrumbling:
-    LDA.W $0F86,X                                                        ;AAC6C6;
+    LDA.W Enemy.properties,X                                                        ;AAC6C6;
     ORA.W #$0400                                                         ;AAC6C9;
-    STA.W $0F86,X                                                        ;AAC6CC;
+    STA.W Enemy.properties,X                                                        ;AAC6CC;
     PHX                                                                  ;AAC6CF;
     LDX.W #$004E                                                         ;AAC6D0;
 
@@ -6070,13 +6070,13 @@ Function_Torizo_WakeWhenBombTorizoChozoFinishesCrumbling:
     PLX                                                                  ;AAC6DF;
     LDA.W TorizoMusicTracks_song1                                        ;AAC6E0;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;AAC6E3;
-    LDA.W $0F86,X                                                        ;AAC6E7;
+    LDA.W Enemy.properties,X                                                        ;AAC6E7;
     AND.W #$FBFF                                                         ;AAC6EA;
-    STA.W $0F86,X                                                        ;AAC6ED;
-    INC.W $0F92,X                                                        ;AAC6F0;
-    INC.W $0F92,X                                                        ;AAC6F3;
+    STA.W Enemy.properties,X                                                        ;AAC6ED;
+    INC.W Enemy.instList,X                                                        ;AAC6F0;
+    INC.W Enemy.instList,X                                                        ;AAC6F3;
     LDA.W #$0001                                                         ;AAC6F6;
-    STA.W $0F94,X                                                        ;AAC6F9;
+    STA.W Enemy.instTimer,X                                                        ;AAC6F9;
     RTS                                                                  ;AAC6FC;
 
   .return:
@@ -6092,12 +6092,12 @@ Function_Torizo_NormalMovement:
     LDA.W $0F8C,X                                                        ;AAC707;
     CMP.W #$015E                                                         ;AAC70A;
     BCS .notLowHealth                                                    ;AAC70D;
-    LDA.W $0F92,X                                                        ;AAC70F;
+    LDA.W Enemy.instList,X                                                        ;AAC70F;
     STA.L Torizo.gutExplosionLinkInstruction,X                           ;AAC712;
     LDA.W #InstList_Torizo_SpecialCallable_BlowUpBombTorizosGut          ;AAC716;
-    STA.W $0F92,X                                                        ;AAC719;
+    STA.W Enemy.instList,X                                                        ;AAC719;
     LDA.W #$0001                                                         ;AAC71C;
-    STA.W $0F94,X                                                        ;AAC71F;
+    STA.W Enemy.instTimer,X                                                        ;AAC71F;
     RTS                                                                  ;AAC722;
 
   .notLowHealth:
@@ -6116,9 +6116,9 @@ Function_Torizo_NormalMovement:
 
 +   STA.L Torizo.linkInstruction,X                                       ;AAC73D;
     LDA.W #InstList_Torizo_Callable_BlowUpBombTorizosFace                ;AAC741;
-    STA.W $0F92,X                                                        ;AAC744;
+    STA.W Enemy.instList,X                                                        ;AAC744;
     LDA.W #$0001                                                         ;AAC747;
-    STA.W $0F94,X                                                        ;AAC74A;
+    STA.W Enemy.instTimer,X                                                        ;AAC74A;
     RTS                                                                  ;AAC74D;
 
   .noChange:
@@ -6148,9 +6148,9 @@ Function_Torizo_Movement_Walking:
   .facingRight:
     LDA.W #InstList_Torizo_FacingLeft_TurningLeft                        ;AAC778;
 
-+   STA.W $0F92,X                                                        ;AAC77B;
++   STA.W Enemy.instList,X                                                        ;AAC77B;
     LDA.W #$0001                                                         ;AAC77E;
-    STA.W $0F94,X                                                        ;AAC781;
+    STA.W Enemy.instTimer,X                                                        ;AAC781;
     RTS                                                                  ;AAC784;
 
   .notTurning:
@@ -6176,9 +6176,9 @@ Function_Torizo_Movement_Walking:
   ..facingRight:
     LDA.W #InstList_Torizo_FacingRight_Falling_0                         ;AAC7AB;
 
-+   STA.W $0F92,X                                                        ;AAC7AE;
++   STA.W Enemy.instList,X                                                        ;AAC7AE;
     LDA.W #$0001                                                         ;AAC7B1;
-    STA.W $0F94,X                                                        ;AAC7B4;
+    STA.W Enemy.instTimer,X                                                        ;AAC7B4;
     LDA.W #$0100                                                         ;AAC7B7;
     STA.W Torizo.YVelocity,X                                             ;AAC7BA;
     STZ.W Torizo.XVelocity,X                                             ;AAC7BD;
@@ -6202,9 +6202,9 @@ Function_Torizo_Movement_Walking:
   ..facingRight:
     LDA.W #InstList_Torizo_FacingLeft_Faceless_TurningLeft               ;AAC7DF;
 
-+   STA.W $0F92,X                                                        ;AAC7E2;
++   STA.W Enemy.instList,X                                                        ;AAC7E2;
     LDA.W #$0001                                                         ;AAC7E5;
-    STA.W $0F94,X                                                        ;AAC7E8;
+    STA.W Enemy.instTimer,X                                                        ;AAC7E8;
     RTS                                                                  ;AAC7EB;
 
   .facelessNotTurning:
@@ -6230,9 +6230,9 @@ Function_Torizo_Movement_Walking:
   ..facingRight:
     LDA.W #InstList_Torizo_FacingRight_Falling_0                         ;AAC812;
 
-+   STA.W $0F92,X                                                        ;AAC815;
++   STA.W Enemy.instList,X                                                        ;AAC815;
     LDA.W #$0001                                                         ;AAC818;
-    STA.W $0F94,X                                                        ;AAC81B;
+    STA.W Enemy.instTimer,X                                                        ;AAC81B;
     LDA.W #$0100                                                         ;AAC81E;
     STA.W Torizo.YVelocity,X                                             ;AAC821;
     STZ.W Torizo.XVelocity,X                                             ;AAC824;
@@ -6275,9 +6275,9 @@ Function_Torizo_Movement_Jumping_Falling:
 
   .collision:
     LDA.L Torizo.linkInstruction,X                                       ;AAC85F;
-    STA.W $0F92,X                                                        ;AAC863;
+    STA.W Enemy.instList,X                                                        ;AAC863;
     LDA.W #$0001                                                         ;AAC866;
-    STA.W $0F94,X                                                        ;AAC869;
+    STA.W Enemy.instTimer,X                                                        ;AAC869;
     LDA.W #$0100                                                         ;AAC86C;
     STA.W Torizo.YVelocity,X                                             ;AAC86F;
     LDA.W #$0004                                                         ;AAC872;
@@ -6295,17 +6295,17 @@ InitAI_Torizo:
     JSL.L CheckIfBossBitsForCurrentAreaMatchAnyBitsInA                   ;AAC882;
     BCC .notDead                                                         ;AAC886;
     LDX.W $0E54                                                          ;AAC888;
-    LDA.W $0F86,X                                                        ;AAC88B;
+    LDA.W Enemy.properties,X                                                        ;AAC88B;
     ORA.W #$0200                                                         ;AAC88E;
-    STA.W $0F86,X                                                        ;AAC891;
+    STA.W Enemy.properties,X                                                        ;AAC891;
     RTL                                                                  ;AAC894;
 
   .notDead:
     LDY.W $079F                                                          ;AAC895;
     LDX.W $0E54                                                          ;AAC898;
-    LDA.W $0F86,X                                                        ;AAC89B;
+    LDA.W Enemy.properties,X                                                        ;AAC89B;
     ORA.W TorizoInitial_properties,Y                                     ;AAC89E;
-    STA.W $0F86,X                                                        ;AAC8A1;
+    STA.W Enemy.properties,X                                                        ;AAC8A1;
     LDA.W $0F88,X                                                        ;AAC8A4;
     ORA.W #$0004                                                         ;AAC8A7;
     STA.W $0F88,X                                                        ;AAC8AA;
@@ -6316,13 +6316,13 @@ InitAI_Torizo:
     LDA.W #Function_Torizo_SimpleMovement                                ;AAC8B9;
     STA.W Torizo.function,X                                              ;AAC8BC;
     LDA.W #$0001                                                         ;AAC8BF;
-    STA.W $0F94,X                                                        ;AAC8C2;
-    STZ.W $0F90,X                                                        ;AAC8C5;
+    STA.W Enemy.instTimer,X                                                        ;AAC8C2;
+    STZ.W Enemy.loopCounter,X                                                        ;AAC8C5;
     STZ.W $0F96,X                                                        ;AAC8C8;
     LDA.W #.return2                                                      ;AAC8CB;
     STA.W Torizo.movementFunction,X                                      ;AAC8CE;
     LDA.W TorizoInitial_instListPointer,Y                                ;AAC8D1;
-    STA.W $0F92,X                                                        ;AAC8D4;
+    STA.W Enemy.instList,X                                                        ;AAC8D4;
     LDA.W #ExtendedSpritemap_Torizo_Blank                                ;AAC8D7;
     STA.W $0F8E,X                                                        ;AAC8DA;
     LDA.W TorizoInitial_XPosition,Y                                      ;AAC8DD;
@@ -6430,15 +6430,15 @@ EnemyShot_Torizo_Normal:
     LDA.W #RTS_AAC6AB                                                    ;AAC99C;
     STA.W Torizo.function,X                                              ;AAC99F;
     LDA.W #InstList_Torizo_DeathSequence_0                               ;AAC9A2;
-    STA.W $0F92,X                                                        ;AAC9A5;
+    STA.W Enemy.instList,X                                                        ;AAC9A5;
     LDA.W #$0001                                                         ;AAC9A8;
-    STA.W $0F94,X                                                        ;AAC9AB;
+    STA.W Enemy.instTimer,X                                                        ;AAC9AB;
     LDA.W Torizo.behavioralProperties,X                                  ;AAC9AE;
     ORA.W #$C000                                                         ;AAC9B1;
     STA.W Torizo.behavioralProperties,X                                  ;AAC9B4;
-    LDA.W $0F86,X                                                        ;AAC9B7;
+    LDA.W Enemy.properties,X                                                        ;AAC9B7;
     ORA.W #$0400                                                         ;AAC9BA;
-    STA.W $0F86,X                                                        ;AAC9BD;
+    STA.W Enemy.properties,X                                                        ;AAC9BD;
 
   .return:
     RTL                                                                  ;AAC9C0;
@@ -7809,10 +7809,10 @@ Function_GoldenTorizo_WakeIfSamusIsBelowAndRightOfTargetPos:
     LDA.W #$0170                                                         ;AAD5CA;
     CMP.W $0AF6                                                          ;AAD5CD;
     BCS .return                                                          ;AAD5D0;
-    INC.W $0F92,X                                                        ;AAD5D2;
-    INC.W $0F92,X                                                        ;AAD5D5;
+    INC.W Enemy.instList,X                                                        ;AAD5D2;
+    INC.W Enemy.instList,X                                                        ;AAD5D5;
     LDA.W #$0001                                                         ;AAD5D8;
-    STA.W $0F94,X                                                        ;AAD5DB;
+    STA.W Enemy.instTimer,X                                                        ;AAD5DB;
 
   .return:
     RTS                                                                  ;AAD5DE;
@@ -7857,9 +7857,9 @@ Function_GoldenTorizo_Movement_Walking:
   .facingRight:
     LDA.W #InstList_GoldenTorizo_TurningLeft                             ;AAD60F;
 
-+   STA.W $0F92,X                                                        ;AAD612;
++   STA.W Enemy.instList,X                                                        ;AAD612;
     LDA.W #$0001                                                         ;AAD615;
-    STA.W $0F94,X                                                        ;AAD618;
+    STA.W Enemy.instTimer,X                                                        ;AAD618;
     RTS                                                                  ;AAD61B;
 
   .notTurning:
@@ -7885,9 +7885,9 @@ Function_GoldenTorizo_Movement_Walking:
   ..facingRight:
     LDA.W #InstList_Torizo_FacingRight_Falling_0                         ;AAD642;
 
-+   STA.W $0F92,X                                                        ;AAD645;
++   STA.W Enemy.instList,X                                                        ;AAD645;
     LDA.W #$0001                                                         ;AAD648;
-    STA.W $0F94,X                                                        ;AAD64B;
+    STA.W Enemy.instTimer,X                                                        ;AAD64B;
     LDA.W #$0100                                                         ;AAD64E;
     STA.W Torizo.YVelocity,X                                             ;AAD651;
     STZ.W Torizo.XVelocity,X                                             ;AAD654;
@@ -7951,15 +7951,15 @@ ShotReaction_GoldenTorizo_Damaged:
     LDA.W $0F8C,X                                                        ;AAD6AD;
     BNE .return                                                          ;AAD6B0;
     LDA.W #InstList_Torizo_DeathSequence_0                               ;AAD6B2;
-    STA.W $0F92,X                                                        ;AAD6B5;
+    STA.W Enemy.instList,X                                                        ;AAD6B5;
     LDA.W #$0001                                                         ;AAD6B8;
-    STA.W $0F94,X                                                        ;AAD6BB;
+    STA.W Enemy.instTimer,X                                                        ;AAD6BB;
     LDA.W Torizo.behavioralProperties,X                                  ;AAD6BE;
     ORA.W #$C000                                                         ;AAD6C1;
     STA.W Torizo.behavioralProperties,X                                  ;AAD6C4;
-    LDA.W $0F86,X                                                        ;AAD6C7;
+    LDA.W Enemy.properties,X                                                        ;AAD6C7;
     ORA.W #$0400                                                         ;AAD6CA;
-    STA.W $0F86,X                                                        ;AAD6CD;
+    STA.W Enemy.properties,X                                                        ;AAD6CD;
 
   .return:
     RTL                                                                  ;AAD6D0;
@@ -7973,7 +7973,7 @@ ShotReaction_GoldenTorizo_Normal_Missile:
     LDA.W #RTS_AAC6AB                                                    ;AAD6DA;
     STA.W Torizo.function,X                                              ;AAD6DD;
     LDA.W #$0001                                                         ;AAD6E0;
-    STA.W $0F94,X                                                        ;AAD6E3;
+    STA.W Enemy.instTimer,X                                                        ;AAD6E3;
     BIT.W Torizo.graphicalProperties,X                                   ;AAD6E6;
     BMI .keepRight                                                       ;AAD6E9;
     LDA.W #InstList_GoldenTorizo_Dodge_TurningLeft                       ;AAD6EB;
@@ -7982,7 +7982,7 @@ ShotReaction_GoldenTorizo_Normal_Missile:
   .keepRight:
     LDA.W #InstList_GoldenTorizo_Dodge_TurningRight                      ;AAD6F0;
 
-+   STA.W $0F92,X                                                        ;AAD6F3;
++   STA.W Enemy.instList,X                                                        ;AAD6F3;
     RTL                                                                  ;AAD6F6;
 
 
@@ -8002,7 +8002,7 @@ ShotReaction_GoldenTorizo_Normal_SuperMissile:
     ORA.W #$0010                                                         ;AAD711;
     STA.W $0C04,Y                                                        ;AAD714;
     LDA.W #$0001                                                         ;AAD717;
-    STA.W $0F94,X                                                        ;AAD71A;
+    STA.W Enemy.instTimer,X                                                        ;AAD71A;
     LDA.W Torizo.graphicalProperties,X                                   ;AAD71D;
     BIT.W #$2000                                                         ;AAD720;
     BNE .backgroundLegForward                                            ;AAD723;
@@ -8024,7 +8024,7 @@ ShotReaction_GoldenTorizo_Normal_SuperMissile:
   ..facingRight:
     LDA.W #InstList_GoldenTorizo_CaughtSuper_FacingRight_LeftLegFwd      ;AAD73E;
 
-+   STA.W $0F92,X                                                        ;AAD741;
++   STA.W Enemy.instList,X                                                        ;AAD741;
     RTL                                                                  ;AAD744;
 
 
@@ -8089,11 +8089,11 @@ InitAI_TourianStatue:
     LDX.W $0E54                                                          ;AAD7C8;
     STZ.W $0F96,X                                                        ;AAD7CB;
     LDA.W #$0001                                                         ;AAD7CE;
-    STA.W $0F94,X                                                        ;AAD7D1;
-    STZ.W $0F90,X                                                        ;AAD7D4;
+    STA.W Enemy.instTimer,X                                                        ;AAD7D1;
+    STZ.W Enemy.loopCounter,X                                                        ;AAD7D4;
     LDY.W $0FB4,X                                                        ;AAD7D7;
     LDA.W .pointers,Y                                                    ;AAD7DA;
-    STA.W $0F92,X                                                        ;AAD7DD;
+    STA.W Enemy.instList,X                                                        ;AAD7DD;
     LDY.W $0FB4,X                                                        ;AAD7E0;
     BNE .nonZeroParam1                                                   ;AAD7E3;
     LDY.W #EnemyProjectile_TourianStatueBaseDecoration                   ;AAD7E5;
@@ -8490,9 +8490,9 @@ RTS_AADAE4:
     LDA.W #RTS_AADCAA                                                    ;AADAF1;
     STA.W Shaktool.function,X                                            ;AADAF4;
     LDA.W ShaktoolPieceData_unusedAttackInstListPointer,Y                ;AADAF7;
-    STA.W $0F92,X                                                        ;AADAFA;
+    STA.W Enemy.instList,X                                                        ;AADAFA;
     LDA.W #$0001                                                         ;AADAFD;
-    STA.W $0F94,X                                                        ;AADB00;
+    STA.W Enemy.instTimer,X                                                        ;AADB00;
     TXA                                                                  ;AADB03;
     SEC                                                                  ;AADB04;
     SBC.W #$0040                                                         ;AADB05;
@@ -8768,9 +8768,9 @@ Function_Shaktool_Head:
     LSR                                                                  ;AADD06;
     TAY                                                                  ;AADD07;
     LDA.W .pointers,Y                                                    ;AADD08;
-    STA.W $0F92,X                                                        ;AADD0B;
+    STA.W Enemy.instList,X                                                        ;AADD0B;
     LDA.W #$0001                                                         ;AADD0E;
-    STA.W $0F94,X                                                        ;AADD11;
+    STA.W Enemy.instTimer,X                                                        ;AADD11;
     RTS                                                                  ;AADD14;
 
   .pointers:
@@ -8912,9 +8912,9 @@ Function_Shaktool_FinalPiece:
     LDA.W #RTS_AADCAA                                                    ;AADE26;
     STA.W Shaktool.function,X                                            ;AADE29;
     LDA.W ShaktoolPieceData_headBobInstListPointer,Y                     ;AADE2C;
-    STA.W $0F92,X                                                        ;AADE2F;
+    STA.W Enemy.instList,X                                                        ;AADE2F;
     LDA.W #$0001                                                         ;AADE32;
-    STA.W $0F94,X                                                        ;AADE35;
+    STA.W Enemy.instTimer,X                                                        ;AADE35;
     TXA                                                                  ;AADE38;
     SEC                                                                  ;AADE39;
     SBC.W #$0040                                                         ;AADE3A;
@@ -8931,15 +8931,15 @@ InitAI_Shaktool:
 ; Index identifies pieces starting from the initial rightmost piece and increasing to the initial leftmost piece
     LDX.W $0E54                                                          ;AADE43;
     LDA.W #$0001                                                         ;AADE46;
-    STA.W $0F94,X                                                        ;AADE49;
-    STZ.W $0F90,X                                                        ;AADE4C;
+    STA.W Enemy.instTimer,X                                                        ;AADE49;
+    STZ.W Enemy.loopCounter,X                                                        ;AADE4C;
     LDA.W #$0000                                                         ;AADE4F;
     STA.W Shaktool.facingAngle,X                                         ;AADE52;
     STA.W Shaktool.headDirection,X                                       ;AADE55;
     LDY.W $0FB6,X                                                        ;AADE58;
-    LDA.W $0F86,X                                                        ;AADE5B;
+    LDA.W Enemy.properties,X                                                        ;AADE5B;
     ORA.W ShaktoolPieceData_properties,Y                                 ;AADE5E;
-    STA.W $0F86,X                                                        ;AADE61;
+    STA.W Enemy.properties,X                                                        ;AADE61;
     TXA                                                                  ;AADE64;
     SEC                                                                  ;AADE65;
     SBC.W ShaktoolPieceData_RAMOffset,Y                                  ;AADE66;
@@ -8953,7 +8953,7 @@ InitAI_Shaktool:
     LDA.W ShaktoolPieceData_initialNeighborAngle,Y                       ;AADE7C;
     STA.W Shaktool.neighborAngle,X                                       ;AADE7F;
     LDA.W ShaktoolPieceData_initialInstListPointer,Y                     ;AADE82;
-    STA.W $0F92,X                                                        ;AADE85;
+    STA.W Enemy.instList,X                                                        ;AADE85;
     LDA.W ShaktoolPieceData_layerControl,Y                               ;AADE88;
     STA.W $0F9A,X                                                        ;AADE8B;
     TYA                                                                  ;AADE8E;
@@ -9060,7 +9060,7 @@ EnemyShot_Shaktool:
     BNE .return                                                          ;AADF3E;
     LDY.W Shaktool.primaryPieceEnemyIndex,X                              ;AADF40;
     LDA.W #$0200                                                         ;AADF43;
-    STA.W $0F86,Y                                                        ;AADF46;
+    STA.W Enemy.properties,Y                                                        ;AADF46;
     STA.W $0FC6,Y                                                        ;AADF49;
     STA.W $1006,Y                                                        ;AADF4C;
     STA.W $1046,Y                                                        ;AADF4F;
@@ -9323,9 +9323,9 @@ Function_Chozo_LowerNorfair:
     LDA.W Chozo.activationFlag,X                                         ;AAE445;
     BEQ .return                                                          ;AAE448;
     LDA.W #InstList_Chozo_LowerNorfair_Activated_0                       ;AAE44A;
-    STA.W $0F92,X                                                        ;AAE44D;
+    STA.W Enemy.instList,X                                                        ;AAE44D;
     LDA.W #$0001                                                         ;AAE450;
-    STA.W $0F94,X                                                        ;AAE453;
+    STA.W Enemy.instTimer,X                                                        ;AAE453;
 
   .return:
     RTS                                                                  ;AAE456;
@@ -9583,14 +9583,14 @@ InitAI_NoobTubeCrack:
 ;;; $E725: Initialisation AI - enemy $F0FF (chozo statue) ;;;
 InitAI_Chozo:
     LDX.W $0E54                                                          ;AAE725;
-    LDA.W $0F86,X                                                        ;AAE728;
+    LDA.W Enemy.properties,X                                                        ;AAE728;
     ORA.W #$A800                                                         ;AAE72B;
-    STA.W $0F86,X                                                        ;AAE72E;
+    STA.W Enemy.properties,X                                                        ;AAE72E;
     LDA.W #Spritemap_CommonAA_Nothing                                    ;AAE731;
     STA.W $0F8E,X                                                        ;AAE734;
     LDA.W #$0001                                                         ;AAE737;
-    STA.W $0F94,X                                                        ;AAE73A;
-    STZ.W $0F90,X                                                        ;AAE73D;
+    STA.W Enemy.instTimer,X                                                        ;AAE73A;
+    STZ.W Enemy.loopCounter,X                                                        ;AAE73D;
     LDA.W #RTS_AAE7A6                                                    ;AAE740;
     STA.W Chozo.function,X                                               ;AAE743;
     LDA.W #$0000                                                         ;AAE746;
@@ -9599,7 +9599,7 @@ InitAI_Chozo:
     STZ.W $0F9A                                                          ;AAE74F;
     LDY.W $0FB6,X                                                        ;AAE752;
     LDA.W .instListPointers,Y                                            ;AAE755;
-    STA.W $0F92,X                                                        ;AAE758;
+    STA.W Enemy.instList,X                                                        ;AAE758;
     TYA                                                                  ;AAE75B;
     BNE .lowerNorfair                                                    ;AAE75C;
     LDX.W #$001E                                                         ;AAE75E;
@@ -9665,9 +9665,9 @@ Function_Chozo_WreckedShip:
     LDA.W Chozo.activationFlag,X                                         ;AAE7BC;
     BEQ .return                                                          ;AAE7BF;
     LDA.W #InstList_Chozo_WreckedShip_Activated_0                        ;AAE7C1;
-    STA.W $0F92,X                                                        ;AAE7C4;
+    STA.W Enemy.instList,X                                                        ;AAE7C4;
     LDA.W #$0001                                                         ;AAE7C7;
-    STA.W $0F94,X                                                        ;AAE7CA;
+    STA.W Enemy.instTimer,X                                                        ;AAE7CA;
     LDA.W #$FF00                                                         ;AAE7CD;
     STA.W $0FA8,X                                                        ;AAE7D0;
     LDA.W #$0100                                                         ;AAE7D3;

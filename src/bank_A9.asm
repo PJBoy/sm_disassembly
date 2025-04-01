@@ -146,20 +146,20 @@ NOPNOP_A98069:
     NOP                                                                  ;A9806A;
 
 
-;;; $806B: Instruction - enemy $0FB2 = [[Y]] ;;;
+;;; $806B: Instruction - Enemy.var5 = [[Y]] ;;;
 Instruction_CommonA9_Enemy0FB2_InY:
 ; Used only by torizos (for enemy movement function) and escape etecoon (for enemy function)
     LDA.W $0000,Y                                                        ;A9806B;
-    STA.W $0FB2,X                                                        ;A9806E;
+    STA.W Enemy.var5,X                                                        ;A9806E;
     INY                                                                  ;A98071;
     INY                                                                  ;A98072;
     RTL                                                                  ;A98073;
 
 
-;;; $8074: Instruction - enemy $0FB2 = RTS ;;;
+;;; $8074: Instruction - Enemy.var5 = RTS ;;;
 Instruction_CommonA9_SetEnemy0FB2ToRTS:
     LDA.W #RTS_A9807B                                                    ;A98074;
-    STA.W $0FB2,X                                                        ;A98077;
+    STA.W Enemy.var5,X                                                        ;A98077;
     RTL                                                                  ;A9807A;
 
 
@@ -169,9 +169,9 @@ RTS_A9807B:
 
 ;;; $807C: Instruction - delete enemy ;;;
 Instruction_CommonA9_DeleteEnemy:
-    LDA.W $0F86,X                                                        ;A9807C;
+    LDA.W Enemy.properties,X                                                        ;A9807C;
     ORA.W #$0200                                                         ;A9807F;
-    STA.W $0F86,X                                                        ;A98082;
+    STA.W Enemy.properties,X                                                        ;A98082;
     PLA                                                                  ;A98085;
     PEA.W ProcessEnemyInstructions_return-1                              ;A98086;
     RTL                                                                  ;A98089;
@@ -180,11 +180,11 @@ Instruction_CommonA9_DeleteEnemy:
 ;;; $808A: Instruction - call function [[Y]] ;;;
 Instruction_CommonA9_CallFunctionInY:
     LDA.W $0000,Y                                                        ;A9808A;
-    STA.B $12                                                            ;A9808D;
+    STA.B DP_Temp12                                                            ;A9808D;
     PHY                                                                  ;A9808F;
     PHX                                                                  ;A98090;
     PEA.W .manualReturn-1                                                ;A98091;
-    JMP.W ($0012)                                                        ;A98094;
+    JMP.W (DP_Temp12)                                                        ;A98094;
 
   .manualReturn:
     PLX                                                                  ;A98097;
@@ -197,12 +197,12 @@ Instruction_CommonA9_CallFunctionInY:
 ;;; $809C: Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 Instruction_CommonA9_CallFunctionInY_WithA:
     LDA.W $0000,Y                                                        ;A9809C;
-    STA.B $12                                                            ;A9809F;
+    STA.B DP_Temp12                                                            ;A9809F;
     LDA.W $0002,Y                                                        ;A980A1;
     PHY                                                                  ;A980A4;
     PHX                                                                  ;A980A5;
     PEA.W .manualReturn-1                                                ;A980A6;
-    JMP.W ($0012)                                                        ;A980A9;
+    JMP.W (DP_Temp12)                                                        ;A980A9;
 
   .manualReturn:
     PLX                                                                  ;A980AC;
@@ -218,9 +218,9 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $80B5: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Instruction_CommonA9_CallExternalFunctionInY_A980B5:
     LDA.W $0000,Y                                                        ;A980B5;
-    STA.B $12                                                            ;A980B8;
+    STA.B DP_Temp12                                                            ;A980B8;
     LDA.W $0001,Y                                                        ;A980BA;
-    STA.B $13                                                            ;A980BD;
+    STA.B DP_Temp13                                                            ;A980BD;
     PHX                                                                  ;A980BF;
     PHY                                                                  ;A980C0;
     JSL.L .externalFunction                                              ;A980C1;
@@ -232,15 +232,15 @@ UNUSED_Instruction_CommonA9_CallExternalFunctionInY_A980B5:
     RTL                                                                  ;A980CA;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;A980CB;
+    JML.W [DP_Temp12]                                                        ;A980CB;
 
 
 ;;; $80CE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_CommonA9_CallExternalFunctionInY_WithA_A980CE:
     LDA.W $0000,Y                                                        ;A980CE;
-    STA.B $12                                                            ;A980D1;
+    STA.B DP_Temp12                                                            ;A980D1;
     LDA.W $0001,Y                                                        ;A980D3;
-    STA.B $13                                                            ;A980D6;
+    STA.B DP_Temp13                                                            ;A980D6;
     LDA.W $0003,Y                                                        ;A980D8;
     PHX                                                                  ;A980DB;
     PHY                                                                  ;A980DC;
@@ -254,7 +254,7 @@ UNUSED_Inst_CommonA9_CallExternalFunctionInY_WithA_A980CE:
     RTL                                                                  ;A980E9;
 
   .externalFunction:
-    JML.W [$0012]                                                        ;A980EA;
+    JML.W [DP_Temp12]                                                        ;A980EA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -267,7 +267,7 @@ Instruction_CommonA9_GotoY:
 
 ;;; $80F2: Instruction - go to [[Y]] + ±[[Y]] ;;;
 Instruction_CommonA9_GotoY_PlusY:
-    STY.B $12                                                            ;A980F2;
+    STY.B DP_Temp12                                                            ;A980F2;
     DEY                                                                  ;A980F4;
     LDA.W $0000,Y                                                        ;A980F5;
     XBA                                                                  ;A980F8;
@@ -279,14 +279,14 @@ Instruction_CommonA9_GotoY_PlusY:
     ORA.W #$FF00                                                         ;A98100;
 
 +   CLC                                                                  ;A98103;
-    ADC.B $12                                                            ;A98104;
+    ADC.B DP_Temp12                                                            ;A98104;
     TAY                                                                  ;A98106;
     RTL                                                                  ;A98107;
 
 
 ;;; $8108: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA9_DecrementTimer_GotoYIfNonZero:
-    DEC.W $0F90,X                                                        ;A98108;
+    DEC.W Enemy.loopCounter,X                                                        ;A98108;
     BNE Instruction_CommonA9_GotoY                                       ;A9810B;
     INY                                                                  ;A9810D;
     INY                                                                  ;A9810E;
@@ -295,7 +295,7 @@ Instruction_CommonA9_DecrementTimer_GotoYIfNonZero:
 
 ;;; $8110: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA9_DecrementTimer_GotoYIfNonZero_duplicate:
-    DEC.W $0F90,X                                                        ;A98110;
+    DEC.W Enemy.loopCounter,X                                                        ;A98110;
     BNE Instruction_CommonA9_GotoY                                       ;A98113;
     INY                                                                  ;A98115;
     INY                                                                  ;A98116;
@@ -305,7 +305,7 @@ Instruction_CommonA9_DecrementTimer_GotoYIfNonZero_duplicate:
 ;;; $8118: Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 Instruction_CommonA9_DecrementTimer_GotoY_PlusY_IfNonZero:
     SEP #$20                                                             ;A98118;
-    DEC.W $0F90,X                                                        ;A9811A;
+    DEC.W Enemy.loopCounter,X                                                        ;A9811A;
     REP #$20                                                             ;A9811D;
     BNE Instruction_CommonA9_GotoY_PlusY                                 ;A9811F;
     INY                                                                  ;A98121;
@@ -315,7 +315,7 @@ Instruction_CommonA9_DecrementTimer_GotoY_PlusY_IfNonZero:
 ;;; $8123: Instruction - timer = [[Y]] ;;;
 Instruction_CommonA9_TimerInY:
     LDA.W $0000,Y                                                        ;A98123;
-    STA.W $0F90,X                                                        ;A98126;
+    STA.W Enemy.loopCounter,X                                                        ;A98126;
     INY                                                                  ;A98129;
     INY                                                                  ;A9812A;
     RTL                                                                  ;A9812B;
@@ -333,7 +333,7 @@ Instruction_CommonA9_Sleep:
     DEY                                                                  ;A9812F;
     DEY                                                                  ;A98130;
     TYA                                                                  ;A98131;
-    STA.W $0F92,X                                                        ;A98132;
+    STA.W Enemy.instList,X                                                        ;A98132;
     PLA                                                                  ;A98135;
     PEA.W ProcessEnemyInstructions_return-1                              ;A98136;
     RTL                                                                  ;A98139;
@@ -346,11 +346,11 @@ Instruction_CommonA9_WaitYFrames:
 ; useful for e.g. GT eye beam attack ($AA:D10D), implemented by an instruction list that has no graphical instructions,
 ; which allows it to be called from multiple different poses
     LDA.W $0000,Y                                                        ;A9813A;
-    STA.W $0F94,X                                                        ;A9813D;
+    STA.W Enemy.instTimer,X                                                        ;A9813D;
     INY                                                                  ;A98140;
     INY                                                                  ;A98141;
     TYA                                                                  ;A98142;
-    STA.W $0F92,X                                                        ;A98143;
+    STA.W Enemy.instList,X                                                        ;A98143;
     PLA                                                                  ;A98146;
     PEA.W ProcessEnemyInstructions_return-1                              ;A98147;
     RTL                                                                  ;A9814A;
@@ -359,19 +359,19 @@ Instruction_CommonA9_WaitYFrames:
 ;;; $814B: Instruction - transfer [[Y]] bytes from [[Y] + 2] to VRAM [[Y] + 5] ;;;
 Instruction_CommonA9_TransferYBytesInYToVRAM:
     PHX                                                                  ;A9814B;
-    LDX.W $0330                                                          ;A9814C;
+    LDX.W VRAMWriteStack                                                          ;A9814C;
     LDA.W $0000,Y                                                        ;A9814F;
-    STA.B $D0,X                                                          ;A98152;
+    STA.B VRAMWrite.size,X                                                          ;A98152;
     LDA.W $0002,Y                                                        ;A98154;
-    STA.B $D2,X                                                          ;A98157;
+    STA.B VRAMWrite.src,X                                                          ;A98157;
     LDA.W $0003,Y                                                        ;A98159;
-    STA.B $D3,X                                                          ;A9815C;
+    STA.B VRAMWrite.src+1,X                                                          ;A9815C;
     LDA.W $0005,Y                                                        ;A9815E;
-    STA.B $D5,X                                                          ;A98161;
+    STA.B VRAMWrite.dest,X                                                          ;A98161;
     TXA                                                                  ;A98163;
     CLC                                                                  ;A98164;
     ADC.W #$0007                                                         ;A98165;
-    STA.W $0330                                                          ;A98168;
+    STA.W VRAMWriteStack                                                          ;A98168;
     TYA                                                                  ;A9816B;
     CLC                                                                  ;A9816C;
     ADC.W #$0007                                                         ;A9816D;
@@ -382,17 +382,17 @@ Instruction_CommonA9_TransferYBytesInYToVRAM:
 
 ;;; $8173: Instruction - enable off-screen processing ;;;
 Instruction_CommonA9_EnableOffScreenProcessing:
-    LDA.W $0F86,X                                                        ;A98173;
+    LDA.W Enemy.properties,X                                                        ;A98173;
     ORA.W #$0800                                                         ;A98176;
-    STA.W $0F86,X                                                        ;A98179;
+    STA.W Enemy.properties,X                                                        ;A98179;
     RTL                                                                  ;A9817C;
 
 
 ;;; $817D: Instruction - disable off-screen processing ;;;
 Instruction_CommonA9_DisableOffScreenProcessing:
-    LDA.W $0F86,X                                                        ;A9817D;
+    LDA.W Enemy.properties,X                                                        ;A9817D;
     AND.W #$F7FF                                                         ;A98180;
-    STA.W $0F86,X                                                        ;A98183;
+    STA.W Enemy.properties,X                                                        ;A98183;
     RTL                                                                  ;A98186;
 
 
@@ -608,9 +608,9 @@ InitAI_MotherBrainBody:
     LDA.W #InstList_MotherBrainHead_InitialDummy                         ;A9869B;
     JSR.W SetMotherBrainBodyInstList                                     ;A9869E;
     STZ.W $0F98                                                          ;A986A1;
-    LDA.W $0F86                                                          ;A986A4;
+    LDA.W Enemy.properties                                                          ;A986A4;
     ORA.W #$1500                                                         ;A986A7;
-    STA.W $0F86                                                          ;A986AA;
+    STA.W Enemy.properties                                                          ;A986AA;
     LDA.W #$0000                                                         ;A986AD;
     STA.W $0F96                                                          ;A986B0;
     LDY.W #Palette_MotherBrain_GlassShards+2                             ;A986B3;
@@ -1323,9 +1323,9 @@ HandleFallingTubeSmoke:
 
 ;;; $8BA6: Explode Mother Brain tube ;;;
 ExplodeMotherBrainTubes:
-    LDA.W $0F86,X                                                        ;A98BA6;
+    LDA.W Enemy.properties,X                                                        ;A98BA6;
     ORA.W #$0200                                                         ;A98BA9;
-    STA.W $0F86,X                                                        ;A98BAC;
+    STA.W Enemy.properties,X                                                        ;A98BAC;
     LDA.W $0F7A,X                                                        ;A98BAF;
     STA.B $12                                                            ;A98BB2;
     LDA.W $0F7E,X                                                        ;A98BB4;
@@ -1356,9 +1356,9 @@ Function_MotherBrainTubes_MainTube_Falling:
     PHA                                                                  ;A98BE3;
     CMP.W #$00F4                                                         ;A98BE4;
     BMI .lessThanF4                                                      ;A98BE7;
-    LDA.W $0F86,X                                                        ;A98BE9;
+    LDA.W Enemy.properties,X                                                        ;A98BE9;
     ORA.W #$0100                                                         ;A98BEC;
-    STA.W $0F86,X                                                        ;A98BEF;
+    STA.W Enemy.properties,X                                                        ;A98BEF;
 
   .lessThanF4:
     PLA                                                                  ;A98BF2;
@@ -1551,9 +1551,9 @@ Function_MotherBrainBody_FakeDeath_Ascent_SetupMBPhase2Brain:
     STA.W $1982                                                          ;A98D4C;
     LDA.W #Function_MotherBrain_SetupBrainAndNeckToBeDrawn               ;A98D4F;
     STA.W MotherBrainBody.brainFunction                                  ;A98D52;
-    LDA.W $0F86                                                          ;A98D55;
+    LDA.W Enemy.properties                                                          ;A98D55;
     AND.W #$FBFF                                                         ;A98D58;
-    STA.W $0F86                                                          ;A98D5B;
+    STA.W Enemy.properties                                                          ;A98D5B;
     LDA.W $0FC6                                                          ;A98D5E;
     AND.W #$FBFF                                                         ;A98D61;
     STA.W $0FC6                                                          ;A98D64;
@@ -1637,9 +1637,9 @@ Function_MotherBrainBody_FakeDeath_Ascent_StartMusic_Quake:
     JSR.W SetMotherBrainBodyInstList                                     ;A98DEF;
     LDA.W #$0001                                                         ;A98DF2;
     STA.W $0FD4                                                          ;A98DF5;
-    LDA.W $0F86                                                          ;A98DF8;
+    LDA.W Enemy.properties                                                          ;A98DF8;
     AND.W #$FEFF                                                         ;A98DFB;
-    STA.W $0F86                                                          ;A98DFE;
+    STA.W Enemy.properties                                                          ;A98DFE;
     LDA.W #$003B                                                         ;A98E01;
     STA.W $0F7A                                                          ;A98E04;
     LDA.W #$0117                                                         ;A98E07;
@@ -2299,7 +2299,7 @@ GetMotherBrainHeadSpritemapPointerInY:
 
 ;;; $9303: Draw Mother Brain's neck ;;;
 DrawMotherBrainsNeck:
-    LDA.W $0F86                                                          ;A99303;
+    LDA.W Enemy.properties                                                          ;A99303;
     AND.W #$0100                                                         ;A99306;
     BEQ .visible                                                         ;A99309;
     RTS                                                                  ;A9930B;
@@ -5103,9 +5103,9 @@ Spritemaps_MotherBrainTubes_4:
 
 ;;; $AEE1: Mother Brain body function - third phase - death sequence - move to back of room ;;;
 Function_MBBody_Phase3_DeathSequence_MoveToBackOfRoom:
-    LDA.W $0F86                                                          ;A9AEE1;
+    LDA.W Enemy.properties                                                          ;A9AEE1;
     ORA.W #$0400                                                         ;A9AEE4;
-    STA.W $0F86                                                          ;A9AEE7;
+    STA.W Enemy.properties                                                          ;A9AEE7;
     LDA.W $0FC6                                                          ;A9AEEA;
     ORA.W #$0400                                                         ;A9AEED;
     STA.W $0FC6                                                          ;A9AEF0;
@@ -5238,10 +5238,10 @@ Function_MBBody_Phase3_DeathSequence_FadeOutBody:
     PLB                                                                  ;A9AFF0;
     LDA.W #$0001                                                         ;A9AFF1;
     STA.W $0E1E                                                          ;A9AFF4;
-    LDA.W $0F86                                                          ;A9AFF7;
+    LDA.W Enemy.properties                                                          ;A9AFF7;
     ORA.W #$0100                                                         ;A9AFFA;
     AND.W #$DFFF                                                         ;A9AFFD;
-    STA.W $0F86                                                          ;A9B000;
+    STA.W Enemy.properties                                                          ;A9B000;
     STZ.W $0F88                                                          ;A9B003;
     LDA.W #Function_MBBody_Phase3_DeathSequence_FinalFewExplosions       ;A9B006;
     STA.W MotherBrainBody.function                                       ;A9B009;
@@ -8064,10 +8064,10 @@ MoveEnemyAccordingToVelocity:
 
 ;;; $C42D: Set Mother Brain body instruction list ;;;
 SetMotherBrainBodyInstList:
-    STA.W $0F92                                                          ;A9C42D;
+    STA.W Enemy.instList                                                          ;A9C42D;
     LDA.W #$0001                                                         ;A9C430;
-    STA.W $0F94                                                          ;A9C433;
-    STZ.W $0F90                                                          ;A9C436;
+    STA.W Enemy.instTimer                                                          ;A9C433;
+    STZ.W Enemy.loopCounter                                                          ;A9C436;
     RTS                                                                  ;A9C439;
 
 
@@ -8090,10 +8090,10 @@ SetMotherBrainHeadInstList:
 
 ;;; $C453: Set enemy instruction list ;;;
 SetEnemyInstList:
-    STA.W $0F92,X                                                        ;A9C453;
+    STA.W Enemy.instList,X                                                        ;A9C453;
     LDA.W #$0001                                                         ;A9C456;
-    STA.W $0F94,X                                                        ;A9C459;
-    STZ.W $0F90,X                                                        ;A9C45C;
+    STA.W Enemy.instTimer,X                                                        ;A9C459;
+    STZ.W Enemy.loopCounter,X                                                        ;A9C45C;
     RTL                                                                  ;A9C45F;
 
 
@@ -8347,20 +8347,20 @@ ProcessSpriteTilesTransfers:
     TXA                                                                  ;A9C5C4;
 
 +   TAX                                                                  ;A9C5C5;
-    LDY.W $0330                                                          ;A9C5C6;
+    LDY.W VRAMWriteStack                                                          ;A9C5C6;
     LDA.W $0000,X                                                        ;A9C5C9;
     BEQ +                                                                ;A9C5CC;
-    STA.W $00D0,Y                                                        ;A9C5CE;
+    STA.W $00D0,Y                                                        ;A9C5CE; >.<
     LDA.W $0003,X                                                        ;A9C5D1;
-    STA.W $00D3,Y                                                        ;A9C5D4;
+    STA.W $00D3,Y                                                        ;A9C5D4; >.<
     LDA.W $0002,X                                                        ;A9C5D7;
-    STA.W $00D2,Y                                                        ;A9C5DA;
+    STA.W $00D2,Y                                                        ;A9C5DA; >.<
     LDA.W $0005,X                                                        ;A9C5DD;
-    STA.W $00D5,Y                                                        ;A9C5E0;
+    STA.W $00D5,Y                                                        ;A9C5E0; >.<
     TYA                                                                  ;A9C5E3;
     CLC                                                                  ;A9C5E4;
     ADC.W #$0007                                                         ;A9C5E5;
-    STA.W $0330                                                          ;A9C5E8;
+    STA.W VRAMWriteStack                                                          ;A9C5E8;
     TXA                                                                  ;A9C5EB;
     ADC.W #$0007                                                         ;A9C5EC;
     STA.L MotherBrainBody.spriteTilesTransferEntryPointer                ;A9C5EF;
@@ -8586,17 +8586,17 @@ HandleMotherBrainWalking:
 ;;; $C710: Initialisation AI - enemy $ECBF (Shitroid in cutscene) ;;;
 InitAI_BabyMetroidCutscene:
     LDX.W $0E54                                                          ;A9C710;
-    LDA.W $0F86,X                                                        ;A9C713;
+    LDA.W Enemy.properties,X                                                        ;A9C713;
     ORA.W #$3000                                                         ;A9C716;
-    STA.W $0F86,X                                                        ;A9C719;
+    STA.W Enemy.properties,X                                                        ;A9C719;
     LDA.W #$0E00                                                         ;A9C71C;
     STA.W $0F96,X                                                        ;A9C71F;
     LDA.W #InstList_BabyMetroid_Initial                                  ;A9C722;
-    STA.W $0F92,X                                                        ;A9C725;
+    STA.W Enemy.instList,X                                                        ;A9C725;
     LDA.W #$0001                                                         ;A9C728;
-    STA.W $0F94,X                                                        ;A9C72B;
+    STA.W Enemy.instTimer,X                                                        ;A9C72B;
     STA.L BabyMetroidCutscene.crySFXFlag,X                               ;A9C72E;
-    STZ.W $0F90,X                                                        ;A9C732;
+    STZ.W Enemy.loopCounter,X                                                        ;A9C732;
     LDA.W #$000A                                                         ;A9C735;
     STA.W BabyMetroidCutscene.paletteHandlerDelay,X                      ;A9C738;
     LDA.W #$00A0                                                         ;A9C73B;
@@ -9287,9 +9287,9 @@ Function_BabyMetroidCutscene_DeathSequence:
     JMP.W HandleEnemyBlinking                                            ;A9CCA7;
 
   .fadedToBlack:
-    LDA.W $0F86,X                                                        ;A9CCAA;
+    LDA.W Enemy.properties,X                                                        ;A9CCAA;
     ORA.W #$0100                                                         ;A9CCAD;
-    STA.W $0F86,X                                                        ;A9CCB0;
+    STA.W Enemy.properties,X                                                        ;A9CCB0;
     LDA.W #Function_BabyMetroidCutscene_UnloadTiles                      ;A9CCB3;
     STA.W BabyMetroidCutscene.function,X                                 ;A9CCB6;
     LDA.W #$0080                                                         ;A9CCB9;
@@ -9341,9 +9341,9 @@ Function_BabyMetroidCutscene_FinalCutscene:
     JSL.L Run_Samus_Command                                              ;A9CD0B;
     LDA.W #$0003                                                         ;A9CD0F;
     JSL.L DrainedSamusController                                         ;A9CD12;
-    LDA.W $0F86,X                                                        ;A9CD16;
+    LDA.W Enemy.properties,X                                                        ;A9CD16;
     ORA.W #$0200                                                         ;A9CD19;
-    STA.W $0F86,X                                                        ;A9CD1C;
+    STA.W Enemy.properties,X                                                        ;A9CD1C;
     LDA.W #$0000                                                         ;A9CD1F;
     STA.L MotherBrainBody.BabyMetroidEnemyIndex                          ;A9CD22;
     RTS                                                                  ;A9CD26;
@@ -9500,15 +9500,15 @@ HandleEnemyBlinking:
     LDA.W $0FA4,X                                                        ;A9CE24;
     AND.W #$0001                                                         ;A9CE27;
     BEQ .invisible                                                       ;A9CE2A;
-    LDA.W $0F86,X                                                        ;A9CE2C;
+    LDA.W Enemy.properties,X                                                        ;A9CE2C;
     AND.W #$FEFF                                                         ;A9CE2F;
-    STA.W $0F86,X                                                        ;A9CE32;
+    STA.W Enemy.properties,X                                                        ;A9CE32;
     RTS                                                                  ;A9CE35;
 
   .invisible:
-    LDA.W $0F86,X                                                        ;A9CE36;
+    LDA.W Enemy.properties,X                                                        ;A9CE36;
     ORA.W #$0100                                                         ;A9CE39;
-    STA.W $0F86,X                                                        ;A9CE3C;
+    STA.W Enemy.properties,X                                                        ;A9CE3C;
     RTS                                                                  ;A9CE3F;
 
 
@@ -10121,14 +10121,14 @@ InitAI_CorpseTorizo:
     PLB                                                                  ;A9D31B;
     LDA.W #Function_CorpseTorizo_WaitForSamusCollision                   ;A9D31C;
     STA.W CorpseTorizo.function                                          ;A9D31F;
-    LDA.W $0F86                                                          ;A9D322;
+    LDA.W Enemy.properties                                                          ;A9D322;
     ORA.W #$A000                                                         ;A9D325;
-    STA.W $0F86                                                          ;A9D328;
+    STA.W Enemy.properties                                                          ;A9D328;
     LDA.W #InstList_CorpseTorizo                                         ;A9D32B;
-    STA.W $0F92                                                          ;A9D32E;
+    STA.W Enemy.instList                                                          ;A9D32E;
     LDA.W #$0001                                                         ;A9D331;
-    STA.W $0F94                                                          ;A9D334;
-    STZ.W $0F90                                                          ;A9D337;
+    STA.W Enemy.instTimer                                                          ;A9D334;
+    STZ.W Enemy.loopCounter                                                          ;A9D337;
     LDA.W #$0200                                                         ;A9D33A;
     STA.W $0F96                                                          ;A9D33D;
     STZ.W CorpseTorizo.XVelocity                                         ;A9D340;
@@ -10148,14 +10148,14 @@ InitAI_CorpseTorizo:
 
 ;;; $D368: Main AI - enemy $ED3F (torizo corpse) ;;;
 MainAI_CorpseTorizo:
-    LDA.W $0F86                                                          ;A9D368;
+    LDA.W Enemy.properties                                                          ;A9D368;
     AND.W #$0400                                                         ;A9D36B;
     BNE .noCollision                                                     ;A9D36E;
     JSR.W CorpseTorizo_vs_Samus_CollisionDetection                       ;A9D370;
     BCC .noCollision                                                     ;A9D373;
-    LDA.W $0F86                                                          ;A9D375;
+    LDA.W Enemy.properties                                                          ;A9D375;
     ORA.W #$0400                                                         ;A9D378;
-    STA.W $0F86                                                          ;A9D37B;
+    STA.W Enemy.properties                                                          ;A9D37B;
     LDA.W #Function_CorpseTorizo_Rotting                                 ;A9D37E;
     STA.W CorpseTorizo.function                                          ;A9D381;
 
@@ -10211,9 +10211,9 @@ Function_CorpseTorizo_PreRotDelay:
     RTS                                                                  ;A9D3D6;
 
   .done:
-    LDA.W $0F86                                                          ;A9D3D7;
+    LDA.W Enemy.properties                                                          ;A9D3D7;
     ORA.W #$0400                                                         ;A9D3DA;
-    STA.W $0F86                                                          ;A9D3DD;
+    STA.W Enemy.properties                                                          ;A9D3DD;
     LDA.W #Function_CorpseTorizo_Rotting                                 ;A9D3E0;
     STA.W CorpseTorizo.function                                          ;A9D3E3; fallthrough to Function_CorpseTorizo_Rotting
 
@@ -10252,7 +10252,7 @@ Function_CorpseTorizo_Rotting:
 
 ;;; $D42A: Power bomb reaction - enemy $ED3F (torizo corpse) ;;;
 PowerBombReaction_CorpseTorizo:
-    LDA.W $0F86                                                          ;A9D42A;
+    LDA.W Enemy.properties                                                          ;A9D42A;
     AND.W #$0400                                                         ;A9D42D;
     BEQ EnemyTouch_EnemyShot_CorpseTorizo                                ;A9D430;
     RTL                                                                  ;A9D432;
@@ -10260,9 +10260,9 @@ PowerBombReaction_CorpseTorizo:
 
 ;;; $D433: Enemy touch / enemy shot - enemy $ED3F (torizo corpse) ;;;
 EnemyTouch_EnemyShot_CorpseTorizo:
-    LDA.W $0F86                                                          ;A9D433;
+    LDA.W Enemy.properties                                                          ;A9D433;
     ORA.W #$0400                                                         ;A9D436;
-    STA.W $0F86                                                          ;A9D439;
+    STA.W Enemy.properties                                                          ;A9D439;
     LDA.W #Function_CorpseTorizo_Rotting                                 ;A9D43C;
     STA.W CorpseTorizo.function                                          ;A9D43F;
     RTL                                                                  ;A9D442;
@@ -10369,17 +10369,17 @@ ProcessCorpseTorizoRottingVRAMTransfers:
     LSR                                                                  ;A9D4D8;
     BCS .odd                                                             ;A9D4D9;
     LDX.W #$0000                                                         ;A9D4DB;
-    LDY.W $0330                                                          ;A9D4DE;
+    LDY.W VRAMWriteStack                                                          ;A9D4DE;
     LDA.W .size0,X                                                       ;A9D4E1;
 
   .loopEven:
-    STA.W $00D0,Y                                                        ;A9D4E4;
+    STA.W $00D0,Y                                                        ;A9D4E4; >.<
     LDA.W .bank0,X                                                       ;A9D4E7;
-    STA.W $00D3,Y                                                        ;A9D4EA;
+    STA.W $00D3,Y                                                        ;A9D4EA; >.<
     LDA.W .src0,X                                                        ;A9D4ED;
-    STA.W $00D2,Y                                                        ;A9D4F0;
+    STA.W $00D2,Y                                                        ;A9D4F0; >.<
     LDA.W .dest0,X                                                       ;A9D4F3;
-    STA.W $00D5,Y                                                        ;A9D4F6;
+    STA.W $00D5,Y                                                        ;A9D4F6; >.<
     TYA                                                                  ;A9D4F9;
     CLC                                                                  ;A9D4FA;
     ADC.W #$0007                                                         ;A9D4FB;
@@ -10391,22 +10391,22 @@ ProcessCorpseTorizoRottingVRAMTransfers:
     BNE .loopEven                                                        ;A9D507;
     STA.L MotherBrainBody.spriteTilesTransferEntryPointer                ;A9D509;
     TYA                                                                  ;A9D50D;
-    STA.W $0330                                                          ;A9D50E;
+    STA.W VRAMWriteStack                                                          ;A9D50E;
     RTS                                                                  ;A9D511;
 
   .odd:
     LDX.W #$0000                                                         ;A9D512;
-    LDY.W $0330                                                          ;A9D515;
+    LDY.W VRAMWriteStack                                                          ;A9D515;
     LDA.W .size1,X                                                       ;A9D518;
 
   .loopOdd:
-    STA.W $00D0,Y                                                        ;A9D51B;
+    STA.W $00D0,Y                                                        ;A9D51B; >.<
     LDA.W .bank1,X                                                       ;A9D51E;
-    STA.W $00D3,Y                                                        ;A9D521;
+    STA.W $00D3,Y                                                        ;A9D521; >.<
     LDA.W .src1,X                                                        ;A9D524;
-    STA.W $00D2,Y                                                        ;A9D527;
+    STA.W $00D2,Y                                                        ;A9D527; >.<
     LDA.W .dest1,X                                                       ;A9D52A;
-    STA.W $00D5,Y                                                        ;A9D52D;
+    STA.W $00D5,Y                                                        ;A9D52D; >.<
     TYA                                                                  ;A9D530;
     CLC                                                                  ;A9D531;
     ADC.W #$0007                                                         ;A9D532;
@@ -10418,7 +10418,7 @@ ProcessCorpseTorizoRottingVRAMTransfers:
     BNE .loopOdd                                                         ;A9D53E;
     STA.L MotherBrainBody.spriteTilesTransferEntryPointer                ;A9D540;
     TYA                                                                  ;A9D544;
-    STA.W $0330                                                          ;A9D545;
+    STA.W VRAMWriteStack                                                          ;A9D545;
     RTS                                                                  ;A9D548;
 
 ; Corpse rotting VRAM transfers
@@ -10647,16 +10647,16 @@ InitAI_CorpseSidehopper:
 CorpseSidehopperInit_Param1_0_InitiallyAlive:
 ; Palette 1 is loaded by Shitroid from Palette_CorpseSidehopper
     LDX.W $0E54                                                          ;A9D7C4;
-    LDA.W $0F86,X                                                        ;A9D7C7;
+    LDA.W Enemy.properties,X                                                        ;A9D7C7;
     AND.W #$7FFF                                                         ;A9D7CA;
     ORA.W #$0800                                                         ;A9D7CD;
-    STA.W $0F86,X                                                        ;A9D7D0;
-    LDA.W $0F86                                                          ;A9D7D3;
+    STA.W Enemy.properties,X                                                        ;A9D7D0;
+    LDA.W Enemy.properties                                                          ;A9D7D3;
     AND.W #$0100                                                         ;A9D7D6;
     BEQ .visible                                                         ;A9D7D9;
-    LDA.W $0F86,X                                                        ;A9D7DB;
+    LDA.W Enemy.properties,X                                                        ;A9D7DB;
     ORA.W #$0200                                                         ;A9D7DE;
-    STA.W $0F86,X                                                        ;A9D7E1;
+    STA.W Enemy.properties,X                                                        ;A9D7E1;
 
   .visible:
     LDA.W #$0000                                                         ;A9D7E4;
@@ -10996,9 +10996,9 @@ Function_CorpseSidehopper_BeingDrained:
     JSL.L SetEnemyInstList                                               ;A9DA49;
     LDA.W #Function_CorpseSidehopper_Dead_WaitForSamusCollision          ;A9DA4D;
     STA.W CorpseSidehopper.function,X                                    ;A9DA50;
-    LDA.W $0F86,X                                                        ;A9DA53;
+    LDA.W Enemy.properties,X                                                        ;A9DA53;
     ORA.W #$8000                                                         ;A9DA56;
-    STA.W $0F86,X                                                        ;A9DA59;
+    STA.W Enemy.properties,X                                                        ;A9DA59;
     LDA.W #$000C                                                         ;A9DA5C;
     STA.W $0F84,X                                                        ;A9DA5F;
 
@@ -11088,9 +11088,9 @@ CorpseCommonAI_PreRotDelay:
     BCC .return                                                          ;A9DAAA;
     TYA                                                                  ;A9DAAC;
     STA.W Corpse.function,X                                              ;A9DAAD;
-    LDA.W $0F86,X                                                        ;A9DAB0;
+    LDA.W Enemy.properties,X                                                        ;A9DAB0;
     ORA.W #$0400                                                         ;A9DAB3;
-    STA.W $0F86,X                                                        ;A9DAB6;
+    STA.W Enemy.properties,X                                                        ;A9DAB6;
 
   .return:
     RTS                                                                  ;A9DAB9;
@@ -11450,17 +11450,17 @@ InitializeEnemyCorpseRotting:
 ProcessCorpseRottingVRAMTransfers:
 ;; Parameters:
 ;;     X: Corpse rotting VRAM transfers pointer. Format: size, source bank, source address, VRAM address (all 16 bit)
-    LDY.W $0330                                                          ;A9DCB9;
+    LDY.W VRAMWriteStack                                                          ;A9DCB9;
     LDA.W $0000,X                                                        ;A9DCBC;
 
   .loop:
-    STA.W $00D0,Y                                                        ;A9DCBF;
+    STA.W $00D0,Y                                                        ;A9DCBF; >.<
     LDA.W $0002,X                                                        ;A9DCC2;
-    STA.W $00D3,Y                                                        ;A9DCC5;
+    STA.W $00D3,Y                                                        ;A9DCC5; >.<
     LDA.W $0004,X                                                        ;A9DCC8;
-    STA.W $00D2,Y                                                        ;A9DCCB;
+    STA.W $00D2,Y                                                        ;A9DCCB; >.<
     LDA.W $0006,X                                                        ;A9DCCE;
-    STA.W $00D5,Y                                                        ;A9DCD1;
+    STA.W $00D5,Y                                                        ;A9DCD1; >.<
     TYA                                                                  ;A9DCD4;
     CLC                                                                  ;A9DCD5;
     ADC.W #$0007                                                         ;A9DCD6;
@@ -11472,14 +11472,14 @@ ProcessCorpseRottingVRAMTransfers:
     BNE .loop                                                            ;A9DCE2;
     STA.L MotherBrainBody.spriteTilesTransferEntryPointer                ;A9DCE4;
     TYA                                                                  ;A9DCE8;
-    STA.W $0330                                                          ;A9DCE9;
+    STA.W VRAMWriteStack                                                          ;A9DCE9;
     RTS                                                                  ;A9DCEC;
 
 
 ;;; $DCED: Power bomb reaction - enemy $EDFF (zoomer corpse) ;;;
 PowerBombReaction_CorpseZoomer:
     LDX.W $0E54                                                          ;A9DCED;
-    LDA.W $0F86,X                                                        ;A9DCF0;
+    LDA.W Enemy.properties,X                                                        ;A9DCF0;
     AND.W #$0400                                                         ;A9DCF3;
     BNE CorpseCommonContactReaction_return                               ;A9DCF6; fallthrough to EnemyTouch_EnemyShot_CorpseZoomer
 
@@ -11493,7 +11493,7 @@ EnemyTouch_EnemyShot_CorpseZoomer:
 ;;; $DCFD: Power bomb reaction - enemy $EE3F (ripper corpse) ;;;
 PowerBombReaction_CorpseRipper:
     LDX.W $0E54                                                          ;A9DCFD;
-    LDA.W $0F86,X                                                        ;A9DD00;
+    LDA.W Enemy.properties,X                                                        ;A9DD00;
     AND.W #$0400                                                         ;A9DD03;
     BNE CorpseCommonContactReaction_return                               ;A9DD06; fallthrough to EnemyTouch_EnemyShot_CorpseRipper
 
@@ -11507,7 +11507,7 @@ EnemyTouch_EnemyShot_CorpseRipper:
 ;;; $DD0D: Power bomb reaction - enemy $EE7F (skree corpse) ;;;
 PowerBombReaction_CorpseSkree:
     LDX.W $0E54                                                          ;A9DD0D;
-    LDA.W $0F86,X                                                        ;A9DD10;
+    LDA.W Enemy.properties,X                                                        ;A9DD10;
     AND.W #$0400                                                         ;A9DD13;
     BNE CorpseCommonContactReaction_return                               ;A9DD16; fallthrough to EnemyTouch_EnemyShot_CorpseSkree
 
@@ -11522,7 +11522,7 @@ EnemyTouch_EnemyShot_CorpseSkree:
 EnemyShot_CorpseSidehopper:
 ; Also power bomb reaction / enemy touch / enemy shot - enemy $EDBF (sidehopper corpse, part 2)
     LDX.W $0E54                                                          ;A9DD1D;
-    LDA.W $0F86,X                                                        ;A9DD20;
+    LDA.W Enemy.properties,X                                                        ;A9DD20;
     AND.W #$0400                                                         ;A9DD23;
     BNE CorpseCommonContactReaction_return                               ;A9DD26;
     LDA.L CorpseSidehopper.drainedPaletteIndex,X                         ;A9DD28;
@@ -11541,9 +11541,9 @@ CorpseCommonContactReaction:
 ;;     A: Rotting enemy function
     LDX.W $0E54                                                          ;A9DD34;
     STA.W Corpse.function,X                                              ;A9DD37;
-    LDA.W $0F86,X                                                        ;A9DD3A;
+    LDA.W Enemy.properties,X                                                        ;A9DD3A;
     ORA.W #$0C00                                                         ;A9DD3D;
-    STA.W $0F86,X                                                        ;A9DD40;
+    STA.W Enemy.properties,X                                                        ;A9DD40;
 
   .return:
     RTL                                                                  ;A9DD43;
@@ -14123,22 +14123,22 @@ InitAI_BabyMetroid:
     BPL .loop                                                            ;A9EF48;
     PLB                                                                  ;A9EF4A;
     LDX.W $0E54                                                          ;A9EF4B;
-    LDA.W $0F86,X                                                        ;A9EF4E;
+    LDA.W Enemy.properties,X                                                        ;A9EF4E;
     ORA.W #$3000                                                         ;A9EF51;
-    STA.W $0F86,X                                                        ;A9EF54;
+    STA.W Enemy.properties,X                                                        ;A9EF54;
     LDA.W #$0400                                                         ;A9EF57;
     STA.W $0F96,X                                                        ;A9EF5A;
     LDA.W #InstList_BabyMetroid_Normal                                   ;A9EF5D;
-    STA.W $0F92,X                                                        ;A9EF60;
+    STA.W Enemy.instList,X                                                        ;A9EF60;
     LDA.W #$0001                                                         ;A9EF63;
-    STA.W $0F94,X                                                        ;A9EF66;
-    STZ.W $0F90,X                                                        ;A9EF69;
+    STA.W Enemy.instTimer,X                                                        ;A9EF66;
+    STZ.W Enemy.loopCounter,X                                                        ;A9EF69;
     LDA.W #Function_BabyMetroid_WaitForCamera                            ;A9EF6C;
     BIT.W $0911                                                          ;A9EF6F;
     BPL .notLeftDoor                                                     ;A9EF72;
-    LDA.W $0F86,X                                                        ;A9EF74;
+    LDA.W Enemy.properties,X                                                        ;A9EF74;
     ORA.W #$0500                                                         ;A9EF77;
-    STA.W $0F86,X                                                        ;A9EF7A;
+    STA.W Enemy.properties,X                                                        ;A9EF7A;
     LDA.W #Function_BabyMetroid_Disappeared                              ;A9EF7D;
 
   .notLeftDoor:
@@ -14306,10 +14306,10 @@ Function_BabyMetroid_LatchOntoSidehopper:
     ADC.W #$FFE0                                                         ;A9F0BB;
     STA.W $0F7E,X                                                        ;A9F0BE;
     LDA.W #InstList_BabyMetroid_LatchedOn                                ;A9F0C1;
-    STA.W $0F92,X                                                        ;A9F0C4;
+    STA.W Enemy.instList,X                                                        ;A9F0C4;
     LDA.W #$0001                                                         ;A9F0C7;
-    STA.W $0F94,X                                                        ;A9F0CA;
-    STZ.W $0F90,X                                                        ;A9F0CD;
+    STA.W Enemy.instTimer,X                                                        ;A9F0CA;
+    STZ.W Enemy.loopCounter,X                                                        ;A9F0CD;
     LDA.W #Function_BabyMetroid_DrainingSidehopper                       ;A9F0D0;
     STA.W BabyMetroid.function,X                                         ;A9F0D3;
     LDA.W #$0001                                                         ;A9F0D6;
@@ -14339,10 +14339,10 @@ Function_BabyMetroid_DrainingSidehopper:
     LDA.W #Function_BabyMetroid_MakeSidehopperRottable                   ;A9F109;
     STA.W BabyMetroid.function,X                                         ;A9F10C;
     LDA.W #InstList_BabyMetroid_FinishDraining                           ;A9F10F;
-    STA.W $0F92,X                                                        ;A9F112;
+    STA.W Enemy.instList,X                                                        ;A9F112;
     LDA.W #$0001                                                         ;A9F115;
-    STA.W $0F94,X                                                        ;A9F118;
-    STZ.W $0F90,X                                                        ;A9F11B;
+    STA.W Enemy.instTimer,X                                                        ;A9F118;
+    STZ.W Enemy.loopCounter,X                                                        ;A9F11B;
     LDA.W #$000A                                                         ;A9F11E;
     STA.W BabyMetroid.paletteHandlerDelay,X                              ;A9F121;
 
@@ -14576,10 +14576,10 @@ Function_BabyMetroid_BackOffGuiltily:
     LDA.W #$0058                                                         ;A9F2E6;
     STA.W BabyMetroid.functionTimer,X                                    ;A9F2E9;
     LDA.W #InstList_BabyMetroid_LatchedOn                                ;A9F2EC;
-    STA.W $0F92,X                                                        ;A9F2EF;
+    STA.W Enemy.instList,X                                                        ;A9F2EF;
     LDA.W #$0001                                                         ;A9F2F2;
-    STA.W $0F94,X                                                        ;A9F2F5;
-    STZ.W $0F90,X                                                        ;A9F2F8; fallthrough to Function_BabyMetroid_GoLeftGuiltily
+    STA.W Enemy.instTimer,X                                                        ;A9F2F5;
+    STZ.W Enemy.loopCounter,X                                                        ;A9F2F8; fallthrough to Function_BabyMetroid_GoLeftGuiltily
 
 
 ;;; $F2FB: Shitroid function - go left guiltily ;;;
@@ -14626,10 +14626,10 @@ Function_BabyMetroid_GoRightGuiltily:
     LDA.W #$0100                                                         ;A9F34A;
     STA.W BabyMetroid.functionTimer,X                                    ;A9F34D;
     LDA.W #InstList_BabyMetroid_Remorse                                  ;A9F350;
-    STA.W $0F92,X                                                        ;A9F353;
+    STA.W Enemy.instList,X                                                        ;A9F353;
     LDA.W #$0001                                                         ;A9F356;
-    STA.W $0F94,X                                                        ;A9F359;
-    STZ.W $0F90,X                                                        ;A9F35C;
+    STA.W Enemy.instTimer,X                                                        ;A9F359;
+    STZ.W Enemy.loopCounter,X                                                        ;A9F35C;
     RTS                                                                  ;A9F35F;
 
 
@@ -14657,9 +14657,9 @@ Function_BabyMetroid_Fleeing:
     BCS .return                                                          ;A9F38B;
     STZ.W BabyMetroid.XVelocity,X                                        ;A9F38D;
     STZ.W BabyMetroid.YVelocity,X                                        ;A9F390;
-    LDA.W $0F86,X                                                        ;A9F393;
+    LDA.W Enemy.properties,X                                                        ;A9F393;
     AND.W #$DEFF                                                         ;A9F396;
-    STA.W $0F86,X                                                        ;A9F399;
+    STA.W Enemy.properties,X                                                        ;A9F399;
     LDA.W #Function_BabyMetroid_Disappeared                              ;A9F39C;
     STA.W BabyMetroid.function,X                                         ;A9F39F;
 
@@ -15325,10 +15325,10 @@ EnemyTouch_BabyMetroid:
     BCC .return                                                          ;A9F7CF;
     LDX.W $0E54                                                          ;A9F7D1;
     LDA.W #InstList_BabyMetroid_LatchedOn                                ;A9F7D4;
-    STA.W $0F92,X                                                        ;A9F7D7;
+    STA.W Enemy.instList,X                                                        ;A9F7D7;
     LDA.W #$0001                                                         ;A9F7DA;
-    STA.W $0F94,X                                                        ;A9F7DD;
-    STZ.W $0F90,X                                                        ;A9F7E0;
+    STA.W Enemy.instTimer,X                                                        ;A9F7DD;
+    STZ.W Enemy.loopCounter,X                                                        ;A9F7E0;
     LDA.W #$0001                                                         ;A9F7E3;
     STA.W BabyMetroid.paletteHandlerDelay,X                              ;A9F7E6;
     STZ.W BabyMetroid.contactReactionFlag,X                              ;A9F7E9;
