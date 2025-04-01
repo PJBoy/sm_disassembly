@@ -1074,10 +1074,12 @@ Temp_AbsoluteDifference: skip 0 ; $0E34
 Temp_Angle: skip 0 ; $0E34
 Temp_SwapNybbles: skip 0 ; $0E34
 Temp_Unknown0E34: skip 2 ; $0E34
+Temp_Unknown0E36: skip 0 ; $0E36
 Temp_DrawingQueueSizeBackup: skip 0 ; $0E36
 Temp_SamusXPosition: skip 0 ; $0E36
 Temp_SineProduct: skip 0 ; $0E36
 Temp_TargetPosition: skip 2 ; $0E36
+Temp_Unknown0E38: skip 0 ; $0E38
 Temp_DrawingQueueIndex0E38: skip 0 ; $0E38
 Temp_SamusYPosition: skip 0 ; $0E38
 Temp_SineProductFractionalPart: skip 2 ; $0E38
@@ -2001,9 +2003,9 @@ EnemyGFXData_PaletteIndices: skip 8 ; $7EDE6C..73
 EnemyGFXData_StackPointer: skip 2 ; $7EDE74
 EnemyGFXData_NextTilesIndex: skip 2 ; $7EDE76
 
-SpriteObjects_InstListPointers: skip $40 ; $7EEF78..F7
+SpriteObjects_InstListPointers: skip $80 ; $7EEF78..F7
 SpriteObjects_Instructions: skip 0 ; $7EEFF8..F077
-SpriteObjects_Timers: skip $40 ; $7EEFF8..F077
+SpriteObjects_Timers: skip $80 ; $7EEFF8..F077
 SpriteObjects_Palettes: skip 0 ; $7EF078..F7
 SpriteObjects_VRAMIndices: skip $80 ; $7EF078..F7
 SpriteObjects_XPositions: skip $80 ; $7EF0F8..F177
@@ -2012,7 +2014,6 @@ SpriteObjects_YPositions: skip $80 ; $7EF1F8..F277
 SpriteObjects_YSubPositions: skip $80 ; $7EF278..F7
 SpriteObjects_DisableFlags: skip $80 ; $7EF2F8..F377
 
-skip $80
 EnemyProcessingStage: skip 2 ; $7EF378
 neverReadF37A: skip 2 ; $7EF37A
 neverReadF37C: skip 2 ; $7EF37C
