@@ -1616,7 +1616,15 @@ skip 10
   .Name: skip 12 ; $7E702E..39
 endstruct
 
-; see "ENEMY RAM" section below for extra enemy RAM ($7800, $8000, $8800)
+; also see "ENEMY RAM" section below for extra enemy RAM ($7800, $8000, $8800)
+org $7E7800
+ExtraEnemy7800:
+
+org $7E8000
+ExtraEnemy8000:
+
+org $7E8800
+ExtraEnemy8800:
 
 struct EnemyLogging $7E9000 ; $7E9000..97FF
   .executionCount: skip 2 ; $7E9000
