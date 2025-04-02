@@ -150,7 +150,7 @@ NOPNOP_A48069:
 Instruction_CommonA4_Enemy0FB2_InY:
 ; Used only by torizos (for enemy movement function) and escape etecoon (for enemy function)
     LDA.W $0000,Y                                                        ;A4806B;
-    STA.W Enemy.var5,X                                                        ;A4806E;
+    STA.W Enemy.var5,X                                                   ;A4806E;
     INY                                                                  ;A48071;
     INY                                                                  ;A48072;
     RTL                                                                  ;A48073;
@@ -159,7 +159,7 @@ Instruction_CommonA4_Enemy0FB2_InY:
 ;;; $8074: Instruction - Enemy.var5 = RTS ;;;
 Instruction_CommonA4_SetEnemy0FB2ToRTS:
     LDA.W #RTS_A4807B                                                    ;A48074;
-    STA.W Enemy.var5,X                                                        ;A48077;
+    STA.W Enemy.var5,X                                                   ;A48077;
     RTL                                                                  ;A4807A;
 
 
@@ -169,9 +169,9 @@ RTS_A4807B:
 
 ;;; $807C: Instruction - delete enemy ;;;
 Instruction_CommonA4_DeleteEnemy:
-    LDA.W Enemy.properties,X                                                        ;A4807C;
+    LDA.W Enemy.properties,X                                             ;A4807C;
     ORA.W #$0200                                                         ;A4807F;
-    STA.W Enemy.properties,X                                                        ;A48082;
+    STA.W Enemy.properties,X                                             ;A48082;
     PLA                                                                  ;A48085;
     PEA.W ProcessEnemyInstructions_return-1                              ;A48086;
     RTL                                                                  ;A48089;
@@ -180,11 +180,11 @@ Instruction_CommonA4_DeleteEnemy:
 ;;; $808A: Instruction - call function [[Y]] ;;;
 Instruction_CommonA4_CallFunctionInY:
     LDA.W $0000,Y                                                        ;A4808A;
-    STA.B DP_Temp12                                                            ;A4808D;
+    STA.B DP_Temp12                                                      ;A4808D;
     PHY                                                                  ;A4808F;
     PHX                                                                  ;A48090;
     PEA.W .manualReturn-1                                                ;A48091;
-    JMP.W (DP_Temp12)                                                        ;A48094;
+    JMP.W (DP_Temp12)                                                    ;A48094;
 
   .manualReturn:
     PLX                                                                  ;A48097;
@@ -197,12 +197,12 @@ Instruction_CommonA4_CallFunctionInY:
 ;;; $809C: Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 Instruction_CommonA4_CallFunctionInY_WithA:
     LDA.W $0000,Y                                                        ;A4809C;
-    STA.B DP_Temp12                                                            ;A4809F;
+    STA.B DP_Temp12                                                      ;A4809F;
     LDA.W $0002,Y                                                        ;A480A1;
     PHY                                                                  ;A480A4;
     PHX                                                                  ;A480A5;
     PEA.W .manualReturn-1                                                ;A480A6;
-    JMP.W (DP_Temp12)                                                        ;A480A9;
+    JMP.W (DP_Temp12)                                                    ;A480A9;
 
   .manualReturn:
     PLX                                                                  ;A480AC;
@@ -218,9 +218,9 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $80B5: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Instruction_CommonA4_CallExternalFunctionInY_A480B5:
     LDA.W $0000,Y                                                        ;A480B5;
-    STA.B DP_Temp12                                                            ;A480B8;
+    STA.B DP_Temp12                                                      ;A480B8;
     LDA.W $0001,Y                                                        ;A480BA;
-    STA.B DP_Temp13                                                            ;A480BD;
+    STA.B DP_Temp13                                                      ;A480BD;
     PHX                                                                  ;A480BF;
     PHY                                                                  ;A480C0;
     JSL.L .externalFunction                                              ;A480C1;
@@ -232,15 +232,15 @@ UNUSED_Instruction_CommonA4_CallExternalFunctionInY_A480B5:
     RTL                                                                  ;A480CA;
 
   .externalFunction:
-    JML.W [DP_Temp12]                                                        ;A480CB;
+    JML.W [DP_Temp12]                                                    ;A480CB;
 
 
 ;;; $80CE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_CommonA4_CallExternalFunctionInY_WithA_A480CE:
     LDA.W $0000,Y                                                        ;A480CE;
-    STA.B DP_Temp12                                                            ;A480D1;
+    STA.B DP_Temp12                                                      ;A480D1;
     LDA.W $0001,Y                                                        ;A480D3;
-    STA.B DP_Temp13                                                            ;A480D6;
+    STA.B DP_Temp13                                                      ;A480D6;
     LDA.W $0003,Y                                                        ;A480D8;
     PHX                                                                  ;A480DB;
     PHY                                                                  ;A480DC;
@@ -254,7 +254,7 @@ UNUSED_Inst_CommonA4_CallExternalFunctionInY_WithA_A480CE:
     RTL                                                                  ;A480E9;
 
   .externalFunction:
-    JML.W [DP_Temp12]                                                        ;A480EA;
+    JML.W [DP_Temp12]                                                    ;A480EA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -267,7 +267,7 @@ Instruction_CommonA4_GotoY:
 
 ;;; $80F2: Instruction - go to [[Y]] + ±[[Y]] ;;;
 Instruction_CommonA4_GotoY_PlusY:
-    STY.B DP_Temp12                                                            ;A480F2;
+    STY.B DP_Temp12                                                      ;A480F2;
     DEY                                                                  ;A480F4;
     LDA.W $0000,Y                                                        ;A480F5;
     XBA                                                                  ;A480F8;
@@ -279,14 +279,14 @@ Instruction_CommonA4_GotoY_PlusY:
     ORA.W #$FF00                                                         ;A48100;
 
 +   CLC                                                                  ;A48103;
-    ADC.B DP_Temp12                                                            ;A48104;
+    ADC.B DP_Temp12                                                      ;A48104;
     TAY                                                                  ;A48106;
     RTL                                                                  ;A48107;
 
 
 ;;; $8108: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA4_DecrementTimer_GotoYIfNonZero:
-    DEC.W Enemy.loopCounter,X                                                        ;A48108;
+    DEC.W Enemy.loopCounter,X                                            ;A48108;
     BNE Instruction_CommonA4_GotoY                                       ;A4810B;
     INY                                                                  ;A4810D;
     INY                                                                  ;A4810E;
@@ -295,7 +295,7 @@ Instruction_CommonA4_DecrementTimer_GotoYIfNonZero:
 
 ;;; $8110: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA4_DecrementTimer_GotoYIfNonZero_duplicate:
-    DEC.W Enemy.loopCounter,X                                                        ;A48110;
+    DEC.W Enemy.loopCounter,X                                            ;A48110;
     BNE Instruction_CommonA4_GotoY                                       ;A48113;
     INY                                                                  ;A48115;
     INY                                                                  ;A48116;
@@ -305,7 +305,7 @@ Instruction_CommonA4_DecrementTimer_GotoYIfNonZero_duplicate:
 ;;; $8118: Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 Instruction_CommonA4_DecrementTimer_GotoY_PlusY_IfNonZero:
     SEP #$20                                                             ;A48118;
-    DEC.W Enemy.loopCounter,X                                                        ;A4811A;
+    DEC.W Enemy.loopCounter,X                                            ;A4811A;
     REP #$20                                                             ;A4811D;
     BNE Instruction_CommonA4_GotoY_PlusY                                 ;A4811F;
     INY                                                                  ;A48121;
@@ -315,7 +315,7 @@ Instruction_CommonA4_DecrementTimer_GotoY_PlusY_IfNonZero:
 ;;; $8123: Instruction - timer = [[Y]] ;;;
 Instruction_CommonA4_TimerInY:
     LDA.W $0000,Y                                                        ;A48123;
-    STA.W Enemy.loopCounter,X                                                        ;A48126;
+    STA.W Enemy.loopCounter,X                                            ;A48126;
     INY                                                                  ;A48129;
     INY                                                                  ;A4812A;
     RTL                                                                  ;A4812B;
@@ -333,7 +333,7 @@ Instruction_CommonA4_Sleep:
     DEY                                                                  ;A4812F;
     DEY                                                                  ;A48130;
     TYA                                                                  ;A48131;
-    STA.W Enemy.instList,X                                                        ;A48132;
+    STA.W Enemy.instList,X                                               ;A48132;
     PLA                                                                  ;A48135;
     PEA.W ProcessEnemyInstructions_return-1                              ;A48136;
     RTL                                                                  ;A48139;
@@ -346,11 +346,11 @@ Instruction_CommonA4_WaitYFrames:
 ; useful for e.g. GT eye beam attack ($AA:D10D), implemented by an instruction list that has no graphical instructions,
 ; which allows it to be called from multiple different poses
     LDA.W $0000,Y                                                        ;A4813A;
-    STA.W Enemy.instTimer,X                                                        ;A4813D;
+    STA.W Enemy.instTimer,X                                              ;A4813D;
     INY                                                                  ;A48140;
     INY                                                                  ;A48141;
     TYA                                                                  ;A48142;
-    STA.W Enemy.instList,X                                                        ;A48143;
+    STA.W Enemy.instList,X                                               ;A48143;
     PLA                                                                  ;A48146;
     PEA.W ProcessEnemyInstructions_return-1                              ;A48147;
     RTL                                                                  ;A4814A;
@@ -359,19 +359,19 @@ Instruction_CommonA4_WaitYFrames:
 ;;; $814B: Instruction - transfer [[Y]] bytes from [[Y] + 2] to VRAM [[Y] + 5] ;;;
 Instruction_CommonA4_TransferYBytesInYToVRAM:
     PHX                                                                  ;A4814B;
-    LDX.W VRAMWriteStack                                                          ;A4814C;
+    LDX.W VRAMWriteStack                                                 ;A4814C;
     LDA.W $0000,Y                                                        ;A4814F;
-    STA.B VRAMWrite.size,X                                                          ;A48152;
+    STA.B VRAMWrite.size,X                                               ;A48152;
     LDA.W $0002,Y                                                        ;A48154;
-    STA.B VRAMWrite.src,X                                                          ;A48157;
+    STA.B VRAMWrite.src,X                                                ;A48157;
     LDA.W $0003,Y                                                        ;A48159;
-    STA.B VRAMWrite.src+1,X                                                          ;A4815C;
+    STA.B VRAMWrite.src+1,X                                              ;A4815C;
     LDA.W $0005,Y                                                        ;A4815E;
-    STA.B VRAMWrite.dest,X                                                          ;A48161;
+    STA.B VRAMWrite.dest,X                                               ;A48161;
     TXA                                                                  ;A48163;
     CLC                                                                  ;A48164;
     ADC.W #$0007                                                         ;A48165;
-    STA.W VRAMWriteStack                                                          ;A48168;
+    STA.W VRAMWriteStack                                                 ;A48168;
     TYA                                                                  ;A4816B;
     CLC                                                                  ;A4816C;
     ADC.W #$0007                                                         ;A4816D;
@@ -382,17 +382,17 @@ Instruction_CommonA4_TransferYBytesInYToVRAM:
 
 ;;; $8173: Instruction - enable off-screen processing ;;;
 Instruction_CommonA4_EnableOffScreenProcessing:
-    LDA.W Enemy.properties,X                                                        ;A48173;
+    LDA.W Enemy.properties,X                                             ;A48173;
     ORA.W #$0800                                                         ;A48176;
-    STA.W Enemy.properties,X                                                        ;A48179;
+    STA.W Enemy.properties,X                                             ;A48179;
     RTL                                                                  ;A4817C;
 
 
 ;;; $817D: Instruction - disable off-screen processing ;;;
 Instruction_CommonA4_DisableOffScreenProcessing:
-    LDA.W Enemy.properties,X                                                        ;A4817D;
+    LDA.W Enemy.properties,X                                             ;A4817D;
     AND.W #$F7FF                                                         ;A48180;
-    STA.W Enemy.properties,X                                                        ;A48183;
+    STA.W Enemy.properties,X                                             ;A48183;
     RTL                                                                  ;A48186;
 
 
@@ -593,7 +593,7 @@ CommonA4EnemySpeeds_QuadraticallyIncreasing:
 ;;; $8687: Hurt AI - enemy $DD8F (Crocomire) ;;;
 HurtAI_Crocomire:
 ; No call to Crocomire_vs_Samus_CollisionHandling, I guess that's why charged plasma lets you roll over past Crocomire
-    LDX.W EnemyIndex                                                          ;A48687;
+    LDX.W EnemyIndex                                                     ;A48687;
     JSL.L UpdateCrocomireBG2Scroll                                       ;A4868A;
     JSR.W CrocomireHurtFlashHandling                                     ;A4868E;
     RTL                                                                  ;A48691;
@@ -645,7 +645,7 @@ CrocomireConstants:
 ;;; $86A6: Instruction - fight AI ;;;
 Instruction_Crocomire_FightAI:
     PHX                                                                  ;A486A6;
-    LDX.W EnemyIndex                                                          ;A486A7;
+    LDX.W EnemyIndex                                                     ;A486A7;
     LDA.W Crocomire.fightFunctionIndex,X                                 ;A486AA;
     TAX                                                                  ;A486AD;
     JSR.W (.pointers,X)                                                  ;A486AE;
@@ -687,7 +687,7 @@ FightAI_Crocomire_0_LockUp_SetInitialInstList:
 ;;     Y: Instruction list pointer
     LDY.W #InstList_Crocomire_Initial                                    ;A486DE;
     LDA.W #$0001                                                         ;A486E1;
-    STA.W Enemy.instTimer,X                                                        ;A486E4;
+    STA.W Enemy.instTimer,X                                              ;A486E4;
     RTS                                                                  ;A486E7;
 
 
@@ -707,9 +707,9 @@ FightAI_Crocomire_2_StepForwardUntilOnScreen_StepForward:
 FightAI_Crocomire_4_Asleep:
 ;; Returns:
 ;;     Y: Instruction list pointer
-    LDA.W Enemy.XPosition                                                          ;A486F2;
+    LDA.W Enemy.XPosition                                                ;A486F2;
     SEC                                                                  ;A486F5;
-    SBC.W SamusXPosition                                                          ;A486F6;
+    SBC.W SamusXPosition                                                 ;A486F6;
     BPL +                                                                ;A486F9;
     EOR.W #$FFFF                                                         ;A486FB;
     INC                                                                  ;A486FE;
@@ -745,7 +745,7 @@ FightAI_Crocomire_6_SteppingForward:
     RTS                                                                  ;A48736;
 
   .step:
-    LDA.W Enemy.XPosition                                                          ;A48737;
+    LDA.W Enemy.XPosition                                                ;A48737;
     CMP.W CrocomireConstants_XThresholdSpikeWall                         ;A4873A;
     BMI .nearSpikeWall                                                   ;A4873D;
     CPY.W #InstList_Crocomire_SteppingBack                               ;A4873F;
@@ -765,7 +765,7 @@ FightAI_Crocomire_6_SteppingForward:
 ;;; $8752: Instruction - maybe start projectile attack ;;;
 Instruction_Crocomire_MaybeStartProjectileAttack:
     PHX                                                                  ;A48752;
-    LDA.W RandomNumberSeed                                                          ;A48753;
+    LDA.W RandomNumberSeed                                               ;A48753;
     AND.W #$0FFF                                                         ;A48756;
     CMP.W #$0400                                                         ;A48759;
     BPL .return                                                          ;A4875C;
@@ -801,7 +801,7 @@ FightAI_Crocomire_8_ProjectileAttack:
     INC.W Crocomire.projectileCounter                                    ;A4878F;
     PHX                                                                  ;A48792;
     PHY                                                                  ;A48793;
-    LDX.W EnemyIndex                                                          ;A48794;
+    LDX.W EnemyIndex                                                     ;A48794;
     LDY.W #EnemyProjectile_CrocomiresProjectile                          ;A48797;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A4879A;
     LDA.W #$001C                                                         ;A4879E;
@@ -859,7 +859,7 @@ FightAI_Crocomire_C_SteppingBack:
 FightAI_Crocomire_E_BackOffFromSpikeWall:
 ;; Returns:
 ;;     Y: Instruction list pointer
-    LDA.W Enemy.XPosition                                                          ;A487E9;
+    LDA.W Enemy.XPosition                                                ;A487E9;
     CMP.W CrocomireConstants_XThresholdSpikeWall                         ;A487EC;
     BMI .return                                                          ;A487EF;
     LDA.W #$0006                                                         ;A487F1;
@@ -967,7 +967,7 @@ UNUSED_FightAI_Crocomire_16_WaitForSecondDamage_A4885A:
 FightAI_Crocomire_18_PowerBombedCharge:
 ;; Returns:
 ;;     Y: Instruction list pointer
-    LDX.W EnemyIndex                                                          ;A4887E;
+    LDX.W EnemyIndex                                                     ;A4887E;
     LDA.W Crocomire.stepCounter                                          ;A48881;
     DEC                                                                  ;A48884;
     STA.W Crocomire.stepCounter                                          ;A48885;
@@ -988,7 +988,7 @@ UNUSED_FightAI_Crocomire_1A_DoNearSpikeWallCharge_A4889A:
 ;;     Y: Instruction list pointer
 
 ; The sound effect played here sound a bit like skree (sound 5Bh)
-    LDX.W EnemyIndex                                                          ;A4889A;
+    LDX.W EnemyIndex                                                     ;A4889A;
     LDA.W Crocomire.fightFlags                                           ;A4889D;
     BIT.W #$0800                                                         ;A488A0;
     BNE .SamusNotHitByClaw                                               ;A488A3;
@@ -1016,7 +1016,7 @@ UNUSED_FightAI_Crocomire_1A_DoNearSpikeWallCharge_A4889A:
 FightAI_Crocomire_1C_UnusedSequence_SetInitialInstList:
 ;; Returns:
 ;;     Y: Instruction list pointer
-    LDX.W EnemyIndex                                                          ;A488D2;
+    LDX.W EnemyIndex                                                     ;A488D2;
     JSR.W FightAI_Crocomire_0_LockUp_SetInitialInstList                  ;A488D5;
     LDA.W Crocomire.fightFlags                                           ;A488D8;
     ORA.W #$0200                                                         ;A488DB;
@@ -1031,7 +1031,7 @@ FightAI_Crocomire_1C_UnusedSequence_SetInitialInstList:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $88EE: Unused. Charge Crocomire forward one step after delay ;;;
 UNUSED_ChargeCrocomireForwardOneStepAfterDelay_A488EE:
-    LDX.W EnemyIndex                                                          ;A488EE;
+    LDX.W EnemyIndex                                                     ;A488EE;
     JSR.W FightAI_Crocomire_0_LockUp_SetInitialInstList                  ;A488F1;
     LDA.W Crocomire.timer                                                ;A488F4;
     BEQ .timerExpired                                                    ;A488F7;
@@ -1039,7 +1039,7 @@ UNUSED_ChargeCrocomireForwardOneStepAfterDelay_A488EE:
     BNE .return                                                          ;A488FC;
 
   .timerExpired:
-    LDX.W EnemyIndex                                                          ;A488FE;
+    LDX.W EnemyIndex                                                     ;A488FE;
     JSR.W ChargeCrocomireForwardOneStep                                  ;A48901;
     LDA.W #$0020                                                         ;A48904;
     STA.W Crocomire.fightFunctionIndex                                   ;A48907;
@@ -1064,7 +1064,7 @@ ChargeCrocomireForwardOneStep:
 UNUSED_FightAI_Crocomire_1E_ChooseForwardMovingAttack_A4891B:
 ;; Returns:
 ;;     Y: Instruction list pointer
-    LDX.W EnemyIndex                                                          ;A4891B;
+    LDX.W EnemyIndex                                                     ;A4891B;
     LDA.W Crocomire.fightFlags                                           ;A4891E;
     BIT.W #$0100                                                         ;A48921;
     BNE .setInstList                                                     ;A48924;
@@ -1086,7 +1086,7 @@ UNUSED_FightAI_Crocomire_1E_ChooseForwardMovingAttack_A4891B:
 UNUSED_FightAI_Crocomire_20_DoNothingAndStepForward_A48940:
 ;; Returns:
 ;;     Y: Instruction list pointer
-    LDX.W EnemyIndex                                                          ;A48940;
+    LDX.W EnemyIndex                                                     ;A48940;
     JSR.W FightAI_Crocomire_0_LockUp_SetInitialInstList                  ;A48943;
     LDA.W Crocomire.timer                                                ;A48946;
     BNE .return                                                          ;A48949;
@@ -1105,10 +1105,10 @@ UNUSED_FightAI_Crocomire_20_DoNothingAndStepForward_A48940:
 UNUSED_FightAI_Crocomire_22_MoveForwardUntilHitSamus_A4895E:
 ;; Returns:
 ;;     Y: Instruction list pointer
-    LDA.W Enemy.XPosition                                                          ;A4895E;
+    LDA.W Enemy.XPosition                                                ;A4895E;
     CMP.W #$02A0                                                         ;A48961;
     BPL .notAgainstSpikes                                                ;A48964;
-    LDX.W EnemyIndex                                                          ;A48966;
+    LDX.W EnemyIndex                                                     ;A48966;
     JSR.W FightAI_Crocomire_2_StepForwardUntilOnScreen_StepForward       ;A48969;
     LDA.W #$0024                                                         ;A4896C;
     STA.W Crocomire.fightFunctionIndex                                   ;A4896F;
@@ -1146,7 +1146,7 @@ UNUSED_FightAI_Crocomire_24_MoveClaws_StepForward_A489A8:
 ;;     Y: Instruction list pointer
 
 ; Crocomire.stepCounter is remaining number of times to do moving claws action
-    LDX.W EnemyIndex                                                          ;A489A8;
+    LDX.W EnemyIndex                                                     ;A489A8;
     LDA.W Crocomire.stepCounter                                          ;A489AB;
     BEQ .timerExpired                                                    ;A489AE;
     DEC.W Crocomire.stepCounter                                          ;A489B0;
@@ -1181,7 +1181,7 @@ UNUSED_FightAI_Crocomire_26_StepForward_A489DE:
     STA.W Crocomire.fightFlags                                           ;A489E9;
 
   .stepForward:
-    LDX.W EnemyIndex                                                          ;A489EC;
+    LDX.W EnemyIndex                                                     ;A489EC;
     JSR.W FightAI_Crocomire_2_StepForwardUntilOnScreen_StepForward       ;A489EF;
     LDA.W #$0028                                                         ;A489F2;
     STA.W Crocomire.fightFunctionIndex                                   ;A489F5;
@@ -1201,7 +1201,7 @@ UNUSED_FightAI_Crocomire_28_MovingClaws_A489F9:
     AND.W #$BFFF                                                         ;A48A01;
     STA.W Crocomire.fightFlags                                           ;A48A04;
     LDA.W #$0001                                                         ;A48A07;
-    STA.W Enemy.instTimer                                                          ;A48A0A;
+    STA.W Enemy.instTimer                                                ;A48A0A;
     LDA.W Crocomire.projectileCounter                                    ;A48A0D;
     STA.W Crocomire.fightFunctionIndex                                   ;A48A10;
     LDY.W #InstList_Crocomire_WaitForFirstSecondDamage_MovingClaws       ;A48A13;
@@ -1237,23 +1237,23 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 InitAI_Crocomire:
     REP #$30                                                             ;A48A5A;
     LDA.W #$0006                                                         ;A48A5C;
-    STA.W BossID                                                          ;A48A5F;
+    STA.W BossID                                                         ;A48A5F;
     LDX.W #$0000                                                         ;A48A62;
     LDA.W #$0338                                                         ;A48A65;
 
   .loopBG2Tilemap:
-    STA.L EnemyBG2Tilemap,X                                                      ;A48A68;
+    STA.L EnemyBG2Tilemap,X                                              ;A48A68;
     INX                                                                  ;A48A6C;
     INX                                                                  ;A48A6D;
     CPX.W #$1000                                                         ;A48A6E;
     BMI .loopBG2Tilemap                                                  ;A48A71;
-    LDX.W AreaIndex                                                          ;A48A73;
-    LDA.L SRAMMirror_Boss,X                                                      ;A48A76;
+    LDX.W AreaIndex                                                      ;A48A73;
+    LDA.L SRAMMirror_Boss,X                                              ;A48A76;
     BIT.W #$0002                                                         ;A48A7A;
     BNE .dead                                                            ;A48A7D;
     JSL.L DisableMinimap_MarkBossRoomTilesExplored                       ;A48A7F;
-    STZ.W CrocomireMelting_TilesLoadingTableIndex                                                          ;A48A83;
-    LDX.W EnemyIndex                                                          ;A48A86;
+    STZ.W CrocomireMelting_TilesLoadingTableIndex                        ;A48A83;
+    LDX.W EnemyIndex                                                     ;A48A86;
     STZ.W Crocomire.deathSequenceIndex,X                                 ;A48A89;
     STZ.W Crocomire.YVelocity,X                                          ;A48A8C;
     LDA.W #$0000                                                         ;A48A8F;
@@ -1262,39 +1262,39 @@ InitAI_Crocomire:
 
   .loopTargetPalette:
     LDA.W Palette_Crocomire_Sprite2,X                                    ;A48A99;
-    STA.L TargetPalettes_SpriteP2,X                                                      ;A48A9C;
+    STA.L TargetPalettes_SpriteP2,X                                      ;A48A9C;
     LDA.W Palette_Crocomire_Sprite5,X                                    ;A48AA0;
-    STA.L TargetPalettes_SpriteP5,X                                                      ;A48AA3;
+    STA.L TargetPalettes_SpriteP5,X                                      ;A48AA3;
     DEX                                                                  ;A48AA7;
     DEX                                                                  ;A48AA8;
     BPL .loopTargetPalette                                               ;A48AA9;
-    LDX.W EnemyIndex                                                          ;A48AAB;
+    LDX.W EnemyIndex                                                     ;A48AAB;
     LDA.W #$0004                                                         ;A48AAE;
     STA.W Crocomire.fightFunctionIndex,X                                 ;A48AB1;
     LDA.W #$0010                                                         ;A48AB4;
-    STA.W unused179E                                                          ;A48AB7;
+    STA.W unused179E                                                     ;A48AB7;
     LDA.W #$0002                                                         ;A48ABA;
-    STA.W CameraDistanceIndex                                                          ;A48ABD;
+    STA.W CameraDistanceIndex                                            ;A48ABD;
     LDA.W #$0400                                                         ;A48AC0;
-    STA.W EnemyBG2TilemapSize                                                          ;A48AC3;
+    STA.W EnemyBG2TilemapSize                                            ;A48AC3;
     LDA.W #InstList_Crocomire_Initial                                    ;A48AC6;
-    STA.W Enemy.instList,X                                                        ;A48AC9;
-    LDA.W Enemy.properties2,X                                                        ;A48ACC;
+    STA.W Enemy.instList,X                                               ;A48AC9;
+    LDA.W Enemy.properties2,X                                            ;A48ACC;
     ORA.W #$0004                                                         ;A48ACF;
-    STA.W Enemy.properties2,X                                                        ;A48AD2;
+    STA.W Enemy.properties2,X                                            ;A48AD2;
     LDA.W #$0001                                                         ;A48AD5;
-    STA.W Enemy.instTimer,X                                                        ;A48AD8;
+    STA.W Enemy.instTimer,X                                              ;A48AD8;
     RTL                                                                  ;A48ADB;
 
   .dead:
     LDA.W #$0101                                                         ;A48ADC;
     STA.L Scrolls                                                        ;A48ADF;
-    STA.L Scrolls+2                                                        ;A48AE3;
-    STZ.W CrocomireMelting_SkeletonLoadingIndex                                                          ;A48AE7;
-    LDA.W Enemy.properties                                                          ;A48AEA;
+    STA.L Scrolls+2                                                      ;A48AE3;
+    STZ.W CrocomireMelting_SkeletonLoadingIndex                          ;A48AE7;
+    LDA.W Enemy.properties                                               ;A48AEA;
     ORA.W #$0400                                                         ;A48AED;
     AND.W #$7FFF                                                         ;A48AF0;
-    STA.W Enemy.properties                                                          ;A48AF3;
+    STA.W Enemy.properties                                               ;A48AF3;
     JSL.L Spawn_Hardcoded_PLM                                            ;A48AF6;
     db $20,$03                                                           ;A48AFA;
     dw PLMEntries_clearCrocomireInvisibleWall                            ;A48AFC;
@@ -1307,47 +1307,47 @@ InitAI_Crocomire:
     LDA.W #$0054                                                         ;A48B0E;
     STA.W Crocomire.deathSequenceIndex                                   ;A48B11;
     LDA.W #InstList_CrocomireCorpse_Skeleton_Dead                        ;A48B14;
-    STA.W Enemy.instList                                                          ;A48B17;
+    STA.W Enemy.instList                                                 ;A48B17;
     LDA.W #$0001                                                         ;A48B1A;
-    STA.W Enemy.instTimer                                                          ;A48B1D;
+    STA.W Enemy.instTimer                                                ;A48B1D;
     LDA.W #$0240                                                         ;A48B20;
-    STA.W Enemy.XPosition                                                          ;A48B23;
+    STA.W Enemy.XPosition                                                ;A48B23;
     LDA.W #$0090                                                         ;A48B26;
-    STA.W Enemy.YPosition                                                          ;A48B29;
+    STA.W Enemy.YPosition                                                ;A48B29;
     LDA.W #$001C                                                         ;A48B2C;
-    STA.W Enemy.YHitboxRadius                                                          ;A48B2F;
+    STA.W Enemy.YHitboxRadius                                            ;A48B2F;
     LDA.W #$0028                                                         ;A48B32;
-    STA.W Enemy.XHitboxRadius                                                          ;A48B35;
-    LDX.W VRAMWriteStack                                                          ;A48B38;
+    STA.W Enemy.XHitboxRadius                                            ;A48B35;
+    LDX.W VRAMWriteStack                                                 ;A48B38;
     LDA.W #$0800                                                         ;A48B3B;
-    STA.B VRAMWrite.size,X                                                          ;A48B3E;
-    LDA.W #EnemyBG2Tilemap                                                         ;A48B40;
-    STA.B VRAMWrite.src,X                                                          ;A48B43;
-    LDA.W #EnemyBG2Tilemap>>16                                                         ;A48B45;
-    STA.B VRAMWrite.src+2,X                                                          ;A48B48;
-    LDA.B DP_BG2TilemapAddrSize                                                            ;A48B4A;
+    STA.B VRAMWrite.size,X                                               ;A48B3E;
+    LDA.W #EnemyBG2Tilemap                                               ;A48B40;
+    STA.B VRAMWrite.src,X                                                ;A48B43;
+    LDA.W #EnemyBG2Tilemap>>16                                           ;A48B45;
+    STA.B VRAMWrite.src+2,X                                              ;A48B48;
+    LDA.B DP_BG2TilemapAddrSize                                          ;A48B4A;
     AND.W #$00FC                                                         ;A48B4C;
     XBA                                                                  ;A48B4F;
-    STA.B VRAMWrite.dest,X                                                          ;A48B50;
+    STA.B VRAMWrite.dest,X                                               ;A48B50;
     TXA                                                                  ;A48B52;
     CLC                                                                  ;A48B53;
     ADC.W #$0007                                                         ;A48B54;
-    STA.W VRAMWriteStack                                                          ;A48B57;
+    STA.W VRAMWriteStack                                                 ;A48B57;
     RTL                                                                  ;A48B5A;
 
 
 ;;; $8B5B: Update Crocomire BG2 scroll ;;;
 UpdateCrocomireBG2Scroll:
-    LDA.W Enemy.YPosition,X                                                        ;A48B5B;
+    LDA.W Enemy.YPosition,X                                              ;A48B5B;
     SEC                                                                  ;A48B5E;
     SBC.W #$0043                                                         ;A48B5F;
     EOR.W #$FFFF                                                         ;A48B62;
     INC                                                                  ;A48B65;
-    STA.B DP_BG2YScroll                                                            ;A48B66;
+    STA.B DP_BG2YScroll                                                  ;A48B66;
     LDX.W #$0020                                                         ;A48B68;
 
   .loop:
-    LDA.W Enemy.spritemap                                                          ;A48B6B;
+    LDA.W Enemy.spritemap                                                ;A48B6B;
     CMP.W .pointers,X                                                    ;A48B6E;
     BEQ .found                                                           ;A48B71;
     DEX                                                                  ;A48B73;
@@ -1378,31 +1378,31 @@ UpdateCrocomireBG2Scroll:
     TAY                                                                  ;A48B9B;
     LDA.W $001C,Y                                                        ;A48B9C;
     CLC                                                                  ;A48B9F;
-    ADC.B DP_BG2YScroll                                                            ;A48BA0;
-    STA.B DP_BG2YScroll                                                            ;A48BA2; fallthrough to UpdateCrocomireBG2XScroll
+    ADC.B DP_BG2YScroll                                                  ;A48BA0;
+    STA.B DP_BG2YScroll                                                  ;A48BA2; fallthrough to UpdateCrocomireBG2XScroll
 
 
 ;;; $8BA4: Update Crocomire BG2 X scroll ;;;
 UpdateCrocomireBG2XScroll:
-    LDX.W EnemyIndex                                                          ;A48BA4;
-    LDA.W Enemy.XPosition,X                                                        ;A48BA7;
+    LDX.W EnemyIndex                                                     ;A48BA4;
+    LDA.W Enemy.XPosition,X                                              ;A48BA7;
     CLC                                                                  ;A48BAA;
-    ADC.W Enemy[1].var0,X                                                        ;A48BAB;
-    STA.W Enemy[1].XPosition,X                                                        ;A48BAE;
-    LDA.W Enemy.YPosition,X                                                        ;A48BB1;
-    STA.W Enemy[1].YPosition,X                                                        ;A48BB4;
-    LDA.W Enemy.XPosition,X                                                        ;A48BB7;
-    CMP.W Layer1XPosition                                                          ;A48BBA;
+    ADC.W Enemy[1].var0,X                                                ;A48BAB;
+    STA.W Enemy[1].XPosition,X                                           ;A48BAE;
+    LDA.W Enemy.YPosition,X                                              ;A48BB1;
+    STA.W Enemy[1].YPosition,X                                           ;A48BB4;
+    LDA.W Enemy.XPosition,X                                              ;A48BB7;
+    CMP.W Layer1XPosition                                                ;A48BBA;
     BPL .rightOffScreenCheck                                             ;A48BBD;
     CLC                                                                  ;A48BBF;
     ADC.W #$0080                                                         ;A48BC0;
-    CMP.W Layer1XPosition                                                          ;A48BC3;
+    CMP.W Layer1XPosition                                                ;A48BC3;
     BMI .offScreen                                                       ;A48BC6;
 
   .onScreen:
-    LDA.W Layer1XPosition                                                          ;A48BC8;
+    LDA.W Layer1XPosition                                                ;A48BC8;
     SEC                                                                  ;A48BCB;
-    SBC.W Enemy.XPosition,X                                                        ;A48BCC;
+    SBC.W Enemy.XPosition,X                                              ;A48BCC;
     CLC                                                                  ;A48BCF;
     ADC.W #$0033                                                         ;A48BD0;
     PHA                                                                  ;A48BD3;
@@ -1417,23 +1417,23 @@ UpdateCrocomireBG2XScroll:
     PHA                                                                  ;A48BE3;
 
 +   PLA                                                                  ;A48BE4;
-    STA.B DP_BG2XScroll                                                            ;A48BE5;
+    STA.B DP_BG2XScroll                                                  ;A48BE5;
     RTL                                                                  ;A48BE7;
 
   .offScreen:
     LDA.W #$0100                                                         ;A48BE8;
-    STA.B DP_BG2XScroll                                                            ;A48BEB;
+    STA.B DP_BG2XScroll                                                  ;A48BEB;
     RTL                                                                  ;A48BED;
 
   .rightOffScreenCheck:
-    LDA.W Layer1XPosition                                                          ;A48BEE;
+    LDA.W Layer1XPosition                                                ;A48BEE;
     CLC                                                                  ;A48BF1;
     ADC.W #$0100                                                         ;A48BF2;
-    STA.B DP_Temp12                                                            ;A48BF5;
-    LDA.W Enemy.XPosition,X                                                        ;A48BF7;
+    STA.B DP_Temp12                                                      ;A48BF5;
+    LDA.W Enemy.XPosition,X                                              ;A48BF7;
     SEC                                                                  ;A48BFA;
     SBC.W #$0080                                                         ;A48BFB;
-    CMP.B DP_Temp12                                                            ;A48BFE;
+    CMP.B DP_Temp12                                                      ;A48BFE;
     BPL .offScreen                                                       ;A48C00;
     BRA .onScreen                                                        ;A48C02;
 
@@ -1501,15 +1501,15 @@ MainAI_Crocomire:
 MainAI_Crocomire_DeathSequence_0_NotStarted:
     JSL.L HandleCrocomiresBridge                                         ;A48C6E;
     LDA.W #$0101                                                         ;A48C72;
-    STA.L Scrolls+4                                                        ;A48C75;
-    LDA.W SamusXPosition                                                          ;A48C79;
+    STA.L Scrolls+4                                                      ;A48C75;
+    LDA.W SamusXPosition                                                 ;A48C79;
     CMP.W #$0520                                                         ;A48C7C;
     BMI .bridgeNotInSight                                                ;A48C7F;
     LDA.W #$0100                                                         ;A48C81;
-    STA.L Scrolls+4                                                        ;A48C84;
+    STA.L Scrolls+4                                                      ;A48C84;
 
   .bridgeNotInSight:
-    LDX.W EnemyIndex                                                          ;A48C88;
+    LDX.W EnemyIndex                                                     ;A48C88;
     JSL.L UpdateCrocomireBG2Scroll                                       ;A48C8B; fallthrough to RTS_A48C8F
 
 
@@ -1520,8 +1520,8 @@ RTS_A48C8F:
 
 ;;; $8C90: Crocomire main AI - death sequence index 56h - dead (due to room entry, final state) ;;;
 MainAI_Crocomire_DeathSequence_56_DeadDueToRoomEntry:
-    STZ.B DP_BG2XScroll                                                            ;A48C90;
-    STZ.B DP_BG2YScroll                                                            ;A48C92;
+    STZ.B DP_BG2XScroll                                                  ;A48C90;
+    STZ.B DP_BG2YScroll                                                  ;A48C92;
     RTS                                                                  ;A48C94;
 
 
@@ -1529,24 +1529,24 @@ MainAI_Crocomire_DeathSequence_56_DeadDueToRoomEntry:
 Crocomire_vs_Samus_CollisionHandling:
     LDA.W Crocomire.deathSequenceIndex                                   ;A48C95;
     BNE .return                                                          ;A48C98;
-    LDA.W Enemy.XPosition                                                          ;A48C9A;
+    LDA.W Enemy.XPosition                                                ;A48C9A;
     SEC                                                                  ;A48C9D;
-    SBC.W Enemy.XHitboxRadius                                                          ;A48C9E;
-    SBC.W SamusXRadius                                                          ;A48CA1;
-    SBC.W SamusXPosition                                                          ;A48CA4;
+    SBC.W Enemy.XHitboxRadius                                            ;A48C9E;
+    SBC.W SamusXRadius                                                   ;A48CA1;
+    SBC.W SamusXPosition                                                 ;A48CA4;
     BPL .return                                                          ;A48CA7;
     JSL.L NormalEnemyTouchAI                                             ;A48CA9;
-    LDA.W Enemy.XPosition                                                          ;A48CAD;
+    LDA.W Enemy.XPosition                                                ;A48CAD;
     SEC                                                                  ;A48CB0;
-    SBC.W Enemy.XHitboxRadius                                                          ;A48CB1;
+    SBC.W Enemy.XHitboxRadius                                            ;A48CB1;
     SEC                                                                  ;A48CB4;
-    SBC.W SamusXRadius                                                          ;A48CB5;
-    STA.W SamusXPosition                                                          ;A48CB8;
-    STA.W SamusPreviousXPosition                                                          ;A48CBB;
+    SBC.W SamusXRadius                                                   ;A48CB5;
+    STA.W SamusXPosition                                                 ;A48CB8;
+    STA.W SamusPreviousXPosition                                         ;A48CBB;
     LDA.W #$FFFC                                                         ;A48CBE;
-    STA.W ExtraSamusXDisplacement                                                          ;A48CC1;
+    STA.W ExtraSamusXDisplacement                                        ;A48CC1;
     LDA.W #$FFFF                                                         ;A48CC4;
-    STA.W ExtraSamusYDisplacement                                                          ;A48CC7;
+    STA.W ExtraSamusYDisplacement                                        ;A48CC7;
 
   .return:
     RTS                                                                  ;A48CCA;
@@ -1554,18 +1554,18 @@ Crocomire_vs_Samus_CollisionHandling:
 
 ;;; $8CCB: Crocomire hurt flash handling ;;;
 CrocomireHurtFlashHandling:
-    LDA.W DoorTransitionFlagEnemiesPause                                                          ;A48CCB;
+    LDA.W DoorTransitionFlagEnemiesPause                                 ;A48CCB;
     BNE .return                                                          ;A48CCE;
-    LDA.W Enemy.flashTimer                                                          ;A48CD0;
+    LDA.W Enemy.flashTimer                                               ;A48CD0;
     BEQ .palette                                                         ;A48CD3;
-    LDA.W $0E44                                                          ;A48CD5;
+    LDA.W NumberOfTimesMainEnemyRoutineExecuted                          ;A48CD5;
     BIT.W #$0002                                                         ;A48CD8;
     BEQ .palette                                                         ;A48CDB;
     LDA.W #$7FFF                                                         ;A48CDD;
     LDX.W #$000E                                                         ;A48CE0;
 
   .loopWhite:
-    STA.L $7EC0E0,X                                                      ;A48CE3;
+    STA.L Palettes_BG12P7,X                                              ;A48CE3;
     DEX                                                                  ;A48CE7;
     DEX                                                                  ;A48CE8;
     BPL .loopWhite                                                       ;A48CE9;
@@ -1576,7 +1576,7 @@ CrocomireHurtFlashHandling:
 
   .loopPalette:
     LDA.W Palette_Crocomire_BG12,X                                       ;A48CEF;
-    STA.L $7EC0E0,X                                                      ;A48CF2;
+    STA.L Palettes_BG12P7,X                                              ;A48CF2;
     DEX                                                                  ;A48CF6;
     DEX                                                                  ;A48CF7;
     BPL .loopPalette                                                     ;A48CF8;
@@ -1622,13 +1622,13 @@ Instruction_Crocomire_QueueSkeletonCollapseSFX:
 HandlePlayingCrocomireAcidDamageSFX:
     PHX                                                                  ;A48D1F;
     PHY                                                                  ;A48D20;
-    LDA.L $7E8000                                                        ;A48D21;
+    LDA.L Crocomire.acidDamageSFXTimer                                   ;A48D21;
     BEQ .return                                                          ;A48D25;
     DEC                                                                  ;A48D27;
-    STA.L $7E8000                                                        ;A48D28;
+    STA.L Crocomire.acidDamageSFXTimer                                   ;A48D28;
     BNE .return                                                          ;A48D2C;
     LDA.W #$0020                                                         ;A48D2E;
-    STA.L $7E8000                                                        ;A48D31;
+    STA.L Crocomire.acidDamageSFXTimer                                   ;A48D31;
     LDA.W #$0022                                                         ;A48D35;
     JSL.L QueueSound_Lib3_Max6                                           ;A48D38;
 
@@ -1663,19 +1663,19 @@ MainAI_Crocomire_DeathSequence_20_26_Hop_4_5_Resting:
 ;;; $8D5E: Handle Crocomire's bridge ;;;
 HandleCrocomiresBridge:
     PHY                                                                  ;A48D5E;
-    LDA.W Enemy.XPosition                                                          ;A48D5F;
+    LDA.W Enemy.XPosition                                                ;A48D5F;
     CMP.W #$0600                                                         ;A48D62;
     BMI .notOnBridge                                                     ;A48D65;
     CMP.W #$0610                                                         ;A48D67;
     BPL .oneBlockDeep                                                    ;A48D6A;
-    LDA.L $7E9000                                                        ;A48D6C;
+    LDA.L CrocomireDeath_PreBridgeBlockDustCloudSpawnedFlag              ;A48D6C;
     BNE .returnUpper                                                     ;A48D70;
     LDA.W #$0001                                                         ;A48D72;
-    STA.L $7E9000                                                        ;A48D75;
+    STA.L CrocomireDeath_PreBridgeBlockDustCloudSpawnedFlag              ;A48D75;
     LDA.W #$0600                                                         ;A48D79;
-    STA.B $12                                                            ;A48D7C;
+    STA.B DP_Temp12                                                      ;A48D7C;
     LDA.W #$00B0                                                         ;A48D7E;
-    STA.B $14                                                            ;A48D81;
+    STA.B DP_Temp14                                                      ;A48D81;
     LDA.W #$0015                                                         ;A48D83;
     LDY.W #EnemyProjectile_MiscDust                                      ;A48D86;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A48D89;
@@ -1686,30 +1686,30 @@ HandleCrocomiresBridge:
 
   .notOnBridge:
     LDA.W #$0000                                                         ;A48D8F;
-    STA.L $7E9000                                                        ;A48D92;
-    STA.L $7E9002                                                        ;A48D96;
-    STA.L $7E9006                                                        ;A48D9A;
-    STA.L $7E900A                                                        ;A48D9E;
+    STA.L CrocomireDeath_PreBridgeBlockDustCloudSpawnedFlag              ;A48D92;
+    STA.L CrocomireDeath_BridgePart1CrumbledFlag                         ;A48D96;
+    STA.L CrocomireDeath_BridgePart2CrumbledFlag                         ;A48D9A;
+    STA.L neverRead900A                                                  ;A48D9E;
     PLY                                                                  ;A48DA2;
     RTL                                                                  ;A48DA3;
 
   .oneBlockDeep:
-    LDA.W Enemy.XPosition                                                          ;A48DA4;
+    LDA.W Enemy.XPosition                                                ;A48DA4;
     CMP.W #$0610                                                         ;A48DA7;
     BMI .deadCode                                                        ;A48DAA;
     CMP.W #$0620                                                         ;A48DAC;
     BPL .twoBlocksDeep                                                   ;A48DAF;
-    LDA.L $7E9002                                                        ;A48DB1;
+    LDA.L CrocomireDeath_BridgePart1CrumbledFlag                         ;A48DB1;
     BNE .returnMiddle                                                    ;A48DB5;
     LDA.W #$0001                                                         ;A48DB7;
-    STA.L $7E9002                                                        ;A48DBA;
+    STA.L CrocomireDeath_BridgePart1CrumbledFlag                         ;A48DBA;
     JSL.L Spawn_Hardcoded_PLM                                            ;A48DBE;
     db $61,$0B                                                           ;A48DC2;
     dw PLMEntries_crumbleABlockOfCrocomiresBridge                        ;A48DC4;
     LDA.W #$0620                                                         ;A48DC6;
-    STA.B $12                                                            ;A48DC9;
+    STA.B DP_Temp12                                                      ;A48DC9;
     LDA.W #$00B0                                                         ;A48DCB;
-    STA.B $14                                                            ;A48DCE;
+    STA.B DP_Temp14                                                      ;A48DCE;
     LDA.W #$0015                                                         ;A48DD0;
     LDY.W #EnemyProjectile_MiscDust                                      ;A48DD3;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A48DD6;
@@ -1721,22 +1721,22 @@ HandleCrocomiresBridge:
   .deadCode:
 ; This branch is never executed
     LDA.W #$0000                                                         ;A48DDC;
-    STA.L $7E9002                                                        ;A48DDF;
-    STA.L $7E9006                                                        ;A48DE3;
-    STA.L $7E900A                                                        ;A48DE7;
+    STA.L CrocomireDeath_BridgePart1CrumbledFlag                         ;A48DDF;
+    STA.L CrocomireDeath_BridgePart2CrumbledFlag                         ;A48DE3;
+    STA.L neverRead900A                                                  ;A48DE7;
     PLY                                                                  ;A48DEB;
     RTL                                                                  ;A48DEC;
 
   .twoBlocksDeep:
-    LDA.W Enemy.XPosition                                                          ;A48DED;
+    LDA.W Enemy.XPosition                                                ;A48DED;
     CMP.W #$0620                                                         ;A48DF0;
     BMI .deadCode2                                                       ;A48DF3;
     CMP.W #$0630                                                         ;A48DF5;
     BPL .threeBlocksDeep                                                 ;A48DF8;
-    LDA.L $7E9006                                                        ;A48DFA;
+    LDA.L CrocomireDeath_BridgePart2CrumbledFlag                         ;A48DFA;
     BNE .returnLower                                                     ;A48DFE;
     LDA.W #$0001                                                         ;A48E00;
-    STA.L $7E9006                                                        ;A48E03;
+    STA.L CrocomireDeath_BridgePart2CrumbledFlag                         ;A48E03;
     JSL.L Spawn_Hardcoded_PLM                                            ;A48E07;
     db $62,$0B                                                           ;A48E0B;
     dw PLMEntries_crumbleABlockOfCrocomiresBridge                        ;A48E0D;
@@ -1744,9 +1744,9 @@ HandleCrocomiresBridge:
     db $63,$0B                                                           ;A48E13;
     dw PLMEntries_crumbleABlockOfCrocomiresBridge                        ;A48E15;
     LDA.W #$0630                                                         ;A48E17;
-    STA.B $12                                                            ;A48E1A;
+    STA.B DP_Temp12                                                      ;A48E1A;
     LDA.W #$00B0                                                         ;A48E1C;
-    STA.B $14                                                            ;A48E1F;
+    STA.B DP_Temp14                                                      ;A48E1F;
     LDA.W #$0015                                                         ;A48E21;
     LDY.W #EnemyProjectile_MiscDust                                      ;A48E24;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A48E27;
@@ -1758,8 +1758,8 @@ HandleCrocomiresBridge:
   .deadCode2:
 ; This branch is never executed
     LDA.W #$0000                                                         ;A48E2D;
-    STA.L $7E9006                                                        ;A48E30;
-    STA.L $7E900A                                                        ;A48E34;
+    STA.L CrocomireDeath_BridgePart2CrumbledFlag                         ;A48E30;
+    STA.L neverRead900A                                                  ;A48E34;
     PLY                                                                  ;A48E38;
     RTL                                                                  ;A48E39;
 
@@ -1772,53 +1772,53 @@ HandleCrocomiresBridge:
   .collapseBridge:
     JSR.W CollapseCrocomiresBridge                                       ;A48E41;
     LDA.W #$0001                                                         ;A48E44;
-    STA.L $7E8000                                                        ;A48E47;
+    STA.L Crocomire.acidDamageSFXTimer                                   ;A48E47;
     LDA.W #$0001                                                         ;A48E4B;
-    STA.L $7E9018                                                        ;A48E4E;
-    LDX.W EnemyIndex                                                          ;A48E52;
+    STA.L CrocomireDeath_AcidDamageSmokeTimer                            ;A48E4E;
+    LDX.W EnemyIndex                                                     ;A48E52;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A48E55;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A48E58;
     LDA.W #$0002                                                         ;A48E5B;
-    STA.L $7E7800                                                        ;A48E5E;
-    STA.L $7E7840                                                        ;A48E62;
-    STA.L $7E7880                                                        ;A48E66;
-    STA.L $7E78C0                                                        ;A48E6A;
-    STA.L $7E7900                                                        ;A48E6E;
-    STA.L $7E7940                                                        ;A48E72;
+    STA.L ExtraEnemy7800                                                 ;A48E5E;
+    STA.L ExtraEnemy7800+$40                                             ;A48E62;
+    STA.L ExtraEnemy7800+$80                                             ;A48E66;
+    STA.L ExtraEnemy7800+$C0                                             ;A48E6A;
+    STA.L ExtraEnemy7800+$100                                            ;A48E6E;
+    STA.L ExtraEnemy7800+$140                                            ;A48E72;
     LDA.W #$0000                                                         ;A48E76;
-    STA.L $7E7802                                                        ;A48E79;
-    STA.L $7E7842                                                        ;A48E7D;
-    STA.L $7E7882                                                        ;A48E81;
-    STA.L $7E78C2                                                        ;A48E85;
-    STA.L $7E7902                                                        ;A48E89;
-    STA.L $7E7942                                                        ;A48E8D;
+    STA.L ExtraEnemy7800+2                                               ;A48E79;
+    STA.L ExtraEnemy7800+$42                                             ;A48E7D;
+    STA.L ExtraEnemy7800+$82                                             ;A48E81;
+    STA.L ExtraEnemy7800+$C2                                             ;A48E85;
+    STA.L ExtraEnemy7800+$102                                            ;A48E89;
+    STA.L ExtraEnemy7800+$142                                            ;A48E8D;
     LDA.W #$003B                                                         ;A48E91;
     JSL.L QueueSound_Lib2_Max6                                           ;A48E94;
     LDA.W #$0000                                                         ;A48E98;
-    STA.L $7E9016                                                        ;A48E9B;
+    STA.L CrocomireDeath_CrumblingBridgeIndex                            ;A48E9B;
     JSL.L Spawn_Hardcoded_PLM                                            ;A48E9F;
     db $4E,$03                                                           ;A48EA3;
     dw PLMEntries_createCrocomireInvisibleWall                           ;A48EA5;
     LDA.W #InstList_CrocomireTongue_BridgeCollapsed                      ;A48EA7;
-    STA.W Enemy.instList,X                                                        ;A48EAA;
+    STA.W Enemy.instList,X                                               ;A48EAA;
     LDA.W #$0001                                                         ;A48EAD;
-    STA.W Enemy.instTimer,X                                                        ;A48EB0;
-    LDA.W Enemy.properties,X                                                        ;A48EB3;
+    STA.W Enemy.instTimer,X                                              ;A48EB0;
+    LDA.W Enemy.properties,X                                             ;A48EB3;
     ORA.W #$0400                                                         ;A48EB6;
-    STA.W Enemy.properties,X                                                        ;A48EB9;
+    STA.W Enemy.properties,X                                             ;A48EB9;
     LDA.W #$7FFF                                                         ;A48EBC;
-    STA.W $0FD4,X                                                        ;A48EBF;
+    STA.W Enemy[1].instTimer,X                                           ;A48EBF;
     LDA.W #InstList_Crocomire_Sleep                                      ;A48EC2;
-    STA.W $0FD2,X                                                        ;A48EC5;
-    LDA.W $0FC6                                                          ;A48EC8;
+    STA.W Enemy[1].instList,X                                            ;A48EC5;
+    LDA.W Enemy[1].properties                                            ;A48EC8;
     ORA.W #$0100                                                         ;A48ECB;
-    STA.W $0FC6                                                          ;A48ECE;
+    STA.W Enemy[1].properties                                            ;A48ECE;
     STZ.W Crocomire.YVelocity,X                                          ;A48ED1;
     STZ.W Crocomire.projectileCounter,X                                  ;A48ED4;
     LDA.W #$0800                                                         ;A48ED7;
     STA.W Crocomire.YAcceleration,X                                      ;A48EDA;
     LDA.W #$0010                                                         ;A48EDD;
-    STA.W Enemy.YHitboxRadius                                                          ;A48EE0;
+    STA.W Enemy.YHitboxRadius                                            ;A48EE0;
     PLY                                                                  ;A48EE3;
     RTL                                                                  ;A48EE4;
 
@@ -1856,51 +1856,51 @@ CollapseCrocomiresBridge:
     db $6A,$0B                                                           ;A48F31;
     dw PLMEntries_clearABlockOfCrocomiresBridge                          ;A48F33;
     LDA.W #$0600                                                         ;A48F35;
-    STA.B $12                                                            ;A48F38;
+    STA.B DP_Temp12                                                      ;A48F38;
     LDA.W #$00B0                                                         ;A48F3A;
-    STA.B $14                                                            ;A48F3D;
+    STA.B DP_Temp14                                                      ;A48F3D;
     LDA.W #$0015                                                         ;A48F3F;
     LDY.W #EnemyProjectile_MiscDust                                      ;A48F42;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A48F45;
     LDA.W #$0610                                                         ;A48F49;
-    STA.B $12                                                            ;A48F4C;
+    STA.B DP_Temp12                                                      ;A48F4C;
     LDA.W #$00C0                                                         ;A48F4E;
-    STA.B $14                                                            ;A48F51;
+    STA.B DP_Temp14                                                      ;A48F51;
     LDA.W #$0015                                                         ;A48F53;
     LDY.W #EnemyProjectile_MiscDust                                      ;A48F56;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A48F59;
     LDA.W #$0620                                                         ;A48F5D;
-    STA.B $12                                                            ;A48F60;
+    STA.B DP_Temp12                                                      ;A48F60;
     LDA.W #$00B0                                                         ;A48F62;
-    STA.B $14                                                            ;A48F65;
+    STA.B DP_Temp14                                                      ;A48F65;
     LDA.W #$0015                                                         ;A48F67;
     LDY.W #EnemyProjectile_MiscDust                                      ;A48F6A;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A48F6D;
     LDA.W #$0630                                                         ;A48F71;
-    STA.B $12                                                            ;A48F74;
+    STA.B DP_Temp12                                                      ;A48F74;
     LDA.W #$00C0                                                         ;A48F76;
-    STA.B $14                                                            ;A48F79;
+    STA.B DP_Temp14                                                      ;A48F79;
     LDA.W #$0015                                                         ;A48F7B;
     LDY.W #EnemyProjectile_MiscDust                                      ;A48F7E;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A48F81;
     LDA.W #$0640                                                         ;A48F85;
-    STA.B $12                                                            ;A48F88;
+    STA.B DP_Temp12                                                      ;A48F88;
     LDA.W #$00C0                                                         ;A48F8A;
-    STA.B $14                                                            ;A48F8D;
+    STA.B DP_Temp14                                                      ;A48F8D;
     LDA.W #$0015                                                         ;A48F8F;
     LDY.W #EnemyProjectile_MiscDust                                      ;A48F92;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A48F95;
     LDA.W #$0650                                                         ;A48F99;
-    STA.B $12                                                            ;A48F9C;
+    STA.B DP_Temp12                                                      ;A48F9C;
     LDA.W #$00C0                                                         ;A48F9E;
-    STA.B $14                                                            ;A48FA1;
+    STA.B DP_Temp14                                                      ;A48FA1;
     LDA.W #$0015                                                         ;A48FA3;
     LDY.W #EnemyProjectile_MiscDust                                      ;A48FA6;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A48FA9;
     LDA.W #$0660                                                         ;A48FAD;
-    STA.B $12                                                            ;A48FB0;
+    STA.B DP_Temp12                                                      ;A48FB0;
     LDA.W #$00C0                                                         ;A48FB2;
-    STA.B $14                                                            ;A48FB5;
+    STA.B DP_Temp14                                                      ;A48FB5;
     LDA.W #$0015                                                         ;A48FB7;
     LDY.W #EnemyProjectile_MiscDust                                      ;A48FBA;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A48FBD;
@@ -1920,9 +1920,9 @@ Instruction_Crocomire_ShakeScreen:
     PHX                                                                  ;A48FC7;
     PHY                                                                  ;A48FC8;
     LDA.W #$0004                                                         ;A48FC9;
-    STA.W $183E                                                          ;A48FCC;
+    STA.W EarthquakeType                                                 ;A48FCC;
     LDA.W #$0005                                                         ;A48FCF;
-    STA.W $1840                                                          ;A48FD2;
+    STA.W EarthquakeTimer                                                ;A48FD2;
     LDA.W #$0076                                                         ;A48FD5;
     JSL.L QueueSound_Lib2_Max6                                           ;A48FD8;
     PLY                                                                  ;A48FDC;
@@ -1934,13 +1934,13 @@ Instruction_Crocomire_ShakeScreen:
 Instruction_Crocomire_MoveLeft4Pixels:
     PHX                                                                  ;A48FDF;
     PHY                                                                  ;A48FE0;
-    LDX.W EnemyIndex                                                          ;A48FE1;
+    LDX.W EnemyIndex                                                     ;A48FE1;
     LDA.W Crocomire.fightFlags                                           ;A48FE4;
     BIT.W #$0800                                                         ;A48FE7;
     BNE .return                                                          ;A48FEA;
-    STZ.B $12                                                            ;A48FEC;
+    STZ.B DP_Temp12                                                      ;A48FEC;
     LDA.W #$FFFC                                                         ;A48FEE;
-    STA.B $14                                                            ;A48FF1;
+    STA.B DP_Temp14                                                      ;A48FF1;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A48FF3;
 
   .return:
@@ -1964,9 +1964,9 @@ Instruction_Crocomire_MoveLeft4Pixels_SpawnBigDustCloud_dup:
 ;;; $9004: Spawn big dust cloud enemy projectile with random X offset ;;;
 SpawnBigDustCloudProjectileWithRandomXOffset:
     PHX                                                                  ;A49004;
-    LDA.W RandomNumberSeed                                                          ;A49005;
+    LDA.W RandomNumberSeed                                               ;A49005;
     AND.W #$001F                                                         ;A49008;
-    LDX.W RandomNumberSeed                                                          ;A4900B;
+    LDX.W RandomNumberSeed                                               ;A4900B;
     CPX.W #$1000                                                         ;A4900E;
     BMI .spawn                                                           ;A49011;
     EOR.W #$FFFF                                                         ;A49013;
@@ -1982,24 +1982,24 @@ SpawnBigDustCloudProjectileWithRandomXOffset:
 Instruction_Crocomire_MoveLeft_SpawnCloud_HandleSpikeWall:
     PHX                                                                  ;A4901D;
     PHY                                                                  ;A4901E;
-    LDX.W EnemyIndex                                                          ;A4901F;
-    STZ.B $12                                                            ;A49022;
+    LDX.W EnemyIndex                                                     ;A4901F;
+    STZ.B DP_Temp12                                                      ;A49022;
     LDA.W #$FFFC                                                         ;A49024;
-    STA.B $14                                                            ;A49027;
+    STA.B DP_Temp14                                                      ;A49027;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A49029;
     BCS .hitWall                                                         ;A4902D;
     LDX.W #$0020                                                         ;A4902F;
-    LDA.W RandomNumberSeed                                                          ;A49032;
+    LDA.W RandomNumberSeed                                               ;A49032;
     CMP.W #$0800                                                         ;A49035;
     BMI .spawnDustCloud                                                  ;A49038;
     LDX.W #$FFE0                                                         ;A4903A;
 
   .spawnDustCloud:
-    LDA.W RandomNumberSeed                                                          ;A4903D;
+    LDA.W RandomNumberSeed                                               ;A4903D;
     AND.W #$000F                                                         ;A49040;
-    STX.B $12                                                            ;A49043;
+    STX.B DP_Temp12                                                      ;A49043;
     CLC                                                                  ;A49045;
-    ADC.B $12                                                            ;A49046;
+    ADC.B DP_Temp12                                                      ;A49046;
     JSL.L SpawnBigDustCloudProjectile                                    ;A49048;
     PLY                                                                  ;A4904C;
     PLX                                                                  ;A4904D;
@@ -2018,16 +2018,16 @@ Instruction_Crocomire_MoveLeft_SpawnCloud_HandleSpikeWall:
 Instruction_Crocomire_MoveRight4PixelsIfOnScreen:
     PHX                                                                  ;A4905B;
     PHY                                                                  ;A4905C;
-    LDX.W EnemyIndex                                                          ;A4905D;
-    STZ.B $12                                                            ;A49060;
+    LDX.W EnemyIndex                                                     ;A4905D;
+    STZ.B DP_Temp12                                                      ;A49060;
     LDA.W #$0004                                                         ;A49062;
-    STA.B $14                                                            ;A49065;
-    LDA.W Enemy.XPosition                                                          ;A49067;
+    STA.B DP_Temp14                                                      ;A49065;
+    LDA.W Enemy.XPosition                                                ;A49067;
     SEC                                                                  ;A4906A;
-    SBC.W Enemy.XHitboxRadius                                                          ;A4906B;
+    SBC.W Enemy.XHitboxRadius                                            ;A4906B;
     SBC.W #$0100                                                         ;A4906E;
-    SBC.B $14                                                            ;A49071;
-    CMP.W Layer1XPosition                                                          ;A49073;
+    SBC.B DP_Temp14                                                      ;A49071;
+    CMP.W Layer1XPosition                                                ;A49073;
     BPL .return                                                          ;A49076;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A49078;
 
@@ -2041,9 +2041,9 @@ Instruction_Crocomire_MoveRight4PixelsIfOnScreen:
 Instruction_Crocomire_MoveRight4Pixels:
     PHX                                                                  ;A4907F;
     PHY                                                                  ;A49080;
-    STZ.B $12                                                            ;A49081;
+    STZ.B DP_Temp12                                                      ;A49081;
     LDA.W #$0004                                                         ;A49083;
-    STA.B $14                                                            ;A49086;
+    STA.B DP_Temp14                                                      ;A49086;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A49088;
     PLY                                                                  ;A4908C;
     PLX                                                                  ;A4908D;
@@ -2075,18 +2075,18 @@ MainAI_Crocomire_DeathSequence_3C_Hop_6_Sinking:
     LDA.W #$0058                                                         ;A490B1;
     STA.W Crocomire.deathSequenceIndex                                   ;A490B4;
     LDA.W #InstList_CrocomireCorpse_Skeleton_FlowingDownTheRiver         ;A490B7;
-    STA.W Enemy.instList                                                          ;A490BA;
+    STA.W Enemy.instList                                                 ;A490BA;
     LDA.W #$0101                                                         ;A490BD;
-    STA.L Scrolls+4                                                        ;A490C0;
-    STZ.W $05F7                                                          ;A490C4;
-    LDA.W $0FC6                                                          ;A490C7;
+    STA.L Scrolls+4                                                      ;A490C0;
+    STZ.W DisableMinimap                                                 ;A490C4;
+    LDA.W Enemy[1].properties                                            ;A490C7;
     ORA.W #$0200                                                         ;A490CA;
-    STA.W $0FC6                                                          ;A490CD;
+    STA.W Enemy[1].properties                                            ;A490CD;
     JSL.L Spawn_Hardcoded_PLM                                            ;A490D0;
     db $4E,$03                                                           ;A490D4;
     dw PLMEntries_clearCrocomireInvisibleWall                            ;A490D6;
-    STZ.W CameraDistanceIndex                                                          ;A490D8;
-    STZ.W CrocomireMelting_SkeletonLoadingIndex                                                          ;A490DB;
+    STZ.W CameraDistanceIndex                                            ;A490D8;
+    STZ.W CrocomireMelting_SkeletonLoadingIndex                          ;A490DB;
 
   .return:
     RTS                                                                  ;A490DE;
@@ -2094,7 +2094,7 @@ MainAI_Crocomire_DeathSequence_3C_Hop_6_Sinking:
 
 ;;; $90DF: Set melting 2 instruction list pointer ;;;
 SetMelting2InstListPointer:
-    LDA.W Enemy.YPosition                                                          ;A490DF;
+    LDA.W Enemy.YPosition                                                ;A490DF;
     LDY.W #InstList_Crocomire_Melting2_TopRow                            ;A490E2;
     CMP.W #$0118                                                         ;A490E5;
     BPL .setInstList                                                     ;A490E8;
@@ -2108,9 +2108,9 @@ SetMelting2InstListPointer:
 
   .setInstList:
     TYA                                                                  ;A490FD;
-    STA.W Enemy.instList                                                          ;A490FE;
+    STA.W Enemy.instList                                                 ;A490FE;
     LDA.W #$0001                                                         ;A49101;
-    STA.W Enemy.instTimer                                                          ;A49104;
+    STA.W Enemy.instTimer                                                ;A49104;
     RTS                                                                  ;A49107;
 
 
@@ -2131,15 +2131,15 @@ MainAI_Crocomire_DeathSequence_1E_24_2A_Hop_3_4_5_Sinking:
 
   .setInstList:
     TYA                                                                  ;A49129;
-    STA.W Enemy.instList                                                          ;A4912A;
+    STA.W Enemy.instList                                                 ;A4912A;
     LDA.W #$0001                                                         ;A4912D;
-    STA.W Enemy.instTimer                                                          ;A49130;
+    STA.W Enemy.instTimer                                                ;A49130;
     JMP.W SinkCrocomireDown                                              ;A49133;
 
 
 ;;; $9136: Crocomire main AI - death sequence index 2 - falling ;;;
 MainAI_Crocomire_DeathSequence_2_Falling:
-    LDA.L $7E9016                                                        ;A49136;
+    LDA.L CrocomireDeath_CrumblingBridgeIndex                            ;A49136;
     CMP.W #$0016                                                         ;A4913A;
     BMI .indexLessThan16                                                 ;A4913D;
     JMP.W MainAI_Crocomire_DeathSequence_8_E_Hop_1_2_Sinking             ;A4913F;
@@ -2148,7 +2148,7 @@ MainAI_Crocomire_DeathSequence_2_Falling:
     TAX                                                                  ;A49142;
     INC                                                                  ;A49143;
     INC                                                                  ;A49144;
-    STA.L $7E9016                                                        ;A49145;
+    STA.L CrocomireDeath_CrumblingBridgeIndex                            ;A49145;
     LDA.W .XPositions,X                                                  ;A49149;
     LDY.W #EnemyProjectile_CrocomireBridgeCrumbling                      ;A4914C;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A4914F;
@@ -2165,16 +2165,16 @@ MainAI_Crocomire_DeathSequence_2_Falling:
 
 ;;; $916C: Handle Crocomire acid damage smoke ;;;
 HandleCrocomireAcidDamageSmoke:
-    LDA.L $7E9018                                                        ;A4916C;
+    LDA.L CrocomireDeath_AcidDamageSmokeTimer                            ;A4916C;
     DEC                                                                  ;A49170;
-    STA.L $7E9018                                                        ;A49171;
+    STA.L CrocomireDeath_AcidDamageSmokeTimer                            ;A49171;
     BNE .return                                                          ;A49175;
     LDA.W #$0006                                                         ;A49177;
-    STA.L $7E9018                                                        ;A4917A;
-    LDA.W RandomNumberSeed                                                          ;A4917E;
+    STA.L CrocomireDeath_AcidDamageSmokeTimer                            ;A4917A;
+    LDA.W RandomNumberSeed                                               ;A4917E;
     AND.W #$003F                                                         ;A49181;
     TAX                                                                  ;A49184;
-    LDA.W RandomNumberSeed                                                          ;A49185;
+    LDA.W RandomNumberSeed                                               ;A49185;
     BIT.W #$0002                                                         ;A49188;
     BNE +                                                                ;A4918B;
     TXA                                                                  ;A4918D;
@@ -2183,21 +2183,21 @@ HandleCrocomireAcidDamageSmoke:
 
 +   TXA                                                                  ;A49192;
     CLC                                                                  ;A49193;
-    ADC.W Enemy.XPosition                                                          ;A49194;
-    STA.B $12                                                            ;A49197;
-    LDA.W RandomNumberSeed                                                          ;A49199;
+    ADC.W Enemy.XPosition                                                ;A49194;
+    STA.B DP_Temp12                                                      ;A49197;
+    LDA.W RandomNumberSeed                                               ;A49199;
     AND.W #$1F00                                                         ;A4919C;
     XBA                                                                  ;A4919F;
-    STA.B $14                                                            ;A491A0;
-    LDA.W $1962                                                          ;A491A2;
+    STA.B DP_Temp14                                                      ;A491A0;
+    LDA.W FX_LavaAcidYPosition                                           ;A491A2;
     CLC                                                                  ;A491A5;
     ADC.W #$0010                                                         ;A491A6;
     SEC                                                                  ;A491A9;
-    SBC.B $14                                                            ;A491AA;
-    STA.B $14                                                            ;A491AC;
+    SBC.B DP_Temp14                                                      ;A491AA;
+    STA.B DP_Temp14                                                      ;A491AC;
     LDA.W #$0015                                                         ;A491AE;
-    STA.B $16                                                            ;A491B1;
-    STZ.B $18                                                            ;A491B3;
+    STA.B DP_Temp16                                                      ;A491B1;
+    STZ.B DP_Temp18                                                      ;A491B3;
     JSL.L Create_Sprite_Object                                           ;A491B5;
 
   .return:
@@ -2218,9 +2218,9 @@ SinkCrocomireDown:
     LDA.W Crocomire.fightFlags                                           ;A491C4;
     AND.W #$F7FF                                                         ;A491C7;
     STA.W Crocomire.fightFlags                                           ;A491CA;
-    LDX.W EnemyIndex                                                          ;A491CD;
+    LDX.W EnemyIndex                                                     ;A491CD;
     JSL.L UpdateCrocomireBG2Scroll                                       ;A491D0;
-    LDA.W Enemy.YPosition,X                                                        ;A491D4;
+    LDA.W Enemy.YPosition,X                                              ;A491D4;
     CMP.W #$0118                                                         ;A491D7;
     BMI .reachedLeftLedge                                                ;A491DA;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A491DC;
@@ -2230,34 +2230,34 @@ SinkCrocomireDown:
     RTS                                                                  ;A491E8;
 
   .reachedLeftLedge:
-    LDA.B DP_BG2YScroll                                                            ;A491E9;
+    LDA.B DP_BG2YScroll                                                  ;A491E9;
     EOR.W #$FFFF                                                         ;A491EB;
     INC                                                                  ;A491EE;
-    STA.B $12                                                            ;A491EF;
+    STA.B DP_Temp12                                                      ;A491EF;
     LDA.W #$0120                                                         ;A491F1;
     SEC                                                                  ;A491F4;
-    SBC.B $12                                                            ;A491F5;
+    SBC.B DP_Temp12                                                      ;A491F5;
     AND.W #$FFF8                                                         ;A491F7;
     ASL                                                                  ;A491FA;
     ASL                                                                  ;A491FB;
     ASL                                                                  ;A491FC;
     TAX                                                                  ;A491FD;
     LDA.W #$0020                                                         ;A491FE;
-    STA.B $12                                                            ;A49201;
+    STA.B DP_Temp12                                                      ;A49201;
     LDA.W #$0338                                                         ;A49203;
 
   .loopTilemap:
-    STA.L EnemyBG2Tilemap,X                                                      ;A49206;
+    STA.L EnemyBG2Tilemap,X                                              ;A49206;
     INX                                                                  ;A4920A;
     INX                                                                  ;A4920B;
-    DEC.B $12                                                            ;A4920C;
+    DEC.B DP_Temp12                                                      ;A4920C;
     BNE .loopTilemap                                                     ;A4920E;
     LDA.W #$0001                                                         ;A49210;
-    STA.W $0E1E                                                          ;A49213;
-    LDA.W Enemy.properties2                                                          ;A49216;
+    STA.W RequestEnemyBG2TilemapTransferFlag                             ;A49213;
+    LDA.W Enemy.properties2                                              ;A49216;
     AND.W #$7FFF                                                         ;A49219;
-    STA.W Enemy.properties2                                                          ;A4921C;
-    LDX.W EnemyIndex                                                          ;A4921F;
+    STA.W Enemy.properties2                                              ;A4921C;
+    LDX.W EnemyIndex                                                     ;A4921F;
     SEP #$20                                                             ;A49222;
     LDA.W Crocomire.YAcceleration,X                                      ;A49224;
     CLC                                                                  ;A49227;
@@ -2273,31 +2273,31 @@ SinkCrocomireDown:
     CLC                                                                  ;A4923B;
     ADC.W Crocomire.YVelocity,X                                          ;A4923C;
     STA.W Crocomire.YVelocity,X                                          ;A4923F;
-    LDA.W $0FB1,X                                                        ;A49242;
+    LDA.W Enemy.var4+1,X                                                 ;A49242;
     ADC.B #$00                                                           ;A49245;
     CMP.B #$03                                                           ;A49247;
     BMI +                                                                ;A49249;
     LDA.B #$03                                                           ;A4924B;
 
-+   STA.W $0FB1,X                                                        ;A4924D;
++   STA.W Enemy.var4+1,X                                                 ;A4924D;
     LDA.W Crocomire.YVelocity,X                                          ;A49250;
     CLC                                                                  ;A49253;
-    ADC.W $0FB3,X                                                        ;A49254;
-    STA.W $0FB3,X                                                        ;A49257;
-    LDA.W $0FB1,X                                                        ;A4925A;
-    ADC.W Enemy.YPosition,X                                                        ;A4925D;
-    STA.W Enemy.YPosition,X                                                        ;A49260;
-    LDA.W $0F7F,X                                                        ;A49263;
+    ADC.W Enemy.var5+1,X                                                 ;A49254;
+    STA.W Enemy.var5+1,X                                                 ;A49257;
+    LDA.W Enemy.var4+1,X                                                 ;A4925A;
+    ADC.W Enemy.YPosition,X                                              ;A4925D;
+    STA.W Enemy.YPosition,X                                              ;A49260;
+    LDA.W Enemy.YPosition+1,X                                            ;A49263;
     ADC.B #$00                                                           ;A49266;
-    STA.W $0F7F,X                                                        ;A49268;
+    STA.W Enemy.YPosition+1,X                                            ;A49268;
     REP #$20                                                             ;A4926B;
     RTS                                                                  ;A4926D;
 
 
 ;;; $926E: Crocomire main AI - death sequence index 34h - hop 6 - rising ;;;
 MainAI_Crocomire_DeathSequence_34_Hop_6_Rising:
-    LDX.W EnemyIndex                                                          ;A4926E;
-    LDA.W Enemy.YPosition,X                                                        ;A49271;
+    LDX.W EnemyIndex                                                     ;A4926E;
+    LDA.W Enemy.YPosition,X                                              ;A49271;
     LDY.W #InstList_Crocomire_Melting2_TopRow                            ;A49274;
     CMP.W #$0118                                                         ;A49277;
     BPL .setInstListPointer                                              ;A4927A;
@@ -2311,9 +2311,9 @@ MainAI_Crocomire_DeathSequence_34_Hop_6_Rising:
 
   .setInstListPointer:
     TYA                                                                  ;A4928F;
-    STA.W Enemy.instList,X                                                        ;A49290;
+    STA.W Enemy.instList,X                                               ;A49290;
     LDA.W #$0001                                                         ;A49293;
-    STA.W Enemy.instTimer,X                                                        ;A49296;
+    STA.W Enemy.instTimer,X                                              ;A49296;
     JSR.W HandleCrocomireAcidDamageSmoke                                 ;A49299;
     BRA RaiseCrocomireUp                                                 ;A4929C;
 
@@ -2321,8 +2321,8 @@ MainAI_Crocomire_DeathSequence_34_Hop_6_Rising:
 ;;; $929E: Crocomire main AI - death sequence index 16h/22h/28h - hop 3/4/5 - rising ;;;
 MainAI_Crocomire_DeathSequence_16_22_28_Hop_3_4_5_Rising:
     JSR.W HandleCrocomireAcidDamageSmoke                                 ;A4929E;
-    LDX.W EnemyIndex                                                          ;A492A1;
-    LDA.W Enemy.YPosition,X                                                        ;A492A4;
+    LDX.W EnemyIndex                                                     ;A492A1;
+    LDA.W Enemy.YPosition,X                                              ;A492A4;
     LDY.W #InstList_Crocomire_Melting1_TopRow                            ;A492A7;
     CMP.W #$0118                                                         ;A492AA;
     BPL .setInstListPointer                                              ;A492AD;
@@ -2336,9 +2336,9 @@ MainAI_Crocomire_DeathSequence_16_22_28_Hop_3_4_5_Rising:
 
   .setInstListPointer:
     TYA                                                                  ;A492C2;
-    STA.W Enemy.instList,X                                                        ;A492C3;
+    STA.W Enemy.instList,X                                               ;A492C3;
     LDA.W #$0001                                                         ;A492C6;
-    STA.W Enemy.instTimer,X                                                        ;A492C9;
+    STA.W Enemy.instTimer,X                                              ;A492C9;
     BRA RaiseCrocomireUp                                                 ;A492CC;
 
 
@@ -2346,17 +2346,17 @@ MainAI_Crocomire_DeathSequence_16_22_28_Hop_3_4_5_Rising:
 MainAI_Crocomire_DeathSequence_6_C_Hop_1_2_Rising:
     JSL.L HandlePlayingCrocomireAcidDamageSFX                            ;A492CE;
     JSR.W HandleCrocomireAcidDamageSmoke                                 ;A492D2;
-    LDX.W EnemyIndex                                                          ;A492D5; fallthrough to RaiseCrocomireUp
+    LDX.W EnemyIndex                                                     ;A492D5; fallthrough to RaiseCrocomireUp
 
 
 ;;; $92D8: Rise Crocomire up ;;;
 RaiseCrocomireUp:
     JSR.W ResetCrocomireBG2YScrollHDMADataTable                          ;A492D8;
-    LDX.W EnemyIndex                                                          ;A492DB;
-    LDA.W Enemy.YPosition,X                                                        ;A492DE;
+    LDX.W EnemyIndex                                                     ;A492DB;
+    LDA.W Enemy.YPosition,X                                              ;A492DE;
     CMP.W #$00DA                                                         ;A492E1;
     BPL .raised                                                          ;A492E4;
-    LDX.W EnemyIndex                                                          ;A492E6;
+    LDX.W EnemyIndex                                                     ;A492E6;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A492E9;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A492EC;
     RTS                                                                  ;A492EF;
@@ -2374,9 +2374,9 @@ RaiseCrocomireUp:
     SEP #$20                                                             ;A49306;
     LDA.W Crocomire.YVelocity                                            ;A49308;
     SEC                                                                  ;A4930B;
-    SBC.W $0FAF                                                          ;A4930C;
+    SBC.W Enemy.var3+1                                                   ;A4930C;
     STA.W Crocomire.YVelocity                                            ;A4930F;
-    LDA.W $0FB1                                                          ;A49312;
+    LDA.W Enemy.var4+1                                                   ;A49312;
     SBC.B #$00                                                           ;A49315;
     BPL .positiveYVelocity                                               ;A49317;
     LDA.B #$FF                                                           ;A49319;
@@ -2384,17 +2384,17 @@ RaiseCrocomireUp:
     LDA.B #$00                                                           ;A4931E;
 
   .positiveYVelocity:
-    STA.W $0FB1                                                          ;A49320;
-    LDA.W $0FB3                                                          ;A49323;
+    STA.W Enemy.var4+1                                                   ;A49320;
+    LDA.W Enemy.var5+1                                                   ;A49323;
     SEC                                                                  ;A49326;
     SBC.W Crocomire.YVelocity                                            ;A49327;
-    STA.W $0FB3                                                          ;A4932A;
-    LDA.W Enemy.YPosition                                                          ;A4932D;
-    SBC.W $0FB1                                                          ;A49330;
-    STA.W Enemy.YPosition                                                          ;A49333;
-    LDA.W $0F7F                                                          ;A49336;
+    STA.W Enemy.var5+1                                                   ;A4932A;
+    LDA.W Enemy.YPosition                                                ;A4932D;
+    SBC.W Enemy.var4+1                                                   ;A49330;
+    STA.W Enemy.YPosition                                                ;A49333;
+    LDA.W Enemy.YPosition+1                                              ;A49336;
     SBC.B #$00                                                           ;A49339;
-    STA.W $0F7F                                                          ;A4933B;
+    STA.W Enemy.YPosition+1                                              ;A4933B;
     REP #$20                                                             ;A4933E;
     RTS                                                                  ;A49340;
 
@@ -2402,37 +2402,37 @@ RaiseCrocomireUp:
 ;;; $9341: Crocomire main AI - death sequence index 10h - hop 3 - load melting tilemap ;;;
 MainAI_Crocomire_DeathSequence_10_Hop_3_LoadMeltingTilemap:
     LDA.W #$0030                                                         ;A49341;
-    STA.W $068C                                                          ;A49344;
-    STA.W CrocomireMelting_SkeletonLoadingIndex                                                          ;A49347;
-    LDX.W EnemyIndex                                                          ;A4934A;
+    STA.W CrocomireMelting_PixelsToErasePerColumn                        ;A49344;
+    STA.W CrocomireMelting_SkeletonLoadingIndex                          ;A49347;
+    LDX.W EnemyIndex                                                     ;A4934A;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A4934D;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A49350;
     LDA.W #InstList_Crocomire_Melting1_TopRow                            ;A49353;
-    STA.W Enemy.instList,X                                                        ;A49356;
+    STA.W Enemy.instList,X                                               ;A49356;
     LDA.W #$0001                                                         ;A49359;
-    STA.W Enemy.instTimer,X                                                        ;A4935C;
+    STA.W Enemy.instTimer,X                                              ;A4935C;
     LDA.W #$0001                                                         ;A4935F;
-    STA.W $0E1E                                                          ;A49362;
+    STA.W RequestEnemyBG2TilemapTransferFlag                             ;A49362;
     LDA.W #InstList_CrocomireTongue_Melting                              ;A49365;
-    STA.W $0FD2,X                                                        ;A49368;
+    STA.W Enemy[1].instList,X                                            ;A49368;
     LDA.W #$0001                                                         ;A4936B;
-    STA.W $0FD4,X                                                        ;A4936E;
-    LDA.W $0FC6,X                                                        ;A49371;
+    STA.W Enemy[1].instTimer,X                                           ;A4936E;
+    LDA.W Enemy[1].properties,X                                          ;A49371;
     ORA.W #$2C00                                                         ;A49374;
     AND.W #$FEFF                                                         ;A49377;
-    STA.W $0FC6,X                                                        ;A4937A;
-    LDA.W Enemy.XPosition,X                                                        ;A4937D;
-    STA.W Enemy[1].XPosition,X                                                        ;A49380;
-    LDA.W Enemy.YPosition,X                                                        ;A49383;
+    STA.W Enemy[1].properties,X                                          ;A4937A;
+    LDA.W Enemy.XPosition,X                                              ;A4937D;
+    STA.W Enemy[1].XPosition,X                                           ;A49380;
+    LDA.W Enemy.YPosition,X                                              ;A49383;
     CLC                                                                  ;A49386;
     ADC.W #$0010                                                         ;A49387;
-    STA.W Enemy[1].YPosition,X                                                        ;A4938A;
+    STA.W Enemy[1].YPosition,X                                           ;A4938A;
     LDX.W #$0000                                                         ;A4938D;
     LDA.W #$0338                                                         ;A49390;
 
   .loopClearTilemap:
-    STA.L EnemyBG2Tilemap,X                                                      ;A49393;
-    STA.L $7E2002,X                                                      ;A49397;
+    STA.L EnemyBG2Tilemap,X                                              ;A49393;
+    STA.L EnemyBG2Tilemap+2,X                                            ;A49397;
     INX                                                                  ;A4939B;
     INX                                                                  ;A4939C;
     INX                                                                  ;A4939D;
@@ -2445,7 +2445,7 @@ MainAI_Crocomire_DeathSequence_10_Hop_3_LoadMeltingTilemap:
     LDA.L MeltingCrocomireTilesLoadingTable_Tilemap_Melting1,X           ;A493A7;
     CMP.W #$FFFF                                                         ;A493AB;
     BEQ .done                                                            ;A493AE;
-    STA.L $7E2040,X                                                      ;A493B0;
+    STA.L EnemyBG2Tilemap+$40,X                                          ;A493B0;
     INX                                                                  ;A493B4;
     INX                                                                  ;A493B5;
     BRA .loopMeltingTilemap                                              ;A493B6;
@@ -2462,30 +2462,30 @@ WriteCrocomireBG2Tilemap:
 ;; Parameters:
 ;;     X: BG2 tilemap size. 600h (little excessive...)
     TXY                                                                  ;A493BE;
-    LDX.W VRAMWriteStack                                                          ;A493BF;
-    STY.B VRAMWrite.size,X                                                          ;A493C2;
-    LDA.W #$2000                                                         ;A493C4;
-    STA.B VRAMWrite.src,X                                                          ;A493C7;
-    LDA.W #$007E                                                         ;A493C9;
-    STA.B VRAMWrite.src+2,X                                                          ;A493CC;
-    LDA.B DP_BG2TilemapAddrSize                                                            ;A493CE;
+    LDX.W VRAMWriteStack                                                 ;A493BF;
+    STY.B VRAMWrite.size,X                                               ;A493C2;
+    LDA.W #EnemyBG2Tilemap                                               ;A493C4;
+    STA.B VRAMWrite.src,X                                                ;A493C7;
+    LDA.W #EnemyBG2Tilemap>>16                                           ;A493C9;
+    STA.B VRAMWrite.src+2,X                                              ;A493CC;
+    LDA.B DP_BG2TilemapAddrSize                                          ;A493CE;
     AND.W #$00FC                                                         ;A493D0;
     XBA                                                                  ;A493D3;
-    STA.B VRAMWrite.dest,X                                                          ;A493D4;
+    STA.B VRAMWrite.dest,X                                               ;A493D4;
     TXA                                                                  ;A493D6;
     CLC                                                                  ;A493D7;
     ADC.W #$0007                                                         ;A493D8;
-    STA.W VRAMWriteStack                                                          ;A493DB;
+    STA.W VRAMWriteStack                                                 ;A493DB;
     RTS                                                                  ;A493DE;
 
 
 ;;; $93DF: Reset Crocomire BG2 Y scroll HDMA data table ;;;
 ResetCrocomireBG2YScrollHDMADataTable:
-    LDA.B DP_BG2YScroll                                                            ;A493DF;
+    LDA.B DP_BG2YScroll                                                  ;A493DF;
     LDX.W #$01FE                                                         ;A493E1;
 
   .loop:
-    STA.L $7ECAF0,X                                                      ;A493E4;
+    STA.L CrocomireBG2YScrollHDMADataTable,X                             ;A493E4;
     DEX                                                                  ;A493E8;
     DEX                                                                  ;A493E9;
     BPL .loop                                                            ;A493EA;
@@ -2495,21 +2495,21 @@ ResetCrocomireBG2YScrollHDMADataTable:
 ;;; $93ED: Crocomire main AI - death sequence index 2Ch - hop 6 - load melting tilemap ;;;
 MainAI_Crocomire_DeathSequence_2C_Hop_6_LoadMeltingTilemap:
     JSR.W ResetCrocomireBG2YScrollHDMADataTable                          ;A493ED;
-    LDX.W EnemyIndex                                                          ;A493F0;
+    LDX.W EnemyIndex                                                     ;A493F0;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A493F3;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A493F6;
     LDA.W #$0001                                                         ;A493F9;
-    STA.W Enemy.instTimer,X                                                        ;A493FC;
+    STA.W Enemy.instTimer,X                                              ;A493FC;
     LDA.W #$0030                                                         ;A493FF;
-    STA.W $068C                                                          ;A49402;
-    STA.W CrocomireMelting_SkeletonLoadingIndex                                                          ;A49405;
+    STA.W CrocomireMelting_PixelsToErasePerColumn                        ;A49402;
+    STA.W CrocomireMelting_SkeletonLoadingIndex                          ;A49405;
     LDA.W #InstList_Crocomire_Melting2_TopRow                            ;A49408;
-    STA.W Enemy.instList,X                                                        ;A4940B;
+    STA.W Enemy.instList,X                                               ;A4940B;
     LDX.W #$0000                                                         ;A4940E;
     LDA.W #$0338                                                         ;A49411;
 
   .loopClearTilemap:
-    STA.L EnemyBG2Tilemap,X                                                      ;A49414;
+    STA.L EnemyBG2Tilemap,X                                              ;A49414;
     INX                                                                  ;A49418;
     INX                                                                  ;A49419;
     CPX.W #$0800                                                         ;A4941A;
@@ -2520,7 +2520,7 @@ MainAI_Crocomire_DeathSequence_2C_Hop_6_LoadMeltingTilemap:
     LDA.L MeltingCrocomireTilesLoadingTable_Tilemap_Melting2,X           ;A49422;
     CMP.W #$FFFF                                                         ;A49426;
     BEQ .done                                                            ;A49429;
-    STA.L $7E2040,X                                                      ;A4942B;
+    STA.L EnemyBG2Tilemap+$40,X                                          ;A4942B;
     INX                                                                  ;A4942F;
     INX                                                                  ;A49430;
     BRA .loopMeltingTilemap                                              ;A49431;
@@ -2546,23 +2546,23 @@ MainAI_Crocomire_DeathSequence_12_2E_Hop_3_4_LoadMeltTiles:
 ; The loop that does the copying from ROM to WRAM seems to be copying twice as many bytes as it needs to (missing LSR before writing to $12)
     REP #$30                                                             ;A4943D;
     PHB                                                                  ;A4943F;
-    LDX.W EnemyIndex                                                          ;A49440;
+    LDX.W EnemyIndex                                                     ;A49440;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A49443;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A49446;
     LDA.W #$0100                                                         ;A49449;
-    STA.W $0692                                                          ;A4944C;
-    STZ.W $0690                                                          ;A4944F;
-    LDX.W CrocomireMelting_TilesLoadingTableIndex                                                          ;A49452;
+    STA.W CrocomireMelting_DisplacementCoefficient                       ;A4944C;
+    STZ.W CrocomireMelting_XOffsetTableIndex                             ;A4944F;
+    LDX.W CrocomireMelting_TilesLoadingTableIndex                        ;A49452;
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0,X                 ;A49455;
-    STA.W $0698                                                          ;A49458;
-    STA.W $0694                                                          ;A4945B;
+    STA.W CrocomireMelting_MaxAdjustedDestYOffset                        ;A49458;
+    STA.W CrocomireMelting_InitialAdjustedDestYOffset                    ;A4945B;
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0+2,X               ;A4945E;
-    STA.W $0696                                                          ;A49461;
+    STA.W CrocomireMelting_NeverRead0696                                 ;A49461;
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0+4,X               ;A49464;
-    STA.W $068E                                                          ;A49467;
-    STZ.B $00                                                            ;A4946A;
+    STA.W CrocomireMelting_WordsToLoad                                   ;A49467;
+    STZ.B DP_Temp00                                                      ;A4946A;
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0+6,X               ;A4946C;
-    STA.B $02                                                            ;A4946F;
+    STA.B DP_Temp02                                                      ;A4946F;
     TXA                                                                  ;A49471;
     CLC                                                                  ;A49472;
     ADC.W #$0008                                                         ;A49473;
@@ -2575,17 +2575,17 @@ MainAI_Crocomire_DeathSequence_12_2E_Hop_3_4_LoadMeltTiles:
     PHX                                                                  ;A4947F;
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0+2,X               ;A49480;
     TAX                                                                  ;A49483;
-    LDA.W $068E                                                          ;A49484;
-    STA.B $12                                                            ;A49487;
+    LDA.W CrocomireMelting_WordsToLoad                                   ;A49484;
+    STA.B DP_Temp12                                                      ;A49487;
 
   .loopInner:
-    LDA.B [$00],Y                                                        ;A49489;
-    STA.L $7E0000,X                                                      ;A4948B;
+    LDA.B [DP_Temp00],Y                                                  ;A49489;
+    STA.L CrocomireMeltingBG2Tiles&$FF0000,X                             ;A4948B;
     INX                                                                  ;A4948F;
     INX                                                                  ;A49490;
     INY                                                                  ;A49491;
     INY                                                                  ;A49492;
-    DEC.B $12                                                            ;A49493;
+    DEC.B DP_Temp12                                                      ;A49493;
     BPL .loopInner                                                       ;A49495;
     PLX                                                                  ;A49497;
     INX                                                                  ;A49498;
@@ -2597,12 +2597,12 @@ MainAI_Crocomire_DeathSequence_12_2E_Hop_3_4_LoadMeltTiles:
   .done:
     INX                                                                  ;A4949E;
     INX                                                                  ;A4949F;
-    STX.W CrocomireMelting_TilesLoadingTableIndex                                                          ;A494A0;
-    STX.W $068A                                                          ;A494A3;
+    STX.W CrocomireMelting_TilesLoadingTableIndex                        ;A494A0;
+    STX.W CrocomireMelting_TilesLoadingTable                             ;A494A3;
     LDX.W #$0080                                                         ;A494A6;
 
   .loopYOffsets:
-    STZ.W $069C,X                                                        ;A494A9;
+    STZ.W CrocomireMelting_YOffsets,X                                    ;A494A9;
     DEX                                                                  ;A494AC;
     DEX                                                                  ;A494AD;
     BPL .loopYOffsets                                                    ;A494AE;
@@ -2620,18 +2620,18 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 ;;; $94B6: Crocomire main AI - death sequence index 14h/30h - hop 3/6 - uploading to VRAM ;;;
 MainAI_Crocomire_DeathSequence_14_30_Hop_3_6_UploadingToVRAM:
-    LDX.W $068A                                                          ;A494B6;
-    LDY.W VRAMWriteStack                                                          ;A494B9;
+    LDX.W CrocomireMelting_TilesLoadingTable                             ;A494B6;
+    LDY.W VRAMWriteStack                                                 ;A494B9;
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0,X                 ;A494BC;
     CMP.W #$FFFF                                                         ;A494BF;
     BEQ .terminator                                                      ;A494C2;
-    STA.W $00D0,Y                                                        ;A494C4; >.<
+    STA.W VRAMWrite.size,Y                                               ;A494C4; >.<
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0+6,X               ;A494C7;
-    STA.W $00D2,Y                                                        ;A494CA; >.<
+    STA.W VRAMWrite.src,Y                                                ;A494CA; >.<
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0+4,X               ;A494CD;
-    STA.W $00D4,Y                                                        ;A494D0; >.<
+    STA.W VRAMWrite.src+2,Y                                              ;A494D0; >.<
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0+2,X               ;A494D3;
-    STA.W $00D5,Y                                                        ;A494D6; >.<
+    STA.W VRAMWrite.dest,Y                                               ;A494D6; >.<
     TYA                                                                  ;A494D9;
     CLC                                                                  ;A494DA;
     ADC.W #$0007                                                         ;A494DB;
@@ -2639,16 +2639,16 @@ MainAI_Crocomire_DeathSequence_14_30_Hop_3_6_UploadingToVRAM:
     TXA                                                                  ;A494DF;
     CLC                                                                  ;A494E0;
     ADC.W #$0008                                                         ;A494E1;
-    STA.W $068A                                                          ;A494E4;
-    STY.W VRAMWriteStack                                                          ;A494E7;
+    STA.W CrocomireMelting_TilesLoadingTable                             ;A494E4;
+    STY.W VRAMWriteStack                                                 ;A494E7;
     RTS                                                                  ;A494EA;
 
   .terminator:
-    STY.W VRAMWriteStack                                                          ;A494EB;
-    LDX.W EnemyIndex                                                          ;A494EE;
+    STY.W VRAMWriteStack                                                 ;A494EB;
+    LDX.W EnemyIndex                                                     ;A494EE;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A494F1;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A494F4;
-    STZ.W $068A                                                          ;A494F7;
+    STZ.W CrocomireMelting_TilesLoadingTable                             ;A494F7;
     RTS                                                                  ;A494FA;
 
 
@@ -2669,34 +2669,34 @@ MainAI_Crocomire_DeathSequence_36_Hop_6_QueueCry_HDMAObject:
 
 ;;; $950F: Create Crocomire melting HDMA object ;;;
 CreateCrocomireMeltingHDMAObject:
-    LDA.W Enemy[1].YPosition                                                          ;A4950F;
+    LDA.W Enemy[1].YPosition                                             ;A4950F;
     SEC                                                                  ;A49512;
     SBC.W #$0048                                                         ;A49513;
     ASL                                                                  ;A49516;
     TAX                                                                  ;A49517;
-    LDA.B DP_BG2YScroll                                                            ;A49518;
+    LDA.B DP_BG2YScroll                                                  ;A49518;
 
   .loop:
-    STA.L $7ECAF0,X                                                      ;A4951A;
+    STA.L CrocomireBG2YScrollHDMADataTable,X                             ;A4951A;
     DEX                                                                  ;A4951E;
     DEX                                                                  ;A4951F;
     BPL .loop                                                            ;A49520;
-    LDX.W EnemyIndex                                                          ;A49522;
+    LDX.W EnemyIndex                                                     ;A49522;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A49525;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A49528;
-    LDA.W Enemy.XPosition                                                          ;A4952B;
+    LDA.W Enemy.XPosition                                                ;A4952B;
     STA.W Crocomire.timer102E                                            ;A4952E;
     PHP                                                                  ;A49531;
     LDA.W #$00FF                                                         ;A49532;
-    STA.L $7ECAE0                                                        ;A49535;
-    LDA.W #$CAF0                                                         ;A49539; $7E
-    STA.L $7ECAE1                                                        ;A4953C;
+    STA.L CrocomireBG2YScrollIndirectHDMATable                           ;A49535;
+    LDA.W #CrocomireBG2YScrollHDMADataTable                              ;A49539;
+    STA.L CrocomireBG2YScrollIndirectHDMATable+1                         ;A4953C;
     LDA.W #$00E1                                                         ;A49540;
-    STA.L $7ECAE3                                                        ;A49543;
+    STA.L CrocomireBG2YScrollIndirectHDMATable+3                         ;A49543;
     LDA.W #$CBEE                                                         ;A49547;
-    STA.L $7ECAE4                                                        ;A4954A;
+    STA.L CrocomireBG2YScrollIndirectHDMATable+4                         ;A4954A;
     LDA.W #$0000                                                         ;A4954E;
-    STA.L $7ECAE6                                                        ;A49551;
+    STA.L CrocomireBG2YScrollIndirectHDMATable+6                         ;A49551;
     JSL.L Spawn_HDMAObject                                               ;A49555;
     db $42,$10                                                           ;A49559;
     dw InstList_HDMAObject_CrocomireMelting_0                            ;A4955B;
@@ -2713,14 +2713,14 @@ InstList_HDMAObject_CrocomireMelting_0:
     dl RTL_A4943C                                                        ;A4956B;
 
 InstList_HDMAObject_CrocomireMelting_1:
-    dw $7777,$CAE0                                                       ;A4956E; $7E
+    dw $7777,CrocomireBG2YScrollIndirectHDMATable                        ;A4956E;
     dw Instruction_HDMAObject_GotoY                                      ;A49572;
     dw InstList_HDMAObject_CrocomireMelting_1                            ;A49574;
 
 
 ;;; $9576: Crocomire main AI - death sequence index 32h - set index 34h ;;;
 MainAI_Crocomire_DeathSequence_32_SetIndex34:
-    LDX.W EnemyIndex                                                          ;A49576;
+    LDX.W EnemyIndex                                                     ;A49576;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A49579;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A4957C;
     RTS                                                                  ;A4957F;
@@ -2729,10 +2729,10 @@ MainAI_Crocomire_DeathSequence_32_SetIndex34:
 ;;; $9580: Crocomire main AI - death sequence index 1Ah/38h - hop 3/6 - melting ;;;
 MainAI_Crocomire_DeathSequence_1A_38_Hop_3_6_Melting:
 ; Copy+paste from RAM map:
-;     $05A6: Adjusted source Y offset. [$0694] + y
-;     $0692: Crocomire melting displacement coefficient. Displacement = y * [$0692] / 10000h. Initialised to 100h. Incremented by 180h up to 5000h, finishing the melting
-;     $0694: Initial adjusted destination Y offset during melting. Initialised to 58h (MeltingCrocomireTilesLoadingTable_Melting1_0/MeltingCrocomireTilesLoadingTable_Melting2_0). Decremented by 3 until 10h
-;     $0698: Max adjusted destination Y offset (58h) during melting. HDMA data table is processed until [$0694] + y - displacement(y) >= [$0698]
+;     CrocomireMelting_SrcYOffset: Adjusted source Y offset. CrocomireMelting_InitialAdjustedDestYOffset + y
+;     CrocomireMelting_DisplacementCoefficient: Crocomire melting displacement coefficient. Displacement = y * [CrocomireMelting_DisplacementCoefficient] / 10000h. Initialised to 100h. Incremented by 180h up to 5000h, finishing the melting
+;     CrocomireMelting_InitialAdjustedDestYOffset: Initial adjusted destination Y offset during melting. Initialised to 58h (MeltingCrocomireTilesLoadingTable_Melting1_0/MeltingCrocomireTilesLoadingTable_Melting2_0). Decremented by 3 until 10h
+;     CrocomireMelting_MaxAdjustedDestYOffset: Max adjusted destination Y offset (58h) during melting. HDMA data table is processed until CrocomireMelting_InitialAdjustedDestYOffset + y - displacement(y) >= CrocomireMelting_MaxAdjustedDestYOffset
     REP #$30                                                             ;A49580;
     JSR.W HandleCrocomireAcidDamageSmoke                                 ;A49582;
     LDX.W Crocomire.timer102E                                            ;A49585;
@@ -2745,16 +2745,16 @@ MainAI_Crocomire_DeathSequence_1A_38_Hop_3_6_Melting:
     ADC.W #$0004                                                         ;A49595;
     TAX                                                                  ;A49598;
 
-+   STX.W Enemy.XPosition                                                          ;A49599;
++   STX.W Enemy.XPosition                                                ;A49599;
     JSL.L EraseMeltingCrocomirePixelColumn                               ;A4959C;
     CMP.W #$0000                                                         ;A495A0;
     BNE .noError                                                         ;A495A3;
 
   .finished:
-    LDX.W EnemyIndex                                                          ;A495A5;
+    LDX.W EnemyIndex                                                     ;A495A5;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A495A8;
     INC.W Crocomire.deathSequenceIndex,X                                 ;A495AB;
-    LDX.W CrocomireMelting_TilesLoadingTableIndex                                                          ;A495AE;
+    LDX.W CrocomireMelting_TilesLoadingTableIndex                        ;A495AE;
 
   .loopFindTerminator:
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0,X                 ;A495B1;
@@ -2769,22 +2769,22 @@ MainAI_Crocomire_DeathSequence_1A_38_Hop_3_6_Melting:
   .terminator:
     INX                                                                  ;A495C1;
     INX                                                                  ;A495C2;
-    STX.W CrocomireMelting_TilesLoadingTableIndex                                                          ;A495C3;
+    STX.W CrocomireMelting_TilesLoadingTableIndex                        ;A495C3;
     LDA.L Crocomire.meltingHDMAObjectIndex                               ;A495C6;
     TAX                                                                  ;A495CA;
     LDA.W #$0000                                                         ;A495CB;
-    STA.W $18B4,X                                                        ;A495CE;
+    STA.W HDMAObject_ChannelBitflags,X                                   ;A495CE;
     RTS                                                                  ;A495D1;
 
   .noError:
-    LDX.W EnemyIndex                                                          ;A495D2;
+    LDX.W EnemyIndex                                                     ;A495D2;
     JSL.L UpdateCrocomireBG2Scroll                                       ;A495D5;
-    LDA.W $0692                                                          ;A495D9;
+    LDA.W CrocomireMelting_DisplacementCoefficient                       ;A495D9;
     TAX                                                                  ;A495DC;
     AND.W #$FF00                                                         ;A495DD;
     XBA                                                                  ;A495E0;
-    STA.B $12                                                            ;A495E1;
-    LDA.W $0694                                                          ;A495E3;
+    STA.B DP_Temp12                                                      ;A495E1;
+    LDA.W CrocomireMelting_InitialAdjustedDestYOffset                    ;A495E3;
     SEC                                                                  ;A495E6;
     SBC.W #$0003                                                         ;A495E7;
     CMP.W #$0010                                                         ;A495EA;
@@ -2793,52 +2793,52 @@ MainAI_Crocomire_DeathSequence_1A_38_Hop_3_6_Melting:
     BPL .finished                                                        ;A495F2;
     LDA.W #$0010                                                         ;A495F4;
 
-+   STA.W $0694                                                          ;A495F7;
-    LDA.W $0692                                                          ;A495FA;
++   STA.W CrocomireMelting_InitialAdjustedDestYOffset                    ;A495F7;
+    LDA.W CrocomireMelting_DisplacementCoefficient                       ;A495FA;
     CLC                                                                  ;A495FD;
     ADC.W #$0180                                                         ;A495FE;
     CMP.W #$5000                                                         ;A49601;
     BMI +                                                                ;A49604;
     LDA.W #$5000                                                         ;A49606;
 
-+   STA.W $0692                                                          ;A49609;
-    STZ.B $12                                                            ;A4960C;
-    LDA.W Enemy[1].YPosition                                                          ;A4960E;
++   STA.W CrocomireMelting_DisplacementCoefficient                       ;A49609;
+    STZ.B DP_Temp12                                                      ;A4960C;
+    LDA.W Enemy[1].YPosition                                             ;A4960E;
     SEC                                                                  ;A49611;
     SBC.W #$0048                                                         ;A49612;
     ASL                                                                  ;A49615;
     TAX                                                                  ;A49616;
-    LDA.W $0694                                                          ;A49617;
+    LDA.W CrocomireMelting_InitialAdjustedDestYOffset                    ;A49617;
     TAY                                                                  ;A4961A;
-    STA.W $05A6                                                          ;A4961B;
+    STA.W CrocomireMelting_SrcYOffset                                    ;A4961B;
     ASL                                                                  ;A4961E;
 
   .loopMeltingRows:
     TYA                                                                  ;A4961F;
     SEC                                                                  ;A49620;
-    SBC.W $05A6                                                          ;A49621;
+    SBC.W CrocomireMelting_SrcYOffset                                    ;A49621;
     CLC                                                                  ;A49624;
-    ADC.B DP_BG2YScroll                                                            ;A49625;
-    STA.L $7ECAF0,X                                                      ;A49627;
-    LDA.B $12                                                            ;A4962B;
+    ADC.B DP_BG2YScroll                                                  ;A49625;
+    STA.L CrocomireBG2YScrollHDMADataTable,X                             ;A49627;
+    LDA.B DP_Temp12                                                      ;A4962B;
     CLC                                                                  ;A4962D;
-    ADC.W $0692                                                          ;A4962E;
-    STA.B $12                                                            ;A49631;
+    ADC.W CrocomireMelting_DisplacementCoefficient                       ;A4962E;
+    STA.B DP_Temp12                                                      ;A49631;
     BCS .carrySet                                                        ;A49633;
     INY                                                                  ;A49635;
 
   .carrySet:
-    INC.W $05A6                                                          ;A49636;
+    INC.W CrocomireMelting_SrcYOffset                                    ;A49636;
     INX                                                                  ;A49639;
     INX                                                                  ;A4963A;
-    CPY.W $0698                                                          ;A4963B;
+    CPY.W CrocomireMelting_MaxAdjustedDestYOffset                        ;A4963B;
     BMI .loopMeltingRows                                                 ;A4963E;
     CPX.W #$0200                                                         ;A49640;
     BPL .return                                                          ;A49643;
-    LDA.B DP_BG2YScroll                                                            ;A49645;
+    LDA.B DP_BG2YScroll                                                  ;A49645;
 
   .loopTablePadding:
-    STA.L $7ECAF0,X                                                      ;A49647;
+    STA.L CrocomireBG2YScrollHDMADataTable,X                             ;A49647;
     INX                                                                  ;A4964B;
     INX                                                                  ;A4964C;
     CPX.W #$0200                                                         ;A4964D;
@@ -2851,7 +2851,7 @@ MainAI_Crocomire_DeathSequence_1A_38_Hop_3_6_Melting:
 ;;; $9653: Crocomire main AI - death sequence index 1Ch/3Ah - hop 3/6 - clear tilemap ;;;
 MainAI_Crocomire_DeathSequence_1C_3A_Hop_3_6_ClearTilemap:
     REP #$30                                                             ;A49653;
-    LDX.W EnemyIndex                                                          ;A49655;
+    LDX.W EnemyIndex                                                     ;A49655;
     STZ.W Crocomire.YVelocity,X                                          ;A49658;
     STZ.W Crocomire.projectileCounter,X                                  ;A4965B;
     LDA.W #$0800                                                         ;A4965E;
@@ -2860,31 +2860,31 @@ MainAI_Crocomire_DeathSequence_1C_3A_Hop_3_6_ClearTilemap:
     LDX.W #$0FFE                                                         ;A49667;
 
   .loop:
-    STA.L EnemyBG2Tilemap,X                                                      ;A4966A;
+    STA.L EnemyBG2Tilemap,X                                              ;A4966A;
     DEX                                                                  ;A4966E;
     DEX                                                                  ;A4966F;
     BPL .loop                                                            ;A49670;
-    LDX.W VRAMWriteStack                                                          ;A49672;
+    LDX.W VRAMWriteStack                                                 ;A49672;
     LDA.W #$0800                                                         ;A49675;
-    STA.B VRAMWrite.size,X                                                          ;A49678;
-    LDA.W #$2000                                                         ;A4967A;
-    STA.B VRAMWrite.src,X                                                          ;A4967D;
-    LDA.W #$007E                                                         ;A4967F;
-    STA.B VRAMWrite.src+2,X                                                          ;A49682;
-    LDA.B DP_BG2TilemapAddrSize                                                            ;A49684;
+    STA.B VRAMWrite.size,X                                               ;A49678;
+    LDA.W #EnemyBG2Tilemap                                               ;A4967A;
+    STA.B VRAMWrite.src,X                                                ;A4967D;
+    LDA.W #EnemyBG2Tilemap>>16                                           ;A4967F;
+    STA.B VRAMWrite.src+2,X                                              ;A49682;
+    LDA.B DP_BG2TilemapAddrSize                                          ;A49684;
     AND.W #$00FE                                                         ;A49686;
     XBA                                                                  ;A49689;
-    STA.B VRAMWrite.dest,X                                                          ;A4968A;
+    STA.B VRAMWrite.dest,X                                               ;A4968A;
     TXA                                                                  ;A4968C;
     CLC                                                                  ;A4968D;
     ADC.W #$0007                                                         ;A4968E;
-    STA.W VRAMWriteStack                                                          ;A49691;
+    STA.W VRAMWriteStack                                                 ;A49691;
     JMP.W NextCrocomireDeathSequenceIndex                                ;A49694;
 
 
 ;;; $9697: Crocomire melting X offset table ;;;
 CrocomireMeltingXOffsetTable:                                            ;A49697;
-; Indexed by $0690
+; Indexed by CrocomireMelting_XOffsetTableIndex
 ; Provides the pixel X offsets of melting Crocomire to erase in chronological order
 ; Due (presumably) to a programming error, this table is only used to determine the tile to modify, but not the pixel within the tile
 ; This pixel within the tile that gets erased is instead determined by the table index % 8
@@ -2917,51 +2917,51 @@ EraseMeltingCrocomirePixelColumn:
     SEP #$20                                                             ;A496C9;
     REP #$10                                                             ;A496CB;
     XBA                                                                  ;A496CD;
-    LDA.W $068C                                                          ;A496CE;
-    STA.B $12                                                            ;A496D1;
-    STZ.B $13                                                            ;A496D3;
-    STZ.B $14                                                            ;A496D5;
-    STZ.B $15                                                            ;A496D7;
-    STZ.B $16                                                            ;A496D9;
-    STZ.B $17                                                            ;A496DB;
-    LDX.W $0690                                                          ;A496DD;
+    LDA.W CrocomireMelting_PixelsToErasePerColumn                        ;A496CE;
+    STA.B DP_Temp12                                                      ;A496D1;
+    STZ.B DP_Temp13                                                      ;A496D3;
+    STZ.B DP_Temp14                                                      ;A496D5;
+    STZ.B DP_Temp15                                                      ;A496D7;
+    STZ.B DP_Temp16                                                      ;A496D9;
+    STZ.B DP_Temp17                                                      ;A496DB;
+    LDX.W CrocomireMelting_XOffsetTableIndex                             ;A496DD;
 
   .loopFindColumnToErase:
     LDA.W CrocomireMeltingXOffsetTable,X                                 ;A496E0;
     TAY                                                                  ;A496E3;
-    LDA.W $069C,Y                                                        ;A496E4;
-    CMP.W CrocomireMelting_SkeletonLoadingIndex                                                          ;A496E7;
+    LDA.W CrocomireMelting_YOffsets,Y                                    ;A496E4;
+    CMP.W CrocomireMelting_SkeletonLoadingIndex                          ;A496E7;
     BMI +                                                                ;A496EA;
     INX                                                                  ;A496EC;
     CPX.W #$0080                                                         ;A496ED;
     BMI .loopFindColumnToErase                                           ;A496F0;
-    STZ.W $0690                                                          ;A496F2;
+    STZ.W CrocomireMelting_XOffsetTableIndex                             ;A496F2;
     LDA.B #$00                                                           ;A496F5;
     PLP                                                                  ;A496F7;
     RTL                                                                  ;A496F8;
 
-+   STX.W $0690                                                          ;A496F9;
++   STX.W CrocomireMelting_XOffsetTableIndex                             ;A496F9;
     TXA                                                                  ;A496FC;
     AND.B #$07                                                           ;A496FD;
     TAY                                                                  ;A496FF;
     REP #$20                                                             ;A49700;
 
   .loopEraseColumn:
-    LDX.W $0690                                                          ;A49702;
+    LDX.W CrocomireMelting_XOffsetTableIndex                             ;A49702;
     LDA.W CrocomireMeltingXOffsetTable,X                                 ;A49705;
     AND.W #$00FF                                                         ;A49708;
     TAX                                                                  ;A4970B;
     AND.W #$FFF8                                                         ;A4970C;
     ASL                                                                  ;A4970F;
     ASL                                                                  ;A49710;
-    STA.B $14                                                            ;A49711;
-    LDA.W $069C,X                                                        ;A49713;
+    STA.B DP_Temp14                                                      ;A49711;
+    LDA.W CrocomireMelting_YOffsets,X                                    ;A49713;
     AND.W #$0007                                                         ;A49716;
     ASL                                                                  ;A49719;
     CLC                                                                  ;A4971A;
-    ADC.B $14                                                            ;A4971B;
-    STA.B $14                                                            ;A4971D;
-    LDA.W $069C,X                                                        ;A4971F;
+    ADC.B DP_Temp14                                                      ;A4971B;
+    STA.B DP_Temp14                                                      ;A4971D;
+    LDA.W CrocomireMelting_YOffsets,X                                    ;A4971F;
     AND.W #$FFF8                                                         ;A49722;
     ASL                                                                  ;A49725;
     ASL                                                                  ;A49726;
@@ -2970,72 +2970,72 @@ EraseMeltingCrocomirePixelColumn:
     ASL                                                                  ;A49729;
     ASL                                                                  ;A4972A;
     CLC                                                                  ;A4972B;
-    ADC.B $14                                                            ;A4972C;
+    ADC.B DP_Temp14                                                      ;A4972C;
     TAX                                                                  ;A4972E;
     SEP #$20                                                             ;A4972F;
-    LDA.L $7E4000,X                                                      ;A49731;
+    LDA.L CrocomireMeltingBG2Tiles,X                                     ;A49731;
     AND.W TilePixelColumnBitmasks,Y                                      ;A49735;
-    STA.L $7E4000,X                                                      ;A49738;
-    LDA.L $7E4001,X                                                      ;A4973C;
+    STA.L CrocomireMeltingBG2Tiles,X                                     ;A49738;
+    LDA.L CrocomireMeltingBG2Tiles+1,X                                   ;A4973C;
     AND.W TilePixelColumnBitmasks,Y                                      ;A49740;
-    STA.L $7E4001,X                                                      ;A49743;
-    LDA.L $7E4010,X                                                      ;A49747;
+    STA.L CrocomireMeltingBG2Tiles+1,X                                   ;A49743;
+    LDA.L CrocomireMeltingBG2Tiles+$10,X                                 ;A49747;
     AND.W TilePixelColumnBitmasks,Y                                      ;A4974B;
-    STA.L $7E4010,X                                                      ;A4974E;
-    LDA.L $7E4011,X                                                      ;A49752;
+    STA.L CrocomireMeltingBG2Tiles+$10,X                                 ;A4974E;
+    LDA.L CrocomireMeltingBG2Tiles+$11,X                                 ;A49752;
     AND.W TilePixelColumnBitmasks,Y                                      ;A49756;
-    STA.L $7E4011,X                                                      ;A49759;
+    STA.L CrocomireMeltingBG2Tiles+$11,X                                 ;A49759;
     LDA.B #$00                                                           ;A4975D;
     XBA                                                                  ;A4975F;
-    LDX.W $0690                                                          ;A49760;
+    LDX.W CrocomireMelting_XOffsetTableIndex                             ;A49760;
     LDA.W CrocomireMeltingXOffsetTable,X                                 ;A49763;
     TAX                                                                  ;A49766;
-    LDA.W $069C,X                                                        ;A49767;
+    LDA.W CrocomireMelting_YOffsets,X                                    ;A49767;
     CMP.B #$30                                                           ;A4976A;
     BEQ +                                                                ;A4976C;
     REP #$20                                                             ;A4976E;
-    INC.W $069C,X                                                        ;A49770;
-    LDA.W $069C,X                                                        ;A49773;
+    INC.W CrocomireMelting_YOffsets,X                                    ;A49770;
+    LDA.W CrocomireMelting_YOffsets,X                                    ;A49773;
     AND.W #$00FF                                                         ;A49776;
-    STA.B $16                                                            ;A49779;
-    DEC.B $12                                                            ;A4977B;
+    STA.B DP_Temp16                                                      ;A49779;
+    DEC.B DP_Temp12                                                      ;A4977B;
     BNE .loopEraseColumn                                                 ;A4977D;
 
 +   REP #$30                                                             ;A4977F;
 
   .cycled:
-    LDA.W CrocomireMelting_TilesLoadingTableIndex                                                          ;A49781;
+    LDA.W CrocomireMelting_TilesLoadingTableIndex                        ;A49781;
     CLC                                                                  ;A49784;
-    ADC.W $068A                                                          ;A49785;
+    ADC.W CrocomireMelting_TilesLoadingTable                             ;A49785;
     TAX                                                                  ;A49788;
-    LDY.W VRAMWriteStack                                                          ;A49789;
+    LDY.W VRAMWriteStack                                                 ;A49789;
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0,X                 ;A4978C;
     CMP.W #$FFFF                                                         ;A4978F;
     BNE +                                                                ;A49792;
-    STZ.W $068A                                                          ;A49794;
+    STZ.W CrocomireMelting_TilesLoadingTable                             ;A49794;
     BRA .cycled                                                          ;A49797;
 
-+   STA.W $00D0,Y                                                        ;A49799; >.<
++   STA.W VRAMWrite.size,Y                                               ;A49799; >.<
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0+6,X               ;A4979C;
-    STA.W $00D2,Y                                                        ;A4979F; >.<
+    STA.W VRAMWrite.src,Y                                                ;A4979F; >.<
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0+4,X               ;A497A2;
-    STA.W $00D4,Y                                                        ;A497A5; >.<
+    STA.W VRAMWrite.src+2,Y                                              ;A497A5; >.<
     LDA.W MeltingCrocomireTilesLoadingTable_Melting1_0+2,X               ;A497A8;
-    STA.W $00D5,Y                                                        ;A497AB; >.<
+    STA.W VRAMWrite.dest,Y                                               ;A497AB; >.<
     TYA                                                                  ;A497AE;
     CLC                                                                  ;A497AF;
     ADC.W #$0007                                                         ;A497B0;
-    STA.W VRAMWriteStack                                                          ;A497B3;
-    LDA.W $068A                                                          ;A497B6;
+    STA.W VRAMWriteStack                                                 ;A497B3;
+    LDA.W CrocomireMelting_TilesLoadingTable                             ;A497B6;
     CLC                                                                  ;A497B9;
     ADC.W #$0008                                                         ;A497BA;
-    STA.W $068A                                                          ;A497BD;
-    LDA.W $0690                                                          ;A497C0;
+    STA.W CrocomireMelting_TilesLoadingTable                             ;A497BD;
+    LDA.W CrocomireMelting_XOffsetTableIndex                             ;A497C0;
     CMP.W #$0080                                                         ;A497C3;
     BMI +                                                                ;A497C6;
-    STZ.W $0690                                                          ;A497C8;
+    STZ.W CrocomireMelting_XOffsetTableIndex                             ;A497C8;
 
-+   STA.W $0690                                                          ;A497CB;
++   STA.W CrocomireMelting_XOffsetTableIndex                             ;A497CB;
     LDA.W #$0001                                                         ;A497CE;
     PLP                                                                  ;A497D1;
     RTL                                                                  ;A497D2;
@@ -3044,25 +3044,25 @@ EraseMeltingCrocomirePixelColumn:
 ;;; $97D3: Crocomire main AI - death sequence index 3Eh - behind wall - wait for Samus ;;;
 MainAI_Crocomire_DeathSequence_3E_BehindWall_WaitForSamus:
     REP #$20                                                             ;A497D3;
-    LDA.W SamusXPosition                                                          ;A497D5;
+    LDA.W SamusXPosition                                                 ;A497D5;
     CMP.W #$0280                                                         ;A497D8;
     BPL .return                                                          ;A497DB;
     LDA.W #$0005                                                         ;A497DD;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A497E0;
     LDA.W #$0100                                                         ;A497E4;
-    STA.L Scrolls+3                                                        ;A497E7;
+    STA.L Scrolls+3                                                      ;A497E7;
     JSL.L Spawn_Hardcoded_PLM                                            ;A497EB;
     db $30,$03                                                           ;A497EF;
     dw PLMEntries_createCrocomireInvisibleWall                           ;A497F1;
     LDA.W #$0006                                                         ;A497F3;
-    STA.W CameraDistanceIndex                                                          ;A497F6;
-    LDA.W Enemy.properties                                                          ;A497F9;
+    STA.W CameraDistanceIndex                                            ;A497F6;
+    LDA.W Enemy.properties                                               ;A497F9;
     AND.W #$7FFF                                                         ;A497FC;
     ORA.W #$0400                                                         ;A497FF;
-    STA.W Enemy.properties                                                          ;A49802;
-    LDA.W $0FC6                                                          ;A49805;
+    STA.W Enemy.properties                                               ;A49802;
+    LDA.W Enemy[1].properties                                            ;A49805;
     ORA.W #$0500                                                         ;A49808;
-    STA.W $0FC6                                                          ;A4980B;
+    STA.W Enemy[1].properties                                            ;A4980B;
     LDA.W #$0004                                                         ;A4980E;
     STA.W Crocomire.YAcceleration                                        ;A49811;
     STZ.W Crocomire.rumblingYOffset                                      ;A49814;
@@ -3072,7 +3072,7 @@ MainAI_Crocomire_DeathSequence_3E_BehindWall_WaitForSamus:
     STA.W Crocomire.rumblingYOffsetDelta                                 ;A49820;
     STZ.W Crocomire.fightFlags                                           ;A49823;
     LDA.W #$0038                                                         ;A49826;
-    STA.W Enemy.YHitboxRadius                                                          ;A49829;
+    STA.W Enemy.YHitboxRadius                                            ;A49829;
     JMP.W NextCrocomireDeathSequenceIndex                                ;A4982C;
 
   .return:
@@ -3082,21 +3082,21 @@ MainAI_Crocomire_DeathSequence_3E_BehindWall_WaitForSamus:
 ;;; $9830: Crocomire main AI - death sequence index 58h - flowing down the river ;;;
 MainAI_Crocomire_DeathSequence_58_FlowingDownTheRiver:
 ; Strangely, sequenced between 3Ch and 3Eh
-    LDA.W Enemy.XPosition                                                          ;A49830;
+    LDA.W Enemy.XPosition                                                ;A49830;
     SEC                                                                  ;A49833;
     SBC.W #$0002                                                         ;A49834;
-    STA.W Enemy.XPosition                                                          ;A49837;
+    STA.W Enemy.XPosition                                                ;A49837;
     CMP.W #$01E0                                                         ;A4983A;
     BMI .leftOfFightArea                                                 ;A4983D;
     LDA.W #$00DC                                                         ;A4983F;
-    STA.W Enemy.YPosition                                                          ;A49842;
+    STA.W Enemy.YPosition                                                ;A49842;
     RTS                                                                  ;A49845;
 
   .leftOfFightArea:
     LDA.W #$01E0                                                         ;A49846;
-    STA.W Enemy.XPosition                                                          ;A49849;
+    STA.W Enemy.XPosition                                                ;A49849;
     LDA.W #$0036                                                         ;A4984C;
-    STA.W Enemy.YPosition                                                          ;A4984F;
+    STA.W Enemy.YPosition                                                ;A4984F;
     LDA.W #$003E                                                         ;A49852;
     STA.W Crocomire.deathSequenceIndex                                   ;A49855;
     RTS                                                                  ;A49858;
@@ -3116,7 +3116,7 @@ MainAI_Crocomire_DeathSequence_40_BehindWall_Rumbling:
 
   .loopSpritePalette:
     LDA.W Palette_Crocomire_Sprite3,X                                    ;A49870;
-    STA.L $7EC160,X                                                      ;A49873;
+    STA.L Palettes_SpriteP3,X                                            ;A49873;
     DEX                                                                  ;A49877;
     DEX                                                                  ;A49878;
     BPL .loopSpritePalette                                               ;A49879;
@@ -3201,20 +3201,20 @@ MainAI_Crocomire_DeathSequence_42_BehindWall_NoMoreRumbling:
     BEQ .zero                                                            ;A4990D;
     DEC                                                                  ;A4990F;
     STA.W Crocomire.timer                                                ;A49910;
-    LDY.W CrocomireMelting_SkeletonLoadingIndex                                                          ;A49913;
+    LDY.W CrocomireMelting_SkeletonLoadingIndex                          ;A49913;
     LDA.W .VRAMSpriteTilesOffset,Y                                       ;A49916;
     CMP.W #$FFFF                                                         ;A49919;
     BNE +                                                                ;A4991C;
     RTS                                                                  ;A4991E;
 
-+   LDX.W VRAMWriteStack                                                          ;A4991F;
++   LDX.W VRAMWriteStack                                                 ;A4991F;
     LDA.W #$0200                                                         ;A49922;
-    STA.B VRAMWrite.size,X                                                          ;A49925;
+    STA.B VRAMWrite.size,X                                               ;A49925;
     LDA.W .skeletonSpriteTilesSourceAddress,Y                            ;A49927;
-    STA.B VRAMWrite.src,X                                                          ;A4992A;
-    LDA.W #$00AD                                                         ;A4992C;
-    STA.B VRAMWrite.src+2,X                                                          ;A4992F;
-    LDA.B $52                                                            ;A49931;
+    STA.B VRAMWrite.src,X                                                ;A4992A;
+    LDA.W #Tiles_CrocomireSkeleton_0>>16                                 ;A4992C;
+    STA.B VRAMWrite.src+2,X                                              ;A4992F;
+    LDA.B DP_SpriteSizeAddr                                              ;A49931;
     AND.W #$0007                                                         ;A49933;
     XBA                                                                  ;A49936;
     ASL                                                                  ;A49937;
@@ -3222,24 +3222,24 @@ MainAI_Crocomire_DeathSequence_42_BehindWall_NoMoreRumbling:
     ASL                                                                  ;A49939;
     ASL                                                                  ;A4993A;
     ASL                                                                  ;A4993B;
-    STA.B $12                                                            ;A4993C;
+    STA.B DP_Temp12                                                      ;A4993C;
     CLC                                                                  ;A4993E;
     ADC.W .VRAMSpriteTilesOffset,Y                                       ;A4993F;
-    STA.B VRAMWrite.dest,X                                                          ;A49942;
+    STA.B VRAMWrite.dest,X                                               ;A49942;
     TXA                                                                  ;A49944;
     CLC                                                                  ;A49945;
     ADC.W #$0007                                                         ;A49946;
-    STA.W VRAMWriteStack                                                          ;A49949;
+    STA.W VRAMWriteStack                                                 ;A49949;
     INY                                                                  ;A4994C;
     INY                                                                  ;A4994D;
-    STY.W CrocomireMelting_SkeletonLoadingIndex                                                          ;A4994E;
+    STY.W CrocomireMelting_SkeletonLoadingIndex                          ;A4994E;
     RTS                                                                  ;A49951;
 
   .zero:
     LDA.W #$01E0                                                         ;A49952;
-    STA.W Enemy.XPosition                                                          ;A49955;
+    STA.W Enemy.XPosition                                                ;A49955;
     LDA.W #$0036                                                         ;A49958;
-    STA.W Enemy.YPosition                                                          ;A4995B;
+    STA.W Enemy.YPosition                                                ;A4995B;
     LDA.W #$0050                                                         ;A4995E;
     STA.W Crocomire.timer102E                                            ;A49961;
     STZ.W Crocomire.YVelocity                                            ;A49964;
@@ -3256,28 +3256,28 @@ MainAI_Crocomire_DeathSequence_42_BehindWall_NoMoreRumbling:
     LDA.W #$0029                                                         ;A49982;
     JSL.L QueueSound_Lib2_Max6                                           ;A49985;
     LDA.W #InstList_CrocomireCorpse_Skeleton_FallsApart_0                ;A49989;
-    STA.W Enemy.instList                                                          ;A4998C;
+    STA.W Enemy.instList                                                 ;A4998C;
     LDA.W #$0001                                                         ;A4998F;
-    STA.W Enemy.instTimer                                                          ;A49992;
+    STA.W Enemy.instTimer                                                ;A49992;
     LDA.W #$0000                                                         ;A49995;
-    STA.W Enemy.palette                                                          ;A49998;
+    STA.W Enemy.palette                                                  ;A49998;
     LDX.W #$001E                                                         ;A4999B;
 
   .loopSpritePalette:
     LDA.W Palette_Crocomire_Sprite1,X                                    ;A4999E;
-    STA.L $7EC120,X                                                      ;A499A1;
+    STA.L Palettes_SpriteP1,X                                            ;A499A1;
     DEX                                                                  ;A499A5;
     DEX                                                                  ;A499A6;
     BPL .loopSpritePalette                                               ;A499A7;
     JSL.L Clear_Enemy_Projectiles                                        ;A499A9;
     LDA.W #$0008                                                         ;A499AD;
-    STA.B $12                                                            ;A499B0;
+    STA.B DP_Temp12                                                      ;A499B0;
 
   .loop:
-    LDX.W EnemyIndex                                                          ;A499B2;
+    LDX.W EnemyIndex                                                     ;A499B2;
     LDY.W #EnemyProjectile_CrocomireSpikeWallPieces                      ;A499B5;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A499B8;
-    DEC.B $12                                                            ;A499BC;
+    DEC.B DP_Temp12                                                      ;A499BC;
     BNE .loop                                                            ;A499BE;
     LDA.W #$0030                                                         ;A499C0;
     JSL.L QueueSound_Lib2_Max6                                           ;A499C3;
@@ -3304,7 +3304,7 @@ MainAI_Crocomire_DeathSequence_42_BehindWall_NoMoreRumbling:
 ;;; $99E5: Crocomire main AI - death sequence index 44h - breaks down wall ;;;
 MainAI_Crocomire_DeathSequence_44_BreaksDownWall:
 ; Crocomire's X position coming into this function is 1E0h (set by MainAI_Crocomire_DeathSequence_58_FlowingDownTheRiver)
-    LDA.W Enemy.XPosition                                                          ;A499E5;
+    LDA.W Enemy.XPosition                                                ;A499E5;
     CMP.W #$00E0                                                         ;A499E8;
     BPL .timer                                                           ;A499EB;
     LDA.W Crocomire.YVelocity                                            ;A499ED;
@@ -3318,13 +3318,13 @@ MainAI_Crocomire_DeathSequence_44_BreaksDownWall:
     LDA.W #$0002                                                         ;A49A02;
 
 +   STA.W Crocomire.projectileCounter                                    ;A49A05;
-    LDA.W $0F7C                                                          ;A49A08;
+    LDA.W Enemy.XSubPosition                                             ;A49A08;
     CLC                                                                  ;A49A0B;
     ADC.W Crocomire.YVelocity                                            ;A49A0C;
-    STA.W $0F7C                                                          ;A49A0F;
-    LDA.W Enemy.XPosition                                                          ;A49A12;
+    STA.W Enemy.XSubPosition                                             ;A49A0F;
+    LDA.W Enemy.XPosition                                                ;A49A12;
     ADC.W Crocomire.projectileCounter                                    ;A49A15;
-    STA.W Enemy.XPosition                                                          ;A49A18;
+    STA.W Enemy.XPosition                                                ;A49A18;
 
   .timer:
     LDA.W Crocomire.timer102E                                            ;A49A1B;
@@ -3333,9 +3333,9 @@ MainAI_Crocomire_DeathSequence_44_BreaksDownWall:
     BNE .return                                                          ;A49A23;
     STZ.W Crocomire.YVelocity                                            ;A49A25;
     LDA.W #InstList_CrocomireCorpse_Skeleton_Falling                     ;A49A28;
-    STA.W Enemy.instList                                                          ;A49A2B;
+    STA.W Enemy.instList                                                 ;A49A2B;
     LDA.W #$0001                                                         ;A49A2E;
-    STA.W Enemy.instTimer                                                          ;A49A31;
+    STA.W Enemy.instTimer                                                ;A49A31;
     JMP.W NextCrocomireDeathSequenceIndex                                ;A49A34;
 
   .return:
@@ -3357,28 +3357,28 @@ MainAI_Crocomire_DeathSequence_46_SkeletonFalls:
 +   STA.W Crocomire.projectileCounter                                    ;A49A50;
     LDA.W #$E000                                                         ;A49A53;
     CLC                                                                  ;A49A56;
-    ADC.W $0F80                                                          ;A49A57;
-    STA.W $0F80                                                          ;A49A5A;
-    LDA.W Enemy.YPosition                                                          ;A49A5D;
+    ADC.W Enemy.YSubPosition                                             ;A49A57;
+    STA.W Enemy.YSubPosition                                             ;A49A5A;
+    LDA.W Enemy.YPosition                                                ;A49A5D;
     ADC.W #$0000                                                         ;A49A60;
-    STA.W Enemy.YPosition                                                          ;A49A63;
-    LDA.W $0F7C                                                          ;A49A66;
+    STA.W Enemy.YPosition                                                ;A49A63;
+    LDA.W Enemy.XSubPosition                                             ;A49A66;
     CLC                                                                  ;A49A69;
     ADC.W Crocomire.YVelocity                                            ;A49A6A;
-    STA.W $0F7C                                                          ;A49A6D;
-    LDA.W Enemy.XPosition                                                          ;A49A70;
+    STA.W Enemy.XSubPosition                                             ;A49A6D;
+    LDA.W Enemy.XPosition                                                ;A49A70;
     ADC.W Crocomire.projectileCounter                                    ;A49A73;
-    STA.W Enemy.XPosition                                                          ;A49A76;
+    STA.W Enemy.XPosition                                                ;A49A76;
     CMP.W #$0240                                                         ;A49A79;
     BMI .return                                                          ;A49A7C;
     LDA.W #$0025                                                         ;A49A7E;
     JSL.L QueueSound_Lib2_Max6                                           ;A49A81;
-    LDA.W Enemy.palette                                                          ;A49A85;
+    LDA.W Enemy.palette                                                  ;A49A85;
     STA.W $0FD6                                                          ;A49A88;
     LDA.W #InstList_CrocomireCorpse_Skeleton_FallsApart_0                ;A49A8B;
-    STA.W Enemy.instList                                                          ;A49A8E;
+    STA.W Enemy.instList                                                 ;A49A8E;
     LDA.W #$0001                                                         ;A49A91;
-    STA.W Enemy.instTimer                                                          ;A49A94;
+    STA.W Enemy.instTimer                                                ;A49A94;
     JMP.W NextCrocomireDeathSequenceIndex                                ;A49A97;
 
   .return:
@@ -3468,19 +3468,19 @@ SpawnBigDustCloudProjectile:
 ;;     A: X offset
     PHX                                                                  ;A49ADA;
     PHY                                                                  ;A49ADB;
-    STA.B $12                                                            ;A49ADC;
-    LDA.W RandomNumberSeed                                                          ;A49ADE;
+    STA.B DP_Temp12                                                      ;A49ADC;
+    LDA.W RandomNumberSeed                                               ;A49ADE;
     AND.W #$0007                                                         ;A49AE1;
     CLC                                                                  ;A49AE4;
-    ADC.W Enemy.XPosition                                                          ;A49AE5;
-    ADC.B $12                                                            ;A49AE8;
-    STA.B $12                                                            ;A49AEA;
-    LDA.W Enemy.YPosition                                                          ;A49AEC;
+    ADC.W Enemy.XPosition                                                ;A49AE5;
+    ADC.B DP_Temp12                                                      ;A49AE8;
+    STA.B DP_Temp12                                                      ;A49AEA;
+    LDA.W Enemy.YPosition                                                ;A49AEC;
     CLC                                                                  ;A49AEF;
-    ADC.W Enemy.YHitboxRadius                                                          ;A49AF0;
+    ADC.W Enemy.YHitboxRadius                                            ;A49AF0;
     SEC                                                                  ;A49AF3;
     SBC.W #$0010                                                         ;A49AF4;
-    STA.B $14                                                            ;A49AF7;
+    STA.B DP_Temp14                                                      ;A49AF7;
     LDA.W #$0015                                                         ;A49AF9;
     LDY.W #EnemyProjectile_MiscDust                                      ;A49AFC;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;A49AFF;
@@ -3491,25 +3491,25 @@ SpawnBigDustCloudProjectile:
 
 ;;; $9B06: Crocomire main AI - death sequence index 48h - skeleton falls apart ;;;
 MainAI_Crocomire_DeathSequence_48_SkeletonFallsApart:
-    LDA.W Enemy.instList                                                          ;A49B06;
+    LDA.W Enemy.instList                                                 ;A49B06;
     CMP.W #InstList_CrocomireCorpse_Skeleton_1                           ;A49B09;
     BMI .notFallenApartYet                                               ;A49B0C;
     LDA.W #InstList_CrocomireCorpse_Skeleton_Dead                        ;A49B0E;
-    STA.W Enemy.instList                                                          ;A49B11;
+    STA.W Enemy.instList                                                 ;A49B11;
     LDA.W #$0001                                                         ;A49B14;
-    STA.W Enemy.instTimer                                                          ;A49B17;
-    LDA.W Enemy.XPosition                                                          ;A49B1A;
+    STA.W Enemy.instTimer                                                ;A49B17;
+    LDA.W Enemy.XPosition                                                ;A49B1A;
     CLC                                                                  ;A49B1D;
     ADC.W #$0040                                                         ;A49B1E;
-    STA.W Enemy.XPosition                                                          ;A49B21;
-    LDA.W Enemy.YPosition                                                          ;A49B24;
+    STA.W Enemy.XPosition                                                ;A49B21;
+    LDA.W Enemy.YPosition                                                ;A49B24;
     CLC                                                                  ;A49B27;
     ADC.W #$0015                                                         ;A49B28;
-    STA.W Enemy.YPosition                                                          ;A49B2B;
+    STA.W Enemy.YPosition                                                ;A49B2B;
     LDA.W #$001C                                                         ;A49B2E;
-    STA.W Enemy.YHitboxRadius                                                          ;A49B31;
+    STA.W Enemy.YHitboxRadius                                            ;A49B31;
     LDA.W #$0028                                                         ;A49B34;
-    STA.W Enemy.XHitboxRadius                                                          ;A49B37;
+    STA.W Enemy.XHitboxRadius                                            ;A49B37;
     JSL.L Spawn_Hardcoded_PLM                                            ;A49B3A;
     db $30,$03                                                           ;A49B3E;
     dw PLMEntries_clearCrocomireInvisibleWall                            ;A49B40;
@@ -3535,7 +3535,7 @@ MainAI_Crocomire_DeathSequence_48_SkeletonFallsApart:
 MainAI_Crocomire_DeathSequence_4A_UnlockCamera:
     LDA.W #$0101                                                         ;A49B65;
     STA.L Scrolls                                                        ;A49B68;
-    STA.L Scrolls+2                                                        ;A49B6C;
+    STA.L Scrolls+2                                                      ;A49B6C;
     JSL.L Spawn_Hardcoded_PLM                                            ;A49B70;
     db $1E,$03                                                           ;A49B74;
     dw PLMEntries_clearCrocomireInvisibleWall                            ;A49B76;
@@ -3550,7 +3550,7 @@ MainAI_Crocomire_DeathSequence_4E_SetIndex50:
 ;;; $9B7D: Crocomire main AI - death sequence index 4Ch - set index 4Eh ;;;
 MainAI_Crocomire_DeathSequence_4C_SetIndex4E:
 ; Crocomire instruction list pointer coming into this function is $E1D0 (last set to InstList_CrocomireCorpse_Skeleton_Dead by MainAI_Crocomire_DeathSequence_48_SkeletonFallsApart)
-    LDA.W Enemy.instList                                                          ;A49B7D;
+    LDA.W Enemy.instList                                                 ;A49B7D;
     CMP.W #InstList_CrocomireCorpse_Skeleton_1                           ;A49B80;
     BPL NextCrocomireDeathSequenceIndex                                  ;A49B83;
     RTS                                                                  ;A49B85;
@@ -3560,11 +3560,11 @@ MainAI_Crocomire_DeathSequence_4C_SetIndex4E:
 MainAI_Crocomire_DeathSequence_50_MarkEvent_PostDeathMusic:
     LDA.W #$0006                                                         ;A49B86;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A49B89;
-    STZ.W CameraDistanceIndex                                                          ;A49B8D;
-    LDX.W AreaIndex                                                          ;A49B90;
-    LDA.L SRAMMirror_Boss,X                                                      ;A49B93;
+    STZ.W CameraDistanceIndex                                            ;A49B8D;
+    LDX.W AreaIndex                                                      ;A49B90;
+    LDA.L SRAMMirror_Boss,X                                              ;A49B93;
     ORA.W #$0002                                                         ;A49B97;
-    STA.L SRAMMirror_Boss,X                                                      ;A49B9A;
+    STA.L SRAMMirror_Boss,X                                              ;A49B9A;
     LDA.W #$0006                                                         ;A49B9E;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A49BA1;
     LDA.W #$FFF0                                                         ;A49BA5;
@@ -3797,7 +3797,7 @@ EnemyTouch_Crocomire_Claws:
     ORA.W #$4000                                                         ;A4B944;
     STA.W Crocomire.fightFlags                                           ;A4B947;
     LDA.W #$FFFC                                                         ;A4B94A;
-    STA.W ExtraSamusXDisplacement                                                          ;A4B94D; fallthrough to RTL_A4B950
+    STA.W ExtraSamusXDisplacement                                        ;A4B94D; fallthrough to RTL_A4B950
 
 
 ;;; $B950: RTL. Enemy touch - enemy $DDBF (Crocomire) ;;;
@@ -3817,9 +3817,9 @@ EnemyShot_Crocomire_Nothing:
     BPL +                                                                ;A4B95A;
     INC                                                                  ;A4B95C;
 
-+   STA.B DP_Temp12                                                            ;A4B95D;
++   STA.B DP_Temp12                                                      ;A4B95D;
     LDA.W Crocomire.fightFlags                                           ;A4B95F;
-    ORA.B DP_Temp12                                                            ;A4B962;
+    ORA.B DP_Temp12                                                      ;A4B962;
     STA.W Crocomire.fightFlags                                           ;A4B964;
     RTL                                                                  ;A4B967;
 
@@ -3828,14 +3828,14 @@ EnemyShot_Crocomire_Nothing:
 EnemyShot_Crocomire_SpawnShotExplosion:
     PHX                                                                  ;A4B968;
     PHY                                                                  ;A4B969;
-    LDA.W CollisionIndex                                                          ;A4B96A;
+    LDA.W CollisionIndex                                                 ;A4B96A;
     ASL                                                                  ;A4B96D;
     TAX                                                                  ;A4B96E;
-    LDA.W SamusProjectile_XPositions,X                                                        ;A4B96F;
-    STA.B DP_Temp12                                                            ;A4B972;
-    LDA.W SamusProjectile_YPositions,X                                                        ;A4B974;
-    STA.B DP_Temp14                                                            ;A4B977;
-    LDA.W SamusProjectile_Types,X                                                        ;A4B979;
+    LDA.W SamusProjectile_XPositions,X                                   ;A4B96F;
+    STA.B DP_Temp12                                                      ;A4B972;
+    LDA.W SamusProjectile_YPositions,X                                   ;A4B974;
+    STA.B DP_Temp14                                                      ;A4B977;
+    LDA.W SamusProjectile_Types,X                                        ;A4B979;
     LDY.W #$001D                                                         ;A4B97C;
     BIT.W #$0200                                                         ;A4B97F;
     BNE .notBeamMissileBomb                                              ;A4B982;
@@ -3866,18 +3866,18 @@ PowerBombReaction_Crocomire:
     STA.W Crocomire.fightFlags                                           ;A4B9B0;
     LDA.W #$000A                                                         ;A4B9B3;
     STA.W Crocomire.YVelocity                                            ;A4B9B6;
-    LDA.W Enemy.flashTimer                                                          ;A4B9B9;
+    LDA.W Enemy.flashTimer                                               ;A4B9B9;
     CLC                                                                  ;A4B9BC;
     ADC.W #$0004                                                         ;A4B9BD;
-    STA.W Enemy.flashTimer                                                          ;A4B9C0;
-    LDA.W Enemy.AI                                                          ;A4B9C3;
+    STA.W Enemy.flashTimer                                               ;A4B9C0;
+    LDA.W Enemy.AI                                                       ;A4B9C3;
     ORA.W #$0002                                                         ;A4B9C6;
-    STA.W Enemy.AI                                                          ;A4B9C9;
+    STA.W Enemy.AI                                                       ;A4B9C9;
     LDA.W #$0018                                                         ;A4B9CC;
     STA.W Crocomire.fightFunctionIndex                                   ;A4B9CF;
-    LDX.W Enemy.spritemap                                                          ;A4B9D2;
+    LDX.W Enemy.spritemap                                                ;A4B9D2;
     LDA.W $0000,X                                                        ;A4B9D5;
-    STA.B DP_Temp12                                                            ;A4B9D8;
+    STA.B DP_Temp12                                                      ;A4B9D8;
 
   .loop:
     LDA.W $0006,X                                                        ;A4B9DA;
@@ -3891,15 +3891,15 @@ PowerBombReaction_Crocomire:
     CLC                                                                  ;A4B9EE;
     ADC.W #$0008                                                         ;A4B9EF;
     TAX                                                                  ;A4B9F2;
-    DEC.B DP_Temp12                                                            ;A4B9F3;
+    DEC.B DP_Temp12                                                      ;A4B9F3;
     BNE .loop                                                            ;A4B9F5;
     LDY.W #InstList_Crocomire_PowerBombReaction_MouthNotOpen_0           ;A4B9F7;
 
   .mouthNotOpen:
     TYA                                                                  ;A4B9FA;
-    STA.W Enemy.instList                                                          ;A4B9FB;
+    STA.W Enemy.instList                                                 ;A4B9FB;
     LDA.W #$0001                                                         ;A4B9FE;
-    STA.W Enemy.instTimer                                                          ;A4BA01;
+    STA.W Enemy.instTimer                                                ;A4BA01;
 
   .return:
     RTL                                                                  ;A4BA04;
@@ -3908,26 +3908,26 @@ PowerBombReaction_Crocomire:
 ;;; $BA05: Enemy shot - Crocomire - open mouth ;;;
 EnemyShot_Crocomire_OpenMouth:
     LDA.W #$0000                                                         ;A4BA05;
-    STA.W Enemy.invincibilityTimer                                                          ;A4BA08;
-    LDA.W Enemy.XPosition                                                          ;A4BA0B;
+    STA.W Enemy.invincibilityTimer                                       ;A4BA08;
+    LDA.W Enemy.XPosition                                                ;A4BA0B;
     SEC                                                                  ;A4BA0E;
-    SBC.W Enemy.XHitboxRadius                                                          ;A4BA0F;
+    SBC.W Enemy.XHitboxRadius                                            ;A4BA0F;
     SEC                                                                  ;A4BA12;
     SBC.W #$0100                                                         ;A4BA13;
     SEC                                                                  ;A4BA16;
-    SBC.W Layer1XPosition                                                          ;A4BA17;
+    SBC.W Layer1XPosition                                                ;A4BA17;
     BPL .offScreen                                                       ;A4BA1A;
-    LDA.W CollisionIndex                                                          ;A4BA1C;
+    LDA.W CollisionIndex                                                 ;A4BA1C;
     ASL                                                                  ;A4BA1F;
     TAX                                                                  ;A4BA20;
-    LDA.W SamusProjectile_Types,X                                                        ;A4BA21;
+    LDA.W SamusProjectile_Types,X                                        ;A4BA21;
     BIT.W #$0F00                                                         ;A4BA24;
     BNE .notBeam                                                         ;A4BA27;
     LDX.W CrocomireConstants_stepsWhenDamagedByChargeBeam                ;A4BA29;
     BIT.W #$0010                                                         ;A4BA2C;
     BNE .damage                                                          ;A4BA2F;
     LDA.W CrocomireConstants_mouthOpenInstructionTimer                   ;A4BA31;
-    STA.W Enemy.instTimer                                                          ;A4BA34;
+    STA.W Enemy.instTimer                                                ;A4BA34;
     LDX.W CrocomireConstants_index                                       ;A4BA37;
     JMP.W EnemyShot_Crocomire_SpawnShotExplosion_duplicate               ;A4BA3A;
 
@@ -3956,7 +3956,7 @@ EnemyShot_Crocomire_OpenMouth:
     BPL +                                                                ;A4BA69;
     INC                                                                  ;A4BA6B;
 
-+   STA.B DP_Temp12                                                            ;A4BA6C;
++   STA.B DP_Temp12                                                      ;A4BA6C;
     LDA.W Crocomire.fightFlags                                           ;A4BA6E;
     BIT.W #$0800                                                         ;A4BA71;
     BNE .damaged                                                         ;A4BA74;
@@ -3968,26 +3968,26 @@ EnemyShot_Crocomire_OpenMouth:
 
 +   TXA                                                                  ;A4BA84;
     CLC                                                                  ;A4BA85;
-    ADC.W Enemy.instTimer                                                          ;A4BA86;
-    STA.W Enemy.instTimer                                                          ;A4BA89;
+    ADC.W Enemy.instTimer                                                ;A4BA86;
+    STA.W Enemy.instTimer                                                ;A4BA89;
 
   .damaged:
     LDA.W Crocomire.fightFlags                                           ;A4BA8C;
     AND.W #$BFF0                                                         ;A4BA8F;
     ORA.W #$0800                                                         ;A4BA92;
-    ORA.B DP_Temp12                                                            ;A4BA95;
+    ORA.B DP_Temp12                                                      ;A4BA95;
     STA.W Crocomire.fightFlags                                           ;A4BA97;
     LDA.W #$000A                                                         ;A4BA9A;
     STA.W Crocomire.YVelocity                                            ;A4BA9D;
 
   .flash:
-    LDA.W Enemy.flashTimer                                                          ;A4BAA0;
+    LDA.W Enemy.flashTimer                                               ;A4BAA0;
     CLC                                                                  ;A4BAA3;
     ADC.W #$000E                                                         ;A4BAA4;
-    STA.W Enemy.flashTimer                                                          ;A4BAA7;
-    LDA.W Enemy.AI                                                          ;A4BAAA;
+    STA.W Enemy.flashTimer                                               ;A4BAA7;
+    LDA.W Enemy.AI                                                       ;A4BAAA;
     ORA.W #$0002                                                         ;A4BAAD;
-    STA.W Enemy.AI                                                          ;A4BAB0;
+    STA.W Enemy.AI                                                       ;A4BAB0;
     RTL                                                                  ;A4BAB3;
 
 
@@ -3997,14 +3997,14 @@ EnemyShot_Crocomire_SpawnShotExplosion_duplicate:
 ; Used for claws
     PHX                                                                  ;A4BAB4;
     PHY                                                                  ;A4BAB5;
-    LDA.W CollisionIndex                                                          ;A4BAB6;
+    LDA.W CollisionIndex                                                 ;A4BAB6;
     ASL                                                                  ;A4BAB9;
     TAX                                                                  ;A4BABA;
-    LDA.W SamusProjectile_XPositions,X                                                        ;A4BABB;
-    STA.B $12                                                            ;A4BABE;
-    LDA.W SamusProjectile_YPositions,X                                                        ;A4BAC0;
-    STA.B $14                                                            ;A4BAC3;
-    LDA.W SamusProjectile_Types,X                                                        ;A4BAC5;
+    LDA.W SamusProjectile_XPositions,X                                   ;A4BABB;
+    STA.B DP_Temp12                                                      ;A4BABE;
+    LDA.W SamusProjectile_YPositions,X                                   ;A4BAC0;
+    STA.B DP_Temp14                                                      ;A4BAC3;
+    LDA.W SamusProjectile_Types,X                                        ;A4BAC5;
     LDY.W #$001D                                                         ;A4BAC8;
     BIT.W #$0200                                                         ;A4BACB;
     BNE .notBeamMissileBomb                                              ;A4BACE;
@@ -8536,36 +8536,36 @@ Spritemap_CrocomireCorpse_1F:
 
 ;;; $F67A: Initialisation AI - enemy $DDFF (Crocomire tongue) ;;;
 InitAI_CrocomireTongue:
-    LDX.W AreaIndex                                                          ;A4F67A;
-    LDA.L SRAMMirror_Boss,X                                                      ;A4F67D;
+    LDX.W AreaIndex                                                      ;A4F67A;
+    LDA.L SRAMMirror_Boss,X                                              ;A4F67D;
     BIT.W #$0002                                                         ;A4F681;
     BNE .dead                                                            ;A4F684;
-    LDX.W EnemyIndex                                                          ;A4F686;
+    LDX.W EnemyIndex                                                     ;A4F686;
     LDA.W #InstList_CrocomireTongue_Fight                                ;A4F689;
-    STA.W Enemy.instList,X                                                        ;A4F68C;
-    LDA.W Enemy.properties2,X                                                        ;A4F68F;
+    STA.W Enemy.instList,X                                               ;A4F68C;
+    LDA.W Enemy.properties2,X                                            ;A4F68F;
     ORA.W #$0404                                                         ;A4F692;
-    STA.W Enemy.properties2,X                                                        ;A4F695;
+    STA.W Enemy.properties2,X                                            ;A4F695;
     LDA.W #$0001                                                         ;A4F698;
-    STA.W Enemy.instTimer,X                                                        ;A4F69B;
+    STA.W Enemy.instTimer,X                                              ;A4F69B;
     LDA.W #$0017                                                         ;A4F69E;
     STA.W CrocomireTongue.XOffsetFromCrocomire,X                         ;A4F6A1;
     LDA.W #$0E00                                                         ;A4F6A4;
-    STA.W Enemy.palette,X                                                        ;A4F6A7;
+    STA.W Enemy.palette,X                                                ;A4F6A7;
     RTL                                                                  ;A4F6AA;
 
   .dead:
-    LDX.W EnemyIndex                                                          ;A4F6AB;
-    LDA.W Enemy.properties,X                                                        ;A4F6AE;
+    LDX.W EnemyIndex                                                     ;A4F6AB;
+    LDA.W Enemy.properties,X                                             ;A4F6AE;
     ORA.W #$0300                                                         ;A4F6B1;
     AND.W #$DFFF                                                         ;A4F6B4;
-    STA.W Enemy.properties,X                                                        ;A4F6B7;
+    STA.W Enemy.properties,X                                             ;A4F6B7;
     RTL                                                                  ;A4F6BA;
 
 
 ;;; $F6BB: RTL. Main AI - enemy $DDFF (Crocomire tongue) ;;;
 MainAI_CrocomireTongue:
-    LDX.W EnemyIndex                                                          ;A4F6BB;
+    LDX.W EnemyIndex                                                     ;A4F6BB;
     RTL                                                                  ;A4F6BE;
 
 

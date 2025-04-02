@@ -1656,12 +1656,13 @@ KraidDeathSequenceQuakeSoundTimer: skip 2 ; $7E9000
 DisableSporeSpawnSporeGeneration: ; $7E9000
 DraygonSwoopYPositions: ; $7E9002..97FF
 
+org $7E9000
 CrocomireDeath_PreBridgeBlockDustCloudSpawnedFlag: skip 2 ; $7E9000
 CrocomireDeath_BridgePart1CrumbledFlag: skip 2 ; $7E9002
 skip 2
 CrocomireDeath_BridgePart2CrumbledFlag: skip 2 ; $7E9006
 skip 2
-NeverRead900A: skip 2 ; $7E900A
+neverRead900A: skip 2 ; $7E900A
 skip 10
 CrocomireDeath_CrumblingBridgeIndex: skip 2 ; $7E9016
 CrocomireDeath_AcidDamageSmokeTimer: skip 2 ; $7E9018
@@ -2628,7 +2629,9 @@ skip $3E
   .rumblingYOffsetDelta: skip 2 ; $106E
 skip $7DE7CE
   .meltingHDMAObjectIndex: skip 2 ; $7E783E
-; see also "CrocomireDeathSequence"
+skip $7C0
+  .acidDamageSFXTimer: skip 2 ; $7E8000
+; see also "CrocomireDeath"
 endstruct
 
 struct CrocomireTongue $0FA8
