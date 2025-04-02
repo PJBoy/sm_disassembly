@@ -1271,7 +1271,7 @@ LoadEnemyGFXIndices:
     STA.L EnemySpawnData.VRAMTilesIndex,X                                ;A08C3B;
     LDA.W #$0A00                                                         ;A08C3F;
     STA.W Enemy.palette,X                                                ;A08C42;
-    STA.L EnemySpawnData.PaletteIndex,X                                  ;A08C45;
+    STA.L EnemySpawnData.paletteIndex,X                                  ;A08C45;
     PLY                                                                  ;A08C49;
     PLX                                                                  ;A08C4A;
     RTS                                                                  ;A08C4B;
@@ -1284,7 +1284,7 @@ LoadEnemyGFXIndices:
     ASL                                                                  ;A08C56;
     LDX.B DP_Temp14                                                      ;A08C57;
     STA.W Enemy.palette,X                                                ;A08C59;
-    STA.L EnemySpawnData.PaletteIndex,X                                  ;A08C5C;
+    STA.L EnemySpawnData.paletteIndex,X                                  ;A08C5C;
     LDA.B DP_Temp1E                                                      ;A08C60;
     STA.W Enemy.GFXOffset,X                                              ;A08C62;
     STA.L EnemySpawnData.VRAMTilesIndex,X                                ;A08C65;
@@ -2398,14 +2398,14 @@ WriteEnemyOAM_IfNotFrozenOrInvincibleFrame:
     SEC                                                                  ;A0945C;
     SBC.W Layer1XPosition                                                ;A0945D;
     CLC                                                                  ;A09460;
-    ADC.L EnemySpawnData.GraphicalXOffset,X                              ;A09461;
+    ADC.L EnemySpawnData.graphicalXOffset,X                              ;A09461;
     STA.W Temp_XPositionOnScreen                                         ;A09465;
     STA.B DP_Temp14                                                      ;A09468;
     LDA.W Enemy.YPosition,X                                              ;A0946A;
     SEC                                                                  ;A0946D;
     SBC.W Layer1YPosition                                                ;A0946E;
     CLC                                                                  ;A09471;
-    ADC.L EnemySpawnData.GraphicalYOffset,X                              ;A09472;
+    ADC.L EnemySpawnData.graphicalYOffset,X                              ;A09472;
     STA.W Temp_YPositionOnScreen                                         ;A09476;
     STA.B DP_Temp12                                                      ;A09479;
     LDA.W Enemy.shakeTimer,X                                             ;A0947B;

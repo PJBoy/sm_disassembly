@@ -1025,7 +1025,8 @@ Temp_AbsoluteXDistanceFromEnemyToSamus: skip 0 ; $0E20
 Temp_Threshold: skip 0 ; $0E20
 Temp_AngleToMove: skip 0 ; $0E20
 Temp_DebuggerHexValueXPosition: skip 0 ; $0E20
-Temp_InstListIndex: skip 2 ; $0E20
+Temp_InstListIndex: skip 0 ; $0E20
+Temp_Unknown0E20: skip 2 ; $0E20
 Temp_DemoRecorderFrameCounterYPosition: skip 0 ; $0E22
 Temp_ProjectileYRadius: skip 0 ; $0E22
 Temp_SpawnEnemyLoopCounter: skip 0 ; $0E22
@@ -1602,20 +1603,20 @@ struct EnemySpawnData $7E7000
   .neverRead7002: skip 2 ; $7E7002
   .unknown7004: skip 2 ; $7E7004
   .VRAMTilesIndex: skip 2 ; $7E7006
-  .PaletteIndex: skip 2 ; $7E7008
+  .paletteIndex: skip 2 ; $7E7008
 skip 6
-  .GraphicalXOffset: skip 2 ; $7E7010
-  .GraphicalYOffset: skip 2 ; $7E7012
+  .graphicalXOffset: skip 2 ; $7E7010
+  .graphicalYOffset: skip 2 ; $7E7012
 skip 10
   .ID: skip 2 ; $7E701E
   .XPosition: skip 2 ; $7E7020
   .YPosition: skip 2 ; $7E7022
-  .InitParam: skip 2 ; $7E7024
-  .Properties: skip 2 ; $7E7026
-  .ExtraProperties: skip 2 ; $7E7028
-  .Param1: skip 2 ; $7E702A
-  .Param2: skip 2 ; $7E702C
-  .Name: skip 12 ; $7E702E..39
+  .initParam: skip 2 ; $7E7024
+  .properties: skip 2 ; $7E7026
+  .extraProperties: skip 2 ; $7E7028
+  .param1: skip 2 ; $7E702A
+  .param2: skip 2 ; $7E702C
+  .name: skip 12 ; $7E702E..39
 endstruct
 
 ; also see "ENEMY RAM" section below for extra enemy RAM ($7800, $8000, $8800)
@@ -2696,10 +2697,12 @@ skip $7E6
   .stalkSegment2YPosition: skip 2 ; $7E8006
   .stalkSegment1YPosition: skip 2 ; $7E8008
   .stalkSegment0YPosition: skip 2 ; $7E800A
-skip 6
-  .deathDriftXSpeed: skip 2 ; $7E8012
+skip 4
+  .deathDriftXSpeed: skip 2 ; $7E8010
+  .deathDriftXSubSpeed: skip 2 ; $7E8012
   .deathDriftYSpeed: skip 2 ; $7E8014
-skip 8
+  .deathDriftYSubSpeed: skip 2 ; $7E8016
+skip 6
   .damagedFlag: skip 2 ; $7E801E
 skip $7E0
   .previousHealth: skip 2 ; $7E8800
