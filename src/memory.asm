@@ -2729,7 +2729,7 @@ skip $7DE84E
   .type: skip 2 ; $7E780E
 endstruct
 
-struct KzanTop $0FA8
+struct Kzan $0FA8
   .function: skip 2 ; $0FA8
   .fallWaitTimer: skip 2 ; $0FAA
   .risingTargetYPosition: skip 2 ; $0FAC
@@ -2782,9 +2782,10 @@ skip 8
   .spriteObject1ExplosionReason: skip 2 ; $7E7832
   .spriteObject2ExplosionReason: skip 2 ; $7E7834
   .spriteObject3ExplosionReason: skip 2 ; $7E7836
-skip $7CA
+skip $7C8
   .subAngle: skip 2 ; $7E8000
   .angle: skip 2 ; $7E8002
+skip 2
   .startAngle: skip 2 ; $7E8006
   .subAngleDelta: skip 2 ; $7E8008
   .angleDelta: skip 2 ; $7E800A
@@ -3058,6 +3059,7 @@ skip 4
   .destroyedCounter: skip 2 ; $0FAE
 skip 2
   .multiPartFlag: skip 2 ; $0FB2
+skip 2
   .otherPartEnemyIndex: skip 2 ; $0FB6
 endstruct
 
