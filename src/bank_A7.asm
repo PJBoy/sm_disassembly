@@ -951,10 +951,10 @@ InstList_KraidArm_Slow:
 
 ;;; $8A8F: Instruction - slow Kraid arm if Kraid has less than half health ;;;
 Instruction_KraidArm_SlowArmIfLessThanHalfHealth:
-    LDA.W $0F8C                                                          ;A78A8F;
-    CMP.L $7E7812                                                        ;A78A92;
+    LDA.W Enemy.health                                                          ;A78A8F;
+    CMP.L Kraid.maxHealth_4_8                                                        ;A78A92;
     BPL .return                                                          ;A78A96;
-    LDA.W $0FD2                                                          ;A78A98;
+    LDA.W Enemy[1].instList                                                          ;A78A98;
     CMP.W #InstList_KraidArm_Slow                                        ;A78A9B;
     BPL .return                                                          ;A78A9E;
     LDY.W #InstList_KraidArm_Slow                                        ;A78AA0;
@@ -2151,14 +2151,14 @@ RTL_A7948F:
 
 ;;; $9490: Enemy touch - enemy $E2FF (Kraid arm) ;;;
 EnemyTouch_KraidArm:
-    LDA.W $18A8                                                          ;A79490;
+    LDA.W SamusInvincibilityTimer                                                          ;A79490;
     BEQ .SamusInvincible                                                 ;A79493;
     RTL                                                                  ;A79495;
 
   .SamusInvincible:
     JSR.W PushSamusBack                                                  ;A79496;
     LDA.W #Function_KraidLint_FireLint                                   ;A79499;
-    STA.W $10A8                                                          ;A7949C; fallthrough to EnemyTouch_Kraid
+    STA.W Enemy[4].instList                                                          ;A7949C; fallthrough to EnemyTouch_Kraid
 
 
 ;;; $949F: Enemy touch - enemy $E2BF (Kraid) ;;;
@@ -2170,9 +2170,9 @@ EnemyTouch_Kraid:
 ;;; $94A4: Push Samus back ;;;
 PushSamusBack:
     LDA.W #$0004                                                         ;A794A4;
-    STA.W $0B58                                                          ;A794A7;
+    STA.W ExtraSamusXDisplacement                                                          ;A794A7;
     LDA.W #$FFF8                                                         ;A794AA;
-    STA.W $0B5C                                                          ;A794AD;
+    STA.W ExtraSamusYDisplacement                                                          ;A794AD;
     RTS                                                                  ;A794B0;
 
 
@@ -2189,9 +2189,9 @@ RTL_A794B5:
 EnemyShot_KraidArm:
     TYX                                                                  ;A794B6;
     JSR.W SpawnExplosionProjectile                                       ;A794B7;
-    LDA.W $0C04,Y                                                        ;A794BA;
+    LDA.W SamusProjectile_Directions,Y                                                        ;A794BA;
     ORA.W #$0010                                                         ;A794BD;
-    STA.W $0C04,Y                                                        ;A794C0;
+    STA.W SamusProjectile_Directions,Y                                                        ;A794C0;
     RTL                                                                  ;A794C3;
 
 
@@ -3146,8 +3146,8 @@ CheckIfKraidHasDied:
 ;; Returns:
 ;;     A: 0 if Kraid is alive, 1 if Kraid is dead
     PHX                                                                  ;A7A92C;
-    LDX.W $079F                                                          ;A7A92D;
-    LDA.L $7ED828,X                                                      ;A7A930;
+    LDX.W AreaIndex                                                          ;A7A92D;
+    LDA.L SRAMMirror_Boss,X                                                      ;A7A930;
     BIT.W #$0001                                                         ;A7A934;
     BEQ .returnAlive                                                     ;A7A937;
     PLX                                                                  ;A7A939;
@@ -3164,7 +3164,7 @@ CheckIfKraidHasDied:
 SetEnemyPropertiesToDead:
 ; Set enemy as intangible, flagged for deletion, invisible,
 ; not processed off-screen, not processing instructions and non-solid hitbox
-    LDX.W $0E54                                                          ;A7A943;
+    LDX.W EnemyIndex                                                          ;A7A943;
     LDA.W Enemy.properties,X                                                        ;A7A946;
     ORA.W #$0700                                                         ;A7A949;
     AND.W #$F7FF                                                         ;A7A94C; >.< $57FF
@@ -3176,18 +3176,18 @@ SetEnemyPropertiesToDead:
 
 ;;; $A959: Initialisation AI - enemy $E2BF (Kraid) ;;;
 InitAI_Kraid:
-; Note that BG1 tiles base address = ([$5D] & Fh) * 1000h, whereas this routine is using ([$5D] & Fh) * 100h,
+; Note that BG1 tiles base address = (DP_BGTilesAddr & Fh) * 1000h, whereas this routine is using (DP_BGTilesAddr & Fh) * 100h,
 ; i.e. this routine only works because BG1 tiles base address = $0000
     SEP #$20                                                             ;A7A959;
-    LDA.B #$A7                                                           ;A7A95B;
-    STA.W $0606                                                          ;A7A95D;
-    LDA.B #$A7                                                           ;A7A960;
-    STA.W $0603                                                          ;A7A962;
+    LDA.B #UnpauseHook_KraidIsAlive>>16                                                           ;A7A95B;
+    STA.W PauseHook_Unpause+2                                                          ;A7A95D;
+    LDA.B #PauseHook_Kraid>>16                                                           ;A7A960;
+    STA.W PauseHook_Pause+2                                                          ;A7A962;
     REP #$20                                                             ;A7A965;
     LDA.W #UnpauseHook_KraidIsAlive                                      ;A7A967;
-    STA.W $0604                                                          ;A7A96A;
+    STA.W PauseHook_Unpause                                                          ;A7A96A;
     LDA.W #PauseHook_Kraid                                               ;A7A96D;
-    STA.W $0601                                                          ;A7A970;
+    STA.W PauseHook_Pause                                                          ;A7A970;
     JSR.W CheckIfKraidHasDied                                            ;A7A973;
     BNE .dead                                                            ;A7A976;
     JMP.W .alive                                                         ;A7A978;
@@ -3198,7 +3198,7 @@ InitAI_Kraid:
 
   .loopBGPalette6:
     LDA.W Palette_KraidRoomBackground,Y                                  ;A7A981;
-    STA.L $7EC200,X                                                      ;A7A984;
+    STA.L TargetPalettes_BGP0,X                                                      ;A7A984;
     INX                                                                  ;A7A988;
     INX                                                                  ;A7A989;
     INY                                                                  ;A7A98A;
@@ -3209,12 +3209,12 @@ InitAI_Kraid:
     LDA.W #$0338                                                         ;A7A994;
 
   .loopBG2Tilemap:
-    STA.L $7E2000,X                                                      ;A7A997;
+    STA.L EnemyBG2Tilemap,X                                                      ;A7A997;
     DEX                                                                  ;A7A99B;
     DEX                                                                  ;A7A99C;
     BPL .loopBG2Tilemap                                                  ;A7A99D;
     LDA.W #$0000                                                         ;A7A99F;
-    STA.L $7E7804                                                        ;A7A9A2;
+    STA.L EnemyExtra7800+4                                                        ;A7A9A2;
     LDX.W VRAMWriteStack                                                          ;A7A9A6;
     LDA.W #$0200                                                         ;A7A9A9;
     STA.B VRAMWrite.size,X                                                          ;A7A9AC;
@@ -3222,9 +3222,9 @@ InitAI_Kraid:
     STA.B VRAMWrite.src,X                                                          ;A7A9B1;
     SEP #$20                                                             ;A7A9B3;
     LDA.B #Tiles_KraidRoomBackground>>16                                 ;A7A9B5;
-    STA.B $D4,X                                                          ;A7A9B7;
+    STA.B VRAMWrite.src+2,X                                                          ;A7A9B7;
     REP #$20                                                             ;A7A9B9;
-    LDA.B $5D                                                            ;A7A9BB;
+    LDA.B DP_BGTilesAddr                                                            ;A7A9BB;
     AND.W #$000F                                                         ;A7A9BD;
     XBA                                                                  ;A7A9C0;
     CLC                                                                  ;A7A9C1;
@@ -3237,60 +3237,60 @@ InitAI_Kraid:
     JSR.W SpawnPLMToClearTheCeiling                                      ;A7A9CF;
     JSR.W SpawnPLMToClearTheSpikes                                       ;A7A9D2;
     LDA.W #Function_Kraid_FadeInRegularBG_ClearBG2TilemapTopHalf         ;A7A9D5;
-    STA.W $0FA8                                                          ;A7A9D8;
+    STA.W Kraid.function                                                          ;A7A9D8;
     RTL                                                                  ;A7A9DB;
 
   .alive:
     SEP #$20                                                             ;A7A9DC;
     LDA.B #$43                                                           ;A7A9DE;
-    STA.B $59                                                            ;A7A9E0;
+    STA.B DP_BG2TilemapAddrSize                                                            ;A7A9E0;
     REP #$20                                                             ;A7A9E2;
     LDA.W #$0002                                                         ;A7A9E4;
-    STA.W $0941                                                          ;A7A9E7;
+    STA.W CameraDistanceIndex                                                          ;A7A9E7;
     LDA.W #$0000                                                         ;A7A9EA;
-    STA.L $7ECD20                                                        ;A7A9ED;
+    STA.L Scrolls                                                        ;A7A9ED;
     LDA.W #$0001                                                         ;A7A9F1;
-    STA.L $7ECD22                                                        ;A7A9F4;
+    STA.L Scrolls+2                                                        ;A7A9F4;
     LDA.W #$0144                                                         ;A7A9F8;
-    STA.L $7E7808                                                        ;A7A9FB;
+    STA.L Kraid.minimumSamusEjectionYPosition                                                        ;A7A9FB;
     LDX.W #$0000                                                         ;A7A9FF;
-    LDA.W $0F8C                                                          ;A7AA02;
+    LDA.W Enemy.health                                                          ;A7AA02;
     LSR                                                                  ;A7AA05;
     LSR                                                                  ;A7AA06;
     LSR                                                                  ;A7AA07;
-    STA.B $12                                                            ;A7AA08;
+    STA.B DP_Temp12                                                            ;A7AA08;
 
   .loopKraidHealth:
-    STA.L $7E780C,X                                                      ;A7AA0A;
+    STA.L Kraid.maxHealth_1_8,X                                                      ;A7AA0A;
     CLC                                                                  ;A7AA0E;
-    ADC.B $12                                                            ;A7AA0F;
+    ADC.B DP_Temp12                                                            ;A7AA0F;
     INX                                                                  ;A7AA11;
     INX                                                                  ;A7AA12;
     CPX.W #$0010                                                         ;A7AA13;
     BMI .loopKraidHealth                                                 ;A7AA16;
     LDA.W #$DFFF                                                         ;A7AA18;
-    STA.B $12                                                            ;A7AA1B;
-    LDX.W $0E54                                                          ;A7AA1D;
+    STA.B DP_Temp12                                                            ;A7AA1B;
+    LDX.W EnemyIndex                                                          ;A7AA1D;
     JSR.W SetupKraidGFXWithTheTilePriorityCleared                        ;A7AA20;
-    LDA.W $0F8C                                                          ;A7AA23;
+    LDA.W Enemy.health                                                          ;A7AA23;
     LSR                                                                  ;A7AA26;
     LSR                                                                  ;A7AA27;
-    STA.L $7E7820                                                        ;A7AA28;
+    STA.L Kraid.maxHealth_1_4                                                        ;A7AA28;
     CLC                                                                  ;A7AA2C;
-    ADC.L $7E7820                                                        ;A7AA2D;
-    STA.L $7E7822                                                        ;A7AA31;
+    ADC.L Kraid.maxHealth_1_4                                                        ;A7AA2D;
+    STA.L Kraid.maxHealth_2_4                                                        ;A7AA31;
     CLC                                                                  ;A7AA35;
-    ADC.L $7E7820                                                        ;A7AA36;
-    STA.L $7E7824                                                        ;A7AA3A;
+    ADC.L Kraid.maxHealth_1_4                                                        ;A7AA36;
+    STA.L Kraid.maxHealth_3_4                                                        ;A7AA3A;
     CLC                                                                  ;A7AA3E;
-    ADC.L $7E7820                                                        ;A7AA3F;
-    STA.L $7E7826                                                        ;A7AA43;
+    ADC.L Kraid.maxHealth_1_4                                                        ;A7AA3F;
+    STA.L Kraid.maxHealth_4_4                                                        ;A7AA43;
     LDA.W #$0000                                                         ;A7AA47;
-    STA.L $7E783E                                                        ;A7AA4A;
+    STA.L ExtraEnemy7800+$3E                                                        ;A7AA4A;
     LDA.W #$00B0                                                         ;A7AA4E;
-    STA.W $0F7A                                                          ;A7AA51;
+    STA.W Enemy.XPosition                                                          ;A7AA51;
     LDA.W #$0250                                                         ;A7AA54;
-    STA.W $0F7E                                                          ;A7AA57;
+    STA.W Enemy.YPosition                                                          ;A7AA57;
     LDA.W Enemy.properties                                                          ;A7AA5A;
     ORA.W #$0400                                                         ;A7AA5D;
     STA.W Enemy.properties                                                          ;A7AA60;
@@ -3364,9 +3364,9 @@ SetupKraidGFXWithTheTilePriorityCleared:
     LDX.W #$0000                                                         ;A7AB19;
 
   .loop0:
-    LDA.L $7E2000,X                                                      ;A7AB1C;
+    LDA.L EnemyBG2Tilemap,X                                                      ;A7AB1C;
     AND.W #$DFFF                                                         ;A7AB20;
-    STA.L $7E2800,X                                                      ;A7AB23;
+    STA.L EnemyBG2Tilemap+$800,X                                                      ;A7AB23;
     INX                                                                  ;A7AB27;
     INX                                                                  ;A7AB28;
     CPX.W #$0600                                                         ;A7AB29;
@@ -3374,9 +3374,9 @@ SetupKraidGFXWithTheTilePriorityCleared:
     LDX.W #$0000                                                         ;A7AB2E;
 
   .loop1:
-    LDA.L $7E4000,X                                                      ;A7AB31;
+    LDA.L BG2Tilemap,X                                                      ;A7AB31;
     AND.B $12                                                            ;A7AB35;
-    STA.L $7E2000,X                                                      ;A7AB37;
+    STA.L EnemyBG2Tilemap,X                                                      ;A7AB37;
     INX                                                                  ;A7AB3B;
     INX                                                                  ;A7AB3C;
     CPX.W #$0800                                                         ;A7AB3D;
@@ -3393,7 +3393,7 @@ InitAI_KraidArm:
     LDA.W #RTL_A7BA2D                                                    ;A7AB4E;
     STA.W $0FE8                                                          ;A7AB51;
     LDA.W #InstList_KraidArm_RisingSinking                               ;A7AB54;
-    STA.W $0FD2                                                          ;A7AB57;
+    STA.W Enemy[1].instList                                                          ;A7AB57;
     LDA.W #$0001                                                         ;A7AB5A;
     STA.W $0FD4                                                          ;A7AB5D;
     STZ.W $0FEA                                                          ;A7AB60;
@@ -3465,7 +3465,7 @@ InitAI_KraidLintBottom:
     LDA.W #Spritemap_KraidLint_Initial                                   ;A7ABE1;
     STA.W $108E                                                          ;A7ABE4;
     LDA.W #RTL_A7B831                                                    ;A7ABE7;
-    STA.W $10A8                                                          ;A7ABEA;
+    STA.W Enemy[4].instList                                                          ;A7ABEA;
     LDA.W #$FFF0                                                         ;A7ABED;
     STA.W $10AC                                                          ;A7ABF0;
     RTL                                                                  ;A7ABF3;
@@ -3502,19 +3502,19 @@ MainAI_Kraid:
     JSR.W KraidPaletteHandling                                           ;A7AC24;
     JSR.W KraidBody_vs_Projectile_CollisionHandling                      ;A7AC27;
     JSR.W KraidBody_vs_Samus_CollisionHandling                           ;A7AC2A;
-    LDX.W $0E54                                                          ;A7AC2D;
+    LDX.W EnemyIndex                                                          ;A7AC2D;
     LDA.B $B1                                                            ;A7AC30;
     SEC                                                                  ;A7AC32;
     SBC.W $091D                                                          ;A7AC33;
-    SBC.W $0F7A                                                          ;A7AC36;
+    SBC.W Enemy.XPosition                                                          ;A7AC36;
     ADC.W $0F82                                                          ;A7AC39;
     STA.B $B5                                                            ;A7AC3C;
     LDA.W $0915                                                          ;A7AC3E;
     SEC                                                                  ;A7AC41;
-    SBC.W $0F7E                                                          ;A7AC42;
+    SBC.W Enemy.YPosition                                                          ;A7AC42;
     ADC.W #$0098                                                         ;A7AC45;
     STA.B $B7                                                            ;A7AC48;
-    JMP.W ($0FA8)                                                        ;A7AC4A;
+    JMP.W (Kraid.function)                                                        ;A7AC4A;
 
 
 ;;; $AC4D: Kraid function - Kraid gets big - break ceiling into platforms ;;;
@@ -3526,18 +3526,18 @@ Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
 
   .nonZeroCounter:
     LDY.W #$0001                                                         ;A7AC58;
-    LDA.W $0F7E                                                          ;A7AC5B;
+    LDA.W Enemy.YPosition                                                          ;A7AC5B;
     BIT.W #$0002                                                         ;A7AC5E;
     BEQ +                                                                ;A7AC61;
     LDY.W #$FFFF                                                         ;A7AC63;
 
 +   STY.B $12                                                            ;A7AC66;
-    LDA.W $0F7A                                                          ;A7AC68;
+    LDA.W Enemy.XPosition                                                          ;A7AC68;
     CLC                                                                  ;A7AC6B;
     ADC.B $12                                                            ;A7AC6C;
-    STA.W $0F7A                                                          ;A7AC6E;
-    DEC.W $0F7E                                                          ;A7AC71;
-    LDA.W $0F7E                                                          ;A7AC74;
+    STA.W Enemy.XPosition                                                          ;A7AC6E;
+    DEC.W Enemy.YPosition                                                          ;A7AC71;
+    LDA.W Enemy.YPosition                                                          ;A7AC74;
     AND.W #$0003                                                         ;A7AC77;
     BNE .done                                                            ;A7AC7A;
     LDX.W Enemy.var5                                                          ;A7AC7C;
@@ -3545,7 +3545,7 @@ Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
     BPL .done                                                            ;A7AC82;
     LDA.W .XPositions,X                                                  ;A7AC84;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7AC87;
-    LDX.W $0E54                                                          ;A7AC8A;
+    LDX.W EnemyIndex                                                          ;A7AC8A;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A7AC8D;
     LDX.W Enemy.var5                                                          ;A7AC91;
     LDA.W .functionPointers,X                                            ;A7AC94;
@@ -3560,11 +3560,11 @@ Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms:
     STX.W Enemy.var5                                                          ;A7ACA1;
 
   .done:
-    LDA.W $0F7E                                                          ;A7ACA4;
+    LDA.W Enemy.YPosition                                                          ;A7ACA4;
     CMP.W #$0128                                                         ;A7ACA7;
     BPL .return                                                          ;A7ACAA;
     LDA.W #Function_Kraid_KraidGetsBig_SetBG2TilemapPriorityBits         ;A7ACAC;
-    STA.W $0FA8                                                          ;A7ACAF;
+    STA.W Kraid.function                                                          ;A7ACAF;
 
   .return:
     RTL                                                                  ;A7ACB2;
@@ -3645,9 +3645,9 @@ Function_Kraid_KraidGetsBig_SetBG2TilemapPriorityBits:
     LDX.W #$0000                                                         ;A7AD3A;
 
   .loop:
-    LDA.L $7E2000,X                                                      ;A7AD3D;
+    LDA.L EnemyBG2Tilemap,X                                                      ;A7AD3D;
     ORA.W #$2000                                                         ;A7AD41;
-    STA.L $7E2000,X                                                      ;A7AD44;
+    STA.L EnemyBG2Tilemap,X                                                      ;A7AD44;
     INX                                                                  ;A7AD48;
     INX                                                                  ;A7AD49;
     CPX.W #$1000                                                         ;A7AD4A;
@@ -3656,14 +3656,14 @@ Function_Kraid_KraidGetsBig_SetBG2TilemapPriorityBits:
     AND.W #$FBFF                                                         ;A7AD52;
     STA.W $0FC6                                                          ;A7AD55;
     LDA.W #Function_Kraid_KraidGetsBig_FinishUpdatingBG2Tilemap          ;A7AD58;
-    STA.W $0FA8                                                          ;A7AD5B;
+    STA.W Kraid.function                                                          ;A7AD5B;
     JMP.W UpdateBG2TilemapTopHalf                                        ;A7AD5E;
 
 
 ;;; $AD61: Kraid function - Kraid gets big - finish updating BG2 tilemap ;;;
 Function_Kraid_KraidGetsBig_FinishUpdatingBG2Tilemap:
     LDA.W #Function_Kraid_KraidGetsBig_DrawRoomBackground                ;A7AD61;
-    STA.W $0FA8                                                          ;A7AD64;
+    STA.W Kraid.function                                                          ;A7AD64;
     LDA.W #$0001                                                         ;A7AD67;
     STA.W $10D4                                                          ;A7AD6A;
     LDA.W #InstList_KraidFoot_KraidIsBig_Neutral                         ;A7AD6D;
@@ -3681,10 +3681,10 @@ Function_Kraid_KraidGetsBig_FinishUpdatingBG2Tilemap:
 
 ;;; $AD8E: Kraid function - Kraid gets big - draw room background ;;;
 Function_Kraid_KraidGetsBig_DrawRoomBackground:
-; Note that BG1 tiles base address = ([$5D] & Fh) * 1000h, whereas this routine is using ([$5D] & Fh) * 100h,
+; Note that BG1 tiles base address = (DP_BGTilesAddr & Fh) * 1000h, whereas this routine is using (DP_BGTilesAddr & Fh) * 100h,
 ; i.e. this routine only works because BG1 tiles base address = $0000
     LDA.W #Function_Kraid_KraidGetsBig_FadeInRoomBackground              ;A7AD8E;
-    STA.W $0FA8                                                          ;A7AD91;
+    STA.W Kraid.function                                                          ;A7AD91;
     STZ.W $0FB0                                                          ;A7AD94;
     STZ.W Enemy.var5                                                          ;A7AD97; fallthrough to DrawKraidsRoomBackground
 
@@ -3696,7 +3696,7 @@ DrawKraidsRoomBackground:
 
   .loop:
     LDA.W Palette_KraidRoomBackground,Y                                  ;A7ADA0;
-    STA.L $7EC200,X                                                      ;A7ADA3;
+    STA.L TargetPalettes_BGP0,X                                                      ;A7ADA3;
     INX                                                                  ;A7ADA7;
     INX                                                                  ;A7ADA8;
     INY                                                                  ;A7ADA9;
@@ -3712,9 +3712,9 @@ DrawKraidsRoomBackground:
     STA.B VRAMWrite.src,X                                                          ;A7ADC2;
     SEP #$20                                                             ;A7ADC4;
     LDA.B #Tiles_KraidRoomBackground>>16                                 ;A7ADC6;
-    STA.B $D4,X                                                          ;A7ADC8;
+    STA.B VRAMWrite.src+2,X                                                          ;A7ADC8;
     REP #$20                                                             ;A7ADCA;
-    LDA.B $5D                                                            ;A7ADCC;
+    LDA.B DP_BGTilesAddr                                                            ;A7ADCC;
     AND.W #$000F                                                         ;A7ADCE;
     XBA                                                                  ;A7ADD1;
     CLC                                                                  ;A7ADD2;
@@ -3730,27 +3730,27 @@ DrawKraidsRoomBackground:
 ;;; $ADE1: Set up Kraid gets big - thinking ;;;
 SetupKraidGetsBig_Thinking:
     LDA.W #Function_Kraid_KraidGetsBig_Thinking                          ;A7ADE1;
-    STA.W $0FA8                                                          ;A7ADE4;
+    STA.W Kraid.function                                                          ;A7ADE4;
     BRA SetLintYPositionsAndRandomThinkingTimer                          ;A7ADE7;
 
 
 ;;; $ADE9: Set up Kraid main loop - thinking ;;;
 SetupKraidMainLoop_Thinking:
     LDA.W #Function_Kraid_MainLoop_Thinking                              ;A7ADE9;
-    STA.W $0FA8                                                          ;A7ADEC; fallthrough to SetLintYPositionsAndRandomThinkingTimer
+    STA.W Kraid.function                                                          ;A7ADEC; fallthrough to SetLintYPositionsAndRandomThinkingTimer
 
 
 ;;; $ADEF: Set lint Y positions and random thinking timer ;;;
 SetLintYPositionsAndRandomThinkingTimer:
-    LDA.W $0F7E                                                          ;A7ADEF;
+    LDA.W Enemy.YPosition                                                          ;A7ADEF;
     SEC                                                                  ;A7ADF2;
     SBC.W #$0014                                                         ;A7ADF3;
     STA.W $0FFE                                                          ;A7ADF6;
-    LDA.W $0F7E                                                          ;A7ADF9;
+    LDA.W Enemy.YPosition                                                          ;A7ADF9;
     CLC                                                                  ;A7ADFC;
     ADC.W #$002E                                                         ;A7ADFD;
     STA.W $103E                                                          ;A7AE00;
-    LDA.W $0F7E                                                          ;A7AE03;
+    LDA.W Enemy.YPosition                                                          ;A7AE03;
     CLC                                                                  ;A7AE06;
     ADC.W #$0070                                                         ;A7AE07;
     STA.W $107E                                                          ;A7AE0A;
@@ -3833,7 +3833,7 @@ Function_Kraid_MainLoop_Thinking:
     STA.L $7E7806                                                        ;A7AEAB;
     BNE .return                                                          ;A7AEAF;
     LDA.W #Function_KraidMainLoop_AttackingWithMouthOpen                 ;A7AEB1;
-    STA.W $0FA8                                                          ;A7AEB4;
+    STA.W Kraid.function                                                          ;A7AEB4;
     LDA.W #InstList_Kraid_Roar_1                                         ;A7AEB7;
     STA.W $0FAA                                                          ;A7AEBA;
     LDA.W InstList_Kraid_Roar_0                                          ;A7AEBD;
@@ -3851,7 +3851,7 @@ Function_Kraid_KraidGetsBig_Thinking:
     STA.L $7E7806                                                        ;A7AECB;
     BNE .return                                                          ;A7AECF;
     LDA.W #Function_Kraid_KraidShot_KraidsMouthIsOpen                    ;A7AED1;
-    STA.W $0FA8                                                          ;A7AED4;
+    STA.W Kraid.function                                                          ;A7AED4;
     LDA.W #InstList_Kraid_Roar_1                                         ;A7AED7;
     STA.W $0FAA                                                          ;A7AEDA;
     LDA.W InstList_Kraid_Roar_0                                          ;A7AEDD;
@@ -3867,7 +3867,7 @@ Function_Kraid_KraidShot_KraidsMouthIsOpen:
     CMP.W #$FFFF                                                         ;A7AEE7;
     BNE .return                                                          ;A7AEEA;
     LDA.W #Function_Kraid_MainLoop_Thinking                              ;A7AEEC;
-    STA.W $0FA8                                                          ;A7AEEF;
+    STA.W Kraid.function                                                          ;A7AEEF;
     LDA.W #$005A                                                         ;A7AEF2;
     STA.W $0FAC                                                          ;A7AEF5;
     LDA.L $7E780A                                                        ;A7AEF8;
@@ -3879,7 +3879,7 @@ Function_Kraid_KraidShot_KraidsMouthIsOpen:
     AND.W #$FF00                                                         ;A7AF09;
     BEQ .done                                                            ;A7AF0C;
     LDA.W #Function_Kraid_HandleFunctionTimer                            ;A7AF0E;
-    STA.W $0FA8                                                          ;A7AF11;
+    STA.W Kraid.function                                                          ;A7AF11;
     LDA.W #$0040                                                         ;A7AF14;
     STA.W Enemy.var5                                                          ;A7AF17;
     LDA.W #Function_Kraid_KraidShot_InitializeEyeGlowing                 ;A7AF1A;
@@ -3945,7 +3945,7 @@ ProcessKraidInstList:
     STA.B VRAMWrite.size,X                                                          ;A7AF6C;
     REP #$20                                                             ;A7AF6E;
     INX                                                                  ;A7AF70;
-    LDA.B $59                                                            ;A7AF71;
+    LDA.B DP_BG2TilemapAddrSize                                                            ;A7AF71;
     AND.W #$00FC                                                         ;A7AF73;
     XBA                                                                  ;A7AF76;
     STA.B VRAMWrite.size,X                                                          ;A7AF77;
@@ -4001,7 +4001,7 @@ KraidsMouth_vs_Projectile_CollisionHandling:
 ; making it technically possible to get a bomb interaction from Kraid (trigger mouth to open and kill projectile)
     REP #$30                                                             ;A7AFAA;
     PHX                                                                  ;A7AFAC;
-    LDA.W $0FA8                                                          ;A7AFAD;
+    LDA.W Kraid.function                                                          ;A7AFAD;
     CMP.W #KraidDeath_SinkThroughFloor                                   ;A7AFB0;
     BMI .notDying                                                        ;A7AFB3;
     PLX                                                                  ;A7AFB5;
@@ -4025,15 +4025,15 @@ KraidsMouth_vs_Projectile_CollisionHandling:
     LDY.W #$0000                                                         ;A7AFD4;
     LDA.W $0000,X                                                        ;A7AFD7;
     CLC                                                                  ;A7AFDA;
-    ADC.W $0F7A                                                          ;A7AFDB;
+    ADC.W Enemy.XPosition                                                          ;A7AFDB;
     STA.B $16                                                            ;A7AFDE;
     LDA.W $0002,X                                                        ;A7AFE0;
     CLC                                                                  ;A7AFE3;
-    ADC.W $0F7E                                                          ;A7AFE4;
+    ADC.W Enemy.YPosition                                                          ;A7AFE4;
     STA.B $14                                                            ;A7AFE7;
     LDA.W $0006,X                                                        ;A7AFE9;
     CLC                                                                  ;A7AFEC;
-    ADC.W $0F7E                                                          ;A7AFED;
+    ADC.W Enemy.YPosition                                                          ;A7AFED;
     STA.B $12                                                            ;A7AFF0;
     LDA.W $0CCE                                                          ;A7AFF2;
     BEQ .noProjectiles                                                   ;A7AFF5;
@@ -4075,9 +4075,9 @@ KraidsMouth_vs_Projectile_CollisionHandling:
     JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;A7B03A;
     PLP                                                                  ;A7B03E;
     PLX                                                                  ;A7B03F;
-    LDA.W $0C04,X                                                        ;A7B040;
+    LDA.W SamusProjectile_Directions,X                                                        ;A7B040;
     ORA.W #$0010                                                         ;A7B043;
-    STA.W $0C04,X                                                        ;A7B046;
+    STA.W SamusProjectile_Directions,X                                                        ;A7B046;
     LDY.W #$0001                                                         ;A7B049;
 
   .next:
@@ -4103,17 +4103,17 @@ KraidsMouth_vs_Projectile_CollisionHandling:
     STA.L $7E780A                                                        ;A7B071;
 
   .notChargedBeam:
-    LDA.W $0F8C                                                          ;A7B075;
+    LDA.W Enemy.health                                                          ;A7B075;
     CMP.W #$0001                                                         ;A7B078;
     BMI .dead                                                            ;A7B07B;
     RTS                                                                  ;A7B07D;
 
   .dead:
-    LDA.W $0FA8                                                          ;A7B07E;
+    LDA.W Kraid.function                                                          ;A7B07E;
     CMP.W #KraidDeath_Initialize                                         ;A7B081;
     BPL .return                                                          ;A7B084;
     LDA.W #KraidDeath_Initialize                                         ;A7B086;
-    STA.W $0FA8                                                          ;A7B089;
+    STA.W Kraid.function                                                          ;A7B089;
     LDA.W #$0000                                                         ;A7B08C;
     STA.L $7E780A                                                        ;A7B08F;
     LDA.W Enemy.properties                                                          ;A7B093;
@@ -4168,7 +4168,7 @@ SpawnExplosionProjectile:
 
 ;;; $B0F3: Kraid body / Samus collision handling ;;;
 KraidBody_vs_Samus_CollisionHandling:
-    LDA.W $0FA8                                                          ;A7B0F3;
+    LDA.W Kraid.function                                                          ;A7B0F3;
     CMP.W #KraidDeath_Initialize                                         ;A7B0F6;
     BPL .return0                                                         ;A7B0F9;
     LDA.W $0AF6                                                          ;A7B0FB;
@@ -4177,7 +4177,7 @@ KraidBody_vs_Samus_CollisionHandling:
     STA.B $12                                                            ;A7B102;
     LDA.W $0AFA                                                          ;A7B104;
     SEC                                                                  ;A7B107;
-    SBC.W $0F7E                                                          ;A7B108;
+    SBC.W Enemy.YPosition                                                          ;A7B108;
     LDX.W #$0000                                                         ;A7B10B;
 
   .loop:
@@ -4193,7 +4193,7 @@ KraidBody_vs_Samus_CollisionHandling:
 
 +   LDA.W HitboxDefinitionTable_KraidBody_left,X                         ;A7B11E;
     CLC                                                                  ;A7B121;
-    ADC.W $0F7A                                                          ;A7B122;
+    ADC.W Enemy.XPosition                                                          ;A7B122;
     SEC                                                                  ;A7B125;
     SBC.B $12                                                            ;A7B126;
     BPL .return1                                                         ;A7B128;
@@ -4209,14 +4209,14 @@ KraidBody_vs_Samus_CollisionHandling:
     LDA.W $0AFA                                                          ;A7B13C;
     SEC                                                                  ;A7B13F;
     SBC.W #$0008                                                         ;A7B140;
-    CMP.L $7E7808                                                        ;A7B143;
+    CMP.L Kraid.minimumSamusEjectionYPosition                                                        ;A7B143;
     BPL +                                                                ;A7B147;
-    LDA.L $7E7808                                                        ;A7B149;
+    LDA.L Kraid.minimumSamusEjectionYPosition                                                        ;A7B149;
 
 +   STA.W $0AFA                                                          ;A7B14D;
     STA.W $0B14                                                          ;A7B150;
     JSR.W PushSamusBack                                                  ;A7B153;
-    LDA.W $18A8                                                          ;A7B156;
+    LDA.W SamusInvincibilityTimer                                                          ;A7B156;
     BNE .return1                                                         ;A7B159;
     JSL.L NormalEnemyTouchAI                                             ;A7B15B;
 
@@ -4250,7 +4250,7 @@ HitboxDefinitionTable_KraidBody:
 KraidBody_vs_Projectile_CollisionHandling:
 ; See projectile loop note in KraidsMouth_vs_Projectile_CollisionHandling
     PHX                                                                  ;A7B181;
-    LDA.W $0FA8                                                          ;A7B182;
+    LDA.W Kraid.function                                                          ;A7B182;
     CMP.W #KraidDeath_SinkThroughFloor                                   ;A7B185;
     BMI .lessThanC537                                                    ;A7B188;
     PLX                                                                  ;A7B18A;
@@ -4270,15 +4270,15 @@ KraidBody_vs_Projectile_CollisionHandling:
     TAX                                                                  ;A7B1A7;
     LDA.W $0000,X                                                        ;A7B1A8;
     CLC                                                                  ;A7B1AB;
-    ADC.W $0F7A                                                          ;A7B1AC;
+    ADC.W Enemy.XPosition                                                          ;A7B1AC;
     STA.B $16                                                            ;A7B1AF;
     LDA.W $0002,X                                                        ;A7B1B1;
     CLC                                                                  ;A7B1B4;
-    ADC.W $0F7E                                                          ;A7B1B5;
+    ADC.W Enemy.YPosition                                                          ;A7B1B5;
     STA.B $14                                                            ;A7B1B8;
     LDA.W $0006,X                                                        ;A7B1BA;
     CLC                                                                  ;A7B1BD;
-    ADC.W $0F7E                                                          ;A7B1BE;
+    ADC.W Enemy.YPosition                                                          ;A7B1BE;
     STA.B $12                                                            ;A7B1C1;
     LDA.W $0CCE                                                          ;A7B1C3;
     BEQ .noProjectiles                                                   ;A7B1C6;
@@ -4305,9 +4305,9 @@ KraidBody_vs_Projectile_CollisionHandling:
 
   .hit:
     JSR.W SpawnExplosionProjectile                                       ;A7B1EC;
-    LDA.W $0C04,X                                                        ;A7B1EF;
+    LDA.W SamusProjectile_Directions,X                                                        ;A7B1EF;
     ORA.W #$0010                                                         ;A7B1F2;
-    STA.W $0C04,X                                                        ;A7B1F5;
+    STA.W SamusProjectile_Directions,X                                                        ;A7B1F5;
     LDA.W $0C18,X                                                        ;A7B1F8;
     BIT.W #$0010                                                         ;A7B1FB;
     BEQ +                                                                ;A7B1FE;
@@ -4327,11 +4327,11 @@ KraidBody_vs_Projectile_CollisionHandling:
     LDY.B $30                                                            ;A7B212;
     CPY.W #$0000                                                         ;A7B214;
     BEQ .return                                                          ;A7B217;
-    LDA.W $0FA8                                                          ;A7B219;
+    LDA.W Kraid.function                                                          ;A7B219;
     CMP.W #Function_Kraid_MainLoop_Thinking                              ;A7B21C;
     BNE .return                                                          ;A7B21F;
     LDA.W #Function_Kraid_KraidShot_InitializeEyeGlowing                 ;A7B221;
-    STA.W $0FA8                                                          ;A7B224;
+    STA.W Kraid.function                                                          ;A7B224;
     LDA.L $7E780A                                                        ;A7B227;
     BIT.W #$0001                                                         ;A7B22B;
     BEQ .return                                                          ;A7B22E;
@@ -4348,7 +4348,7 @@ KraidBody_vs_Projectile_CollisionHandling:
     STA.B $12                                                            ;A7B23F;
     LDA.W $0B78,X                                                        ;A7B241;
     SEC                                                                  ;A7B244;
-    SBC.W $0F7E                                                          ;A7B245;
+    SBC.W Enemy.YPosition                                                          ;A7B245;
     LDY.W #$0000                                                         ;A7B248;
 
   .loopBody:
@@ -4364,7 +4364,7 @@ KraidBody_vs_Projectile_CollisionHandling:
 
 +   LDA.W HitboxDefinitionTable_KraidBody_left,Y                         ;A7B25B;
     CLC                                                                  ;A7B25E;
-    ADC.W $0F7A                                                          ;A7B25F;
+    ADC.W Enemy.XPosition                                                          ;A7B25F;
     SEC                                                                  ;A7B262;
     SBC.B $12                                                            ;A7B263;
     BPL .next                                                            ;A7B265;
@@ -4379,7 +4379,7 @@ UNUSED_HandleProjectileDamageAndSound:
     PHX                                                                  ;A7B269;
     PHY                                                                  ;A7B26A;
     TXY                                                                  ;A7B26B;
-    LDX.W $0E54                                                          ;A7B26C;
+    LDX.W EnemyIndex                                                          ;A7B26C;
     LDA.W $0C2C,Y                                                        ;A7B26F;
     STA.W $187A                                                          ;A7B272;
     LDA.W $0C18,Y                                                        ;A7B275;
@@ -4455,16 +4455,16 @@ UNUSED_HandleProjectileDamageAndSound:
     LDA.W $4216                                                          ;A7B2F8;
     BEQ .return                                                          ;A7B2FB;
     STA.W $187A                                                          ;A7B2FD;
-    LDA.W $0F8C                                                          ;A7B300;
+    LDA.W Enemy.health                                                          ;A7B300;
     SEC                                                                  ;A7B303;
     SBC.W $187A                                                          ;A7B304;
-    LDA.W $0F8C                                                          ;A7B307;
+    LDA.W Enemy.health                                                          ;A7B307;
     SEC                                                                  ;A7B30A;
     SBC.W $187A                                                          ;A7B30B;
-    STA.W $0F8C                                                          ;A7B30E;
+    STA.W Enemy.health                                                          ;A7B30E;
     LDA.W $0FB0                                                          ;A7B311;
     BEQ .tripleDamageEnd                                                 ;A7B314;
-    LDA.W $0F8C                                                          ;A7B316;
+    LDA.W Enemy.health                                                          ;A7B316;
     SEC                                                                  ;A7B319;
     SBC.W $187A                                                          ;A7B31A;
     SEC                                                                  ;A7B31D;
@@ -4473,7 +4473,7 @@ UNUSED_HandleProjectileDamageAndSound:
     LDA.W #$0000                                                         ;A7B323;
 
   .storeHealth:
-    STA.W $0F8C                                                          ;A7B326;
+    STA.W Enemy.health                                                          ;A7B326;
 
   .tripleDamageEnd:
     LDX.W $0F78                                                          ;A7B329;
@@ -4491,7 +4491,7 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 KraidPaletteHandling:
     PHX                                                                  ;A7B337;
     PHY                                                                  ;A7B338;
-    LDA.W $0F8C                                                          ;A7B339;
+    LDA.W Enemy.health                                                          ;A7B339;
     CMP.W #$0001                                                         ;A7B33C;
     BPL .alive                                                           ;A7B33F;
     STA.L $7E782A                                                        ;A7B341;
@@ -4550,10 +4550,10 @@ KraidHealthBasedPaletteHandling:
     BIT.W #$0001                                                         ;A7B39B;
     BNE .hurtFlashFrame                                                  ;A7B39E;
     LDX.W #$000E                                                         ;A7B3A0;
-    LDA.W $0F8C                                                          ;A7B3A3;
+    LDA.W Enemy.health                                                          ;A7B3A3;
 
   .loop:
-    CMP.L $7E780C,X                                                      ;A7B3A6;
+    CMP.L Kraid.maxHealth_1_8,X                                                      ;A7B3A6;
     BPL .getIndex                                                        ;A7B3AA;
     DEX                                                                  ;A7B3AC;
     DEX                                                                  ;A7B3AD;
@@ -4694,7 +4694,7 @@ Instruction_Kraid_NOP_A7B633:
 ;;; $B636: Instruction - decrement Kraid Y position ;;;
 Instruction_Kraid_DecrementYPosition:
     PHX                                                                  ;A7B636;
-    DEC.W $0F7E                                                          ;A7B637;
+    DEC.W Enemy.YPosition                                                          ;A7B637;
     PLX                                                                  ;A7B63A;
     RTL                                                                  ;A7B63B;
 
@@ -4702,7 +4702,7 @@ Instruction_Kraid_DecrementYPosition:
 ;;; $B63C: Instruction - increment Kraid Y position, set screen shaking ;;;
 Instruction_Kraid_IncrementYPosition_SetScreenShaking:
     PHX                                                                  ;A7B63C;
-    INC.W $0F7E                                                          ;A7B63D;
+    INC.W Enemy.YPosition                                                          ;A7B63D;
     LDA.W #$0001                                                         ;A7B640;
     STA.W $183E                                                          ;A7B643;
     LDA.W #$000A                                                         ;A7B646;
@@ -4725,10 +4725,10 @@ Instruction_Kraid_QueueSFX76_Lib2_Max6:
 ;;; $B65A: Instruction - Kraid X position -= 3 ;;;
 Instruction_Kraid_XPositionMinus3:
     PHX                                                                  ;A7B65A;
-    LDA.W $0F7A                                                          ;A7B65B;
+    LDA.W Enemy.XPosition                                                          ;A7B65B;
     SEC                                                                  ;A7B65E;
     SBC.W KraidForwardsSpeed                                             ;A7B65F;
-    STA.W $0F7A                                                          ;A7B662;
+    STA.W Enemy.XPosition                                                          ;A7B662;
     PLX                                                                  ;A7B665;
     RTL                                                                  ;A7B666;
 
@@ -4736,10 +4736,10 @@ Instruction_Kraid_XPositionMinus3:
 ;;; $B667: Instruction - Kraid X position -= 3 ;;;
 Instruction_Kraid_XPositionMinus3_duplicate:
     PHX                                                                  ;A7B667;
-    LDA.W $0F7A                                                          ;A7B668;
+    LDA.W Enemy.XPosition                                                          ;A7B668;
     SEC                                                                  ;A7B66B;
     SBC.W KraidForwardsSpeed                                             ;A7B66C;
-    STA.W $0F7A                                                          ;A7B66F;
+    STA.W Enemy.XPosition                                                          ;A7B66F;
     PLX                                                                  ;A7B672;
     RTL                                                                  ;A7B673;
 
@@ -4750,8 +4750,8 @@ Instruction_Kraid_XPositionPlus3:
     PHY                                                                  ;A7B675;
     LDA.W KraidBackwardsSpeed                                            ;A7B676;
     CLC                                                                  ;A7B679;
-    ADC.W $0F7A                                                          ;A7B67A;
-    STA.W $0F7A                                                          ;A7B67D;
+    ADC.W Enemy.XPosition                                                          ;A7B67A;
+    STA.W Enemy.XPosition                                                          ;A7B67D;
     PLY                                                                  ;A7B680;
     PLX                                                                  ;A7B681;
     RTL                                                                  ;A7B682;
@@ -4762,7 +4762,7 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_Instruction_Kraid_MoveRight_A7B683:
     PHX                                                                  ;A7B683;
     PHY                                                                  ;A7B684;
-    LDA.W $0F7A                                                          ;A7B685;
+    LDA.W Enemy.XPosition                                                          ;A7B685;
     CMP.W #$0140                                                         ;A7B688;
     BMI .leftScreen                                                      ;A7B68B;
     LDA.L $7E781E                                                        ;A7B68D;
@@ -4788,7 +4788,7 @@ UNUSED_Instruction_Kraid_MoveRight_A7B683:
     STA.W $183E                                                          ;A7B6AE;
     LDA.W #$0007                                                         ;A7B6B1;
     STA.W $1840                                                          ;A7B6B4;
-    LDA.W $0F7A                                                          ;A7B6B7;
+    LDA.W Enemy.XPosition                                                          ;A7B6B7;
     STA.W $10BA                                                          ;A7B6BA;
     BRA .return                                                          ;A7B6BD;
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -4797,9 +4797,9 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 ;;; $B6BF: Kraid function - Kraid shot - initialise Kraid eye glowing ;;;
 Function_Kraid_KraidShot_InitializeEyeGlowing:
     LDA.W #Function_Kraid_KraidShot_KraidsMouthIsOpen                    ;A7B6BF;
-    STA.W $0FA8                                                          ;A7B6C2;
+    STA.W Kraid.function                                                          ;A7B6C2;
     LDA.W #Function_Kraid_KraidShot_GlowEye                              ;A7B6C5;
-    STA.W $0FA8                                                          ;A7B6C8;
+    STA.W Kraid.function                                                          ;A7B6C8;
     LDA.W #InstList_Kraid_EyeGlowing_1                                   ;A7B6CB;
     STA.W $0FAA                                                          ;A7B6CE;
     LDA.W InstList_Kraid_EyeGlowing_0                                    ;A7B6D1;
@@ -4853,7 +4853,7 @@ Function_Kraid_KraidShot_GlowEye:
     CPY.W #$0006                                                         ;A7B72F;
     BMI .return                                                          ;A7B732;
     LDA.W #Function_Kraid_KraidShot_UnglowEye                            ;A7B734;
-    STA.W $0FA8                                                          ;A7B737;
+    STA.W Kraid.function                                                          ;A7B737;
 
   .return:
     PLY                                                                  ;A7B73A;
@@ -4866,10 +4866,10 @@ Function_Kraid_KraidShot_UnglowEye:
     PHX                                                                  ;A7B73D;
     PHY                                                                  ;A7B73E;
     LDX.W #$000E                                                         ;A7B73F;
-    LDA.W $0F8C                                                          ;A7B742;
+    LDA.W Enemy.health                                                          ;A7B742;
 
   .loopHealth:
-    CMP.L $7E780C,X                                                      ;A7B745;
+    CMP.L Kraid.maxHealth_1_8,X                                                      ;A7B745;
     BPL .getIndexY                                                       ;A7B749;
     DEX                                                                  ;A7B74B;
     DEX                                                                  ;A7B74C;
@@ -4923,7 +4923,7 @@ Function_Kraid_KraidShot_UnglowEye:
     LDA.B $14                                                            ;A7B7A4;
     BNE .return                                                          ;A7B7A6;
     LDA.W #Function_Kraid_KraidShot_KraidsMouthIsOpen                    ;A7B7A8;
-    STA.W $0FA8                                                          ;A7B7AB;
+    STA.W Kraid.function                                                          ;A7B7AB;
     LDA.W #InstList_Kraid_Roar_1                                         ;A7B7AE;
     STA.W $0FAA                                                          ;A7B7B1;
     LDA.W InstList_Kraid_Roar_0                                          ;A7B7B4;
@@ -4941,7 +4941,7 @@ MainAI_KraidArm:
     CLC                                                                  ;A7B7C0;
     ADC.W #$00E0                                                         ;A7B7C1;
     STA.B $12                                                            ;A7B7C4;
-    LDA.W $0F7E                                                          ;A7B7C6;
+    LDA.W Enemy.YPosition                                                          ;A7B7C6;
     SEC                                                                  ;A7B7C9;
     SBC.W #$002C                                                         ;A7B7CA;
     STA.W $0FBE                                                          ;A7B7CD;
@@ -4955,7 +4955,7 @@ MainAI_KraidArm:
     AND.W #$FEFF                                                         ;A7B7E0;
 
 +   STA.W $0FC6                                                          ;A7B7E3;
-    LDA.W $0F7A                                                          ;A7B7E6;
+    LDA.W Enemy.XPosition                                                          ;A7B7E6;
     CLC                                                                  ;A7B7E9;
     ADC.W #$0000                                                         ;A7B7EA;
     STA.W $0FBA                                                          ;A7B7ED;
@@ -5013,12 +5013,12 @@ Function_KraidLint_ProduceLint:
     AND.W #$FEFF                                                         ;A7B835; >.< #$FAFF
     AND.W #$FBFF                                                         ;A7B838;
     STA.W Enemy.properties,X                                                        ;A7B83B;
-    LDA.W $0F7A                                                          ;A7B83E;
+    LDA.W Enemy.XPosition                                                          ;A7B83E;
     CLC                                                                  ;A7B841;
     ADC.W $0FAC,X                                                        ;A7B842;
     SEC                                                                  ;A7B845;
     SBC.W $0FAA,X                                                        ;A7B846;
-    STA.W $0F7A,X                                                        ;A7B849;
+    STA.W Enemy.XPosition,X                                                        ;A7B849;
     LDA.W $0FAA,X                                                        ;A7B84C;
     CLC                                                                  ;A7B84F;
     ADC.W #$0001                                                         ;A7B850;
@@ -5045,12 +5045,12 @@ Function_KraidLint_ChargeLint:
   .zeroTimer:
     TYA                                                                  ;A7B876;
     STA.W $0F96,X                                                        ;A7B877;
-    LDA.W $0F7A                                                          ;A7B87A;
+    LDA.W Enemy.XPosition                                                          ;A7B87A;
     CLC                                                                  ;A7B87D;
     ADC.W $0FAC,X                                                        ;A7B87E;
     SEC                                                                  ;A7B881;
     SBC.W $0FAA,X                                                        ;A7B882;
-    STA.W $0F7A,X                                                        ;A7B885;
+    STA.W Enemy.XPosition,X                                                        ;A7B885;
     DEC.W Enemy.var5,X                                                        ;A7B888;
     BNE .return                                                          ;A7B88B;
     LDA.W #Function_KraidLint_FireLint                                   ;A7B88D;
@@ -5068,9 +5068,9 @@ Function_KraidLint_FireLint:
     SEC                                                                  ;A7B89E;
     SBC.W KraidLint_XSubSpeed                                            ;A7B89F;
     STA.W $0F7C,X                                                        ;A7B8A2;
-    LDA.W $0F7A,X                                                        ;A7B8A5;
+    LDA.W Enemy.XPosition,X                                                        ;A7B8A5;
     SBC.W KraidLint_XSpeed                                               ;A7B8A8;
-    STA.W $0F7A,X                                                        ;A7B8AB;
+    STA.W Enemy.XPosition,X                                                        ;A7B8AB;
     CMP.W #$0038                                                         ;A7B8AE;
     BPL .greaterThanEqualTo38                                            ;A7B8B1;
     PHA                                                                  ;A7B8B3;
@@ -5101,14 +5101,14 @@ Function_KraidLint_FireLint:
     SEC                                                                  ;A7B8EE;
     SBC.W KraidLint_XSubSpeed                                            ;A7B8EF;
     STA.W $0B56                                                          ;A7B8F2;
-    LDA.W $0B58                                                          ;A7B8F5;
+    LDA.W ExtraSamusXDisplacement                                                          ;A7B8F5;
     SBC.W KraidLint_XSpeed                                               ;A7B8F8;
     CMP.W #$FFF0                                                         ;A7B8FB;
     BPL .storeExtraDisplacement                                          ;A7B8FE;
     LDA.W #$FFF0                                                         ;A7B900;
 
   .storeExtraDisplacement:
-    STA.W $0B58                                                          ;A7B903;
+    STA.W ExtraSamusXDisplacement                                                          ;A7B903;
 
   .return:
     RTL                                                                  ;A7B906;
@@ -5132,10 +5132,10 @@ Function_KraidNail_WaitUntilTopLintXPosition100Plus:
 
 ;;; $B923: Kraid lint function - horizontally align enemy to Kraid ;;;
 Function_KraidNail_HorizontallyAlignEnemyToKraid:
-    LDA.W $0F7A                                                          ;A7B923;
+    LDA.W Enemy.XPosition                                                          ;A7B923;
     SEC                                                                  ;A7B926;
     SBC.W $0F82,X                                                        ;A7B927;
-    STA.W $0F7A,X                                                        ;A7B92A; fallthrough to Function_Kraid_HandleFunctionTimer
+    STA.W Enemy.XPosition,X                                                        ;A7B92A; fallthrough to Function_Kraid_HandleFunctionTimer
 
 
 ;;; $B92D: Kraid enemy function - handle Kraid enemy function timer ;;;
@@ -5145,7 +5145,7 @@ Function_Kraid_HandleFunctionTimer:
     DEC.W Enemy.var5,X                                                        ;A7B932;
     BNE .return                                                          ;A7B935;
     LDA.L $7E7800,X                                                      ;A7B937;
-    STA.W $0FA8,X                                                        ;A7B93B;
+    STA.W Kraid.function,X                                                        ;A7B93B;
 
   .return:
     RTL                                                                  ;A7B93E;
@@ -5153,7 +5153,7 @@ Function_Kraid_HandleFunctionTimer:
 
 ;;; $B93F: Kraid foot function - start retreat ;;;
 Function_KraidFoot_StartRetreat:
-    LDX.W $0E54                                                          ;A7B93F;
+    LDX.W EnemyIndex                                                          ;A7B93F;
     LDA.W KraidPart.functionTimer,X                                                        ;A7B942;
     BEQ .return                                                          ;A7B945;
     DEC.W KraidPart.functionTimer,X                                                        ;A7B947;
@@ -5189,9 +5189,9 @@ KraidLint_vs_Samus_CollisionHandling:
     RTS                                                                  ;A7B972;
 
   .notIntangible:
-    LDA.W $18A8                                                          ;A7B973;
+    LDA.W SamusInvincibilityTimer                                                          ;A7B973;
     BNE .return                                                          ;A7B976;
-    LDA.W $0F7A,X                                                        ;A7B978;
+    LDA.W Enemy.XPosition,X                                                        ;A7B978;
     CLC                                                                  ;A7B97B;
     ADC.W Hitbox_KraidLint+2                                             ;A7B97C;
     SEC                                                                  ;A7B97F;
@@ -5207,7 +5207,7 @@ KraidLint_vs_Samus_CollisionHandling:
     SBC.W $0AFE                                                          ;A7B994;
     CMP.B $12                                                            ;A7B997;
     BPL .return                                                          ;A7B999;
-    LDA.W $0F7E,X                                                        ;A7B99B;
+    LDA.W Enemy.YPosition,X                                                        ;A7B99B;
     CLC                                                                  ;A7B99E;
     ADC.W Hitbox_KraidLint+4                                             ;A7B99F;
     CLC                                                                  ;A7B9A2;
@@ -5218,7 +5218,7 @@ KraidLint_vs_Samus_CollisionHandling:
     ADC.W $0B00                                                          ;A7B9AC;
     CMP.B $16                                                            ;A7B9AF;
     BMI .return                                                          ;A7B9B1;
-    LDA.W $0F7E,X                                                        ;A7B9B3;
+    LDA.W Enemy.YPosition,X                                                        ;A7B9B3;
     CLC                                                                  ;A7B9B6;
     ADC.W Hitbox_KraidLint+8                                             ;A7B9B7;
     SEC                                                                  ;A7B9BA;
@@ -5234,12 +5234,12 @@ KraidLint_vs_Samus_CollisionHandling:
     ADC.W #$0010                                                         ;A7B9CF;
     EOR.W #$FFFF                                                         ;A7B9D2;
     CLC                                                                  ;A7B9D5;
-    ADC.W $0B58                                                          ;A7B9D6;
+    ADC.W ExtraSamusXDisplacement                                                          ;A7B9D6;
     CMP.W #$0010                                                         ;A7B9D9;
     BMI +                                                                ;A7B9DC;
     LDA.W #$0010                                                         ;A7B9DE;
 
-+   STA.W $0B58                                                          ;A7B9E1;
++   STA.W ExtraSamusXDisplacement                                                          ;A7B9E1;
     PHX                                                                  ;A7B9E4;
     PHP                                                                  ;A7B9E5;
     JSL.L NormalEnemyTouchAI                                             ;A7B9E6;
@@ -5255,9 +5255,9 @@ KraidLint_vs_Samus_CollisionHandling:
 
 ;;; $B9F6: Main AI - enemy $E3FF (Kraid foot) ;;;
 MainAI_KraidFoot:
-    LDA.W $0F7A                                                          ;A7B9F6;
+    LDA.W Enemy.XPosition                                                          ;A7B9F6;
     STA.W $10BA                                                          ;A7B9F9;
-    LDA.W $0F7E                                                          ;A7B9FC;
+    LDA.W Enemy.YPosition                                                          ;A7B9FC;
     CLC                                                                  ;A7B9FF;
     ADC.W #$0064                                                         ;A7BA00;
     STA.W $10BE                                                          ;A7BA03;
@@ -5278,7 +5278,7 @@ MainAI_KraidFoot:
     ORA.W #$0100                                                         ;A7BA21;
 
 +   STA.W $10C6                                                          ;A7BA24;
-    LDX.W $0E54                                                          ;A7BA27;
+    LDX.W EnemyIndex                                                          ;A7BA27;
     JMP.W (KraidPart.function+$140)                                                        ;A7BA2A;
 
 
@@ -5296,7 +5296,7 @@ Function_KraidFoot_Phase2_Thinking:
     LDX.W #$0000                                                         ;A7BA39;
 
   .loopXPositions:
-    LDA.W $0F7A                                                          ;A7BA3C;
+    LDA.W Enemy.XPosition                                                          ;A7BA3C;
     CMP.W .XPosition,X                                                   ;A7BA3F;
     BEQ +                                                                ;A7BA42;
     INX                                                                  ;A7BA44;
@@ -5319,7 +5319,7 @@ Function_KraidFoot_Phase2_Thinking:
     LDA.W $0002,X                                                        ;A7BA63;
     TAY                                                                  ;A7BA66;
     LDA.W $0000,X                                                        ;A7BA67;
-    CMP.W $0F7A                                                          ;A7BA6A;
+    CMP.W Enemy.XPosition                                                          ;A7BA6A;
     BPL .backwards                                                       ;A7BA6D;
     LDA.W $0000,X                                                        ;A7BA6F;
     JSR.W SetKraidWalkingForwards                                        ;A7BA72;
@@ -5397,10 +5397,10 @@ SetKraidWalkingForwards:
 ;;; $BB45: Kraid foot function - second phase - walking backwards ;;;
 Function_KraidFoot_Phase2_WalkingBackward:
     LDA.L $7E781E                                                        ;A7BB45;
-    CMP.W $0F7A                                                          ;A7BB49;
+    CMP.W Enemy.XPosition                                                          ;A7BB49;
     BEQ .walking                                                         ;A7BB4C;
     BPL .return                                                          ;A7BB4E;
-    STA.W $0F7A                                                          ;A7BB50;
+    STA.W Enemy.XPosition                                                          ;A7BB50;
 
   .walking:
     LDA.W $10D2                                                          ;A7BB53;
@@ -5420,10 +5420,10 @@ Function_KraidFoot_Phase2_WalkingBackward:
 ;;; $BB6E: Kraid foot function - second phase setup - walk to starting spot ;;;
 Function_KraidFoot_Phase2Setup_WalkToStartingPoint:
     LDA.L $7E781E                                                        ;A7BB6E;
-    CMP.W $0F7A                                                          ;A7BB72;
+    CMP.W Enemy.XPosition                                                          ;A7BB72;
     BEQ .walking                                                         ;A7BB75;
     BPL .return                                                          ;A7BB77;
-    STA.W $0F7A                                                          ;A7BB79;
+    STA.W Enemy.XPosition                                                          ;A7BB79;
 
   .walking:
     LDA.W $10D2                                                          ;A7BB7C;
@@ -5455,9 +5455,9 @@ Function_KraidFoot_Phase2Setup_InitializePhase2:
 ;;; $BBAE: Kraid foot function - second phase - walking forwards ;;;
 Function_KraidFoot_Phase2_WalkingForward:
     LDA.L $7E781E                                                        ;A7BBAE;
-    CMP.W $0F7A                                                          ;A7BBB2;
+    CMP.W Enemy.XPosition                                                          ;A7BBB2;
     BMI .forwards                                                        ;A7BBB5;
-    STA.W $0F7A                                                          ;A7BBB7;
+    STA.W Enemy.XPosition                                                          ;A7BBB7;
     LDA.W $10D2                                                          ;A7BBBA;
     CMP.W #InstList_KraidFoot_KraidIsBig_WalkingForward_1                ;A7BBBD;
     BNE .return                                                          ;A7BBC0;
@@ -5522,7 +5522,7 @@ Function_KraidMainLoop_AttackingWithMouthOpen:
     AND.W #$FF00                                                         ;A7BC3D;
     BEQ .done                                                            ;A7BC40;
     LDA.W #Function_Kraid_HandleFunctionTimer                            ;A7BC42;
-    STA.W $0FA8                                                          ;A7BC45;
+    STA.W Kraid.function                                                          ;A7BC45;
     LDA.W #$0040                                                         ;A7BC48;
     STA.W Enemy.var5                                                          ;A7BC4B;
     LDA.W #Function_Kraid_KraidShot_InitializeEyeGlowing                 ;A7BC4E;
@@ -5548,7 +5548,7 @@ UNUSED_KraidFoot_LungeForwardIfSamusIsNotInvincible_A7BC75:
     LDA.W $10D2                                                          ;A7BC75;
     CMP.W #InstList_KraidFoot_LungeForward_1                             ;A7BC78;
     BMI .return                                                          ;A7BC7B;
-    LDA.W $18A8                                                          ;A7BC7D;
+    LDA.W SamusInvincibilityTimer                                                          ;A7BC7D;
     BEQ .lunge                                                           ;A7BC80;
     LDA.W #Function_KraidFoot_Phase2_WalkingBackward                     ;A7BC82;
     STA.W KraidPart.function+$140                                                          ;A7BC85;
@@ -5593,18 +5593,18 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 ;;; $BCCF: Enemy touch - enemy $E43F (Kraid good fingernail) ;;;
 EnemyTouch_KraidNail:
     JSL.L NormalEnemyTouchAI                                             ;A7BCCF;
-    LDX.W $0E54                                                          ;A7BCD3;
+    LDX.W EnemyIndex                                                          ;A7BCD3;
     JSL.L EnemyDeath                                                     ;A7BCD6;
-    LDX.W $0E54                                                          ;A7BCDA;
+    LDX.W EnemyIndex                                                          ;A7BCDA;
     RTL                                                                  ;A7BCDD;
 
 
 ;;; $BCDE: Enemy touch - enemy $E47F (Kraid bad fingernail) ;;;
 EnemyTouch_KraidNailBad:
     JSL.L NormalEnemyTouchAI                                             ;A7BCDE;
-    LDX.W $0E54                                                          ;A7BCE2;
+    LDX.W EnemyIndex                                                          ;A7BCE2;
     JSL.L EnemyDeath                                                     ;A7BCE5;
-    LDX.W $0E54                                                          ;A7BCE9;
+    LDX.W EnemyIndex                                                          ;A7BCE9;
     RTL                                                                  ;A7BCEC;
 
 
@@ -5620,7 +5620,7 @@ RTL_A7BCEE:
 
 ;;; $BCEF: Initialisation AI - enemy $E43F (Kraid good fingernail) ;;;
 InitAI_KraidNail:
-    LDX.W $0E54                                                          ;A7BCEF; fallthrough to InitAI_KraidNail_WithoutLoadingEnemyIndex
+    LDX.W EnemyIndex                                                          ;A7BCEF; fallthrough to InitAI_KraidNail_WithoutLoadingEnemyIndex
 
 
 ;;; $BCF2: Kraid's fingernails initialisation AI ;;;
@@ -5641,7 +5641,7 @@ InitAI_KraidNail_Common:
     LDA.W #Function_KraidNail_Initialize                                 ;A7BD19;
     STA.L $7E7800,X                                                      ;A7BD1C;
     LDA.W #Function_Kraid_HandleFunctionTimer                            ;A7BD20;
-    STA.W $0FA8,X                                                        ;A7BD23;
+    STA.W Kraid.function,X                                                        ;A7BD23;
     LDA.W #$0040                                                         ;A7BD26;
     STA.W Enemy.var5,X                                                        ;A7BD29;
     RTL                                                                  ;A7BD2C;
@@ -5649,14 +5649,14 @@ InitAI_KraidNail_Common:
 
 ;;; $BD2D: Initialisation AI - enemy $E47F (Kraid bad fingernail) ;;;
 InitAI_KraidNailBad:
-    LDX.W $0E54                                                          ;A7BD2D;
+    LDX.W EnemyIndex                                                          ;A7BD2D;
     BRA InitAI_KraidNail_Common                                          ;A7BD30;
 
 
 ;;; $BD32: Main AI - enemy $E43F (Kraid good fingernail) ;;;
 MainAI_KraidNail:
     REP #$30                                                             ;A7BD32;
-    LDA.W $0F8C                                                          ;A7BD34;
+    LDA.W Enemy.health                                                          ;A7BD34;
     CMP.W #$0001                                                         ;A7BD37;
     BMI .delete                                                          ;A7BD3A;
     JMP.W ($1128)                                                        ;A7BD3C;
@@ -5671,7 +5671,7 @@ MainAI_KraidNail:
 ;;; $BD49: Main AI - enemy $E47F (Kraid bad fingernail) ;;;
 MainAI_KraidNailBad:
     REP #$30                                                             ;A7BD49;
-    LDA.W $0F8C                                                          ;A7BD4B;
+    LDA.W Enemy.health                                                          ;A7BD4B;
     CMP.W #$0001                                                         ;A7BD4E;
     BMI .delete                                                          ;A7BD51;
     JMP.W ($1168)                                                        ;A7BD53;
@@ -5689,7 +5689,7 @@ Function_KraidNail_Initialize:
     AND.W #$0006                                                         ;A7BD63;
     TAY                                                                  ;A7BD66;
     LDA.W $1130                                                          ;A7BD67;
-    LDX.W $0E54                                                          ;A7BD6A;
+    LDX.W EnemyIndex                                                          ;A7BD6A;
     CPX.W #$0180                                                         ;A7BD6D;
     BNE +                                                                ;A7BD70;
     LDA.W $1170                                                          ;A7BD72;
@@ -5730,17 +5730,17 @@ Function_KraidNail_Initialize:
   .diagonal:
     LDA.W #$0000                                                         ;A7BDC7;
     STA.L $7E780E,X                                                      ;A7BDCA;
-    LDA.W $0F7A                                                          ;A7BDCE;
+    LDA.W Enemy.XPosition                                                          ;A7BDCE;
     SEC                                                                  ;A7BDD1;
     SBC.W $0F82                                                          ;A7BDD2;
     SEC                                                                  ;A7BDD5;
     SBC.W $0F82,X                                                        ;A7BDD6;
     AND.W #$FFF0                                                         ;A7BDD9;
-    STA.W $0F7A,X                                                        ;A7BDDC;
+    STA.W Enemy.XPosition,X                                                        ;A7BDDC;
     LDA.W $0FBE                                                          ;A7BDDF;
     CLC                                                                  ;A7BDE2;
     ADC.W #$0080                                                         ;A7BDE3;
-    STA.W $0F7E,X                                                        ;A7BDE6;
+    STA.W Enemy.YPosition,X                                                        ;A7BDE6;
     RTL                                                                  ;A7BDE9;
 
   .horizontal:
@@ -5755,9 +5755,9 @@ Function_KraidNail_Initialize:
     LDA.W #$0001                                                         ;A7BDFC;
     STA.L $7E780E,X                                                      ;A7BDFF;
     LDA.W #$0032                                                         ;A7BE03;
-    STA.W $0F7A,X                                                        ;A7BE06;
+    STA.W Enemy.XPosition,X                                                        ;A7BE06;
     LDA.W #$00F0                                                         ;A7BE09;
-    STA.W $0F7E,X                                                        ;A7BE0C;
+    STA.W Enemy.YPosition,X                                                        ;A7BE0C;
     LDA.W #$0000                                                         ;A7BE0F;
     STA.W $0FAA,X                                                        ;A7BE12;
     LDA.W #$0001                                                         ;A7BE15;
@@ -5835,10 +5835,10 @@ Function_KraidNail_Fire:
     LDY.W #$0000                                                         ;A7BEB4;
 
   .loop:
-    LDA.W $0F7E                                                          ;A7BEB7;
+    LDA.W Enemy.YPosition                                                          ;A7BEB7;
     CLC                                                                  ;A7BEBA;
     ADC.W .topBoundaryOffset,Y                                           ;A7BEBB;
-    CMP.W $0F7E,X                                                        ;A7BEBE;
+    CMP.W Enemy.YPosition,X                                                        ;A7BEBE;
     BMI +                                                                ;A7BEC1;
     INY                                                                  ;A7BEC3;
     INY                                                                  ;A7BEC4;
@@ -5846,11 +5846,11 @@ Function_KraidNail_Fire:
     INY                                                                  ;A7BEC6;
     BRA .loop                                                            ;A7BEC7;
 
-+   LDA.W $0F7A                                                          ;A7BEC9;
++   LDA.W Enemy.XPosition                                                          ;A7BEC9;
     CLC                                                                  ;A7BECC;
     ADC.W .leftBoundaryOffset,Y                                          ;A7BECD;
     STA.B $12                                                            ;A7BED0;
-    LDA.W $0F7A,X                                                        ;A7BED2;
+    LDA.W Enemy.XPosition,X                                                        ;A7BED2;
     CLC                                                                  ;A7BED5;
     ADC.W $0F82,X                                                        ;A7BED6;
     CMP.B $12                                                            ;A7BED9;
@@ -5900,11 +5900,11 @@ Function_KraidNail_Fire:
 ;;; $BF2D: Kraid foot function - first phase - prepare to lunge forward ;;;
 Function_KraidFoot_Phase1_PrepareToLungeForward:
     JSR.W HandleKraidPhase1                                              ;A7BF2D;
-    LDA.W $0FD2                                                          ;A7BF30;
+    LDA.W Enemy[1].instList                                                          ;A7BF30;
     CMP.W #InstList_KraidArm_Normal_1                                    ;A7BF33;
     BMI .return                                                          ;A7BF36;
     LDA.W #InstList_KraidArm_Dying_PreparingToLungeForward               ;A7BF38;
-    STA.W $0FD2                                                          ;A7BF3B;
+    STA.W Enemy[1].instList                                                          ;A7BF3B;
     LDA.W #$0001                                                         ;A7BF3E;
     STA.W $0FD4                                                          ;A7BF41;
     LDA.W #$0001                                                         ;A7BF44;
@@ -5923,16 +5923,16 @@ Function_KraidFoot_Phase1_PrepareToLungeForward:
 ;;; $BF5D: Kraid foot function - first phase - lunge forward ;;;
 Function_KraidFoot_Phase1_LungeForward:
     JSR.W HandleKraidPhase1                                              ;A7BF5D;
-    LDA.W $0F7A                                                          ;A7BF60;
+    LDA.W Enemy.XPosition                                                          ;A7BF60;
     CMP.W #$005C                                                         ;A7BF63;
     BPL +                                                                ;A7BF66;
     LDA.W #$005C                                                         ;A7BF68;
-    STA.W $0F7A                                                          ;A7BF6B;
+    STA.W Enemy.XPosition                                                          ;A7BF6B;
 
 +   LDA.W $10D2                                                          ;A7BF6E;
     CMP.W #InstList_KraidFoot_LungeForward_1                             ;A7BF71;
     BNE .return                                                          ;A7BF74;
-    LDA.W $0F7A                                                          ;A7BF76;
+    LDA.W Enemy.XPosition                                                          ;A7BF76;
     CMP.W #$005C                                                         ;A7BF79;
     BEQ .done                                                            ;A7BF7C;
     LDA.W #$0001                                                         ;A7BF7E;
@@ -5960,16 +5960,16 @@ Function_KraidFoot_Phase1_LungeForward:
 ;;; $BFAB: Kraid foot function - first phase - retreat from lunge ;;;
 Function_KraidFoot_Phase1_RetreatFromLunge:
     JSR.W HandleKraidPhase1                                              ;A7BFAB;
-    LDA.W $0F7A                                                          ;A7BFAE;
+    LDA.W Enemy.XPosition                                                          ;A7BFAE;
     CMP.W #$00B0                                                         ;A7BFB1;
     BMI +                                                                ;A7BFB4;
     LDA.W #$00B0                                                         ;A7BFB6;
-    STA.W $0F7A                                                          ;A7BFB9;
+    STA.W Enemy.XPosition                                                          ;A7BFB9;
 
 +   LDA.W $10D2                                                          ;A7BFBC;
     CMP.W #InstList_KraidFoot_KraidIsBig_WalkingBackwards_1              ;A7BFBF;
     BMI .return                                                          ;A7BFC2;
-    LDA.W $0F7A                                                          ;A7BFC4;
+    LDA.W Enemy.XPosition                                                          ;A7BFC4;
     CMP.W #$00B0                                                         ;A7BFC7;
     BEQ .done                                                            ;A7BFCA;
     LDA.W #InstList_KraidFoot_KraidIsBig_WalkingBackwards_0              ;A7BFCC;
@@ -5980,7 +5980,7 @@ Function_KraidFoot_Phase1_RetreatFromLunge:
 
   .done:
     LDA.W #InstList_KraidArm_Normal_0                                    ;A7BFD9;
-    STA.W $0FD2                                                          ;A7BFDC;
+    STA.W Enemy[1].instList                                                          ;A7BFDC;
     LDA.W #$0001                                                         ;A7BFDF;
     STA.W $0FD4                                                          ;A7BFE2;
     LDA.W #$0001                                                         ;A7BFE5;
@@ -6016,14 +6016,14 @@ HandleKraidPhase1:
 
 ; Easiest way to fix this is to set the Kraid instruction timer to Ah unconditionally (instead of hoping it's Ah from instruction list lookup).
 ; I.e. $C04C = LDA #$000A
-    LDA.W $0F8C                                                          ;A7C005;
+    LDA.W Enemy.health                                                          ;A7C005;
     CMP.L $7E7818                                                        ;A7C008;
     BMI .getBig                                                          ;A7C00C;
     RTS                                                                  ;A7C00E;
 
   .getBig:
     LDA.W #Function_Kraid_ProcessKraidInstruction                        ;A7C00F;
-    STA.W $0FA8                                                          ;A7C012;
+    STA.W Kraid.function                                                          ;A7C012;
     LDA.W #$00B4                                                         ;A7C015;
     STA.W Enemy.var5                                                          ;A7C018;
     LDA.W #Function_Kraid_GetBig_ReleaseCamera                           ;A7C01B;
@@ -6059,7 +6059,7 @@ HandleKraidPhase1:
     LDA.W #RTL_A7BA2D                                                    ;A7C06A;
     STA.W KraidPart.function+$140                                                          ;A7C06D;
     LDA.W #InstList_KraidArm_Normal_0                                    ;A7C070;
-    STA.W $0FD2                                                          ;A7C073;
+    STA.W Enemy[1].instList                                                          ;A7C073;
     LDA.W #$0001                                                         ;A7C076;
     STA.W $0FD4                                                          ;A7C079;
     LDA.W $1006                                                          ;A7C07C;
@@ -6080,13 +6080,13 @@ HandleKraidPhase1:
 ;;; $C0A1: Kraid function - Kraid gets big - release camera ;;;
 Function_Kraid_GetBig_ReleaseCamera:
     LDA.W #Function_Kraid_KraidGetsBig_BreakCeilingIntoPlatforms         ;A7C0A1;
-    STA.W $0FA8                                                          ;A7C0A4;
+    STA.W Kraid.function                                                          ;A7C0A4;
     LDA.W #$0202                                                         ;A7C0A7;
-    STA.L $7ECD20                                                        ;A7C0AA;
+    STA.L Scrolls                                                        ;A7C0AA;
     LDA.W #$0101                                                         ;A7C0AE;
     STA.L $7ECD22                                                        ;A7C0B1;
     LDA.W #$00A4                                                         ;A7C0B5;
-    STA.L $7E7808                                                        ;A7C0B8;
+    STA.L Kraid.minimumSamusEjectionYPosition                                                        ;A7C0B8;
     RTL                                                                  ;A7C0BC;
 
 
@@ -6252,7 +6252,7 @@ UnpauseHook_KraidIsDead:
     JSL.L SetForceBlankAndWaitForNMI                                     ;A7C1FE;
     LDA.B #$00                                                           ;A7C202;
     STA.W $2116                                                          ;A7C204;
-    LDA.B $5D                                                            ;A7C207;
+    LDA.B DP_BGTilesAddr                                                            ;A7C207;
     AND.B #$0F                                                           ;A7C209;
     ASL                                                                  ;A7C20B;
     ASL                                                                  ;A7C20C;
@@ -6286,13 +6286,13 @@ UnpauseHook_KraidIsDead:
 
 ;;; $C24E: Unpause hook - Kraid is alive ;;;
 UnpauseHook_KraidIsAlive:
-; $5D isn't being masked, so this code only works because BG1 tiles base address = $0000
+; DP_BGTilesAddr isn't being masked, so this code only works because BG1 tiles base address = $0000
     PHP                                                                  ;A7C24E;
     SEP #$20                                                             ;A7C24F;
     JSL.L SetForceBlankAndWaitForNMI                                     ;A7C251;
     LDA.B #$00                                                           ;A7C255;
     STA.W $2116                                                          ;A7C257;
-    LDA.B $5D                                                            ;A7C25A;
+    LDA.B DP_BGTilesAddr                                                            ;A7C25A;
     CLC                                                                  ;A7C25C;
     ADC.B #$3E                                                           ;A7C25D;
     STA.W $2117                                                          ;A7C25F;
@@ -6310,14 +6310,14 @@ UnpauseHook_KraidIsAlive:
 TransferKraidTopHalfTilemapToVRAM:
     LDA.B #$00                                                           ;A7C278;
     STA.W $2116                                                          ;A7C27A;
-    LDA.B $59                                                            ;A7C27D;
+    LDA.B DP_BG2TilemapAddrSize                                                            ;A7C27D;
     AND.B #$FC                                                           ;A7C27F;
     STA.W $2117                                                          ;A7C281;
     LDA.B #$80                                                           ;A7C284;
     STA.W $2115                                                          ;A7C286;
     JSL.L SetupHDMATransfer                                              ;A7C289;
     db $01,$01,$18                                                       ;A7C28D;
-    dl $7E2000                                                           ;A7C290;
+    dl EnemyBG2Tilemap                                                           ;A7C290;
     dw $0800                                                             ;A7C293;
     LDA.B #$02                                                           ;A7C295;
     STA.W $420B                                                          ;A7C297;
@@ -6328,7 +6328,7 @@ TransferKraidTopHalfTilemapToVRAM:
 
 ;;; $C2A0: Unpause hook - Kraid is sinking ;;;
 UnpauseHook_KraidIsSinking:
-; $5D isn't being masked, so this code only works because BG1 tiles base address = $0000
+; DP_BGTilesAddr isn't being masked, so this code only works because BG1 tiles base address = $0000
 ; Note that this routine is spending a frame on each row of Kraid it erases (worst case, 28 frames),
 ; the forced blank isn't even being used to transfer the tilemap on demand... and only one transfer is being queued per frame...
 ; Also note that VRAMWriteStack is being loaded for no reason (guaranteed to be 0), in fact, if it wasn't guaranteed to be 0,
@@ -6338,7 +6338,7 @@ UnpauseHook_KraidIsSinking:
     JSL.L SetForceBlankAndWaitForNMI                                     ;A7C2A3;
     LDA.B #$00                                                           ;A7C2A7;
     STA.W $2116                                                          ;A7C2A9;
-    LDA.B $5D                                                            ;A7C2AC;
+    LDA.B DP_BGTilesAddr                                                            ;A7C2AC;
     CLC                                                                  ;A7C2AE;
     ADC.B #$3E                                                           ;A7C2AF;
     STA.W $2117                                                          ;A7C2B1;
@@ -6354,7 +6354,7 @@ UnpauseHook_KraidIsSinking:
     PHB                                                                  ;A7C2CC;
     PHK                                                                  ;A7C2CD;
     PLB                                                                  ;A7C2CE;
-    LDA.W $0F7E                                                          ;A7C2CF;
+    LDA.W Enemy.YPosition                                                          ;A7C2CF;
     CMP.W ShrinkingKraidTable_KraidYPosition                             ;A7C2D2;
     BMI .return                                                          ;A7C2D5;
     LDY.W #$0000                                                         ;A7C2D7;
@@ -6365,7 +6365,7 @@ UnpauseHook_KraidIsSinking:
     LDA.W ShrinkingKraidTable_KraidYPosition,Y                           ;A7C2DF;
     CMP.W #$FFFF                                                         ;A7C2E2;
     BEQ .return                                                          ;A7C2E5;
-    LDA.W $0F7E                                                          ;A7C2E7;
+    LDA.W Enemy.YPosition                                                          ;A7C2E7;
     CMP.W ShrinkingKraidTable_KraidYPosition,Y                           ;A7C2EA;
     BMI .return                                                          ;A7C2ED;
     LDA.W #$0040                                                         ;A7C2EF;
@@ -6373,8 +6373,8 @@ UnpauseHook_KraidIsSinking:
     LDA.W #$2FC0                                                         ;A7C2F4;
     STA.B VRAMWrite.src,X                                                          ;A7C2F7;
     LDA.W #$007E                                                         ;A7C2F9;
-    STA.B $D4,X                                                          ;A7C2FC;
-    LDA.B $59                                                            ;A7C2FE;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C2FC;
+    LDA.B DP_BG2TilemapAddrSize                                                            ;A7C2FE;
     AND.W #$00FC                                                         ;A7C300;
     XBA                                                                  ;A7C303;
     CLC                                                                  ;A7C304;
@@ -6400,11 +6400,11 @@ UnpauseHook_KraidIsSinking:
 
 ;;; $C325: Pause hook - Kraid ;;;
 PauseHook_Kraid:
-; $5D is being masked as if its a tilemap register (completely wrong), so this code only works because BG1/2 tiles base address = $0000
+; DP_BGTilesAddr is being masked as if its a tilemap register (completely wrong), so this code only works because BG1/2 tiles base address = $0000
     PHP                                                                  ;A7C325;
     REP #$30                                                             ;A7C326;
     LDX.W $0360                                                          ;A7C328;
-    LDA.B $5D                                                            ;A7C32B;
+    LDA.B DP_BGTilesAddr                                                            ;A7C32B;
     AND.W #$00FC                                                         ;A7C32D;
     XBA                                                                  ;A7C330;
     CLC                                                                  ;A7C331;
@@ -6439,7 +6439,7 @@ KraidDeath_Initialize:
     LDA.W #$0000                                                         ;A7C36A;
 
   .loopPalette6:
-    STA.L $7EC200,X                                                      ;A7C36D;
+    STA.L TargetPalettes_BGP0,X                                                      ;A7C36D;
     INX                                                                  ;A7C371;
     INX                                                                  ;A7C372;
     CPX.W #$00E0                                                         ;A7C373;
@@ -6453,40 +6453,40 @@ KraidDeath_Initialize:
     DEX                                                                  ;A7C383;
     BPL .loopPalette7                                                    ;A7C384;
     LDA.W #InstList_KraidArm_Dying_PreparingToLungeForward               ;A7C386;
-    STA.W $0FD2                                                          ;A7C389;
+    STA.W Enemy[1].instList                                                          ;A7C389;
     LDA.W #$0001                                                         ;A7C38C;
     STA.W $0FD4                                                          ;A7C38F;
     LDA.W #KraidDeath_FadeOutBackground                                  ;A7C392;
-    STA.W $0FA8                                                          ;A7C395;
+    STA.W Kraid.function                                                          ;A7C395;
     LDA.W #InstList_Kraid_Dying_1                                        ;A7C398;
     STA.W $0FAA                                                          ;A7C39B;
     LDA.W InstList_Kraid_Dying_0                                         ;A7C39E;
     STA.W $0FAC                                                          ;A7C3A1;
-    LDX.W $0E54                                                          ;A7C3A4;
+    LDX.W EnemyIndex                                                          ;A7C3A4;
     PHX                                                                  ;A7C3A7;
     LDA.W $1106                                                          ;A7C3A8;
     AND.W #$BFFF                                                         ;A7C3AB;
     STA.W $1106                                                          ;A7C3AE;
     LDA.W #$0180                                                         ;A7C3B1;
-    STA.W $0E54                                                          ;A7C3B4;
+    STA.W EnemyIndex                                                          ;A7C3B4;
     JSL.L EnemyDeath                                                     ;A7C3B7;
     LDA.W $1146                                                          ;A7C3BB;
     AND.W #$BFFF                                                         ;A7C3BE;
     STA.W $1146                                                          ;A7C3C1;
     LDA.W #$01C0                                                         ;A7C3C4;
-    STA.W $0E54                                                          ;A7C3C7;
+    STA.W EnemyIndex                                                          ;A7C3C7;
     JSL.L EnemyDeath                                                     ;A7C3CA;
     LDA.W #$0080                                                         ;A7C3CE;
-    STA.W $0E54                                                          ;A7C3D1;
+    STA.W EnemyIndex                                                          ;A7C3D1;
     JSL.L EnemyDeath                                                     ;A7C3D4;
     LDA.W #$00C0                                                         ;A7C3D8;
-    STA.W $0E54                                                          ;A7C3DB;
+    STA.W EnemyIndex                                                          ;A7C3DB;
     JSL.L EnemyDeath                                                     ;A7C3DE;
     LDA.W #$0100                                                         ;A7C3E2;
-    STA.W $0E54                                                          ;A7C3E5;
+    STA.W EnemyIndex                                                          ;A7C3E5;
     JSL.L EnemyDeath                                                     ;A7C3E8;
     PLA                                                                  ;A7C3EC;
-    STA.W $0E54                                                          ;A7C3ED;
+    STA.W EnemyIndex                                                          ;A7C3ED;
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C3F0;
     db $05,$1B                                                           ;A7C3F4;
     dw PLMEntries_crumbleKraidSpikeBlocks                                ;A7C3F6;
@@ -6495,13 +6495,13 @@ KraidDeath_Initialize:
 
 ;;; $C3F9: Kraid death - fade out background ;;;
 KraidDeath_FadeOutBackground:
-; Note that BG1 tiles base address = ([$5D] & Fh) * 1000h, whereas this routine is using ([$5D] & Fh) * 100h,
+; Note that BG1 tiles base address = (DP_BGTilesAddr & Fh) * 1000h, whereas this routine is using (DP_BGTilesAddr & Fh) * 100h,
 ; i.e. this routine only works because BG1 tiles base address = $0000
     JSR.W KraidInstListHandling                                          ;A7C3F9;
     JSL.L Advance_GradualColorChange_ofBGPalette6                        ;A7C3FC;
     BCC .return                                                          ;A7C400;
     LDA.W #KraidDeath_UpdateBG2TilemapTopHalf                            ;A7C402;
-    STA.W $0FA8                                                          ;A7C405;
+    STA.W Kraid.function                                                          ;A7C405;
     LDA.W #$0001                                                         ;A7C408;
     STA.L $7E782C                                                        ;A7C40B;
     STA.L $7E782A                                                        ;A7C40F;
@@ -6525,9 +6525,9 @@ KraidDeath_FadeOutBackground:
     STA.B VRAMWrite.src,X                                                          ;A7C438;
     SEP #$20                                                             ;A7C43A;
     LDA.B #$7E                                                           ;A7C43C;
-    STA.B $D4,X                                                          ;A7C43E;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C43E;
     REP #$20                                                             ;A7C440;
-    LDA.B $5D                                                            ;A7C442;
+    LDA.B DP_BGTilesAddr                                                            ;A7C442;
     AND.W #$000F                                                         ;A7C444;
     XBA                                                                  ;A7C447;
     CLC                                                                  ;A7C448;
@@ -6577,7 +6577,7 @@ UNUSED_ProcessKraidInstruction_WithNoASMInstructions_A7C457:
     STA.B VRAMWrite.size,X                                                          ;A7C491;
     REP #$20                                                             ;A7C493;
     INX                                                                  ;A7C495;
-    LDA.B $59                                                            ;A7C496;
+    LDA.B DP_BG2TilemapAddrSize                                                            ;A7C496;
     AND.W #$00FC                                                         ;A7C498;
     XBA                                                                  ;A7C49B;
     STA.B VRAMWrite.size,X                                                          ;A7C49C;
@@ -6594,11 +6594,11 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 KraidDeath_UpdateBG2TilemapTopHalf:
     JSR.W KraidInstListHandling                                          ;A7C4A4;
     LDA.W #KraidDeath_UpdateBG2TilemapBottomHalf                         ;A7C4A7;
-    STA.W $0FA8                                                          ;A7C4AA;
+    STA.W Kraid.function                                                          ;A7C4AA;
     LDA.W #Function_KraidNail_HorizontallyAlignEnemyToKraid              ;A7C4AD;
     STA.W $1028                                                          ;A7C4B0;
     STA.W $1068                                                          ;A7C4B3;
-    STA.W $10A8                                                          ;A7C4B6;
+    STA.W Enemy[4].instList                                                          ;A7C4B6;
     LDA.W #$7FFF                                                         ;A7C4B9;
     STA.W $1032                                                          ;A7C4BC;
     STA.W $1072                                                          ;A7C4BF;
@@ -6610,13 +6610,13 @@ KraidDeath_UpdateBG2TilemapTopHalf:
 KraidDeath_UpdateBG2TilemapBottomHalf:
     JSR.W KraidInstListHandling                                          ;A7C4C8;
     SEP #$20                                                             ;A7C4CB;
-    LDA.B #$A7                                                           ;A7C4CD;
-    STA.W $0606                                                          ;A7C4CF;
+    LDA.B #UnpauseHook_KraidIsSinking>>16                                                           ;A7C4CD;
+    STA.W PauseHook_Unpause+2                                                          ;A7C4CF;
     REP #$20                                                             ;A7C4D2;
     LDA.W #UnpauseHook_KraidIsSinking                                    ;A7C4D4;
-    STA.W $0604                                                          ;A7C4D7;
+    STA.W PauseHook_Unpause                                                          ;A7C4D7;
     LDA.W #KraidDeath_SinkThroughFloor                                   ;A7C4DA;
-    STA.W $0FA8                                                          ;A7C4DD;
+    STA.W Kraid.function                                                          ;A7C4DD;
     LDA.W #$002B                                                         ;A7C4E0;
     STA.L $7E9000                                                        ;A7C4E3;
     LDA.W Enemy.properties                                                          ;A7C4E7;
@@ -6627,7 +6627,7 @@ KraidDeath_UpdateBG2TilemapBottomHalf:
     LDA.W #$0100                                                         ;A7C4F6;
     STA.W $1840                                                          ;A7C4F9;
     LDA.W #InstList_KraidArm_RisingSinking                               ;A7C4FC;
-    STA.W $0FD2                                                          ;A7C4FF;
+    STA.W Enemy[1].instList                                                          ;A7C4FF;
     LDA.W #$0001                                                         ;A7C502;
     STA.W $0FD4                                                          ;A7C505;
     LDA.W #InstList_KraidFoot_Initial                                    ;A7C508;
@@ -6659,8 +6659,8 @@ KraidDeath_SinkThroughFloor:
     JSR.W KraidInstListHandling                                          ;A7C537;
     JSR.W PlaySoundEveryHalfSecond                                       ;A7C53A;
     JSR.W HandleKraidSinking                                             ;A7C53D;
-    INC.W $0F7E                                                          ;A7C540;
-    LDA.W $0F7E                                                          ;A7C543;
+    INC.W Enemy.YPosition                                                          ;A7C540;
+    LDA.W Enemy.YPosition                                                          ;A7C543;
     CMP.W #$0260                                                         ;A7C546;
     BMI .return                                                          ;A7C549;
     LDA.W Enemy.properties                                                          ;A7C54B;
@@ -6668,7 +6668,7 @@ KraidDeath_SinkThroughFloor:
     STA.W Enemy.properties                                                          ;A7C551;
     LDA.W #$0002                                                         ;A7C554;
     STA.W $179A                                                          ;A7C557;
-    LDY.W $0E54                                                          ;A7C55A;
+    LDY.W EnemyIndex                                                          ;A7C55A;
     LDX.W $0F78,Y                                                        ;A7C55D;
     LDA.W #RTL_A7804C                                                    ;A7C560;
     STA.L $A00032,X                                                      ;A7C563;
@@ -6686,8 +6686,8 @@ KraidDeath_SinkThroughFloor:
     STA.W $1086                                                          ;A7C588;
     STA.W $10C6                                                          ;A7C58B;
     LDA.W #Function_Kraid_FadeInRegularBG_ClearBG2TilemapTopHalf         ;A7C58E;
-    STA.W $0FA8                                                          ;A7C591;
-    STZ.W $0941                                                          ;A7C594;
+    STA.W Kraid.function                                                          ;A7C591;
+    STZ.W CameraDistanceIndex                                                          ;A7C594;
     JSL.L KraidDeathItemDropRoutine                                      ;A7C597;
     JMP.W DrawKraidsRoomBackground                                       ;A7C59B;
 
@@ -6703,7 +6703,7 @@ HandleKraidSinking:
   .loop:
     LDA.W ShrinkingKraidTable_KraidYPosition,Y                           ;A7C5A2;
     BMI .return                                                          ;A7C5A5;
-    CMP.W $0F7E                                                          ;A7C5A7;
+    CMP.W Enemy.YPosition                                                          ;A7C5A7;
     BEQ .found                                                           ;A7C5AA;
     TYA                                                                  ;A7C5AC;
     CLC                                                                  ;A7C5AD;
@@ -6721,9 +6721,9 @@ HandleKraidSinking:
     STA.B VRAMWrite.src,X                                                          ;A7C5C4;
     SEP #$20                                                             ;A7C5C6;
     LDA.B #$7E                                                           ;A7C5C8;
-    STA.B $D4,X                                                          ;A7C5CA;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C5CA;
     REP #$20                                                             ;A7C5CC;
-    LDA.B $59                                                            ;A7C5CE;
+    LDA.B DP_BG2TilemapAddrSize                                                            ;A7C5CE;
     AND.W #$00FC                                                         ;A7C5D0;
     XBA                                                                  ;A7C5D3;
     CLC                                                                  ;A7C5D4;
@@ -6815,7 +6815,7 @@ ShrinkingKraidTable:
 CrumbleLeftPlatform_Left:
     LDA.W #$0070                                                         ;A7C691;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C694;
-    LDX.W $0E54                                                          ;A7C697;
+    LDX.W EnemyIndex                                                          ;A7C697;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A7C69A;
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C69E; fallthrough to RTS_A7C6A6
     db $07,$12                                                           ;A7C6A2;
@@ -6829,7 +6829,7 @@ RTS_A7C6A6:
 CrumbleRightPlatform_Middle:
     LDA.W #$00F0                                                         ;A7C6A7;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C6AA;
-    LDX.W $0E54                                                          ;A7C6AD;
+    LDX.W EnemyIndex                                                          ;A7C6AD;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A7C6B0;
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C6B4;
     db $0F,$12                                                           ;A7C6B8;
@@ -6841,7 +6841,7 @@ CrumbleRightPlatform_Middle:
 CrumbleRightPlatform_Left:
     LDA.W #$00E0                                                         ;A7C6BD;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C6C0;
-    LDX.W $0E54                                                          ;A7C6C3;
+    LDX.W EnemyIndex                                                          ;A7C6C3;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A7C6C6;
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C6CA;
     db $0E,$12                                                           ;A7C6CE;
@@ -6853,7 +6853,7 @@ CrumbleRightPlatform_Left:
 CrumbleLeftPlatform_Right:
     LDA.W #$0090                                                         ;A7C6D3;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C6D6;
-    LDX.W $0E54                                                          ;A7C6D9;
+    LDX.W EnemyIndex                                                          ;A7C6D9;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A7C6DC;
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C6E0;
     db $09,$12                                                           ;A7C6E4;
@@ -6865,7 +6865,7 @@ CrumbleLeftPlatform_Right:
 CrumbleLeftPlatform_Middle:
     LDA.W #$0080                                                         ;A7C6E9;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C6EC;
-    LDX.W $0E54                                                          ;A7C6EF;
+    LDX.W EnemyIndex                                                          ;A7C6EF;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A7C6F2;
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C6F6;
     db $08,$12                                                           ;A7C6FA;
@@ -6877,7 +6877,7 @@ CrumbleLeftPlatform_Middle:
 CrumbleRightPlatform_Right:
     LDA.W #$0100                                                         ;A7C6FF;
     LDY.W #EnemyProjectile_KraidCeilingRocks                             ;A7C702;
-    LDX.W $0E54                                                          ;A7C705;
+    LDX.W EnemyIndex                                                          ;A7C705;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A7C708;
     JSL.L Spawn_Hardcoded_PLM                                            ;A7C70C;
     db $10,$12                                                           ;A7C710;
@@ -6889,13 +6889,13 @@ CrumbleRightPlatform_Right:
 Function_Kraid_FadeInRegularBG_ClearBG2TilemapTopHalf:
     SEP #$20                                                             ;A7C715;
     LDA.B #$48                                                           ;A7C717;
-    STA.B $59                                                            ;A7C719;
+    STA.B DP_BG2TilemapAddrSize                                                            ;A7C719;
     REP #$20                                                             ;A7C71B;
     LDX.W #$07FE                                                         ;A7C71D;
     LDA.W #$0338                                                         ;A7C720;
 
   .loop:
-    STA.L $7E2000,X                                                      ;A7C723;
+    STA.L EnemyBG2Tilemap,X                                                      ;A7C723;
     DEX                                                                  ;A7C727;
     DEX                                                                  ;A7C728;
     BPL .loop                                                            ;A7C729;
@@ -6905,7 +6905,7 @@ Function_Kraid_FadeInRegularBG_ClearBG2TilemapTopHalf:
     LDA.W #$2000                                                         ;A7C733;
     STA.B VRAMWrite.src,X                                                          ;A7C736;
     LDA.W #$007E                                                         ;A7C738;
-    STA.B $D4,X                                                          ;A7C73B;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C73B;
     LDA.W #$4800                                                         ;A7C73D;
     STA.B VRAMWrite.dest,X                                                          ;A7C740;
     TXA                                                                  ;A7C742;
@@ -6913,7 +6913,7 @@ Function_Kraid_FadeInRegularBG_ClearBG2TilemapTopHalf:
     ADC.W #$0007                                                         ;A7C744;
     STA.W VRAMWriteStack                                                          ;A7C747;
     LDA.W #Function_Kraid_FadeInRegularBG_ClearBG2TilemapBottomHalf      ;A7C74A;
-    STA.W $0FA8                                                          ;A7C74D;
+    STA.W Kraid.function                                                          ;A7C74D;
     RTL                                                                  ;A7C750;
 
 
@@ -6925,7 +6925,7 @@ Function_Kraid_FadeInRegularBG_ClearBG2TilemapBottomHalf:
     LDA.W #$2000                                                         ;A7C759;
     STA.B VRAMWrite.src,X                                                          ;A7C75C;
     LDA.W #$007E                                                         ;A7C75E;
-    STA.B $D4,X                                                          ;A7C761;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C761;
     LDA.W #$4A00                                                         ;A7C763;
     STA.B VRAMWrite.dest,X                                                          ;A7C766;
     TXA                                                                  ;A7C768;
@@ -6933,23 +6933,23 @@ Function_Kraid_FadeInRegularBG_ClearBG2TilemapBottomHalf:
     ADC.W #$0007                                                         ;A7C76A;
     STA.W VRAMWriteStack                                                          ;A7C76D;
     LDA.W #Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_0         ;A7C770;
-    STA.W $0FA8                                                          ;A7C773;
+    STA.W Kraid.function                                                          ;A7C773;
     RTL                                                                  ;A7C776;
 
 
 ;;; $C777: Kraid function - fade in regular background - load standard BG3 tiles 1/4 ;;;
 Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_0:
     LDA.W #UnpauseHook_KraidIsDead                                       ;A7C777;
-    STA.W $0604                                                          ;A7C77A;
+    STA.W PauseHook_Unpause                                                          ;A7C77A;
     LDA.W #Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_1         ;A7C77D;
-    STA.W $0FA8                                                          ;A7C780;
+    STA.W Kraid.function                                                          ;A7C780;
     LDX.W VRAMWriteStack                                                          ;A7C783;
     LDA.W #$0400                                                         ;A7C786;
     STA.B VRAMWrite.size,X                                                          ;A7C789;
     LDA.W #Tiles_Standard_BG3                                            ;A7C78B;
     STA.B VRAMWrite.src,X                                                          ;A7C78E;
     LDA.W #Tiles_Standard_BG3>>16                                        ;A7C790;
-    STA.B $D4,X                                                          ;A7C793;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C793;
     LDA.W #$4000                                                         ;A7C795;
     STA.B VRAMWrite.dest,X                                                          ;A7C798;
     TXA                                                                  ;A7C79A;
@@ -6962,14 +6962,14 @@ Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_0:
 ;;; $C7A3: Kraid function - fade in regular background - load standard BG3 tiles 2/4 ;;;
 Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_1:
     LDA.W #Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_2         ;A7C7A3;
-    STA.W $0FA8                                                          ;A7C7A6;
+    STA.W Kraid.function                                                          ;A7C7A6;
     LDX.W VRAMWriteStack                                                          ;A7C7A9;
     LDA.W #$0400                                                         ;A7C7AC;
     STA.B VRAMWrite.size,X                                                          ;A7C7AF;
     LDA.W #Tiles_Standard_BG3+$400                                       ;A7C7B1;
     STA.B VRAMWrite.src,X                                                          ;A7C7B4;
     LDA.W #Tiles_Standard_BG3>>16                                        ;A7C7B6;
-    STA.B $D4,X                                                          ;A7C7B9;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C7B9;
     LDA.W #$4200                                                         ;A7C7BB;
     STA.B VRAMWrite.dest,X                                                          ;A7C7BE;
     TXA                                                                  ;A7C7C0;
@@ -6982,14 +6982,14 @@ Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_1:
 ;;; $C7C9: Kraid function - fade in regular background - load standard BG3 tiles 3/4 ;;;
 Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_2:
     LDA.W #Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_3         ;A7C7C9;
-    STA.W $0FA8                                                          ;A7C7CC;
+    STA.W Kraid.function                                                          ;A7C7CC;
     LDX.W VRAMWriteStack                                                          ;A7C7CF;
     LDA.W #$0400                                                         ;A7C7D2;
     STA.B VRAMWrite.size,X                                                          ;A7C7D5;
     LDA.W #Tiles_Standard_BG3+$800                                       ;A7C7D7;
     STA.B VRAMWrite.src,X                                                          ;A7C7DA;
     LDA.W #Tiles_Standard_BG3>>16                                        ;A7C7DC;
-    STA.B $D4,X                                                          ;A7C7DF;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C7DF;
     LDA.W #$4400                                                         ;A7C7E1;
     STA.B VRAMWrite.dest,X                                                          ;A7C7E4;
     TXA                                                                  ;A7C7E6;
@@ -7002,14 +7002,14 @@ Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_2:
 ;;; $C7EF: Kraid function - fade in regular background - load standard BG3 tiles 4/4 ;;;
 Function_Kraid_FadeInRegularBG_LoadStandardBG3Tiles_3:
     LDA.W #Function_Kraid_FadeInRegularBG_FadeInBGPalette6               ;A7C7EF;
-    STA.W $0FA8                                                          ;A7C7F2;
+    STA.W Kraid.function                                                          ;A7C7F2;
     LDX.W VRAMWriteStack                                                          ;A7C7F5;
     LDA.W #$0400                                                         ;A7C7F8;
     STA.B VRAMWrite.size,X                                                          ;A7C7FB;
     LDA.W #Tiles_Standard_BG3+$C00                                       ;A7C7FD;
     STA.B VRAMWrite.src,X                                                          ;A7C800;
     LDA.W #Tiles_Standard_BG3>>16                                        ;A7C802;
-    STA.B $D4,X                                                          ;A7C805;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C805;
     LDA.W #$4600                                                         ;A7C807;
     STA.B VRAMWrite.dest,X                                                          ;A7C80A;
     TXA                                                                  ;A7C80C;
@@ -7025,21 +7025,21 @@ Function_Kraid_FadeInRegularBG_FadeInBGPalette6:
     BCC .return                                                          ;A7C819;
     LDA.W #$0003                                                         ;A7C81B;
     JSL.L QueueMusicDataOrTrack_8FrameDelay                              ;A7C81E;
-    LDX.W $079F                                                          ;A7C822;
-    LDA.L $7ED828,X                                                      ;A7C825;
+    LDX.W AreaIndex                                                          ;A7C822;
+    LDA.L SRAMMirror_Boss,X                                                      ;A7C825;
     BIT.W #$0001                                                         ;A7C829;
     BNE .KraidIsDead                                                     ;A7C82C;
     ORA.W #$0001                                                         ;A7C82E;
-    STA.L $7ED828,X                                                      ;A7C831;
+    STA.L SRAMMirror_Boss,X                                                      ;A7C831;
     LDA.W #Function_Kraid_FadeInRegularBG_SetToDead_KraidWasAlive        ;A7C835;
-    STA.W $0FA8                                                          ;A7C838;
+    STA.W Kraid.function                                                          ;A7C838;
 
   .return:
     RTL                                                                  ;A7C83B;
 
   .KraidIsDead:
     LDA.W #Function_Kraid_FadeInRegularBG_SetToDead_KraidWasDead         ;A7C83C;
-    STA.W $0FA8                                                          ;A7C83F;
+    STA.W Kraid.function                                                          ;A7C83F;
     RTL                                                                  ;A7C842;
 
 
@@ -7085,7 +7085,7 @@ Function_Kraid_RestrictSamusXPositionToFirstScreen:
 Function_Kraid_RaiseThruFloor_LoadTilemapTopHalf:
     JSR.W RestrictSamusXPositionToFirstScreen                            ;A7C86B;
     LDA.W #Function_Kraid_RaiseThruFloor_LoadTilemapBottomHalf_ShakeScn  ;A7C86E;
-    STA.W $0FA8                                                          ;A7C871; fallthrough to UpdateBG2TilemapTopHalf
+    STA.W Kraid.function                                                          ;A7C871; fallthrough to UpdateBG2TilemapTopHalf
 
 
 ;;; $C874: Update BG2 tilemap top half ;;;
@@ -7097,9 +7097,9 @@ UpdateBG2TilemapTopHalf:
     STA.B VRAMWrite.src,X                                                          ;A7C87F;
     SEP #$20                                                             ;A7C881;
     LDA.B #$7E                                                           ;A7C883;
-    STA.B $D4,X                                                          ;A7C885;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C885;
     REP #$20                                                             ;A7C887;
-    LDA.B $59                                                            ;A7C889;
+    LDA.B DP_BG2TilemapAddrSize                                                            ;A7C889;
     AND.W #$00FC                                                         ;A7C88B;
     XBA                                                                  ;A7C88E;
     STA.B VRAMWrite.dest,X                                                          ;A7C88F;
@@ -7114,7 +7114,7 @@ UpdateBG2TilemapTopHalf:
 Function_Kraid_RaiseThruFloor_LoadTilemapBottomHalf_ShakeScn:
     JSR.W RestrictSamusXPositionToFirstScreen                            ;A7C89A;
     LDA.W #Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery10f  ;A7C89D;
-    STA.W $0FA8                                                          ;A7C8A0;
+    STA.W Kraid.function                                                          ;A7C8A0;
     LDA.W #$0078                                                         ;A7C8A3;
     STA.W Enemy.var5                                                          ;A7C8A6;
     LDA.W #$01F0                                                         ;A7C8A9;
@@ -7132,9 +7132,9 @@ UpdateBG2TilemapBottomHalf:
     STA.B VRAMWrite.src,X                                                          ;A7C8C1;
     SEP #$20                                                             ;A7C8C3;
     LDA.B #$7E                                                           ;A7C8C5;
-    STA.B $D4,X                                                          ;A7C8C7;
+    STA.B VRAMWrite.src+2,X                                                          ;A7C8C7;
     REP #$20                                                             ;A7C8C9;
-    LDA.B $59                                                            ;A7C8CB;
+    LDA.B DP_BG2TilemapAddrSize                                                            ;A7C8CB;
     AND.W #$00FC                                                         ;A7C8CD;
     XBA                                                                  ;A7C8D0;
     CLC                                                                  ;A7C8D1;
@@ -7155,7 +7155,7 @@ Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery10f:
     STA.W Enemy.var5                                                          ;A7C8E7;
     BNE .timerNotExpired                                                 ;A7C8EA;
     LDA.W #Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery8f   ;A7C8EC;
-    STA.W $0FA8                                                          ;A7C8EF;
+    STA.W Kraid.function                                                          ;A7C8EF;
     LDA.W #$0060                                                         ;A7C8F2;
     STA.W Enemy.var5                                                          ;A7C8F5;
     RTL                                                                  ;A7C8F8;
@@ -7177,7 +7177,7 @@ Function_Kraid_RaiseThruFloor_SpawnRNGEarthquakeProjEvery8f:
     STA.W Enemy.var5                                                          ;A7C909;
     BNE .timerNotExpired                                                 ;A7C90C;
     LDA.W #Function_Kraid_RaiseThruFloor_RaiseKraid                      ;A7C90E;
-    STA.W $0FA8                                                          ;A7C911;
+    STA.W Kraid.function                                                          ;A7C911;
     LDA.W #$0120                                                         ;A7C914;
     STA.W Enemy.var5                                                          ;A7C917;
     RTL                                                                  ;A7C91A;
@@ -7200,28 +7200,28 @@ Function_Kraid_RaiseThruFloor_RaiseKraid:
     JSR.W SpawnRandomEarthquakeProjectile                                ;A7C92F;
 
 +   LDY.W #$0001                                                         ;A7C932;
-    LDA.W $0F7E                                                          ;A7C935;
+    LDA.W Enemy.YPosition                                                          ;A7C935;
     BIT.W #$0002                                                         ;A7C938;
     BNE +                                                                ;A7C93B;
     LDY.W #$FFFF                                                         ;A7C93D;
 
 +   STY.B $12                                                            ;A7C940;
-    LDA.W $0F7A                                                          ;A7C942;
+    LDA.W Enemy.XPosition                                                          ;A7C942;
     CLC                                                                  ;A7C945;
     ADC.B $12                                                            ;A7C946;
-    STA.W $0F7A                                                          ;A7C948;
+    STA.W Enemy.XPosition                                                          ;A7C948;
     LDA.W $0F80                                                          ;A7C94B;
     SEC                                                                  ;A7C94E;
     SBC.W #$8000                                                         ;A7C94F;
     STA.W $0F80                                                          ;A7C952;
-    LDA.W $0F7E                                                          ;A7C955;
+    LDA.W Enemy.YPosition                                                          ;A7C955;
     SBC.W #$0000                                                         ;A7C958;
-    STA.W $0F7E                                                          ;A7C95B;
-    LDA.W $0F7E                                                          ;A7C95E;
+    STA.W Enemy.YPosition                                                          ;A7C95B;
+    LDA.W Enemy.YPosition                                                          ;A7C95E;
     CMP.W #$01C9                                                         ;A7C961;
     BPL .return                                                          ;A7C964;
     LDA.W #$00B0                                                         ;A7C966;
-    STA.W $0F7A                                                          ;A7C969;
+    STA.W Enemy.XPosition                                                          ;A7C969;
     LDA.W #Function_KraidFoot_Phase1_Thinking                            ;A7C96C;
     STA.W KraidPart.function+$140                                                          ;A7C96F;
     LDA.W #$012C                                                         ;A7C972;
@@ -7232,7 +7232,7 @@ Function_Kraid_RaiseThruFloor_RaiseKraid:
     STA.W $0FAA                                                          ;A7C982;
     JSR.W SetupKraidMainLoop_Thinking                                    ;A7C985;
     LDA.W #InstList_KraidArm_Normal_0                                    ;A7C988;
-    STA.W $0FD2                                                          ;A7C98B;
+    STA.W Enemy[1].instList                                                          ;A7C98B;
     LDA.W #$0001                                                         ;A7C98E;
     STA.W $0FD4                                                          ;A7C991;
 
@@ -7261,7 +7261,7 @@ SpawnRandomEarthquakeProjectile:
 
 +   TXA                                                                  ;A7C9AF;
     CLC                                                                  ;A7C9B0;
-    ADC.W $0F7A                                                          ;A7C9B1;
+    ADC.W Enemy.XPosition                                                          ;A7C9B1;
     STA.B $12                                                            ;A7C9B4;
     LDA.W $05E5                                                          ;A7C9B6;
     AND.W #$3F00                                                         ;A7C9B9;
@@ -7282,7 +7282,7 @@ SpawnRandomEarthquakeProjectile:
     LDY.W #EnemyProjectile_KraidFloorRocks_Right                         ;A7C9DD;
 
   .keepLeft:
-    LDX.W $0E54                                                          ;A7C9E0;
+    LDX.W EnemyIndex                                                          ;A7C9E0;
     LDA.W $05E5                                                          ;A7C9E3;
     AND.W #$03F0                                                         ;A7C9E6;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A7C9E9;
@@ -7679,7 +7679,7 @@ InitAI_PhantoonBody:
     LDA.W #$0338                                                         ;A7CDF6;
 
   .loopBG2Tilemap:
-    STA.L $7E2000,X                                                      ;A7CDF9;
+    STA.L EnemyBG2Tilemap,X                                                      ;A7CDF9;
     DEX                                                                  ;A7CDFD;
     DEX                                                                  ;A7CDFE;
     BPL .loopBG2Tilemap                                                  ;A7CDFF;
@@ -7702,7 +7702,7 @@ InitAI_PhantoonBody:
     LDA.W #$0360                                                         ;A7CE1D;
     STA.L $00179A                                                        ;A7CE20;
     JSL.L DisableMinimap_MarkBossRoomTilesExplored                       ;A7CE24;
-    LDX.W $0E54                                                          ;A7CE28;
+    LDX.W EnemyIndex                                                          ;A7CE28;
     LDA.W #$0078                                                         ;A7CE2B;
     STA.W $0FB0,X                                                        ;A7CE2E;
     STZ.W $0FA8,X                                                        ;A7CE31;
@@ -7722,7 +7722,7 @@ InitAI_PhantoonBody:
 ;;; $CE55: Initialisation AI - enemy $E4FF/$E53F/$E57F (Phantoon eye / tentacles / mouth) ;;;
 InitAI_Phantoon_Eye_Tentacles_Mouth:
 ; Phantoon body also executes this as part of initialisation AI, so all Phantoon parts are doing this
-    LDX.W $0E54                                                          ;A7CE55;
+    LDX.W EnemyIndex                                                          ;A7CE55;
     LDA.W #Spritemap_Common_Nothing                                    ;A7CE58;
     STA.W $0F8E,X                                                        ;A7CE5B;
     LDA.W #$0001                                                         ;A7CE5E;
@@ -7765,7 +7765,7 @@ HDMAObjectInstList_Phantoon_SemiTransparency:
 MainAI_Phantoon:
 ; Phantoon code is making a trend of returning if the current enemy index is not 0, then using indexed addressing anyway,
 ; and these routines are only called for enemy 0 in the first place >_<;
-    LDX.W $0E54                                                          ;A7CEA6;
+    LDX.W EnemyIndex                                                          ;A7CEA6;
     JSR.W Phantoon_BrokenNothingness                                     ;A7CEA9;
     PEA.W .manualReturn-1                                                ;A7CEAC;
     JMP.W (Enemy.var5,X)                                                      ;A7CEAF;
@@ -7773,11 +7773,11 @@ MainAI_Phantoon:
   .manualReturn:
     TXA                                                                  ;A7CEB2;
     BNE .return                                                          ;A7CEB3;
-    LDA.W $0F7A,X                                                        ;A7CEB5;
+    LDA.W Enemy.XPosition,X                                                        ;A7CEB5;
     STA.W $0FBA,X                                                        ;A7CEB8;
     STA.W $0FFA,X                                                        ;A7CEBB;
     STA.W $103A,X                                                        ;A7CEBE;
-    LDA.W $0F7E,X                                                        ;A7CEC1;
+    LDA.W Enemy.YPosition,X                                                        ;A7CEC1;
     STA.W $0FBE,X                                                        ;A7CEC4;
     STA.W $0FFE,X                                                        ;A7CEC7;
     STA.W $103E,X                                                        ;A7CECA;
@@ -7785,13 +7785,13 @@ MainAI_Phantoon:
     BNE .return                                                          ;A7CED0;
     LDA.W $0911                                                          ;A7CED2;
     SEC                                                                  ;A7CED5;
-    SBC.W $0F7A,X                                                        ;A7CED6;
+    SBC.W Enemy.XPosition,X                                                        ;A7CED6;
     SEC                                                                  ;A7CED9;
     SBC.W #$FFD8                                                         ;A7CEDA;
     STA.B $B5                                                            ;A7CEDD;
     LDA.W $0915                                                          ;A7CEDF;
     SEC                                                                  ;A7CEE2;
-    SBC.W $0F7E,X                                                        ;A7CEE3;
+    SBC.W Enemy.YPosition,X                                                        ;A7CEE3;
     SEC                                                                  ;A7CEE6;
     SBC.W #$FFD8                                                         ;A7CEE7;
     STA.B $B7                                                            ;A7CEEA;
@@ -8038,7 +8038,7 @@ SetupEyeOpenPhantoonState:
     LDA.W #InstList_Phantoon_Body_EyeHitboxOnly                          ;A7D04B;
     STA.W Enemy.instList                                                          ;A7D04E;
     LDA.W #InstList_Phantoon_Eyeball_Centered                            ;A7D051;
-    STA.W $0FD2                                                          ;A7D054;
+    STA.W Enemy[1].instList                                                          ;A7D054;
     LDA.W Enemy.properties                                                          ;A7D057;
     AND.W #$FBFF                                                         ;A7D05A;
     STA.W Enemy.properties                                                          ;A7D05D;
@@ -8297,10 +8297,10 @@ MovePhantoonInFigure8:
     ORA.W #$FF00                                                         ;A7D234;
 
 +   STA.B $12                                                            ;A7D237;
-    LDA.W $0F7A                                                          ;A7D239;
+    LDA.W Enemy.XPosition                                                          ;A7D239;
     CLC                                                                  ;A7D23C;
     ADC.B $12                                                            ;A7D23D;
-    STA.W $0F7A                                                          ;A7D23F;
+    STA.W Enemy.XPosition                                                          ;A7D23F;
     LDA.W $0001,Y                                                        ;A7D242;
     AND.W #$00FF                                                         ;A7D245;
     BIT.W #$0080                                                         ;A7D248;
@@ -8308,10 +8308,10 @@ MovePhantoonInFigure8:
     ORA.W #$FF00                                                         ;A7D24D;
 
 +   STA.B $12                                                            ;A7D250;
-    LDA.W $0F7E                                                          ;A7D252;
+    LDA.W Enemy.YPosition                                                          ;A7D252;
     CLC                                                                  ;A7D255;
     ADC.B $12                                                            ;A7D256;
-    STA.W $0F7E                                                          ;A7D258;
+    STA.W Enemy.YPosition                                                          ;A7D258;
     LDA.W $0FA8                                                          ;A7D25B;
     INC                                                                  ;A7D25E;
     STA.W $0FA8                                                          ;A7D25F;
@@ -8356,10 +8356,10 @@ MovePhantoonInReverseFigure8:
     ORA.W #$FF00                                                         ;A7D294;
 
 +   STA.B $12                                                            ;A7D297;
-    LDA.W $0F7A                                                          ;A7D299;
+    LDA.W Enemy.XPosition                                                          ;A7D299;
     SEC                                                                  ;A7D29C;
     SBC.B $12                                                            ;A7D29D;
-    STA.W $0F7A                                                          ;A7D29F;
+    STA.W Enemy.XPosition                                                          ;A7D29F;
     LDA.W $0001,Y                                                        ;A7D2A2;
     AND.W #$00FF                                                         ;A7D2A5;
     BIT.W #$0080                                                         ;A7D2A8;
@@ -8367,10 +8367,10 @@ MovePhantoonInReverseFigure8:
     ORA.W #$FF00                                                         ;A7D2AD;
 
 +   STA.B $12                                                            ;A7D2B0;
-    LDA.W $0F7E                                                          ;A7D2B2;
+    LDA.W Enemy.YPosition                                                          ;A7D2B2;
     SEC                                                                  ;A7D2B5;
     SBC.B $12                                                            ;A7D2B6;
-    STA.W $0F7E                                                          ;A7D2B8;
+    STA.W Enemy.YPosition                                                          ;A7D2B8;
     LDA.W $0FA8                                                          ;A7D2BB;
     DEC                                                                  ;A7D2BE;
     STA.W $0FA8                                                          ;A7D2BF;
@@ -8413,7 +8413,7 @@ MovePhantoonInSwoopingPattern:
     STA.W $1030                                                          ;A7D2FE;
 
   .targetCalculated:
-    CMP.W $0F7A                                                          ;A7D301;
+    CMP.W Enemy.XPosition                                                          ;A7D301;
     BMI .lessThanX                                                       ;A7D304;
     LDA.W $102C                                                          ;A7D306;
     CMP.W #$0800                                                         ;A7D309;
@@ -8447,19 +8447,19 @@ MovePhantoonInSwoopingPattern:
     CLC                                                                  ;A7D341;
     ADC.B $14                                                            ;A7D342;
     STA.W $0F7C                                                          ;A7D344;
-    LDA.W $0F7A                                                          ;A7D347;
+    LDA.W Enemy.XPosition                                                          ;A7D347;
     ADC.B $12                                                            ;A7D34A;
-    STA.W $0F7A                                                          ;A7D34C;
+    STA.W Enemy.XPosition                                                          ;A7D34C;
     CMP.W #$FFC0                                                         ;A7D34F;
     BPL +                                                                ;A7D352;
     LDA.W #$FFC0                                                         ;A7D354;
-    STA.W $0F7A                                                          ;A7D357;
+    STA.W Enemy.XPosition                                                          ;A7D357;
     BRA .checkDead                                                       ;A7D35A;
 
 +   CMP.W #$01C0                                                         ;A7D35C;
     BMI .checkDead                                                       ;A7D35F;
     LDA.W #$01C0                                                         ;A7D361;
-    STA.W $0F7A                                                          ;A7D364;
+    STA.W Enemy.XPosition                                                          ;A7D364;
 
   .checkDead:
     LDA.W Enemy.var5,X                                                        ;A7D367;
@@ -8473,7 +8473,7 @@ MovePhantoonInSwoopingPattern:
     SEC                                                                  ;A7D377;
     SBC.W #$0030                                                         ;A7D378;
 
-+   CMP.W $0F7E                                                          ;A7D37B;
++   CMP.W Enemy.YPosition                                                          ;A7D37B;
     BMI .lessThanY                                                       ;A7D37E;
     LDA.W $102E                                                          ;A7D380;
     CMP.W #$0600                                                         ;A7D383;
@@ -8507,19 +8507,19 @@ MovePhantoonInSwoopingPattern:
     CLC                                                                  ;A7D3BB;
     ADC.B $14                                                            ;A7D3BC;
     STA.W $0F80                                                          ;A7D3BE;
-    LDA.W $0F7E                                                          ;A7D3C1;
+    LDA.W Enemy.YPosition                                                          ;A7D3C1;
     ADC.B $12                                                            ;A7D3C4;
-    STA.W $0F7E                                                          ;A7D3C6;
+    STA.W Enemy.YPosition                                                          ;A7D3C6;
     CMP.W #$0040                                                         ;A7D3C9;
     BPL +                                                                ;A7D3CC;
     LDA.W #$0040                                                         ;A7D3CE;
-    STA.W $0F7E                                                          ;A7D3D1;
+    STA.W Enemy.YPosition                                                          ;A7D3D1;
     RTS                                                                  ;A7D3D4;
 
 +   CMP.W #$00D8                                                         ;A7D3D5;
     BMI .return                                                          ;A7D3D8;
     LDA.W #$00D8                                                         ;A7D3DA;
-    STA.W $0F7E                                                          ;A7D3DD;
+    STA.W Enemy.YPosition                                                          ;A7D3DD;
 
   .return:
     RTS                                                                  ;A7D3E0;
@@ -8546,7 +8546,7 @@ MakePhantoonLookTowardsSamus:
     LDA.W #$0001                                                         ;A7D400;
     STA.W $0FD4                                                          ;A7D403;
     LDA.W .directionPointers,Y                                           ;A7D406;
-    STA.W $0FD2                                                          ;A7D409;
+    STA.W Enemy[1].instList                                                          ;A7D409;
     RTS                                                                  ;A7D40C;
 
   .directionPointers:
@@ -8834,7 +8834,7 @@ Function_Phantoon_Figure8_Moving:
     LDA.W #$0001                                                         ;A7D5FA;
     STA.W $0FD4                                                          ;A7D5FD;
     LDA.W #InstList_Phantoon_Eye_Open                                    ;A7D600;
-    STA.W $0FD2                                                          ;A7D603;
+    STA.W Enemy[1].instList                                                          ;A7D603;
     STZ.W $0FB6                                                          ;A7D606;
     JSR.W PhantoonMaterializationFlameSpiral                             ;A7D609;
 
@@ -8868,7 +8868,7 @@ Function_Phantoon_Figure8_VulnerableWindow:
     LDA.W #InstList_Phantoon_Body_Invulnerable                           ;A7D63C;
     STA.W Enemy.instList                                                          ;A7D63F;
     LDA.W #InstList_Phantoon_Eye_Close_PickNewPattern                    ;A7D642;
-    STA.W $0FD2                                                          ;A7D645;
+    STA.W Enemy[1].instList                                                          ;A7D645;
     LDA.W Enemy.properties                                                          ;A7D648;
     ORA.W #$0400                                                         ;A7D64B;
     STA.W Enemy.properties                                                          ;A7D64E;
@@ -8915,7 +8915,7 @@ Function_Phantoon_Swooping_Opaque:
     LDA.W #InstList_Phantoon_Body_Invulnerable                           ;A7D69D;
     STA.W Enemy.instList                                                          ;A7D6A0;
     LDA.W #InstList_Phantoon_Eye_Close                                   ;A7D6A3;
-    STA.W $0FD2                                                          ;A7D6A6;
+    STA.W Enemy[1].instList                                                          ;A7D6A6;
     LDA.W Enemy.properties                                                          ;A7D6A9;
     ORA.W #$0400                                                         ;A7D6AC;
     STA.W Enemy.properties                                                          ;A7D6AF;
@@ -8964,18 +8964,18 @@ Function_Phantoon_HidingBeforeFigure8_PlacePhantoon:
     LDA.W #$0088                                                         ;A7D6EB;
     STA.W $0FA8                                                          ;A7D6EE;
     LDA.W #$00D0                                                         ;A7D6F1;
-    STA.W $0F7A                                                          ;A7D6F4;
+    STA.W Enemy.XPosition                                                          ;A7D6F4;
     LDA.W #$0060                                                         ;A7D6F7;
-    STA.W $0F7E                                                          ;A7D6FA;
+    STA.W Enemy.YPosition                                                          ;A7D6FA;
     BRA +                                                                ;A7D6FD;
 
   .leftSidePattern:
     LDA.W #$018F                                                         ;A7D6FF;
     STA.W $0FA8                                                          ;A7D702;
     LDA.W #$0030                                                         ;A7D705;
-    STA.W $0F7A                                                          ;A7D708;
+    STA.W Enemy.XPosition                                                          ;A7D708;
     LDA.W #$0060                                                         ;A7D70B;
-    STA.W $0F7E                                                          ;A7D70E;
+    STA.W Enemy.YPosition                                                          ;A7D70E;
 
 +   STZ.W $0FEC                                                          ;A7D711;
     LDA.W #$0001                                                         ;A7D714;
@@ -9014,7 +9014,7 @@ Function_Phantoon_FlameRain_ShowPhantoon:
     LDA.W #InstList_Phantoon_Body_FullHitbox                             ;A7D754;
     STA.W Enemy.instList                                                          ;A7D757;
     LDA.W #InstList_Phantoon_Eyeball_Centered                            ;A7D75A;
-    STA.W $0FD2                                                          ;A7D75D;
+    STA.W Enemy[1].instList                                                          ;A7D75D;
     LDA.W #Function_Phantoon_FlameRain_MakePhantoonVulnerable            ;A7D760;
     STA.W Enemy.var5,X                                                        ;A7D763;
     RTS                                                                  ;A7D766;
@@ -9064,7 +9064,7 @@ Function_Phantoon_FlameRain_VulnerableWindow:
     LDA.W #InstList_Phantoon_Body_Invulnerable                           ;A7D7B6;
     STA.W Enemy.instList                                                          ;A7D7B9;
     LDA.W #InstList_Phantoon_Eye_Close                                   ;A7D7BC;
-    STA.W $0FD2                                                          ;A7D7BF;
+    STA.W Enemy[1].instList                                                          ;A7D7BF;
     LDA.W Enemy.properties                                                          ;A7D7C2;
     ORA.W #$0400                                                         ;A7D7C5;
     STA.W Enemy.properties                                                          ;A7D7C8;
@@ -9113,9 +9113,9 @@ Function_Phantoon_FlameRain_SubsequentFlameRain:
     LDA.W Phantoon_FlameRain_PositionTable_index,Y                       ;A7D80A;
     STA.W $0FA8                                                          ;A7D80D;
     LDA.W Phantoon_FlameRain_PositionTable_XPosition,Y                   ;A7D810;
-    STA.W $0F7A                                                          ;A7D813;
+    STA.W Enemy.XPosition                                                          ;A7D813;
     LDA.W Phantoon_FlameRain_PositionTable_YPosition,Y                   ;A7D816;
-    STA.W $0F7E                                                          ;A7D819;
+    STA.W Enemy.YPosition                                                          ;A7D819;
     STZ.W $0FEC                                                          ;A7D81C;
     LDA.W #Function_Phantoon_FlameRain_ShowPhantoon                      ;A7D81F;
     STA.W Enemy.var5,X                                                        ;A7D822;
@@ -9140,7 +9140,7 @@ Function_Phantoon_FlameRain_InitialFlameRain:
     STZ.W $1028                                                          ;A7D83D;
     LDA.W #Function_Phantoon_FlameRain_ShowPhantoon                      ;A7D840;
     STA.W Enemy.var5,X                                                        ;A7D843;
-    LDA.W $0F7A                                                          ;A7D846;
+    LDA.W Enemy.XPosition                                                          ;A7D846;
     CMP.W #$0080                                                         ;A7D849;
     BMI .pattern0                                                        ;A7D84C;
     LDA.W #$0002                                                         ;A7D84E;
@@ -9180,9 +9180,9 @@ Function_Phantoon_Enraged_Hiding:
     LDA.W #Function_Phantoon_Enraged_FadingIn                            ;A7D87B;
     STA.W Enemy.var5,X                                                        ;A7D87E;
     LDA.W #$0080                                                         ;A7D881;
-    STA.W $0F7A                                                          ;A7D884;
+    STA.W Enemy.XPosition                                                          ;A7D884;
     LDA.W #$0020                                                         ;A7D887;
-    STA.W $0F7E                                                          ;A7D88A;
+    STA.W Enemy.YPosition                                                          ;A7D88A;
     STZ.W $0FF2                                                          ;A7D88D;
 
   .return:
@@ -9258,7 +9258,7 @@ Function_Phantoon_Enraged_Rage:
     LDA.W #$0001                                                         ;A7D900;
     STA.W $0FD4                                                          ;A7D903;
     LDA.W #InstList_Phantoon_Eye_Close                                   ;A7D906;
-    STA.W $0FD2                                                          ;A7D909;
+    STA.W Enemy[1].instList                                                          ;A7D909;
     STZ.W $0FF2                                                          ;A7D90C;
     LDA.W #Function_Phantoon_Enraged_FadingOutAfterRage                  ;A7D90F;
     STA.W Enemy.var5,X                                                        ;A7D912;
@@ -9286,7 +9286,7 @@ Function_Phantoon_Enraged_FadingOutAfterRage:
 Function_Phantoon_Swooping_FatalDamage:
     JSR.W MakePhantoonLookTowardsSamus                                   ;A7D92E;
     JSR.W MovePhantoonInSwoopingPattern                                  ;A7D931;
-    LDA.W $0F7A                                                          ;A7D934;
+    LDA.W Enemy.XPosition                                                          ;A7D934;
     CMP.W #$0060                                                         ;A7D937;
     BMI .return                                                          ;A7D93A;
     CMP.W #$00A0                                                         ;A7D93C;
@@ -9353,7 +9353,7 @@ Function_Phantoon_DeathSequence_Exploding:
     ORA.W #$FF00                                                         ;A7D9A4;
 
 +   STA.B $12                                                            ;A7D9A7;
-    LDA.W $0F7A                                                          ;A7D9A9;
+    LDA.W Enemy.XPosition                                                          ;A7D9A9;
     CLC                                                                  ;A7D9AC;
     ADC.B $12                                                            ;A7D9AD;
     STA.B $12                                                            ;A7D9AF;
@@ -9364,7 +9364,7 @@ Function_Phantoon_DeathSequence_Exploding:
     ORA.W #$FF00                                                         ;A7D9BC;
 
 +   STA.B $14                                                            ;A7D9BF;
-    LDA.W $0F7E                                                          ;A7D9C1;
+    LDA.W Enemy.YPosition                                                          ;A7D9C1;
     CLC                                                                  ;A7D9C4;
     ADC.B $14                                                            ;A7D9C5;
     STA.B $14                                                            ;A7D9C7;
@@ -9516,14 +9516,14 @@ Function_Phantoon_DeathSequence_ClearGraphics:
     STA.W $0FB0,X                                                        ;A7DAF8;
     STZ.W $0FF2                                                          ;A7DAFB;
     LDA.W #$0180                                                         ;A7DAFE;
-    STA.W $0F7A                                                          ;A7DB01;
+    STA.W Enemy.XPosition                                                          ;A7DB01;
     LDA.W #$0080                                                         ;A7DB04;
-    STA.W $0F7E                                                          ;A7DB07;
+    STA.W Enemy.YPosition                                                          ;A7DB07;
     LDX.W #$03FE                                                         ;A7DB0A;
     LDA.W #$0338                                                         ;A7DB0D;
 
   .loop:
-    STA.L $7E2000,X                                                      ;A7DB10;
+    STA.L EnemyBG2Tilemap,X                                                      ;A7DB10;
     DEX                                                                  ;A7DB14;
     DEX                                                                  ;A7DB15;
     BPL .loop                                                            ;A7DB16;
@@ -9578,10 +9578,10 @@ Function_Phantoon_DeathSequence_ActivateWreckedShip:
     STA.W $0FC6                                                          ;A7DB72;
     STA.W $1006                                                          ;A7DB75;
     STA.W $1046                                                          ;A7DB78;
-    LDX.W $079F                                                          ;A7DB7B;
-    LDA.L $7ED828,X                                                      ;A7DB7E;
+    LDX.W AreaIndex                                                          ;A7DB7B;
+    LDA.L SRAMMirror_Boss,X                                                      ;A7DB7E;
     ORA.W #$0001                                                         ;A7DB82;
-    STA.L $7ED828,X                                                      ;A7DB85;
+    STA.L SRAMMirror_Boss,X                                                      ;A7DB85;
     JSL.L Spawn_Hardcoded_PLM                                            ;A7DB89;
     db $00,$06                                                           ;A7DB8D;
     dw PLMEntries_restorePhantoonsDoorDuringBossFight                    ;A7DB8F;
@@ -9673,7 +9673,7 @@ GetPhantoonHealthBasedPaletteColor:
 ;; Returns:
 ;;     Y: [Palette_Phantoon_HealthBased_0 + clamp(([enemy health] - 1) / 312, 0, 7) * 20h + [X]]
     STX.B $18                                                            ;A7DC0F;
-    LDX.W $0E54                                                          ;A7DC11;
+    LDX.W EnemyIndex                                                          ;A7DC11;
     LDA.W #$09C4                                                         ;A7DC14;
     LSR                                                                  ;A7DC17;
     LSR                                                                  ;A7DC18;
@@ -9684,7 +9684,7 @@ GetPhantoonHealthBasedPaletteColor:
 
   .loop:
     LDA.B $14                                                            ;A7DC20;
-    CMP.W $0F8C,X                                                        ;A7DC22;
+    CMP.W Enemy.health,X                                                        ;A7DC22;
     BPL .getPointer                                                      ;A7DC25;
     LDA.B $14                                                            ;A7DC27;
     CLC                                                                  ;A7DC29;
@@ -9960,13 +9960,13 @@ EnemyShot_Phantoon:
     RTL                                                                  ;A7DDA5;
 
   .notDead:
-    LDX.W $0E54                                                          ;A7DDA6;
-    LDA.W $0F8C,X                                                        ;A7DDA9;
+    LDX.W EnemyIndex                                                          ;A7DDA6;
+    LDA.W Enemy.health,X                                                        ;A7DDA9;
     PHA                                                                  ;A7DDAC;
     JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;A7DDAD;
     PLA                                                                  ;A7DDB1;
     STA.B $12                                                            ;A7DDB2;
-    LDA.W $0F8C,X                                                        ;A7DDB4;
+    LDA.W Enemy.health,X                                                        ;A7DDB4;
     BNE .alive                                                           ;A7DDB7;
     LDA.W #$0073                                                         ;A7DDB9;
     JSL.L QueueSound_Lib2_Max6                                           ;A7DDBC;
@@ -9999,7 +9999,7 @@ EnemyShot_Phantoon:
   .swooping:
     LDA.B $12                                                            ;A7DDF8;
     SEC                                                                  ;A7DDFA;
-    SBC.W $0F8C,X                                                        ;A7DDFB;
+    SBC.W Enemy.health,X                                                        ;A7DDFB;
     STA.B $12                                                            ;A7DDFE;
     CMP.W #$012C                                                         ;A7DE00;
     BMI .overDamaged                                                     ;A7DE03;
@@ -10026,7 +10026,7 @@ EnemyShot_Phantoon:
   .vulnerableWindow:
     LDA.B $12                                                            ;A7DE2E;
     SEC                                                                  ;A7DE30;
-    SBC.W $0F8C,X                                                        ;A7DE31;
+    SBC.W Enemy.health,X                                                        ;A7DE31;
     STA.B $12                                                            ;A7DE34;
     CMP.W #$012C                                                         ;A7DE36;
     BMI +                                                                ;A7DE39;
@@ -10092,7 +10092,7 @@ EnemyShot_Phantoon:
     LDA.W #InstList_Phantoon_Body_Invulnerable                           ;A7DEBB;
     STA.W Enemy.instList                                                          ;A7DEBE;
     LDA.W #InstList_Phantoon_Eye_Close                                   ;A7DEC1;
-    STA.W $0FD2                                                          ;A7DEC4;
+    STA.W Enemy[1].instList                                                          ;A7DEC4;
     LDA.W Enemy.properties                                                          ;A7DEC7;
     ORA.W #$0400                                                         ;A7DECA;
     STA.W Enemy.properties                                                          ;A7DECD;
@@ -10738,7 +10738,7 @@ EtecoonConstants:
 
 ;;; $E912: Initialisation AI - enemy $E5BF (etecoon) ;;;
 InitAI_Etecoon:
-    LDX.W $0E54                                                          ;A7E912;
+    LDX.W EnemyIndex                                                          ;A7E912;
     LDA.W Enemy.properties,X                                                        ;A7E915;
     ORA.W #$2000                                                         ;A7E918;
     STA.W Enemy.properties,X                                                        ;A7E91B;
@@ -10758,7 +10758,7 @@ InitAI_Etecoon:
 
 ;;; $E940: Main AI - enemy $E5BF (etecoon) ;;;
 MainAI_Etecoon:
-    LDX.W $0E54                                                          ;A7E940;
+    LDX.W EnemyIndex                                                          ;A7E940;
     LDA.W $0FB6,X                                                        ;A7E943;
     BIT.W #$FF00                                                         ;A7E946;
     BEQ .executeFunction                                                 ;A7E949;
@@ -11218,7 +11218,7 @@ HopAtCenterRunUpPoint:
 ;;; $EC97: Etecoon function - run to left run-up point ;;;
 Function_Etecoon_RunToLeftRunUpPoint:
     JSR.W EtecoonHorizontalMovement                                      ;A7EC97;
-    LDA.W $0F7A,X                                                        ;A7EC9A;
+    LDA.W Enemy.XPosition,X                                                        ;A7EC9A;
     CMP.W #$0219                                                         ;A7EC9D;
     BPL .return                                                          ;A7ECA0;
     LDA.W #$000B                                                         ;A7ECA2;
@@ -11237,7 +11237,7 @@ Function_Etecoon_RunToLeftRunUpPoint:
 ;;; $ECBB: Etecoon function - run to right run-up point ;;;
 Function_Etecoon_RunToRightRunUpPoint:
     JSR.W EtecoonHorizontalMovement                                      ;A7ECBB;
-    LDA.W $0F7A,X                                                        ;A7ECBE;
+    LDA.W Enemy.XPosition,X                                                        ;A7ECBE;
     CMP.W #$0258                                                         ;A7ECC1;
     BMI .return                                                          ;A7ECC4;
     LDA.W #$000B                                                         ;A7ECC6;
@@ -11256,7 +11256,7 @@ Function_Etecoon_RunToRightRunUpPoint:
 ;;; $ECDF: Etecoon function - running for successful morph tunnel jump ;;;
 Function_Etecoon_RunningForSuccessfulMorphTunnelJump:
     JSR.W EtecoonHorizontalMovement                                      ;A7ECDF;
-    LDA.W $0F7A,X                                                        ;A7ECE2;
+    LDA.W Enemy.XPosition,X                                                        ;A7ECE2;
     CMP.W #$0258                                                         ;A7ECE5;
     BMI .return                                                          ;A7ECE8;
     LDA.W #Function_Etecoon_SuccessfulMorphTunnelJump                    ;A7ECEA;
@@ -11278,7 +11278,7 @@ Function_Etecoon_RunningForSuccessfulMorphTunnelJump:
 Function_Etecoon_SuccessfulMorphTunnelJump:
     JSR.W EtecoonHorizontalMovement                                      ;A7ED09;
     JSR.W EtecoonVerticalMovement                                        ;A7ED0C;
-    LDA.W $0F7A,X                                                        ;A7ED0F;
+    LDA.W Enemy.XPosition,X                                                        ;A7ED0F;
     CMP.W #$02A8                                                         ;A7ED12;
     BMI .return                                                          ;A7ED15;
     LDA.W #$0001                                                         ;A7ED17;
@@ -11295,7 +11295,7 @@ Function_Etecoon_SuccessfulMorphTunnelJump:
 ;;; $ED2A: Etecoon function - running through morph tunnel ;;;
 Function_Etecoon_RunningThroughMorphTunnel:
     JSR.W EtecoonHorizontalMovement                                      ;A7ED2A;
-    LDA.W $0F7A,X                                                        ;A7ED2D;
+    LDA.W Enemy.XPosition,X                                                        ;A7ED2D;
     CMP.W #$0348                                                         ;A7ED30;
     BMI .return                                                          ;A7ED33;
     LDA.W #$0001                                                         ;A7ED35;
@@ -11366,7 +11366,7 @@ Function_Etecoon_Hopping_TopOfRoom:
     BRA .return                                                          ;A7EDB6;
 
   .successEtecoon:
-    LDA.W $0F7A,X                                                        ;A7EDB8;
+    LDA.W Enemy.XPosition,X                                                        ;A7EDB8;
     CMP.W #$0340                                                         ;A7EDBB;
     BPL .hop                                                             ;A7EDBE;
     LDA.W #Function_Etecoon_HopUntilSamusIsNear                          ;A7EDC0;
@@ -11482,7 +11482,7 @@ Function_Etecoon_HopUntilSamusIsNear:
 ;;; $EE9A: Etecoon function - running for failed morph tunnel jump ;;;
 Function_Etecoon_RunningForFailedMorphTunnelJump:
     JSR.W EtecoonHorizontalMovement                                      ;A7EE9A;
-    LDA.W $0F7A,X                                                        ;A7EE9D;
+    LDA.W Enemy.XPosition,X                                                        ;A7EE9D;
     CMP.W #$0258                                                         ;A7EEA0;
     BMI .return                                                          ;A7EEA3;
     LDA.W #Function_Etecoon_FailedTunnelJump                             ;A7EEA5;
@@ -12027,7 +12027,7 @@ DachoraConstants_XAcceleration:
 
 ;;; $F4DD: Initialisation AI - enemy $E5FF (dachora) ;;;
 InitAI_Dachora:
-    LDX.W $0E54                                                          ;A7F4DD;
+    LDX.W EnemyIndex                                                          ;A7F4DD;
     LDA.W Enemy.properties,X                                                        ;A7F4E0;
     ORA.W #$2000                                                         ;A7F4E3;
     STA.W Enemy.properties,X                                                        ;A7F4E6;
@@ -12069,7 +12069,7 @@ InitAI_Dachora:
 
 ;;; $F52E: Main AI - enemy $E5FF (dachora) ;;;
 MainAI_Dachora:
-    LDX.W $0E54                                                          ;A7F52E;
+    LDX.W EnemyIndex                                                          ;A7F52E;
     JMP.W (Enemy.var5,X)                                                      ;A7F531;
 
 
@@ -12229,7 +12229,7 @@ Function_Dachora_RunningLeft:
     RTL                                                                  ;A7F639;
 
   .noWall:
-    LDA.W $0F7A,X                                                        ;A7F63A;
+    LDA.W Enemy.XPosition,X                                                        ;A7F63A;
     CMP.W #$0060                                                         ;A7F63D;
     BMI .stop                                                            ;A7F640;
     RTL                                                                  ;A7F642;
@@ -12277,7 +12277,7 @@ Function_Dachora_RunningRight:
     RTL                                                                  ;A7F698;
 
   .noWall:
-    LDA.W $0F7A,X                                                        ;A7F699;
+    LDA.W Enemy.XPosition,X                                                        ;A7F699;
     CMP.W #$0480                                                         ;A7F69C;
     BPL +                                                                ;A7F69F;
     RTL                                                                  ;A7F6A1;
@@ -12288,10 +12288,10 @@ Function_Dachora_RunningRight:
     STA.W Enemy.var5,X                                                        ;A7F6AB;
     LDA.W DachoraConstants_delayBeforeActivatingShinespark               ;A7F6AE;
     STA.W $0FA8,X                                                        ;A7F6B1;
-    LDA.W $0F7E,X                                                        ;A7F6B4;
+    LDA.W Enemy.YPosition,X                                                        ;A7F6B4;
     CLC                                                                  ;A7F6B7;
     ADC.W #$0008                                                         ;A7F6B8;
-    STA.W $0F7E,X                                                        ;A7F6BB;
+    STA.W Enemy.YPosition,X                                                        ;A7F6BB;
     LDA.W #$003D                                                         ;A7F6BE;
     JSL.L QueueSound_Lib2_Max6                                           ;A7F6C1;
     BRA .newAnimation                                                    ;A7F6C5;
@@ -12422,16 +12422,16 @@ Function_Dachora_ActivateShinespark:
     STZ.W $10AE,X                                                        ;A7F7B7;
     STZ.W $0FAC,X                                                        ;A7F7BA;
     STZ.W $0FAE,X                                                        ;A7F7BD;
-    LDA.W $0F7E,X                                                        ;A7F7C0;
+    LDA.W Enemy.YPosition,X                                                        ;A7F7C0;
     SEC                                                                  ;A7F7C3;
     SBC.W #$0008                                                         ;A7F7C4;
-    STA.W $0F7E,X                                                        ;A7F7C7;
+    STA.W Enemy.YPosition,X                                                        ;A7F7C7;
     LDA.W #$003B                                                         ;A7F7CA;
     JSL.L QueueSound_Lib2_Max6                                           ;A7F7CD;
     LDA.W $0FB4,X                                                        ;A7F7D1;
     BEQ .left                                                            ;A7F7D4;
     LDA.W #InstList_Dachora_Echo_FacingRight                             ;A7F7D6;
-    STA.W $0FD2,X                                                        ;A7F7D9;
+    STA.W Enemy[1].instList,X                                                        ;A7F7D9;
     STA.W $1012,X                                                        ;A7F7DC;
     STA.W $1052,X                                                        ;A7F7DF;
     STA.W $1092,X                                                        ;A7F7E2;
@@ -12439,7 +12439,7 @@ Function_Dachora_ActivateShinespark:
 
   .left:
     LDA.W #InstList_Dachora_Echo_FacingLeft                              ;A7F7E7;
-    STA.W $0FD2,X                                                        ;A7F7EA;
+    STA.W Enemy[1].instList,X                                                        ;A7F7EA;
     STA.W $1012,X                                                        ;A7F7ED;
     STA.W $1052,X                                                        ;A7F7F0;
     STA.W $1092,X                                                        ;A7F7F3;
@@ -12534,9 +12534,9 @@ UpdateDachoraEchoPositions:
     STA.W $0FE8,X                                                        ;A7F8A7;
     LDA.W $0FEE,X                                                        ;A7F8AA;
     BNE .echo1                                                           ;A7F8AD;
-    LDA.W $0F7A,X                                                        ;A7F8AF;
+    LDA.W Enemy.XPosition,X                                                        ;A7F8AF;
     STA.W $0FBA,X                                                        ;A7F8B2;
-    LDA.W $0F7E,X                                                        ;A7F8B5;
+    LDA.W Enemy.YPosition,X                                                        ;A7F8B5;
     STA.W $0FBE,X                                                        ;A7F8B8;
     LDA.W DachoraConstants_echoLifetime                                  ;A7F8BB;
     STA.W $0FEE,X                                                        ;A7F8BE;
@@ -12545,9 +12545,9 @@ UpdateDachoraEchoPositions:
   .echo1:
     LDA.W $102E,X                                                        ;A7F8C2;
     BNE .echo2                                                           ;A7F8C5;
-    LDA.W $0F7A,X                                                        ;A7F8C7;
+    LDA.W Enemy.XPosition,X                                                        ;A7F8C7;
     STA.W $0FFA,X                                                        ;A7F8CA;
-    LDA.W $0F7E,X                                                        ;A7F8CD;
+    LDA.W Enemy.YPosition,X                                                        ;A7F8CD;
     STA.W $0FFE,X                                                        ;A7F8D0;
     LDA.W DachoraConstants_echoLifetime                                  ;A7F8D3;
     STA.W $102E,X                                                        ;A7F8D6;
@@ -12556,9 +12556,9 @@ UpdateDachoraEchoPositions:
   .echo2:
     LDA.W $106E,X                                                        ;A7F8DA;
     BNE .echo3                                                           ;A7F8DD;
-    LDA.W $0F7A,X                                                        ;A7F8DF;
+    LDA.W Enemy.XPosition,X                                                        ;A7F8DF;
     STA.W $103A,X                                                        ;A7F8E2;
-    LDA.W $0F7E,X                                                        ;A7F8E5;
+    LDA.W Enemy.YPosition,X                                                        ;A7F8E5;
     STA.W $103E,X                                                        ;A7F8E8;
     LDA.W DachoraConstants_echoLifetime                                  ;A7F8EB;
     STA.W $106E,X                                                        ;A7F8EE;
@@ -12567,9 +12567,9 @@ UpdateDachoraEchoPositions:
   .echo3:
     LDA.W $10AE,X                                                        ;A7F8F2;
     BNE .return                                                          ;A7F8F5;
-    LDA.W $0F7A,X                                                        ;A7F8F7;
+    LDA.W Enemy.XPosition,X                                                        ;A7F8F7;
     STA.W $107A,X                                                        ;A7F8FA;
-    LDA.W $0F7E,X                                                        ;A7F8FD;
+    LDA.W Enemy.YPosition,X                                                        ;A7F8FD;
     STA.W $107E,X                                                        ;A7F900;
     LDA.W DachoraConstants_echoLifetime                                  ;A7F903;
     STA.W $10AE,X                                                        ;A7F906;
