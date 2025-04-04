@@ -10990,7 +10990,7 @@ PreInstruction_PhantoonSemiTransparency:
     REP #$20                                                             ;88E44C;
     BIT.W LayerBlending_PhantoonSemiTransparencyFlag                     ;88E44E;
     BVS .semiTransparent                                                 ;88E451;
-    LDX.W PhantoonBody.semiTransparencyHDMAObjectControl                 ;88E453;
+    LDX.W Phantoon.semiTransparencyHDMAObjectControl                     ;88E453;
     BEQ .BG2Disabled                                                     ;88E456;
     CPX.B #$FF                                                           ;88E458;
     BEQ .delete                                                          ;88E45A;
@@ -11031,11 +11031,11 @@ Spawn_WavyPhantoon_HDMAObject:
     PLB                                                                  ;88E48A;
     REP #$30                                                             ;88E48B;
     PHX                                                                  ;88E48D;
-    STA.W PhantoonBody.nextWavyPhantoonMode                              ;88E48E;
-    STZ.W PhantoonBody.wavyPhantoonPhaseAmplitude                        ;88E491;
-    STZ.W PhantoonBody.wavyPhantoonPhaseDeltaDirection                   ;88E494;
+    STA.W Phantoon.nextWavyPhantoonMode                                  ;88E48E;
+    STZ.W Phantoon.wavyPhantoonPhaseAmplitude                            ;88E491;
+    STZ.W Phantoon.wavyPhantoonPhaseDeltaDirection                       ;88E494;
     LDA.B $16                                                            ;88E497;
-    STA.W PhantoonBody.wavyPhantoonPhaseDelta                            ;88E499;
+    STA.W Phantoon.wavyPhantoonPhaseDelta                                ;88E499;
     JSL.L Spawn_HDMAObject                                               ;88E49C;
     db $42,$0F                                                           ;88E4A0;
     dw InstList_WavyPhantoon_BG2_Xscroll                                 ;88E4A2;
@@ -11063,8 +11063,8 @@ Instruction_Setup_WavyPhantoon:
 ;;     X: HDMA object index
     PHP                                                                  ;88E4BD;
     REP #$30                                                             ;88E4BE;
-    LDA.W PhantoonBody.nextWavyPhantoonMode                              ;88E4C0;
-    STA.W PhantoonBody.wavyPhantoonMode                                  ;88E4C3;
+    LDA.W Phantoon.nextWavyPhantoonMode                                  ;88E4C0;
+    STA.W Phantoon.wavyPhantoonMode                                      ;88E4C3;
     BIT.W #$0001                                                         ;88E4C6;
     BNE .wavelengthDoubled                                               ;88E4C9;
     LDA.W #$00A0                                                         ;88E4CB;
@@ -11144,7 +11144,7 @@ PreInstruction_WavyPhantoon:
 ; This routine could be rewritten to be considerably faster by using the 8-bit sine table and using the 16-bit x 8-bit signed multiplication registers ($211B et al)
     PHP                                                                  ;88E567;
     REP #$30                                                             ;88E568;
-    LDA.W PhantoonBody.wavyPhantoonMode                                  ;88E56A;
+    LDA.W Phantoon.wavyPhantoonMode                                      ;88E56A;
     BNE .phantoonEnabled                                                 ;88E56D;
     LDX.W HDMAObject_Index                                               ;88E56F;
     LDA.W HDMAObject_InstListPointers,X                                  ;88E572;
@@ -11176,7 +11176,7 @@ PreInstruction_WavyPhantoon:
     BNE .nonZeroTimer                                                    ;88E5A1;
     LDA.W #$0001                                                         ;88E5A3;
     STA.W HDMAObject_Var1,X                                              ;88E5A6;
-    LDA.W PhantoonBody.wavyPhantoonPhaseDelta                            ;88E5A9;
+    LDA.W Phantoon.wavyPhantoonPhaseDelta                                ;88E5A9;
     ASL                                                                  ;88E5AC;
     STA.B DP_Temp12                                                      ;88E5AD;
     LDA.W HDMAObject_Var0,X                                              ;88E5AF;
@@ -11201,7 +11201,7 @@ PreInstruction_WavyPhantoon:
     STA.B DP_Temp12                                                      ;88E5CF;
     SEP #$20                                                             ;88E5D1;
     STA.W $4202                                                          ;88E5D3;
-    LDA.W PhantoonBody.wavyPhantoonPhaseAmplitude                        ;88E5D6;
+    LDA.W Phantoon.wavyPhantoonPhaseAmplitude                            ;88E5D6;
     STA.W $4203                                                          ;88E5D9;
     NOP                                                                  ;88E5DC;
     NOP                                                                  ;88E5DD;
@@ -11214,7 +11214,7 @@ PreInstruction_WavyPhantoon:
     SEP #$20                                                             ;88E5EA;
     LDA.B DP_Temp13                                                      ;88E5EC;
     STA.W $4202                                                          ;88E5EE;
-    LDA.W PhantoonBody.wavyPhantoonPhaseAmplitude                        ;88E5F1;
+    LDA.W Phantoon.wavyPhantoonPhaseAmplitude                            ;88E5F1;
     STA.W $4203                                                          ;88E5F4;
     NOP                                                                  ;88E5F7;
     NOP                                                                  ;88E5F8;
@@ -11227,7 +11227,7 @@ PreInstruction_WavyPhantoon:
     SEP #$20                                                             ;88E604;
     LDA.B DP_Temp12                                                      ;88E606;
     STA.W $4202                                                          ;88E608;
-    LDA.W PhantoonBody.wavyPhantoonPhaseAmplitude+1                      ;88E60B;
+    LDA.W Phantoon.wavyPhantoonPhaseAmplitude+1                          ;88E60B;
     STA.W $4203                                                          ;88E60E;
     NOP                                                                  ;88E611;
     NOP                                                                  ;88E612;
@@ -11238,7 +11238,7 @@ PreInstruction_WavyPhantoon:
     SEP #$20                                                             ;88E61B;
     LDA.B DP_Temp13                                                      ;88E61D;
     STA.W $4202                                                          ;88E61F;
-    LDA.W PhantoonBody.wavyPhantoonPhaseAmplitude+1                      ;88E622;
+    LDA.W Phantoon.wavyPhantoonPhaseAmplitude+1                          ;88E622;
     STA.W $4203                                                          ;88E625;
     REP #$20                                                             ;88E628;
     LDA.B DP_Temp16                                                      ;88E62A;
@@ -11270,7 +11270,7 @@ PreInstruction_WavyPhantoon:
     STA.B DP_Temp12                                                      ;88E65A;
     SEP #$20                                                             ;88E65C;
     STA.W $4202                                                          ;88E65E;
-    LDA.W PhantoonBody.wavyPhantoonPhaseAmplitude                        ;88E661;
+    LDA.W Phantoon.wavyPhantoonPhaseAmplitude                            ;88E661;
     STA.W $4203                                                          ;88E664;
     NOP                                                                  ;88E667;
     NOP                                                                  ;88E668;
@@ -11283,7 +11283,7 @@ PreInstruction_WavyPhantoon:
     SEP #$20                                                             ;88E675;
     LDA.B DP_Temp13                                                      ;88E677;
     STA.W $4202                                                          ;88E679;
-    LDA.W PhantoonBody.wavyPhantoonPhaseAmplitude                        ;88E67C;
+    LDA.W Phantoon.wavyPhantoonPhaseAmplitude                            ;88E67C;
     STA.W $4203                                                          ;88E67F;
     NOP                                                                  ;88E682;
     NOP                                                                  ;88E683;
@@ -11296,7 +11296,7 @@ PreInstruction_WavyPhantoon:
     SEP #$20                                                             ;88E68F;
     LDA.B DP_Temp12                                                      ;88E691;
     STA.W $4202                                                          ;88E693;
-    LDA.W PhantoonBody.wavyPhantoonPhaseAmplitude+1                      ;88E696;
+    LDA.W Phantoon.wavyPhantoonPhaseAmplitude+1                          ;88E696;
     STA.W $4203                                                          ;88E699;
     NOP                                                                  ;88E69C;
     NOP                                                                  ;88E69D;
@@ -11307,7 +11307,7 @@ PreInstruction_WavyPhantoon:
     SEP #$20                                                             ;88E6A6;
     LDA.B DP_Temp13                                                      ;88E6A8;
     STA.W $4202                                                          ;88E6AA;
-    LDA.W PhantoonBody.wavyPhantoonPhaseAmplitude+1                      ;88E6AD;
+    LDA.W Phantoon.wavyPhantoonPhaseAmplitude+1                          ;88E6AD;
     STA.W $4203                                                          ;88E6B0;
     REP #$20                                                             ;88E6B3;
     LDA.B DP_Temp16                                                      ;88E6B5;
@@ -11339,7 +11339,7 @@ PreInstruction_WavyPhantoon:
     BPL +                                                                ;88E6E2;
     JMP.W .loop                                                          ;88E6E4;
 
-+   LDA.W PhantoonBody.wavyPhantoonMode                                  ;88E6E7;
++   LDA.W Phantoon.wavyPhantoonMode                                      ;88E6E7;
     BIT.W #$0001                                                         ;88E6EA;
     BNE .doubledE706                                                     ;88E6ED;
     LDX.W #$003E                                                         ;88E6EF;

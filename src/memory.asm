@@ -1585,7 +1585,7 @@ BG2RoomSelectMapTilemap: ; $7E4000..47FF
 IntroBG3JapanTextTiles: ; $7E4000..45FF
 skip $100
 BackupOfVRAMDuringMessageBoxes: ; $7E4100..47FF
-skip $E00
+skip $F00
 CopyOfVRAMDuringPauseMenuKraidRoom: ; $7E5000..53FF
 skip $1000
 BigZebesDuringZebesExplosionTilemap: ; $7E6000..9FFF
@@ -3071,7 +3071,7 @@ skip 4
   .functionTimer: skip 2 ; $0FB2
 skip 2
   .ceilingBreakIndex: skip 2 ; $0FB6
-skip $7DE84C
+skip $7DE848
   .nextFunction: skip 2 ; $7E7800
 skip 4
   .thinkingTimer: skip 2 ; $7E7806
@@ -3097,30 +3097,21 @@ skip 2
   .hurtFrameTimer: skip 2 ; $7E782C
 endstruct
 
-struct KraidPart $0FA8
-  .function: skip 2 ; $0FA8
+struct KraidPart $0FAA
   .spawningXSpeed: skip 2 ; $0FAA
-  .XAdditionalSpawningVelocity: skip 2 ; $0FAC
-skip 4
-  .functionTimer: skip 2 ; $0FB2
-skip $7DE84C
-  .nextFunction: skip 2 ; $7E7800
+  .additionalSpawningXVelocity: skip 2 ; $0FAC
 endstruct
 
-struct KraidNail $0FA8
-  .function: skip 2 ; $0FA8
+struct KraidNail $0FAA
   .XSubVelocity: skip 2 ; $0FAA
   .XVelocity: skip 2 ; $0FAC
   .YSubVelocity: skip 2 ; $0FAE
   .YVelocity: skip 2 ; $0FB0
-  .functionTimer: skip 2 ; $0FB2
-skip $7DE84C
-  .nextFunction: skip 0 ; $7E7800
-skip 12
+skip $7E685C
   .orientation: skip 2 ; $7E780E
 endstruct
 
-struct PhantoonBody $0FA8
+struct Phantoon $0FA8
   .flameCounter: skip 0 ; $0FA8
   .movementIndex: skip 0 ; $0FA8
   .explosionLoopCounter: skip 2 ; $0FA8
