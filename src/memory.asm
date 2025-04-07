@@ -1649,6 +1649,7 @@ struct EnemyLogging $7E9000 ; $7E9000..97FF
 endstruct
 
 org $7E9000
+CorpseRottingTable: ; $7E9000..??
 MotherBrainCorpseRottingGFX: ; $7E9000..953F
 BotwoonPositionHistory: ; $7E9000..93FF
 WavyPhantoonBG2XScrollIndirectHDMATable: ; $7E9000..19
@@ -1679,7 +1680,9 @@ EyeBeamColorIndex: ; $7E9090
 skip $70
 EyeBeamWindow1HDMADataTable: ; $7E9100..92FF
 WavyPhantoonBG2XScrollHDMADataTable: ; $7E9100..FF
-skip $600
+skip $400
+TorizoCorpseRottingGFX: ; $7E9500..??
+skip $200
 MotherBrainCorpseRottingRotTable: ; $7E9700..BF
 skip $DC
 EnemyProjectileAngles: ; $7E97DC..FF
@@ -3658,17 +3661,6 @@ skip $7DE856
   .sandHeapYPixelRowToCopy: skip 2 ; $7E7804
   .sandHeapFormationTimer: skip 2 ; $7E7806
   .preRotDelayTimer: skip 2 ; $7E7808
-skip $101A
-  .rotTablePointer: skip 2 ; $7E8824
-  .VRAMTransfersPointer: skip 2 ; $7E8826
-  .rotEntryCopyFunction: skip 2 ; $7E8828
-  .rotEntryMoveFunction: skip 2 ; $7E882A
-  .tileDataRowOffsetsPointer: skip 2 ; $7E882C
-  .spriteHeight: skip 2 ; $7E882E
-  .spriteHeightMinus1: skip 2 ; $7E8830
-  .spriteHeightMinus2: skip 2 ; $7E8832
-  .interTileDataOffset: skip 2 ; $7E8834
-  .rotEntryFinishedHook: skip 2 ; $7E8836
 endstruct
 
 struct CorpseSidehopper $0FA8
@@ -3683,23 +3675,22 @@ skip $7DE858
 skip 2
   .XVelocity: skip 2 ; $7E7814
   .YVelocity: skip 2 ; $7E7816
-skip $100C
-  .rotTablePointer: skip 2 ; $7E8824
-  .VRAMTransfersPointer: skip 2 ; $7E8826
-  .rotEntryCopyFunction: skip 2 ; $7E8828
-  .rotEntryMoveFunction: skip 2 ; $7E882A
-  .tileDataRowOffsetsPointer: skip 2 ; $7E882C
-  .spriteHeight: skip 2 ; $7E882E
-  .spriteHeightMinus1: skip 2 ; $7E8830
-  .spriteHeightMinus2: skip 2 ; $7E8832
-  .interTileDataOffset: skip 2 ; $7E8834
-  .rotEntryFinishedHook: skip 2 ; $7E8836
 endstruct
 
 struct Corpse $0FA8
   .function: skip 2 ; $0FA8
   .preRotDelayTimer: skip 2 ; $0FAA
-skip $7DF878
+skip $7DF856
+  .rotEntryYOffset: skip 2 ; $7E8802
+  .backupRotEntryCopyFunction: skip 2 ; $7E8804
+  .backupRotEntryMoveFunction: skip 2 ; $7E8806
+  .backupTileDataRowOffsetsPointer: skip 2 ; $7E8808
+  .backupSpriteHeight: skip 2 ; $7E880A
+  .backupSpriteHeightMinus1: skip 2 ; $7E880C
+  .backupSpriteHeightMinus2: skip 2 ; $7E880E
+  .backupInterTileDataOffset: skip 2 ; $7E8810
+  .backupRotEntryFinishedHook: skip 2 ; $7E8812
+skip $10
   .rotTablePointer: skip 2 ; $7E8824
   .VRAMTransfersPointer: skip 2 ; $7E8826
   .rotEntryCopyFunction: skip 2 ; $7E8828
