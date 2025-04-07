@@ -150,7 +150,7 @@ NOPNOP_A88069:
 Instruction_CommonA8_Enemy0FB2_InY:
 ; Used only by torizos (for enemy movement function) and escape etecoon (for enemy function)
     LDA.W $0000,Y                                                        ;A8806B;
-    STA.W Enemy.var5,X                                                        ;A8806E;
+    STA.W Enemy.var5,X                                                   ;A8806E;
     INY                                                                  ;A88071;
     INY                                                                  ;A88072;
     RTL                                                                  ;A88073;
@@ -159,7 +159,7 @@ Instruction_CommonA8_Enemy0FB2_InY:
 ;;; $8074: Instruction - Enemy.var5 = RTS ;;;
 Instruction_CommonA8_SetEnemy0FB2ToRTS:
     LDA.W #RTS_A8807B                                                    ;A88074;
-    STA.W Enemy.var5,X                                                        ;A88077;
+    STA.W Enemy.var5,X                                                   ;A88077;
     RTL                                                                  ;A8807A;
 
 
@@ -169,9 +169,9 @@ RTS_A8807B:
 
 ;;; $807C: Instruction - delete enemy ;;;
 Instruction_CommonA8_DeleteEnemy:
-    LDA.W Enemy.properties,X                                                        ;A8807C;
+    LDA.W Enemy.properties,X                                             ;A8807C;
     ORA.W #$0200                                                         ;A8807F;
-    STA.W Enemy.properties,X                                                        ;A88082;
+    STA.W Enemy.properties,X                                             ;A88082;
     PLA                                                                  ;A88085;
     PEA.W ProcessEnemyInstructions_return-1                              ;A88086;
     RTL                                                                  ;A88089;
@@ -180,11 +180,11 @@ Instruction_CommonA8_DeleteEnemy:
 ;;; $808A: Instruction - call function [[Y]] ;;;
 Instruction_CommonA8_CallFunctionInY:
     LDA.W $0000,Y                                                        ;A8808A;
-    STA.B DP_Temp12                                                            ;A8808D;
+    STA.B DP_Temp12                                                      ;A8808D;
     PHY                                                                  ;A8808F;
     PHX                                                                  ;A88090;
     PEA.W .manualReturn-1                                                ;A88091;
-    JMP.W (DP_Temp12)                                                        ;A88094;
+    JMP.W (DP_Temp12)                                                    ;A88094;
 
   .manualReturn:
     PLX                                                                  ;A88097;
@@ -197,12 +197,12 @@ Instruction_CommonA8_CallFunctionInY:
 ;;; $809C: Instruction - call function [[Y]] with A = [[Y] + 2] ;;;
 Instruction_CommonA8_CallFunctionInY_WithA:
     LDA.W $0000,Y                                                        ;A8809C;
-    STA.B DP_Temp12                                                            ;A8809F;
+    STA.B DP_Temp12                                                      ;A8809F;
     LDA.W $0002,Y                                                        ;A880A1;
     PHY                                                                  ;A880A4;
     PHX                                                                  ;A880A5;
     PEA.W .manualReturn-1                                                ;A880A6;
-    JMP.W (DP_Temp12)                                                        ;A880A9;
+    JMP.W (DP_Temp12)                                                    ;A880A9;
 
   .manualReturn:
     PLX                                                                  ;A880AC;
@@ -218,9 +218,9 @@ if !FEATURE_KEEP_UNREFERENCED
 ;;; $80B5: Unused. Instruction - call external function [[Y]] ;;;
 UNUSED_Instruction_CommonA8_CallExternalFunctionInY_A880B5:
     LDA.W $0000,Y                                                        ;A880B5;
-    STA.B DP_Temp12                                                            ;A880B8;
+    STA.B DP_Temp12                                                      ;A880B8;
     LDA.W $0001,Y                                                        ;A880BA;
-    STA.B DP_Temp13                                                            ;A880BD;
+    STA.B DP_Temp13                                                      ;A880BD;
     PHX                                                                  ;A880BF;
     PHY                                                                  ;A880C0;
     JSL.L .externalFunction                                              ;A880C1;
@@ -232,15 +232,15 @@ UNUSED_Instruction_CommonA8_CallExternalFunctionInY_A880B5:
     RTL                                                                  ;A880CA;
 
   .externalFunction:
-    JML.W [DP_Temp12]                                                        ;A880CB;
+    JML.W [DP_Temp12]                                                    ;A880CB;
 
 
 ;;; $80CE: Unused. Instruction - call external function [[Y]] with A = [[Y] + 3] ;;;
 UNUSED_Inst_CommonA8_CallExternalFunctionInY_WithA_A880CE:
     LDA.W $0000,Y                                                        ;A880CE;
-    STA.B DP_Temp12                                                            ;A880D1;
+    STA.B DP_Temp12                                                      ;A880D1;
     LDA.W $0001,Y                                                        ;A880D3;
-    STA.B DP_Temp13                                                            ;A880D6;
+    STA.B DP_Temp13                                                      ;A880D6;
     LDA.W $0003,Y                                                        ;A880D8;
     PHX                                                                  ;A880DB;
     PHY                                                                  ;A880DC;
@@ -254,7 +254,7 @@ UNUSED_Inst_CommonA8_CallExternalFunctionInY_WithA_A880CE:
     RTL                                                                  ;A880E9;
 
   .externalFunction:
-    JML.W [DP_Temp12]                                                        ;A880EA;
+    JML.W [DP_Temp12]                                                    ;A880EA;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -267,7 +267,7 @@ Instruction_CommonA8_GotoY:
 
 ;;; $80F2: Instruction - go to [[Y]] + ±[[Y]] ;;;
 Instruction_CommonA8_GotoY_PlusY:
-    STY.B DP_Temp12                                                            ;A880F2;
+    STY.B DP_Temp12                                                      ;A880F2;
     DEY                                                                  ;A880F4;
     LDA.W $0000,Y                                                        ;A880F5;
     XBA                                                                  ;A880F8;
@@ -279,14 +279,14 @@ Instruction_CommonA8_GotoY_PlusY:
     ORA.W #$FF00                                                         ;A88100;
 
 +   CLC                                                                  ;A88103;
-    ADC.B DP_Temp12                                                            ;A88104;
+    ADC.B DP_Temp12                                                      ;A88104;
     TAY                                                                  ;A88106;
     RTL                                                                  ;A88107;
 
 
 ;;; $8108: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA8_DecrementTimer_GotoYIfNonZero:
-    DEC.W Enemy.loopCounter,X                                                        ;A88108;
+    DEC.W Enemy.loopCounter,X                                            ;A88108;
     BNE Instruction_CommonA8_GotoY                                       ;A8810B;
     INY                                                                  ;A8810D;
     INY                                                                  ;A8810E;
@@ -295,7 +295,7 @@ Instruction_CommonA8_DecrementTimer_GotoYIfNonZero:
 
 ;;; $8110: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_CommonA8_DecrementTimer_GotoYIfNonZero_duplicate:
-    DEC.W Enemy.loopCounter,X                                                        ;A88110;
+    DEC.W Enemy.loopCounter,X                                            ;A88110;
     BNE Instruction_CommonA8_GotoY                                       ;A88113;
     INY                                                                  ;A88115;
     INY                                                                  ;A88116;
@@ -305,7 +305,7 @@ Instruction_CommonA8_DecrementTimer_GotoYIfNonZero_duplicate:
 ;;; $8118: Instruction - decrement timer and go to [Y] + ±[[Y]] if non-zero ;;;
 Instruction_CommonA8_DecrementTimer_GotoY_PlusY_IfNonZero:
     SEP #$20                                                             ;A88118;
-    DEC.W Enemy.loopCounter,X                                                        ;A8811A;
+    DEC.W Enemy.loopCounter,X                                            ;A8811A;
     REP #$20                                                             ;A8811D;
     BNE Instruction_CommonA8_GotoY_PlusY                                 ;A8811F;
     INY                                                                  ;A88121;
@@ -315,7 +315,7 @@ Instruction_CommonA8_DecrementTimer_GotoY_PlusY_IfNonZero:
 ;;; $8123: Instruction - timer = [[Y]] ;;;
 Instruction_CommonA8_TimerInY:
     LDA.W $0000,Y                                                        ;A88123;
-    STA.W Enemy.loopCounter,X                                                        ;A88126;
+    STA.W Enemy.loopCounter,X                                            ;A88126;
     INY                                                                  ;A88129;
     INY                                                                  ;A8812A;
     RTL                                                                  ;A8812B;
@@ -333,7 +333,7 @@ Instruction_CommonA8_Sleep:
     DEY                                                                  ;A8812F;
     DEY                                                                  ;A88130;
     TYA                                                                  ;A88131;
-    STA.W Enemy.instList,X                                                        ;A88132;
+    STA.W Enemy.instList,X                                               ;A88132;
     PLA                                                                  ;A88135;
     PEA.W ProcessEnemyInstructions_return-1                              ;A88136;
     RTL                                                                  ;A88139;
@@ -346,11 +346,11 @@ Instruction_CommonA8_WaitYFrames:
 ; useful for e.g. GT eye beam attack ($AA:D10D), implemented by an instruction list that has no graphical instructions,
 ; which allows it to be called from multiple different poses
     LDA.W $0000,Y                                                        ;A8813A;
-    STA.W Enemy.instTimer,X                                                        ;A8813D;
+    STA.W Enemy.instTimer,X                                              ;A8813D;
     INY                                                                  ;A88140;
     INY                                                                  ;A88141;
     TYA                                                                  ;A88142;
-    STA.W Enemy.instList,X                                                        ;A88143;
+    STA.W Enemy.instList,X                                               ;A88143;
     PLA                                                                  ;A88146;
     PEA.W ProcessEnemyInstructions_return-1                              ;A88147;
     RTL                                                                  ;A8814A;
@@ -359,19 +359,19 @@ Instruction_CommonA8_WaitYFrames:
 ;;; $814B: Instruction - transfer [[Y]] bytes from [[Y] + 2] to VRAM [[Y] + 5] ;;;
 Instruction_CommonA8_TransferYBytesInYToVRAM:
     PHX                                                                  ;A8814B;
-    LDX.W VRAMWriteStack                                                          ;A8814C;
+    LDX.W VRAMWriteStack                                                 ;A8814C;
     LDA.W $0000,Y                                                        ;A8814F;
-    STA.B VRAMWrite.size,X                                                          ;A88152;
+    STA.B VRAMWrite.size,X                                               ;A88152;
     LDA.W $0002,Y                                                        ;A88154;
-    STA.B VRAMWrite.src,X                                                          ;A88157;
+    STA.B VRAMWrite.src,X                                                ;A88157;
     LDA.W $0003,Y                                                        ;A88159;
-    STA.B VRAMWrite.src+1,X                                                          ;A8815C;
+    STA.B VRAMWrite.src+1,X                                              ;A8815C;
     LDA.W $0005,Y                                                        ;A8815E;
-    STA.B VRAMWrite.dest,X                                                          ;A88161;
+    STA.B VRAMWrite.dest,X                                               ;A88161;
     TXA                                                                  ;A88163;
     CLC                                                                  ;A88164;
     ADC.W #$0007                                                         ;A88165;
-    STA.W VRAMWriteStack                                                          ;A88168;
+    STA.W VRAMWriteStack                                                 ;A88168;
     TYA                                                                  ;A8816B;
     CLC                                                                  ;A8816C;
     ADC.W #$0007                                                         ;A8816D;
@@ -382,17 +382,17 @@ Instruction_CommonA8_TransferYBytesInYToVRAM:
 
 ;;; $8173: Instruction - enable off-screen processing ;;;
 Instruction_CommonA8_EnableOffScreenProcessing:
-    LDA.W Enemy.properties,X                                                        ;A88173;
+    LDA.W Enemy.properties,X                                             ;A88173;
     ORA.W #$0800                                                         ;A88176;
-    STA.W Enemy.properties,X                                                        ;A88179;
+    STA.W Enemy.properties,X                                             ;A88179;
     RTL                                                                  ;A8817C;
 
 
 ;;; $817D: Instruction - disable off-screen processing ;;;
 Instruction_CommonA8_DisableOffScreenProcessing:
-    LDA.W Enemy.properties,X                                                        ;A8817D;
+    LDA.W Enemy.properties,X                                             ;A8817D;
     AND.W #$F7FF                                                         ;A88180;
-    STA.W Enemy.properties,X                                                        ;A88183;
+    STA.W Enemy.properties,X                                             ;A88183;
     RTL                                                                  ;A88186;
 
 
@@ -639,7 +639,7 @@ InstList_Evir_Body_FacingRight:
     dw $000A,Spritemap_Evir_10                                           ;A88717;
     dw $000A,Spritemap_Evir_11                                           ;A8871B;
     dw $000A,Spritemap_Evir_12                                           ;A8871F;
-    dw Instruction_Common_GotoY                                        ;A88723;
+    dw Instruction_Common_GotoY                                          ;A88723;
     dw InstList_Evir_Body_FacingRight                                    ;A88725;
 
 
@@ -701,17 +701,17 @@ Instruction_Evir_PlaySpitSFX:
 
 ;;; $879B: Instruction - set initial regeneration X offset ;;;
 Instruction_Evir_SetInitialRegenerationXOffset:
-    LDX.W $0E54                                                          ;A8879B;
-    LDA.L $7E7782,X                                                      ;A8879E;
+    LDX.W EnemyIndex                                                     ;A8879B;
+    LDA.L Evir.instList-$80,X                                            ;A8879E;
     CMP.W #InstList_Evir_Body_FacingRight                                ;A887A2;
     BEQ .facingRight                                                     ;A887A5;
     LDA.W #$0008                                                         ;A887A7;
-    STA.W Enemy.var5,X                                                        ;A887AA;
+    STA.W Enemy.var5,X                                                   ;A887AA;
     BRA .return                                                          ;A887AD;
 
   .facingRight:
     LDA.W #$FFF8                                                         ;A887AF;
-    STA.W Enemy.var5,X                                                        ;A887B2;
+    STA.W Enemy.var5,X                                                   ;A887B2;
 
   .return:
     RTL                                                                  ;A887B5;
@@ -719,15 +719,15 @@ Instruction_Evir_SetInitialRegenerationXOffset:
 
 ;;; $87B6: Instruction - advance regeneration X offset ;;;
 Instruction_Evir_AdvanceRegenerationXOffset:
-    LDX.W $0E54                                                          ;A887B6;
-    LDA.L $7E7782,X                                                      ;A887B9;
+    LDX.W EnemyIndex                                                     ;A887B6;
+    LDA.L Evir.instList-$80,X                                            ;A887B9;
     CMP.W #InstList_Evir_Body_FacingRight                                ;A887BD;
     BEQ .facingRight                                                     ;A887C0;
-    DEC.W Enemy.var5,X                                                        ;A887C2;
+    DEC.W Enemy.var5,X                                                   ;A887C2;
     BRA .return                                                          ;A887C5;
 
   .facingRight:
-    INC.W Enemy.var5,X                                                        ;A887C7;
+    INC.W Enemy.var5,X                                                   ;A887C7;
 
   .return:
     RTL                                                                  ;A887CA;
@@ -735,7 +735,7 @@ Instruction_Evir_AdvanceRegenerationXOffset:
 
 ;;; $87CB: Instruction - finish regeneration ;;;
 Instruction_Evir_FinishRegeneration:
-    LDX.W $0E54                                                          ;A887CB;
+    LDX.W EnemyIndex                                                     ;A887CB;
     LDA.W #$0000                                                         ;A887CE;
     STA.L Evir.regenerationFlag,X                                        ;A887D1;
     STA.L Evir.movingFlag,X                                              ;A887D5;
@@ -746,11 +746,11 @@ Instruction_Evir_FinishRegeneration:
 
 ;;; $87E0: Initialisation AI - enemy $E63F (evir) ;;;
 InitAI_Evir:
-    LDX.W $0E54                                                          ;A887E0;
-    LDA.W $0FB4,X                                                        ;A887E3;
+    LDX.W EnemyIndex                                                     ;A887E0;
+    LDA.W Enemy.init0,X                                                  ;A887E3;
     BNE .nonZeroParam1                                                   ;A887E6;
     JSR.W SetEvirFacingDirection                                         ;A887E8;
-    LDA.W $0FB6,X                                                        ;A887EB;
+    LDA.W Enemy.init1,X                                                  ;A887EB;
     AND.W #$00FF                                                         ;A887EE;
     ASL                                                                  ;A887F1;
     ASL                                                                  ;A887F2;
@@ -764,7 +764,7 @@ InitAI_Evir:
     STA.L Evir.upVelocity,X                                              ;A88806;
     LDA.W CommonEnemySpeeds_LinearlyIncreasing+6,Y                       ;A8880A;
     STA.L Evir.upSubVelocity,X                                           ;A8880D;
-    LDA.W $0FB7,Y                                                        ;A88811;
+    LDA.W Enemy.init1+1,Y                                                ;A88811;
     AND.W #$00FF                                                         ;A88814;
     LSR                                                                  ;A88817;
     STA.W Evir.movementTimer,X                                           ;A88818;
@@ -773,7 +773,7 @@ InitAI_Evir:
   .nonZeroParam1:
     JSR.W HandleEvirArms                                                 ;A8881D;
     LDA.W #$0004                                                         ;A88820;
-    STA.W $0F9A,X                                                        ;A88823;
+    STA.W Enemy.layer,X                                                  ;A88823;
 
 +   LDA.W #$0000                                                         ;A88826;
     STA.L Evir.movementDirection,X                                       ;A88829;
@@ -785,7 +785,7 @@ InitAI_Evir:
 
 ;;; $8838: Set evir facing direction ;;;
 SetEvirFacingDirection:
-    LDX.W $0E54                                                          ;A88838;
+    LDX.W EnemyIndex                                                     ;A88838;
     JSL.L Get_SamusX_minus_EnemyX                                        ;A8883B;
     BPL .SamusToTheRight                                                 ;A8883F;
     LDA.W #$0000                                                         ;A88841;
@@ -810,32 +810,32 @@ SetEvirFacingDirection:
 
 ;;; $8866: Handle evir arms ;;;
 HandleEvirArms:
-    LDX.W $0E54                                                          ;A88866;
-    LDA.W $0F6A,X                                                        ;A88869;
+    LDX.W EnemyIndex                                                     ;A88866;
+    LDA.W Enemy[-1].var1,X                                               ;A88869;
     STA.W Evir.facingDirection,X                                         ;A8886C;
     BNE .facingRight                                                     ;A8886F;
-    LDA.W $0F3A,X                                                        ;A88871;
+    LDA.W Enemy[-1].XPosition,X                                          ;A88871;
     SEC                                                                  ;A88874;
     SBC.W #$0004                                                         ;A88875;
-    STA.W $0F7A,X                                                        ;A88878;
-    LDA.W $0F3E,X                                                        ;A8887B;
+    STA.W Enemy.XPosition,X                                              ;A88878;
+    LDA.W Enemy[-1].YPosition,X                                          ;A8887B;
     CLC                                                                  ;A8887E;
     ADC.W #$000A                                                         ;A8887F;
-    STA.W $0F7E,X                                                        ;A88882;
+    STA.W Enemy.YPosition,X                                              ;A88882;
     LDA.W #InstList_Evir_Arms_FacingLeft                                 ;A88885;
     STA.L Evir.newInstList,X                                             ;A88888;
     JSR.W SetEvirInstList                                                ;A8888C;
     BRA .return                                                          ;A8888F;
 
   .facingRight:
-    LDA.W $0F3A,X                                                        ;A88891;
+    LDA.W Enemy[-1].XPosition,X                                          ;A88891;
     CLC                                                                  ;A88894;
     ADC.W #$0004                                                         ;A88895;
-    STA.W $0F7A,X                                                        ;A88898;
-    LDA.W $0F3E,X                                                        ;A8889B;
+    STA.W Enemy.XPosition,X                                              ;A88898;
+    LDA.W Enemy[-1].YPosition,X                                          ;A8889B;
     CLC                                                                  ;A8889E;
     ADC.W #$000A                                                         ;A8889F;
-    STA.W $0F7E,X                                                        ;A888A2;
+    STA.W Enemy.YPosition,X                                              ;A888A2;
     LDA.W #InstList_Evir_Arms_FacingRight                                ;A888A5;
     STA.L Evir.newInstList,X                                             ;A888A8;
     JSR.W SetEvirInstList                                                ;A888AC;
@@ -846,20 +846,20 @@ HandleEvirArms:
 
 ;;; $88B0: Initialisation AI - enemy $E67F (evir projectile) ;;;
 InitAI_EvirProjectile:
-    LDX.W $0E54                                                          ;A888B0;
+    LDX.W EnemyIndex                                                     ;A888B0;
     LDA.W #InstList_Evir_Projectile_Normal                               ;A888B3;
     STA.L Evir.newInstList,X                                             ;A888B6;
     JSR.W SetEvirInstList                                                ;A888BA;
-    LDA.W $0F16,X                                                        ;A888BD;
-    STA.W $0F96,X                                                        ;A888C0;
-    LDA.W $0F18,X                                                        ;A888C3;
-    STA.W $0F98,X                                                        ;A888C6;
+    LDA.W Enemy[-2].palette,X                                            ;A888BD;
+    STA.W Enemy.palette,X                                                ;A888C0;
+    LDA.W Enemy[-2].GFXOffset,X                                          ;A888C3;
+    STA.W Enemy.GFXOffset,X                                              ;A888C6;
     JSR.W ResetEvirProjectilePosition                                    ;A888C9;
     LDA.W #$0000                                                         ;A888CC;
     STA.L Evir.instList,X                                                ;A888CF;
     STA.L Evir.regenerationFlag,X                                        ;A888D3;
     STA.L Evir.movingFlag,X                                              ;A888D7;
-    STA.W Enemy.var5,X                                                        ;A888DB;
+    STA.W Enemy.var5,X                                                   ;A888DB;
     LDA.W #Function_EvirProjectile_Idle                                  ;A888DE;
     STA.W Evir.function,X                                                ;A888E1;
     RTL                                                                  ;A888E4;
@@ -867,29 +867,29 @@ InitAI_EvirProjectile:
 
 ;;; $88E5: Reset evir projectile position ;;;
 ResetEvirProjectilePosition:
-    LDX.W $0E54                                                          ;A888E5;
-    LDA.W $0F2A,X                                                        ;A888E8;
+    LDX.W EnemyIndex                                                     ;A888E5;
+    LDA.W Enemy[-2].var1,X                                               ;A888E8;
     STA.W Evir.facingDirection,X                                         ;A888EB;
     BNE .notUp                                                           ;A888EE;
-    LDA.W $0EFA,X                                                        ;A888F0;
+    LDA.W Enemy[-2].XPosition,X                                          ;A888F0;
     SEC                                                                  ;A888F3;
     SBC.W #$0004                                                         ;A888F4;
-    STA.W $0F7A,X                                                        ;A888F7;
-    LDA.W $0EFE,X                                                        ;A888FA;
+    STA.W Enemy.XPosition,X                                              ;A888F7;
+    LDA.W Enemy[-2].YPosition,X                                          ;A888FA;
     CLC                                                                  ;A888FD;
     ADC.W #$0012                                                         ;A888FE;
-    STA.W $0F7E,X                                                        ;A88901;
+    STA.W Enemy.YPosition,X                                              ;A88901;
     BRA .return                                                          ;A88904;
 
   .notUp:
-    LDA.W $0EFA,X                                                        ;A88906;
+    LDA.W Enemy[-2].XPosition,X                                          ;A88906;
     CLC                                                                  ;A88909;
     ADC.W #$0004                                                         ;A8890A;
-    STA.W $0F7A,X                                                        ;A8890D;
-    LDA.W $0EFE,X                                                        ;A88910;
+    STA.W Enemy.XPosition,X                                              ;A8890D;
+    LDA.W Enemy[-2].YPosition,X                                          ;A88910;
     CLC                                                                  ;A88913;
     ADC.W #$0012                                                         ;A88914;
-    STA.W $0F7E,X                                                        ;A88917;
+    STA.W Enemy.YPosition,X                                              ;A88917;
 
   .return:
     RTS                                                                  ;A8891A;
@@ -897,15 +897,15 @@ ResetEvirProjectilePosition:
 
 ;;; $891B: Main AI - enemy $E63F (evir) ;;;
 MainAI_Evir:
-    LDX.W $0E54                                                          ;A8891B;
+    LDX.W EnemyIndex                                                     ;A8891B;
     JSR.W (Evir.function,X)                                              ;A8891E;
     RTL                                                                  ;A88921;
 
 
 ;;; $8922: Evir function - handle body/arms ;;;
 Function_Evir_HandleBodyArms:
-    LDX.W $0E54                                                          ;A88922;
-    LDA.W $0FB4,X                                                        ;A88925;
+    LDX.W EnemyIndex                                                     ;A88922;
+    LDA.W Enemy.init0,X                                                  ;A88925;
     BNE .notMaster                                                       ;A88928;
     JSR.W HandleEvirBody                                                 ;A8892A;
     BRA .return                                                          ;A8892D;
@@ -919,45 +919,45 @@ Function_Evir_HandleBodyArms:
 
 ;;; $8933: Handle evir body ;;;
 HandleEvirBody:
-    LDX.W $0E54                                                          ;A88933;
-    LDA.L $7E7898,X                                                      ;A88936;
+    LDX.W EnemyIndex                                                     ;A88933;
+    LDA.L Evir.regenerationFlag+$80,X                                    ;A88936;
     BNE .directionChosen                                                 ;A8893A;
     JSR.W SetEvirFacingDirection                                         ;A8893C;
 
   .directionChosen:
     LDA.L Evir.movementDirection,X                                       ;A8893F;
     BNE .sinking                                                         ;A88943;
-    LDA.W $0F7E,X                                                        ;A88945;
+    LDA.W Enemy.YPosition,X                                              ;A88945;
     CLC                                                                  ;A88948;
     ADC.L Evir.upVelocity,X                                              ;A88949;
-    STA.W $0F7E,X                                                        ;A8894D;
-    LDA.W $0F80,X                                                        ;A88950;
+    STA.W Enemy.YPosition,X                                              ;A8894D;
+    LDA.W Enemy.YSubPosition,X                                           ;A88950;
     CLC                                                                  ;A88953;
     ADC.L Evir.upSubVelocity,X                                           ;A88954;
     BCC .storeYSubPosition                                               ;A88958;
-    INC.W $0F7E,X                                                        ;A8895A;
+    INC.W Enemy.YPosition,X                                              ;A8895A;
 
   .storeYSubPosition:
-    STA.W $0F80,X                                                        ;A8895D;
+    STA.W Enemy.YSubPosition,X                                           ;A8895D;
     BRA +                                                                ;A88960;
 
   .sinking:
-    LDA.W $0F7E,X                                                        ;A88962;
+    LDA.W Enemy.YPosition,X                                              ;A88962;
     CLC                                                                  ;A88965;
     ADC.L Evir.downVelocity,X                                            ;A88966;
-    STA.W $0F7E,X                                                        ;A8896A;
-    LDA.W $0F80,X                                                        ;A8896D;
+    STA.W Enemy.YPosition,X                                              ;A8896A;
+    LDA.W Enemy.YSubPosition,X                                           ;A8896D;
     CLC                                                                  ;A88970;
     ADC.L Evir.downSubVelocity,X                                         ;A88971;
     BCC ..storeYSubPosition                                              ;A88975;
-    INC.W $0F7E,X                                                        ;A88977;
+    INC.W Enemy.YPosition,X                                              ;A88977;
 
   ..storeYSubPosition:
-    STA.W $0F80,X                                                        ;A8897A;
+    STA.W Enemy.YSubPosition,X                                           ;A8897A;
 
 +   DEC.W Evir.movementTimer,X                                           ;A8897D;
     BPL .return                                                          ;A88980;
-    LDA.W $0FB7,X                                                        ;A88982;
+    LDA.W Enemy.init1+1,X                                                ;A88982;
     AND.W #$00FF                                                         ;A88985;
     STA.W Evir.movementTimer,X                                           ;A88988;
     LDA.L Evir.movementDirection,X                                       ;A8898B;
@@ -970,15 +970,15 @@ HandleEvirBody:
 
 ;;; $8997: Handle evir arms ;;;
 Call_HandleEvirArms:
-    LDX.W $0E54                                                          ;A88997; >.<
+    LDX.W EnemyIndex                                                     ;A88997; >.<
     JSR.W HandleEvirArms                                                 ;A8899A;
     RTS                                                                  ;A8899D;
 
 
 ;;; $899E: Main AI - enemy $E67F (evir projectile) ;;;
 MainAI_EvirProjectile:
-    LDX.W $0E54                                                          ;A8899E;
-    LDA.W $0F9E,X                                                        ;A889A1;
+    LDX.W EnemyIndex                                                     ;A8899E;
+    LDA.W Enemy.freezeTimer,X                                            ;A889A1;
     BNE .merge                                                           ;A889A4;
     LDA.L Evir.movingFlag,X                                              ;A889A6;
     BEQ .angleInitialized                                                ;A889AA;
@@ -1006,7 +1006,7 @@ MainAI_EvirProjectile:
 
 ;;; $89D4: Shoot evir projectile at Samus ;;;
 ShootEvirProjectileAtSamus:
-    LDA.W $0E54                                                          ;A889D4;
+    LDA.W EnemyIndex                                                     ;A889D4;
     SEC                                                                  ;A889D7;
     SBC.W #$0080                                                         ;A889D8;
     TAX                                                                  ;A889DB;
@@ -1014,22 +1014,22 @@ ShootEvirProjectileAtSamus:
     JSL.L IsSamusWithinAPixelColumnsOfEnemy                              ;A889DF;
     BEQ .return                                                          ;A889E3;
     LDA.W #$0004                                                         ;A889E5;
-    STA.W $0E32                                                          ;A889E8;
+    STA.W Temp_Unknown0E32                                               ;A889E8;
     JSL.L CalculateAngleOfSamusFromEnemy                                 ;A889EB;
     SEC                                                                  ;A889EF;
     SBC.W #$0040                                                         ;A889F0;
     AND.W #$00FF                                                         ;A889F3;
     EOR.W #$FFFF                                                         ;A889F6;
     INC                                                                  ;A889F9;
-    STA.B $16                                                            ;A889FA;
+    STA.B DP_Temp16                                                      ;A889FA;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;A889FC;
     STA.L Evir.XVelocity,X                                               ;A88A00;
-    LDA.W $0E38                                                          ;A88A04;
+    LDA.W Temp_Unknown0E38                                               ;A88A04;
     STA.L Evir.XSubVelocity,X                                            ;A88A07;
-    LDA.B $16                                                            ;A88A0B;
+    LDA.B DP_Temp16                                                      ;A88A0B;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A88A0D;
     STA.L Evir.YVelocity,X                                               ;A88A11;
-    LDA.W $0E38                                                          ;A88A15;
+    LDA.W Temp_Unknown0E38                                               ;A88A15;
     STA.L Evir.YSubVelocity,X                                            ;A88A18;
     LDA.W #InstList_Evir_Projectile_Normal                               ;A88A1C;
     STA.L Evir.newInstList,X                                             ;A88A1F;
@@ -1045,44 +1045,44 @@ ShootEvirProjectileAtSamus:
 
 ;;; $8A34: Evir projectile function - idle ;;;
 Function_EvirProjectile_Idle:
-    LDX.W $0E54                                                          ;A88A34;
+    LDX.W EnemyIndex                                                     ;A88A34;
     JSR.W ResetEvirProjectilePosition                                    ;A88A37;
     RTS                                                                  ;A88A3A;
 
 
 ;;; $8A3B: Evir projectile function - moving ;;;
 Function_EvirProjectile_Moving:
-    LDX.W $0E54                                                          ;A88A3B;
+    LDX.W EnemyIndex                                                     ;A88A3B;
     JSR.W StartEvirProjectileRegeneratingIfFarOffScreen                  ;A88A3E;
-    LDA.W $0F7A,X                                                        ;A88A41;
+    LDA.W Enemy.XPosition,X                                              ;A88A41;
     CLC                                                                  ;A88A44;
     ADC.L Evir.XVelocity,X                                               ;A88A45;
-    STA.W $0F7A,X                                                        ;A88A49;
-    LDA.W $0F7C,X                                                        ;A88A4C;
+    STA.W Enemy.XPosition,X                                              ;A88A49;
+    LDA.W Enemy.XSubPosition,X                                           ;A88A4C;
     CLC                                                                  ;A88A4F;
     ADC.L Evir.XSubVelocity,X                                            ;A88A50;
     BCC +                                                                ;A88A54;
-    INC.W $0F7A,X                                                        ;A88A56;
+    INC.W Enemy.XPosition,X                                              ;A88A56;
 
-+   STA.W $0F7C,X                                                        ;A88A59;
-    LDA.W $0F7E,X                                                        ;A88A5C;
++   STA.W Enemy.XSubPosition,X                                           ;A88A59;
+    LDA.W Enemy.YPosition,X                                              ;A88A5C;
     CLC                                                                  ;A88A5F;
     ADC.L Evir.YVelocity,X                                               ;A88A60;
-    STA.W $0F7E,X                                                        ;A88A64;
-    LDA.W $0F80,X                                                        ;A88A67;
+    STA.W Enemy.YPosition,X                                              ;A88A64;
+    LDA.W Enemy.YSubPosition,X                                           ;A88A67;
     CLC                                                                  ;A88A6A;
     ADC.L Evir.YSubVelocity,X                                            ;A88A6B;
     BCC +                                                                ;A88A6F;
-    INC.W $0F7E,X                                                        ;A88A71;
+    INC.W Enemy.YPosition,X                                              ;A88A71;
 
-+   STA.W $0F80,X                                                        ;A88A74;
++   STA.W Enemy.YSubPosition,X                                           ;A88A74;
     RTS                                                                  ;A88A77;
 
 
 ;;; $8A78: Evir projectile function - regenerating ;;;
 Function_EvirProjectile_Regenerating:
-    LDX.W $0E54                                                          ;A88A78;
-    LDA.W $0F1E,X                                                        ;A88A7B;
+    LDX.W EnemyIndex                                                     ;A88A78;
+    LDA.W Enemy[-2].freezeTimer,X                                        ;A88A7B;
     BNE .return                                                          ;A88A7E;
     LDA.L Evir.regenerationFlag,X                                        ;A88A80;
     BNE .notRegenerating                                                 ;A88A84;
@@ -1098,10 +1098,10 @@ Function_EvirProjectile_Regenerating:
 
   .notRegenerating:
     JSR.W ResetEvirProjectilePosition                                    ;A88AA3;
-    LDA.W $0F7A,X                                                        ;A88AA6;
+    LDA.W Enemy.XPosition,X                                              ;A88AA6;
     CLC                                                                  ;A88AA9;
-    ADC.W Enemy.var5,X                                                        ;A88AAA;
-    STA.W $0F7A,X                                                        ;A88AAD;
+    ADC.W Enemy.var5,X                                                   ;A88AAA;
+    STA.W Enemy.XPosition,X                                              ;A88AAD;
 
   .return:
     RTS                                                                  ;A88AB0;
@@ -1109,11 +1109,11 @@ Function_EvirProjectile_Regenerating:
 
 ;;; $8AB1: Start evir projectile regenerating if far off-screen ;;;
 StartEvirProjectileRegeneratingIfFarOffScreen:
-    LDX.W $0E54                                                          ;A88AB1;
+    LDX.W EnemyIndex                                                     ;A88AB1;
     LDA.W #$0100                                                         ;A88AB4;
     JSL.L CheckIfEnemyCenterIsOverAPixelsOffScreen                       ;A88AB7;
     BEQ .return                                                          ;A88ABB;
-    LDA.W $0F1E,X                                                        ;A88ABD;
+    LDA.W Enemy[-2].freezeTimer,X                                        ;A88ABD;
     BNE .return                                                          ;A88AC0;
     LDA.W #$0000                                                         ;A88AC2;
     STA.L Evir.movingFlag,X                                              ;A88AC5;
@@ -1133,15 +1133,15 @@ StartEvirProjectileRegeneratingIfFarOffScreen:
 
 ;;; $8AE8: Set evir instruction list ;;;
 SetEvirInstList:
-    LDX.W $0E54                                                          ;A88AE8;
+    LDX.W EnemyIndex                                                     ;A88AE8;
     LDA.L Evir.newInstList,X                                             ;A88AEB;
     CMP.L Evir.instList,X                                                ;A88AEF;
     BEQ .return                                                          ;A88AF3;
-    STA.W Enemy.instList,X                                                        ;A88AF5;
+    STA.W Enemy.instList,X                                               ;A88AF5;
     STA.L Evir.instList,X                                                ;A88AF8;
     LDA.W #$0001                                                         ;A88AFC;
-    STA.W Enemy.instTimer,X                                                        ;A88AFF;
-    STZ.W Enemy.loopCounter,X                                                        ;A88B02;
+    STA.W Enemy.instTimer,X                                              ;A88AFF;
+    STZ.W Enemy.loopCounter,X                                            ;A88B02;
 
   .return:
     RTS                                                                  ;A88B05;
@@ -1166,31 +1166,31 @@ EnemyTouch_Evir:
 
 ;;; $8B16: Evir shared contact reaction ;;;
 ContactReaction_Evir_Common:
-    LDX.W $0E54                                                          ;A88B16;
-    LDA.W $0F8C,X                                                        ;A88B19;
+    LDX.W EnemyIndex                                                     ;A88B16;
+    LDA.W Enemy.health,X                                                 ;A88B19;
     BNE .notDead                                                         ;A88B1C;
-    LDA.W $0FC6,X                                                        ;A88B1E;
+    LDA.W Enemy[1].properties,X                                          ;A88B1E;
     ORA.W #$0200                                                         ;A88B21;
-    STA.W $0FC6,X                                                        ;A88B24;
-    LDA.W $1006,X                                                        ;A88B27;
+    STA.W Enemy[1].properties,X                                          ;A88B24;
+    LDA.W Enemy[2].properties,X                                          ;A88B27;
     ORA.W #$0200                                                         ;A88B2A;
-    STA.W $1006,X                                                        ;A88B2D;
+    STA.W Enemy[2].properties,X                                          ;A88B2D;
 
   .notDead:
-    LDA.W $0F9E,X                                                        ;A88B30;
+    LDA.W Enemy.freezeTimer,X                                            ;A88B30;
     BEQ .return                                                          ;A88B33;
-    STA.W $0FDE,X                                                        ;A88B35;
-    LDA.W $0FCA,X                                                        ;A88B38;
+    STA.W Enemy[1].freezeTimer,X                                         ;A88B35;
+    LDA.W Enemy[1].AI,X                                                  ;A88B38;
     ORA.W #$0004                                                         ;A88B3B;
-    STA.W $0FCA,X                                                        ;A88B3E;
-    LDA.W $102C,X                                                        ;A88B41;
+    STA.W Enemy[1].AI,X                                                  ;A88B3E;
+    LDA.W Enemy[2].var2,X                                                ;A88B41;
     CMP.W #Function_EvirProjectile_Moving                                ;A88B44;
     BEQ .return                                                          ;A88B47;
-    LDA.W $100A,X                                                        ;A88B49;
+    LDA.W Enemy[2].AI,X                                                  ;A88B49;
     ORA.W #$0004                                                         ;A88B4C;
-    STA.W $100A,X                                                        ;A88B4F;
-    LDA.W $0F9E,X                                                        ;A88B52;
-    STA.W $101E,X                                                        ;A88B55;
+    STA.W Enemy[2].AI,X                                                  ;A88B4F;
+    LDA.W Enemy.freezeTimer,X                                            ;A88B52;
+    STA.W Enemy[2].freezeTimer,X                                         ;A88B55;
 
   .return:
     RTL                                                                  ;A88B58;
@@ -1587,13 +1587,13 @@ InstList_Eye_Mount_FacingDown:
 ;;; $9044: Instruction list - mount - facing left ;;;
 InstList_Eye_Mount_FacingLeft:
     dw $0001,Spritemap_Eye_14                                            ;A89044;
-    dw Instruction_Common_Sleep                                        ;A89048;
+    dw Instruction_Common_Sleep                                          ;A89048;
 
 
 ;;; $904A: Instruction list - mount - facing up ;;;
 InstList_Eye_Mount_FacingUp:
     dw $0001,Spritemap_Eye_15                                            ;A8904A;
-    dw Instruction_Common_Sleep                                        ;A8904E;
+    dw Instruction_Common_Sleep                                          ;A8904E;
 
 
 ;;; $9050: Morph ball eye proximities ;;;
@@ -1613,52 +1613,52 @@ EyeConstants:
 
 ;;; $9058: Initialisation AI - enemy $E6BF (morph ball eye) ;;;
 InitAI_Eye:
-    LDX.W $0E54                                                          ;A89058;
-    LDA.W Enemy.properties,X                                                        ;A8905B;
+    LDX.W EnemyIndex                                                     ;A89058;
+    LDA.W Enemy.properties,X                                             ;A8905B;
     ORA.W #$2000                                                         ;A8905E;
-    STA.W Enemy.properties,X                                                        ;A89061;
-    LDA.W #Spritemap_Common_Nothing                                    ;A89064;
-    STA.W $0F8E,X                                                        ;A89067;
+    STA.W Enemy.properties,X                                             ;A89061;
+    LDA.W #Spritemap_Common_Nothing                                      ;A89064;
+    STA.W Enemy.spritemap,X                                              ;A89067;
     LDA.W #$0001                                                         ;A8906A;
-    STA.W Enemy.instTimer,X                                                        ;A8906D;
-    STZ.W Enemy.loopCounter,X                                                        ;A89070;
-    LDA.W $0FB6,X                                                        ;A89073;
+    STA.W Enemy.instTimer,X                                              ;A8906D;
+    STZ.W Enemy.loopCounter,X                                            ;A89070;
+    LDA.W Enemy.init1,X                                                  ;A89073;
     BMI .mountPart                                                       ;A89076;
     LDA.W #Function_Eye_WaitForSamusToGetNear                            ;A89078;
     STA.W Eye.function,X                                                 ;A8907B;
-    LDA.W $0FB4,X                                                        ;A8907E;
+    LDA.W Enemy.init0,X                                                  ;A8907E;
     BIT.W #$0001                                                         ;A89081;
     BEQ .facingRight                                                     ;A89084;
     LDA.W #InstList_Eye_FacingLeft_Closed                                ;A89086;
-    STA.W Enemy.instList,X                                                        ;A89089;
+    STA.W Enemy.instList,X                                               ;A89089;
     BRA .return                                                          ;A8908C;
 
   .facingRight:
     LDA.W #InstList_Eye_FacingRight_Closed                               ;A8908E;
-    STA.W Enemy.instList,X                                                        ;A89091;
+    STA.W Enemy.instList,X                                               ;A89091;
     BRA .return                                                          ;A89094;
 
   .mountPart:
     AND.W #$000F                                                         ;A89096;
     ASL                                                                  ;A89099;
     TAY                                                                  ;A8909A;
-    LDA.W $0F7A,X                                                        ;A8909B;
+    LDA.W Enemy.XPosition,X                                              ;A8909B;
     CLC                                                                  ;A8909E;
     ADC.W .XOffsets,Y                                                    ;A8909F;
-    STA.W $0F7A,X                                                        ;A890A2;
-    LDA.W $0F7E,X                                                        ;A890A5;
+    STA.W Enemy.XPosition,X                                              ;A890A2;
+    LDA.W Enemy.YPosition,X                                              ;A890A5;
     CLC                                                                  ;A890A8;
     ADC.W .YOffsets,Y                                                    ;A890A9;
-    STA.W $0F7E,X                                                        ;A890AC;
+    STA.W Enemy.YPosition,X                                              ;A890AC;
     LDA.W #RTL_A891DC                                                    ;A890AF;
     STA.W Eye.function,X                                                 ;A890B2;
     LDA.W .instListPointers,Y                                            ;A890B5;
-    STA.W Enemy.instList,X                                                        ;A890B8;
+    STA.W Enemy.instList,X                                               ;A890B8;
     LDX.W #$01FE                                                         ;A890BB;
 
   .loop:
     LDA.W #$00FF                                                         ;A890BE;
-    STA.L $7E9100,X                                                      ;A890C1;
+    STA.L EyeBeamWindow1HDMADataTable,X                                  ;A890C1;
     DEX                                                                  ;A890C5;
     DEX                                                                  ;A890C6;
     BPL .loop                                                            ;A890C7;
@@ -1681,8 +1681,8 @@ InitAI_Eye:
 
 ;;; $90E2: Main AI - enemy $E6BF (morph ball eye) ;;;
 MainAI_Eye:
-    LDX.W $0E54                                                          ;A890E2;
-    LDA.W $09A4                                                          ;A890E5;
+    LDX.W EnemyIndex                                                     ;A890E2;
+    LDA.W CollectedItems                                                 ;A890E5;
     BIT.W #$0004                                                         ;A890E8;
     BEQ .return                                                          ;A890EB;
     JMP.W (Eye.function,X)                                               ;A890ED;
@@ -1704,17 +1704,17 @@ Function_Eye_WaitForSamusToGetNear:
     LDA.W #$0020                                                         ;A89105;
     STA.W Eye.functionTimer,X                                            ;A89108;
     LDA.W #$0001                                                         ;A8910B;
-    STA.W Enemy.instTimer,X                                                        ;A8910E;
-    LDA.W $0FB4,X                                                        ;A89111;
+    STA.W Enemy.instTimer,X                                              ;A8910E;
+    LDA.W Enemy.init0,X                                                  ;A89111;
     BIT.W #$0001                                                         ;A89114;
     BEQ .zeroParam                                                       ;A89117;
     LDA.W #InstList_Eye_FacingLeft_Activating                            ;A89119;
-    STA.W Enemy.instList,X                                                        ;A8911C;
+    STA.W Enemy.instList,X                                               ;A8911C;
     BRA +                                                                ;A8911F;
 
   .zeroParam:
     LDA.W #InstList_Eye_FacingRight_Activating                           ;A89121;
-    STA.W Enemy.instList,X                                                        ;A89124;
+    STA.W Enemy.instList,X                                               ;A89124;
 
 +   LDA.W #Function_Eye_Activating                                       ;A89127;
     STA.W Eye.function,X                                                 ;A8912A;
@@ -1735,14 +1735,14 @@ Function_Eye_Activating:
     JSL.L Spawn_MorphBallEyeBeam_HDMAObject                              ;A8913C;
     LDA.W #Function_Eye_Active                                           ;A89140;
     STA.W Eye.function,X                                                 ;A89143;
-    LDA.W $0AF6                                                          ;A89146;
+    LDA.W SamusXPosition                                                 ;A89146;
     SEC                                                                  ;A89149;
-    SBC.W $0F7A,X                                                        ;A8914A;
-    STA.B $12                                                            ;A8914D;
-    LDA.W $0AFA                                                          ;A8914F;
+    SBC.W Enemy.XPosition,X                                              ;A8914A;
+    STA.B DP_Temp12                                                      ;A8914D;
+    LDA.W SamusYPosition                                                 ;A8914F;
     SEC                                                                  ;A89152;
-    SBC.W $0F7E,X                                                        ;A89153;
-    STA.B $14                                                            ;A89156;
+    SBC.W Enemy.YPosition,X                                              ;A89153;
+    STA.B DP_Temp14                                                      ;A89156;
     JSL.L CalculateAngleOf_12_14_Offset                                  ;A89158;
     STA.W Eye.angle,X                                                    ;A8915C;
 
@@ -1767,30 +1767,30 @@ Function_Eye_Active:
     STZ.W Eye.activatedFlag,X                                            ;A8917B;
     LDA.W #$0020                                                         ;A8917E;
     STA.W Eye.functionTimer,X                                            ;A89181;
-    LDA.W $0FB4,X                                                        ;A89184;
+    LDA.W Enemy.init0,X                                                  ;A89184;
     BIT.W #$0001                                                         ;A89187;
     BEQ .zeroParam                                                       ;A8918A;
     LDA.W #InstList_Eye_FacingLeft_Deactivating                          ;A8918C;
-    STA.W Enemy.instList,X                                                        ;A8918F;
+    STA.W Enemy.instList,X                                               ;A8918F;
     BRA +                                                                ;A89192;
 
   .zeroParam:
     LDA.W #InstList_Eye_FacingRight_Deactivating                         ;A89194;
-    STA.W Enemy.instList,X                                                        ;A89197;
+    STA.W Enemy.instList,X                                               ;A89197;
 
 +   LDA.W #Function_Eye_Deactivating                                     ;A8919A;
     STA.W Eye.function,X                                                 ;A8919D;
     BRA .merge                                                           ;A891A0;
 
   .inProximity:
-    LDA.W $0AF6                                                          ;A891A2;
+    LDA.W SamusXPosition                                                 ;A891A2;
     SEC                                                                  ;A891A5;
-    SBC.W $0F7A,X                                                        ;A891A6;
-    STA.B $12                                                            ;A891A9;
-    LDA.W $0AFA                                                          ;A891AB;
+    SBC.W Enemy.XPosition,X                                              ;A891A6;
+    STA.B DP_Temp12                                                      ;A891A9;
+    LDA.W SamusYPosition                                                 ;A891AB;
     SEC                                                                  ;A891AE;
-    SBC.W $0F7E,X                                                        ;A891AF;
-    STA.B $14                                                            ;A891B2;
+    SBC.W Enemy.YPosition,X                                              ;A891AF;
+    STA.B DP_Temp14                                                      ;A891B2;
     JSL.L CalculateAngleOf_12_14_Offset                                  ;A891B4;
     STA.W Eye.angle,X                                                    ;A891B8;
     AND.W #$00F0                                                         ;A891BB;
@@ -1798,11 +1798,11 @@ Function_Eye_Active:
     LSR                                                                  ;A891BF;
     CLC                                                                  ;A891C0;
     ADC.W #InstList_Eye_Active                                           ;A891C1;
-    STA.W Enemy.instList,X                                                        ;A891C4;
+    STA.W Enemy.instList,X                                               ;A891C4;
 
   .merge:
     LDA.W #$0001                                                         ;A891C7;
-    STA.W Enemy.instTimer,X                                                        ;A891CA;
+    STA.W Enemy.instTimer,X                                              ;A891CA;
     RTL                                                                  ;A891CD;
 
 
@@ -2229,10 +2229,10 @@ Instruction_FuneNamihe_QueueSpitSFX:
 ;;; $9631: Instruction - spawn leftwards namihe fireball ;;;
 Instruction_Namihe_SpawnFireball_FacingLeft:
     PHY                                                                  ;A89631;
-    LDX.W $0E54                                                          ;A89632;
-    LDA.W $0FB6,X                                                        ;A89635;
+    LDX.W EnemyIndex                                                     ;A89632;
+    LDA.W Enemy.init1,X                                                  ;A89635;
     AND.W #$00FF                                                         ;A89638;
-    STA.W $1995                                                          ;A8963B;
+    STA.W EnemyProjectile_InitParam1                                     ;A8963B;
     LDA.W #$0000                                                         ;A8963E;
     LDY.W #EnemyProjectile_NamiheFireball                                ;A89641;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A89644;
@@ -2243,10 +2243,10 @@ Instruction_Namihe_SpawnFireball_FacingLeft:
 ;;; $964A: Instruction - spawn rightwards namihe fireball ;;;
 Instruction_Namihe_SpawnFireball_FacingRight:
     PHY                                                                  ;A8964A;
-    LDX.W $0E54                                                          ;A8964B;
-    LDA.W $0FB6,X                                                        ;A8964E;
+    LDX.W EnemyIndex                                                     ;A8964B;
+    LDA.W Enemy.init1,X                                                  ;A8964E;
     AND.W #$00FF                                                         ;A89651;
-    STA.W $1995                                                          ;A89654;
+    STA.W EnemyProjectile_InitParam1                                     ;A89654;
     LDA.W #$0001                                                         ;A89657;
     LDY.W #EnemyProjectile_NamiheFireball                                ;A8965A;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8965D;
@@ -2257,10 +2257,10 @@ Instruction_Namihe_SpawnFireball_FacingRight:
 ;;; $9663: Instruction - spawn leftwards fune fireball ;;;
 Instruction_Fune_SpawnFireball_FacingLeft:
     PHY                                                                  ;A89663;
-    LDX.W $0E54                                                          ;A89664;
-    LDA.W $0FB6,X                                                        ;A89667;
+    LDX.W EnemyIndex                                                     ;A89664;
+    LDA.W Enemy.init1,X                                                  ;A89667;
     AND.W #$00FF                                                         ;A8966A;
-    STA.W $1995                                                          ;A8966D;
+    STA.W EnemyProjectile_InitParam1                                     ;A8966D;
     LDA.W #$0000                                                         ;A89670;
     LDY.W #EnemyProjectile_FuneFireball                                  ;A89673;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A89676;
@@ -2271,10 +2271,10 @@ Instruction_Fune_SpawnFireball_FacingLeft:
 ;;; $967C: Instruction - spawn rightwards fune fireball ;;;
 Instruction_Fune_SpawnFireball_FacingRight:
     PHY                                                                  ;A8967C;
-    LDX.W $0E54                                                          ;A8967D;
-    LDA.W $0FB6,X                                                        ;A89680;
+    LDX.W EnemyIndex                                                     ;A8967D;
+    LDA.W Enemy.init1,X                                                  ;A89680;
     AND.W #$00FF                                                         ;A89683;
-    STA.W $1995                                                          ;A89686;
+    STA.W EnemyProjectile_InitParam1                                     ;A89686;
     LDA.W #$0001                                                         ;A89689;
     LDY.W #EnemyProjectile_FuneFireball                                  ;A8968C;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8968F;
@@ -2284,7 +2284,7 @@ Instruction_Fune_SpawnFireball_FacingRight:
 
 ;;; $9695: Instruction - finish activity ;;;
 Instruction_FuneNamihe_FinishActivity:
-    LDX.W $0E54                                                          ;A89695;
+    LDX.W EnemyIndex                                                     ;A89695;
     LDA.W FuneNamihe.instListPointersPointer,X                           ;A89698;
     INC                                                                  ;A8969B;
     INC                                                                  ;A8969C;
@@ -2305,7 +2305,7 @@ Instruction_FuneNamihe_FinishActivity:
 ;;; $96B4: Instruction - finish activity ;;;
 Instruction_FuneNamihe_FinishActivity_duplicate:
 ; Clone of Instruction_FuneNamihe_FinishActivity
-    LDX.W $0E54                                                          ;A896B4;
+    LDX.W EnemyIndex                                                     ;A896B4;
     LDA.W FuneNamihe.instListPointersPointer,X                           ;A896B7;
     INC                                                                  ;A896BA;
     INC                                                                  ;A896BB;
@@ -2337,12 +2337,12 @@ InstListPointers_Fune_Namihe:
 
 ;;; $96E3: Initialisation AI - enemy $E6FF/$E73F (fune / namihe) ;;;
 InitAI_Fune_Namihe:
-    LDX.W $0E54                                                          ;A896E3;
+    LDX.W EnemyIndex                                                     ;A896E3;
     LDA.W #InstListPointers_Fune_Namihe+$4                               ;A896E6;
     STA.W FuneNamihe.instListPointersPointer,X                           ;A896E9;
     LDA.W #Function_Fune_WaitForTimer                                    ;A896EC;
     STA.W FuneNamihe.function,X                                          ;A896EF;
-    LDA.W $0FB4,X                                                        ;A896F2;
+    LDA.W Enemy.init0,X                                                  ;A896F2;
     AND.W #$000F                                                         ;A896F5;
     STA.W FuneNamihe.variantIndex,X                                      ;A896F8;
     BEQ .speciesDetermined                                               ;A896FB;
@@ -2352,7 +2352,7 @@ InitAI_Fune_Namihe:
     STA.W FuneNamihe.function,X                                          ;A89706;
 
   .speciesDetermined:
-    LDA.W $0FB4,X                                                        ;A89709;
+    LDA.W Enemy.init0,X                                                  ;A89709;
     AND.W #$00F0                                                         ;A8970C;
     BEQ .directionDetermined                                             ;A8970F;
     INC.W FuneNamihe.instListPointersPointer,X                           ;A89711;
@@ -2360,10 +2360,10 @@ InitAI_Fune_Namihe:
 
   .directionDetermined:
     JSR.W SetFuneNamiheInstList                                          ;A89717;
-    LDA.W $0FB7,X                                                        ;A8971A;
+    LDA.W Enemy.init1+1,X                                                ;A8971A;
     AND.W #$00FF                                                         ;A8971D;
     STA.W FuneNamihe.YProximity,X                                        ;A89720;
-    LDA.W $0FB5,X                                                        ;A89723;
+    LDA.W Enemy.init0+1,X                                                ;A89723;
     AND.W #$00FF                                                         ;A89726;
     STA.W FuneNamihe.cooldownTime,X                                      ;A89729;
     STZ.W FuneNamihe.cooldownTimer,X                                     ;A8972C;
@@ -2372,14 +2372,14 @@ InitAI_Fune_Namihe:
 
 ;;; $9730: Main AI - enemy $E6FF/$E73F (fune / namihe) ;;;
 MainAI_Fune_Namihe:
-    LDX.W $0E54                                                          ;A89730;
+    LDX.W EnemyIndex                                                     ;A89730;
     JSR.W (FuneNamihe.function,X)                                        ;A89733;
     RTL                                                                  ;A89736;
 
 
 ;;; $9737: Fune / namihe function - wait for timer (fune) ;;;
 Function_Fune_WaitForTimer:
-    LDX.W $0E54                                                          ;A89737;
+    LDX.W EnemyIndex                                                     ;A89737;
     INC.W FuneNamihe.cooldownTimer,X                                     ;A8973A;
     LDA.W FuneNamihe.cooldownTimer,X                                     ;A8973D;
     CMP.W FuneNamihe.cooldownTime,X                                      ;A89740;
@@ -2401,25 +2401,25 @@ Function_Fune_WaitForTimer:
 
 ;;; $975C: Fune / namihe function - wait for Samus to get near (namihe) ;;;
 Function_Namihe_WaitForSamusToGetNear:
-    LDX.W $0E54                                                          ;A8975C;
+    LDX.W EnemyIndex                                                     ;A8975C;
     LDA.W FuneNamihe.instListPointersPointer,X                           ;A8975F;
-    STA.L $7E7800,X                                                      ;A89762;
+    STA.L ExtraEnemy7800,X                                               ;A89762;
     JSR.W Namihe_CheckIfSamusIsInProximity                               ;A89766;
     BEQ .notInProximity                                                  ;A89769;
-    LDA.L $7E7800,X                                                      ;A8976B;
+    LDA.L ExtraEnemy7800,X                                               ;A8976B;
     STA.W FuneNamihe.instListPointersPointer,X                           ;A8976F;
     DEC                                                                  ;A89772;
     DEC                                                                  ;A89773;
     DEC                                                                  ;A89774;
     DEC                                                                  ;A89775;
-    STA.L $7E7800,X                                                      ;A89776;
+    STA.L ExtraEnemy7800,X                                               ;A89776;
     STA.W FuneNamihe.instListPointersPointer,X                           ;A8977A;
     JSR.W SetFuneNamiheInstList                                          ;A8977D;
     LDA.W #RTS_A8978F                                                    ;A89780;
     STA.W FuneNamihe.function,X                                          ;A89783;
 
   .notInProximity:
-    LDA.L $7E7800,X                                                      ;A89786;
+    LDA.L ExtraEnemy7800,X                                               ;A89786;
     STA.W FuneNamihe.instListPointersPointer,X                           ;A8978A;
     RTS                                                                  ;A8978D;
 
@@ -2438,7 +2438,7 @@ RTS_A8978F:
 Namihe_CheckIfSamusIsInProximity:
 ;; Returns:
 ;;     Zero: Clear if Samus is in proximity, set otherwise
-    LDX.W $0E54                                                          ;A89790;
+    LDX.W EnemyIndex                                                     ;A89790;
     LDA.W FuneNamihe.YProximity,X                                        ;A89793;
     JSL.L IsSamusWithingAPixelRowsOfEnemy                                ;A89796;
     RTS                                                                  ;A8979A;
@@ -2446,14 +2446,14 @@ Namihe_CheckIfSamusIsInProximity:
 
 ;;; $979B: Set fune / namihe instruction list ;;;
 SetFuneNamiheInstList:
-    LDX.W $0E54                                                          ;A8979B;
+    LDX.W EnemyIndex                                                     ;A8979B;
     LDA.W #$0001                                                         ;A8979E;
-    STA.W Enemy.instTimer,X                                                        ;A897A1;
-    STZ.W Enemy.loopCounter,X                                                        ;A897A4;
+    STA.W Enemy.instTimer,X                                              ;A897A1;
+    STZ.W Enemy.loopCounter,X                                            ;A897A4;
     LDA.W FuneNamihe.instListPointersPointer,X                           ;A897A7;
     TAY                                                                  ;A897AA;
     LDA.W $0000,Y                                                        ;A897AB;
-    STA.W Enemy.instList,X                                                        ;A897AE;
+    STA.W Enemy.instList,X                                               ;A897AE;
     RTS                                                                  ;A897B1;
 
 
@@ -2684,23 +2684,23 @@ CovenPaletteTransitionDelayTable:
 
 ;;; $9AEE: Initialisation AI - enemy $E77F (coven) ;;;
 InitAI_Coven:
-    LDX.W $0E54                                                          ;A89AEE;
-    LDA.W Enemy.properties,X                                                        ;A89AF1;
+    LDX.W EnemyIndex                                                     ;A89AEE;
+    LDA.W Enemy.properties,X                                             ;A89AF1;
     ORA.W #$2500                                                         ;A89AF4;
-    STA.W Enemy.properties,X                                                        ;A89AF7;
+    STA.W Enemy.properties,X                                             ;A89AF7;
     LDA.W #$0001                                                         ;A89AFA;
-    STA.W Enemy.instTimer,X                                                        ;A89AFD;
-    STZ.W Enemy.loopCounter,X                                                        ;A89B00;
+    STA.W Enemy.instTimer,X                                              ;A89AFD;
+    STZ.W Enemy.loopCounter,X                                            ;A89B00;
     LDA.W #InstList_Coven                                                ;A89B03;
-    STA.W Enemy.instList,X                                                        ;A89B06;
+    STA.W Enemy.instList,X                                               ;A89B06;
     LDA.W #Function_Coven_Dematerialized_Asleep                          ;A89B09;
     STA.W Coven.function,X                                               ;A89B0C;
     LDA.W CovenConstants_SleepTimer                                      ;A89B0F;
     CLC                                                                  ;A89B12;
     ADC.W #$00A0                                                         ;A89B13;
     STA.W Coven.functionTimer,X                                          ;A89B16;
-    LDX.W $0E54                                                          ;A89B19;
-    LDA.W $0F96,X                                                        ;A89B1C;
+    LDX.W EnemyIndex                                                     ;A89B19;
+    LDA.W Enemy.palette,X                                                ;A89B1C;
     XBA                                                                  ;A89B1F;
     ASL                                                                  ;A89B20;
     ASL                                                                  ;A89B21;
@@ -2710,21 +2710,21 @@ InitAI_Coven:
     ADC.W #$0100                                                         ;A89B25;
     TAX                                                                  ;A89B28;
     LDA.W #$0010                                                         ;A89B29;
-    STA.B $12                                                            ;A89B2C;
+    STA.B DP_Temp12                                                      ;A89B2C;
     LDA.W #$0000                                                         ;A89B2E;
 
   .loop:
-    STA.L $7EC200,X                                                      ;A89B31;
+    STA.L TargetPalettes_BGP0,X                                          ;A89B31;
     INX                                                                  ;A89B35;
     INX                                                                  ;A89B36;
-    DEC.B $12                                                            ;A89B37;
+    DEC.B DP_Temp12                                                      ;A89B37;
     BPL .loop                                                            ;A89B39;
     RTL                                                                  ;A89B3B;
 
 
 ;;; $9B3C: Main AI - enemy $E77F (coven) ;;;
 MainAI_Coven:
-    LDX.W $0E54                                                          ;A89B3C;
+    LDX.W EnemyIndex                                                     ;A89B3C;
     JMP.W (Coven.function,X)                                             ;A89B3F;
 
 
@@ -2735,8 +2735,8 @@ Function_Coven_Materialize_FadeToWhite:
     PHX                                                                  ;A89B42;
     JSR.W HandleFadeInTimerAndIndex                                      ;A89B43;
     LDY.W #$0010                                                         ;A89B46;
-    LDX.W $0E54                                                          ;A89B49;
-    LDA.W $0F96,X                                                        ;A89B4C;
+    LDX.W EnemyIndex                                                     ;A89B49;
+    LDA.W Enemy.palette,X                                                ;A89B4C;
     XBA                                                                  ;A89B4F;
     ASL                                                                  ;A89B50;
     ASL                                                                  ;A89B51;
@@ -2746,30 +2746,30 @@ Function_Coven_Materialize_FadeToWhite:
     ADC.W #$0100                                                         ;A89B55;
     TAX                                                                  ;A89B58;
     LDA.W #$0010                                                         ;A89B59;
-    STA.B $12                                                            ;A89B5C;
+    STA.B DP_Temp12                                                      ;A89B5C;
 
   .loopUpper:
-    LDA.L $7EC000,X                                                      ;A89B5E;
+    LDA.L Palettes,X                                                     ;A89B5E;
     AND.W #$001F                                                         ;A89B62;
     CMP.W #$001F                                                         ;A89B65;
     BPL .next                                                            ;A89B68;
-    LDA.L $7EC000,X                                                      ;A89B6A;
+    LDA.L Palettes,X                                                     ;A89B6A;
     CLC                                                                  ;A89B6E;
     ADC.W #$0421                                                         ;A89B6F;
-    STA.L $7EC000,X                                                      ;A89B72;
+    STA.L Palettes,X                                                     ;A89B72;
     DEY                                                                  ;A89B76;
 
   .next:
     INX                                                                  ;A89B77;
     INX                                                                  ;A89B78;
-    DEC.B $12                                                            ;A89B79;
+    DEC.B DP_Temp12                                                      ;A89B79;
     BNE .loopUpper                                                       ;A89B7B;
     CPY.W #$0010                                                         ;A89B7D;
     BMI .return                                                          ;A89B80;
-    LDX.W $0E54                                                          ;A89B82;
+    LDX.W EnemyIndex                                                     ;A89B82;
     LDA.W #Function_Coven_Materialize_FadeFromWhite                      ;A89B85;
     STA.W Coven.function,X                                               ;A89B88;
-    LDA.W $0F96,X                                                        ;A89B8B;
+    LDA.W Enemy.palette,X                                                ;A89B8B;
     XBA                                                                  ;A89B8E;
     ASL                                                                  ;A89B8F;
     ASL                                                                  ;A89B90;
@@ -2782,7 +2782,7 @@ Function_Coven_Materialize_FadeToWhite:
 
   .loopLower:
     LDA.W Palette_Coven,Y                                                ;A89B9B;
-    STA.L $7EC200,X                                                      ;A89B9E;
+    STA.L TargetPalettes_BGP0,X                                          ;A89B9E;
     INX                                                                  ;A89BA2;
     INX                                                                  ;A89BA3;
     INY                                                                  ;A89BA4;
@@ -2799,18 +2799,18 @@ Function_Coven_Materialize_FadeToWhite:
 Function_Coven_Materialize_FadeFromWhite:
     JSR.W AdvanceCovenPaletteTransition                                  ;A89BAD;
     PHA                                                                  ;A89BB0;
-    LDX.W $0E54                                                          ;A89BB1;
+    LDX.W EnemyIndex                                                     ;A89BB1;
     JSR.W HandleFadeInTimerAndIndex                                      ;A89BB4;
     PLA                                                                  ;A89BB7;
     ORA.W Coven.functionTimer,X                                          ;A89BB8;
     BNE .return                                                          ;A89BBB;
-    LDA.W Enemy.properties,X                                                        ;A89BBD;
+    LDA.W Enemy.properties,X                                             ;A89BBD;
     AND.W #$FBFF                                                         ;A89BC0; >.< #$FAFF
     AND.W #$FEFF                                                         ;A89BC3;
-    STA.W Enemy.properties,X                                                        ;A89BC6;
+    STA.W Enemy.properties,X                                             ;A89BC6;
     LDA.W #Function_Coven_Materialized                                   ;A89BC9;
     STA.W Coven.function,X                                               ;A89BCC;
-    LDA.W $0F7E,X                                                        ;A89BCF;
+    LDA.W Enemy.YPosition,X                                              ;A89BCF;
     STA.L Coven.hoverCenterYPosition,X                                   ;A89BD2;
     LDA.W #$0001                                                         ;A89BD6;
     STA.W Coven.functionTimer,X                                          ;A89BD9;
@@ -2824,13 +2824,13 @@ Function_Coven_Materialize_FadeFromWhite:
     STA.W Coven.functionTimer,X                                          ;A89BF3;
     LDA.W #$0004                                                         ;A89BF6;
     STA.L Coven.previousSamusXMovementDirection,X                        ;A89BF9;
-    LDA.W $0AF6                                                          ;A89BFD;
+    LDA.W SamusXPosition                                                 ;A89BFD;
     STA.L Coven.previousSamusXPosition,X                                 ;A89C00;
     STA.L Coven.zoneLeftPosition,X                                       ;A89C04;
     STA.L Coven.zoneRightPosition,X                                      ;A89C08;
     LDA.W #$000C                                                         ;A89C0C;
     STA.L Coven.previousSamusYMovementDirection,X                        ;A89C0F;
-    LDA.W $0AFA,X                                                        ;A89C13;
+    LDA.W SamusYPosition,X                                               ;A89C13;
     STA.L Coven.previousSamusYPosition,X                                 ;A89C16;
     STA.L Coven.zoneTopPosition,X                                        ;A89C1A;
     STA.L Coven.zoneBottomPosition,X                                     ;A89C1E;
@@ -2867,9 +2867,9 @@ HandleFadeInTimerAndIndex:
     RTS                                                                  ;A89C54;
 
   .timerExpired:
-    LDA.W Enemy.properties,X                                                        ;A89C55;
+    LDA.W Enemy.properties,X                                             ;A89C55;
     AND.W #$FEFF                                                         ;A89C58;
-    STA.W Enemy.properties,X                                                        ;A89C5B;
+    STA.W Enemy.properties,X                                             ;A89C5B;
     RTS                                                                  ;A89C5E;
 
   .terminator:
@@ -2884,12 +2884,12 @@ Function_Coven_Dematerializing:
     JSR.W AdvanceCovenPaletteTransition                                  ;A89C69;
     CMP.W #$0000                                                         ;A89C6C;
     BNE .return                                                          ;A89C6F;
-    LDX.W $0E54                                                          ;A89C71;
+    LDX.W EnemyIndex                                                     ;A89C71;
     LDA.W #Function_Coven_Dematerialized_Asleep                          ;A89C74;
     STA.W Coven.function,X                                               ;A89C77;
-    LDA.W Enemy.properties,X                                                        ;A89C7A;
+    LDA.W Enemy.properties,X                                             ;A89C7A;
     ORA.W #$0100                                                         ;A89C7D;
-    STA.W Enemy.properties,X                                                        ;A89C80;
+    STA.W Enemy.properties,X                                             ;A89C80;
     LDA.W CovenConstants_SleepTimer                                      ;A89C83;
     STA.W Coven.functionTimer,X                                          ;A89C86;
 
@@ -2899,14 +2899,14 @@ Function_Coven_Dematerializing:
 
 ;;; $9C8A: Coven function - materialised ;;;
 Function_Coven_Materialized:
-    LDA.W $0F80,X                                                        ;A89C8A;
+    LDA.W Enemy.YSubPosition,X                                           ;A89C8A;
     CLC                                                                  ;A89C8D;
     ADC.L Coven.YSubVelocity,X                                           ;A89C8E;
-    STA.W $0F80,X                                                        ;A89C92;
-    LDA.W $0F7E,X                                                        ;A89C95;
+    STA.W Enemy.YSubPosition,X                                           ;A89C92;
+    LDA.W Enemy.YPosition,X                                              ;A89C95;
     ADC.L Coven.YVelocity,X                                              ;A89C98;
-    STA.W $0F7E,X                                                        ;A89C9C;
-    LDA.W $0F7E,X                                                        ;A89C9F;
+    STA.W Enemy.YPosition,X                                              ;A89C9C;
+    LDA.W Enemy.YPosition,X                                              ;A89C9F;
     CMP.L Coven.hoverCenterYPosition,X                                   ;A89CA2;
     BMI .subvelocity                                                     ;A89CA6;
     LDA.L Coven.YSubVelocity,X                                           ;A89CA8;
@@ -2933,11 +2933,11 @@ Function_Coven_Materialized:
     BNE .return                                                          ;A89CDF;
     LDA.W #Function_Coven_Dematerializing                                ;A89CE1;
     STA.W Coven.function,X                                               ;A89CE4;
-    LDA.W Enemy.properties,X                                                        ;A89CE7;
+    LDA.W Enemy.properties,X                                             ;A89CE7;
     ORA.W #$0400                                                         ;A89CEA;
-    STA.W Enemy.properties,X                                                        ;A89CED;
-    LDX.W $0E54                                                          ;A89CF0;
-    LDA.W $0F96,X                                                        ;A89CF3;
+    STA.W Enemy.properties,X                                             ;A89CED;
+    LDX.W EnemyIndex                                                     ;A89CF0;
+    LDA.W Enemy.palette,X                                                ;A89CF3;
     XBA                                                                  ;A89CF6;
     ASL                                                                  ;A89CF7;
     ASL                                                                  ;A89CF8;
@@ -2947,14 +2947,14 @@ Function_Coven_Materialized:
     ADC.W #$0100                                                         ;A89CFC;
     TAX                                                                  ;A89CFF;
     LDA.W #$0010                                                         ;A89D00;
-    STA.B $12                                                            ;A89D03;
+    STA.B DP_Temp12                                                      ;A89D03;
     LDA.W #$7FFF                                                         ;A89D05;
 
   .loop:
-    STA.L $7EC200,X                                                      ;A89D08;
+    STA.L TargetPalettes_BGP0,X                                          ;A89D08;
     INX                                                                  ;A89D0C;
     INX                                                                  ;A89D0D;
-    DEC.B $12                                                            ;A89D0E;
+    DEC.B DP_Temp12                                                      ;A89D0E;
     BPL .loop                                                            ;A89D10;
 
   .return:
@@ -3002,12 +3002,12 @@ Function_Coven_Dematerialized_Awake:
 
 ; Materialise if Samus has moved at most 1px/frame for 40h frames (tracked by the "lock-on timer" and "zone" variables)
 ; or has moved more than 1px/frame in the same direction 10h times (tracked by the "directed movement timer" and "previous Samus" variables)
-    LDA.W $0AF6                                                          ;A89D36;
+    LDA.W SamusXPosition                                                 ;A89D36;
     CMP.L Coven.zoneLeftPosition,X                                       ;A89D39;
     BMI .breakLockOn                                                     ;A89D3D;
     CMP.L Coven.zoneRightPosition,X                                      ;A89D3F;
     BPL .breakLockOn                                                     ;A89D43;
-    LDA.W $0AFA,X                                                        ;A89D45;
+    LDA.W SamusYPosition,X                                               ;A89D45;
     CMP.L Coven.zoneTopPosition,X                                        ;A89D48;
     BMI .breakLockOn                                                     ;A89D4C;
     CMP.L Coven.zoneBottomPosition,X                                     ;A89D4E;
@@ -3028,7 +3028,7 @@ Function_Coven_Dematerialized_Awake:
     LDA.W CovenConstants_SamusStationaryFramesThreshold                  ;A89D72;
     STA.L Coven.lockOnTimer,X                                            ;A89D75;
     LDY.W #$0000                                                         ;A89D79;
-    LDA.W $0AF6                                                          ;A89D7C;
+    LDA.W SamusXPosition                                                 ;A89D7C;
     SEC                                                                  ;A89D7F;
     SBC.L Coven.previousSamusXPosition,X                                 ;A89D80;
     BMI .checkXMovementDirection                                         ;A89D84;
@@ -3060,19 +3060,19 @@ Function_Coven_Dematerialized_Awake:
     CLC                                                                  ;A89DBD;
     ADC.L Coven.previousSamusYMovementDirection,X                        ;A89DBE;
     TAY                                                                  ;A89DC2;
-    LDA.W $0AF6,X                                                        ;A89DC3;
+    LDA.W SamusXPosition,X                                               ;A89DC3;
     CLC                                                                  ;A89DC6;
     ADC.W CovenConstants_OffsetsFromSamusToMaterialize_X,Y               ;A89DC7;
-    STA.W $0F7A,X                                                        ;A89DCA;
-    LDA.W $0AFA,X                                                        ;A89DCD;
+    STA.W Enemy.XPosition,X                                              ;A89DCA;
+    LDA.W SamusYPosition,X                                               ;A89DCD;
     CLC                                                                  ;A89DD0;
     ADC.W CovenConstants_OffsetsFromSamusToMaterialize_Y,Y               ;A89DD1;
-    STA.W $0F7E,X                                                        ;A89DD4;
+    STA.W Enemy.YPosition,X                                              ;A89DD4;
     RTL                                                                  ;A89DD7;
 
   .checkYMovement:
     LDY.W #$0000                                                         ;A89DD8;
-    LDA.W $0AFA                                                          ;A89DDB;
+    LDA.W SamusYPosition                                                 ;A89DDB;
     SEC                                                                  ;A89DDE;
     SBC.L Coven.previousSamusYPosition,X                                 ;A89DDF;
     BMI .checkYMovementDirection                                         ;A89DE3;
@@ -3100,21 +3100,21 @@ Function_Coven_Dematerialized_Awake:
     BEQ .materialize                                                     ;A89E0D;
 
   .updateZone:
-    LDA.W $0AF6                                                          ;A89E0F;
+    LDA.W SamusXPosition                                                 ;A89E0F;
     STA.L Coven.previousSamusXPosition,X                                 ;A89E12;
     SEC                                                                  ;A89E16;
     SBC.W CovenStationaryZoneXRadius                                     ;A89E17;
     STA.L Coven.zoneLeftPosition,X                                       ;A89E1A;
-    LDA.W $0AF6                                                          ;A89E1E;
+    LDA.W SamusXPosition                                                 ;A89E1E;
     CLC                                                                  ;A89E21;
     ADC.W CovenStationaryZoneXRadius                                     ;A89E22;
     STA.L Coven.zoneRightPosition,X                                      ;A89E25;
-    LDA.W $0AFA                                                          ;A89E29;
+    LDA.W SamusYPosition                                                 ;A89E29;
     STA.L Coven.previousSamusYPosition,X                                 ;A89E2C;
     SEC                                                                  ;A89E30;
     SBC.W CovenStationaryZoneYRadius                                     ;A89E31;
     STA.L Coven.zoneTopPosition,X                                        ;A89E34;
-    LDA.W $0AFA                                                          ;A89E38;
+    LDA.W SamusYPosition                                                 ;A89E38;
     CLC                                                                  ;A89E3B;
     ADC.W CovenStationaryZoneYRadius                                     ;A89E3C;
     STA.L Coven.zoneBottomPosition,X                                     ;A89E3F;
@@ -3163,13 +3163,13 @@ AdvanceCovenPaletteTransition:
     PHY                                                                  ;A89E8A;
     REP #$30                                                             ;A89E8B;
     LDY.W #$0000                                                         ;A89E8D;
-    LDA.W $0797                                                          ;A89E90;
+    LDA.W DoorTransitionFlagEnemiesPause                                 ;A89E90;
     BEQ .notDoorTransition                                               ;A89E93;
     JMP.W .return                                                        ;A89E95;
 
   .notDoorTransition:
-    LDX.W $0E54                                                          ;A89E98;
-    LDA.W $0F96,X                                                        ;A89E9B;
+    LDX.W EnemyIndex                                                     ;A89E98;
+    LDA.W Enemy.palette,X                                                ;A89E9B;
     XBA                                                                  ;A89E9E;
     ASL                                                                  ;A89E9F;
     ASL                                                                  ;A89EA0;
@@ -3180,20 +3180,20 @@ AdvanceCovenPaletteTransition:
     TAX                                                                  ;A89EA7;
     CLC                                                                  ;A89EA8;
     ADC.W #$0020                                                         ;A89EA9;
-    STA.B $14                                                            ;A89EAC;
+    STA.B DP_Temp14                                                      ;A89EAC;
 
   .loop:
-    LDA.L $7EC200,X                                                      ;A89EAE;
-    CMP.L $7EC000,X                                                      ;A89EB2;
+    LDA.L TargetPalettes_BGP0,X                                          ;A89EAE;
+    CMP.L Palettes,X                                                     ;A89EB2;
     BNE .notReachedTarget                                                ;A89EB6;
     JMP.W .next                                                          ;A89EB8;
 
   .notReachedTarget:
     AND.W #$001F                                                         ;A89EBB;
-    STA.B $12                                                            ;A89EBE;
-    LDA.L $7EC000,X                                                      ;A89EC0;
+    STA.B DP_Temp12                                                      ;A89EBE;
+    LDA.L Palettes,X                                                     ;A89EC0;
     AND.W #$001F                                                         ;A89EC4;
-    CMP.B $12                                                            ;A89EC7;
+    CMP.B DP_Temp12                                                      ;A89EC7;
     BEQ .redEnd                                                          ;A89EC9;
     BPL .notReachedRedTarget                                             ;A89ECB;
     INC                                                                  ;A89ECD;
@@ -3202,20 +3202,20 @@ AdvanceCovenPaletteTransition:
   .notReachedRedTarget:
     DEC                                                                  ;A89ED0;
 
-+   STA.B $12                                                            ;A89ED1;
-    LDA.L $7EC000,X                                                      ;A89ED3;
++   STA.B DP_Temp12                                                      ;A89ED1;
+    LDA.L Palettes,X                                                     ;A89ED3;
     AND.W #$FFE0                                                         ;A89ED7;
-    ORA.B $12                                                            ;A89EDA;
-    STA.L $7EC000,X                                                      ;A89EDC;
+    ORA.B DP_Temp12                                                      ;A89EDA;
+    STA.L Palettes,X                                                     ;A89EDC;
     INY                                                                  ;A89EE0;
 
   .redEnd:
-    LDA.L $7EC200,X                                                      ;A89EE1;
+    LDA.L TargetPalettes_BGP0,X                                          ;A89EE1;
     AND.W #$03E0                                                         ;A89EE5;
-    STA.B $12                                                            ;A89EE8;
-    LDA.L $7EC000,X                                                      ;A89EEA;
+    STA.B DP_Temp12                                                      ;A89EE8;
+    LDA.L Palettes,X                                                     ;A89EEA;
     AND.W #$03E0                                                         ;A89EEE;
-    CMP.B $12                                                            ;A89EF1;
+    CMP.B DP_Temp12                                                      ;A89EF1;
     BEQ .greenEnd                                                        ;A89EF3;
     BPL .notReachedGreenTarget                                           ;A89EF5;
     CLC                                                                  ;A89EF7;
@@ -3226,20 +3226,20 @@ AdvanceCovenPaletteTransition:
     SEC                                                                  ;A89EFD;
     SBC.W #$0020                                                         ;A89EFE;
 
-+   STA.B $12                                                            ;A89F01;
-    LDA.L $7EC000,X                                                      ;A89F03;
++   STA.B DP_Temp12                                                      ;A89F01;
+    LDA.L Palettes,X                                                     ;A89F03;
     AND.W #$FC1F                                                         ;A89F07;
-    ORA.B $12                                                            ;A89F0A;
-    STA.L $7EC000,X                                                      ;A89F0C;
+    ORA.B DP_Temp12                                                      ;A89F0A;
+    STA.L Palettes,X                                                     ;A89F0C;
     INY                                                                  ;A89F10;
 
   .greenEnd:
-    LDA.L $7EC200,X                                                      ;A89F11;
+    LDA.L TargetPalettes_BGP0,X                                          ;A89F11;
     AND.W #$7C00                                                         ;A89F15;
-    STA.B $12                                                            ;A89F18;
-    LDA.L $7EC000,X                                                      ;A89F1A;
+    STA.B DP_Temp12                                                      ;A89F18;
+    LDA.L Palettes,X                                                     ;A89F1A;
     AND.W #$7C00                                                         ;A89F1E;
-    CMP.B $12                                                            ;A89F21;
+    CMP.B DP_Temp12                                                      ;A89F21;
     BEQ .next                                                            ;A89F23;
     BPL .notReachedBlueTarget                                            ;A89F25;
     CLC                                                                  ;A89F27;
@@ -3250,17 +3250,17 @@ AdvanceCovenPaletteTransition:
     SEC                                                                  ;A89F2D;
     SBC.W #$0400                                                         ;A89F2E;
 
-+   STA.B $12                                                            ;A89F31;
-    LDA.L $7EC000,X                                                      ;A89F33;
++   STA.B DP_Temp12                                                      ;A89F31;
+    LDA.L Palettes,X                                                     ;A89F33;
     AND.W #$83FF                                                         ;A89F37;
-    ORA.B $12                                                            ;A89F3A;
-    STA.L $7EC000,X                                                      ;A89F3C;
+    ORA.B DP_Temp12                                                      ;A89F3A;
+    STA.L Palettes,X                                                     ;A89F3C;
     INY                                                                  ;A89F40;
 
   .next:
     INX                                                                  ;A89F41;
     INX                                                                  ;A89F42;
-    CPX.B $14                                                            ;A89F43;
+    CPX.B DP_Temp14                                                      ;A89F43;
     BPL .return                                                          ;A89F45;
     JMP.W .loop                                                          ;A89F47;
 
@@ -3398,7 +3398,7 @@ InstList_YappingMaw_Cooldown_FacingUpLeft_1:
     dw $0005,Spritemap_YappingMaw_0                                      ;A8A04D;
     dw $0003,Spritemap_YappingMaw_1                                      ;A8A051;
     dw Instruction_YappingMaw_QueueSFXIfOnScreen                         ;A8A055;
-    dw Instruction_Common_GotoY                                        ;A8A057;
+    dw Instruction_Common_GotoY                                          ;A8A057;
     dw InstList_YappingMaw_Cooldown_FacingUpLeft_1                       ;A8A059;
 
 
@@ -3500,7 +3500,7 @@ YappingMawSamusOffsets_Y_UpLeft:
 
 ;;; $A0C7: Instruction - offset Samus up-right ;;;
 Instruction_YappingMaw_OffsetSamusUpRight:
-    LDX.W $0E54                                                          ;A8A0C7;
+    LDX.W EnemyIndex                                                     ;A8A0C7;
     LDA.W YappingMawSamusOffsets_X_UpRight                               ;A8A0CA;
     STA.L YappingMaw.SamusXOffset,X                                      ;A8A0CD;
     LDA.W YappingMawSamusOffsets_Y_UpRight                               ;A8A0D1;
@@ -3510,7 +3510,7 @@ Instruction_YappingMaw_OffsetSamusUpRight:
 
 ;;; $A0D9: Instruction - offset Samus up-left ;;;
 Instruction_YappingMaw_OffsetSamusUpLeft:
-    LDX.W $0E54                                                          ;A8A0D9;
+    LDX.W EnemyIndex                                                     ;A8A0D9;
     LDA.W YappingMawSamusOffsets_X_UpLeft                                ;A8A0DC;
     STA.L YappingMaw.SamusXOffset,X                                      ;A8A0DF;
     LDA.W YappingMawSamusOffsets_Y_UpLeft                                ;A8A0E3;
@@ -3520,7 +3520,7 @@ Instruction_YappingMaw_OffsetSamusUpLeft:
 
 ;;; $A0EB: Instruction - offset Samus down-right ;;;
 Instruction_YappingMaw_OffsetSamusDownRight:
-    LDX.W $0E54                                                          ;A8A0EB;
+    LDX.W EnemyIndex                                                     ;A8A0EB;
     LDA.W YappingMawSamusOffsets_X_DownRight                             ;A8A0EE;
     STA.L YappingMaw.SamusXOffset,X                                      ;A8A0F1;
     LDA.W YappingMawSamusOffsets_Y_DownRight                             ;A8A0F5;
@@ -3530,7 +3530,7 @@ Instruction_YappingMaw_OffsetSamusDownRight:
 
 ;;; $A0FD: Instruction - offset Samus down-left ;;;
 Instruction_YappingMaw_OffsetSamusDownLeft:
-    LDX.W $0E54                                                          ;A8A0FD;
+    LDX.W EnemyIndex                                                     ;A8A0FD;
     LDA.W YappingMawSamusOffsets_X_DownLeft                              ;A8A100;
     STA.L YappingMaw.SamusXOffset,X                                      ;A8A103;
     LDA.W YappingMawSamusOffsets_Y_DownLeft                              ;A8A107;
@@ -3540,7 +3540,7 @@ Instruction_YappingMaw_OffsetSamusDownLeft:
 
 ;;; $A10F: Instruction - offset Samus up ;;;
 Instruction_YappingMaw_OffsetSamusUp:
-    LDX.W $0E54                                                          ;A8A10F;
+    LDX.W EnemyIndex                                                     ;A8A10F;
     LDA.W YappingMawSamusOffsets_X_Up                                    ;A8A112;
     STA.L YappingMaw.SamusXOffset,X                                      ;A8A115;
     LDA.W YappingMawSamusOffsets_Y_Up                                    ;A8A119;
@@ -3550,7 +3550,7 @@ Instruction_YappingMaw_OffsetSamusUp:
 
 ;;; $A121: Instruction - offset Samus down ;;;
 Instruction_YappingMaw_OffsetSamusDown:
-    LDX.W $0E54                                                          ;A8A121;
+    LDX.W EnemyIndex                                                     ;A8A121;
     LDA.W YappingMawSamusOffsets_X_Down                                  ;A8A124;
     STA.L YappingMaw.SamusXOffset,X                                      ;A8A127;
     LDA.W YappingMawSamusOffsets_Y_Down                                  ;A8A12B;
@@ -3562,8 +3562,8 @@ Instruction_YappingMaw_OffsetSamusDown:
 Instruction_YappingMaw_QueueSFXIfOnScreen:
     PHY                                                                  ;A8A133;
     PHX                                                                  ;A8A134;
-    LDX.W $0E54                                                          ;A8A135;
-    LDA.L $7E802C,X                                                      ;A8A138;
+    LDX.W EnemyIndex                                                     ;A8A135;
+    LDA.L ExtraEnemy8000+$2C,X                                           ;A8A138;
     BNE .return                                                          ;A8A13C;
     LDA.W #$002F                                                         ;A8A13E;
     JSL.L QueueSound_Lib2_Max6                                           ;A8A141;
@@ -3576,10 +3576,10 @@ Instruction_YappingMaw_QueueSFXIfOnScreen:
 
 ;;; $A148: Initialisation AI - enemy $E7BF (yapping maw) ;;;
 InitAI_YappingMaw:
-    LDX.W $0E54                                                          ;A8A148;
-    LDA.W $0F7A,X                                                        ;A8A14B;
+    LDX.W EnemyIndex                                                     ;A8A148;
+    LDA.W Enemy.XPosition,X                                              ;A8A14B;
     STA.L YappingMaw.bodySegmentBaseXPosition,X                          ;A8A14E;
-    LDA.W $0F7E,X                                                        ;A8A152;
+    LDA.W Enemy.YPosition,X                                              ;A8A152;
     STA.L YappingMaw.bodySegmentBaseYPosition,X                          ;A8A155;
     LDA.W #$0000                                                         ;A8A159;
     STA.L YappingMaw.bodySegment1XOffset,X                               ;A8A15C;
@@ -3591,72 +3591,72 @@ InitAI_YappingMaw:
     STA.L YappingMaw.headSegmentXOffset,X                                ;A8A174;
     STA.L YappingMaw.headSegmentYOffset,X                                ;A8A178;
     STA.L YappingMaw.grabbingSamusFlag,X                                 ;A8A17C;
-    LDA.W $0FB4,X                                                        ;A8A180;
+    LDA.W Enemy.init0,X                                                  ;A8A180;
     STA.W YappingMaw.proximity,X                                         ;A8A183;
     LDA.W #$0040                                                         ;A8A186;
-    STA.W $0FB0,X                                                        ;A8A189;
+    STA.W Enemy.var4,X                                                   ;A8A189;
     LDA.W #InstList_YappingMaw_Attacking_FacingUp                        ;A8A18C;
-    STA.W Enemy.instList,X                                                        ;A8A18F;
+    STA.W Enemy.instList,X                                               ;A8A18F;
     LDA.W #$0039                                                         ;A8A192;
-    STA.B $24                                                            ;A8A195;
+    STA.B DP_Temp24                                                      ;A8A195;
     LDA.W #$0008                                                         ;A8A197;
-    STA.B $22                                                            ;A8A19A;
-    LDA.W $0FB6,X                                                        ;A8A19C;
+    STA.B DP_Temp22                                                      ;A8A19A;
+    LDA.W Enemy.init1,X                                                  ;A8A19C;
     BNE .keepUp                                                          ;A8A19F;
     LDA.W #InstList_YappingMaw_Attacking_FacingDown                      ;A8A1A1;
-    STA.W Enemy.instList,X                                                        ;A8A1A4;
+    STA.W Enemy.instList,X                                               ;A8A1A4;
     LDA.W #$0038                                                         ;A8A1A7;
-    STA.B $24                                                            ;A8A1AA;
+    STA.B DP_Temp24                                                      ;A8A1AA;
     LDA.W #$FFF8                                                         ;A8A1AC;
-    STA.B $22                                                            ;A8A1AF;
+    STA.B DP_Temp22                                                      ;A8A1AF;
 
   .keepUp:
     LDA.W #$0001                                                         ;A8A1B1;
-    STA.W Enemy.instTimer,X                                                        ;A8A1B4;
-    STZ.W Enemy.loopCounter,X                                                        ;A8A1B7;
+    STA.W Enemy.instTimer,X                                              ;A8A1B4;
+    STZ.W Enemy.loopCounter,X                                            ;A8A1B7;
     LDA.W #Function_YappingMaw_Neutral                                   ;A8A1BA;
     STA.W YappingMaw.function,X                                          ;A8A1BD;
-    LDA.W $0F96,X                                                        ;A8A1C0;
+    LDA.W Enemy.palette,X                                                ;A8A1C0;
     AND.W #$0E00                                                         ;A8A1C3;
     STA.L YappingMaw.initialPaletteIndex,X                               ;A8A1C6;
     LDA.W #$0003                                                         ;A8A1CA;
     STA.L YappingMaw.bodySegmentIndex,X                                  ;A8A1CD;
 
   .loop:
-    LDX.W $0E54                                                          ;A8A1D1;
+    LDX.W EnemyIndex                                                     ;A8A1D1;
     LDY.W #EnemyProjectile_YappingMawsBody                               ;A8A1D4;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8A1D7;
-    LDX.W $0E54                                                          ;A8A1DB;
+    LDX.W EnemyIndex                                                     ;A8A1DB;
     LDA.L YappingMaw.bodySegmentIndex,X                                  ;A8A1DE;
     DEC                                                                  ;A8A1E2;
     STA.L YappingMaw.bodySegmentIndex,X                                  ;A8A1E3;
     BPL .loop                                                            ;A8A1E7;
-    LDA.W $0F7A,X                                                        ;A8A1E9;
-    STA.B $12                                                            ;A8A1EC;
-    LDA.W $0F7E,X                                                        ;A8A1EE;
+    LDA.W Enemy.XPosition,X                                              ;A8A1E9;
+    STA.B DP_Temp12                                                      ;A8A1EC;
+    LDA.W Enemy.YPosition,X                                              ;A8A1EE;
     CLC                                                                  ;A8A1F1;
-    ADC.B $22                                                            ;A8A1F2;
-    STA.B $14                                                            ;A8A1F4;
-    LDA.B $24                                                            ;A8A1F6;
-    STA.B $16                                                            ;A8A1F8;
-    LDA.W $0F96,X                                                        ;A8A1FA;
-    ORA.W $0F98,X                                                        ;A8A1FD;
-    STA.L $7E880E,X                                                      ;A8A200;
-    STA.B $18                                                            ;A8A204;
+    ADC.B DP_Temp22                                                      ;A8A1F2;
+    STA.B DP_Temp14                                                      ;A8A1F4;
+    LDA.B DP_Temp24                                                      ;A8A1F6;
+    STA.B DP_Temp16                                                      ;A8A1F8;
+    LDA.W Enemy.palette,X                                                ;A8A1FA;
+    ORA.W Enemy.GFXOffset,X                                              ;A8A1FD;
+    STA.L ExtraEnemy8800+$E,X                                            ;A8A200;
+    STA.B DP_Temp18                                                      ;A8A204;
     JSL.L Create_Sprite_Object                                           ;A8A206;
-    LDA.B $12                                                            ;A8A20A;
+    LDA.B DP_Temp12                                                      ;A8A20A;
     STA.L YappingMaw.baseSpriteObjectIndex,X                             ;A8A20C;
     RTL                                                                  ;A8A210;
 
 
 ;;; $A211: Main AI - enemy $E7BF (yapping maw) ;;;
 MainAI_YappingMaw:
-    LDX.W $0E54                                                          ;A8A211;
+    LDX.W EnemyIndex                                                     ;A8A211;
     LDA.L YappingMaw.intangibilityTimer,X                                ;A8A214;
     DEC                                                                  ;A8A218;
     STA.L YappingMaw.intangibilityTimer,X                                ;A8A219;
     JSL.L CheckIfEnemyCenterIsOnScreen                                   ;A8A21D;
-    STA.L $7E802C,X                                                      ;A8A221;
+    STA.L ExtraEnemy8000+$2C,X                                           ;A8A221;
     JSR.W (YappingMaw.function,X)                                        ;A8A225;
     JSR.W SetBodySegmentPosition_3                                       ;A8A228;
     JSR.W SetBodySegmentPosition_2                                       ;A8A22B;
@@ -3667,15 +3667,15 @@ MainAI_YappingMaw:
 
 ;;; $A235: Yapping maw function - neutral ;;;
 Function_YappingMaw_Neutral:
-    LDX.W $0E54                                                          ;A8A235;
-    LDA.W $0F7A,X                                                        ;A8A238;
-    STA.W $0E32                                                          ;A8A23B;
-    LDA.W $0F7E,X                                                        ;A8A23E;
-    STA.W $0E34                                                          ;A8A241;
-    LDA.W $0AF6                                                          ;A8A244;
-    STA.W $0E36                                                          ;A8A247;
-    LDA.W $0AFA                                                          ;A8A24A;
-    STA.W $0E38                                                          ;A8A24D;
+    LDX.W EnemyIndex                                                     ;A8A235;
+    LDA.W Enemy.XPosition,X                                              ;A8A238;
+    STA.W Temp_XPosition                                                 ;A8A23B;
+    LDA.W Enemy.YPosition,X                                              ;A8A23E;
+    STA.W Temp_YPosition                                                 ;A8A241;
+    LDA.W SamusXPosition                                                 ;A8A244;
+    STA.W Temp_SamusXPosition                                            ;A8A247;
+    LDA.W SamusYPosition                                                 ;A8A24A;
+    STA.W Temp_SamusYPosition                                            ;A8A24D;
     JSL.L CalculateDistanceAndAngleOfSamusFromEnemy                      ;A8A250;
     JSL.L NegateA_A0B067                                                 ;A8A254;
     STA.L YappingMaw.targetLength,X                                      ;A8A258;
@@ -3689,7 +3689,7 @@ Function_YappingMaw_Neutral:
     LDA.W #$0040                                                         ;A8A26F;
     STA.L YappingMaw.targetLength,X                                      ;A8A272;
 
-+   LDA.W $0E3A                                                          ;A8A276;
++   LDA.W Temp_AngleFromEnemyToSamus                                     ;A8A276;
     STA.L YappingMaw.targetAngleSMConvention,X                           ;A8A279;
     LDA.W #Function_YappingMaw_Attack                                    ;A8A27D;
     STA.W YappingMaw.function,X                                          ;A8A280;
@@ -3705,7 +3705,7 @@ Function_YappingMaw_Neutral:
 
 ;;; $A28C: Yapping maw function - attack ;;;
 Function_YappingMaw_Attack:
-    LDX.W $0E54                                                          ;A8A28C;
+    LDX.W EnemyIndex                                                     ;A8A28C;
     STZ.W YappingMaw.angle,X                                             ;A8A28F;
     STZ.W YappingMaw.subAngle,X                                          ;A8A292;
     STZ.W YappingMaw.angularSpeedTableIndex,X                            ;A8A295;
@@ -3746,10 +3746,10 @@ Function_YappingMaw_Attack:
     STA.L YappingMaw.instListTableIndex,X                                ;A8A2E4;
     TAY                                                                  ;A8A2E8;
     LDA.W InstListPointers_YappingMaw,Y                                  ;A8A2E9;
-    STA.W Enemy.instList,X                                                        ;A8A2EC;
+    STA.W Enemy.instList,X                                               ;A8A2EC;
     LDA.W #$0001                                                         ;A8A2EF;
-    STA.W Enemy.instTimer,X                                                        ;A8A2F2;
-    STZ.W Enemy.loopCounter,X                                                        ;A8A2F5;
+    STA.W Enemy.instTimer,X                                              ;A8A2F2;
+    STZ.W Enemy.loopCounter,X                                            ;A8A2F5;
     TYA                                                                  ;A8A2F8;
     ASL                                                                  ;A8A2F9;
     TAY                                                                  ;A8A2FA;
@@ -3764,15 +3764,15 @@ Function_YappingMaw_Attack:
 
 ;;; $A310: Calculate yapping maw origin position ;;;
 CalculateYappingMawOriginPosition:
-    LDX.W $0E54                                                          ;A8A310;
+    LDX.W EnemyIndex                                                     ;A8A310;
     LDA.L YappingMaw.length,X                                            ;A8A313;
-    STA.W $0E32                                                          ;A8A317;
+    STA.W Temp_Unknown0E32                                               ;A8A317;
     LDA.W #$0080                                                         ;A8A31A;
     JSL.L Math_Cosine_A8A73E                                             ;A8A31D;
     STA.L YappingMaw.originXPosition,X                                   ;A8A321;
     LDA.L YappingMaw.length,X                                            ;A8A325;
     LSR                                                                  ;A8A329;
-    STA.W $0E32                                                          ;A8A32A;
+    STA.W Temp_Unknown0E32                                               ;A8A32A;
     LDA.W #$0080                                                         ;A8A32D;
     JSL.L Math_Sine_A8A742                                               ;A8A330;
     STA.L YappingMaw.originYPosition,X                                   ;A8A334;
@@ -3781,96 +3781,96 @@ CalculateYappingMawOriginPosition:
 
 ;;; $A339: Calculate body segment 1 velocities ;;;
 CalculateBodySegment1Velocities:
-    LDX.W $0E54                                                          ;A8A339;
+    LDX.W EnemyIndex                                                     ;A8A339;
     LDA.L YappingMaw.bodySegment1XOffset,X                               ;A8A33C;
-    STA.W $0E32                                                          ;A8A340;
+    STA.W Temp_Unknown0E32                                               ;A8A340;
     LDA.W #$0000                                                         ;A8A343;
     JSL.L Math_Cosine_A8A73E                                             ;A8A346;
-    STA.L $7E7820,X                                                      ;A8A34A;
+    STA.L ExtraEnemy7800+$20,X                                           ;A8A34A;
     LDA.W #$0000                                                         ;A8A34E;
     JSL.L Math_Sine_A8A742                                               ;A8A351;
-    STA.L $7E7822,X                                                      ;A8A355;
+    STA.L ExtraEnemy7800+$22,X                                           ;A8A355;
     LDA.L YappingMaw.targetAngleMathsConvention,X                        ;A8A359;
     JSL.L Math_Cosine_A8A73E                                             ;A8A35D;
     SEC                                                                  ;A8A361;
-    SBC.L $7E7820,X                                                      ;A8A362;
+    SBC.L ExtraEnemy7800+$20,X                                           ;A8A362;
     STA.L YappingMaw.bodySegment1XVelocity,X                             ;A8A366;
     LDA.L YappingMaw.targetAngleMathsConvention,X                        ;A8A36A;
     JSL.L Math_Sine_A8A742                                               ;A8A36E;
     SEC                                                                  ;A8A372;
-    SBC.L $7E7822,X                                                      ;A8A373;
+    SBC.L ExtraEnemy7800+$22,X                                           ;A8A373;
     STA.L YappingMaw.bodySegment1YVelocity,X                             ;A8A377;
     RTS                                                                  ;A8A37B;
 
 
 ;;; $A37C: Calculate body segment 2 velocities ;;;
 CalculateBodySegment2Velocities:
-    LDX.W $0E54                                                          ;A8A37C;
+    LDX.W EnemyIndex                                                     ;A8A37C;
     LDA.L YappingMaw.bodySegment2XOffset,X                               ;A8A37F;
-    STA.W $0E32                                                          ;A8A383;
+    STA.W Temp_Unknown0E32                                               ;A8A383;
     LDA.W #$0000                                                         ;A8A386;
     JSL.L Math_Cosine_A8A73E                                             ;A8A389;
-    STA.L $7E7820,X                                                      ;A8A38D;
+    STA.L ExtraEnemy7800+$20,X                                           ;A8A38D;
     LDA.W #$0000                                                         ;A8A391;
     JSL.L Math_Sine_A8A742                                               ;A8A394;
-    STA.L $7E7822,X                                                      ;A8A398;
+    STA.L ExtraEnemy7800+$22,X                                           ;A8A398;
     LDA.L YappingMaw.targetAngleMathsConvention,X                        ;A8A39C;
     JSL.L Math_Cosine_A8A73E                                             ;A8A3A0;
     SEC                                                                  ;A8A3A4;
-    SBC.L $7E7820,X                                                      ;A8A3A5;
+    SBC.L ExtraEnemy7800+$20,X                                           ;A8A3A5;
     STA.L YappingMaw.bodySegment2XVelocity,X                             ;A8A3A9;
     LDA.L YappingMaw.targetAngleMathsConvention,X                        ;A8A3AD;
     JSL.L Math_Sine_A8A742                                               ;A8A3B1;
     SEC                                                                  ;A8A3B5;
-    SBC.L $7E7822,X                                                      ;A8A3B6;
+    SBC.L ExtraEnemy7800+$22,X                                           ;A8A3B6;
     STA.L YappingMaw.bodySegment2YVelocity,X                             ;A8A3BA;
     RTS                                                                  ;A8A3BE;
 
 
 ;;; $A3BF: Calculate body segment 3 velocities ;;;
 CalculateBodySegment3Velocities:
-    LDX.W $0E54                                                          ;A8A3BF;
+    LDX.W EnemyIndex                                                     ;A8A3BF;
     LDA.L YappingMaw.bodySegment3XOffset,X                               ;A8A3C2;
-    STA.W $0E32                                                          ;A8A3C6;
+    STA.W Temp_Unknown0E32                                               ;A8A3C6;
     LDA.W #$0000                                                         ;A8A3C9;
     JSL.L Math_Cosine_A8A73E                                             ;A8A3CC;
-    STA.L $7E7820,X                                                      ;A8A3D0;
+    STA.L ExtraEnemy7800+$20,X                                           ;A8A3D0;
     LDA.W #$0000                                                         ;A8A3D4;
     JSL.L Math_Sine_A8A742                                               ;A8A3D7;
-    STA.L $7E7822,X                                                      ;A8A3DB;
+    STA.L ExtraEnemy7800+$22,X                                           ;A8A3DB;
     LDA.L YappingMaw.targetAngleMathsConvention,X                        ;A8A3DF;
     JSL.L Math_Cosine_A8A73E                                             ;A8A3E3;
     SEC                                                                  ;A8A3E7;
-    SBC.L $7E7820,X                                                      ;A8A3E8;
+    SBC.L ExtraEnemy7800+$20,X                                           ;A8A3E8;
     STA.L YappingMaw.bodySegment3XVelocity,X                             ;A8A3EC;
     LDA.L YappingMaw.targetAngleMathsConvention,X                        ;A8A3F0;
     JSL.L Math_Sine_A8A742                                               ;A8A3F4;
     SEC                                                                  ;A8A3F8;
-    SBC.L $7E7822,X                                                      ;A8A3F9;
+    SBC.L ExtraEnemy7800+$22,X                                           ;A8A3F9;
     STA.L YappingMaw.bodySegment3YVelocity,X                             ;A8A3FD;
     RTS                                                                  ;A8A401;
 
 
 ;;; $A402: Calculate head segment velocities ;;;
 CalculateHeadSegmentVelocities:
-    LDX.W $0E54                                                          ;A8A402;
+    LDX.W EnemyIndex                                                     ;A8A402;
     LDA.L YappingMaw.headSegmentXOffset,X                                ;A8A405;
-    STA.W $0E32                                                          ;A8A409;
+    STA.W Temp_Unknown0E32                                               ;A8A409;
     LDA.W #$0000                                                         ;A8A40C;
     JSL.L Math_Cosine_A8A73E                                             ;A8A40F;
-    STA.L $7E7820,X                                                      ;A8A413;
+    STA.L ExtraEnemy7800+$20,X                                           ;A8A413;
     LDA.W #$0000                                                         ;A8A417;
     JSL.L Math_Sine_A8A742                                               ;A8A41A;
-    STA.L $7E7822,X                                                      ;A8A41E;
+    STA.L ExtraEnemy7800+$22,X                                           ;A8A41E;
     LDA.L YappingMaw.targetAngleMathsConvention,X                        ;A8A422;
     JSL.L Math_Cosine_A8A73E                                             ;A8A426;
     SEC                                                                  ;A8A42A;
-    SBC.L $7E7820,X                                                      ;A8A42B;
+    SBC.L ExtraEnemy7800+$20,X                                           ;A8A42B;
     STA.L YappingMaw.headSegmentXVelocity,X                              ;A8A42F;
     LDA.L YappingMaw.targetAngleMathsConvention,X                        ;A8A433;
     JSL.L Math_Sine_A8A742                                               ;A8A437;
     SEC                                                                  ;A8A43B;
-    SBC.L $7E7822,X                                                      ;A8A43C;
+    SBC.L ExtraEnemy7800+$22,X                                           ;A8A43C;
     STA.L YappingMaw.headSegmentYVelocity,X                              ;A8A440;
     RTS                                                                  ;A8A444;
 
@@ -3882,39 +3882,39 @@ Function_YappingMaw_Attacking:
 ;     Enemy segment Y offset = ([enemy length] * cos([enemy segment angle] * pi / 80h) - [enemy origin X position]) * -sin([enemy target angle] * pi / 80h) + [enemy length] / 2 * -sin([enemy segment angle] * pi / 80h) - [enemy origin Y position]
 
 ; TODO: deserving of a diagram? need to verify with lua script also
-    LDX.W $0E54                                                          ;A8A445;
+    LDX.W EnemyIndex                                                     ;A8A445;
     LDA.W YappingMaw.angle,X                                             ;A8A448;
     LSR                                                                  ;A8A44B;
     LSR                                                                  ;A8A44C;
-    STA.B $14                                                            ;A8A44D;
+    STA.B DP_Temp14                                                      ;A8A44D;
     LDA.L YappingMaw.aimingDownFlag,X                                    ;A8A44F;
     BNE .notAimingDown                                                   ;A8A453;
     SEC                                                                  ;A8A455;
     LDA.W #$0080                                                         ;A8A456;
-    SBC.B $14                                                            ;A8A459;
+    SBC.B DP_Temp14                                                      ;A8A459;
     STA.L YappingMaw.bodySegment1Angle,X                                 ;A8A45B;
-    SBC.B $14                                                            ;A8A45F;
+    SBC.B DP_Temp14                                                      ;A8A45F;
     STA.L YappingMaw.bodySegment2Angle,X                                 ;A8A461;
-    SBC.B $14                                                            ;A8A465;
+    SBC.B DP_Temp14                                                      ;A8A465;
     STA.L YappingMaw.bodySegment3Angle,X                                 ;A8A467;
-    SBC.B $14                                                            ;A8A46B;
+    SBC.B DP_Temp14                                                      ;A8A46B;
     STA.L YappingMaw.bodySegmentAngle,X                                  ;A8A46D;
     BRA +                                                                ;A8A471;
 
   .notAimingDown:
     CLC                                                                  ;A8A473;
     LDA.W #$0080                                                         ;A8A474;
-    ADC.B $14                                                            ;A8A477;
+    ADC.B DP_Temp14                                                      ;A8A477;
     STA.L YappingMaw.bodySegment1Angle,X                                 ;A8A479;
-    ADC.B $14                                                            ;A8A47D;
+    ADC.B DP_Temp14                                                      ;A8A47D;
     STA.L YappingMaw.bodySegment2Angle,X                                 ;A8A47F;
-    ADC.B $14                                                            ;A8A483;
+    ADC.B DP_Temp14                                                      ;A8A483;
     STA.L YappingMaw.bodySegment3Angle,X                                 ;A8A485;
-    ADC.B $14                                                            ;A8A489;
+    ADC.B DP_Temp14                                                      ;A8A489;
     STA.L YappingMaw.bodySegmentAngle,X                                  ;A8A48B;
 
 +   LDA.L YappingMaw.length,X                                            ;A8A48F;
-    STA.W $0E32                                                          ;A8A493;
+    STA.W Temp_Unknown0E32                                               ;A8A493;
     LDA.L YappingMaw.bodySegment1Angle,X                                 ;A8A496;
     JSL.L Math_Cosine_A8A73E                                             ;A8A49A;
     SEC                                                                  ;A8A49E;
@@ -3937,7 +3937,7 @@ Function_YappingMaw_Attacking:
     STA.L YappingMaw.headSegmentXOffset,X                                ;A8A4D6;
     LDA.L YappingMaw.length,X                                            ;A8A4DA;
     LSR                                                                  ;A8A4DE;
-    STA.W $0E32                                                          ;A8A4DF;
+    STA.W Temp_Unknown0E32                                               ;A8A4DF;
     LDA.L YappingMaw.bodySegment1Angle,X                                 ;A8A4E2;
     JSL.L Math_Sine_A8A742                                               ;A8A4E6;
     SEC                                                                  ;A8A4EA;
@@ -3990,11 +3990,11 @@ Function_YappingMaw_Attacking:
     LDA.L YappingMaw.bodySegmentBaseXPosition,X                          ;A8A593;
     CLC                                                                  ;A8A597;
     ADC.L YappingMaw.headSegmentXOffset,X                                ;A8A598;
-    STA.W $0F7A,X                                                        ;A8A59C;
+    STA.W Enemy.XPosition,X                                              ;A8A59C;
     LDA.L YappingMaw.bodySegmentBaseYPosition,X                          ;A8A59F;
     CLC                                                                  ;A8A5A3;
     ADC.L YappingMaw.headSegmentYOffset,X                                ;A8A5A4;
-    STA.W $0F7E,X                                                        ;A8A5A8;
+    STA.W Enemy.YPosition,X                                              ;A8A5A8;
     JSR.W UpdateYappingMawAngularSpeed                                   ;A8A5AB;
     LDA.W YappingMaw.angle,X                                             ;A8A5AE;
     CMP.W #$0000                                                         ;A8A5B1;
@@ -4027,20 +4027,20 @@ Function_YappingMaw_Attacking:
 
   .upRight:
     LDA.W #InstList_YappingMaw_Cooldown_FacingUpRight                    ;A8A5F1;
-    STA.W Enemy.instList,X                                                        ;A8A5F4;
+    STA.W Enemy.instList,X                                               ;A8A5F4;
     BRA .upMerge                                                         ;A8A5F7;
 
   .upLeft:
     LDA.W #InstList_YappingMaw_Cooldown_FacingUpLeft_0                   ;A8A5F9;
-    STA.W Enemy.instList,X                                                        ;A8A5FC;
+    STA.W Enemy.instList,X                                               ;A8A5FC;
     BRA .upMerge                                                         ;A8A5FF;
 
   .up:
     LDA.W #InstList_YappingMaw_Cooldown_FacingUp_0                       ;A8A601;
-    STA.W Enemy.instList,X                                                        ;A8A604;
+    STA.W Enemy.instList,X                                               ;A8A604;
 
   .upMerge:
-    LDA.W $0FB6,X                                                        ;A8A607;
+    LDA.W Enemy.init1,X                                                  ;A8A607;
     BNE .return                                                          ;A8A60A;
     LDA.L YappingMaw.instListTableIndex,X                                ;A8A60C;
     CMP.W #$0004                                                         ;A8A610;
@@ -4051,17 +4051,17 @@ Function_YappingMaw_Attacking:
 
   .downRight:
     LDA.W #InstList_YappingMaw_Cooldown_FacingDownRight                  ;A8A61C;
-    STA.W Enemy.instList,X                                                        ;A8A61F;
+    STA.W Enemy.instList,X                                               ;A8A61F;
     BRA .moveSamus                                                       ;A8A622;
 
   .downLeft:
     LDA.W #InstList_YappingMaw_Cooldown_FacingDownLeft_0                 ;A8A624;
-    STA.W Enemy.instList,X                                                        ;A8A627;
+    STA.W Enemy.instList,X                                               ;A8A627;
     BRA .moveSamus                                                       ;A8A62A;
 
   .down:
     LDA.W #InstList_YappingMaw_Cooldown_FacingDown_0                     ;A8A62C;
-    STA.W Enemy.instList,X                                                        ;A8A62F;
+    STA.W Enemy.instList,X                                               ;A8A62F;
     BRA .return                                                          ;A8A632;
 
   .moveSamus:
@@ -4096,17 +4096,17 @@ UpdateYappingMawAngularSpeed:
 
 ;;; $A665: Move Samus with yapping maw pincers ;;;
 MoveSamusWithYappingMawPincers:
-    LDX.W $0E54                                                          ;A8A665;
+    LDX.W EnemyIndex                                                     ;A8A665;
     LDA.W #$0003                                                         ;A8A668;
     JSL.L Run_Samus_Command                                              ;A8A66B;
-    LDA.W $0F7A,X                                                        ;A8A66F;
+    LDA.W Enemy.XPosition,X                                              ;A8A66F;
     CLC                                                                  ;A8A672;
     ADC.L YappingMaw.SamusXOffset,X                                      ;A8A673;
-    STA.W $0AF6                                                          ;A8A677;
-    LDA.W $0F7E,X                                                        ;A8A67A;
+    STA.W SamusXPosition                                                 ;A8A677;
+    LDA.W Enemy.YPosition,X                                              ;A8A67A;
     CLC                                                                  ;A8A67D;
     ADC.L YappingMaw.SamusYOffset,X                                      ;A8A67E;
-    STA.W $0AFA                                                          ;A8A682;
+    STA.W SamusYPosition                                                 ;A8A682;
     JSL.L CapScrollingSpeed                                              ;A8A685;
     RTS                                                                  ;A8A689;
 
@@ -4124,25 +4124,25 @@ Function_YappingMaw_Cooldown:
 ;      which is only 3 entries long
 ;      The resulting jump pointer is loaded from $90:D57B, which happens to be $FEAD, which is in the free space of bank $90
 ;      Eventually, the PC lands on $0001 and starts executing from WRAM where a crash is inevitable
-    LDX.W $0E54                                                          ;A8A68A;
+    LDX.W EnemyIndex                                                     ;A8A68A;
     LDA.L YappingMaw.grabbingSamusFlag,X                                 ;A8A68D;
     BEQ .notGrabbingSamus                                                ;A8A691;
     JSR.W MoveSamusWithYappingMawPincers                                 ;A8A693;
 
   .notGrabbingSamus:
-    DEC.W $0FB0,X                                                        ;A8A696;
+    DEC.W Enemy.var4,X                                                   ;A8A696;
     BPL .return                                                          ;A8A699;
-    LDA.W $0A60                                                          ;A8A69B;
+    LDA.W PoseInputHandler                                               ;A8A69B;
     CMP.W #SamusPoseInputHandler_Demo                                    ;A8A69E;
     BEQ .return                                                          ;A8A6A1;
     LDA.W #SamusPoseInputHandler_Normal                                  ;A8A6A3;
-    STA.W $0A60                                                          ;A8A6A6;
+    STA.W PoseInputHandler                                               ;A8A6A6;
     LDA.W #$0000                                                         ;A8A6A9;
     STA.L YappingMaw.grabbingSamusFlag,X                                 ;A8A6AC;
     LDA.W #$0030                                                         ;A8A6B0;
     STA.L YappingMaw.intangibilityTimer,X                                ;A8A6B3;
     LDA.W #$0040                                                         ;A8A6B7;
-    STA.W $0FB0,X                                                        ;A8A6BA;
+    STA.W Enemy.var4,X                                                   ;A8A6BA;
     LDA.W #Function_YappingMaw_Neutral                                   ;A8A6BD;
     STA.W YappingMaw.function,X                                          ;A8A6C0;
 
@@ -4152,61 +4152,61 @@ Function_YappingMaw_Cooldown:
 
 ;;; $A6C4: Set body segment 0 position ;;;
 SetBodySegmentPosition_0:
-    LDX.W $0E54                                                          ;A8A6C4;
+    LDX.W EnemyIndex                                                     ;A8A6C4;
     LDA.L YappingMaw.bodySegment0ProjectileIndex,X                       ;A8A6C7;
     TAY                                                                  ;A8A6CB;
     LDA.L YappingMaw.bodySegmentBaseXPosition,X                          ;A8A6CC;
-    STA.W $1A4B,Y                                                        ;A8A6D0;
+    STA.W EnemyProjectile_XPositions,Y                                   ;A8A6D0;
     LDA.L YappingMaw.bodySegmentBaseYPosition,X                          ;A8A6D3;
-    STA.W $1A93,Y                                                        ;A8A6D7;
+    STA.W EnemyProjectile_YPositions,Y                                   ;A8A6D7;
     RTS                                                                  ;A8A6DA;
 
 
 ;;; $A6DB: Set body segment 1 position ;;;
 SetBodySegmentPosition_1:
-    LDX.W $0E54                                                          ;A8A6DB;
+    LDX.W EnemyIndex                                                     ;A8A6DB;
     LDA.L YappingMaw.bodySegment1ProjectileIndex,X                       ;A8A6DE;
     TAY                                                                  ;A8A6E2;
     LDA.L YappingMaw.bodySegmentBaseXPosition,X                          ;A8A6E3;
     CLC                                                                  ;A8A6E7;
     ADC.L YappingMaw.bodySegment1XOffset,X                               ;A8A6E8;
-    STA.W $1A4B,Y                                                        ;A8A6EC;
+    STA.W EnemyProjectile_XPositions,Y                                   ;A8A6EC;
     LDA.L YappingMaw.bodySegmentBaseYPosition,X                          ;A8A6EF;
     CLC                                                                  ;A8A6F3;
     ADC.L YappingMaw.bodySegment1YOffset,X                               ;A8A6F4;
-    STA.W $1A93,Y                                                        ;A8A6F8;
+    STA.W EnemyProjectile_YPositions,Y                                   ;A8A6F8;
     RTS                                                                  ;A8A6FB;
 
 
 ;;; $A6FC: Set body segment 2 position ;;;
 SetBodySegmentPosition_2:
-    LDX.W $0E54                                                          ;A8A6FC;
+    LDX.W EnemyIndex                                                     ;A8A6FC;
     LDA.L YappingMaw.bodySegment2ProjectileIndex,X                       ;A8A6FF;
     TAY                                                                  ;A8A703;
     LDA.L YappingMaw.bodySegmentBaseXPosition,X                          ;A8A704;
     CLC                                                                  ;A8A708;
     ADC.L YappingMaw.bodySegment2XOffset,X                               ;A8A709;
-    STA.W $1A4B,Y                                                        ;A8A70D;
+    STA.W EnemyProjectile_XPositions,Y                                   ;A8A70D;
     LDA.L YappingMaw.bodySegmentBaseYPosition,X                          ;A8A710;
     CLC                                                                  ;A8A714;
     ADC.L YappingMaw.bodySegment2YOffset,X                               ;A8A715;
-    STA.W $1A93,Y                                                        ;A8A719;
+    STA.W EnemyProjectile_YPositions,Y                                   ;A8A719;
     RTS                                                                  ;A8A71C;
 
 
 ;;; $A71D: Set body segment 3 position ;;;
 SetBodySegmentPosition_3:
-    LDX.W $0E54                                                          ;A8A71D;
+    LDX.W EnemyIndex                                                     ;A8A71D;
     LDA.L YappingMaw.bodySegment3ProjectileIndex,X                       ;A8A720;
     TAY                                                                  ;A8A724;
     LDA.L YappingMaw.bodySegmentBaseXPosition,X                          ;A8A725;
     CLC                                                                  ;A8A729;
     ADC.L YappingMaw.bodySegment3XOffset,X                               ;A8A72A;
-    STA.W $1A4B,Y                                                        ;A8A72E;
+    STA.W EnemyProjectile_XPositions,Y                                   ;A8A72E;
     LDA.L YappingMaw.bodySegmentBaseYPosition,X                          ;A8A731;
     CLC                                                                  ;A8A735;
     ADC.L YappingMaw.bodySegment3YOffset,X                               ;A8A736;
-    STA.W $1A93,Y                                                        ;A8A73A;
+    STA.W EnemyProjectile_YPositions,Y                                   ;A8A73A;
     RTS                                                                  ;A8A73D;
 
 
@@ -4228,27 +4228,27 @@ Math_Sine_A8A742:
 ;;     $0E32: Radius
 ;; Returns:
 ;;     A: [$0E32] * -sin([A] * pi / 80h)
-    STA.B $12                                                            ;A8A742;
+    STA.B DP_Temp12                                                      ;A8A742;
     LDA.W #$0100                                                         ;A8A744;
     SEC                                                                  ;A8A747;
-    SBC.B $12                                                            ;A8A748;
+    SBC.B DP_Temp12                                                      ;A8A748;
     AND.W #$00FF                                                         ;A8A74A;
     ASL                                                                  ;A8A74D;
     TAX                                                                  ;A8A74E;
     PHP                                                                  ;A8A74F;
-    STZ.B $14                                                            ;A8A750;
-    STZ.B $16                                                            ;A8A752;
+    STZ.B DP_Temp14                                                      ;A8A750;
+    STZ.B DP_Temp16                                                      ;A8A752;
     LDA.L SineCosineTables_16bitSine,X                                   ;A8A754;
     BPL +                                                                ;A8A758;
     EOR.W #$FFFF                                                         ;A8A75A;
     INC                                                                  ;A8A75D;
-    INC.B $14                                                            ;A8A75E;
+    INC.B DP_Temp14                                                      ;A8A75E;
 
 +   AND.W #$FF00                                                         ;A8A760;
     XBA                                                                  ;A8A763;
     SEP #$20                                                             ;A8A764;
     STA.W $4202                                                          ;A8A766;
-    LDA.W $0E32                                                          ;A8A769;
+    LDA.W Temp_Unknown0E32                                               ;A8A769;
     BEQ +                                                                ;A8A76C;
     STA.W $4203                                                          ;A8A76E;
     NOP                                                                  ;A8A771;
@@ -4259,8 +4259,8 @@ Math_Sine_A8A742:
     AND.W #$FF00                                                         ;A8A779;
     XBA                                                                  ;A8A77C;
     ASL                                                                  ;A8A77D;
-    STA.B $16                                                            ;A8A77E;
-    LDA.B $14                                                            ;A8A780;
+    STA.B DP_Temp16                                                      ;A8A77E;
+    LDA.B DP_Temp14                                                      ;A8A780;
     BEQ +                                                                ;A8A782;
     LDA.W $4216                                                          ;A8A784;
     EOR.W #$FFFF                                                         ;A8A787;
@@ -4268,17 +4268,17 @@ Math_Sine_A8A742:
     XBA                                                                  ;A8A78B;
     ASL                                                                  ;A8A78C;
     ORA.W #$FF00                                                         ;A8A78D;
-    STA.B $16                                                            ;A8A790;
+    STA.B DP_Temp16                                                      ;A8A790;
 
-+   LDA.B $16                                                            ;A8A792;
-    LDX.W $0E54                                                          ;A8A794;
++   LDA.B DP_Temp16                                                      ;A8A792;
+    LDX.W EnemyIndex                                                     ;A8A794;
     PLP                                                                  ;A8A797;
     RTL                                                                  ;A8A798;
 
 
 ;;; $A799: Enemy touch - enemy $E7BF (yapping maw) ;;;
 EnemyTouch_YappingMaw:
-    LDX.W $0E54                                                          ;A8A799;
+    LDX.W EnemyIndex                                                     ;A8A799;
     LDA.L YappingMaw.intangibilityTimer,X                                ;A8A79C;
     BPL .return                                                          ;A8A7A0;
     LDA.L YappingMaw.grabbingSamusFlag,X                                 ;A8A7A2;
@@ -4288,7 +4288,7 @@ EnemyTouch_YappingMaw:
     LDA.W #$0001                                                         ;A8A7AF;
     STA.L YappingMaw.grabbingSamusFlag,X                                 ;A8A7B2;
     LDA.W #RTS_90E90E                                                    ;A8A7B6;
-    STA.W $0A60                                                          ;A8A7B9;
+    STA.W PoseInputHandler                                               ;A8A7B9;
 
   .return:
     RTL                                                                  ;A8A7BC;
@@ -4298,36 +4298,36 @@ EnemyTouch_YappingMaw:
 EnemyShot_YappingMaw:
 ; BUG: Yapping maw shinespark crash crash applies here too if a yapping maw is frozen or killed, see Function_YappingMaw_Cooldown
     JSL.L NormalEnemyShotAI                                              ;A8A7BD;
-    LDX.W $0E54                                                          ;A8A7C1;
-    LDA.W $0F8C,X                                                        ;A8A7C4;
+    LDX.W EnemyIndex                                                     ;A8A7C1;
+    LDA.W Enemy.health,X                                                 ;A8A7C4;
     BNE .alive                                                           ;A8A7C7;
     LDA.L YappingMaw.bodySegment0ProjectileIndex,X                       ;A8A7C9;
     TAY                                                                  ;A8A7CD;
     LDA.W #$0000                                                         ;A8A7CE;
-    STA.W $1997,Y                                                        ;A8A7D1;
+    STA.W EnemyProjectile_ID,Y                                           ;A8A7D1;
     LDA.L YappingMaw.bodySegment1ProjectileIndex,X                       ;A8A7D4;
     TAY                                                                  ;A8A7D8;
     LDA.W #$0000                                                         ;A8A7D9;
-    STA.W $1997,Y                                                        ;A8A7DC;
+    STA.W EnemyProjectile_ID,Y                                           ;A8A7DC;
     LDA.L YappingMaw.bodySegment2ProjectileIndex,X                       ;A8A7DF;
     TAY                                                                  ;A8A7E3;
     LDA.W #$0000                                                         ;A8A7E4;
-    STA.W $1997,Y                                                        ;A8A7E7;
+    STA.W EnemyProjectile_ID,Y                                           ;A8A7E7;
     LDA.L YappingMaw.bodySegment3ProjectileIndex,X                       ;A8A7EA;
     TAY                                                                  ;A8A7EE;
     LDA.W #$0000                                                         ;A8A7EF;
-    STA.W $1997,Y                                                        ;A8A7F2;
+    STA.W EnemyProjectile_ID,Y                                           ;A8A7F2;
     PHX                                                                  ;A8A7F5;
     LDA.L YappingMaw.baseSpriteObjectIndex,X                             ;A8A7F6;
     TAX                                                                  ;A8A7FA;
     LDA.W #$0000                                                         ;A8A7FB;
-    STA.L $7EEF78,X                                                      ;A8A7FE;
+    STA.L SpriteObjects_InstListPointers,X                               ;A8A7FE;
     PLX                                                                  ;A8A802;
-    LDA.W $0A60                                                          ;A8A803;
+    LDA.W PoseInputHandler                                               ;A8A803;
     CMP.W #SamusPoseInputHandler_Demo                                    ;A8A806;
     BEQ .notDemo                                                         ;A8A809;
     LDA.W #SamusPoseInputHandler_Normal                                  ;A8A80B;
-    STA.W $0A60                                                          ;A8A80E;
+    STA.W PoseInputHandler                                               ;A8A80E;
 
   .notDemo:
     LDA.W #$0000                                                         ;A8A811;
@@ -4335,13 +4335,13 @@ EnemyShot_YappingMaw:
     BRA .return                                                          ;A8A818;
 
   .alive:
-    LDA.W $0F9E,X                                                        ;A8A81A;
+    LDA.W Enemy.freezeTimer,X                                            ;A8A81A;
     BEQ .return                                                          ;A8A81D;
-    LDA.W $0A60                                                          ;A8A81F;
+    LDA.W PoseInputHandler                                               ;A8A81F;
     CMP.W #SamusPoseInputHandler_Demo                                    ;A8A822;
     BEQ .alsoNotDemo                                                     ;A8A825;
     LDA.W #SamusPoseInputHandler_Normal                                  ;A8A827;
-    STA.W $0A60                                                          ;A8A82A;
+    STA.W PoseInputHandler                                               ;A8A82A;
 
   .alsoNotDemo:
     LDA.W #$0000                                                         ;A8A82D;
@@ -4374,26 +4374,26 @@ FrozenAI_YappingMaw:
 SetYappingMawBodySegmentFrozenPalette:
 ;; Parameters:
 ;;     Y: Enemy projectile index
-    LDX.W $0E54                                                          ;A8A85D;
-    LDA.W $19BB,Y                                                        ;A8A860;
+    LDX.W EnemyIndex                                                     ;A8A85D;
+    LDA.W EnemyProjectile_GraphicsIndices,Y                              ;A8A860;
     AND.W #$F1FF                                                         ;A8A863;
     ORA.L YappingMaw.initialPaletteIndex,X                               ;A8A866;
-    STA.W $19BB,Y                                                        ;A8A86A;
-    LDA.W $0F9E,X                                                        ;A8A86D;
+    STA.W EnemyProjectile_GraphicsIndices,Y                              ;A8A86A;
+    LDA.W Enemy.freezeTimer,X                                            ;A8A86D;
     BEQ .return                                                          ;A8A870;
-    LDA.W $19BB,Y                                                        ;A8A872;
+    LDA.W EnemyProjectile_GraphicsIndices,Y                              ;A8A872;
     AND.W #$F1FF                                                         ;A8A875;
     ORA.W #$0C00                                                         ;A8A878;
-    STA.W $19BB,Y                                                        ;A8A87B;
-    LDA.W $0F9E,X                                                        ;A8A87E;
+    STA.W EnemyProjectile_GraphicsIndices,Y                              ;A8A87B;
+    LDA.W Enemy.freezeTimer,X                                            ;A8A87E;
     CMP.W #$005A                                                         ;A8A881;
     BPL .return                                                          ;A8A884;
     BIT.W #$0002                                                         ;A8A886;
     BNE .return                                                          ;A8A889;
-    LDA.W $19BB,Y                                                        ;A8A88B;
+    LDA.W EnemyProjectile_GraphicsIndices,Y                              ;A8A88B;
     AND.W #$F1FF                                                         ;A8A88E;
     ORA.L YappingMaw.initialPaletteIndex,X                               ;A8A891;
-    STA.W $19BB,Y                                                        ;A8A895;
+    STA.W EnemyProjectile_GraphicsIndices,Y                              ;A8A895;
 
   .return:
     RTS                                                                  ;A8A898;
@@ -4401,35 +4401,35 @@ SetYappingMawBodySegmentFrozenPalette:
 
 ;;; $A899: Set yapping maw base frozen palette ;;;
 SetYappingMawBaseFrozenPalette:
-    LDX.W $0E54                                                          ;A8A899;
+    LDX.W EnemyIndex                                                     ;A8A899;
     LDA.L YappingMaw.initialPaletteIndex,X                               ;A8A89C;
-    STA.B $12                                                            ;A8A8A0;
+    STA.B DP_Temp12                                                      ;A8A8A0;
     LDA.L YappingMaw.baseSpriteObjectIndex,X                             ;A8A8A2;
-    STA.B $14                                                            ;A8A8A6;
+    STA.B DP_Temp14                                                      ;A8A8A6;
     TAX                                                                  ;A8A8A8;
-    LDA.L $7EF078,X                                                      ;A8A8A9;
+    LDA.L SpriteObjects_Palettes,X                                       ;A8A8A9;
     AND.W #$F1FF                                                         ;A8A8AD;
-    ORA.B $12                                                            ;A8A8B0;
-    STA.L $7EF078,X                                                      ;A8A8B2;
-    LDX.W $0E54                                                          ;A8A8B6;
-    LDA.W $0F9E,X                                                        ;A8A8B9;
+    ORA.B DP_Temp12                                                      ;A8A8B0;
+    STA.L SpriteObjects_Palettes,X                                       ;A8A8B2;
+    LDX.W EnemyIndex                                                     ;A8A8B6;
+    LDA.W Enemy.freezeTimer,X                                            ;A8A8B9;
     BEQ .return                                                          ;A8A8BC;
-    LDX.B $14                                                            ;A8A8BE;
-    LDA.L $7EF078,X                                                      ;A8A8C0;
+    LDX.B DP_Temp14                                                      ;A8A8BE;
+    LDA.L SpriteObjects_Palettes,X                                       ;A8A8C0;
     AND.W #$F1FF                                                         ;A8A8C4;
     ORA.W #$0C00                                                         ;A8A8C7;
-    STA.L $7EF078,X                                                      ;A8A8CA;
-    LDX.W $0E54                                                          ;A8A8CE;
-    LDA.W $0F9E,X                                                        ;A8A8D1;
+    STA.L SpriteObjects_Palettes,X                                       ;A8A8CA;
+    LDX.W EnemyIndex                                                     ;A8A8CE;
+    LDA.W Enemy.freezeTimer,X                                            ;A8A8D1;
     CMP.W #$005A                                                         ;A8A8D4;
     BPL .return                                                          ;A8A8D7;
     BIT.W #$0002                                                         ;A8A8D9;
     BNE .return                                                          ;A8A8DC;
-    LDX.B $14                                                            ;A8A8DE;
-    LDA.L $7EF078,X                                                      ;A8A8E0;
+    LDX.B DP_Temp14                                                      ;A8A8DE;
+    LDA.L SpriteObjects_Palettes,X                                       ;A8A8E0;
     AND.W #$F1FF                                                         ;A8A8E4;
-    ORA.B $12                                                            ;A8A8E7;
-    STA.L $7EF078,X                                                      ;A8A8E9;
+    ORA.B DP_Temp12                                                      ;A8A8E7;
+    STA.L SpriteObjects_Palettes,X                                       ;A8A8E9;
 
   .return:
     RTS                                                                  ;A8A8ED;
@@ -4634,27 +4634,27 @@ InstList_Kago_TakenHit_FastAnimation:
 ;;; $AB46: Initialisation AI - enemy $E7FF (kago) ;;;
 InitAI_Kago:
 ; Hit counter is $7E:7808, how obscure
-    LDX.W $0E54                                                          ;A8AB46;
-    LDA.W Enemy.properties,X                                                        ;A8AB49;
+    LDX.W EnemyIndex                                                     ;A8AB46;
+    LDA.W Enemy.properties,X                                             ;A8AB49;
     ORA.W #$2000                                                         ;A8AB4C;
-    STA.W Enemy.properties,X                                                        ;A8AB4F;
+    STA.W Enemy.properties,X                                             ;A8AB4F;
     LDA.W #$0001                                                         ;A8AB52;
-    STA.W Enemy.instTimer,X                                                        ;A8AB55;
-    STZ.W Enemy.loopCounter,X                                                        ;A8AB58;
-    STZ.W $0FB0,X                                                        ;A8AB5B;
+    STA.W Enemy.instTimer,X                                              ;A8AB55;
+    STZ.W Enemy.loopCounter,X                                            ;A8AB58;
+    STZ.W Enemy.var4,X                                                   ;A8AB5B;
     LDA.W #InstList_Kago_Initial_SlowAnimation                           ;A8AB5E;
-    STA.W Enemy.instList,X                                                        ;A8AB61;
+    STA.W Enemy.instList,X                                               ;A8AB61;
     LDA.W #Function_Kago_Nothing                                         ;A8AB64;
     STA.W Kago.function,X                                                ;A8AB67;
-    STZ.W Enemy.var5,X                                                        ;A8AB6A;
-    LDA.W $0FB4,X                                                        ;A8AB6D;
+    STZ.W Enemy.var5,X                                                   ;A8AB6A;
+    LDA.W Enemy.init0,X                                                  ;A8AB6D;
     STA.L Kago.hitCounter,X                                              ;A8AB70;
     RTL                                                                  ;A8AB74;
 
 
 ;;; $AB75: Main AI - enemy $E7FF (kago) ;;;
 MainAI_Kago:
-    LDX.W $0E54                                                          ;A8AB75;
+    LDX.W EnemyIndex                                                     ;A8AB75;
     JMP.W (Kago.function,X)                                              ;A8AB78;
 
 
@@ -4678,18 +4678,18 @@ EnemyShot_Kago:
     PHY                                                                  ;A8AB84;
     JSL.L NormalEnemyShotAI                                              ;A8AB85;
     LDA.W #$0002                                                         ;A8AB89;
-    STA.W $183E                                                          ;A8AB8C;
+    STA.W EarthquakeType                                                 ;A8AB8C;
     LDA.W #$0010                                                         ;A8AB8F;
-    STA.W $1840                                                          ;A8AB92;
-    LDX.W $0E54                                                          ;A8AB95;
+    STA.W EarthquakeTimer                                                ;A8AB92;
+    LDX.W EnemyIndex                                                     ;A8AB95;
     LDA.W Kago.fastAnimationFlag,X                                       ;A8AB98;
     BNE .takenHit                                                        ;A8AB9B;
     LDA.W #$0001                                                         ;A8AB9D;
     STA.W Kago.fastAnimationFlag,X                                       ;A8ABA0;
     LDA.W #InstList_Kago_TakenHit_FastAnimation                          ;A8ABA3;
-    STA.W Enemy.instList,X                                                        ;A8ABA6;
+    STA.W Enemy.instList,X                                               ;A8ABA6;
     LDA.W #$0001                                                         ;A8ABA9;
-    STA.W Enemy.instTimer,X                                                        ;A8ABAC;
+    STA.W Enemy.instTimer,X                                              ;A8ABAC;
 
   .takenHit:
     LDA.L Kago.hitCounter,X                                              ;A8ABAF;
@@ -4699,13 +4699,13 @@ EnemyShot_Kago:
     BPL .notDead                                                         ;A8ABBB;
     LDA.W #$0004                                                         ;A8ABBD;
     JSL.L EnemyDeath                                                     ;A8ABC0;
-    LDX.W $0E54                                                          ;A8ABC4;
+    LDX.W EnemyIndex                                                     ;A8ABC4;
     LDA.W #$0001                                                         ;A8ABC7;
-    STA.W Enemy.var5,X                                                        ;A8ABCA;
+    STA.W Enemy.var5,X                                                   ;A8ABCA;
 
   .notDead:
     LDY.W #EnemyProjectile_KagoBug                                       ;A8ABCD;
-    LDA.W $0F7E,X                                                        ;A8ABD0;
+    LDA.W Enemy.YPosition,X                                              ;A8ABD0;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8ABD3;
     PLY                                                                  ;A8ABD7;
     PLX                                                                  ;A8ABD8;
@@ -4764,7 +4764,7 @@ InstList_Magdollite_Idling_FacingLeft:
     dw $000D,Spritemap_Magdollite_FacingLeft_Head_1                      ;A8ACA0;
     dw $000D,Spritemap_Magdollite_FacingLeft_Head_2                      ;A8ACA4;
     dw $000D,Spritemap_Magdollite_FacingLeft_Head_1                      ;A8ACA8;
-    dw Instruction_Common_GotoY                                        ;A8ACAC;
+    dw Instruction_Common_GotoY                                          ;A8ACAC;
     dw InstList_Magdollite_Idling_FacingLeft                             ;A8ACAE;
 
 
@@ -4965,7 +4965,7 @@ InstList_Magdollite_Slave1_8xPillarStack:
 ;;; $AE0C: Instruction list - hand - stub ;;;
 InstList_Magdollite_Slave2_PillarCap:
     dw $0001,Spritemap_Magdollite_FacingLeft_PillarCap                   ;A8AE0C;
-    dw Instruction_Common_Sleep                                        ;A8AE10;
+    dw Instruction_Common_Sleep                                          ;A8AE10;
 
 
 ;;; $AE12: Instruction - queue sound [[Y]], sound library 2, max queued sounds allowed = 6, if enemy is on-screen ;;;
@@ -4987,23 +4987,23 @@ Instruction_Magdollite_QueueSFXInY_Lib2_Max6_IfOnScreen:
 
 ;;; $AE26: Instruction - move head down 2px ;;;
 Instruction_Magdollite_MoveDown2Pixels:
-    LDX.W $0E54                                                          ;A8AE26;
-    INC.W $0F7E,X                                                        ;A8AE29;
-    INC.W $0F7E,X                                                        ;A8AE2C;
+    LDX.W EnemyIndex                                                     ;A8AE26;
+    INC.W Enemy.YPosition,X                                              ;A8AE29;
+    INC.W Enemy.YPosition,X                                              ;A8AE2C;
     RTL                                                                  ;A8AE2F;
 
 
 ;;; $AE30: Instruction - move head up 2px ;;;
 Instruction_Magdollite_MoveUp2Pixels:
-    LDX.W $0E54                                                          ;A8AE30;
-    DEC.W $0F7E,X                                                        ;A8AE33;
-    DEC.W $0F7E,X                                                        ;A8AE36;
+    LDX.W EnemyIndex                                                     ;A8AE30;
+    DEC.W Enemy.YPosition,X                                              ;A8AE33;
+    DEC.W Enemy.YPosition,X                                              ;A8AE36;
     RTL                                                                  ;A8AE39;
 
 
 ;;; $AE3A: Instruction - set animation active flag ;;;
 Instruction_Magdollite_SetWaitingFlag:
-    LDX.W $0E54                                                          ;A8AE3A;
+    LDX.W EnemyIndex                                                     ;A8AE3A;
     LDA.W #$0001                                                         ;A8AE3D;
     STA.L Magdollite.animationActiveFlag,X                               ;A8AE40;
     RTL                                                                  ;A8AE44;
@@ -5011,7 +5011,7 @@ Instruction_Magdollite_SetWaitingFlag:
 
 ;;; $AE45: Instruction - clear animation active flag ;;;
 Instruction_Magdollite_ResetWaitingFlag:
-    LDX.W $0E54                                                          ;A8AE45;
+    LDX.W EnemyIndex                                                     ;A8AE45;
     LDA.W #$0000                                                         ;A8AE48;
     STA.L Magdollite.animationActiveFlag,X                               ;A8AE4B;
     RTL                                                                  ;A8AE4F;
@@ -5019,67 +5019,67 @@ Instruction_Magdollite_ResetWaitingFlag:
 
 ;;; $AE50: Instruction - move head + arm up 1px ;;;
 Instruction_Magdollite_MoveBaseAndPillarUp1Pixel:
-    LDX.W $0E54                                                          ;A8AE50;
-    DEC.W $0F7E,X                                                        ;A8AE53;
-    DEC.W $0FBE,X                                                        ;A8AE56;
+    LDX.W EnemyIndex                                                     ;A8AE50;
+    DEC.W Enemy.YPosition,X                                              ;A8AE53;
+    DEC.W Enemy[1].YPosition,X                                           ;A8AE56;
     RTL                                                                  ;A8AE59;
 
 
 ;;; $AE5A: Instruction - move head + arm down 1px ;;;
 Instruction_Magdollite_MoveBaseAndPillarDown1Pixel:
-    LDX.W $0E54                                                          ;A8AE5A;
-    INC.W $0F7E,X                                                        ;A8AE5D;
-    INC.W $0FBE,X                                                        ;A8AE60;
+    LDX.W EnemyIndex                                                     ;A8AE5A;
+    INC.W Enemy.YPosition,X                                              ;A8AE5D;
+    INC.W Enemy[1].YPosition,X                                           ;A8AE60;
     RTL                                                                  ;A8AE63;
 
 
 ;;; $AE64: Instruction - set submerged head + arm position, make arm + hand visible ;;;
 Instruction_Magdollite_MoveDownBy18Pixels_SetSlavesAsVisible:
-    LDX.W $0E54                                                          ;A8AE64;
+    LDX.W EnemyIndex                                                     ;A8AE64;
     LDA.L Magdollite.YSpawnPosition,X                                    ;A8AE67;
     CLC                                                                  ;A8AE6B;
     ADC.W #$0018                                                         ;A8AE6C;
-    STA.W $0F7E,X                                                        ;A8AE6F;
-    STA.W $0FBE,X                                                        ;A8AE72;
-    LDA.W $0FC6,X                                                        ;A8AE75;
+    STA.W Enemy.YPosition,X                                              ;A8AE6F;
+    STA.W Enemy[1].YPosition,X                                           ;A8AE72;
+    LDA.W Enemy[1].properties,X                                          ;A8AE75;
     AND.W #$FEFF                                                         ;A8AE78;
-    STA.W $0FC6,X                                                        ;A8AE7B;
-    LDA.W $1006,X                                                        ;A8AE7E;
+    STA.W Enemy[1].properties,X                                          ;A8AE7B;
+    LDA.W Enemy[2].properties,X                                          ;A8AE7E;
     AND.W #$FEFF                                                         ;A8AE81;
-    STA.W $1006,X                                                        ;A8AE84;
+    STA.W Enemy[2].properties,X                                          ;A8AE84;
     RTL                                                                  ;A8AE87;
 
 
 ;;; $AE88: Instruction - reset head + arm position ;;;
 Instruction_Magdollite_RestoreInitialYPositions:
-    LDX.W $0E54                                                          ;A8AE88;
+    LDX.W EnemyIndex                                                     ;A8AE88;
     LDA.L Magdollite.YSpawnPosition,X                                    ;A8AE8B;
-    STA.W $0F7E,X                                                        ;A8AE8F;
-    STA.W $0FBE,X                                                        ;A8AE92;
+    STA.W Enemy.YPosition,X                                              ;A8AE8F;
+    STA.W Enemy[1].YPosition,X                                           ;A8AE92;
     RTL                                                                  ;A8AE95;
 
 
 ;;; $AE96: Instruction - set emerged head + arm position, make arm + hand invisible ;;;
 Instruction_Magdollite_MoveDown4Pixels_SetSlavesAsInvisible:
-    LDX.W $0E54                                                          ;A8AE96;
+    LDX.W EnemyIndex                                                     ;A8AE96;
     LDA.L Magdollite.YSpawnPosition,X                                    ;A8AE99;
     CLC                                                                  ;A8AE9D;
     ADC.W #$0004                                                         ;A8AE9E;
-    STA.W $0F7E,X                                                        ;A8AEA1;
-    STA.W $0FBE,X                                                        ;A8AEA4;
-    LDA.W $0FC6,X                                                        ;A8AEA7;
+    STA.W Enemy.YPosition,X                                              ;A8AEA1;
+    STA.W Enemy[1].YPosition,X                                           ;A8AEA4;
+    LDA.W Enemy[1].properties,X                                          ;A8AEA7;
     ORA.W #$0100                                                         ;A8AEAA;
-    STA.W $0FC6,X                                                        ;A8AEAD;
-    LDA.W $1006,X                                                        ;A8AEB0;
+    STA.W Enemy[1].properties,X                                          ;A8AEAD;
+    LDA.W Enemy[2].properties,X                                          ;A8AEB0;
     ORA.W #$0100                                                         ;A8AEB3;
-    STA.W $1006,X                                                        ;A8AEB6;
+    STA.W Enemy[2].properties,X                                          ;A8AEB6;
     RTL                                                                  ;A8AEB9;
 
 
 ;;; $AEBA: Instruction - spawn magdollite lava enemy projectile ;;;
 Instruction_Magdollite_SpawnLavaProjectile:
     PHY                                                                  ;A8AEBA;
-    LDX.W $0E54                                                          ;A8AEBB;
+    LDX.W EnemyIndex                                                     ;A8AEBB;
     LDY.W #EnemyProjectile_Magdollite                                    ;A8AEBE;
     LDA.W Magdollite.handDirection,X                                     ;A8AEC1;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8AEC4;
@@ -5089,75 +5089,75 @@ Instruction_Magdollite_SpawnLavaProjectile:
 
 ;;; $AECA: Instruction - set open hand position - facing right ;;;
 Instruction_Magdollite_ShiftRight8Pixels_Up4Pixels_FaceRight:
-    LDX.W $0E54                                                          ;A8AECA;
+    LDX.W EnemyIndex                                                     ;A8AECA;
     LDA.L Magdollite.throwXPosition,X                                    ;A8AECD;
     CLC                                                                  ;A8AED1;
     ADC.W #$0008                                                         ;A8AED2;
-    STA.W $0F7A,X                                                        ;A8AED5;
+    STA.W Enemy.XPosition,X                                              ;A8AED5;
     LDA.L Magdollite.throwYPosition,X                                    ;A8AED8;
     CLC                                                                  ;A8AEDC;
     ADC.W #$FFFC                                                         ;A8AEDD;
-    STA.W $0F7E,X                                                        ;A8AEE0;
+    STA.W Enemy.YPosition,X                                              ;A8AEE0;
     RTL                                                                  ;A8AEE3;
 
 
 ;;; $AEE4: Instruction - set open hand position - facing left ;;;
 Instruction_Magdollite_ShiftLeft8Pixels_Up4Pixels_FacingLeft:
-    LDX.W $0E54                                                          ;A8AEE4;
+    LDX.W EnemyIndex                                                     ;A8AEE4;
     LDA.L Magdollite.throwXPosition,X                                    ;A8AEE7;
     CLC                                                                  ;A8AEEB;
     ADC.W #$FFF8                                                         ;A8AEEC;
-    STA.W $0F7A,X                                                        ;A8AEEF;
+    STA.W Enemy.XPosition,X                                              ;A8AEEF;
     LDA.L Magdollite.throwYPosition,X                                    ;A8AEF2;
     CLC                                                                  ;A8AEF6;
     ADC.W #$FFFC                                                         ;A8AEF7;
-    STA.W $0F7E,X                                                        ;A8AEFA;
+    STA.W Enemy.YPosition,X                                              ;A8AEFA;
     RTL                                                                  ;A8AEFD;
 
 
 ;;; $AEFE: Instruction - set closed hand position - facing right ;;;
 Instruction_Magdollite_ShiftRight8Pixels_Up4Pixels_Right_dup:
-    LDX.W $0E54                                                          ;A8AEFE;
+    LDX.W EnemyIndex                                                     ;A8AEFE;
     LDA.L Magdollite.throwXPosition,X                                    ;A8AF01;
     CLC                                                                  ;A8AF05;
     ADC.W #$0008                                                         ;A8AF06;
-    STA.W $0F7A,X                                                        ;A8AF09;
+    STA.W Enemy.XPosition,X                                              ;A8AF09;
     LDA.L Magdollite.throwYPosition,X                                    ;A8AF0C;
     CLC                                                                  ;A8AF10;
     ADC.W #$FFF8                                                         ;A8AF11;
-    STA.W $0F7E,X                                                        ;A8AF14;
+    STA.W Enemy.YPosition,X                                              ;A8AF14;
     RTL                                                                  ;A8AF17;
 
 
 ;;; $AF18: Instruction - set closed hand position - facing left ;;;
 Instruction_Magdollite_ShiftLeft8Pixels_Up4Pixels_Left_dup:
-    LDX.W $0E54                                                          ;A8AF18;
+    LDX.W EnemyIndex                                                     ;A8AF18;
     LDA.L Magdollite.throwXPosition,X                                    ;A8AF1B;
     CLC                                                                  ;A8AF1F;
     ADC.W #$FFF8                                                         ;A8AF20;
-    STA.W $0F7A,X                                                        ;A8AF23;
+    STA.W Enemy.XPosition,X                                              ;A8AF23;
     LDA.L Magdollite.throwYPosition,X                                    ;A8AF26;
     CLC                                                                  ;A8AF2A;
     ADC.W #$FFFC                                                         ;A8AF2B;
-    STA.W $0F7E,X                                                        ;A8AF2E;
+    STA.W Enemy.YPosition,X                                              ;A8AF2E;
     RTL                                                                  ;A8AF31;
 
 
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $AF32: Unused. Set hand throw position ;;;
 UNUSED_Magdollite_RestoreXYPositions_A8AF32:
-    LDX.W $0E54                                                          ;A8AF32;
+    LDX.W EnemyIndex                                                     ;A8AF32;
     LDA.L Magdollite.throwXPosition,X                                    ;A8AF35;
-    STA.W $0F7A,X                                                        ;A8AF39;
+    STA.W Enemy.XPosition,X                                              ;A8AF39;
     LDA.L Magdollite.throwYPosition,X                                    ;A8AF3C;
-    STA.W $0F7E,X                                                        ;A8AF40;
+    STA.W Enemy.YPosition,X                                              ;A8AF40;
     RTL                                                                  ;A8AF43;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
 ;;; $AF44: Instruction - reset cooldown timer ;;;
 Instruction_Magdollite_SetCooldownTimerTo100:
-    LDX.W $0E54                                                          ;A8AF44;
+    LDX.W EnemyIndex                                                     ;A8AF44;
     LDA.W #$0100                                                         ;A8AF47;
     STA.L Magdollite.cooldownTimer,X                                     ;A8AF4A;
     RTL                                                                  ;A8AF4E;
@@ -5193,8 +5193,8 @@ MagdolliteYOffsetAimingAtSamus:
 
 ;;; $AF8B: Initialisation AI - enemy $E83F (magdollite) ;;;
 InitAI_Magdollite:
-    LDX.W $0E54                                                          ;A8AF8B;
-    LDA.W $0FB4,X                                                        ;A8AF8E;
+    LDX.W EnemyIndex                                                     ;A8AF8B;
+    LDA.W Enemy.init0,X                                                  ;A8AF8E;
     ASL                                                                  ;A8AF91;
     TAX                                                                  ;A8AF92;
     JSR.W (InitAIFunctionPointers,X)                                     ;A8AF93;
@@ -5205,12 +5205,12 @@ InitAI_Magdollite:
 
 ;;; $AF9D: Magdollite initialisation function - head ;;;
 Function_Magdollite_Init_Master:
-    LDX.W $0E54                                                          ;A8AF9D;
+    LDX.W EnemyIndex                                                     ;A8AF9D;
     LDA.W #$0000                                                         ;A8AFA0;
     STA.W Magdollite.instList,X                                          ;A8AFA3;
     STA.L Magdollite.headDirection,X                                     ;A8AFA6;
     STA.L Magdollite.emergeNotReadyFlag,X                                ;A8AFAA;
-    LDA.W $0F7E,X                                                        ;A8AFAE;
+    LDA.W Enemy.YPosition,X                                              ;A8AFAE;
     STA.L Magdollite.YSpawnPosition,X                                    ;A8AFB1;
     JSL.L Get_SamusX_minus_EnemyX                                        ;A8AFB5;
     BPL .keepLeft                                                        ;A8AFB9;
@@ -5235,8 +5235,8 @@ Function_Magdollite_Init_Master:
 
 ;;; $AFE2: Magdollite initialisation function - arm ;;;
 Function_Magdollite_Init_Slave1:
-    LDX.W $0E54                                                          ;A8AFE2;
-    LDA.W $0F7E,X                                                        ;A8AFE5;
+    LDX.W EnemyIndex                                                     ;A8AFE2;
+    LDA.W Enemy.YPosition,X                                              ;A8AFE5;
     STA.L Magdollite.YSpawnPosition,X                                    ;A8AFE8;
     LDA.W #$0000                                                         ;A8AFEC;
     STA.W Magdollite.instList,X                                          ;A8AFEF;
@@ -5246,47 +5246,47 @@ Function_Magdollite_Init_Slave1:
     LDA.W #InstList_Magdollite_Slave1_NarrowPillar_FacingLeft            ;A8AFFD;
     STA.W Magdollite.newInstList,X                                       ;A8B000;
     JSR.W SetMagdolliteInstList                                          ;A8B003;
-    LDA.W $0F7E,X                                                        ;A8B006;
+    LDA.W Enemy.YPosition,X                                              ;A8B006;
     CLC                                                                  ;A8B009;
     ADC.W #$0020                                                         ;A8B00A;
-    STA.W $0F7E,X                                                        ;A8B00D;
+    STA.W Enemy.YPosition,X                                              ;A8B00D;
     LDA.W #Function_Magdollite_Slave1_WaitForAttackToBeTriggered         ;A8B010;
     STA.W Magdollite.function,X                                          ;A8B013;
-    LDA.W Enemy.properties,X                                                        ;A8B016;
+    LDA.W Enemy.properties,X                                             ;A8B016;
     ORA.W #$0100                                                         ;A8B019;
-    STA.W Enemy.properties,X                                                        ;A8B01C;
+    STA.W Enemy.properties,X                                             ;A8B01C;
     RTS                                                                  ;A8B01F;
 
 
 ;;; $B020: Magdollite initialisation function - hand ;;;
 Function_Magdollite_Init_Slave2:
-    LDX.W $0E54                                                          ;A8B020;
-    LDA.W $0F7E,X                                                        ;A8B023;
+    LDX.W EnemyIndex                                                     ;A8B020;
+    LDA.W Enemy.YPosition,X                                              ;A8B023;
     STA.L Magdollite.YSpawnPosition,X                                    ;A8B026;
-    LDA.W $0F7A,X                                                        ;A8B02A;
-    STA.L $7E7822,X                                                      ;A8B02D;
+    LDA.W Enemy.XPosition,X                                              ;A8B02A;
+    STA.L ExtraEnemy7800+$22,X                                           ;A8B02D;
     LDA.W #$0000                                                         ;A8B031;
     STA.W Magdollite.instList,X                                          ;A8B034;
     STA.L Magdollite.cooldownTimer,X                                     ;A8B037;
     LDA.W #InstList_Magdollite_Slave2_PillarCap                          ;A8B03B;
     STA.W Magdollite.newInstList,X                                       ;A8B03E;
     JSR.W SetMagdolliteInstList                                          ;A8B041;
-    LDA.W $0F7E,X                                                        ;A8B044;
+    LDA.W Enemy.YPosition,X                                              ;A8B044;
     CLC                                                                  ;A8B047;
     ADC.W #$0020                                                         ;A8B048;
-    STA.W $0F7E,X                                                        ;A8B04B;
+    STA.W Enemy.YPosition,X                                              ;A8B04B;
     LDA.W #Function_Magdollite_Slave2_Idling_WaitingForTrigger           ;A8B04E;
     STA.W Magdollite.function,X                                          ;A8B051;
-    LDA.W Enemy.properties,X                                                        ;A8B054;
+    LDA.W Enemy.properties,X                                             ;A8B054;
     ORA.W #$0100                                                         ;A8B057;
-    STA.W Enemy.properties,X                                                        ;A8B05A;
+    STA.W Enemy.properties,X                                             ;A8B05A;
     RTS                                                                  ;A8B05D;
 
 
 ;;; $B05E: Set magdollite arm Y velocities ;;;
 GetMagdolliteSpeeds:
-    LDX.W $0E54                                                          ;A8B05E;
-    LDA.W $0FB7,X                                                        ;A8B061;
+    LDX.W EnemyIndex                                                     ;A8B05E;
+    LDA.W Enemy.init1+1,X                                                ;A8B061;
     AND.W #$00FF                                                         ;A8B064;
     ASL                                                                  ;A8B067;
     ASL                                                                  ;A8B068;
@@ -5306,10 +5306,10 @@ GetMagdolliteSpeeds:
 ;;; $B088: Set up magdollite palette cycling ;;;
 SetMagdolliteGraphicsDrawnHook:
     LDA.W #EnemyGraphicsDrawnHook_Magdollite_PeriodicallyCyclePalettes   ;A8B088;
-    STA.W $178C                                                          ;A8B08B;
+    STA.W EnemyGraphicsDrawnHook                                         ;A8B08B;
     LDA.W #EnemyGraphicsDrawnHook_Magdollite_PeriodicallyCyclePalettes>>16 ;A8B08E;
-    STA.W $178E                                                          ;A8B091;
-    LDA.W $0F96,X                                                        ;A8B094;
+    STA.W EnemyGraphicsDrawnHook+2                                       ;A8B091;
+    LDA.W Enemy.palette,X                                                ;A8B094;
     AND.W #$0E00                                                         ;A8B097;
     LSR                                                                  ;A8B09A;
     LSR                                                                  ;A8B09B;
@@ -5317,29 +5317,29 @@ SetMagdolliteGraphicsDrawnHook:
     LSR                                                                  ;A8B09D;
     CLC                                                                  ;A8B09E;
     ADC.W #$0100                                                         ;A8B09F;
-    STA.W $1794                                                          ;A8B0A2;
+    STA.W EnemyPaletteCycle_PaletteIndex                                 ;A8B0A2;
     LDA.W #$0008                                                         ;A8B0A5;
-    STA.W $1798                                                          ;A8B0A8;
+    STA.W EnemyPaletteCycle_Timer                                        ;A8B0A8;
     LDA.W #$0000                                                         ;A8B0AB;
-    STA.W $1796                                                          ;A8B0AE;
+    STA.W EnemyPaletteCycle_ColorSetIndex                                ;A8B0AE;
     RTS                                                                  ;A8B0B1;
 
 
 ;;; $B0B2: Enemy graphics drawn hook - magdollite - periodically cycle between palettes ;;;
 EnemyGraphicsDrawnHook_Magdollite_PeriodicallyCyclePalettes:
 ; Why is this one implemented differently to the others? >_<;
-    LDA.W $0797                                                          ;A8B0B2;
+    LDA.W DoorTransitionFlagEnemiesPause                                 ;A8B0B2;
     BNE .return                                                          ;A8B0B5;
-    LDX.W $0E54                                                          ;A8B0B7;
-    LDA.W $1798                                                          ;A8B0BA;
+    LDX.W EnemyIndex                                                     ;A8B0B7;
+    LDA.W EnemyPaletteCycle_Timer                                        ;A8B0BA;
     DEC                                                                  ;A8B0BD;
-    STA.W $1798                                                          ;A8B0BE;
+    STA.W EnemyPaletteCycle_Timer                                        ;A8B0BE;
     BNE .return                                                          ;A8B0C1;
     LDA.W #$0008                                                         ;A8B0C3;
-    STA.W $1798                                                          ;A8B0C6;
-    LDA.W $1796                                                          ;A8B0C9;
+    STA.W EnemyPaletteCycle_Timer                                        ;A8B0C6;
+    LDA.W EnemyPaletteCycle_ColorSetIndex                                ;A8B0C9;
     INC                                                                  ;A8B0CC;
-    STA.W $1796                                                          ;A8B0CD;
+    STA.W EnemyPaletteCycle_ColorSetIndex                                ;A8B0CD;
     AND.W #$0003                                                         ;A8B0D0;
     ASL                                                                  ;A8B0D3;
     ASL                                                                  ;A8B0D4;
@@ -5348,23 +5348,23 @@ EnemyGraphicsDrawnHook_Magdollite_PeriodicallyCyclePalettes:
     ASL                                                                  ;A8B0D7;
     TAY                                                                  ;A8B0D8;
     LDA.W Palette_Magdollite_Glow_0,Y                                    ;A8B0D9;
-    STA.B $12                                                            ;A8B0DC;
+    STA.B DP_Temp12                                                      ;A8B0DC;
     LDA.W Palette_Magdollite_Glow_1,Y                                    ;A8B0DE;
-    STA.B $14                                                            ;A8B0E1;
+    STA.B DP_Temp14                                                      ;A8B0E1;
     LDA.W Palette_Magdollite_Glow_2,Y                                    ;A8B0E3;
-    STA.B $16                                                            ;A8B0E6;
+    STA.B DP_Temp16                                                      ;A8B0E6;
     LDA.W Palette_Magdollite_Glow_3,Y                                    ;A8B0E8;
-    STA.B $18                                                            ;A8B0EB;
-    LDA.W $1794                                                          ;A8B0ED;
+    STA.B DP_Temp18                                                      ;A8B0EB;
+    LDA.W EnemyPaletteCycle_PaletteIndex                                 ;A8B0ED;
     TAX                                                                  ;A8B0F0;
-    LDA.B $12                                                            ;A8B0F1;
-    STA.L $7EC012,X                                                      ;A8B0F3;
-    LDA.B $14                                                            ;A8B0F7;
-    STA.L $7EC014,X                                                      ;A8B0F9;
-    LDA.B $16                                                            ;A8B0FD;
-    STA.L $7EC016,X                                                      ;A8B0FF;
-    LDA.B $18                                                            ;A8B103;
-    STA.L $7EC018,X                                                      ;A8B105;
+    LDA.B DP_Temp12                                                      ;A8B0F1;
+    STA.L Palettes+$12,X                                                 ;A8B0F3;
+    LDA.B DP_Temp14                                                      ;A8B0F7;
+    STA.L Palettes+$14,X                                                 ;A8B0F9;
+    LDA.B DP_Temp16                                                      ;A8B0FD;
+    STA.L Palettes+$16,X                                                 ;A8B0FF;
+    LDA.B DP_Temp18                                                      ;A8B103;
+    STA.L Palettes+$18,X                                                 ;A8B105;
 
   .return:
     RTL                                                                  ;A8B109;
@@ -5372,7 +5372,7 @@ EnemyGraphicsDrawnHook_Magdollite_PeriodicallyCyclePalettes:
 
 ;;; $B10A: Main AI - enemy $E83F (magdollite) ;;;
 MainAI_Magdollite:
-    LDX.W $0E54                                                          ;A8B10A;
+    LDX.W EnemyIndex                                                     ;A8B10A;
     LDA.L Magdollite.cooldownTimer,X                                     ;A8B10D;
     DEC                                                                  ;A8B111;
     STA.L Magdollite.cooldownTimer,X                                     ;A8B112;
@@ -5382,7 +5382,7 @@ MainAI_Magdollite:
 
 ;;; $B11A: Magdollite function - idle ;;;
 Function_Magdollite_WaitForSamusToGetNear:
-    LDX.W $0E54                                                          ;A8B11A;
+    LDX.W EnemyIndex                                                     ;A8B11A;
     LDA.W #$0000                                                         ;A8B11D;
     STA.L Magdollite.headDirection,X                                     ;A8B120;
     LDA.W #InstList_Magdollite_Idling_FacingLeft                         ;A8B124;
@@ -5396,11 +5396,11 @@ Function_Magdollite_WaitForSamusToGetNear:
 
   .facingDirectionChosen:
     JSR.W SetMagdolliteInstList                                          ;A8B13D;
-    LDA.L $7E7888,X                                                      ;A8B140;
+    LDA.L ExtraEnemy7800+$88,X                                           ;A8B140;
     BPL .return                                                          ;A8B144;
     LDA.W #$0000                                                         ;A8B146;
-    STA.L $7E7888,X                                                      ;A8B149;
-    LDA.W $0FB6,X                                                        ;A8B14D;
+    STA.L ExtraEnemy7800+$88,X                                           ;A8B149;
+    LDA.W Enemy.init1,X                                                  ;A8B14D;
     AND.W #$00FF                                                         ;A8B150;
     JSL.L IsSamusWithinAPixelColumnsOfEnemy                              ;A8B153;
     BEQ .return                                                          ;A8B157;
@@ -5422,13 +5422,13 @@ Function_Magdollite_WaitForSamusToGetNear:
 
 ;;; $B175: Magdollite function - wait until submerged ;;;
 Function_Magdollite_WaitUntilBasePillarFormed:
-    LDX.W $0E54                                                          ;A8B175;
+    LDX.W EnemyIndex                                                     ;A8B175;
     LDA.L Magdollite.animationActiveFlag,X                               ;A8B178;
     BNE .return                                                          ;A8B17C;
     LDA.W #$0001                                                         ;A8B17E;
     STA.L Magdollite.emergeNotReadyFlag,X                                ;A8B181;
     LDA.W #$0000                                                         ;A8B185;
-    STA.L $7E785A,X                                                      ;A8B188;
+    STA.L ExtraEnemy7800+$5A,X                                           ;A8B188;
     LDA.W #Function_Magdollite_WaitForOtherPartsToFinish                 ;A8B18C;
     STA.W Magdollite.function,X                                          ;A8B18F;
 
@@ -5438,7 +5438,7 @@ Function_Magdollite_WaitUntilBasePillarFormed:
 
 ;;; $B193: Magdollite function - emerge when ready ;;;
 Function_Magdollite_WaitForOtherPartsToFinish:
-    LDX.W $0E54                                                          ;A8B193;
+    LDX.W EnemyIndex                                                     ;A8B193;
     LDA.L Magdollite.emergeNotReadyFlag,X                                ;A8B196;
     BNE .return                                                          ;A8B19A;
     LDA.W #InstList_Magdollite_UnformBasePillar_SplashBackToIdle_Left_0  ;A8B19C;
@@ -5459,7 +5459,7 @@ Function_Magdollite_WaitForOtherPartsToFinish:
 
 ;;; $B1B8: Magdollite function - wait until emerged ;;;
 Function_Magdollite_UnformBasePillarBackToHeadIdling:
-    LDX.W $0E54                                                          ;A8B1B8;
+    LDX.W EnemyIndex                                                     ;A8B1B8;
     LDA.L Magdollite.animationActiveFlag,X                               ;A8B1BB;
     BNE .return                                                          ;A8B1BF;
     LDA.W #InstList_Magdollite_Idling_FacingLeft                         ;A8B1C1;
@@ -5480,7 +5480,7 @@ Function_Magdollite_UnformBasePillarBackToHeadIdling:
 
 ;;; $B1DD: Magdollite function - wait until head submerged ;;;
 Function_Magdollite_Slave1_WaitForAttackToBeTriggered:
-    LDX.W $0E54                                                          ;A8B1DD;
+    LDX.W EnemyIndex                                                     ;A8B1DD;
     LDA.L Magdollite.notEmergedFlag,X                                    ;A8B1E0;
     BNE .return                                                          ;A8B1E4;
     LDA.W #Function_Magdollite_Slave1_HandlePillarGrowth                 ;A8B1E6;
@@ -5491,7 +5491,7 @@ Function_Magdollite_Slave1_WaitForAttackToBeTriggered:
     LDA.W #$0002                                                         ;A8B1F6;
     STA.W Magdollite.armGrowthTableIndex,X                               ;A8B1F9;
     LDA.L Magdollite.YSpawnPosition,X                                    ;A8B1FC;
-    STA.W $0F7E,X                                                        ;A8B200;
+    STA.W Enemy.YPosition,X                                              ;A8B200;
 
   .return:
     RTS                                                                  ;A8B203;
@@ -5499,20 +5499,20 @@ Function_Magdollite_Slave1_WaitForAttackToBeTriggered:
 
 ;;; $B204: Magdollite function - growing arm ;;;
 Function_Magdollite_Slave1_HandlePillarGrowth:
-    LDX.W $0E54                                                          ;A8B204;
+    LDX.W EnemyIndex                                                     ;A8B204;
     CLC                                                                  ;A8B207;
-    LDA.W $0F80,X                                                        ;A8B208;
-    ADC.L $7E77D2,X                                                      ;A8B20B;
-    STA.W $0F80,X                                                        ;A8B20F;
+    LDA.W Enemy.YSubPosition,X                                           ;A8B208;
+    ADC.L Magdollite.upSubVelocity-$40,X                                 ;A8B20B;
+    STA.W Enemy.YSubPosition,X                                           ;A8B20F;
     BCC +                                                                ;A8B212;
     INC.W Magdollite.negativeArmHeight,X                                 ;A8B214;
 
-+   LDA.W $0F7E,X                                                        ;A8B217;
-    ADC.L $7E77D4,X                                                      ;A8B21A;
-    STA.W $0F7E,X                                                        ;A8B21E;
++   LDA.W Enemy.YPosition,X                                              ;A8B217;
+    ADC.L Magdollite.upVelocity-$40,X                                    ;A8B21A;
+    STA.W Enemy.YPosition,X                                              ;A8B21E;
     CLC                                                                  ;A8B221;
     LDA.W Magdollite.negativeArmHeight,X                                 ;A8B222;
-    ADC.L $7E77D4,X                                                      ;A8B225;
+    ADC.L Magdollite.upVelocity-$40,X                                    ;A8B225;
     STA.W Magdollite.negativeArmHeight,X                                 ;A8B229;
     JSR.W Function_Magdollite_Slave1_AddPillarStacksToReachSamusHeight   ;A8B22C;
     RTS                                                                  ;A8B22F;
@@ -5526,10 +5526,10 @@ Function_Magdollite_Slave1_AddPillarStacksToReachSamusHeight:
     CMP.W #$006C                                                         ;A8B237;
     BPL .doneGrowing                                                     ;A8B23A;
     LDY.W Magdollite.armGrowthTableIndex,X                               ;A8B23C;
-    LDA.W $0F7E,X                                                        ;A8B23F;
+    LDA.W Enemy.YPosition,X                                              ;A8B23F;
     SEC                                                                  ;A8B242;
     SBC.W MagdolliteYOffsetAimingAtSamus,Y                               ;A8B243;
-    CMP.W $0AFA                                                          ;A8B246;
+    CMP.W SamusYPosition                                                 ;A8B246;
     BMI .doneGrowing                                                     ;A8B249;
     LDA.W Magdollite.negativeArmHeight,X                                 ;A8B24B;
     EOR.W #$FFFF                                                         ;A8B24E;
@@ -5553,10 +5553,10 @@ Function_Magdollite_Slave1_AddPillarStacksToReachSamusHeight:
   .increasePillarStack:
     INC.W Magdollite.armGrowthTableIndex,X                               ;A8B274;
     INC.W Magdollite.armGrowthTableIndex,X                               ;A8B277;
-    LDA.W $0F7E,X                                                        ;A8B27A;
+    LDA.W Enemy.YPosition,X                                              ;A8B27A;
     CLC                                                                  ;A8B27D;
     ADC.W #$0008                                                         ;A8B27E;
-    STA.W $0F7E,X                                                        ;A8B281;
+    STA.W Enemy.YPosition,X                                              ;A8B281;
     LDY.W Magdollite.armGrowthTableIndex,X                               ;A8B284;
     LDA.W MagdolliteSlave1InstListPointers,Y                             ;A8B287;
     STA.W Magdollite.newInstList,X                                       ;A8B28A;
@@ -5568,29 +5568,29 @@ Function_Magdollite_Slave1_AddPillarStacksToReachSamusHeight:
 
 ;;; $B291: RTS ;;;
 Function_Magdollite_Slave1_GetEnemyIndex:
-    LDX.W $0E54                                                          ;A8B291;
+    LDX.W EnemyIndex                                                     ;A8B291;
     RTS                                                                  ;A8B294;
 
 
 ;;; $B295: Magdollite function - shrinking arm ;;;
 Function_Magdollite_Slave1_HandlePillarShrinking:
-    LDX.W $0E54                                                          ;A8B295;
-    LDA.W $0F7E,X                                                        ;A8B298;
+    LDX.W EnemyIndex                                                     ;A8B295;
+    LDA.W Enemy.YPosition,X                                              ;A8B298;
     CLC                                                                  ;A8B29B;
-    ADC.L $7E77D0,X                                                      ;A8B29C;
-    STA.W $0F7E,X                                                        ;A8B2A0;
+    ADC.L Magdollite.downVelocity-$40,X                                  ;A8B29C;
+    STA.W Enemy.YPosition,X                                              ;A8B2A0;
     LDA.W Magdollite.negativeArmHeight,X                                 ;A8B2A3;
     CLC                                                                  ;A8B2A6;
-    ADC.L $7E77D0,X                                                      ;A8B2A7;
+    ADC.L Magdollite.downVelocity-$40,X                                  ;A8B2A7;
     STA.W Magdollite.negativeArmHeight,X                                 ;A8B2AB;
-    LDA.W $0F80,X                                                        ;A8B2AE;
+    LDA.W Enemy.YSubPosition,X                                           ;A8B2AE;
     CLC                                                                  ;A8B2B1;
-    ADC.L $7E77CE,X                                                      ;A8B2B2;
+    ADC.L Magdollite.downSubVelocity-$40,X                               ;A8B2B2;
     BCC +                                                                ;A8B2B6;
-    INC.W $0F7E,X                                                        ;A8B2B8;
+    INC.W Enemy.YPosition,X                                              ;A8B2B8;
     INC.W Magdollite.negativeArmHeight,X                                 ;A8B2BB;
 
-+   STA.W $0F80,X                                                        ;A8B2BE;
++   STA.W Enemy.YSubPosition,X                                           ;A8B2BE;
     JSR.W ShrinkMagdolliteArm                                            ;A8B2C1;
     RTS                                                                  ;A8B2C4;
 
@@ -5611,10 +5611,10 @@ ShrinkMagdolliteArm:
   .removeTileAndRecenter:
     DEC.W Magdollite.armGrowthTableIndex,X                               ;A8B2DA;
     DEC.W Magdollite.armGrowthTableIndex,X                               ;A8B2DD;
-    LDA.W $0F7E,X                                                        ;A8B2E0;
+    LDA.W Enemy.YPosition,X                                              ;A8B2E0;
     SEC                                                                  ;A8B2E3;
     SBC.W #$0008                                                         ;A8B2E4;
-    STA.W $0F7E,X                                                        ;A8B2E7;
+    STA.W Enemy.YPosition,X                                              ;A8B2E7;
     LDY.W Magdollite.armGrowthTableIndex,X                               ;A8B2EA;
     LDA.W MagdolliteSlave1InstListPointers,Y                             ;A8B2ED;
     STA.W Magdollite.newInstList,X                                       ;A8B2F0;
@@ -5625,7 +5625,7 @@ ShrinkMagdolliteArm:
     LDA.W #$0001                                                         ;A8B2F8;
     STA.L Magdollite.notEmergedFlag,X                                    ;A8B2FB;
     LDA.W #$0000                                                         ;A8B2FF;
-    STA.L $7E77C4,X                                                      ;A8B302;
+    STA.L Magdollite.emergeNotReadyFlag-$40,X                            ;A8B302;
     LDA.W #Function_Magdollite_Slave1_WaitForAttackToBeTriggered         ;A8B306;
     STA.W Magdollite.function,X                                          ;A8B309;
 
@@ -5635,8 +5635,8 @@ ShrinkMagdolliteArm:
 
 ;;; $B30D: Magdollite function - idle ;;;
 Function_Magdollite_Slave2_Idling_WaitingForTrigger:
-    LDX.W $0E54                                                          ;A8B30D;
-    LDA.W $0F32,X                                                        ;A8B310;
+    LDX.W EnemyIndex                                                     ;A8B30D;
+    LDA.W Enemy[-2].var5,X                                               ;A8B310;
     CMP.W #Function_Magdollite_WaitUntilBasePillarFormed                 ;A8B313;
     BNE .return                                                          ;A8B316;
     LDA.W #Function_Magdollite_Slave2_SetToThrowFireballsAfterGrowing    ;A8B318;
@@ -5648,22 +5648,22 @@ Function_Magdollite_Slave2_Idling_WaitingForTrigger:
 
 ;;; $B31F: Magdollite function - wait until finished throwing lava and shrink arm ;;;
 Function_Magdollite_Slave2_SetSlave1ToShrinkAfterFireballs:
-    LDX.W $0E54                                                          ;A8B31F;
+    LDX.W EnemyIndex                                                     ;A8B31F;
     LDA.L Magdollite.animationActiveFlag,X                               ;A8B322;
     BNE .done                                                            ;A8B326;
     LDA.W #InstList_Magdollite_Slave2_PillarCap                          ;A8B328;
     STA.W Magdollite.newInstList,X                                       ;A8B32B;
     JSR.W SetMagdolliteInstList                                          ;A8B32E;
     LDA.W #Function_Magdollite_Slave1_HandlePillarShrinking              ;A8B331;
-    STA.W $0F72,X                                                        ;A8B334;
+    STA.W Enemy[-1].var5,X                                               ;A8B334;
     LDA.W #Function_Magdollite_Slave2_GoBackToIdlingAfterPillarShrinks   ;A8B337;
     STA.W Magdollite.function,X                                          ;A8B33A;
     LDA.W #$0000                                                         ;A8B33D;
-    STA.L $7E77D8,X                                                      ;A8B340;
+    STA.L Magdollite.finishedGrowingFlag-$40,X                           ;A8B340;
     LDA.L Magdollite.throwXPosition,X                                    ;A8B344;
-    STA.W $0F7A,X                                                        ;A8B348;
+    STA.W Enemy.XPosition,X                                              ;A8B348;
     LDA.L Magdollite.throwYPosition,X                                    ;A8B34B;
-    STA.W $0F7E,X                                                        ;A8B34F;
+    STA.W Enemy.YPosition,X                                              ;A8B34F;
 
   .done:
     JSR.W SetMagdolliteYRadius                                           ;A8B352;
@@ -5672,8 +5672,8 @@ Function_Magdollite_Slave2_SetSlave1ToShrinkAfterFireballs:
 
 ;;; $B356: Magdollite function - wait until finished growing and throw lava ;;;
 Function_Magdollite_Slave2_SetToThrowFireballsAfterGrowing:
-    LDX.W $0E54                                                          ;A8B356;
-    LDA.L $7E77D8,X                                                      ;A8B359;
+    LDX.W EnemyIndex                                                     ;A8B356;
+    LDA.L Magdollite.finishedGrowingFlag-$40,X                           ;A8B359;
     BEQ .waiting                                                         ;A8B35D;
     LDA.W #InstList_Magdollite_Slave2_ThrowFireballs_FacingLeft          ;A8B35F;
     STA.W Magdollite.newInstList,X                                       ;A8B362;
@@ -5690,18 +5690,18 @@ Function_Magdollite_Slave2_SetToThrowFireballsAfterGrowing:
     JSR.W SetMagdolliteInstList                                          ;A8B37D;
     LDA.W #Function_Magdollite_Slave2_SetSlave1ToShrinkAfterFireballs    ;A8B380;
     STA.W Magdollite.function,X                                          ;A8B383;
-    LDA.W $0F7A,X                                                        ;A8B386;
+    LDA.W Enemy.XPosition,X                                              ;A8B386;
     STA.L Magdollite.throwXPosition,X                                    ;A8B389;
-    LDA.W $0F7E,X                                                        ;A8B38D;
+    LDA.W Enemy.YPosition,X                                              ;A8B38D;
     STA.L Magdollite.throwYPosition,X                                    ;A8B390;
     BRA .done                                                            ;A8B394;
 
   .waiting:
-    LDY.W $0F6A,X                                                        ;A8B396;
-    LDA.W $0F3E,X                                                        ;A8B399;
+    LDY.W Enemy[-1].var1,X                                               ;A8B396;
+    LDA.W Enemy[-1].YPosition,X                                          ;A8B399;
     SEC                                                                  ;A8B39C;
     SBC.W MagdolliteYOffsetAimingAtSamus,Y                               ;A8B39D;
-    STA.W $0F7E,X                                                        ;A8B3A0;
+    STA.W Enemy.YPosition,X                                              ;A8B3A0;
 
   .done:
     JSR.W SetMagdolliteYRadius                                           ;A8B3A3;
@@ -5710,8 +5710,8 @@ Function_Magdollite_Slave2_SetToThrowFireballsAfterGrowing:
 
 ;;; $B3A7: Magdollite function - move with shrinking arm ;;;
 Function_Magdollite_Slave2_GoBackToIdlingAfterPillarShrinks:
-    LDX.W $0E54                                                          ;A8B3A7;
-    LDA.W $0F32,X                                                        ;A8B3AA;
+    LDX.W EnemyIndex                                                     ;A8B3A7;
+    LDA.W Enemy[-2].var5,X                                               ;A8B3AA;
     CMP.W #Function_Magdollite_WaitForSamusToGetNear                     ;A8B3AD;
     BNE .notWaitingForTrigger                                            ;A8B3B0;
     LDA.W #Function_Magdollite_Slave2_Idling_WaitingForTrigger           ;A8B3B2;
@@ -5719,11 +5719,11 @@ Function_Magdollite_Slave2_GoBackToIdlingAfterPillarShrinks:
     BRA .done                                                            ;A8B3B8;
 
   .notWaitingForTrigger:
-    LDY.W $0F6A,X                                                        ;A8B3BA;
-    LDA.W $0F3E,X                                                        ;A8B3BD;
+    LDY.W Enemy[-1].var1,X                                               ;A8B3BA;
+    LDA.W Enemy[-1].YPosition,X                                          ;A8B3BD;
     SEC                                                                  ;A8B3C0;
     SBC.W MagdolliteYOffsetAimingAtSamus,Y                               ;A8B3C1;
-    STA.W $0F7E,X                                                        ;A8B3C4;
+    STA.W Enemy.YPosition,X                                              ;A8B3C4;
 
   .done:
     JSR.W SetMagdolliteYRadius                                           ;A8B3C7;
@@ -5732,16 +5732,16 @@ Function_Magdollite_Slave2_GoBackToIdlingAfterPillarShrinks:
 
 ;;; $B3CB: Update magdollite head Y radius ;;;
 SetMagdolliteYRadius:
-    LDA.W $0EFE,X                                                        ;A8B3CB;
+    LDA.W Enemy[-2].YPosition,X                                          ;A8B3CB;
     SEC                                                                  ;A8B3CE;
-    SBC.W $0F7E,X                                                        ;A8B3CF;
+    SBC.W Enemy.YPosition,X                                              ;A8B3CF;
     CLC                                                                  ;A8B3D2;
     ADC.W #$0002                                                         ;A8B3D3;
-    STA.W $0F04,X                                                        ;A8B3D6;
+    STA.W Enemy[-2].YHitboxRadius,X                                      ;A8B3D6;
     CMP.W #$0008                                                         ;A8B3D9;
     BPL .return                                                          ;A8B3DC;
     LDA.W #$0008                                                         ;A8B3DE;
-    STA.W $0F04,X                                                        ;A8B3E1;
+    STA.W Enemy[-2].YHitboxRadius,X                                      ;A8B3E1;
 
   .return:
     RTS                                                                  ;A8B3E4;
@@ -5749,15 +5749,15 @@ SetMagdolliteYRadius:
 
 ;;; $B3E5: Set magdollite instruction list ;;;
 SetMagdolliteInstList:
-    LDX.W $0E54                                                          ;A8B3E5;
+    LDX.W EnemyIndex                                                     ;A8B3E5;
     LDA.W Magdollite.newInstList,X                                       ;A8B3E8;
     CMP.W Magdollite.instList,X                                          ;A8B3EB;
     BEQ .return                                                          ;A8B3EE;
-    STA.W Enemy.instList,X                                                        ;A8B3F0;
+    STA.W Enemy.instList,X                                               ;A8B3F0;
     STA.W Magdollite.instList,X                                          ;A8B3F3;
     LDA.W #$0001                                                         ;A8B3F6;
-    STA.W Enemy.instTimer,X                                                        ;A8B3F9;
-    STZ.W Enemy.loopCounter,X                                                        ;A8B3FC;
+    STA.W Enemy.instTimer,X                                              ;A8B3F9;
+    STZ.W Enemy.loopCounter,X                                            ;A8B3FC;
 
   .return:
     RTS                                                                  ;A8B3FF;
@@ -5782,27 +5782,27 @@ EnemyShot_Magdollite:
 
 ;;; $B410: Magdollite shared contact reaction ;;;
 ContactReaction_Magdollite_Common:
-    LDX.W $0E54                                                          ;A8B410;
-    LDA.W $0F8C,X                                                        ;A8B413;
+    LDX.W EnemyIndex                                                     ;A8B410;
+    LDA.W Enemy.health,X                                                 ;A8B413;
     BNE .notDead                                                         ;A8B416;
-    LDA.W $0FC6,X                                                        ;A8B418;
+    LDA.W Enemy[1].properties,X                                          ;A8B418;
     ORA.W #$0200                                                         ;A8B41B;
-    STA.W $0FC6,X                                                        ;A8B41E;
-    LDA.W $1006,X                                                        ;A8B421;
+    STA.W Enemy[1].properties,X                                          ;A8B41E;
+    LDA.W Enemy[2].properties,X                                          ;A8B421;
     ORA.W #$0200                                                         ;A8B424;
-    STA.W $1006,X                                                        ;A8B427;
+    STA.W Enemy[2].properties,X                                          ;A8B427;
 
   .notDead:
-    LDA.W $0F9E,X                                                        ;A8B42A;
+    LDA.W Enemy.freezeTimer,X                                            ;A8B42A;
     BEQ .return                                                          ;A8B42D;
-    STA.W $0FDE,X                                                        ;A8B42F;
-    STA.W $101E,X                                                        ;A8B432;
-    LDA.W $0FCA,X                                                        ;A8B435;
+    STA.W Enemy[1].freezeTimer,X                                         ;A8B42F;
+    STA.W Enemy[2].freezeTimer,X                                         ;A8B432;
+    LDA.W Enemy[1].AI,X                                                  ;A8B435;
     ORA.W #$0004                                                         ;A8B438;
-    STA.W $0FCA,X                                                        ;A8B43B;
-    LDA.W $100A,X                                                        ;A8B43E;
+    STA.W Enemy[1].AI,X                                                  ;A8B43B;
+    LDA.W Enemy[2].AI,X                                                  ;A8B43E;
     ORA.W #$0004                                                         ;A8B441;
-    STA.W $100A,X                                                        ;A8B444;
+    STA.W Enemy[2].AI,X                                                  ;A8B444;
 
   .return:
     RTL                                                                  ;A8B447;
@@ -6100,7 +6100,7 @@ UNUSED_InstList_Beetom_SmallHop_FacingRight_A8B71C:
     dw Instruction_Common_EnableOffScreenProcessing                      ;A8B71C;
     dw $0004,Spritemap_Beetom_E                                          ;A8B71E;
     dw $0001,Spritemap_Beetom_B                                          ;A8B722;
-    dw Instruction_Common_Sleep                                        ;A8B726;
+    dw Instruction_Common_Sleep                                          ;A8B726;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -6135,52 +6135,52 @@ SamusNotInProximityBeetomFunctionPointers:
 
 ;;; $B75E: Instruction - nothing ;;;
 Instruction_Beetom_Nothing:
-    LDX.W $0E54                                                          ;A8B75E;
+    LDX.W EnemyIndex                                                     ;A8B75E;
     RTL                                                                  ;A8B761;
 
 
 ;;; $B762: Set beetom instruction list ;;;
 SetBeetomInstList:
-    LDX.W $0E54                                                          ;A8B762;
+    LDX.W EnemyIndex                                                     ;A8B762;
     LDA.L Beetom.instList,X                                              ;A8B765;
-    STA.W Enemy.instList,X                                                        ;A8B769;
+    STA.W Enemy.instList,X                                               ;A8B769;
     LDA.W #$0001                                                         ;A8B76C;
-    STA.W Enemy.instTimer,X                                                        ;A8B76F;
-    STZ.W Enemy.loopCounter,X                                                        ;A8B772;
+    STA.W Enemy.instTimer,X                                              ;A8B76F;
+    STZ.W Enemy.loopCounter,X                                            ;A8B772;
     RTS                                                                  ;A8B775;
 
 
 ;;; $B776: Initialisation AI - enemy $E87F (beetom) ;;;
 InitAI_Beetom:
-    LDX.W $0E54                                                          ;A8B776;
+    LDX.W EnemyIndex                                                     ;A8B776;
     LDA.W #$0000                                                         ;A8B779;
     STA.W Beetom.functionTimer,X                                         ;A8B77C;
     STA.W Beetom.function,X                                              ;A8B77F; >.<
     STA.L Beetom.fallingFlag,X                                           ;A8B782;
     STA.L Beetom.attachedToSamusFlag,X                                   ;A8B786;
-    STA.W $0FA8,X                                                        ;A8B78A;
+    STA.W Enemy.var0,X                                                   ;A8B78A;
     LDA.W #$0040                                                         ;A8B78D;
     STA.W Beetom.buttonCounter,X                                         ;A8B790;
-    LDA.B $8B                                                            ;A8B793;
+    LDA.B DP_Controller1Input                                            ;A8B793;
     STA.W Beetom.previousController1Input,X                              ;A8B795;
     LDA.W #$0017                                                         ;A8B798;
-    STA.W $05E5                                                          ;A8B79B;
+    STA.W RandomNumberSeed                                               ;A8B79B;
     LDA.W #$3000                                                         ;A8B79E;
-    STA.B $16                                                            ;A8B7A1;
+    STA.B DP_Temp16                                                      ;A8B7A1;
     LDA.W #$0004                                                         ;A8B7A3;
-    STA.B $18                                                            ;A8B7A6;
+    STA.B DP_Temp18                                                      ;A8B7A6;
     JSR.W Beetom_CalculateInitialHopSpeed                                ;A8B7A8;
     STA.L Beetom.initialShortLeapYSpeedIndex,X                           ;A8B7AB;
     LDA.W #$4000                                                         ;A8B7AF;
-    STA.B $16                                                            ;A8B7B2;
+    STA.B DP_Temp16                                                      ;A8B7B2;
     LDA.W #$0005                                                         ;A8B7B4;
-    STA.B $18                                                            ;A8B7B7;
+    STA.B DP_Temp18                                                      ;A8B7B7;
     JSR.W Beetom_CalculateInitialHopSpeed                                ;A8B7B9;
     STA.L Beetom.initialLongLeapYSpeedIndex,X                            ;A8B7BC;
     LDA.W #$3000                                                         ;A8B7C0;
-    STA.B $16                                                            ;A8B7C3;
+    STA.B DP_Temp16                                                      ;A8B7C3;
     LDA.W #$0003                                                         ;A8B7C5;
-    STA.B $18                                                            ;A8B7C8;
+    STA.B DP_Temp18                                                      ;A8B7C8;
     JSR.W Beetom_CalculateInitialHopSpeed                                ;A8B7CA;
     STA.L Beetom.initialLungeYSpeedIndex,X                               ;A8B7CD;
     LDA.W #InstList_Beetom_Crawling_FacingRight_0                        ;A8B7D1;
@@ -6204,38 +6204,38 @@ Beetom_CalculateInitialHopSpeed:
 ;;     $18: Y acceleration scalar
 ;; Returns:
 ;;     A: Initial Y speed table index
-    STZ.B $12                                                            ;A8B7EF;
-    STZ.B $14                                                            ;A8B7F1;
+    STZ.B DP_Temp12                                                      ;A8B7EF;
+    STZ.B DP_Temp14                                                      ;A8B7F1;
 
   .loop:
-    LDA.B $12                                                            ;A8B7F3;
+    LDA.B DP_Temp12                                                      ;A8B7F3;
     CLC                                                                  ;A8B7F5;
-    ADC.B $18                                                            ;A8B7F6;
-    STA.B $12                                                            ;A8B7F8;
+    ADC.B DP_Temp18                                                      ;A8B7F6;
+    STA.B DP_Temp12                                                      ;A8B7F8;
     ASL                                                                  ;A8B7FA;
     ASL                                                                  ;A8B7FB;
     ASL                                                                  ;A8B7FC;
     TAY                                                                  ;A8B7FD;
-    LDA.B $14                                                            ;A8B7FE;
+    LDA.B DP_Temp14                                                      ;A8B7FE;
     CLC                                                                  ;A8B800;
     ADC.W CommonEnemySpeeds_QuadraticallyIncreasing+1,Y                  ;A8B801;
-    STA.B $14                                                            ;A8B804;
-    CMP.B $16                                                            ;A8B806;
+    STA.B DP_Temp14                                                      ;A8B804;
+    CMP.B DP_Temp16                                                      ;A8B806;
     BMI .loop                                                            ;A8B808;
-    LDA.B $12                                                            ;A8B80A;
+    LDA.B DP_Temp12                                                      ;A8B80A;
     RTS                                                                  ;A8B80C;
 
 
 ;;; $B80D: Main AI - enemy $E87F (beetom) ;;;
 MainAI_Beetom:
-    LDX.W $0E54                                                          ;A8B80D;
+    LDX.W EnemyIndex                                                     ;A8B80D;
     JSR.W (Beetom.function,X)                                            ;A8B810;
     RTL                                                                  ;A8B813;
 
 
 ;;; $B814: Beetom function - decide action ;;;
 Function_Beetom_DecideAction:
-    LDX.W $0E54                                                          ;A8B814;
+    LDX.W EnemyIndex                                                     ;A8B814;
     LDA.W #$0060                                                         ;A8B817;
     JSL.L IsSamusWithinAPixelColumnsOfEnemy                              ;A8B81A;
     BEQ .notInProximity                                                  ;A8B81E;
@@ -6253,15 +6253,15 @@ Function_Beetom_DecideAction:
 
 ;;; $B82F: Beetom function - decide action - Samus not in proximity ;;;
 Function_Beetom_DecideAction_SamusNotInProximity:
-    LDX.W $0E54                                                          ;A8B82F;
+    LDX.W EnemyIndex                                                     ;A8B82F;
     JSL.L GenerateRandomNumber                                           ;A8B832;
-    LDA.W $05E5                                                          ;A8B836;
+    LDA.W RandomNumberSeed                                               ;A8B836;
     AND.W #$0007                                                         ;A8B839;
     ASL                                                                  ;A8B83C;
     TAY                                                                  ;A8B83D;
     LDA.W SamusNotInProximityBeetomFunctionPointers,Y                    ;A8B83E;
     STA.W Beetom.function,X                                              ;A8B841;
-    LDA.W $05E5                                                          ;A8B844;
+    LDA.W RandomNumberSeed                                               ;A8B844;
     AND.W #$0001                                                         ;A8B847;
     STA.L Beetom.direction,X                                             ;A8B84A;
     RTS                                                                  ;A8B84E;
@@ -6269,7 +6269,7 @@ Function_Beetom_DecideAction_SamusNotInProximity:
 
 ;;; $B84F: Beetom function - start idling ;;;
 Function_Beetom_StartIdling:
-    LDX.W $0E54                                                          ;A8B84F;
+    LDX.W EnemyIndex                                                     ;A8B84F;
     LDA.W #$0020                                                         ;A8B852;
     STA.W Beetom.functionTimer,X                                         ;A8B855;
     LDA.W #Function_Beetom_Idling                                        ;A8B858;
@@ -6279,7 +6279,7 @@ Function_Beetom_StartIdling:
 
 ;;; $B85F: Beetom function - start crawling left ;;;
 Function_Beetom_StartCrawlingLeft:
-    LDX.W $0E54                                                          ;A8B85F;
+    LDX.W EnemyIndex                                                     ;A8B85F;
     LDA.W #Function_Beetom_CrawlingLeft                                  ;A8B862;
     STA.W Beetom.function,X                                              ;A8B865;
     LDA.W #InstList_Beetom_Crawling_FacingLeft_0                         ;A8B868;
@@ -6290,7 +6290,7 @@ Function_Beetom_StartCrawlingLeft:
 
 ;;; $B873: Beetom function - start crawling right ;;;
 Function_Beetom_StartCrawlingRight:
-    LDX.W $0E54                                                          ;A8B873;
+    LDX.W EnemyIndex                                                     ;A8B873;
     LDA.W #Function_Beetom_CrawlingRight                                 ;A8B876;
     STA.W Beetom.function,X                                              ;A8B879;
     LDA.W #InstList_Beetom_Crawling_FacingRight_0                        ;A8B87C;
@@ -6301,7 +6301,7 @@ Function_Beetom_StartCrawlingRight:
 
 ;;; $B887: Beetom function - start short hop left ;;;
 Function_Beetom_StartShortHopRight:
-    LDX.W $0E54                                                          ;A8B887;
+    LDX.W EnemyIndex                                                     ;A8B887;
     LDA.L Beetom.initialShortLeapYSpeedIndex,X                           ;A8B88A;
     STA.W Beetom.YSpeedTableIndex,X                                      ;A8B88E;
     LDA.W #Function_Beetom_ShortHopLeft                                  ;A8B891;
@@ -6316,7 +6316,7 @@ Function_Beetom_StartShortHopRight:
 
 ;;; $B8A9: Beetom function - start short hop right ;;;
 Function_Beetom_StartShortHopLeft:
-    LDX.W $0E54                                                          ;A8B8A9;
+    LDX.W EnemyIndex                                                     ;A8B8A9;
     LDA.L Beetom.initialShortLeapYSpeedIndex,X                           ;A8B8AC;
     STA.W Beetom.YSpeedTableIndex,X                                      ;A8B8B0;
     LDA.W #Function_Beetom_ShortHopRight                                 ;A8B8B3;
@@ -6331,7 +6331,7 @@ Function_Beetom_StartShortHopLeft:
 
 ;;; $B8CB: Beetom function - start long hop left ;;;
 Function_Beetom_StartLongHopLeft:
-    LDX.W $0E54                                                          ;A8B8CB;
+    LDX.W EnemyIndex                                                     ;A8B8CB;
     LDA.L Beetom.initialLongLeapYSpeedIndex,X                            ;A8B8CE;
     STA.W Beetom.YSpeedTableIndex,X                                      ;A8B8D2;
     LDA.W #Function_Beetom_LongHopLeft                                   ;A8B8D5;
@@ -6346,7 +6346,7 @@ Function_Beetom_StartLongHopLeft:
 
 ;;; $B8ED: Beetom function - start long hop right ;;;
 Function_Beetom_StartLongHopRight:
-    LDX.W $0E54                                                          ;A8B8ED;
+    LDX.W EnemyIndex                                                     ;A8B8ED;
     LDA.L Beetom.initialLongLeapYSpeedIndex,X                            ;A8B8F0;
     STA.W Beetom.YSpeedTableIndex,X                                      ;A8B8F4;
     LDA.W #Function_Beetom_LongHopRight                                  ;A8B8F7;
@@ -6361,7 +6361,7 @@ Function_Beetom_StartLongHopRight:
 
 ;;; $B90F: Beetom function - decide action - Samus in proximity ;;;
 Function_Beetom_DecideAction_SamusInProximity:
-    LDX.W $0E54                                                          ;A8B90F;
+    LDX.W EnemyIndex                                                     ;A8B90F;
     LDA.L Beetom.initialLungeYSpeedIndex,X                               ;A8B912;
     STA.W Beetom.YSpeedTableIndex,X                                      ;A8B916;
     LDA.W #InstList_Beetom_Hop_FacingRight                               ;A8B919;
@@ -6388,7 +6388,7 @@ Function_Beetom_DecideAction_SamusInProximity:
 
 ;;; $B952: Beetom function - start draining Samus - facing left ;;;
 Function_Beetom_StartDrainingSamus_FacingLeft:
-    LDX.W $0E54                                                          ;A8B952;
+    LDX.W EnemyIndex                                                     ;A8B952;
     LDA.W #InstList_Beetom_DrainingSamus_FacingLeft_0                    ;A8B955;
     STA.L Beetom.instList,X                                              ;A8B958;
     JSR.W SetBeetomInstList                                              ;A8B95C;
@@ -6399,7 +6399,7 @@ Function_Beetom_StartDrainingSamus_FacingLeft:
 
 ;;; $B966: Beetom function - start draining Samus - facing right ;;;
 Function_Beetom_StartDrainingSamus_FacingRight:
-    LDX.W $0E54                                                          ;A8B966;
+    LDX.W EnemyIndex                                                     ;A8B966;
     LDA.W #InstList_Beetom_DrainingSamus_FacingRight_0                   ;A8B969;
     STA.L Beetom.instList,X                                              ;A8B96C;
     JSR.W SetBeetomInstList                                              ;A8B970;
@@ -6410,7 +6410,7 @@ Function_Beetom_StartDrainingSamus_FacingRight:
 
 ;;; $B97A: Beetom function - start dropping ;;;
 Function_Beetom_StartDropping:
-    LDX.W $0E54                                                          ;A8B97A;
+    LDX.W EnemyIndex                                                     ;A8B97A;
     LDA.W #InstList_Beetom_Crawling_FacingLeft_0                         ;A8B97D;
     STA.L Beetom.instList,X                                              ;A8B980;
     LDA.L Beetom.direction,X                                             ;A8B984;
@@ -6429,7 +6429,7 @@ Function_Beetom_StartDropping:
 
 ;;; $B9A2: Beetom function - start being flung ;;;
 Function_Beetom_StartBeingFlung:
-    LDX.W $0E54                                                          ;A8B9A2;
+    LDX.W EnemyIndex                                                     ;A8B9A2;
     LDA.W #$0000                                                         ;A8B9A5;
     STA.W Beetom.YSpeedTableIndex,X                                      ;A8B9A8;
     LDA.W #Function_Beetom_BeingFlung                                    ;A8B9AB;
@@ -6439,7 +6439,7 @@ Function_Beetom_StartBeingFlung:
 
 ;;; $B9B2: Beetom function - idling ;;;
 Function_Beetom_Idling:
-    LDX.W $0E54                                                          ;A8B9B2;
+    LDX.W EnemyIndex                                                     ;A8B9B2;
     DEC.W Beetom.functionTimer,X                                         ;A8B9B5;
     BPL .return                                                          ;A8B9B8;
     LDA.W #Function_Beetom_DecideAction                                  ;A8B9BA;
@@ -6451,36 +6451,36 @@ Function_Beetom_Idling:
 
 ;;; $B9C1: Beetom function - crawling left ;;;
 Function_Beetom_CrawlingLeft:
-    LDX.W $0E54                                                          ;A8B9C1;
+    LDX.W EnemyIndex                                                     ;A8B9C1;
     DEC.W Beetom.functionTimer,X                                         ;A8B9C4;
     BMI .end                                                             ;A8B9C7;
-    LDA.W $0F7A,X                                                        ;A8B9C9;
+    LDA.W Enemy.XPosition,X                                              ;A8B9C9;
     SEC                                                                  ;A8B9CC;
     SBC.W #$0008                                                         ;A8B9CD;
-    STA.W $0F7A,X                                                        ;A8B9D0;
+    STA.W Enemy.XPosition,X                                              ;A8B9D0;
     LDA.W #$0001                                                         ;A8B9D3;
-    STA.B $14                                                            ;A8B9D6;
-    STZ.B $12                                                            ;A8B9D8;
+    STA.B DP_Temp14                                                      ;A8B9D6;
+    STZ.B DP_Temp12                                                      ;A8B9D8;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8B9DA;
     BCS .collidedWithBlock                                               ;A8B9DE;
     LDA.W #Function_Beetom_StartCrawlingRight                            ;A8B9E0;
     STA.W Beetom.function,X                                              ;A8B9E3;
-    DEC.W $0F7E,X                                                        ;A8B9E6;
-    LDA.W $0F7A,X                                                        ;A8B9E9;
+    DEC.W Enemy.YPosition,X                                              ;A8B9E6;
+    LDA.W Enemy.XPosition,X                                              ;A8B9E9;
     CLC                                                                  ;A8B9EC;
     ADC.W #$0008                                                         ;A8B9ED;
-    STA.W $0F7A,X                                                        ;A8B9F0;
+    STA.W Enemy.XPosition,X                                              ;A8B9F0;
     BRA .return                                                          ;A8B9F3;
 
   .collidedWithBlock:
-    LDA.W $0F7A,X                                                        ;A8B9F5;
+    LDA.W Enemy.XPosition,X                                              ;A8B9F5;
     CLC                                                                  ;A8B9F8;
     ADC.W #$0008                                                         ;A8B9F9;
-    STA.W $0F7A,X                                                        ;A8B9FC;
+    STA.W Enemy.XPosition,X                                              ;A8B9FC;
     LDA.W #$C000                                                         ;A8B9FF;
-    STA.B $12                                                            ;A8BA02;
+    STA.B DP_Temp12                                                      ;A8BA02;
     LDA.W #$FFFF                                                         ;A8BA04;
-    STA.B $14                                                            ;A8BA07;
+    STA.B DP_Temp14                                                      ;A8BA07;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BA09;
     BCC .return                                                          ;A8BA0D;
     LDA.W #Function_Beetom_StartCrawlingRight                            ;A8BA0F;
@@ -6499,35 +6499,35 @@ Function_Beetom_CrawlingLeft:
 
 ;;; $BA24: Beetom function - crawling right ;;;
 Function_Beetom_CrawlingRight:
-    LDX.W $0E54                                                          ;A8BA24;
+    LDX.W EnemyIndex                                                     ;A8BA24;
     DEC.W Beetom.functionTimer,X                                         ;A8BA27;
     BMI .end                                                             ;A8BA2A;
-    LDA.W $0F7A,X                                                        ;A8BA2C;
+    LDA.W Enemy.XPosition,X                                              ;A8BA2C;
     CLC                                                                  ;A8BA2F;
     ADC.W #$0008                                                         ;A8BA30;
-    STA.W $0F7A,X                                                        ;A8BA33;
+    STA.W Enemy.XPosition,X                                              ;A8BA33;
     LDA.W #$0001                                                         ;A8BA36;
-    STA.B $14                                                            ;A8BA39;
-    STZ.B $12                                                            ;A8BA3B;
+    STA.B DP_Temp14                                                      ;A8BA39;
+    STZ.B DP_Temp12                                                      ;A8BA3B;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8BA3D;
     BCS .collidedWithBlock                                               ;A8BA41;
     LDA.W #Function_Beetom_StartCrawlingLeft                             ;A8BA43;
     STA.W Beetom.function,X                                              ;A8BA46;
-    DEC.W $0F7E,X                                                        ;A8BA49;
-    LDA.W $0F7A,X                                                        ;A8BA4C;
+    DEC.W Enemy.YPosition,X                                              ;A8BA49;
+    LDA.W Enemy.XPosition,X                                              ;A8BA4C;
     SEC                                                                  ;A8BA4F;
     SBC.W #$0008                                                         ;A8BA50;
-    STA.W $0F7A,X                                                        ;A8BA53;
+    STA.W Enemy.XPosition,X                                              ;A8BA53;
     BRA .return                                                          ;A8BA56;
 
   .collidedWithBlock:
-    LDA.W $0F7A,X                                                        ;A8BA58;
+    LDA.W Enemy.XPosition,X                                              ;A8BA58;
     SEC                                                                  ;A8BA5B;
     SBC.W #$0008                                                         ;A8BA5C;
-    STA.W $0F7A,X                                                        ;A8BA5F;
+    STA.W Enemy.XPosition,X                                              ;A8BA5F;
     LDA.W #$4000                                                         ;A8BA62;
-    STA.B $12                                                            ;A8BA65;
-    STZ.B $14                                                            ;A8BA67;
+    STA.B DP_Temp12                                                      ;A8BA65;
+    STZ.B DP_Temp14                                                      ;A8BA67;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BA69;
     BCC .return                                                          ;A8BA6D;
     LDA.W #Function_Beetom_StartCrawlingLeft                             ;A8BA6F;
@@ -6546,7 +6546,7 @@ Function_Beetom_CrawlingRight:
 
 ;;; $BA84: Beetom function - short hop left ;;;
 Function_Beetom_ShortHopLeft:
-    LDX.W $0E54                                                          ;A8BA84;
+    LDX.W EnemyIndex                                                     ;A8BA84;
     LDA.L Beetom.fallingFlag,X                                           ;A8BA87;
     BNE .falling                                                         ;A8BA8B;
     JSR.W Function_Beetom_YMovement_ShortHop_Rising                      ;A8BA8D;
@@ -6556,9 +6556,9 @@ Function_Beetom_ShortHopLeft:
     JSR.W Function_Beetom_YMovement_ShortHop_Falling                     ;A8BA92;
 
 +   LDA.W #$FFFF                                                         ;A8BA95;
-    STA.B $14                                                            ;A8BA98;
+    STA.B DP_Temp14                                                      ;A8BA98;
     LDA.W #$C000                                                         ;A8BA9A;
-    STA.B $12                                                            ;A8BA9D;
+    STA.B DP_Temp12                                                      ;A8BA9D;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BA9F;
     BCC .return                                                          ;A8BAA3;
     LDA.L Beetom.direction,X                                             ;A8BAA5;
@@ -6573,7 +6573,7 @@ Function_Beetom_ShortHopLeft:
 
 ;;; $BAB7: Beetom function - short hop right ;;;
 Function_Beetom_ShortHopRight:
-    LDX.W $0E54                                                          ;A8BAB7;
+    LDX.W EnemyIndex                                                     ;A8BAB7;
     LDA.L Beetom.fallingFlag,X                                           ;A8BABA;
     BNE .falling                                                         ;A8BABE;
     JSR.W Function_Beetom_YMovement_ShortHop_Rising                      ;A8BAC0;
@@ -6582,9 +6582,9 @@ Function_Beetom_ShortHopRight:
   .falling:
     JSR.W Function_Beetom_YMovement_ShortHop_Falling                     ;A8BAC5;
 
-+   STZ.B $14                                                            ;A8BAC8;
++   STZ.B DP_Temp14                                                      ;A8BAC8;
     LDA.W #$4000                                                         ;A8BACA;
-    STA.B $12                                                            ;A8BACD;
+    STA.B DP_Temp12                                                      ;A8BACD;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BACF;
     BCC .return                                                          ;A8BAD3;
     LDA.L Beetom.direction,X                                             ;A8BAD5;
@@ -6605,9 +6605,9 @@ Function_Beetom_YMovement_ShortHop_Rising:
     ASL                                                                  ;A8BAEC;
     TAY                                                                  ;A8BAED;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing+6,Y                  ;A8BAEE;
-    STA.B $14                                                            ;A8BAF1;
+    STA.B DP_Temp14                                                      ;A8BAF1;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing+4,Y                  ;A8BAF3;
-    STA.B $12                                                            ;A8BAF6;
+    STA.B DP_Temp12                                                      ;A8BAF6;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8BAF8;
     BCC .notCollidedWithBlock                                            ;A8BAFC;
     LDA.W #Function_Beetom_StartDropping                                 ;A8BAFE;
@@ -6637,9 +6637,9 @@ Function_Beetom_YMovement_ShortHop_Falling:
     ASL                                                                  ;A8BB25;
     TAY                                                                  ;A8BB26;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing+2,Y                  ;A8BB27;
-    STA.B $14                                                            ;A8BB2A;
+    STA.B DP_Temp14                                                      ;A8BB2A;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing,Y                    ;A8BB2C;
-    STA.B $12                                                            ;A8BB2F;
+    STA.B DP_Temp12                                                      ;A8BB2F;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8BB31;
     BCC .notCollidedWithBlock                                            ;A8BB35;
     LDA.W #Function_Beetom_DecideAction                                  ;A8BB37;
@@ -6662,7 +6662,7 @@ Function_Beetom_YMovement_ShortHop_Falling:
 
 ;;; $BB55: Beetom function - long hop left ;;;
 Function_Beetom_LongHopLeft:
-    LDX.W $0E54                                                          ;A8BB55;
+    LDX.W EnemyIndex                                                     ;A8BB55;
     LDA.L Beetom.fallingFlag,X                                           ;A8BB58;
     BNE .falling                                                         ;A8BB5C;
     JSR.W Function_Beetom_YMovement_LongHop_Rising                       ;A8BB5E;
@@ -6672,9 +6672,9 @@ Function_Beetom_LongHopLeft:
     JSR.W Function_Beetom_YMovement_LongHop_Falling                      ;A8BB63;
 
 +   LDA.W #$FFFF                                                         ;A8BB66;
-    STA.B $14                                                            ;A8BB69;
+    STA.B DP_Temp14                                                      ;A8BB69;
     LDA.W #$C000                                                         ;A8BB6B;
-    STA.B $12                                                            ;A8BB6E;
+    STA.B DP_Temp12                                                      ;A8BB6E;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BB70;
     BCC .return                                                          ;A8BB74;
     LDA.L Beetom.direction,X                                             ;A8BB76;
@@ -6689,7 +6689,7 @@ Function_Beetom_LongHopLeft:
 
 ;;; $BB88: Beetom function - long hop right ;;;
 Function_Beetom_LongHopRight:
-    LDX.W $0E54                                                          ;A8BB88;
+    LDX.W EnemyIndex                                                     ;A8BB88;
     LDA.L Beetom.fallingFlag,X                                           ;A8BB8B;
     BNE .falling                                                         ;A8BB8F;
     JSR.W Function_Beetom_YMovement_LongHop_Rising                       ;A8BB91;
@@ -6698,9 +6698,9 @@ Function_Beetom_LongHopRight:
   .falling:
     JSR.W Function_Beetom_YMovement_LongHop_Falling                      ;A8BB96;
 
-+   STZ.B $14                                                            ;A8BB99;
++   STZ.B DP_Temp14                                                      ;A8BB99;
     LDA.W #$4000                                                         ;A8BB9B;
-    STA.B $12                                                            ;A8BB9E;
+    STA.B DP_Temp12                                                      ;A8BB9E;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BBA0;
     BCC .return                                                          ;A8BBA4;
     LDA.L Beetom.direction,X                                             ;A8BBA6;
@@ -6721,9 +6721,9 @@ Function_Beetom_YMovement_LongHop_Rising:
     ASL                                                                  ;A8BBBD;
     TAY                                                                  ;A8BBBE;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing+6,Y                  ;A8BBBF;
-    STA.B $14                                                            ;A8BBC2;
+    STA.B DP_Temp14                                                      ;A8BBC2;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing+4,Y                  ;A8BBC4;
-    STA.B $12                                                            ;A8BBC7;
+    STA.B DP_Temp12                                                      ;A8BBC7;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8BBC9;
     BCC .notCollidedWithBlock                                            ;A8BBCD;
     LDA.W #Function_Beetom_StartDropping                                 ;A8BBCF;
@@ -6753,9 +6753,9 @@ Function_Beetom_YMovement_LongHop_Falling:
     ASL                                                                  ;A8BBF6;
     TAY                                                                  ;A8BBF7;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing+2,Y                  ;A8BBF8;
-    STA.B $14                                                            ;A8BBFB;
+    STA.B DP_Temp14                                                      ;A8BBFB;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing,Y                    ;A8BBFD;
-    STA.B $12                                                            ;A8BC00;
+    STA.B DP_Temp12                                                      ;A8BC00;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8BC02;
     BCC .notCollidedWithBlock                                            ;A8BC06;
     LDA.W #Function_Beetom_DecideAction                                  ;A8BC08;
@@ -6778,7 +6778,7 @@ Function_Beetom_YMovement_LongHop_Falling:
 
 ;;; $BC26: Beetom function - lunge left ;;;
 Function_Beetom_LungeLeft:
-    LDX.W $0E54                                                          ;A8BC26;
+    LDX.W EnemyIndex                                                     ;A8BC26;
     LDA.L Beetom.fallingFlag,X                                           ;A8BC29;
     BNE .falling                                                         ;A8BC2D;
     JSR.W Function_Beetom_YMovement_Lunge_Rising                         ;A8BC2F;
@@ -6790,8 +6790,8 @@ Function_Beetom_LungeLeft:
 +   LDA.W #$0003                                                         ;A8BC37;
     EOR.W #$FFFF                                                         ;A8BC3A;
     INC                                                                  ;A8BC3D;
-    STA.B $14                                                            ;A8BC3E;
-    STZ.B $12                                                            ;A8BC40;
+    STA.B DP_Temp14                                                      ;A8BC3E;
+    STZ.B DP_Temp12                                                      ;A8BC40;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BC42;
     BCC .return                                                          ;A8BC46;
     LDA.L Beetom.direction,X                                             ;A8BC48;
@@ -6806,7 +6806,7 @@ Function_Beetom_LungeLeft:
 
 ;;; $BC5A: Beetom function - lunge right ;;;
 Function_Beetom_LungeRight:
-    LDX.W $0E54                                                          ;A8BC5A;
+    LDX.W EnemyIndex                                                     ;A8BC5A;
     LDA.L Beetom.fallingFlag,X                                           ;A8BC5D;
     BNE .falling                                                         ;A8BC61;
     JSR.W Function_Beetom_YMovement_Lunge_Rising                         ;A8BC63;
@@ -6816,8 +6816,8 @@ Function_Beetom_LungeRight:
     JSR.W Function_Beetom_YMovement_Lunge_Falling                        ;A8BC68;
 
 +   LDA.W #$0003                                                         ;A8BC6B;
-    STA.B $14                                                            ;A8BC6E;
-    STZ.B $12                                                            ;A8BC70;
+    STA.B DP_Temp14                                                      ;A8BC6E;
+    STZ.B DP_Temp12                                                      ;A8BC70;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BC72;
     BCC .return                                                          ;A8BC76;
     LDA.L Beetom.direction,X                                             ;A8BC78;
@@ -6838,9 +6838,9 @@ Function_Beetom_YMovement_Lunge_Rising:
     ASL                                                                  ;A8BC8F;
     TAY                                                                  ;A8BC90;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing+6,Y                  ;A8BC91;
-    STA.B $14                                                            ;A8BC94;
+    STA.B DP_Temp14                                                      ;A8BC94;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing+4,Y                  ;A8BC96;
-    STA.B $12                                                            ;A8BC99;
+    STA.B DP_Temp12                                                      ;A8BC99;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8BC9B;
     BCC .notCollidedWithBlock                                            ;A8BC9F;
     LDA.W #Function_Beetom_StartDropping                                 ;A8BCA1;
@@ -6869,9 +6869,9 @@ Function_Beetom_YMovement_Lunge_Falling:
     ASL                                                                  ;A8BCC8;
     TAY                                                                  ;A8BCC9;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing+2,Y                  ;A8BCCA;
-    STA.B $14                                                            ;A8BCCD;
+    STA.B DP_Temp14                                                      ;A8BCCD;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing,Y                    ;A8BCCF;
-    STA.B $12                                                            ;A8BCD2;
+    STA.B DP_Temp12                                                      ;A8BCD2;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8BCD4;
     BCC .notCollidedWithBlock                                            ;A8BCD8;
     LDA.W #Function_Beetom_DecideAction                                  ;A8BCDA;
@@ -6894,19 +6894,19 @@ Function_Beetom_YMovement_Lunge_Falling:
 
 ;;; $BCF8: Beetom function - draining Samus - facing left ;;;
 Function_Beetom_DrainingSamus_FacingLeft:
-    LDX.W $0E54                                                          ;A8BCF8;
+    LDX.W EnemyIndex                                                     ;A8BCF8;
     LDA.W Beetom.buttonCounter,X                                         ;A8BCFB;
     BNE .attached                                                        ;A8BCFE;
-    STZ.B $12                                                            ;A8BD00;
+    STZ.B DP_Temp12                                                      ;A8BD00;
     LDA.W #$0010                                                         ;A8BD02;
-    STA.B $14                                                            ;A8BD05;
+    STA.B DP_Temp14                                                      ;A8BD05;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BD07;
     BCC .notCollidedWithWall                                             ;A8BD0B;
     LDA.W #$0001                                                         ;A8BD0D;
     STA.L Beetom.direction,X                                             ;A8BD10;
-    STZ.B $12                                                            ;A8BD14;
+    STZ.B DP_Temp12                                                      ;A8BD14;
     LDA.W #$FFE0                                                         ;A8BD16;
-    STA.B $14                                                            ;A8BD19;
+    STA.B DP_Temp14                                                      ;A8BD19;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BD1B;
 
   .notCollidedWithWall:
@@ -6917,12 +6917,12 @@ Function_Beetom_DrainingSamus_FacingLeft:
     BRA .return                                                          ;A8BD2C;
 
   .attached:
-    LDA.W $0AF6                                                          ;A8BD2E;
-    STA.W $0F7A,X                                                        ;A8BD31;
-    LDA.W $0AFA                                                          ;A8BD34;
+    LDA.W SamusXPosition                                                 ;A8BD2E;
+    STA.W Enemy.XPosition,X                                              ;A8BD31;
+    LDA.W SamusYPosition                                                 ;A8BD34;
     SEC                                                                  ;A8BD37;
     SBC.W #$0004                                                         ;A8BD38;
-    STA.W $0F7E,X                                                        ;A8BD3B;
+    STA.W Enemy.YPosition,X                                              ;A8BD3B;
     JSR.W UpdateBeetomButtonCounter                                      ;A8BD3E;
 
   .return:
@@ -6931,19 +6931,19 @@ Function_Beetom_DrainingSamus_FacingLeft:
 
 ;;; $BD42: Beetom function - draining Samus - facing right ;;;
 Function_Beetom_DrainingSamus_FacingRight:
-    LDX.W $0E54                                                          ;A8BD42;
+    LDX.W EnemyIndex                                                     ;A8BD42;
     LDA.W Beetom.buttonCounter,X                                         ;A8BD45;
     BNE .attached                                                        ;A8BD48;
-    STZ.B $12                                                            ;A8BD4A;
+    STZ.B DP_Temp12                                                      ;A8BD4A;
     LDA.W #$FFF0                                                         ;A8BD4C;
-    STA.B $14                                                            ;A8BD4F;
+    STA.B DP_Temp14                                                      ;A8BD4F;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BD51;
     BCC .notCollidedWithWall                                             ;A8BD55;
     LDA.W #$0000                                                         ;A8BD57;
     STA.L Beetom.direction,X                                             ;A8BD5A;
-    STZ.B $12                                                            ;A8BD5E;
+    STZ.B DP_Temp12                                                      ;A8BD5E;
     LDA.W #$0020                                                         ;A8BD60;
-    STA.B $14                                                            ;A8BD63;
+    STA.B DP_Temp14                                                      ;A8BD63;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BD65;
 
   .notCollidedWithWall:
@@ -6954,12 +6954,12 @@ Function_Beetom_DrainingSamus_FacingRight:
     BRA .return                                                          ;A8BD76;
 
   .attached:
-    LDA.W $0AF6                                                          ;A8BD78;
-    STA.W $0F7A,X                                                        ;A8BD7B;
-    LDA.W $0AFA                                                          ;A8BD7E;
+    LDA.W SamusXPosition                                                 ;A8BD78;
+    STA.W Enemy.XPosition,X                                              ;A8BD7B;
+    LDA.W SamusYPosition                                                 ;A8BD7E;
     SEC                                                                  ;A8BD81;
     SBC.W #$0004                                                         ;A8BD82;
-    STA.W $0F7E,X                                                        ;A8BD85;
+    STA.W Enemy.YPosition,X                                              ;A8BD85;
     JSR.W UpdateBeetomButtonCounter                                      ;A8BD88;
 
   .return:
@@ -6968,8 +6968,8 @@ Function_Beetom_DrainingSamus_FacingRight:
 
 ;;; $BD8C: Update beetom button counter ;;;
 UpdateBeetomButtonCounter:
-    LDX.W $0E54                                                          ;A8BD8C;
-    LDA.B $8B                                                            ;A8BD8F;
+    LDX.W EnemyIndex                                                     ;A8BD8C;
+    LDA.B DP_Controller1Input                                            ;A8BD8F;
     CMP.W Beetom.previousController1Input,X                              ;A8BD91;
     BEQ .return                                                          ;A8BD94;
     STA.W Beetom.previousController1Input,X                              ;A8BD96;
@@ -6981,11 +6981,11 @@ UpdateBeetomButtonCounter:
 
 ;;; $BD9D: Beetom function - dropping ;;;
 Function_Beetom_Dropping:
-    LDX.W $0E54                                                          ;A8BD9D;
+    LDX.W EnemyIndex                                                     ;A8BD9D;
     LDA.W #$0003                                                         ;A8BDA0;
-    STA.B $14                                                            ;A8BDA3;
+    STA.B DP_Temp14                                                      ;A8BDA3;
     LDA.W #$0000                                                         ;A8BDA5;
-    STA.B $12                                                            ;A8BDA8;
+    STA.B DP_Temp12                                                      ;A8BDA8;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8BDAA;
     BCC .return                                                          ;A8BDAE;
     LDA.L Beetom.direction,X                                             ;A8BDB0;
@@ -7004,7 +7004,7 @@ Function_Beetom_Dropping:
 
 ;;; $BDC5: Beetom function - being flung ;;;
 Function_Beetom_BeingFlung:
-    LDX.W $0E54                                                          ;A8BDC5;
+    LDX.W EnemyIndex                                                     ;A8BDC5;
     JSR.W Function_Beetom_Movement_BeingFlung                            ;A8BDC8;
     RTS                                                                  ;A8BDCB;
 
@@ -7017,9 +7017,9 @@ Function_Beetom_Movement_BeingFlung:
     ASL                                                                  ;A8BDD1;
     TAY                                                                  ;A8BDD2;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing+2,Y                  ;A8BDD3;
-    STA.B $14                                                            ;A8BDD6;
+    STA.B DP_Temp14                                                      ;A8BDD6;
     LDA.W CommonEnemySpeeds_QuadraticallyIncreasing,Y                    ;A8BDD8;
-    STA.B $12                                                            ;A8BDDB;
+    STA.B DP_Temp12                                                      ;A8BDDB;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8BDDD;
     BCC .notCollidedWithBlock                                            ;A8BDE1;
     LDA.W #Function_Beetom_DecideAction                                  ;A8BDE3;
@@ -7046,8 +7046,8 @@ Function_Beetom_Movement_BeingFlung:
     EOR.W #$FFFF                                                         ;A8BE0E;
     INC                                                                  ;A8BE11;
 
-+   STA.B $14                                                            ;A8BE12;
-    STZ.B $12                                                            ;A8BE14;
++   STA.B DP_Temp14                                                      ;A8BE12;
+    STZ.B DP_Temp12                                                      ;A8BE14;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8BE16;
     BCC .return                                                          ;A8BE1A;
     LDA.L Beetom.direction,X                                             ;A8BE1C;
@@ -7062,7 +7062,7 @@ Function_Beetom_Movement_BeingFlung:
 
 ;;; $BE2E: Enemy touch - enemy $E87F (beetom) ;;;
 EnemyTouch_Beetom:
-    LDX.W $0E54                                                          ;A8BE2E;
+    LDX.W EnemyIndex                                                     ;A8BE2E;
     LDA.L Beetom.attachedToSamusFlag,X                                   ;A8BE31;
     BNE .attached                                                        ;A8BE35;
     LDA.L Beetom.direction,X                                             ;A8BE37;
@@ -7080,30 +7080,30 @@ EnemyTouch_Beetom:
     LDA.W #$0040                                                         ;A8BE52;
     STA.W Beetom.buttonCounter,X                                         ;A8BE55;
     LDA.W #$0002                                                         ;A8BE58;
-    STA.W $0F9A,X                                                        ;A8BE5B;
-    LDA.W $0AF6                                                          ;A8BE5E;
+    STA.W Enemy.layer,X                                                  ;A8BE5B;
+    LDA.W SamusXPosition                                                 ;A8BE5E;
     SEC                                                                  ;A8BE61;
-    SBC.W $0F7A,X                                                        ;A8BE62;
-    STA.L $7E780C,X                                                      ;A8BE65;
-    LDA.W $0AFA                                                          ;A8BE69;
+    SBC.W Enemy.XPosition,X                                              ;A8BE62;
+    STA.L ExtraEnemy7800+$C,X                                            ;A8BE65;
+    LDA.W SamusYPosition                                                 ;A8BE69;
     SEC                                                                  ;A8BE6C;
-    SBC.W $0F7E,X                                                        ;A8BE6D;
-    STA.L $7E780E,X                                                      ;A8BE70;
+    SBC.W Enemy.YPosition,X                                              ;A8BE6D;
+    STA.L ExtraEnemy7800+$E,X                                            ;A8BE70;
 
   .attached:
-    LDA.W $0A6E                                                          ;A8BE74;
+    LDA.W ContactDamageIndex                                             ;A8BE74;
     BNE .damage                                                          ;A8BE77;
-    LDA.W $0E44                                                          ;A8BE79;
+    LDA.W NumberOfTimesMainEnemyRoutineExecuted                          ;A8BE79;
     AND.W #$0007                                                         ;A8BE7C;
     CMP.W #$0007                                                         ;A8BE7F;
     BNE +                                                                ;A8BE82;
-    LDA.W $09C2                                                          ;A8BE84;
+    LDA.W Energy                                                         ;A8BE84;
     CMP.W #$001E                                                         ;A8BE87;
     BMI +                                                                ;A8BE8A;
     LDA.W #$002D                                                         ;A8BE8C;
     JSL.L QueueSound_Lib3_Max6                                           ;A8BE8F;
 
-+   LDA.W $0FA4,X                                                        ;A8BE93;
++   LDA.W Enemy.frameCounter,X                                           ;A8BE93;
     AND.W #$003F                                                         ;A8BE96;
     CMP.W #$003F                                                         ;A8BE99;
     BNE .return                                                          ;A8BE9C;
@@ -7111,8 +7111,8 @@ EnemyTouch_Beetom:
   .damage:
     JSL.L CommonA8_NormalEnemyTouchAI                                    ;A8BE9E;
     LDA.W #$0000                                                         ;A8BEA2;
-    STA.W $18A8                                                          ;A8BEA5;
-    STA.W $18AA                                                          ;A8BEA8;
+    STA.W SamusInvincibilityTimer                                        ;A8BEA5;
+    STA.W SamusKnockbackTimer                                            ;A8BEA8;
 
   .return:
     RTL                                                                  ;A8BEAB;
@@ -7121,8 +7121,8 @@ EnemyTouch_Beetom:
 ;;; $BEAC: Enemy shot - enemy $E87F (beetom) ;;;
 EnemyShot_Beetom:
     JSL.L CommonA8_NormalEnemyShotAI                                     ;A8BEAC;
-    LDX.W $0E54                                                          ;A8BEB0;
-    LDA.W $0F9E,X                                                        ;A8BEB3;
+    LDX.W EnemyIndex                                                     ;A8BEB0;
+    LDA.W Enemy.freezeTimer,X                                            ;A8BEB3;
     BEQ .return                                                          ;A8BEB6;
     LDA.W Beetom.function,X                                              ;A8BEB8;
     CMP.W #Function_Beetom_DrainingSamus_FacingRight                     ;A8BEBB;
@@ -7396,35 +7396,35 @@ Powamp_InitialYVelocity_Rising:
 
 ;;; $C1C9: Initialisation AI - enemy $E8BF (powamp) ;;;
 InitAI_Powamp:
-    LDX.W $0E54                                                          ;A8C1C9;
-    LDA.W Enemy.properties,X                                                        ;A8C1CC;
+    LDX.W EnemyIndex                                                     ;A8C1C9;
+    LDA.W Enemy.properties,X                                             ;A8C1CC;
     ORA.W #$2000                                                         ;A8C1CF;
-    STA.W Enemy.properties,X                                                        ;A8C1D2;
-    LDA.W #Spritemap_Common_Nothing                                    ;A8C1D5;
-    STA.W $0F8E,X                                                        ;A8C1D8;
+    STA.W Enemy.properties,X                                             ;A8C1D2;
+    LDA.W #Spritemap_Common_Nothing                                      ;A8C1D5;
+    STA.W Enemy.spritemap,X                                              ;A8C1D8;
     LDA.W #$0001                                                         ;A8C1DB;
-    STA.W Enemy.instTimer,X                                                        ;A8C1DE;
-    STZ.W Enemy.loopCounter,X                                                        ;A8C1E1;
-    LDA.W $0FB4,X                                                        ;A8C1E4;
+    STA.W Enemy.instTimer,X                                              ;A8C1DE;
+    STZ.W Enemy.loopCounter,X                                            ;A8C1E1;
+    LDA.W Enemy.init0,X                                                  ;A8C1E4;
     BNE .balloon                                                         ;A8C1E7;
     LDA.W #$003C                                                         ;A8C1E9;
     STA.W Powamp.functionTimer,X                                         ;A8C1EC;
     LDA.W #Function_Powamp_Deflated_Resting                              ;A8C1EF;
     STA.W Powamp.function,X                                              ;A8C1F2;
     LDA.W #InstList_Powamp_Body_SlowAnimation                            ;A8C1F5;
-    STA.W Enemy.instList,X                                                        ;A8C1F8;
+    STA.W Enemy.instList,X                                               ;A8C1F8;
     BRA .return                                                          ;A8C1FB;
 
   .balloon:
-    LDA.W $0F7A,X                                                        ;A8C1FD;
+    LDA.W Enemy.XPosition,X                                              ;A8C1FD;
     STA.W Powamp.balloonSpawnXPosition,X                                 ;A8C200;
-    LDA.W $0F7E,X                                                        ;A8C203;
+    LDA.W Enemy.YPosition,X                                              ;A8C203;
     STA.W Powamp.balloonSpawnYPosition,X                                 ;A8C206;
     LDA.W #RTL_A8C568                                                    ;A8C209;
     STA.W Powamp.function,X                                              ;A8C20C;
     LDA.W #InstList_Powamp_Balloon_Deflated                              ;A8C20F;
-    STA.W Enemy.instList,X                                                        ;A8C212;
-    LDA.W $0FB6,X                                                        ;A8C215;
+    STA.W Enemy.instList,X                                               ;A8C212;
+    LDA.W Enemy.init1,X                                                  ;A8C215;
     STA.W Powamp.balloonGrappleTravelDistance,X                          ;A8C218;
 
   .return:
@@ -7433,7 +7433,7 @@ InitAI_Powamp:
 
 ;;; $C21C: Main AI - enemy $E8BF (powamp) ;;;
 MainAI_Powamp:
-    LDX.W $0E54                                                          ;A8C21C;
+    LDX.W EnemyIndex                                                     ;A8C21C;
     JMP.W (Powamp.function,X)                                            ;A8C21F;
 
 
@@ -7459,7 +7459,7 @@ FirePowampSpikesIn8Directions:
 
 ;;; $C234: Set powamp balloon Y position ;;;
 HandlePowampBalloonYOffset:
-    LDA.W $0F52,X                                                        ;A8C234;
+    LDA.W Enemy[-1].instList,X                                           ;A8C234;
     CMP.W #InstList_Powamp_Balloon_StartSinking                          ;A8C237;
     BPL .sinking                                                         ;A8C23A;
     SEC                                                                  ;A8C23C;
@@ -7472,10 +7472,10 @@ HandlePowampBalloonYOffset:
     LDA.W #$0000                                                         ;A8C24A;
 
 +   TAY                                                                  ;A8C24D;
-    LDA.W $0F7E,X                                                        ;A8C24E;
+    LDA.W Enemy.YPosition,X                                              ;A8C24E;
     CLC                                                                  ;A8C251;
     ADC.W .risingYOffsets,Y                                              ;A8C252;
-    STA.W $0F3E,X                                                        ;A8C255;
+    STA.W Enemy[-1].YPosition,X                                          ;A8C255;
     BRA .return                                                          ;A8C258;
 
   .sinking:
@@ -7489,10 +7489,10 @@ HandlePowampBalloonYOffset:
     LDA.W #$0000                                                         ;A8C268;
 
 +   TAY                                                                  ;A8C26B;
-    LDA.W $0F7E,X                                                        ;A8C26C;
+    LDA.W Enemy.YPosition,X                                              ;A8C26C;
     CLC                                                                  ;A8C26F;
     ADC.W .sinkingYOffsets,Y                                             ;A8C270;
-    STA.W $0F3E,X                                                        ;A8C273;
+    STA.W Enemy[-1].YPosition,X                                          ;A8C273;
 
   .return:
     RTS                                                                  ;A8C276;
@@ -7513,9 +7513,9 @@ Function_Powamp_Deflated_Resting:
 
   .timerExpired:
     LDA.W #$0001                                                         ;A8C28A;
-    STA.W $0F54,X                                                        ;A8C28D;
+    STA.W Enemy[-1].instTimer,X                                          ;A8C28D;
     LDA.W #InstList_Powamp_Balloon_Inflate_0                             ;A8C290;
-    STA.W $0F52,X                                                        ;A8C293;
+    STA.W Enemy[-1].instList,X                                           ;A8C293;
     LDA.W #Function_Powamp_Inflating                                     ;A8C296;
     STA.W Powamp.function,X                                              ;A8C299;
     LDA.W #$000A                                                         ;A8C29C;
@@ -7540,9 +7540,9 @@ Function_Powamp_Inflating:
     LDA.W Powamp_InitialYVelocity_Rising+2                               ;A8C2B9;
     STA.W Powamp.YSubVelocity,X                                          ;A8C2BC;
     LDA.W #$0001                                                         ;A8C2BF;
-    STA.W Enemy.instTimer,X                                                        ;A8C2C2;
+    STA.W Enemy.instTimer,X                                              ;A8C2C2;
     LDA.W #InstList_Powamp_Body_FastAnimation                            ;A8C2C5;
-    STA.W Enemy.instList,X                                                        ;A8C2C8;
+    STA.W Enemy.instList,X                                               ;A8C2C8;
 
   .done:
     JSR.W HandlePowampBalloonYOffset                                     ;A8C2CB;
@@ -7551,7 +7551,7 @@ Function_Powamp_Inflating:
 
 ;;; $C2CF: Powamp function - body - inflated - rise to target height ;;;
 Function_Powamp_Inflated_RiseToTargetHeight:
-    LDA.W $0F8A,X                                                        ;A8C2CF;
+    LDA.W Enemy.AI,X                                                     ;A8C2CF;
     BIT.W #$0001                                                         ;A8C2D2;
     BEQ .notGrappleAI                                                    ;A8C2D5;
     LDA.W #Function_Powamp_Grappled_RiseToTargetHeight                   ;A8C2D7;
@@ -7569,11 +7569,11 @@ Function_Powamp_Inflated_RiseToTargetHeight:
     LDA.W Powamp.wiggleIndex,X                                           ;A8C2ED;
     ASL                                                                  ;A8C2F0;
     TAY                                                                  ;A8C2F1;
-    LDA.W $0F68,X                                                        ;A8C2F2;
+    LDA.W Enemy[-1].var0,X                                               ;A8C2F2;
     CLC                                                                  ;A8C2F5;
     ADC.W PowampWiggleTable,Y                                            ;A8C2F6;
-    STA.W $0F3A,X                                                        ;A8C2F9;
-    STA.W $0F7A,X                                                        ;A8C2FC;
+    STA.W Enemy[-1].XPosition,X                                          ;A8C2F9;
+    STA.W Enemy.XPosition,X                                              ;A8C2FC;
     LDA.W Powamp.wiggleIndex,X                                           ;A8C2FF;
     INC                                                                  ;A8C302;
     CMP.W #$000C                                                         ;A8C303;
@@ -7592,15 +7592,15 @@ Function_Powamp_Inflated_RiseToTargetHeight:
     ADC.W Powamp_YAccel_Rising                                           ;A8C31B;
     STA.W Powamp.YVelocity,X                                             ;A8C31E;
     LDA.W Powamp.YVelocity,X                                             ;A8C321; >.<
-    STA.B $14                                                            ;A8C324;
+    STA.B DP_Temp14                                                      ;A8C324;
     LDA.W Powamp.YSubVelocity,X                                          ;A8C326;
-    STA.B $12                                                            ;A8C329;
+    STA.B DP_Temp12                                                      ;A8C329;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8C32B;
     BCS .doneRising                                                      ;A8C32F;
-    LDA.W $0F6A,X                                                        ;A8C331;
+    LDA.W Enemy[-1].var1,X                                               ;A8C331;
     SEC                                                                  ;A8C334;
     SBC.W PowampTravelDistanceWhenNotGrappled                            ;A8C335;
-    CMP.W $0F7E,X                                                        ;A8C338;
+    CMP.W Enemy.YPosition,X                                              ;A8C338;
     BMI .done                                                            ;A8C33B;
 
   .doneRising:
@@ -7618,9 +7618,9 @@ Function_Powamp_Inflated_RiseToTargetHeight:
     LDA.W #$000A                                                         ;A8C355;
     STA.W Powamp.functionTimer,X                                         ;A8C358;
     LDA.W #$0001                                                         ;A8C35B;
-    STA.W $0F54,X                                                        ;A8C35E;
+    STA.W Enemy[-1].instTimer,X                                          ;A8C35E;
     LDA.W #InstList_Powamp_Balloon_StartSinking                          ;A8C361;
-    STA.W $0F52,X                                                        ;A8C364;
+    STA.W Enemy[-1].instList,X                                           ;A8C364;
 
   .done:
     JSR.W HandlePowampBalloonYOffset                                     ;A8C367;
@@ -7639,11 +7639,11 @@ Function_Powamp_Inflated_FinishWiggle:
     LDA.W Powamp.wiggleIndex,X                                           ;A8C378;
     ASL                                                                  ;A8C37B;
     TAY                                                                  ;A8C37C;
-    LDA.W $0F68,X                                                        ;A8C37D;
+    LDA.W Enemy[-1].var0,X                                               ;A8C37D;
     CLC                                                                  ;A8C380;
     ADC.W PowampWiggleTable,Y                                            ;A8C381;
-    STA.W $0F3A,X                                                        ;A8C384;
-    STA.W $0F7A,X                                                        ;A8C387;
+    STA.W Enemy[-1].XPosition,X                                          ;A8C384;
+    STA.W Enemy.XPosition,X                                              ;A8C387;
     LDA.W Powamp.wiggleIndex,X                                           ;A8C38A;
     BEQ .centered                                                        ;A8C38D;
     CMP.W #$0006                                                         ;A8C38F;
@@ -7663,9 +7663,9 @@ Function_Powamp_Inflated_FinishWiggle:
     LDA.W #$000A                                                         ;A8C3A8;
     STA.W Powamp.functionTimer,X                                         ;A8C3AB;
     LDA.W #$0001                                                         ;A8C3AE;
-    STA.W $0F54,X                                                        ;A8C3B1;
+    STA.W Enemy[-1].instTimer,X                                          ;A8C3B1;
     LDA.W #InstList_Powamp_Balloon_StartSinking                          ;A8C3B4;
-    STA.W $0F52,X                                                        ;A8C3B7;
+    STA.W Enemy[-1].instList,X                                           ;A8C3B7;
     BRA .return                                                          ;A8C3BA;
 
   .continueRising:
@@ -7677,9 +7677,9 @@ Function_Powamp_Inflated_FinishWiggle:
     ADC.W Powamp_YAccel_Rising                                           ;A8C3C9;
     STA.W Powamp.YVelocity,X                                             ;A8C3CC;
     LDA.W Powamp.YVelocity,X                                             ;A8C3CF; >.<
-    STA.B $14                                                            ;A8C3D2;
+    STA.B DP_Temp14                                                      ;A8C3D2;
     LDA.W Powamp.YSubVelocity,X                                          ;A8C3D4;
-    STA.B $12                                                            ;A8C3D7;
+    STA.B DP_Temp12                                                      ;A8C3D7;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8C3D9;
 
   .return:
@@ -7689,7 +7689,7 @@ Function_Powamp_Inflated_FinishWiggle:
 
 ;;; $C3E1: Powamp function - body - grappled - rise to target height ;;;
 Function_Powamp_Grappled_RiseToTargetHeight:
-    LDA.W $0F8A,X                                                        ;A8C3E1;
+    LDA.W Enemy.AI,X                                                     ;A8C3E1;
     BIT.W #$0001                                                         ;A8C3E4;
     BNE .grappleAI                                                       ;A8C3E7;
     LDA.W #Function_Powamp_Inflated_FinishWiggle                         ;A8C3E9;
@@ -7707,11 +7707,11 @@ Function_Powamp_Grappled_RiseToTargetHeight:
     LDA.W Powamp.wiggleIndex,X                                           ;A8C3FD;
     ASL                                                                  ;A8C400;
     TAY                                                                  ;A8C401;
-    LDA.W $0F68,X                                                        ;A8C402;
+    LDA.W Enemy[-1].var0,X                                               ;A8C402;
     CLC                                                                  ;A8C405;
     ADC.W PowampWiggleTable,Y                                            ;A8C406;
-    STA.W $0F3A,X                                                        ;A8C409;
-    STA.W $0F7A,X                                                        ;A8C40C;
+    STA.W Enemy[-1].XPosition,X                                          ;A8C409;
+    STA.W Enemy.XPosition,X                                              ;A8C40C;
     LDA.W Powamp.wiggleIndex,X                                           ;A8C40F;
     INC                                                                  ;A8C412;
     CMP.W #$000C                                                         ;A8C413;
@@ -7730,15 +7730,15 @@ Function_Powamp_Grappled_RiseToTargetHeight:
     ADC.W Powamp_YAccel_Rising                                           ;A8C42B;
     STA.W Powamp.YVelocity,X                                             ;A8C42E;
     LDA.W Powamp.YVelocity,X                                             ;A8C431; >.<
-    STA.B $14                                                            ;A8C434;
+    STA.B DP_Temp14                                                      ;A8C434;
     LDA.W Powamp.YSubVelocity,X                                          ;A8C436;
-    STA.B $12                                                            ;A8C439;
+    STA.B DP_Temp12                                                      ;A8C439;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8C43B;
     BCS .doneSinking                                                     ;A8C43F;
-    LDA.W $0F6A,X                                                        ;A8C441;
+    LDA.W Enemy[-1].var1,X                                               ;A8C441;
     SEC                                                                  ;A8C444;
-    SBC.W $0F6E,X                                                        ;A8C445;
-    CMP.W $0F7E,X                                                        ;A8C448;
+    SBC.W Enemy[-1].var3,X                                               ;A8C445;
+    CMP.W Enemy.YPosition,X                                              ;A8C448;
     BMI .return                                                          ;A8C44B;
 
   .doneSinking:
@@ -7761,7 +7761,7 @@ Function_Powamp_Grappled_RiseToTargetHeight:
 
 ;;; $C469: Powamp function - body - grappled - finish wiggle ;;;
 Function_Powamp_Grappled_FinishWiggle:
-    LDA.W $0F8A,X                                                        ;A8C469;
+    LDA.W Enemy.AI,X                                                     ;A8C469;
     BIT.W #$0001                                                         ;A8C46C;
     BNE .GrappleAI                                                       ;A8C46F;
     LDA.W #Function_Powamp_Inflated_FinishWiggle                         ;A8C471;
@@ -7779,11 +7779,11 @@ Function_Powamp_Grappled_FinishWiggle:
     LDA.W Powamp.wiggleIndex,X                                           ;A8C485;
     ASL                                                                  ;A8C488;
     TAY                                                                  ;A8C489;
-    LDA.W $0F68,X                                                        ;A8C48A;
+    LDA.W Enemy[-1].var0,X                                               ;A8C48A;
     CLC                                                                  ;A8C48D;
     ADC.W PowampWiggleTable,Y                                            ;A8C48E;
-    STA.W $0F3A,X                                                        ;A8C491;
-    STA.W $0F7A,X                                                        ;A8C494;
+    STA.W Enemy[-1].XPosition,X                                          ;A8C491;
+    STA.W Enemy.XPosition,X                                              ;A8C494;
     LDA.W Powamp.wiggleIndex,X                                           ;A8C497;
     BEQ .centered                                                        ;A8C49A;
     CMP.W #$0006                                                         ;A8C49C;
@@ -7811,9 +7811,9 @@ Function_Powamp_Grappled_FinishWiggle:
     ADC.W Powamp_YAccel_Rising                                           ;A8C4C4;
     STA.W Powamp.YVelocity,X                                             ;A8C4C7;
     LDA.W Powamp.YVelocity,X                                             ;A8C4CA; >.<
-    STA.B $14                                                            ;A8C4CD;
+    STA.B DP_Temp14                                                      ;A8C4CD;
     LDA.W Powamp.YSubVelocity,X                                          ;A8C4CF;
-    STA.B $12                                                            ;A8C4D2;
+    STA.B DP_Temp12                                                      ;A8C4D2;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8C4D4;
 
   .return:
@@ -7823,7 +7823,7 @@ Function_Powamp_Grappled_FinishWiggle:
 
 ;;; $C4DC: Powamp function - body - grappled - resting ;;;
 Function_Powamp_Grappled_Resting:
-    LDA.W $0F8A,X                                                        ;A8C4DC;
+    LDA.W Enemy.AI,X                                                     ;A8C4DC;
     BIT.W #$0001                                                         ;A8C4DF;
     BNE .done                                                            ;A8C4E2;
     LDA.W #Function_Powamp_Deflating                                     ;A8C4E4;
@@ -7831,9 +7831,9 @@ Function_Powamp_Grappled_Resting:
     LDA.W #$000A                                                         ;A8C4EA;
     STA.W Powamp.functionTimer,X                                         ;A8C4ED;
     LDA.W #$0001                                                         ;A8C4F0;
-    STA.W $0F54,X                                                        ;A8C4F3;
+    STA.W Enemy[-1].instTimer,X                                          ;A8C4F3;
     LDA.W #InstList_Powamp_Balloon_StartSinking                          ;A8C4F6;
-    STA.W $0F52,X                                                        ;A8C4F9;
+    STA.W Enemy[-1].instList,X                                           ;A8C4F9;
 
   .done:
     JSR.W HandlePowampBalloonYOffset                                     ;A8C4FC;
@@ -7869,23 +7869,23 @@ Function_Powamp_Deflated_Sinking:
     ADC.W Powamp_YAccel_Sinking                                          ;A8C52A;
     STA.W Powamp.YVelocity,X                                             ;A8C52D;
     LDA.W Powamp.YVelocity,X                                             ;A8C530; >.<
-    STA.B $14                                                            ;A8C533;
+    STA.B DP_Temp14                                                      ;A8C533;
     LDA.W Powamp.YSubVelocity,X                                          ;A8C535;
-    STA.B $12                                                            ;A8C538;
+    STA.B DP_Temp12                                                      ;A8C538;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8C53A;
-    LDA.W $0F7E,X                                                        ;A8C53E;
-    CMP.W $0F6A,X                                                        ;A8C541;
+    LDA.W Enemy.YPosition,X                                              ;A8C53E;
+    CMP.W Enemy[-1].var1,X                                               ;A8C541;
     BMI .done                                                            ;A8C544;
-    LDA.W $0F6A,X                                                        ;A8C546;
-    STA.W $0F7E,X                                                        ;A8C549;
+    LDA.W Enemy[-1].var1,X                                               ;A8C546;
+    STA.W Enemy.YPosition,X                                              ;A8C549;
     LDA.W #Function_Powamp_Deflated_Resting                              ;A8C54C;
     STA.W Powamp.function,X                                              ;A8C54F;
     LDA.W #$003C                                                         ;A8C552;
     STA.W Powamp.functionTimer,X                                         ;A8C555;
     LDA.W #$0001                                                         ;A8C558;
-    STA.W Enemy.instTimer,X                                                        ;A8C55B;
+    STA.W Enemy.instTimer,X                                              ;A8C55B;
     LDA.W #InstList_Powamp_Body_SlowAnimation                            ;A8C55E;
-    STA.W Enemy.instList,X                                                        ;A8C561;
+    STA.W Enemy.instList,X                                               ;A8C561;
 
   .done:
     JSR.W HandlePowampBalloonYOffset                                     ;A8C564;
@@ -7899,7 +7899,7 @@ RTL_A8C568:
 
 ;;; $C569: Powamp function - body - fatal damage ;;;
 Function_Powamp_FatalDamage:
-    LDA.W $0F52,X                                                        ;A8C569;
+    LDA.W Enemy[-1].instList,X                                           ;A8C569;
     CMP.W #InstList_Powamp_Balloon_StartSinking                          ;A8C56C;
     BMI +                                                                ;A8C56F;
     SEC                                                                  ;A8C571;
@@ -7910,9 +7910,9 @@ Function_Powamp_FatalDamage:
     BEQ +                                                                ;A8C57A;
     TAY                                                                  ;A8C57C;
     LDA.W .instListPointers,Y                                            ;A8C57D;
-    STA.W $0F52,X                                                        ;A8C580;
+    STA.W Enemy[-1].instList,X                                           ;A8C580;
     LDA.W #$0001                                                         ;A8C583;
-    STA.W $0F54,X                                                        ;A8C586;
+    STA.W Enemy[-1].instTimer,X                                          ;A8C586;
 
 +   LDA.W #Function_Powamp_DeathSequence                                 ;A8C589;
     STA.W Powamp.function,X                                              ;A8C58C;
@@ -7935,10 +7935,10 @@ Function_Powamp_DeathSequence:
     BPL .done                                                            ;A8C5A4;
 
   .timerExpired:
-    STZ.W $0F4C,X                                                        ;A8C5A6;
-    LDA.W $0F46,X                                                        ;A8C5A9;
+    STZ.W Enemy[-1].health,X                                             ;A8C5A6;
+    LDA.W Enemy[-1].properties,X                                         ;A8C5A9;
     ORA.W #$0200                                                         ;A8C5AC;
-    STA.W $0F46,X                                                        ;A8C5AF;
+    STA.W Enemy[-1].properties,X                                         ;A8C5AF;
     JSR.W FirePowampSpikesIn8Directions                                  ;A8C5B2;
     JSL.L EnemyDeath                                                     ;A8C5B5;
     RTL                                                                  ;A8C5B9;
@@ -7950,27 +7950,27 @@ Function_Powamp_DeathSequence:
 
 ;;; $C5BE: Enemy touch - enemy $E8BF (powamp) ;;;
 EnemyTouch_Powamp:
-    LDX.W $0E54                                                          ;A8C5BE;
-    LDA.W $0FB6,X                                                        ;A8C5C1;
+    LDX.W EnemyIndex                                                     ;A8C5BE;
+    LDA.W Enemy.init1,X                                                  ;A8C5C1;
     BNE .return                                                          ;A8C5C4;
-    LDA.W $0F96,X                                                        ;A8C5C6;
+    LDA.W Enemy.palette,X                                                ;A8C5C6;
     PHA                                                                  ;A8C5C9;
     JSL.L NormalEnemyTouchAI                                             ;A8C5CA;
-    LDX.W $0E54                                                          ;A8C5CE;
-    LDA.W $0F8C,X                                                        ;A8C5D1;
+    LDX.W EnemyIndex                                                     ;A8C5CE;
+    LDA.W Enemy.health,X                                                 ;A8C5D1;
     BEQ .dead                                                            ;A8C5D4;
     PLA                                                                  ;A8C5D6;
     RTL                                                                  ;A8C5D7;
 
   .dead:
-    LDA.W $0F46,X                                                        ;A8C5D8;
+    LDA.W Enemy[-1].properties,X                                         ;A8C5D8;
     ORA.W #$0200                                                         ;A8C5DB;
-    STA.W $0F46,X                                                        ;A8C5DE;
+    STA.W Enemy[-1].properties,X                                         ;A8C5DE;
     PLA                                                                  ;A8C5E1;
-    STA.W $0F96,X                                                        ;A8C5E2;
+    STA.W Enemy.palette,X                                                ;A8C5E2;
     JSR.W FirePowampSpikesIn8Directions                                  ;A8C5E5;
     LDA.W #$0A00                                                         ;A8C5E8;
-    STA.W $0F96,X                                                        ;A8C5EB;
+    STA.W Enemy.palette,X                                                ;A8C5EB;
 
   .return:
     RTL                                                                  ;A8C5EE;
@@ -7979,40 +7979,40 @@ EnemyTouch_Powamp:
 ;;; $C5EF: Enemy shot - enemy $E8BF (powamp) ;;;
 EnemyShot_Powamp:
     PHB                                                                  ;A8C5EF;
-    LDX.W $0E54                                                          ;A8C5F0;
-    LDA.W $0FB6,X                                                        ;A8C5F3;
+    LDX.W EnemyIndex                                                     ;A8C5F0;
+    LDA.W Enemy.init1,X                                                  ;A8C5F3;
     BEQ .body                                                            ;A8C5F6;
     PLB                                                                  ;A8C5F8;
     RTL                                                                  ;A8C5F9;
 
   .body:
     JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;A8C5FA;
-    LDA.W $0F8A,X                                                        ;A8C5FE;
+    LDA.W Enemy.AI,X                                                     ;A8C5FE;
     BIT.W #$0004                                                         ;A8C601;
     BEQ .notFrozenAI                                                     ;A8C604;
-    LDA.W $0F9E,X                                                        ;A8C606;
-    STA.W $0F5E,X                                                        ;A8C609;
-    LDA.W $0F4A,X                                                        ;A8C60C;
+    LDA.W Enemy.freezeTimer,X                                            ;A8C606;
+    STA.W Enemy[-1].freezeTimer,X                                        ;A8C609;
+    LDA.W Enemy[-1].AI,X                                                 ;A8C60C;
     ORA.W #$0004                                                         ;A8C60F;
-    STA.W $0F4A,X                                                        ;A8C612;
+    STA.W Enemy[-1].AI,X                                                 ;A8C612;
 
   .notFrozenAI:
-    LDA.W $0F8A,X                                                        ;A8C615;
+    LDA.W Enemy.AI,X                                                     ;A8C615;
     BIT.W #$0002                                                         ;A8C618;
     BEQ .notHurtAI                                                       ;A8C61B;
-    LDA.W $0F9C,X                                                        ;A8C61D;
-    STA.W $0F5C,X                                                        ;A8C620;
-    LDA.W $0F4A,X                                                        ;A8C623;
+    LDA.W Enemy.flashTimer,X                                             ;A8C61D;
+    STA.W Enemy[-1].flashTimer,X                                         ;A8C620;
+    LDA.W Enemy[-1].AI,X                                                 ;A8C623;
     ORA.W #$0002                                                         ;A8C626;
-    STA.W $0F4A,X                                                        ;A8C629;
+    STA.W Enemy[-1].AI,X                                                 ;A8C629;
 
   .notHurtAI:
-    LDA.W $0F8C,X                                                        ;A8C62C;
+    LDA.W Enemy.health,X                                                 ;A8C62C;
     BNE .return                                                          ;A8C62F;
     LDA.W #Function_Powamp_FatalDamage                                   ;A8C631;
     STA.W Powamp.function,X                                              ;A8C634;
     LDA.W #$0001                                                         ;A8C637;
-    STA.W $0FB6,X                                                        ;A8C63A;
+    STA.W Enemy.init1,X                                                  ;A8C63A;
 
   .return:
     PLB                                                                  ;A8C63D;
@@ -8022,25 +8022,25 @@ EnemyShot_Powamp:
 ;;; $C63F: Power bomb reaction - enemy $E8BF (powamp) ;;;
 PowerBombReaction_Powamp:
     JSL.L CommonA8_NormalEnemyPowerBombAI                                ;A8C63F;
-    LDX.W $0E54                                                          ;A8C643;
-    LDA.W $0F8C,X                                                        ;A8C646;
+    LDX.W EnemyIndex                                                     ;A8C643;
+    LDA.W Enemy.health,X                                                 ;A8C646;
     BNE .notDead                                                         ;A8C649;
-    LDA.W $0F46,X                                                        ;A8C64B;
+    LDA.W Enemy[-1].properties,X                                         ;A8C64B;
     ORA.W #$0200                                                         ;A8C64E;
-    STA.W $0F46,X                                                        ;A8C651;
+    STA.W Enemy[-1].properties,X                                         ;A8C651;
     BRA .return                                                          ;A8C654;
 
   .notDead:
-    LDA.W $0FA2,X                                                        ;A8C656;
-    STA.W $0F62,X                                                        ;A8C659;
-    LDA.W $0FA0,X                                                        ;A8C65C;
-    STA.W $0F60,X                                                        ;A8C65F;
-    LDA.W $0F9C,X                                                        ;A8C662;
-    STA.W $0F5C,X                                                        ;A8C665;
-    LDA.W $0F9E,X                                                        ;A8C668;
-    STA.W $0F5E,X                                                        ;A8C66B;
-    LDA.W $0F8A,X                                                        ;A8C66E;
-    STA.W $0F4A,X                                                        ;A8C671;
+    LDA.W Enemy.shakeTimer,X                                             ;A8C656;
+    STA.W Enemy[-1].shakeTimer,X                                         ;A8C659;
+    LDA.W Enemy.invincibilityTimer,X                                     ;A8C65C;
+    STA.W Enemy[-1].invincibilityTimer,X                                 ;A8C65F;
+    LDA.W Enemy.flashTimer,X                                             ;A8C662;
+    STA.W Enemy[-1].flashTimer,X                                         ;A8C665;
+    LDA.W Enemy.freezeTimer,X                                            ;A8C668;
+    STA.W Enemy[-1].freezeTimer,X                                        ;A8C66B;
+    LDA.W Enemy.AI,X                                                     ;A8C66E;
+    STA.W Enemy[-1].AI,X                                                 ;A8C671;
 
   .return:
     RTL                                                                  ;A8C674;
@@ -8097,7 +8097,7 @@ InstList_RobotNoPower_LeaningLeft:
 ;;; $C6DF: Instruction list - work robot deactivated - leaning right ;;;
 InstList_RobotNoPower_LeaningRight:
     dw $7FFF,Spritemap_Robot_1A                                          ;A8C6DF;
-    dw Instruction_Common_Sleep                                        ;A8C6E3;
+    dw Instruction_Common_Sleep                                          ;A8C6E3;
 
 
 ;;; $C6E5: Instruction list - initial ;;;
@@ -8308,7 +8308,7 @@ InstList_Robot_FacingLeft_LaserShotRecoil:
     dw $000A,Spritemap_Robot_3                                           ;A8C90D;
     dw $0060,Spritemap_Robot_2                                           ;A8C911;
     dw Instruction_Robot_DecrementLaserCooldown                          ;A8C915;
-    dw Instruction_Common_GotoY                                        ;A8C917;
+    dw Instruction_Common_GotoY                                          ;A8C917;
     dw InstList_Robot_FacingLeft_WalkingForwards_0                       ;A8C919;
 
 
@@ -8543,34 +8543,34 @@ InstList_Robot_ApproachingAFallToTheLeft:
 
 ;;; $CB77: Initialisation AI - enemy $E8FF (work robot) ;;;
 InitAI_Robot:
-    LDX.W $079F                                                          ;A8CB77;
-    LDA.L $7ED828,X                                                      ;A8CB7A;
+    LDX.W AreaIndex                                                      ;A8CB77;
+    LDA.L SRAMMirror_Boss,X                                              ;A8CB7A;
     BIT.W #$0001                                                         ;A8CB7E;
     BEQ InitAI_RobotNoPower                                              ;A8CB81;
-    LDX.W $0E54                                                          ;A8CB83;
+    LDX.W EnemyIndex                                                     ;A8CB83;
     SEP #$20                                                             ;A8CB86;
     LDA.B #EnemyGraphicsDrawnHook_Robot_PeriodicallyCyclePalettes>>16    ;A8CB88;
-    STA.W $178E                                                          ;A8CB8A;
+    STA.W EnemyGraphicsDrawnHook+2                                       ;A8CB8A;
     REP #$20                                                             ;A8CB8D;
     LDA.W #EnemyGraphicsDrawnHook_Robot_PeriodicallyCyclePalettes        ;A8CB8F;
-    STA.W $178C                                                          ;A8CB92;
-    LDA.W Enemy.properties,X                                                        ;A8CB95;
+    STA.W EnemyGraphicsDrawnHook                                         ;A8CB92;
+    LDA.W Enemy.properties,X                                             ;A8CB95;
     ORA.W #$A000                                                         ;A8CB98;
-    STA.W Enemy.properties,X                                                        ;A8CB9B;
+    STA.W Enemy.properties,X                                             ;A8CB9B;
     LDA.W #$0004                                                         ;A8CB9E;
-    STA.W Enemy.instTimer,X                                                        ;A8CBA1;
-    STZ.W Enemy.loopCounter,X                                                        ;A8CBA4;
+    STA.W Enemy.instTimer,X                                              ;A8CBA1;
+    STZ.W Enemy.loopCounter,X                                            ;A8CBA4;
     LDA.W #InstList_Robot_Initial                                        ;A8CBA7;
-    STA.W Enemy.instList,X                                                        ;A8CBAA;
+    STA.W Enemy.instList,X                                               ;A8CBAA;
     LDA.W #$FE00                                                         ;A8CBAD;
     STA.W Robot.laserXVelocity,X                                         ;A8CBB0;
     LDA.W #$0001                                                         ;A8CBB3;
-    STA.L $7ED654                                                        ;A8CBB6;
+    STA.L RobotPaletteAnimationTimer                                     ;A8CBB6;
     LDA.W #$0000                                                         ;A8CBBA;
-    STA.L $7ED656                                                        ;A8CBBD;
+    STA.L RobotPaletteAnimationTableIndex                                ;A8CBBD;
     STA.W Robot.laserCooldown,X                                          ;A8CBC1;
-    LDA.W $0F96,X                                                        ;A8CBC4;
-    STA.L $7ED652                                                        ;A8CBC7;
+    LDA.W Enemy.palette,X                                                ;A8CBC4;
+    STA.L RobotPaletteAnimationPaletteIndex                              ;A8CBC7;
     RTL                                                                  ;A8CBCB;
 
 
@@ -8582,8 +8582,8 @@ InitAI_RobotNoPower:
 ;     Even if there was an activated robot loaded at some point in some previous room, that robot's palette index would be unrelated to the current room's one
 ;     It wouldn't have any effect if there was an activated robot in the same room either, due to the active palette animation
 ;     In the pre-Phantoon hall, they use the roach's palette, so it has yellow eyes in that room(!)
-    LDX.W $0E54                                                          ;A8CBCC;
-    LDA.W $0FB4,X                                                        ;A8CBCF;
+    LDX.W EnemyIndex                                                     ;A8CBCC;
+    LDA.W Enemy.init0,X                                                  ;A8CBCF;
     CMP.W #$0000                                                         ;A8CBD2;
     BMI .zeroParam1                                                      ;A8CBD5;
     CMP.W #$0004                                                         ;A8CBD7;
@@ -8593,24 +8593,24 @@ InitAI_RobotNoPower:
     LDA.W #$0000                                                         ;A8CBDC;
 
   .valid:
-    STA.W $0FB4,X                                                        ;A8CBDF;
+    STA.W Enemy.init0,X                                                  ;A8CBDF;
     ASL                                                                  ;A8CBE2;
     TAY                                                                  ;A8CBE3;
     LDA.W .pointers,Y                                                    ;A8CBE4;
-    STA.W Enemy.instList,X                                                        ;A8CBE7;
-    LDA.W Enemy.properties,X                                                        ;A8CBEA;
+    STA.W Enemy.instList,X                                               ;A8CBE7;
+    LDA.W Enemy.properties,X                                             ;A8CBEA;
     ORA.W #$8000                                                         ;A8CBED;
-    STA.W Enemy.properties,X                                                        ;A8CBF0;
+    STA.W Enemy.properties,X                                             ;A8CBF0;
     LDA.W #$0001                                                         ;A8CBF3;
-    STA.W Enemy.instTimer,X                                                        ;A8CBF6;
-    STZ.W Enemy.loopCounter,X                                                        ;A8CBF9;
+    STA.W Enemy.instTimer,X                                              ;A8CBF6;
+    STZ.W Enemy.loopCounter,X                                            ;A8CBF9;
     LDA.W #$0000                                                         ;A8CBFC;
-    STA.L $7ED654                                                        ;A8CBFF;
+    STA.L RobotPaletteAnimationTimer                                     ;A8CBFF;
     LDA.W #$0000                                                         ;A8CC03;
     STA.W Robot.YSubVelocity,X                                           ;A8CC06;
     LDA.W #$0001                                                         ;A8CC09;
     STA.W Robot.YVelocity,X                                              ;A8CC0C;
-    LDA.L $7ED652                                                        ;A8CC0F;
+    LDA.L RobotPaletteAnimationPaletteIndex                              ;A8CC0F;
     AND.W #$FF00                                                         ;A8CC13;
     XBA                                                                  ;A8CC16;
     ASL                                                                  ;A8CC17;
@@ -8619,10 +8619,10 @@ InitAI_RobotNoPower:
     ASL                                                                  ;A8CC1A;
     TAX                                                                  ;A8CC1B;
     LDA.W #$000A                                                         ;A8CC1C;
-    STA.L $7EC112,X                                                      ;A8CC1F;
-    STA.L $7EC114,X                                                      ;A8CC23;
-    STA.L $7EC116,X                                                      ;A8CC27;
-    STA.L $7EC118,X                                                      ;A8CC2B;
+    STA.L Palettes_SpriteP0+$12,X                                        ;A8CC1F;
+    STA.L Palettes_SpriteP0+$14,X                                        ;A8CC23;
+    STA.L Palettes_SpriteP0+$16,X                                        ;A8CC27;
+    STA.L Palettes_SpriteP0+$18,X                                        ;A8CC2B;
     RTL                                                                  ;A8CC2F;
 
   .pointers:
@@ -8634,17 +8634,17 @@ InitAI_RobotNoPower:
 
 ;;; $CC36: Main AI - enemy $E8FF (work robot) ;;;
 MainAI_Robot:
-    LDX.W $0E54                                                          ;A8CC36;
+    LDX.W EnemyIndex                                                     ;A8CC36;
     LDA.W Robot.YSubVelocity,X                                           ;A8CC39;
-    STA.B $12                                                            ;A8CC3C;
+    STA.B DP_Temp12                                                      ;A8CC3C;
     LDA.W Robot.YVelocity,X                                              ;A8CC3E;
-    STA.B $14                                                            ;A8CC41;
+    STA.B DP_Temp14                                                      ;A8CC41;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8CC43;
     BCS RTL_A8CC66                                                       ;A8CC47;
-    LDX.W $0E54                                                          ;A8CC49;
-    LDA.W Enemy.instTimer,X                                                        ;A8CC4C;
+    LDX.W EnemyIndex                                                     ;A8CC49;
+    LDA.W Enemy.instTimer,X                                              ;A8CC4C;
     INC                                                                  ;A8CC4F;
-    STA.W Enemy.instTimer,X                                                        ;A8CC50;
+    STA.W Enemy.instTimer,X                                              ;A8CC50;
     LDA.W Robot.YSubVelocity,X                                           ;A8CC53;
     CLC                                                                  ;A8CC56;
     ADC.W #$8000                                                         ;A8CC57;
@@ -8661,15 +8661,15 @@ RTL_A8CC66:
 
 ;;; $CC67: Enemy graphics drawn hook - work robot - periodically cycle between palettes ;;;
 EnemyGraphicsDrawnHook_Robot_PeriodicallyCyclePalettes:
-    LDA.W $0797                                                          ;A8CC67;
+    LDA.W DoorTransitionFlagEnemiesPause                                 ;A8CC67;
     BNE .return                                                          ;A8CC6A;
-    LDA.L $7ED654                                                        ;A8CC6C;
+    LDA.L RobotPaletteAnimationTimer                                     ;A8CC6C;
     BEQ .return                                                          ;A8CC70;
     DEC                                                                  ;A8CC72;
-    STA.L $7ED654                                                        ;A8CC73;
+    STA.L RobotPaletteAnimationTimer                                     ;A8CC73;
     BNE .return                                                          ;A8CC77;
     PHX                                                                  ;A8CC79;
-    LDA.L $7ED652                                                        ;A8CC7A;
+    LDA.L RobotPaletteAnimationPaletteIndex                              ;A8CC7A;
     AND.W #$FF00                                                         ;A8CC7E;
     XBA                                                                  ;A8CC81;
     ASL                                                                  ;A8CC82;
@@ -8677,25 +8677,25 @@ EnemyGraphicsDrawnHook_Robot_PeriodicallyCyclePalettes:
     ASL                                                                  ;A8CC84;
     ASL                                                                  ;A8CC85;
     TAX                                                                  ;A8CC86;
-    LDA.L $7ED656                                                        ;A8CC87;
+    LDA.L RobotPaletteAnimationTableIndex                                ;A8CC87;
     TAY                                                                  ;A8CC8B;
 
   .again:
     LDA.W .paletteColor9,Y                                               ;A8CC8C;
     BMI .zero                                                            ;A8CC8F;
-    STA.L $7EC112,X                                                      ;A8CC91;
+    STA.L Palettes_SpriteP0+$12,X                                        ;A8CC91;
     LDA.W .paletteColorA,Y                                               ;A8CC95;
-    STA.L $7EC114,X                                                      ;A8CC98;
+    STA.L Palettes_SpriteP0+$14,X                                        ;A8CC98;
     LDA.W .paletteColorB,Y                                               ;A8CC9C;
-    STA.L $7EC116,X                                                      ;A8CC9F;
+    STA.L Palettes_SpriteP0+$16,X                                        ;A8CC9F;
     LDA.W .paletteColorC,Y                                               ;A8CCA3;
-    STA.L $7EC118,X                                                      ;A8CCA6;
+    STA.L Palettes_SpriteP0+$18,X                                        ;A8CCA6;
     LDA.W .timer,Y                                                       ;A8CCAA;
-    STA.L $7ED654                                                        ;A8CCAD;
+    STA.L RobotPaletteAnimationTimer                                     ;A8CCAD;
     TYA                                                                  ;A8CCB1;
     CLC                                                                  ;A8CCB2;
     ADC.W #$000A                                                         ;A8CCB3;
-    STA.L $7ED656                                                        ;A8CCB6;
+    STA.L RobotPaletteAnimationTableIndex                                ;A8CCB6;
     PLX                                                                  ;A8CCBA;
 
   .return:
@@ -8742,14 +8742,14 @@ DecrementRobotLaserCooldown:
 Instruction_Robot_FacingLeft_MoveForward_HandleWallOrFall:
     PHX                                                                  ;A8CD09;
     PHY                                                                  ;A8CD0A;
-    LDX.W $0E54                                                          ;A8CD0B;
+    LDX.W EnemyIndex                                                     ;A8CD0B;
     JSR.W DecrementRobotLaserCooldown                                    ;A8CD0E;
     LDA.W #$FE00                                                         ;A8CD11;
     STA.W Robot.laserXVelocity,X                                         ;A8CD14;
     LDA.W #$0000                                                         ;A8CD17;
-    STA.B $12                                                            ;A8CD1A;
+    STA.B DP_Temp12                                                      ;A8CD1A;
     LDA.W #$FFFC                                                         ;A8CD1C;
-    STA.B $14                                                            ;A8CD1F;
+    STA.B DP_Temp14                                                      ;A8CD1F;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8CD21;
     BCC .notCollidedWithWall                                             ;A8CD25;
     LDA.W Robot.laserCooldown,X                                          ;A8CD27;
@@ -8766,23 +8766,23 @@ Instruction_Robot_FacingLeft_MoveForward_HandleWallOrFall:
     AND.W #$FFFF                                                         ;A8CD3B;
     BEQ .notTouchingSamusFromBelow                                       ;A8CD3E;
     LDA.W #$0000                                                         ;A8CD40;
-    STA.W $0B56                                                          ;A8CD43;
+    STA.W ExtraSamusXSubDisplacement                                     ;A8CD43;
     LDA.W #$FFFC                                                         ;A8CD46;
-    STA.W $0B58                                                          ;A8CD49;
+    STA.W ExtraSamusXDisplacement                                        ;A8CD49;
 
   .notTouchingSamusFromBelow:
-    LDA.W $0F7E,X                                                        ;A8CD4C;
-    STA.W $0FAE,X                                                        ;A8CD4F;
-    LDA.W $0F7A,X                                                        ;A8CD52;
+    LDA.W Enemy.YPosition,X                                              ;A8CD4C;
+    STA.W Enemy.var3,X                                                   ;A8CD4F;
+    LDA.W Enemy.XPosition,X                                              ;A8CD52;
     STA.W Robot.backupXPosition,X                                        ;A8CD55;
     SEC                                                                  ;A8CD58;
-    SBC.W $0F82,X                                                        ;A8CD59;
+    SBC.W Enemy.XHitboxRadius,X                                          ;A8CD59;
     SEC                                                                  ;A8CD5C;
-    SBC.W $0F82,X                                                        ;A8CD5D;
-    STA.W $0F7A,X                                                        ;A8CD60;
-    STZ.B $12                                                            ;A8CD63;
+    SBC.W Enemy.XHitboxRadius,X                                          ;A8CD5D;
+    STA.W Enemy.XPosition,X                                              ;A8CD60;
+    STZ.B DP_Temp12                                                      ;A8CD63;
     LDA.W #$0001                                                         ;A8CD65;
-    STA.B $14                                                            ;A8CD68;
+    STA.B DP_Temp14                                                      ;A8CD68;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8CD6A;
     BCS .collidedWithBlock                                               ;A8CD6E;
     LDA.W Robot.laserCooldown,X                                          ;A8CD70;
@@ -8790,11 +8790,11 @@ Instruction_Robot_FacingLeft_MoveForward_HandleWallOrFall:
     ADC.W #$0008                                                         ;A8CD74;
     STA.W Robot.laserCooldown,X                                          ;A8CD77;
     LDA.W Robot.backupXPosition,X                                        ;A8CD7A;
-    STA.W $0F7A,X                                                        ;A8CD7D;
-    LDA.W $0FAE,X                                                        ;A8CD80;
-    STA.W $0F7E,X                                                        ;A8CD83;
+    STA.W Enemy.XPosition,X                                              ;A8CD7D;
+    LDA.W Enemy.var3,X                                                   ;A8CD80;
+    STA.W Enemy.YPosition,X                                              ;A8CD83;
     PLY                                                                  ;A8CD86;
-    LDX.W $0E54                                                          ;A8CD87;
+    LDX.W EnemyIndex                                                     ;A8CD87;
     LDA.W #$0200                                                         ;A8CD8A;
     STA.W Robot.laserXVelocity,X                                         ;A8CD8D;
     LDY.W #InstList_Robot_ApproachingAFallToTheLeft                      ;A8CD90;
@@ -8803,9 +8803,9 @@ Instruction_Robot_FacingLeft_MoveForward_HandleWallOrFall:
 
   .collidedWithBlock:
     LDA.W Robot.backupXPosition,X                                        ;A8CD95;
-    STA.W $0F7A,X                                                        ;A8CD98;
-    LDA.W $0FAE,X                                                        ;A8CD9B;
-    STA.W $0F7E,X                                                        ;A8CD9E;
+    STA.W Enemy.XPosition,X                                              ;A8CD98;
+    LDA.W Enemy.var3,X                                                   ;A8CD9B;
+    STA.W Enemy.YPosition,X                                              ;A8CD9E;
     PLY                                                                  ;A8CDA1;
     PLX                                                                  ;A8CDA2;
     RTL                                                                  ;A8CDA3;
@@ -8815,14 +8815,14 @@ Instruction_Robot_FacingLeft_MoveForward_HandleWallOrFall:
 Instruction_Robot_FacingLeft_MoveForward_HandleHittingWall:
     PHX                                                                  ;A8CDA4;
     PHY                                                                  ;A8CDA5;
-    LDX.W $0E54                                                          ;A8CDA6;
+    LDX.W EnemyIndex                                                     ;A8CDA6;
     JSR.W DecrementRobotLaserCooldown                                    ;A8CDA9;
     LDA.W #$FE00                                                         ;A8CDAC;
     STA.W Robot.laserXVelocity,X                                         ;A8CDAF;
     LDA.W #$0000                                                         ;A8CDB2;
-    STA.B $12                                                            ;A8CDB5;
+    STA.B DP_Temp12                                                      ;A8CDB5;
     LDA.W #$FFFC                                                         ;A8CDB7;
-    STA.B $14                                                            ;A8CDBA;
+    STA.B DP_Temp14                                                      ;A8CDBA;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8CDBC;
     BCC .notCollidedWtihWall                                             ;A8CDC0;
     LDA.W Robot.laserCooldown,X                                          ;A8CDC2;
@@ -8839,9 +8839,9 @@ Instruction_Robot_FacingLeft_MoveForward_HandleHittingWall:
     AND.W #$FFFF                                                         ;A8CDD6;
     BEQ .return                                                          ;A8CDD9;
     LDA.W #$0000                                                         ;A8CDDB;
-    STA.W $0B56                                                          ;A8CDDE;
+    STA.W ExtraSamusXSubDisplacement                                     ;A8CDDE;
     LDA.W #$FFFC                                                         ;A8CDE1;
-    STA.W $0B58                                                          ;A8CDE4;
+    STA.W ExtraSamusXDisplacement                                        ;A8CDE4;
 
   .return:
     PLY                                                                  ;A8CDE7;
@@ -8853,14 +8853,14 @@ Instruction_Robot_FacingLeft_MoveForward_HandleHittingWall:
 Instruction_Robot_FacingLeft_MoveBackward_HandleWallOrFall:
     PHX                                                                  ;A8CDEA;
     PHY                                                                  ;A8CDEB;
-    LDX.W $0E54                                                          ;A8CDEC;
+    LDX.W EnemyIndex                                                     ;A8CDEC;
     JSR.W DecrementRobotLaserCooldown                                    ;A8CDEF;
     LDA.W #$FE00                                                         ;A8CDF2;
     STA.W Robot.laserXVelocity,X                                         ;A8CDF5;
     LDA.W #$0000                                                         ;A8CDF8;
-    STA.B $12                                                            ;A8CDFB;
+    STA.B DP_Temp12                                                      ;A8CDFB;
     LDA.W #$0004                                                         ;A8CDFD;
-    STA.B $14                                                            ;A8CE00;
+    STA.B DP_Temp14                                                      ;A8CE00;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8CE02;
     BCC .notCollidedWithWall                                             ;A8CE06;
     LDA.W Robot.laserCooldown,X                                          ;A8CE08;
@@ -8877,23 +8877,23 @@ Instruction_Robot_FacingLeft_MoveBackward_HandleWallOrFall:
     AND.W #$FFFF                                                         ;A8CE1C;
     BEQ .notTouchingSamusFromBelow                                       ;A8CE1F;
     LDA.W #$0000                                                         ;A8CE21;
-    STA.W $0B56                                                          ;A8CE24;
+    STA.W ExtraSamusXSubDisplacement                                     ;A8CE24;
     LDA.W #$0004                                                         ;A8CE27;
-    STA.W $0B58                                                          ;A8CE2A;
+    STA.W ExtraSamusXDisplacement                                        ;A8CE2A;
 
   .notTouchingSamusFromBelow:
-    LDA.W $0F7E,X                                                        ;A8CE2D;
-    STA.W $0FAE,X                                                        ;A8CE30;
-    LDA.W $0F7A,X                                                        ;A8CE33;
+    LDA.W Enemy.YPosition,X                                              ;A8CE2D;
+    STA.W Enemy.var3,X                                                   ;A8CE30;
+    LDA.W Enemy.XPosition,X                                              ;A8CE33;
     STA.W Robot.backupXPosition,X                                        ;A8CE36;
     CLC                                                                  ;A8CE39;
-    ADC.W $0F82,X                                                        ;A8CE3A;
+    ADC.W Enemy.XHitboxRadius,X                                          ;A8CE3A;
     CLC                                                                  ;A8CE3D;
-    ADC.W $0F82,X                                                        ;A8CE3E;
-    STA.W $0F7A,X                                                        ;A8CE41;
-    STZ.B $12                                                            ;A8CE44;
+    ADC.W Enemy.XHitboxRadius,X                                          ;A8CE3E;
+    STA.W Enemy.XPosition,X                                              ;A8CE41;
+    STZ.B DP_Temp12                                                      ;A8CE44;
     LDA.W #$0001                                                         ;A8CE46;
-    STA.B $14                                                            ;A8CE49;
+    STA.B DP_Temp14                                                      ;A8CE49;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8CE4B;
     BCS .collidedWithBlock                                               ;A8CE4F;
     LDA.W Robot.laserCooldown,X                                          ;A8CE51;
@@ -8901,11 +8901,11 @@ Instruction_Robot_FacingLeft_MoveBackward_HandleWallOrFall:
     ADC.W #$0008                                                         ;A8CE55;
     STA.W Robot.laserCooldown,X                                          ;A8CE58;
     LDA.W Robot.backupXPosition,X                                        ;A8CE5B;
-    STA.W $0F7A,X                                                        ;A8CE5E;
-    LDA.W $0FAE,X                                                        ;A8CE61;
-    STA.W $0F7E,X                                                        ;A8CE64;
+    STA.W Enemy.XPosition,X                                              ;A8CE5E;
+    LDA.W Enemy.var3,X                                                   ;A8CE61;
+    STA.W Enemy.YPosition,X                                              ;A8CE64;
     PLY                                                                  ;A8CE67;
-    LDX.W $0E54                                                          ;A8CE68;
+    LDX.W EnemyIndex                                                     ;A8CE68;
     LDA.W #$FE00                                                         ;A8CE6B;
     STA.W Robot.laserXVelocity,X                                         ;A8CE6E;
     LDY.W #InstList_Robot_ApproachingAFallToTheRight                     ;A8CE71;
@@ -8914,9 +8914,9 @@ Instruction_Robot_FacingLeft_MoveBackward_HandleWallOrFall:
 
   .collidedWithBlock:
     LDA.W Robot.backupXPosition,X                                        ;A8CE76;
-    STA.W $0F7A,X                                                        ;A8CE79;
-    LDA.W $0FAE,X                                                        ;A8CE7C;
-    STA.W $0F7E,X                                                        ;A8CE7F;
+    STA.W Enemy.XPosition,X                                              ;A8CE79;
+    LDA.W Enemy.var3,X                                                   ;A8CE7C;
+    STA.W Enemy.YPosition,X                                              ;A8CE7F;
     PLY                                                                  ;A8CE82;
     PLX                                                                  ;A8CE83;
     RTL                                                                  ;A8CE84;
@@ -8926,14 +8926,14 @@ Instruction_Robot_FacingLeft_MoveBackward_HandleWallOrFall:
 Instruction_Robot_FacingLeft_MoveBackward_HandleHittingWall:
     PHX                                                                  ;A8CE85;
     PHY                                                                  ;A8CE86;
-    LDX.W $0E54                                                          ;A8CE87;
+    LDX.W EnemyIndex                                                     ;A8CE87;
     JSR.W DecrementRobotLaserCooldown                                    ;A8CE8A;
     LDA.W #$FE00                                                         ;A8CE8D;
     STA.W Robot.laserXVelocity,X                                         ;A8CE90;
     LDA.W #$0000                                                         ;A8CE93;
-    STA.B $12                                                            ;A8CE96;
+    STA.B DP_Temp12                                                      ;A8CE96;
     LDA.W #$0004                                                         ;A8CE98;
-    STA.B $14                                                            ;A8CE9B;
+    STA.B DP_Temp14                                                      ;A8CE9B;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8CE9D;
     BCC .notCollidedWithWall                                             ;A8CEA1;
     LDA.W Robot.laserCooldown,X                                          ;A8CEA3;
@@ -8950,9 +8950,9 @@ Instruction_Robot_FacingLeft_MoveBackward_HandleHittingWall:
     AND.W #$FFFF                                                         ;A8CEB7;
     BEQ .return                                                          ;A8CEBA;
     LDA.W #$0000                                                         ;A8CEBC;
-    STA.W $0B56                                                          ;A8CEBF;
+    STA.W ExtraSamusXSubDisplacement                                     ;A8CEBF;
     LDA.W #$0004                                                         ;A8CEC2;
-    STA.W $0B58                                                          ;A8CEC5;
+    STA.W ExtraSamusXDisplacement                                        ;A8CEC5;
 
   .return:
     PLY                                                                  ;A8CEC8;
@@ -8970,14 +8970,14 @@ Instruction_Robot_SetInstListTo_FacingRight_WalkingForwards:
 Instruction_Robot_FacingRight_MoveForward_HandleWallOrFall:
     PHX                                                                  ;A8CECF;
     PHY                                                                  ;A8CED0;
-    LDX.W $0E54                                                          ;A8CED1;
+    LDX.W EnemyIndex                                                     ;A8CED1;
     JSR.W DecrementRobotLaserCooldown                                    ;A8CED4;
     LDA.W #$0200                                                         ;A8CED7;
     STA.W Robot.laserXVelocity,X                                         ;A8CEDA;
     LDA.W #$0000                                                         ;A8CEDD;
-    STA.B $12                                                            ;A8CEE0;
+    STA.B DP_Temp12                                                      ;A8CEE0;
     LDA.W #$0004                                                         ;A8CEE2;
-    STA.B $14                                                            ;A8CEE5;
+    STA.B DP_Temp14                                                      ;A8CEE5;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8CEE7;
     BCC .notCollidedWithWall                                             ;A8CEEB;
     LDA.W Robot.laserCooldown,X                                          ;A8CEED;
@@ -8994,23 +8994,23 @@ Instruction_Robot_FacingRight_MoveForward_HandleWallOrFall:
     AND.W #$FFFF                                                         ;A8CF01;
     BEQ .notTouchingSamusFromBelow                                       ;A8CF04;
     LDA.W #$0000                                                         ;A8CF06;
-    STA.W $0B56                                                          ;A8CF09;
+    STA.W ExtraSamusXSubDisplacement                                     ;A8CF09;
     LDA.W #$0004                                                         ;A8CF0C;
-    STA.W $0B58                                                          ;A8CF0F;
+    STA.W ExtraSamusXDisplacement                                        ;A8CF0F;
 
   .notTouchingSamusFromBelow:
-    LDA.W $0F7E,X                                                        ;A8CF12;
-    STA.W $0FAE,X                                                        ;A8CF15;
-    LDA.W $0F7A,X                                                        ;A8CF18;
+    LDA.W Enemy.YPosition,X                                              ;A8CF12;
+    STA.W Enemy.var3,X                                                   ;A8CF15;
+    LDA.W Enemy.XPosition,X                                              ;A8CF18;
     STA.W Robot.backupXPosition,X                                        ;A8CF1B;
     CLC                                                                  ;A8CF1E;
-    ADC.W $0F82,X                                                        ;A8CF1F;
+    ADC.W Enemy.XHitboxRadius,X                                          ;A8CF1F;
     CLC                                                                  ;A8CF22;
-    ADC.W $0F82,X                                                        ;A8CF23;
-    STA.W $0F7A,X                                                        ;A8CF26;
-    STZ.B $12                                                            ;A8CF29;
+    ADC.W Enemy.XHitboxRadius,X                                          ;A8CF23;
+    STA.W Enemy.XPosition,X                                              ;A8CF26;
+    STZ.B DP_Temp12                                                      ;A8CF29;
     LDA.W #$0001                                                         ;A8CF2B;
-    STA.B $14                                                            ;A8CF2E;
+    STA.B DP_Temp14                                                      ;A8CF2E;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8CF30;
     BCS .collidedWithBlock                                               ;A8CF34;
     LDA.W Robot.laserCooldown,X                                          ;A8CF36;
@@ -9018,11 +9018,11 @@ Instruction_Robot_FacingRight_MoveForward_HandleWallOrFall:
     ADC.W #$0008                                                         ;A8CF3A;
     STA.W Robot.laserCooldown,X                                          ;A8CF3D;
     LDA.W Robot.backupXPosition,X                                        ;A8CF40;
-    STA.W $0F7A,X                                                        ;A8CF43;
-    LDA.W $0FAE,X                                                        ;A8CF46;
-    STA.W $0F7E,X                                                        ;A8CF49;
+    STA.W Enemy.XPosition,X                                              ;A8CF43;
+    LDA.W Enemy.var3,X                                                   ;A8CF46;
+    STA.W Enemy.YPosition,X                                              ;A8CF49;
     PLY                                                                  ;A8CF4C;
-    LDX.W $0E54                                                          ;A8CF4D;
+    LDX.W EnemyIndex                                                     ;A8CF4D;
     LDA.W #$FE00                                                         ;A8CF50;
     STA.W Robot.laserXVelocity,X                                         ;A8CF53;
     LDY.W #InstList_Robot_ApproachingAFallToTheRight                     ;A8CF56;
@@ -9031,9 +9031,9 @@ Instruction_Robot_FacingRight_MoveForward_HandleWallOrFall:
 
   .collidedWithBlock:
     LDA.W Robot.backupXPosition,X                                        ;A8CF5B;
-    STA.W $0F7A,X                                                        ;A8CF5E;
-    LDA.W $0FAE,X                                                        ;A8CF61;
-    STA.W $0F7E,X                                                        ;A8CF64;
+    STA.W Enemy.XPosition,X                                              ;A8CF5E;
+    LDA.W Enemy.var3,X                                                   ;A8CF61;
+    STA.W Enemy.YPosition,X                                              ;A8CF64;
     PLY                                                                  ;A8CF67;
     PLX                                                                  ;A8CF68;
     RTL                                                                  ;A8CF69;
@@ -9043,14 +9043,14 @@ Instruction_Robot_FacingRight_MoveForward_HandleWallOrFall:
 Instruction_Robot_FacingRight_MoveForward_HandleHittingWall:
     PHX                                                                  ;A8CF6A;
     PHY                                                                  ;A8CF6B;
-    LDX.W $0E54                                                          ;A8CF6C;
+    LDX.W EnemyIndex                                                     ;A8CF6C;
     JSR.W DecrementRobotLaserCooldown                                    ;A8CF6F;
     LDA.W #$0200                                                         ;A8CF72;
     STA.W Robot.laserXVelocity,X                                         ;A8CF75;
     LDA.W #$0000                                                         ;A8CF78;
-    STA.B $12                                                            ;A8CF7B;
+    STA.B DP_Temp12                                                      ;A8CF7B;
     LDA.W #$0004                                                         ;A8CF7D;
-    STA.B $14                                                            ;A8CF80;
+    STA.B DP_Temp14                                                      ;A8CF80;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8CF82;
     BCC .notCollidedWithWall                                             ;A8CF86;
     LDA.W Robot.laserCooldown,X                                          ;A8CF88;
@@ -9067,9 +9067,9 @@ Instruction_Robot_FacingRight_MoveForward_HandleHittingWall:
     AND.W #$FFFF                                                         ;A8CF9C;
     BEQ .return                                                          ;A8CF9F;
     LDA.W #$0000                                                         ;A8CFA1;
-    STA.W $0B56                                                          ;A8CFA4;
+    STA.W ExtraSamusXSubDisplacement                                     ;A8CFA4;
     LDA.W #$0004                                                         ;A8CFA7;
-    STA.W $0B58                                                          ;A8CFAA;
+    STA.W ExtraSamusXDisplacement                                        ;A8CFAA;
 
   .return:
     PLY                                                                  ;A8CFAD;
@@ -9081,14 +9081,14 @@ Instruction_Robot_FacingRight_MoveForward_HandleHittingWall:
 Instruction_Robot_FacingRight_MoveBackward_HandleWallOrFall:
     PHX                                                                  ;A8CFB0;
     PHY                                                                  ;A8CFB1;
-    LDX.W $0E54                                                          ;A8CFB2;
+    LDX.W EnemyIndex                                                     ;A8CFB2;
     JSR.W DecrementRobotLaserCooldown                                    ;A8CFB5;
     LDA.W #$0200                                                         ;A8CFB8;
     STA.W Robot.laserXVelocity,X                                         ;A8CFBB;
     LDA.W #$0000                                                         ;A8CFBE;
-    STA.B $12                                                            ;A8CFC1;
+    STA.B DP_Temp12                                                      ;A8CFC1;
     LDA.W #$FFFC                                                         ;A8CFC3;
-    STA.B $14                                                            ;A8CFC6;
+    STA.B DP_Temp14                                                      ;A8CFC6;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8CFC8;
     BCC .notCollidedWithWall                                             ;A8CFCC;
     LDA.W Robot.laserCooldown,X                                          ;A8CFCE;
@@ -9105,35 +9105,35 @@ Instruction_Robot_FacingRight_MoveBackward_HandleWallOrFall:
     AND.W #$FFFF                                                         ;A8CFE2;
     BEQ .notTouchingSamusFromBelow                                       ;A8CFE5;
     LDA.W #$0000                                                         ;A8CFE7;
-    STA.W $0B56                                                          ;A8CFEA;
+    STA.W ExtraSamusXSubDisplacement                                     ;A8CFEA;
     LDA.W #$FFFC                                                         ;A8CFED;
-    STA.W $0B58                                                          ;A8CFF0;
+    STA.W ExtraSamusXDisplacement                                        ;A8CFF0;
 
   .notTouchingSamusFromBelow:
-    LDA.W $0F7E,X                                                        ;A8CFF3;
-    STA.W $0FAE,X                                                        ;A8CFF6;
-    LDA.W $0F7A,X                                                        ;A8CFF9;
+    LDA.W Enemy.YPosition,X                                              ;A8CFF3;
+    STA.W Enemy.var3,X                                                   ;A8CFF6;
+    LDA.W Enemy.XPosition,X                                              ;A8CFF9;
     STA.W Robot.backupXPosition,X                                        ;A8CFFC;
     SEC                                                                  ;A8CFFF;
-    SBC.W $0F82,X                                                        ;A8D000;
+    SBC.W Enemy.XHitboxRadius,X                                          ;A8D000;
     SEC                                                                  ;A8D003;
-    SBC.W $0F82,X                                                        ;A8D004;
-    STA.W $0F7A,X                                                        ;A8D007;
-    STZ.B $12                                                            ;A8D00A;
+    SBC.W Enemy.XHitboxRadius,X                                          ;A8D004;
+    STA.W Enemy.XPosition,X                                              ;A8D007;
+    STZ.B DP_Temp12                                                      ;A8D00A;
     LDA.W #$0001                                                         ;A8D00C;
-    STA.B $14                                                            ;A8D00F;
+    STA.B DP_Temp14                                                      ;A8D00F;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8D011;
     BCS .collidedWithBlock                                               ;A8D015;
     LDA.W Robot.laserCooldown,X                                          ;A8D017;
     CLC                                                                  ;A8D01A;
     ADC.W #$0008                                                         ;A8D01B;
     STA.W Robot.laserCooldown,X                                          ;A8D01E;
-    LDA.W $0FAE,X                                                        ;A8D021;
-    STA.W $0F7E,X                                                        ;A8D024;
+    LDA.W Enemy.var3,X                                                   ;A8D021;
+    STA.W Enemy.YPosition,X                                              ;A8D024;
     LDA.W Robot.backupXPosition,X                                        ;A8D027;
-    STA.W $0F7A,X                                                        ;A8D02A;
+    STA.W Enemy.XPosition,X                                              ;A8D02A;
     PLY                                                                  ;A8D02D;
-    LDX.W $0E54                                                          ;A8D02E;
+    LDX.W EnemyIndex                                                     ;A8D02E;
     LDA.W #$0200                                                         ;A8D031;
     STA.W Robot.laserXVelocity,X                                         ;A8D034;
     LDY.W #InstList_Robot_ApproachingAFallToTheLeft                      ;A8D037;
@@ -9141,10 +9141,10 @@ Instruction_Robot_FacingRight_MoveBackward_HandleWallOrFall:
     RTL                                                                  ;A8D03B;
 
   .collidedWithBlock:
-    LDA.W $0FAE,X                                                        ;A8D03C;
-    STA.W $0F7E,X                                                        ;A8D03F;
+    LDA.W Enemy.var3,X                                                   ;A8D03C;
+    STA.W Enemy.YPosition,X                                              ;A8D03F;
     LDA.W Robot.backupXPosition,X                                        ;A8D042;
-    STA.W $0F7A,X                                                        ;A8D045;
+    STA.W Enemy.XPosition,X                                              ;A8D045;
     PLY                                                                  ;A8D048;
     PLX                                                                  ;A8D049;
     RTL                                                                  ;A8D04A;
@@ -9154,14 +9154,14 @@ Instruction_Robot_FacingRight_MoveBackward_HandleWallOrFall:
 Instruction_Robot_FacingRight_MoveBackward_HandleHittingWall:
     PHX                                                                  ;A8D04B;
     PHY                                                                  ;A8D04C;
-    LDX.W $0E54                                                          ;A8D04D;
+    LDX.W EnemyIndex                                                     ;A8D04D;
     JSR.W DecrementRobotLaserCooldown                                    ;A8D050;
     LDA.W #$0200                                                         ;A8D053;
     STA.W Robot.laserXVelocity,X                                         ;A8D056;
     LDA.W #$0000                                                         ;A8D059;
-    STA.B $12                                                            ;A8D05C;
+    STA.B DP_Temp12                                                      ;A8D05C;
     LDA.W #$FFFC                                                         ;A8D05E;
-    STA.B $14                                                            ;A8D061;
+    STA.B DP_Temp14                                                      ;A8D061;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8D063;
     BCC .notCollidedWithWall                                             ;A8D067;
     LDA.W Robot.laserCooldown,X                                          ;A8D069;
@@ -9178,9 +9178,9 @@ Instruction_Robot_FacingRight_MoveBackward_HandleHittingWall:
     AND.W #$FFFF                                                         ;A8D07D;
     BEQ .return                                                          ;A8D080;
     LDA.W #$0000                                                         ;A8D082;
-    STA.W $0B56                                                          ;A8D085;
+    STA.W ExtraSamusXSubDisplacement                                     ;A8D085;
     LDA.W #$FFFC                                                         ;A8D088;
-    STA.W $0B58                                                          ;A8D08B;
+    STA.W ExtraSamusXDisplacement                                        ;A8D08B;
 
   .return:
     PLY                                                                  ;A8D08E;
@@ -9192,20 +9192,20 @@ Instruction_Robot_FacingRight_MoveBackward_HandleHittingWall:
 Instruction_Robot_PlaySFXIfOnScreen:
     PHX                                                                  ;A8D091;
     PHY                                                                  ;A8D092;
-    LDX.W $0E54                                                          ;A8D093;
-    LDA.W $0911                                                          ;A8D096;
-    CMP.W $0F7A,X                                                        ;A8D099;
+    LDX.W EnemyIndex                                                     ;A8D093;
+    LDA.W Layer1XPosition                                                ;A8D096;
+    CMP.W Enemy.XPosition,X                                              ;A8D099;
     BPL .return                                                          ;A8D09C;
     CLC                                                                  ;A8D09E;
     ADC.W #$0100                                                         ;A8D09F;
-    CMP.W $0F7A,X                                                        ;A8D0A2;
+    CMP.W Enemy.XPosition,X                                              ;A8D0A2;
     BMI .return                                                          ;A8D0A5;
-    LDA.W $0915                                                          ;A8D0A7;
-    CMP.W $0F7E,X                                                        ;A8D0AA;
+    LDA.W Layer1YPosition                                                ;A8D0A7;
+    CMP.W Enemy.YPosition,X                                              ;A8D0AA;
     BPL .return                                                          ;A8D0AD;
     CLC                                                                  ;A8D0AF;
     ADC.W #$00E0                                                         ;A8D0B0;
-    CMP.W $0F7E,X                                                        ;A8D0B3;
+    CMP.W Enemy.YPosition,X                                              ;A8D0B3;
     BMI .return                                                          ;A8D0B6;
     LDA.W #$0068                                                         ;A8D0B8;
     JSL.L QueueSound_Lib2_Max6                                           ;A8D0BB;
@@ -9225,35 +9225,35 @@ Instruction_Robot_Goto_FacingLeft_WalkingForwards:
 ;;; $D0C6: Instruction - try shooting laser up-right and go to $CB1D if so ;;;
 Instruction_Robot_TryShootingLaserUpRight:
     LDA.W #InstList_Robot_FacingRight_ShotLaserUpRight                   ;A8D0C6;
-    STA.B $32                                                            ;A8D0C9;
+    STA.B DP_Temp32                                                      ;A8D0C9;
     LDA.W #EnemyProjectile_RobotLaser_UpRight                            ;A8D0CB;
-    STA.B $30                                                            ;A8D0CE;
+    STA.B DP_Temp30                                                      ;A8D0CE;
     BRA HandleFiringLaser_Upwards                                        ;A8D0D0;
 
 
 ;;; $D0D2: Instruction - try shooting laser up-left and go to $C8D1 if so ;;;
 Instruction_Robot_TryShootingLaserUpLeft:
     LDA.W #InstList_Robot_FacingLeft_ShotLaserUpLeft                     ;A8D0D2;
-    STA.B $32                                                            ;A8D0D5;
+    STA.B DP_Temp32                                                      ;A8D0D5;
     LDA.W #EnemyProjectile_RobotLaser_UpLeft                             ;A8D0D7;
-    STA.B $30                                                            ;A8D0DA; fallthrough to HandleFiringLaser_Upwards
+    STA.B DP_Temp30                                                      ;A8D0DA; fallthrough to HandleFiringLaser_Upwards
 
 
 ;;; $D0DC: Handle firing laser - upwards ;;;
 HandleFiringLaser_Upwards:
     LDA.W Robot.laserCooldown,X                                          ;A8D0DC;
     BNE .timerNotExpired                                                 ;A8D0DF;
-    LDA.W $05E5                                                          ;A8D0E1;
+    LDA.W RandomNumberSeed                                               ;A8D0E1;
     AND.W #$001F                                                         ;A8D0E4;
     CLC                                                                  ;A8D0E7;
     ADC.W #$0010                                                         ;A8D0E8;
     STA.W Robot.laserCooldown,X                                          ;A8D0EB;
     PHX                                                                  ;A8D0EE;
-    LDY.B $30                                                            ;A8D0EF;
-    LDX.W $0E54                                                          ;A8D0F1;
+    LDY.B DP_Temp30                                                      ;A8D0EF;
+    LDX.W EnemyIndex                                                     ;A8D0F1;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8D0F4;
     PLX                                                                  ;A8D0F8;
-    LDY.B $32                                                            ;A8D0F9;
+    LDY.B DP_Temp32                                                      ;A8D0F9;
     RTL                                                                  ;A8D0FB;
 
   .timerNotExpired:
@@ -9264,31 +9264,31 @@ HandleFiringLaser_Upwards:
 ;;; $D100: Instruction - try shooting laser horizontally and go to $CB09 if so ;;;
 Instruction_Robot_TryShootingLaserRight:
     LDA.W #InstList_Robot_FacingRight_ShotLaserRight                     ;A8D100;
-    STA.B $32                                                            ;A8D103;
+    STA.B DP_Temp32                                                      ;A8D103;
     BRA HandleFiringLaser_Horizontal                                     ;A8D105;
 
 
 ;;; $D107: Instruction - try shooting laser horizontally and go to $C8BD if so ;;;
 Instruction_Robot_TryShootingLaserLeft:
     LDA.W #InstList_Robot_FacingLeft_ShotLaserLeft                       ;A8D107;
-    STA.B $32                                                            ;A8D10A; fallthrough to HandleFiringLaser_Horizontal
+    STA.B DP_Temp32                                                      ;A8D10A; fallthrough to HandleFiringLaser_Horizontal
 
 
 ;;; $D10C: Handle firing laser - horizontal ;;;
 HandleFiringLaser_Horizontal:
     LDA.W Robot.laserCooldown,X                                          ;A8D10C;
     BNE .timerNotExpired                                                 ;A8D10F;
-    LDA.W $05E5                                                          ;A8D111;
+    LDA.W RandomNumberSeed                                               ;A8D111;
     AND.W #$001F                                                         ;A8D114;
     CLC                                                                  ;A8D117;
     ADC.W #$0010                                                         ;A8D118;
     STA.W Robot.laserCooldown,X                                          ;A8D11B;
     PHX                                                                  ;A8D11E;
     LDY.W #EnemyProjectile_RobotLaser_Horizontal                         ;A8D11F;
-    LDX.W $0E54                                                          ;A8D122;
+    LDX.W EnemyIndex                                                     ;A8D122;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8D125;
     PLX                                                                  ;A8D129;
-    LDY.B $32                                                            ;A8D12A;
+    LDY.B DP_Temp32                                                      ;A8D12A;
     RTL                                                                  ;A8D12C;
 
   .timerNotExpired:
@@ -9299,34 +9299,34 @@ HandleFiringLaser_Horizontal:
 ;;; $D131: Instruction - try shooting laser down-right and go to $CAFD if so ;;;
 Instruction_Robot_TryShootingLaserDownRight:
     LDA.W #EnemyProjectile_RobotLaser_DownRight                          ;A8D131;
-    STA.B $30                                                            ;A8D134;
+    STA.B DP_Temp30                                                      ;A8D134;
     LDA.W #InstList_Robot_FacingRight_ShotLaserDownRight                 ;A8D136;
-    STA.B $32                                                            ;A8D139;
+    STA.B DP_Temp32                                                      ;A8D139;
     BRA HandleFiringLaser_Downwards                                      ;A8D13B;
 
 
 ;;; $D13D: Instruction - try shooting laser down-left and go to $C8B1 if so ;;;
 Instruction_Robot_TryShootingLaserDownLeft:
     LDA.W #EnemyProjectile_RobotLaser_DownLeft                           ;A8D13D;
-    STA.B $30                                                            ;A8D140;
+    STA.B DP_Temp30                                                      ;A8D140;
     LDA.W #InstList_Robot_FacingLeft_ShotLaserDownLeft                   ;A8D142;
-    STA.B $32                                                            ;A8D145; fallthrough to HandleFiringLaser_Downwards
+    STA.B DP_Temp32                                                      ;A8D145; fallthrough to HandleFiringLaser_Downwards
 
 
 ;;; $D147: Handle firing laser - downwards ;;;
 HandleFiringLaser_Downwards:
     LDA.W Robot.laserCooldown,X                                          ;A8D147;
     BNE .timerNotExpired                                                 ;A8D14A;
-    LDA.W $05E5                                                          ;A8D14C;
+    LDA.W RandomNumberSeed                                               ;A8D14C;
     AND.W #$001F                                                         ;A8D14F;
     CLC                                                                  ;A8D152;
     ADC.W #$0010                                                         ;A8D153;
     STA.W Robot.laserCooldown,X                                          ;A8D156;
     PHX                                                                  ;A8D159;
-    LDY.B $30                                                            ;A8D15A;
-    LDX.W $0E54                                                          ;A8D15C;
+    LDY.B DP_Temp30                                                      ;A8D15A;
+    LDX.W EnemyIndex                                                     ;A8D15C;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8D15F;
-    LDY.B $32                                                            ;A8D163;
+    LDY.B DP_Temp32                                                      ;A8D163;
     PLX                                                                  ;A8D165;
     RTL                                                                  ;A8D166;
 
@@ -9338,7 +9338,7 @@ HandleFiringLaser_Downwards:
 ;;; $D16B: Instruction - decrement enemy laser cooldown ;;;
 Instruction_Robot_DecrementLaserCooldown:
     PHX                                                                  ;A8D16B;
-    LDX.W $0E54                                                          ;A8D16C;
+    LDX.W EnemyIndex                                                     ;A8D16C;
     JSR.W DecrementRobotLaserCooldown                                    ;A8D16F;
     PLX                                                                  ;A8D172;
     RTL                                                                  ;A8D173;
@@ -9346,17 +9346,17 @@ Instruction_Robot_DecrementLaserCooldown:
 
 ;;; $D174: Enemy touch - enemy $E8FF/$E93F (work robot) ;;;
 EnemyTouch_Robot:
-    LDX.W $0E54                                                          ;A8D174;
-    LDA.W $0F7A,X                                                        ;A8D177;
-    CMP.W $0AF6                                                          ;A8D17A;
+    LDX.W EnemyIndex                                                     ;A8D174;
+    LDA.W Enemy.XPosition,X                                              ;A8D177;
+    CMP.W SamusXPosition                                                 ;A8D17A;
     BMI .rightOfSamus                                                    ;A8D17D;
     LDA.W #$FFFC                                                         ;A8D17F;
-    STA.W $0B58                                                          ;A8D182;
+    STA.W ExtraSamusXDisplacement                                        ;A8D182;
     RTL                                                                  ;A8D185;
 
   .rightOfSamus:
     LDA.W #$0004                                                         ;A8D186;
-    STA.W $0B58                                                          ;A8D189;
+    STA.W ExtraSamusXDisplacement                                        ;A8D189;
     RTL                                                                  ;A8D18C;
 
 
@@ -9371,19 +9371,19 @@ EnemyShot_Robot:
     REP #$30                                                             ;A8D192;
     PHX                                                                  ;A8D194;
     PHY                                                                  ;A8D195;
-    LDX.W $079F                                                          ;A8D196;
-    LDA.L $7ED828,X                                                      ;A8D199;
+    LDX.W AreaIndex                                                      ;A8D196;
+    LDA.L SRAMMirror_Boss,X                                              ;A8D199;
     BIT.W #$0001                                                         ;A8D19D;
     BEQ .return                                                          ;A8D1A0;
-    LDX.W $0E54                                                          ;A8D1A2;
+    LDX.W EnemyIndex                                                     ;A8D1A2;
     JSL.L NormalEnemyShotAI                                              ;A8D1A5;
-    LDX.W $0E54                                                          ;A8D1A9;
-    LDA.W $0F8C,X                                                        ;A8D1AC;
+    LDX.W EnemyIndex                                                     ;A8D1A9;
+    LDA.W Enemy.health,X                                                 ;A8D1AC;
     BEQ .return                                                          ;A8D1AF;
     LDA.W Robot.laserXVelocity,X                                         ;A8D1B1;
     BMI .facingLeft                                                      ;A8D1B4;
-    LDA.W $0AF6                                                          ;A8D1B6;
-    CMP.W $0F7A,X                                                        ;A8D1B9;
+    LDA.W SamusXPosition                                                 ;A8D1B6;
+    CMP.W Enemy.XPosition,X                                              ;A8D1B9;
     BMI .facingRight_behind                                              ;A8D1BC;
     LDA.W #InstList_Robot_FacingRight_Shot_SamusIsAhead                  ;A8D1BE;
     BRA .merge                                                           ;A8D1C1;
@@ -9398,15 +9398,15 @@ EnemyShot_Robot:
     RTL                                                                  ;A8D1CA;
 
   .facingLeft:
-    LDA.W $0AF6                                                          ;A8D1CB;
-    CMP.W $0F7A,X                                                        ;A8D1CE;
+    LDA.W SamusXPosition                                                 ;A8D1CB;
+    CMP.W Enemy.XPosition,X                                              ;A8D1CE;
     BPL .facingLeft_behind                                               ;A8D1D1;
     LDA.W #InstList_Robot_FacingLeft_Shot_SamusIsAhead                   ;A8D1D3;
 
   .merge:
-    STA.W Enemy.instList,X                                                        ;A8D1D6;
+    STA.W Enemy.instList,X                                               ;A8D1D6;
     LDA.W #$0001                                                         ;A8D1D9;
-    STA.W Enemy.instTimer,X                                                        ;A8D1DC;
+    STA.W Enemy.instTimer,X                                              ;A8D1DC;
     LDA.W Robot.laserCooldown,X                                          ;A8D1DF;
     CLC                                                                  ;A8D1E2;
     ADC.W #$0040                                                         ;A8D1E3;
@@ -9896,13 +9896,13 @@ BullAccelerationIntervalTable:
 
 ;;; $D8C9: Initialisation AI - enemy $E97F (bull) ;;;
 InitAI_Bull:
-    LDX.W $0E54                                                          ;A8D8C9;
+    LDX.W EnemyIndex                                                     ;A8D8C9;
     LDA.W #$0001                                                         ;A8D8CC;
-    STA.W Enemy.instTimer,X                                                        ;A8D8CF;
-    STZ.W Enemy.loopCounter,X                                                        ;A8D8D2;
+    STA.W Enemy.instTimer,X                                              ;A8D8CF;
+    STZ.W Enemy.loopCounter,X                                            ;A8D8D2;
     LDA.W #InstList_Bull_Normal                                          ;A8D8D5;
-    STA.W Enemy.instList,X                                                        ;A8D8D8;
-    LDA.W $0FB4,X                                                        ;A8D8DB;
+    STA.W Enemy.instList,X                                               ;A8D8D8;
+    LDA.W Enemy.init0,X                                                  ;A8D8DB;
     ASL                                                                  ;A8D8DE;
     ASL                                                                  ;A8D8DF;
     TAY                                                                  ;A8D8E0;
@@ -9915,7 +9915,7 @@ InitAI_Bull:
     STA.W Bull.activationTimer,X                                         ;A8D8F5;
     LDA.W #Function_Bull_MovementDelay                                   ;A8D8F8;
     STA.W Bull.function,X                                                ;A8D8FB;
-    LDA.W $0FB6,X                                                        ;A8D8FE;
+    LDA.W Enemy.init1,X                                                  ;A8D8FE;
     ASL                                                                  ;A8D901;
     TAY                                                                  ;A8D902;
     LDA.W BullConstants_MaxSpeeds,Y                                      ;A8D903;
@@ -9925,7 +9925,7 @@ InitAI_Bull:
 
 ;;; $D90B: Main AI - enemy $E97F (bull) ;;;
 MainAI_Bull:
-    LDX.W $0E54                                                          ;A8D90B;
+    LDX.W EnemyIndex                                                     ;A8D90B;
     LDA.L Bull.shotReactionDisableTimer,X                                ;A8D90E;
     DEC                                                                  ;A8D912;
     STA.L Bull.shotReactionDisableTimer,X                                ;A8D913;
@@ -9942,7 +9942,7 @@ MainAI_Bull:
 
 ;;; $D92B: Bull function - movement delay ;;;
 Function_Bull_MovementDelay:
-    LDX.W $0E54                                                          ;A8D92B;
+    LDX.W EnemyIndex                                                     ;A8D92B;
     DEC.W Bull.activationTimer,X                                         ;A8D92E;
     BNE .return                                                          ;A8D931;
     LDA.W #$0010                                                         ;A8D933;
@@ -9956,7 +9956,7 @@ Function_Bull_MovementDelay:
 
 ;;; $D940: Bull function - target Samus ;;;
 Function_Bull_TargetSamus:
-    LDX.W $0E54                                                          ;A8D940;
+    LDX.W EnemyIndex                                                     ;A8D940;
     JSL.L CalculateAngleOfSamusFromEnemy                                 ;A8D943;
     SEC                                                                  ;A8D947;
     SBC.W #$0040                                                         ;A8D948;
@@ -9972,7 +9972,7 @@ Function_Bull_TargetSamus:
 
 ;;; $D963: Bull function - accelerating ;;;
 Function_Bull_Accelerating:
-    LDX.W $0E54                                                          ;A8D963;
+    LDX.W EnemyIndex                                                     ;A8D963;
     LDA.W Bull.speed,X                                                   ;A8D966;
     CMP.L Bull.maxSpeed,X                                                ;A8D969;
     BPL .maxSpeed                                                        ;A8D96D;
@@ -9987,7 +9987,7 @@ Function_Bull_Accelerating:
 
 ;;; $D97C: Bull function - decelerating ;;;
 Function_Bull_Decelerating:
-    LDX.W $0E54                                                          ;A8D97C;
+    LDX.W EnemyIndex                                                     ;A8D97C;
     LDA.W Bull.speed,X                                                   ;A8D97F;
     BEQ .stopped                                                         ;A8D982;
     BMI .stopped                                                         ;A8D984;
@@ -10013,7 +10013,7 @@ Function_Bull_Decelerating:
 
 ;;; $D9AA: Trigger bull deceleration if too far off target ;;;
 TriggerBullDecelerationIfTooFarOffTarget:
-    LDX.W $0E54                                                          ;A8D9AA;
+    LDX.W EnemyIndex                                                     ;A8D9AA;
     JSL.L CalculateAngleOfSamusFromEnemy                                 ;A8D9AD;
     SEC                                                                  ;A8D9B1;
     SBC.W #$0040                                                         ;A8D9B2;
@@ -10036,8 +10036,8 @@ TriggerBullDecelerationIfTooFarOffTarget:
 
 ;;; $D9DB: Bull X movement ;;;
 BullXMovement:
-    LDX.W $0E54                                                          ;A8D9DB;
-    STZ.B $1A                                                            ;A8D9DE;
+    LDX.W EnemyIndex                                                     ;A8D9DB;
+    STZ.B DP_Temp1A                                                      ;A8D9DE;
     LDA.L Bull.angle,X                                                   ;A8D9E0;
     PHX                                                                  ;A8D9E4;
     CLC                                                                  ;A8D9E5;
@@ -10046,73 +10046,73 @@ BullXMovement:
     ASL                                                                  ;A8D9EC;
     TAX                                                                  ;A8D9ED;
     LDA.L SineCosineTables_16bitSine,X                                   ;A8D9EE;
-    STA.B $12                                                            ;A8D9F2;
+    STA.B DP_Temp12                                                      ;A8D9F2;
     PLX                                                                  ;A8D9F4;
-    LDA.B $12                                                            ;A8D9F5;
+    LDA.B DP_Temp12                                                      ;A8D9F5;
     BPL .positive                                                        ;A8D9F7;
-    INC.B $1A                                                            ;A8D9F9;
+    INC.B DP_Temp1A                                                      ;A8D9F9;
 
   .positive:
-    LDA.B $12                                                            ;A8D9FB;
+    LDA.B DP_Temp12                                                      ;A8D9FB;
     JSL.L NegateA_A0B067                                                 ;A8D9FD;
     AND.W #$FF00                                                         ;A8DA01;
     XBA                                                                  ;A8DA04;
-    STA.B $16                                                            ;A8DA05;
+    STA.B DP_Temp16                                                      ;A8DA05;
     LDA.W Bull.speed,X                                                   ;A8DA07;
-    STA.B $18                                                            ;A8DA0A;
+    STA.B DP_Temp18                                                      ;A8DA0A;
     JSR.W Math_24Bit_UnsignedMultiplication_A8DAB3                       ;A8DA0C;
-    LDA.B $1A                                                            ;A8DA0F;
+    LDA.B DP_Temp1A                                                      ;A8DA0F;
     BEQ .notLeft                                                         ;A8DA11;
     JSR.W Negate_1E_1C_A8DAF6                                            ;A8DA13;
 
   .notLeft:
     CLC                                                                  ;A8DA16;
-    LDA.W $0F7C,X                                                        ;A8DA17;
-    ADC.B $1C                                                            ;A8DA1A;
-    STA.W $0F7C,X                                                        ;A8DA1C;
-    LDA.W $0F7A,X                                                        ;A8DA1F;
-    ADC.B $1E                                                            ;A8DA22;
-    STA.W $0F7A,X                                                        ;A8DA24;
+    LDA.W Enemy.XSubPosition,X                                           ;A8DA17;
+    ADC.B DP_Temp1C                                                      ;A8DA1A;
+    STA.W Enemy.XSubPosition,X                                           ;A8DA1C;
+    LDA.W Enemy.XPosition,X                                              ;A8DA1F;
+    ADC.B DP_Temp1E                                                      ;A8DA22;
+    STA.W Enemy.XPosition,X                                              ;A8DA24;
     RTS                                                                  ;A8DA27;
 
 
 ;;; $DA28: Bull Y movement ;;;
 BullYMovement:
-    LDX.W $0E54                                                          ;A8DA28;
-    STZ.B $1A                                                            ;A8DA2B;
+    LDX.W EnemyIndex                                                     ;A8DA28;
+    STZ.B DP_Temp1A                                                      ;A8DA2B;
     LDA.L Bull.angle,X                                                   ;A8DA2D;
     PHX                                                                  ;A8DA31;
     AND.W #$00FF                                                         ;A8DA32;
     ASL                                                                  ;A8DA35;
     TAX                                                                  ;A8DA36;
     LDA.L SineCosineTables_16bitSine,X                                   ;A8DA37;
-    STA.B $12                                                            ;A8DA3B;
+    STA.B DP_Temp12                                                      ;A8DA3B;
     PLX                                                                  ;A8DA3D;
-    LDA.B $12                                                            ;A8DA3E;
+    LDA.B DP_Temp12                                                      ;A8DA3E;
     BPL .positive                                                        ;A8DA40;
-    INC.B $1A                                                            ;A8DA42;
+    INC.B DP_Temp1A                                                      ;A8DA42;
 
   .positive:
-    LDA.B $12                                                            ;A8DA44;
+    LDA.B DP_Temp12                                                      ;A8DA44;
     JSL.L NegateA_A0B067                                                 ;A8DA46;
     AND.W #$FF00                                                         ;A8DA4A;
     XBA                                                                  ;A8DA4D;
-    STA.B $16                                                            ;A8DA4E;
+    STA.B DP_Temp16                                                      ;A8DA4E;
     LDA.W Bull.speed,X                                                   ;A8DA50;
-    STA.B $18                                                            ;A8DA53;
+    STA.B DP_Temp18                                                      ;A8DA53;
     JSR.W Math_24Bit_UnsignedMultiplication_A8DAB3                       ;A8DA55;
-    LDA.B $1A                                                            ;A8DA58;
+    LDA.B DP_Temp1A                                                      ;A8DA58;
     BEQ .notUp                                                           ;A8DA5A;
     JSR.W Negate_1E_1C_A8DAF6                                            ;A8DA5C;
 
   .notUp:
     CLC                                                                  ;A8DA5F;
-    LDA.W $0F80,X                                                        ;A8DA60;
-    ADC.B $1C                                                            ;A8DA63;
-    STA.W $0F80,X                                                        ;A8DA65;
-    LDA.W $0F7E,X                                                        ;A8DA68;
-    ADC.B $1E                                                            ;A8DA6B;
-    STA.W $0F7E,X                                                        ;A8DA6D;
+    LDA.W Enemy.YSubPosition,X                                           ;A8DA60;
+    ADC.B DP_Temp1C                                                      ;A8DA63;
+    STA.W Enemy.YSubPosition,X                                           ;A8DA65;
+    LDA.W Enemy.YPosition,X                                              ;A8DA68;
+    ADC.B DP_Temp1E                                                      ;A8DA6B;
+    STA.W Enemy.YPosition,X                                              ;A8DA6D;
     RTS                                                                  ;A8DA70;
 
 
@@ -10161,20 +10161,20 @@ Math_24Bit_UnsignedMultiplication_A8DAB3:
 ;     $18 = b + c * 100h
     PHP                                                                  ;A8DAB3;
     SEP #$20                                                             ;A8DAB4;
-    LDA.B $16                                                            ;A8DAB6;
+    LDA.B DP_Temp16                                                      ;A8DAB6;
     STA.W $4202                                                          ;A8DAB8;
-    LDA.B $18                                                            ;A8DABB;
+    LDA.B DP_Temp18                                                      ;A8DABB;
     STA.W $4203                                                          ;A8DABD;
     NOP                                                                  ;A8DAC0;
     NOP                                                                  ;A8DAC1;
     NOP                                                                  ;A8DAC2;
     REP #$20                                                             ;A8DAC3;
     LDA.W $4216                                                          ;A8DAC5;
-    STA.B $1C                                                            ;A8DAC8;
+    STA.B DP_Temp1C                                                      ;A8DAC8;
     SEP #$20                                                             ;A8DACA;
-    LDA.B $16                                                            ;A8DACC;
+    LDA.B DP_Temp16                                                      ;A8DACC;
     STA.W $4202                                                          ;A8DACE;
-    LDA.B $19                                                            ;A8DAD1;
+    LDA.B DP_Temp19                                                      ;A8DAD1;
     STA.W $4203                                                          ;A8DAD3;
     NOP                                                                  ;A8DAD6;
     NOP                                                                  ;A8DAD7;
@@ -10183,15 +10183,15 @@ Math_24Bit_UnsignedMultiplication_A8DAB3:
     LDA.W $4216                                                          ;A8DADB;
     AND.W #$FF00                                                         ;A8DADE;
     XBA                                                                  ;A8DAE1;
-    STA.B $1E                                                            ;A8DAE2;
+    STA.B DP_Temp1E                                                      ;A8DAE2;
     LDA.W $4216                                                          ;A8DAE4;
     AND.W #$00FF                                                         ;A8DAE7;
     XBA                                                                  ;A8DAEA;
     CLC                                                                  ;A8DAEB;
-    ADC.B $1C                                                            ;A8DAEC;
-    STA.B $1C                                                            ;A8DAEE;
+    ADC.B DP_Temp1C                                                      ;A8DAEC;
+    STA.B DP_Temp1C                                                      ;A8DAEE;
     BCC .return                                                          ;A8DAF0;
-    INC.B $1E                                                            ;A8DAF2;
+    INC.B DP_Temp1E                                                      ;A8DAF2;
 
   .return:
     PLP                                                                  ;A8DAF4;
@@ -10208,23 +10208,23 @@ Negate_1E_1C_A8DAF6:
 ;         $1E = -[$1E].[$1C]
 ;     Else:
 ;         $1E = -0.0001h - [$1E].[$1C]
-    LDA.B $1C                                                            ;A8DAF6;
+    LDA.B DP_Temp1C                                                      ;A8DAF6;
     BNE .nonZero                                                         ;A8DAF8;
-    LDA.B $1E                                                            ;A8DAFA;
+    LDA.B DP_Temp1E                                                      ;A8DAFA;
     BEQ .return                                                          ;A8DAFC;
-    DEC.B $1C                                                            ;A8DAFE;
+    DEC.B DP_Temp1C                                                      ;A8DAFE;
     BRA +                                                                ;A8DB00;
 
   .nonZero:
-    LDA.B $1C                                                            ;A8DB02; >.<
+    LDA.B DP_Temp1C                                                      ;A8DB02; >.<
     LDA.W #$0000                                                         ;A8DB04;
     SEC                                                                  ;A8DB07;
-    SBC.B $1C                                                            ;A8DB08;
-    STA.B $1C                                                            ;A8DB0A;
+    SBC.B DP_Temp1C                                                      ;A8DB08;
+    STA.B DP_Temp1C                                                      ;A8DB0A;
 
-+   LDA.B $1E                                                            ;A8DB0C;
++   LDA.B DP_Temp1E                                                      ;A8DB0C;
     EOR.W #$FFFF                                                         ;A8DB0E;
-    STA.B $1E                                                            ;A8DB11;
+    STA.B DP_Temp1E                                                      ;A8DB11;
 
   .return:
     RTS                                                                  ;A8DB13;
@@ -10232,11 +10232,11 @@ Negate_1E_1C_A8DAF6:
 
 ;;; $DB14: Enemy shot - enemy $E97F (bull) ;;;
 EnemyShot_Bull:
-    LDX.W $0E54                                                          ;A8DB14;
-    LDA.W $0F8C,X                                                        ;A8DB17;
+    LDX.W EnemyIndex                                                     ;A8DB14;
+    LDA.W Enemy.health,X                                                 ;A8DB17;
     STA.L Bull.previousHealth,X                                          ;A8DB1A;
     JSL.L CommonA8_NormalEnemyShotAI                                     ;A8DB1E;
-    LDA.W $0F8C,X                                                        ;A8DB22;
+    LDA.W Enemy.health,X                                                 ;A8DB22;
     CMP.L Bull.previousHealth,X                                          ;A8DB25;
     BEQ .noDamage                                                        ;A8DB29;
     RTL                                                                  ;A8DB2B;
@@ -10245,14 +10245,14 @@ EnemyShot_Bull:
     LDA.L Bull.shotReactionDisableFlag,X                                 ;A8DB2C;
     BNE .return                                                          ;A8DB30;
     LDA.W #$0001                                                         ;A8DB32;
-    STA.W Enemy.instTimer,X                                                        ;A8DB35;
-    STZ.W Enemy.loopCounter,X                                                        ;A8DB38;
+    STA.W Enemy.instTimer,X                                              ;A8DB35;
+    STZ.W Enemy.loopCounter,X                                            ;A8DB38;
     LDA.W #InstList_Bull_Shot_0                                          ;A8DB3B;
-    STA.W Enemy.instList,X                                                        ;A8DB3E;
-    LDA.W $18A6                                                          ;A8DB41;
+    STA.W Enemy.instList,X                                               ;A8DB3E;
+    LDA.W CollisionIndex                                                 ;A8DB41;
     ASL                                                                  ;A8DB44;
     TAY                                                                  ;A8DB45;
-    LDA.W $0C04,Y                                                        ;A8DB46;
+    LDA.W SamusProjectile_Directions,Y                                   ;A8DB46;
     AND.W #$000F                                                         ;A8DB49;
     ASL                                                                  ;A8DB4C;
     TAY                                                                  ;A8DB4D;
@@ -10323,22 +10323,22 @@ InstList_Alcoon_FacingLeft_Walking_1:
 
 ;;; $DC03: Instruction list - facing left - spawn fireballs ;;;
 InstList_Alcoon_FacingLeft_SpawnFireballs:
-    dw $0014,Spritemap_Alcoon_FacingLeft_WingFullyExtended_BackFootFoward ;A8DC03;
-    dw $0009,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging ;A8DC07;
+    dw $0014,Spritemap_Alcoon_FacingLeft_WingFullyExtended_BackFootFoward;A8DC03;
+    dw $0009,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging;A8DC07;
     dw $0010,Spritemap_Alcoon_FacingLeft_WingForward_AboutToSpit         ;A8DC0B;
-    dw $0003,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging ;A8DC0F;
+    dw $0003,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging;A8DC0F;
     dw Instruction_Alcoon_SpawnAlcoonFireballHorizontally                ;A8DC13;
     dw $000A,Spritemap_Alcoon_FacingLeft_WingExtended_MouthJustSpit      ;A8DC15;
-    dw $000A,Spritemap_Alcoon_FacingLeft_WingFullyExtended_BackFootFoward ;A8DC19;
-    dw $0009,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging ;A8DC1D;
+    dw $000A,Spritemap_Alcoon_FacingLeft_WingFullyExtended_BackFootFoward;A8DC19;
+    dw $0009,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging;A8DC1D;
     dw $0010,Spritemap_Alcoon_FacingLeft_WingForward_AboutToSpit         ;A8DC21;
-    dw $0003,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging ;A8DC25;
+    dw $0003,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging;A8DC25;
     dw Instruction_Alcoon_SpawnAlcoonFireballUpward                      ;A8DC29;
     dw $000A,Spritemap_Alcoon_FacingLeft_WingExtended_MouthJustSpit      ;A8DC2B;
-    dw $000A,Spritemap_Alcoon_FacingLeft_WingFullyExtended_BackFootFoward ;A8DC2F;
-    dw $0009,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging ;A8DC33;
+    dw $000A,Spritemap_Alcoon_FacingLeft_WingFullyExtended_BackFootFoward;A8DC2F;
+    dw $0009,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging;A8DC33;
     dw $0010,Spritemap_Alcoon_FacingLeft_WingForward_AboutToSpit         ;A8DC37;
-    dw $0003,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging ;A8DC3B;
+    dw $0003,Spritemap_Alcoon_FacingLeft_WingMovingForward_MouthEnlarging;A8DC3B;
     dw Instruction_Alcoon_SpawnAlcoonFireballDownward                    ;A8DC3F;
     dw $0028,Spritemap_Alcoon_FacingLeft_WingExtended_MouthJustSpit      ;A8DC41;
     dw Instruction_Alcoon_StartWalking                                   ;A8DC45;
@@ -10375,19 +10375,19 @@ InstList_Alcoon_FacingRight_Walking_1:
 
 ;;; $DC73: Instruction list - facing right - spawn fireballs ;;;
 InstList_Alcoon_FacingRight_SpawnFireballs:
-    dw $0014,Spritemap_Alcoon_FaceRight_WingFullyExtended_BackFootForward ;A8DC73;
+    dw $0014,Spritemap_Alcoon_FaceRight_WingFullyExtended_BackFootForward;A8DC73;
     dw $0009,Spritemap_Alcoon_FaceRight_WingMovingForward_MouthEnlarging ;A8DC77;
     dw $0010,Spritemap_Alcoon_FacingRight_WingForward_AboutToSpit        ;A8DC7B;
     dw $0003,Spritemap_Alcoon_FaceRight_WingMovingForward_MouthEnlarging ;A8DC7F;
     dw Instruction_Alcoon_SpawnAlcoonFireballHorizontally                ;A8DC83;
     dw $000A,Spritemap_Alcoon_FacingRight_WingExtended_MouthJustSpit     ;A8DC85;
-    dw $000A,Spritemap_Alcoon_FaceRight_WingFullyExtended_BackFootForward ;A8DC89;
+    dw $000A,Spritemap_Alcoon_FaceRight_WingFullyExtended_BackFootForward;A8DC89;
     dw $0009,Spritemap_Alcoon_FaceRight_WingMovingForward_MouthEnlarging ;A8DC8D;
     dw $0010,Spritemap_Alcoon_FacingRight_WingForward_AboutToSpit        ;A8DC91;
     dw $0003,Spritemap_Alcoon_FaceRight_WingMovingForward_MouthEnlarging ;A8DC95;
     dw Instruction_Alcoon_SpawnAlcoonFireballUpward                      ;A8DC99;
     dw $000A,Spritemap_Alcoon_FacingRight_WingExtended_MouthJustSpit     ;A8DC9B;
-    dw $000A,Spritemap_Alcoon_FaceRight_WingFullyExtended_BackFootForward ;A8DC9F;
+    dw $000A,Spritemap_Alcoon_FaceRight_WingFullyExtended_BackFootForward;A8DC9F;
     dw $0009,Spritemap_Alcoon_FaceRight_WingMovingForward_MouthEnlarging ;A8DCA3;
     dw $0010,Spritemap_Alcoon_FacingRight_WingForward_AboutToSpit        ;A8DCA7;
     dw $0003,Spritemap_Alcoon_FaceRight_WingMovingForward_MouthEnlarging ;A8DCAB;
@@ -10424,18 +10424,18 @@ AlcoonConstants_XThresholdToHide:
 
 ;;; $DCCD: Initialisation AI - enemy $E9BF (alcoon) ;;;
 InitAI_Alcoon:
-    LDX.W $0E54                                                          ;A8DCCD;
+    LDX.W EnemyIndex                                                     ;A8DCCD;
     LDA.W #$0000                                                         ;A8DCD0;
     STA.L Alcoon.stepCounter,X                                           ;A8DCD3;
-    LDA.W $0F7E,X                                                        ;A8DCD7;
+    LDA.W Enemy.YPosition,X                                              ;A8DCD7;
     STA.W Alcoon.spawnYPosition,X                                        ;A8DCDA;
-    LDA.W $0F7A,X                                                        ;A8DCDD;
+    LDA.W Enemy.XPosition,X                                              ;A8DCDD;
     STA.L Alcoon.spawnXPosition,X                                        ;A8DCE0;
-    LDA.W Enemy.properties,X                                                        ;A8DCE4;
+    LDA.W Enemy.properties,X                                             ;A8DCE4;
     ORA.W #$2000                                                         ;A8DCE7;
-    STA.W Enemy.properties,X                                                        ;A8DCEA;
+    STA.W Enemy.properties,X                                             ;A8DCEA;
     LDA.W #InstList_Alcoon_FacingLeft_Walking_0                          ;A8DCED;
-    STA.W Enemy.instList,X                                                        ;A8DCF0;
+    STA.W Enemy.instList,X                                               ;A8DCF0;
     LDA.W #Function_Alcoon_WaitForSamusToGetNear                         ;A8DCF3;
     STA.W Alcoon.function,X                                              ;A8DCF6;
     JSR.W SetupAlcoonJumpMovement                                        ;A8DCF9;
@@ -10443,29 +10443,29 @@ InitAI_Alcoon:
   .loopRising:
     LDA.W Alcoon.YSubVelocity,X                                          ;A8DCFC;
     CLC                                                                  ;A8DCFF;
-    ADC.W $0F80,X                                                        ;A8DD00;
-    STA.W $0F80,X                                                        ;A8DD03;
+    ADC.W Enemy.YSubPosition,X                                           ;A8DD00;
+    STA.W Enemy.YSubPosition,X                                           ;A8DD03;
     LDA.W Alcoon.YVelocity,X                                             ;A8DD06;
-    ADC.W $0F7E,X                                                        ;A8DD09;
-    STA.W $0F7E,X                                                        ;A8DD0C;
+    ADC.W Enemy.YPosition,X                                              ;A8DD09;
+    STA.W Enemy.YPosition,X                                              ;A8DD0C;
     JSR.W AlcoonYAcceleration                                            ;A8DD0F;
     BMI .loopRising                                                      ;A8DD12;
 
   .loopFalling:
     LDA.W Alcoon.YSubVelocity,X                                          ;A8DD14;
-    STA.B $12                                                            ;A8DD17;
+    STA.B DP_Temp12                                                      ;A8DD17;
     LDA.W Alcoon.YVelocity,X                                             ;A8DD19;
-    STA.B $14                                                            ;A8DD1C;
+    STA.B DP_Temp14                                                      ;A8DD1C;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8DD1E;
     BCS .collidedWithBlock                                               ;A8DD22;
     JSR.W AlcoonYAcceleration                                            ;A8DD24;
     BRA .loopFalling                                                     ;A8DD27;
 
   .collidedWithBlock:
-    LDA.W $0F7E,X                                                        ;A8DD29;
+    LDA.W Enemy.YPosition,X                                              ;A8DD29;
     STA.L Alcoon.landingYPosition,X                                      ;A8DD2C;
     LDA.W Alcoon.spawnYPosition,X                                        ;A8DD30;
-    STA.W $0F7E,X                                                        ;A8DD33;
+    STA.W Enemy.YPosition,X                                              ;A8DD33;
     RTL                                                                  ;A8DD36;
 
 
@@ -10476,7 +10476,7 @@ SetupAlcoonJumpMovement:
     LDA.W #$0000                                                         ;A8DD3D;
     STA.W Alcoon.YSubVelocity,X                                          ;A8DD40;
     STA.W Alcoon.XVelocity,X                                             ;A8DD43;
-    STA.W $0FB0,X                                                        ;A8DD46;
+    STA.W Enemy.var4,X                                                   ;A8DD46;
     STA.L Alcoon.YAcceleration,X                                         ;A8DD49;
     LDA.W #$8000                                                         ;A8DD4D;
     STA.L Alcoon.YSubAcceleration,X                                      ;A8DD50;
@@ -10497,7 +10497,7 @@ AlcoonYAcceleration:
 
 ;;; $DD6B: Main AI - enemy $E9BF (alcoon) ;;;
 MainAI_Alcoon:
-    LDX.W $0E54                                                          ;A8DD6B;
+    LDX.W EnemyIndex                                                     ;A8DD6B;
     JMP.W (Alcoon.function,X)                                            ;A8DD6E;
 
 
@@ -10505,7 +10505,7 @@ MainAI_Alcoon:
 Function_Alcoon_WaitForSamusToGetNear:
     LDA.L Alcoon.landingYPosition,X                                      ;A8DD71;
     SEC                                                                  ;A8DD75;
-    SBC.W $0AFA                                                          ;A8DD76;
+    SBC.W SamusYPosition                                                 ;A8DD76;
     BPL .SamusBelowSpawn                                                 ;A8DD79;
     EOR.W #$FFFF                                                         ;A8DD7B;
     INC                                                                  ;A8DD7E;
@@ -10513,9 +10513,9 @@ Function_Alcoon_WaitForSamusToGetNear:
   .SamusBelowSpawn:
     CMP.W #$0020                                                         ;A8DD7F;
     BPL .return                                                          ;A8DD82;
-    LDA.W $0AF6                                                          ;A8DD84;
+    LDA.W SamusXPosition                                                 ;A8DD84;
     SEC                                                                  ;A8DD87;
-    SBC.W $0F7A,X                                                        ;A8DD88;
+    SBC.W Enemy.XPosition,X                                              ;A8DD88;
     PHP                                                                  ;A8DD8B;
     BPL +                                                                ;A8DD8C;
     EOR.W #$FFFF                                                         ;A8DD8E;
@@ -10534,9 +10534,9 @@ Function_Alcoon_WaitForSamusToGetNear:
   .SamusToTheRight:
     STA.W Alcoon.XVelocity,X                                             ;A8DDA9;
     TYA                                                                  ;A8DDAC;
-    STA.W Enemy.instList,X                                                        ;A8DDAD;
+    STA.W Enemy.instList,X                                               ;A8DDAD;
     LDA.W #$0001                                                         ;A8DDB0;
-    STA.W Enemy.instTimer,X                                                        ;A8DDB3;
+    STA.W Enemy.instTimer,X                                              ;A8DDB3;
     LDA.W #Function_Alcoon_Emerging_Rising                               ;A8DDB6;
     STA.W Alcoon.function,X                                              ;A8DDB9;
     LDA.W #$005E                                                         ;A8DDBC;
@@ -10554,11 +10554,11 @@ Function_Alcoon_WaitForSamusToGetNear:
 Function_Alcoon_Emerging_Rising:
     LDA.W Alcoon.YSubVelocity,X                                          ;A8DDC6;
     CLC                                                                  ;A8DDC9;
-    ADC.W $0F80,X                                                        ;A8DDCA;
-    STA.W $0F80,X                                                        ;A8DDCD;
+    ADC.W Enemy.YSubPosition,X                                           ;A8DDCA;
+    STA.W Enemy.YSubPosition,X                                           ;A8DDCD;
     LDA.W Alcoon.YVelocity,X                                             ;A8DDD0;
-    ADC.W $0F7E,X                                                        ;A8DDD3;
-    STA.W $0F7E,X                                                        ;A8DDD6;
+    ADC.W Enemy.YPosition,X                                              ;A8DDD3;
+    STA.W Enemy.YPosition,X                                              ;A8DDD6;
     JSR.W AlcoonYAcceleration                                            ;A8DDD9;
     BMI .return                                                          ;A8DDDC;
 
@@ -10572,9 +10572,9 @@ Function_Alcoon_Emerging_Rising:
 
   .keepLeft:
     TYA                                                                  ;A8DDEF;
-    STA.W Enemy.instList,X                                                        ;A8DDF0;
+    STA.W Enemy.instList,X                                               ;A8DDF0;
     LDA.W #$0001                                                         ;A8DDF3;
-    STA.W Enemy.instTimer,X                                                        ;A8DDF6;
+    STA.W Enemy.instTimer,X                                              ;A8DDF6;
 
   .return:
     RTL                                                                  ;A8DDF9;
@@ -10589,18 +10589,18 @@ Function_Alcoon_Emerging_Rising:
 ;;; $DE05: Alcoon function - emerging - falling ;;;
 Function_Alcoon_Emerging_Falling:
     LDA.W Alcoon.YSubVelocity,X                                          ;A8DE05;
-    STA.B $12                                                            ;A8DE08;
+    STA.B DP_Temp12                                                      ;A8DE08;
     LDA.W Alcoon.YVelocity,X                                             ;A8DE0A;
-    STA.B $14                                                            ;A8DE0D;
+    STA.B DP_Temp14                                                      ;A8DE0D;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8DE0F;
     BCS .collidedWithBlock                                               ;A8DE13;
     JSR.W AlcoonYAcceleration                                            ;A8DE15;
     RTL                                                                  ;A8DE18;
 
   .collidedWithBlock:
-    LDA.W $0AF6                                                          ;A8DE19;
+    LDA.W SamusXPosition                                                 ;A8DE19;
     SEC                                                                  ;A8DE1C;
-    SBC.W $0F7A,X                                                        ;A8DE1D;
+    SBC.W Enemy.XPosition,X                                              ;A8DE1D;
     PHP                                                                  ;A8DE20;
     LDY.W #InstList_Alcoon_FacingLeft_Walking_0                          ;A8DE21;
     LDA.W #$FFFE                                                         ;A8DE24;
@@ -10612,9 +10612,9 @@ Function_Alcoon_Emerging_Falling:
   .directionChosen:
     STA.W Alcoon.XVelocity,X                                             ;A8DE30;
     TYA                                                                  ;A8DE33;
-    STA.W Enemy.instList,X                                                        ;A8DE34;
+    STA.W Enemy.instList,X                                               ;A8DE34;
     LDA.W #$0001                                                         ;A8DE37;
-    STA.W Enemy.instTimer,X                                                        ;A8DE3A;
+    STA.W Enemy.instTimer,X                                              ;A8DE3A;
     LDA.W #Function_Alcoon_MoveHorizontally_SpitFireballsAtSamus         ;A8DE3D;
     STA.W Alcoon.function,X                                              ;A8DE40;
     LDA.W #$0001                                                         ;A8DE43;
@@ -10624,22 +10624,22 @@ Function_Alcoon_Emerging_Falling:
 
 ;;; $DE4B: Alcoon function - emerged ;;;
 Function_Alcoon_MoveHorizontally_SpitFireballsAtSamus:
-    STZ.B $12                                                            ;A8DE4B;
+    STZ.B DP_Temp12                                                      ;A8DE4B;
     LDA.W #$0002                                                         ;A8DE4D;
-    STA.B $14                                                            ;A8DE50;
+    STA.B DP_Temp14                                                      ;A8DE50;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8DE52;
     LDA.L Alcoon.spawnXPosition,X                                        ;A8DE56;
     SEC                                                                  ;A8DE5A;
-    SBC.W $0F7A,X                                                        ;A8DE5B;
+    SBC.W Enemy.XPosition,X                                              ;A8DE5B;
     BPL +                                                                ;A8DE5E;
     EOR.W #$FFFF                                                         ;A8DE60;
     INC                                                                  ;A8DE63;
 
 +   CMP.W AlcoonConstants_XThresholdToHide                               ;A8DE64;
     BPL .farAway                                                         ;A8DE67;
-    LDA.W $0AF6                                                          ;A8DE69;
+    LDA.W SamusXPosition                                                 ;A8DE69;
     SEC                                                                  ;A8DE6C;
-    SBC.W $0F7A,X                                                        ;A8DE6D;
+    SBC.W Enemy.XPosition,X                                              ;A8DE6D;
     PHP                                                                  ;A8DE70;
     BPL +                                                                ;A8DE71;
     EOR.W #$FFFF                                                         ;A8DE73;
@@ -10665,9 +10665,9 @@ Function_Alcoon_MoveHorizontally_SpitFireballsAtSamus:
 
   .fireballs:
     TYA                                                                  ;A8DE93;
-    STA.W Enemy.instList,X                                                        ;A8DE94;
+    STA.W Enemy.instList,X                                               ;A8DE94;
     LDA.W #$0001                                                         ;A8DE97;
-    STA.W Enemy.instTimer,X                                                        ;A8DE9A;
+    STA.W Enemy.instTimer,X                                              ;A8DE9A;
     LDA.W #RTL_A8DECC                                                    ;A8DE9D;
     STA.W Alcoon.function,X                                              ;A8DEA0;
 
@@ -10687,9 +10687,9 @@ Function_Alcoon_MoveHorizontally_SpitFireballsAtSamus:
     LDY.W #InstList_Alcoon_FacingRight_Airborne_LookingForward           ;A8DEBE;
 
 +   TYA                                                                  ;A8DEC1;
-    STA.W Enemy.instList,X                                                        ;A8DEC2;
+    STA.W Enemy.instList,X                                               ;A8DEC2;
     LDA.W #$0001                                                         ;A8DEC5;
-    STA.W Enemy.instTimer,X                                                        ;A8DEC8;
+    STA.W Enemy.instTimer,X                                              ;A8DEC8;
     RTL                                                                  ;A8DECB;
 
 
@@ -10702,11 +10702,11 @@ RTL_A8DECC:
 Function_Alcoon_Hiding_Rising:
     LDA.W Alcoon.YSubVelocity,X                                          ;A8DECD;
     CLC                                                                  ;A8DED0;
-    ADC.W $0F80,X                                                        ;A8DED1;
-    STA.W $0F80,X                                                        ;A8DED4;
+    ADC.W Enemy.YSubPosition,X                                           ;A8DED1;
+    STA.W Enemy.YSubPosition,X                                           ;A8DED4;
     LDA.W Alcoon.YVelocity,X                                             ;A8DED7;
-    ADC.W $0F7E,X                                                        ;A8DEDA;
-    STA.W $0F7E,X                                                        ;A8DEDD;
+    ADC.W Enemy.YPosition,X                                              ;A8DEDA;
+    STA.W Enemy.YPosition,X                                              ;A8DEDD;
     JSR.W AlcoonYAcceleration                                            ;A8DEE0;
     BMI .return                                                          ;A8DEE3;
     LDA.W #Function_Alcoon_Hiding_Falling                                ;A8DEE5;
@@ -10720,11 +10720,11 @@ Function_Alcoon_Hiding_Rising:
 Function_Alcoon_Hiding_Falling:
     LDA.W Alcoon.YSubVelocity,X                                          ;A8DEEC;
     CLC                                                                  ;A8DEEF;
-    ADC.W $0F80,X                                                        ;A8DEF0;
-    STA.W $0F80,X                                                        ;A8DEF3;
+    ADC.W Enemy.YSubPosition,X                                           ;A8DEF0;
+    STA.W Enemy.YSubPosition,X                                           ;A8DEF3;
     LDA.W Alcoon.YVelocity,X                                             ;A8DEF6;
-    ADC.W $0F7E,X                                                        ;A8DEF9;
-    STA.W $0F7E,X                                                        ;A8DEFC;
+    ADC.W Enemy.YPosition,X                                              ;A8DEF9;
+    STA.W Enemy.YPosition,X                                              ;A8DEFC;
     CMP.W Alcoon.spawnYPosition,X                                        ;A8DEFF;
     BPL .reachedTargetY                                                  ;A8DF02;
     JSR.W AlcoonYAcceleration                                            ;A8DF04;
@@ -10732,9 +10732,9 @@ Function_Alcoon_Hiding_Falling:
 
   .reachedTargetY:
     LDA.W Alcoon.spawnYPosition,X                                        ;A8DF08;
-    STA.W $0F7E,X                                                        ;A8DF0B;
+    STA.W Enemy.YPosition,X                                              ;A8DF0B;
     LDA.L Alcoon.spawnXPosition,X                                        ;A8DF0E;
-    STA.W $0F7A,X                                                        ;A8DF12;
+    STA.W Enemy.XPosition,X                                              ;A8DF12;
     LDA.W #Function_Alcoon_WaitForSamusToGetNear                         ;A8DF15;
     STA.W Alcoon.function,X                                              ;A8DF18;
     RTL                                                                  ;A8DF1B;
@@ -10753,7 +10753,7 @@ Instruction_Alcoon_SpawnAlcoonFireballUpward_loop:
 
 ; Expects a pushed Y
     LDY.W #EnemyProjectile_AlcoonFireball                                ;A8DF20;
-    LDX.W $0E54                                                          ;A8DF23;
+    LDX.W EnemyIndex                                                     ;A8DF23;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8DF26;
     LDA.W #$003F                                                         ;A8DF2A;
     JSL.L QueueSound_Lib2_Max6                                           ;A8DF2D;
@@ -10777,10 +10777,10 @@ Instruction_Alcoon_SpawnAlcoonFireballDownward:
 
 ;;; $DF3F: Instruction - start walking ;;;
 Instruction_Alcoon_StartWalking:
-    LDX.W $0E54                                                          ;A8DF3F;
+    LDX.W EnemyIndex                                                     ;A8DF3F;
     LDA.W #Function_Alcoon_MoveHorizontally_SpitFireballsAtSamus         ;A8DF42;
     STA.W Alcoon.function,X                                              ;A8DF45;
-    LDA.W $05E5                                                          ;A8DF48;
+    LDA.W RandomNumberSeed                                               ;A8DF48;
     AND.W #$0003                                                         ;A8DF4B;
     BNE +                                                                ;A8DF4E;
     LDA.W #$0002                                                         ;A8DF50;
@@ -10797,20 +10797,20 @@ Instruction_Alcoon_StartWalking:
 
 ;;; $DF63: Instruction - decrement step counter and move horizontally ;;;
 Instruction_Alcoon_DecrementStepCounter_MoveHorizontally:
-    LDX.W $0E54                                                          ;A8DF63;
+    LDX.W EnemyIndex                                                     ;A8DF63;
     LDA.L Alcoon.stepCounter,X                                           ;A8DF66;
     BEQ Instruction_Alcoon_MoveHorizontally_TurnIfWallCollision          ;A8DF6A;
     DEC                                                                  ;A8DF6C;
-    STA.L Alcoon.stepCounter,X                                                      ;A8DF6D; fallthrough to Instruction_Alcoon_MoveHorizontally_TurnIfWallCollision
+    STA.L Alcoon.stepCounter,X                                           ;A8DF6D; fallthrough to Instruction_Alcoon_MoveHorizontally_TurnIfWallCollision
 
 
 ;;; $DF71: Instruction - move horizontally ;;;
 Instruction_Alcoon_MoveHorizontally_TurnIfWallCollision:
     PHY                                                                  ;A8DF71;
-    LDX.W $0E54                                                          ;A8DF72;
-    STZ.B $12                                                            ;A8DF75;
+    LDX.W EnemyIndex                                                     ;A8DF72;
+    STZ.B DP_Temp12                                                      ;A8DF75;
     LDA.W Alcoon.XVelocity,X                                             ;A8DF77;
-    STA.B $14                                                            ;A8DF7A;
+    STA.B DP_Temp14                                                      ;A8DF7A;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8DF7C;
     BCS .turnAround                                                      ;A8DF80;
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A8DF82;
@@ -11120,16 +11120,16 @@ AtomicInstListPointers:
 
 ;;; $E388: Initialisation AI - enemy $E9FF (atomic) ;;;
 InitAI_Atomic:
-    LDX.W $0E54                                                          ;A8E388;
+    LDX.W EnemyIndex                                                     ;A8E388;
     LDA.W #$0001                                                         ;A8E38B;
-    STA.W Enemy.instTimer,X                                                        ;A8E38E;
-    STZ.W Enemy.loopCounter,X                                                        ;A8E391;
-    LDA.W $0FB4,X                                                        ;A8E394;
+    STA.W Enemy.instTimer,X                                              ;A8E38E;
+    STZ.W Enemy.loopCounter,X                                            ;A8E391;
+    LDA.W Enemy.init0,X                                                  ;A8E394;
     ASL                                                                  ;A8E397;
     TAY                                                                  ;A8E398;
     LDA.W AtomicInstListPointers,Y                                       ;A8E399;
-    STA.W Enemy.instList,X                                                        ;A8E39C;
-    LDA.W $0FB6,X                                                        ;A8E39F;
+    STA.W Enemy.instList,X                                               ;A8E39C;
+    LDA.W Enemy.init1,X                                                  ;A8E39F;
     ASL                                                                  ;A8E3A2;
     ASL                                                                  ;A8E3A3;
     ASL                                                                  ;A8E3A4;
@@ -11147,19 +11147,19 @@ InitAI_Atomic:
 
 ;;; $E3C3: Main AI - enemy $E9FF (atomic) ;;;
 MainAI_Atomic:
-    LDX.W $0E54                                                          ;A8E3C3;
+    LDX.W EnemyIndex                                                     ;A8E3C3;
     JSR.W ChooseAtomicYMovementFunction                                  ;A8E3C6;
     JSR.W ChooseAtomicXMovementFunction                                  ;A8E3C9;
-    LDX.W $0E54                                                          ;A8E3CC;
+    LDX.W EnemyIndex                                                     ;A8E3CC;
     JSR.W (Atomic.XMovementFunction,X)                                   ;A8E3CF;
-    LDX.W $0E54                                                          ;A8E3D2;
+    LDX.W EnemyIndex                                                     ;A8E3D2;
     JSR.W (Atomic.YMovementFunction,X)                                   ;A8E3D5;
     RTL                                                                  ;A8E3D8;
 
 
 ;;; $E3D9: Set atomic Y movement function ;;;
 ChooseAtomicYMovementFunction:
-    LDX.W $0E54                                                          ;A8E3D9;
+    LDX.W EnemyIndex                                                     ;A8E3D9;
     LDA.W #Function_Atomic_MoveUp                                        ;A8E3DC;
     STA.W Atomic.XMovementFunction,X                                     ;A8E3DF;
     JSL.L Get_SamusY_minus_EnemyY                                        ;A8E3E2;
@@ -11173,7 +11173,7 @@ ChooseAtomicYMovementFunction:
 
 ;;; $E3EF: Set atomic X movement function ;;;
 ChooseAtomicXMovementFunction:
-    LDX.W $0E54                                                          ;A8E3EF;
+    LDX.W EnemyIndex                                                     ;A8E3EF;
     LDA.W #Function_Atomic_MoveLeft                                      ;A8E3F2;
     STA.W Atomic.YMovementFunction,X                                     ;A8E3F5;
     JSL.L Get_SamusX_minus_EnemyX                                        ;A8E3F8;
@@ -11187,86 +11187,86 @@ ChooseAtomicXMovementFunction:
 
 ;;; $E405: Atomic Y movement function - move up ;;;
 Function_Atomic_MoveUp:
-    LDX.W $0E54                                                          ;A8E405;
-    LDA.W $0F7E,X                                                        ;A8E408;
+    LDX.W EnemyIndex                                                     ;A8E405;
+    LDA.W Enemy.YPosition,X                                              ;A8E408;
     CLC                                                                  ;A8E40B;
     ADC.L Atomic.negativeSpeed,X                                         ;A8E40C;
-    STA.W $0F7E,X                                                        ;A8E410;
-    LDA.W $0F80,X                                                        ;A8E413;
+    STA.W Enemy.YPosition,X                                              ;A8E410;
+    LDA.W Enemy.YSubPosition,X                                           ;A8E413;
     CLC                                                                  ;A8E416;
     ADC.L Atomic.negativeSubSpeed,X                                      ;A8E417;
     BCC .done                                                            ;A8E41B;
-    INC.W $0F7E,X                                                        ;A8E41D;
+    INC.W Enemy.YPosition,X                                              ;A8E41D;
 
   .done:
-    STA.W $0F80,X                                                        ;A8E420;
+    STA.W Enemy.YSubPosition,X                                           ;A8E420;
     RTS                                                                  ;A8E423;
 
 
 ;;; $E424: Atomic Y movement function - move down ;;;
 Function_Atomic_MoveDown:
-    LDX.W $0E54                                                          ;A8E424;
-    LDA.W $0F7E,X                                                        ;A8E427;
+    LDX.W EnemyIndex                                                     ;A8E424;
+    LDA.W Enemy.YPosition,X                                              ;A8E427;
     CLC                                                                  ;A8E42A;
-    ADC.L Atomic.speed,X                                                      ;A8E42B;
-    STA.W $0F7E,X                                                        ;A8E42F;
-    LDA.W $0F80,X                                                        ;A8E432;
+    ADC.L Atomic.speed,X                                                 ;A8E42B;
+    STA.W Enemy.YPosition,X                                              ;A8E42F;
+    LDA.W Enemy.YSubPosition,X                                           ;A8E432;
     CLC                                                                  ;A8E435;
     ADC.L Atomic.subSpeed,X                                              ;A8E436;
     BCC .done                                                            ;A8E43A;
-    INC.W $0F7E,X                                                        ;A8E43C;
+    INC.W Enemy.YPosition,X                                              ;A8E43C;
 
   .done:
-    STA.W $0F80,X                                                        ;A8E43F;
+    STA.W Enemy.YSubPosition,X                                           ;A8E43F;
     RTS                                                                  ;A8E442;
 
 
 ;;; $E443: Atomic X movement function - move left ;;;
 Function_Atomic_MoveLeft:
-    LDX.W $0E54                                                          ;A8E443;
-    LDA.W $0F7A,X                                                        ;A8E446;
+    LDX.W EnemyIndex                                                     ;A8E443;
+    LDA.W Enemy.XPosition,X                                              ;A8E446;
     CLC                                                                  ;A8E449;
     ADC.L Atomic.negativeSpeed,X                                         ;A8E44A;
-    STA.W $0F7A,X                                                        ;A8E44E;
-    LDA.W $0F7C,X                                                        ;A8E451;
+    STA.W Enemy.XPosition,X                                              ;A8E44E;
+    LDA.W Enemy.XSubPosition,X                                           ;A8E451;
     CLC                                                                  ;A8E454;
     ADC.L Atomic.negativeSubSpeed,X                                      ;A8E455;
     BCC .done                                                            ;A8E459;
-    INC.W $0F7A,X                                                        ;A8E45B;
+    INC.W Enemy.XPosition,X                                              ;A8E45B;
 
   .done:
-    STA.W $0F7C,X                                                        ;A8E45E;
+    STA.W Enemy.XSubPosition,X                                           ;A8E45E;
     RTS                                                                  ;A8E461;
 
 
 ;;; $E462: Atomic X movement function - move right ;;;
 Function_Atomic_MoveRight:
-    LDX.W $0E54                                                          ;A8E462;
-    LDA.W $0F7A,X                                                        ;A8E465;
+    LDX.W EnemyIndex                                                     ;A8E462;
+    LDA.W Enemy.XPosition,X                                              ;A8E465;
     CLC                                                                  ;A8E468;
     ADC.L Atomic.speed,X                                                 ;A8E469;
-    STA.W $0F7A,X                                                        ;A8E46D;
-    LDA.W $0F7C,X                                                        ;A8E470;
+    STA.W Enemy.XPosition,X                                              ;A8E46D;
+    LDA.W Enemy.XSubPosition,X                                           ;A8E470;
     CLC                                                                  ;A8E473;
     ADC.L Atomic.subSpeed,X                                              ;A8E474;
     BCC .done                                                            ;A8E478;
-    INC.W $0F7A,X                                                        ;A8E47A;
+    INC.W Enemy.XPosition,X                                              ;A8E47A;
 
   .done:
-    STA.W $0F7C,X                                                        ;A8E47D;
+    STA.W Enemy.XSubPosition,X                                           ;A8E47D;
     RTS                                                                  ;A8E480;
 
 
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $E481: Unused. RTL ;;;
 UNUSED_Atomic_GetEnemyIndex_A8E481:
-    LDX.W $0E54                                                          ;A8E481;
+    LDX.W EnemyIndex                                                     ;A8E481;
     RTL                                                                  ;A8E484;
 
 
 ;;; $E485: Unused. RTL ;;;
 UNUSED_Atomic_GetEnemyIndex_A8E485:
-    LDX.W $0E54                                                          ;A8E485;
+    LDX.W EnemyIndex                                                     ;A8E485;
     RTL                                                                  ;A8E488;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
@@ -11365,13 +11365,13 @@ Palette_Spark:
 InstList_Spark_FlickerOn:
     dw Instruction_Spark_SetAsTangible                                   ;A8E5A7;
     dw $0001,Spritemap_Spark_Flickering_0                                ;A8E5A9;
-    dw $0002,Spritemap_Common_Nothing                                  ;A8E5AD;
+    dw $0002,Spritemap_Common_Nothing                                    ;A8E5AD;
     dw $0001,Spritemap_Spark_Flickering_0                                ;A8E5B1;
-    dw $0002,Spritemap_Common_Nothing                                  ;A8E5B5;
+    dw $0002,Spritemap_Common_Nothing                                    ;A8E5B5;
     dw $0001,Spritemap_Spark_Flickering_1                                ;A8E5B9;
-    dw $0002,Spritemap_Common_Nothing                                  ;A8E5BD;
+    dw $0002,Spritemap_Common_Nothing                                    ;A8E5BD;
     dw $0001,Spritemap_Spark_Flickering_1                                ;A8E5C1;
-    dw $0001,Spritemap_Common_Nothing                                  ;A8E5C5;
+    dw $0001,Spritemap_Common_Nothing                                    ;A8E5C5;
     dw $0002,Spritemap_Spark_Flickering_2                                ;A8E5C9;
     dw $0002,Spritemap_Spark_Flickering_3                                ;A8E5CD;
 
@@ -11393,11 +11393,11 @@ InstList_Spark_FlickerOut:
     dw $0001,Spritemap_Spark_Flickering_1                                ;A8E5ED;
     dw $0001,Spritemap_Spark_Flickering_1                                ;A8E5F1;
     dw $0001,Spritemap_Spark_Flickering_2                                ;A8E5F5;
-    dw $0001,Spritemap_Common_Nothing                                  ;A8E5F9;
+    dw $0001,Spritemap_Common_Nothing                                    ;A8E5F9;
     dw $0001,Spritemap_Spark_Flickering_2                                ;A8E5FD;
-    dw $0001,Spritemap_Common_Nothing                                  ;A8E601;
+    dw $0001,Spritemap_Common_Nothing                                    ;A8E601;
     dw Instruction_Spark_SetAsIntangible                                 ;A8E605;
-    dw Instruction_Common_Sleep                                        ;A8E607;
+    dw Instruction_Common_Sleep                                          ;A8E607;
 
 
 ;;; $E609: Instruction list - emit falling sparks ;;;
@@ -11412,53 +11412,53 @@ InstList_Spark_EmitFallingSparks:
 
 ;;; $E61D: Instruction - set enemy as intangible ;;;
 Instruction_Spark_SetAsIntangible:
-    LDX.W $0E54                                                          ;A8E61D;
-    LDA.W Enemy.properties,X                                                        ;A8E620;
+    LDX.W EnemyIndex                                                     ;A8E61D;
+    LDA.W Enemy.properties,X                                             ;A8E620;
     ORA.W #$0400                                                         ;A8E623;
-    STA.W Enemy.properties,X                                                        ;A8E626;
+    STA.W Enemy.properties,X                                             ;A8E626;
     RTL                                                                  ;A8E629;
 
 
 ;;; $E62A: Instruction - set enemy as tangible ;;;
 Instruction_Spark_SetAsTangible:
-    LDX.W $0E54                                                          ;A8E62A;
-    LDA.W Enemy.properties,X                                                        ;A8E62D;
+    LDX.W EnemyIndex                                                     ;A8E62A;
+    LDA.W Enemy.properties,X                                             ;A8E62D;
     AND.W #$FBFF                                                         ;A8E630;
-    STA.W Enemy.properties,X                                                        ;A8E633;
+    STA.W Enemy.properties,X                                             ;A8E633;
     RTL                                                                  ;A8E636;
 
 
 ;;; $E637: Initialisation AI - enemy $EA3F (Wrecked Ship spark) ;;;
 InitAI_Spark:
-    LDX.W $0E54                                                          ;A8E637;
-    LDA.W $0FB4,X                                                        ;A8E63A;
+    LDX.W EnemyIndex                                                     ;A8E637;
+    LDA.W Enemy.init0,X                                                  ;A8E63A;
     AND.W #$0003                                                         ;A8E63D;
     ASL                                                                  ;A8E640;
     TAY                                                                  ;A8E641;
     LDA.W .functionPointers,Y                                            ;A8E642;
     STA.W Spark.function,X                                               ;A8E645;
-    LDA.W $0FB6,X                                                        ;A8E648;
+    LDA.W Enemy.init1,X                                                  ;A8E648;
     STA.W Spark.baseFunctionTime,X                                       ;A8E64B;
-    STZ.B $12                                                            ;A8E64E;
+    STZ.B DP_Temp12                                                      ;A8E64E;
     JSR.W SetSparkFunctionTimer                                          ;A8E650;
     LDA.W #$0001                                                         ;A8E653;
-    STA.W Enemy.instTimer,X                                                        ;A8E656;
+    STA.W Enemy.instTimer,X                                              ;A8E656;
     LDA.W .instListPointers,Y                                            ;A8E659;
-    STA.W Enemy.instList,X                                                        ;A8E65C;
-    STZ.W Enemy.loopCounter,X                                                        ;A8E65F;
+    STA.W Enemy.instList,X                                               ;A8E65C;
+    STZ.W Enemy.loopCounter,X                                            ;A8E65F;
     LDA.W #$0001                                                         ;A8E662;
-    STA.W Enemy.instTimer,X                                                        ;A8E665;
-    LDX.W $079F                                                          ;A8E668;
-    LDA.L $7ED828,X                                                      ;A8E66B;
+    STA.W Enemy.instTimer,X                                              ;A8E665;
+    LDX.W AreaIndex                                                      ;A8E668;
+    LDA.L SRAMMirror_Boss,X                                              ;A8E66B;
     AND.W #$0001                                                         ;A8E66F;
     BEQ .PhantoonAlive                                                   ;A8E672;
     RTL                                                                  ;A8E674;
 
   .PhantoonAlive:
-    LDX.W $0E54                                                          ;A8E675;
-    LDA.W Enemy.properties,X                                                        ;A8E678;
+    LDX.W EnemyIndex                                                     ;A8E675;
+    LDA.W Enemy.properties,X                                             ;A8E678;
     ORA.W $0100                                                          ;A8E67B; >_<
-    STA.W Enemy.properties,X                                                        ;A8E67E;
+    STA.W Enemy.properties,X                                             ;A8E67E;
     RTL                                                                  ;A8E681;
 
   .instListPointers:
@@ -11474,7 +11474,7 @@ InitAI_Spark:
 
 ;;; $E68E: Main AI - enemy $EA3F (Wrecked Ship spark) ;;;
 MainAI_Spark:
-    LDX.W $0E54                                                          ;A8E68E;
+    LDX.W EnemyIndex                                                     ;A8E68E;
     JMP.W (Spark.function,X)                                             ;A8E691;
 
 
@@ -11495,10 +11495,10 @@ Function_Spark_Intermittent_Inactive:
     LDA.W #Function_Spark_Intermittent_Active                            ;A8E69F;
     STA.W Spark.function,X                                               ;A8E6A2;
     LDA.W #InstList_Spark_FlickerOn                                      ;A8E6A5;
-    STA.W Enemy.instList,X                                                        ;A8E6A8;
+    STA.W Enemy.instList,X                                               ;A8E6A8;
     LDA.W #$0001                                                         ;A8E6AB;
-    STA.W Enemy.instTimer,X                                                        ;A8E6AE;
-    STZ.B $12                                                            ;A8E6B1;
+    STA.W Enemy.instTimer,X                                              ;A8E6AE;
+    STZ.B DP_Temp12                                                      ;A8E6B1;
     JSR.W SetSparkFunctionTimer                                          ;A8E6B3;
     RTL                                                                  ;A8E6B6;
 
@@ -11515,11 +11515,11 @@ Function_Spark_Intermittent_Active:
     LDA.W #Function_Spark_Intermittent_Inactive                          ;A8E6C1;
     STA.W Spark.function,X                                               ;A8E6C4;
     LDA.W #InstList_Spark_FlickerOut                                     ;A8E6C7;
-    STA.W Enemy.instList,X                                                        ;A8E6CA;
+    STA.W Enemy.instList,X                                               ;A8E6CA;
     LDA.W #$0001                                                         ;A8E6CD;
-    STA.W Enemy.instTimer,X                                                        ;A8E6D0;
+    STA.W Enemy.instTimer,X                                              ;A8E6D0;
     LDA.W #$0008                                                         ;A8E6D3;
-    STA.B $12                                                            ;A8E6D6;
+    STA.B DP_Temp12                                                      ;A8E6D6;
     JSR.W SetSparkFunctionTimer                                          ;A8E6D8;
     RTL                                                                  ;A8E6DB;
 
@@ -11533,10 +11533,10 @@ Function_Spark_EmitFallingSparks:
     RTL                                                                  ;A8E6E5;
 
   .timerExpired:
-    LDX.W $0E54                                                          ;A8E6E6;
+    LDX.W EnemyIndex                                                     ;A8E6E6;
     LDY.W #EnemyProjectile_FallingSpark                                  ;A8E6E9;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8E6EC;
-    STZ.B $12                                                            ;A8E6F0;
+    STZ.B DP_Temp12                                                      ;A8E6F0;
     JSR.W SetSparkFunctionTimer                                          ;A8E6F2;
     RTL                                                                  ;A8E6F5;
 
@@ -11554,7 +11554,7 @@ SetSparkFunctionTimer:
 
   .noRNG:
     CLC                                                                  ;A8E706;
-    ADC.B $12                                                            ;A8E707;
+    ADC.B DP_Temp12                                                      ;A8E707;
     STA.W Spark.functionTimer,X                                          ;A8E709;
     RTS                                                                  ;A8E70C;
 
@@ -11567,12 +11567,12 @@ RTL_A8E70D:
 ;;; $E70E: Enemy shot - enemy $EA3F (Wrecked Ship spark) ;;;
 EnemyShot_Spark:
     PHX                                                                  ;A8E70E;
-    LDA.W $18A6                                                          ;A8E70F;
+    LDA.W CollisionIndex                                                 ;A8E70F;
     ASL                                                                  ;A8E712;
     TAX                                                                  ;A8E713;
-    LDA.W $0C04,X                                                        ;A8E714;
+    LDA.W SamusProjectile_Directions,X                                   ;A8E714;
     AND.W #$FFEF                                                         ;A8E717;
-    STA.W $0C04,X                                                        ;A8E71A;
+    STA.W SamusProjectile_Directions,X                                   ;A8E71A;
     PLX                                                                  ;A8E71D;
     RTL                                                                  ;A8E71E;
 
@@ -11672,29 +11672,29 @@ InstList_FaceBlock_FacingForward:
 
 ;;; $E82E: Initialisation AI - enemy $EA7F (blue Brinstar face block) ;;;
 InitAI_FaceBlock:
-    LDX.W $0E54                                                          ;A8E82E;
+    LDX.W EnemyIndex                                                     ;A8E82E;
     LDA.W #InstList_FaceBlock_FacingForward                              ;A8E831;
-    STA.W Enemy.instList,X                                                        ;A8E834;
+    STA.W Enemy.instList,X                                               ;A8E834;
     LDY.W #EnemyGraphicsDrawnHook_FaceBlock_PeriodicallyCyclePalettes    ;A8E837;
-    LDA.W $09A4                                                          ;A8E83A;
+    LDA.W CollectedItems                                                 ;A8E83A;
     BIT.W #$0004                                                         ;A8E83D;
     BNE .morphBallCollected                                              ;A8E840;
     LDY.W #RTL_A8804C                                                    ;A8E842;
 
   .morphBallCollected:
-    STY.W $178C                                                          ;A8E845;
-    LDA.W #EnemyGraphicsDrawnHook_FaceBlock_PeriodicallyCyclePalettes>>16 ;A8E848;
-    STA.W $178E                                                          ;A8E84B;
-    LDA.W $0F96,X                                                        ;A8E84E;
+    STY.W EnemyGraphicsDrawnHook                                         ;A8E845;
+    LDA.W #EnemyGraphicsDrawnHook_FaceBlock_PeriodicallyCyclePalettes>>16;A8E848;
+    STA.W EnemyGraphicsDrawnHook+2                                       ;A8E84B;
+    LDA.W Enemy.palette,X                                                ;A8E84E;
     ASL                                                                  ;A8E851;
     ASL                                                                  ;A8E852;
     ASL                                                                  ;A8E853;
     ASL                                                                  ;A8E854;
     AND.W #$FF00                                                         ;A8E855;
     XBA                                                                  ;A8E858;
-    STA.W $1794                                                          ;A8E859;
+    STA.W EnemyPaletteCycle_PaletteIndex                                 ;A8E859;
     LDA.W #$0010                                                         ;A8E85C;
-    STA.W $1798                                                          ;A8E85F;
+    STA.W EnemyPaletteCycle_Timer                                        ;A8E85F;
     LDA.W FaceBlock.directionToNotTurn,X                                 ;A8E862;
     AND.W #$0001                                                         ;A8E865;
     ROR                                                                  ;A8E868;
@@ -11705,26 +11705,26 @@ InitAI_FaceBlock:
 
 ;;; $E86E: Enemy graphics drawn hook - blue Brinstar face block - periodically cycle between palettes ;;;
 EnemyGraphicsDrawnHook_FaceBlock_PeriodicallyCyclePalettes:
-; This enemy doesn't set $1796 to zero anywhere,
-; so visiting a magdollite can cause this routine to execute with [$1796] >= 8,
+; This enemy doesn't set EnemyPaletteCycle_ColorSetIndex to zero anywhere,
+; so visiting a magdollite can cause this routine to execute with EnemyPaletteCycle_ColorSetIndex >= 8,
 ; giving this enemy a glitch palette for its first palette cycle
-    LDA.W $0797                                                          ;A8E86E;
+    LDA.W DoorTransitionFlagEnemiesPause                                 ;A8E86E;
     BNE .return                                                          ;A8E871;
-    LDA.W $1798                                                          ;A8E873;
+    LDA.W EnemyPaletteCycle_Timer                                        ;A8E873;
     DEC                                                                  ;A8E876;
-    STA.W $1798                                                          ;A8E877;
+    STA.W EnemyPaletteCycle_Timer                                        ;A8E877;
     BNE .return                                                          ;A8E87A;
     LDA.W #$0010                                                         ;A8E87C;
-    STA.W $1798                                                          ;A8E87F;
-    LDA.W $1794                                                          ;A8E882;
+    STA.W EnemyPaletteCycle_Timer                                        ;A8E87F;
+    LDA.W EnemyPaletteCycle_PaletteIndex                                 ;A8E882;
     TAX                                                                  ;A8E885;
-    LDA.W $1796                                                          ;A8E886;
+    LDA.W EnemyPaletteCycle_ColorSetIndex                                ;A8E886;
     ASL                                                                  ;A8E889;
     ASL                                                                  ;A8E88A;
     ASL                                                                  ;A8E88B;
     TAY                                                                  ;A8E88C;
     LDA.W #$0004                                                         ;A8E88D;
-    STA.W $060B                                                          ;A8E890;
+    STA.W LoopCounterEnemyDeath                                          ;A8E890;
 
   .loopColors:
     LDA.W FaceBlockGlowColors,Y                                          ;A8E893;
@@ -11733,12 +11733,12 @@ EnemyGraphicsDrawnHook_FaceBlock_PeriodicallyCyclePalettes:
     INY                                                                  ;A8E89B;
     INX                                                                  ;A8E89C;
     INX                                                                  ;A8E89D;
-    DEC.W $060B                                                          ;A8E89E;
+    DEC.W LoopCounterEnemyDeath                                          ;A8E89E;
     BNE .loopColors                                                      ;A8E8A1;
-    LDA.W $1796                                                          ;A8E8A3;
+    LDA.W EnemyPaletteCycle_ColorSetIndex                                ;A8E8A3;
     INC                                                                  ;A8E8A6;
     AND.W #$0007                                                         ;A8E8A7;
-    STA.W $1796                                                          ;A8E8AA;
+    STA.W EnemyPaletteCycle_ColorSetIndex                                ;A8E8AA;
 
   .return:
     RTL                                                                  ;A8E8AD;
@@ -11746,30 +11746,30 @@ EnemyGraphicsDrawnHook_FaceBlock_PeriodicallyCyclePalettes:
 
 ;;; $E8AE: Main AI - enemy $EA7F (blue Brinstar face block) ;;;
 MainAI_FaceBlock:
-    LDX.W $0E54                                                          ;A8E8AE;
-    LDA.W $09A4                                                          ;A8E8B1;
+    LDX.W EnemyIndex                                                     ;A8E8AE;
+    LDA.W CollectedItems                                                 ;A8E8B1;
     BIT.W #$0004                                                         ;A8E8B4;
     BEQ .return                                                          ;A8E8B7;
     LDY.W #EnemyGraphicsDrawnHook_FaceBlock_PeriodicallyCyclePalettes    ;A8E8B9;
-    STY.W $178C                                                          ;A8E8BC;
-    LDA.W $0F96,X                                                        ;A8E8BF;
+    STY.W EnemyGraphicsDrawnHook                                         ;A8E8BC;
+    LDA.W Enemy.palette,X                                                ;A8E8BF;
     ASL                                                                  ;A8E8C2;
     ASL                                                                  ;A8E8C3;
     ASL                                                                  ;A8E8C4;
     ASL                                                                  ;A8E8C5;
     AND.W #$FF00                                                         ;A8E8C6;
     XBA                                                                  ;A8E8C9;
-    STA.W $1794                                                          ;A8E8CA;
+    STA.W EnemyPaletteCycle_PaletteIndex                                 ;A8E8CA;
     LDA.W FaceBlock.activatedFlag,X                                      ;A8E8CD;
     BNE .return                                                          ;A8E8D0;
     JSL.L Get_SamusY_minus_EnemyY                                        ;A8E8D2;
     JSL.L NegateA_A0B067                                                 ;A8E8D6;
-    CMP.W $0FB4,X                                                        ;A8E8DA;
+    CMP.W Enemy.init0,X                                                  ;A8E8DA;
     BPL .return                                                          ;A8E8DD;
     JSL.L Get_SamusX_minus_EnemyX                                        ;A8E8DF;
     STA.W FaceBlock.directionToSamus,X                                   ;A8E8E3;
     JSL.L NegateA_A0B067                                                 ;A8E8E6;
-    CMP.W $0FB4,X                                                        ;A8E8EA;
+    CMP.W Enemy.init0,X                                                  ;A8E8EA;
     BPL .return                                                          ;A8E8ED;
     LDA.W FaceBlock.directionToSamus,X                                   ;A8E8EF;
     AND.W #$8000                                                         ;A8E8F2;
@@ -11782,13 +11782,13 @@ MainAI_FaceBlock:
 
   .keepLeft:
     TYA                                                                  ;A8E905;
-    STA.W Enemy.instList,X                                                        ;A8E906;
+    STA.W Enemy.instList,X                                               ;A8E906;
     LDA.W #$0001                                                         ;A8E909;
-    STA.W Enemy.instTimer,X                                                        ;A8E90C;
+    STA.W Enemy.instTimer,X                                              ;A8E90C;
     LDA.W #$0001                                                         ;A8E90F;
     STA.W FaceBlock.activatedFlag,X                                      ;A8E912;
     LDA.W #$0010                                                         ;A8E915;
-    STA.W $1798                                                          ;A8E918;
+    STA.W EnemyPaletteCycle_Timer                                        ;A8E918;
 
   .return:
     RTL                                                                  ;A8E91B;
@@ -11802,12 +11802,12 @@ RTL_A8E91C:
 ;;; $E91D: Enemy shot - enemy $EA7F (blue Brinstar face block) ;;;
 EnemyShot_FaceBlock:
 ; Undeletes the collided projectile!
-    LDA.W $18A6                                                          ;A8E91D;
+    LDA.W CollisionIndex                                                 ;A8E91D;
     ASL                                                                  ;A8E920;
     TAX                                                                  ;A8E921;
-    LDA.W $0C04,X                                                        ;A8E922;
+    LDA.W SamusProjectile_Directions,X                                   ;A8E922;
     AND.W #$FFEF                                                         ;A8E925;
-    STA.W $0C04,X                                                        ;A8E928;
+    STA.W SamusProjectile_Directions,X                                   ;A8E928;
     RTL                                                                  ;A8E92B;
 
 
@@ -11911,7 +11911,7 @@ InstList_KihunterWings_FacingLeft:
     dw $0002,Spritemap_KihunterWings_FacingLeft_0                        ;A8EA4E;
     dw $0002,Spritemap_KihunterWings_FacingLeft_1                        ;A8EA52;
     dw $0001,Spritemap_KihunterWings_FacingLeft_2                        ;A8EA56;
-    dw Instruction_Common_GotoY                                        ;A8EA5A;
+    dw Instruction_Common_GotoY                                          ;A8EA5A;
     dw InstList_KihunterWings_FacingLeft                                 ;A8EA5C;
 
 
@@ -11943,7 +11943,7 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 ;;; $EA7E: Instruction list - ki-hunter wings - falling ;;;
 InstList_KihunterWings_Falling:
-    dw $0001,Spritemap_KihunterWings_Falling                                        ;A8EA7E;
+    dw $0001,Spritemap_KihunterWings_Falling                             ;A8EA7E;
     dw Instruction_Common_Sleep                                          ;A8EA82;
 
 
@@ -12482,17 +12482,17 @@ KihunterConstants:
 
 ;;; $F188: Initialisation AI - enemy $EABF/$EB3F/$EBBF (ki-hunter) ;;;
 InitAI_Kihunter:
-    LDX.W $0E54                                                          ;A8F188;
-    LDA.W Enemy.properties,X                                                        ;A8F18B;
+    LDX.W EnemyIndex                                                     ;A8F188;
+    LDA.W Enemy.properties,X                                             ;A8F18B;
     ORA.W #$2000                                                         ;A8F18E;
-    STA.W Enemy.properties,X                                                        ;A8F191;
+    STA.W Enemy.properties,X                                             ;A8F191;
     LDA.W #$0000                                                         ;A8F194;
     STA.L Kihunter.winglessFlag,X                                        ;A8F197;
     LDA.W #$0001                                                         ;A8F19B;
-    STA.W Enemy.instTimer,X                                                        ;A8F19E;
-    STZ.W Enemy.loopCounter,X                                                        ;A8F1A1;
+    STA.W Enemy.instTimer,X                                              ;A8F19E;
+    STZ.W Enemy.loopCounter,X                                            ;A8F1A1;
     LDA.W #InstList_Kihunter_Idling_FacingLeft                           ;A8F1A4;
-    STA.W Enemy.instList,X                                                        ;A8F1A7;
+    STA.W Enemy.instList,X                                               ;A8F1A7;
     LDA.W #$0000                                                         ;A8F1AA;
     STA.W Kihunter.arcAngle,X                                            ;A8F1AD;
     LDA.W #Function_Kihunter_Winged_IdleFlying                           ;A8F1B0;
@@ -12505,18 +12505,18 @@ InitAI_Kihunter:
     STA.L Kihunter.XSubVelocity,X                                        ;A8F1C7;
     LDA.W #$FFFF                                                         ;A8F1CB;
     STA.L Kihunter.XVelocity,X                                           ;A8F1CE;
-    LDA.W $0F7E,X                                                        ;A8F1D2;
+    LDA.W Enemy.YPosition,X                                              ;A8F1D2;
     SEC                                                                  ;A8F1D5;
     SBC.W #$0010                                                         ;A8F1D6;
     STA.L Kihunter.idleZoneTopPosition,X                                 ;A8F1D9;
     CLC                                                                  ;A8F1DD;
     ADC.W #$0020                                                         ;A8F1DE;
     STA.L Kihunter.idleZoneBottomPosition,X                              ;A8F1E1;
-    LDA.W $0F7A,X                                                        ;A8F1E5;
+    LDA.W Enemy.XPosition,X                                              ;A8F1E5;
     STA.L Kihunter.spawnXPosition,X                                      ;A8F1E8;
-    LDA.W $0F7E,X                                                        ;A8F1EC;
+    LDA.W Enemy.YPosition,X                                              ;A8F1EC;
     STA.L Kihunter.spawnYPosition,X                                      ;A8F1EF;
-    LDA.W $0FB4,X                                                        ;A8F1F3;
+    LDA.W Enemy.init0,X                                                  ;A8F1F3;
     BPL .return                                                          ;A8F1F6;
     LDA.W #$0001                                                         ;A8F1F8;
     STA.L Kihunter.winglessFlag,X                                        ;A8F1FB;
@@ -12533,30 +12533,30 @@ InitAI_Kihunter:
 
 ;;; $F214: Initialisation AI - enemy $EAFF/$EB7F/$EBFF (ki-hunter wings) ;;;
 InitAI_KihunterWings:
-    LDX.W $0E54                                                          ;A8F214;
-    LDA.W Enemy.properties,X                                                        ;A8F217;
+    LDX.W EnemyIndex                                                     ;A8F214;
+    LDA.W Enemy.properties,X                                             ;A8F217;
     ORA.W #$2000                                                         ;A8F21A;
-    STA.W Enemy.properties,X                                                        ;A8F21D;
+    STA.W Enemy.properties,X                                             ;A8F21D;
     LDA.W #$0001                                                         ;A8F220;
-    STA.W Enemy.instTimer,X                                                        ;A8F223;
-    STZ.W Enemy.loopCounter,X                                                        ;A8F226;
+    STA.W Enemy.instTimer,X                                              ;A8F223;
+    STZ.W Enemy.loopCounter,X                                            ;A8F226;
     LDA.W #InstList_KihunterWings_FacingLeft                             ;A8F229;
-    STA.W Enemy.instList,X                                                        ;A8F22C;
-    LDA.W $0F3E,X                                                        ;A8F22F;
-    STA.W $0F7E,X                                                        ;A8F232;
-    LDA.W $0F3A,X                                                        ;A8F235;
-    STA.W $0F7A,X                                                        ;A8F238;
+    STA.W Enemy.instList,X                                               ;A8F22C;
+    LDA.W Enemy[-1].YPosition,X                                          ;A8F22F;
+    STA.W Enemy.YPosition,X                                              ;A8F232;
+    LDA.W Enemy[-1].XPosition,X                                          ;A8F235;
+    STA.W Enemy.XPosition,X                                              ;A8F238;
     LDA.W #Function_KihunterWings_Attached                               ;A8F23B;
     STA.W KihunterWings.function,X                                       ;A8F23E;
-    LDA.W $0F56,X                                                        ;A8F241;
-    STA.W $0F96,X                                                        ;A8F244;
-    LDA.W $0F58,X                                                        ;A8F247;
-    STA.W $0F98,X                                                        ;A8F24A;
-    LDA.W $0F74,X                                                        ;A8F24D;
+    LDA.W Enemy[-1].palette,X                                            ;A8F241;
+    STA.W Enemy.palette,X                                                ;A8F244;
+    LDA.W Enemy[-1].GFXOffset,X                                          ;A8F247;
+    STA.W Enemy.GFXOffset,X                                              ;A8F24A;
+    LDA.W Enemy[-1].init0,X                                              ;A8F24D;
     BPL .return                                                          ;A8F250;
-    LDA.W Enemy.properties,X                                                        ;A8F252;
+    LDA.W Enemy.properties,X                                             ;A8F252;
     ORA.W #$0200                                                         ;A8F255;
-    STA.W Enemy.properties,X                                                        ;A8F258;
+    STA.W Enemy.properties,X                                             ;A8F258;
 
   .return:
     RTL                                                                  ;A8F25B;
@@ -12564,25 +12564,25 @@ InitAI_KihunterWings:
 
 ;;; $F25C: Main AI - enemy $EABF/$EB3F/$EBBF (ki-hunter) ;;;
 MainAI_Kihunter:
-    LDX.W $0E54                                                          ;A8F25C;
+    LDX.W EnemyIndex                                                     ;A8F25C;
     JMP.W (Kihunter.function,X)                                          ;A8F25F;
 
 
 ;;; $F262: Main AI - enemy $EAFF/$EB7F/$EBFF (ki-hunter wings) ;;;
 MainAI_KihunterWings:
-    LDX.W $0E54                                                          ;A8F262;
+    LDX.W EnemyIndex                                                     ;A8F262;
     JMP.W (KihunterWings.function,X)                                     ;A8F265;
 
 
 ;;; $F268: Ki-hunter function - winged - idle flying ;;;
 Function_Kihunter_Winged_IdleFlying:
     LDA.L Kihunter.YSubVelocity,X                                        ;A8F268;
-    STA.B $12                                                            ;A8F26C;
+    STA.B DP_Temp12                                                      ;A8F26C;
     LDA.L Kihunter.YVelocity,X                                           ;A8F26E;
-    STA.B $14                                                            ;A8F272;
+    STA.B DP_Temp14                                                      ;A8F272;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8F274;
     BCS .collidedWithBlock                                               ;A8F278;
-    LDA.W $0F7E,X                                                        ;A8F27A;
+    LDA.W Enemy.YPosition,X                                              ;A8F27A;
     CMP.L Kihunter.idleZoneTopPosition,X                                 ;A8F27D;
     BMI .idleDown                                                        ;A8F281;
     CMP.L Kihunter.idleZoneBottomPosition,X                              ;A8F283;
@@ -12604,9 +12604,9 @@ Function_Kihunter_Winged_IdleFlying:
 
   .noChangeY:
     LDA.L Kihunter.XSubVelocity,X                                        ;A8F29F;
-    STA.B $12                                                            ;A8F2A3;
+    STA.B DP_Temp12                                                      ;A8F2A3;
     LDA.L Kihunter.XVelocity,X                                           ;A8F2A5;
-    STA.B $14                                                            ;A8F2A9;
+    STA.B DP_Temp14                                                      ;A8F2A9;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8F2AB;
     BCC .noCollision                                                     ;A8F2AF;
     LDY.W #$0000                                                         ;A8F2B1;
@@ -12619,38 +12619,38 @@ Function_Kihunter_Winged_IdleFlying:
 
   .movingLeft:
     LDA.W .instListPointers_kihunter,Y                                   ;A8F2C5;
-    STA.W Enemy.instList,X                                                        ;A8F2C8;
+    STA.W Enemy.instList,X                                               ;A8F2C8;
     LDA.W .instListPointers_wings,Y                                      ;A8F2CB;
-    STA.W $0FD2,X                                                        ;A8F2CE;
+    STA.W Enemy[1].instList,X                                            ;A8F2CE;
     LDA.W #$0001                                                         ;A8F2D1;
-    STA.W Enemy.instTimer,X                                                        ;A8F2D4;
-    STA.W $0FD4,X                                                        ;A8F2D7;
+    STA.W Enemy.instTimer,X                                              ;A8F2D4;
+    STA.W Enemy[1].instTimer,X                                           ;A8F2D7;
 
   .noCollision:
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A8F2DA;
-    LDA.W $0AF6                                                          ;A8F2DE;
+    LDA.W SamusXPosition                                                 ;A8F2DE;
     SEC                                                                  ;A8F2E1;
-    SBC.W $0F7A,X                                                        ;A8F2E2;
-    STA.B $12                                                            ;A8F2E5;
+    SBC.W Enemy.XPosition,X                                              ;A8F2E2;
+    STA.B DP_Temp12                                                      ;A8F2E5;
     BPL +                                                                ;A8F2E7;
     EOR.W #$FFFF                                                         ;A8F2E9;
     INC                                                                  ;A8F2EC;
 
-+   STA.B $14                                                            ;A8F2ED;
++   STA.B DP_Temp14                                                      ;A8F2ED;
     CMP.W KihunterConstants_XProximityToActivateSwoop                    ;A8F2EF;
     BMI +                                                                ;A8F2F2;
     RTL                                                                  ;A8F2F4;
 
-+   LDA.W $0AFA                                                          ;A8F2F5;
++   LDA.W SamusYPosition                                                 ;A8F2F5;
     SEC                                                                  ;A8F2F8;
-    SBC.W $0F7E,X                                                        ;A8F2F9;
+    SBC.W Enemy.YPosition,X                                              ;A8F2F9;
     CMP.W #$0020                                                         ;A8F2FC;
     BPL .outsideRange                                                    ;A8F2FF;
     RTL                                                                  ;A8F301;
 
   .outsideRange:
-    STA.B $18                                                            ;A8F302;
-    LDA.B $12                                                            ;A8F304;
+    STA.B DP_Temp18                                                      ;A8F302;
+    LDA.B DP_Temp12                                                      ;A8F304;
     BMI .rightOfSamus                                                    ;A8F306;
     LDA.W #$0002                                                         ;A8F308;
     STA.L Kihunter.arcAngularVelocityCap,X                               ;A8F30B;
@@ -12687,23 +12687,23 @@ Function_Kihunter_Winged_IdleFlying:
     LDY.W #$0000                                                         ;A8F36F;
 
 +   LDA.W .instListPointers_kihunter,Y                                   ;A8F372;
-    STA.W Enemy.instList,X                                                        ;A8F375;
+    STA.W Enemy.instList,X                                               ;A8F375;
     LDA.W .instListPointers_wings,Y                                      ;A8F378;
-    STA.W $0FD2,X                                                        ;A8F37B;
+    STA.W Enemy[1].instList,X                                            ;A8F37B;
     LDA.W #$0001                                                         ;A8F37E;
-    STA.W Enemy.instTimer,X                                                        ;A8F381;
-    STA.W $0FD4,X                                                        ;A8F384;
-    LDA.W $0F7A,X                                                        ;A8F387;
+    STA.W Enemy.instTimer,X                                              ;A8F381;
+    STA.W Enemy[1].instTimer,X                                           ;A8F384;
+    LDA.W Enemy.XPosition,X                                              ;A8F387;
     CLC                                                                  ;A8F38A;
-    ADC.B $12                                                            ;A8F38B;
+    ADC.B DP_Temp12                                                      ;A8F38B;
     STA.W Kihunter.arcCenterXPosition,X                                  ;A8F38D;
-    LDA.W $0F7E,X                                                        ;A8F390;
+    LDA.W Enemy.YPosition,X                                              ;A8F390;
     STA.W Kihunter.arcCenterYPosition,X                                  ;A8F393;
     LDA.W #Function_Kihunter_Winged_Swoop                                ;A8F396;
     STA.W Kihunter.function,X                                            ;A8F399;
-    LDA.B $18                                                            ;A8F39C;
+    LDA.B DP_Temp18                                                      ;A8F39C;
     STA.L Kihunter.arcYRadius,X                                          ;A8F39E;
-    LDA.B $14                                                            ;A8F3A2;
+    LDA.B DP_Temp14                                                      ;A8F3A2;
     STA.L Kihunter.arcXRadius,X                                          ;A8F3A4;
     LDA.W #$0000                                                         ;A8F3A8;
     STA.L Kihunter.swoopSwipeFlag,X                                      ;A8F3AB;
@@ -12742,9 +12742,9 @@ Function_Kihunter_Winged_Swoop:
 
   .keepRight:
     TYA                                                                  ;A8F3EB;
-    STA.W Enemy.instList,X                                                        ;A8F3EC;
+    STA.W Enemy.instList,X                                               ;A8F3EC;
     LDA.W #$0001                                                         ;A8F3EF;
-    STA.W Enemy.instTimer,X                                                        ;A8F3F2;
+    STA.W Enemy.instTimer,X                                              ;A8F3F2;
 
   .noInstListChange:
     LDA.L Kihunter.arcAngularAcceleration,X                              ;A8F3F5;
@@ -12794,28 +12794,28 @@ Function_Kihunter_Winged_Swoop:
 
   .swoopContinues:
     LDA.L Kihunter.arcXRadius,X                                          ;A8F46F;
-    STA.W $0E32                                                          ;A8F473;
+    STA.W Temp_Unknown0E32                                               ;A8F473;
     LDA.W Kihunter.arcAngle,X                                            ;A8F476;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;A8F479;
     CLC                                                                  ;A8F47D;
     ADC.W Kihunter.arcCenterXPosition,X                                  ;A8F47E;
     SEC                                                                  ;A8F481;
-    SBC.W $0F7A,X                                                        ;A8F482;
-    STA.B $14                                                            ;A8F485;
-    STZ.B $12                                                            ;A8F487;
+    SBC.W Enemy.XPosition,X                                              ;A8F482;
+    STA.B DP_Temp14                                                      ;A8F485;
+    STZ.B DP_Temp12                                                      ;A8F487;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8F489;
     BCS .collidedHorizontally                                            ;A8F48D;
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A8F48F;
     LDA.L Kihunter.arcYRadius,X                                          ;A8F493;
-    STA.W $0E32                                                          ;A8F497;
+    STA.W Temp_Unknown0E32                                               ;A8F497;
     LDA.W Kihunter.arcAngle,X                                            ;A8F49A;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A8F49D;
     CLC                                                                  ;A8F4A1;
     ADC.W Kihunter.arcCenterYPosition,X                                  ;A8F4A2;
     SEC                                                                  ;A8F4A5;
-    SBC.W $0F7E,X                                                        ;A8F4A6;
-    STA.B $14                                                            ;A8F4A9;
-    STZ.B $12                                                            ;A8F4AB;
+    SBC.W Enemy.YPosition,X                                              ;A8F4A6;
+    STA.B DP_Temp14                                                      ;A8F4A9;
+    STZ.B DP_Temp12                                                      ;A8F4AB;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8F4AD;
     BCS .collidedVertically                                              ;A8F4B1;
     RTL                                                                  ;A8F4B3;
@@ -12848,19 +12848,19 @@ Function_Kihunter_Winged_Swoop:
 ;;; $F4ED: Ki-hunter function - winged - back off ;;;
 Function_Kihunter_Winged_BackOff:
     LDA.L Kihunter.XSubVelocity,X                                        ;A8F4ED;
-    STA.B $12                                                            ;A8F4F1;
+    STA.B DP_Temp12                                                      ;A8F4F1;
     LDA.L Kihunter.XVelocity,X                                           ;A8F4F3;
-    STA.B $14                                                            ;A8F4F7;
+    STA.B DP_Temp14                                                      ;A8F4F7;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8F4F9;
     BCS .collidedWithBlock                                               ;A8F4FD;
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A8F4FF;
     LDA.L Kihunter.YSubVelocity,X                                        ;A8F503;
-    STA.B $12                                                            ;A8F507;
+    STA.B DP_Temp12                                                      ;A8F507;
     LDA.L Kihunter.YVelocity,X                                           ;A8F509;
-    STA.B $14                                                            ;A8F50D;
+    STA.B DP_Temp14                                                      ;A8F50D;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8F50F;
     BCS .collidedWithBlock                                               ;A8F513;
-    LDA.W $0F7E,X                                                        ;A8F515;
+    LDA.W Enemy.YPosition,X                                              ;A8F515;
     CMP.L Kihunter.spawnYPosition,X                                      ;A8F518;
     BMI .collidedWithBlock                                               ;A8F51C;
     RTL                                                                  ;A8F51E;
@@ -12875,25 +12875,25 @@ Function_Kihunter_Winged_BackOff:
 Instruction_Kihunter_SetIdlingInstListsFacingForwards:
     LDY.W #InstList_Kihunter_Idling_FacingLeft                           ;A8F526;
     LDA.W #InstList_KihunterWings_FacingLeft                             ;A8F529;
-    STA.B $12                                                            ;A8F52C;
+    STA.B DP_Temp12                                                      ;A8F52C;
     LDA.L Kihunter.XVelocity,X                                           ;A8F52E;
     BMI .keepLeft                                                        ;A8F532;
     LDY.W #InstList_Kihunter_Idling_FacingRight                          ;A8F534;
     LDA.W #InstList_KihunterWings_FacingRight                            ;A8F537;
-    STA.B $12                                                            ;A8F53A;
+    STA.B DP_Temp12                                                      ;A8F53A;
 
   .keepLeft:
     TYA                                                                  ;A8F53C;
-    STA.W Enemy.instList,X                                                        ;A8F53D;
+    STA.W Enemy.instList,X                                               ;A8F53D;
     LDA.W #$0001                                                         ;A8F540;
-    STA.W Enemy.instTimer,X                                                        ;A8F543;
-    LDA.W $0FE8,X                                                        ;A8F546;
+    STA.W Enemy.instTimer,X                                              ;A8F543;
+    LDA.W Enemy[1].var0,X                                                ;A8F546;
     CMP.W #Function_KihunterWings_Attached                               ;A8F549;
     BNE .return                                                          ;A8F54C;
-    LDA.B $12                                                            ;A8F54E;
-    STA.W $0FD2,X                                                        ;A8F550;
+    LDA.B DP_Temp12                                                      ;A8F54E;
+    STA.W Enemy[1].instList,X                                            ;A8F550;
     LDA.W #$0001                                                         ;A8F553;
-    STA.W $0FD4,X                                                        ;A8F556;
+    STA.W Enemy[1].instTimer,X                                           ;A8F556;
 
   .return:
     RTL                                                                  ;A8F559;
@@ -12902,9 +12902,9 @@ Instruction_Kihunter_SetIdlingInstListsFacingForwards:
 ;;; $F55A: Ki-hunter function - wingless - initial falling ;;;
 Function_Kihunter_Wingless_InitialFalling:
     LDA.L Kihunter.YSubVelocity,X                                        ;A8F55A;
-    STA.B $12                                                            ;A8F55E;
+    STA.B DP_Temp12                                                      ;A8F55E;
     LDA.L Kihunter.YVelocity,X                                           ;A8F560;
-    STA.B $14                                                            ;A8F564;
+    STA.B DP_Temp14                                                      ;A8F564;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8F566;
     BCC .notCollidedWithBlock                                            ;A8F56A;
     LDA.W #Function_Kihunter_Wingless_PrepareToHop                       ;A8F56C;
@@ -12928,22 +12928,22 @@ Function_Kihunter_Wingless_PrepareToHop:
     STA.W Kihunter.function,X                                            ;A8F58E;
     LDA.W #$0000                                                         ;A8F591;
     STA.L Kihunter.YSubVelocity,X                                        ;A8F594;
-    LDA.W $05E5                                                          ;A8F598;
+    LDA.W RandomNumberSeed                                               ;A8F598;
     AND.W #$0001                                                         ;A8F59B;
     CLC                                                                  ;A8F59E;
     ADC.W #$FFF8                                                         ;A8F59F;
     STA.L Kihunter.YVelocity,X                                           ;A8F5A2;
-    LDA.W $0F7A,X                                                        ;A8F5A6;
-    CMP.W $0AF6                                                          ;A8F5A9;
+    LDA.W Enemy.XPosition,X                                              ;A8F5A6;
+    CMP.W SamusXPosition                                                 ;A8F5A9;
     BPL .rightOfSamus                                                    ;A8F5AC;
     LDA.W #$0000                                                         ;A8F5AE;
     STA.L Kihunter.XSubVelocity,X                                        ;A8F5B1;
     LDA.W #$0002                                                         ;A8F5B5;
     STA.L Kihunter.XVelocity,X                                           ;A8F5B8;
     LDA.W #InstList_Kihunter_Hop_FacingRight                             ;A8F5BC;
-    STA.W Enemy.instList,X                                                        ;A8F5BF;
+    STA.W Enemy.instList,X                                               ;A8F5BF;
     LDA.W #$0001                                                         ;A8F5C2;
-    STA.W Enemy.instTimer,X                                                        ;A8F5C5;
+    STA.W Enemy.instTimer,X                                              ;A8F5C5;
     RTL                                                                  ;A8F5C8;
 
   .rightOfSamus:
@@ -12952,9 +12952,9 @@ Function_Kihunter_Wingless_PrepareToHop:
     LDA.W #$FFFE                                                         ;A8F5D0;
     STA.L Kihunter.XVelocity,X                                           ;A8F5D3;
     LDA.W #InstList_Kihunter_Hop_FacingLeft                              ;A8F5D7;
-    STA.W Enemy.instList,X                                                        ;A8F5DA;
+    STA.W Enemy.instList,X                                               ;A8F5DA;
     LDA.W #$0001                                                         ;A8F5DD;
-    STA.W Enemy.instTimer,X                                                        ;A8F5E0; fallthrough to RTL_A8F5E3
+    STA.W Enemy.instTimer,X                                              ;A8F5E0; fallthrough to RTL_A8F5E3
 
 
 RTL_A8F5E3:
@@ -12964,7 +12964,7 @@ RTL_A8F5E3:
 ;;; $F5E4: Instruction - enemy function = hop ;;;
 Instruction_Kihunter_SetFunctionToHop:
     PHX                                                                  ;A8F5E4;
-    LDX.W $0E54                                                          ;A8F5E5;
+    LDX.W EnemyIndex                                                     ;A8F5E5;
     LDA.W #Function_Kihunter_Wingless_Hop                                ;A8F5E8;
     STA.W Kihunter.function,X                                            ;A8F5EB;
     PLX                                                                  ;A8F5EE;
@@ -12974,15 +12974,15 @@ Instruction_Kihunter_SetFunctionToHop:
 ;;; $F5F0: Ki-hunter function - wingless - hop ;;;
 Function_Kihunter_Wingless_Hop:
     LDA.L Kihunter.YSubVelocity,X                                        ;A8F5F0;
-    STA.B $12                                                            ;A8F5F4;
+    STA.B DP_Temp12                                                      ;A8F5F4;
     LDA.L Kihunter.YVelocity,X                                           ;A8F5F6;
-    STA.B $14                                                            ;A8F5FA;
+    STA.B DP_Temp14                                                      ;A8F5FA;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8F5FC;
     BCS .collidedVertically                                              ;A8F600;
     LDA.L Kihunter.XSubVelocity,X                                        ;A8F602;
-    STA.B $12                                                            ;A8F606;
+    STA.B DP_Temp12                                                      ;A8F606;
     LDA.L Kihunter.XVelocity,X                                           ;A8F608;
-    STA.B $14                                                            ;A8F60C;
+    STA.B DP_Temp14                                                      ;A8F60C;
     JSL.L MoveEnemyRightBy_14_12_IgnoreSlopes                            ;A8F60E;
     BCS .collidedHorizontally                                            ;A8F612;
     JSL.L AlignEnemyYPositionWIthNonSquareSlope                          ;A8F614;
@@ -13014,16 +13014,16 @@ Function_Kihunter_Wingless_Hop:
     LDA.W #$000C                                                         ;A8F657;
     STA.L Kihunter.thinkingTimer,X                                       ;A8F65A;
     LDY.W #InstList_Kihunter_LandedFromHop_FacingLeft                    ;A8F65E;
-    LDA.W Enemy.instList,X                                                        ;A8F661;
+    LDA.W Enemy.instList,X                                               ;A8F661;
     CMP.W #InstList_Kihunter_Hop_FacingRight                             ;A8F664;
     BMI .keepLeft                                                        ;A8F667;
     LDY.W #InstList_Kihunter_LandedFromHop_FacingRight                   ;A8F669;
 
   .keepLeft:
     TYA                                                                  ;A8F66C;
-    STA.W Enemy.instList,X                                                        ;A8F66D;
+    STA.W Enemy.instList,X                                               ;A8F66D;
     LDA.W #$0001                                                         ;A8F670;
-    STA.W Enemy.instTimer,X                                                        ;A8F673;
+    STA.W Enemy.instTimer,X                                              ;A8F673;
     RTL                                                                  ;A8F676;
 
   .hitCeiling:
@@ -13035,7 +13035,7 @@ Function_Kihunter_Wingless_Hop:
 ;;; $F67F: Instruction - enemy function = wingless - thinking ;;;
 Instruction_Kihunter_SetFunctionTo_Wingless_Thinking:
     PHX                                                                  ;A8F67F;
-    LDX.W $0E54                                                          ;A8F680;
+    LDX.W EnemyIndex                                                     ;A8F680;
     LDA.W #Function_Kihunter_Wingless_Thinking                           ;A8F683;
     STA.W Kihunter.function,X                                            ;A8F686;
     PLX                                                                  ;A8F689;
@@ -13049,9 +13049,9 @@ Function_Kihunter_Wingless_Thinking:
     STA.L Kihunter.thinkingTimer,X                                       ;A8F690;
     BNE .return                                                          ;A8F694;
     LDY.W #Function_Kihunter_Wingless_PrepareToHop                       ;A8F696;
-    LDA.W $0F7A,X                                                        ;A8F699;
+    LDA.W Enemy.XPosition,X                                              ;A8F699;
     SEC                                                                  ;A8F69C;
-    SBC.W $0AF6                                                          ;A8F69D;
+    SBC.W SamusXPosition                                                 ;A8F69D;
     BPL +                                                                ;A8F6A0;
     EOR.W #$FFFF                                                         ;A8F6A2;
     INC                                                                  ;A8F6A5;
@@ -13071,16 +13071,16 @@ Function_Kihunter_Wingless_Thinking:
 ;;; $F6B3: Ki-hunter function - wingless - fire acid spit ;;;
 Function_Kihunter_Wingless_FireAcidSpit:
     LDY.W #InstList_Kihunter_AcidSpitAttack_FacingLeft                   ;A8F6B3;
-    LDA.W $0F7A,X                                                        ;A8F6B6;
-    CMP.W $0AF6                                                          ;A8F6B9;
+    LDA.W Enemy.XPosition,X                                              ;A8F6B6;
+    CMP.W SamusXPosition                                                 ;A8F6B9;
     BPL .keepLeft                                                        ;A8F6BC;
     LDY.W #InstList_Kihunter_AcidSpitAttack_FacingRight                  ;A8F6BE;
 
   .keepLeft:
     TYA                                                                  ;A8F6C1;
-    STA.W Enemy.instList,X                                                        ;A8F6C2;
+    STA.W Enemy.instList,X                                               ;A8F6C2;
     LDA.W #$0001                                                         ;A8F6C5;
-    STA.W Enemy.instTimer,X                                                        ;A8F6C8;
+    STA.W Enemy.instTimer,X                                              ;A8F6C8;
     LDA.W #RTL_A8F5E3                                                    ;A8F6CB;
     STA.W Kihunter.function,X                                            ;A8F6CE;
     RTL                                                                  ;A8F6D1;
@@ -13107,7 +13107,7 @@ FireAcidSpit:
 ; Expects a pushed instruction list pointer
     LDA.W #$004C                                                         ;A8F6DC;
     JSL.L QueueSound_Lib2_Max6                                           ;A8F6DF;
-    LDX.W $0E54                                                          ;A8F6E3;
+    LDX.W EnemyIndex                                                     ;A8F6E3;
     JSL.L SpawnEnemyProjectileY_ParameterA_XGraphics                     ;A8F6E6;
     LDA.W #$0018                                                         ;A8F6EA;
     STA.L Kihunter.thinkingTimer,X                                       ;A8F6ED;
@@ -13117,10 +13117,10 @@ FireAcidSpit:
 
 ;;; $F6F3: Ki-hunter wings function - attached ;;;
 Function_KihunterWings_Attached:
-    LDA.W $0F3A,X                                                        ;A8F6F3;
-    STA.W $0F7A,X                                                        ;A8F6F6;
-    LDA.W $0F3E,X                                                        ;A8F6F9;
-    STA.W $0F7E,X                                                        ;A8F6FC;
+    LDA.W Enemy[-1].XPosition,X                                          ;A8F6F3;
+    STA.W Enemy.XPosition,X                                              ;A8F6F6;
+    LDA.W Enemy[-1].YPosition,X                                          ;A8F6F9;
+    STA.W Enemy.YPosition,X                                              ;A8F6FC;
     RTL                                                                  ;A8F6FF;
 
 
@@ -13132,27 +13132,27 @@ RTL_A8F700:
 ;;; $F701: Enemy shot - enemy $EABF/$EB3F/$EBBF (ki-hunter) ;;;
 EnemyShot_Kihunter:
     JSL.L NormalEnemyShotAI                                              ;A8F701;
-    LDX.W $0E54                                                          ;A8F705;
-    LDA.W $0F8C,X                                                        ;A8F708;
+    LDX.W EnemyIndex                                                     ;A8F705;
+    LDA.W Enemy.health,X                                                 ;A8F708;
     BEQ .dead                                                            ;A8F70B;
-    CMP.W $0FF4,X                                                        ;A8F70D;
+    CMP.W Enemy[1].init0,X                                               ;A8F70D;
     BEQ .clipWings                                                       ;A8F710;
     BMI .clipWings                                                       ;A8F712;
-    LDA.W $0F8A,X                                                        ;A8F714;
-    STA.W $0FCA,X                                                        ;A8F717;
-    LDA.W $0F9E,X                                                        ;A8F71A;
-    STA.W $0FDE,X                                                        ;A8F71D;
-    LDA.W $0FA0,X                                                        ;A8F720;
-    STA.W $0FE0,X                                                        ;A8F723;
-    LDA.W $0F9C,X                                                        ;A8F726;
-    STA.W $0FDC,X                                                        ;A8F729;
+    LDA.W Enemy.AI,X                                                     ;A8F714;
+    STA.W Enemy[1].AI,X                                                  ;A8F717;
+    LDA.W Enemy.freezeTimer,X                                            ;A8F71A;
+    STA.W Enemy[1].freezeTimer,X                                         ;A8F71D;
+    LDA.W Enemy.invincibilityTimer,X                                     ;A8F720;
+    STA.W Enemy[1].invincibilityTimer,X                                  ;A8F723;
+    LDA.W Enemy.flashTimer,X                                             ;A8F726;
+    STA.W Enemy[1].flashTimer,X                                          ;A8F729;
 
   .returnUpper:
     RTL                                                                  ;A8F72C;
 
   .dead:
     LDA.W #$0200                                                         ;A8F72D;
-    STA.W $0FC6,X                                                        ;A8F730;
+    STA.W Enemy[1].properties,X                                          ;A8F730;
     RTL                                                                  ;A8F733;
 
   .clipWings:
@@ -13170,14 +13170,14 @@ EnemyShot_Kihunter:
     TXA                                                                  ;A8F756;
     CLC                                                                  ;A8F757;
     ADC.W #$0040                                                         ;A8F758;
-    STA.W $0E54                                                          ;A8F75B;
+    STA.W EnemyIndex                                                     ;A8F75B;
     TAX                                                                  ;A8F75E;
     LDA.W KihunterWings.function,X                                       ;A8F75F;
     CMP.W #Function_KihunterWings_Falling                                ;A8F762;
     BEQ .returnLower                                                     ;A8F765;
-    LDA.W $0F7E,X                                                        ;A8F767;
+    LDA.W Enemy.YPosition,X                                              ;A8F767;
     STA.L Kihunter.XVelocity,X                                           ;A8F76A;
-    LDA.W $0F7A,X                                                        ;A8F76E;
+    LDA.W Enemy.XPosition,X                                              ;A8F76E;
     STA.L Kihunter.YSubVelocity,X                                        ;A8F771;
     JSR.W DetermineFallingKihunterWingsSpeedTableIndexResetValue         ;A8F775;
     JSR.W DetermineFallingKihunterWingsLeftArcCenterOffsets              ;A8F778;
@@ -13192,38 +13192,38 @@ EnemyShot_Kihunter:
     SEC                                                                  ;A8F795;
     SBC.L Kihunter.idleZoneBottomPosition,X                              ;A8F796;
     STA.L Kihunter.XSubVelocity,X                                        ;A8F79A;
-    LDA.W $0F7A,X                                                        ;A8F79E;
+    LDA.W Enemy.XPosition,X                                              ;A8F79E;
     STA.L Kihunter.arcAngularSubAcceleration,X                           ;A8F7A1;
     LDA.L KihunterWings.speedTableResetValue,X                           ;A8F7A5;
     STA.W KihunterWings.speedTableIndex,X                                ;A8F7A9;
     LDA.W #InstList_KihunterWings_Falling                                ;A8F7AC;
-    STA.W Enemy.instList,X                                                        ;A8F7AF;
-    LDA.W #Spritemap_Common_Nothing                                    ;A8F7B2;
-    STA.W $0F8E,X                                                        ;A8F7B5;
+    STA.W Enemy.instList,X                                               ;A8F7AF;
+    LDA.W #Spritemap_Common_Nothing                                      ;A8F7B2;
+    STA.W Enemy.spritemap,X                                              ;A8F7B5;
     LDA.W #$0001                                                         ;A8F7B8;
-    STA.W Enemy.instTimer,X                                                        ;A8F7BB;
-    STZ.W Enemy.loopCounter,X                                                        ;A8F7BE;
-    LDA.W Enemy.properties,X                                                        ;A8F7C1;
+    STA.W Enemy.instTimer,X                                              ;A8F7BB;
+    STZ.W Enemy.loopCounter,X                                            ;A8F7BE;
+    LDA.W Enemy.properties,X                                             ;A8F7C1;
     ORA.W #$0800                                                         ;A8F7C4;
-    STA.W Enemy.properties,X                                                        ;A8F7C7;
+    STA.W Enemy.properties,X                                             ;A8F7C7;
 
   .returnLower:
     PLA                                                                  ;A8F7CA;
-    STA.W $0E54                                                          ;A8F7CB;
+    STA.W EnemyIndex                                                     ;A8F7CB;
     RTL                                                                  ;A8F7CE;
 
 
 ;;; $F7CF: Ki-hunter wings function - falling ;;;
 Function_KihunterWings_Falling:
-    LDX.W $0E54                                                          ;A8F7CF;
+    LDX.W EnemyIndex                                                     ;A8F7CF;
     LDA.L KihunterWings.fallingFunction,X                                ;A8F7D2;
-    STA.B $12                                                            ;A8F7D6;
+    STA.B DP_Temp12                                                      ;A8F7D6;
     JMP.W ($0012)                                                        ;A8F7D8;
 
 
 ;;; $F7DB: Ki-hunter wings falling function - drifting left ;;;
 Function_KihunterWings_Falling_DriftingLeft:
-    LDX.W $0E54                                                          ;A8F7DB;
+    LDX.W EnemyIndex                                                     ;A8F7DB;
     LDA.W KihunterWings.speedTableIndex,X                                ;A8F7DE;
     AND.W #$FF00                                                         ;A8F7E1;
     XBA                                                                  ;A8F7E4;
@@ -13237,7 +13237,7 @@ Function_KihunterWings_Falling_DriftingLeft:
     STA.W KihunterWings.arcAngle,X                                       ;A8F7F0;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F7F3;
     AND.W #$00FF                                                         ;A8F7F6;
-    STA.W $0E32                                                          ;A8F7F9;
+    STA.W Temp_Unknown0E32                                               ;A8F7F9;
     LDA.W KihunterWings.arcAngle,X                                       ;A8F7FC;
     XBA                                                                  ;A8F7FF;
     AND.W #$00FF                                                         ;A8F800;
@@ -13246,10 +13246,10 @@ Function_KihunterWings_Falling_DriftingLeft:
     SBC.L KihunterWings.leftArcCenterYOffset,X                           ;A8F808;
     CLC                                                                  ;A8F80C;
     ADC.L KihunterWings.arcStartYPosition,X                              ;A8F80D;
-    STA.W $0F7E,X                                                        ;A8F811;
+    STA.W Enemy.YPosition,X                                              ;A8F811;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F814;
     AND.W #$00FF                                                         ;A8F817;
-    STA.W $0E32                                                          ;A8F81A;
+    STA.W Temp_Unknown0E32                                               ;A8F81A;
     LDA.W KihunterWings.arcAngle,X                                       ;A8F81D;
     XBA                                                                  ;A8F820;
     AND.W #$00FF                                                         ;A8F821;
@@ -13258,7 +13258,7 @@ Function_KihunterWings_Falling_DriftingLeft:
     SBC.L KihunterWings.leftArcCenterXOffset,X                           ;A8F829;
     CLC                                                                  ;A8F82D;
     ADC.L KihunterWings.arcStartXPosition,X                              ;A8F82E;
-    STA.W $0F7A,X                                                        ;A8F832;
+    STA.W Enemy.XPosition,X                                              ;A8F832;
     LDA.W KihunterWings.arcAngle,X                                       ;A8F835;
     CMP.W #$C000                                                         ;A8F838;
     BPL +                                                                ;A8F83B;
@@ -13278,17 +13278,17 @@ Function_KihunterWings_Falling_DriftingLeft:
 
 ;;; $F851: Determine falling ki-hunter wings left arc centre offsets ;;;
 DetermineFallingKihunterWingsLeftArcCenterOffsets:
-    LDX.W $0E54                                                          ;A8F851;
+    LDX.W EnemyIndex                                                     ;A8F851;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F854;
     AND.W #$00FF                                                         ;A8F857;
-    STA.W $0E32                                                          ;A8F85A;
+    STA.W Temp_Unknown0E32                                               ;A8F85A;
     LDA.W #$E000                                                         ;A8F85D;
     XBA                                                                  ;A8F860;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;A8F861;
     STA.L KihunterWings.leftArcCenterXOffset,X                           ;A8F865;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F869;
     AND.W #$00FF                                                         ;A8F86C;
-    STA.W $0E32                                                          ;A8F86F;
+    STA.W Temp_Unknown0E32                                               ;A8F86F;
     LDA.W #$E000                                                         ;A8F872;
     XBA                                                                  ;A8F875;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A8F876;
@@ -13298,17 +13298,17 @@ DetermineFallingKihunterWingsLeftArcCenterOffsets:
 
 ;;; $F87F: Determine falling ki-hunter wings right arc centre offsets ;;;
 DetermineFallingKihunterWingsRightArcCenterOffsets:
-    LDX.W $0E54                                                          ;A8F87F;
+    LDX.W EnemyIndex                                                     ;A8F87F;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F882;
     AND.W #$00FF                                                         ;A8F885;
-    STA.W $0E32                                                          ;A8F888;
+    STA.W Temp_Unknown0E32                                               ;A8F888;
     LDA.W #$A000                                                         ;A8F88B;
     XBA                                                                  ;A8F88E;
     JSL.L EightBitCosineMultiplication_A0B0B2                            ;A8F88F;
     STA.L KihunterWings.rightArcCenterXOffset,X                          ;A8F893;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F897;
     AND.W #$00FF                                                         ;A8F89A;
-    STA.W $0E32                                                          ;A8F89D;
+    STA.W Temp_Unknown0E32                                               ;A8F89D;
     LDA.W #$A000                                                         ;A8F8A0;
     XBA                                                                  ;A8F8A3;
     JSL.L EightBitNegativeSineMultiplication_A0B0C6                      ;A8F8A4;
@@ -13318,7 +13318,7 @@ DetermineFallingKihunterWingsRightArcCenterOffsets:
 
 ;;; $F8AD: Ki-hunter wings falling function - drifting right ;;;
 Function_KihunterWings_Falling_DriftingRight:
-    LDX.W $0E54                                                          ;A8F8AD;
+    LDX.W EnemyIndex                                                     ;A8F8AD;
     LDA.W KihunterWings.speedTableIndex,X                                ;A8F8B0;
     AND.W #$FF00                                                         ;A8F8B3;
     XBA                                                                  ;A8F8B6;
@@ -13332,7 +13332,7 @@ Function_KihunterWings_Falling_DriftingRight:
     STA.W KihunterWings.arcAngle,X                                       ;A8F8C2;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F8C5;
     AND.W #$00FF                                                         ;A8F8C8;
-    STA.W $0E32                                                          ;A8F8CB;
+    STA.W Temp_Unknown0E32                                               ;A8F8CB;
     LDA.W KihunterWings.arcAngle,X                                       ;A8F8CE;
     XBA                                                                  ;A8F8D1;
     AND.W #$00FF                                                         ;A8F8D2;
@@ -13342,14 +13342,14 @@ Function_KihunterWings_Falling_DriftingRight:
     CLC                                                                  ;A8F8DE;
     ADC.L KihunterWings.arcStartYPosition,X                              ;A8F8DF;
     SEC                                                                  ;A8F8E3;
-    SBC.W $0F7E,X                                                        ;A8F8E4;
-    STA.B $14                                                            ;A8F8E7;
-    STZ.B $12                                                            ;A8F8E9;
+    SBC.W Enemy.YPosition,X                                              ;A8F8E4;
+    STA.B DP_Temp14                                                      ;A8F8E7;
+    STZ.B DP_Temp12                                                      ;A8F8E9;
     JSL.L MoveEnemyDownBy_14_12                                          ;A8F8EB;
     BCS .collidedVertically                                              ;A8F8EF;
     LDA.W KihunterConstants_fallingWingsArcRadius                        ;A8F8F1;
     AND.W #$00FF                                                         ;A8F8F4;
-    STA.W $0E32                                                          ;A8F8F7;
+    STA.W Temp_Unknown0E32                                               ;A8F8F7;
     LDA.W KihunterWings.arcAngle,X                                       ;A8F8FA;
     XBA                                                                  ;A8F8FD;
     AND.W #$00FF                                                         ;A8F8FE;
@@ -13358,7 +13358,7 @@ Function_KihunterWings_Falling_DriftingRight:
     SBC.L KihunterWings.rightArcCenterXOffset,X                          ;A8F906;
     CLC                                                                  ;A8F90A;
     ADC.L KihunterWings.arcStartXPosition,X                              ;A8F90B;
-    STA.W $0F7A,X                                                        ;A8F90F;
+    STA.W Enemy.XPosition,X                                              ;A8F90F;
     LDA.W KihunterWings.arcAngle,X                                       ;A8F912;
     CMP.W #$C000                                                         ;A8F915;
     BMI +                                                                ;A8F918;
@@ -13376,13 +13376,13 @@ Function_KihunterWings_Falling_DriftingRight:
     RTL                                                                  ;A8F92D;
 
   .collidedVertically:
-    LDA.W Enemy.properties,X                                                        ;A8F92E;
+    LDA.W Enemy.properties,X                                             ;A8F92E;
     ORA.W #$0200                                                         ;A8F931;
-    STA.W Enemy.properties,X                                                        ;A8F934;
+    STA.W Enemy.properties,X                                             ;A8F934;
     LDA.L KihunterWings.fallStartYPosition,X                             ;A8F937;
-    STA.W $0F7A,X                                                        ;A8F93B;
+    STA.W Enemy.XPosition,X                                              ;A8F93B;
     LDA.L KihunterWings.fallStartXPosition,X                             ;A8F93E;
-    STA.W $0F7E,X                                                        ;A8F942;
+    STA.W Enemy.YPosition,X                                              ;A8F942;
     BRA .return                                                          ;A8F945;
 
 
@@ -13394,9 +13394,9 @@ SetupFallingKihunterWingsDriftingLeft:
     STA.W KihunterWings.speedTableIndex,X                                ;A8F952;
     LDA.W #$E000                                                         ;A8F955;
     STA.W KihunterWings.arcAngle,X                                       ;A8F958;
-    LDA.W $0F7A,X                                                        ;A8F95B;
+    LDA.W Enemy.XPosition,X                                              ;A8F95B;
     STA.L KihunterWings.arcStartXPosition,X                              ;A8F95E;
-    LDA.W $0F7E,X                                                        ;A8F962;
+    LDA.W Enemy.YPosition,X                                              ;A8F962;
     STA.L KihunterWings.arcStartYPosition,X                              ;A8F965;
     RTS                                                                  ;A8F969;
 
@@ -13409,16 +13409,16 @@ SetupFallingKihunterWingsDriftingRight:
     STA.W KihunterWings.speedTableIndex,X                                ;A8F975;
     LDA.W #$A000                                                         ;A8F978;
     STA.W KihunterWings.arcAngle,X                                       ;A8F97B;
-    LDA.W $0F7A,X                                                        ;A8F97E;
+    LDA.W Enemy.XPosition,X                                              ;A8F97E;
     STA.L KihunterWings.arcStartXPosition,X                              ;A8F981;
-    LDA.W $0F7E,X                                                        ;A8F985;
+    LDA.W Enemy.YPosition,X                                              ;A8F985;
     STA.L KihunterWings.arcStartYPosition,X                              ;A8F988;
     RTS                                                                  ;A8F98C;
 
 
 ;;; $F98D: Determine falling ki-hunter wings speed table index reset value ;;;
 DetermineFallingKihunterWingsSpeedTableIndexResetValue:
-    LDX.W $0E54                                                          ;A8F98D;
+    LDX.W EnemyIndex                                                     ;A8F98D;
     LDA.W #$0000                                                         ;A8F990;
     STA.L KihunterWings.speedTableResetValue,X                           ;A8F993;
     STA.W KihunterWings.speedTableIndex,X                                ;A8F997;
