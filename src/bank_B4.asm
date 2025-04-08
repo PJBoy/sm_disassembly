@@ -2621,31 +2621,31 @@ DebugHandler_7_EnemyDebugger_EnemySpawnDataEditor:
     JSR.W Debug_HandleCursorMovement                                     ;B492C6;
     JSR.W Debug_HandleDigitModification                                  ;B492C9;
     LDA.W #$0800                                                         ;B492CC;
-    STA.B $26                                                            ;B492CF;
-    LDA.W $1860                                                          ;B492D1;
-    STA.B $14                                                            ;B492D4;
-    LDA.W $1862                                                          ;B492D6;
-    STA.B $12                                                            ;B492D9;
+    STA.B DP_Temp26                                                      ;B492CF;
+    LDA.W DebugTextCursorXPosition                                       ;B492D1;
+    STA.B DP_Temp14                                                      ;B492D4;
+    LDA.W DebugTextCursorYPosition                                       ;B492D6;
+    STA.B DP_Temp12                                                      ;B492D9;
     LDA.W #$001C                                                         ;B492DB;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B492DE;
     LDA.W #$0A00                                                         ;B492E2;
-    STA.B $26                                                            ;B492E5;
+    STA.B DP_Temp26                                                      ;B492E5;
     LDA.W #$00B0                                                         ;B492E7;
-    STA.B $14                                                            ;B492EA;
+    STA.B DP_Temp14                                                      ;B492EA;
     LDA.W #$0048                                                         ;B492EC;
-    STA.B $12                                                            ;B492EF;
+    STA.B DP_Temp12                                                      ;B492EF;
     LDA.W #$002F                                                         ;B492F1;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B492F4;
     LDA.W #$0A00                                                         ;B492F8;
-    STA.B $26                                                            ;B492FB;
+    STA.B DP_Temp26                                                      ;B492FB;
     LDA.W #$00B0                                                         ;B492FD;
-    STA.B $14                                                            ;B49300;
+    STA.B DP_Temp14                                                      ;B49300;
     LDA.W #$0048                                                         ;B49302;
-    STA.B $12                                                            ;B49305;
-    LDX.W $1846                                                          ;B49307;
-    LDA.W $0F78,X                                                        ;B4930A;
+    STA.B DP_Temp12                                                      ;B49305;
+    LDX.W DebugEnemyIndex                                                ;B49307;
+    LDA.W Enemy.ID,X                                                     ;B4930A;
     TAX                                                                  ;B4930D;
-    LDA.L $A0003E,X                                                      ;B4930E;
+    LDA.L EnemyHeaders_name,X                                            ;B4930E;
     BNE .nonZeroName                                                     ;B49312;
     LDA.W #$0030                                                         ;B49314;
     BRA .draw                                                            ;B49317;
@@ -2659,36 +2659,36 @@ DebugHandler_7_EnemyDebugger_EnemySpawnDataEditor:
   .draw:
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49322;
     JSR.W Draw_Debug_Enemy_Spawn_Values                                  ;B49326;
-    LDA.B $91                                                            ;B49329;
+    LDA.B DP_Controller2New                                              ;B49329;
     BIT.W #$0010                                                         ;B4932B;
     BEQ .checkSelect                                                     ;B4932E;
-    STZ.W $185C                                                          ;B49330;
+    STZ.W DebugIndex                                                     ;B49330;
     LDA.W #$0001                                                         ;B49333;
     RTS                                                                  ;B49336;
 
   .checkSelect:
-    LDA.B $91                                                            ;B49337;
+    LDA.B DP_Controller2New                                              ;B49337;
     BIT.W #$2000                                                         ;B49339;
     BEQ .checkA                                                          ;B4933C;
-    INC.W $185C                                                          ;B4933E;
-    STZ.W $185E                                                          ;B49341;
+    INC.W DebugIndex                                                     ;B4933E;
+    STZ.W DebugTimeIsFrozenForEnemies                                    ;B49341;
 
   .checkA:
-    LDA.B $91                                                            ;B49344;
+    LDA.B DP_Controller2New                                              ;B49344;
     BIT.W #$0080                                                         ;B49346;
     BEQ .checkL                                                          ;B49349;
-    LDX.W $1846                                                          ;B4934B;
-    LDA.W $0F7A,X                                                        ;B4934E;
-    STA.L $7E7020,X                                                      ;B49351;
-    LDA.W $0F7E,X                                                        ;B49355;
-    STA.L $7E7022,X                                                      ;B49358;
+    LDX.W DebugEnemyIndex                                                ;B4934B;
+    LDA.W Enemy.XPosition,X                                              ;B4934E;
+    STA.L EnemySpawnData.XPosition,X                                     ;B49351;
+    LDA.W Enemy.YPosition,X                                              ;B49355;
+    STA.L EnemySpawnData.YPosition,X                                     ;B49358;
 
   .checkL:
-    LDA.B $91                                                            ;B4935C;
+    LDA.B DP_Controller2New                                              ;B4935C;
     BIT.W #$0020                                                         ;B4935E;
     BEQ .return                                                          ;B49361;
-    INC.W $185C                                                          ;B49363;
-    INC.W $185C                                                          ;B49366;
+    INC.W DebugIndex                                                     ;B49363;
+    INC.W DebugIndex                                                     ;B49366;
 
   .return:
     LDA.W #$0001                                                         ;B49369;
@@ -2705,61 +2705,61 @@ Draw_Debug_Enemy_Spawn_Values:
 ;     Swt2: [extra properties]
 ;     Opt0: [parameter 1]
 ;     Opt1: [parameter 2]
-    LDX.W $1846                                                          ;B4936D;
-    LDA.L $7E7020,X                                                      ;B49370;
-    STA.W $0E24                                                          ;B49374;
+    LDX.W DebugEnemyIndex                                                ;B4936D;
+    LDA.L EnemySpawnData.XPosition,X                                     ;B49370;
+    STA.W Temp_DebuggerHexValue                                          ;B49374;
     LDA.W #$00C8                                                         ;B49377;
-    STA.W $0E20                                                          ;B4937A;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B4937A;
     LDA.W #$0038                                                         ;B4937D;
-    STA.W $0E22                                                          ;B49380;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49380;
     JSR.W Draw4DigitHexValue                                             ;B49383;
-    LDX.W $1846                                                          ;B49386;
-    LDA.L $7E7022,X                                                      ;B49389;
-    STA.W $0E24                                                          ;B4938D;
+    LDX.W DebugEnemyIndex                                                ;B49386;
+    LDA.L EnemySpawnData.YPosition,X                                     ;B49389;
+    STA.W Temp_DebuggerHexValue                                          ;B4938D;
     LDA.W #$00C8                                                         ;B49390;
-    STA.W $0E20                                                          ;B49393;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49393;
     LDA.W #$0040                                                         ;B49396;
-    STA.W $0E22                                                          ;B49399;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49399;
     JSR.W Draw4DigitHexValue                                             ;B4939C;
-    LDX.W $1846                                                          ;B4939F;
-    LDA.L $7E7024,X                                                      ;B493A2;
-    STA.W $0E24                                                          ;B493A6;
+    LDX.W DebugEnemyIndex                                                ;B4939F;
+    LDA.L EnemySpawnData.initParam,X                                     ;B493A2;
+    STA.W Temp_DebuggerHexValue                                          ;B493A6;
     LDA.W #$00C8                                                         ;B493A9;
-    STA.W $0E20                                                          ;B493AC;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B493AC;
     LDA.W #$0048                                                         ;B493AF;
-    STA.W $0E22                                                          ;B493B2;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B493B2;
     JSR.W Draw4DigitHexValue                                             ;B493B5;
-    LDX.W $1846                                                          ;B493B8;
-    LDA.L $7E7026,X                                                      ;B493BB;
-    STA.W $0E24                                                          ;B493BF;
+    LDX.W DebugEnemyIndex                                                ;B493B8;
+    LDA.L EnemySpawnData.properties,X                                    ;B493BB;
+    STA.W Temp_DebuggerHexValue                                          ;B493BF;
     LDA.W #$00C8                                                         ;B493C2;
-    STA.W $0E20                                                          ;B493C5;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B493C5;
     LDA.W #$0050                                                         ;B493C8;
-    STA.W $0E22                                                          ;B493CB;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B493CB;
     JSR.W Draw4DigitHexValue                                             ;B493CE;
-    LDX.W $1846                                                          ;B493D1;
-    LDA.L $7E7028,X                                                      ;B493D4;
-    STA.W $0E24                                                          ;B493D8;
+    LDX.W DebugEnemyIndex                                                ;B493D1;
+    LDA.L EnemySpawnData.extraProperties,X                               ;B493D4;
+    STA.W Temp_DebuggerHexValue                                          ;B493D8;
     LDA.W #$00C8                                                         ;B493DB;
-    STA.W $0E20                                                          ;B493DE;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B493DE;
     LDA.W #$0058                                                         ;B493E1;
-    STA.W $0E22                                                          ;B493E4;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B493E4;
     JSR.W Draw4DigitHexValue                                             ;B493E7;
-    LDX.W $1846                                                          ;B493EA;
-    LDA.L $7E702A,X                                                      ;B493ED;
-    STA.W $0E24                                                          ;B493F1;
+    LDX.W DebugEnemyIndex                                                ;B493EA;
+    LDA.L EnemySpawnData.param1,X                                        ;B493ED;
+    STA.W Temp_DebuggerHexValue                                          ;B493F1;
     LDA.W #$00C8                                                         ;B493F4;
-    STA.W $0E20                                                          ;B493F7;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B493F7;
     LDA.W #$0060                                                         ;B493FA;
-    STA.W $0E22                                                          ;B493FD;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B493FD;
     JSR.W Draw4DigitHexValue                                             ;B49400;
-    LDX.W $1846                                                          ;B49403;
-    LDA.L $7E702C,X                                                      ;B49406;
-    STA.W $0E24                                                          ;B4940A;
+    LDX.W DebugEnemyIndex                                                ;B49403;
+    LDA.L EnemySpawnData.param2,X                                        ;B49406;
+    STA.W Temp_DebuggerHexValue                                          ;B4940A;
     LDA.W #$00C8                                                         ;B4940D;
-    STA.W $0E20                                                          ;B49410;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49410;
     LDA.W #$0068                                                         ;B49413;
-    STA.W $0E22                                                          ;B49416;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49416;
     JSR.W Draw4DigitHexValue                                             ;B49419;
     RTS                                                                  ;B4941C;
 
@@ -2768,16 +2768,16 @@ Draw_Debug_Enemy_Spawn_Values:
 Debug_Draw_Enemy_Set_Name:
     PHX                                                                  ;B4941D;
     LDA.W #$0A00                                                         ;B4941E;
-    STA.B $26                                                            ;B49421;
+    STA.B DP_Temp26                                                      ;B49421;
     LDA.W #$00B0                                                         ;B49423;
-    STA.B $14                                                            ;B49426;
+    STA.B DP_Temp14                                                      ;B49426;
     LDA.W #$0058                                                         ;B49428;
-    STA.B $12                                                            ;B4942B;
-    LDA.W $079F                                                          ;B4942D;
+    STA.B DP_Temp12                                                      ;B4942B;
+    LDA.W AreaIndex                                                      ;B4942D;
     CLC                                                                  ;B49430;
     ADC.W #$0014                                                         ;B49431;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49434;
-    LDA.W $07D1                                                          ;B49438;
+    LDA.W EnemySetPointer                                                ;B49438;
     SEC                                                                  ;B4943B;
     SBC.W #$0007                                                         ;B4943C;
     TAX                                                                  ;B4943F;
@@ -2785,16 +2785,16 @@ Debug_Draw_Enemy_Set_Name:
     AND.W #$00FF                                                         ;B49444;
     SEC                                                                  ;B49447;
     SBC.W #$002C                                                         ;B49448;
-    STA.B $16                                                            ;B4944B;
+    STA.B DP_Temp16                                                      ;B4944B;
     LDA.W #$0A00                                                         ;B4944D;
-    STA.B $26                                                            ;B49450;
+    STA.B DP_Temp26                                                      ;B49450;
     LDA.W #$00A8                                                         ;B49452;
-    STA.B $14                                                            ;B49455;
+    STA.B DP_Temp14                                                      ;B49455;
     LDA.W #$0058                                                         ;B49457;
-    STA.B $12                                                            ;B4945A;
-    LDA.B $16                                                            ;B4945C;
+    STA.B DP_Temp12                                                      ;B4945A;
+    LDA.B DP_Temp16                                                      ;B4945C;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B4945E;
-    LDA.W $07D1                                                          ;B49462;
+    LDA.W EnemySetPointer                                                ;B49462;
     SEC                                                                  ;B49465;
     SBC.W #$0007                                                         ;B49466;
     TAX                                                                  ;B49469;
@@ -2802,16 +2802,16 @@ Debug_Draw_Enemy_Set_Name:
     AND.W #$00FF                                                         ;B4946E;
     SEC                                                                  ;B49471;
     SBC.W #$002C                                                         ;B49472;
-    STA.B $16                                                            ;B49475;
+    STA.B DP_Temp16                                                      ;B49475;
     LDA.W #$0A00                                                         ;B49477;
-    STA.B $26                                                            ;B4947A;
+    STA.B DP_Temp26                                                      ;B4947A;
     LDA.W #$00B8                                                         ;B4947C;
-    STA.B $14                                                            ;B4947F;
+    STA.B DP_Temp14                                                      ;B4947F;
     LDA.W #$0058                                                         ;B49481;
-    STA.B $12                                                            ;B49484;
-    LDA.B $16                                                            ;B49486;
+    STA.B DP_Temp12                                                      ;B49484;
+    LDA.B DP_Temp16                                                      ;B49486;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49488;
-    LDA.W $07D1                                                          ;B4948C;
+    LDA.W EnemySetPointer                                                ;B4948C;
     SEC                                                                  ;B4948F;
     SBC.W #$0007                                                         ;B49490;
     TAX                                                                  ;B49493;
@@ -2819,14 +2819,14 @@ Debug_Draw_Enemy_Set_Name:
     AND.W #$00FF                                                         ;B49498;
     SEC                                                                  ;B4949B;
     SBC.W #$002C                                                         ;B4949C;
-    STA.B $16                                                            ;B4949F;
+    STA.B DP_Temp16                                                      ;B4949F;
     LDA.W #$0A00                                                         ;B494A1;
-    STA.B $26                                                            ;B494A4;
+    STA.B DP_Temp26                                                      ;B494A4;
     LDA.W #$00C0                                                         ;B494A6;
-    STA.B $14                                                            ;B494A9;
+    STA.B DP_Temp14                                                      ;B494A9;
     LDA.W #$0058                                                         ;B494AB;
-    STA.B $12                                                            ;B494AE;
-    LDA.B $16                                                            ;B494B0;
+    STA.B DP_Temp12                                                      ;B494AE;
+    LDA.B DP_Temp16                                                      ;B494B0;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B494B2;
     PLX                                                                  ;B494B6;
     RTS                                                                  ;B494B7;
@@ -2843,14 +2843,14 @@ DebugHandler_8_EnemyDebugger_RespawnEnemy:
     PEA.W $7E7E                                                          ;B494B9;
     PLB                                                                  ;B494BC;
     PLB                                                                  ;B494BD;
-    LDA.W #$701E                                                         ;B494BE;
+    LDA.W #EnemySpawnData.ID                                             ;B494BE;
     CLC                                                                  ;B494C1;
-    ADC.W $1846                                                          ;B494C2;
+    ADC.W DebugEnemyIndex                                                ;B494C2;
     TAX                                                                  ;B494C5;
-    LDY.W $1846                                                          ;B494C6;
+    LDY.W DebugEnemyIndex                                                ;B494C6;
     JSL.L Debug_SpawnEnemy_ToEnemyIndex_inY                              ;B494C9;
     PLB                                                                  ;B494CD;
-    STZ.W $185C                                                          ;B494CE;
+    STZ.W DebugIndex                                                     ;B494CE;
     LDA.W #$0001                                                         ;B494D1;
     RTS                                                                  ;B494D4;
 
@@ -2859,70 +2859,70 @@ DebugHandler_8_EnemyDebugger_RespawnEnemy:
 DebugHandler_9_EnemyDebugger_EnemySpawner:
 ;; Returns:
 ;;     A: Non-zero to skip processing frame
-    LDA.W $07D1                                                          ;B494D5;
+    LDA.W EnemySetPointer                                                ;B494D5;
     TAX                                                                  ;B494D8;
-    STA.W $0E26                                                          ;B494D9;
-    LDX.W $0E26                                                          ;B494DC;
+    STA.W Temp_NumberOfEnemyPartsToSpawn                                 ;B494D9;
+    LDX.W Temp_NumberOfEnemyPartsToSpawn                                 ;B494DC; >.<
     LDA.W #$0038                                                         ;B494DF;
-    STA.W $0E2A                                                          ;B494E2;
+    STA.W Temp_RowYPosition                                              ;B494E2;
 
   .loop:
-    LDX.W $0E26                                                          ;B494E5;
+    LDX.W Temp_NumberOfEnemyPartsToSpawn                                 ;B494E5;
     LDA.L EnemySets_ID,X                                                 ;B494E8;
     CMP.W #$FFFF                                                         ;B494EC;
     BEQ .endLoop                                                         ;B494EF;
     TAX                                                                  ;B494F1;
-    LDA.L $A0003E,X                                                      ;B494F2;
+    LDA.L EnemyHeaders_name,X                                            ;B494F2;
     TAX                                                                  ;B494F6;
     LDA.L EnemyNames_spritemap,X                                         ;B494F7;
     CLC                                                                  ;B494FB;
     ADC.W #$0030                                                         ;B494FC;
-    STA.B $16                                                            ;B494FF;
+    STA.B DP_Temp16                                                      ;B494FF;
     LDA.W #$0A00                                                         ;B49501;
-    STA.B $26                                                            ;B49504;
+    STA.B DP_Temp26                                                      ;B49504;
     LDA.W #$00A8                                                         ;B49506;
-    STA.B $14                                                            ;B49509;
-    LDA.W $0E2A                                                          ;B4950B;
+    STA.B DP_Temp14                                                      ;B49509;
+    LDA.W Temp_RowYPosition                                              ;B4950B;
     CLC                                                                  ;B4950E;
     ADC.W #$0018                                                         ;B4950F;
-    STA.B $12                                                            ;B49512;
-    LDA.B $16                                                            ;B49514;
+    STA.B DP_Temp12                                                      ;B49512;
+    LDA.B DP_Temp16                                                      ;B49514;
     AND.W #$00FF                                                         ;B49516;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49519;
-    LDX.W $0E26                                                          ;B4951D;
+    LDX.W Temp_NumberOfEnemyPartsToSpawn                                 ;B4951D;
     LDA.L EnemySets_palette,X                                            ;B49520;
-    STA.W $0E24                                                          ;B49524;
+    STA.W Temp_DebuggerHexValue                                          ;B49524;
     LDA.W #$00D8                                                         ;B49527;
-    STA.W $0E20                                                          ;B4952A;
-    LDA.W $0E2A                                                          ;B4952D;
-    STA.W $0E22                                                          ;B49530;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B4952A;
+    LDA.W Temp_RowYPosition                                              ;B4952D;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49530;
     JSR.W Draw4DigitHexValue                                             ;B49533;
-    LDA.W $0E2A                                                          ;B49536;
+    LDA.W Temp_RowYPosition                                              ;B49536;
     CLC                                                                  ;B49539;
     ADC.W #$0008                                                         ;B4953A;
-    STA.W $0E2A                                                          ;B4953D;
-    LDA.W $0E26                                                          ;B49540;
+    STA.W Temp_RowYPosition                                              ;B4953D;
+    LDA.W Temp_NumberOfEnemyPartsToSpawn                                 ;B49540;
     CLC                                                                  ;B49543;
     ADC.W #$0004                                                         ;B49544;
-    STA.W $0E26                                                          ;B49547;
+    STA.W Temp_NumberOfEnemyPartsToSpawn                                 ;B49547;
     BRA .loop                                                            ;B4954A;
 
   .endLoop:
     LDA.W #$0A00                                                         ;B4954C;
-    STA.B $26                                                            ;B4954F;
+    STA.B DP_Temp26                                                      ;B4954F;
     LDA.W #$00B0                                                         ;B49551;
-    STA.B $14                                                            ;B49554;
+    STA.B DP_Temp14                                                      ;B49554;
     LDA.W #$0048                                                         ;B49556;
-    STA.B $12                                                            ;B49559;
-    LDX.W $1846                                                          ;B4955B;
-    LDA.L $7E701E,X                                                      ;B4955E;
+    STA.B DP_Temp12                                                      ;B49559;
+    LDX.W DebugEnemyIndex                                                ;B4955B;
+    LDA.L EnemySpawnData.ID,X                                            ;B4955E;
     BNE .hasSpawnID                                                      ;B49562;
     LDA.W #$0030                                                         ;B49564;
     BRA .resolvedName                                                    ;B49567;
 
   .hasSpawnID:
     TAX                                                                  ;B49569;
-    LDA.L $A0003E,X                                                      ;B4956A;
+    LDA.L EnemyHeaders_name,X                                            ;B4956A;
     BNE +                                                                ;B4956E;
     LDA.W #$0030                                                         ;B49570;
     BRA .resolvedName                                                    ;B49573;
@@ -2934,142 +2934,142 @@ DebugHandler_9_EnemyDebugger_EnemySpawner:
 
   .resolvedName:
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B4957E;
-    LDA.B $91                                                            ;B49582;
+    LDA.B DP_Controller2New                                              ;B49582;
     BIT.W #$0400                                                         ;B49584;
     BEQ .checkTerminator                                                 ;B49587;
-    LDA.W $1864                                                          ;B49589;
+    LDA.W DebugEnemySetEntryIndex                                        ;B49589;
     CLC                                                                  ;B4958C;
     ADC.W #$0004                                                         ;B4958D;
     CMP.W #$0010                                                         ;B49590;
     BNE +                                                                ;B49593;
     LDA.W #$0000                                                         ;B49595;
 
-+   STA.W $1864                                                          ;B49598;
++   STA.W DebugEnemySetEntryIndex                                        ;B49598;
 
   .checkTerminator:
-    LDA.W $07D1                                                          ;B4959B;
+    LDA.W EnemySetPointer                                                ;B4959B;
     CLC                                                                  ;B4959E;
-    ADC.W $1864                                                          ;B4959F;
+    ADC.W DebugEnemySetEntryIndex                                        ;B4959F;
     TAX                                                                  ;B495A2;
     LDA.L EnemySets_ID,X                                                 ;B495A3;
     CMP.W #$FFFF                                                         ;B495A7;
     BNE +                                                                ;B495AA;
-    STZ.W $1864                                                          ;B495AC;
-    LDX.W $07D1                                                          ;B495AF;
-    LDA.L $B40000,X                                                      ;B495B2;
+    STZ.W DebugEnemySetEntryIndex                                        ;B495AC;
+    LDX.W EnemySetPointer                                                ;B495AF;
+    LDA.L EnemySets_ID,X                                                 ;B495B2;
 
-+   STA.B $12                                                            ;B495B6;
++   STA.B DP_Temp12                                                      ;B495B6;
     TAX                                                                  ;B495B8;
-    LDA.L $A0003E,X                                                      ;B495B9;
+    LDA.L EnemyHeaders_name,X                                            ;B495B9;
     TAX                                                                  ;B495BD;
-    LDA.L $B4000A,X                                                      ;B495BE;
+    LDA.L EnemyNames_population,X                                        ;B495BE;
     TAX                                                                  ;B495C2;
-    STX.W $1866                                                          ;B495C3;
-    LDX.W $1846                                                          ;B495C6;
-    LDA.B $12                                                            ;B495C9;
-    STA.L $7E701E,X                                                      ;B495CB;
-    LDA.B $91                                                            ;B495CF;
+    STX.W DebugEnemyPopulationPointer                                    ;B495C3;
+    LDX.W DebugEnemyIndex                                                ;B495C6;
+    LDA.B DP_Temp12                                                      ;B495C9;
+    STA.L EnemySpawnData.ID,X                                            ;B495CB;
+    LDA.B DP_Controller2New                                              ;B495CF;
     BIT.W #$0010                                                         ;B495D1;
     BEQ .checkL                                                          ;B495D4;
-    STZ.W $185C                                                          ;B495D6;
+    STZ.W DebugIndex                                                     ;B495D6;
     LDA.W #$0001                                                         ;B495D9;
     RTS                                                                  ;B495DC;
 
   .checkL:
-    LDA.B $91                                                            ;B495DD;
+    LDA.B DP_Controller2New                                              ;B495DD;
     BIT.W #$0020                                                         ;B495DF;
     BNE .checkB                                                          ;B495E2;
     LDA.W #$0001                                                         ;B495E4;
     RTS                                                                  ;B495E7;
 
   .checkB:
-    LDX.W $1866                                                          ;B495E8;
+    LDX.W DebugEnemyPopulationPointer                                    ;B495E8;
     CMP.W #$8000                                                         ;B495EB;
     BMI +                                                                ;B495EE;
-    LDA.L $B40000,X                                                      ;B495F0;
+    LDA.L EnemyNames_name,X                                              ;B495F0;
     TAX                                                                  ;B495F4;
-    LDA.L $A0003E,X                                                      ;B495F5;
+    LDA.L EnemyHeaders_name,X                                            ;B495F5;
     TAX                                                                  ;B495F9;
-    LDA.L $B4000C,X                                                      ;B495FA;
+    LDA.L EnemyNames_spritemap,X                                         ;B495FA;
     BNE +                                                                ;B495FE;
-    STZ.W $185C                                                          ;B49600;
+    STZ.W DebugIndex                                                     ;B49600;
     LDA.W #$0001                                                         ;B49603;
     RTS                                                                  ;B49606;
 
-+   LDY.W $1846                                                          ;B49607;
-    LDA.W $0F7A,Y                                                        ;B4960A;
-    STA.W $1868                                                          ;B4960D;
-    LDA.W $0F7E,Y                                                        ;B49610;
-    STA.W $186A                                                          ;B49613;
++   LDY.W DebugEnemyIndex                                                ;B49607;
+    LDA.W Enemy.XPosition,Y                                              ;B4960A;
+    STA.W DebugEnemySpawnXPosition                                       ;B4960D;
+    LDA.W Enemy.YPosition,Y                                              ;B49610;
+    STA.W DebugEnemySpawnYPosition                                       ;B49613;
     PHB                                                                  ;B49616;
     PEA.W $B4B4                                                          ;B49617;
     PLB                                                                  ;B4961A;
     PLB                                                                  ;B4961B;
-    LDY.W $1846                                                          ;B4961C;
-    LDX.W $1866                                                          ;B4961F;
+    LDY.W DebugEnemyIndex                                                ;B4961C;
+    LDX.W DebugEnemyPopulationPointer                                    ;B4961F;
     JSL.L Debug_SpawnEnemy_ToEnemyIndex_inY                              ;B49622;
     PLB                                                                  ;B49626;
-    LDY.W $1846                                                          ;B49627;
-    LDA.W $1868                                                          ;B4962A;
-    STA.W $0F7A,Y                                                        ;B4962D;
-    LDA.W $186A                                                          ;B49630;
-    STA.W $0F7E,Y                                                        ;B49633;
+    LDY.W DebugEnemyIndex                                                ;B49627;
+    LDA.W DebugEnemySpawnXPosition                                       ;B4962A;
+    STA.W Enemy.XPosition,Y                                              ;B4962D;
+    LDA.W DebugEnemySpawnYPosition                                       ;B49630;
+    STA.W Enemy.YPosition,Y                                              ;B49633;
     PHX                                                                  ;B49636;
     PHY                                                                  ;B49637;
     TYX                                                                  ;B49638;
     JSL.L Record_EnemySpawnData                                          ;B49639;
     PLY                                                                  ;B4963D;
     PLX                                                                  ;B4963E;
-    STZ.W $185C                                                          ;B4963F;
+    STZ.W DebugIndex                                                     ;B4963F;
     LDA.W #$0001                                                         ;B49642;
     RTS                                                                  ;B49645;
 
 
 ;;; $9646: Debug. Handle cursor movement ;;;
 Debug_HandleCursorMovement:
-    LDA.B $91                                                            ;B49646;
+    LDA.B DP_Controller2New                                              ;B49646;
     BIT.W #$0100                                                         ;B49648;
     BEQ .noRight                                                         ;B4964B;
-    LDA.W $1860                                                          ;B4964D;
+    LDA.W DebugTextCursorXPosition                                       ;B4964D;
     CLC                                                                  ;B49650;
     ADC.W #$0008                                                         ;B49651;
     CMP.W #$00E0                                                         ;B49654;
     BNE +                                                                ;B49657;
     LDA.W #$00C0                                                         ;B49659;
 
-+   STA.W $1860                                                          ;B4965C;
++   STA.W DebugTextCursorXPosition                                       ;B4965C;
     BRA .return                                                          ;B4965F;
 
   .noRight:
     BIT.W #$0200                                                         ;B49661;
     BEQ .noLeft                                                          ;B49664;
-    LDA.W $1860                                                          ;B49666;
+    LDA.W DebugTextCursorXPosition                                       ;B49666;
     SEC                                                                  ;B49669;
     SBC.W #$0008                                                         ;B4966A;
     CMP.W #$00B8                                                         ;B4966D;
     BNE +                                                                ;B49670;
     LDA.W #$00D8                                                         ;B49672;
 
-+   STA.W $1860                                                          ;B49675;
++   STA.W DebugTextCursorXPosition                                       ;B49675;
     BRA .return                                                          ;B49678;
 
   .noLeft:
     BIT.W #$0400                                                         ;B4967A;
     BEQ .noDown                                                          ;B4967D;
-    LDA.W $1862                                                          ;B4967F;
+    LDA.W DebugTextCursorYPosition                                       ;B4967F;
     CLC                                                                  ;B49682;
     ADC.W #$0008                                                         ;B49683;
     CMP.W #$0068                                                         ;B49686;
     BNE +                                                                ;B49689;
     LDA.W #$0030                                                         ;B4968B;
 
-+   STA.W $1862                                                          ;B4968E;
++   STA.W DebugTextCursorYPosition                                       ;B4968E;
     BRA .return                                                          ;B49691;
 
   .noDown:
     BIT.W #$0800                                                         ;B49693;
     BEQ .return                                                          ;B49696;
-    LDA.W $1862                                                          ;B49698;
+    LDA.W DebugTextCursorYPosition                                       ;B49698;
     SEC                                                                  ;B4969B;
     SBC.W #$0008                                                         ;B4969C;
     CMP.W #$0028                                                         ;B4969F;
@@ -3077,7 +3077,7 @@ Debug_HandleCursorMovement:
     LDA.W #$0060                                                         ;B496A4;
 
   .setCursorY:
-    STA.W $1862                                                          ;B496A7;
+    STA.W DebugTextCursorYPosition                                       ;B496A7;
 
   .return:
     RTS                                                                  ;B496AA;
@@ -3085,31 +3085,31 @@ Debug_HandleCursorMovement:
 
 ;;; $96AB: Debug. Handle digit modification ;;;
 Debug_HandleDigitModification:
-    LDX.W $1846                                                          ;B496AB;
-    LDA.L $7E7020,X                                                      ;B496AE;
-    STA.B $12                                                            ;B496B2;
-    LDA.L $7E7022,X                                                      ;B496B4;
-    STA.B $14                                                            ;B496B8;
-    LDA.L $7E7024,X                                                      ;B496BA;
-    STA.B $16                                                            ;B496BE;
-    LDA.L $7E7026,X                                                      ;B496C0;
-    STA.B $18                                                            ;B496C4;
-    LDA.L $7E7028,X                                                      ;B496C6;
-    STA.B $1A                                                            ;B496CA;
-    LDA.L $7E702A,X                                                      ;B496CC;
-    STA.B $1C                                                            ;B496D0;
-    LDA.L $7E702C,X                                                      ;B496D2;
-    STA.B $1E                                                            ;B496D6;
-    LDA.B $91                                                            ;B496D8;
+    LDX.W DebugEnemyIndex                                                ;B496AB;
+    LDA.L EnemySpawnData.XPosition,X                                     ;B496AE;
+    STA.B DP_Temp12                                                      ;B496B2;
+    LDA.L EnemySpawnData.YPosition,X                                     ;B496B4;
+    STA.B DP_Temp14                                                      ;B496B8;
+    LDA.L EnemySpawnData.initParam,X                                     ;B496BA;
+    STA.B DP_Temp16                                                      ;B496BE;
+    LDA.L EnemySpawnData.properties,X                                    ;B496C0;
+    STA.B DP_Temp18                                                      ;B496C4;
+    LDA.L EnemySpawnData.extraProperties,X                               ;B496C6;
+    STA.B DP_Temp1A                                                      ;B496CA;
+    LDA.L EnemySpawnData.param1,X                                        ;B496CC;
+    STA.B DP_Temp1C                                                      ;B496D0;
+    LDA.L EnemySpawnData.param2,X                                        ;B496D2;
+    STA.B DP_Temp1E                                                      ;B496D6;
+    LDA.B DP_Controller2New                                              ;B496D8;
     BIT.W #$0040                                                         ;B496DA;
     BEQ .notNewlyPressedX                                                ;B496DD;
-    LDA.W $1860                                                          ;B496DF;
+    LDA.W DebugTextCursorXPosition                                       ;B496DF;
     SEC                                                                  ;B496E2;
     SBC.W #$00C0                                                         ;B496E3;
     LSR                                                                  ;B496E6;
     LSR                                                                  ;B496E7;
     TAX                                                                  ;B496E8;
-    LDA.W $1862                                                          ;B496E9;
+    LDA.W DebugTextCursorYPosition                                       ;B496E9;
     SEC                                                                  ;B496EC;
     SBC.W #$0030                                                         ;B496ED;
     LSR                                                                  ;B496F0;
@@ -3124,13 +3124,13 @@ Debug_HandleDigitModification:
   .notNewlyPressedX:
     BIT.W #$8000                                                         ;B496FF;
     BEQ +                                                                ;B49702;
-    LDA.W $1860                                                          ;B49704;
+    LDA.W DebugTextCursorXPosition                                       ;B49704;
     SEC                                                                  ;B49707;
     SBC.W #$00C0                                                         ;B49708;
     LSR                                                                  ;B4970B;
     LSR                                                                  ;B4970C;
     TAX                                                                  ;B4970D;
-    LDA.W $1862                                                          ;B4970E;
+    LDA.W DebugTextCursorYPosition                                       ;B4970E;
     SEC                                                                  ;B49711;
     SBC.W #$0030                                                         ;B49712;
     LSR                                                                  ;B49715;
@@ -3141,21 +3141,21 @@ Debug_HandleDigitModification:
     SBC.W .data,X                                                        ;B4971C;
     STA.W $0012,Y                                                        ;B4971F;
 
-+   LDX.W $1846                                                          ;B49722;
-    LDA.B $12                                                            ;B49725;
-    STA.L $7E7020,X                                                      ;B49727;
-    LDA.B $14                                                            ;B4972B;
-    STA.L $7E7022,X                                                      ;B4972D;
-    LDA.B $16                                                            ;B49731;
-    STA.L $7E7024,X                                                      ;B49733;
-    LDA.B $18                                                            ;B49737;
-    STA.L $7E7026,X                                                      ;B49739;
-    LDA.B $1A                                                            ;B4973D;
-    STA.L $7E7028,X                                                      ;B4973F;
-    LDA.B $1C                                                            ;B49743;
-    STA.L $7E702A,X                                                      ;B49745;
-    LDA.B $1E                                                            ;B49749;
-    STA.L $7E702C,X                                                      ;B4974B;
++   LDX.W DebugEnemyIndex                                                ;B49722;
+    LDA.B DP_Temp12                                                      ;B49725;
+    STA.L EnemySpawnData.XPosition,X                                     ;B49727;
+    LDA.B DP_Temp14                                                      ;B4972B;
+    STA.L EnemySpawnData.YPosition,X                                     ;B4972D;
+    LDA.B DP_Temp16                                                      ;B49731;
+    STA.L EnemySpawnData.initParam,X                                     ;B49733;
+    LDA.B DP_Temp18                                                      ;B49737;
+    STA.L EnemySpawnData.properties,X                                    ;B49739;
+    LDA.B DP_Temp1A                                                      ;B4973D;
+    STA.L EnemySpawnData.extraProperties,X                               ;B4973F;
+    LDA.B DP_Temp1C                                                      ;B49743;
+    STA.L EnemySpawnData.param1,X                                        ;B49745;
+    LDA.B DP_Temp1E                                                      ;B49749;
+    STA.L EnemySpawnData.param2,X                                        ;B4974B;
     RTS                                                                  ;B4974F;
 
   .data:
@@ -3168,24 +3168,24 @@ DebugHandler_10_EnemyDebugger_EnemyAllocationViewer:
 ;;     A: Non-zero to skip processing frame
 
 ; Shows the palette index of each enemy and total number of VRAM rows required for all enemies
-    LDA.B $91                                                            ;B49758;
+    LDA.B DP_Controller2New                                              ;B49758;
     BIT.W #$2000                                                         ;B4975A;
     BEQ .notNewlyPressedSelect                                           ;B4975D;
-    STZ.W $185C                                                          ;B4975F;
+    STZ.W DebugIndex                                                     ;B4975F;
     LDA.W #$0000                                                         ;B49762;
     RTS                                                                  ;B49765;
 
   .notNewlyPressedSelect:
-    LDA.W $07D1                                                          ;B49766;
+    LDA.W EnemySetPointer                                                ;B49766;
     TAX                                                                  ;B49769;
-    STA.W $0E26                                                          ;B4976A;
-    LDX.W $0E26                                                          ;B4976D;
+    STA.W Temp_EnemySetEntryPointer                                      ;B4976A;
+    LDX.W Temp_EnemySetEntryPointer                                      ;B4976D;
     LDA.W #$0038                                                         ;B49770;
-    STA.W $0E2A                                                          ;B49773;
-    STZ.W $0E2C                                                          ;B49776;
+    STA.W Temp_RowYPosition                                              ;B49773;
+    STZ.W Temp_RowsOfVRAM                                                ;B49776;
 
   .loop:
-    LDX.W $0E26                                                          ;B49779;
+    LDX.W Temp_EnemySetEntryPointer                                      ;B49779;
     LDA.L $B40000,X                                                      ;B4977C;
     CMP.W #$FFFF                                                         ;B49780;
     BEQ .terminated                                                      ;B49783;
@@ -3195,50 +3195,50 @@ DebugHandler_10_EnemyDebugger_EnemyAllocationViewer:
     AND.W #$00FF                                                         ;B4978B;
     LSR                                                                  ;B4978E;
     CLC                                                                  ;B4978F;
-    ADC.W $0E2C                                                          ;B49790;
-    STA.W $0E2C                                                          ;B49793;
-    LDA.L $A0003E,X                                                      ;B49796;
+    ADC.W Temp_RowsOfVRAM                                                ;B49790;
+    STA.W Temp_RowsOfVRAM                                                ;B49793;
+    LDA.L EnemyHeaders_name,X                                            ;B49796;
     TAX                                                                  ;B4979A;
-    LDA.L $B4000C,X                                                      ;B4979B;
+    LDA.L EnemyNames_spritemap,X                                         ;B4979B;
     CLC                                                                  ;B4979F;
     ADC.W #$0030                                                         ;B497A0;
-    STA.B $16                                                            ;B497A3;
+    STA.B DP_Temp16                                                      ;B497A3;
     LDA.W #$0A00                                                         ;B497A5;
-    STA.B $26                                                            ;B497A8;
+    STA.B DP_Temp26                                                      ;B497A8;
     LDA.W #$00A8                                                         ;B497AA;
-    STA.B $14                                                            ;B497AD;
-    LDA.W $0E2A                                                          ;B497AF;
+    STA.B DP_Temp14                                                      ;B497AD;
+    LDA.W Temp_RowYPosition                                              ;B497AF;
     CLC                                                                  ;B497B2;
     ADC.W #$0018                                                         ;B497B3;
-    STA.B $12                                                            ;B497B6;
-    LDA.B $16                                                            ;B497B8;
+    STA.B DP_Temp12                                                      ;B497B6;
+    LDA.B DP_Temp16                                                      ;B497B8;
     AND.W #$00FF                                                         ;B497BA;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B497BD;
-    LDX.W $0E26                                                          ;B497C1;
-    LDA.L $B40002,X                                                      ;B497C4;
-    STA.W $0E24                                                          ;B497C8;
+    LDX.W Temp_EnemySetEntryPointer                                      ;B497C1;
+    LDA.L EnemySets_palette,X                                            ;B497C4;
+    STA.W Temp_DebuggerHexValue                                          ;B497C8;
     LDA.W #$00D8                                                         ;B497CB;
-    STA.W $0E20                                                          ;B497CE;
-    LDA.W $0E2A                                                          ;B497D1;
-    STA.W $0E22                                                          ;B497D4;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B497CE;
+    LDA.W Temp_RowYPosition                                              ;B497D1;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B497D4;
     JSR.W Draw4DigitHexValue                                             ;B497D7;
-    LDA.W $0E2A                                                          ;B497DA;
+    LDA.W Temp_RowYPosition                                              ;B497DA;
     CLC                                                                  ;B497DD;
     ADC.W #$0008                                                         ;B497DE;
-    STA.W $0E2A                                                          ;B497E1;
-    LDA.W $0E26                                                          ;B497E4;
+    STA.W Temp_RowYPosition                                              ;B497E1;
+    LDA.W Temp_EnemySetEntryPointer                                      ;B497E4;
     CLC                                                                  ;B497E7;
     ADC.W #$0004                                                         ;B497E8;
-    STA.W $0E26                                                          ;B497EB;
+    STA.W Temp_EnemySetEntryPointer                                      ;B497EB;
     BRA .loop                                                            ;B497EE;
 
   .terminated:
-    LDA.W $0E2C                                                          ;B497F0;
-    STA.W $0E24                                                          ;B497F3;
+    LDA.W Temp_RowsOfVRAM                                                ;B497F0;
+    STA.W Temp_DebuggerHexValue                                          ;B497F3;
     LDA.W #$00A8                                                         ;B497F6;
-    STA.W $0E20                                                          ;B497F9;
-    LDA.W $0E2A                                                          ;B497FC;
-    STA.W $0E22                                                          ;B497FF;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B497F9;
+    LDA.W Temp_RowYPosition                                              ;B497FC;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B497FF;
     JSR.W Draw4DigitHexValue                                             ;B49802;
     LDA.W #$0000                                                         ;B49805;
     RTS                                                                  ;B49808;
@@ -3254,7 +3254,7 @@ DebugHandler:
     PHA                                                                  ;B4980E;
     PLB                                                                  ;B4980F;
     REP #$30                                                             ;B49810;
-    LDA.W $185C                                                          ;B49812;
+    LDA.W DebugIndex                                                     ;B49812;
     AND.W #$00FF                                                         ;B49815;
     ASL                                                                  ;B49818;
     TAX                                                                  ;B49819;
@@ -3287,78 +3287,78 @@ DebugHandler_4_SpriteTilesViewer_FirstHalf:
 ;; Returns:
 ;;     A: Non-zero to skip processing frame
     LDA.W #$0A00                                                         ;B49841;
-    STA.B $26                                                            ;B49844;
+    STA.B DP_Temp26                                                      ;B49844;
     LDA.W #$0080                                                         ;B49846;
-    STA.B $14                                                            ;B49849;
+    STA.B DP_Temp14                                                      ;B49849;
     LDA.W #$0080                                                         ;B4984B;
-    STA.B $12                                                            ;B4984E;
+    STA.B DP_Temp12                                                      ;B4984E;
     LDA.W #$0003                                                         ;B49850;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49853;
-    LDA.W $05C5                                                          ;B49857;
+    LDA.W Debug_InputL                                                   ;B49857;
     BIT.W #$0040                                                         ;B4985A;
     BNE .resetIndex                                                      ;B4985D;
     LDA.W #$0001                                                         ;B4985F;
     RTS                                                                  ;B49862;
 
   .resetIndex:
-    STZ.W $185C                                                          ;B49863;
+    STZ.W DebugIndex                                                     ;B49863;
     LDA.W #$0001                                                         ;B49866;
     RTS                                                                  ;B49869;
 
 
 ;;; $986A: Debug handler - [debug index] = 3: sprite tiles viewer - 2nd half ;;;
 DebugHandler_3_SpriteTilesViewer_SecondHalf:
-    LDA.W $05C5                                                          ;B4986A;
+    LDA.W Debug_InputL                                                   ;B4986A;
     BIT.W #$0080                                                         ;B4986D;
     BEQ .noChange                                                        ;B49870;
-    LDA.W $185A                                                          ;B49872;
+    LDA.W neverRead185A                                                  ;B49872;
     CMP.W #$0000                                                         ;B49875;
     BNE +                                                                ;B49878;
     LDA.W #$0200                                                         ;B4987A;
-    STA.W $185A                                                          ;B4987D;
+    STA.W neverRead185A                                                  ;B4987D;
     BRA .merge                                                           ;B49880;
 
 +   CMP.W #$0200                                                         ;B49882;
     BNE +                                                                ;B49885;
     LDA.W #$0400                                                         ;B49887;
-    STA.W $185A                                                          ;B4988A;
+    STA.W neverRead185A                                                  ;B4988A;
     BRA .merge                                                           ;B4988D;
 
 +   CMP.W #$0400                                                         ;B4988F;
     BNE +                                                                ;B49892;
     LDA.W #$0600                                                         ;B49894;
-    STA.W $185A                                                          ;B49897;
+    STA.W neverRead185A                                                  ;B49897;
     BRA .merge                                                           ;B4989A;
 
 +   CMP.W #$0600                                                         ;B4989C;
     BNE +                                                                ;B4989F;
     LDA.W #$0E00                                                         ;B498A1;
-    STA.W $185A                                                          ;B498A4;
+    STA.W neverRead185A                                                  ;B498A4;
     BRA .merge                                                           ;B498A7;
 
 +   LDA.W #$0000                                                         ;B498A9;
-    STA.W $185A                                                          ;B498AC;
+    STA.W neverRead185A                                                  ;B498AC;
     BRA .merge                                                           ;B498AF;
 
   .noChange:
-    LDA.W $185A                                                          ;B498B1;
+    LDA.W neverRead185A                                                  ;B498B1;
 
   .merge:
-    STA.B $26                                                            ;B498B4;
+    STA.B DP_Temp26                                                      ;B498B4;
     LDA.W #$0080                                                         ;B498B6;
-    STA.B $14                                                            ;B498B9;
+    STA.B DP_Temp14                                                      ;B498B9;
     LDA.W #$0080                                                         ;B498BB;
-    STA.B $12                                                            ;B498BE;
+    STA.B DP_Temp12                                                      ;B498BE;
     LDA.W #$0002                                                         ;B498C0;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B498C3;
-    LDA.W $05C5                                                          ;B498C7;
+    LDA.W Debug_InputL                                                   ;B498C7;
     BIT.W #$0040                                                         ;B498CA;
     BNE .incIndex                                                        ;B498CD;
     LDA.W #$0001                                                         ;B498CF;
     RTS                                                                  ;B498D2;
 
   .incIndex:
-    INC.W $185C                                                          ;B498D3;
+    INC.W DebugIndex                                                     ;B498D3;
     LDA.W #$0001                                                         ;B498D6;
     RTS                                                                  ;B498D9;
 
@@ -3370,21 +3370,21 @@ DebugHandler_1_PaletteViewer_SpritePalettes:
 
 ; Note that this routine overwrites the sprite palettes with the BG palettes when switching over to the next debug index
     LDA.W #$0000                                                         ;B498DA;
-    STA.B $26                                                            ;B498DD;
+    STA.B DP_Temp26                                                      ;B498DD;
     LDA.W #$0060                                                         ;B498DF;
-    STA.B $14                                                            ;B498E2;
-    STA.B $12                                                            ;B498E4;
+    STA.B DP_Temp14                                                      ;B498E2;
+    STA.B DP_Temp12                                                      ;B498E4;
     LDA.W #$0000                                                         ;B498E6;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B498E9;
     LDA.W #$0000                                                         ;B498ED;
-    STA.B $26                                                            ;B498F0;
+    STA.B DP_Temp26                                                      ;B498F0;
     LDA.W #$00A0                                                         ;B498F2;
-    STA.B $14                                                            ;B498F5;
+    STA.B DP_Temp14                                                      ;B498F5;
     LDA.W #$0060                                                         ;B498F7;
-    STA.B $12                                                            ;B498FA;
+    STA.B DP_Temp12                                                      ;B498FA;
     LDA.W #$0001                                                         ;B498FC;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B498FF;
-    LDA.W $05C5                                                          ;B49903;
+    LDA.W Debug_InputL                                                   ;B49903;
     BIT.W #$0080                                                         ;B49906;
     BNE .setupLoop                                                       ;B49909;
     LDA.W #$0001                                                         ;B4990B;
@@ -3394,12 +3394,12 @@ DebugHandler_1_PaletteViewer_SpritePalettes:
     LDX.W #$00FE                                                         ;B4990F;
 
   .loop:
-    LDA.L $7EC000,X                                                      ;B49912;
-    STA.L $7EC100,X                                                      ;B49916;
+    LDA.L Palettes,X                                                     ;B49912;
+    STA.L Palettes_SpriteP0,X                                            ;B49916;
     DEX                                                                  ;B4991A;
     DEX                                                                  ;B4991B;
     BNE .loop                                                            ;B4991C;
-    INC.W $185C                                                          ;B4991E;
+    INC.W DebugIndex                                                     ;B4991E;
     LDA.W #$0001                                                         ;B49921;
     RTS                                                                  ;B49924;
 
@@ -3407,28 +3407,28 @@ DebugHandler_1_PaletteViewer_SpritePalettes:
 ;;; $9925: Debug handler - [debug index] = 2: palette viewer - BG palettes ;;;
 DebugHandler_2_PaletteViewer_BGPalettes:
     LDA.W #$0000                                                         ;B49925;
-    STA.B $26                                                            ;B49928;
+    STA.B DP_Temp26                                                      ;B49928;
     LDA.W #$0060                                                         ;B4992A;
-    STA.B $14                                                            ;B4992D;
-    STA.B $12                                                            ;B4992F;
+    STA.B DP_Temp14                                                      ;B4992D;
+    STA.B DP_Temp12                                                      ;B4992F;
     LDA.W #$0000                                                         ;B49931;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49934;
     LDA.W #$0000                                                         ;B49938;
-    STA.B $26                                                            ;B4993B;
+    STA.B DP_Temp26                                                      ;B4993B;
     LDA.W #$00A0                                                         ;B4993D;
-    STA.B $14                                                            ;B49940;
+    STA.B DP_Temp14                                                      ;B49940;
     LDA.W #$0060                                                         ;B49942;
-    STA.B $12                                                            ;B49945;
+    STA.B DP_Temp12                                                      ;B49945;
     LDA.W #$0001                                                         ;B49947;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B4994A;
-    LDA.W $05C5                                                          ;B4994E;
+    LDA.W Debug_InputL                                                   ;B4994E;
     BIT.W #$0080                                                         ;B49951;
     BNE .resetIndex                                                      ;B49954;
     LDA.W #$0001                                                         ;B49956;
     RTS                                                                  ;B49959;
 
   .resetIndex:
-    STZ.W $185C                                                          ;B4995A;
+    STZ.W DebugIndex                                                     ;B4995A;
     LDA.W #$0001                                                         ;B4995D;
     RTS                                                                  ;B49960;
 
@@ -3437,72 +3437,72 @@ DebugHandler_2_PaletteViewer_BGPalettes:
 DebugHandler_0_Default:
 ;; Returns:
 ;;     A: Non-zero to skip processing frame
-    LDA.B $91                                                            ;B49961;
+    LDA.B DP_Controller2New                                              ;B49961;
     BIT.W #$1000                                                         ;B49963;
     BEQ .checkL                                                          ;B49966;
     LDX.W #$001D                                                         ;B49968;
-    STX.W $0998                                                          ;B4996B;
-    STZ.W $0727                                                          ;B4996E;
+    STX.W GameState                                                      ;B4996B;
+    STZ.W PauseMenu_MenuIndex                                            ;B4996E;
 
   .checkL:
-    LDA.B $91                                                            ;B49971;
+    LDA.B DP_Controller2New                                              ;B49971;
     BIT.W #$0020                                                         ;B49973;
     BEQ .notNewlyPressedStartL                                           ;B49976;
-    LDA.W $185E                                                          ;B49978;
+    LDA.W DebugTimeIsFrozenForEnemies                                    ;B49978;
     EOR.W #$0001                                                         ;B4997B;
-    STA.W $185E                                                          ;B4997E;
+    STA.W DebugTimeIsFrozenForEnemies                                    ;B4997E;
 
   .notNewlyPressedStartL:
-    LDA.W $05C5                                                          ;B49981;
+    LDA.W Debug_InputL                                                   ;B49981;
     BIT.W #$0080                                                         ;B49984;
     BNE .SelectLA                                                        ;B49987;
-    LDA.W $05C5                                                          ;B49989;
+    LDA.W Debug_InputL                                                   ;B49989;
     BIT.W #$0040                                                         ;B4998C;
     BNE .SelectLX                                                        ;B4998F;
-    LDA.B $91                                                            ;B49991;
+    LDA.B DP_Controller2New                                              ;B49991;
     AND.W #$0010                                                         ;B49993;
     BNE .R                                                               ;B49996;
-    LDA.B $91                                                            ;B49998;
+    LDA.B DP_Controller2New                                              ;B49998;
     BIT.W #$2000                                                         ;B4999A;
     BNE .Select                                                          ;B4999D;
-    LDA.B $91                                                            ;B4999F;
+    LDA.B DP_Controller2New                                              ;B4999F;
     BIT.W #$0080                                                         ;B499A1;
     BNE .A                                                               ;B499A4;
-    STZ.W $185C                                                          ;B499A6;
+    STZ.W DebugIndex                                                     ;B499A6;
     LDA.W #$0000                                                         ;B499A9;
     RTS                                                                  ;B499AC;
 
   .A:
     LDY.W #$0001                                                         ;B499AD;
-    LDA.W $0E12                                                          ;B499B0;
+    LDA.W DebugDisableSpriteInteractions                                 ;B499B0;
     BEQ .toggle                                                          ;B499B3;
     LDY.W #$0000                                                         ;B499B5;
 
   .toggle:
     TYA                                                                  ;B499B8;
-    STA.W $0E12                                                          ;B499B9;
+    STA.W DebugDisableSpriteInteractions                                 ;B499B9;
     LDA.W #$0000                                                         ;B499BC;
     RTS                                                                  ;B499BF;
 
   .Select:
     LDA.W #$0010                                                         ;B499C0;
-    STA.W $185C                                                          ;B499C3;
+    STA.W DebugIndex                                                     ;B499C3;
     LDA.W #$0000                                                         ;B499C6;
     RTS                                                                  ;B499C9;
 
   .SelectLX:
-    INC.W $185C                                                          ;B499CA;
-    INC.W $185C                                                          ;B499CD;
-    INC.W $185C                                                          ;B499D0;
+    INC.W DebugIndex                                                     ;B499CA;
+    INC.W DebugIndex                                                     ;B499CD;
+    INC.W DebugIndex                                                     ;B499D0;
     LDA.W #$0001                                                         ;B499D3;
     RTS                                                                  ;B499D6;
 
   .R:
-    INC.W $185C                                                          ;B499D7;
-    INC.W $185C                                                          ;B499DA;
-    INC.W $185C                                                          ;B499DD;
-    INC.W $185C                                                          ;B499E0;
-    INC.W $185C                                                          ;B499E3;
+    INC.W DebugIndex                                                     ;B499D7;
+    INC.W DebugIndex                                                     ;B499DA;
+    INC.W DebugIndex                                                     ;B499DD;
+    INC.W DebugIndex                                                     ;B499E0;
+    INC.W DebugIndex                                                     ;B499E3;
     LDA.W #$0000                                                         ;B499E6;
     RTS                                                                  ;B499E9;
 
@@ -3524,7 +3524,7 @@ DebugHandler_0_Default:
     STA.W $420B                                                          ;B49A0E;
     STZ.W $2100                                                          ;B49A11;
     REP #$20                                                             ;B49A14;
-    INC.W $185C                                                          ;B49A16;
+    INC.W DebugIndex                                                     ;B49A16;
     LDA.W #$0001                                                         ;B49A19;
     RTS                                                                  ;B49A1C;
 
@@ -3551,10 +3551,10 @@ DebugHandler_5_EnemyDebugger_Initialize:
     STZ.W $2100                                                          ;B49A44;
     REP #$20                                                             ;B49A47;
     LDA.W #$00C0                                                         ;B49A49;
-    STA.W $1860                                                          ;B49A4C;
+    STA.W DebugTextCursorXPosition                                       ;B49A4C;
     LDA.W #$0030                                                         ;B49A4F;
-    STA.W $1862                                                          ;B49A52;
-    INC.W $185C                                                          ;B49A55;
+    STA.W DebugTextCursorYPosition                                       ;B49A52;
+    INC.W DebugIndex                                                     ;B49A55;
     RTS                                                                  ;B49A58;
 
 
@@ -3562,54 +3562,54 @@ DebugHandler_5_EnemyDebugger_Initialize:
 DebugHandler_6_EnemyDebugger_EnemyMover:
 ;; Returns:
 ;;     A: Non-zero to skip processing frame
-    LDA.B $91                                                            ;B49A59;
+    LDA.B DP_Controller2New                                              ;B49A59;
     BIT.W #$0010                                                         ;B49A5B;
     BEQ .checkSelect                                                     ;B49A5E;
-    INC.W $185C                                                          ;B49A60;
+    INC.W DebugIndex                                                     ;B49A60;
     LDA.W #$0000                                                         ;B49A63;
     RTS                                                                  ;B49A66;
 
   .checkSelect:
-    LDA.B $91                                                            ;B49A67;
+    LDA.B DP_Controller2New                                              ;B49A67;
     BIT.W #$2000                                                         ;B49A69;
     BEQ .checkA                                                          ;B49A6C;
-    LDA.B $8D                                                            ;B49A6E;
+    LDA.B DP_Controller2Input                                            ;B49A6E;
     BIT.W #$8000                                                         ;B49A70;
     BNE .pressingB                                                       ;B49A73;
-    LDA.W $1846                                                          ;B49A75;
+    LDA.W DebugEnemyIndex                                                ;B49A75;
     CLC                                                                  ;B49A78;
     ADC.W #$0040                                                         ;B49A79;
     CMP.W #$0800                                                         ;B49A7C;
     BMI +                                                                ;B49A7F;
     LDA.W #$0000                                                         ;B49A81;
 
-+   STA.W $1846                                                          ;B49A84;
++   STA.W DebugEnemyIndex                                                ;B49A84;
     BRA .checkA                                                          ;B49A87;
 
   .pressingB:
-    LDA.W $1846                                                          ;B49A89;
+    LDA.W DebugEnemyIndex                                                ;B49A89;
     SEC                                                                  ;B49A8C;
     SBC.W #$0040                                                         ;B49A8D;
     BNE +                                                                ;B49A90;
     LDA.W #$07C0                                                         ;B49A92;
 
-+   STA.W $1846                                                          ;B49A95;
++   STA.W DebugEnemyIndex                                                ;B49A95;
 
   .checkA:
-    LDA.B $91                                                            ;B49A98;
+    LDA.B DP_Controller2New                                              ;B49A98;
     BIT.W #$0080                                                         ;B49A9A;
     BEQ .checkX                                                          ;B49A9D;
-    LDX.W $1846                                                          ;B49A9F;
-    LDA.W $0AF6                                                          ;B49AA2;
+    LDX.W DebugEnemyIndex                                                ;B49A9F;
+    LDA.W SamusXPosition                                                 ;B49AA2;
     CLC                                                                  ;B49AA5;
     ADC.W #$0020                                                         ;B49AA6;
-    STA.W $0F7A,X                                                        ;B49AA9;
-    LDA.W $0AFA                                                          ;B49AAC;
-    STA.W $0F7E,X                                                        ;B49AAF;
+    STA.W Enemy.XPosition,X                                              ;B49AA9;
+    LDA.W SamusYPosition                                                 ;B49AAC;
+    STA.W Enemy.YPosition,X                                              ;B49AAF;
 
   .checkX:
-    LDX.W $1846                                                          ;B49AB2;
-    LDA.B $8D                                                            ;B49AB5;
+    LDX.W DebugEnemyIndex                                                ;B49AB2;
+    LDA.B DP_Controller2Input                                            ;B49AB5;
     BIT.W #$0040                                                         ;B49AB7;
     BEQ .moveWithDpad                                                    ;B49ABA;
     JSL.L Debug_MoveEnemyWithDpad_4PixelsPerFrame                        ;B49ABC;
@@ -3618,110 +3618,110 @@ DebugHandler_6_EnemyDebugger_EnemyMover:
   .moveWithDpad:
     JSL.L Debug_MoveEnemyWithDpad_QuarterPixelPerFrame                   ;B49AC2;
 
-+   LDX.W $1846                                                          ;B49AC6;
-    LDA.W $0F7A,X                                                        ;B49AC9;
-    CMP.W $0911                                                          ;B49ACC;
++   LDX.W DebugEnemyIndex                                                ;B49AC6;
+    LDA.W Enemy.XPosition,X                                              ;B49AC9;
+    CMP.W Layer1XPosition                                                ;B49ACC;
     BMI +                                                                ;B49ACF;
-    LDA.W $0911                                                          ;B49AD1;
+    LDA.W Layer1XPosition                                                ;B49AD1;
     CLC                                                                  ;B49AD4;
     ADC.W #$0100                                                         ;B49AD5;
-    CMP.W $0F7A,X                                                        ;B49AD8;
+    CMP.W Enemy.XPosition,X                                              ;B49AD8;
     BMI +                                                                ;B49ADB;
-    LDA.W $0F7E,X                                                        ;B49ADD;
-    CMP.W $0915                                                          ;B49AE0;
+    LDA.W Enemy.YPosition,X                                              ;B49ADD;
+    CMP.W Layer1YPosition                                                ;B49AE0;
     BMI +                                                                ;B49AE3;
-    LDA.W $0915                                                          ;B49AE5;
+    LDA.W Layer1YPosition                                                ;B49AE5;
     CLC                                                                  ;B49AE8;
     ADC.W #$0100                                                         ;B49AE9;
-    CMP.W $0F7E,X                                                        ;B49AEC;
+    CMP.W Enemy.YPosition,X                                              ;B49AEC;
     BMI +                                                                ;B49AEF;
-    LDX.W $1846                                                          ;B49AF1;
-    LDA.W $0F7A,X                                                        ;B49AF4;
+    LDX.W DebugEnemyIndex                                                ;B49AF1;
+    LDA.W Enemy.XPosition,X                                              ;B49AF4;
     SEC                                                                  ;B49AF7;
-    SBC.W $0911                                                          ;B49AF8;
-    STA.B $14                                                            ;B49AFB;
-    STA.W $0E22                                                          ;B49AFD;
-    LDA.W $0F7E,X                                                        ;B49B00;
+    SBC.W Layer1XPosition                                                ;B49AF8;
+    STA.B DP_Temp14                                                      ;B49AFB;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49AFD;
+    LDA.W Enemy.YPosition,X                                              ;B49B00;
     SEC                                                                  ;B49B03;
-    SBC.W $0915                                                          ;B49B04;
-    STA.B $12                                                            ;B49B07;
-    STA.W $0E20                                                          ;B49B09;
-    LDA.W $0E22                                                          ;B49B0C;
+    SBC.W Layer1YPosition                                                ;B49B04;
+    STA.B DP_Temp12                                                      ;B49B07;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49B09;
+    LDA.W Temp_DebuggerHexValueYPosition                                 ;B49B0C;
     CLC                                                                  ;B49B0F;
     ADC.W #$0020                                                         ;B49B10;
-    STA.B $14                                                            ;B49B13;
-    LDA.W $0E20                                                          ;B49B15;
+    STA.B DP_Temp14                                                      ;B49B13;
+    LDA.W Temp_DebuggerHexValueXPosition                                 ;B49B15;
     CLC                                                                  ;B49B18;
     ADC.W #$0004                                                         ;B49B19;
-    STA.B $12                                                            ;B49B1C;
+    STA.B DP_Temp12                                                      ;B49B1C;
     LDA.W #$0A00                                                         ;B49B1E;
-    STA.B $26                                                            ;B49B21;
+    STA.B DP_Temp26                                                      ;B49B21;
     LDA.W #$0025                                                         ;B49B23;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49B26;
 
 +   LDA.W #$00B0                                                         ;B49B2A;
-    STA.B $14                                                            ;B49B2D;
+    STA.B DP_Temp14                                                      ;B49B2D;
     LDA.W #$0050                                                         ;B49B2F;
-    STA.B $12                                                            ;B49B32;
+    STA.B DP_Temp12                                                      ;B49B32;
     LDA.W #$0A00                                                         ;B49B34;
-    STA.B $26                                                            ;B49B37;
+    STA.B DP_Temp26                                                      ;B49B37;
     LDA.W #$0027                                                         ;B49B39;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49B3C;
-    LDX.W $1846                                                          ;B49B40;
-    LDA.W $0F7A,X                                                        ;B49B43;
-    STA.W $0E24                                                          ;B49B46;
+    LDX.W DebugEnemyIndex                                                ;B49B40;
+    LDA.W Enemy.XPosition,X                                              ;B49B43;
+    STA.W Temp_DebuggerHexValue                                          ;B49B46;
     LDA.W #$00E0                                                         ;B49B49;
-    STA.W $0E20                                                          ;B49B4C;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49B4C;
     LDA.W #$0038                                                         ;B49B4F;
-    STA.W $0E22                                                          ;B49B52;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49B52;
     JSR.W Draw4DigitHexValue                                             ;B49B55;
-    LDX.W $1846                                                          ;B49B58;
-    LDA.W $0F7E,X                                                        ;B49B5B;
-    STA.W $0E24                                                          ;B49B5E;
+    LDX.W DebugEnemyIndex                                                ;B49B58;
+    LDA.W Enemy.YPosition,X                                              ;B49B5B;
+    STA.W Temp_DebuggerHexValue                                          ;B49B5E;
     LDA.W #$00E0                                                         ;B49B61;
-    STA.W $0E20                                                          ;B49B64;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49B64;
     LDA.W #$0040                                                         ;B49B67;
-    STA.W $0E22                                                          ;B49B6A;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49B6A;
     JSR.W Draw4DigitHexValue                                             ;B49B6D;
-    LDX.W $1846                                                          ;B49B70;
-    LDA.W $0F8C,X                                                        ;B49B73;
-    STA.W $0E24                                                          ;B49B76;
+    LDX.W DebugEnemyIndex                                                ;B49B70;
+    LDA.W Enemy.health,X                                                 ;B49B73;
+    STA.W Temp_DebuggerHexValue                                          ;B49B76;
     LDA.W #$00E0                                                         ;B49B79;
-    STA.W $0E20                                                          ;B49B7C;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49B7C;
     LDA.W #$0048                                                         ;B49B7F;
-    STA.W $0E22                                                          ;B49B82;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49B82;
     JSR.W Draw4DigitHexValue                                             ;B49B85;
-    LDA.W $1846                                                          ;B49B88;
-    STA.W $0E24                                                          ;B49B8B;
+    LDA.W DebugEnemyIndex                                                ;B49B88;
+    STA.W Temp_DebuggerHexValue                                          ;B49B8B;
     LDA.W #$00E0                                                         ;B49B8E;
-    STA.W $0E20                                                          ;B49B91;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49B91;
     LDA.W #$0050                                                         ;B49B94;
-    STA.W $0E22                                                          ;B49B97;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49B97;
     JSR.W Draw4DigitHexValue                                             ;B49B9A;
     LDA.W #$0A00                                                         ;B49B9D;
-    STA.B $26                                                            ;B49BA0;
+    STA.B DP_Temp26                                                      ;B49BA0;
     LDA.W #$00B0                                                         ;B49BA2;
-    STA.B $14                                                            ;B49BA5;
+    STA.B DP_Temp14                                                      ;B49BA5;
     LDA.W #$0048                                                         ;B49BA7;
-    STA.B $12                                                            ;B49BAA;
-    LDX.W $1846                                                          ;B49BAC;
-    LDA.W $0F78,X                                                        ;B49BAF;
+    STA.B DP_Temp12                                                      ;B49BAA;
+    LDX.W DebugEnemyIndex                                                ;B49BAC;
+    LDA.W Enemy.ID,X                                                     ;B49BAF;
     TAX                                                                  ;B49BB2;
-    LDA.L $A0003E,X                                                      ;B49BB3;
+    LDA.L EnemyHeaders_name,X                                            ;B49BB3;
     BNE .debugName                                                       ;B49BB7;
     LDA.W #$0030                                                         ;B49BB9;
     BRA .draw                                                            ;B49BBC;
 
   .debugName:
     TAX                                                                  ;B49BBE;
-    LDA.L $B4000C,X                                                      ;B49BBF;
+    LDA.L EnemyNames_spritemap,X                                         ;B49BBF;
     CLC                                                                  ;B49BC3;
     ADC.W #$0030                                                         ;B49BC4;
 
   .draw:
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49BC7;
     JSR.W Debug_Draw_Enemy_Set_Name                                      ;B49BCB;
-    STZ.W $1864                                                          ;B49BCE;
+    STZ.W DebugEnemySetEntryIndex                                        ;B49BCE;
     LDA.W #$0000                                                         ;B49BD1;
     RTS                                                                  ;B49BD4;
 
@@ -3736,52 +3736,52 @@ DebugHandler_A_EnemyDebugger_RAMViewer_0:
 ;     TK_Stat: [AI handler]
 ;     TK_Num : [ID]
 ;     TK_Bank: [bank]
-    LDA.B $91                                                            ;B49BD5;
+    LDA.B DP_Controller2New                                              ;B49BD5;
     BIT.W #$0010                                                         ;B49BD7;
     BEQ +                                                                ;B49BDA;
-    INC.W $185C                                                          ;B49BDC;
+    INC.W DebugIndex                                                     ;B49BDC;
     LDA.W #$0000                                                         ;B49BDF;
     RTS                                                                  ;B49BE2;
 
 +   LDA.W #$00B0                                                         ;B49BE3;
-    STA.B $14                                                            ;B49BE6;
+    STA.B DP_Temp14                                                      ;B49BE6;
     LDA.W #$0050                                                         ;B49BE8;
-    STA.B $12                                                            ;B49BEB;
+    STA.B DP_Temp12                                                      ;B49BEB;
     LDA.W #$0A00                                                         ;B49BED;
-    STA.B $26                                                            ;B49BF0;
+    STA.B DP_Temp26                                                      ;B49BF0;
     LDA.W #$0029                                                         ;B49BF2;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49BF5;
-    LDX.W $1846                                                          ;B49BF9;
-    LDA.W $0FA4,X                                                        ;B49BFC;
-    STA.W $0E24                                                          ;B49BFF;
+    LDX.W DebugEnemyIndex                                                ;B49BF9;
+    LDA.W Enemy.frameCounter,X                                           ;B49BFC;
+    STA.W Temp_DebuggerHexValue                                          ;B49BFF;
     LDA.W #$00E0                                                         ;B49C02;
-    STA.W $0E20                                                          ;B49C05;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49C05;
     LDA.W #$0038                                                         ;B49C08;
-    STA.W $0E22                                                          ;B49C0B;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49C0B;
     JSR.W Draw4DigitHexValue                                             ;B49C0E;
-    LDX.W $1846                                                          ;B49C11;
-    LDA.W $0F8A,X                                                        ;B49C14;
-    STA.W $0E24                                                          ;B49C17;
+    LDX.W DebugEnemyIndex                                                ;B49C11;
+    LDA.W Enemy.AI,X                                                     ;B49C14;
+    STA.W Temp_DebuggerHexValue                                          ;B49C17;
     LDA.W #$00E0                                                         ;B49C1A;
-    STA.W $0E20                                                          ;B49C1D;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49C1D;
     LDA.W #$0040                                                         ;B49C20;
-    STA.W $0E22                                                          ;B49C23;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49C23;
     JSR.W Draw4DigitHexValue                                             ;B49C26;
-    LDX.W $1846                                                          ;B49C29;
-    LDA.W $0F78,X                                                        ;B49C2C;
-    STA.W $0E24                                                          ;B49C2F;
+    LDX.W DebugEnemyIndex                                                ;B49C29;
+    LDA.W Enemy.ID,X                                                     ;B49C2C;
+    STA.W Temp_DebuggerHexValue                                          ;B49C2F;
     LDA.W #$00E0                                                         ;B49C32;
-    STA.W $0E20                                                          ;B49C35;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49C35;
     LDA.W #$0048                                                         ;B49C38;
-    STA.W $0E22                                                          ;B49C3B;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49C3B;
     JSR.W Draw4DigitHexValue                                             ;B49C3E;
-    LDX.W $1846                                                          ;B49C41;
-    LDA.W $0FA6,X                                                        ;B49C44;
-    STA.W $0E24                                                          ;B49C47;
+    LDX.W DebugEnemyIndex                                                ;B49C41;
+    LDA.W Enemy.bank,X                                                   ;B49C44;
+    STA.W Temp_DebuggerHexValue                                          ;B49C47;
     LDA.W #$00E0                                                         ;B49C4A;
-    STA.W $0E20                                                          ;B49C4D;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49C4D;
     LDA.W #$0050                                                         ;B49C50;
-    STA.W $0E22                                                          ;B49C53;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49C53;
     JSR.W Draw4DigitHexValue                                             ;B49C56;
     LDA.W #$0000                                                         ;B49C59;
     RTS                                                                  ;B49C5C;
@@ -3797,52 +3797,52 @@ DebugHandler_B_EnemyDebugger_RAMViewer_1:
 ;     Switch2: [extra properties]
 ;     ColorPa: [palette index]
 ;     CharaOf: [VRAM tiles index]
-    LDA.B $91                                                            ;B49C5D;
+    LDA.B DP_Controller2New                                              ;B49C5D;
     BIT.W #$0010                                                         ;B49C5F;
     BEQ +                                                                ;B49C62;
-    INC.W $185C                                                          ;B49C64;
+    INC.W DebugIndex                                                     ;B49C64;
     LDA.W #$0000                                                         ;B49C67;
     RTS                                                                  ;B49C6A;
 
 +   LDA.W #$00B0                                                         ;B49C6B;
-    STA.B $14                                                            ;B49C6E;
+    STA.B DP_Temp14                                                      ;B49C6E;
     LDA.W #$0050                                                         ;B49C70;
-    STA.B $12                                                            ;B49C73;
+    STA.B DP_Temp12                                                      ;B49C73;
     LDA.W #$0A00                                                         ;B49C75;
-    STA.B $26                                                            ;B49C78;
+    STA.B DP_Temp26                                                      ;B49C78;
     LDA.W #$002A                                                         ;B49C7A;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49C7D;
-    LDX.W $1846                                                          ;B49C81;
-    LDA.W $0F86,X                                                        ;B49C84;
-    STA.W $0E24                                                          ;B49C87;
+    LDX.W DebugEnemyIndex                                                ;B49C81;
+    LDA.W Enemy.properties,X                                             ;B49C84;
+    STA.W Temp_DebuggerHexValue                                          ;B49C87;
     LDA.W #$00E0                                                         ;B49C8A;
-    STA.W $0E20                                                          ;B49C8D;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49C8D;
     LDA.W #$0038                                                         ;B49C90;
-    STA.W $0E22                                                          ;B49C93;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49C93;
     JSR.W Draw4DigitHexValue                                             ;B49C96;
-    LDX.W $1846                                                          ;B49C99;
-    LDA.W $0F88,X                                                        ;B49C9C;
-    STA.W $0E24                                                          ;B49C9F;
+    LDX.W DebugEnemyIndex                                                ;B49C99;
+    LDA.W Enemy.properties2,X                                            ;B49C9C;
+    STA.W Temp_DebuggerHexValue                                          ;B49C9F;
     LDA.W #$00E0                                                         ;B49CA2;
-    STA.W $0E20                                                          ;B49CA5;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49CA5;
     LDA.W #$0040                                                         ;B49CA8;
-    STA.W $0E22                                                          ;B49CAB;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49CAB;
     JSR.W Draw4DigitHexValue                                             ;B49CAE;
-    LDX.W $1846                                                          ;B49CB1;
-    LDA.W $0F96,X                                                        ;B49CB4;
-    STA.W $0E24                                                          ;B49CB7;
+    LDX.W DebugEnemyIndex                                                ;B49CB1;
+    LDA.W Enemy.palette,X                                                ;B49CB4;
+    STA.W Temp_DebuggerHexValue                                          ;B49CB7;
     LDA.W #$00E0                                                         ;B49CBA;
-    STA.W $0E20                                                          ;B49CBD;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49CBD;
     LDA.W #$0048                                                         ;B49CC0;
-    STA.W $0E22                                                          ;B49CC3;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49CC3;
     JSR.W Draw4DigitHexValue                                             ;B49CC6;
-    LDX.W $1846                                                          ;B49CC9;
-    LDA.W $0F98,X                                                        ;B49CCC;
-    STA.W $0E24                                                          ;B49CCF;
+    LDX.W DebugEnemyIndex                                                ;B49CC9;
+    LDA.W Enemy.GFXOffset,X                                              ;B49CCC;
+    STA.W Temp_DebuggerHexValue                                          ;B49CCF;
     LDA.W #$00E0                                                         ;B49CD2;
-    STA.W $0E20                                                          ;B49CD5;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49CD5;
     LDA.W #$0050                                                         ;B49CD8;
-    STA.W $0E22                                                          ;B49CDB;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49CDB;
     JSR.W Draw4DigitHexValue                                             ;B49CDE;
     LDA.W #$0000                                                         ;B49CE1;
     RTS                                                                  ;B49CE4;
@@ -3858,52 +3858,52 @@ DebugHandler_C_EnemyDebugger_RAMViewer_2:
 ;     WaitTim: [instruction timer]
 ;     LpCnt  : [timer]
 ;     Patern : [spritemap pointer]
-    LDA.B $91                                                            ;B49CE5;
+    LDA.B DP_Controller2New                                              ;B49CE5;
     BIT.W #$0010                                                         ;B49CE7;
     BEQ +                                                                ;B49CEA;
-    INC.W $185C                                                          ;B49CEC;
+    INC.W DebugIndex                                                     ;B49CEC;
     LDA.W #$0000                                                         ;B49CEF;
     RTS                                                                  ;B49CF2;
 
 +   LDA.W #$00B0                                                         ;B49CF3;
-    STA.B $14                                                            ;B49CF6;
+    STA.B DP_Temp14                                                      ;B49CF6;
     LDA.W #$0050                                                         ;B49CF8;
-    STA.B $12                                                            ;B49CFB;
+    STA.B DP_Temp12                                                      ;B49CFB;
     LDA.W #$0A00                                                         ;B49CFD;
-    STA.B $26                                                            ;B49D00;
+    STA.B DP_Temp26                                                      ;B49D00;
     LDA.W #$002B                                                         ;B49D02;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49D05;
-    LDX.W $1846                                                          ;B49D09;
-    LDA.W $0F92,X                                                        ;B49D0C;
-    STA.W $0E24                                                          ;B49D0F;
+    LDX.W DebugEnemyIndex                                                ;B49D09;
+    LDA.W Enemy.instList,X                                               ;B49D0C;
+    STA.W Temp_DebuggerHexValue                                          ;B49D0F;
     LDA.W #$00E0                                                         ;B49D12;
-    STA.W $0E20                                                          ;B49D15;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49D15;
     LDA.W #$0038                                                         ;B49D18;
-    STA.W $0E22                                                          ;B49D1B;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49D1B;
     JSR.W Draw4DigitHexValue                                             ;B49D1E;
-    LDX.W $1846                                                          ;B49D21;
-    LDA.W $0F94,X                                                        ;B49D24;
-    STA.W $0E24                                                          ;B49D27;
+    LDX.W DebugEnemyIndex                                                ;B49D21;
+    LDA.W Enemy.instTimer,X                                              ;B49D24;
+    STA.W Temp_DebuggerHexValue                                          ;B49D27;
     LDA.W #$00E0                                                         ;B49D2A;
-    STA.W $0E20                                                          ;B49D2D;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49D2D;
     LDA.W #$0040                                                         ;B49D30;
-    STA.W $0E22                                                          ;B49D33;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49D33;
     JSR.W Draw4DigitHexValue                                             ;B49D36;
-    LDX.W $1846                                                          ;B49D39;
-    LDA.W $0F90,X                                                        ;B49D3C;
-    STA.W $0E24                                                          ;B49D3F;
+    LDX.W DebugEnemyIndex                                                ;B49D39;
+    LDA.W Enemy.loopCounter,X                                            ;B49D3C;
+    STA.W Temp_DebuggerHexValue                                          ;B49D3F;
     LDA.W #$00E0                                                         ;B49D42;
-    STA.W $0E20                                                          ;B49D45;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49D45;
     LDA.W #$0048                                                         ;B49D48;
-    STA.W $0E22                                                          ;B49D4B;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49D4B;
     JSR.W Draw4DigitHexValue                                             ;B49D4E;
-    LDX.W $1846                                                          ;B49D51;
-    LDA.W $0F8E,X                                                        ;B49D54;
-    STA.W $0E24                                                          ;B49D57;
+    LDX.W DebugEnemyIndex                                                ;B49D51;
+    LDA.W Enemy.spritemap,X                                              ;B49D54;
+    STA.W Temp_DebuggerHexValue                                          ;B49D57;
     LDA.W #$00E0                                                         ;B49D5A;
-    STA.W $0E20                                                          ;B49D5D;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49D5D;
     LDA.W #$0050                                                         ;B49D60;
-    STA.W $0E22                                                          ;B49D63;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49D63;
     JSR.W Draw4DigitHexValue                                             ;B49D66;
     LDA.W #$0000                                                         ;B49D69;
     RTS                                                                  ;B49D6C;
@@ -3919,52 +3919,52 @@ DebugHandler_D_EnemyDebugger_RAMViewer_3:
 ;     IceCoun: [frozen timer]
 ;     HitCoun: [invincibility timer]
 ;     PlplCou: [shake timer]
-    LDA.B $91                                                            ;B49D6D;
+    LDA.B DP_Controller2New                                              ;B49D6D;
     BIT.W #$0010                                                         ;B49D6F;
     BEQ +                                                                ;B49D72;
-    INC.W $185C                                                          ;B49D74;
+    INC.W DebugIndex                                                     ;B49D74;
     LDA.W #$0000                                                         ;B49D77;
     RTS                                                                  ;B49D7A;
 
 +   LDA.W #$00B0                                                         ;B49D7B;
-    STA.B $14                                                            ;B49D7E;
+    STA.B DP_Temp14                                                      ;B49D7E;
     LDA.W #$0050                                                         ;B49D80;
-    STA.B $12                                                            ;B49D83;
+    STA.B DP_Temp12                                                      ;B49D83;
     LDA.W #$0A00                                                         ;B49D85;
-    STA.B $26                                                            ;B49D88;
+    STA.B DP_Temp26                                                      ;B49D88;
     LDA.W #$002C                                                         ;B49D8A;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49D8D;
-    LDX.W $1846                                                          ;B49D91;
-    LDA.W $0F9C,X                                                        ;B49D94;
-    STA.W $0E24                                                          ;B49D97;
+    LDX.W DebugEnemyIndex                                                ;B49D91;
+    LDA.W Enemy.flashTimer,X                                             ;B49D94;
+    STA.W Temp_DebuggerHexValue                                          ;B49D97;
     LDA.W #$00E0                                                         ;B49D9A;
-    STA.W $0E20                                                          ;B49D9D;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49D9D;
     LDA.W #$0038                                                         ;B49DA0;
-    STA.W $0E22                                                          ;B49DA3;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49DA3;
     JSR.W Draw4DigitHexValue                                             ;B49DA6;
-    LDX.W $1846                                                          ;B49DA9;
-    LDA.W $0F9E,X                                                        ;B49DAC;
-    STA.W $0E24                                                          ;B49DAF;
+    LDX.W DebugEnemyIndex                                                ;B49DA9;
+    LDA.W Enemy.freezeTimer,X                                            ;B49DAC;
+    STA.W Temp_DebuggerHexValue                                          ;B49DAF;
     LDA.W #$00E0                                                         ;B49DB2;
-    STA.W $0E20                                                          ;B49DB5;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49DB5;
     LDA.W #$0040                                                         ;B49DB8;
-    STA.W $0E22                                                          ;B49DBB;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49DBB;
     JSR.W Draw4DigitHexValue                                             ;B49DBE;
-    LDX.W $1846                                                          ;B49DC1;
-    LDA.W $0FA0,X                                                        ;B49DC4;
-    STA.W $0E24                                                          ;B49DC7;
+    LDX.W DebugEnemyIndex                                                ;B49DC1;
+    LDA.W Enemy.invincibilityTimer,X                                     ;B49DC4;
+    STA.W Temp_DebuggerHexValue                                          ;B49DC7;
     LDA.W #$00E0                                                         ;B49DCA;
-    STA.W $0E20                                                          ;B49DCD;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49DCD;
     LDA.W #$0048                                                         ;B49DD0;
-    STA.W $0E22                                                          ;B49DD3;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49DD3;
     JSR.W Draw4DigitHexValue                                             ;B49DD6;
-    LDX.W $1846                                                          ;B49DD9;
-    LDA.W $0FA2,X                                                        ;B49DDC;
-    STA.W $0E24                                                          ;B49DDF;
+    LDX.W DebugEnemyIndex                                                ;B49DD9;
+    LDA.W Enemy.shakeTimer,X                                             ;B49DDC;
+    STA.W Temp_DebuggerHexValue                                          ;B49DDF;
     LDA.W #$00E0                                                         ;B49DE2;
-    STA.W $0E20                                                          ;B49DE5;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49DE5;
     LDA.W #$0050                                                         ;B49DE8;
-    STA.W $0E22                                                          ;B49DEB;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49DEB;
     JSR.W Draw4DigitHexValue                                             ;B49DEE;
     LDA.W #$0000                                                         ;B49DF1;
     RTS                                                                  ;B49DF4;
@@ -3976,56 +3976,56 @@ DebugHandler_E_EnemyDebugger_RAMViewer_4:
 ;;     A: Non-zero to skip processing frame
 
 ; When drawn with the text, result looks like:
-;     Pwork0 : [$0FA8]
-;     Pwork1 : [$0FAA]
-;     Pwork2 : [$0FAC]
-;     Pwork3 : [$0FAE]
-    LDA.B $91                                                            ;B49DF5;
+;     Pwork0 : Enemy.var0
+;     Pwork1 : Enemy.var1
+;     Pwork2 : Enemy.var2
+;     Pwork3 : Enemy.var3
+    LDA.B DP_Controller2New                                              ;B49DF5;
     BIT.W #$0010                                                         ;B49DF7;
     BEQ +                                                                ;B49DFA;
-    INC.W $185C                                                          ;B49DFC;
+    INC.W DebugIndex                                                     ;B49DFC;
     LDA.W #$0000                                                         ;B49DFF;
     RTS                                                                  ;B49E02;
 
 +   LDA.W #$00B0                                                         ;B49E03;
-    STA.B $14                                                            ;B49E06;
+    STA.B DP_Temp14                                                      ;B49E06;
     LDA.W #$0050                                                         ;B49E08;
-    STA.B $12                                                            ;B49E0B;
+    STA.B DP_Temp12                                                      ;B49E0B;
     LDA.W #$0A00                                                         ;B49E0D;
-    STA.B $26                                                            ;B49E10;
+    STA.B DP_Temp26                                                      ;B49E10;
     LDA.W #$002D                                                         ;B49E12;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49E15;
-    LDX.W $1846                                                          ;B49E19;
-    LDA.W $0FA8,X                                                        ;B49E1C;
-    STA.W $0E24                                                          ;B49E1F;
+    LDX.W DebugEnemyIndex                                                ;B49E19;
+    LDA.W Enemy.var0,X                                                   ;B49E1C;
+    STA.W Temp_DebuggerHexValue                                          ;B49E1F;
     LDA.W #$00E0                                                         ;B49E22;
-    STA.W $0E20                                                          ;B49E25;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49E25;
     LDA.W #$0038                                                         ;B49E28;
-    STA.W $0E22                                                          ;B49E2B;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49E2B;
     JSR.W Draw4DigitHexValue                                             ;B49E2E;
-    LDX.W $1846                                                          ;B49E31;
-    LDA.W $0FAA,X                                                        ;B49E34;
-    STA.W $0E24                                                          ;B49E37;
+    LDX.W DebugEnemyIndex                                                ;B49E31;
+    LDA.W Enemy.var1,X                                                   ;B49E34;
+    STA.W Temp_DebuggerHexValue                                          ;B49E37;
     LDA.W #$00E0                                                         ;B49E3A;
-    STA.W $0E20                                                          ;B49E3D;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49E3D;
     LDA.W #$0040                                                         ;B49E40;
-    STA.W $0E22                                                          ;B49E43;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49E43;
     JSR.W Draw4DigitHexValue                                             ;B49E46;
-    LDX.W $1846                                                          ;B49E49;
-    LDA.W $0FAC,X                                                        ;B49E4C;
-    STA.W $0E24                                                          ;B49E4F;
+    LDX.W DebugEnemyIndex                                                ;B49E49;
+    LDA.W Enemy.var2,X                                                   ;B49E4C;
+    STA.W Temp_DebuggerHexValue                                          ;B49E4F;
     LDA.W #$00E0                                                         ;B49E52;
-    STA.W $0E20                                                          ;B49E55;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49E55;
     LDA.W #$0048                                                         ;B49E58;
-    STA.W $0E22                                                          ;B49E5B;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49E5B;
     JSR.W Draw4DigitHexValue                                             ;B49E5E;
-    LDX.W $1846                                                          ;B49E61;
-    LDA.W $0FAE,X                                                        ;B49E64;
-    STA.W $0E24                                                          ;B49E67;
+    LDX.W DebugEnemyIndex                                                ;B49E61;
+    LDA.W Enemy.var3,X                                                   ;B49E64;
+    STA.W Temp_DebuggerHexValue                                          ;B49E67;
     LDA.W #$00E0                                                         ;B49E6A;
-    STA.W $0E20                                                          ;B49E6D;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49E6D;
     LDA.W #$0050                                                         ;B49E70;
-    STA.W $0E22                                                          ;B49E73;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49E73;
     JSR.W Draw4DigitHexValue                                             ;B49E76;
     LDA.W #$0000                                                         ;B49E79;
     RTS                                                                  ;B49E7C;
@@ -4037,56 +4037,56 @@ DebugHandler_F_EnemyDebugger_RAMViewer_5:
 ;;     A: Non-zero to skip processing frame
 
 ; When drawn with the text, result looks like:
-;     Pwork4 : [$0FB0]
-;     Pwork5 : [$0FB2]
-;     InitOP0: [$0FB4]
-;     InitOP1: [$0FB6]
-    LDA.B $91                                                            ;B49E7D;
+;     Pwork4 : Enemy.var4
+;     Pwork5 : Enemy.var5
+;     InitOP0: Enemy.init0
+;     InitOP1: Enemy.init1
+    LDA.B DP_Controller2New                                              ;B49E7D;
     BIT.W #$0010                                                         ;B49E7F;
     BEQ +                                                                ;B49E82;
-    INC.W $185C                                                          ;B49E84;
+    INC.W DebugIndex                                                     ;B49E84;
     LDA.W #$0000                                                         ;B49E87;
     RTS                                                                  ;B49E8A;
 
 +   LDA.W #$00B0                                                         ;B49E8B;
-    STA.B $14                                                            ;B49E8E;
+    STA.B DP_Temp14                                                      ;B49E8E;
     LDA.W #$0050                                                         ;B49E90;
-    STA.B $12                                                            ;B49E93;
+    STA.B DP_Temp12                                                      ;B49E93;
     LDA.W #$0A00                                                         ;B49E95;
-    STA.B $26                                                            ;B49E98;
+    STA.B DP_Temp26                                                      ;B49E98;
     LDA.W #$002E                                                         ;B49E9A;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49E9D;
-    LDX.W $1846                                                          ;B49EA1;
-    LDA.W $0FB0,X                                                        ;B49EA4;
-    STA.W $0E24                                                          ;B49EA7;
+    LDX.W DebugEnemyIndex                                                ;B49EA1;
+    LDA.W Enemy.var4,X                                                   ;B49EA4;
+    STA.W Temp_DebuggerHexValue                                          ;B49EA7;
     LDA.W #$00E0                                                         ;B49EAA;
-    STA.W $0E20                                                          ;B49EAD;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49EAD;
     LDA.W #$0038                                                         ;B49EB0;
-    STA.W $0E22                                                          ;B49EB3;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49EB3;
     JSR.W Draw4DigitHexValue                                             ;B49EB6;
-    LDX.W $1846                                                          ;B49EB9;
-    LDA.W $0FB2,X                                                        ;B49EBC;
-    STA.W $0E24                                                          ;B49EBF;
+    LDX.W DebugEnemyIndex                                                ;B49EB9;
+    LDA.W Enemy.var5,X                                                   ;B49EBC;
+    STA.W Temp_DebuggerHexValue                                          ;B49EBF;
     LDA.W #$00E0                                                         ;B49EC2;
-    STA.W $0E20                                                          ;B49EC5;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49EC5;
     LDA.W #$0040                                                         ;B49EC8;
-    STA.W $0E22                                                          ;B49ECB;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49ECB;
     JSR.W Draw4DigitHexValue                                             ;B49ECE;
-    LDX.W $1846                                                          ;B49ED1;
-    LDA.W $0FB4,X                                                        ;B49ED4;
-    STA.W $0E24                                                          ;B49ED7;
+    LDX.W DebugEnemyIndex                                                ;B49ED1;
+    LDA.W Enemy.init0,X                                                  ;B49ED4;
+    STA.W Temp_DebuggerHexValue                                          ;B49ED7;
     LDA.W #$00E0                                                         ;B49EDA;
-    STA.W $0E20                                                          ;B49EDD;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49EDD;
     LDA.W #$0048                                                         ;B49EE0;
-    STA.W $0E22                                                          ;B49EE3;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49EE3;
     JSR.W Draw4DigitHexValue                                             ;B49EE6;
-    LDX.W $1846                                                          ;B49EE9;
-    LDA.W $0FB6,X                                                        ;B49EEC;
-    STA.W $0E24                                                          ;B49EEF;
+    LDX.W DebugEnemyIndex                                                ;B49EE9;
+    LDA.W Enemy.init1,X                                                  ;B49EEC;
+    STA.W Temp_DebuggerHexValue                                          ;B49EEF;
     LDA.W #$00E0                                                         ;B49EF2;
-    STA.W $0E20                                                          ;B49EF5;
+    STA.W Temp_DebuggerHexValueXPosition                                 ;B49EF5;
     LDA.W #$0050                                                         ;B49EF8;
-    STA.W $0E22                                                          ;B49EFB;
+    STA.W Temp_DebuggerHexValueYPosition                                 ;B49EFB;
     JSR.W Draw4DigitHexValue                                             ;B49EFE;
     LDA.W #$0000                                                         ;B49F01;
     RTS                                                                  ;B49F04;
@@ -4096,31 +4096,31 @@ DebugHandler_F_EnemyDebugger_RAMViewer_5:
 Debug_MoveEnemyWithDpad_QuarterPixelPerFrame:
 ;; Parameters:
 ;;     X: Debug enemy index
-    LDA.W $05B6                                                          ;B49F05;
+    LDA.W NMI_FrameCounter                                               ;B49F05;
     AND.W #$0003                                                         ;B49F08;
     BNE .return                                                          ;B49F0B;
-    LDA.B $8D                                                            ;B49F0D;
+    LDA.B DP_Controller2Input                                            ;B49F0D;
     BIT.W #$0200                                                         ;B49F0F;
     BEQ .notPressingLeft                                                 ;B49F12;
-    DEC.W $0F7A,X                                                        ;B49F14;
+    DEC.W Enemy.XPosition,X                                              ;B49F14;
     BRA .checkUp                                                         ;B49F17;
 
   .notPressingLeft:
     BIT.W #$0100                                                         ;B49F19;
     BEQ .checkUp                                                         ;B49F1C;
-    INC.W $0F7A,X                                                        ;B49F1E;
+    INC.W Enemy.XPosition,X                                              ;B49F1E;
 
   .checkUp:
-    LDA.B $8D                                                            ;B49F21;
+    LDA.B DP_Controller2Input                                            ;B49F21;
     BIT.W #$0800                                                         ;B49F23;
     BEQ .notPressingUp                                                   ;B49F26;
-    DEC.W $0F7E,X                                                        ;B49F28;
+    DEC.W Enemy.YPosition,X                                              ;B49F28;
     BRA .return                                                          ;B49F2B;
 
   .notPressingUp:
     BIT.W #$0400                                                         ;B49F2D;
     BEQ .return                                                          ;B49F30;
-    INC.W $0F7E,X                                                        ;B49F32;
+    INC.W Enemy.YPosition,X                                              ;B49F32;
 
   .return:
     RTL                                                                  ;B49F35;
@@ -4128,41 +4128,41 @@ Debug_MoveEnemyWithDpad_QuarterPixelPerFrame:
 
 ;;; $9F36: Debug. Move enemy with d-pad 4 px/frame ;;;
 Debug_MoveEnemyWithDpad_4PixelsPerFrame:
-    LDA.B $8D                                                            ;B49F36;
+    LDA.B DP_Controller2Input                                            ;B49F36;
     BIT.W #$0200                                                         ;B49F38;
     BEQ .notPressingLeft                                                 ;B49F3B;
-    LDA.W $0F7A,X                                                        ;B49F3D;
+    LDA.W Enemy.XPosition,X                                              ;B49F3D;
     SEC                                                                  ;B49F40;
     SBC.W #$0004                                                         ;B49F41;
-    STA.W $0F7A,X                                                        ;B49F44;
+    STA.W Enemy.XPosition,X                                              ;B49F44;
     BRA .checkUp                                                         ;B49F47;
 
   .notPressingLeft:
     BIT.W #$0100                                                         ;B49F49;
     BEQ .checkUp                                                         ;B49F4C;
-    LDA.W $0F7A,X                                                        ;B49F4E;
+    LDA.W Enemy.XPosition,X                                              ;B49F4E;
     CLC                                                                  ;B49F51;
     ADC.W #$0004                                                         ;B49F52;
-    STA.W $0F7A,X                                                        ;B49F55;
+    STA.W Enemy.XPosition,X                                              ;B49F55;
 
   .checkUp:
-    LDA.B $8D                                                            ;B49F58;
+    LDA.B DP_Controller2Input                                            ;B49F58;
     BIT.W #$0800                                                         ;B49F5A;
     BEQ .notPressingUp                                                   ;B49F5D;
-    LDA.W $0F7E,X                                                        ;B49F5F;
+    LDA.W Enemy.YPosition,X                                              ;B49F5F;
     SEC                                                                  ;B49F62;
     SBC.W #$0004                                                         ;B49F63;
-    STA.W $0F7E,X                                                        ;B49F66;
+    STA.W Enemy.YPosition,X                                              ;B49F66;
     BRA .return                                                          ;B49F69;
 
   .notPressingUp:
     BIT.W #$0400                                                         ;B49F6B;
     BEQ .return                                                          ;B49F6E;
-    INC.W $0F7E,X                                                        ;B49F70;
-    LDA.W $0F7E,X                                                        ;B49F73;
+    INC.W Enemy.YPosition,X                                              ;B49F70;
+    LDA.W Enemy.YPosition,X                                              ;B49F73;
     CLC                                                                  ;B49F76;
     ADC.W #$0004                                                         ;B49F77;
-    STA.W $0F7E,X                                                        ;B49F7A;
+    STA.W Enemy.YPosition,X                                              ;B49F7A;
 
   .return:
     RTL                                                                  ;B49F7D;
@@ -4171,20 +4171,20 @@ Debug_MoveEnemyWithDpad_4PixelsPerFrame:
 ;;; $9F7E: Draw 4 digit hex value ;;;
 Draw4DigitHexValue:
 ;; Parameters:
-;;     $0E20: X position
-;;     $0E22: Y position
-;;     $0E24: Hex value
-    LDA.W $0E20                                                          ;B49F7E;
+;;     Temp_DebuggerHexValueXPosition: X position
+;;     Temp_DebuggerHexValueYPosition: Y position
+;;     Temp_DebuggerHexValue: Hex value
+    LDA.W Temp_DebuggerHexValueXPosition                                 ;B49F7E;
     CLC                                                                  ;B49F81;
     ADC.W #$0000                                                         ;B49F82;
-    STA.B $14                                                            ;B49F85;
-    LDA.W $0E22                                                          ;B49F87;
+    STA.B DP_Temp14                                                      ;B49F85;
+    LDA.W Temp_DebuggerHexValueYPosition                                 ;B49F87;
     CLC                                                                  ;B49F8A;
     ADC.W #$0000                                                         ;B49F8B;
-    STA.B $12                                                            ;B49F8E;
+    STA.B DP_Temp12                                                      ;B49F8E;
     LDA.W #$0A00                                                         ;B49F90;
-    STA.B $26                                                            ;B49F93;
-    LDA.W $0E24                                                          ;B49F95;
+    STA.B DP_Temp26                                                      ;B49F93;
+    LDA.W Temp_DebuggerHexValue                                          ;B49F95;
     AND.W #$F000                                                         ;B49F98;
     XBA                                                                  ;B49F9B;
     LSR                                                                  ;B49F9C;
@@ -4194,33 +4194,33 @@ Draw4DigitHexValue:
     CLC                                                                  ;B49FA0;
     ADC.W #$0004                                                         ;B49FA1;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49FA4;
-    LDA.W $0E20                                                          ;B49FA8;
+    LDA.W Temp_DebuggerHexValueXPosition                                 ;B49FA8;
     CLC                                                                  ;B49FAB;
     ADC.W #$0008                                                         ;B49FAC;
-    STA.B $14                                                            ;B49FAF;
-    LDA.W $0E22                                                          ;B49FB1;
+    STA.B DP_Temp14                                                      ;B49FAF;
+    LDA.W Temp_DebuggerHexValueYPosition                                 ;B49FB1;
     CLC                                                                  ;B49FB4;
     ADC.W #$0000                                                         ;B49FB5;
-    STA.B $12                                                            ;B49FB8;
+    STA.B DP_Temp12                                                      ;B49FB8;
     LDA.W #$0A00                                                         ;B49FBA;
-    STA.B $26                                                            ;B49FBD;
-    LDA.W $0E24                                                          ;B49FBF;
+    STA.B DP_Temp26                                                      ;B49FBD;
+    LDA.W Temp_DebuggerHexValue                                          ;B49FBF;
     AND.W #$0F00                                                         ;B49FC2;
     XBA                                                                  ;B49FC5;
     CLC                                                                  ;B49FC6;
     ADC.W #$0004                                                         ;B49FC7;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49FCA;
-    LDA.W $0E20                                                          ;B49FCE;
+    LDA.W Temp_DebuggerHexValueXPosition                                 ;B49FCE;
     CLC                                                                  ;B49FD1;
     ADC.W #$0010                                                         ;B49FD2;
-    STA.B $14                                                            ;B49FD5;
-    LDA.W $0E22                                                          ;B49FD7;
+    STA.B DP_Temp14                                                      ;B49FD5;
+    LDA.W Temp_DebuggerHexValueYPosition                                 ;B49FD7;
     CLC                                                                  ;B49FDA;
     ADC.W #$0000                                                         ;B49FDB;
-    STA.B $12                                                            ;B49FDE;
+    STA.B DP_Temp12                                                      ;B49FDE;
     LDA.W #$0A00                                                         ;B49FE0;
-    STA.B $26                                                            ;B49FE3;
-    LDA.W $0E24                                                          ;B49FE5;
+    STA.B DP_Temp26                                                      ;B49FE3;
+    LDA.W Temp_DebuggerHexValue                                          ;B49FE5;
     AND.W #$00F0                                                         ;B49FE8;
     LSR                                                                  ;B49FEB;
     LSR                                                                  ;B49FEC;
@@ -4229,17 +4229,17 @@ Draw4DigitHexValue:
     CLC                                                                  ;B49FEF;
     ADC.W #$0004                                                         ;B49FF0;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;B49FF3;
-    LDA.W $0E20                                                          ;B49FF7;
+    LDA.W Temp_DebuggerHexValueXPosition                                 ;B49FF7;
     CLC                                                                  ;B49FFA;
     ADC.W #$0018                                                         ;B49FFB;
-    STA.B $14                                                            ;B49FFE;
+    STA.B DP_Temp14                                                      ;B49FFE;
     LDA.W #$0A00                                                         ;B4A000;
-    STA.B $26                                                            ;B4A003;
-    LDA.W $0E22                                                          ;B4A005;
+    STA.B DP_Temp26                                                      ;B4A003;
+    LDA.W Temp_DebuggerHexValueYPosition                                 ;B4A005;
     CLC                                                                  ;B4A008;
     ADC.W #$0000                                                         ;B4A009;
-    STA.B $12                                                            ;B4A00C;
-    LDA.W $0E24                                                          ;B4A00E;
+    STA.B DP_Temp12                                                      ;B4A00C;
+    LDA.W Temp_DebuggerHexValue                                          ;B4A00E;
     AND.W #$000F                                                         ;B4A011;
     CLC                                                                  ;B4A014;
     ADC.W #$0004                                                         ;B4A015;
@@ -4278,7 +4278,7 @@ Add_Debug_Spritemap_to_OAM:
 ;     p = priority (relative to background)
 ;     t = tile number
     PHP                                                                  ;B4A01D;
-    SEP #$20                                                             ;B4A01E;
+    SEP #$20                                                             ;B4A01E; >.<
     PHB                                                                  ;B4A020;
     PHK                                                                  ;B4A021;
     PLB                                                                  ;B4A022;
@@ -4290,24 +4290,24 @@ Add_Debug_Spritemap_to_OAM:
     LDA.W $0000,Y                                                        ;B4A02B;
     INY                                                                  ;B4A02E;
     INY                                                                  ;B4A02F;
-    STA.B $18                                                            ;B4A030;
-    LDX.W $0590                                                          ;B4A032;
+    STA.B DP_Temp18                                                      ;B4A030;
+    LDX.W OAMStack                                                       ;B4A032;
 
   .loop:
     LDA.W $0000,Y                                                        ;B4A035;
-    STA.B $1A                                                            ;B4A038;
+    STA.B DP_Temp1A                                                      ;B4A038;
     AND.W #$01FF                                                         ;B4A03A;
     INY                                                                  ;B4A03D;
     INY                                                                  ;B4A03E;
     CLC                                                                  ;B4A03F;
-    ADC.B $14                                                            ;B4A040;
-    STA.W $0370,X                                                        ;B4A042;
+    ADC.B DP_Temp14                                                      ;B4A040;
+    STA.W OAMLow,X                                                       ;B4A042;
     INX                                                                  ;B4A045;
-    LDA.B $1B                                                            ;B4A046;
+    LDA.B DP_Temp1B                                                      ;B4A046;
     AND.W #$0002                                                         ;B4A048;
     BEQ +                                                                ;B4A04B;
     TXA                                                                  ;B4A04D;
-    STA.B $1C                                                            ;B4A04E;
+    STA.B DP_Temp1C                                                      ;B4A04E;
     LSR                                                                  ;B4A050;
     PHY                                                                  ;B4A051;
     TAY                                                                  ;B4A052;
@@ -4316,16 +4316,16 @@ Add_Debug_Spritemap_to_OAM:
     LDA.W .indices,Y                                                     ;B4A057;
     TAY                                                                  ;B4A05A;
     LDA.W .size,X                                                        ;B4A05B;
-    ORA.W $0570,Y                                                        ;B4A05E;
-    STA.W $0570,Y                                                        ;B4A061;
+    ORA.W OAMHigh,Y                                                      ;B4A05E;
+    STA.W OAMHigh,Y                                                      ;B4A061;
     PLY                                                                  ;B4A064;
-    LDX.B $1C                                                            ;B4A065;
+    LDX.B DP_Temp1C                                                      ;B4A065;
 
-+   LDA.W $0370,X                                                        ;B4A067;
++   LDA.W OAMLow,X                                                       ;B4A067;
     AND.W #$0001                                                         ;B4A06A;
     BEQ +                                                                ;B4A06D;
     TXA                                                                  ;B4A06F;
-    STA.B $1C                                                            ;B4A070;
+    STA.B DP_Temp1C                                                      ;B4A070;
     LSR                                                                  ;B4A072;
     PHY                                                                  ;B4A073;
     TAY                                                                  ;B4A074;
@@ -4334,23 +4334,23 @@ Add_Debug_Spritemap_to_OAM:
     LDA.W .indices,Y                                                     ;B4A079;
     TAY                                                                  ;B4A07C;
     LDA.W .XPosition,X                                                   ;B4A07D;
-    ORA.W $0570,Y                                                        ;B4A080;
-    STA.W $0570,Y                                                        ;B4A083;
+    ORA.W OAMHigh,Y                                                      ;B4A080;
+    STA.W OAMHigh,Y                                                      ;B4A083;
     PLY                                                                  ;B4A086;
-    LDX.B $1C                                                            ;B4A087;
+    LDX.B DP_Temp1C                                                      ;B4A087;
 
 +   SEP #$20                                                             ;B4A089;
     LDA.W $0000,Y                                                        ;B4A08B;
     BMI +                                                                ;B4A08E;
     CLC                                                                  ;B4A090;
-    ADC.B $12                                                            ;B4A091;
+    ADC.B DP_Temp12                                                      ;B4A091;
     BCS .F0                                                              ;B4A093;
     CMP.B #$F0                                                           ;B4A095;
     BCC .store                                                           ;B4A097;
     BRA .F0                                                              ;B4A099;
 
 +   CLC                                                                  ;B4A09B;
-    ADC.B $12                                                            ;B4A09C;
+    ADC.B DP_Temp12                                                      ;B4A09C;
     BCS .checkMax                                                        ;B4A09E;
     CMP.B #$F0                                                           ;B4A0A0;
     BCS .store                                                           ;B4A0A2;
@@ -4364,39 +4364,39 @@ Add_Debug_Spritemap_to_OAM:
     LDA.B #$F0                                                           ;B4A0AA;
 
   .store:
-    STA.W $0370,X                                                        ;B4A0AC;
+    STA.W OAMLow,X                                                       ;B4A0AC;
     REP #$20                                                             ;B4A0AF;
     INX                                                                  ;B4A0B1;
 
   .unknown:
     INY                                                                  ;B4A0B2;
-    LDA.B $26                                                            ;B4A0B3;
+    LDA.B DP_Temp26                                                      ;B4A0B3;
     BEQ .useSpritemapEntryPalette                                        ;B4A0B5;
     LDA.W $0000,Y                                                        ;B4A0B7;
     AND.W #$F1FF                                                         ;B4A0BA;
-    ORA.B $26                                                            ;B4A0BD;
+    ORA.B DP_Temp26                                                      ;B4A0BD;
     BRA .next                                                            ;B4A0BF;
 
   .useSpritemapEntryPalette:
     LDA.W $0000,Y                                                        ;B4A0C1;
 
   .next:
-    STA.W $0370,X                                                        ;B4A0C4;
+    STA.W OAMLow,X                                                       ;B4A0C4;
     INY                                                                  ;B4A0C7;
     INY                                                                  ;B4A0C8;
     INX                                                                  ;B4A0C9;
     INX                                                                  ;B4A0CA;
     CPX.W #$01FF                                                         ;B4A0CB;
     BPL .return                                                          ;B4A0CE;
-    DEC.B $18                                                            ;B4A0D0;
+    DEC.B DP_Temp18                                                      ;B4A0D0;
     BEQ .return                                                          ;B4A0D2;
     JMP.W .loop                                                          ;B4A0D4;
 
   .return:
-    STX.W $0590                                                          ;B4A0D7;
-    SEP #$20                                                             ;B4A0DA;
+    STX.W OAMStack                                                       ;B4A0D7;
+    SEP #$20                                                             ;B4A0DA; >.<
     PLB                                                                  ;B4A0DC;
-    REP #$20                                                             ;B4A0DD;
+    REP #$20                                                             ;B4A0DD; >.<
     PLP                                                                  ;B4A0DF;
     RTL                                                                  ;B4A0E0;
 
@@ -6294,14 +6294,14 @@ Create_Sprite_Object:
     PHY                                                                  ;B4BC27;
     PHP                                                                  ;B4BC28;
     PHB                                                                  ;B4BC29;
-    PEA.W $B400                                                          ;B4BC2A;
+    PEA.W SpriteObject_DrawInst_Pointers>>8&$FF00                        ;B4BC2A;
     PLB                                                                  ;B4BC2D;
     PLB                                                                  ;B4BC2E;
     REP #$30                                                             ;B4BC2F;
     LDX.W #$003E                                                         ;B4BC31;
 
   .loop:
-    LDA.L $7EEF78,X                                                      ;B4BC34;
+    LDA.L SpriteObjects_InstListPointers,X                               ;B4BC34;
     BEQ .found                                                           ;B4BC38;
     DEX                                                                  ;B4BC3A;
     DEX                                                                  ;B4BC3B;
@@ -6310,27 +6310,27 @@ Create_Sprite_Object:
 
   .found:
     LDA.W #$0000                                                         ;B4BC40;
-    STA.L $7EF078,X                                                      ;B4BC43;
-    STA.L $7EF178,X                                                      ;B4BC47;
-    STA.L $7EF278,X                                                      ;B4BC4B;
-    STA.L $7EF2F8,X                                                      ;B4BC4F;
-    LDA.B $12                                                            ;B4BC53;
-    STA.L $7EF0F8,X                                                      ;B4BC55;
-    LDA.B $14                                                            ;B4BC59;
-    STA.L $7EF1F8,X                                                      ;B4BC5B;
-    LDA.B $18                                                            ;B4BC5F;
-    STA.L $7EF078,X                                                      ;B4BC61;
-    LDA.B $16                                                            ;B4BC65;
+    STA.L SpriteObjects_Palettes,X                                       ;B4BC43;
+    STA.L SpriteObjects_XSubPositions,X                                  ;B4BC47;
+    STA.L SpriteObjects_YSubPositions,X                                  ;B4BC4B;
+    STA.L SpriteObjects_DisableFlags,X                                   ;B4BC4F;
+    LDA.B DP_Temp12                                                      ;B4BC53;
+    STA.L SpriteObjects_XPositions,X                                     ;B4BC55;
+    LDA.B DP_Temp14                                                      ;B4BC59;
+    STA.L SpriteObjects_YPositions,X                                     ;B4BC5B;
+    LDA.B DP_Temp18                                                      ;B4BC5F;
+    STA.L SpriteObjects_Palettes,X                                       ;B4BC61;
+    LDA.B DP_Temp16                                                      ;B4BC65;
     ASL                                                                  ;B4BC67;
     TAY                                                                  ;B4BC68;
     LDA.W SpriteObject_DrawInst_Pointers,Y                               ;B4BC69;
-    STA.L $7EEF78,X                                                      ;B4BC6C;
+    STA.L SpriteObjects_InstListPointers,X                               ;B4BC6C;
     PHX                                                                  ;B4BC70;
     TAX                                                                  ;B4BC71;
-    LDA.L $B40000,X                                                      ;B4BC72;
+    LDA.L $B40000,X                                                      ;B4BC72; ?
     PLX                                                                  ;B4BC76;
-    STA.L $7EEFF8,X                                                      ;B4BC77;
-    STX.B $12                                                            ;B4BC7B;
+    STA.L SpriteObjects_Instructions,X                                   ;B4BC77;
+    STX.B DP_Temp12                                                      ;B4BC7B;
 
   .return:
     PLB                                                                  ;B4BC7D;
@@ -6350,49 +6350,49 @@ HandleSpriteObjects:
     PLB                                                                  ;B4BC89;
     PLB                                                                  ;B4BC8A;
     REP #$30                                                             ;B4BC8B;
-    LDA.W $0A78                                                          ;B4BC8D;
-    ORA.W $185E                                                          ;B4BC90;
+    LDA.W TimeIsFrozenFlag                                               ;B4BC8D;
+    ORA.W DebugTimeIsFrozenForEnemies                                    ;B4BC90;
     BNE .return                                                          ;B4BC93;
     LDX.W #$003E                                                         ;B4BC95;
-    STX.W $1844                                                          ;B4BC98;
+    STX.W SpriteObjectIndex                                              ;B4BC98;
 
   .loop:
-    LDX.W $1844                                                          ;B4BC9B;
-    LDA.L $7EEF78,X                                                      ;B4BC9E;
+    LDX.W SpriteObjectIndex                                              ;B4BC9B;
+    LDA.L SpriteObjects_InstListPointers,X                               ;B4BC9E;
     BEQ .next                                                            ;B4BCA2;
-    LDA.L $7EF2F8,X                                                      ;B4BCA4;
+    LDA.L SpriteObjects_DisableFlags,X                                   ;B4BCA4;
     BIT.W #$0001                                                         ;B4BCA8;
     BNE .next                                                            ;B4BCAB;
-    LDA.L $7EEFF8,X                                                      ;B4BCAD;
+    LDA.L SpriteObjects_Instructions,X                                   ;B4BCAD;
     BMI .ASMInstruction                                                  ;B4BCB1;
     DEC                                                                  ;B4BCB3;
-    STA.L $7EEFF8,X                                                      ;B4BCB4;
+    STA.L SpriteObjects_Instructions,X                                   ;B4BCB4;
     BNE .next                                                            ;B4BCB8;
-    LDA.L $7EEF78,X                                                      ;B4BCBA;
+    LDA.L SpriteObjects_InstListPointers,X                               ;B4BCBA;
     INC                                                                  ;B4BCBE;
     INC                                                                  ;B4BCBF;
     INC                                                                  ;B4BCC0;
     INC                                                                  ;B4BCC1;
-    STA.L $7EEF78,X                                                      ;B4BCC2;
+    STA.L SpriteObjects_InstListPointers,X                               ;B4BCC2;
     TAX                                                                  ;B4BCC6;
     LDA.L $B40000,X                                                      ;B4BCC7;
     CMP.W #$8000                                                         ;B4BCCB;
     BPL .ASMInstruction                                                  ;B4BCCE;
-    LDX.W $1844                                                          ;B4BCD0;
-    STA.L $7EEFF8,X                                                      ;B4BCD3;
+    LDX.W SpriteObjectIndex                                              ;B4BCD0;
+    STA.L SpriteObjects_Instructions,X                                   ;B4BCD3;
 
   .next:
-    LDA.W $1844                                                          ;B4BCD7;
+    LDA.W SpriteObjectIndex                                              ;B4BCD7;
     DEC                                                                  ;B4BCDA;
     DEC                                                                  ;B4BCDB;
-    STA.W $1844                                                          ;B4BCDC;
+    STA.W SpriteObjectIndex                                              ;B4BCDC;
     BPL .loop                                                            ;B4BCDF;
     BRA .return                                                          ;B4BCE1;
 
   .ASMInstruction:
-    STA.B $12                                                            ;B4BCE3;
+    STA.B DP_Temp12                                                      ;B4BCE3;
     PEA.W .next-1                                                        ;B4BCE5;
-    JMP.W ($0012)                                                        ;B4BCE8;
+    JMP.W (DP_Temp12)                                                    ;B4BCE8;
 
   .return:
     PLB                                                                  ;B4BCEB;
@@ -6404,38 +6404,38 @@ HandleSpriteObjects:
 
 ;;; $BCF0: Sprite object instruction - go back 4 bytes ;;;
 Instruction_SpriteObject_GoBack4Bytes:
-    LDX.W $1844                                                          ;B4BCF0;
-    LDA.L $7EEF78,X                                                      ;B4BCF3;
+    LDX.W SpriteObjectIndex                                              ;B4BCF0;
+    LDA.L SpriteObjects_InstListPointers,X                               ;B4BCF3;
     DEC                                                                  ;B4BCF7;
     DEC                                                                  ;B4BCF8;
     DEC                                                                  ;B4BCF9;
     DEC                                                                  ;B4BCFA;
-    STA.L $7EEF78,X                                                      ;B4BCFB;
+    STA.L SpriteObjects_InstListPointers,X                               ;B4BCFB;
     LDA.W #$7FFF                                                         ;B4BCFF;
-    STA.L $7EEFF8,X                                                      ;B4BD02;
+    STA.L SpriteObjects_Instructions,X                                   ;B4BD02;
     RTS                                                                  ;B4BD06;
 
 
 ;;; $BD07: Sprite object instruction - delete ;;;
 Instruction_SpriteObject_Delete:
-    LDX.W $1844                                                          ;B4BD07;
+    LDX.W SpriteObjectIndex                                              ;B4BD07;
     LDA.W #$0000                                                         ;B4BD0A;
-    STA.L $7EEF78,X                                                      ;B4BD0D;
+    STA.L SpriteObjects_InstListPointers,X                               ;B4BD0D;
     RTS                                                                  ;B4BD11;
 
 
 ;;; $BD12: Sprite object instruction - go to parameter ;;;
 Instruction_SpriteObject_GotoParameter:
-    LDX.W $1844                                                          ;B4BD12;
-    LDA.L $7EEF78,X                                                      ;B4BD15;
+    LDX.W SpriteObjectIndex                                              ;B4BD12;
+    LDA.L SpriteObjects_InstListPointers,X                               ;B4BD15;
     TAX                                                                  ;B4BD19;
-    LDA.L $B40002,X                                                      ;B4BD1A;
-    LDX.W $1844                                                          ;B4BD1E;
-    STA.L $7EEF78,X                                                      ;B4BD21;
+    LDA.L $B40002,X                                                      ;B4BD1A; ?
+    LDX.W SpriteObjectIndex                                              ;B4BD1E;
+    STA.L SpriteObjects_InstListPointers,X                               ;B4BD21;
     TAX                                                                  ;B4BD25;
-    LDA.L $B40000,X                                                      ;B4BD26;
-    LDX.W $1844                                                          ;B4BD2A;
-    STA.L $7EEFF8,X                                                      ;B4BD2D;
+    LDA.L $B40000,X                                                      ;B4BD26; ?
+    LDX.W SpriteObjectIndex                                              ;B4BD2A;
+    STA.L SpriteObjects_Instructions,X                                   ;B4BD2D;
     RTS                                                                  ;B4BD31;
 
 
@@ -6452,32 +6452,32 @@ DrawSpriteObjects:
     LDX.W #$003E                                                         ;B4BD3D;
 
   .loop:
-    LDA.L $7EEF78,X                                                      ;B4BD40;
+    LDA.L SpriteObjects_InstListPointers,X                               ;B4BD40;
     BEQ .next                                                            ;B4BD44;
-    LDA.L $7EF0F8,X                                                      ;B4BD46;
+    LDA.L SpriteObjects_XPositions,X                                     ;B4BD46;
     SEC                                                                  ;B4BD4A;
-    SBC.W $0911                                                          ;B4BD4B;
-    STA.B $14                                                            ;B4BD4E;
+    SBC.W Layer1XPosition                                                ;B4BD4B;
+    STA.B DP_Temp14                                                      ;B4BD4E;
     CLC                                                                  ;B4BD50;
     ADC.W #$0010                                                         ;B4BD51;
     BMI .next                                                            ;B4BD54;
     CMP.W #$0120                                                         ;B4BD56;
     BPL .next                                                            ;B4BD59;
-    LDA.L $7EF1F8,X                                                      ;B4BD5B;
+    LDA.L SpriteObjects_YPositions,X                                     ;B4BD5B;
     SEC                                                                  ;B4BD5F;
-    SBC.W $0915                                                          ;B4BD60;
-    STA.B $12                                                            ;B4BD63;
+    SBC.W Layer1YPosition                                                ;B4BD60;
+    STA.B DP_Temp12                                                      ;B4BD63;
     BMI .next                                                            ;B4BD65;
     CMP.W #$0110                                                         ;B4BD67;
     BPL .next                                                            ;B4BD6A;
-    LDA.L $7EF078,X                                                      ;B4BD6C;
+    LDA.L SpriteObjects_Palettes,X                                       ;B4BD6C;
     AND.W #$0E00                                                         ;B4BD70;
-    STA.B $03                                                            ;B4BD73;
-    LDA.L $7EF078,X                                                      ;B4BD75;
+    STA.B DP_Temp03                                                      ;B4BD73;
+    LDA.L SpriteObjects_Palettes,X                                       ;B4BD75;
     AND.W #$01FF                                                         ;B4BD79;
-    STA.B $00                                                            ;B4BD7C;
+    STA.B DP_Temp00                                                      ;B4BD7C;
     PHX                                                                  ;B4BD7E;
-    LDA.L $7EEF78,X                                                      ;B4BD7F;
+    LDA.L SpriteObjects_InstListPointers,X                               ;B4BD7F;
     TAX                                                                  ;B4BD83;
     LDA.L $B40002,X                                                      ;B4BD84;
     TAY                                                                  ;B4BD88;
@@ -6503,7 +6503,7 @@ ClearSpriteObjects:
     LDA.W #$0000                                                         ;B4BD9A;
 
   .loop:
-    STA.L $7EEF78,X                                                      ;B4BD9D;
+    STA.L SpriteObjects_InstListPointers,X                               ;B4BD9D;
     DEX                                                                  ;B4BDA1;
     DEX                                                                  ;B4BDA2;
     BNE .loop                                                            ;B4BDA3;
@@ -6826,8 +6826,8 @@ UNUSED_InstList_SpriteObject_13_ShortBigDustCloudBeam_B4C026:
     dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_5              ;B4C02A;
     dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_6              ;B4C02E;
     dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_7              ;B4C032;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC ;B4C036;
-    dw $0005,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3 ;B4C03A;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC;B4C036;
+    dw $0005,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3;B4C03A;
     dw Instruction_SpriteObject_Delete                                   ;B4C03E;
 
 
@@ -6837,8 +6837,8 @@ UNUSED_InstList_SpriteObject_14_ShortBigDustCloudBeam_B4C040:
     dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_5              ;B4C044;
     dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_6              ;B4C048;
     dw $0003,SpriteObjectSpritemaps_13_14_15_BigDustCloud_7              ;B4C04C;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC ;B4C050;
-    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3 ;B4C054;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC;B4C050;
+    dw $0003,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3;B4C054;
     dw $0003,UNUSED_SpriteObjectSpritemaps_14_16_DustCloud_Beam_B4C8BA   ;B4C058;
     dw Instruction_SpriteObject_Delete                                   ;B4C05C;
 
@@ -6858,8 +6858,8 @@ InstList_SpriteObject_15_BigDustCloud:
 
 ;;; $C080: Instruction list - sprite object 16h (unused. Weird long beam) ;;;
 UNUSED_InstList_SpriteObject_16_WeirdLongBeam_B4C080:
-    dw $0001,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC ;B4C080;
-    dw $0001,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3 ;B4C084;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8AC;B4C080;
+    dw $0001,UNUSED_SpriteObjectSpritemaps_13_14_16_DustCloud_Beam_B4C8B3;B4C084;
     dw $0001,UNUSED_SpriteObjectSpritemaps_14_16_DustCloud_Beam_B4C8BA   ;B4C088;
     dw $0001,UNUSED_SpriteObjectSpritemaps_16_DustCloud_Beam_B4C8C6      ;B4C08C;
     dw $0001,UNUSED_SpriteObjectSpritemaps_16_DustCloud_Beam_B4C8D2      ;B4C090;
