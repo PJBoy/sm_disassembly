@@ -5535,12 +5535,12 @@ CinematicFunction_Intro_HandleDrawingInitialJapanText_Wait60f:
     STA.B VRAMWrite.size,X                                               ;8BA5D9;
     INX                                                                  ;8BA5DB;
     INX                                                                  ;8BA5DC;
-    LDA.W #$3000                                                         ;8BA5DD;
+    LDA.W #CinematicBGTilemap_TopMarginInitialJapanText                  ;8BA5DD;
     STA.B VRAMWrite.size,X                                               ;8BA5E0;
     INX                                                                  ;8BA5E2;
     INX                                                                  ;8BA5E3;
     SEP #$20                                                             ;8BA5E4;
-    LDA.B #$7E                                                           ;8BA5E6;
+    LDA.B #CinematicBGTilemap_TopMarginInitialJapanText>>16              ;8BA5E6;
     STA.B VRAMWrite.size,X                                               ;8BA5E8;
     REP #$20                                                             ;8BA5EA;
     INX                                                                  ;8BA5EC;
@@ -5764,7 +5764,7 @@ Clear_EnglishText_Tilemap:
     LDA.W #$002F                                                         ;8BA85A;
 
   .loop:
-    STA.L CinematicBGTilemap_TopMarginInitialJapanText,X                 ;8BA85D;
+    STA.L CinematicBGTilemap_EnglishTextRegion-$100,X                    ;8BA85D;
     INX                                                                  ;8BA861;
     INX                                                                  ;8BA862;
     CPX.W #$0600                                                         ;8BA863;
@@ -9407,7 +9407,7 @@ CinematicFunction_CeresGoesBoom_FadeOut:
     LDX.W #$00FE                                                         ;8BC688;
 
   .loop:
-    STZ.W $1A8D,X                                                        ;8BC68B; ?
+    STZ.W CinematicSpriteObject_XPositions+$10,X                         ;8BC68B;
     DEX                                                                  ;8BC68E;
     DEX                                                                  ;8BC68F;
     BPL .loop                                                            ;8BC690;
