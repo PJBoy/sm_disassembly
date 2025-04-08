@@ -1026,6 +1026,7 @@ Temp_Threshold: skip 0 ; $0E20
 Temp_AngleToMove: skip 0 ; $0E20
 Temp_DebuggerHexValueXPosition: skip 0 ; $0E20
 Temp_InstListIndex: skip 0 ; $0E20
+Temp_TargetHoleAngle: skip 0 ; $0E20
 Temp_Unknown0E20: skip 2 ; $0E20
 Temp_DemoRecorderFrameCounterYPosition: skip 0 ; $0E22
 Temp_ProjectileYRadius: skip 0 ; $0E22
