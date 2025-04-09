@@ -3097,7 +3097,7 @@ Spawn_Mode7Objects:
     PHP                                                                  ;8B94E4;
     REP #$30                                                             ;8B94E5;
     PHX                                                                  ;8B94E7;
-    STA.W NeverRead19B3                                                  ;8B94E8;
+    STA.W neverRead19B3                                                  ;8B94E8;
     TYX                                                                  ;8B94EB;
     LDY.W #$0002                                                         ;8B94EC;
 

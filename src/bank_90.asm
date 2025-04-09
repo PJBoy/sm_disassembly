@@ -4,6 +4,17 @@ org $908000
 
 ;;; $8000: Animate Samus ;;;
 AnimateSamus:
+; Calls code to check FX for liquid physics (which affects the Samus animation frame buffer variable)
+; That code also handles lava/acid damage and water splash / air bubble graphics
+; Some special case code for keeping to frame 1 of neutral jump animation whilst rising
+; Decrement the Samus animation frame timer,
+; if zero then Samus animation frame is incremented and the Samus animation delay table is processed
+; If an instruction is encountered in the animation delay table,
+; some handling for speed booster running is called that deals with incrementing the speed booster stage
+; If speed booster handling is not applicable, then the animation delay instruction is processed,
+; which may cause looping or branching of the animation
+
+; The actual drawing of Samus (using the Samus pose and Samus animation frame) happens elsewhere (draw Samus routines $85E2..8A4B)
     PHP                                                                  ;908000;
     REP #$30                                                             ;908001;
     JSL.L Get_Samus_BottomTop_Boundary                                   ;908003;
@@ -88,6 +99,8 @@ AnimateSamus_FX_None:
 
 ; 0: None
 ; 20h: Scrolling sky
+
+; Called by the subroutines for the other FX types too if the FX doesn't affect Samus
     LDA.W XSpeedDivisor                                                  ;908078;
     STA.W SamusAnimationFrameBuffer                                      ;90807B;
     LDA.W LiquidPhysicsType                                              ;90807E;
@@ -489,12 +502,18 @@ Handle_Samus_AnimationDelay:
 
 ;;; $8344: Clear carry. Animation delay instruction 0..5 ;;;
 CLCRTS_908344:
+;; Returns:
+;;     Carry: Clear. Samus animation frame is unchanged
     CLC                                                                  ;908344;
     RTS                                                                  ;908345;
 
 
 ;;; $8346: Animation delay instruction 6 - go to beginning if [Samus health] >= 30 ;;;
 AnimDelay_6_GotoBeginningIfSamusNotLowEnergy:
+;; Returns:
+;;     Carry: Set. Samus animation frame is changed
+;;     Y: New Samus animation frame
+
 ; Used by:
 ;     1: Facing right - normal
 ;     2: Facing left  - normal
@@ -519,6 +538,10 @@ AnimDelay_6_GotoBeginningIfSamusNotLowEnergy:
 
 ;;; $8360: Animation delay instruction 7 - set drained Samus movement handler ;;;
 AnimDelay_7_SetDrainedSamusMovementHandler:
+;; Returns:
+;;     Carry: Set. Samus animation frame is changed
+;;     Y: New Samus animation frame
+
 ; Used by:
 ;     E8h: Facing right - Samus drained - crouching
 ;     E9h: Facing left  - Samus drained - crouching
@@ -534,6 +557,9 @@ AnimDelay_7_SetDrainedSamusMovementHandler:
 
 ;;; $8370: Animation delay instruction 8 - enable auto-jump hack and transition to pose if not jumping ;;;
 AnimDelay_8_EnableAutoJumpHack_TransitionToPoseIfNotJumping:
+;; Returns:
+;;     Carry: Clear. Samus animation frame is unchanged
+
 ; Used by:
 ;     25h/26h / 2Fh/30h / 43h/44h / 87h/88h / 8Bh..9Ah / 9Ch..A3h: Turning -> 2/1 / 52h/51h / 28h/27h / 2Ah/29h / 4/3/8/7/16h/15h/18h/17h/2Ch/2Bh/2Eh/2Dh/86h/85h/74h/73h/6/5/6Ah/69h/6Eh/6Dh/72h/71h
 ;         1: Facing right - normal
@@ -597,6 +623,9 @@ AnimDelay_8_EnableAutoJumpHack_TransitionToPoseIfNotJumping:
 
 ;;; $839A: Animation delay instruction 9 - transition to pose depending on item equipped and Y speed ;;;
 AnimDelay_9_TransitionToPoseDependingOnItemEquippedAndYSpeed:
+;; Returns:
+;;     Carry: Clear. Samus animation frame is unchanged
+
 ; Used by:
 ;     37h: Facing right - morphing transition. F9,0002,1D,31,79,7D
 ;         1Dh: Facing right - morph ball - no springball - on ground
@@ -667,6 +696,8 @@ AnimDelay_9_TransitionToPoseDependingOnItemEquippedAndYSpeed:
 
 ;;; $83F6: Unused. Animation delay instruction Ah - transition to pose depending on Y speed ;;;
 UNUSED_AnimDelay_A_TransitionToPoseDependingOnYSpeed_9083F6:
+;; Returns:
+;;     Carry: Clear. Samus animation frame is unchanged
     LDA.W SamusYSpeed                                                    ;9083F6;
     BNE .nonZeroYSpeed                                                   ;9083F9;
     LDA.W SamusYSubSpeed                                                 ;9083FB;
@@ -692,6 +723,10 @@ UNUSED_AnimDelay_A_TransitionToPoseDependingOnYSpeed_9083F6:
 
 ;;; $841D: Animation delay instruction Bh - select animation delay sequence for wall-jump ;;;
 AnimDelay_B_SelectAnimDelaySequenceForWallJump:
+;; Returns:
+;;     Carry: Set. Samus animation frame is changed
+;;     Y: New Samus animation frame
+
 ; Used by:
 ;     83h: Facing right - wall jump
 ;     84h: Facing left  - wall jump
@@ -756,6 +791,9 @@ AnimDelay_B_SelectAnimDelaySequenceForWallJump:
 
 ;;; $848B: Unused. Animation delay instruction Ch - transition to pose depending on item equipped ;;;
 UNUSED_AnimDelay_C_TransToPoseDependingOnItemEquipped_90848B:
+;; Returns:
+;;     Carry: Clear. Samus animation frame is unchanged
+
 ; Used by:
 ;     3Fh: Unused. FC,0002,1D,79
 ;         1Dh: Facing right - morph ball - no springball - on ground
@@ -793,6 +831,9 @@ UNUSED_AnimDelay_C_TransToPoseDependingOnItemEquipped_90848B:
 
 ;;; $84B6: Animation delay instruction Dh - transition to pose ;;;
 AnimDelay_D_TransitionToPose:
+;; Returns:
+;;     Carry: Clear. Samus animation frame is unchanged
+
 ; Also see instruction 8, which calls this instruction.
 
 ; Used by:
@@ -848,6 +889,9 @@ AnimDelay_D_TransitionToPose:
 
 ;;; $84C7: Animation delay instruction Eh - go to [Y] - [[$00] + [Y] + 1] ;;;
 AnimDelay_E_GotoY:
+;; Returns:
+;;     Carry: Set. Samus animation frame is changed
+;;     Y: New Samus animation frame
     INY                                                                  ;9084C7;
     LDA.B [DP_Temp00],Y                                                  ;9084C8;
     AND.W #$00FF                                                         ;9084CA;
@@ -863,6 +907,9 @@ AnimDelay_E_GotoY:
 
 ;;; $84DB: Animation delay instruction Fh - go to beginning ;;;
 AnimDelay_F_GotoBeginning:
+;; Returns:
+;;     Carry: Set. Samus animation frame is changed
+;;     Y: New Samus animation frame
     LDY.W #$0000                                                         ;9084DB;
     STY.W SamusAnimationFrame                                            ;9084DE;
     SEC                                                                  ;9084E1;
@@ -875,7 +922,7 @@ Handle_NormalAnimationDelay:
 ;;     Y: Samus animation frame
 ;;     $00: Samus animation delay data pointer
 
-; If check enabled and running:
+; If Samus has running momentum and running:
 ;     If speed booster equipped:
 ;         Load animation delay data pointer from $91:B5DE table
 ;     Else:
@@ -926,28 +973,38 @@ Handle_SpeedBooster_AnimationDelay:
 ;; Parameters:
 ;;     Y: Samus animation frame
 ;;     $00: Samus animation delay data pointer
+;; Returns:
+;;     A: 0 if Samus animation frame timer is set by this routine, otherwise animation delay
+;;     $00: Samus animation delay data pointer
 
-; If check enabled and running and pressing run:
-;     If speed booster not equipped:
-;         Samus animation frame = 0
-;         Load animation delay data pointer from $91:B5D1
-;         A = 0
+; Called when an instruction is encountered in the Samus animation delay table
+; If speed booster handling is applicable, the instruction is ignored and Samus animation frame reset to 0
+
+; If Samus has no running momentum or not running or not pressing run:
+;     A = [[$00] + [Samus animation frame]]
+; Else if speed booster not equipped:
+;     Samus animation frame = 0
+;     Load animation delay data pointer from $91:B5D1
+;     A = 0
+;     Set animation frame timer
+; Else:
+;     Decrement speed boost timer
+;     If [speed boost timer] != 0:
+;         A = [[$00] + [Samus animation frame]]
 ;     Else:
-;         Decrement speed boost timer
-;         If [speed boost timer] = 0:
-;             If [speed boost counter] != 4:
-;                 Increment speed boost counter
-;                 If [speed boost counter] = 4:
-;                     Play speed echo sound effect
-;                     BUG: This overwrites A with the number of sounds queued if the queue is not full
-;                          Causing the index for the $91:B61F table to be 5 sometimes, which greater than the table size,
-;                          which causes the blue suit fail when speed boosting sometimes (mostly in heated rooms)
-;             Load speed boost timer from $91:B61F table
-;             Samus animation frame = 0
-;             Load animation delay data pointer from $91:B5DE
-;             A = 0
-; Set animation frame timer
-; A = [[$00] + [Samus animation frame]]
+;         If [speed boost counter] != 4:
+;             Increment speed boost counter
+;             If [speed boost counter] = 4:
+;                 Play speed echo sound effect
+;                 BUG: This clobbers A. If the sound queue is not full, A high is the number of sounds queued,
+;                      which can be greater than the $91:B61F table size 4,
+;                      which causes the blue suit fail when speed boosting sometimes (mostly in heated rooms)
+;                      If the speed boost timer ends up being set to 0, it lasts 100h frames, which causes the apparent sliding-on-one-leg pose
+;         Load speed boost timer from $91:B61F table
+;         Samus animation frame = 0
+;         Load animation delay data pointer from $91:B5DE
+;         A = 0
+;         Set animation frame timer
     PHP                                                                  ;90852C;
     SEP #$20                                                             ;90852D;
     PHB                                                                  ;90852F;

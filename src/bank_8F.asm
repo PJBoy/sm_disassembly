@@ -1410,7 +1410,7 @@ PLMPopulation_LNSave:                                                    ;8F918C
     dw $0000
 
 
-;;; $9194: Setup ASM: clear a few blocks after saving animals and shake screen ;;;
+;;; $9194: Room setup ASM - clear Crateria mainstreet escape passage if critters escaped and shake screen ;;;
 SetupASM_ClearBlocksAfterSavingAnimalsAndShakeScreen:
 ; Room $92FD, state $9348. Crateria mainstreet, Zebes timebomb set
     JSL.L Spawn_Hardcoded_PLM                                            ;8F9194;
@@ -1423,7 +1423,7 @@ SetupASM_ClearBlocksAfterSavingAnimalsAndShakeScreen:
     RTS                                                                  ;8F91A8;
 
 
-;;; $91A9: Setup ASM: auto-destroy the wall during escape ;;;
+;;; $91A9: Room setup ASM - make old Tourian escape shaft fake wall explode ;;;
 SetupASM_AutoDestroyWallDuringEscape:
 ; Room $96BA, state $9705. Old Tourian escape shaft, Zebes timebomb set
     JSL.L Spawn_Hardcoded_PLM                                            ;8F91A9;
@@ -1432,7 +1432,7 @@ SetupASM_AutoDestroyWallDuringEscape:
     RTS                                                                  ;8F91B1;
 
 
-;;; $91B2: Setup ASM: turn wall into shotblocks during escape ;;;
+;;; $91B2: Room setup ASM - spawn critters escape block ;;;
 SetupASM_TurnWallIntoShotBlocksDuringEscape:
 ; Room $9804, state $984F. Bomb Torizo's room, Zebes timebomb set
     JSL.L Spawn_Hardcoded_PLM                                            ;8F91B2;
@@ -1441,13 +1441,13 @@ SetupASM_TurnWallIntoShotBlocksDuringEscape:
     RTS                                                                  ;8F91BA;
 
 
-;;; $91BB: Setup ASM: RTS ;;;
+;;; $91BB: RTS. Room setup ASM ;;;
 RTS_8F91BB:
 ; Room $9879, state $98C4. Pre Bomb Torizo room, Zebes timebomb set
     RTS                                                                  ;8F91BB;
 
 
-;;; $91BC: Setup ASM: RTS ;;;
+;;; $91BC: RTS. Room setup ASM ;;;
 RTS_8F91BC:
 ; Room $92FD, state $932E. Crateria mainstreet, Zebes is awake
 ; Room $96BA, state $96EB. Old Tourian escape shaft, Zebes is awake
@@ -1459,7 +1459,7 @@ RTS_8F91BC:
     RTS                                                                  ;8F91BC;
 
 
-;;; $91BD: Setup ASM: shake the screen and call $88A7D8 during the escape ;;;
+;;; $91BD: Room setup ASM - scrolling sky land, shake screen ;;;
 SetupASM_ShakeScreenAndCall88A7D8DuringEscape:
 ; Room $91F8, state $9261. Landing site, Zebes timebomb set
     LDA.W #$0006                                                         ;8F91BD;
@@ -1468,7 +1468,7 @@ SetupASM_ShakeScreenAndCall88A7D8DuringEscape:
     STA.W EarthquakeTimer                                                ;8F91C6; fallthrough to SetupASM_ScrollingSkyLand
 
 
-;;; $91C9: Setup ASM: scrolling sky land ;;;
+;;; $91C9: Room setup ASM - scrolling sky land ;;;
 SetupASM_ScrollingSkyLand:
 ; Room $91F8, state $9213. Landing site, power bombs
 ; Room $91F8, state $922D. Landing site, Zebes is awake
@@ -1477,7 +1477,7 @@ SetupASM_ScrollingSkyLand:
     RTS                                                                  ;8F91CD;
 
 
-;;; $91CE: Setup ASM: scrolling sky ocean ;;;
+;;; $91CE: Room setup ASM - scrolling sky ocean ;;;
 SetupASM_ScrollingSkyOcean:
 ; Room $93FE. Wrecked Ship entrance
 ; Room $94FD. Wrecked Ship back door
@@ -1486,7 +1486,7 @@ SetupASM_ScrollingSkyOcean:
     RTS                                                                  ;8F91D2;
 
 
-;;; $91D3: Setup ASM: RTS ;;;
+;;; $91D3: RTS. Room setup ASM ;;;
 RTS_8F91D3:
 ; Room $92B3. Gauntlet east
 ; Room $92FD, state $9314. Crateria mainstreet, default
@@ -1587,7 +1587,7 @@ RTS_8F91D6:
     RTS                                                                  ;8F91D6;
 
 
-;;; $91D7: Setup ASM: run statue unlocking animations ;;;
+;;; $91D7: Room setup ASM - run statue unlocking animations ;;;
 SetupASM_RunStatueUnlockingAnimations:
 ; Room $A66A. Tourian entrance
     LDY.W #AnimatedTilesObject_TourianStatueKraid                        ;8F91D7;
@@ -1701,6 +1701,50 @@ RTS_8F91F7:
 
 ; see labels.asm for RoomHeaders: RoomStates: and RoomDoors:
 ;;; $91F8: Room headers, scroll data, door lists ;;;
+
+; Room header format:
+;      __________________________________________ Room index
+;     |   _______________________________________ Area index
+;     |  |    ___________________________________ X position (of top left corner) on the map
+;     |  |   |   ________________________________ Y position (of top left corner) on the map
+;     |  |   |  |    ____________________________ Room width (in units of screens = 16 blocks = 256 pixels)
+;     |  |   |  |   |   _________________________ Room height (in units of screens = 16 blocks = 256 pixels)
+;     |  |   |  |   |  |    _____________________ Up scroller
+;     |  |   |  |   |  |   |   __________________ Down scroller
+;     |  |   |  |   |  |   |  |    ______________ CRE bitset
+;     |  |   |  |   |  |   |  |   |    __________ Door list pointer
+;     |  |   |  |   |  |   |  |   |   |      ____ State conditions list
+;     |  |   |  |   |  |   |  |   |   |     |
+;     ii,aa, xx,yy, ww,hh, uu,dd, cc, dddd, [...]
+
+; State conditions list format:
+;      ______________ State condition
+;     |     _________ State condition parameters
+;     |    |      ___ State header pointer
+;     |    |     |
+;     eeee [...] ssss ; First state condition
+;     eeee [...] ssss ; Second state condition
+;     [...]           ; Other state conditions
+;     E5E6            ; Default state condition (terminator)
+
+; State header format:
+;      ___________________________________________________________________________ Level data
+;     |        ___________________________________________________________________ Tileset
+;     |       |    _______________________________________________________________ Music data index
+;     |       |   |   ____________________________________________________________ Music track
+;     |       |   |  |    ________________________________________________________ FX ($83)
+;     |       |   |  |   |      __________________________________________________ Enemy population ($A1)
+;     |       |   |  |   |     |      ____________________________________________ Enemy set ($B4)
+;     |       |   |  |   |     |     |      ______________________________________ Layer 2 scroll X
+;     |       |   |  |   |     |     |     |   ___________________________________ Layer 2 scroll Y
+;     |       |   |  |   |     |     |     |  |    _______________________________ Scroll
+;     |       |   |  |   |     |     |     |  |   |      _________________________ Special x-ray blocks
+;     |       |   |  |   |     |     |     |  |   |     |      ___________________ Main ASM
+;     |       |   |  |   |     |     |     |  |   |     |     |      _____________ PLM population
+;     |       |   |  |   |     |     |     |  |   |     |     |     |      _______ Library background
+;     |       |   |  |   |     |     |     |  |   |     |     |     |     |      _ Setup ASM
+;     |       |   |  |   |     |     |     |  |   |     |     |     |     |     |
+;     llllll, tt, MM,mm, ffff, eeee, EEEE, xx,yy, ssss, xxxx, AAAA, pppp, bbbb, aaaa
 RoomHeader_LandingSite:
     db $00,$00,$17,$00,$09,$05,$70,$A0,$00                               ;8F91F8;
     dw RoomDoors_LandingSite                                             ;8F9201;
@@ -6734,9 +6778,9 @@ LibBG_ScrollingSky_Tilemaps_BowlingAlley:                                ;8FB80A
 LibBG_Brinstar_1A_Kraid_Upper_Lower:                                     ;8FB815;
     dw $0008 : dl Tiles_Standard_BG3 : dw $2000,$1000
     dw $0004 : dl Background_Brinstar_1A_Kraid_Upper : dw $4000
-    dw $0002 : dl $7E4000 : dw $4000,$1000
+    dw $0002 : dl BG2Tilemap : dw $4000,$1000
     dw $0004 : dl Background_Brinstar_1A_Kraid_Lower_0 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$1000
+    dw $0002 : dl BG2Tilemap : dw $4800,$1000
     dw $0000
 
 LibBG_Standard_BG3_Tiles:                                                ;8FB840;
@@ -6752,67 +6796,64 @@ LibBG_Crocomire_State1:                                                  ;8FB858
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_LibBG_Brinstar_1A_Kraid_Lower_8FB863:                             ;8FB863;
-    dw $0004 : dl Background_Brinstar_1A_Kraid_Lower_1 : dw $4000,$0002
-    dl $7E4000
-    dw $4800,$0800
-    dw $0002
-    dl $7E4000
-    dw $4C00,$0800
+    dw $0004 : dl Background_Brinstar_1A_Kraid_Lower_1 : dw $4000
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 LibBG_Crateria_0_VerticalPatternRocks:                                   ;8FB87E;
     dw $0004 : dl Background_Crateria_0_VerticalPatternRocks : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Crateria_0_HorizontalPatternRocks:                                 ;8FB899;
     dw $0004 : dl Background_Crateria_0_HorizontalPatternRocks : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Crateria_0_Rocks:                                                  ;8FB8B4;
     dw $0004 : dl Background_Crateria_0_Rocks : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Crateria_2_PurpleRocks:                                            ;8FB8CF;
     dw $0004 : dl Background_Crateria_2_PurpleRocks : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Crateria_2_BrickRoom_WallArt_Dark:                                 ;8FB8EA;
     dw $0004 : dl Background_Crateria_2_BrickRoom_WallArt_Dark : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Crateria_2_3_Mechanical:                                           ;8FB905;
     dw $0004 : dl Background_Crateria_2_3_Mechanical : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Crateria_2_BrickRoom_WallArt:                                      ;8FB920;
     dw $0004 : dl Background_Crateria_2_BrickRoom_WallArt : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Crateria_2_Elevator:                                               ;8FB93B;
     dw $0004 : dl Background_Crateria_2_Elevator : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Crateria_2_BrickRoom:                                              ;8FB956;
     dw $0004 : dl Background_Crateria_2_BrickRoom : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 
@@ -6829,10 +6870,11 @@ DoorASM_StartWreckedShipTreadmillWestEntrance:
 
 ;;; $B981: Door ASM: scroll 6 = green ;;;
 DoorASM_Scroll_6_Green:
-; Room $93D5, door list index 0: Door
-; Room $96BA, door list index 0: Door
-; Room $98E2, door list index 0: Door
-; Room $9A44, door list index 1: Door
+; Door destination: Crateria mainstreet
+; Room $93D5, door 0. Crateria save station
+; Room $96BA, door 0. Old Tourian escape shaft
+; Room $98E2, door 0. Pre Crateria map station hall
+; Room $9A44, door 1. Crateria bomb block hall
     PHP                                                                  ;8FB981;
     SEP #$20                                                             ;8FB982;
     LDA.B #$02                                                           ;8FB984;
@@ -6843,6 +6885,7 @@ DoorASM_Scroll_6_Green:
 
 ;;; $B98C: Door ASM: scroll 0 = blue ;;;
 DoorASM_Scroll_0_Blue:
+; Door destination: Crateria mainstreet
 ; Room $990D, door list index 1: Door
     PHP                                                                  ;8FB98C;
     SEP #$20                                                             ;8FB98D;
@@ -6854,6 +6897,7 @@ DoorASM_Scroll_0_Blue:
 
 ;;; $B997: Door ASM: scroll 13h = blue ;;;
 DoorASM_Scroll_13_Blue:
+; Door destination: Landing site
 ; Room $92B3, door list index 0: Door
     PHP                                                                  ;8FB997;
     SEP #$20                                                             ;8FB998;
@@ -6865,6 +6909,7 @@ DoorASM_Scroll_13_Blue:
 
 ;;; $B9A2: Door ASM: scroll 4 = red, 8 = green ;;;
 DoorASM_Scroll_4_Red_8_Green:
+; Door destination: Wrecked Ship chozo room
 ; Room $9879, door list index 0: Door
     PHP                                                                  ;8FB9A2;
     SEP #$20                                                             ;8FB9A3;
@@ -6878,6 +6923,7 @@ DoorASM_Scroll_4_Red_8_Green:
 
 ;;; $B9B3: Door ASM: scroll 8..Bh = red ;;;
 DoorASM_Scroll_8_9_A_B_Red:
+; Door destination: Wrecked Ship chozo room
 ; Room $93FE, door list index 4: Door
     PHP                                                                  ;8FB9B3;
     SEP #$20                                                             ;8FB9B4;
@@ -6892,6 +6938,7 @@ DoorASM_Scroll_8_9_A_B_Red:
 
 ;;; $B9CA: Door ASM: scroll 2..5,Bh..Dh,11h = red ;;;
 DoorASM_Scroll_2_3_4_5_B_C_D_11_Red:
+; Door destination: Wrecked Ship chozo room
 ; Room $968F, door list index 1: Door
     PHP                                                                  ;8FB9CA;
     SEP #$20                                                             ;8FB9CB;
@@ -6978,173 +7025,173 @@ DoorASM_Scroll_3_Green:
 ;;; $BA37: Library background ;;;
 LibBG_Brinstar_6_Vertical_GlowPatches:                                   ;8FBA37;
     dw $0004 : dl Background_Brinstar_6_Vertical_GlowPatches : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_6_Horizontal_GlowPatches:                                 ;8FBA52;
     dw $0004 : dl Background_Brinstar_6_Horizontal_GlowPatches : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_6_LargeHorizontalPattern:                                 ;8FBA6D;
     dw $0004 : dl Background_Brinstar_6_LargeHorizontalPattern : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_6_MediumHorizontalPattern:                                ;8FBA88;
     dw $0004 : dl Background_Brinstar_6_MediumHorizontalPattern : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_6_ThinHorizontalPattern:                                  ;8FBAA3;
     dw $0004 : dl Background_Brinstar_6_ThinHorizontalPattern : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_6_SmallPattern:                                           ;8FBABE;
     dw $0004 : dl Background_Brinstar_6_SmallPattern : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_6_SpheresPattern:                                         ;8FBAD9;
     dw $0004 : dl Background_Brinstar_6_SpheresPattern : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_6_SmallPattern_Variety_0:                                 ;8FBAF4;
     dw $0004 : dl Background_Brinstar_6_SmallPattern_Variety_0 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_LibBG_Brinstar_6_SmallPattern_Variety_1_8FBB0F:                   ;8FBB0F;
     dw $0004 : dl Background_Brinstar_6_SmallPattern_Variety_1 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 UNUSED_LibBG_Brinstar_6_SmallPattern_Variety_2_8FBB2A:                   ;8FBB2A;
     dw $0004 : dl Background_Brinstar_6_SmallPattern_Variety_2 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 LibBG_Brinstar_6_DarkPattern:                                            ;8FBB45;
     dw $0004 : dl Background_Brinstar_6_DarkPattern : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_15_Statues:                                                ;8FBB60;
     dw $0004 : dl Background_Tourian_15_Statues : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$1000
+    dw $0002 : dl BG2Tilemap : dw $4800,$1000
     dw $0002 : dl Tiles_TourianStatuesSoul : dw $6D00,$0600
     dw $0000
 
 LibBG_Brinstar_7_WideVerticalTower_Brick_0:                              ;8FBB7B;
     dw $0004 : dl Background_Brinstar_7_WideVerticalTower_Brick_0 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_LibBG_Brinstar_7_WideVerticalTower_Brick_1_8FBB96:                ;8FBB96;
     dw $0004 : dl Background_Brinstar_7_WideVerticalTower_Brick_1 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 UNUSED_LibBG_Brinstar_7_WideVerticalTower_Brick_2_8FBBB1:                ;8FBBB1;
     dw $0004 : dl Background_Brinstar_7_WideVerticalTower_Brick_2 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 LibBG_Brinstar_7_VerticalTower:                                          ;8FBBCC;
     dw $0004 : dl Background_Brinstar_7_VerticalTower : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_7_NarrowVerticalTower_Brick:                              ;8FBBE7;
     dw $0004 : dl Background_Brinstar_7_NarrowVerticalTower_Brick : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_7_VerticalBrick_0:                                        ;8FBC02;
     dw $0004 : dl Background_Brinstar_7_VerticalBrick_0 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_LibBG_Brinstar_7_VerticalBrick_1_8FBC1D:                          ;8FBC1D;
     dw $0004 : dl Background_Brinstar_7_VerticalBrick_1 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 LibBG_Brinstar_7_MechanicalRoom_SpikeFloor:                              ;8FBC38;
     dw $0004 : dl Background_Brinstar_7_MechanicalRoom_SpikeFloor : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_7_MechanicalRoom:                                         ;8FBC53;
     dw $0004 : dl Background_Brinstar_7_MechanicalRoom : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Brinstar_7_NarrowVerticalTower_Brick_Vines_0:                      ;8FBC6E;
     dw $0004 : dl Background_Brinstar_7_NarrowVerticalTower_Brick_Vines_0 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_LibBG_Brin_7_NarrowVerticalTower_Brick_Vines_1_8FBC89:            ;8FBC89;
     dw $0004 : dl Background_Brinstar_7_NarrowVerticalTower_Brick_Vines_1 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 LibBG_Brinstar_8_NarrowVerticalTower_Brick_Grey_0:                       ;8FBCA4;
     dw $0004 : dl Background_Brinstar_8_NarrowVerticalTower_Brick_Grey_0 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$1000
+    dw $0002 : dl BG2Tilemap : dw $4800,$1000
     dw $0000
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_LibBG_Brin_8_NarrowVerticalTower_Brick_Grey_1_8FBCB6:             ;8FBCB6;
     dw $0004 : dl Background_Brinstar_8_NarrowVerticalTower_Brick_Grey_1 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 UNUSED_LibBG_Brin_8_NarrowVerticalTower_Brick_Grey_2_8FBCD1:             ;8FBCD1;
     dw $0004 : dl Background_Brinstar_8_NarrowVerticalTower_Brick_Grey_2 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 LibBG_Brinstar_7_BlueGridBlocks:                                         ;8FBCEC;
     dw $0004 : dl Background_Brinstar_7_BlueGridBlocks : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 
@@ -7422,8 +7469,8 @@ LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright:                        ;8FBE3F
 ; Room $AD1B, state $AD28: Speed booster room
 ; Room $B106, state $B113: Norfair speed blockade hall
     dw $0004 : dl Background_Norfair_9_A_SmallPatternBrownPurple_Bright : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_A_SmallPatternBrownPurple_0:                             ;8FBE5A;
@@ -7437,30 +7484,30 @@ LibBG_Norfair_9_A_SmallPatternBrownPurple_0:                             ;8FBE5A
 ; Room $B4E5, state $B4F2: Lower Norfair lavaquake room
 ; Room $B585, state $B592: Lower Norfair kihunter shaft
     dw $0004 : dl Background_Norfair_9_A_SmallPatternBrownPurple_0 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_LibBG_Norfair_9_A_SmallPatternBrownPurple_1_8FBE75:               ;8FBE75;
     dw $0004 : dl Background_Norfair_9_A_SmallPatternBrownPurple_1 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 LibBG_Norfair_9_HorizontalPatternBrick:                                  ;8FBE90;
 ; Room $B3E1, state $B3EE: Unused room
     dw $0004 : dl Background_Norfair_9_HorizontalPatternBrick : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_VerticalPatternBrick:                                    ;8FBEAB;
 ; Room $B3A5, state $B3B2: Lower Norfair power bomb floor shaft
     dw $0004 : dl Background_Norfair_9_VerticalPatternBrick : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_A_CavernStalagtites:                                     ;8FBEC6;
@@ -7475,8 +7522,8 @@ LibBG_Norfair_9_A_CavernStalagtites:                                     ;8FBEC6
 ; Room $AFCE, state $AFDB: Boring near-Crocomire hall
 ; Room $AFFB, state $B008: Norfair spike floor hall
     dw $0004 : dl Background_Norfair_9_A_CavernStalagtites : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_A_CavernVertical:                                        ;8FBEE1;
@@ -7487,15 +7534,15 @@ LibBG_Norfair_9_A_CavernVertical:                                        ;8FBEE1
 ; Room $AC2B, state $AC38: Grapple room
 ; Room $B139, state $B146: Norfair stone zoomer shaft
     dw $0004 : dl Background_Norfair_9_A_CavernVertical : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_CavernHorizontalRuins:                                   ;8FBEFC;
 ; Room $B4AD, state $B4BA: Lower Norfair wall jumping space pirates shaft
     dw $0004 : dl Background_Norfair_9_CavernHorizontalRuins : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_CavernVerticalRuins:                                     ;8FBF17;
@@ -7503,8 +7550,8 @@ LibBG_Norfair_9_CavernVerticalRuins:                                     ;8FBF17
 ; Room $B2DA, state $B2E7: Screw attack practice
 ; Room $B457, state $B464: Lower Norfair breakable pillars hall
     dw $0004 : dl Background_Norfair_9_CavernVerticalRuins : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_CavernRoomPillars:                                       ;8FBF32;
@@ -7516,8 +7563,8 @@ LibBG_Norfair_9_CavernRoomPillars:                                       ;8FBF32
 ; Room $B698, state $B6A5: Ridley's energy tank
 ; Room $B6C1, state $B6CE: Screw attack shaft
     dw $0004 : dl Background_Norfair_9_CavernRoomPillars : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_RoomStatues:                                             ;8FBF4D;
@@ -7525,8 +7572,8 @@ LibBG_Norfair_9_RoomStatues:                                             ;8FBF4D
 ; Room $B482, state $B48F: Lower Norfair holtz room
 ; Room $B62B, state $B638: Elite pirate hall
     dw $0004 : dl Background_Norfair_9_RoomStatues : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_PurplePatches:                                           ;8FBF68;
@@ -7537,16 +7584,16 @@ LibBG_Norfair_9_PurplePatches:                                           ;8FBF68
 ; Room $B510, state $B51D: Lower Norfair mini metal maze room
 ; Room $B656, state $B663: Impossible's x-ray room
     dw $0004 : dl Background_Norfair_9_PurplePatches : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Norfair_9_Bubbles:                                                 ;8FBF83;
 ; Room $AC83, state $AC90: Bubble Norfair pre reserve tank room
 ; Room $ACB3, state $ACC0: Bubble Norfair mainstreet
     dw $0004 : dl Background_Norfair_9_Bubbles : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 
@@ -12079,15 +12126,15 @@ LibBG_WreckedShip_4_5_EntranceHall:                                      ;8FE117
 ; Room $CA08, state $CA34: Wrecked Ship entrance treadmill
 ; Room $E82C, state $E839: Debug room
     dw $0004 : dl Background_WreckedShip_4_5_EntranceHall_0 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_LibBG_WreckedShip_4_5_EntranceHall_1_8FE132:                      ;8FE132;
     dw $0004 : dl Background_WreckedShip_4_5_EntranceHall_1 : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 
@@ -12097,16 +12144,16 @@ LibBG_WreckedShip_4_5_Columns_Tubes:                                     ;8FE14D
 ; Room $CC6F, state $CC81: Pre Phantoon hall
 ; Room $CC6F, state $CC9B: Pre Phantoon hall
     dw $0004 : dl Background_WreckedShip_4_5_Columns_Tubes : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_WreckedShip_4_5_ExperimentRoom:                                    ;8FE168;
 ; Room $CA52, state $CA64: Wrecked Ship attic
 ; Room $CA52, state $CA7E: Wrecked Ship attic
     dw $0004 : dl Background_WreckedShip_4_5_ExperimentRoom : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_WreckedShip_4_5_Panels_Vents:                                      ;8FE183;
@@ -12118,8 +12165,8 @@ LibBG_WreckedShip_4_5_Panels_Vents:                                      ;8FE183
 ; Room $CE40, state $CE52: Gravity suit room
 ; Room $CE40, state $CE6C: Gravity suit room
     dw $0004 : dl Background_WreckedShip_4_5_Panels_Vents : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_WreckedShip_4_5_Panels_Vents_Horizontal:                           ;8FE19E;
@@ -12129,16 +12176,16 @@ LibBG_WreckedShip_4_5_Panels_Vents_Horizontal:                           ;8FE19E
 ; Room $CBD5, state $CC01: Wrecked Ship east exit
 ; Room $CDF1, state $CE03: Wrecked Ship hidden super missile hall
     dw $0004 : dl Background_WreckedShip_4_5_Panels_Vents_Horizontal : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_WreckedShip_4_5_Panels_Vents_Vertical:                             ;8FE1B9;
 ; Room $CAAE, state $CAC0: Wrecked Ship attic missile tank room
 ; Room $CAAE, state $CADA: Wrecked Ship attic missile tank room
     dw $0004 : dl Background_WreckedShip_4_5_Panels_Vents_Vertical : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_CeresElevator_State0_1:                                            ;8FE1D4;
@@ -12237,14 +12284,14 @@ DoorASM_Scroll_6_7_8_9_A_B_Red:
 LibBG_Maridia_B_BrownWall:                                               ;8FE248;
 ; Room $D08A, state $D097: Maridia green gate hall
     dw $0004 : dl Background_Maridia_B_BrownWall : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$1000
+    dw $0002 : dl BG2Tilemap : dw $4800,$1000
     dw $0000
 
 LibBG_Maridia_C_GreenWall:                                               ;8FE25A;
 ; Room $D461, state $D46E: Sand falls west
 ; Room $D4C2, state $D4CF: Sand falls east
     dw $0004 : dl Background_Maridia_C_GreenWall : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$1000
+    dw $0002 : dl BG2Tilemap : dw $4800,$1000
     dw $0000
 
 
@@ -12525,8 +12572,8 @@ LibBG_Tourian_D_MechanicalRoom:                                          ;8FE3E8
 ; Room $DBCD, state $DBDF: Metroid room 4
 ; Room $DBCD, state $DBF9: Metroid room 4
     dw $0004 : dl Background_Tourian_D_MechanicalRoom : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_MechanicalRoom_Letterbox:                                ;8FE403;
@@ -12535,8 +12582,8 @@ LibBG_Tourian_D_MechanicalRoom_Letterbox:                                ;8FE403
 ; Room $DB7D, state $DB8F: Metroid room 3
 ; Room $DB7D, state $DBA9: Metroid room 3
     dw $0004 : dl Background_Tourian_D_MechanicalRoom_Letterbox : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_VerticalStructures:                                      ;8FE41E;
@@ -12549,31 +12596,31 @@ LibBG_Tourian_D_VerticalStructures:                                      ;8FE41E
 ; Room $DCFF, state $DD0C: Post Shitroid room
 ; Room $DDC4, state $DDD1: Tourian eye-door room
     dw $0004 : dl Background_Tourian_D_VerticalStructures : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_PipeRoom_Letterbox:                                      ;8FE439;
 ; Room $DE4D, state $DE5A: Escape room 1
     dw $0004 : dl Background_Tourian_D_PipeRoom_Letterbox : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_PipeRoom_VerticalSeparation:                             ;8FE454;
 ; Room $DDF3, state $DE00: Pre Mother Brain shaft
 ; Room $DE7A, state $DE87: Escape room 2
     dw $0004 : dl Background_Tourian_D_PipeRoom_VerticalSeparation : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_PipeRoom:                                                ;8FE46F;
 ; Room $DEA7, state $DEB4: Escape room 3
 ; Room $DEDE, state $DEEB: Escape room 4
     dw $0004 : dl Background_Tourian_D_PipeRoom : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_E_PipeRoom_Dark:                                           ;8FE48A;
@@ -12581,8 +12628,8 @@ LibBG_Tourian_E_PipeRoom_Dark:                                           ;8FE48A
 ; Room $DD58, state $DD88: Mother Brain
 ; Room $DD58, state $DDA2: Mother Brain
     dw $0004 : dl Background_Tourian_E_PipeRoom_Dark : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 LibBG_Tourian_D_E_StatueHall:                                            ;8FE4A5;
@@ -12593,8 +12640,8 @@ LibBG_Tourian_D_E_StatueHall:                                            ;8FE4A5
 ; Room $E06B, state $E07D: Pre Ceres Ridley hall
 ; Room $E06B, state $E097: Pre Ceres Ridley hall
     dw $0004 : dl Background_Tourian_D_E_StatueHall : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 
 
@@ -12776,6 +12823,10 @@ MainASM_ShakeScreenSwitchingBetweenMediumHorizAndStrongDiag:
 
 ;;; $E5D2: Room state checking handler ;;;
 Room_State_Checking_Handler:
+;; Parameters:
+;;     X: Room pointer
+
+; A matching state condition will return out of *this* routine by popping the return address pushed to the stack by $E5E0
     TXA                                                                  ;8FE5D2;
     CLC                                                                  ;8FE5D3;
     ADC.W #$000B                                                         ;8FE5D4;
@@ -13213,8 +13264,8 @@ UNUSED_LibraryBackground_8FE85B:                                         ;8FE85B
 ; Except that this one additionally (incorrectly) loads the water FX tilemap
     dw $0002 : dl FX_Layer3_Tilemaps_water : dw $5880,$0F00
     dw $0004 : dl Background_Crateria_0_Rocks : dw $4000
-    dw $0002 : dl $7E4000 : dw $4800,$0800
-    dw $0002 : dl $7E4000 : dw $4C00,$0800
+    dw $0002 : dl BG2Tilemap : dw $4800,$0800
+    dw $0002 : dl BG2Tilemap : dw $4C00,$0800
     dw $0000
 endif ; !FEATURE_KEEP_UNREFERENCED
 

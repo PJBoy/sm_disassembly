@@ -1388,7 +1388,7 @@ LoadDemoData:
     LDA.W #$0020                                                         ;918869;
     STA.W AimDownBinding                                                 ;91886C;
     LDA.W #$0001                                                         ;91886F;
-    STA.W NeverRead09E8                                                  ;918872;
+    STA.W neverRead09E8                                                  ;918872;
     STA.W SamusPlacementMode                                             ;918875;
     STZ.W Moonwalk                                                       ;918878;
     STZ.W unknown0DF8                                                    ;91887B;
@@ -5248,18 +5248,23 @@ AnimationDelayTable_Running_SpeedBooster_pointers:
     dw AnimationDelayTable_Running_SpeedBooster_4                        ;91B5E6;
 
 AnimationDelayTable_Running_SpeedBooster_0:
+; Unused, except for the first speed boosting animation cycle sometimes due to a bug (see $90:852C)
     db $03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$FF                       ;91B5E8;
 
 AnimationDelayTable_Running_SpeedBooster_1:
+; Speed booster stage 1 (after the first run button check)
     db $02,$03,$02,$03,$02,$03,$02,$03,$02,$03,$FF                       ;91B5F3;
 
 AnimationDelayTable_Running_SpeedBooster_2:
+; Speed booster stage 2
     db $02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$FF                       ;91B5FE;
 
 AnimationDelayTable_Running_SpeedBooster_3:
+; Speed booster stage 3
     db $01,$02,$01,$02,$01,$02,$01,$02,$01,$02,$FF                       ;91B609;
 
 AnimationDelayTable_Running_SpeedBooster_4:
+; Speed boosting (after the first speed boosting animation cycle)
     db $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$FF                       ;91B614;
 
 

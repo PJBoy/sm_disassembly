@@ -186,8 +186,8 @@ skip 2 ; Unused
 BG3XScrollHDMADataTableSize: skip 2 ; $0596
 YPositionOnScreenFX22: skip 2 ; $0598
 ExpandContract_HDMATableUpdateCounter: skip 0 ; $059A
-NeverRead059A: skip 2 ; $059A
-NeverRead059C: skip 2 ; $059C
+neverRead059A: skip 2 ; $059A
+neverRead059C: skip 2 ; $059C
 HUDBG2XPositionScrollingSky: skip 2 ; $059E
 ContractingFlag: skip 2 ; $05A0
 
@@ -386,7 +386,7 @@ HUDItemTilemapPaletteBits: skip 2 ; $077C
 skip 5 ; $077E..82
 Mode7Flag: skip 2 ; $0783
 UnusedMode7RotationAngle: skip 2 ; $0785
-NeverRead0787: skip 2 ; $0787
+neverRead0787: skip 2 ; $0787
 CurrentAreaMapCollectedFlag: skip 2 ; $0789
 LoadStationIndex: skip 2 ; $078B
 DoorPointer: skip 2 ; $078D
@@ -569,7 +569,7 @@ IGTHours: skip 2 ; $09E0
 JapanText: skip 2 ; $09E2
 Moonwalk: skip 2 ; $09E4
 SamusPlacementMode: skip 2 ; $09E6
-NeverRead09E8: skip 2 ; $09E8
+neverRead09E8: skip 2 ; $09E8
 IconCancel: skip 2 ; $09EA
 Unused09EC: skip $16 ; $09EC..0A01
 
@@ -1333,7 +1333,7 @@ Mode7Object_PreInstructions: skip 4 ; $19A5..A8
 Mode7Object_InstructionTimers: skip 4 ; $19A9..AC
 Mode7Object_Timers: skip 4 ; $19AD..B0
 Mode7Object_Index: skip 2 ; $19B1
-NeverRead19B3: skip 2 ; $19B3
+neverRead19B3: skip 2 ; $19B3
 
 CinematicBGObject_IndirectInstructionPointers: skip 8 ; $19B5..BC
 skip $10
@@ -1361,17 +1361,17 @@ TitleMenu_SlotAHelmetAnimationTimer: skip 2 ; $1991
 TitleMenu_SlotBHelmetAnimationTimer: skip 2 ; $1993
 TitleMenu_SlotCHelmetAnimationTimer: skip 2 ; $1995
 TitleMenu_SelectionMissileAnimFrame: skip 2 ; $1997
-NeverRead1999: skip 2 ; $1999
+neverRead1999: skip 2 ; $1999
 TitleMenu_SlotAHelmetAnimationFrame: skip 2 ; $199B
 TitleMenu_SlotBHelmetAnimationFrame: skip 2 ; $199D
 TitleMenu_SlotCHelmetAnimationFrame: skip 2 ; $199F
 TitleMenu_SelectionMissileXPosition: skip 2 ; $19A1
-NeverRead19A3: skip 2 ; $19A3
+neverRead19A3: skip 2 ; $19A3
 TitleMenu_SlotAHelmetXPosition: skip 2 ; $19A5
 TitleMenu_SlotBHelmetXPosition: skip 2 ; $19A7
 TitleMenu_SlotCHelmetXPosition: skip 2 ; $19A9
 TitleMenu_SelectionMissileYPosition: skip 2 ; $19AB
-NeverRead19AD: skip 2 ; $19AD
+neverRead19AD: skip 2 ; $19AD
 TitleMenu_SlotAHelmetYPosition: skip 2 ; $19AF
 TitleMenu_SlotBHelmetYPosition: skip 2 ; $19B1
 TitleMenu_SlotCHelmetYPosition: skip 2 ; $19B3
@@ -1436,8 +1436,8 @@ GameOptionsMenuObject_SpritemapPointers: skip $10 ; $1A9D..AC
 GameOptionsMenuObject_XPositions: skip $10 ; $1AAD..BC
 GameOptionsMenuObject_YPositions: skip $10 ; $1ABD..CC
 GameOptionsMenuObject_PaletteIndices: skip $10 ; $1ACD..DC
-NeverRead1ADD: skip $10 ; $1ADD..EC
-NeverRead1AED: skip $10 ; $1AED..FC
+neverRead1ADD: skip $10 ; $1ADD..EC
+neverRead1AED: skip $10 ; $1AED..FC
 GameOptionsMenuObject_InstListPointers: skip $10 ; $1AFD..1B0C
 GameOptionsMenuObject_PreInstructions: skip $10 ; $1B0D..1C
 GameOptionsMenuObject_InstructionTimers: skip $10 ; $1B1D..2C
@@ -1978,10 +1978,10 @@ SRAMMirror_BossDebug: skip 1 ; $7ED82F
 SRAMMirror_ChozeBlockDestroyed: skip $40 ; $7ED830..6F
 SRAMMirror_Items: skip $40 ; $7ED870..AF
 SRAMMirror_Doors: skip $40 ; $7ED8B0..EF
-UnusedD8F0: skip 8 ; $7ED8F0..F7
+unusedD8F0: skip 8 ; $7ED8F0..F7
 SRAMMirror_UsedSaveStationsElevators: skip $10 ; $7ED8F8..D907
 SRAMMirror_MapStations: skip 8 ; $7ED908..0F
-UnusedD910: skip 4 ; $7ED910..13
+unusedD910: skip 4 ; $7ED910..13
 SRAMMirror_LoadingGameState: skip 2 ; $7ED914
 SRAMMirror_SaveStationIndex: skip 2 ; $7ED916
 SRAMMirror_AreaIndex: skip 2 ; $7ED918

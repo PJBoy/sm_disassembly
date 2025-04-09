@@ -1101,6 +1101,17 @@ UNUSED_ProjectileDataTable_NonBeam_Projectile27_9386D7:
     dw $0000                                                             ;9386D7;
     dw UNUSED_InstList_SamusProjectile_Projectile27_93A16D               ;9386D9;
 
+; Instruction format:
+;     If t & 8000h = 0:
+;         tttt ssss xx yy ffff
+;         t: Timer
+;         s: Spritemap pointer
+;         x: Projectile X radius
+;         y: Projectile Y radius
+;         f: Projectile trail frame. Used to index beam trail offset table, see BeamTrailOffsets_uncharged
+;     If p & 8000h != 0:
+;         pppp
+;         p: Pointer to function
 
 ;;; $86DB: Instruction list - power - up ;;;
 InstList_SamusProjectile_Power_Up:

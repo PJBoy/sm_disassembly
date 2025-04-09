@@ -4437,7 +4437,7 @@ Calculate_FXType_22_IndirectHDMATable:
     RTS                                                                  ;88A7D7;
 
 
-;;; $A7D8: FX type 20h: scrolling sky / room setup ASM: scrolling sky land ;;;
+;;; $A7D8: Spawn scrolling sky land HDMA object / FX type 20h: scrolling sky ;;;
 FXType_20_ScrollingSky_RoomSetupASM_ScrollingSkyLand:
     PHP                                                                  ;88A7D8;
     SEP #$30                                                             ;88A7D9;
@@ -4452,13 +4452,13 @@ FXType_20_ScrollingSky_RoomSetupASM_ScrollingSkyLand:
     dw InstList_ScrollingSkyLand_BG2XScroll_0                            ;88A7F1;
     REP #$30                                                             ;88A7F3;
     LDA.W #$00E0                                                         ;88A7F5;
-    STA.W NeverRead059A                                                  ;88A7F8;
-    STZ.W NeverRead059C                                                  ;88A7FB;
+    STA.W neverRead059A                                                  ;88A7F8;
+    STZ.W neverRead059C                                                  ;88A7FB;
     PLP                                                                  ;88A7FE;
     RTL                                                                  ;88A7FF;
 
 
-;;; $A800: Room setup ASM: scrolling sky ocean ;;;
+;;; $A800: Spawn scrolling sky ocean HDMA object ;;;
 RoomSetupASM_ScrollingSkyOcean:
     PHP                                                                  ;88A800;
     SEP #$30                                                             ;88A801;
@@ -4469,8 +4469,8 @@ RoomSetupASM_ScrollingSkyOcean:
     dw InstList_ScrollingSkyOcean_BG2XScroll_0                           ;88A80D;
     REP #$30                                                             ;88A80F;
     LDA.W #$00E0                                                         ;88A811;
-    STA.W NeverRead059A                                                  ;88A814;
-    STZ.W NeverRead059C                                                  ;88A817;
+    STA.W neverRead059A                                                  ;88A814;
+    STZ.W neverRead059C                                                  ;88A817;
     PLP                                                                  ;88A81A;
     RTL                                                                  ;88A81B;
 
@@ -4814,9 +4814,9 @@ PreInstruction_ScrollingSkyOcean_BG2XScroll:
 
 ;;; $ADC2: Handle scrolling sky BG2 X scroll HDMA tables ;;;
 Handle_ScrollingSky_BG2XScroll_HDMATables:
-; The $059E HDMA data entry pointer used at $AE05 I low-key suspect should be NeverRead059C,
+; The HUDBG2XPositionScrollingSky HDMA data entry pointer used at $AE05 I low-key suspect should be neverRead059C,
 ; which is explicitly set to zero in room setup ASM and otherwise unused,
-; unlike $059E which is never set (but is also otherwise unused)
+; unlike HUDBG2XPositionScrollingSky which is never set (but is also otherwise unused)
     SEP #$30                                                             ;88ADC2;
     LDA.B #$4A                                                           ;88ADC4;
     STA.B DP_BG2TilemapAddrSize                                          ;88ADC6;
@@ -4844,7 +4844,7 @@ Handle_ScrollingSky_BG2XScroll_HDMATables:
     STA.L ScrollingSkyBG2XScrollHDMADataTable+$5A                        ;88ADFA;
     LDA.W #$001F                                                         ;88ADFE;
     STA.L ScrollingSkyBG2XScrollIndirectHDMATable                        ;88AE01;
-    LDA.W #$059E                                                         ;88AE05;
+    LDA.W #HUDBG2XPositionScrollingSky                                   ;88AE05;
     STA.L ScrollingSkyBG2XScrollIndirectHDMATable+1                      ;88AE08;
     LDA.W Layer1YPosition                                                ;88AE0C;
     CLC                                                                  ;88AE0F;
@@ -4986,7 +4986,7 @@ ScrollingSky_ScrollingTable:
     dw $05F0                                                             ;88AF8B;
 
 
-;;; $AF8D: Room main ASM - scrolling sky land ;;;
+;;; $AF8D: Update scrolling sky land tilemap ;;;
 RoomMainASM_ScrollingSkyLand:
     LDA.W #ScrollingSkyLand_ChunkPointers                                ;88AF8D;
     STA.B DP_Temp00                                                      ;88AF90;
@@ -4995,7 +4995,7 @@ RoomMainASM_ScrollingSkyLand:
     BRA RoomMainASM_ScrollingSky                                         ;88AF97;
 
 
-;;; $AF99: Room main ASM - scrolling sky ocean ;;;
+;;; $AF99: Update scrolling sky ocean tilemap ;;;
 RoomMainASM_ScrollingSkyOcean:
     LDA.W #ScrollingSkyOcean_ChunkPointesr                               ;88AF99;
     STA.B DP_Temp00                                                      ;88AF9C;
@@ -5003,7 +5003,7 @@ RoomMainASM_ScrollingSkyOcean:
     STA.B DP_Temp02                                                      ;88AFA1; fallthrough to RoomMainASM_ScrollingSky
 
 
-;;; $AFA3: Room main ASM - scrolling sky ;;;
+;;; $AFA3: Update scrolling sky tilemap ;;;
 RoomMainASM_ScrollingSky:
 ;; Parameters:
 ;;     $00: Address of scrolling sky chunk pointers

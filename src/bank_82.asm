@@ -392,7 +392,7 @@ Load_StandardBG3Tiles_SpriteTiles_ClearTilemaps:
     STA.W $2115                                                          ;828331;
     JSL.L SetupHDMATransfer                                              ;828334;
     db $01,$01,$18                                                       ;828338;
-    dl $7E4000                                                           ;82833B;
+    dl BG2Tilemap                                                        ;82833B;
     dw $1000                                                             ;82833E;
     LDA.B #$02                                                           ;828340;
     STA.W $420B                                                          ;828342;
@@ -404,7 +404,7 @@ Load_StandardBG3Tiles_SpriteTiles_ClearTilemaps:
     STA.W $2115                                                          ;828351;
     JSL.L SetupHDMATransfer                                              ;828354;
     db $01,$01,$18                                                       ;828358;
-    dl $7E4000                                                           ;82835B;
+    dl BG2Tilemap                                                        ;82835B;
     dw $0800                                                             ;82835E;
     LDA.B #$02                                                           ;828360;
     STA.W $420B                                                          ;828362;
@@ -884,7 +884,7 @@ LoadDemoRoomData:
     LDA.W #$FFFF                                                         ;8286FC;
     STA.L SRAMMirror_ChozeBlockDestroyed,X                               ;8286FF;
     STA.L SRAMMirror_Items,X                                             ;828703;
-    STA.L UnusedD8F0,X                                                   ;828707;
+    STA.L unusedD8F0,X                                                   ;828707;
     STA.L SRAMMirror_MapStations,X                                       ;82870B;
     STA.L SRAMMirror_UsedSaveStationsElevators,X                         ;82870F;
     STA.L SRAMMirror_UsedSaveStationsElevators+8,X                       ;828713;
@@ -1596,8 +1596,8 @@ Spawn_GameOptionsMenu_Object:
     STA.W GameOptionsMenuObject_SpritemapPointers,Y                      ;828BFA;
     LDA.W #$0000                                                         ;828BFD;
     STA.W GameOptionsMenuObject_Timers,Y                                 ;828C00;
-    STA.W NeverRead1ADD,Y                                                ;828C03;
-    STA.W NeverRead1AED,Y                                                ;828C06;
+    STA.W neverRead1ADD,Y                                                ;828C03;
+    STA.W neverRead1AED,Y                                                ;828C06;
     JSR.W ($0000,X)                                                      ;828C09;
     PLX                                                                  ;828C0C;
     PLP                                                                  ;828C0D;
@@ -2766,7 +2766,7 @@ Load_PauseMenuMapTilemap_and_AreaLabel:
     JSR.W LoadPauseMenuMapTilemap                                        ;8293E2;
     JSL.L SetupHDMATransfer                                              ;8293E5;
     db $01,$01,$18                                                       ;8293E9;
-    dl $7E4000                                                           ;8293EC;
+    dl BG2Tilemap                                                        ;8293EC;
     dw $1000                                                             ;8293EF;
     LDA.B #$02                                                           ;8293F1;
     STA.W $420B                                                          ;8293F3;

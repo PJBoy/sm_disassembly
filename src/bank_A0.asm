@@ -2,7 +2,6 @@
 org $A08000
 
 
-
 ; Loading the game:
 ;     $8A1E - load enemies - at $80:A0CA (start gameplay)
 ;     $8CD7 - initialise enemies and transfer tiles to VRAM - at $82:80C9/80F9/814C (game state 6/1Fh/28h), executed 6 times for 6 frames
@@ -6673,14 +6672,17 @@ AddressesForEnemyDrawingQueues:
     dw EnemyDrawingQueues_Layer7                                         ;A0B141;
 
 
-;;; $B143: Sine/cosine tables ;;;
 ; Generate 16-bit tables with
 ;     [int((0x7FFF+0.5) * math.sin(i * math.pi / 0x80)) for i in range(0x40 * n_quadrants)]
 
 ; Generate sign-extended 8-bit tables with
 ;     [0x100 * math.sin(i * math.pi / 0x80) for i in range(0x40 * n_quadrants)]
 
-; Unsigned 8-bit table is the same as the signed-extended first half, except cos(0) is capped at FFh
+; 8-bit table is the same as the 8-bit signed-extended first half, except cos(0) is capped at FFh
+
+; "8-bit" table range = 0..FFh, positive values only (i.e. the first two quadrants only)
+; "16-bit" table range = -7FFFh..7FFFh
+; "16-bit sign-extended" table range = -100h..100h
 SineCosineTables_8bitSine:
 ; 8-bit sine
     db $00,$06,$0C,$12,$19,$1F,$25,$2B,$31,$38,$3E,$44,$4A,$50,$56,$5C   ;A0B143;

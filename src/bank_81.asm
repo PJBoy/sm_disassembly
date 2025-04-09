@@ -100,7 +100,7 @@ LoadFromSRAM:
     PHB                                                                  ;818087;
     PHX                                                                  ;818088;
     PHY                                                                  ;818089;
-    PEA.W $7E00                                                          ;81808A;
+    PEA.W SRAMMirror_Equipment>>8&$FF00                                                          ;81808A;
     PLB                                                                  ;81808D;
     PLB                                                                  ;81808E;
     STZ.B DP_Temp14                                                      ;81808F;
@@ -113,7 +113,7 @@ LoadFromSRAM:
     LDY.W #SRAMMirror_Equipment                                          ;81809D;
 
   .loop:
-    LDA.L $700000,X                                                      ;8180A0;
+    LDA.L SRAM_Slot0Checksum0,X                                                      ;8180A0;
     STA.W $0000,Y                                                        ;8180A4;
     CLC                                                                  ;8180A7;
     ADC.B DP_Temp14                                                      ;8180A8;
@@ -126,10 +126,10 @@ LoadFromSRAM:
     BNE .loop                                                            ;8180B3;
     LDX.B DP_Temp12                                                      ;8180B5;
     LDA.B DP_Temp14                                                      ;8180B7;
-    CMP.L $700000,X                                                      ;8180B9;
+    CMP.L SRAM_Slot0Checksum0,X                                                      ;8180B9;
     BNE .doubleCheck                                                     ;8180BD;
     EOR.W #$FFFF                                                         ;8180BF;
-    CMP.L $700008,X                                                      ;8180C2;
+    CMP.L SRAM_Slot0Complement0,X                                                      ;8180C2;
     BNE .doubleCheck                                                     ;8180C6;
     BRA .success                                                         ;8180C8;
 
@@ -170,7 +170,7 @@ LoadFromSRAM:
     LDA.W #$0000                                                         ;818108;
 
   .loopCorrupt:
-    STA.L $700000,X                                                      ;81810B;
+    STA.L SRAM_Slot0Checksum0,X                                                      ;81810B;
     CLC                                                                  ;81810F;
     ADC.B DP_Temp14                                                      ;818110;
     STA.B DP_Temp14                                                      ;818112;
@@ -3964,14 +3964,14 @@ FileSelectMenu_Index10_1C_ReloadMain:
     STA.W TitleMenu_SlotBHelmetAnimationTimer                            ;819FFA;
     STA.W TitleMenu_SlotCHelmetAnimationTimer                            ;819FFD;
     STA.W EnemyProjectile_ID                                             ;81A000;
-    STA.W NeverRead1999                                                  ;81A003;
+    STA.W neverRead1999                                                  ;81A003;
     STA.W TitleMenu_SlotAHelmetAnimationFrame                            ;81A006;
     STA.W TitleMenu_SlotBHelmetAnimationFrame                            ;81A009;
     STA.W TitleMenu_SlotCHelmetAnimationFrame                            ;81A00C;
     STA.W Mode7Object_InstListPointers                                   ;81A00F;
     STA.W Mode7Object_InstructionTimers+2                                ;81A012;
-    STA.W NeverRead19A3                                                  ;81A015;
-    STA.W NeverRead19AD                                                  ;81A018;
+    STA.W neverRead19A3                                                  ;81A015;
+    STA.W neverRead19AD                                                  ;81A018;
     LDA.W #$0064                                                         ;81A01B;
     STA.W TitleMenu_SlotAHelmetXPosition                                 ;81A01E;
     STA.W TitleMenu_SlotBHelmetXPosition                                 ;81A021;
@@ -4454,7 +4454,7 @@ FileSelectMap_Index1_GameOptionsToAreaSelectMap_FadeOut:
     CPX.W #$0006                                                         ;81A3BF;
     BMI .loopAreaColors                                                  ;81A3C2;
     INC.W PauseMenu_MenuIndex                                            ;81A3C4;
-    STZ.W NeverRead0787                                                  ;81A3C7;
+    STZ.W neverRead0787                                                  ;81A3C7;
     SEP #$20                                                             ;81A3CA;
     LDA.B #$02                                                           ;81A3CC;
     STA.B DP_MainScreenLayers                                            ;81A3CE;
@@ -5358,16 +5358,16 @@ FileSelectMap_Index7_AreaSelectMapToRoomSelectMap:
     STA.L $7E9E19                                                        ;81AAE4;
     REP #$30                                                             ;81AAE8;
     LDA.W #$4154                                                         ;81AAEA;
-    STA.B $00                                                            ;81AAED;
+    STA.B DP_Temp00                                                            ;81AAED;
     LDA.W #$007E                                                         ;81AAEF;
-    STA.B $02                                                            ;81AAF2;
+    STA.B DP_Temp02                                                            ;81AAF2;
     JSL.L DrawRoomSelectMap_AreaLabel                                    ;81AAF4;
     LDX.W VRAMWriteStack                                                 ;81AAF8;
     LDA.W #$0200                                                         ;81AAFB;
     STA.B VRAMWrite.size,X                                               ;81AAFE;
-    LDA.W #$4000                                                         ;81AB00;
+    LDA.W #BG2Tilemap                                                         ;81AB00;
     STA.B VRAMWrite.src,X                                                ;81AB03;
-    LDA.W #$007E                                                         ;81AB05;
+    LDA.W #BG2Tilemap>>16                                                         ;81AB05;
     STA.B VRAMWrite.src+2,X                                              ;81AB08;
     LDA.B DP_BG2TilemapAddrSize                                          ;81AB0A;
     AND.W #$00FC                                                         ;81AB0C;
@@ -6251,7 +6251,7 @@ NewSaveFile:
     STZ.W IconCancel                                                     ;81B360;
     LDA.W #$0001                                                         ;81B363;
     STA.W SamusPlacementMode                                             ;81B366;
-    STA.W NeverRead09E8                                                  ;81B369;
+    STA.W neverRead09E8                                                  ;81B369;
     LDX.W #$0000                                                         ;81B36C;
     LDA.W #$0000                                                         ;81B36F;
 
@@ -6260,7 +6260,7 @@ NewSaveFile:
     STA.L SRAMMirror_Items,X                                             ;81B376;
     STA.L SRAMMirror_Items,X                                             ;81B37A; >.<
     STA.L SRAMMirror_Doors,X                                             ;81B37E;
-    STA.L UnusedD8F0,X                                                   ;81B382;
+    STA.L unusedD8F0,X                                                   ;81B382;
     STA.L SRAMMirror_MapStations,X                                       ;81B386;
     STA.L SRAMMirror_UsedSaveStationsElevators,X                         ;81B38A;
     STA.L SRAMMirror_UsedSaveStationsElevators+8,X                       ;81B38E;
