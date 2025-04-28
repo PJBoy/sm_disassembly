@@ -17133,6 +17133,10 @@ Instruction_EnemyProjectile_EnemyDeathExplosion_BecomePickup:
 ;;     X: Enemy projectile index
 ;; Returns:
 ;;     Y: Pointer to next instruction
+
+; BUG: The BEQ after the JSR Random_Drop_Routine causes enemy projectile 0 to be unable to become a pickup
+;      The intention I guess is to check if the returned drop type in A is zero,
+;      although zero isn't even one of the drop types that can be returned
     PHX                                                                  ;86EEAF;
     PHY                                                                  ;86EEB0;
     JSR.W Random_Drop_Routine                                            ;86EEB1;
@@ -17208,7 +17212,11 @@ InitAI_EnemyProjectile_Pickup:
 ;;     Y: Enemy projectile index
 ;;     $12: X position
 ;;     $14: Y position
-;;     Temp_EnemyHeaderPointer: Enemy header pointer (to check drop rates)
+;;     $0E24: Enemy header pointer (to check drop rates)
+
+; BUG: The BEQ after the JSR Random_Drop_Routine causes enemy projectile 0 to be unable to become a pickup
+;      The intention I guess is to check if the returned drop type in A is zero,
+;      although zero isn't even one of the drop types that can be returned
     PHX                                                                  ;86EF29;
     PHY                                                                  ;86EF2A;
     LDA.B DP_Temp12                                                      ;86EF2B;

@@ -34,7 +34,7 @@ org $888000
 ;     2/Eh/20h: Normal
 
 ;     4: Normal, but BG2 is disabled
-;         Used by Phantoon intro
+;         Used by Phantoon when hidden
 
 ;     6: Normal, but sprites aren't affected by BG3 and sprites are added to BG1/BG2 (instead of hidden)
 ;         Unused
@@ -51,7 +51,7 @@ org $888000
 ;     10h/12h: Normal, but BG3 is disabled inside window 1
 ;         Used by morph ball eye and varia/gravity suit pickup
 
-;     14h/22h: Normal, but BG1 isn't affected by BG3 and colour math is subtractive
+;     14h/22h: Normal, but colour math is subtractive
 ;         Sometimes use with FX type = water
 
 ;     16h: BG1/sprites are drawn after the result of drawing BG2/BG3 is subtracted and Y = 4
@@ -67,7 +67,7 @@ org $888000
 ;     1Ch: Normal, but BG2 and BG3 have reversed roles, colour addition is halved and backdrop is disabled
 ;         Unused
 
-;     24h: BG1/BG2/sprites are drawn the backdrop is added on top inside window 1
+;     24h: BG1/BG2/sprites are drawn. Within window 1, the backdrop is added on top
 ;         Used by Mother Brain
 
 ;     26h: Normal, but colour addition is halved
@@ -101,36 +101,35 @@ org $888000
 ;}
 
 ; $1986: Layer blending configuration
-;{
-;     Set to [FX A] at the start of the HDMA object handler. See "FX per room.asm"
+{
+;     Set to [FX A] at the start of the HDMA object handler. See "rooms by FX A.asm"
 ;     Set to [FX B] by:
-;         $B3B0 ; HDMA object $C3E1, FX layer 3 lava and acid
-;         $C48E ; HDMA object $D847 / $D856, FX layer 3 water / Tourian entrance statue
-;         $D9A1 ; HDMA object $D96C, FX layer 3 rain
-;         $DA47 ; HDMA object $DA2D, FX layer 3 spores
-;         $DB36 ; HDMA object $DB19, FX layer 3 fog
+;         $B3B0: FX type 2 / 4: lava / acid
+;         $C48E: FX type 6 / 26h: water / Tourian entrance statue
+;         $D9A1: FX type Ah: rain
+;         $DA47: FX type 8: spores
+;         $DB36: FX type Ch: fog
 
-;     Set to 4/1Ah by $E449, Phantoon
-;     Set to Ch by $B0BC, HDMA object $B0AC, FX layer 3 fireflea
-;     Set to 10h by $E917, $E9E6, $EA3C, $EACB, HDMA object $E8EC, morph ball eye
+;     Set to 4/1Ah by $E449: Phantoon semi-transparency
+;     Set to Ch by $B0BC: FX type 24h: fireflea
+;     Set to 10h by $E917, $E9E6, $EA3C, $EACB: morph ball eye beam
 ;     Set to 12h by:
-;         $E026, HDMA object $D5A2, varia suit pickup
-;         $E05C, HDMA object $D67A, gravity suit pickup
-;     Set to 24h by $E767, $E7BC, HDMA object $E751, Mother Brain
+;         $E026: varia suit pickup
+;         $E05C: gravity suit pickup
+;     Set to 24h by $E767, $E7BC: Mother Brain rainbow beam
 ;     Set to 2Ch by:
-;         $DE18/96, HDMA object $DEEB, FX layer 3 haze
-;         $DD43, HDMA object $DD4A, torizos
+;         $DE18, $DE96: FX type 2Ch: Ceres haze
+;         $DD43: Bomb Torizo haze
 ;}
 
-; The following is a list of what FX B values are used with each FX type (only FX B is used with FX layer 3)
-;{
-;     FX type = fireflea/both Ceres:     FX B = 2
+; $1984: FX layer 3 layer blending configuration (FX B)
+{
 ;     FX type = spores:                  FX B = Ah
 ;     FX type = rain:                    FX B = Eh
 ;     FX type = water:                   FX B = 14h/16h/18h
+;     FX type = Tourian entrance statue: FX B = 18h
 ;     FX type = lava/acid:               FX B = 1Eh
 ;     FX type = fog:                     FX B = 30h
-;     FX type = Tourian entrance statue: FX B = 18h
 ;}
 ;}
 
@@ -205,8 +204,9 @@ LayerBlending_Handler:
     dw LayerBlending_34                                                  ;888072;
 
 
-;;; $8074: RTS. Layer blending configuration 0/2 ;;;
+;;; $8074: RTS. Layer blending configuration 2 ;;;
 RTS_888074:
+; This appears to be the default for rooms that have FX data (74 such rooms)
     RTS                                                                  ;888074;
 
 
@@ -228,7 +228,7 @@ Initialize_LayerBlending:
     RTS                                                                  ;88808F;
 
 
-;;; $8090: Layer blending configuration 4 ;;;
+;;; $8090: Layer blending configuration 4 - Phantoon - hidden (BG2 disabled) ;;;
 LayerBlending_4_Phantoon:
 ; Used by Phantoon
     LDA.B #$11                                                           ;888090;
@@ -238,7 +238,7 @@ LayerBlending_4_Phantoon:
     RTS                                                                  ;888098;
 
 
-;;; $8099: Unused. Layer blending configuration 6 ;;;
+;;; $8099: Unused. Layer blending configuration 6 - semi-transparent sprites on BG1/BG2 ;;;
 UNUSED_LayerBlending_6_888099:
     LDA.B #$14                                                           ;888099;
     STA.B DP_SubScreenLayers                                             ;88809B;
@@ -250,9 +250,9 @@ UNUSED_LayerBlending_6_888099:
 ;;; $80A2: Layer blending configuration 8 ;;;
 LayerBlending_8_WreckedShipPowerOff:
 ; Used in:
-;     Room CA52, state $CA64 ; Wrecked Ship attic, power off
-;     Room CAF6, state $CB08 ; Wrecked Ship mainstreet, power off
-;     Room CCCB, state $CCDD ; Wrecked Ship map station, power off
+;     Room $CA52, state $CA64. Wrecked Ship attic - default
+;     Room $CAF6, state $CB08. Wrecked Ship mainstreet - default
+;     Room $CCCB, state $CCDD. Wrecked Ship map station - default
     LDA.B #$14                                                           ;8880A2;
     STA.B DP_SubScreenLayers                                             ;8880A4;
     LDA.B #$22                                                           ;8880A6;
@@ -260,7 +260,7 @@ LayerBlending_8_WreckedShipPowerOff:
     RTS                                                                  ;8880AA;
 
 
-;;; $80AB: Layer blending configuration Ah ;;;
+;;; $80AB: Layer blending configuration Ah - spores (BG3 hidden by BG1) ;;;
 LayerBlending_A_Spores:
 ; Used with spores
     LDA.B #$32                                                           ;8880AB;
@@ -268,7 +268,7 @@ LayerBlending_A_Spores:
     RTS                                                                  ;8880AF;
 
 
-;;; $80B0: Layer blending configuration Ch ;;;
+;;; $80B0: Layer blending configuration Ch - fireflea (BG3 disabled, BG2 dimmed by subscreen backdrop) ;;;
 LayerBlending_C_Fireflea:
 ; Used with FX type = fireflea
     STZ.B DP_NextGameplayColorMathA                                      ;8880B0;
@@ -277,16 +277,19 @@ LayerBlending_C_Fireflea:
     RTS                                                                  ;8880B6;
 
 
-;;; $80B7: RTS. Layer blending configuration Eh ;;;
+;;; $80B7: RTS. Layer blending configuration Eh - rain ;;;
 RTS_8880B7:
 ; Used with FX type = rain
     RTS                                                                  ;8880B7;
 
 
-;;; $80B8: Layer blending configuration 10h/12h ;;;
+;;; $80B8: Layer blending configuration 10h/12h - subscreen backdrop window (BG3 disabled, colour math disabled outside window 1) ;;;
 LayerBlending_10_12_MorphBallEye_SuitPickup:
 ; 10h is used by morph ball eye
 ; 12h is used by varia/gravity suit pickup
+
+; The BG3 hides the subscreen backdrop, so the BG3 window mask is used to reveal the subscreen backdrop inside the window
+; The colour math window mask disables the blending of BG3 outside the window (note subscreen backdrop is not affected by windowing and must be hidden by BG3)
     LDA.B #$02                                                           ;8880B8;
     STA.B DP_WindowMaskBG34                                              ;8880BA;
     LDA.B #$20                                                           ;8880BC;
@@ -296,17 +299,24 @@ LayerBlending_10_12_MorphBallEye_SuitPickup:
     RTS                                                                  ;8880C4;
 
 
-;;; $80C5: Layer blending configuration 14h/22h ;;;
+;;; $80C5: Layer blending configuration 14h/22h - water - dimmed by BG3 ;;;
 LayerBlending_14_22_Water:
 ; 14h is sometimes used with FX type = water
+; 22h is unused
     LDA.B #$B3                                                           ;8880C5;
     STA.B DP_NextGameplayColorMathB                                      ;8880C7;
     RTS                                                                  ;8880C9;
 
 
-;;; $80CA: Layer blending configuration 16h ;;;
+;;; $80CA: Layer blending configuration 16h - water - background waterfalls (dimmed by BG2/BG3) ;;;
 LayerBlending_16_Water:
-; Sometimes used with FX type = water
+;; Returns:
+;;     Y: Layer blending power bomb configuration
+
+; Used with FX type = water in:
+;     Room $D72A. Maridia grapple room
+;     Room $D913. Maridia grapple wall shaft
+;     Room $DA2B. Maridia cacatac room east
     LDY.B #$04                                                           ;8880CA;
     LDA.B #$11                                                           ;8880CC;
     STA.B DP_MainScreenLayers                                            ;8880CE;
@@ -317,9 +327,10 @@ LayerBlending_16_Water:
     RTS                                                                  ;8880D8;
 
 
-;;; $80D9: Layer blending configuration 1Ah ;;;
+;;; $80D9: Layer blending configuration 1Ah - Phantoon - semi-transparent (semi-transparent BG2 on BG1) ;;;
 LayerBlending_1A_Phantoon:
-; Used by Phantoon
+;; Returns:
+;;     Y: Layer blending power bomb configuration
     LDY.B #$04                                                           ;8880D9;
     LDA.B #$15                                                           ;8880DB;
     STA.B DP_MainScreenLayers                                            ;8880DD;
@@ -330,7 +341,7 @@ LayerBlending_1A_Phantoon:
     RTS                                                                  ;8880E7;
 
 
-;;; $80E8: Layer blending configuration 1Ch ;;;
+;;; $80E8: Unused. Layer blending configuration 1Ch - semi-transparent BG2 on semi-transparent BG1/BG3/sprites ;;;
 LayerBlending_1C:
     LDA.B #$15                                                           ;8880E8;
     STA.B DP_MainScreenLayers                                            ;8880EA;
@@ -341,12 +352,17 @@ LayerBlending_1C:
     RTS                                                                  ;8880F4;
 
 
-;;; $80F5: Layer blending configuration 18h/1Eh/30h ;;;
+;;; $80F5: Layer blending configuration 18h/1Eh/30h - colour math affects all sprite palettes (semi-transparent BG1/BG2/sprites on BG3) ;;;
 LayerBlending_18_1E_30_Water_LavaAcid_Fog:
+;; Returns:
+;;     Y: Layer blending power bomb configuration
+
 ; 18h is sometimes used with FX type = water
-; 18h might be used with FX type = tourian entrance statue?
+; 18h is used with FX type = Tourian entrance statue
 ; 1Eh is used with FX type = lava/acid
 ; 30h is used with FX type = fog
+
+; Unsure of the significance of h/v-counter interrupts being disabled...
     LDY.B #$02                                                           ;8880F5;
     LDA.B DP_IRQAutoJoy                                                  ;8880F7;
     AND.B #$30                                                           ;8880F9;
@@ -368,23 +384,23 @@ RTS_88810C:
     RTS                                                                  ;88810C;
 
 
-;;; $810D: Layer blending configuration 26h ;;;
+;;; $810D: Unused. Layer blending configuration 26h - semi-transparent BG3 on semi-transparent BG1/BG2/sprites ;;;
 LayerBlending_26:
     LDA.B #$77                                                           ;88810D;
     STA.B DP_NextGameplayColorMathB                                      ;88810F;
     RTS                                                                  ;888111;
 
 
-;;; $8112: Layer blending configuration 28h ;;;
+;;; $8112: Layer blending configuration 28h - red desaturation (BG3 disabled, dimmed by red subscreen backdrop) ;;;
 LayerBlending_28:
 ; Used in:
-;     Room 92FD, state $9314 ; Crateria mainstreet, default state
-;     Room 9A44, state $9A56 ; Crateria bomb block hall, default state
-;     Room 9A90, state $9AA2 ; Crateria chozo missile, default state
-;     Room C98E, state $C9A0 ; Wrecked Ship spike floor hall, power off
-;     Room CC6F, state $CC81 ; Pre Phantoon hall, power off
-;     Room D27E ; Plasma beam puyo room
-;     Room D387 ; Pre plasma beam shaft
+;     Room $92FD, state $9314. Crateria mainstreet - default
+;     Room $9A44, state $9A56. Crateria bomb block hall - default
+;     Room $9A90, state $9AA2. Crateria chozo missile - default
+;     Room $C98E, state $C9A0. Wrecked Ship chozo room - default
+;     Room $CC6F, state $CC81. Pre Phantoon hall - default
+;     Room $D27E. Plasma beam puyo room
+;     Room $D387. Pre plasma beam shaft
     STZ.B DP_NextGameplayColorMathA                                      ;888112;
     LDA.B #$B3                                                           ;888114;
     STA.B DP_NextGameplayColorMathB                                      ;888116;
@@ -401,21 +417,21 @@ LayerBlending_28:
     RTS                                                                  ;888129;
 
 
-;;; $812A: Layer blending configuration 2Ah ;;;
+;;; $812A: Layer blending configuration 2Ah - orange desaturation (BG3 disabled, dimmed by orange subscreen backdrop) ;;;
 LayerBlending_2A:
 ; Used in:
-;     Room 97B5, state $97C6 ; Crateria -> Blue Brinstar elevator, default state
-;     Room 9E9F, state $9EB1 ; Morph ball room, default state
-;     Room 9F11, state $9F23 ; Old Kraid entrance, default state
-;     Room 9F64, state $9F76 ; Blue Brinstar ceiling e-tank hall, default state
-;     Room A6A1 ; Kraid's lair entrance
-;     Room CF54 ; n00b tube west
-;     Room CF80 ; n00b tube east
-;     Room D2AA ; Plasma beam room
-;     Room D54D ; Pre Maridia reserve tank room sand fall room
-;     Room D57A ; Pre PB #66 room sand fall room
-;     Room D86E ; Sandy Maridia sand falls room
-;     Room D898 ; Sand falls
+;     Room $97B5, state $97C6. Crateria -> Blue Brinstar elevator - default
+;     Room $9E9F, state $9EB1. Morph ball room - default
+;     Room $9F11, state $9F23. Old Kraid entrance - default
+;     Room $9F64, state $9F76. Blue Brinstar ceiling e-tank hall - default
+;     Room $A6A1. Kraid's lair entrance
+;     Room $CF54. n00b tube west
+;     Room $CF80. n00b tube east
+;     Room $D2AA. Plasma beam room
+;     Room $D54D. Snail room quicksand fall west
+;     Room $D57A. Snail room quicksand fall east
+;     Room $D86E. Sandy Maridia quicksand fall
+;     Room $D898. Maridia speed blockade quicksand fall
     STZ.B DP_NextGameplayColorMathA                                      ;88812A;
     LDA.B #$B3                                                           ;88812C;
     STA.B DP_NextGameplayColorMathB                                      ;88812E;
@@ -432,20 +448,22 @@ LayerBlending_2A:
     RTS                                                                  ;888141;
 
 
-;;; $8142: Layer blending configuration 2Ch ;;;
+;;; $8142: Layer blending configuration 2Ch - haze (BG3 disabled) ;;;
 LayerBlending_2C:
+; Used by FX type = Ceres haze and Bomb Torizo haze
     STZ.B DP_NextGameplayColorMathA                                      ;888142;
     RTS                                                                  ;888144;
 
 
-;;; $8145: Layer blending configuration 2Eh ;;;
+;;; $8145: Unused. Layer blending configuration 2Eh - dimmed by BG3 ;;;
 LayerBlending_2E:
+; Clone of LayerBlending_14_22_Water
     LDA.B #$B3                                                           ;888145;
     STA.B DP_NextGameplayColorMathB                                      ;888147;
     RTS                                                                  ;888149;
 
 
-;;; $814A: Layer blending configuration 32h ;;;
+;;; $814A: Unused. Layer blending configuration 32h - dimmed by BG3, BG3 hidden by BG1 ;;;
 LayerBlending_32:
     LDA.B #$44                                                           ;88814A;
     STA.B DP_SubScreenLayers                                             ;88814C;
@@ -454,15 +472,16 @@ LayerBlending_32:
     RTS                                                                  ;888152;
 
 
-;;; $8153: Layer blending configuration 34h ;;;
+;;; $8153: Layer blending configuration 34h - Mother Brain phase 2 (power bomb explosion doesn't affect BG2) ;;;
 LayerBlending_34:
+;; Returns:
+;;     Y: Layer blending power bomb configuration
     LDY.B #$06                                                           ;888153;
     RTS                                                                  ;888155;
 
 
-;;; $8156: Layer blending configuration 24h ;;;
+;;; $8156: Layer blending configuration 24h - Mother Brain rainbow beam (BG3 disabled, colour math disabled outside window 1) ;;;
 LayerBlending_24_MotherBrain:
-; Used by Mother Brain
     LDA.B #$00                                                           ;888156;
     STA.B DP_WindowMaskBG12                                              ;888158;
     LDA.B #$02                                                           ;88815A;
@@ -486,6 +505,10 @@ LayerBlending_24_MotherBrain:
 
 ;;; $817B: Handle layer blending x-ray - can show blocks ;;;
 Handle_LayerBlending_Xray_CanShowBlocks:
+; Disable BG1 inside window
+; Disable BG2 outside window
+; Disable BG3
+; Enabled halved colour math outside window
     LDA.B #$C8                                                           ;88817B;
     STA.B DP_WindowMaskBG12                                              ;88817D;
     LDA.B #$08                                                           ;88817F;
@@ -511,6 +534,9 @@ Handle_LayerBlending_Xray_CanShowBlocks:
 
 ;;; $81A4: Handle layer blending x-ray - can't show blocks ;;;
 Handle_LayerBlending_Xray_CantShowBlocks:
+; Disable BG3
+; Enabled halved colour math outside window
+; If n00b tube room, disable BG2
     STZ.B DP_WindowMaskBG12                                              ;8881A4;
     LDA.B #$08                                                           ;8881A6;
     STA.B DP_WindowMaskBG34                                              ;8881A8;
@@ -544,6 +570,8 @@ Handle_LayerBlending_Xray_CantShowBlocks:
 
 ;;; $81DB: Handle layer blending x-ray - fireflea room ;;;
 Handle_LayerBlending_Xray_FirefleaRoom:
+; Disable BG3
+; Enabled subtractive colour math outside window
     STZ.B DP_WindowMaskBG12                                              ;8881DB;
     LDA.B #$08                                                           ;8881DD;
     STA.B DP_WindowMaskBG34                                              ;8881DF;
@@ -572,10 +600,11 @@ Handle_LayerBlending_PowerBomb:
     LDA.W RoomPointer                                                    ;888200;
     CMP.W #RoomHeader_Statues                                            ;888203;
     SEP #$30                                                             ;888206;
-    BNE +                                                                ;888208;
+    BNE .execute                                                         ;888208;
     LDY.B #$06                                                           ;88820A;
 
-+   TYX                                                                  ;88820C;
+  .execute
+    TYX                                                                  ;88820C;
     JSR.W (.pointers,X)                                                  ;88820D;
     RTS                                                                  ;888210;
 
@@ -586,7 +615,7 @@ Handle_LayerBlending_PowerBomb:
     dw Handle_LayerBlending_PowerBomb_6                                  ;888217;
 
 
-;;; $8219: Handle layer blending power bomb configuration 0/2 ;;;
+;;; $8219: Handle layer blending power bomb configuration 0/2 - normal ;;;
 Handle_LayerBlending_PowerBomb_0_2:
     LDA.B #$00                                                           ;888219;
     STA.B DP_WindowMaskBG12                                              ;88821B;
@@ -609,8 +638,11 @@ Handle_LayerBlending_PowerBomb_0_2:
     RTS                                                                  ;88823D;
 
 
-;;; $823E: Handle layer blending power bomb configuration 4 ;;;
+;;; $823E: Handle layer blending power bomb configuration 4 - BG2 hidden by explosion ;;;
 Handle_LayerBlending_PowerBomb_4:
+; Used by:
+;    Layer blending configuration 16h - water - background waterfalls
+;    Layer blending configuration 1Ah - Phantoon - semi-transparent
     LDA.B #$80                                                           ;88823E;
     STA.B DP_WindowMaskBG12                                              ;888240;
     LDA.B #$08                                                           ;888242;
@@ -632,8 +664,11 @@ Handle_LayerBlending_PowerBomb_4:
     RTS                                                                  ;888262;
 
 
-;;; $8263: Handle layer blending power bomb configuration 6 ;;;
+;;; $8263: Handle layer blending power bomb configuration 6 - explosion hidden by BG2 ;;;
 Handle_LayerBlending_PowerBomb_6:
+; Used by:
+;     Layer blending configuration 34h - Mother Brain phase 2
+
 ; Compared with config 0/2, this one disables colour math on BG2/BG3
     LDA.B #$00                                                           ;888263;
     STA.B DP_WindowMaskBG12                                              ;888265;

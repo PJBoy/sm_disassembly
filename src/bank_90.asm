@@ -1154,38 +1154,41 @@ Draw_Samus:
 
 ;;; $864E: Function pointer table - check if Samus bottom half drawn ;;;
 Draw_Samus_pointers:
-    dw DetermineIf_SamusBottomHalf_IsDrawn_Standing                      ;90864E; 0: Standing
-    dw Flag_SamusBottomHalfIsDrawn                                       ;908650; 1: Running
-    dw Flag_SamusBottomHalfIsDrawn                                       ;908652; 2: Normal jumping
-    dw DetermineIf_SamusBottomHalf_IsDrawn_SpinJumping                   ;908654; 3: Spin jumping
-    dw Flag_SamusBottomHalfIsNotDrawn                                    ;908656; 4: Morph ball - on ground
-    dw Flag_SamusBottomHalfIsDrawn                                       ;908658; 5: Crouching
-    dw Flag_SamusBottomHalfIsDrawn                                       ;90865A; 6: Falling
-    dw Flag_SamusBottomHalfIsNotDrawn                                    ;90865C; 7: Unused
-    dw Flag_SamusBottomHalfIsNotDrawn                                    ;90865E; 8: Morph ball - falling
-    dw Flag_SamusBottomHalfIsNotDrawn                                    ;908660; 9: Unused
-    dw DetermineIf_SamusBottomHalf_IsDrawn_Knockback_CFEnding            ;908662; Ah: Knockback
-    dw Flag_SamusBottomHalfIsDrawn                                       ;908664; Bh: Unused
-    dw Flag_SamusBottomHalfIsDrawn                                       ;908666; Ch: Unused
-    dw DetermineIf_SamusBottomHalf_IsDrawn_UnusedMovementTypeD           ;908668; Dh: Unused
-    dw Flag_SamusBottomHalfIsDrawn                                       ;90866A; Eh: Turning around - on ground
-    dw DetermineIf_SamusBottomHalf_IsDrawn_TransitionPoses               ;90866C; Fh: Crouching/standing/morphing/unmorphing transition
-    dw Flag_SamusBottomHalfIsDrawn                                       ;90866E; 10h: Moonwalking
-    dw Flag_SamusBottomHalfIsNotDrawn                                    ;908670; 11h: Spring ball - on ground
-    dw Flag_SamusBottomHalfIsNotDrawn                                    ;908672; 12h: Spring ball - in air
-    dw Flag_SamusBottomHalfIsNotDrawn                                    ;908674; 13h: Spring ball - falling
-    dw DetermineIf_SamusBottomHalf_IsDrawn_WallJumping                   ;908676; 14h: Wall jumping
-    dw Flag_SamusBottomHalfIsDrawn                                       ;908678; 15h: Ran into a wall
-    dw Flag_SamusBottomHalfIsDrawn                                       ;90867A; 16h: Grappling
-    dw Flag_SamusBottomHalfIsDrawn                                       ;90867C; 17h: Turning around - jumping
-    dw Flag_SamusBottomHalfIsDrawn                                       ;90867E; 18h: Turning around - falling
-    dw DetermineIf_SamusBottomHalf_IsDrawn_DamageBoost                   ;908680; 19h: Damage boost
-    dw Flag_SamusBottomHalfIsDrawn                                       ;908682; 1Ah: Grabbed by Draygon
-    dw DetermineIf_SamusBottomHalf_IsDrawn_Shinespark_CF_Drained         ;908684; 1Bh: Shinespark / crystal flash / drained by metroid / damaged by MB's attacks
+    dw DetermineIf_SamusBottomHalf_IsDrawn_Standing                      ;90864E; *0: Standing
+    dw Flag_SamusBottomHalfIsDrawn                                       ;908650;  1: Running
+    dw Flag_SamusBottomHalfIsDrawn                                       ;908652;  2: Normal jumping
+    dw DetermineIf_SamusBottomHalf_IsDrawn_SpinJumping                   ;908654; *3: Spin jumping
+    dw Flag_SamusBottomHalfIsNotDrawn                                    ;908656;  4: Morph ball - on ground
+    dw Flag_SamusBottomHalfIsDrawn                                       ;908658;  5: Crouching
+    dw Flag_SamusBottomHalfIsDrawn                                       ;90865A;  6: Falling
+    dw Flag_SamusBottomHalfIsNotDrawn                                    ;90865C;  7: Unused
+    dw Flag_SamusBottomHalfIsNotDrawn                                    ;90865E;  8: Morph ball - falling
+    dw Flag_SamusBottomHalfIsNotDrawn                                    ;908660;  9: Unused
+    dw DetermineIf_SamusBottomHalf_IsDrawn_Knockback_CFEnding            ;908662; *Ah: Knockback
+    dw Flag_SamusBottomHalfIsDrawn                                       ;908664;  Bh: Unused
+    dw Flag_SamusBottomHalfIsDrawn                                       ;908666;  Ch: Unused
+    dw DetermineIf_SamusBottomHalf_IsDrawn_UnusedMovementTypeD           ;908668; *Dh: Unused
+    dw Flag_SamusBottomHalfIsDrawn                                       ;90866A;  Eh: Turning around - on ground
+    dw DetermineIf_SamusBottomHalf_IsDrawn_TransitionPoses               ;90866C; *Fh: Crouching/standing/morphing/unmorphing transition
+    dw Flag_SamusBottomHalfIsDrawn                                       ;90866E;  10h: Moonwalking
+    dw Flag_SamusBottomHalfIsNotDrawn                                    ;908670;  11h: Spring ball - on ground
+    dw Flag_SamusBottomHalfIsNotDrawn                                    ;908672;  12h: Spring ball - in air
+    dw Flag_SamusBottomHalfIsNotDrawn                                    ;908674;  13h: Spring ball - falling
+    dw DetermineIf_SamusBottomHalf_IsDrawn_WallJumping                   ;908676; *14h: Wall jumping
+    dw Flag_SamusBottomHalfIsDrawn                                       ;908678;  15h: Ran into a wall
+    dw Flag_SamusBottomHalfIsDrawn                                       ;90867A;  16h: Grappling
+    dw Flag_SamusBottomHalfIsDrawn                                       ;90867C;  17h: Turning around - jumping
+    dw Flag_SamusBottomHalfIsDrawn                                       ;90867E;  18h: Turning around - falling
+    dw DetermineIf_SamusBottomHalf_IsDrawn_DamageBoost                   ;908680; *19h: Damage boost
+    dw Flag_SamusBottomHalfIsDrawn                                       ;908682;  1Ah: Grabbed by Draygon
+    dw DetermineIf_SamusBottomHalf_IsDrawn_Shinespark_CF_Drained         ;908684; *1Bh: Shinespark / crystal flash / drained by metroid / damaged by MB's attacks
 
 
 ;;; $8686: Flag that Samus bottom half is drawn ;;;
 Flag_SamusBottomHalfIsDrawn:
+;; Returns:
+;;     Carry: Set. Bottom spritemap is drawn
+
 ; 1: Running
 ; 2: Normal jumping
 ; 5: Crouching
@@ -1205,6 +1208,9 @@ Flag_SamusBottomHalfIsDrawn:
 
 ;;; $8688: Flag that Samus bottom half is not drawn ;;;
 Flag_SamusBottomHalfIsNotDrawn:
+;; Returns:
+;;     Carry: Clear. Bottom spritemap is not drawn
+
 ; 4: Morph ball - on ground
 ; 7: Unused
 ; 8: Morph ball - falling
@@ -1219,6 +1225,9 @@ Flag_SamusBottomHalfIsNotDrawn:
 
 ;;; $868D: Determine if Samus bottom half is drawn - standing ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_Standing:
+;; Returns:
+;;     Carry: Set. Bottom spritemap is drawn
+
 ; If Samus is facing forward without varia/suit, spawns an extra sprite to cover the left part of her chest
     LDA.W Pose                                                           ;90868D;
     CMP.W #$0000                                                         ;908690;
@@ -1253,6 +1262,9 @@ DetermineIf_SamusBottomHalf_IsDrawn_Standing:
 
 ;;; $86C6: Determine if Samus bottom half is drawn - spin jumping ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_SpinJumping:
+;; Returns:
+;;     Carry: Set if bottom spritemap is drawn, clear otherwise
+
 ; Samus animation frame is 0 during the spin jump start-up
 ; Samus animation frame is >= Bh during the wall jump eligible animation
     LDA.W Pose                                                           ;9086C6;
@@ -1281,6 +1293,8 @@ DetermineIf_SamusBottomHalf_IsDrawn_SpinJumping:
 
 ;;; $86EE: Determine if Samus bottom half is drawn - knockback / crystal flash ending ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_Knockback_CFEnding:
+;; Returns:
+;;     Carry: Set if bottom spritemap is drawn, clear otherwise
     LDA.W Pose                                                           ;9086EE;
     CMP.W #$00D7                                                         ;9086F1;
     BEQ .crystalFlashEnding                                              ;9086F4;
@@ -1305,6 +1319,9 @@ DetermineIf_SamusBottomHalf_IsDrawn_Knockback_CFEnding:
 
 ;;; $870C: Determine if Samus bottom half is drawn - crouching/standing/morphing/unmorphing transition ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_TransitionPoses:
+;; Returns:
+;;     Carry: Set if bottom spritemap is drawn, clear otherwise
+
 ; .noBottom is used for poses 37h..3Ah / 3Dh..40h (morphing/unmorphing transition and some unused poses)
 ; .unused is used for poses DBh..DEh (unused)
     LDA.W Pose                                                           ;90870C;
@@ -1347,6 +1364,8 @@ DetermineIf_SamusBottomHalf_IsDrawn_TransitionPoses:
 
 ;;; $874C: Determine if Samus bottom half is drawn - unused movement type Dh ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_UnusedMovementTypeD:
+;; Returns:
+;;     Carry: Set if bottom spritemap is drawn, clear otherwise
     LDA.W Pose                                                           ;90874C;
     CMP.W #$0065                                                         ;90874F;
     BEQ +                                                                ;908752;
@@ -1369,6 +1388,8 @@ DetermineIf_SamusBottomHalf_IsDrawn_UnusedMovementTypeD:
 
 ;;; $8768: Determine if Samus bottom half is drawn - wall jumping ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_WallJumping:
+;; Returns:
+;;     Carry: Set if bottom spritemap is drawn, clear otherwise
     LDA.W SamusAnimationFrame                                            ;908768;
     CMP.W #$0003                                                         ;90876B;
     BPL .spinning                                                        ;90876E;
@@ -1387,6 +1408,8 @@ DetermineIf_SamusBottomHalf_IsDrawn_WallJumping:
 
 ;;; $877C: Determine if Samus bottom half is drawn - damage boost ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_DamageBoost:
+;; Returns:
+;;     Carry: Set if bottom spritemap is drawn, clear otherwise
     LDA.W SamusAnimationFrame                                            ;90877C;
     CMP.W #$0002                                                         ;90877F;
     BPL .spinning                                                        ;908782;
@@ -1405,6 +1428,8 @@ DetermineIf_SamusBottomHalf_IsDrawn_DamageBoost:
 
 ;;; $8790: Determine if Samus bottom half is drawn - shinespark / crystal flash / drained by metroid / damaged by MB's attacks ;;;
 DetermineIf_SamusBottomHalf_IsDrawn_Shinespark_CF_Drained:
+;; Returns:
+;;     Carry: Set if bottom spritemap is drawn, clear otherwise
     LDA.W Pose                                                           ;908790;
     CMP.W #$00CF                                                         ;908793;
     BPL .notShinespark                                                   ;908796;
@@ -1919,6 +1944,8 @@ AtmosphericEffects_1_2_FootstepSplashes:
 ;; Parameters:
 ;;     X: Atmospheric graphic type
 ;;     Y: Atmospheric graphic index
+
+; Called by the subroutines for other atmospheric graphic types too
     PHY                                                                  ;908AC5;
     LDA.W AtmosphericGraphicsAnimFramesGraphicsTypes,Y                   ;908AC6;
     AND.W #$00FF                                                         ;908AC9;
@@ -1965,7 +1992,6 @@ AtmosphericEffects_1_2_FootstepSplashes:
 ;;; $8B16: Handle atmospheric effects - [atmospheric graphic type] = 3 (diving splash) ;;;
 AtmosphericEffects_3_DivingSplash:
 ;; Parameters:
-;;     X: Atmospheric graphic type
 ;;     Y: Atmospheric graphic index
     PHY                                                                  ;908B16;
     LDA.W AtmosphericGraphicsAnimFramesGraphicsTypes,Y                   ;908B17;
@@ -2022,7 +2048,6 @@ AtmosphericEffects_6_7_Dust:
 ;;; $8B64: Handle atmospheric effects - [atmospheric graphic type] = 5 (bubbles) ;;;
 AtmosphericEffects_5_Bubbles:
 ;; Parameters:
-;;     X: Atmospheric graphic type
 ;;     Y: Atmospheric graphic index
     PHY                                                                  ;908B64;
     LDA.W AtmosphericGraphicsAnimFramesGraphicsTypes,Y                   ;908B65;
@@ -2036,6 +2061,11 @@ AtmosphericEffects_5_Bubbles:
 
 ;;; $8B74: Add atmospheric spritemap to OAM ;;;
 AddAtmosphericSpritemapToOAM:
+;; Parameters:
+;;     Y: Atmospheric graphic index
+;;     [[S] + 1] + 1: Samus spritemap table index
+
+; Expects a pushed Y (in addition to the pushed table index)
     LDA.W AtmosphericGraphicsXPositions,Y                                ;908B74;
     SEC                                                                  ;908B77;
     SBC.W Layer1XPosition                                                ;908B78;
@@ -2071,22 +2101,27 @@ AtmosphericGraphics_AnimationTimers:
     dw $0000                                                             ;908BA3;
 
 ; Indexed by [atmospheric graphics animation frame] * 2
+; 1/2 - footstep splashes
 AtmosphericGraphics_1_FootstepSplashes:
     dw $0003,$0003,$0003,$0003                                           ;908BA5;
 
 AtmosphericGraphics_2_FootstepSplashes:
     dw $0003,$0003,$0003,$0003                                           ;908BAD;
 
+; 3 - diving splash
 AtmosphericGraphics_3_DivingSplash:
     dw $0002,$0002,$0003,$0003,$0003,$0005,$0005,$0006                   ;908BB5;
     dw $0007                                                             ;908BC5;
 
+; 4 - lava surface damage
 AtmosphericGraphics_4_LavaSurfaceDamage:
     dw $0002,$0002,$0002,$0002                                           ;908BC7;
 
+; 5 - bubbles
 AtmosphericGraphics_5_Bubbles:
     dw $0005,$0005,$0005,$0005,$0005,$0005,$0005,$0005                   ;908BCF;
 
+; 6/7 - dust
 AtmosphericGraphics_6_Dust:
     dw $0003,$0004,$0005,$0006                                           ;908BDF;
 
@@ -2292,6 +2327,13 @@ CalculateSamusSpritemapPosition_Standing:
 
 ;;; $8D38: Go to calculate usual Samus spritemap position ;;;
 Goto_CalculateUsualSamusSpritemapPosition:
+;; Parameters:
+;;     Y: Samus pose * 2
+;; Returns:
+;;     X: Samus spritemap X position
+;;     Y: Samus spritemap Y position
+
+; Expects pushed DB
     PLB                                                                  ;908D38;
     JMP.W CalculateUsualSamusSpritemapPosition                           ;908D39;
 
@@ -2495,6 +2537,7 @@ Samus_X_Movement:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $8E75: Unused ;;;
 UNUSED_SamusMovement_908E75:
+; Seems vaguely close to falling X movement, $919F in particular
     PHP                                                                  ;908E75;
     REP #$30                                                             ;908E76;
     JSR.W Determine_SamusXSpeedTable_EntryPointer                        ;908E78;

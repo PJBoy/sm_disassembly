@@ -8791,7 +8791,7 @@ XraySetup_3_ReadBG1Tilemap_1stScreen:
 
 ;;; $CB8E: X-ray setup stage 4 - build x-ray BG2 tilemap, read BG2 tilemap - 1st screen ;;;
 XraySetup_4_BuildBG2Tilemap_ReadBG2Tilemap_1stScreen:
-; Calls the $84 X-ray block graphics lookup
+; Calls Load_Item_and_Room_Special_Xray_Blocks to load item x-ray blocks
     PHP                                                                  ;91CB8E;
     REP #$30                                                             ;91CB8F;
     LDA.W BG1YOffset                                                     ;91CB91;
