@@ -559,7 +559,7 @@ Write_supermetroid_ToSRAM:
 
 
 ;;; $8261: Determine number of demo sets ;;;
-CheckForNonCorruptSRAM:
+DetermineNumberOfDemoSets:
     PHX                                                                  ;808261;
     LDA.W #$0003                                                         ;808262;
     STA.W NumberOfDemoSets                                               ;808265; Number of demo sets = 3
@@ -1125,7 +1125,7 @@ CommonBootSection:
     STA.W $05D1                                                          ;80855C; Mirror debug byte to RAM
     JSR.W NTSC_PAL_SRAM_MappingCheck                                     ;80855F; NTSC/PAL and SRAM mapping check
     REP #$30                                                             ;808562;
-    JSL.L CheckForNonCorruptSRAM                                         ;808564; Check for non-corrupt SRAM
+    JSL.L DetermineNumberOfDemoSets                                      ;808564; Check for non-corrupt SRAM
     STZ.W DisableSounds                                                  ;808568; Enable sounds
     STZ.W APU_SoundHandlerDowntime                                       ;80856B; Sound handler downtime = 0
     JML.L MainGameLoop                                                   ;80856E; Go to main game loop

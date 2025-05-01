@@ -493,48 +493,59 @@ AnimatedTilesObjects_FX_nothing:
     dw $0000,$0000                                                       ;87824D;
 
 AnimatedTilesObjects_FX_verticalSpikes:
+; All areas 1 - vertical spikes
     dw InstList_AnimatedTilesObject_VerticalSpikes                       ;878251;
     dw $0080,$3880                                                       ;878253;
 
 AnimatedTilesObjects_FX_horizontalSpikes:
+; All areas 2 - horizontal spikes
     dw InstList_AnimatedTilesObject_HorizontalSpikes                     ;878257;
     dw $0080,$3D60                                                       ;878259;
 
 AnimatedTilesObjects_FX_crateriaLake:
+; Crateria 4 - Crateria lake
     dw InstList_AnimatedTilesObject_CrateriaLake                         ;87825D;
     dw $0200,$1B00                                                       ;87825F;
 
 UNUSED_AnimatedTilesObjects_FX_unusedCrateriaLava_0_878263:
+; Crateria 8 - unused Crateria lava
     dw UNUSED_InstList_AnimatedTilesObject_CrateriaLava_8781A6           ;878263;
     dw $00C0,$0A00                                                       ;878265;
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_AnimatedTilesObjects_FX_unusedCrateriaLava_1_878269:
+; Unused. Crateria lava
     dw UNUSED_InstList_AnimatedTilesObject_CrateriaLava_8781A6           ;878269;
     dw $00C0,$0640                                                       ;87826B;
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 AnimatedTilesObjects_FX_wreckedShipScreen:
+; Wrecked Ship 10h - Wrecked Ship screen
     dw InstList_AnimatedTilesObject_WreckedShipScreen_0                  ;87826F;
     dw $0080,$19C0                                                       ;878271;
 
 AnimatedTilesObjects_FX_wreckedShipTreadmillRightwards:
+; Wrecked Ship 4 - Wrecked Ship treadmill - rightwards
     dw InstList_AnimTilesObject_WreckedShipTreadmill_Rightwards_0        ;878275;
     dw $0020,$00E0                                                       ;878277;
 
 AnimatedTilesObjects_FX_wreckedShipTreadmillLeftwards:
+; Wrecked Ship 8 - Wrecked Ship treadmill - leftwards
     dw InstList_AnimTilesObject_WreckedShipTreadmill_Leftwards_0         ;87827B;
     dw $0020,$00E0                                                       ;87827D;
 
 AnimatedTilesObjects_FX_brinstarMouth:
+; Brinstar 4 - Brinstar plant
     dw InstList_AnimatedTilesObject_BrinstarMouth                        ;878281;
     dw $00E0,$0410                                                       ;878283;
 
 AnimatedTilesObjects_FX_maridiaSandCeiling:
+; Maridia 4 - Maridia sand ceiling
     dw InstList_AnimatedTilesObject_MaridiaSandCeiling                   ;878287;
     dw $0040,$1000                                                       ;878289;
 
 AnimatedTilesObjects_FX_maridiaSandFalling:
+; Maridia 8 - Maridia sand falling
     dw InstList_AnimatedTilesObject_MaridiaSandFalling                   ;87828D;
     dw $0020,$1020                                                       ;87828F;
 
@@ -954,7 +965,7 @@ AnimatedTilesObject_TourianStatueDraygon:
     dw $0080,$0CA0                                                       ;878560;
 
 
-;;; $8564: Crateria lake ;;;
+;;; $8564: Crateria 4 - Crateria lake ;;;
 AnimatedTiles_CrateriaLake_0:
 incbin "../data/AnimatedTiles_CrateriaLake_0.bin" ; $200 bytes
 
@@ -965,7 +976,7 @@ AnimatedTiles_CrateriaLake_2:
 incbin "../data/AnimatedTiles_CrateriaLake_2.bin" ; $200 bytes
 
 
-;;; $8B64: Unused. Crateria lava ;;;
+;;; $8B64: Crateria 8 - unused Crateria lava ;;;
 UNUSED_AnimatedTiles_CrateriaLava_0_878B64:
 incbin "../data/UNUSED_AnimatedTiles_CrateriaLava_0.bin" ; $C0 bytes
 
@@ -979,7 +990,7 @@ UNUSED_AnimatedTiles_CrateriaLava_3_878DA4:
 incbin "../data/UNUSED_AnimatedTiles_CrateriaLava_3.bin" ; $C0 bytes
 
 
-;;; $8E64: Wrecked Ship treadmill ;;;
+;;; $8E64: Wrecked Ship 4/8 - Wrecked Ship treadmill ;;;
 AnimatedTiles_WreckedShipTreadmill_0:
 incbin "../data/AnimatedTiles_WreckedShipTreadmill_0.bin" ; $20 bytes
 
@@ -993,7 +1004,7 @@ AnimatedTiles_WreckedShipTreadmill_3:
 incbin "../data/AnimatedTiles_WreckedShipTreadmill_3.bin" ; $20 bytes
 
 
-;;; $8EE4: Wrecked Ship screen ;;;
+;;; $8EE4: Wrecked Ship 10h - Wrecked Ship screen ;;;
 AnimatedTiles_WreckedShipScreen_0:
 incbin "../data/AnimatedTiles_WreckedShipScreen_0.bin" ; $80 bytes
 
@@ -1005,13 +1016,13 @@ incbin "../data/AnimatedTiles_WreckedShipScreen_2.bin" ; $80 bytes
 
 
 if !FEATURE_KEEP_UNREFERENCED
-;;; $9064: "X" ;;;
+;;; $9064: Unused. "X" ;;;
 UNUSED_AnimatedTiles_X_879064:
 incbin "../data/AnimatedTiles_X_879064.bin" ; $100 bytes
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
-;;; $9164: Maridia sand falling ;;;
+;;; $9164: Maridia 8 - Maridia sand falling ;;;
 AnimatedTiles_MaridiaSandFalling_0:
 incbin "../data/AnimatedTiles_MaridiaSandFalling_0.bin" ; $20 bytes
 
@@ -1025,7 +1036,7 @@ AnimatedTiles_MaridiaSandFalling_3:
 incbin "../data/AnimatedTiles_MaridiaSandFalling_3.bin" ; $20 bytes
 
 
-;;; $91E4: Maridia sand ceiling ;;;
+;;; $91E4: Maridia 4 - Maridia sand ceiling ;;;
 AnimatedTiles_MaridiaSandCeiling_0:
 incbin "../data/AnimatedTiles_MaridiaSandCeiling_0.bin" ; $40 bytes
 
@@ -1040,7 +1051,7 @@ incbin "../data/AnimatedTiles_MaridiaSandCeiling_3.bin" ; $40 bytes
 
 
 if !FEATURE_KEEP_UNREFERENCED
-;;; $92E4: "X" ;;;
+;;; $92E4: Unused. "X" ;;;
 UNUSED_AnimatedTiles_X_8792E4:
 incbin "../data/AnimatedTiles_X_8792E4.bin" ; $80 bytes
 endif ; !FEATURE_KEEP_UNREFERENCED
@@ -1110,7 +1121,7 @@ AnimatedTiles_KraidStatue_Other:
 incbin "../data/AnimatedTiles_KraidStatue_Other.bin" ; $80 bytes
 
 
-;;; $9964: Brinstar mouth ;;;
+;;; $9964: Brinstar 4 - Brinstar plant ;;;
 AnimatedTiles_BrinstarMouth_0:
 incbin "../data/AnimatedTiles_BrinstarMouth_0.bin" ; $E0 bytes
 
@@ -1121,7 +1132,7 @@ AnimatedTiles_BrinstarMouth_2:
 incbin "../data/AnimatedTiles_BrinstarMouth_2.bin" ; $E0 bytes
 
 
-;;; $9C04: Vertical spikes ;;;
+;;; $9C04: All areas 1 - vertical spikes ;;;
 AnimatedTiles_VerticalSpikes_0:
 incbin "../data/AnimatedTiles_VerticalSpikes_0.bin" ; $80 bytes
 
@@ -1132,7 +1143,7 @@ AnimatedTiles_VerticalSpikes_2:
 incbin "../data/AnimatedTiles_VerticalSpikes_2.bin" ; $80 bytes
 
 
-;;; $9D84: Horizontal spikes ;;;
+;;; $9D84: All areas 2 - horizontal spikes ;;;
 AnimatedTiles_HorizontalSpikes_0:
 incbin "../data/AnimatedTiles_HorizontalSpikes_0.bin" ; $80 bytes
 
@@ -1144,7 +1155,7 @@ incbin "../data/AnimatedTiles_HorizontalSpikes_2.bin" ; $80 bytes
 
 
 if !FEATURE_KEEP_UNREFERENCED
-;;; $9F04: "X" ;;;
+;;; $9F04: Unused. "X" ;;;
 UNUSED_AnimatedTiles_X_879F04:
 incbin "../data/AnimatedTiles_X_879F04.bin" ; $660 bytes
 endif ; !FEATURE_KEEP_UNREFERENCED
