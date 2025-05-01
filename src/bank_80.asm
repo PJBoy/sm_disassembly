@@ -9,7 +9,7 @@ DebugConst:
   .DemoRecorder:
     dw $0000 ; Demo recorder ($90:E759)
   .DebugMode:
-    dw $0000 ; Debug mode, written to $05D1 on boot
+    dw $0000 ; Debug mode, written to Debug_Enable on boot
   .DebugScrolling:
     dw $0000 ; Debug scrolling ($82:8B44: game state 8 - main gameplay)
   .DisableAudio:
@@ -1122,7 +1122,7 @@ CommonBootSection:
     STA.W APU_MusicQueueTimers+12                                        ;808552;
     STA.W APU_MusicQueueTimers+14                                        ;808555;
     LDA.L DebugConst_DebugMode                                           ;808558;
-    STA.W $05D1                                                          ;80855C; Mirror debug byte to RAM
+    STA.W Debug_Enable                                                   ;80855C; Mirror debug byte to RAM
     JSR.W NTSC_PAL_SRAM_MappingCheck                                     ;80855F; NTSC/PAL and SRAM mapping check
     REP #$30                                                             ;808562;
     JSL.L DetermineNumberOfDemoSets                                      ;808564; Check for non-corrupt SRAM
@@ -6524,12 +6524,12 @@ UpdateLevelBackgroundDataColumn:
 +   STA.W VRAMTilemapScreenBaseAddr                                      ;80AA59;
     CLC                                                                  ;80AA5C;
     ADC.W PositionOfScrollBoundary                                       ;80AA5D;
-    STA.W $095A,X                                                        ;80AA60;
+    STA.W BG1Col_unwrappedTilemapVRAMUpdateDest,X                        ;80AA60;
     LDA.W VRAMTilemapScreenBaseAddr                                      ;80AA63;
     CLC                                                                  ;80AA66;
     ADC.W XBlockOfVRAMBlocksToUpdate                                     ;80AA67;
     ADC.W XBlockOfVRAMBlocksToUpdate                                     ;80AA6A;
-    STA.W $095C,X                                                        ;80AA6D;
+    STA.W BG1Col_wrappedTilemapVRAMUpdateDest,X                          ;80AA6D;
     LDA.W #BG1ColumnUpdateTilemapLeftHalves                              ;80AA70;
     LDY.W #$0000                                                         ;80AA73;
     CPX.W #$0000                                                         ;80AA76;
@@ -6539,10 +6539,10 @@ UpdateLevelBackgroundDataColumn:
 
 +   CLC                                                                  ;80AA81;
     ADC.W BG1Col_unwrappedTilemapVRAMUpdateSize,X                        ;80AA82;
-    STA.W $095E,X                                                        ;80AA85;
+    STA.W BG1Col_wrappedTilemapVRAMUpdateLeftHalvesSrc,X                 ;80AA85;
     CLC                                                                  ;80AA88;
     ADC.W #$0040                                                         ;80AA89;
-    STA.W $0960,X                                                        ;80AA8C;
+    STA.W BG1Col_wrappedTilemapVRAMUpdateRightHalvesSrc,X                ;80AA8C;
     STY.W VRAMTilemapScreenBaseAddr                                      ;80AA8F;
     SEP #$20                                                             ;80AA92;
     LDA.B #$7E                                                           ;80AA94;
@@ -6555,7 +6555,7 @@ UpdateLevelBackgroundDataColumn:
     STA.W ProposedScrolledLayer1XPosition                                ;80AAA1;
 
   .loop:
-    LDA.B [$36],Y                                                        ;80AAA4;
+    LDA.B [DP_BlocksToUpdate],Y                                          ;80AAA4;
     STA.W BackgroundBlockToUpdate                                        ;80AAA6;
     AND.W #$03FF                                                         ;80AAA9;
     ASL                                                                  ;80AAAC;
@@ -6567,60 +6567,60 @@ UpdateLevelBackgroundDataColumn:
     LDA.W BackgroundBlockToUpdate                                        ;80AAB4;
     AND.W #$0C00                                                         ;80AAB7;
     BNE +                                                                ;80AABA;
-    LDA.W $A000,X                                                        ;80AABC;
-    STA.W $C8C8,Y                                                        ;80AABF;
-    LDA.W $A002,X                                                        ;80AAC2;
-    STA.W $C908,Y                                                        ;80AAC5;
-    LDA.W $A004,X                                                        ;80AAC8;
-    STA.W $C8CA,Y                                                        ;80AACB;
-    LDA.W $A006,X                                                        ;80AACE;
-    STA.W $C90A,Y                                                        ;80AAD1;
+    LDA.W TileTable_topLeft,X                                            ;80AABC;
+    STA.W BG1ColumnUpdateTilemapLeftHalves,Y                             ;80AABF;
+    LDA.W TileTable_topRight,X                                           ;80AAC2;
+    STA.W BG1ColumnUpdateTilemapRightHalves,Y                            ;80AAC5;
+    LDA.W TileTable_bottomLeft,X                                         ;80AAC8;
+    STA.W BG1ColumnUpdateTilemapLeftHalves+2,Y                           ;80AACB;
+    LDA.W TileTable_bottomRight,X                                        ;80AACE;
+    STA.W BG1ColumnUpdateTilemapRightHalves+2,Y                          ;80AAD1;
     JMP.W .next                                                          ;80AAD4;
 
 +   CMP.W #$0400                                                         ;80AAD7;
     BNE +                                                                ;80AADA;
-    LDA.W $A002,X                                                        ;80AADC;
+    LDA.W TileTable_topRight,X                                           ;80AADC;
     EOR.W #$4000                                                         ;80AADF;
-    STA.W $C8C8,Y                                                        ;80AAE2;
-    LDA.W $A000,X                                                        ;80AAE5;
+    STA.W BG1ColumnUpdateTilemapLeftHalves,Y                             ;80AAE2;
+    LDA.W TileTable_topLeft,X                                            ;80AAE5;
     EOR.W #$4000                                                         ;80AAE8;
-    STA.W $C908,Y                                                        ;80AAEB;
-    LDA.W $A006,X                                                        ;80AAEE;
+    STA.W BG1ColumnUpdateTilemapRightHalves,Y                            ;80AAEB;
+    LDA.W TileTable_bottomRight,X                                        ;80AAEE;
     EOR.W #$4000                                                         ;80AAF1;
-    STA.W $C8CA,Y                                                        ;80AAF4;
-    LDA.W $A004,X                                                        ;80AAF7;
+    STA.W BG1ColumnUpdateTilemapLeftHalves+2,Y                           ;80AAF4;
+    LDA.W TileTable_bottomLeft,X                                         ;80AAF7;
     EOR.W #$4000                                                         ;80AAFA;
-    STA.W $C90A,Y                                                        ;80AAFD;
+    STA.W BG1ColumnUpdateTilemapRightHalves+2,Y                          ;80AAFD;
     BRA .next                                                            ;80AB00;
 
 +   CMP.W #$0800                                                         ;80AB02;
     BNE +                                                                ;80AB05;
-    LDA.W $A004,X                                                        ;80AB07;
+    LDA.W TileTable_bottomLeft,X                                         ;80AB07;
     EOR.W #$8000                                                         ;80AB0A;
-    STA.W $C8C8,Y                                                        ;80AB0D;
-    LDA.W $A006,X                                                        ;80AB10;
+    STA.W BG1ColumnUpdateTilemapLeftHalves,Y                             ;80AB0D;
+    LDA.W TileTable_bottomRight,X                                        ;80AB10;
     EOR.W #$8000                                                         ;80AB13;
-    STA.W $C908,Y                                                        ;80AB16;
-    LDA.W $A000,X                                                        ;80AB19;
+    STA.W BG1ColumnUpdateTilemapRightHalves,Y                            ;80AB16;
+    LDA.W TileTable_topLeft,X                                            ;80AB19;
     EOR.W #$8000                                                         ;80AB1C;
-    STA.W $C8CA,Y                                                        ;80AB1F;
-    LDA.W $A002,X                                                        ;80AB22;
+    STA.W BG1ColumnUpdateTilemapLeftHalves+2,Y                           ;80AB1F;
+    LDA.W TileTable_topRight,X                                           ;80AB22;
     EOR.W #$8000                                                         ;80AB25;
-    STA.W $C90A,Y                                                        ;80AB28;
+    STA.W BG1ColumnUpdateTilemapRightHalves+2,Y                          ;80AB28;
     BRA .next                                                            ;80AB2B;
 
-+   LDA.W $A006,X                                                        ;80AB2D;
++   LDA.W TileTable_bottomRight,X                                        ;80AB2D;
     EOR.W #$C000                                                         ;80AB30;
-    STA.W $C8C8,Y                                                        ;80AB33;
-    LDA.W $A004,X                                                        ;80AB36;
+    STA.W BG1ColumnUpdateTilemapLeftHalves,Y                             ;80AB33;
+    LDA.W TileTable_bottomLeft,X                                         ;80AB36;
     EOR.W #$C000                                                         ;80AB39;
-    STA.W $C908,Y                                                        ;80AB3C;
-    LDA.W $A002,X                                                        ;80AB3F;
+    STA.W BG1ColumnUpdateTilemapRightHalves,Y                            ;80AB3C;
+    LDA.W TileTable_topRight,X                                           ;80AB3F;
     EOR.W #$C000                                                         ;80AB42;
-    STA.W $C8CA,Y                                                        ;80AB45;
-    LDA.W $A000,X                                                        ;80AB48;
+    STA.W BG1ColumnUpdateTilemapLeftHalves+2,Y                           ;80AB45;
+    LDA.W TileTable_topLeft,X                                            ;80AB48;
     EOR.W #$C000                                                         ;80AB4B;
-    STA.W $C90A,Y                                                        ;80AB4E;
+    STA.W BG1ColumnUpdateTilemapRightHalves+2,Y                          ;80AB4E;
 
   .next:
     INY                                                                  ;80AB51;
