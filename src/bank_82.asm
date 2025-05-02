@@ -651,7 +651,7 @@ GameState_2A_PlayingDemo:
     LDA.B DP_Controller1New                                              ;82854E;
     BEQ .decDemoTimer                                                    ;828550;
     LDA.W #$0001                                                         ;828552;
-    STA.W EndingClearTime_HoursTens                                      ;828555;
+    STA.W DemoControlFlags                                               ;828555;
     BRA .endDemos                                                        ;828558;
 
   .decDemoTimer:
@@ -659,7 +659,7 @@ GameState_2A_PlayingDemo:
     BEQ +                                                                ;82855D;
     BPL .return                                                          ;82855F;
 
-+   STZ.W EndingClearTime_HoursTens                                      ;828561;
++   STZ.W DemoControlFlags                                               ;828561;
     LDX.W #$005A                                                         ;828564;
 
   .loop:
@@ -672,7 +672,7 @@ GameState_2A_PlayingDemo:
 
   .pressedInput:
     LDA.W #$0001                                                         ;828574;
-    STA.W EndingClearTime_HoursTens                                      ;828577;
+    STA.W DemoControlFlags                                               ;828577;
 
   .endDemos:
     INC.W GameState                                                      ;82857A;
@@ -694,7 +694,7 @@ GameState_2A_PlayingDemo:
 GameState_2B_UnloadGameData:
     PHP                                                                  ;828593;
     REP #$30                                                             ;828594;
-    LDA.W EndingClearTime_HoursTens                                      ;828596;
+    LDA.W DemoControlFlags                                               ;828596;
     CMP.W #$0001                                                         ;828599;
     BEQ +                                                                ;82859C;
     JSR.W CheckForNextDemo                                               ;82859E;
@@ -753,7 +753,7 @@ GameState_2C_TransitionFromDemo:
     REP #$30                                                             ;8285FC;
     LDA.W #$0001                                                         ;8285FE;
     STA.W GameState                                                      ;828601;
-    LDA.W EndingClearTime_HoursTens                                      ;828604;
+    LDA.W DemoControlFlags                                               ;828604;
     BMI .nextDemoScene                                                   ;828607;
     BNE .titleSequence                                                   ;828609;
     LDA.W #$0000                                                         ;82860B;
@@ -801,7 +801,7 @@ CheckForNextDemo:
     LDA.W $0000,X                                                        ;828652;
     CMP.W #$FFFF                                                         ;828655;
     BNE .nextDemoScene                                                   ;828658;
-    STZ.W EndingClearTime_HoursTens                                      ;82865A;
+    STZ.W DemoControlFlags                                               ;82865A;
     LDA.W DemoSet                                                        ;82865D;
     INC                                                                  ;828660;
     CMP.W NumberOfDemoSets                                               ;828661;
@@ -815,7 +815,7 @@ CheckForNextDemo:
 
   .nextDemoScene:
     LDA.W #$8000                                                         ;828671;
-    STA.W EndingClearTime_HoursTens                                      ;828674;
+    STA.W DemoControlFlags                                               ;828674;
     PLP                                                                  ;828677;
     RTS                                                                  ;828678;
 
@@ -867,7 +867,7 @@ LoadDemoRoomData:
     STA.W DemoTimer                                                      ;8286DC;
     PHB                                                                  ;8286DF;
     SEP #$20                                                             ;8286E0;
-    LDA.B #DP_Controller1New                                             ;8286E2;
+    LDA.B #$8F                                                           ;8286E2;
     PHA                                                                  ;8286E4;
     PLB                                                                  ;8286E5;
     LDX.W RoomPointer                                                    ;8286E6;
