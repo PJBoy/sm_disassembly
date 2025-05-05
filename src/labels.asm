@@ -15,6 +15,13 @@ DoorHeaders:
 org $830000
 FXHeaders:
 
+
+org $840000
+PLMEntries:
+  .setup: skip 2 ; 0: Setup pointer
+  .instList: skip 2 ; 2: Instruction list pointer
+  .instList2: skip 2 ; 4: Instruction list pointer 2
+
 org $860000
 EnemyProjectiles:
   .initAI: skip 2 ; 0: Initialisation AI

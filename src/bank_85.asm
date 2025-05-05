@@ -182,10 +182,10 @@ Initialise_PPU_for_MessageBoxes:
     STA.W $2122                                                          ;858161;
     LDA.B #$00                                                           ;858164;
     STA.W $2122                                                          ;858166;
-    LDA.B $85                                                            ;858169;
-    STA.L $7E33EA                                                        ;85816B;
+    LDA.B DP_HDMAEnable                                                  ;858169;
+    STA.L BackupOfHDMAChannelsDuringMessageBoxes                         ;85816B;
     LDA.B DP_GameplayBG1TilemapAddrSize                                  ;85816F;
-    STA.L $7E33EB                                                        ;858171;
+    STA.L BackupOfBG3TilemapBaseAddrSizeDuringMessageBoxes               ;858171;
     LDA.B #$58                                                           ;858175;
     STA.B DP_GameplayBG1TilemapAddrSize                                  ;858177;
     LDA.B #$17                                                           ;858179;
@@ -209,7 +209,7 @@ Initialise_PPU_for_MessageBoxes:
     LDA.W #$0000                                                         ;8581A7;
 
   .loop:
-    STA.L $7E3000,X                                                      ;8581AA;
+    STA.L MessageBoxBG3YScrollHDMADataTable,X                            ;8581AA;
     DEX                                                                  ;8581AE;
     DEX                                                                  ;8581AF;
     BPL .loop                                                            ;8581B0;
@@ -220,9 +220,9 @@ Initialise_PPU_for_MessageBoxes:
     LDA.W $2139                                                          ;8581BD;
     LDA.W #$3981                                                         ;8581C0;  (8-bit transfer looks wrong, bug?)
     STA.W $4310                                                          ;8581C3;
-    LDA.W #$4100                                                         ;8581C6;
+    LDA.W #BackupOfVRAMDuringMessageBoxes                                ;8581C6;
     STA.W $4312                                                          ;8581C9;
-    LDA.W #$007E                                                         ;8581CC;
+    LDA.W #BackupOfVRAMDuringMessageBoxes>>16                            ;8581CC;
     STA.W $4314                                                          ;8581CF;
     LDA.W #$0700                                                         ;8581D2;
     STA.W $4315                                                          ;8581D5;
@@ -245,7 +245,7 @@ Clear_MessageBox_BG3Tilemap:
     LDA.W .blankTile                                                     ;8581F8;
 
   .loop:
-    STA.L $7E3800,X                                                      ;8581FB;
+    STA.L ClearedMessageBoxBG3Tilemap,X                                  ;8581FB;
     DEX                                                                  ;8581FF;
     DEX                                                                  ;858200;
     BPL .loop                                                            ;858201;
@@ -254,9 +254,9 @@ Clear_MessageBox_BG3Tilemap:
     STA.W $2116                                                          ;858209;
     LDA.W #$1801                                                         ;85820C;
     STA.W $4310                                                          ;85820F;
-    LDA.W #$3800                                                         ;858212;
+    LDA.W #ClearedMessageBoxBG3Tilemap                                   ;858212;
     STA.W $4312                                                          ;858215;
-    LDA.W #$007E                                                         ;858218;
+    LDA.W #ClearedMessageBoxBG3Tilemap>>16                               ;858218;
     STA.W $4314                                                          ;85821B;
     LDA.W #$0700                                                         ;85821E;
     STA.W $4315                                                          ;858221;
@@ -281,10 +281,10 @@ Initialise_MessageBox:
     LDA.W MessageBoxIndex                                                ;858243;
     DEC                                                                  ;858246;
     ASL                                                                  ;858247;
-    STA.B $34                                                            ;858248;
+    STA.B DP_Temp34                                                      ;858248;
     ASL                                                                  ;85824A;
     CLC                                                                  ;85824B;
-    ADC.B $34                                                            ;85824C;
+    ADC.B DP_Temp34                                                      ;85824C;
     TAX                                                                  ;85824E;
     PHX                                                                  ;85824F;
     JSR.W (MessageDefinitionsPointers_drawInitialMessageBox,X)           ;858250;
@@ -306,7 +306,7 @@ Write_Large_MessageBox_Tilemap:
 
   .topBorderLoop:
     LDA.W Large_MessageBox_TopBottomBorder_Tilemap,X                     ;85825D;
-    STA.L $7E3200,X                                                      ;858260;
+    STA.L MessageBoxTilemap,X                                            ;858260;
     INX                                                                  ;858264;
     INX                                                                  ;858265;
     CPX.W #$0040                                                         ;858266;
@@ -314,17 +314,17 @@ Write_Large_MessageBox_Tilemap:
     LDY.W #$0000                                                         ;85826B;
     JSR.W Write_Message_Tilemap                                          ;85826E;
     LDA.W #$0020                                                         ;858271;
-    STA.B $16                                                            ;858274;
+    STA.B DP_Temp16                                                      ;858274;
     LDY.W #$0000                                                         ;858276;
 
   .bottomBorderLoop:
     LDA.W Large_MessageBox_TopBottomBorder_Tilemap,Y                     ;858279;
-    STA.L $7E3200,X                                                      ;85827C;
+    STA.L MessageBoxTilemap,X                                            ;85827C;
     INY                                                                  ;858280;
     INY                                                                  ;858281;
     INX                                                                  ;858282;
     INX                                                                  ;858283;
-    DEC.B $16                                                            ;858284;
+    DEC.B DP_Temp16                                                      ;858284;
     BNE .bottomBorderLoop                                                ;858286;
     RTS                                                                  ;858288;
 
@@ -336,24 +336,24 @@ Write_Small_MessageBox_Tilemap:
 
   .topBorderLoop:
     LDA.W Small_MessageBox_TopBottomBorder_Tilemap,X                     ;85828F;
-    STA.L $7E3200,X                                                      ;858292;
+    STA.L MessageBoxTilemap,X                                            ;858292;
     INX                                                                  ;858296;
     INX                                                                  ;858297;
     CPX.W #$0040                                                         ;858298;
     BNE .topBorderLoop                                                   ;85829B;
     JSR.W Write_Message_Tilemap                                          ;85829D;
     LDA.W #$0020                                                         ;8582A0;
-    STA.B $16                                                            ;8582A3;
+    STA.B DP_Temp16                                                      ;8582A3;
     LDY.W #$0000                                                         ;8582A5;
 
   .bottomBorderLoop:
     LDA.W Small_MessageBox_TopBottomBorder_Tilemap,Y                     ;8582A8;
-    STA.L $7E3200,X                                                      ;8582AB;
+    STA.L MessageBoxTilemap,X                                            ;8582AB;
     INY                                                                  ;8582AF;
     INY                                                                  ;8582B0;
     INX                                                                  ;8582B1;
     INX                                                                  ;8582B2;
-    DEC.B $16                                                            ;8582B3;
+    DEC.B DP_Temp16                                                      ;8582B3;
     BNE .bottomBorderLoop                                                ;8582B5;
     RTS                                                                  ;8582B7;
 
@@ -367,15 +367,15 @@ Write_Message_Tilemap:
     JSL.L HandleSounds                                                   ;8582BF;
     REP #$30                                                             ;8582C3;
     LDA.W #$0070                                                         ;8582C5;
-    STA.W $05A6                                                          ;8582C8;
+    STA.W MessageBoxAnim_BottomHalf                                      ;8582C8;
     LDA.W #$007C                                                         ;8582CB;
-    STA.W $05A4                                                          ;8582CE;
-    STZ.W $05A2                                                          ;8582D1;
+    STA.W MessageBoxAnim_BottomHalfPlusRadius                            ;8582CE;
+    STZ.W MessageBoxAnim_YRadius                                         ;8582D1;
     LDX.W #$0000                                                         ;8582D4;
     LDA.W #$0000                                                         ;8582D7;
 
   .zeroLoop:
-    STA.L $7E3000,X                                                      ;8582DA;
+    STA.L MessageBoxBG3YScrollHDMADataTable,X                            ;8582DA;
     INX                                                                  ;8582DE;
     INX                                                                  ;8582DF;
     CPX.W #$00E0                                                         ;8582E0;
@@ -383,34 +383,34 @@ Write_Message_Tilemap:
     LDA.W MessageBoxIndex                                                ;8582E5;
     DEC                                                                  ;8582E8;
     ASL                                                                  ;8582E9;
-    STA.B $34                                                            ;8582EA;
+    STA.B DP_Temp34                                                      ;8582EA;
     ASL                                                                  ;8582EC;
     CLC                                                                  ;8582ED;
-    ADC.B $34                                                            ;8582EE;
+    ADC.B DP_Temp34                                                      ;8582EE;
     TAX                                                                  ;8582F0;
     LDA.W MessageDefinitionsPointers_messageTilemap,X                    ;8582F1;
-    STA.B $00                                                            ;8582F4;
+    STA.B DP_Temp00                                                      ;8582F4;
     LDA.W MessageDefinitionsPointers_nextEntryMessageTilemap,X           ;8582F6;
     SEC                                                                  ;8582F9;
-    SBC.B $00                                                            ;8582FA;
-    STA.B $09                                                            ;8582FC;
+    SBC.B DP_Temp00                                                      ;8582FA;
+    STA.B DP_Temp09                                                      ;8582FC;
     LSR                                                                  ;8582FE;
-    STA.B $16                                                            ;8582FF;
-    LDA.B $09                                                            ;858301;
+    STA.B DP_Temp16                                                      ;8582FF;
+    LDA.B DP_Temp09                                                      ;858301;
     CLC                                                                  ;858303;
     ADC.W #$0080                                                         ;858304;
-    STA.B $09                                                            ;858307;
+    STA.B DP_Temp09                                                      ;858307;
     LDX.W #$0040                                                         ;858309;
     LDY.W #$0000                                                         ;85830C;
 
   .messageLoop:
-    LDA.B ($00),Y                                                        ;85830F;
-    STA.L $7E3200,X                                                      ;858311;
+    LDA.B (DP_Temp00),Y                                                  ;85830F;
+    STA.L MessageBoxTilemap,X                                            ;858311;
     INX                                                                  ;858315;
     INX                                                                  ;858316;
     INY                                                                  ;858317;
     INY                                                                  ;858318;
-    DEC.B $16                                                            ;858319;
+    DEC.B DP_Temp16                                                      ;858319;
     BNE .messageLoop                                                     ;85831B;
     RTS                                                                  ;85831D;
 
@@ -424,16 +424,16 @@ Setup_PPU_for_Active_MessageBox:
     REP #$20                                                             ;858324;
     LDA.W #$5800                                                         ;858326;
     CLC                                                                  ;858329;
-    ADC.B $34                                                            ;85832A;
-    STA.B $34                                                            ;85832C;
+    ADC.B DP_Temp34                                                      ;85832A;
+    STA.B DP_Temp34                                                      ;85832C;
     STA.W $2116                                                          ;85832E;
     LDA.W #$1801                                                         ;858331;
     STA.W $4310                                                          ;858334;
-    LDA.W #$3200                                                         ;858337;
+    LDA.W #MessageBoxTilemap                                             ;858337;
     STA.W $4312                                                          ;85833A;
-    LDA.W #$007E                                                         ;85833D;
+    LDA.W #MessageBoxTilemap>>16                                         ;85833D;
     STA.W $4314                                                          ;858340;
-    LDA.B $09                                                            ;858343;
+    LDA.B DP_Temp09                                                      ;858343;
     STA.W $4315                                                          ;858345;
     STZ.W $4317                                                          ;858348;
     STZ.W $4319                                                          ;85834B;
@@ -451,30 +451,30 @@ Setup_PPU_for_Active_MessageBox:
 Setup_MessageBox_BG3_Yscroll_HDMA:
     SEP #$20                                                             ;858363;
     LDA.B #$FF                                                           ;858365;
-    STA.L $7E3380                                                        ;858367;
+    STA.L MessageBoxBG3YScrollIndirectHDMATable                          ;858367;
     LDA.B #$00                                                           ;85836B;
-    STA.L $7E3381                                                        ;85836D;
+    STA.L MessageBoxBG3YScrollIndirectHDMATable+1                        ;85836D;
     LDA.B #$30                                                           ;858371;
-    STA.L $7E3382                                                        ;858373;
+    STA.L MessageBoxBG3YScrollIndirectHDMATable+2                        ;858373;
     LDA.B #$E1                                                           ;858377;
-    STA.L $7E3383                                                        ;858379;
+    STA.L MessageBoxBG3YScrollIndirectHDMATable+3                        ;858379;
     LDA.B #$FE                                                           ;85837D;
-    STA.L $7E3384                                                        ;85837F;
+    STA.L MessageBoxBG3YScrollIndirectHDMATable+4                        ;85837F;
     LDA.B #$30                                                           ;858383;
-    STA.L $7E3385                                                        ;858385;
+    STA.L MessageBoxBG3YScrollIndirectHDMATable+5                        ;858385;
     LDA.B #$00                                                           ;858389;
-    STA.L $7E3386                                                        ;85838B;
+    STA.L MessageBoxBG3YScrollIndirectHDMATable+6                        ;85838B;
     LDA.B #$42                                                           ;85838F;
     STA.W $4360                                                          ;858391;
     LDA.B #$12                                                           ;858394;
     STA.W $4361                                                          ;858396;
-    LDA.B #$80                                                           ;858399;
+    LDA.B #MessageBoxBG3YScrollIndirectHDMATable                         ;858399;
     STA.W $4362                                                          ;85839B;
     STA.W $4365                                                          ;85839E;
-    LDA.B #$33                                                           ;8583A1;
+    LDA.B #MessageBoxBG3YScrollIndirectHDMATable>>8                      ;8583A1;
     STA.W $4363                                                          ;8583A3;
     STA.W $4366                                                          ;8583A6;
-    LDA.B #$7E                                                           ;8583A9;
+    LDA.B #MessageBoxBG3YScrollIndirectHDMATable>>16                     ;8583A9;
     STA.W $4364                                                          ;8583AB;
     STA.W $4367                                                          ;8583AE;
     STZ.W $4368                                                          ;8583B1;
@@ -490,14 +490,14 @@ Setup_MessageBox_BG3_Yscroll_HDMA:
 ;;; $83C5: Draw shoot button and set up PPU for large message box ;;;
 DrawShootButton_SetupPPUForLargeMessageBox:
     REP #$30                                                             ;8583C5;
-    LDA.W $09B2                                                          ;8583C7;
+    LDA.W ShotBinding                                                    ;8583C7;
     BRA DrawSpecialButton_SetupPPUForLargeMessageBox                     ;8583CA;
 
 
 ;;; $83CC: Draw run button and set up PPU for large message box ;;;
 DrawRunButton_SetupPPUForLargeMessageBox:
     REP #$30                                                             ;8583CC;
-    LDA.W $09B6                                                          ;8583CE; fallthrough to DrawSpecialButton_SetupPPUForLargeMessageBox
+    LDA.W DashBinding                                                    ;8583CE; fallthrough to DrawSpecialButton_SetupPPUForLargeMessageBox
 
 
 ;;; $83D1: Draw special button and set up PPU for large message box ;;;
@@ -535,9 +535,9 @@ DrawSpecialButton_SetupPPUForLargeMessageBox:
     LDA.W Special_Button_Tilemap_Offsets,X                               ;858412;
     TAX                                                                  ;858415;
     LDA.W .buttons,Y                                                     ;858416;
-    STA.L $7E3200,X                                                      ;858419;
+    STA.L MessageBoxTilemap,X                                            ;858419;
     LDA.W #$01A0                                                         ;85841D;
-    STA.B $34                                                            ;858420;
+    STA.B DP_Temp34                                                      ;858420;
     JSR.W Setup_PPU_for_Active_MessageBox                                ;858422;
     RTS                                                                  ;858425;
 
@@ -557,7 +557,7 @@ DrawSpecialButton_SetupPPUForLargeMessageBox:
 Setup_PPU_for_Small_MessageBox:
     REP #$30                                                             ;858436;
     LDA.W #$01C0                                                         ;858438;
-    STA.B $34                                                            ;85843B;
+    STA.B DP_Temp34                                                      ;85843B;
     JSR.W Setup_PPU_for_Active_MessageBox                                ;85843D;
     RTS                                                                  ;858440;
 
@@ -566,7 +566,7 @@ Setup_PPU_for_Small_MessageBox:
 Setup_PPU_for_Large_MessageBox:
     REP #$30                                                             ;858441;
     LDA.W #$01A0                                                         ;858443;
-    STA.B $34                                                            ;858446;
+    STA.B DP_Temp34                                                      ;858446;
     JSR.W Setup_PPU_for_Active_MessageBox                                ;858448;
     RTS                                                                  ;85844B;
 
@@ -574,18 +574,18 @@ Setup_PPU_for_Large_MessageBox:
 ;;; $844C: Open message box ;;;
 Open_MessageBox:
     REP #$30                                                             ;85844C;
-    STZ.W $05A2                                                          ;85844E;
+    STZ.W MessageBoxAnim_YRadius                                         ;85844E;
 
   .loop:
     JSR.W Write_MessageBox_BG3_Yscroll_HDMA_DataTable                    ;858451;
-    LDA.W $05A2                                                          ;858454;
+    LDA.W MessageBoxAnim_YRadius                                         ;858454;
     CLC                                                                  ;858457;
     ADC.W #$0200                                                         ;858458;
-    STA.W $05A2                                                          ;85845B;
+    STA.W MessageBoxAnim_YRadius                                         ;85845B;
     CMP.W #$1800                                                         ;85845E;
     BMI .loop                                                            ;858461;
     LDA.W #$1800                                                         ;858463;
-    STA.W $05A2                                                          ;858466;
+    STA.W MessageBoxAnim_YRadius                                         ;858466;
     JSR.W Write_MessageBox_BG3_Yscroll_HDMA_DataTable                    ;858469;
     RTS                                                                  ;85846C;
 
@@ -649,7 +649,7 @@ Handle_MessageBox_Interaction:
     BNE .waitLoop                                                        ;8584CC;
     JSL.L ReadControllerInput                                            ;8584CE;
     REP #$30                                                             ;8584D2;
-    LDA.B $8F                                                            ;8584D4;
+    LDA.B DP_Controller1New                                              ;8584D4;
     BEQ .saveInput                                                       ;8584D6;
     BIT.W #$0080                                                         ;8584D8;
     BNE .inputA                                                          ;8584DB;
@@ -690,28 +690,28 @@ Toggle_Save_Confirmation_Selection:
 
 +   LDX.W #$0100                                                         ;85851B;
     LDA.W #$0020                                                         ;85851E;
-    STA.B $34                                                            ;858521;
+    STA.B DP_Temp34                                                      ;858521;
 
   .loop:
     LDA.W UNUSED_MessageTilemaps_YES_859581,Y                            ;858523;
-    STA.L $7E3200,X                                                      ;858526;
+    STA.L MessageBoxTilemap,X                                            ;858526;
     INX                                                                  ;85852A;
     INX                                                                  ;85852B;
     INY                                                                  ;85852C;
     INY                                                                  ;85852D;
-    DEC.B $34                                                            ;85852E;
+    DEC.B DP_Temp34                                                      ;85852E;
     BNE .loop                                                            ;858530;
     JSR.W Wait_for_Lag_Frame                                             ;858532;
     REP #$20                                                             ;858535;
     LDA.W #$59A0                                                         ;858537;
-    STA.B $34                                                            ;85853A;
-    LDA.B $34                                                            ;85853C; >_<
+    STA.B DP_Temp34                                                      ;85853A;
+    LDA.B DP_Temp34                                                      ;85853C; >_<
     STA.W $2116                                                          ;85853E;
     LDA.W #$1801                                                         ;858541;
     STA.W $4310                                                          ;858544;
-    LDA.W #$3200                                                         ;858547;
+    LDA.W #MessageBoxTilemap                                             ;858547;
     STA.W $4312                                                          ;85854A;
-    LDA.W #$007E                                                         ;85854D;
+    LDA.W #MessageBoxTilemap>>16                                         ;85854D;
     STA.W $4314                                                          ;858550;
     LDA.W #$0180                                                         ;858553;
     STA.W $4315                                                          ;858556;
@@ -749,10 +749,10 @@ Close_MessageBox:
 
   .loop:
     JSR.W Write_MessageBox_BG3_Yscroll_HDMA_DataTable                    ;85858B;
-    LDA.W $05A2                                                          ;85858E;
+    LDA.W MessageBoxAnim_YRadius                                         ;85858E;
     SEC                                                                  ;858591;
     SBC.W #$0200                                                         ;858592;
-    STA.W $05A2                                                          ;858595;
+    STA.W MessageBoxAnim_YRadius                                         ;858595;
     BPL .loop                                                            ;858598;
     RTS                                                                  ;85859A;
 
@@ -782,52 +782,52 @@ Write_MessageBox_BG3_Yscroll_HDMA_DataTable:
     JSL.L HandleSounds                                                   ;8585A5;
     LDA.W #$7B00                                                         ;8585A9;
     SEC                                                                  ;8585AC;
-    SBC.W $05A2                                                          ;8585AD;
+    SBC.W MessageBoxAnim_YRadius                                         ;8585AD;
     XBA                                                                  ;8585B0;
     AND.W #$00FF                                                         ;8585B1;
-    STA.W $05A8                                                          ;8585B4;
+    STA.W MessageBoxAnim_TopHalfPlusRadius                               ;8585B4;
     LDA.W #$0063                                                         ;8585B7;
-    STA.W $05AA                                                          ;8585BA;
+    STA.W MessageBoxAnim_TopHalf                                         ;8585BA;
     LDA.W #$7C00                                                         ;8585BD;
     CLC                                                                  ;8585C0;
-    ADC.W $05A2                                                          ;8585C1;
+    ADC.W MessageBoxAnim_YRadius                                         ;8585C1;
     XBA                                                                  ;8585C4;
     AND.W #$00FF                                                         ;8585C5;
-    STA.W $05A4                                                          ;8585C8;
+    STA.W MessageBoxAnim_BottomHalfPlusRadius                            ;8585C8;
     LDA.W #$0094                                                         ;8585CB;
-    STA.W $05A6                                                          ;8585CE;
+    STA.W MessageBoxAnim_BottomHalf                                      ;8585CE;
     LDX.W #$00F6                                                         ;8585D1;
     LDY.W #$00F8                                                         ;8585D4;
     LDA.W #$001E                                                         ;8585D7;
-    STA.B $14                                                            ;8585DA;
+    STA.B DP_Temp14                                                      ;8585DA;
 
   .loop:
-    LDA.W $05AA                                                          ;8585DC;
+    LDA.W MessageBoxAnim_TopHalf                                         ;8585DC;
     SEC                                                                  ;8585DF;
-    SBC.W $05A8                                                          ;8585E0;
-    STA.L $7E3000,X                                                      ;8585E3;
-    DEC.W $05AA                                                          ;8585E7;
-    DEC.W $05A8                                                          ;8585EA;
+    SBC.W MessageBoxAnim_TopHalfPlusRadius                               ;8585E0;
+    STA.L MessageBoxBG3YScrollHDMADataTable,X                            ;8585E3;
+    DEC.W MessageBoxAnim_TopHalf                                         ;8585E7;
+    DEC.W MessageBoxAnim_TopHalfPlusRadius                               ;8585EA;
     DEX                                                                  ;8585ED;
     DEX                                                                  ;8585EE;
     PHX                                                                  ;8585EF;
     TYX                                                                  ;8585F0;
-    LDA.W $05A6                                                          ;8585F1;
+    LDA.W MessageBoxAnim_BottomHalf                                      ;8585F1;
     SEC                                                                  ;8585F4;
-    SBC.W $05A4                                                          ;8585F5;
-    STA.L $7E3000,X                                                      ;8585F8;
+    SBC.W MessageBoxAnim_BottomHalfPlusRadius                            ;8585F5;
+    STA.L MessageBoxBG3YScrollHDMADataTable,X                            ;8585F8;
     PLX                                                                  ;8585FC;
-    INC.W $05A6                                                          ;8585FD;
-    INC.W $05A4                                                          ;858600;
+    INC.W MessageBoxAnim_BottomHalf                                      ;8585FD;
+    INC.W MessageBoxAnim_BottomHalfPlusRadius                            ;858600;
     INY                                                                  ;858603;
     INY                                                                  ;858604;
-    DEC.B $14                                                            ;858605;
+    DEC.B DP_Temp14                                                      ;858605;
     BNE .loop                                                            ;858607;
     TYX                                                                  ;858609;
     LDA.W #$0000                                                         ;85860A;
 
   .zeroLoop:
-    STA.L $7E3000,X                                                      ;85860D;
+    STA.L MessageBoxBG3YScrollHDMADataTable,X                            ;85860D;
     INX                                                                  ;858611;
     INX                                                                  ;858612;
     CPX.W #$01E0                                                         ;858613;
@@ -845,9 +845,9 @@ Restore_PPU:
     STA.W $2116                                                          ;858624;
     LDA.W #$1801                                                         ;858627;
     STA.W $4310                                                          ;85862A;
-    LDA.W #$4100                                                         ;85862D;
+    LDA.W #BackupOfVRAMDuringMessageBoxes                                ;85862D;
     STA.W $4312                                                          ;858630;
-    LDA.W #$007E                                                         ;858633;
+    LDA.W #BackupOfVRAMDuringMessageBoxes>>16                            ;858633;
     STA.W $4314                                                          ;858636;
     LDA.W #$0700                                                         ;858639;
     STA.W $4315                                                          ;85863C;
@@ -860,10 +860,10 @@ Restore_PPU:
     STA.W $420B                                                          ;85864E;
     JSR.W Wait_for_Lag_Frame                                             ;858651;
     SEP #$20                                                             ;858654;
-    LDA.L $7E33EA                                                        ;858656;
+    LDA.L BackupOfHDMAChannelsDuringMessageBoxes                         ;858656;
     STA.B DP_HDMAEnable                                                  ;85865A;
     STA.W $420C                                                          ;85865C;
-    LDA.L $7E33EB                                                        ;85865F;
+    LDA.L BackupOfBG3TilemapBaseAddrSizeDuringMessageBoxes               ;85865F;
     STA.B DP_GameplayBG1TilemapAddrSize                                  ;858663;
     LDA.B DP_MainScreenLayers                                            ;858665;
     STA.B DP_GameplayMainScreenLayers                                    ;858667;

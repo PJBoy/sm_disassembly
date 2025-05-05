@@ -7522,7 +7522,7 @@ Handle_MapScrollArrows:
     PHP                                                                  ;82B934;
     PHB                                                                  ;82B935;
     SEP #$20                                                             ;82B936;
-    LDA.B #$82                                                           ;82B938;
+    LDA.B #MapScrollArrows>>16                                           ;82B938;
     PHA                                                                  ;82B93A;
     PLB                                                                  ;82B93B;
     REP #$20                                                             ;82B93C;
@@ -7665,7 +7665,7 @@ Update_Samus_Position_Indicator_Animation:
 ;;; $BA35: Draw border around SAMUS DATA ;;;
 Draw_Border_Around_SAMUS_DATA:
     LDA.W #$0E00                                                         ;82BA35;
-    STA.B $03                                                            ;82BA38;
+    STA.B DP_Temp03                                                      ;82BA38;
     LDX.W #$0080                                                         ;82BA3A;
     LDY.W #$0010                                                         ;82BA3D;
     LDA.W #$0048                                                         ;82BA40;
@@ -7676,7 +7676,7 @@ Draw_Border_Around_SAMUS_DATA:
 ;;; $BA48: Draw border around DATA COPY MODE ;;;
 Draw_Border_Around_DATA_COPY_MODE:
     LDA.W #$0E00                                                         ;82BA48;
-    STA.B $03                                                            ;82BA4B;
+    STA.B DP_Temp03                                                      ;82BA4B;
     LDX.W #$0080                                                         ;82BA4D;
     LDY.W #$0010                                                         ;82BA50;
     LDA.W #$0049                                                         ;82BA53;
@@ -7687,7 +7687,7 @@ Draw_Border_Around_DATA_COPY_MODE:
 ;;; $BA5B: Draw border around DATA CLEAR MODE ;;;
 Draw_Border_Around_DATA_CLEAR_MODE:
     LDA.W #$0E00                                                         ;82BA5B;
-    STA.B $03                                                            ;82BA5E;
+    STA.B DP_Temp03                                                      ;82BA5E;
     LDX.W #$007C                                                         ;82BA60;
     LDY.W #$0010                                                         ;82BA63;
     LDA.W #$004A                                                         ;82BA66;
@@ -8069,7 +8069,7 @@ Queue_Samus_Movement_SoundEffects:
     LDA.W #$002B                                                         ;82BE3C;
     JSL.L QueueSound_Lib3_Max6                                           ;82BE3F;
 
-+   LDA.W $0CD0                                                          ;82BE43;
++   LDA.W SamusProjectile_FlareCounter                                   ;82BE43;
     CMP.W #$0010                                                         ;82BE46;
     BMI +                                                                ;82BE49;
     LDA.W #$0041                                                         ;82BE4B;
@@ -12502,19 +12502,19 @@ LoadLevelData_CRE_TileTable_ScrollData_PLMs_DoorASM_RoomASM:
     BRA .scrollsEnd                                                      ;82E88B;
 
   .presetScrolls:
-    STY.B $12                                                            ;82E88D;
+    STY.B DP_Temp12                                                      ;82E88D;
     SEP #$30                                                             ;82E88F;
     LDA.W RoomHeightScrolls                                              ;82E891;
     DEC                                                                  ;82E894;
-    STA.B $14                                                            ;82E895;
+    STA.B DP_Temp14                                                      ;82E895;
     LDA.B #$02                                                           ;82E897;
     LDX.B #$00                                                           ;82E899;
     LDY.B #$00                                                           ;82E89B;
 
   .loop:
-    CPY.B $14                                                            ;82E89D;
+    CPY.B DP_Temp14                                                      ;82E89D;
     BNE +                                                                ;82E89F;
-    LDA.B $12                                                            ;82E8A1;
+    LDA.B DP_Temp12                                                      ;82E8A1;
     INC                                                                  ;82E8A3;
 
 +   PHY                                                                  ;82E8A4;
@@ -12619,7 +12619,7 @@ CheckIfColoredDoorcapWasSpawned_SwitchDoorPLMInstruction:
     LDX.W #$004E                                                         ;82E93E;
 
   .loop:
-    CMP.W $1C87,X                                                        ;82E941;
+    CMP.W PLM_BlockIndices,X                                             ;82E941;
     BEQ .found                                                           ;82E944;
     DEX                                                                  ;82E946;
     DEX                                                                  ;82E947;
@@ -12630,25 +12630,25 @@ CheckIfColoredDoorcapWasSpawned_SwitchDoorPLMInstruction:
     RTS                                                                  ;82E94B;
 
   .found:
-    LDA.W $1C37,X                                                        ;82E94C;
+    LDA.W PLM_IDs,X                                                      ;82E94C;
     BEQ .noColoredDoor                                                   ;82E94F;
-    LDA.W $1DC7,X                                                        ;82E951;
+    LDA.W PLM_RoomArgs,X                                                 ;82E951;
     BMI +                                                                ;82E954;
     PHX                                                                  ;82E956;
     JSL.L BitIndexToByteIndexAndBitmask                                  ;82E957;
     LDA.L SRAMMirror_Doors,X                                             ;82E95B;
     PLX                                                                  ;82E95F;
-    AND.W $05E7                                                          ;82E960;
+    AND.W Bitmask                                                        ;82E960;
     BNE .noColoredDoor                                                   ;82E963;
 
 +   LDA.W #$0001                                                         ;82E965;
-    STA.L $7EDE1C,X                                                      ;82E968;
+    STA.L PLMExtra_InstructionTimers,X                                   ;82E968;
     TXY                                                                  ;82E96C;
-    LDA.W $1C37,X                                                        ;82E96D;
+    LDA.W PLM_IDs,X                                                      ;82E96D;
     BEQ .noColoredDoor                                                   ;82E970;
     TAX                                                                  ;82E972;
-    LDA.L $840004,X                                                      ;82E973;
-    STA.W $1D27,Y                                                        ;82E977;
+    LDA.L PLMEntries_instList2,X                                         ;82E973;
+    STA.W PLM_InstListPointers,Y                                         ;82E977;
     SEC                                                                  ;82E97A;
     RTS                                                                  ;82E97B;
 

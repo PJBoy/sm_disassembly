@@ -465,7 +465,6 @@ Spawn_Hardcoded_PLM:
     CLC                                                                  ;848467;
     RTL                                                                  ;848468;
 
-
   .return:
     RTS                                                                  ;848469;
 

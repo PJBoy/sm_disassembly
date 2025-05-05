@@ -2730,8 +2730,8 @@ UNUSED_PreInstruction_EnemyProjectile_Draygon_868E99:
     STA.L EnemyProjectileAngles,X                                        ;868EB8;
     STA.B DP_Temp12                                                      ;868EBC;
     LDA.W #$0001                                                         ;868EBE;
-    STA.B DP_Temp14                                                      ;868EC1; ($16.$18, $1A.$1C) = ([$14] * |cos([$12] * pi / 80h)|, [$14] * |sin([$12] * pi / 80h)|)
-    JSL.L Do_Some_Math_With_Sine_Cosine_Terrible_Label_Name              ;868EC3;
+    STA.B DP_Temp14                                                      ;868EC1;
+    JSL.L Do_Some_Math_With_Sine_Cosine_Terrible_Label_Name              ;868EC3; ($16.$18, $1A.$1C) = ([$14] * |cos([$12] * pi / 80h)|, [$14] * |sin([$12] * pi / 80h)|)
     LDA.B DP_Temp16                                                      ;868EC7;
     STA.W EnemyProjectile_XVelocity,X                                    ;868EC9;
     LDA.B DP_Temp18                                                      ;868ECC;
