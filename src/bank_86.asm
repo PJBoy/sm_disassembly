@@ -5061,7 +5061,7 @@ InitAI_EnemyProjectile_MiniKraidSpit:
     LDX.W EnemyIndex                                                     ;869DED;
     LDA.W Enemy.XPosition,X                                              ;869DF0;
     CLC                                                                  ;869DF3;
-    ADC.L $7E7804,X                                                      ;869DF4;
+    ADC.L MiniKraid.spitXOffset,X                                                      ;869DF4;
     STA.W EnemyProjectile_XPositions,Y                                   ;869DF8;
     LDA.W Enemy.YPosition,X                                              ;869DFB;
     SEC                                                                  ;869DFE;
@@ -16076,9 +16076,9 @@ PlaceAndAim_DraygonsWallTurretProjectile:
     AND.W #$00FF                                                         ;86E7D4;
     STA.L EnemyProjectileAngles,X                                        ;86E7D7;
     STA.B DP_Temp12                                                      ;86E7DB;
-    LDA.W EnemyProjectile_InitParam0                                     ;86E7DD; ($16.$18, $1A.$1C) = ([$14] * |cos([$12] * pi / 80h)|, [$14] * |sin([$12] * pi / 80h)|)
+    LDA.W EnemyProjectile_InitParam0                                     ;86E7DD;
     STA.B DP_Temp14                                                      ;86E7E0;
-    JSL.L Do_Some_Math_With_Sine_Cosine_Terrible_Label_Name              ;86E7E2;
+    JSL.L Do_Some_Math_With_Sine_Cosine_Terrible_Label_Name              ;86E7E2; ($16.$18, $1A.$1C) = ([$14] * |cos([$12] * pi / 80h)|, [$14] * |sin([$12] * pi / 80h)|)
     LDA.B DP_Temp16                                                      ;86E7E6;
     STA.W EnemyProjectile_XVelocity,Y                                    ;86E7E8;
     LDA.B DP_Temp18                                                      ;86E7EB;
@@ -16698,10 +16698,10 @@ InitAI_EnemyProjectile_BotwoonsSpit:
     TYX                                                                  ;86EBDC;
     LDA.W BotwoonSpitAngleParam                                          ;86EBDD;
     STA.L EnemyProjectileAngles,X                                        ;86EBE0;
-    STA.B DP_Temp12                                                      ;86EBE4; ($16.$18, $1A.$1C) = ([$14] * |cos([$12] * pi / 80h)|, [$14] * |sin([$12] * pi / 80h)|)
+    STA.B DP_Temp12                                                      ;86EBE4;
     LDA.W EnemyProjectile_InitParam0                                     ;86EBE6;
     STA.B DP_Temp14                                                      ;86EBE9;
-    JSL.L Do_Some_Math_With_Sine_Cosine_Terrible_Label_Name              ;86EBEB;
+    JSL.L Do_Some_Math_With_Sine_Cosine_Terrible_Label_Name              ;86EBEB; ($16.$18, $1A.$1C) = ([$14] * |cos([$12] * pi / 80h)|, [$14] * |sin([$12] * pi / 80h)|)
     LDA.B DP_Temp16                                                      ;86EBEF;
     STA.W EnemyProjectile_XVelocity,Y                                    ;86EBF1;
     LDA.B DP_Temp18                                                      ;86EBF4;
@@ -17718,7 +17718,7 @@ Respawn_Enemy:
     PHB                                                                  ;86F264;
     PHX                                                                  ;86F265;
     PHY                                                                  ;86F266;
-    PEA.W $A000                                                          ;86F267;
+    PEA.W EnemyHeaders>>8&$FF00                                          ;86F267;
     PLB                                                                  ;86F26A;
     PLB                                                                  ;86F26B;
     REP #$30                                                             ;86F26C;

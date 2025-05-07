@@ -2704,7 +2704,7 @@ PreInstruction_PowerBombExplosion_3_Explosion_Yellow:
     PHX                                                                  ;888DF3;
     PHY                                                                  ;888DF4;
     JSL.L Calculate_PowerBombExplosion_HDMADataTablePointers             ;888DF5;
-    PEA.W $8800                                                          ;888DF9;
+    PEA.W PowerBombExplosion_Colors>>8&$FF00                             ;888DF9;
     PLB                                                                  ;888DFC;
     PLB                                                                  ;888DFD;
     SEP #$30                                                             ;888DFE;
@@ -2820,7 +2820,7 @@ PreInstruction_PowerBombExplosion_4_Explosion_White:
     PHX                                                                  ;888EBC;
     PHY                                                                  ;888EBD;
     JSL.L Calculate_PowerBombExplosion_HDMADataTablePointers             ;888EBE;
-    PEA.W $8800                                                          ;888EC2;
+    PEA.W PowerBombExplosion_Colors>>8&$FF00                             ;888EC2;
     PLB                                                                  ;888EC5;
     PLB                                                                  ;888EC6;
     LDY.W SamusProjectile_PreScaledPowerBombExplosionShapeDefPointer     ;888EC7;
@@ -3176,7 +3176,7 @@ PreInstruction_PowerBombExplosion_1_PreExplosion_White:
     PHX                                                                  ;8890E9;
     PHY                                                                  ;8890EA;
     JSL.L Calculate_PowerBombPreExplosion_HDMAObjectTablePointers        ;8890EB;
-    PEA.W $8800                                                          ;8890EF;
+    PEA.W PowerBomb_PreExplosion_Colors>>8&$FF00                         ;8890EF;
     PLB                                                                  ;8890F2;
     PLB                                                                  ;8890F3;
     SEP #$30                                                             ;8890F4;
@@ -3292,7 +3292,7 @@ PreInstruction_PowerBombExplosion_2_PreExplosion_Yellow:
     PHX                                                                  ;8891B2;
     PHY                                                                  ;8891B3;
     JSL.L Calculate_PowerBombPreExplosion_HDMAObjectTablePointers        ;8891B4;
-    PEA.W $8800                                                          ;8891B8;
+    PEA.W PowerBomb_PreExplosion_Colors>>8&$FF00                         ;8891B8;
     PLB                                                                  ;8891BB;
     PLB                                                                  ;8891BC;
     LDY.W SamusProjectile_PreScaledPowerBombExplosionShapeDefPointer     ;8891BD;
@@ -4107,7 +4107,7 @@ PreInstruction_CrystalFlash_1_Explosion:
     PHX                                                                  ;88A55C;
     PHY                                                                  ;88A55D;
     JSL.L Calculate_CrystalFlash_HDMAObjectTablePointers                 ;88A55E;
-    PEA.W $8800                                                          ;88A562;
+    PEA.W PowerBombExplosion_Colors>>8&$FF00                             ;88A562;
     PLB                                                                  ;88A565;
     PLB                                                                  ;88A566;
     SEP #$30                                                             ;88A567;
@@ -4863,11 +4863,11 @@ Handle_ScrollingSky_BG2XScroll_HDMATables:
     TAX                                                                  ;88ADD0;
     LDA.W ScrollingSky_ScrollingTable_scrollSubspeed,Y                   ;88ADD1;
     CLC                                                                  ;88ADD4;
-    ADC.L $7E0000,X                                                      ;88ADD5;
-    STA.L $7E0000,X                                                      ;88ADD9;
+    ADC.L ScrollingSkyBG2XScrollHDMADataTable&$FF0000,X                  ;88ADD5;
+    STA.L ScrollingSkyBG2XScrollHDMADataTable&$FF0000,X                  ;88ADD9;
     LDA.W ScrollingSky_ScrollingTable_scrollSpeed,Y                      ;88ADDD;
-    ADC.L $7E0002,X                                                      ;88ADE0;
-    STA.L $7E0002,X                                                      ;88ADE4;
+    ADC.L (ScrollingSkyBG2XScrollHDMADataTable&$FF0000)+2,X              ;88ADE0;
+    STA.L (ScrollingSkyBG2XScrollHDMADataTable&$FF0000)+2,X              ;88ADE4;
     TYA                                                                  ;88ADE8;
     CLC                                                                  ;88ADE9;
     ADC.W #$0008                                                         ;88ADEA;
@@ -4929,7 +4929,7 @@ Handle_ScrollingSky_BG2XScroll_HDMATables:
     LDA.W #$00B5                                                         ;88AE62;
     STA.L ScrollingSkyBG2XScrollIndirectHDMATable+1,X                    ;88AE65;
     LDA.W #$0000                                                         ;88AE69;
-    STA.L $7E9F03,X                                                      ;88AE6C;
+    STA.L ScrollingSkyBG2XScrollIndirectHDMATable+3,X                    ;88AE6C;
     RTL                                                                  ;88AE70;
 
   .scrollingSection:
@@ -4986,38 +4986,38 @@ ScrollingSky_ScrollingTable:
   .topPosition:
     dw $0000                                                             ;88AEC1;
   .scrollSubspeed:
-    dw $8000                                                             ;88AEC3;
+    dw       $8000                                                       ;88AEC3;
   .scrollSpeed:
-    dw $0000                                                             ;88AEC5;
+    dw             $0000                                                 ;88AEC5;
   .HDMADataTableEntryPointer:
-    dw $9F80                                                             ;88AEC7;
+    dw                   ScrollingSkyBG2XScrollHDMADataTable             ;88AEC7;
   .nextEntry:
-    dw $0010,$C000,$0000,$9F84                                           ;88AEC9;
-    dw $0038,$8000,$0000,$9F88                                           ;88AED1;
-    dw $00D0,$C000,$0000,$9F8C                                           ;88AED9;
-    dw $00E0,$8000,$0000,$9F90                                           ;88AEE1;
-    dw $0120,$C000,$0000,$9F94                                           ;88AEE9;
-    dw $01A0,$8000,$0000,$9F98                                           ;88AEF1;
-    dw $01D8,$C000,$0000,$9F9C                                           ;88AEF9;
-    dw $0238,$8000,$0000,$9FA0                                           ;88AF01;
-    dw $0268,$C000,$0000,$9FA4                                           ;88AF09;
-    dw $02A0,$8000,$0000,$9FA8                                           ;88AF11;
-    dw $02E0,$C000,$0000,$9FA0                                           ;88AF19;
-    dw $0300,$8000,$0000,$9FB0                                           ;88AF21;
-    dw $0320,$C000,$0000,$9FB4                                           ;88AF29;
-    dw $0350,$8000,$0000,$9FB8                                           ;88AF31;
-    dw $0378,$C000,$0000,$9FBC                                           ;88AF39;
-    dw $03C8,$8000,$0000,$9FC0                                           ;88AF41;
-    dw $0440,$7000,$0000,$9FC4                                           ;88AF49;
-    dw $0460,$C000,$0000,$9FC8                                           ;88AF51;
-    dw $0480,$8000,$0000,$9FCC                                           ;88AF59;
-    dw $0490,$0000,$0000,$9FD0                                           ;88AF61;
-    dw $04A8,$0000,$0000,$9FD4                                           ;88AF69;
-    dw $04B8,$0000,$0000,$9FD8                                           ;88AF71;
+    dw $0010,$C000,$0000,ScrollingSkyBG2XScrollHDMADataTable+4           ;88AEC9;
+    dw $0038,$8000,$0000,ScrollingSkyBG2XScrollHDMADataTable+8           ;88AED1;
+    dw $00D0,$C000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$C          ;88AED9;
+    dw $00E0,$8000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$10         ;88AEE1;
+    dw $0120,$C000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$14         ;88AEE9;
+    dw $01A0,$8000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$18         ;88AEF1;
+    dw $01D8,$C000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$1C         ;88AEF9;
+    dw $0238,$8000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$20         ;88AF01;
+    dw $0268,$C000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$24         ;88AF09;
+    dw $02A0,$8000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$28         ;88AF11;
+    dw $02E0,$C000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$20         ;88AF19;
+    dw $0300,$8000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$30         ;88AF21;
+    dw $0320,$C000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$34         ;88AF29;
+    dw $0350,$8000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$38         ;88AF31;
+    dw $0378,$C000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$3C         ;88AF39;
+    dw $03C8,$8000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$40         ;88AF41;
+    dw $0440,$7000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$44         ;88AF49;
+    dw $0460,$C000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$48         ;88AF51;
+    dw $0480,$8000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$4C         ;88AF59;
+    dw $0490,$0000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$50         ;88AF61;
+    dw $04A8,$0000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$54         ;88AF69;
+    dw $04B8,$0000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$58         ;88AF71;
     dw $0500
 ; Unused continuation
-    dw $0500,$0000,$0000,$9FDC                                           ;88AF79;
-    dw $0578,$0000,$0000,$9FE0                                           ;88AF83;
+    dw $0500,$0000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$5C         ;88AF79;
+    dw $0578,$0000,$0000,ScrollingSkyBG2XScrollHDMADataTable+$60         ;88AF83;
     dw $05F0                                                             ;88AF8B;
 
 
@@ -11495,7 +11495,7 @@ Initialise_Rainbow_Beam:
     LDA.W #$0000                                                         ;88E7A8;
     STA.L MotherBrainRainbowBeamWindow1HDMADataTable+4                   ;88E7AB;
     PHB                                                                  ;88E7AF;
-    PEA.W $A900                                                          ;88E7B0;
+    PEA.W Calculate_MotherBrain_RainbowBeam_HDMATables>>8&$FF00          ;88E7B0;
     PLB                                                                  ;88E7B3;
     PLB                                                                  ;88E7B4;
     JSL.L Calculate_MotherBrain_RainbowBeam_HDMATables                   ;88E7B5;
@@ -11517,7 +11517,7 @@ PreInstruction_MotherBrainRainbowBeam:
     CMP.W #$001B                                                         ;88E7D0;
     BEQ .return                                                          ;88E7D3;
     PHB                                                                  ;88E7D5;
-    PEA.W $A900                                                          ;88E7D6;
+    PEA.W Calculate_MotherBrain_RainbowBeam_HDMATables>>8&$FF00          ;88E7D6;
     PLB                                                                  ;88E7D9;
     PLB                                                                  ;88E7DA;
     JSL.L Calculate_MotherBrain_RainbowBeam_HDMATables                   ;88E7DB;

@@ -2045,18 +2045,24 @@ CustomBackground: skip $6400 ; $7F9602..FA01
 org $7F0000
 EndingShipTiles: ; $7F0000..3FFF
 CreditsTilemap: ; $7F0000..1FFF
+IntroBackgroundTiles: ; $7F0000..??
+TitleBackgroundMode7Tiles: ; $7F0000..??
 skip $4000
 PostCreditsSamusBeamInterleavedTilesTilemap: ; $7F4000.BFFF
-EndingShipTIlemap: ; $7F4000..7FFF
+EndingShipTilemap: ; $7F4000..7FFF
 CeresCutsceneTilemap_ShipFront: ; $7F4000..42FF
+TitleMode7Tilemap: ; $7F4000..??
 skip $300
 CeresCutsceneTilemap_ShipBack: skip $300 ; $7F4300..45FF
 CeresCutsceneTilemap_Ceres: skip $600 ; $7F4600..4BFF
-CeresCutsceneTilemap_ClearTilemap: skip $3400 ; $7F4C00..42FF
+CeresCutsceneTilemap_ClearTilemap: skip $400 ; $7F4C00..42FF
+TitleSpriteTiles: skip $3000 ; $7F5000..8FFF
 ZebesExplosionTiles: ; $7F8000..DFFF
 IntroFont1Tiles: ; $7F8000..88FF
 skip $1000
-TitleBabyMetroidTiles: skip $1000 ; $7F9000..93FF
+TitleBabyMetroidTiles: ; $7F9000..93FF
+IntroBG2SamusHeadTilemap: skip $800 ; $7F9000..??
+IntroBG1MotherBrainsRoomTilemap: skip $800 ; $7F9800..??
 IntroFont2Tiles: skip $2000 ; $7FA000..B1FF
 CreditsFont3: ; $7FC000..D7FF
 GameOptionsTilemap_Options: skip $800 ; $7FC000..C7FF
@@ -2065,7 +2071,7 @@ ItemPercentageJapanText: ; $7FD000..D3FF
 GameOptionsTilemap_JapanControllerSettings: skip $800 ; $7FD000..D7FF
 GameOptionsTilemap_EnglishSpecialSettings: skip $800 ; $7FD800..DFFF
 GameOptionsTilemap_JapanSpecialSettings: ; $7FE000..E7FF
-WidePartOfZebesExplosionTilemap: ; $7EE000..E7FF
+WidePartOfZebesExplosionTilemap: ; $7FE000..E7FF
 skip $800
 ConcentricWidePartOfZebesExplosionTilemap: skip $800 ; $7FE800..EFFF
 EclipseOfZebesDuringExplosionTilemap: skip $800 ; $7FF000..F7FF

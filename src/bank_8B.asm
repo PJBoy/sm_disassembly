@@ -2015,12 +2015,12 @@ TransferJapanTextTilesToVRAM:
     STA.B VRAMWrite.size,X                                               ;8B8DED;
     INX                                                                  ;8B8DEF;
     INX                                                                  ;8B8DF0;
-    LDA.W #$4000                                                         ;8B8DF1;
+    LDA.W #IntroBG3JapanTextTiles                                        ;8B8DF1;
     STA.B VRAMWrite.size,X                                               ;8B8DF4;
     INX                                                                  ;8B8DF6;
     INX                                                                  ;8B8DF7;
     SEP #$20                                                             ;8B8DF8;
-    LDA.B #$7E                                                           ;8B8DFA;
+    LDA.B #IntroBG3JapanTextTiles>>16                                    ;8B8DFA;
     STA.B VRAMWrite.size,X                                               ;8B8DFC;
     REP #$20                                                             ;8B8DFE;
     INX                                                                  ;8B8E00;
@@ -2644,7 +2644,7 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     LDA.W #Tiles_Title_Sprite                                            ;8B9298;
     STA.B DP_DecompSrc                                                   ;8B929B;
     JSL.L Decompression_HardcodedDestination                             ;8B929D;
-    dl $7F5000                                                           ;8B92A1;
+    dl TitleSpriteTiles                                                  ;8B92A1;
     SEP #$30                                                             ;8B92A4;
     LDA.B #$00                                                           ;8B92A6;
     STA.W $2116                                                          ;8B92A8;
@@ -2654,7 +2654,7 @@ Initialise_IO_Registers_and_Display_Nintendo_Logo:
     STA.W $2115                                                          ;8B92B2;
     JSL.L SetupHDMATransfer                                              ;8B92B5;
     db $01,$01,$18                                                       ;8B92B9;
-    dl $7F5000                                                           ;8B92BC;
+    dl TitleSpriteTiles                                                  ;8B92BC;
     dw $4000                                                             ;8B92BF;
     LDA.B #$02                                                           ;8B92C1;
     STA.W $420B                                                          ;8B92C3;
@@ -3394,7 +3394,7 @@ Process_CinematicBGObject_InstList:
 ; (marked "terminate processing cinematic BG object")
     JSR.W (CinematicBGObject_PreInstructions,X)                          ;8B9659;
     PHB                                                                  ;8B965C;
-    PEA.W $8C00                                                          ;8B965D;
+    PEA.W CinematicBGObjectInstLists>>8&$FF00                            ;8B965D;
     PLB                                                                  ;8B9660;
     PLB                                                                  ;8B9661;
     LDX.W CinematicBGObject_Index                                        ;8B9662;
@@ -3589,7 +3589,7 @@ Draw_CinematicSpriteObjects_IntroTitleSequence:
   .loop:
     LDA.W CinematicSpriteObject_SpritemapPointers,X                      ;8B974D;
     BEQ .next                                                            ;8B9750;
-    PEA.W $8C00                                                          ;8B9752;
+    PEA.W CinematicBGObjectInstLists>>8                                  ;8B9752;
     PLB                                                                  ;8B9755;
     PLB                                                                  ;8B9756;
     LDY.W CinematicSpriteObject_SpritemapPointers,X                      ;8B9757;
@@ -3717,7 +3717,7 @@ Handle_TextGlowObject:
     PHP                                                                  ;8B9828;
     REP #$30                                                             ;8B9829;
     PHB                                                                  ;8B982B;
-    PEA.W $8C00                                                          ;8B982C;
+    PEA.W IndirectInstructions>>8                                        ;8B982C;
     PLB                                                                  ;8B982F;
     PLB                                                                  ;8B9830;
     LDX.W #$000E                                                         ;8B9831;
@@ -3909,7 +3909,7 @@ Process_CreditsObject_InstList:
     LDX.W #$0000                                                         ;8B996A;
     JSR.W (CreditsObject_PreInstruction,X)                               ;8B996D;
     PHB                                                                  ;8B9970;
-    PEA.W $8C00                                                          ;8B9971;
+    PEA.W CreditsInstLists>>8                                            ;8B9971;
     PLB                                                                  ;8B9974;
     PLB                                                                  ;8B9975;
     LDA.W CinematicBG1_YSubPosition                                      ;8B9976;
@@ -4251,19 +4251,19 @@ Load_Title_Sequence_Graphics:
     LDA.W #Tiles_Title_Background_Mode7                                  ;8B9BAB;
     STA.B DP_DecompSrc                                                   ;8B9BAE;
     JSL.L Decompression_HardcodedDestination                             ;8B9BB0;
-    dl $7F0000                                                           ;8B9BB4;
+    dl TitleBackgroundMode7Tiles                                         ;8B9BB4;
     LDA.W #Title_Mode7_Tilemap>>8&$FF00                                  ;8B9BB7;
     STA.B DP_DecompSrc+1                                                 ;8B9BBA;
     LDA.W #Title_Mode7_Tilemap                                           ;8B9BBC;
     STA.B DP_DecompSrc                                                   ;8B9BBF;
     JSL.L Decompression_HardcodedDestination                             ;8B9BC1;
-    dl $7F4000                                                           ;8B9BC5;
+    dl TitleMode7Tilemap                                                 ;8B9BC5;
     LDA.W #Tiles_Title_Sprite>>8&$FF00                                   ;8B9BC8;
     STA.B DP_DecompSrc+1                                                 ;8B9BCB;
     LDA.W #Tiles_Title_Sprite                                            ;8B9BCD;
     STA.B DP_DecompSrc                                                   ;8B9BD0;
     JSL.L Decompression_HardcodedDestination                             ;8B9BD2;
-    dl $7F5000                                                           ;8B9BD6;
+    dl TitleSpriteTiles                                                  ;8B9BD6;
     LDA.W #Tiles_Baby_Metroid_Mode7>>8&$FF00                             ;8B9BD9;
     STA.B DP_DecompSrc+1                                                 ;8B9BDC;
     LDA.W #Tiles_Baby_Metroid_Mode7                                      ;8B9BDE;
@@ -4279,7 +4279,7 @@ Load_Title_Sequence_Graphics:
     STA.W $2115                                                          ;8B9BF8;
     JSL.L SetupHDMATransfer                                              ;8B9BFB;
     db $01,$00,$19                                                       ;8B9BFF;
-    dl $7F0000                                                           ;8B9C02;
+    dl TitleBackgroundMode7Tiles                                         ;8B9C02;
     dw $4000                                                             ;8B9C05;
     LDA.B #$02                                                           ;8B9C07;
     STA.W $420B                                                          ;8B9C09;
@@ -4303,7 +4303,7 @@ Load_Title_Sequence_Graphics:
     STA.W $2115                                                          ;8B9C30;
     JSL.L SetupHDMATransfer                                              ;8B9C33;
     db $01,$00,$18                                                       ;8B9C37;
-    dl $7F4000                                                           ;8B9C3A;
+    dl TitleMode7Tilemap                                                 ;8B9C3A;
     dw $1000                                                             ;8B9C3D;
     LDA.B #$02                                                           ;8B9C3F;
     STA.W $420B                                                          ;8B9C41;
@@ -4315,7 +4315,7 @@ Load_Title_Sequence_Graphics:
     STA.W $2115                                                          ;8B9C50;
     JSL.L SetupHDMATransfer                                              ;8B9C53;
     db $01,$01,$18                                                       ;8B9C57;
-    dl $7F5000                                                           ;8B9C5A;
+    dl TitleSpriteTiles                                                  ;8B9C5A;
     dw $4000                                                             ;8B9C5D;
     LDA.B #$02                                                           ;8B9C5F;
     STA.W $420B                                                          ;8B9C61;
@@ -5345,7 +5345,7 @@ CinematicFunction_Intro_Initial:
     LDA.W #Tiles_Intro_BG1_BG2                                           ;8BA3F3;
     STA.B DP_DecompSrc                                                   ;8BA3F6;
     JSL.L Decompression_HardcodedDestination                             ;8BA3F8;
-    dl $7F0000                                                           ;8BA3FC;
+    dl IntroBackgroundTiles                                              ;8BA3FC;
     LDA.W #Tiles_Font1_BG3>>8&$FF00                                      ;8BA3FF;
     STA.B DP_DecompSrc+1                                                 ;8BA402;
     LDA.W #Tiles_Font1_BG3                                               ;8BA404;
@@ -5357,19 +5357,19 @@ CinematicFunction_Intro_Initial:
     LDA.W #Intro_BG2_SamusHead_Tilemap                                   ;8BA415;
     STA.B DP_DecompSrc                                                   ;8BA418;
     JSL.L Decompression_HardcodedDestination                             ;8BA41A;
-    dl $7F9000                                                           ;8BA41E;
+    dl IntroBG2SamusHeadTilemap                                          ;8BA41E;
     LDA.W #Intro_BG1_MotherBrainsRoom_Tilemap>>8&$FF00                   ;8BA421;
     STA.B DP_DecompSrc+1                                                 ;8BA424;
     LDA.W #Intro_BG1_MotherBrainsRoom_Tilemap                            ;8BA426;
     STA.B DP_DecompSrc                                                   ;8BA429;
     JSL.L Decompression_HardcodedDestination                             ;8BA42B;
-    dl $7F9800                                                           ;8BA42F;
+    dl IntroBG1MotherBrainsRoomTilemap                                   ;8BA42F;
     LDA.W #Tiles_Intro_Sprite>>8&$FF00                                   ;8BA432;
     STA.B DP_DecompSrc+1                                                 ;8BA435;
     LDA.W #Tiles_Intro_Sprite                                            ;8BA437;
     STA.B DP_DecompSrc                                                   ;8BA43A;
     JSL.L Decompression_HardcodedDestination                             ;8BA43C;
-    dl $7FB800                                                           ;8BA440;
+    dl IntroSpriteTiles                                                  ;8BA440;
     LDA.W #Intro_BG3_TheLastMetroidIsInCaptivity_Tilemap>>8&$FF00        ;8BA443;
     STA.B DP_DecompSrc+1                                                 ;8BA446;
     LDA.W #Intro_BG3_TheLastMetroidIsInCaptivity_Tilemap                 ;8BA448;
@@ -5457,7 +5457,7 @@ CinematicFunction_Intro_Initial:
     STA.W $2115                                                          ;8BA522;
     JSL.L SetupHDMATransfer                                              ;8BA525;
     db $01,$01,$18                                                       ;8BA529;
-    dl $7FB800                                                           ;8BA52C;
+    dl IntroSpriteTiles                                                  ;8BA52C;
     dw $2400                                                             ;8BA52F;
     LDA.B #$02                                                           ;8BA531;
     STA.W $420B                                                          ;8BA533;
@@ -15809,8 +15809,7 @@ CinematicBGObjectDefinitions_PostCredits_ItemPercentage:
 
 ;;; $F754: Debug. Version string ;;;
 Debug_VersionString:
-; '02.02.21.30'
-    db $30,$32,$2E,$30,$32,$2E,$32,$31,$2E,$33,$30,$00                   ;8BF754;
+    db "02.02.21.30", $00                                                ;8BF754;
 
 
 Freespace_Bank8B_F760:                                                   ;8BF760;

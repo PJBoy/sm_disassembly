@@ -34,6 +34,18 @@ EnemyProjectiles:
   .shotInstList: skip 2 ; Eh: Shot instruction list 
 
 
+org $8C0000
+CinematicBGObjectInstLists:
+
+
+org $8C0000
+IndirectInstructions:
+
+
+org $8C0000
+CreditsInstLists:
+
+
 org $8F0000
 RoomHeaders:
   .room: skip 1 ; 0: Room index
