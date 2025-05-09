@@ -5375,7 +5375,7 @@ CinematicFunction_Intro_Initial:
     LDA.W #Intro_BG3_TheLastMetroidIsInCaptivity_Tilemap                 ;8BA448;
     STA.B DP_DecompSrc                                                   ;8BA44B;
     JSL.L Decompression_HardcodedDestination                             ;8BA44D;
-    dl $7FE000                                                           ;8BA451;
+    dl IntroBG3TheLastMetroidTilemap                                     ;8BA451;
     SEP #$30                                                             ;8BA454;
     LDA.B #$00                                                           ;8BA456;
     STA.W $2116                                                          ;8BA458;
@@ -5385,7 +5385,7 @@ CinematicFunction_Intro_Initial:
     STA.W $2115                                                          ;8BA462;
     JSL.L SetupHDMATransfer                                              ;8BA465;
     db $01,$01,$18                                                       ;8BA469;
-    dl $7F0000                                                           ;8BA46C;
+    dl IntroBackgroundTiles                                              ;8BA46C;
     dw $8000                                                             ;8BA46F;
     LDA.B #$02                                                           ;8BA471;
     STA.W $420B                                                          ;8BA473;
@@ -5409,7 +5409,7 @@ CinematicFunction_Intro_Initial:
     STA.W $2115                                                          ;8BA4A2;
     JSL.L SetupHDMATransfer                                              ;8BA4A5;
     db $01,$01,$18                                                       ;8BA4A9;
-    dl $7F9000                                                           ;8BA4AC;
+    dl IntroBG2SamusHeadTilemap                                          ;8BA4AC;
     dw $0800                                                             ;8BA4AF;
     LDA.B #$02                                                           ;8BA4B1;
     STA.W $420B                                                          ;8BA4B3;
@@ -5421,7 +5421,7 @@ CinematicFunction_Intro_Initial:
     STA.W $2115                                                          ;8BA4C2;
     JSL.L SetupHDMATransfer                                              ;8BA4C5;
     db $01,$01,$18                                                       ;8BA4C9;
-    dl $7FE000                                                           ;8BA4CC;
+    dl IntroBG3TheLastMetroidTilemap                                     ;8BA4CC;
     dw $0800                                                             ;8BA4CF;
     LDA.B #$02                                                           ;8BA4D1;
     STA.W $420B                                                          ;8BA4D3;
@@ -5433,7 +5433,7 @@ CinematicFunction_Intro_Initial:
     STA.W $2115                                                          ;8BA4E2;
     JSL.L SetupHDMATransfer                                              ;8BA4E5;
     db $01,$01,$18                                                       ;8BA4E9;
-    dl $7F9800                                                           ;8BA4EC;
+    dl IntroBG1MotherBrainsRoomTilemap                                   ;8BA4EC;
     dw $2000                                                             ;8BA4EF;
     LDA.B #$02                                                           ;8BA4F1;
     STA.W $420B                                                          ;8BA4F3;
@@ -5482,7 +5482,7 @@ CinematicFunction_Intro_Initial:
     LDX.W #$07FE                                                         ;8BA56E;
 
   .loopSamusHead:
-    LDA.L $7F9000,X                                                      ;8BA571; ?
+    LDA.L IntroBG2SamusHeadTilemap,X                                     ;8BA571;
     STA.L CinematicBGTilemap,X                                           ;8BA575;
     DEX                                                                  ;8BA579;
     DEX                                                                  ;8BA57A;
@@ -7482,7 +7482,7 @@ CinematicFunction_Intro_Finish:
     STZ.W ScreenFadeCounter                                              ;8BB744;
     STZ.B DP_BG2XScroll                                                  ;8BB747;
     STZ.B DP_BG3XScroll                                                  ;8BB749;
-    STZ.B $B7                                                            ;8BB74B;
+    STZ.B DP_BG2YScroll                                                  ;8BB74B;
     STZ.B DP_BG3YScroll                                                  ;8BB74D;
     STZ.W Mode7TransformationAngle                                       ;8BB74F;
     LDA.W #MessageBoxIndex                                               ;8BB752;
@@ -8206,19 +8206,19 @@ CinematicFunction_FlyToCeres_Initial:
     LDA.W #Tiles_Gunship_Ceres_Mode7                                     ;8BBCC1;
     STA.B DP_DecompSrc                                                   ;8BBCC4;
     JSL.L Decompression_HardcodedDestination                             ;8BBCC6;
-    dl $7F0000                                                           ;8BBCCA;
+    dl CeresGunshipMode7Tiles                                            ;8BBCCA;
     LDA.W #Gunship_Ceres_Tilemap>>8&$FF00                                ;8BBCCD;
     STA.B DP_DecompSrc+1                                                 ;8BBCD0;
     LDA.W #Gunship_Ceres_Tilemap                                         ;8BBCD2;
     STA.B DP_DecompSrc                                                   ;8BBCD5;
     JSL.L Decompression_HardcodedDestination                             ;8BBCD7;
-    dl $7F4000                                                           ;8BBCDB;
+    dl CeresCutsceneTilemap_ShipFront                                    ;8BBCDB;
     LDA.W #Tiles_Space_Ceres>>8&$FF00                                    ;8BBCDE;
     STA.B DP_DecompSrc+1                                                 ;8BBCE1;
     LDA.W #Tiles_Space_Ceres                                             ;8BBCE3;
     STA.B DP_DecompSrc                                                   ;8BBCE6;
     JSL.L Decompression_HardcodedDestination                             ;8BBCE8;
-    dl $7F5000                                                           ;8BBCEC;
+    dl SpaceCeresTiles                                                   ;8BBCEC;
     SEP #$30                                                             ;8BBCEF;
     LDA.B #$00                                                           ;8BBCF1;
     STA.W $2116                                                          ;8BBCF3;
@@ -8228,7 +8228,7 @@ CinematicFunction_FlyToCeres_Initial:
     STA.W $2115                                                          ;8BBCFD;
     JSL.L SetupHDMATransfer                                              ;8BBD00;
     db $01,$00,$19                                                       ;8BBD04;
-    dl $7F0000                                                           ;8BBD07;
+    dl CeresGunshipMode7Tiles                                            ;8BBD07;
     dw $4000                                                             ;8BBD0A;
     LDA.B #$02                                                           ;8BBD0C;
     STA.W $420B                                                          ;8BBD0E;
@@ -8252,7 +8252,7 @@ CinematicFunction_FlyToCeres_Initial:
     STA.W $2115                                                          ;8BBD35;
     JSL.L SetupHDMATransfer                                              ;8BBD38;
     db $01,$00,$18                                                       ;8BBD3C;
-    dl $7F4000                                                           ;8BBD3F;
+    dl CeresCutsceneTilemap_ShipFront                                    ;8BBD3F;
     dw $0300                                                             ;8BBD42;
     LDA.B #$02                                                           ;8BBD44;
     STA.W $420B                                                          ;8BBD46;
@@ -8264,7 +8264,7 @@ CinematicFunction_FlyToCeres_Initial:
     STA.W $2115                                                          ;8BBD55;
     JSL.L SetupHDMATransfer                                              ;8BBD58;
     db $01,$01,$18                                                       ;8BBD5C;
-    dl $7F5000                                                           ;8BBD5F;
+    dl SpaceCeresTiles                                                   ;8BBD5F;
     dw $4000                                                             ;8BBD62;
     LDA.B #$02                                                           ;8BBD64;
     STA.W $420B                                                          ;8BBD66;
@@ -8381,7 +8381,7 @@ CinematicFunction_FlyToCeres_FlyingIntoCamera:
   .transferData:
 ; Mode 7 transfers data - back of gunship
     db $80                                                               ;8BBE74; Control. 80h = write to VRAM tilemap
-    dl $7F4300                                                           ;8BBE75; Source address
+    dl CeresCutsceneTilemap_ShipBack                                     ;8BBE75; Source address
     dw $0300,$0000                                                       ;8BBE78; Size, Destination address (VRAM)
     db $00, $00                                                          ;8BBE7C; VRAM address increment mode
 
@@ -8796,7 +8796,7 @@ CinematicFunction_CeresGoesBoom_Initial:
     LDA.W #Tiles_Gunship_Ceres_Mode7                                     ;8BC159;
     STA.B DP_DecompSrc                                                   ;8BC15C;
     JSL.L Decompression_HardcodedDestination                             ;8BC15E;
-    dl $7F0000                                                           ;8BC162;
+    dl CeresGunshipMode7Tiles                                            ;8BC162;
     LDA.W #Gunship_Ceres_Tilemap>>8&$FF00                                ;8BC165;
     STA.B DP_DecompSrc+1                                                 ;8BC168;
     LDA.W #Gunship_Ceres_Tilemap                                         ;8BC16A;
@@ -8808,7 +8808,7 @@ CinematicFunction_CeresGoesBoom_Initial:
     LDA.W #Tiles_Space_Ceres                                             ;8BC17B;
     STA.B DP_DecompSrc                                                   ;8BC17E;
     JSL.L Decompression_HardcodedDestination                             ;8BC180;
-    dl $7F5000                                                           ;8BC184;
+    dl SpaceCeresTiles                                                   ;8BC184;
     SEP #$30                                                             ;8BC187;
     LDA.B #$00                                                           ;8BC189;
     STA.W $2116                                                          ;8BC18B;
@@ -8818,7 +8818,7 @@ CinematicFunction_CeresGoesBoom_Initial:
     STA.W $2115                                                          ;8BC195;
     JSL.L SetupHDMATransfer                                              ;8BC198;
     db $01,$00,$19                                                       ;8BC19C;
-    dl $7F0000                                                           ;8BC19F;
+    dl CeresGunshipMode7Tiles                                            ;8BC19F;
     dw $4000                                                             ;8BC1A2;
     LDA.B #$02                                                           ;8BC1A4;
     STA.W $420B                                                          ;8BC1A6;
@@ -8842,7 +8842,7 @@ CinematicFunction_CeresGoesBoom_Initial:
     STA.W $2115                                                          ;8BC1CD;
     JSL.L SetupHDMATransfer                                              ;8BC1D0;
     db $01,$00,$18                                                       ;8BC1D4;
-    dl $7F4600                                                           ;8BC1D7;
+    dl CeresCutsceneTilemap_Ceres                                        ;8BC1D7;
     dw $0600                                                             ;8BC1DA;
     LDA.B #$02                                                           ;8BC1DC;
     STA.W $420B                                                          ;8BC1DE;
@@ -8854,7 +8854,7 @@ CinematicFunction_CeresGoesBoom_Initial:
     STA.W $2115                                                          ;8BC1ED;
     JSL.L SetupHDMATransfer                                              ;8BC1F0;
     db $01,$01,$18                                                       ;8BC1F4;
-    dl $7F5000                                                           ;8BC1F7;
+    dl SpaceCeresTiles                                                   ;8BC1F7;
     dw $4000                                                             ;8BC1FA;
     LDA.B #$02                                                           ;8BC1FC;
     STA.W $420B                                                          ;8BC1FE;
@@ -9067,19 +9067,19 @@ CinematicFunction_CeresGoesBoom_CeresExplosions:
 ; Mode 7 transfers data
   .mode7TransferData_frontOfGunship:
     db $80                                                               ;8BC3E6; Control. 80h = write to VRAM tilemap
-    dl $7F4000                                                           ;8BC3E7; Source address
+    dl CeresCutsceneTilemap_ShipFront                                    ;8BC3E7; Source address
     dw $0300,$0000                                                       ;8BC3EA; Size, Destination address (VRAM)
     db $00, $00                                                          ;8BC3EE; VRAM address increment mode
 
   .mode7TransferData_clearCeresLowerHalf:
     db $80                                                               ;8BC3F0; Control. 80h = write to VRAM tilemap
-    dl $7F4C00                                                           ;8BC3F1; Source address
+    dl CeresCutsceneTilemap_ClearTilemap                                 ;8BC3F1; Source address
     dw $0300,$0300                                                       ;8BC3F4; Size, Destination address (VRAM)
     db $00, $00                                                          ;8BC3F8; VRAM address increment mode
 
   .mode7TransferData_clearCeresUpperHalf:
     db $80                                                               ;8BC3FA; Control. 80h = write to VRAM tilemap
-    dl $7F4C00                                                           ;8BC3FB; Source address
+    dl CeresCutsceneTilemap_ClearTilemap                                 ;8BC3FB; Source address
     dw $0300,$0000                                                       ;8BC3FE; Size, Destination address (VRAM)
     db $00, $00                                                          ;8BC402; VRAM address increment mode
 
@@ -9438,13 +9438,13 @@ CinematicFunction_FlyToZebes_Initial:
     LDA.W #Zebes_Tilemap                                                 ;8BC6B2;
     STA.B DP_DecompSrc                                                   ;8BC6B5;
     JSL.L Decompression_HardcodedDestination                             ;8BC6B7;
-    dl $7F9000                                                           ;8BC6BB;
+    dl ZebesTilemap                                                      ;8BC6BB;
     LDA.W #Tiles_Zebes>>8&$FF00                                          ;8BC6BE;
     STA.B DP_DecompSrc+1                                                 ;8BC6C1;
     LDA.W #Tiles_Zebes                                                   ;8BC6C3;
     STA.B DP_DecompSrc                                                   ;8BC6C6;
     JSL.L Decompression_HardcodedDestination                             ;8BC6C8;
-    dl $7F5000                                                           ;8BC6CC;
+    dl ZebesTiles                                                        ;8BC6CC;
     SEP #$30                                                             ;8BC6CF;
     LDA.B #$00                                                           ;8BC6D1;
     STA.W $2116                                                          ;8BC6D3;
@@ -9454,7 +9454,7 @@ CinematicFunction_FlyToZebes_Initial:
     STA.W $2115                                                          ;8BC6DD;
     JSL.L SetupHDMATransfer                                              ;8BC6E0;
     db $01,$00,$18                                                       ;8BC6E4;
-    dl $7F4300                                                           ;8BC6E7;
+    dl CeresCutsceneTilemap_ShipBack                                     ;8BC6E7;
     dw $0300                                                             ;8BC6EA;
     LDA.B #$02                                                           ;8BC6EC;
     STA.W $420B                                                          ;8BC6EE;
@@ -9466,7 +9466,7 @@ CinematicFunction_FlyToZebes_Initial:
     STA.W $2115                                                          ;8BC6FD;
     JSL.L SetupHDMATransfer                                              ;8BC700;
     db $01,$01,$18                                                       ;8BC704;
-    dl $7F9000                                                           ;8BC707;
+    dl ZebesTilemap                                                      ;8BC707;
     dw $0800                                                             ;8BC70A;
     LDA.B #$02                                                           ;8BC70C;
     STA.W $420B                                                          ;8BC70E;
@@ -9478,7 +9478,7 @@ CinematicFunction_FlyToZebes_Initial:
     STA.W $2115                                                          ;8BC71D;
     JSL.L SetupHDMATransfer                                              ;8BC720;
     db $01,$01,$18                                                       ;8BC724;
-    dl $7F5000                                                           ;8BC727;
+    dl ZebesTiles                                                        ;8BC727;
     dw $4000                                                             ;8BC72A;
     LDA.B #$02                                                           ;8BC72C;
     STA.W $420B                                                          ;8BC72E;
@@ -11351,19 +11351,19 @@ CinematicFunction_Ending_Setup:
     LDA.W #Tiles_Zebes_Being_Zoomed_Out_during_Zebes_Explosion_Mode7     ;8BD4B9;
     STA.B DP_DecompSrc                                                   ;8BD4BC;
     JSL.L Decompression_HardcodedDestination                             ;8BD4BE;
-    dl $7F0000                                                           ;8BD4C2;
+    dl ZebesExplosionZoomedOutMode7Tiles                                 ;8BD4C2;
     LDA.W #Tiles_Yellow_Clouds_during_Zebes_Explosion>>8&$FF00           ;8BD4C5;
     STA.B DP_DecompSrc+1                                                 ;8BD4C8;
     LDA.W #Tiles_Yellow_Clouds_during_Zebes_Explosion                    ;8BD4CA;
     STA.B DP_DecompSrc                                                   ;8BD4CD;
     JSL.L Decompression_HardcodedDestination                             ;8BD4CF;
-    dl $7F4000                                                           ;8BD4D3;
+    dl YellowCloudsZebesExplosionTiles                                   ;8BD4D3;
     LDA.W #InterleavedTilesTilemap_ZebesBeingZoomedOutExplosion_Mode7>>8&$FF00 ;8BD4D6;
     STA.B DP_DecompSrc+1                                                 ;8BD4D9;
     LDA.W #InterleavedTilesTilemap_ZebesBeingZoomedOutExplosion_Mode7    ;8BD4DB;
     STA.B DP_DecompSrc                                                   ;8BD4DE;
     JSL.L Decompression_HardcodedDestination                             ;8BD4E0;
-    dl $7F8000                                                           ;8BD4E4;
+    dl ZebesBeingZoomedOutExplosionInterleavedTilesTilemap               ;8BD4E4;
     SEP #$30                                                             ;8BD4E7;
     LDA.B #$00                                                           ;8BD4E9;
     STA.W $2116                                                          ;8BD4EB;
@@ -11373,7 +11373,7 @@ CinematicFunction_Ending_Setup:
     STA.W $2115                                                          ;8BD4F5;
     JSL.L SetupHDMATransfer                                              ;8BD4F8;
     db $01,$01,$18                                                       ;8BD4FC;
-    dl $7F8000                                                           ;8BD4FF;
+    dl ZebesBeingZoomedOutExplosionInterleavedTilesTilemap               ;8BD4FF;
     dw $4000                                                             ;8BD502;
     LDA.B #$02                                                           ;8BD504;
     STA.W $420B                                                          ;8BD506;
@@ -11385,7 +11385,7 @@ CinematicFunction_Ending_Setup:
     STA.W $2115                                                          ;8BD515;
     JSL.L SetupHDMATransfer                                              ;8BD518;
     db $01,$01,$18                                                       ;8BD51C;
-    dl $7F8000                                                           ;8BD51F;
+    dl ZebesBeingZoomedOutExplosionInterleavedTilesTilemap               ;8BD51F;
     dw $4000                                                             ;8BD522;
     LDA.B #$02                                                           ;8BD524;
     STA.W $420B                                                          ;8BD526;
@@ -11397,7 +11397,7 @@ CinematicFunction_Ending_Setup:
     STA.W $2115                                                          ;8BD535;
     JSL.L SetupHDMATransfer                                              ;8BD538;
     db $01,$01,$18                                                       ;8BD53C;
-    dl $7F4000                                                           ;8BD53F;
+    dl YellowCloudsZebesExplosionTiles                                   ;8BD53F;
     dw $4000                                                             ;8BD542;
     LDA.B #$02                                                           ;8BD544;
     STA.W $420B                                                          ;8BD546;
@@ -11409,7 +11409,7 @@ CinematicFunction_Ending_Setup:
     STA.W $2115                                                          ;8BD555;
     JSL.L SetupHDMATransfer                                              ;8BD558;
     db $01,$00,$19                                                       ;8BD55C;
-    dl $7F0000                                                           ;8BD55F;
+    dl ZebesExplosionZoomedOutMode7Tiles                                 ;8BD55F;
     dw $4000                                                             ;8BD562;
     LDA.B #$02                                                           ;8BD564;
     STA.W $420B                                                          ;8BD566;
@@ -11419,24 +11419,24 @@ CinematicFunction_Ending_Setup:
     LDA.W #Tiles_Zebes_Explosion                                         ;8BD570;
     STA.B DP_DecompSrc                                                   ;8BD573;
     JSL.L Decompression_HardcodedDestination                             ;8BD575;
-    dl $7F8000                                                           ;8BD579;
+    dl ZebesExplosionTiles                                               ;8BD579;
     LDA.W #Tiles_Gunship_Ceres_Mode7>>8&$FF00                            ;8BD57C;
     STA.B DP_DecompSrc+1                                                 ;8BD57F;
     LDA.W #Tiles_Gunship_Ceres_Mode7                                     ;8BD581;
     STA.B DP_DecompSrc                                                   ;8BD584;
     JSL.L Decompression_HardcodedDestination                             ;8BD586;
-    dl $7F0000                                                           ;8BD58A;
+    dl CeresGunshipMode7Tiles                                            ;8BD58A;
     LDA.W #Gunship_Ceres_Tilemap>>8&$FF00                                ;8BD58D;
     STA.B DP_DecompSrc+1                                                 ;8BD590;
     LDA.W #Gunship_Ceres_Tilemap                                         ;8BD592;
     STA.B DP_DecompSrc                                                   ;8BD595;
     JSL.L Decompression_HardcodedDestination                             ;8BD597;
-    dl $7F4000                                                           ;8BD59B;
+    dl CeresCutsceneTilemap_ShipFront                                    ;8BD59B;
     LDX.W #$0300                                                         ;8BD59E;
     LDA.W #$8C8C                                                         ;8BD5A1;
 
   .loopTilemap:
-    STA.L $7F4000,X                                                      ;8BD5A4;
+    STA.L CeresCutsceneTilemap_ShipFront,X                               ;8BD5A4;
     INX                                                                  ;8BD5A8;
     INX                                                                  ;8BD5A9;
     CPX.W #$4000                                                         ;8BD5AA;
@@ -11446,31 +11446,31 @@ CinematicFunction_Ending_Setup:
     LDA.W #Wide_Part_of_Zebes_Explosion_Tilemap                          ;8BD5B4;
     STA.B DP_DecompSrc                                                   ;8BD5B7;
     JSL.L Decompression_HardcodedDestination                             ;8BD5B9;
-    dl $7FE000                                                           ;8BD5BD;
+    dl WidePartOfZebesExplosionTilemap                                   ;8BD5BD;
     LDA.W #Concentric_Wide_Part_of_Zebes_Explosion_Tilemap>>8&$FF00      ;8BD5C0;
     STA.B DP_DecompSrc+1                                                 ;8BD5C3;
     LDA.W #Concentric_Wide_Part_of_Zebes_Explosion_Tilemap               ;8BD5C5;
     STA.B DP_DecompSrc                                                   ;8BD5C8;
     JSL.L Decompression_HardcodedDestination                             ;8BD5CA;
-    dl $7FE800                                                           ;8BD5CE;
+    dl ConcentricWidePartOfZebesExplosionTilemap                         ;8BD5CE;
     LDA.W #Eclipse_of_Zebes_during_Explosion_Tilemap>>8&$FF00            ;8BD5D1;
     STA.B DP_DecompSrc+1                                                 ;8BD5D4;
     LDA.W #Eclipse_of_Zebes_during_Explosion_Tilemap                     ;8BD5D6;
     STA.B DP_DecompSrc                                                   ;8BD5D9;
     JSL.L Decompression_HardcodedDestination                             ;8BD5DB;
-    dl $7FF000                                                           ;8BD5DF;
+    dl EclipseOfZebesDuringExplosionTilemap                              ;8BD5DF;
     LDA.W #Blank_BG2_Tilemap>>8&$FF00                                    ;8BD5E2;
     STA.B DP_DecompSrc+1                                                 ;8BD5E5;
     LDA.W #Blank_BG2_Tilemap                                             ;8BD5E7;
     STA.B DP_DecompSrc                                                   ;8BD5EA;
     JSL.L Decompression_HardcodedDestination                             ;8BD5EC;
-    dl $7FF800                                                           ;8BD5F0;
+    dl EndingBlankTilemap                                                ;8BD5F0;
     LDA.W #Tiles_Font3_Background>>8&$FF00                               ;8BD5F3;
     STA.B DP_DecompSrc+1                                                 ;8BD5F6;
     LDA.W #Tiles_Font3_Background                                        ;8BD5F8;
     STA.B DP_DecompSrc                                                   ;8BD5FB;
     JSL.L Decompression_HardcodedDestination                             ;8BD5FD;
-    dl $7EA000                                                           ;8BD601;
+    dl EndingFont3Tiles                                                  ;8BD601;
     LDA.W #InterleavedTilesTilemap_GreyCloudsDuringZebesExplosion_Mode7>>8&$FF00 ;8BD604;
     STA.B DP_DecompSrc+1                                                 ;8BD607;
     LDA.W #InterleavedTilesTilemap_GreyCloudsDuringZebesExplosion_Mode7  ;8BD609;
@@ -11482,7 +11482,7 @@ CinematicFunction_Ending_Setup:
     LDA.W #InterleavedTilesTilemap_BigZebesDuringZebesExplosion_Mode7    ;8BD61A;
     STA.B DP_DecompSrc                                                   ;8BD61D;
     JSL.L Decompression_HardcodedDestination                             ;8BD61F;
-    dl $7E6000                                                           ;8BD623;
+    dl BigZebesDuringZebesExplosionTilemap                               ;8BD623;
     LDA.W #$0100                                                         ;8BD626;
     STA.W $211B                                                          ;8BD629;
     STA.B DP_Mode7TransMatrixA                                           ;8BD62C;
@@ -11727,7 +11727,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     STA.W $2115                                                          ;8BD845;
     JSL.L SetupHDMATransfer                                              ;8BD848;
     db $01,$01,$18                                                       ;8BD84C;
-    dl $7E6000                                                           ;8BD84F;
+    dl BigZebesZebesExplosionTiles                                       ;8BD84F;
     dw $4000                                                             ;8BD852;
     LDA.B #$02                                                           ;8BD854;
     STA.W $420B                                                          ;8BD856;
@@ -11739,7 +11739,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     STA.W $2115                                                          ;8BD865;
     JSL.L SetupHDMATransfer                                              ;8BD868;
     db $01,$01,$18                                                       ;8BD86C;
-    dl $7E6000                                                           ;8BD86F;
+    dl BigZebesZebesExplosionTiles                                       ;8BD86F;
     dw $4000                                                             ;8BD872;
     LDA.B #$02                                                           ;8BD874;
     STA.W $420B                                                          ;8BD876;
@@ -11749,7 +11749,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     LDA.W #Tiles_Big_Zebes_during_Zebes_Explosion                        ;8BD880;
     STA.B DP_DecompSrc                                                   ;8BD883;
     JSL.L Decompression_HardcodedDestination                             ;8BD885;
-    dl $7E6000                                                           ;8BD889;
+    dl BigZebesZebesExplosionTiles                                       ;8BD889;
     SEP #$30                                                             ;8BD88C;
     LDA.B #$00                                                           ;8BD88E;
     STA.W $2116                                                          ;8BD890;
@@ -11759,7 +11759,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     STA.W $2115                                                          ;8BD89A;
     JSL.L SetupHDMATransfer                                              ;8BD89D;
     db $01,$00,$19                                                       ;8BD8A1;
-    dl $7E6000                                                           ;8BD8A4;
+    dl BigZebesZebesExplosionTiles                                       ;8BD8A4;
     dw $4000                                                             ;8BD8A7;
     LDA.B #$02                                                           ;8BD8A9;
     STA.W $420B                                                          ;8BD8AB;
@@ -11771,7 +11771,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     STA.W $2115                                                          ;8BD8BA;
     JSL.L SetupHDMATransfer                                              ;8BD8BD;
     db $01,$01,$18                                                       ;8BD8C1;
-    dl $7F8000                                                           ;8BD8C4;
+    dl ZebesExplosionTiles                                               ;8BD8C4;
     dw $6000                                                             ;8BD8C7;
     LDA.B #$02                                                           ;8BD8C9;
     STA.W $420B                                                          ;8BD8CB;
@@ -11783,7 +11783,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     STA.W $2115                                                          ;8BD8DA;
     JSL.L SetupHDMATransfer                                              ;8BD8DD;
     db $01,$01,$18                                                       ;8BD8E1;
-    dl $7FE000                                                           ;8BD8E4;
+    dl WidePartOfZebesExplosionTilemap                                   ;8BD8E4;
     dw $0800                                                             ;8BD8E7;
     LDA.B #$02                                                           ;8BD8E9;
     STA.W $420B                                                          ;8BD8EB;
@@ -11795,7 +11795,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     STA.W $2115                                                          ;8BD8FA;
     JSL.L SetupHDMATransfer                                              ;8BD8FD;
     db $01,$01,$18                                                       ;8BD901;
-    dl $7FE800                                                           ;8BD904;
+    dl ConcentricWidePartOfZebesExplosionTilemap                         ;8BD904;
     dw $0800                                                             ;8BD907;
     LDA.B #$02                                                           ;8BD909;
     STA.W $420B                                                          ;8BD90B;
@@ -11807,7 +11807,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     STA.W $2115                                                          ;8BD91A;
     JSL.L SetupHDMATransfer                                              ;8BD91D;
     db $01,$01,$18                                                       ;8BD921;
-    dl $7FF000                                                           ;8BD924;
+    dl EclipseOfZebesDuringExplosionTilemap                              ;8BD924;
     dw $0800                                                             ;8BD927;
     LDA.B #$02                                                           ;8BD929;
     STA.W $420B                                                          ;8BD92B;
@@ -11819,7 +11819,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     STA.W $2115                                                          ;8BD93A;
     JSL.L SetupHDMATransfer                                              ;8BD93D;
     db $01,$01,$18                                                       ;8BD941;
-    dl $7FF800                                                           ;8BD944;
+    dl EndingBlankTilemap                                                ;8BD944;
     dw $0800                                                             ;8BD947;
     LDA.B #$02                                                           ;8BD949;
     STA.W $420B                                                          ;8BD94B;
@@ -11831,7 +11831,7 @@ CinematicFunc_Ending_ZebesDestruction2_CrossFade_Setup:
     STA.W $2115                                                          ;8BD95A;
     JSL.L SetupHDMATransfer                                              ;8BD95D;
     db $01,$01,$18                                                       ;8BD961;
-    dl $7EA000                                                           ;8BD964;
+    dl EndingFont3Tiles                                                  ;8BD964;
     dw $1000                                                             ;8BD967;
     LDA.B #$02                                                           ;8BD969;
     STA.W $420B                                                          ;8BD96B;
@@ -12169,20 +12169,22 @@ FadeOut_ZebesExplosion_AfterGlow:
     SBC.B #$01                                                           ;8BDC5B;
     STA.B DP_ColorMathSubScreenBackdropColor0                            ;8BDC5D;
     CMP.B #$20                                                           ;8BDC5F;
-    BPL +                                                                ;8BDC61;
+    BPL .color1                                                          ;8BDC61;
     LDA.B #$20                                                           ;8BDC63;
     STA.B DP_ColorMathSubScreenBackdropColor0                            ;8BDC65;
 
-+   LDA.B DP_ColorMathSubScreenBackdropColor1                            ;8BDC67;
+  .color1:
+    LDA.B DP_ColorMathSubScreenBackdropColor1                            ;8BDC67;
     SEC                                                                  ;8BDC69;
     SBC.B #$01                                                           ;8BDC6A;
     STA.B DP_ColorMathSubScreenBackdropColor1                            ;8BDC6C;
     CMP.B #$40                                                           ;8BDC6E;
-    BPL +                                                                ;8BDC70;
+    BPL .color2                                                          ;8BDC70;
     LDA.B #$40                                                           ;8BDC72;
     STA.B DP_ColorMathSubScreenBackdropColor1                            ;8BDC74;
 
-+   LDA.B DP_ColorMathSubScreenBackdropColor2                            ;8BDC76;
+  .color2:
+    LDA.B DP_ColorMathSubScreenBackdropColor2                            ;8BDC76;
     SEC                                                                  ;8BDC78;
     SBC.B #$01                                                           ;8BDC79;
     STA.B DP_ColorMathSubScreenBackdropColor2                            ;8BDC7B;
@@ -12427,43 +12429,43 @@ CinematicFunction_Credits_Setup:
     LDA.W #Tiles_PostCredits_SuitlessSamus                               ;8BDEB2;
     STA.B DP_DecompSrc                                                   ;8BDEB5;
     JSL.L Decompression_HardcodedDestination                             ;8BDEB7;
-    dl $7E2000                                                           ;8BDEBB;
+    dl PostCreditsSuitlessSamusTiles                                     ;8BDEBB;
     LDA.W #Tiles_PostCredits_Samus_Shooting_the_Screen>>8&$FF00          ;8BDEBE;
     STA.B DP_DecompSrc+1                                                 ;8BDEC1;
     LDA.W #Tiles_PostCredits_Samus_Shooting_the_Screen                   ;8BDEC3;
     STA.B DP_DecompSrc                                                   ;8BDEC6;
     JSL.L Decompression_HardcodedDestination                             ;8BDEC8;
-    dl $7E6000                                                           ;8BDECC;
+    dl PostCreditsSamusShootingScreenTiles                               ;8BDECC;
     LDA.W #Tiles_Font3_Background>>8&$FF00                               ;8BDECF;
     STA.B DP_DecompSrc+1                                                 ;8BDED2;
     LDA.W #Tiles_Font3_Background                                        ;8BDED4;
     STA.B DP_DecompSrc                                                   ;8BDED7;
     JSL.L Decompression_HardcodedDestination                             ;8BDED9;
-    dl $7FC000                                                           ;8BDEDD;
+    dl CreditsFont3                                                      ;8BDEDD;
     LDA.W #Samus_Waiting_for_Credits_to_End_Tilemap>>8&$FF00             ;8BDEE0;
     STA.B DP_DecompSrc+1                                                 ;8BDEE3;
     LDA.W #Samus_Waiting_for_Credits_to_End_Tilemap                      ;8BDEE5;
     STA.B DP_DecompSrc                                                   ;8BDEE8;
     JSL.L Decompression_HardcodedDestination                             ;8BDEEA;
-    dl $7FE000                                                           ;8BDEEE;
+    dl SamusWaitingForCreditsTilemap                                     ;8BDEEE;
     LDA.W #InterleavedTilesTilemapPostCreditsSamusBeamMode7>>8&$FF00     ;8BDEF1;
     STA.B DP_DecompSrc+1                                                 ;8BDEF4;
     LDA.W #InterleavedTilesTilemapPostCreditsSamusBeamMode7              ;8BDEF6;
     STA.B DP_DecompSrc                                                   ;8BDEF9;
     JSL.L Decompression_HardcodedDestination                             ;8BDEFB;
-    dl $7F4000                                                           ;8BDEFF;
+    dl PostCreditsSamusBeamInterleavedTilesTilemap                       ;8BDEFF;
     LDA.W #Tiles_PostCredits_Samus_Transformation_Effect>>8&$FF00        ;8BDF02;
     STA.B DP_DecompSrc+1                                                 ;8BDF05;
     LDA.W #Tiles_PostCredits_Samus_Transformation_Effect                 ;8BDF07;
     STA.B DP_DecompSrc                                                   ;8BDF0A;
     JSL.L Decompression_HardcodedDestination                             ;8BDF0C;
-    dl $7FE800                                                           ;8BDF10;
+    dl PostCreditsSamusTransformationEffectTiles                         ;8BDF10;
     LDA.W #PostCredits_Samus_Transformation_Effect_Tilemap>>8&$FF00      ;8BDF13;
     STA.B DP_DecompSrc+1                                                 ;8BDF16;
     LDA.W #PostCredits_Samus_Transformation_Effect_Tilemap               ;8BDF18;
     STA.B DP_DecompSrc                                                   ;8BDF1B;
     JSL.L Decompression_HardcodedDestination                             ;8BDF1D;
-    dl $7FF000                                                           ;8BDF21;
+    dl PostCreditsSamusTransformationEffectTilemap                       ;8BDF21;
     SEP #$30                                                             ;8BDF24;
     LDA.B #$00                                                           ;8BDF26;
     STA.W $2116                                                          ;8BDF28;
@@ -12473,7 +12475,7 @@ CinematicFunction_Credits_Setup:
     STA.W $2115                                                          ;8BDF32;
     JSL.L SetupHDMATransfer                                              ;8BDF35;
     db $01,$01,$18                                                       ;8BDF39;
-    dl $7FE800                                                           ;8BDF3C;
+    dl PostCreditsSamusTransformationEffectTiles                         ;8BDF3C;
     dw $0100                                                             ;8BDF3F;
     LDA.B #$02                                                           ;8BDF41;
     STA.W $420B                                                          ;8BDF43;
@@ -12485,7 +12487,7 @@ CinematicFunction_Credits_Setup:
     STA.W $2115                                                          ;8BDF52;
     JSL.L SetupHDMATransfer                                              ;8BDF55;
     db $01,$01,$18                                                       ;8BDF59;
-    dl $7FF000                                                           ;8BDF5C;
+    dl PostCreditsSamusTransformationEffectTilemap                       ;8BDF5C;
     dw $0800                                                             ;8BDF5F;
     LDA.B #$02                                                           ;8BDF61;
     STA.W $420B                                                          ;8BDF63;
@@ -12497,7 +12499,7 @@ CinematicFunction_Credits_Setup:
     STA.W $2115                                                          ;8BDF72;
     JSL.L SetupHDMATransfer                                              ;8BDF75;
     db $01,$01,$18                                                       ;8BDF79;
-    dl $7FC000                                                           ;8BDF7C;
+    dl CreditsFont3                                                      ;8BDF7C;
     dw $1000                                                             ;8BDF7F;
     LDA.B #$02                                                           ;8BDF81;
     STA.W $420B                                                          ;8BDF83;
@@ -12509,7 +12511,7 @@ CinematicFunction_Credits_Setup:
     STA.W $2115                                                          ;8BDF92;
     JSL.L SetupHDMATransfer                                              ;8BDF95;
     db $01,$01,$18                                                       ;8BDF99;
-    dl $7E6000                                                           ;8BDF9C;
+    dl PostCreditsSamusShootingScreenTiles                               ;8BDF9C;
     dw $4000                                                             ;8BDF9F;
     LDA.B #$02                                                           ;8BDFA1;
     STA.W $420B                                                          ;8BDFA3;
@@ -12521,7 +12523,7 @@ CinematicFunction_Credits_Setup:
     STA.W $2115                                                          ;8BDFB2;
     JSL.L SetupHDMATransfer                                              ;8BDFB5;
     db $01,$01,$18                                                       ;8BDFB9;
-    dl $7F0000                                                           ;8BDFBC;
+    dl SamusWaitingForCreditsToEndTiles                                  ;8BDFBC;
     dw $2000                                                             ;8BDFBF;
     LDA.B #$02                                                           ;8BDFC1;
     STA.W $420B                                                          ;8BDFC3;
@@ -12533,7 +12535,7 @@ CinematicFunction_Credits_Setup:
     STA.W $2115                                                          ;8BDFD2;
     JSL.L SetupHDMATransfer                                              ;8BDFD5;
     db $01,$01,$18                                                       ;8BDFD9;
-    dl $7FE000                                                           ;8BDFDC;
+    dl SamusWaitingForCreditsTilemap                                     ;8BDFDC;
     dw $0800                                                             ;8BDFDF;
     LDA.B #$02                                                           ;8BDFE1;
     STA.W $420B                                                          ;8BDFE3;
@@ -12562,7 +12564,7 @@ CinematicFunction_Credits_Setup:
     STA.W $2115                                                          ;8BE020;
     JSL.L SetupHDMATransfer                                              ;8BE023;
     db $01,$01,$18                                                       ;8BE027;
-    dl $7E2000                                                           ;8BE02A;
+    dl PostCreditsSuitlessSamusTiles                                     ;8BE02A;
     dw $4000                                                             ;8BE02D;
     LDA.B #$02                                                           ;8BE02F;
     STA.W $420B                                                          ;8BE031;
@@ -12578,7 +12580,7 @@ CinematicFunction_Credits_Setup:
     STA.W $2115                                                          ;8BE044;
     JSL.L SetupHDMATransfer                                              ;8BE047;
     db $01,$01,$18                                                       ;8BE04B;
-    dl $7F0000                                                           ;8BE04E;
+    dl SamusWaitingForCreditsToEndTiles                                  ;8BE04E;
     dw $4000                                                             ;8BE051;
     LDA.B #$02                                                           ;8BE053;
     STA.W $420B                                                          ;8BE055;
@@ -12628,7 +12630,7 @@ CinematicFunction_Credits_Setup:
     LDA.W #Credits_Tilemap                                               ;8BE0C2;
     STA.B DP_DecompSrc                                                   ;8BE0C5;
     JSL.L Decompression_HardcodedDestination                             ;8BE0C7;
-    dl $7F0000                                                           ;8BE0CB;
+    dl CreditsTilemap                                                    ;8BE0CB;
     LDA.W #$007F                                                         ;8BE0CE;
     JSL.L Clear_CinematicBGObjects_CinematicBGTilemap                    ;8BE0D1;
     LDA.W #$007F                                                         ;8BE0D5;
@@ -13199,7 +13201,7 @@ CinematicFunction_PostCredits_FadeToWhite:
     LDA.W #$007F                                                         ;8BE4F5;
 
   .loopTilemap:
-    STA.L $7E3300,X                                                      ;8BE4F8;
+    STA.L CinematicBGTilemap_RowsCD,X                                    ;8BE4F8;
     DEX                                                                  ;8BE4FC;
     DEX                                                                  ;8BE4FD;
     BPL .loopTilemap                                                     ;8BE4FE;
@@ -13296,7 +13298,7 @@ CinematicFunction_PostCredits_GreyOutSuperMetroidIcon:
     PHA                                                                  ;8BE596;
     LDA.W .BGPalette,X                                                   ;8BE597;
     TAY                                                                  ;8BE59A;
-    PEA.W $8C00                                                          ;8BE59B;
+    PEA.W Palettes_EndingSuperMetroidIconFadingToGrey_BG_0>>8&$FF00      ;8BE59B;
     PLB                                                                  ;8BE59E;
     PLB                                                                  ;8BE59F;
     LDX.W #$001E                                                         ;8BE5A0;
@@ -13570,7 +13572,7 @@ Instruction_DrawItemPercentageJapanText:
 
   .loop:
     LDA.L Tilemap_PostCredits_ItemPercentageJapanText,X                  ;8BE772;
-    STA.L $7E35C0,X                                                      ;8BE776;
+    STA.L CinematicBGTilemap_Rows17_18,X                                 ;8BE776;
     DEX                                                                  ;8BE77A;
     DEX                                                                  ;8BE77B;
     BPL .loop                                                            ;8BE77C;
@@ -13587,7 +13589,7 @@ Instruction_ClearItemPercentageJapanText:
     LDA.W #$007F                                                         ;8BE784;
 
   .loop:
-    STA.L $7E35C0,X                                                      ;8BE787;
+    STA.L CinematicBGTilemap_Rows17_18,X                                 ;8BE787;
     DEX                                                                  ;8BE78B;
     DEX                                                                  ;8BE78C;
     BPL .loop                                                            ;8BE78D;

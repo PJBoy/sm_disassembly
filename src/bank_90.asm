@@ -12118,62 +12118,62 @@ Shinespark_Horizontal_Movement:
 Shinespark_Vertical_Movement:
     LDA.W #$000F                                                         ;90D1FF;
     STA.W SpecialPaletteTimer                                            ;90D202;
-    LDA.W $0DEE                                                          ;90D205;
+    LDA.W ShinesparkYSubAcceleration                                     ;90D205;
     CLC                                                                  ;90D208;
     ADC.W SamusYSubAcceleration                                          ;90D209;
     STA.W ShinesparkYSubAcceleration                                     ;90D20C;
-    LDA.W $0DEC                                                          ;90D20F;
+    LDA.W ShinesparkYAcceleration                                        ;90D20F;
     ADC.W SamusYAcceleration                                             ;90D212;
-    STA.W $0DEC                                                          ;90D215;
+    STA.W ShinesparkYAcceleration                                        ;90D215;
     LDA.W SamusYSubSpeed                                                 ;90D218;
     CLC                                                                  ;90D21B;
     ADC.W ShinesparkYSubAcceleration                                     ;90D21C;
     STA.W SamusYSubSpeed                                                 ;90D21F;
-    STA.B $14                                                            ;90D222;
+    STA.B DP_Temp14                                                      ;90D222;
     LDA.W SamusYSpeed                                                    ;90D224;
-    ADC.W $0DEC                                                          ;90D227;
+    ADC.W ShinesparkYAcceleration                                        ;90D227;
     STA.W SamusYSpeed                                                    ;90D22A;
-    STA.B $12                                                            ;90D22D;
+    STA.B DP_Temp12                                                      ;90D22D;
     CMP.W #$000E                                                         ;90D22F;
     BMI .flipDirection                                                   ;90D232;
     LDA.W #$000E                                                         ;90D234;
-    STA.B $12                                                            ;90D237;
+    STA.B DP_Temp12                                                      ;90D237;
 
   .flipDirection:
-    LDA.B $12                                                            ;90D239;
+    LDA.B DP_Temp12                                                      ;90D239;
     EOR.W #$FFFF                                                         ;90D23B;
-    STA.B $12                                                            ;90D23E;
-    LDA.B $14                                                            ;90D240;
+    STA.B DP_Temp12                                                      ;90D23E;
+    LDA.B DP_Temp14                                                      ;90D240;
     EOR.W #$FFFF                                                         ;90D242;
     INC                                                                  ;90D245;
-    STA.B $14                                                            ;90D246;
+    STA.B DP_Temp14                                                      ;90D246;
     BNE +                                                                ;90D248;
-    INC.B $12                                                            ;90D24A;
+    INC.B DP_Temp12                                                      ;90D24A;
 
 +   LDA.W ExtraSamusYSubDisplacement                                     ;90D24C;
     CLC                                                                  ;90D24F;
-    ADC.B $14                                                            ;90D250;
-    STA.B $14                                                            ;90D252;
+    ADC.B DP_Temp14                                                      ;90D250;
+    STA.B DP_Temp14                                                      ;90D252;
     LDA.W ExtraSamusYDisplacement                                        ;90D254;
-    ADC.B $12                                                            ;90D257;
-    STA.B $12                                                            ;90D259;
+    ADC.B DP_Temp12                                                      ;90D257;
+    STA.B DP_Temp12                                                      ;90D259;
     LDA.W #$0002                                                         ;90D25B;
     STA.W CollisionMovementDirection                                     ;90D25E;
-    LDA.B $12                                                            ;90D261;
+    LDA.B DP_Temp12                                                      ;90D261;
     EOR.W #$FFFF                                                         ;90D263;
-    STA.B $12                                                            ;90D266;
-    LDA.B $14                                                            ;90D268;
+    STA.B DP_Temp12                                                      ;90D266;
+    LDA.B DP_Temp14                                                      ;90D268;
     EOR.W #$FFFF                                                         ;90D26A;
     INC                                                                  ;90D26D;
-    STA.B $14                                                            ;90D26E;
+    STA.B DP_Temp14                                                      ;90D26E;
     BNE +                                                                ;90D270;
-    INC.B $12                                                            ;90D272;
+    INC.B DP_Temp12                                                      ;90D272;
 
-+   LDA.B $12                                                            ;90D274;
++   LDA.B DP_Temp12                                                      ;90D274;
     CMP.W #$000F                                                         ;90D276;
     BMI .collisionDetection                                              ;90D279;
     LDA.W #$000F                                                         ;90D27B;
-    STA.B $12                                                            ;90D27E;
+    STA.B DP_Temp12                                                      ;90D27E;
 
   .collisionDetection:
     JSL.L Samus_vs_SolidEnemy_CollisionDetection                         ;90D280;
@@ -12182,15 +12182,15 @@ Shinespark_Vertical_Movement:
     STA.W SamusSolidCollisionFlag                                        ;90D287;
     BRA .noMovement                                                      ;90D28A;
 
-+   LDA.B $12                                                            ;90D28C;
++   LDA.B DP_Temp12                                                      ;90D28C;
     EOR.W #$FFFF                                                         ;90D28E;
-    STA.B $12                                                            ;90D291;
-    LDA.B $14                                                            ;90D293;
+    STA.B DP_Temp12                                                      ;90D291;
+    LDA.B DP_Temp14                                                      ;90D293;
     EOR.W #$FFFF                                                         ;90D295;
     INC                                                                  ;90D298;
-    STA.B $14                                                            ;90D299;
+    STA.B DP_Temp14                                                      ;90D299;
     BNE .moveSamus                                                       ;90D29B;
-    INC.B $12                                                            ;90D29D;
+    INC.B DP_Temp12                                                      ;90D29D;
 
   .moveSamus:
     JSL.L MoveSamusDown_NoSolidEnemyCollision                            ;90D29F;
@@ -12231,7 +12231,7 @@ EndShinesparkIfCollisionDetectedOrLowEnergy:
     STA.W SpeedEcho_XSpeed1                                              ;90D2DD;
     LDA.W #$FFFC                                                         ;90D2E0;
     STA.W SpeedEcho_XPosition2                                           ;90D2E3;
-    BRA +                                                                ;90D2E6;
+    BRA .merge                                                           ;90D2E6;
 
   .facingLeft:
     LDA.W #$0020                                                         ;90D2E8;
@@ -12241,7 +12241,8 @@ EndShinesparkIfCollisionDetectedOrLowEnergy:
     LDA.W #$0004                                                         ;90D2F4;
     STA.W SpeedEcho_XPosition2                                           ;90D2F7;
 
-+   STZ.W SamusYSubSpeed                                                 ;90D2FA;
+  .merge:
+    STZ.W SamusYSubSpeed                                                 ;90D2FA;
     STZ.W SamusYSpeed                                                    ;90D2FD;
     STZ.W SamusXExtraRunSpeed                                            ;90D300;
     STZ.W SamusXExtraRunSubSpeed                                         ;90D303;
@@ -12273,7 +12274,7 @@ EndShinesparkIfCollisionDetectedOrLowEnergy:
 SamusMovementHandler_ShinesparkCrash_EchoesCircleSamus:
     LDA.W #$000F                                                         ;90D346;
     STA.W SpecialPaletteTimer                                            ;90D349;
-    LDA.W $0AAF                                                          ;90D34C;
+    LDA.W CrashEcho_Phase                                                          ;90D34C;
     AND.W #$00FF                                                         ;90D34F;
     ASL                                                                  ;90D352;
     TAX                                                                  ;90D353;
@@ -12287,11 +12288,11 @@ SamusMovementHandler_ShinesparkCrash_EchoesCircleSamus:
     JSR.W Math_90CC39                                                    ;90D363;
     LDA.W SamusXPosition                                                 ;90D366;
     CLC                                                                  ;90D369;
-    ADC.B $14                                                            ;90D36A;
+    ADC.B DP_Temp14                                                      ;90D36A;
     STA.W SpeedEcho_XPosition0,X                                         ;90D36C;
     LDA.W SamusYPosition                                                 ;90D36F;
     CLC                                                                  ;90D372;
-    ADC.B $16                                                            ;90D373;
+    ADC.B DP_Temp16                                                      ;90D373;
     STA.W SpeedEcho_YPosition0,X                                         ;90D375;
     DEX                                                                  ;90D378;
     DEX                                                                  ;90D379;

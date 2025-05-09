@@ -1535,11 +1535,14 @@ CorpseRottingGFX_Ripper2: skip $C0 ; $7E2C40..2CFF
 org $7E2000
 RoomTiles: ; $7E2000..9FFF
 GreyCloudsDuringZebesExplosionTilemap: ; $7E2000..5FFF
+PostCreditsSuitlessSamusTiles: ; $7E2000..??
 EnemyBG2Tilemap: ; $7E2000..2FFF
 
 org $7E3000
 CinematicBGTilemap_TopMarginInitialJapanText: skip $100 ; $7E3000..FF
-CinematicBGTilemap_EnglishTextRegion: skip $500 ; $7E3100..35FF
+CinematicBGTilemap_EnglishTextRegion: skip $200 ; $7E3100..35FF
+CinematicBGTilemap_RowsCD: skip $2C0 ; $7E3300..??
+CinematicBGTilemap_Rows17_18: skip $40 ; $7E35C0..??
 CinematicBGTilemap_JapanTextRegion: skip $100 ; $7E3600..FF
 CinematicBGTilemap_BottomMargin: skip $100 ; $7E3700..FF
 
@@ -1590,8 +1593,10 @@ skip $F00
 CopyOfVRAMDuringPauseMenuKraidRoom: ; $7E5000..53FF
 skip $1000
 BigZebesDuringZebesExplosionTilemap: ; $7E6000..9FFF
+BigZebesZebesExplosionTiles: ; $7E6000..??
 
 org $7E6000
+PostCreditsSamusShootingScreenTiles: ; $7E6000..??
 PostCreditsSuperMetroidIcon_Tiles: skip $2000 ; $7E6000..7FFF
 PostCreditsSuperMetroidIcon_Tilemap: skip $800 ; $7E8000..87FF
 
@@ -2036,34 +2041,43 @@ EnemyProjectileData_SpecialDeathItemDropYOriginPosition: skip 2 ; $7EF436
 
 ; $7F0000..FFFF
 
-org $7F0000
+org $7F0000 ; gameplay
 SizeOfLevelData: skip 2 ; $7F0000
 LevelData: skip $6400 ; $7F0002..6401
 BTS: skip $3200 ; $7F6402..9601
 CustomBackground: skip $6400 ; $7F9602..FA01
 
-org $7F0000
+org $7F0000 ; non-gameplay
 EndingShipTiles: ; $7F0000..3FFF
 CreditsTilemap: ; $7F0000..1FFF
+SamusWaitingForCreditsToEndTiles: ; $7F0000..??
 IntroBackgroundTiles: ; $7F0000..??
 TitleBackgroundMode7Tiles: ; $7F0000..??
+CeresGunshipMode7Tiles: ; $7F0000..??
+ZebesExplosionZoomedOutMode7Tiles: ; $7F0000..??
 skip $4000
-PostCreditsSamusBeamInterleavedTilesTilemap: ; $7F4000.BFFF
+PostCreditsSamusBeamInterleavedTilesTilemap: ; $7F4000..BFFF
 EndingShipTilemap: ; $7F4000..7FFF
 CeresCutsceneTilemap_ShipFront: ; $7F4000..42FF
 TitleMode7Tilemap: ; $7F4000..??
+YellowCloudsZebesExplosionTiles: ; $7F4000..??
 skip $300
 CeresCutsceneTilemap_ShipBack: skip $300 ; $7F4300..45FF
 CeresCutsceneTilemap_Ceres: skip $600 ; $7F4600..4BFF
 CeresCutsceneTilemap_ClearTilemap: skip $400 ; $7F4C00..42FF
+SpaceCeresTiles: ; $7F5000..??
+ZebesTiles: ; $7F5000..??
 TitleSpriteTiles: skip $3000 ; $7F5000..8FFF
+ZebesBeingZoomedOutExplosionInterleavedTilesTilemap: ; $7F8000..??
 ZebesExplosionTiles: ; $7F8000..DFFF
 IntroFont1Tiles: ; $7F8000..88FF
 skip $1000
 TitleBabyMetroidTiles: ; $7F9000..93FF
+ZebesTilemap: ; $7F9000..?
 IntroBG2SamusHeadTilemap: skip $800 ; $7F9000..??
 IntroBG1MotherBrainsRoomTilemap: skip $800 ; $7F9800..??
-IntroFont2Tiles: skip $2000 ; $7FA000..B1FF
+IntroFont2Tiles: skip $1800 ; $7FA000..B1FF
+IntroSpriteTiles: skip $800 ; $7FB800..??
 CreditsFont3: ; $7FC000..D7FF
 GameOptionsTilemap_Options: skip $800 ; $7FC000..C7FF
 GameOptionsTilemap_EnglishControllerSettings: skip $800 ; $7FC800..CFFF
@@ -2072,8 +2086,12 @@ GameOptionsTilemap_JapanControllerSettings: skip $800 ; $7FD000..D7FF
 GameOptionsTilemap_EnglishSpecialSettings: skip $800 ; $7FD800..DFFF
 GameOptionsTilemap_JapanSpecialSettings: ; $7FE000..E7FF
 WidePartOfZebesExplosionTilemap: ; $7FE000..E7FF
+IntroBG3TheLastMetroidTilemap: ; $7FE000..??
+SamusWaitingForCreditsTilemap: ; $7FE000..??
 skip $800
+PostCreditsSamusTransformationEffectTiles: ; $7EE800..??
 ConcentricWidePartOfZebesExplosionTilemap: skip $800 ; $7FE800..EFFF
+PostCreditsSamusTransformationEffectTilemap: ; $7FF000..??
 EclipseOfZebesDuringExplosionTilemap: skip $800 ; $7FF000..F7FF
 EndingBlankTilemap: skip $800 ; $7FF800..FFFF
 
