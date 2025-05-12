@@ -1520,7 +1520,7 @@ FinishDeathAnimationFlashing:
     LDA.W $0000,X                                                        ;9BB4C0;
     TAX                                                                  ;9BB4C3;
     PHB                                                                  ;9BB4C4;
-    PEA.W $9B00                                                          ;9BB4C5;
+    PEA.W SamusPalettes_PowerSuit>>8&$FF00                               ;9BB4C5;
     PLB                                                                  ;9BB4C8;
     PLB                                                                  ;9BB4C9;
     LDA.W $0000,X                                                        ;9BB4CA;
@@ -1624,7 +1624,7 @@ WriteDeathAnimationSpritePalettes:
     LDA.W $0000,X                                                        ;9BB5E3;
     TAX                                                                  ;9BB5E6;
     PHB                                                                  ;9BB5E7;
-    PEA.W $9B00                                                          ;9BB5E8;
+    PEA.W SamusPalettes_PowerSuit>>8&$FF00                               ;9BB5E8;
     PLB                                                                  ;9BB5EB;
     PLB                                                                  ;9BB5EC;
     LDA.W $0000,X                                                        ;9BB5ED;
@@ -3131,7 +3131,7 @@ UpdateGrappleBeamTiles:
     INX                                                                  ;9BBFF0;
     INX                                                                  ;9BBFF1;
     SEP #$20                                                             ;9BBFF2;
-    LDA.B #$9A                                                           ;9BBFF4;
+    LDA.B #Tiles_GrappleBeam_Horizontal_Beam>>16                         ;9BBFF4;
     STA.B VRAMWrite.size,X                                               ;9BBFF6;
     REP #$20                                                             ;9BBFF8;
     INX                                                                  ;9BBFFA;
@@ -3156,7 +3156,7 @@ UpdateGrappleBeamTiles:
     INX                                                                  ;9BC020;
     INX                                                                  ;9BC021;
     SEP #$20                                                             ;9BC022;
-    LDA.B #$9A                                                           ;9BC024;
+    LDA.B #Tiles_GrappleBeam_Horizontal_Beam>>16                         ;9BC024;
     STA.B VRAMWrite.size,X                                               ;9BC026;
     REP #$20                                                             ;9BC028;
     INX                                                                  ;9BC02A;

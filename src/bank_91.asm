@@ -1152,7 +1152,7 @@ PreInstruction_DemoInput_BabyMetroidDiscovery_RunningLeft:
 
 ;;; $866A: Pre-instruction - demo input - baby metroid discovery - stop and look ;;;
 PreInstruction_DemoInput_BabyMetroidDiscovery_StopAndLook:
-    LDA.W $1A4B                                                          ;91866A;
+    LDA.W CinematicFunctionTimer                                         ;91866A;
     BNE .return                                                          ;91866D;
     LDA.W #RTS_9183BF                                                    ;91866F;
     STA.W DemoInput_PreInstruction                                       ;918672;
@@ -9045,13 +9045,13 @@ LoadRightHalfOfRevealed2xNBlock:
     ASL                                                                  ;91CD5D;
     ASL                                                                  ;91CD5E;
     TAX                                                                  ;91CD5F;
-    LDA.L $7EA000,X                                                      ;91CD60;
+    LDA.L TileTable_topLeft,X                                            ;91CD60;
     PHA                                                                  ;91CD64;
-    LDA.L $7EA002,X                                                      ;91CD65;
+    LDA.L TileTable_topRight,X                                           ;91CD65;
     PHA                                                                  ;91CD69;
-    LDA.L $7EA004,X                                                      ;91CD6A;
+    LDA.L TileTable_bottomLeft,X                                         ;91CD6A;
     PHA                                                                  ;91CD6E;
-    LDA.L $7EA006,X                                                      ;91CD6F;
+    LDA.L TileTable_bottomRight,X                                        ;91CD6F;
     LDX.B DP_Temp16                                                      ;91CD73;
     STA.L XrayTilemaps_BG2+$C2,X                                         ;91CD75;
     PLA                                                                  ;91CD79;
@@ -9072,13 +9072,13 @@ LoadRightHalfOfRevealed2xNBlock:
     ASL                                                                  ;91CD92;
     ASL                                                                  ;91CD93;
     TAX                                                                  ;91CD94;
-    LDA.L $7EA000,X                                                      ;91CD95;
+    LDA.L TileTable_topLeft,X                                            ;91CD95;
     PHA                                                                  ;91CD99;
-    LDA.L $7EA002,X                                                      ;91CD9A;
+    LDA.L TileTable_topRight,X                                           ;91CD9A;
     PHA                                                                  ;91CD9E;
-    LDA.L $7EA004,X                                                      ;91CD9F;
+    LDA.L TileTable_bottomLeft,X                                         ;91CD9F;
     PHA                                                                  ;91CDA3;
-    LDA.L $7EA006,X                                                      ;91CDA4;
+    LDA.L TileTable_bottomRight,X                                        ;91CDA4;
     LDX.B DP_Temp16                                                      ;91CDA8;
     STA.L XrayTilemaps_BG2+$42,X                                         ;91CDAA;
     PLA                                                                  ;91CDAE;
@@ -9100,7 +9100,7 @@ LoadRevealedBlock:
     JSR.W LoadRevealedBlockCommand                                       ;91CDC0;
     CMP.W #$FFFF                                                         ;91CDC3;
     BEQ LoadRevealedBlock_Done                                           ;91CDC6;
-    JMP.W ($0000)                                                        ;91CDC8;
+    JMP.W (DP_Temp00)                                                        ;91CDC8;
 
 
 ;;; $CDCB: Load revealed block - done ;;;
@@ -9484,13 +9484,13 @@ RevealedBlockCommand_Copy2x2BlockToXrayBG2Tilemap:
     ASL                                                                  ;91CF91;
     ASL                                                                  ;91CF92;
     TAX                                                                  ;91CF93;
-    LDA.L $7EA000,X                                                      ;91CF94;
+    LDA.L TileTable_topLeft,X                                            ;91CF94;
     PHA                                                                  ;91CF98;
-    LDA.L $7EA002,X                                                      ;91CF99;
+    LDA.L TileTable_topRight,X                                           ;91CF99;
     PHA                                                                  ;91CF9D;
-    LDA.L $7EA004,X                                                      ;91CF9E;
+    LDA.L TileTable_bottomLeft,X                                         ;91CF9E;
     PHA                                                                  ;91CFA2;
-    LDA.L $7EA006,X                                                      ;91CFA3;
+    LDA.L TileTable_bottomRight,X                                        ;91CFA3;
     LDX.B DP_Temp16                                                      ;91CFA7;
     STA.L XrayTilemaps_BG2+$C6,X                                         ;91CFA9;
     PLA                                                                  ;91CFAD;
@@ -9522,14 +9522,14 @@ CopyBlockToXrayBG2Tilemap:
     ASL                                                                  ;91CFC2;
     ASL                                                                  ;91CFC3;
     TAX                                                                  ;91CFC4;
-    LDA.L $7EA000,X                                                      ;91CFC5;
+    LDA.L TileTable_topLeft,X                                            ;91CFC5;
     PHA                                                                  ;91CFC9;
-    LDA.L $7EA002,X                                                      ;91CFCA;
+    LDA.L TileTable_topRight,X                                           ;91CFCA;
     PHA                                                                  ;91CFCE;
-    LDA.L $7EA004,X                                                      ;91CFCF;
+    LDA.L TileTable_bottomLeft,X                                         ;91CFCF;
     PHA                                                                  ;91CFD3;
-    LDA.L $7EA006,X                                                      ;91CFD4;
-    LDX.B $16                                                            ;91CFD8;
+    LDA.L TileTable_bottomRight,X                                        ;91CFD4;
+    LDX.B DP_Temp16                                                      ;91CFD8;
     STA.L XrayTilemaps_BG2+$42,X                                         ;91CFDA;
     PLA                                                                  ;91CFDE;
     STA.L XrayTilemaps_BG2+$40,X                                         ;91CFDF;
@@ -9551,13 +9551,13 @@ CopyRevealedBlockCommandArgumentToXrayBG2Tilemap_1BlockRight:
     ASL                                                                  ;91CFF1;
     ASL                                                                  ;91CFF2;
     TAX                                                                  ;91CFF3;
-    LDA.L $7EA000,X                                                      ;91CFF4;
+    LDA.L TileTable_topLeft,X                                            ;91CFF4;
     PHA                                                                  ;91CFF8;
-    LDA.L $7EA002,X                                                      ;91CFF9;
+    LDA.L TileTable_topRight,X                                           ;91CFF9;
     PHA                                                                  ;91CFFD;
-    LDA.L $7EA004,X                                                      ;91CFFE;
+    LDA.L TileTable_bottomLeft,X                                         ;91CFFE;
     PHA                                                                  ;91D002;
-    LDA.L $7EA006,X                                                      ;91D003;
+    LDA.L TileTable_bottomRight,X                                        ;91D003;
     LDX.B DP_Temp16                                                      ;91D007;
     STA.L XrayTilemaps_BG2+$46,X                                         ;91D009;
     PLA                                                                  ;91D00D;
@@ -9580,13 +9580,13 @@ CopyRevealedBlockCommandArgumentToXrayBG2Tilemap_1BlockDown:
     ASL                                                                  ;91D020;
     ASL                                                                  ;91D021;
     TAX                                                                  ;91D022;
-    LDA.L $7EA000,X                                                      ;91D023;
+    LDA.L TileTable_topLeft,X                                            ;91D023;
     PHA                                                                  ;91D027;
-    LDA.L $7EA002,X                                                      ;91D028;
+    LDA.L TileTable_topRight,X                                           ;91D028;
     PHA                                                                  ;91D02C;
-    LDA.L $7EA004,X                                                      ;91D02D;
+    LDA.L TileTable_bottomLeft,X                                         ;91D02D;
     PHA                                                                  ;91D031;
-    LDA.L $7EA006,X                                                      ;91D032;
+    LDA.L TileTable_bottomRight,X                                        ;91D032;
     LDX.B DP_Temp16                                                      ;91D036;
     STA.L XrayTilemaps_BG2+$C2,X                                         ;91D038;
     PLA                                                                  ;91D03C;
@@ -9676,13 +9676,13 @@ CopyYFlippedBlockToXrayBG2Tilemap:
     ASL                                                                  ;91D0A7;
     ASL                                                                  ;91D0A8;
     TAX                                                                  ;91D0A9;
-    LDA.L $7EA000,X                                                      ;91D0AA;
+    LDA.L TileTable_topLeft,X                                            ;91D0AA;
     PHA                                                                  ;91D0AE;
-    LDA.L $7EA002,X                                                      ;91D0AF;
+    LDA.L TileTable_topRight,X                                           ;91D0AF;
     PHA                                                                  ;91D0B3;
-    LDA.L $7EA004,X                                                      ;91D0B4;
+    LDA.L TileTable_bottomLeft,X                                         ;91D0B4;
     PHA                                                                  ;91D0B8;
-    LDA.L $7EA006,X                                                      ;91D0B9;
+    LDA.L TileTable_bottomRight,X                                        ;91D0B9;
     LDX.B DP_Temp16                                                      ;91D0BD;
     STA.L XrayTilemaps_BG2+2,X                                           ;91D0BF;
     PLA                                                                  ;91D0C3;
@@ -11367,7 +11367,7 @@ HandleCrystalFlashPalette:
 SetCrystalFlashSamusColors:
 ; Sprite palette 6 colours 0..9 = 14h bytes from $9B:[Y]
     PHB                                                                  ;91DC34;
-    PEA.W $9B00                                                          ;91DC35;
+    PEA.W SamusPalettes_PowerSuit>>8&$FF00                               ;91DC35;
     PLB                                                                  ;91DC38;
     PLB                                                                  ;91DC39;
     LDA.W $0000,Y                                                        ;91DC3A;
@@ -11398,7 +11398,7 @@ SetCrystalFlashSamusColors:
 SetCrystalFlashBubbleColors:
 ; Sprite palette 6 colours Ah..Fh = Ch bytes from $9B:[Y]
     PHB                                                                  ;91DC82;
-    PEA.W $9B00                                                          ;91DC83;
+    PEA.W SamusPalettes_PowerSuit>>8&$FF00                               ;91DC83;
     PLB                                                                  ;91DC86;
     PLB                                                                  ;91DC87;
     LDA.W $0000,Y                                                        ;91DC88;
@@ -11521,7 +11521,7 @@ Load20BytesOfSamusPaletteInX:
     PHP                                                                  ;91DD5B;
     REP #$30                                                             ;91DD5C;
     PHB                                                                  ;91DD5E;
-    PEA.W $9B00                                                          ;91DD5F;
+    PEA.W SamusPalettes_PowerSuit>>8&$FF00                               ;91DD5F;
     PLB                                                                  ;91DD62;
     PLB                                                                  ;91DD63;
     LDA.W $0000,X                                                        ;91DD64;
@@ -11567,7 +11567,7 @@ Load20BytesOfSamusTargetPaletteInX:
     PHP                                                                  ;91DDD7;
     REP #$30                                                             ;91DDD8;
     PHB                                                                  ;91DDDA;
-    PEA.W $9B00                                                          ;91DDDB;
+    PEA.W SamusPalettes_PowerSuit>>8&$FF00                               ;91DDDB;
     PLB                                                                  ;91DDDE;
     PLB                                                                  ;91DDDF;
     LDA.W $0000,X                                                        ;91DDE0;
