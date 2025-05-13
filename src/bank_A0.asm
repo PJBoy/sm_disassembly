@@ -996,7 +996,7 @@ Load_Enemies:
 ; Aside from loading tile data, this routine also loads palette data, and the enemy GFX data needed for respawn
     PHP                                                                  ;A08A1E;
     PHB                                                                  ;A08A1F;
-    PEA.W $A000                                                          ;A08A20;
+    PEA.W Load_Enemies>>8&$FF00                                          ;A08A20;
     PLB                                                                  ;A08A23;
     PLB                                                                  ;A08A24;
     REP #$30                                                             ;A08A25;
@@ -1030,7 +1030,7 @@ Load_Enemies:
 ClearEnemyData_ProcessEnemySet:
     PHP                                                                  ;A08A6D;
     PHB                                                                  ;A08A6E;
-    PEA.W $A000                                                          ;A08A6F;
+    PEA.W ClearEnemyData_ProcessEnemySet>>8&$FF00                        ;A08A6F;
     PLB                                                                  ;A08A72;
     PLB                                                                  ;A08A73;
     REP #$30                                                             ;A08A74;
@@ -1074,7 +1074,7 @@ Initialise_Enemies:
     INX                                                                  ;A08AAE;
     DEY                                                                  ;A08AAF;
     BNE .loopExtraEnemyRAM                                               ;A08AB0;
-    PEA.W $A000                                                          ;A08AB2;
+    PEA.W EnemyHeaders>>8&$FF00                                          ;A08AB2;
     PLB                                                                  ;A08AB5;
     PLB                                                                  ;A08AB6;
     REP #$30                                                             ;A08AB7;
@@ -1385,13 +1385,13 @@ TransferEnemyTilesToVRAM_InitialiseEnemies:
     BEQ .finish                                                          ;A08D03;
     LDX.W VRAMWriteStack                                                 ;A08D05;
     LDA.W #$0800                                                         ;A08D08;
-    STA.B $D0,X                                                          ;A08D0B;
+    STA.B VRAMWrite.size,X                                               ;A08D0B;
     LDA.W EnemyTileData_SrcAddr                                          ;A08D0D;
     STA.B VRAMWrite.src,X                                                ;A08D10;
     CLC                                                                  ;A08D12;
     ADC.W #$0800                                                         ;A08D13;
     STA.W EnemyTileData_SrcAddr                                          ;A08D16;
-    LDA.W #$007E                                                         ;A08D19;
+    LDA.W #EnemyTileData_SrcAddr>>16                                     ;A08D19;
     STA.B VRAMWrite.src+2,X                                              ;A08D1C;
     LDA.W EnemyTileData_DestAddr                                         ;A08D1E;
     STA.B VRAMWrite.dest,X                                               ;A08D21;
@@ -1593,7 +1593,7 @@ ProcessEnemySet_LoadPalettesAndEnemyLoadingData:
 ;;; $8EB6: Determine which enemies to process ;;;
 Determine_Which_Enemies_to_Process:
     PHB                                                                  ;A08EB6;
-    PEA.W $A000                                                          ;A08EB7;
+    PEA.W Determine_Which_Enemies_to_Process>>8&$FF00                    ;A08EB7;
     PLB                                                                  ;A08EBA;
     PLB                                                                  ;A08EBB;
     REP #$30                                                             ;A08EBC;
@@ -1808,7 +1808,7 @@ Main_Enemy_Routine:
 ;     Distances between Samus and enemy when Samus collides with solid enemy = 0
 ; }
     PHB                                                                  ;A08FD4;
-    PEA.W $A000                                                          ;A08FD5;
+    PEA.W EnemyHeaders>>8&$FF00                                          ;A08FD5;
     PLB                                                                  ;A08FD8;
     PLB                                                                  ;A08FD9;
     REP #$30                                                             ;A08FDA;
@@ -2087,7 +2087,7 @@ Spawn_Enemy_Drops:
     PHX                                                                  ;A09210;
     PHY                                                                  ;A09211;
     STA.W Temp_EnemyHeaderPointer                                        ;A09212;
-    PEA.W $A000                                                          ;A09215;
+    PEA.W Spawn_Enemy_Drops>>8&$FF00                                     ;A09215;
     PLB                                                                  ;A09218;
     PLB                                                                  ;A09219;
     REP #$30                                                             ;A0921A;
@@ -2367,7 +2367,7 @@ AddEnemyToDrawingQueue:
     LDX.W EnemyIndex                                                     ;A09425;
     LDA.W Enemy.layer,X                                                  ;A09428;
     ASL                                                                  ;A0942B;
-    STA.W $0E34                                                          ;A0942C;
+    STA.W Temp_DrawingQueueIndex0E34                                     ;A0942C;
     TAY                                                                  ;A0942F;
     LDA.W AddressesForEnemyDrawingQueues,Y                               ;A09430;
     CLC                                                                  ;A09433;
@@ -2375,7 +2375,7 @@ AddEnemyToDrawingQueue:
     TAY                                                                  ;A09437;
     LDA.W EnemyIndex                                                     ;A09438;
     STA.W $0000,Y                                                        ;A0943B;
-    LDX.W $0E34                                                          ;A0943E;
+    LDX.W Temp_DrawingQueueIndex0E34                                     ;A0943E;
     INC.W EnemyDrawingQueues_Sizes,X                                     ;A09441;
     INC.W EnemyDrawingQueues_Sizes,X                                     ;A09444;
     PLY                                                                  ;A09447;
@@ -2576,7 +2576,7 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_ExecuteEnemyAI_A095AD:
     PHB                                                                  ;A095AD;
     PHP                                                                  ;A095AE;
-    PEA.W $A000                                                          ;A095AF;
+    PEA.W UNUSED_ExecuteEnemyAI_A095AD>>8&$FF00                          ;A095AF;
     PLB                                                                  ;A095B2;
     PLB                                                                  ;A095B3;
     REP #$30                                                             ;A095B4;
@@ -2621,7 +2621,7 @@ UNUSED_ExecuteEnemyAI_A095AD:
 UNUSED_RespawnEnemy_A095F1:
 ; See $86:F264 for the used routine
     PHB                                                                  ;A095F1;
-    PEA.W $A000                                                          ;A095F2;
+    PEA.W UNUSED_RespawnEnemy_A095F1>>8&$FF00                            ;A095F2;
     PLB                                                                  ;A095F5;
     PLB                                                                  ;A095F6;
     REP #$30                                                             ;A095F7;
@@ -2744,7 +2744,7 @@ ProcessExtendedTilemap:
 
   .innerLoop:
     LDA.W $0000,Y                                                        ;A096E5;
-    STA.L $7E0000,X                                                      ;A096E8;
+    STA.L EnemyBG2Tilemap,X                                              ;A096E8;
     INX                                                                  ;A096EC;
     INX                                                                  ;A096ED;
     INY                                                                  ;A096EE;
@@ -2755,9 +2755,9 @@ ProcessExtendedTilemap:
 
   .unrolled:
     LDA.W $0000,Y                                                        ;A096F8;
-    STA.L $7E0000,X                                                      ;A096FB;
+    STA.L EnemyBG2Tilemap,X                                              ;A096FB;
     LDA.W $0002,Y                                                        ;A096FF;
-    STA.L $7E0002,X                                                      ;A09702;
+    STA.L EnemyBG2Tilemap+2,X                                            ;A09702;
     INX                                                                  ;A09706;
     INX                                                                  ;A09707;
     INX                                                                  ;A09708;
@@ -2813,7 +2813,7 @@ Handle_Queuing_Enemy_BG2_Tilemap_VRAM_Transfer:
 EnemyCollisionHandling:
     PHP                                                                  ;A09758;
     PHB                                                                  ;A09759;
-    PEA.W $A000                                                          ;A0975A;
+    PEA.W EnemyCollisionHandling>>8&$FF00                                ;A0975A;
     PLB                                                                  ;A0975D;
     PLB                                                                  ;A0975E;
     REP #$30                                                             ;A0975F;
@@ -2846,7 +2846,7 @@ RTL_A09784:
 Samus_Projectiles_Interaction_Handling:
 ; Handles bomb jumps and damage due to reflected projectiles
     PHB                                                                  ;A09785;
-    PEA.W $A000                                                          ;A09786;
+    PEA.W Samus_Projectiles_Interaction_Handling>>8&$FF00                ;A09786;
     PLB                                                                  ;A09789;
     PLB                                                                  ;A0978A;
     REP #$30                                                             ;A0978B;
@@ -3002,7 +3002,7 @@ Samus_Projectiles_Interaction_Handling:
 EnemyProjectile_Samus_Collision_Handling:
     PHP                                                                  ;A09894;
     PHB                                                                  ;A09895;
-    PEA.W $A000                                                          ;A09896;
+    PEA.W EnemyProjectile_Samus_Collision_Handling>>8&$FF00              ;A09896;
     PLB                                                                  ;A09899;
     PLB                                                                  ;A0989A;
     REP #$30                                                             ;A0989B;
@@ -3124,7 +3124,7 @@ HandleEnemyProjectileCollisionWithSamus:
 Projectile_vs_Projectile_Collision_Handling:
     PHP                                                                  ;A0996C;
     PHB                                                                  ;A0996D;
-    PEA.W $A000                                                          ;A0996E;
+    PEA.W Projectile_vs_Projectile_Collision_Handling>>8&$FF00           ;A0996E;
     PLB                                                                  ;A09971;
     PLB                                                                  ;A09972;
     REP #$30                                                             ;A09973;
@@ -10280,6 +10280,7 @@ CommonEnemyProjectileSpeeds_QuadraticallyIncreasing:
 
 
 ;;; $CEBF: Enemy headers ;;;
+; see labels.asm for EnemyHeaders:
 EnemyHeaders_Boyon:
     dw $0400                                                             ;A0CEBF;
     dw Palette_Boyon                                                     ;A0CEC1;
