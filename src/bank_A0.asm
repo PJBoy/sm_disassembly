@@ -1391,7 +1391,7 @@ TransferEnemyTilesToVRAM_InitialiseEnemies:
     CLC                                                                  ;A08D12;
     ADC.W #$0800                                                         ;A08D13;
     STA.W EnemyTileData_SrcAddr                                          ;A08D16;
-    LDA.W #EnemyTileData_SrcAddr>>16                                     ;A08D19;
+    LDA.W #EnemyTileData>>16                                             ;A08D19;
     STA.B VRAMWrite.src+2,X                                              ;A08D1C;
     LDA.W EnemyTileData_DestAddr                                         ;A08D1E;
     STA.B VRAMWrite.dest,X                                               ;A08D21;
@@ -2744,7 +2744,7 @@ ProcessExtendedTilemap:
 
   .innerLoop:
     LDA.W $0000,Y                                                        ;A096E5;
-    STA.L EnemyBG2Tilemap,X                                              ;A096E8;
+    STA.L EnemyBG2Tilemap&$FF0000,X                                      ;A096E8;
     INX                                                                  ;A096EC;
     INX                                                                  ;A096ED;
     INY                                                                  ;A096EE;
@@ -2755,9 +2755,9 @@ ProcessExtendedTilemap:
 
   .unrolled:
     LDA.W $0000,Y                                                        ;A096F8;
-    STA.L EnemyBG2Tilemap,X                                              ;A096FB;
+    STA.L EnemyBG2Tilemap&$FF0000,X                                      ;A096FB;
     LDA.W $0002,Y                                                        ;A096FF;
-    STA.L EnemyBG2Tilemap+2,X                                            ;A09702;
+    STA.L (EnemyBG2Tilemap&$FF0000)+2,X                                  ;A09702;
     INX                                                                  ;A09706;
     INX                                                                  ;A09707;
     INX                                                                  ;A09708;
@@ -4073,7 +4073,7 @@ Enemy_vs_Samus_CollisionHandling:
 ; Not the cause of crystal flash insta-death, that would be $90:D6D6
     PHB                                                                  ;A0A07A;
     REP #$30                                                             ;A0A07B;
-    PEA.W $A000                                                          ;A0A07D;
+    PEA.W EnemyHeaders>>8&$FF00                                          ;A0A07D;
     PLB                                                                  ;A0A080;
     PLB                                                                  ;A0A081;
     LDA.W #$0009                                                         ;A0A082;
@@ -4536,7 +4536,7 @@ EnemyDeath:
 ;;         4: Big explosion. Used by space pirates, Shaktool, ki-hunter, dragon, kago, yapping maw, evir, metroid, super-sidehopper/desgeega, tatori
     PHP                                                                  ;A0A3AF;
     PHB                                                                  ;A0A3B0;
-    PEA.W $A000                                                          ;A0A3B1;
+    PEA.W EnemyDeath>>8&$FF00                                            ;A0A3B1;
     PLB                                                                  ;A0A3B4;
     PLB                                                                  ;A0A3B5;
     REP #$30                                                             ;A0A3B6;
@@ -4596,7 +4596,7 @@ RinkaDeath:
 ;;         2: Normal explosion
     PHP                                                                  ;A0A410;
     PHB                                                                  ;A0A411;
-    PEA.W $A000                                                          ;A0A412;
+    PEA.W RinkaDeath>>8&$FF00                                            ;A0A412;
     PLB                                                                  ;A0A415;
     PLB                                                                  ;A0A416;
     REP #$30                                                             ;A0A417;
@@ -5292,7 +5292,7 @@ Samus_vs_SolidEnemy_CollisionDetection:
 ; Samus is now horizontally inside the zebetite, and so no horizontal collision will be detected due to the zebetite
     PHP                                                                  ;A0A8F0;
     PHB                                                                  ;A0A8F1;
-    PEA.W $A000                                                          ;A0A8F2;
+    PEA.W Samus_vs_SolidEnemy_CollisionDetection>>8&$FF00                ;A0A8F2;
     PLB                                                                  ;A0A8F5;
     PLB                                                                  ;A0A8F6;
     REP #$30                                                             ;A0A8F7;
@@ -5914,7 +5914,7 @@ if !FEATURE_KEEP_UNREFERENCED
 UNUSED_EnemyVariable_ZeroOrMax_A0AD33:
     PHB                                                                  ;A0AD33;
     SEP #$20                                                             ;A0AD34;
-    LDA.B #$A0                                                           ;A0AD36;
+    LDA.B #UNUSED_EnemyVariable_ZeroOrMax_A0AD33>>16                     ;A0AD36;
     PHA                                                                  ;A0AD38;
     PLB                                                                  ;A0AD39;
     REP #$30                                                             ;A0AD3A;
@@ -6615,7 +6615,7 @@ EightBitSineMultiplication_A0B0DA:
 
 ; Results for negative angles with this bug are almost always 1.0 greater than they should be
     SEP #$20                                                             ;A0B0DA;
-    LDA.B #$A0                                                           ;A0B0DC;
+    LDA.B #SineCosineTables_8bitSine>>16                                 ;A0B0DC;
     PHA                                                                  ;A0B0DE;
     PLB                                                                  ;A0B0DF;
     REP #$30                                                             ;A0B0E0;
@@ -7563,7 +7563,7 @@ CheckForHorizontalSolidBlockCollision:
 ;;     Carry: Set if collision, clear otherwise
     PHB                                                                  ;A0BBBF;
     SEP #$20                                                             ;A0BBC0;
-    LDA.B #$A0                                                           ;A0BBC2;
+    LDA.B #CheckForHorizontalSolidBlockCollision>>16                     ;A0BBC2;
     PHA                                                                  ;A0BBC4;
     PLB                                                                  ;A0BBC5;
     REP #$30                                                             ;A0BBC6;
@@ -7682,7 +7682,7 @@ CheckForVerticalSolidBlockCollision:
 ;;     Carry: Set if collision, clear otherwise
     PHB                                                                  ;A0BC76;
     SEP #$20                                                             ;A0BC77;
-    LDA.B #$A0                                                           ;A0BC79;
+    LDA.B #CheckForVerticalSolidBlockCollision>>16                       ;A0BC79;
     PHA                                                                  ;A0BC7B;
     PLB                                                                  ;A0BC7C;
     REP #$30                                                             ;A0BC7D;
@@ -7801,7 +7801,7 @@ UNUSED_MoveEnemyRight_NoBlockCollisionReactions_A0BD26:
 ;;     Carry: Set if collision, clear otherwise
     PHB                                                                  ;A0BD26;
     SEP #$20                                                             ;A0BD27;
-    LDA.B #$A0                                                           ;A0BD29;
+    LDA.B #UNUSED_MoveEnemyRight_NoBlockCollisionReactions_A0BD26>>16    ;A0BD29;
     PHA                                                                  ;A0BD2B;
     PLB                                                                  ;A0BD2C;
     REP #$30                                                             ;A0BD2D;
@@ -7936,7 +7936,7 @@ UNUSED_MoveEnemyDown_NoBlockCollisionReactions_A0BDF6:
 ;;     Carry: Set if collision, clear otherwise
     PHB                                                                  ;A0BDF6;
     SEP #$20                                                             ;A0BDF7;
-    LDA.B #$A0                                                           ;A0BDF9;
+    LDA.B #UNUSED_MoveEnemyDown_NoBlockCollisionReactions_A0BDF6>>16     ;A0BDF9;
     PHA                                                                  ;A0BDFB;
     PLB                                                                  ;A0BDFC;
     REP #$30                                                             ;A0BDFD;
@@ -8069,7 +8069,7 @@ UNUSED_CheckForHorizontalSolidBlockCollision_A0BEBF:
     STA.B DP_Temp1C                                                      ;A0BEBF;
     PHB                                                                  ;A0BEC1;
     SEP #$20                                                             ;A0BEC2;
-    LDA.B #$A0                                                           ;A0BEC4;
+    LDA.B #UNUSED_CheckForHorizontalSolidBlockCollision_A0BEBF>>16       ;A0BEC4;
     PHA                                                                  ;A0BEC6;
     PLB                                                                  ;A0BEC7;
     REP #$30                                                             ;A0BEC8;
@@ -8203,7 +8203,7 @@ CheckForVerticalSolidBlockCollision_SkreeMetaree:
     STA.B DP_Temp1C                                                      ;A0BF8A;
     PHB                                                                  ;A0BF8C;
     SEP #$20                                                             ;A0BF8D;
-    LDA.B #$A0                                                           ;A0BF8F;
+    LDA.B #CheckForVerticalSolidBlockCollision_SkreeMetaree>>16          ;A0BF8F;
     PHA                                                                  ;A0BF91;
     PLB                                                                  ;A0BF92;
     REP #$30                                                             ;A0BF93;

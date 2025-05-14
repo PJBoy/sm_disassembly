@@ -1152,7 +1152,7 @@ PreInstruction_DemoInput_BabyMetroidDiscovery_RunningLeft:
 
 ;;; $866A: Pre-instruction - demo input - baby metroid discovery - stop and look ;;;
 PreInstruction_DemoInput_BabyMetroidDiscovery_StopAndLook:
-    LDA.W CinematicFunctionTimer                                         ;91866A;
+    LDA.W IntroCrossFadeTimer                                            ;91866A;
     BNE .return                                                          ;91866D;
     LDA.W #RTS_9183BF                                                    ;91866F;
     STA.W DemoInput_PreInstruction                                       ;918672;

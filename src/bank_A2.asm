@@ -4802,12 +4802,12 @@ Function_Ship_LandingOnZebes_EjectSamus:
     LDA.W ShipTop.fixedYPosition,X                                       ;A2A950;
     SEC                                                                  ;A2A953;
     SBC.W #$001E                                                         ;A2A954;
-    STA.B $12                                                            ;A2A957;
+    STA.B DP_Temp12                                                      ;A2A957;
     LDA.W SamusYPosition                                                 ;A2A959;
     SEC                                                                  ;A2A95C;
     SBC.W #$0001                                                         ;A2A95D;
     STA.W SamusYPosition                                                 ;A2A960;
-    CMP.B $12                                                            ;A2A963;
+    CMP.B DP_Temp12                                                      ;A2A963;
     BPL .return                                                          ;A2A965;
     LDA.W #Function_Ship_LandOnZebes_WaitForShipEntranceToClose_UnlockSamus ;A2A967;
     STA.W ShipTop.function,X                                             ;A2A96A;
@@ -12702,7 +12702,7 @@ MainAI_ShutterHorizShootable:
 
 +   LDA.W SamusXPosition                                                 ;A2F215;
     STA.L ExtraEnemy7800+$2A,X                                           ;A2F218;
-    LDA.W $0AF8                                                          ;A2F21C;
+    LDA.W SamusXSubPosition                                              ;A2F21C;
     STA.L ExtraEnemy7800+$2C,X                                           ;A2F21F;
     RTL                                                                  ;A2F223;
 
