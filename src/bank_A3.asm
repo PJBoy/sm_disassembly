@@ -367,7 +367,7 @@ Instruction_CommonA3_TransferYBytesInYToVRAM:
     LDA.W $0003,Y                                                        ;A38159;
     STA.B VRAMWrite.src+1,X                                              ;A3815C;
     LDA.W $0005,Y                                                        ;A3815E;
-    STA.B $D5,X                                                          ;A38161;
+    STA.B VRAMWrite.dest,X                                               ;A38161;
     TXA                                                                  ;A38163;
     CLC                                                                  ;A38164;
     ADC.W #$0007                                                         ;A38165;
