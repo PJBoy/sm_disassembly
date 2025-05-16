@@ -12079,7 +12079,7 @@ InitAI_Zoomer_MZoomer:
     ASL                                                                  ;A3E672;
     TAY                                                                  ;A3E673;
     LDA.W InitialInstListPointers_Crawlers,Y                             ;A3E674;
-    STA.W Enemy.instList,X                                                        ;A3E677; fallthrough to InitAI_Crawlers_Common
+    STA.W Enemy.instList,X                                               ;A3E677; fallthrough to InitAI_Crawlers_Common
 
 
 ;;; $E67A: Creepy crawly common initialisation AI ;;;
@@ -12689,7 +12689,7 @@ MainAI_Metroid:
     LDA.W SamusYPosition                                                 ;A3EB9B;
     SEC                                                                  ;A3EB9E;
     SBC.W #$0008                                                         ;A3EB9F;
-    STA.W $0E32                                                          ;A3EBA2;
+    STA.W Temp_TargetYPosition                                           ;A3EBA2;
     LDA.W Metroid.functionIndex,X                                        ;A3EBA5;
     ASL                                                                  ;A3EBA8;
     TAX                                                                  ;A3EBA9;

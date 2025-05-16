@@ -5823,7 +5823,7 @@ RTL_A4CB00:
 
 
 ;;; $CB01: RTL ;;;
-LoadEnemyIndexAndRTL:
+RTL_A4CB01:
     LDX.W EnemyIndex                                                     ;A4CB01;
     RTL                                                                  ;A4CB04;
 
