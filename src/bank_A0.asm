@@ -10282,37 +10282,29 @@ CommonEnemyProjectileSpeeds_QuadraticallyIncreasing:
 ;;; $CEBF: Enemy headers ;;;
 ; see labels.asm for EnemyHeaders:
 EnemyHeaders_Boyon:
-    dw $0400                                                             ;A0CEBF;
-    dw Palette_Boyon                                                     ;A0CEC1;
-    dw $03E8                                                             ;A0CEC3;
-    dw $000A                                                             ;A0CEC5;
-    dw $0008                                                             ;A0CEC7;
-    dw $0008                                                             ;A0CEC9;
-    db $A2                                                               ;A0CECB;
-    db $00                                                               ;A0CECC;
-    dw $0000                                                             ;A0CECD;
-    dw $0000                                                             ;A0CECF;
-    dw InitAI_Boyon                                                      ;A0CED1;
-    dw $0001                                                             ;A0CED3;
-    dw $0000                                                             ;A0CED5;
-    dw MainAI_Boyon                                                      ;A0CED7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0CED9;
-    dw RTL_A2804C                                                        ;A0CEDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0CEDD;
-    dw $0000                                                             ;A0CEDF;
-    dw $0000                                                             ;A0CEE1;
-    dd $00000000                                                         ;A0CEE3;
-    dw $0000                                                             ;A0CEE7;
-    dw $0000                                                             ;A0CEE9;
-    dd $00000000                                                         ;A0CEEB;
-    dw Common_NormalEnemyTouchAI                                         ;A0CEEF;
-    dw Common_NormalEnemyShotAI                                          ;A0CEF1;
-    dw $0000                                                             ;A0CEF3;
-    dl Tiles_Boyon                                                       ;A0CEF5;
-    db $05                                                               ;A0CEF8;
-    dw EnemyDropChances_Boyon                                            ;A0CEF9;
-    dw EnemyVulnerabilities_Boyon                                        ;A0CEFB;
-    dw EnemyName_Boyon                                                   ;A0CEFD;
+    %EnemyHeader(Boyon,
+    %tileDataSize($0400),
+    %health($03E8),
+    %damage($000A),
+    %width(8),
+    %height(8),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %parts(1),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %layer(5),
+    %drops(EnemyDropChances_Boyon),
+    %vulnerabilities(EnemyVulnerabilities_Boyon),
+    %name(EnemyName_Boyon))
 
 EnemyHeaders_Stoke:
     dw $0400                                                             ;A0CEFF;
