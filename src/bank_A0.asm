@@ -10281,17 +10281,22 @@ CommonEnemyProjectileSpeeds_QuadraticallyIncreasing:
 
 ;;; $CEBF: Enemy headers ;;;
 ; see labels.asm for EnemyHeaders:
-EnemyHeaders_Boyon:
-    %EnemyHeader(Boyon,
+EnemyHeaders_Boyon:                                                      ;A0CEBF;
+    %EnemyHeader(\
     %tileDataSize($0400),
-    %health($03E8),
-    %damage($000A),
+    %palette(Palette_Boyon),
+    %health(1000),
+    %damage(10),
     %width(8),
     %height(8),
+    %bank(InitAI_Boyon>>16),
     %hurtAITime(0),
     %cry(0),
     %bossID(0),
+    %initAI(InitAI_Boyon),
     %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Boyon),
     %grappleAI(Common_GrappleAI_CancelGrappleBeam),
     %hurtAI(RTL_A2804C),
     %frozenAI(Common_NormalEnemyFrozenAI),
@@ -10301,3627 +10306,4396 @@ EnemyHeaders_Boyon:
     %variantIndex(0),
     %enemyTouch(Common_NormalEnemyTouchAI),
     %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Boyon),
     %layer(5),
     %drops(EnemyDropChances_Boyon),
     %vulnerabilities(EnemyVulnerabilities_Boyon),
     %name(EnemyName_Boyon))
 
-EnemyHeaders_Stoke:
-    dw $0400                                                             ;A0CEFF;
-    dw Palette_Stoke                                                     ;A0CF01;
-    dw $0014,$0028,$0008,$0008                                           ;A0CF03;
-    db $A2,$00                                                           ;A0CF0B;
-    dw $0053,$0000                                                       ;A0CF0D;
-    dw InitAI_Stoke                                                      ;A0CF11;
-    dw $0001,$0000                                                       ;A0CF13;
-    dw MainAI_Stoke                                                      ;A0CF17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0CF19;
-    dw RTL_A2804C                                                        ;A0CF1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0CF1D;
-    dw $0000                                                             ;A0CF1F;
-    dw $0000                                                             ;A0CF21;
-    dd $00000000                                                         ;A0CF23;
-    dw $0000,$0000                                                       ;A0CF27;
-    dd $00000000                                                         ;A0CF2B;
-    dw Common_NormalEnemyTouchAI                                         ;A0CF2F;
-    dw Common_NormalEnemyShotAI                                          ;A0CF31;
-    dw $0000                                                             ;A0CF33;
-    dl Tiles_Stoke                                                       ;A0CF35;
-    db $05                                                               ;A0CF38;
-    dw EnemyDropChances_Stoke                                            ;A0CF39;
-    dw EnemyVulnerabilities_Default                                      ;A0CF3B;
-    dw EnemyName_Stoke                                                   ;A0CF3D;
-
-EnemyHeaders_MamaTurtle:
-    dw $0C00                                                             ;A0CF3F;
-    dw Palette_MamaTurtle_BabyTurtle                                     ;A0CF41;
-    dw $4E20,$00C8,$0014,$0010                                           ;A0CF43;
-    db $A2,$00                                                           ;A0CF4B;
-    dw $0000,$0000                                                       ;A0CF4D;
-    dw InitAI_MamaTurtle                                                 ;A0CF51;
-    dw $0005,$0000                                                       ;A0CF53;
-    dw MainAI_MamaTurtle                                                 ;A0CF57;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0CF59;
-    dw RTL_A2804C                                                        ;A0CF5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0CF5D;
-    dw $0000                                                             ;A0CF5F;
-    dw $0004                                                             ;A0CF61;
-    dd $00000000                                                         ;A0CF63;
-    dw $0000,$0000                                                       ;A0CF67;
-    dd $00000000                                                         ;A0CF6B;
-    dw EnemyTouch_MamaTurtle                                             ;A0CF6F;
-    dw Common_NormalEnemyShotAI                                          ;A0CF71;
-    dw $0000                                                             ;A0CF73;
-    dl Tiles_MamaTurtle_BabyTurtle                                       ;A0CF75;
-    db $05                                                               ;A0CF78;
-    dw EnemyDropChances_MamaTurtle_BabyTurtle                            ;A0CF79;
-    dw EnemyVulnerabilities_Indestructible                               ;A0CF7B;
-    dw EnemyName_MamaTurtle                                              ;A0CF7D;
-
-EnemyHeaders_BabyTurtle:
-    dw $0C00                                                             ;A0CF7F;
-    dw Palette_MamaTurtle_BabyTurtle                                     ;A0CF81;
-    dw $4E20,$0000,$0008,$0005                                           ;A0CF83;
-    db $A2,$00                                                           ;A0CF8B;
-    dw $0000,$0000                                                       ;A0CF8D;
-    dw InitAI_BabyTurtle                                                 ;A0CF91;
-    dw $0001,$0000                                                       ;A0CF93;
-    dw MainAI_BabyTurtle                                                 ;A0CF97;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0CF99;
-    dw RTL_A2804C                                                        ;A0CF9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0CF9D;
-    dw $0000                                                             ;A0CF9F;
-    dw $0000                                                             ;A0CFA1;
-    dd $00000000                                                         ;A0CFA3;
-    dw $0000,$0000                                                       ;A0CFA7;
-    dd $00000000                                                         ;A0CFAB;
-    dw EnemyTouch_BabyTurtle                                             ;A0CFAF;
-    dw EnemyShot_BabyTurtle                                              ;A0CFB1;
-    dw $0000                                                             ;A0CFB3;
-    dl Tiles_MamaTurtle_BabyTurtle                                       ;A0CFB5;
-    db $05                                                               ;A0CFB8;
-    dw EnemyDropChances_MamaTurtle_BabyTurtle                            ;A0CFB9;
-    dw EnemyVulnerabilities_Indestructible                               ;A0CFBB;
-    dw $0000                                                             ;A0CFBD;
-
-EnemyHeaders_Puyo:
-    dw $0200                                                             ;A0CFBF;
-    dw Palette_Puyo                                                      ;A0CFC1;
-    dw $0064,$003C,$0008,$0004                                           ;A0CFC3;
-    db $A2,$00                                                           ;A0CFCB;
-    dw $0000,$0000                                                       ;A0CFCD;
-    dw InitAI_Puyo                                                       ;A0CFD1;
-    dw $0001,$0000                                                       ;A0CFD3;
-    dw MainAI_Puyo                                                       ;A0CFD7;
-    dw Common_GrappleAI_KillEnemy                                        ;A0CFD9;
-    dw RTL_A2804C                                                        ;A0CFDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0CFDD;
-    dw $0000                                                             ;A0CFDF;
-    dw $0000                                                             ;A0CFE1;
-    dd $00000000                                                         ;A0CFE3;
-    dw $0000,$0000                                                       ;A0CFE7;
-    dd $00000000                                                         ;A0CFEB;
-    dw Common_NormalEnemyTouchAI                                         ;A0CFEF;
-    dw Common_NormalEnemyShotAI                                          ;A0CFF1;
-    dw $0000                                                             ;A0CFF3;
-    dl Tiles_Puyo                                                        ;A0CFF5;
-    db $05                                                               ;A0CFF8;
-    dw EnemyDropChances_Puyo                                             ;A0CFF9;
-    dw EnemyVulnerabilities_Default                                      ;A0CFFB;
-    dw EnemyName_Puyo                                                    ;A0CFFD;
-
-EnemyHeaders_Cacatac:
-    dw $0400                                                             ;A0CFFF;
-    dw Palette_Cacatac                                                   ;A0D001;
-    dw $003C,$0014,$0008,$0008                                           ;A0D003;
-    db $A2,$00                                                           ;A0D00B;
-    dw $0000,$0000                                                       ;A0D00D;
-    dw InitAI_Cacatac                                                    ;A0D011;
-    dw $0001,$0000                                                       ;A0D013;
-    dw MainAI_Cacatac                                                    ;A0D017;
-    dw Common_GrappleAI_KillEnemy                                        ;A0D019;
-    dw RTL_A2804C                                                        ;A0D01B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D01D;
-    dw $0000                                                             ;A0D01F;
-    dw $0002                                                             ;A0D021;
-    dd $00000000                                                         ;A0D023;
-    dw $0000,$0000                                                       ;A0D027;
-    dd $00000000                                                         ;A0D02B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D02F;
-    dw Common_NormalEnemyShotAI                                          ;A0D031;
-    dw $0000                                                             ;A0D033;
-    dl Tiles_Cacatac                                                     ;A0D035;
-    db $05                                                               ;A0D038;
-    dw EnemyDropChances_Cacatac                                          ;A0D039;
-    dw EnemyVulnerabilities_Default                                      ;A0D03B;
-    dw EnemyName_Cacatac                                                 ;A0D03D;
-
-EnemyHeaders_Owtch:
-    dw $0400                                                             ;A0D03F;
-    dw Palette_Owtch                                                     ;A0D041;
-    dw $0014,$0064,$0008,$0008                                           ;A0D043;
-    db $A2,$00                                                           ;A0D04B;
-    dw $003E,$0000                                                       ;A0D04D;
-    dw InitAI_Owtch                                                      ;A0D051;
-    dw $0001,$0000                                                       ;A0D053;
-    dw MainAI_Owtch                                                      ;A0D057;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D059;
-    dw RTL_A2804C                                                        ;A0D05B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D05D;
-    dw $0000                                                             ;A0D05F;
-    dw $0000                                                             ;A0D061;
-    dd $00000000                                                         ;A0D063;
-    dw $0000,$0000                                                       ;A0D067;
-    dd $00000000                                                         ;A0D06B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D06F;
-    dw EnemyShot_Owtch                                                   ;A0D071;
-    dw $0000                                                             ;A0D073;
-    dl Tiles_Owtch                                                       ;A0D075;
-    db $05                                                               ;A0D078;
-    dw EnemyDropChances_Owtch                                            ;A0D079;
-    dw EnemyVulnerabilities_Owtch                                        ;A0D07B;
-    dw EnemyName_Owtch                                                   ;A0D07D;
-
-EnemyHeaders_ShipTop:
-    dw $1000                                                             ;A0D07F;
-    dw Palette_Ship                                                      ;A0D081;
-    dw $0014,$0028,$005C,$0028                                           ;A0D083;
-    db $A2,$00                                                           ;A0D08B;
-    dw $0000,$0000                                                       ;A0D08D;
-    dw InitAI_ShipTop                                                    ;A0D091;
-    dw $0001,$0000                                                       ;A0D093;
-    dw MainAI_ShipTop                                                    ;A0D097;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D099;
-    dw RTL_A2804C                                                        ;A0D09B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D09D;
-    dw $0000                                                             ;A0D09F;
-    dw $0000                                                             ;A0D0A1;
-    dd $00000000                                                         ;A0D0A3;
-    dw RTL_A0804C                                                        ;A0D0A7;
-    dw $0000                                                             ;A0D0A9;
-    dd $00000000                                                         ;A0D0AB;
-    dw RTL_A2804C                                                        ;A0D0AF;
-    dw RTL_A2804C                                                        ;A0D0B1;
-    dw $0000                                                             ;A0D0B3;
-    dl Tiles_Ship                                                        ;A0D0B5;
-    db $02                                                               ;A0D0B8;
-    dw EnemyDropChances_ShipTop_ShipBottomEntrance                       ;A0D0B9;
-    dw EnemyVulnerabilities_Default                                      ;A0D0BB;
-    dw $0000                                                             ;A0D0BD;
-
-EnemyHeaders_ShipBottomEntrance:
-    dw $0200                                                             ;A0D0BF;
-    dw Palette_Ship                                                      ;A0D0C1;
-    dw $0014,$0028,$0060,$0028                                           ;A0D0C3;
-    db $A2,$00                                                           ;A0D0CB;
-    dw $0000,$0000                                                       ;A0D0CD;
-    dw InitAI_ShipBottomEntrance                                         ;A0D0D1;
-    dw $0001,$0000                                                       ;A0D0D3;
-    dw RTL_A2804C                                                        ;A0D0D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D0D9;
-    dw RTL_A2804C                                                        ;A0D0DB;
-    dw RTL_A2804C                                                        ;A0D0DD;
-    dw $0000                                                             ;A0D0DF;
-    dw $0000                                                             ;A0D0E1;
-    dd $00000000                                                         ;A0D0E3;
-    dw RTL_A0804C                                                        ;A0D0E9;
-    dw $0000                                                             ;A0D0E7;
-    dd $00000000                                                         ;A0D0EB;
-    dw RTL_A2804C                                                        ;A0D0EF;
-    dw RTL_A2804C                                                        ;A0D0F1;
-    dw $0000                                                             ;A0D0F3;
-    dl Tiles_Ship                                                        ;A0D0F5;
-    db $02                                                               ;A0D0F8;
-    dw EnemyDropChances_ShipTop_ShipBottomEntrance                       ;A0D0F9;
-    dw EnemyVulnerabilities_Default                                      ;A0D0FB;
-    dw $0000                                                             ;A0D0FD;
-
-EnemyHeaders_Mellow:
-    dw $0400                                                             ;A0D0FF;
-    dw Palette_Mellow                                                    ;A0D101;
-    dw $0009,$0008,$0008,$0004                                           ;A0D103;
-    db $A2,$00                                                           ;A0D10B;
-    dw $0020,$0000                                                       ;A0D10D;
-    dw InitAI_Mellow_Mella_Menu                                          ;A0D111;
-    dw $0001,$0000                                                       ;A0D113;
-    dw MainAI_Mellow_Mella_Menu                                          ;A0D117;
-    dw Common_GrappleAI_KillEnemy                                        ;A0D119;
-    dw RTL_A2804C                                                        ;A0D11B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D11D;
-    dw $0000                                                             ;A0D11F;
-    dw $0000                                                             ;A0D121;
-    dd $00000000                                                         ;A0D123;
-    dw $0000                                                             ;A0D127;
-    dw InstList_Mellow_Mella_Menu                                        ;A0D129;
-    dd $00000000                                                         ;A0D12B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D12F;
-    dw Common_NormalEnemyShotAI                                          ;A0D131;
-    dw UNUSED_FlySpritemapPointers_A2B204                                ;A0D133;
-    dl Tiles_Mellow                                                      ;A0D135;
-    db $05                                                               ;A0D138;
-    dw EnemyDropChances_Mellow                                           ;A0D139;
-    dw EnemyVulnerabilities_Default                                      ;A0D13B;
-    dw EnemyName_Mellow                                                  ;A0D13D;
-
-EnemyHeaders_Mella:
-    dw $0400                                                             ;A0D13F;
-    dw Palette_Mella                                                     ;A0D141;
-    dw $001E,$0010,$0008,$0004                                           ;A0D143;
-    db $A2,$00                                                           ;A0D14B;
-    dw $0020,$0000                                                       ;A0D14D;
-    dw InitAI_Mellow_Mella_Menu                                          ;A0D151;
-    dw $0001,$0000                                                       ;A0D153;
-    dw MainAI_Mellow_Mella_Menu                                          ;A0D157;
-    dw Common_GrappleAI_KillEnemy                                        ;A0D159;
-    dw RTL_A2804C                                                        ;A0D15B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D15D;
-    dw $0000                                                             ;A0D15F;
-    dw $0000                                                             ;A0D161;
-    dd $00000000                                                         ;A0D163;
-    dw $0000                                                             ;A0D167;
-    dw UNUSED_PointerToUnusedData_A2B22C                                 ;A0D169;
-    dd $00000000                                                         ;A0D16B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D16F;
-    dw Common_NormalEnemyShotAI                                          ;A0D171;
-    dw UNUSED_SpritemapPointers_Mella_A2B25C                             ;A0D173;
-    dl Tiles_Mella                                                       ;A0D175;
-    db $05                                                               ;A0D178;
-    dw EnemyDropChances_Mella                                            ;A0D179;
-    dw EnemyVulnerabilities_Mella                                        ;A0D17B;
-    dw EnemyName_Mella                                                   ;A0D17D;
-
-EnemyHeaders_Menu:
-    dw $0400                                                             ;A0D17F;
-    dw Palette_Menu                                                      ;A0D181;
-    dw $0064,$003C,$0008,$0008                                           ;A0D183;
-    db $A2,$00                                                           ;A0D18B;
-    dw $0020,$0000                                                       ;A0D18D;
-    dw InitAI_Mellow_Mella_Menu                                          ;A0D191;
-    dw $0001,$0000                                                       ;A0D193;
-    dw MainAI_Mellow_Mella_Menu                                          ;A0D197;
-    dw Common_GrappleAI_KillEnemy                                        ;A0D199;
-    dw RTL_A2804C                                                        ;A0D19B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D19D;
-    dw $0000                                                             ;A0D19F;
-    dw $0000                                                             ;A0D1A1;
-    dd $00000000                                                         ;A0D1A3;
-    dw $0000                                                             ;A0D1A7;
-    dw UNUSED_DataPointer_A2B284                                         ;A0D1A9;
-    dd $00000000                                                         ;A0D1AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D1AF;
-    dw Common_NormalEnemyShotAI                                          ;A0D1B1;
-    dw UNUSED_SpritemapPointers_Menu_A2B2B4                              ;A0D1B3;
-    dl Tiles_Menu                                                        ;A0D1B5;
-    db $05                                                               ;A0D1B8;
-    dw EnemyDropChances_Menu                                             ;A0D1B9;
-    dw EnemyVulnerabilities_Default                                      ;A0D1BB;
-    dw EnemyName_Menu                                                    ;A0D1BD;
-
-EnemyHeaders_Multiviola:
-    dw $0400                                                             ;A0D1BF;
-    dw Palette_Multiviola                                                ;A0D1C1;
-    dw $005A,$0032,$0008,$0008                                           ;A0D1C3;
-    db $A2,$00                                                           ;A0D1CB;
-    dw $003E,$0000                                                       ;A0D1CD;
-    dw InitAI_Multiviola                                                 ;A0D1D1;
-    dw $0001,$0000                                                       ;A0D1D3;
-    dw MainAI_Multiviola                                                 ;A0D1D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D1D9;
-    dw RTL_A2804C                                                        ;A0D1DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D1DD;
-    dw $0000                                                             ;A0D1DF;
-    dw $0000                                                             ;A0D1E1;
-    dd $00000000                                                         ;A0D1E3;
-    dw $0000                                                             ;A0D1E7;
-    dw InstList_Multiviola                                               ;A0D1E9;
-    dd $00000000                                                         ;A0D1EB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D1EF;
-    dw Common_NormalEnemyShotAI                                          ;A0D1F1;
-    dw $0000                                                             ;A0D1F3;
-    dl Tiles_Multiviola                                                  ;A0D1F5;
-    db $05                                                               ;A0D1F8;
-    dw EnemyDropChances_Multiviola                                       ;A0D1F9;
-    dw EnemyVulnerabilities_Multiviola                                   ;A0D1FB;
-    dw EnemyName_Multiviola                                              ;A0D1FD;
-
-EnemyHeaders_LavaRocks:
-    dw $0600                                                             ;A0D1FF;
-    dw Palette_Polyp_Rinka                                               ;A0D201;
-    dw $0001,$0004,$0004,$0004                                           ;A0D203;
-    db $A2,$00                                                           ;A0D20B;
-    dw $0000,$0000                                                       ;A0D20D;
-    dw InitAI_Polyp                                                      ;A0D211;
-    dw $0001,$0000                                                       ;A0D213;
-    dw MainAI_Polyp                                                      ;A0D217;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D219;
-    dw RTL_A2804C                                                        ;A0D21B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D21D;
-    dw $0000                                                             ;A0D21F;
-    dw $0000                                                             ;A0D221;
-    dd $00000000                                                         ;A0D223;
-    dw $0000,$0000                                                       ;A0D227;
-    dd $00000000                                                         ;A0D22B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D22F;
-    dw Common_NormalEnemyShotAI                                          ;A0D231;
-    dw $0000                                                             ;A0D233;
-    dl Tiles_Polyp_Rinka                                                 ;A0D235;
-    db $05                                                               ;A0D238;
-    dw EnemyDropChances_Polyp                                            ;A0D239;
-    dw EnemyVulnerabilities_Indestructible                               ;A0D23B;
-    dw EnemyName_Polyp                                                   ;A0D23D;
-
-EnemyHeaders_Rinka:
-    dw $0600                                                             ;A0D23F;
-    dw Palette_Polyp_Rinka                                               ;A0D241;
-    dw $000A,$0028,$0008,$0008                                           ;A0D243;
-    db $A2,$00                                                           ;A0D24B;
-    dw $0000,$0000                                                       ;A0D24D;
-    dw InitAI_Rinka                                                      ;A0D251;
-    dw $0001,$0000                                                       ;A0D253;
-    dw MainAI_Rinka                                                      ;A0D257;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D259;
-    dw RTL_A2804C                                                        ;A0D25B;
-    dw FrozenAI_Rinka                                                    ;A0D25D;
-    dw $0000                                                             ;A0D25F;
-    dw $0000                                                             ;A0D261;
-    dd $00000000                                                         ;A0D263;
-    dw PowerBombReaction_Rinka                                           ;A0D267;
-    dw $0000                                                             ;A0D269;
-    dd $00000000                                                         ;A0D26B;
-    dw EnemyTouch_Rinka                                                  ;A0D26F;
-    dw EnemyShot_Rinka                                                   ;A0D271;
-    dw $0000                                                             ;A0D273;
-    dl Tiles_Polyp_Rinka                                                 ;A0D275;
-    db $02                                                               ;A0D278;
-    dw EnemyDropChances_Rinka                                            ;A0D279;
-    dw EnemyVulnerabilities_Default                                      ;A0D27B;
-    dw EnemyName_Rinka                                                   ;A0D27D;
-
-EnemyHeaders_Rio:
-    dw $0400                                                             ;A0D27F;
-    dw Palette_Rio                                                       ;A0D281;
-    dw $002D,$000F,$0010,$0007                                           ;A0D283;
-    db $A2,$00                                                           ;A0D28B;
-    dw $0036,$0000                                                       ;A0D28D;
-    dw InitAI_Rio                                                        ;A0D291;
-    dw $0001,$0000                                                       ;A0D293;
-    dw MainAI_Rio                                                        ;A0D297;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D299;
-    dw RTL_A2804C                                                        ;A0D29B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D29D;
-    dw $0000                                                             ;A0D29F;
-    dw $0002                                                             ;A0D2A1;
-    dd $00000000                                                         ;A0D2A3;
-    dw $0000,$0000                                                       ;A0D2A7;
-    dd $00000000                                                         ;A0D2AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D2AF;
-    dw Common_NormalEnemyShotAI                                          ;A0D2B1;
-    dw $0000                                                             ;A0D2B3;
-    dl Tiles_Rio                                                         ;A0D2B5;
-    db $05                                                               ;A0D2B8;
-    dw EnemyDropChances_Rio                                              ;A0D2B9;
-    dw EnemyVulnerabilities_Default                                      ;A0D2BB;
-    dw EnemyName_Rio                                                     ;A0D2BD;
-
-EnemyHeaders_Squeept:
-    dw $0400                                                             ;A0D2BF;
-    dw Palette_Squeept                                                   ;A0D2C1;
-    dw $012C,$0032,$0008,$000C                                           ;A0D2C3;
-    db $A2,$00                                                           ;A0D2CB;
-    dw $0036,$0000                                                       ;A0D2CD;
-    dw InitAI_Squeept                                                    ;A0D2D1;
-    dw $0002,$0000                                                       ;A0D2D3;
-    dw MainAI_Squeept                                                    ;A0D2D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D2D9;
-    dw RTL_A2804C                                                        ;A0D2DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D2DD;
-    dw $0000                                                             ;A0D2DF;
-    dw $0002                                                             ;A0D2E1;
-    dd $00000000                                                         ;A0D2E3;
-    dw $0000,$0000                                                       ;A0D2E7;
-    dd $00000000                                                         ;A0D2EB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D2EF;
-    dw Common_NormalEnemyShotAI                                          ;A0D2F1;
-    dw $0000                                                             ;A0D2F3;
-    dl Tiles_Squeept                                                     ;A0D2F5;
-    db $05                                                               ;A0D2F8;
-    dw EnemyDropChances_Squeept                                          ;A0D2F9;
-    dw EnemyVulnerabilities_Squeept_Ripper2_Ripper_Tripper               ;A0D2FB;
-    dw EnemyName_Squeept                                                 ;A0D2FD;
-
-EnemyHeaders_Geruta:
-    dw $0600                                                             ;A0D2FF;
-    dw Palette_Geruta                                                    ;A0D301;
-    dw $0078,$003C,$0010,$0009                                           ;A0D303;
-    db $A2,$00                                                           ;A0D30B;
-    dw $0036,$0000                                                       ;A0D30D;
-    dw InitAI_Geruta                                                     ;A0D311;
-    dw $0002,$0000                                                       ;A0D313;
-    dw MainAI_Geruta                                                     ;A0D317;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D319;
-    dw RTL_A2804C                                                        ;A0D31B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D31D;
-    dw $0000                                                             ;A0D31F;
-    dw $0002                                                             ;A0D321;
-    dd $00000000                                                         ;A0D323;
-    dw $0000,$0000                                                       ;A0D327;
-    dd $00000000                                                         ;A0D32B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D32F;
-    dw Common_NormalEnemyShotAI                                          ;A0D331;
-    dw $0000                                                             ;A0D333;
-    dl Tiles_Geruta                                                      ;A0D335;
-    db $05                                                               ;A0D338;
-    dw EnemyDropChances_Geruta                                           ;A0D339;
-    dw EnemyVulnerabilities_Geruta                                       ;A0D33B;
-    dw EnemyName_Geruta                                                  ;A0D33D;
-
-EnemyHeaders_Holtz:
-    dw $0800                                                             ;A0D33F;
-    dw Palette_Holtz                                                     ;A0D341;
-    dw $0384,$0078,$0010,$000A                                           ;A0D343;
-    db $A2,$00                                                           ;A0D34B;
-    dw $005F,$0000                                                       ;A0D34D;
-    dw InitAI_Holtz                                                      ;A0D351;
-    dw $0002,$0000                                                       ;A0D353;
-    dw MainAI_Holtz                                                      ;A0D357;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D359;
-    dw RTL_A2804C                                                        ;A0D35B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D35D;
-    dw $0000                                                             ;A0D35F;
-    dw $0002                                                             ;A0D361;
-    dd $00000000                                                         ;A0D363;
-    dw $0000,$0000                                                       ;A0D367;
-    dd $00000000                                                         ;A0D36B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D36F;
-    dw Common_NormalEnemyShotAI                                          ;A0D371;
-    dw $0000                                                             ;A0D373;
-    dl Tiles_Holtz                                                       ;A0D375;
-    db $05                                                               ;A0D378;
-    dw EnemyDropChances_Holtz                                            ;A0D379;
-    dw EnemyVulnerabilities_Holtz                                        ;A0D37B;
-    dw EnemyName_Holtz                                                   ;A0D37D;
-
-EnemyHeaders_Oum:
-    dw $0800                                                             ;A0D37F;
-    dw Palette_Oum                                                       ;A0D381;
-    dw $012C,$0064,$0010,$0010                                           ;A0D383;
-    db $A2,$00                                                           ;A0D38B;
-    dw $0000,$0000                                                       ;A0D38D;
-    dw InitAI_Oum                                                        ;A0D391;
-    dw $0001,$0000                                                       ;A0D393;
-    dw MainAI_Oum                                                        ;A0D397;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D399;
-    dw RTL_A2804C                                                        ;A0D39B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D39D;
-    dw $0000                                                             ;A0D39F;
-    dw $0002                                                             ;A0D3A1;
-    dd $00000000                                                         ;A0D3A3;
-    dw $0000,$0000                                                       ;A0D3A7;
-    dd $00000000                                                         ;A0D3AB;
-    dw EnemyTouch_Oum_DoesNotHurtSamus                                   ;A0D3AF;
-    dw EnemyShot_Oum                                                     ;A0D3B1;
-    dw $0000                                                             ;A0D3B3;
-    dl Tiles_Oum                                                         ;A0D3B5;
-    db $05                                                               ;A0D3B8;
-    dw EnemyDropChances_Oum                                              ;A0D3B9;
-    dw EnemyVulnerabilities_Indestructible                               ;A0D3BB;
-    dw EnemyName_Oum                                                     ;A0D3BD;
-
-EnemyHeaders_Choot:
-    dw $0400                                                             ;A0D3BF;
-    dw Palette_Choot                                                     ;A0D3C1;
-    dw $0064,$0050,$0010,$0005                                           ;A0D3C3;
-    db $A2,$00                                                           ;A0D3CB;
-    dw $0022,$0000                                                       ;A0D3CD;
-    dw InitAI_Choot                                                      ;A0D3D1;
-    dw $0001,$0000                                                       ;A0D3D3;
-    dw MainAI_Choot                                                      ;A0D3D7;
-    dw Common_GrappleAI_KillEnemy                                        ;A0D3D9;
-    dw RTL_A2804C                                                        ;A0D3DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D3DD;
-    dw $0000                                                             ;A0D3DF;
-    dw $0002                                                             ;A0D3E1;
-    dd $00000000                                                         ;A0D3E3;
-    dw $0000,$0000                                                       ;A0D3E7;
-    dd $00000000                                                         ;A0D3EB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D3EF;
-    dw Common_NormalEnemyShotAI                                          ;A0D3F1;
-    dw $0000                                                             ;A0D3F3;
-    dl Tiles_Choot                                                       ;A0D3F5;
-    db $05                                                               ;A0D3F8;
-    dw EnemyDropChances_Choot                                            ;A0D3F9;
-    dw EnemyVulnerabilities_Default                                      ;A0D3FB;
-    dw EnemyName_Choot                                                   ;A0D3FD;
-
-EnemyHeaders_GRipper:
-    dw $0400                                                             ;A0D3FF;
-    dw Palette_GRipper                                                   ;A0D401;
-    dw $00C8,$000A,$0008,$0008                                           ;A0D403;
-    db $A2,$00                                                           ;A0D40B;
-    dw $003E,$0000                                                       ;A0D40D;
-    dw InitAI_GRipper                                                    ;A0D411;
-    dw $0001,$0000                                                       ;A0D413;
-    dw MainAI_GRipper                                                    ;A0D417;
-    dw Common_GrappleAI_SamusLatchesOn                                   ;A0D419;
-    dw RTL_A2804C                                                        ;A0D41B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D41D;
-    dw $0000                                                             ;A0D41F;
-    dw $0000                                                             ;A0D421;
-    dd $00000000                                                         ;A0D423;
-    dw $0000,$0000                                                       ;A0D427;
-    dd $00000000                                                         ;A0D42B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D42F;
-    dw EnemyShot_GRipper_Ripper2                                         ;A0D431;
-    dw $0000                                                             ;A0D433;
-    dl Tiles_Ripper                                                      ;A0D435;
-    db $05                                                               ;A0D438;
-    dw EnemyDropChances_GRipper_Ripper2                                  ;A0D439;
-    dw EnemyVulnerabilities_GRipper                                      ;A0D43B;
-    dw EnemyName_GRipper_Ripper2                                         ;A0D43D;
-
-EnemyHeaders_Ripper2:
-    dw $0400                                                             ;A0D43F;
-    dw Palette_Ripper2                                                   ;A0D441;
-    dw $00C8,$000A,$0008,$0004                                           ;A0D443;
-    db $A2,$00                                                           ;A0D44B;
-    dw $003E,$0000                                                       ;A0D44D;
-    dw InitAI_Ripper2                                                    ;A0D451;
-    dw $0001,$0000                                                       ;A0D453;
-    dw MainAI_Ripper2                                                    ;A0D457;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D459;
-    dw RTL_A2804C                                                        ;A0D45B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D45D;
-    dw $0000                                                             ;A0D45F;
-    dw $0000                                                             ;A0D461;
-    dd $00000000                                                         ;A0D463;
-    dw $0000                                                             ;A0D467;
-    dw InstList_Ripper_MovingRight                                       ;A0D469;
-    dd $00000000                                                         ;A0D46B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D46F;
-    dw EnemyShot_GRipper_Ripper2                                         ;A0D471;
-    dw $0000                                                             ;A0D473;
-    dl Tiles_Ripper                                                      ;A0D475;
-    db $05                                                               ;A0D478;
-    dw EnemyDropChances_GRipper_Ripper2                                  ;A0D479;
-    dw EnemyVulnerabilities_Squeept_Ripper2_Ripper_Tripper               ;A0D47B;
-    dw EnemyName_GRipper_Ripper2                                         ;A0D47D;
-
-EnemyHeaders_Ripper:
-    dw $0400                                                             ;A0D47F;
-    dw Palette_Ripper                                                    ;A0D481;
-    dw $00C8,$0005,$0008,$0004                                           ;A0D483;
-    db $A2,$00                                                           ;A0D48B;
-    dw $003E,$0000                                                       ;A0D48D;
-    dw InitAI_Ripper                                                     ;A0D491;
-    dw $0001,$0000                                                       ;A0D493;
-    dw MainAI_Ripper                                                     ;A0D497;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D499;
-    dw RTL_A2804C                                                        ;A0D49B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D49D;
-    dw $0000                                                             ;A0D49F;
-    dw $0000                                                             ;A0D4A1;
-    dd $00000000                                                         ;A0D4A3;
-    dw $0000                                                             ;A0D4A7;
-    dw InstList_Ripper_MovingRight                                       ;A0D4A9;
-    dd $00000000                                                         ;A0D4AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D4AF;
-    dw Common_NormalEnemyShotAI                                          ;A0D4B1;
-    dw SpritemapPointers_Ripper                                          ;A0D4B3;
-    dl Tiles_Ripper                                                      ;A0D4B5;
-    db $05                                                               ;A0D4B8;
-    dw EnemyDropChances_Ripper                                           ;A0D4B9;
-    dw EnemyVulnerabilities_Squeept_Ripper2_Ripper_Tripper               ;A0D4BB;
-    dw EnemyName_Ripper                                                  ;A0D4BD;
-
-EnemyHeaders_Dragon:
-    dw $0600                                                             ;A0D4BF;
-    dw Palette_Dragon                                                    ;A0D4C1;
-    dw $012C,$0018,$0008,$001C                                           ;A0D4C3;
-    db $A2,$00                                                           ;A0D4CB;
-    dw $0036,$0000                                                       ;A0D4CD;
-    dw InitAI_Dragon                                                     ;A0D4D1;
-    dw $0002,$0000                                                       ;A0D4D3;
-    dw MainAI_Dragon                                                     ;A0D4D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D4D9;
-    dw RTL_A2804C                                                        ;A0D4DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D4DD;
-    dw $0000                                                             ;A0D4DF;
-    dw $0004                                                             ;A0D4E1;
-    dd $00000000                                                         ;A0D4E3;
-    dw PowerBombReaction_Dragon                                          ;A0D4E7;
-    dw $0000                                                             ;A0D4E9;
-    dd $00000000                                                         ;A0D4EB;
-    dw EnemyTouch_Dragon                                                 ;A0D4EF;
-    dw EnemyShot_Dragon                                                  ;A0D4F1;
-    dw $0000                                                             ;A0D4F3;
-    dl Tiles_Dragon                                                      ;A0D4F5;
-    db $05                                                               ;A0D4F8;
-    dw EnemyDropChances_Dragon                                           ;A0D4F9;
-    dw EnemyVulnerabilities_Dragon                                       ;A0D4FB;
-    dw EnemyName_Dragon                                                  ;A0D4FD;
-
-EnemyHeaders_ShutterGrowing:
-    dw $0400                                                             ;A0D4FF;
-    dw Palette_Shutters                                                  ;A0D501;
-    dw $0014,$0028,$0008,$0008                                           ;A0D503;
-    db $A2,$00                                                           ;A0D50B;
-    dw $0000,$0000                                                       ;A0D50D;
-    dw InitAI_ShutterGrowing                                             ;A0D511;
-    dw $0001,$0000                                                       ;A0D513;
-    dw MainAI_ShutterGrowing                                             ;A0D517;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D519;
-    dw RTL_A2804C                                                        ;A0D51B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D51D;
-    dw $0000                                                             ;A0D51F;
-    dw $0000                                                             ;A0D521;
-    dd $00000000                                                         ;A0D523;
-    dw RTL_A0804C                                                        ;A0D527;
-    dw $0000                                                             ;A0D529;
-    dd $00000000                                                         ;A0D52B;
-    dw RTL_A2804C                                                        ;A0D52F;
-    dw Common_NormalEnemyShotAI                                          ;A0D531;
-    dw $0000                                                             ;A0D533;
-    dl Tiles_Shutter                                                     ;A0D535;
-    db $05                                                               ;A0D538;
-    dw EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene                ;A0D539;
-    dw EnemyVulnerabilities_NonDestructibleShutter                       ;A0D53B;
-    dw EnemyName_ShutterGrowing                                          ;A0D53D;
-
-EnemyHeaders_ShutterShootable:
-    dw $0400                                                             ;A0D53F;
-    dw Palette_Shutters                                                  ;A0D541;
-    dw $0014,$0028,$0008,$0020                                           ;A0D543;
-    db $A2,$00                                                           ;A0D54B;
-    dw $0000,$0000                                                       ;A0D54D;
-    dw InitAI_ShutterShootable_ShutterDestroyable                        ;A0D551;
-    dw $0001,$0000                                                       ;A0D553;
-    dw MainAI_ShutterShootable_ShutterDestroyable_Kamer                  ;A0D557;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D559;
-    dw RTL_A2804C                                                        ;A0D55B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D55D;
-    dw $0000                                                             ;A0D55F;
-    dw $0000                                                             ;A0D561;
-    dd $00000000                                                         ;A0D563;
-    dw PowerBombReaction_ShutterShootable_ShutterDestroyable_Kamer       ;A0D567;
-    dw $0000                                                             ;A0D569;
-    dd $00000000                                                         ;A0D56B;
-    dw EnemyTouch_ShutterShootable_ShutterDestroyable_Kamer              ;A0D56F;
-    dw EnemyShot_ShutterShootable_Kamer                                  ;A0D571;
-    dw $0000                                                             ;A0D573;
-    dl Tiles_Shutter                                                     ;A0D575;
-    db $05                                                               ;A0D578;
-    dw EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene                ;A0D579;
-    dw EnemyVulnerabilities_NonDestructibleShutter                       ;A0D57B;
-    dw EnemyName_Shutter2_Kamer                                          ;A0D57D;
-
-EnemyHeaders_ShutterHorizShootable:
-    dw $0400                                                             ;A0D57F;
-    dw Palette_Shutters                                                  ;A0D581;
-    dw $0014,$0028,$0020,$0008                                           ;A0D583;
-    db $A2,$00                                                           ;A0D58B;
-    dw $0000,$0000                                                       ;A0D58D;
-    dw InitAI_ShutterHorizShootable                                      ;A0D591;
-    dw $0001,$0000                                                       ;A0D593;
-    dw MainAI_ShutterHorizShootable                                      ;A0D597;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D599;
-    dw RTL_A2804C                                                        ;A0D59B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D59D;
-    dw $0000                                                             ;A0D59F;
-    dw $0000                                                             ;A0D5A1;
-    dd $00000000                                                         ;A0D5A3;
-    dw PowerBombReaction_CommonReaction_HorizontalShutter                ;A0D5A7;
-    dw $0000                                                             ;A0D5A9;
-    dd $00000000                                                         ;A0D5AB;
-    dw EnemyTouch_HorizShootableShutter                                  ;A0D5AF;
-    dw EnemyShot_ShutterHorizShootable                                   ;A0D5B1;
-    dw $0000                                                             ;A0D5B3;
-    dl Tiles_Shutter                                                     ;A0D5B5;
-    db $05                                                               ;A0D5B8;
-    dw EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene                ;A0D5B9;
-    dw EnemyVulnerabilities_NonDestructibleShutter                       ;A0D5BB;
-    dw EnemyName_Shutter2_Kamer                                          ;A0D5BD;
-
-EnemyHeaders_ShutterDestroyable:
-    dw $0400                                                             ;A0D5BF;
-    dw Palette_Shutters                                                  ;A0D5C1;
-    dw $0014,$0028,$0008,$0020                                           ;A0D5C3;
-    db $A2,$00                                                           ;A0D5CB;
-    dw $0000,$0000                                                       ;A0D5CD;
-    dw InitAI_ShutterShootable_ShutterDestroyable                        ;A0D5D1;
-    dw $0001,$0000                                                       ;A0D5D3;
-    dw MainAI_ShutterShootable_ShutterDestroyable_Kamer                  ;A0D5D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D5D9;
-    dw RTL_A2804C                                                        ;A0D5DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D5DD;
-    dw $0000                                                             ;A0D5DF;
-    dw $0000                                                             ;A0D5E1;
-    dd $00000000                                                         ;A0D5E3;
-    dw PowerBombReaction_ShutterShootable_ShutterDestroyable_Kamer       ;A0D5E7;
-    dw $0000                                                             ;A0D569;
-    dd $00000000                                                         ;A0D5EB;
-    dw EnemyTouch_ShutterShootable_ShutterDestroyable_Kamer              ;A0D5EF;
-    dw EnemyTouch_ShutterDestroyable                                     ;A0D5F1;
-    dw $0000                                                             ;A0D5F3;
-    dl Tiles_Shutter                                                     ;A0D5F5;
-    db $05                                                               ;A0D5F8;
-    dw EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene                ;A0D5F9;
-    dw EnemyVulnerabilities_ShutterDestroyable                           ;A0D5FB;
-    dw EnemyName_Shutter2_Kamer                                          ;A0D5FD;
-
-EnemyHeaders_Kamer:
-    dw $0400                                                             ;A0D5FF;
-    dw Palette_Kamer                                                     ;A0D601;
-    dw $0014,$0028,$0010,$0008                                           ;A0D603;
-    db $A2,$00                                                           ;A0D60B;
-    dw $0000,$0000                                                       ;A0D60D;
-    dw InitAI_Kamer                                                      ;A0D611;
-    dw $0001,$0000                                                       ;A0D613;
-    dw MainAI_ShutterShootable_ShutterDestroyable_Kamer                  ;A0D617;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D619;
-    dw RTL_A2804C                                                        ;A0D61B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D61D;
-    dw $0000                                                             ;A0D61F;
-    dw $0000                                                             ;A0D621;
-    dd $00000000                                                         ;A0D623;
-    dw PowerBombReaction_ShutterShootable_ShutterDestroyable_Kamer       ;A0D627;
-    dw $0000                                                             ;A0D569;
-    dd $00000000                                                         ;A0D62B;
-    dw EnemyTouch_ShutterShootable_ShutterDestroyable_Kamer              ;A0D62F;
-    dw EnemyShot_ShutterShootable_Kamer                                  ;A0D631;
-    dw $0000                                                             ;A0D633;
-    dl Tiles_Kamer                                                       ;A0D635;
-    db $05                                                               ;A0D638;
-    dw EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene                ;A0D639;
-    dw EnemyVulnerabilities_NonDestructibleShutter                       ;A0D63B;
-    dw EnemyName_Shutter2_Kamer                                          ;A0D63D;
-
-EnemyHeaders_Waver:
-    dw $0600                                                             ;A0D63F;
-    dw Palette_Waver                                                     ;A0D641;
-    dw $001E,$000A,$0008,$0008                                           ;A0D643;
-    db $A3,$00                                                           ;A0D64B;
-    dw $0047,$0000                                                       ;A0D64D;
-    dw InitAI_Waver                                                      ;A0D651;
-    dw $0001,$0000                                                       ;A0D653;
-    dw MainAI_Waver                                                      ;A0D657;
-    dw Common_GrappleAI_KillEnemy                                        ;A0D659;
-    dw RTL_A3804C                                                        ;A0D65B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D65D;
-    dw $0000                                                             ;A0D65F;
-    dw $0000                                                             ;A0D661;
-    dd $00000000                                                         ;A0D663;
-    dw $0000,$0000                                                       ;A0D667;
-    dd $00000000                                                         ;A0D66B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D66F;
-    dw Common_NormalEnemyShotAI                                          ;A0D671;
-    dw $0000                                                             ;A0D673;
-    dl Tiles_Waver                                                       ;A0D675;
-    db $05                                                               ;A0D678;
-    dw EnemyDropChances_Waver                                            ;A0D679;
-    dw EnemyVulnerabilities_Default                                      ;A0D67B;
-    dw EnemyName_Waver                                                   ;A0D67D;
-
-EnemyHeaders_Metaree:
-    dw $0600                                                             ;A0D67F;
-    dw Palette_Metaree                                                   ;A0D681;
-    dw $0032,$0032,$0008,$000C                                           ;A0D683;
-    db $A3,$00                                                           ;A0D68B;
-    dw $0021,$0000                                                       ;A0D68D;
-    dw InitAI_Metaree                                                    ;A0D691;
-    dw $0001,$0000                                                       ;A0D693;
-    dw MainAI_Metaree                                                    ;A0D697;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D699;
-    dw RTL_A3804C                                                        ;A0D69B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D69D;
-    dw $0000                                                             ;A0D69F;
-    dw $0002                                                             ;A0D6A1;
-    dd $00000000                                                         ;A0D6A3;
-    dw $0000,$0000                                                       ;A0D6A7;
-    dd $00000000                                                         ;A0D6AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D6AF;
-    dw EnemyShot_Metaree                                                 ;A0D6B1;
-    dw $0000                                                             ;A0D6B3;
-    dl Tiles_Metaree                                                     ;A0D6B5;
-    db $05                                                               ;A0D6B8;
-    dw EnemyDropChances_Metaree                                          ;A0D6B9;
-    dw EnemyVulnerabilities_Metaree                                      ;A0D6BB;
-    dw EnemyName_Metaree                                                 ;A0D6BD;
-
-EnemyHeaders_Fireflea:
-    dw $0600                                                             ;A0D6BF;
-    dw Palette_Fireflea                                                  ;A0D6C1;
-    dw $0014,$0004,$0008,$0008                                           ;A0D6C3;
-    db $A3,$00                                                           ;A0D6CB;
-    dw $0020,$0000                                                       ;A0D6CD;
-    dw InitAI_Fireflea                                                   ;A0D6D1;
-    dw $0001,$0000                                                       ;A0D6D3;
-    dw MainAI_Fireflea                                                   ;A0D6D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D6D9;
-    dw RTL_A3804C                                                        ;A0D6DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D6DD;
-    dw $0000                                                             ;A0D6DF;
-    dw $0000                                                             ;A0D6E1;
-    dd $00000000                                                         ;A0D6E3;
-    dw PowerBombReaction_Fireflea                                        ;A0D6E7;
-    dw $0000                                                             ;A0D6E9;
-    dd $00000000                                                         ;A0D6EB;
-    dw EnemyTouch_Fireflea                                               ;A0D6EF;
-    dw EnemyShot_Fireflea                                                ;A0D6F1;
-    dw $0000                                                             ;A0D6F3;
-    dl Tiles_Fireflea                                                    ;A0D6F5;
-    db $05                                                               ;A0D6F8;
-    dw EnemyDropChances_Fireflea                                         ;A0D6F9;
-    dw EnemyVulnerabilities_Default                                      ;A0D6FB;
-    dw EnemyName_Fireflea                                                ;A0D6FD;
-
-EnemyHeaders_Skultera:
-    dw $0600                                                             ;A0D6FF;
-    dw Palette_Skultera                                                  ;A0D701;
-    dw $012C,$0050,$000D,$000B                                           ;A0D703;
-    db $A3,$00                                                           ;A0D70B;
-    dw $0049,$0000                                                       ;A0D70D;
-    dw InitAI_Skultera                                                   ;A0D711;
-    dw $0001,$0000                                                       ;A0D713;
-    dw MainAI_Skultera                                                   ;A0D717;
-    dw Common_GrappleAI_NoInteraction                                    ;A0D719;
-    dw RTL_A3804C                                                        ;A0D71B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D71D;
-    dw $0000                                                             ;A0D71F;
-    dw $0002                                                             ;A0D721;
-    dd $00000000                                                         ;A0D723;
-    dw $0000,$0000                                                       ;A0D727;
-    dd $00000000                                                         ;A0D72B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D72F;
-    dw Common_NormalEnemyShotAI                                          ;A0D731;
-    dw UNUSED_SpritemapPointers_Skultera                                 ;A0D733;
-    dl Tiles_Skultera                                                    ;A0D735;
-    db $05                                                               ;A0D738;
-    dw EnemyDropChances_Skultera                                         ;A0D739;
-    dw EnemyVulnerabilities_Default                                      ;A0D73B;
-    dw EnemyName_Skultera                                                ;A0D73D;
-
-EnemyHeaders_Elevator:
-    dw $0000                                                             ;A0D73F;
-    dw $0000                                                             ;A0D741;
-    dw $0028,$000F,$0010,$0008                                           ;A0D743;
-    db $A3,$00                                                           ;A0D74B;
-    dw $0059,$0000                                                       ;A0D74D;
-    dw InitAI_Elevator                                                   ;A0D751;
-    dw $0001,$0000                                                       ;A0D753;
-    dw MainAI_GrappleAI_FrozenAI_Elevator                                ;A0D757;
-    dw MainAI_GrappleAI_FrozenAI_Elevator                                ;A0D759;
-    dw RTL_A3804C                                                        ;A0D75B;
-    dw MainAI_GrappleAI_FrozenAI_Elevator                                ;A0D75D;
-    dw $0000                                                             ;A0D75F;
-    dw $0000                                                             ;A0D761;
-    dd $00000000                                                         ;A0D763;
-    dw RTL_A0804C                                                        ;A0D767;
-    dw $0000                                                             ;A0D769;
-    dd $00000000                                                         ;A0D76B;
-    dw RTL_A3804C                                                        ;A0D76F;
-    dw RTL_A3804C                                                        ;A0D771;
-    dw $0000                                                             ;A0D773;
-    dl $000000                                                           ;A0D775;
-    db $05                                                               ;A0D778;
-    dw $0000                                                             ;A0D779;
-    dw $0000                                                             ;A0D77B;
-    dw $0000                                                             ;A0D77D;
-
-EnemyHeaders_Sciser:
-    dw $0400                                                             ;A0D77F;
-    dw Palette_Sciser                                                    ;A0D781;
-    dw $00C8,$0078,$0008,$0008                                           ;A0D783;
-    db $A3,$00                                                           ;A0D78B;
-    dw $0049,$0000                                                       ;A0D78D;
-    dw InitAI_Sciser                                                     ;A0D791;
-    dw $0001,$0000                                                       ;A0D793;
-    dw MainAI_Crawlers                                                   ;A0D797;
-    dw Common_GrappleAI_KillEnemy                                        ;A0D799;
-    dw RTL_A3804C                                                        ;A0D79B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D79D;
-    dw $0000                                                             ;A0D79F;
-    dw $0002                                                             ;A0D7A1;
-    dd $00000000                                                         ;A0D7A3;
-    dw $0000,$0000                                                       ;A0D7A7;
-    dd $00000000                                                         ;A0D7AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D7AF;
-    dw Common_NormalEnemyShotAI                                          ;A0D7B1;
-    dw $0000                                                             ;A0D7B3;
-    dl Tiles_Sciser                                                      ;A0D7B5;
-    db $05                                                               ;A0D7B8;
-    dw EnemyDropChances_Sciser                                           ;A0D7B9;
-    dw EnemyVulnerabilities_Sciser_Zero                                  ;A0D7BB;
-    dw EnemyName_Sciser                                                  ;A0D7BD;
-
-EnemyHeaders_Zero:
-    dw $0400                                                             ;A0D7BF;
-    dw Palette_Zero                                                      ;A0D7C1;
-    dw $0032,$0028,$0008,$0008                                           ;A0D7C3;
-    db $A3,$00                                                           ;A0D7CB;
-    dw $0023,$0000                                                       ;A0D7CD;
-    dw InitAI_Zero                                                       ;A0D7D1;
-    dw $0001,$0000                                                       ;A0D7D3;
-    dw MainAI_Crawlers                                                   ;A0D7D7;
-    dw Common_GrappleAI_KillEnemy                                        ;A0D7D9;
-    dw RTL_A3804C                                                        ;A0D7DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D7DD;
-    dw $0000                                                             ;A0D7DF;
-    dw $0002                                                             ;A0D7E1;
-    dd $00000000                                                         ;A0D7E3;
-    dw $0000,$0000                                                       ;A0D7E7;
-    dd $00000000                                                         ;A0D7EB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D7EF;
-    dw Common_NormalEnemyShotAI                                          ;A0D7F1;
-    dw $0000                                                             ;A0D7F3;
-    dl Tiles_Zero                                                        ;A0D7F5;
-    db $05                                                               ;A0D7F8;
-    dw EnemyDropChances_Zero                                             ;A0D7F9;
-    dw EnemyVulnerabilities_Sciser_Zero                                  ;A0D7FB;
-    dw EnemyName_Zero                                                    ;A0D7FD;
-
-EnemyHeaders_Tripper:
-    dw $0400                                                             ;A0D7FF;
-    dw Palette_Tripper                                                   ;A0D801;
-    dw $0014,$0028,$0010,$0008                                           ;A0D803;
-    db $A3,$00                                                           ;A0D80B;
-    dw $003E,$0000                                                       ;A0D80D;
-    dw InitAI_Tripper                                                    ;A0D811;
-    dw $0001,$0000                                                       ;A0D813;
-    dw MainAI_Tripper_Kamer2                                             ;A0D817;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D819;
-    dw RTL_A3804C                                                        ;A0D81B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D81D;
-    dw $0000                                                             ;A0D81F;
-    dw $0000                                                             ;A0D821;
-    dd $00000000                                                         ;A0D823;
-    dw $0000,$0000                                                       ;A0D827;
-    dd $00000000                                                         ;A0D82B;
-    dw RTL_A39F07                                                        ;A0D82F;
-    dw EnemyShot_Tripper                                                 ;A0D831;
-    dw $0000                                                             ;A0D833;
-    dl Tiles_Tripper                                                     ;A0D835;
-    db $05                                                               ;A0D838;
-    dw EnemyDropChances_Tripper_Kamer2                                   ;A0D839;
-    dw EnemyVulnerabilities_Squeept_Ripper2_Ripper_Tripper               ;A0D83B;
-    dw EnemyName_Tripper                                                 ;A0D83D;
-
-EnemyHeaders_Kamer2:
-    dw $0400                                                             ;A0D83F;
-    dw Palette_Kamer2                                                    ;A0D841;
-    dw $0014,$0028,$0010,$0008                                           ;A0D843;
-    db $A3,$00                                                           ;A0D84B;
-    dw $003E,$0000                                                       ;A0D84D;
-    dw InitAI_Kamer2                                                     ;A0D851;
-    dw $0001,$0000                                                       ;A0D853;
-    dw MainAI_Tripper_Kamer2                                             ;A0D857;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D859;
-    dw RTL_A3804C                                                        ;A0D85B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D85D;
-    dw $0000                                                             ;A0D85F;
-    dw $0000                                                             ;A0D861;
-    dd $00000000                                                         ;A0D863;
-    dw $0000,$0000                                                       ;A0D867;
-    dd $00000000                                                         ;A0D86B;
-    dw RTL_A39F07                                                        ;A0D86F;
-    dw Common_NormalEnemyShotAI                                          ;A0D871;
-    dw $0000                                                             ;A0D873;
-    dl Tiles_Kamer                                                       ;A0D875;
-    db $05                                                               ;A0D878;
-    dw EnemyDropChances_Tripper_Kamer2                                   ;A0D879;
-    dw EnemyVulnerabilities_Indestructible                               ;A0D87B;
-    dw EnemyName_Tripper                                                 ;A0D87D;
-
-EnemyHeaders_Sbug:
-    dw $0200                                                             ;A0D87F;
-    dw Palette_Sbug                                                      ;A0D881;
-    dw $0014,$0028,$0004,$0004                                           ;A0D883;
-    db $A3,$00                                                           ;A0D88B;
-    dw $0000,$0000                                                       ;A0D88D;
-    dw InitAI_Sbug                                                       ;A0D891;
-    dw $0001,$0000                                                       ;A0D893;
-    dw MainAI_Sbug                                                       ;A0D897;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D899;
-    dw RTL_A3804C                                                        ;A0D89B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D89D;
-    dw $0000                                                             ;A0D89F;
-    dw $0000                                                             ;A0D8A1;
-    dd $00000000                                                         ;A0D8A3;
-    dw $0000,$0000                                                       ;A0D8A7;
-    dd $00000000                                                         ;A0D8AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D8AF;
-    dw Common_NormalEnemyShotAI                                          ;A0D8B1;
-    dw $0000                                                             ;A0D8B3;
-    dl Tiles_Sbug                                                        ;A0D8B5;
-    db $05                                                               ;A0D8B8;
-    dw EnemyDropChances_Sbug_Sbug2                                       ;A0D8B9;
-    dw EnemyVulnerabilities_Indestructible                               ;A0D8BB;
-    dw EnemyName_Sbug                                                    ;A0D8BD;
-
-EnemyHeaders_Sbug2:
-    dw $8200                                                             ;A0D8BF;
-    dw Palette_Sbug                                                      ;A0D8C1;
-    dw $0014,$0028,$0004,$0004                                           ;A0D8C3;
-    db $A3,$00                                                           ;A0D8CB;
-    dw $0000,$0000                                                       ;A0D8CD;
-    dw InitAI_Sbug                                                       ;A0D8D1;
-    dw $0001,$0000                                                       ;A0D8D3;
-    dw MainAI_Sbug                                                       ;A0D8D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D8D9;
-    dw RTL_A3804C                                                        ;A0D8DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D8DD;
-    dw $0000                                                             ;A0D8DF;
-    dw $0000                                                             ;A0D8E1;
-    dd $00000000                                                         ;A0D8E3;
-    dw $0000,$0000                                                       ;A0D8E7;
-    dd $00000000                                                         ;A0D8EB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D8EF;
-    dw Common_NormalEnemyShotAI                                          ;A0D8F1;
-    dw $0000                                                             ;A0D8F3;
-    dl Tiles_Sbug                                                        ;A0D8F5;
-    db $05                                                               ;A0D8F8;
-    dw EnemyDropChances_Sbug_Sbug2                                       ;A0D8F9;
-    dw EnemyVulnerabilities_Indestructible                               ;A0D8FB;
-    dw EnemyName_Sbug                                                    ;A0D8FD;
-
-EnemyHeaders_Mochtroid:
-    dw $0400                                                             ;A0D8FF;
-    dw Palette_Mochtroid                                                 ;A0D901;
-    dw $0064,$005A,$000A,$000C                                           ;A0D903;
-    db $A3,$00                                                           ;A0D90B;
-    dw $0058,$0000                                                       ;A0D90D;
-    dw InitAI_Mochtroid                                                  ;A0D911;
-    dw $0001,$0000                                                       ;A0D913;
-    dw MainAI_Mochtroid                                                  ;A0D917;
-    dw Common_GrappleAI_KillEnemy                                        ;A0D919;
-    dw RTL_A3804C                                                        ;A0D91B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D91D;
-    dw $0000                                                             ;A0D91F;
-    dw $0002                                                             ;A0D921;
-    dd $00000000                                                         ;A0D923;
-    dw $0000,$0000                                                       ;A0D927;
-    dd $00000000                                                         ;A0D92B;
-    dw EnemyTouch_Mochtroid                                              ;A0D92F;
-    dw EnemyShot_Mochtroid                                               ;A0D931;
-    dw $0000                                                             ;A0D933;
-    dl Tiles_Mochtroid                                                   ;A0D935;
-    db $05                                                               ;A0D938;
-    dw EnemyDropChances_Mochtroid                                        ;A0D939;
-    dw EnemyVulnerabilities_Default                                      ;A0D93B;
-    dw EnemyName_Mochtroid                                               ;A0D93D;
-
-EnemyHeaders_Sidehopper:
-    dw $0400                                                             ;A0D93F;
-    dw Palette_Sidehopper                                                ;A0D941;
-    dw $003C,$0014,$0010,$000D                                           ;A0D943;
-    db $A3,$00                                                           ;A0D94B;
-    dw $0023,$0000                                                       ;A0D94D;
-    dw InitAI_Hopper                                                     ;A0D951;
-    dw $0001,$0000                                                       ;A0D953;
-    dw MainAI_Hopper                                                     ;A0D957;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D959;
-    dw RTL_A3804C                                                        ;A0D95B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D95D;
-    dw $0000                                                             ;A0D95F;
-    dw $0002                                                             ;A0D961;
-    dd $00000000                                                         ;A0D963;
-    dw $0000,$0000                                                       ;A0D967;
-    dd $00000000                                                         ;A0D96B;
-    dw Common_NormalEnemyTouchAI                                         ;A0D96F;
-    dw Common_NormalEnemyShotAI                                          ;A0D971;
-    dw $0000                                                             ;A0D973;
-    dl Tiles_Sidehopper                                                  ;A0D975;
-    db $05                                                               ;A0D978;
-    dw EnemyDropChances_Sidehopper                                       ;A0D979;
-    dw EnemyVulnerabilities_Default                                      ;A0D97B;
-    dw EnemyName_Sidehopper                                              ;A0D97D;
-
-EnemyHeaders_Dessgeega:
-    dw $0400                                                             ;A0D97F;
-    dw Palette_Dessgeega                                                 ;A0D981;
-    dw $0078,$0050,$0010,$000D                                           ;A0D983;
-    db $A3,$00                                                           ;A0D98B;
-    dw $005F,$0000                                                       ;A0D98D;
-    dw InitAI_Hopper                                                     ;A0D991;
-    dw $0001,$0000                                                       ;A0D993;
-    dw MainAI_Hopper                                                     ;A0D997;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D999;
-    dw RTL_A3804C                                                        ;A0D99B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D99D;
-    dw $0000                                                             ;A0D99F;
-    dw $0002                                                             ;A0D9A1;
-    dd $00000000                                                         ;A0D9A3;
-    dw $0000,$0003                                                       ;A0D9A7;
-    dd $00000000                                                         ;A0D9AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D9AF;
-    dw Common_NormalEnemyShotAI                                          ;A0D9B1;
-    dw $0000                                                             ;A0D9B3;
-    dl Tiles_Dessgeega                                                   ;A0D9B5;
-    db $05                                                               ;A0D9B8;
-    dw EnemyDropChances_Dessgeega                                        ;A0D9B9;
-    dw EnemyVulnerabilities_Default                                      ;A0D9BB;
-    dw EnemyName_Dessgeega                                               ;A0D9BD;
-
-EnemyHeaders_SidehopperLarge:
-    dw $0600                                                             ;A0D9BF;
-    dw Palette_SidehopperLarge                                           ;A0D9C1;
-    dw $0140,$0050,$0018,$0014                                           ;A0D9C3;
-    db $A3,$00                                                           ;A0D9CB;
-    dw $0023,$0000                                                       ;A0D9CD;
-    dw InitAI_Hopper                                                     ;A0D9D1;
-    dw $0001,$0000                                                       ;A0D9D3;
-    dw MainAI_Hopper                                                     ;A0D9D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0D9D9;
-    dw RTL_A3804C                                                        ;A0D9DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0D9DD;
-    dw $0000                                                             ;A0D9DF;
-    dw $0004                                                             ;A0D9E1;
-    dd $00000000                                                         ;A0D9E3;
-    dw $0000,$0001                                                       ;A0D9E7;
-    dd $00000000                                                         ;A0D9EB;
-    dw Common_NormalEnemyTouchAI                                         ;A0D9EF;
-    dw Common_NormalEnemyShotAI                                          ;A0D9F1;
-    dw $0000                                                             ;A0D9F3;
-    dl Tiles_SidehopperLarge                                             ;A0D9F5;
-    db $05                                                               ;A0D9F8;
-    dw EnemyDropChances_SidehopperLarge_SidehopperTourian                ;A0D9F9;
-    dw EnemyVulnerabilities_Default                                      ;A0D9FB;
-    dw EnemyName_SidehopperLarge_SidehopperTourian                       ;A0D9FD;
-
-EnemyHeaders_SidehopperTourian:
-    dw $0600                                                             ;A0D9FF;
-    dw Palette_SidehopperTourian                                         ;A0DA01;
-    dw $05DC,$0078,$0018,$0014                                           ;A0DA03;
-    db $A3,$00                                                           ;A0DA0B;
-    dw $0023,$0000                                                       ;A0DA0D;
-    dw InitAI_Hopper                                                     ;A0DA11;
-    dw $0001,$0000                                                       ;A0DA13;
-    dw MainAI_Hopper                                                     ;A0DA17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DA19;
-    dw RTL_A3804C                                                        ;A0DA1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DA1D;
-    dw $0000                                                             ;A0DA1F;
-    dw $0004                                                             ;A0DA21;
-    dd $00000000                                                         ;A0DA23;
-    dw $0000,$0001                                                       ;A0DA27;
-    dd $00000000                                                         ;A0DA2B;
-    dw Common_NormalEnemyTouchAI                                         ;A0DA2F;
-    dw Common_NormalEnemyShotAI                                          ;A0DA31;
-    dw $0000                                                             ;A0DA33;
-    dl Tiles_SidehopperLarge                                             ;A0DA35;
-    db $05                                                               ;A0DA38;
-    dw EnemyDropChances_SidehopperLarge_SidehopperTourian                ;A0DA39;
-    dw EnemyVulnerabilities_SidehopperTourian                            ;A0DA3B;
-    dw EnemyName_SidehopperLarge_SidehopperTourian                       ;A0DA3D;
-
-EnemyHeaders_DessgeegaLarge:
-    dw $0400                                                             ;A0DA3F;
-    dw Palette_DessgeegaLarge                                            ;A0DA41;
-    dw $0320,$00A0,$0018,$0014                                           ;A0DA43;
-    db $A3,$00                                                           ;A0DA4B;
-    dw $0030,$0000                                                       ;A0DA4D;
-    dw InitAI_Hopper                                                     ;A0DA51;
-    dw $0001,$0000                                                       ;A0DA53;
-    dw MainAI_Hopper                                                     ;A0DA57;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DA59;
-    dw RTL_A3804C                                                        ;A0DA5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DA5D;
-    dw $0000                                                             ;A0DA5F;
-    dw $0004                                                             ;A0DA61;
-    dd $00000000                                                         ;A0DA63;
-    dw $0000,$0002                                                       ;A0DA67;
-    dd $00000000                                                         ;A0DA6B;
-    dw Common_NormalEnemyTouchAI                                         ;A0DA6F;
-    dw Common_NormalEnemyShotAI                                          ;A0DA71;
-    dw $0000                                                             ;A0DA73;
-    dl Tiles_DessgeegaLarge                                              ;A0DA75;
-    db $05                                                               ;A0DA78;
-    dw EnemyDropChances_DessgeegaLarge                                   ;A0DA79;
-    dw EnemyVulnerabilities_DessgeegaLarge                               ;A0DA7B;
-    dw EnemyName_DessgeegaLarge                                          ;A0DA7D;
-
-EnemyHeaders_Zoa:
-    dw $0400                                                             ;A0DA7F;
-    dw Palette_Zoa                                                       ;A0DA81;
-    dw $0028,$000F,$0008,$0008                                           ;A0DA83;
-    db $A3,$00                                                           ;A0DA8B;
-    dw $0049,$0000                                                       ;A0DA8D;
-    dw InitAI_Zoa                                                        ;A0DA91;
-    dw $0001,$0000                                                       ;A0DA93;
-    dw MainAI_Zoa                                                        ;A0DA97;
-    dw Common_GrappleAI_KillEnemy                                        ;A0DA99;
-    dw RTL_A3804C                                                        ;A0DA9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DA9D;
-    dw $0000                                                             ;A0DA9F;
-    dw $0000                                                             ;A0DAA1;
-    dd $00000000                                                         ;A0DAA3;
-    dw $0000,$0000                                                       ;A0DAA7;
-    dd $00000000                                                         ;A0DAAB;
-    dw Common_NormalEnemyTouchAI                                         ;A0DAAF;
-    dw Common_NormalEnemyShotAI                                          ;A0DAB1;
-    dw $0000                                                             ;A0DAB3;
-    dl Tiles_Zoa                                                         ;A0DAB5;
-    db $05                                                               ;A0DAB8;
-    dw EnemyDropChances_Zoa                                              ;A0DAB9;
-    dw EnemyVulnerabilities_Default                                      ;A0DABB;
-    dw EnemyName_Zoa                                                     ;A0DABD;
-
-EnemyHeaders_Viola:
-    dw $0400                                                             ;A0DABF;
-    dw Palette_Viola                                                     ;A0DAC1;
-    dw $001E,$000F,$0008,$0008                                           ;A0DAC3;
-    db $A3,$00                                                           ;A0DACB;
-    dw $005F,$0000                                                       ;A0DACD;
-    dw InitAI_Viola                                                      ;A0DAD1;
-    dw $0001,$0000                                                       ;A0DAD3;
-    dw MainAI_Crawlers                                                   ;A0DAD7;
-    dw Common_GrappleAI_KillEnemy                                        ;A0DAD9;
-    dw RTL_A3804C                                                        ;A0DADB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DADD;
-    dw $0000                                                             ;A0DADF;
-    dw $0000                                                             ;A0DAE1;
-    dd $00000000                                                         ;A0DAE3;
-    dw $0000                                                             ;A0DAE7;
-    dw InstList_Viola_UpsideDown                                         ;A0DAE9;
-    dd $00000000                                                         ;A0DAEB;
-    dw Common_NormalEnemyTouchAI                                         ;A0DAEF;
-    dw Common_NormalEnemyShotAI                                          ;A0DAF1;
-    dw $0000                                                             ;A0DAF3;
-    dl Tiles_Viola                                                       ;A0DAF5;
-    db $05                                                               ;A0DAF8;
-    dw EnemyDropChances_Viola                                            ;A0DAF9;
-    dw EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer         ;A0DAFB;
-    dw EnemyName_Viola                                                   ;A0DAFD;
-
-EnemyHeaders_Respawn:
-    dw $0000                                                             ;A0DAFF;
-    dw NOPNOP_A38069                                                     ;A0DB01;
-    dw $0000,$0000,$0008,$0008                                           ;A0DB03;
-    db $A3,$00                                                           ;A0DB0B;
-    dw $0059,$0000                                                       ;A0DB0D;
-    dw RTL_A3804C                                                        ;A0DB11;
-    dw $0001,$0000                                                       ;A0DB13;
-    dw RTL_A3804C                                                        ;A0DB17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DB19;
-    dw RTL_A3804C                                                        ;A0DB1B;
-    dw RTL_A3804C                                                        ;A0DB1D;
-    dw $0000                                                             ;A0DB1F;
-    dw $0000                                                             ;A0DB21;
-    dd $00000000                                                         ;A0DB23;
-    dw $0000,$0000                                                       ;A0DB27;
-    dd $00000000                                                         ;A0DB2B;
-    dw RTL_A3804C                                                        ;A0DB2F;
-    dw RTL_A3804C                                                        ;A0DB31;
-    dw $0000                                                             ;A0DB33;
-    dl Tiles_Metroid                                                     ;A0DB35;
-    db $00                                                               ;A0DB38;
-    dw $0000                                                             ;A0DB39;
-    dw $0000                                                             ;A0DB3B;
-    dw $0000                                                             ;A0DB3D;
-
-EnemyHeaders_Bang:
-    dw $1000                                                             ;A0DB3F;
-    dw Palette_Bang                                                      ;A0DB41;
-    dw $000A,$0004,$0010,$0010                                           ;A0DB43;
-    db $A3,$00                                                           ;A0DB4B;
-    dw $0056,$0000                                                       ;A0DB4D;
-    dw InitAI_Bang                                                       ;A0DB51;
-    dw $0003,$0000                                                       ;A0DB53;
-    dw MainAI_Bang                                                       ;A0DB57;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DB59;
-    dw RTL_A3804C                                                        ;A0DB5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DB5D;
-    dw $0000                                                             ;A0DB5F;
-    dw $0004                                                             ;A0DB61;
-    dd $00000000                                                         ;A0DB63;
-    dw $0000,$0000                                                       ;A0DB67;
-    dd $00000000                                                         ;A0DB6B;
-    dw Common_NormalEnemyTouchAI                                         ;A0DB6F;
-    dw EnemyShot_Bang                                                    ;A0DB71;
-    dw $0000                                                             ;A0DB73;
-    dl Tiles_Bang                                                        ;A0DB75;
-    db $05                                                               ;A0DB78;
-    dw EnemyDropChances_Bang                                             ;A0DB79;
-    dw EnemyVulnerabilities_Bang                                         ;A0DB7B;
-    dw EnemyName_Bang                                                    ;A0DB7D;
-
-EnemyHeaders_Skree:
-    dw $0400                                                             ;A0DB7F;
-    dw Palette_Skree                                                     ;A0DB81;
-    dw $000F,$000A,$0008,$000C                                           ;A0DB83;
-    db $A3,$00                                                           ;A0DB8B;
-    dw $0021,$0000                                                       ;A0DB8D;
-    dw InitAI_Skree                                                      ;A0DB91;
-    dw $0001,$0000                                                       ;A0DB93;
-    dw MainAI_Skree                                                      ;A0DB97;
-    dw Common_GrappleAI_KillEnemy                                        ;A0DB99;
-    dw RTL_A3804C                                                        ;A0DB9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DB9D;
-    dw $0000                                                             ;A0DB9F;
-    dw $0000                                                             ;A0DBA1;
-    dd $00000000                                                         ;A0DBA3;
-    dw $0000,$0000                                                       ;A0DBA7;
-    dd $00000000                                                         ;A0DBAB;
-    dw Common_NormalEnemyTouchAI                                         ;A0DBAF;
-    dw EnemyShot_Skree                                                   ;A0DBB1;
-    dw $0000                                                             ;A0DBB3;
-    dl Tiles_Skree                                                       ;A0DBB5;
-    db $05                                                               ;A0DBB8;
-    dw EnemyDropChances_Skree                                            ;A0DBB9;
-    dw EnemyVulnerabilities_Default                                      ;A0DBBB;
-    dw EnemyName_Skree                                                   ;A0DBBD;
-
-EnemyHeaders_Yard:
-    dw $0800                                                             ;A0DBBF;
-    dw Palette_Yard                                                      ;A0DBC1;
-    dw $000A,$0064,$0008,$0008                                           ;A0DBC3;
-    db $A3,$00                                                           ;A0DBCB;
-    dw $003E,$0000                                                       ;A0DBCD;
-    dw InitAI_Yard                                                       ;A0DBD1;
-    dw $0001,$0000                                                       ;A0DBD3;
-    dw MainAI_Yard                                                       ;A0DBD7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DBD9;
-    dw RTL_A3804C                                                        ;A0DBDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DBDD;
-    dw $0000                                                             ;A0DBDF;
-    dw $0002                                                             ;A0DBE1;
-    dd $00000000                                                         ;A0DBE3;
-    dw $0000,$0000                                                       ;A0DBE7;
-    dd $00000000                                                         ;A0DBEB;
-    dw EnemyTouch_Yard                                                   ;A0DBEF;
-    dw EnemyShot_Yard                                                    ;A0DBF1;
-    dw $0000                                                             ;A0DBF3;
-    dl Tiles_Yard                                                        ;A0DBF5;
-    db $05                                                               ;A0DBF8;
-    dw EnemyDropChances_Yard                                             ;A0DBF9;
-    dw EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer         ;A0DBFB;
-    dw EnemyName_Yard                                                    ;A0DBFD;
-
-EnemyHeaders_Reflec:
-    dw $0600                                                             ;A0DBFF;
-    dw Palette_Reflec                                                    ;A0DC01;
-    dw $00C8,$001E,$0010,$0010                                           ;A0DC03;
-    db $A3,$00                                                           ;A0DC0B;
-    dw $0057,$0000                                                       ;A0DC0D;
-    dw InitAI_Reflec                                                     ;A0DC11;
-    dw $0001,$0000                                                       ;A0DC13;
-    dw RTL_A3DC1B                                                        ;A0DC17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DC19;
-    dw RTL_A3804C                                                        ;A0DC1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DC1D;
-    dw $0000                                                             ;A0DC1F;
-    dw $0002                                                             ;A0DC21;
-    dd $00000000                                                         ;A0DC23;
-    dw $0000,$0000                                                       ;A0DC27;
-    dd $00000000                                                         ;A0DC2B;
-    dw RTL_A3804C                                                        ;A0DC2F;
-    dw EnemyShot_Reflec                                                  ;A0DC31;
-    dw $0000                                                             ;A0DC33;
-    dl Tiles_Reflec                                                      ;A0DC35;
-    db $05                                                               ;A0DC38;
-    dw EnemyDropChances_Reflec                                           ;A0DC39;
-    dw EnemyVulnerabilities_Indestructible                               ;A0DC3B;
-    dw EnemyName_Reflec                                                  ;A0DC3D;
-
-EnemyHeaders_HZoomer:
-    dw $0600                                                             ;A0DC3F;
-    dw Palette_HZoomer                                                   ;A0DC41;
-    dw $000F,$0005,$0008,$0008                                           ;A0DC43;
-    db $A3,$00                                                           ;A0DC4B;
-    dw $0023,$0000                                                       ;A0DC4D;
-    dw InitAI_HZoomer                                                    ;A0DC51;
-    dw $0001,$0000                                                       ;A0DC53;
-    dw MainAI_HZoomer                                                    ;A0DC57;
-    dw Common_GrappleAI_KillEnemy                                        ;A0DC59;
-    dw RTL_A3804C                                                        ;A0DC5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DC5D;
-    dw $0000                                                             ;A0DC5F;
-    dw $0000                                                             ;A0DC61;
-    dd $00000000                                                         ;A0DC63;
-    dw $0000,$0000                                                       ;A0DC67;
-    dd $00000000                                                         ;A0DC6B;
-    dw Common_NormalEnemyTouchAI                                         ;A0DC6F;
-    dw Common_NormalEnemyShotAI                                          ;A0DC71;
-    dw $0000                                                             ;A0DC73;
-    dl Tiles_Zoomer                                                      ;A0DC75;
-    db $05                                                               ;A0DC78;
-    dw EnemyDropChances_HZoomer                                          ;A0DC79;
-    dw EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer         ;A0DC7B;
-    dw EnemyName_HZoomer                                                 ;A0DC7D;
-
-EnemyHeaders_Zeela:
-    dw $0600                                                             ;A0DC7F;
-    dw Palette_Zeela                                                     ;A0DC81;
-    dw $001E,$000A,$0008,$0008                                           ;A0DC83;
-    db $A3,$00                                                           ;A0DC8B;
-    dw $0023,$0000                                                       ;A0DC8D;
-    dw InitAI_Zeela                                                      ;A0DC91;
-    dw $0001,$0000                                                       ;A0DC93;
-    dw MainAI_Crawlers                                                   ;A0DC97;
-    dw Common_GrappleAI_KillEnemy                                        ;A0DC99;
-    dw RTL_A3804C                                                        ;A0DC9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DC9D;
-    dw $0000                                                             ;A0DC9F;
-    dw $0000                                                             ;A0DCA1;
-    dd $00000000                                                         ;A0DCA3;
-    dw $0000,$0000                                                       ;A0DCA7;
-    dd $00000000                                                         ;A0DCAB;
-    dw Common_NormalEnemyTouchAI                                         ;A0DCAF;
-    dw Common_NormalEnemyShotAI                                          ;A0DCB1;
-    dw $0000                                                             ;A0DCB3;
-    dl Tiles_Zeela                                                       ;A0DCB5;
-    db $05                                                               ;A0DCB8;
-    dw EnemyDropChances_Zeela                                            ;A0DCB9;
-    dw EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer         ;A0DCBB;
-    dw EnemyName_Zeela                                                   ;A0DCBD;
-
-EnemyHeaders_Sova:
-    dw $0600                                                             ;A0DCBF;
-    dw Palette_Sova                                                      ;A0DCC1;
-    dw $0028,$0014,$0008,$0008                                           ;A0DCC3;
-    db $A3,$00                                                           ;A0DCCB;
-    dw $0023,$0000                                                       ;A0DCCD;
-    dw InitAI_Sova                                                       ;A0DCD1;
-    dw $0001,$0000                                                       ;A0DCD3;
-    dw MainAI_Crawlers                                                   ;A0DCD7;
-    dw Common_GrappleAI_KillEnemy                                        ;A0DCD9;
-    dw RTL_A3804C                                                        ;A0DCDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DCDD;
-    dw $0000                                                             ;A0DCDF;
-    dw $0000                                                             ;A0DCE1;
-    dd $00000000                                                         ;A0DCE3;
-    dw $0000,$0000                                                       ;A0DCE7;
-    dd $00000000                                                         ;A0DCEB;
-    dw Common_NormalEnemyTouchAI                                         ;A0DCEF;
-    dw Common_NormalEnemyShotAI                                          ;A0DCF1;
-    dw $0000                                                             ;A0DCF3;
-    dl Tiles_Sova                                                        ;A0DCF5;
-    db $05                                                               ;A0DCF8;
-    dw EnemyDropChances_Sova                                             ;A0DCF9;
-    dw EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer         ;A0DCFB;
-    dw EnemyName_Sova                                                    ;A0DCFD;
-
-EnemyHeaders_Zoomer:
-    dw $0600                                                             ;A0DCFF;
-    dw Palette_Zoomer                                                    ;A0DD01;
-    dw $000F,$0005,$0008,$0008                                           ;A0DD03;
-    db $A3,$00                                                           ;A0DD0B;
-    dw $0023,$0000                                                       ;A0DD0D;
-    dw InitAI_Zoomer_MZoomer                                             ;A0DD11;
-    dw $0001,$0001                                                       ;A0DD13;
-    dw MainAI_Crawlers                                                   ;A0DD17;
-    dw Common_GrappleAI_KillEnemy                                        ;A0DD19;
-    dw RTL_A3804C                                                        ;A0DD1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DD1D;
-    dw $0000                                                             ;A0DD1F;
-    dw $0000                                                             ;A0DD21;
-    dd $00000000                                                         ;A0DD23;
-    dw $0000,$0000                                                       ;A0DD27;
-    dd $00000000                                                         ;A0DD2B;
-    dw Common_NormalEnemyTouchAI                                         ;A0DD2F;
-    dw Common_NormalEnemyShotAI                                          ;A0DD31;
-    dw $0000                                                             ;A0DD33;
-    dl Tiles_Zoomer                                                      ;A0DD35;
-    db $05                                                               ;A0DD38;
-    dw EnemyDropChances_Zoomer                                           ;A0DD39;
-    dw EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer         ;A0DD3B;
-    dw EnemyName_Zoomer                                                  ;A0DD3D;
-
-EnemyHeaders_MZoomer:
-    dw $0600                                                             ;A0DD3F;
-    dw Palette_MZoomer                                                   ;A0DD41;
-    dw $000F,$0005,$0008,$0008                                           ;A0DD43;
-    db $A3,$00                                                           ;A0DD4B;
-    dw $0023,$0000                                                       ;A0DD4D;
-    dw InitAI_Zoomer_MZoomer                                             ;A0DD51;
-    dw $0001,$0001                                                       ;A0DD53;
-    dw MainAI_Crawlers                                                   ;A0DD57;
-    dw Common_GrappleAI_KillEnemy                                        ;A0DD59;
-    dw RTL_A3804C                                                        ;A0DD5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DD5D;
-    dw $0000                                                             ;A0DD5F;
-    dw $0000                                                             ;A0DD61;
-    dd $00000000                                                         ;A0DD63;
-    dw $0000,$0000                                                       ;A0DD67;
-    dd $00000000                                                         ;A0DD6B;
-    dw Common_NormalEnemyTouchAI                                         ;A0DD6F;
-    dw Common_NormalEnemyShotAI                                          ;A0DD71;
-    dw $0000                                                             ;A0DD73;
-    dl Tiles_Zoomer                                                      ;A0DD75;
-    db $05                                                               ;A0DD78;
-    dw EnemyDropChances_MZoomer                                          ;A0DD79;
-    dw EnemyVulnerabilities_MZoomer                                      ;A0DD7B;
-    dw EnemyName_MZoomer                                                 ;A0DD7D;
-
-EnemyHeaders_Metroid:
-    dw $1000                                                             ;A0DD7F;
-    dw Palette_Metroid                                                   ;A0DD81;
-    dw $01F4,$0078,$000A,$000A                                           ;A0DD83;
-    db $A3,$00                                                           ;A0DD8B;
-    dw $005A,$0000                                                       ;A0DD8D;
-    dw InitAI_Metroid                                                    ;A0DD91;
-    dw $0001,$0000                                                       ;A0DD93;
-    dw MainAI_Metroid                                                    ;A0DD97;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DD99;
-    dw HurtAI_Metroid                                                    ;A0DD9B;
-    dw FrozenAI_Metroid                                                  ;A0DD9D;
-    dw $0000                                                             ;A0DD9F;
-    dw $0004                                                             ;A0DDA1;
-    dd $00000000                                                         ;A0DDA3;
-    dw PowerBombReaction_Metroid                                         ;A0DDA7;
-    dw $0000                                                             ;A0DDA9;
-    dd $00000000                                                         ;A0DDAB;
-    dw EnemyTouch_Metroid                                                ;A0DDAF;
-    dw EnemyShot_Metroid                                                 ;A0DDB1;
-    dw $0000                                                             ;A0DDB3;
-    dl Tiles_Metroid                                                     ;A0DDB5;
-    db $05                                                               ;A0DDB8;
-    dw EnemyDropChances_Metroid                                          ;A0DDB9;
-    dw EnemyVulnerabilities_Metroid                                      ;A0DDBB;
-    dw EnemyName_Metroid                                                 ;A0DDBD;
-
-EnemyHeaders_Crocomire:
-    dw $A600                                                             ;A0DDBF;
-    dw Palette_Crocomire                                                 ;A0DDC1;
-    dw $7FFF,$0028,$0030,$0038                                           ;A0DDC3;
-    db $A4,$00                                                           ;A0DDCB;
-    dw $0005,$0006                                                       ;A0DDCD;
-    dw InitAI_Crocomire                                                  ;A0DDD1;
-    dw $0001,$0000                                                       ;A0DDD3;
-    dw MainAI_Crocomire                                                  ;A0DDD7;
-    dw Common_GrappleAI_SamusLatchesOn                                   ;A0DDD9;
-    dw HurtAI_Crocomire                                                  ;A0DDDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DDDD;
-    dw $0000                                                             ;A0DDDF;
-    dw $0000                                                             ;A0DDE1;
-    dd $00000000                                                         ;A0DDE3;
-    dw PowerBombReaction_Crocomire                                       ;A0DDE7;
-    dw $0000                                                             ;A0DDE9;
-    dd $00000000                                                         ;A0DDEB;
-    dw RTL_A4B950                                                        ;A0DDEF;
-    dw $0000                                                             ;A0DDF1;
-    dw $0000                                                             ;A0DDF3;
-    dl Tiles_Crocomire                                                   ;A0DDF5;
-    db $05                                                               ;A0DDF8;
-    dw EnemyDropChances_Crocomire                                        ;A0DDF9;
-    dw EnemyVulnerabilities_Crocomire_CrocomireTongue                    ;A0DDFB;
-    dw $0000                                                             ;A0DDFD;
-
-EnemyHeaders_CrocomireTongue:
-    dw $2000                                                             ;A0DDFF;
-    dw Palette_Crocomire                                                 ;A0DE01;
-    dw $7FFF,$0028,$0008,$0008                                           ;A0DE03;
-    db $A4,$00                                                           ;A0DE0B;
-    dw $0000,$0006                                                       ;A0DE0D;
-    dw InitAI_CrocomireTongue                                            ;A0DE11;
-    dw $0001,$0000                                                       ;A0DE13;
-    dw MainAI_CrocomireTongue                                            ;A0DE17;
-    dw Common_GrappleAI_SamusLatchesOn                                   ;A0DE19;
-    dw RTL_A4804C                                                        ;A0DE1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DE1D;
-    dw $0000                                                             ;A0DE1F;
-    dw $0000                                                             ;A0DE21;
-    dd $00000000                                                         ;A0DE23;
-    dw $0000,$0000                                                       ;A0DE27;
-    dd $00000000                                                         ;A0DE2B;
-    dw Common_NormalEnemyTouchAI                                         ;A0DE2F;
-    dw Common_NormalEnemyShotAI                                          ;A0DE31;
-    dw $0000                                                             ;A0DE33;
-    dl Tiles_Crocomire                                                   ;A0DE35;
-    db $05                                                               ;A0DE38;
-    dw EnemyDropChances_CrocomireTongue                                  ;A0DE39;
-    dw EnemyVulnerabilities_Crocomire_CrocomireTongue                    ;A0DE3B;
-    dw $0000                                                             ;A0DE3D;
-
-EnemyHeaders_DraygonBody:
-    dw $2000                                                             ;A0DE3F;
-    dw Palette_Draygon_Sprite7                                           ;A0DE41;
-    dw $1770,$00A0,$0040,$0040                                           ;A0DE43;
-    db $A5,$04                                                           ;A0DE4B;
-    dw $0000,$0008                                                       ;A0DE4D;
-    dw InitAI_DraygonBody                                                ;A0DE51;
-    dw $0001,$0000                                                       ;A0DE53;
-    dw MainAI_DraygonBody                                                ;A0DE57;
-    dw Common_GrappleAI_NoInteraction                                    ;A0DE59;
-    dw HurtAI_Draygon                                                    ;A0DE5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DE5D;
-    dw $0000                                                             ;A0DE5F;
-    dw $0000                                                             ;A0DE61;
-    dd $00000000                                                         ;A0DE63;
-    dw PowerBombReaction_Draygon                                         ;A0DE67;
-    dw $0000                                                             ;A0DE69;
-    dd $00000000                                                         ;A0DE6B;
-    dw EnemyTouch_Draygon                                                ;A0DE6F;
-    dw EnemyShot_Draygon                                                 ;A0DE71;
-    dw $0000                                                             ;A0DE73;
-    dl Tiles_Draygon                                                     ;A0DE75;
-    db $05                                                               ;A0DE78;
-    dw EnemyDropChances_DraygonBody_DraygonTail_DraygonArms              ;A0DE79;
-    dw EnemyVulnerabilities_Draygon_Body_Eye_Tail_Arms                   ;A0DE7B;
-    dw $0000                                                             ;A0DE7D;
-
-EnemyHeaders_DraygonEye:
-    dw $1800                                                             ;A0DE7F;
-    dw NOPNOP_A58069                                                     ;A0DE81;
-    dw $1770,$00A0,$0002,$0002                                           ;A0DE83;
-    db $A5,$00                                                           ;A0DE8B;
-    dw $0000,$0000                                                       ;A0DE8D;
-    dw InitAI_DraygonEye                                                 ;A0DE91;
-    dw $0001,$0000                                                       ;A0DE93;
-    dw MainAI_DraygonEye                                                 ;A0DE97;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DE99;
-    dw RTL_A5804C                                                        ;A0DE9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DE9D;
-    dw $0000                                                             ;A0DE9F;
-    dw $0000                                                             ;A0DEA1;
-    dd $00000000                                                         ;A0DEA3;
-    dw RTL_A0804C                                                        ;A0DEA7;
-    dw $0000                                                             ;A0DEA9;
-    dd $00000000                                                         ;A0DEAB;
-    dw RTL_A5804C                                                        ;A0DEAF;
-    dw RTL_A5804C                                                        ;A0DEB1;
-    dw $0000                                                             ;A0DEB3;
-    dl Tiles_Draygon                                                     ;A0DEB5;
-    db $05                                                               ;A0DEB8;
-    dw EnemyDropChances_DraygonEye                                       ;A0DEB9;
-    dw EnemyVulnerabilities_Draygon_Body_Eye_Tail_Arms                   ;A0DEBB;
-    dw $0000                                                             ;A0DEBD;
-
-EnemyHeaders_DraygonTail:
-    dw $1800                                                             ;A0DEBF;
-    dw Palette_Draygon_Sprite7                                           ;A0DEC1;
-    dw $1770,$00A0,$0010,$0020                                           ;A0DEC3;
-    db $A5,$00                                                           ;A0DECB;
-    dw $0000,$0000                                                       ;A0DECD;
-    dw InitAI_DraygonTail                                                ;A0DED1;
-    dw $0001,$0000                                                       ;A0DED3;
-    dw RTL_A5C5AA                                                        ;A0DED7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DED9;
-    dw RTL_A5804C                                                        ;A0DEDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DEDD;
-    dw $0000                                                             ;A0DEDF;
-    dw $0000                                                             ;A0DEE1;
-    dd $00000000                                                         ;A0DEE3;
-    dw RTL_A0804C                                                        ;A0DEE7;
-    dw $0000                                                             ;A0DEE7;
-    dd $00000000                                                         ;A0DEEB;
-    dw Common_NormalEnemyTouchAI                                         ;A0DEEF;
-    dw Common_NormalEnemyShotAI                                          ;A0DEF1;
-    dw $0000                                                             ;A0DEF3;
-    dl Tiles_Draygon                                                     ;A0DEF5;
-    db $05                                                               ;A0DEF8;
-    dw EnemyDropChances_DraygonBody_DraygonTail_DraygonArms              ;A0DEF9;
-    dw EnemyVulnerabilities_Draygon_Body_Eye_Tail_Arms                   ;A0DEFB;
-    dw $0000                                                             ;A0DEFD;
-
-EnemyHeaders_DraygonArms:
-    dw $1800                                                             ;A0DEFF;
-    dw Palette_Draygon_Sprite7                                           ;A0DF01;
-    dw $1770,$00A0,$0018,$0018                                           ;A0DF03;
-    db $A5,$00                                                           ;A0DF0B;
-    dw $0000,$0000                                                       ;A0DF0D;
-    dw InitAI_DraygonArms                                                ;A0DF11;
-    dw $0001,$0000                                                       ;A0DF13;
-    dw RTL_A5C5C4                                                        ;A0DF17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DF19;
-    dw RTL_A5804C                                                        ;A0DF1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DF1D;
-    dw $0000                                                             ;A0DF1F;
-    dw $0000                                                             ;A0DF21;
-    dd $00000000                                                         ;A0DF23;
-    dw RTL_A0804C                                                        ;A0DF27;
-    dw $0000                                                             ;A0DF29;
-    dd $00000000                                                         ;A0DF2B;
-    dw RTL_A5804C                                                        ;A0DF2F;
-    dw RTL_A5804C                                                        ;A0DF31;
-    dw $0000                                                             ;A0DF33;
-    dl Tiles_Draygon                                                     ;A0DF35;
-    db $05                                                               ;A0DF38;
-    dw EnemyDropChances_DraygonBody_DraygonTail_DraygonArms              ;A0DF39;
-    dw EnemyVulnerabilities_Draygon_Body_Eye_Tail_Arms                   ;A0DF3B;
-    dw $0000                                                             ;A0DF3D;
-
-EnemyHeaders_SporeSpawn:
-    dw $0E00                                                             ;A0DF3F;
-    dw Palette_SporeSpawn                                                ;A0DF41;
-    dw $03C0,$000C,$0030,$0020                                           ;A0DF43;
-    db $A5,$04                                                           ;A0DF4B;
-    dw $002C,$0004                                                       ;A0DF4D;
-    dw InitAI_SporeSpawn                                                 ;A0DF51;
-    dw $0001,$0000                                                       ;A0DF53;
-    dw MainAI_SporeSpawn                                                 ;A0DF57;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DF59;
-    dw RTL_A5804C                                                        ;A0DF5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DF5D;
-    dw $0000                                                             ;A0DF5F;
-    dw $0000                                                             ;A0DF61;
-    dd $00000000                                                         ;A0DF63;
-    dw PowerBombReaction_SporeSpawn                                      ;A0DF67;
-    dw $0000                                                             ;A0DF69;
-    dd $00000000                                                         ;A0DF6B;
-    dw EnemyTouch_SporeSpawn                                             ;A0DF6F;
-    dw EnemyShot_SporeSpawn_Vulnerable                                   ;A0DF71;
-    dw $0000                                                             ;A0DF73;
-    dl Tiles_SporeSpawn                                                  ;A0DF75;
-    db $02                                                               ;A0DF78;
-    dw EnemyDropChances_SporeSpawn                                       ;A0DF79;
-    dw EnemyVulnerabilities_SporeSpawn                                   ;A0DF7B;
-    dw $0000                                                             ;A0DF7D;
-
-EnemyHeaders_SporeSpawnStalk:
-    dw $0E00                                                             ;A0DF7F;
-    dw Palette_SporeSpawn                                                ;A0DF81;
-    dw $03C0,$000C,$0013,$0013                                           ;A0DF83;
-    db $A5,$08                                                           ;A0DF8B;
-    dw $0000,$0004                                                       ;A0DF8D;
-    dw InitAI_SporeSpawn                                                 ;A0DF91;
-    dw $0001,$0000                                                       ;A0DF93;
-    dw MainAI_SporeSpawn                                                 ;A0DF97;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DF99;
-    dw RTL_A5804C                                                        ;A0DF9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DF9D;
-    dw $0000                                                             ;A0DF9F;
-    dw $0000                                                             ;A0DFA1;
-    dd $00000000                                                         ;A0DFA3;
-    dw $0000,$0000                                                       ;A0DFA7;
-    dd $00000000                                                         ;A0DFAB;
-    dw EnemyTouch_SporeSpawn                                             ;A0DFAF;
-    dw EnemyShot_SporeSpawn_Vulnerable                                   ;A0DFB1;
-    dw $0000                                                             ;A0DFB3;
-    dl Tiles_SporeSpawn                                                  ;A0DFB5;
-    db $05                                                               ;A0DFB8;
-    dw EnemyDropChances_SporeSpawnStalk                                  ;A0DFB9;
-    dw EnemyVulnerabilities_SporeSpawn                                   ;A0DFBB;
-    dw $0000                                                             ;A0DFBD;
-
-EnemyHeaders_Boulder:
-    dw $1000                                                             ;A0DFBF;
-    dw Palette_Boulder                                                   ;A0DFC1;
-    dw $0014,$0028,$0010,$0010                                           ;A0DFC3;
-    db $A6,$00                                                           ;A0DFCB;
-    dw $0000,$0000                                                       ;A0DFCD;
-    dw InitAI_Boulder                                                    ;A0DFD1;
-    dw $0001,$0000                                                       ;A0DFD3;
-    dw MainAI_Boulder                                                    ;A0DFD7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0DFD9;
-    dw RTL_A6804C                                                        ;A0DFDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0DFDD;
-    dw $0000                                                             ;A0DFDF;
-    dw $0000                                                             ;A0DFE1;
-    dd $00000000                                                         ;A0DFE3;
-    dw $0000,$0000                                                       ;A0DFE7;
-    dd $00000000                                                         ;A0DFEB;
-    dw Common_NormalEnemyTouchAI                                         ;A0DFEF;
-    dw Common_NormalEnemyShotAI                                          ;A0DFF1;
-    dw $0000                                                             ;A0DFF3;
-    dl Tiles_Boulder                                                     ;A0DFF5;
-    db $05                                                               ;A0DFF8;
-    dw EnemyDropChances_Boulder                                          ;A0DFF9;
-    dw EnemyVulnerabilities_Boulder                                      ;A0DFFB;
-    dw EnemyName_Boulder                                                 ;A0DFFD;
-
-EnemyHeaders_KzanTop:
-    dw $0400                                                             ;A0DFFF;
-    dw Palette_Kzan                                                      ;A0E001;
-    dw $01F4,$00C8,$0010,$000C                                           ;A0E003;
-    db $A6,$00                                                           ;A0E00B;
-    dw $0000,$0000                                                       ;A0E00D;
-    dw InitAI_KzanTop                                                    ;A0E011;
-    dw $0002,$0000                                                       ;A0E013;
-    dw MainAI_KzanTop                                                    ;A0E017;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E019;
-    dw RTL_A6804C                                                        ;A0E01B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E01D;
-    dw $0000                                                             ;A0E01F;
-    dw $0000                                                             ;A0E021;
-    dd $00000000                                                         ;A0E023;
-    dw $0000,$0000                                                       ;A0E027;
-    dd $00000000                                                         ;A0E02B;
-    dw Common_NormalEnemyTouchAI                                         ;A0E02F;
-    dw RTL_A6804C                                                        ;A0E031;
-    dw $0000                                                             ;A0E033;
-    dl Tiles_Kzan                                                        ;A0E035;
-    db $05                                                               ;A0E038;
-    dw EnemyDropChances_KzanTop_KzanBottom                               ;A0E039;
-    dw EnemyVulnerabilities_Indestructible                               ;A0E03B;
-    dw EnemyName_KzanTop                                                 ;A0E03D;
-
-EnemyHeaders_KzanBottom:
-    dw $0200                                                             ;A0E03F;
-    dw Palette_Kzan                                                      ;A0E041;
-    dw $01F4,$00C8,$0010,$0002                                           ;A0E043;
-    db $A6,$00                                                           ;A0E04B;
-    dw $0000,$0000                                                       ;A0E04D;
-    dw InitAI_KzanBottom                                                 ;A0E051;
-    dw $0001,$0000                                                       ;A0E053;
-    dw MainAI_KzanBottom                                                 ;A0E057;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E059;
-    dw RTL_A6804C                                                        ;A0E05B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E05D;
-    dw $0000                                                             ;A0E05F;
-    dw $0000                                                             ;A0E061;
-    dd $00000000                                                         ;A0E063;
-    dw $0000,$0000                                                       ;A0E067;
-    dd $00000000                                                         ;A0E06B;
-    dw Common_NormalEnemyTouchAI                                         ;A0E06F;
-    dw RTL_A6804C                                                        ;A0E071;
-    dw $0000                                                             ;A0E073;
-    dl Tiles_Kzan                                                        ;A0E075;
-    db $05                                                               ;A0E078;
-    dw EnemyDropChances_KzanTop_KzanBottom                               ;A0E079;
-    dw EnemyVulnerabilities_Indestructible                               ;A0E07B;
-    dw $0000                                                             ;A0E07D;
-
-EnemyHeaders_Hibashi:
-    dw $0800                                                             ;A0E07F;
-    dw Palette_Hibashi                                                   ;A0E081;
-    dw $0014,$001E,$0008,$0008                                           ;A0E083;
-    db $A6,$00                                                           ;A0E08B;
-    dw $0000,$0000                                                       ;A0E08D;
-    dw InitAI_Hibashi                                                    ;A0E091;
-    dw $0002,$0000                                                       ;A0E093;
-    dw MainAI_Hibashi                                                    ;A0E097;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E099;
-    dw RTL_A6804C                                                        ;A0E09B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E09D;
-    dw $0000                                                             ;A0E09F;
-    dw $0000                                                             ;A0E0A1;
-    dd $00000000                                                         ;A0E0A3;
-    dw $0000,$0000                                                       ;A0E0A7;
-    dd $00000000                                                         ;A0E0AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0E0AF;
-    dw RTL_A6804C                                                        ;A0E0B1;
-    dw $0000                                                             ;A0E0B3;
-    dl Tiles_Hibashi_Puromi                                              ;A0E0B5;
-    db $05                                                               ;A0E0B8;
-    dw EnemyDropChances_Hibashi                                          ;A0E0B9;
-    dw EnemyVulnerabilities_Indestructible                               ;A0E0BB;
-    dw EnemyName_Hibashi                                                 ;A0E0BD;
-
-EnemyHeaders_Puromi:
-    dw $0800                                                             ;A0E0BF;
-    dw Palette_Puromi                                                    ;A0E0C1;
-    dw $0028,$0032,$0008,$0008                                           ;A0E0C3;
-    db $A6,$00                                                           ;A0E0CB;
-    dw $0000,$0000                                                       ;A0E0CD;
-    dw InitAI_Puromi                                                     ;A0E0D1;
-    dw $0001,$0000                                                       ;A0E0D3;
-    dw MainAI_Puromi                                                     ;A0E0D7;
-    dw Common_GrappleAI_NoInteraction                                    ;A0E0D9;
-    dw RTL_A6804C                                                        ;A0E0DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E0DD;
-    dw $0000                                                             ;A0E0DF;
-    dw $0000                                                             ;A0E0E1;
-    dd $00000000                                                         ;A0E0E3;
-    dw $0000,$0000                                                       ;A0E0E7;
-    dd $00000000                                                         ;A0E0EB;
-    dw Common_NormalEnemyTouchAI                                         ;A0E0EF;
-    dw RTL_A6804C                                                        ;A0E0F1;
-    dw $0000                                                             ;A0E0F3;
-    dl Tiles_Hibashi_Puromi                                              ;A0E0F5;
-    db $05                                                               ;A0E0F8;
-    dw EnemyDropChances_Puromi                                           ;A0E0F9;
-    dw EnemyVulnerabilities_Indestructible                               ;A0E0FB;
-    dw EnemyName_Puromi                                                  ;A0E0FD;
-
-EnemyHeaders_MiniKraid:
-    dw $1000                                                             ;A0E0FF;
-    dw Palette_MiniKraid                                                 ;A0E101;
-    dw $0190,$0064,$0020,$0018                                           ;A0E103;
-    db $A6,$00                                                           ;A0E10B;
-    dw $0000,$0000                                                       ;A0E10D;
-    dw InitAI_MiniKraid                                                  ;A0E111;
-    dw $0001,$0000                                                       ;A0E113;
-    dw MainAI_MiniKraid                                                  ;A0E117;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E119;
-    dw RTL_A6804C                                                        ;A0E11B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E11D;
-    dw $0000                                                             ;A0E11F;
-    dw $0003                                                             ;A0E121;
-    dd $00000000                                                         ;A0E123;
-    dw EnemyShot_PowerBombReaction_MiniKraid                             ;A0E127;
-    dw $0000                                                             ;A0E129;
-    dd $00000000                                                         ;A0E12B;
-    dw EnemyTouch_MiniKraid                                              ;A0E12F;
-    dw EnemyShot_PowerBombReaction_MiniKraid                             ;A0E131;
-    dw $0000                                                             ;A0E133;
-    dl Tiles_MiniKraid                                                   ;A0E135;
-    db $05                                                               ;A0E138;
-    dw EnemyDropChances_MiniKraid                                        ;A0E139;
-    dw EnemyVulnerabilities_MiniKraid                                    ;A0E13B;
-    dw EnemyName_MiniKraid                                               ;A0E13D;
-
-EnemyHeaders_RidleyCeres:
-    dw $2000                                                             ;A0E13F;
-    dw Palette_Ridley                                                    ;A0E141;
-    dw $7FFF,$0005,$0008,$0008                                           ;A0E143;
-    db $A6,$08                                                           ;A0E14B;
-    dw $0000,$0001                                                       ;A0E14D;
-    dw InitAI_Ridley                                                     ;A0E151;
-    dw $0001,$0000                                                       ;A0E153;
-    dw MainAI_RidleyCeres                                                ;A0E157;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E159;
-    dw HurtAI_RidleyCeres                                                ;A0E15B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E15D;
-    dw $0000                                                             ;A0E15F;
-    dw $0000                                                             ;A0E161;
-    dd $00000000                                                         ;A0E163;
-    dw PowerBombReaction_Ridley                                          ;A0E167;
-    dw $0000                                                             ;A0E169;
-    dd $00000000                                                         ;A0E16B;
-    dw Common_NormalEnemyTouchAI                                         ;A0E16F;
-    dw EnemyShot_Ridley                                                  ;A0E171;
-    dw $0000                                                             ;A0E173;
-    dl Tiles_Ridley_0                                                    ;A0E175;
-    db $05                                                               ;A0E178;
-    dw EnemyDropChances_Ridley_RidleyCeres                               ;A0E179;
-    dw EnemyVulnerabilities_Ridley_RidleyCeres                           ;A0E17B;
-    dw $0000                                                             ;A0E17D;
-
-EnemyHeaders_Ridley:
-    dw $2000                                                             ;A0E17F;
-    dw Palette_Ridley                                                    ;A0E181;
-    dw $4650,$00A0,$0008,$0008                                           ;A0E183;
-    db $A6,$08                                                           ;A0E18B;
-    dw $0000,$0005                                                       ;A0E18D;
-    dw InitAI_Ridley                                                     ;A0E191;
-    dw $0001,$0000                                                       ;A0E193;
-    dw MainAI_Ridley                                                     ;A0E197;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E199;
-    dw HurtAI_Ridley                                                     ;A0E19B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E19D;
-    dw TimeIsFrozenAI_Ridley                                             ;A0E19F;
-    dw $0000                                                             ;A0E1A1;
-    dd $00000000                                                         ;A0E1A3;
-    dw PowerBombReaction_Ridley                                          ;A0E1A7;
-    dw $0000                                                             ;A0E1A9;
-    dd $00000000                                                         ;A0E1AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0E1AF;
-    dw EnemyShot_Ridley                                                  ;A0E1B1;
-    dw $0000                                                             ;A0E1B3;
-    dl Tiles_Ridley_0                                                    ;A0E1B5;
-    db $02                                                               ;A0E1B8;
-    dw EnemyDropChances_Ridley_RidleyCeres                               ;A0E1B9;
-    dw EnemyVulnerabilities_Ridley_RidleyCeres                           ;A0E1BB;
-    dw $0000                                                             ;A0E1BD;
-
-EnemyHeaders_RidleyExplosion:
-    dw $8400                                                             ;A0E1BF;
-    dw Palette_RidleyExplosion_0                                         ;A0E1C1;
-    dw $4650,$00A0,$0008,$0008                                           ;A0E1C3;
-    db $A6,$00                                                           ;A0E1CB;
-    dw $0000,$0000                                                       ;A0E1CD;
-    dw InitAI_RidleyExplosion                                            ;A0E1D1;
-    dw $0001,$0000                                                       ;A0E1D3;
-    dw MainAI_RidleyExplosion                                            ;A0E1D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E1D9;
-    dw RTL_A6804C                                                        ;A0E1DB;
-    dw RTL_A6804C                                                        ;A0E1DD;
-    dw $0000                                                             ;A0E1DF;
-    dw $0000                                                             ;A0E1E1;
-    dd $00000000                                                         ;A0E1E3;
-    dw RTL_A0804C                                                        ;A0E1E7;
-    dw $0000                                                             ;A0E1E9;
-    dd $00000000                                                         ;A0E1EB;
-    dw RTL_A6804C                                                        ;A0E1EF;
-    dw RTL_A6804C                                                        ;A0E1F1;
-    dw $0000                                                             ;A0E1F3;
-    dl Tiles_RidleyExplosion                                             ;A0E1F5;
-    db $05                                                               ;A0E1F8;
-    dw $0000                                                             ;A0E1F9;
-    dw EnemyVulnerabilities_Indestructible                               ;A0E1FB;
-    dw $0000                                                             ;A0E1FD;
-
-EnemyHeaders_Steam:
-    dw $0000                                                             ;A0E1FF;
-    dw Palette_CeresSteam                                                ;A0E201;
-    dw $7FFF,$0000,$0008,$0008                                           ;A0E203;
-    db $A6,$00                                                           ;A0E20B;
-    dw $0000,$0000                                                       ;A0E20D;
-    dw InitAI_CeresSteam                                                 ;A0E211;
-    dw $0001,$0000                                                       ;A0E213;
-    dw MainAI_CeresSteam                                                 ;A0E217;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E219;
-    dw RTL_A6804C                                                        ;A0E21B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E21D;
-    dw $0000                                                             ;A0E21F;
-    dw $0000                                                             ;A0E221;
-    dd $00000000                                                         ;A0E223;
-    dw $0000,$0000                                                       ;A0E227;
-    dd $00000000                                                         ;A0E22B;
-    dw EnemyTouch_CeresSteam                                             ;A0E22F;
-    dw RTL_A6804C                                                        ;A0E231;
-    dw $0000                                                             ;A0E233;
-    dl EnemyHeaders_CeresDoor                                            ;A0E235;
-    db $05                                                               ;A0E238;
-    dw EnemyDropChances_Steam_Dachora_DachoraEscape                      ;A0E239;
-    dw EnemyVulnerabilities_Indestructible                               ;A0E23B;
-    dw $0000                                                             ;A0E23D;
-
-EnemyHeaders_CeresDoor:
-    dw $8600                                                             ;A0E23F;
-    dw Palette_CeresDoor_BeforeEscape                                    ;A0E241;
-    dw $0028,$000F,$0008,$0020                                           ;A0E243;
-    db $A6,$00                                                           ;A0E24B;
-    dw $0059,$0000                                                       ;A0E24D;
-    dw InitAI_CeresDoor                                                  ;A0E251;
-    dw $0001,$0000                                                       ;A0E253;
-    dw MainAI_CeresDoor                                                  ;A0E257;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E259;
-    dw RTL_A6804C                                                        ;A0E25B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E25D;
-    dw $0000                                                             ;A0E25F;
-    dw $0000                                                             ;A0E261;
-    dd $00000000                                                         ;A0E263;
-    dw $0000                                                             ;A0E267;
-    dw InstListPointers_CeresDoor                                        ;A0E269;
-    dd $00000000                                                         ;A0E26B;
-    dw RTL_A6F920                                                        ;A0E26F;
-    dw RTL_A6F920                                                        ;A0E271;
-    dw InitAI_Zebetite                                                   ;A0E273;
-    dl Tiles_CeresDoor_0                                                 ;A0E275;
-    db $02                                                               ;A0E278;
-    dw $0000                                                             ;A0E279;
-    dw $0000                                                             ;A0E27B;
-    dw $0000                                                             ;A0E27D;
-
-EnemyHeaders_Zebetite:
-    dw $0000                                                             ;A0E27F;
-    dw $0000                                                             ;A0E281;
-    dw $03E8,$0000,$0008,$0018                                           ;A0E283;
-    db $A6,$00                                                           ;A0E28B;
-    dw $0000,$0000                                                       ;A0E28D;
-    dw InitAI_Zebetite                                                   ;A0E291;
-    dw $0001,$0000                                                       ;A0E293;
-    dw MainAI_Zebetite                                                   ;A0E297;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E299;
-    dw RTL_A6804C                                                        ;A0E29B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E29D;
-    dw $0000                                                             ;A0E29F;
-    dw $0000                                                             ;A0E2A1;
-    dd $00000000                                                         ;A0E2A3;
-    dw $0000,$0000                                                       ;A0E2A7;
-    dd $00000000                                                         ;A0E2AB;
-    dw EnemyTouch_Zebetite                                               ;A0E2AF;
-    dw EnemyShot_Zebetite                                                ;A0E2B1;
-    dw $0000                                                             ;A0E2B3;
-    dl Tiles_MotherBrainHead                                             ;A0E2B5;
-    db $05                                                               ;A0E2B8;
-    dw $0000                                                             ;A0E2B9;
-    dw EnemyVulnerabilities_Zebetite                                     ;A0E2BB;
-    dw $0000                                                             ;A0E2BD;
-
-EnemyHeaders_Kraid:
-    dw $1E00                                                             ;A0E2BF;
-    dw Palette_Kraid                                                     ;A0E2C1;
-    dw $03E8,$0014,$0038,$0090                                           ;A0E2C3;
-    db $A7,$00                                                           ;A0E2CB;
-    dw $0000,$0003                                                       ;A0E2CD;
-    dw InitAI_Kraid                                                      ;A0E2D1;
-    dw $0001,$0000                                                       ;A0E2D3;
-    dw MainAI_Kraid                                                      ;A0E2D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E2D9;
-    dw RTL_A7804C                                                        ;A0E2DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E2DD;
-    dw $0000                                                             ;A0E2DF;
-    dw $0000                                                             ;A0E2E1;
-    dd $00000000                                                         ;A0E2E3;
-    dw Common_NormalEnemyPowerBombAI_NoDeathCheck                        ;A0E2E7;
-    dw $0000                                                             ;A0E2E9;
-    dd $00000000                                                         ;A0E2EB;
-    dw EnemyTouch_Kraid                                                  ;A0E2EF;
-    dw RTL_A7804C                                                        ;A0E2F1;
-    dw $0000                                                             ;A0E2F3;
-    dl Tiles_Kraid                                                       ;A0E2F5;
-    db $05                                                               ;A0E2F8;
-    dw EnemyDropChances_Kraid                                            ;A0E2F9;
-    dw EnemyVulnerabilities_Kraid                                        ;A0E2FB;
-    dw $0000                                                             ;A0E2FD;
-
-EnemyHeaders_KraidArm:
-    dw $1E00                                                             ;A0E2FF;
-    dw Palette_Kraid                                                     ;A0E301;
-    dw $03E8,$0014,$0030,$0030                                           ;A0E303;
-    db $A7,$00                                                           ;A0E30B;
-    dw $0000,$0000                                                       ;A0E30D;
-    dw InitAI_KraidArm                                                   ;A0E311;
-    dw $0001,$0000                                                       ;A0E313;
-    dw MainAI_KraidArm                                                   ;A0E317;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E319;
-    dw RTL_A7804C                                                        ;A0E31B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E31D;
-    dw $0000                                                             ;A0E31F;
-    dw $0000                                                             ;A0E321;
-    dd $00000000                                                         ;A0E323;
-    dw $0000,$0000                                                       ;A0E327;
-    dd $00000000                                                         ;A0E32B;
-    dw EnemyTouch_KraidArm                                               ;A0E32F;
-    dw RTL_A794B5                                                        ;A0E331;
-    dw $0000                                                             ;A0E333;
-    dl Tiles_Kraid                                                       ;A0E335;
-    db $05                                                               ;A0E338;
-    dw $0000                                                             ;A0E339;
-    dw EnemyVulnerabilities_KraidArm_KraidFoot                           ;A0E33B;
-    dw $0000                                                             ;A0E33D;
-
-EnemyHeaders_KraidLintTop:
-    dw $1E00                                                             ;A0E33F;
-    dw Palette_Kraid                                                     ;A0E341;
-    dw $03E8,$000A,$0018,$0008                                           ;A0E343;
-    db $A7,$00                                                           ;A0E34B;
-    dw $0000,$0000                                                       ;A0E34D;
-    dw InitAI_KraidLintTop                                               ;A0E351;
-    dw $0001,$0000                                                       ;A0E353;
-    dw MainAI_KraidLintTop                                               ;A0E357;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E359;
-    dw RTL_A7804C                                                        ;A0E35B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E35D;
-    dw $0000                                                             ;A0E35F;
-    dw $0000                                                             ;A0E361;
-    dd $00000000                                                         ;A0E363;
-    dw $0000,$0000                                                       ;A0E367;
-    dd $00000000                                                         ;A0E36B;
-    dw RTL_A7948F                                                        ;A0E36F;
-    dw Common_NormalEnemyShotAI                                          ;A0E371;
-    dw $0000                                                             ;A0E373;
-    dl Tiles_Kraid                                                       ;A0E375;
-    db $05                                                               ;A0E378;
-    dw $0000                                                             ;A0E379;
-    dw EnemyVulnerabilities_Kraid_LintTop_LintMiddle_LintBottom          ;A0E37B;
-    dw $0000                                                             ;A0E37D;
-
-EnemyHeaders_KraidLintMiddle:
-    dw $1E00                                                             ;A0E37F;
-    dw Palette_Kraid                                                     ;A0E381;
-    dw $03E8,$000A,$0018,$0008                                           ;A0E383;
-    db $A7,$00                                                           ;A0E38B;
-    dw $0000,$0000                                                       ;A0E38D;
-    dw InitAI_KraidLintMiddle                                            ;A0E391;
-    dw $0001,$0000                                                       ;A0E393;
-    dw MainAI_KraidLintMiddle                                            ;A0E397;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E399;
-    dw RTL_A7804C                                                        ;A0E39B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E39D;
-    dw $0000                                                             ;A0E39F;
-    dw $0000                                                             ;A0E3A1;
-    dd $00000000                                                         ;A0E3A3;
-    dw $0000,$0000                                                       ;A0E3A7;
-    dd $00000000                                                         ;A0E3AB;
-    dw RTL_A7948F                                                        ;A0E3AF;
-    dw Common_NormalEnemyShotAI                                          ;A0E3B1;
-    dw $0000                                                             ;A0E3B3;
-    dl Tiles_Kraid                                                       ;A0E3B5;
-    db $05                                                               ;A0E3B8;
-    dw $0000                                                             ;A0E3B9;
-    dw EnemyVulnerabilities_Kraid_LintTop_LintMiddle_LintBottom          ;A0E3BB;
-    dw $0000                                                             ;A0E3BD;
-
-EnemyHeaders_KraidLintBottom:
-    dw $1E00                                                             ;A0E3BF;
-    dw Palette_Kraid                                                     ;A0E3C1;
-    dw $03E8,$000A,$0018,$0008                                           ;A0E3C3;
-    db $A7,$00                                                           ;A0E3CB;
-    dw $0000,$0000                                                       ;A0E3CD;
-    dw InitAI_KraidLintBottom                                            ;A0E3D1;
-    dw $0001,$0000                                                       ;A0E3D3;
-    dw MainAI_KraidLintBottom                                            ;A0E3D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E3D9;
-    dw RTL_A7804C                                                        ;A0E3DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E3DD;
-    dw $0000                                                             ;A0E3DF;
-    dw $0000                                                             ;A0E3E1;
-    dd $00000000                                                         ;A0E3E3;
-    dw $0000,$0000                                                       ;A0E3E7;
-    dd $00000000                                                         ;A0E3EB;
-    dw RTL_A7948F                                                        ;A0E3EF;
-    dw Common_NormalEnemyShotAI                                          ;A0E3F1;
-    dw $0000                                                             ;A0E3F3;
-    dl Tiles_Kraid                                                       ;A0E3F5;
-    db $05                                                               ;A0E3F8;
-    dw $0000                                                             ;A0E3F9;
-    dw EnemyVulnerabilities_Kraid_LintTop_LintMiddle_LintBottom          ;A0E3FB;
-    dw $0000                                                             ;A0E3FD;
-
-EnemyHeaders_KraidFoot:
-    dw $1E00                                                             ;A0E3FF;
-    dw Palette_Kraid                                                     ;A0E401;
-    dw $03E8,$0014,$0008,$0008                                           ;A0E403;
-    db $A7,$00                                                           ;A0E40B;
-    dw $0000,$0000                                                       ;A0E40D;
-    dw InitAI_KraidFoot                                                  ;A0E411;
-    dw $0001,$0000                                                       ;A0E413;
-    dw MainAI_KraidFoot                                                  ;A0E417;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E419;
-    dw RTL_A7804C                                                        ;A0E41B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E41D;
-    dw $0000                                                             ;A0E41F;
-    dw $0000                                                             ;A0E421;
-    dd $00000000                                                         ;A0E423;
-    dw $0000,$0000                                                       ;A0E427;
-    dd $00000000                                                         ;A0E42B;
-    dw RTL_A7948F                                                        ;A0E42F;
-    dw RTL_A794B5                                                        ;A0E431;
-    dw $0000                                                             ;A0E433;
-    dl Tiles_Kraid                                                       ;A0E435;
-    db $05                                                               ;A0E438;
-    dw EnemyDropChances_KraidNail_KraidFoot                              ;A0E439;
-    dw EnemyVulnerabilities_KraidArm_KraidFoot                           ;A0E43B;
-    dw $0000                                                             ;A0E43D;
-
-EnemyHeaders_KraidNail:
-    dw $1E00                                                             ;A0E43F;
-    dw Palette_Kraid                                                     ;A0E441;
-    dw $000A,$000A,$0008,$0008                                           ;A0E443;
-    db $A7,$00                                                           ;A0E44B;
-    dw $0000,$0000                                                       ;A0E44D;
-    dw InitAI_KraidNail                                                  ;A0E451;
-    dw $0001,$0000                                                       ;A0E453;
-    dw MainAI_KraidNail                                                  ;A0E457;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E459;
-    dw RTL_A7804C                                                        ;A0E45B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E45D;
-    dw $0000                                                             ;A0E45F;
-    dw $0000                                                             ;A0E461;
-    dd $00000000                                                         ;A0E463;
-    dw $0000,$0000                                                       ;A0E467;
-    dd $00000000                                                         ;A0E46B;
-    dw EnemyTouch_KraidNail                                              ;A0E46F;
-    dw Common_NormalEnemyShotAI                                          ;A0E471;
-    dw $0000                                                             ;A0E473;
-    dl Tiles_Kraid                                                       ;A0E475;
-    db $05                                                               ;A0E478;
-    dw EnemyDropChances_KraidNail_KraidFoot                              ;A0E479;
-    dw EnemyVulnerabilities_KraidNail_KraidNailBad                       ;A0E47B;
-    dw $0000                                                             ;A0E47D;
-
-EnemyHeaders_KraidNailBad:
-    dw $1E00                                                             ;A0E47F;
-    dw Palette_Kraid                                                     ;A0E481;
-    dw $000A,$000A,$0008,$0008                                           ;A0E483;
-    db $A7,$00                                                           ;A0E48B;
-    dw $0000,$0000                                                       ;A0E48D;
-    dw InitAI_KraidNailBad                                               ;A0E491;
-    dw $0001,$0000                                                       ;A0E493;
-    dw MainAI_KraidNailBad                                               ;A0E497;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E499;
-    dw RTL_A7804C                                                        ;A0E49B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E49D;
-    dw $0000                                                             ;A0E49F;
-    dw $0000                                                             ;A0E4A1;
-    dd $00000000                                                         ;A0E4A3;
-    dw $0000,$0000                                                       ;A0E4A7;
-    dd $00000000                                                         ;A0E4AB;
-    dw EnemyTouch_KraidNailBad                                           ;A0E4AF;
-    dw Common_NormalEnemyShotAI                                          ;A0E4B1;
-    dw $0000                                                             ;A0E4B3;
-    dl Tiles_Kraid                                                       ;A0E4B5;
-    db $05                                                               ;A0E4B8;
-    dw $0000                                                             ;A0E4B9;
-    dw EnemyVulnerabilities_KraidNail_KraidNailBad                       ;A0E4BB;
-    dw $0000                                                             ;A0E4BD;
-
-EnemyHeaders_PhantoonBody:
-    dw $0C00                                                             ;A0E4BF;
-    dw Palette_Phantoon                                                  ;A0E4C1;
-    dw $09C4,$0028,$0008,$0008                                           ;A0E4C3;
-    db $A7,$08                                                           ;A0E4CB;
-    dw $0000,$0007                                                       ;A0E4CD;
-    dw InitAI_PhantoonBody                                               ;A0E4D1;
-    dw $0001,$0000                                                       ;A0E4D3;
-    dw MainAI_Phantoon                                                   ;A0E4D7;
-    dw Common_GrappleAI_NoInteraction                                    ;A0E4D9;
-    dw HurtAI_Phantoon                                                   ;A0E4DB;
-    dw RTL_A7804C                                                        ;A0E4DD;
-    dw $0000                                                             ;A0E4DF;
-    dw $0000                                                             ;A0E4E1;
-    dd $00000000                                                         ;A0E4E3;
-    dw RTL_A7DD9A                                                        ;A0E4E7;
-    dw $0000                                                             ;A0E4E9;
-    dd $00000000                                                         ;A0E4EB;
-    dw EnemyTouch_Phantoon                                               ;A0E4EF;
-    dw EnemyShot_Phantoon                                                ;A0E4F1;
-    dw $0000                                                             ;A0E4F3;
-    dl Tiles_Phantoon                                                    ;A0E4F5;
-    db $05                                                               ;A0E4F8;
-    dw EnemyDropChances_Phantoon_Body_Tentacles_Mouth                    ;A0E4F9;
-    dw EnemyVulnerabilities_Phantoon_Body_Eye_Tentacles_Mouth            ;A0E4FB;
-    dw $0000                                                             ;A0E4FD;
-
-EnemyHeaders_PhantoonEye:
-    dw $0400                                                             ;A0E4FF;
-    dw Palette_Phantoon                                                  ;A0E501;
-    dw $09C4,$0028,$0008,$0008                                           ;A0E503;
-    db $A7,$00                                                           ;A0E50B;
-    dw $0000,$0000                                                       ;A0E50D;
-    dw InitAI_Phantoon_Eye_Tentacles_Mouth                               ;A0E511;
-    dw $0001,$0000                                                       ;A0E513;
-    dw RTL_A7804C                                                        ;A0E517;
-    dw Common_GrappleAI_NoInteraction                                    ;A0E519;
-    dw RTL_A7804C                                                        ;A0E51B;
-    dw RTL_A7804C                                                        ;A0E51D;
-    dw $0000                                                             ;A0E51F;
-    dw $0000                                                             ;A0E521;
-    dd $00000000                                                         ;A0E523;
-    dw RTL_A0804C                                                        ;A0E527;
-    dw $0000                                                             ;A0E529;
-    dd $00000000                                                         ;A0E52B;
-    dw RTL_A7804C                                                        ;A0E52F;
-    dw RTL_A7804C                                                        ;A0E531;
-    dw $0000                                                             ;A0E533;
-    dl Tiles_Phantoon                                                    ;A0E535;
-    db $05                                                               ;A0E538;
-    dw EnemyDropChances_PhantoonEye                                      ;A0E539;
-    dw EnemyVulnerabilities_Phantoon_Body_Eye_Tentacles_Mouth            ;A0E53B;
-    dw $0000                                                             ;A0E53D;
-
-EnemyHeaders_PhantoonTentacles:
-    dw $0400                                                             ;A0E53F;
-    dw Palette_Phantoon                                                  ;A0E541;
-    dw $09C4,$0028,$0008,$0008                                           ;A0E543;
-    db $A7,$00                                                           ;A0E54B;
-    dw $0000,$0000                                                       ;A0E54D;
-    dw InitAI_Phantoon_Eye_Tentacles_Mouth                               ;A0E551;
-    dw $0001,$0000                                                       ;A0E553;
-    dw RTL_A7E011                                                        ;A0E557;
-    dw Common_GrappleAI_NoInteraction                                    ;A0E559;
-    dw RTL_A7804C                                                        ;A0E55B;
-    dw RTL_A7804C                                                        ;A0E55D;
-    dw $0000                                                             ;A0E55F;
-    dw $0000                                                             ;A0E561;
-    dd $00000000                                                         ;A0E563;
-    dw RTL_A0804C                                                        ;A0E567;
-    dw $0000                                                             ;A0E569;
-    dd $00000000                                                         ;A0E56B;
-    dw RTL_A7804C                                                        ;A0E56F;
-    dw RTL_A7804C                                                        ;A0E571;
-    dw $0000                                                             ;A0E573;
-    dl Tiles_Phantoon                                                    ;A0E575;
-    db $05                                                               ;A0E578;
-    dw EnemyDropChances_Phantoon_Body_Tentacles_Mouth                    ;A0E579;
-    dw EnemyVulnerabilities_Phantoon_Body_Eye_Tentacles_Mouth            ;A0E57B;
-    dw $0000                                                             ;A0E57D;
-
-EnemyHeaders_PhantoonMouth:
-    dw $0400                                                             ;A0E57F;
-    dw Palette_Phantoon                                                  ;A0E581;
-    dw $09C4,$0028,$0008,$0008                                           ;A0E583;
-    db $A7,$00                                                           ;A0E58B;
-    dw $0000,$0000                                                       ;A0E58D;
-    dw InitAI_Phantoon_Eye_Tentacles_Mouth                               ;A0E591;
-    dw $0001,$0000                                                       ;A0E593;
-    dw RTL_A7E011                                                        ;A0E597;
-    dw Common_GrappleAI_NoInteraction                                    ;A0E599;
-    dw RTL_A7804C                                                        ;A0E59B;
-    dw RTL_A7804C                                                        ;A0E59D;
-    dw $0000                                                             ;A0E59F;
-    dw $0000                                                             ;A0E5A1;
-    dd $00000000                                                         ;A0E5A3;
-    dw RTL_A0804C                                                        ;A0E5A7;
-    dw $0000                                                             ;A0E5A9;
-    dd $00000000                                                         ;A0E5AB;
-    dw RTL_A7804C                                                        ;A0E5AF;
-    dw RTL_A7804C                                                        ;A0E5B1;
-    dw $0000                                                             ;A0E5B3;
-    dl Tiles_Phantoon                                                    ;A0E5B5;
-    db $05                                                               ;A0E5B8;
-    dw EnemyDropChances_Phantoon_Body_Tentacles_Mouth                    ;A0E5B9;
-    dw EnemyVulnerabilities_Phantoon_Body_Eye_Tentacles_Mouth            ;A0E5BB;
-    dw $0000                                                             ;A0E5BD;
-
-EnemyHeaders_Etecoon:
-    dw $0600                                                             ;A0E5BF;
-    dw Palette_Etecoon                                                   ;A0E5C1;
-    dw $7FFF,$0000,$0006,$0007                                           ;A0E5C3;
-    db $A7,$00                                                           ;A0E5CB;
-    dw $0000,$0000                                                       ;A0E5CD;
-    dw InitAI_Etecoon                                                    ;A0E5D1;
-    dw $0001,$0000                                                       ;A0E5D3;
-    dw MainAI_Etecoon                                                    ;A0E5D7;
-    dw Common_GrappleAI_NoInteraction                                    ;A0E5D9;
-    dw RTL_A7804C                                                        ;A0E5DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E5DD;
-    dw $0000                                                             ;A0E5DF;
-    dw $0000                                                             ;A0E5E1;
-    dd $00000000                                                         ;A0E5E3;
-    dw RTL_A0804C                                                        ;A0E5E7;
-    dw $0000                                                             ;A0E5E9;
-    dd $00000000                                                         ;A0E5EB;
-    dw RTL_A7804C                                                        ;A0E5EF;
-    dw RTL_A7804C                                                        ;A0E5F1;
-    dw $0000                                                             ;A0E5F3;
-    dl Tiles_Etecoon                                                     ;A0E5F5;
-    db $05                                                               ;A0E5F8;
-    dw EnemyDropChances_Etecoon_EtecoonEscape                            ;A0E5F9;
-    dw $0000                                                             ;A0E5FB;
-    dw $0000                                                             ;A0E5FD;
-
-EnemyHeaders_Dachora:
-    dw $0C00                                                             ;A0E5FF;
-    dw Palette_Dachora                                                   ;A0E601;
-    dw $7FFF,$0000,$0008,$0018                                           ;A0E603;
-    db $A7,$00                                                           ;A0E60B;
-    dw $0000,$0000                                                       ;A0E60D;
-    dw InitAI_Dachora                                                    ;A0E611;
-    dw $0001,$0000                                                       ;A0E613;
-    dw MainAI_Dachora                                                    ;A0E617;
-    dw Common_GrappleAI_NoInteraction                                    ;A0E619;
-    dw RTL_A7804C                                                        ;A0E61B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E61D;
-    dw $0000                                                             ;A0E61F;
-    dw $0000                                                             ;A0E621;
-    dd $00000000                                                         ;A0E623;
-    dw RTL_A0804C                                                        ;A0E627;
-    dw $0000                                                             ;A0E629;
-    dd $00000000                                                         ;A0E62B;
-    dw RTL_A7804C                                                        ;A0E62F;
-    dw RTL_A7804C                                                        ;A0E631;
-    dw $0000                                                             ;A0E633;
-    dl Tiles_Dachora                                                     ;A0E635;
-    db $05                                                               ;A0E638;
-    dw EnemyDropChances_Steam_Dachora_DachoraEscape                      ;A0E639;
-    dw $0000                                                             ;A0E63B;
-    dw $0000                                                             ;A0E63D;
-
-EnemyHeaders_Evir:
-    dw $0600                                                             ;A0E63F;
-    dw Palette_Evir                                                      ;A0E641;
-    dw $012C,$0064,$0010,$0014                                           ;A0E643;
-    db $A8,$00                                                           ;A0E64B;
-    dw $004A,$0000                                                       ;A0E64D;
-    dw InitAI_Evir                                                       ;A0E651;
-    dw $0003,$0000                                                       ;A0E653;
-    dw MainAI_Evir                                                       ;A0E657;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E659;
-    dw RTL_A8804C                                                        ;A0E65B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E65D;
-    dw $0000                                                             ;A0E65F;
-    dw $0004                                                             ;A0E661;
-    dd $00000000                                                         ;A0E663;
-    dw PowerBombReaction_Evir                                            ;A0E667;
-    dw $0000                                                             ;A0E669;
-    dd $00000000                                                         ;A0E66B;
-    dw EnemyShot_Evir                                                    ;A0E66F;
-    dw EnemyTouch_Evir                                                   ;A0E671;
-    dw $0000                                                             ;A0E673;
-    dl Tiles_Evir                                                        ;A0E675;
-    db $05                                                               ;A0E678;
-    dw EnemyDropChances_Evir_EvirProjectile                              ;A0E679;
-    dw EnemyVulnerabilities_Evir                                         ;A0E67B;
-    dw EnemyName_Evir                                                    ;A0E67D;
-
-EnemyHeaders_EvirProjectile:
-    dw $0600                                                             ;A0E67F;
-    dw Palette_Evir                                                      ;A0E681;
-    dw $012C,$0064,$0008,$0008                                           ;A0E683;
-    db $A8,$00                                                           ;A0E68B;
-    dw $0000,$0000                                                       ;A0E68D;
-    dw InitAI_EvirProjectile                                             ;A0E691;
-    dw $0001,$0000                                                       ;A0E693;
-    dw MainAI_EvirProjectile                                             ;A0E697;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E699;
-    dw RTL_A8804C                                                        ;A0E69B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E69D;
-    dw $0000                                                             ;A0E69F;
-    dw $0000                                                             ;A0E6A1;
-    dd $00000000                                                         ;A0E6A3;
-    dw RTL_A0804C                                                        ;A0E6A7;
-    dw $0000                                                             ;A0E6A9;
-    dd $00000000                                                         ;A0E6AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0E6AF;
-    dw RTL_A8804C                                                        ;A0E6B1;
-    dw $0000                                                             ;A0E6B3;
-    dl Tiles_Evir                                                        ;A0E6B5;
-    db $05                                                               ;A0E6B8;
-    dw EnemyDropChances_Evir_EvirProjectile                              ;A0E6B9;
-    dw EnemyVulnerabilities_EvirProjectile                               ;A0E6BB;
-    dw $0000                                                             ;A0E6BD;
-
-EnemyHeaders_Eye:
-    dw $0400                                                             ;A0E6BF;
-    dw Palette_Eye                                                       ;A0E6C1;
-    dw $0014,$0000,$0008,$0008                                           ;A0E6C3;
-    db $A8,$00                                                           ;A0E6CB;
-    dw $0000,$0000                                                       ;A0E6CD;
-    dw InitAI_Eye                                                        ;A0E6D1;
-    dw $0002,$0000                                                       ;A0E6D3;
-    dw MainAI_Eye                                                        ;A0E6D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E6D9;
-    dw RTL_A8804C                                                        ;A0E6DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E6DD;
-    dw $0000                                                             ;A0E6DF;
-    dw $0000                                                             ;A0E6E1;
-    dd $00000000                                                         ;A0E6E3;
-    dw $0000,$0000                                                       ;A0E6E7;
-    dd $00000000                                                         ;A0E6EB;
-    dw Common_NormalEnemyTouchAI                                         ;A0E6EF;
-    dw RTL_A8804C                                                        ;A0E6F1;
-    dw $0000                                                             ;A0E6F3;
-    dl Tiles_Eye                                                         ;A0E6F5;
-    db $05                                                               ;A0E6F8;
-    dw EnemyDropChances_Eye                                              ;A0E6F9;
-    dw EnemyVulnerabilities_Indestructible                               ;A0E6FB;
-    dw EnemyName_Eye                                                     ;A0E6FD;
-
-EnemyHeaders_Fune:
-    dw $0800                                                             ;A0E6FF;
-    dw Palette_Fune                                                      ;A0E701;
-    dw $0014,$000A,$0010,$0010                                           ;A0E703;
-    db $A8,$00                                                           ;A0E70B;
-    dw $0000,$0000                                                       ;A0E70D;
-    dw InitAI_Fune_Namihe                                                ;A0E711;
-    dw $0001,$0000                                                       ;A0E713;
-    dw MainAI_Fune_Namihe                                                ;A0E717;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E719;
-    dw RTL_A8804C                                                        ;A0E71B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E71D;
-    dw $0000                                                             ;A0E71F;
-    dw $0002                                                             ;A0E721;
-    dd $00000000                                                         ;A0E723;
-    dw $0000,$0000                                                       ;A0E727;
-    dd $00000000                                                         ;A0E72B;
-    dw Common_NormalEnemyTouchAI                                         ;A0E72F;
-    dw Common_NormalEnemyShotAI                                          ;A0E731;
-    dw $0000                                                             ;A0E733;
-    dl Tiles_Fune_Namihe                                                 ;A0E735;
-    db $05                                                               ;A0E738;
-    dw EnemyDropChances_Fune                                             ;A0E739;
-    dw EnemyVulnerabilities_Fune_Magdollite                              ;A0E73B;
-    dw EnemyName_Fune                                                    ;A0E73D;
-
-EnemyHeaders_Namihe:
-    dw $0800                                                             ;A0E73F;
-    dw Palette_Namihe                                                    ;A0E741;
-    dw $0014,$000A,$0010,$0010                                           ;A0E743;
-    db $A8,$00                                                           ;A0E74B;
-    dw $0000,$0000                                                       ;A0E74D;
-    dw InitAI_Fune_Namihe                                                ;A0E751;
-    dw $0003,$0000                                                       ;A0E753;
-    dw MainAI_Fune_Namihe                                                ;A0E757;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E759;
-    dw RTL_A8804C                                                        ;A0E75B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E75D;
-    dw $0000                                                             ;A0E75F;
-    dw $0002                                                             ;A0E761;
-    dd $00000000                                                         ;A0E763;
-    dw $0000,$0000                                                       ;A0E767;
-    dd $00000000                                                         ;A0E76B;
-    dw Common_NormalEnemyTouchAI                                         ;A0E76F;
-    dw Common_NormalEnemyShotAI                                          ;A0E771;
-    dw $0000                                                             ;A0E773;
-    dl Tiles_Fune_Namihe                                                 ;A0E775;
-    db $05                                                               ;A0E778;
-    dw EnemyDropChances_Namihe                                           ;A0E779;
-    dw EnemyVulnerabilities_Namihe                                       ;A0E77B;
-    dw EnemyName_Namihe                                                  ;A0E77D;
-
-EnemyHeaders_Coven:
-    dw $0400                                                             ;A0E77F;
-    dw Palette_Coven                                                     ;A0E781;
-    dw $012C,$003C,$0010,$0010                                           ;A0E783;
-    db $A8,$00                                                           ;A0E78B;
-    dw $0051,$0000                                                       ;A0E78D;
-    dw InitAI_Coven                                                      ;A0E791;
-    dw $0001,$0000                                                       ;A0E793;
-    dw MainAI_Coven                                                      ;A0E797;
-    dw Common_GrappleAI_NoInteraction                                    ;A0E799;
-    dw RTL_A8804C                                                        ;A0E79B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E79D;
-    dw $0000                                                             ;A0E79F;
-    dw $0002                                                             ;A0E7A1;
-    dd $00000000                                                         ;A0E7A3;
-    dw $0000,$0000                                                       ;A0E7A7;
-    dd $00000000                                                         ;A0E7AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0E7AF;
-    dw Common_NormalEnemyShotAI                                          ;A0E7B1;
-    dw $0000                                                             ;A0E7B3;
-    dl Tiles_Coven                                                       ;A0E7B5;
-    db $05                                                               ;A0E7B8;
-    dw EnemyDropChances_Coven                                            ;A0E7B9;
-    dw EnemyVulnerabilities_Default                                      ;A0E7BB;
-    dw EnemyName_Coven                                                   ;A0E7BD;
-
-EnemyHeaders_YappingMaw:
-    dw $0400                                                             ;A0E7BF;
-    dw Palette_YappingMaw                                                ;A0E7C1;
-    dw $0014,$001E,$0008,$0008                                           ;A0E7C3;
-    db $A8,$00                                                           ;A0E7CB;
-    dw $003E,$0000                                                       ;A0E7CD;
-    dw InitAI_YappingMaw                                                 ;A0E7D1;
-    dw $0001,$0000                                                       ;A0E7D3;
-    dw MainAI_YappingMaw                                                 ;A0E7D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E7D9;
-    dw RTL_A8804C                                                        ;A0E7DB;
-    dw FrozenAI_YappingMaw                                               ;A0E7DD;
-    dw $0000                                                             ;A0E7DF;
-    dw $0004                                                             ;A0E7E1;
-    dd $00000000                                                         ;A0E7E3;
-    dw $0000,$0000                                                       ;A0E7E7;
-    dd $00000000                                                         ;A0E7EB;
-    dw EnemyTouch_YappingMaw                                             ;A0E7EF;
-    dw EnemyShot_YappingMaw                                              ;A0E7F1;
-    dw $0000                                                             ;A0E7F3;
-    dl Tiles_YappingMaw                                                  ;A0E7F5;
-    db $05                                                               ;A0E7F8;
-    dw EnemyDropChances_YappingMaw                                       ;A0E7F9;
-    dw EnemyVulnerabilities_YappingMaw                                   ;A0E7FB;
-    dw EnemyName_YappingMaw                                              ;A0E7FD;
-
-EnemyHeaders_Kago:
-    dw $0800                                                             ;A0E7FF;
-    dw Palette_Kago                                                      ;A0E801;
-    dw $0640,$0000,$0010,$0010                                           ;A0E803;
-    db $A8,$00                                                           ;A0E80B;
-    dw $0000,$0000                                                       ;A0E80D;
-    dw InitAI_Kago                                                       ;A0E811;
-    dw $0009,$0000                                                       ;A0E813;
-    dw MainAI_Kago                                                       ;A0E817;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E819;
-    dw RTL_A8804C                                                        ;A0E81B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E81D;
-    dw $0000                                                             ;A0E81F;
-    dw $0004                                                             ;A0E821;
-    dd $00000000                                                         ;A0E823;
-    dw $0000,$0000                                                       ;A0E827;
-    dd $00000000                                                         ;A0E82B;
-    dw Common_NormalEnemyTouchAI                                         ;A0E82F;
-    dw EnemyShot_Kago                                                    ;A0E831;
-    dw $0000                                                             ;A0E833;
-    dl Tiles_Kago                                                        ;A0E835;
-    db $05                                                               ;A0E838;
-    dw EnemyDropChances_Kago                                             ;A0E839;
-    dw EnemyVulnerabilities_Kago                                         ;A0E83B;
-    dw EnemyName_Kago                                                    ;A0E83D;
-
-EnemyHeaders_Magdollite:
-    dw $0600                                                             ;A0E83F;
-    dw Palette_Magdollite                                                ;A0E841;
-    dw $0014,$0028,$0008,$0008                                           ;A0E843;
-    db $A8,$00                                                           ;A0E84B;
-    dw $0000,$0000                                                       ;A0E84D;
-    dw InitAI_Magdollite                                                 ;A0E851;
-    dw $0003,$0000                                                       ;A0E853;
-    dw MainAI_Magdollite                                                 ;A0E857;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E859;
-    dw RTL_A8804C                                                        ;A0E85B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E85D;
-    dw $0000                                                             ;A0E85F;
-    dw $0004                                                             ;A0E861;
-    dd $00000000                                                         ;A0E863;
-    dw PowerBombReaction_Magdollite                                      ;A0E867;
-    dw $0000                                                             ;A0E869;
-    dd $00000000                                                         ;A0E86B;
-    dw EnemyTouch_Magdollite                                             ;A0E86F;
-    dw EnemyShot_Magdollite                                              ;A0E871;
-    dw $0000                                                             ;A0E873;
-    dl Tiles_Magdollite                                                  ;A0E875;
-    db $05                                                               ;A0E878;
-    dw EnemyDropChances_Magdollite                                       ;A0E879;
-    dw EnemyVulnerabilities_Fune_Magdollite                              ;A0E87B;
-    dw EnemyName_Magdollite                                              ;A0E87D;
-
-EnemyHeaders_Beetom:
-    dw $0600                                                             ;A0E87F;
-    dw Palette_Beetom                                                    ;A0E881;
-    dw $003C,$000A,$0008,$0008                                           ;A0E883;
-    db $A8,$00                                                           ;A0E88B;
-    dw $0055,$0000                                                       ;A0E88D;
-    dw InitAI_Beetom                                                     ;A0E891;
-    dw $0001,$0000                                                       ;A0E893;
-    dw MainAI_Beetom                                                     ;A0E897;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E899;
-    dw RTL_A8804C                                                        ;A0E89B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E89D;
-    dw $0000                                                             ;A0E89F;
-    dw $0000                                                             ;A0E8A1;
-    dd $00000000                                                         ;A0E8A3;
-    dw $0000,$0000                                                       ;A0E8A7;
-    dd $00000000                                                         ;A0E8AB;
-    dw EnemyTouch_Beetom                                                 ;A0E8AF;
-    dw EnemyShot_Beetom                                                  ;A0E8B1;
-    dw $0000                                                             ;A0E8B3;
-    dl Tiles_Beetom                                                      ;A0E8B5;
-    db $05                                                               ;A0E8B8;
-    dw EnemyDropChances_Beetom                                           ;A0E8B9;
-    dw EnemyVulnerabilities_Beetom                                       ;A0E8BB;
-    dw EnemyName_Beetom                                                  ;A0E8BD;
-
-EnemyHeaders_Powamp:
-    dw $0400                                                             ;A0E8BF;
-    dw Palette_Powamp                                                    ;A0E8C1;
-    dw $000A,$0064,$0008,$0010                                           ;A0E8C3;
-    db $A8,$00                                                           ;A0E8CB;
-    dw $006A,$0000                                                       ;A0E8CD;
-    dw InitAI_Powamp                                                     ;A0E8D1;
-    dw $0002,$0000                                                       ;A0E8D3;
-    dw MainAI_Powamp                                                     ;A0E8D7;
-    dw Common_GrappleAI_SamusLatchesOn_NoInvincibility                   ;A0E8D9;
-    dw RTL_A8804C                                                        ;A0E8DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E8DD;
-    dw $0000                                                             ;A0E8DF;
-    dw $0002                                                             ;A0E8E1;
-    dd $00000000                                                         ;A0E8E3;
-    dw PowerBombReaction_Powamp                                          ;A0E8E7;
-    dw $0000                                                             ;A0E8E9;
-    dd $00000000                                                         ;A0E8EB;
-    dw EnemyTouch_Powamp                                                 ;A0E8EF;
-    dw EnemyShot_Powamp                                                  ;A0E8F1;
-    dw $0000                                                             ;A0E8F3;
-    dl Tiles_Powamp                                                      ;A0E8F5;
-    db $05                                                               ;A0E8F8;
-    dw EnemyDropChances_Powamp                                           ;A0E8F9;
-    dw EnemyVulnerabilities_Powamp                                       ;A0E8FB;
-    dw EnemyName_Powamp                                                  ;A0E8FD;
-
-EnemyHeaders_Robot:
-    dw $0C00                                                             ;A0E8FF;
-    dw Palette_Robot                                                     ;A0E901;
-    dw $0320,$0050,$000C,$0020                                           ;A0E903;
-    db $A8,$00                                                           ;A0E90B;
-    dw $0068,$0000                                                       ;A0E90D;
-    dw InitAI_Robot                                                      ;A0E911;
-    dw $0001,$0000                                                       ;A0E913;
-    dw MainAI_Robot                                                      ;A0E917;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E919;
-    dw RTL_A8804C                                                        ;A0E91B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E91D;
-    dw $0000                                                             ;A0E91F;
-    dw $0002                                                             ;A0E921;
-    dd $00000000                                                         ;A0E923;
-    dw $0000,$0000                                                       ;A0E927;
-    dd $00000000                                                         ;A0E92B;
-    dw EnemyTouch_Robot                                                  ;A0E92F;
-    dw EnemyShot_Robot                                                   ;A0E931;
-    dw $0000                                                             ;A0E933;
-    dl Tiles_Robot                                                       ;A0E935;
-    db $05                                                               ;A0E938;
-    dw EnemyDropChances_Robot                                            ;A0E939;
-    dw EnemyVulnerabilities_Indestructible                               ;A0E93B;
-    dw EnemyName_Robot                                                   ;A0E93D;
-
-EnemyHeaders_RobotNoPower:
-    dw $0C00                                                             ;A0E93F;
-    dw Palette_Robot                                                     ;A0E941;
-    dw $01C2,$0050,$000C,$0020                                           ;A0E943;
-    db $A8,$00                                                           ;A0E94B;
-    dw $0068,$0000                                                       ;A0E94D;
-    dw InitAI_RobotNoPower                                               ;A0E951;
-    dw $0001,$0000                                                       ;A0E953;
-    dw RTL_A8CC66                                                        ;A0E957;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E959;
-    dw RTL_A8804C                                                        ;A0E95B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E95D;
-    dw $0000                                                             ;A0E95F;
-    dw $0000                                                             ;A0E961;
-    dd $00000000                                                         ;A0E963;
-    dw $0000,$0000                                                       ;A0E967;
-    dd $00000000                                                         ;A0E96B;
-    dw EnemyTouch_Robot                                                  ;A0E96F;
-    dw EnemyShot_RobotNoPower                                            ;A0E971;
-    dw $0000                                                             ;A0E973;
-    dl Tiles_Robot                                                       ;A0E975;
-    db $05                                                               ;A0E978;
-    dw EnemyDropChances_RobotNoPower                                     ;A0E979;
-    dw EnemyVulnerabilities_Indestructible                               ;A0E97B;
-    dw EnemyName_RobotNoPower                                            ;A0E97D;
-
-EnemyHeaders_Bull:
-    dw $0600                                                             ;A0E97F;
-    dw Palette_Bull                                                      ;A0E981;
-    dw $0064,$000A,$0008,$0008                                           ;A0E983;
-    db $A8,$00                                                           ;A0E98B;
-    dw $0000,$0000                                                       ;A0E98D;
-    dw InitAI_Bull                                                       ;A0E991;
-    dw $0001,$0000                                                       ;A0E993;
-    dw MainAI_Bull                                                       ;A0E997;
-    dw Common_GrappleAI_KillEnemy                                        ;A0E999;
-    dw RTL_A8804C                                                        ;A0E99B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E99D;
-    dw $0000                                                             ;A0E99F;
-    dw $0002                                                             ;A0E9A1;
-    dd $00000000                                                         ;A0E9A3;
-    dw $0000,$0000                                                       ;A0E9A7;
-    dd $00000000                                                         ;A0E9AB;
-    dw Common_NormalEnemyTouchAI                                         ;A0E9AF;
-    dw EnemyShot_Bull                                                    ;A0E9B1;
-    dw $0000                                                             ;A0E9B3;
-    dl Tiles_Bull                                                        ;A0E9B5;
-    db $05                                                               ;A0E9B8;
-    dw EnemyDropChances_Bull                                             ;A0E9B9;
-    dw EnemyVulnerabilities_Bull                                         ;A0E9BB;
-    dw EnemyName_Bull                                                    ;A0E9BD;
-
-EnemyHeaders_Alcoon:
-    dw $0800                                                             ;A0E9BF;
-    dw Palette_Alcoon                                                    ;A0E9C1;
-    dw $00C8,$0032,$0008,$0018                                           ;A0E9C3;
-    db $A8,$00                                                           ;A0E9CB;
-    dw $005F,$0000                                                       ;A0E9CD;
-    dw InitAI_Alcoon                                                     ;A0E9D1;
-    dw $0001,$0000                                                       ;A0E9D3;
-    dw MainAI_Alcoon                                                     ;A0E9D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0E9D9;
-    dw RTL_A8804C                                                        ;A0E9DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0E9DD;
-    dw $0000                                                             ;A0E9DF;
-    dw $0004                                                             ;A0E9E1;
-    dd $00000000                                                         ;A0E9E3;
-    dw $0000,$0000                                                       ;A0E9E7;
-    dd $00000000                                                         ;A0E9EB;
-    dw Common_NormalEnemyTouchAI                                         ;A0E9EF;
-    dw Common_NormalEnemyShotAI                                          ;A0E9F1;
-    dw $0000                                                             ;A0E9F3;
-    dl Tiles_Alcoon                                                      ;A0E9F5;
-    db $05                                                               ;A0E9F8;
-    dw EnemyDropChances_Alcoon                                           ;A0E9F9;
-    dw EnemyVulnerabilities_Alcoon                                       ;A0E9FB;
-    dw EnemyName_Alcoon                                                  ;A0E9FD;
-
-EnemyHeaders_Atomic:
-    dw $0400                                                             ;A0E9FF;
-    dw Palette_Atomic                                                    ;A0EA01;
-    dw $00FA,$0028,$0008,$0008                                           ;A0EA03;
-    db $A8,$00                                                           ;A0EA0B;
-    dw $003E,$0000                                                       ;A0EA0D;
-    dw InitAI_Atomic                                                     ;A0EA11;
-    dw $0001,$0000                                                       ;A0EA13;
-    dw MainAI_Atomic                                                     ;A0EA17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EA19;
-    dw RTL_A8804C                                                        ;A0EA1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EA1D;
-    dw $0000                                                             ;A0EA1F;
-    dw $0002                                                             ;A0EA21;
-    dd $00000000                                                         ;A0EA23;
-    dw $0000,$0000                                                       ;A0EA27;
-    dd $00000000                                                         ;A0EA2B;
-    dw Common_NormalEnemyTouchAI                                         ;A0EA2F;
-    dw Common_NormalEnemyShotAI                                          ;A0EA31;
-    dw $0000                                                             ;A0EA33;
-    dl Tiles_Atomic                                                      ;A0EA35;
-    db $05                                                               ;A0EA38;
-    dw EnemyDropChances_Atomic                                           ;A0EA39;
-    dw EnemyVulnerabilities_Default                                      ;A0EA3B;
-    dw EnemyName_Atomic                                                  ;A0EA3D;
-
-EnemyHeaders_Spark:
-    dw $0200                                                             ;A0EA3F;
-    dw Palette_Spark                                                     ;A0EA41;
-    dw $0050,$001E,$0008,$0008                                           ;A0EA43;
-    db $A8,$00                                                           ;A0EA4B;
-    dw $0000,$0000                                                       ;A0EA4D;
-    dw InitAI_Spark                                                      ;A0EA51;
-    dw $0001,$0000                                                       ;A0EA53;
-    dw MainAI_Spark                                                      ;A0EA57;
-    dw Common_GrappleAI_HurtSamus                                        ;A0EA59;
-    dw RTL_A8804C                                                        ;A0EA5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EA5D;
-    dw $0000                                                             ;A0EA5F;
-    dw $0000                                                             ;A0EA61;
-    dd $00000000                                                         ;A0EA63;
-    dw $0000,$0000                                                       ;A0EA67;
-    dd $00000000                                                         ;A0EA6B;
-    dw Common_NormalEnemyTouchAI                                         ;A0EA6F;
-    dw EnemyShot_Spark                                                   ;A0EA71;
-    dw $0000                                                             ;A0EA73;
-    dl Tiles_Spark                                                       ;A0EA75;
-    db $05                                                               ;A0EA78;
-    dw EnemyDropChances_Spark                                            ;A0EA79;
-    dw EnemyVulnerabilities_Indestructible                               ;A0EA7B;
-    dw EnemyName_Spark                                                   ;A0EA7D;
-
-EnemyHeaders_FaceBlock:
-    dw $0200                                                             ;A0EA7F;
-    dw Palette_FaceBlock                                                 ;A0EA81;
-    dw $0014,$0000,$0008,$0008                                           ;A0EA83;
-    db $A8,$00                                                           ;A0EA8B;
-    dw $0000,$0000                                                       ;A0EA8D;
-    dw InitAI_FaceBlock                                                  ;A0EA91;
-    dw $0001,$0000                                                       ;A0EA93;
-    dw MainAI_FaceBlock                                                  ;A0EA97;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EA99;
-    dw RTL_A8804C                                                        ;A0EA9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EA9D;
-    dw $0000                                                             ;A0EA9F;
-    dw $0000                                                             ;A0EAA1;
-    dd $00000000                                                         ;A0EAA3;
-    dw $0000,$0000                                                       ;A0EAA7;
-    dd $00000000                                                         ;A0EAAB;
-    dw RTL_A8804C                                                        ;A0EAAF;
-    dw EnemyShot_FaceBlock                                               ;A0EAB1;
-    dw $0000                                                             ;A0EAB3;
-    dl Tiles_FaceBlock                                                   ;A0EAB5;
-    db $02                                                               ;A0EAB8;
-    dw EnemyDropChances_FaceBlock                                        ;A0EAB9;
-    dw EnemyVulnerabilities_Indestructible                               ;A0EABB;
-    dw EnemyName_FaceBlock                                               ;A0EABD;
-
-EnemyHeaders_KihunterGreen:
-    dw $1000                                                             ;A0EABF;
-    dw Palette_KihunterGreen                                             ;A0EAC1;
-    dw $003C,$0014,$0008,$0012                                           ;A0EAC3;
-    db $A8,$00                                                           ;A0EACB;
-    dw $0066,$0000                                                       ;A0EACD;
-    dw InitAI_Kihunter                                                   ;A0EAD1;
-    dw $0002,$0000                                                       ;A0EAD3;
-    dw MainAI_Kihunter                                                   ;A0EAD7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EAD9;
-    dw RTL_A8804C                                                        ;A0EADB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EADD;
-    dw $0000                                                             ;A0EADF;
-    dw $0004                                                             ;A0EAE1;
-    dd $00000000                                                         ;A0EAE3;
-    dw $0000,$0000                                                       ;A0EAE7;
-    dd $00000000                                                         ;A0EAEB;
-    dw Common_NormalEnemyTouchAI                                         ;A0EAEF;
-    dw EnemyShot_Kihunter                                                ;A0EAF1;
-    dw $0000                                                             ;A0EAF3;
-    dl Tiles_Kihunter                                                    ;A0EAF5;
-    db $05                                                               ;A0EAF8;
-    dw EnemyDropChances_KihunterGreen_KihunterGreenWings                 ;A0EAF9;
-    dw EnemyVulnerabilities_KihunterGreen_KihunterGreenWings             ;A0EAFB;
-    dw EnemyName_KihunterGreen                                           ;A0EAFD;
-
-EnemyHeaders_KihunterGreenWings:
-    dw $0200                                                             ;A0EAFF;
-    dw Palette_KihunterGreen                                             ;A0EB01;
-    dw $003C,$0014,$000A,$000A                                           ;A0EB03;
-    db $A8,$00                                                           ;A0EB0B;
-    dw $0066,$0000                                                       ;A0EB0D;
-    dw InitAI_KihunterWings                                              ;A0EB11;
-    dw $0001,$0000                                                       ;A0EB13;
-    dw MainAI_KihunterWings                                              ;A0EB17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EB19;
-    dw RTL_A8804C                                                        ;A0EB1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EB1D;
-    dw $0000                                                             ;A0EB1F;
-    dw $0004                                                             ;A0EB21;
-    dd $00000000                                                         ;A0EB23;
-    dw RTL_A0804C                                                        ;A0EB27;
-    dw $0000                                                             ;A0EB29;
-    dd $00000000                                                         ;A0EB2B;
-    dw RTL_A8804C                                                        ;A0EB2F;
-    dw RTL_A8804C                                                        ;A0EB31;
-    dw $0000                                                             ;A0EB33;
-    dl Tiles_Kihunter                                                    ;A0EB35;
-    db $05                                                               ;A0EB38;
-    dw EnemyDropChances_KihunterGreen_KihunterGreenWings                 ;A0EB39;
-    dw EnemyVulnerabilities_KihunterGreen_KihunterGreenWings             ;A0EB3B;
-    dw $0000                                                             ;A0EB3D;
-
-EnemyHeaders_KihunterYellow:
-    dw $1000                                                             ;A0EB3F;
-    dw Palette_KihunterYellow                                            ;A0EB41;
-    dw $0168,$003C,$0008,$0012                                           ;A0EB43;
-    db $A8,$00                                                           ;A0EB4B;
-    dw $0066,$0000                                                       ;A0EB4D;
-    dw InitAI_Kihunter                                                   ;A0EB51;
-    dw $0002,$0000                                                       ;A0EB53;
-    dw MainAI_Kihunter                                                   ;A0EB57;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EB59;
-    dw RTL_A8804C                                                        ;A0EB5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EB5D;
-    dw $0000                                                             ;A0EB5F;
-    dw $0004                                                             ;A0EB61;
-    dd $00000000                                                         ;A0EB63;
-    dw $0000,$0000                                                       ;A0EB67;
-    dd $00000000                                                         ;A0EB6B;
-    dw Common_NormalEnemyTouchAI                                         ;A0EB6F;
-    dw EnemyShot_Kihunter                                                ;A0EB71;
-    dw $0000                                                             ;A0EB73;
-    dl Tiles_Kihunter                                                    ;A0EB75;
-    db $05                                                               ;A0EB78;
-    dw EnemyDropChances_KihunterYellow_KihunterYellowWings               ;A0EB79;
-    dw EnemyVulnerabilities_KihunterYellow_KihunterYellowWings           ;A0EB7B;
-    dw EnemyName_KihunterYellow                                          ;A0EB7D;
-
-EnemyHeaders_KihunterYellowWings:
-    dw $0200                                                             ;A0EB7F;
-    dw Palette_KihunterYellow                                            ;A0EB81;
-    dw $0168,$003C,$000A,$000A                                           ;A0EB83;
-    db $A8,$00                                                           ;A0EB8B;
-    dw $0066,$0000                                                       ;A0EB8D;
-    dw InitAI_KihunterWings                                              ;A0EB91;
-    dw $0001,$0000                                                       ;A0EB93;
-    dw MainAI_KihunterWings                                              ;A0EB97;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EB99;
-    dw RTL_A8804C                                                        ;A0EB9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EB9D;
-    dw $0000                                                             ;A0EB9F;
-    dw $0004                                                             ;A0EBA1;
-    dd $00000000                                                         ;A0EBA3;
-    dw RTL_A0804C                                                        ;A0EBA7;
-    dw $0000                                                             ;A0EBA9;
-    dd $00000000                                                         ;A0EBAB;
-    dw RTL_A8804C                                                        ;A0EBAF;
-    dw RTL_A8804C                                                        ;A0EBB1;
-    dw $0000                                                             ;A0EBB3;
-    dl Tiles_Kihunter                                                    ;A0EBB5;
-    db $05                                                               ;A0EBB8;
-    dw EnemyDropChances_KihunterYellow_KihunterYellowWings               ;A0EBB9;
-    dw EnemyVulnerabilities_KihunterYellow_KihunterYellowWings           ;A0EBBB;
-    dw $0000                                                             ;A0EBBD;
-
-EnemyHeaders_KihunterRed:
-    dw $1000                                                             ;A0EBBF;
-    dw Palette_KihunterRed                                               ;A0EBC1;
-    dw $0708,$00C8,$0008,$0012                                           ;A0EBC3;
-    db $A8,$00                                                           ;A0EBCB;
-    dw $0066,$0000                                                       ;A0EBCD;
-    dw InitAI_Kihunter                                                   ;A0EBD1;
-    dw $0002,$0000                                                       ;A0EBD3;
-    dw MainAI_Kihunter                                                   ;A0EBD7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EBD9;
-    dw RTL_A8804C                                                        ;A0EBDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EBDD;
-    dw $0000                                                             ;A0EBDF;
-    dw $0004                                                             ;A0EBE1;
-    dd $00000000                                                         ;A0EBE3;
-    dw $0000,$0000                                                       ;A0EBE7;
-    dd $00000000                                                         ;A0EBEB;
-    dw Common_NormalEnemyTouchAI                                         ;A0EBEF;
-    dw EnemyShot_Kihunter                                                ;A0EBF1;
-    dw $0000                                                             ;A0EBF3;
-    dl Tiles_Kihunter                                                    ;A0EBF5;
-    db $05                                                               ;A0EBF8;
-    dw EnemyDropChances_KihunterRed_KihunterRedWings                     ;A0EBF9;
-    dw EnemyVulnerabilities_KihunterRed_KihunterRedWings                 ;A0EBFB;
-    dw EnemyName_KihunterRed                                             ;A0EBFD;
-
-EnemyHeaders_KihunterRedWings:
-    dw $0200                                                             ;A0EBFF;
-    dw Palette_KihunterRed                                               ;A0EC01;
-    dw $0708,$00C8,$000A,$000A                                           ;A0EC03;
-    db $A8,$00                                                           ;A0EC0B;
-    dw $0066,$0000                                                       ;A0EC0D;
-    dw InitAI_KihunterWings                                              ;A0EC11;
-    dw $0001,$0000                                                       ;A0EC13;
-    dw MainAI_KihunterWings                                              ;A0EC17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EC19;
-    dw RTL_A8804C                                                        ;A0EC1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EC1D;
-    dw $0000                                                             ;A0EC1F;
-    dw $0004                                                             ;A0EC21;
-    dd $00000000                                                         ;A0EC23;
-    dw RTL_A0804C                                                        ;A0EC27;
-    dw $0000                                                             ;A0EC29;
-    dd $00000000                                                         ;A0EC2B;
-    dw RTL_A8804C                                                        ;A0EC2F;
-    dw RTL_A8804C                                                        ;A0EC31;
-    dw $0000                                                             ;A0EC33;
-    dl Tiles_Kihunter                                                    ;A0EC35;
-    db $05                                                               ;A0EC38;
-    dw EnemyDropChances_KihunterRed_KihunterRedWings                     ;A0EC39;
-    dw EnemyVulnerabilities_KihunterRed_KihunterRedWings                 ;A0EC3B;
-    dw $0000                                                             ;A0EC3D;
-
-EnemyHeaders_MotherBrainHead:
-    dw $1000                                                             ;A0EC3F;
-    dw Palette_MotherBrain                                               ;A0EC41;
-    dw $4650,$0078,$0010,$0010                                           ;A0EC43;
-    db $A9,$00                                                           ;A0EC4B;
-    dw $0000,$000A                                                       ;A0EC4D;
-    dw InitAI_MotherBrainHead                                            ;A0EC51;
-    dw $0001,$0000                                                       ;A0EC53;
-    dw MainAI_HurtAI_MotherBrainHead                                     ;A0EC57;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EC59;
-    dw MainAI_HurtAI_MotherBrainHead                                     ;A0EC5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EC5D;
-    dw $0000                                                             ;A0EC5F;
-    dw $0000                                                             ;A0EC61;
-    dd $00000000                                                         ;A0EC63;
-    dw PowerBombReaction_MotherBrain                                     ;A0EC67;
-    dw $0000                                                             ;A0EC69;
-    dd $00000000                                                         ;A0EC6B;
-    dw EnemyTouch_MotherBrainHead                                        ;A0EC6F;
-    dw EnemyShot_MotherBrainHead                                         ;A0EC71;
-    dw $0000                                                             ;A0EC73;
-    dl Tiles_MotherBrainHead                                             ;A0EC75;
-    db $05                                                               ;A0EC78;
-    dw EnemyDropChances_MotherBrainHead                                  ;A0EC79;
-    dw EnemyVulnerabilities_MotherBrainHead                              ;A0EC7B;
-    dw $0000                                                             ;A0EC7D;
-
-EnemyHeaders_MotherBrainBody:
-    dw $8600                                                             ;A0EC7F;
-    dw Palette_MotherBrain                                               ;A0EC81;
-    dw $4650,$0078,$0008,$0008                                           ;A0EC83;
-    db $A9,$00                                                           ;A0EC8B;
-    dw $0000,$0000                                                       ;A0EC8D;
-    dw InitAI_MotherBrainBody                                            ;A0EC91;
-    dw $0001,$0000                                                       ;A0EC93;
-    dw MainAI_HurtAI_MotherBrainBody                                     ;A0EC97;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EC99;
-    dw MainAI_HurtAI_MotherBrainBody                                     ;A0EC9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EC9D;
-    dw $0000                                                             ;A0EC9F;
-    dw $0000                                                             ;A0ECA1;
-    dd $00000000                                                         ;A0ECA3;
-    dw PowerBombReaction_MotherBrain                                     ;A0ECA7;
-    dw $0000                                                             ;A0ECA9;
-    dd $00000000                                                         ;A0ECAB;
-    dw RTL_A9B5C5                                                        ;A0ECAF;
-    dw EnemyShot_MotherBrainBody                                         ;A0ECB1;
-    dw $0000                                                             ;A0ECB3;
-    dl Tiles_MotherBrainBody                                             ;A0ECB5;
-    db $05                                                               ;A0ECB8;
-    dw EnemyDropChances_MotherBrainBody_BombTorizo                       ;A0ECB9;
-    dw EnemyVulnerabilities_MotherBrainBody                              ;A0ECBB;
-    dw $0000                                                             ;A0ECBD;
-
-EnemyHeaders_BabyMetroidCutscene:
-    dw $0000                                                             ;A0ECBF;
-    dw Palette_BabyMetroid                                               ;A0ECC1;
-    dw $0C80,$0028,$0024,$0024                                           ;A0ECC3;
-    db $A9,$00                                                           ;A0ECCB;
-    dw $0000,$0000                                                       ;A0ECCD;
-    dw InitAI_BabyMetroidCutscene                                        ;A0ECD1;
-    dw $0001,$0000                                                       ;A0ECD3;
-    dw MainAI_BabyMetroidCutscene                                        ;A0ECD7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0ECD9;
-    dw RTL_A9804C                                                        ;A0ECDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0ECDD;
-    dw $0000                                                             ;A0ECDF;
-    dw $0000                                                             ;A0ECE1;
-    dd $00000000                                                         ;A0ECE3;
-    dw $0000,$0000                                                       ;A0ECE7;
-    dd $00000000                                                         ;A0ECEB;
-    dw EnemyTouch_BabyMetroidCutscene                                    ;A0ECEF;
-    dw RTL_A9804C                                                        ;A0ECF1;
-    dw $0000                                                             ;A0ECF3;
-    dl Tiles_BabyMetroid                                                 ;A0ECF5;
-    db $02                                                               ;A0ECF8;
-    dw EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene                ;A0ECF9;
-    dw EnemyVulnerabilities_Default                                      ;A0ECFB;
-    dw $0000                                                             ;A0ECFD;
-
-EnemyHeaders_MotherBrainTubes:
-    dw $0000                                                             ;A0ECFF;
-    dw Palette_MotherBrain                                               ;A0ED01;
-    dw $03E8,$0000,$0000,$0000                                           ;A0ED03;
-    db $A9,$00                                                           ;A0ED0B;
-    dw $0000,$0000                                                       ;A0ED0D;
-    dw InitAI_MotherBrainTubes                                           ;A0ED11;
-    dw $0001,$0000                                                       ;A0ED13;
-    dw MainAI_MotherBrainTubes                                           ;A0ED17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0ED19;
-    dw RTL_A9804C                                                        ;A0ED1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0ED1D;
-    dw $0000                                                             ;A0ED1F;
-    dw $0000                                                             ;A0ED21;
-    dd $00000000                                                         ;A0ED23;
-    dw $0000,$0000                                                       ;A0ED27;
-    dd $00000000                                                         ;A0ED2B;
-    dw RTL_A9804C                                                        ;A0ED2F;
-    dw RTL_A9804C                                                        ;A0ED31;
-    dw $0000                                                             ;A0ED33;
-    dl Tiles_MotherBrainHead                                             ;A0ED35;
-    db $05                                                               ;A0ED38;
-    dw $0000                                                             ;A0ED39;
-    dw EnemyVulnerabilities_Default                                      ;A0ED3B;
-    dw $0000                                                             ;A0ED3D;
-
-EnemyHeaders_CorpseTorizo:
-    dw $1800                                                             ;A0ED3F;
-    dw Palette_CorpseTorizo                                              ;A0ED41;
-    dw $03E8,$0000,$0010,$0028                                           ;A0ED43;
-    db $A9,$00                                                           ;A0ED4B;
-    dw $0000,$0000                                                       ;A0ED4D;
-    dw InitAI_CorpseTorizo                                               ;A0ED51;
-    dw $0001,$0000                                                       ;A0ED53;
-    dw MainAI_CorpseTorizo                                               ;A0ED57;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0ED59;
-    dw RTL_A9804C                                                        ;A0ED5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0ED5D;
-    dw $0000                                                             ;A0ED5F;
-    dw $0000                                                             ;A0ED61;
-    dd $00000000                                                         ;A0ED63;
-    dw PowerBombReaction_CorpseTorizo                                    ;A0ED67;
-    dw $0000                                                             ;A0ED69;
-    dd $00000000                                                         ;A0ED6B;
-    dw EnemyTouch_EnemyShot_CorpseTorizo                                 ;A0ED6F;
-    dw EnemyTouch_EnemyShot_CorpseTorizo                                 ;A0ED71;
-    dw $0000                                                             ;A0ED73;
-    dl Tiles_CorpseTorizo                                                ;A0ED75;
-    db $05                                                               ;A0ED78;
-    dw EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene                ;A0ED79;
-    dw EnemyVulnerabilities_Corpse_BabyMetroid                           ;A0ED7B;
-    dw $0000                                                             ;A0ED7D;
-
-EnemyHeaders_CorpseSidehopper:
-    dw $0E00                                                             ;A0ED7F;
-    dw Palette_CorpseCommon                                              ;A0ED81;
-    dw $0140,$0050,$0016,$000C                                           ;A0ED83;
-    db $A9,$00                                                           ;A0ED8B;
-    dw $0000,$0000                                                       ;A0ED8D;
-    dw InitAI_CorpseSidehopper                                           ;A0ED91;
-    dw $0001,$0000                                                       ;A0ED93;
-    dw MainAI_HurtAI_CorpseEnemies                                       ;A0ED97;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0ED99;
-    dw MainAI_HurtAI_CorpseEnemies                                       ;A0ED9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0ED9D;
-    dw $0000                                                             ;A0ED9F;
-    dw $0000                                                             ;A0EDA1;
-    dd $00000000                                                         ;A0EDA3;
-    dw PowerBombReaction_CorpseSidehopper                                ;A0EDA7;
-    dw $0000                                                             ;A0EDA9;
-    dd $00000000                                                         ;A0EDAB;
-    dw EnemyTouch_CorpseSidehopper                                       ;A0EDAF;
-    dw EnemyShot_CorpseSidehopper                                        ;A0EDB1;
-    dw $0000                                                             ;A0EDB3;
-    dl Tiles_Corpse_Sidehopper_Zoomer_Ripper_Skree                       ;A0EDB5;
-    db $05                                                               ;A0EDB8;
-    dw $0000                                                             ;A0EDB9;
-    dw EnemyVulnerabilities_Corpse_BabyMetroid                           ;A0EDBB;
-    dw $0000                                                             ;A0EDBD;
-
-EnemyHeaders_CorpseSidehopper2:
-    dw $0600                                                             ;A0EDBF;
-    dw Palette_CorpseSidehopper2                                         ;A0EDC1;
-    dw $0140,$0050,$0016,$000C                                           ;A0EDC3;
-    db $A9,$00                                                           ;A0EDCB;
-    dw $0000,$0000                                                       ;A0EDCD;
-    dw InitAI_CorpseSidehopper                                           ;A0EDD1;
-    dw $0001,$0000                                                       ;A0EDD3;
-    dw MainAI_HurtAI_CorpseEnemies                                       ;A0EDD7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EDD9;
-    dw RTL_A9804C                                                        ;A0EDDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EDDD;
-    dw $0000                                                             ;A0EDDF;
-    dw $0000                                                             ;A0EDE1;
-    dd $00000000                                                         ;A0EDE3;
-    dw EnemyShot_CorpseSidehopper                                        ;A0EDE7;
-    dw $0000                                                             ;A0EDE9;
-    dd $00000000                                                         ;A0EDEB;
-    dw EnemyShot_CorpseSidehopper                                        ;A0EDEF;
-    dw EnemyShot_CorpseSidehopper                                        ;A0EDF1;
-    dw $0000                                                             ;A0EDF3;
-    dl Tiles_SidehopperLarge                                             ;A0EDF5;
-    db $05                                                               ;A0EDF8;
-    dw $0000                                                             ;A0EDF9;
-    dw EnemyVulnerabilities_Corpse_BabyMetroid                           ;A0EDFB;
-    dw $0000                                                             ;A0EDFD;
-
-EnemyHeaders_CorpseZoomer:
-    dw $0000                                                             ;A0EDFF;
-    dw Palette_CorpseCommon                                              ;A0EE01;
-    dw $03E8,$0000,$000A,$0008                                           ;A0EE03;
-    db $A9,$00                                                           ;A0EE0B;
-    dw $0000,$0000                                                       ;A0EE0D;
-    dw InitAI_CorpseZoomer                                               ;A0EE11;
-    dw $0001,$0000                                                       ;A0EE13;
-    dw MainAI_HurtAI_CorpseEnemies                                       ;A0EE17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EE19;
-    dw RTL_A9804C                                                        ;A0EE1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EE1D;
-    dw $0000                                                             ;A0EE1F;
-    dw $0000                                                             ;A0EE21;
-    dd $00000000                                                         ;A0EE23;
-    dw PowerBombReaction_CorpseZoomer                                    ;A0EE27;
-    dw $0000                                                             ;A0EE29;
-    dd $00000000                                                         ;A0EE2B;
-    dw EnemyTouch_EnemyShot_CorpseZoomer                                 ;A0EE2F;
-    dw EnemyTouch_EnemyShot_CorpseZoomer                                 ;A0EE31;
-    dw $0000                                                             ;A0EE33;
-    dl Tiles_Corpse_Sidehopper_Zoomer_Ripper_Skree                       ;A0EE35;
-    db $05                                                               ;A0EE38;
-    dw $0000                                                             ;A0EE39;
-    dw EnemyVulnerabilities_Corpse_BabyMetroid                           ;A0EE3B;
-    dw $0000                                                             ;A0EE3D;
-
-EnemyHeaders_CorpseRipper:
-    dw $0000                                                             ;A0EE3F;
-    dw Palette_CorpseCommon                                              ;A0EE41;
-    dw $03E8,$0000,$000B,$0006                                           ;A0EE43;
-    db $A9,$00                                                           ;A0EE4B;
-    dw $0000,$0000                                                       ;A0EE4D;
-    dw InitAI_CorpseRipper                                               ;A0EE51;
-    dw $0001,$0000                                                       ;A0EE53;
-    dw MainAI_HurtAI_CorpseEnemies                                       ;A0EE57;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EE59;
-    dw RTL_A9804C                                                        ;A0EE5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EE5D;
-    dw $0000                                                             ;A0EE5F;
-    dw $0000                                                             ;A0EE61;
-    dd $00000000                                                         ;A0EE63;
-    dw PowerBombReaction_CorpseRipper                                    ;A0EE67;
-    dw $0000                                                             ;A0EE69;
-    dd $00000000                                                         ;A0EE6B;
-    dw EnemyTouch_EnemyShot_CorpseRipper                                 ;A0EE6F;
-    dw EnemyTouch_EnemyShot_CorpseRipper                                 ;A0EE71;
-    dw $0000                                                             ;A0EE73;
-    dl Tiles_Corpse_Sidehopper_Zoomer_Ripper_Skree                       ;A0EE75;
-    db $05                                                               ;A0EE78;
-    dw $0000                                                             ;A0EE79;
-    dw EnemyVulnerabilities_Corpse_BabyMetroid                           ;A0EE7B;
-    dw $0000                                                             ;A0EE7D;
-
-EnemyHeaders_CorpseSkree:
-    dw $0000                                                             ;A0EE7F;
-    dw Palette_CorpseCommon                                              ;A0EE81;
-    dw $03E8,$0000,$000C,$0010                                           ;A0EE83;
-    db $A9,$00                                                           ;A0EE8B;
-    dw $0000,$0000                                                       ;A0EE8D;
-    dw InitAI_CorpseSkree                                                ;A0EE91;
-    dw $0001,$0000                                                       ;A0EE93;
-    dw MainAI_HurtAI_CorpseEnemies                                       ;A0EE97;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EE99;
-    dw RTL_A9804C                                                        ;A0EE9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EE9D;
-    dw $0000                                                             ;A0EE9F;
-    dw $0000                                                             ;A0EEA1;
-    dd $00000000                                                         ;A0EEA3;
-    dw PowerBombReaction_CorpseSkree                                     ;A0EEA7;
-    dw $0000                                                             ;A0EEA9;
-    dd $00000000                                                         ;A0EEAB;
-    dw EnemyTouch_EnemyShot_CorpseSkree                                  ;A0EEAF;
-    dw EnemyTouch_EnemyShot_CorpseSkree                                  ;A0EEB1;
-    dw $0000                                                             ;A0EEB3;
-    dl Tiles_Corpse_Sidehopper_Zoomer_Ripper_Skree                       ;A0EEB5;
-    db $05                                                               ;A0EEB8;
-    dw $0000                                                             ;A0EEB9;
-    dw EnemyVulnerabilities_Corpse_BabyMetroid                           ;A0EEBB;
-    dw $0000                                                             ;A0EEBD;
-
-EnemyHeaders_BabyMetroid:
-    dw $0C00                                                             ;A0EEBF;
-    dw Palette_BabyMetroid                                               ;A0EEC1;
-    dw $0C80,$0028,$0028,$0028                                           ;A0EEC3;
-    db $A9,$00                                                           ;A0EECB;
-    dw $0000,$0000                                                       ;A0EECD;
-    dw InitAI_BabyMetroid                                                ;A0EED1;
-    dw $0001,$0000                                                       ;A0EED3;
-    dw MainAI_BabyMetroid                                                ;A0EED7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EED9;
-    dw RTL_A9804C                                                        ;A0EEDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EEDD;
-    dw $0000                                                             ;A0EEDF;
-    dw $0000                                                             ;A0EEE1;
-    dd $00000000                                                         ;A0EEE3;
-    dw PowerBombReaction_BabyMetroid                                     ;A0EEE7;
-    dw $0000                                                             ;A0EEE9;
-    dd $00000000                                                         ;A0EEEB;
-    dw EnemyTouch_BabyMetroid                                            ;A0EEEF;
-    dw EnemyShot_BabyMetroid                                             ;A0EEF1;
-    dw $0000                                                             ;A0EEF3;
-    dl Tiles_BabyMetroid                                                 ;A0EEF5;
-    db $02                                                               ;A0EEF8;
-    dw $0000                                                             ;A0EEF9;
-    dw EnemyVulnerabilities_Corpse_BabyMetroid                           ;A0EEFB;
-    dw $0000                                                             ;A0EEFD;
-
-EnemyHeaders_BombTorizo:
-    dw $2000                                                             ;A0EEFF;
-    dw Palette_Torizo_OrbProjectile                                      ;A0EF01;
-    dw $0320,$0008,$0012,$0030                                           ;A0EF03;
-    db $AA,$08                                                           ;A0EF0B;
-    dw $0027,$0002                                                       ;A0EF0D;
-    dw InitAI_Torizo                                                     ;A0EF11;
-    dw $0001,$0000                                                       ;A0EF13;
-    dw MainAI_BombTorizo                                                 ;A0EF17;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EF19;
-    dw HurtAI_BombTorizo                                                 ;A0EF1B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EF1D;
-    dw $0000                                                             ;A0EF1F;
-    dw $0000                                                             ;A0EF21;
-    dd $00000000                                                         ;A0EF23;
-    dw $0000,$0000                                                       ;A0EF27;
-    dd $00000000                                                         ;A0EF2B;
-    dw EnemyTouch_Torizo                                                 ;A0EF2F;
-    dw EnemyShot_Torizo_Normal                                           ;A0EF31;
-    dw $0000                                                             ;A0EF33;
-    dl Tiles_BombTorizo_GoldenTorizo                                     ;A0EF35;
-    db $05                                                               ;A0EF38;
-    dw EnemyDropChances_MotherBrainBody_BombTorizo                       ;A0EF39;
-    dw EnemyVulnerabilities_BombTorizo_BombTorizoOrb                     ;A0EF3B;
-    dw $0000                                                             ;A0EF3D;
-
-EnemyHeaders_BombTorizoOrb:
-    dw $2000                                                             ;A0EF3F;
-    dw Palette_Torizo_OrbProjectile                                      ;A0EF41;
-    dw $0320,$0008,$0012,$0030                                           ;A0EF43;
-    db $AA,$08                                                           ;A0EF4B;
-    dw $0027,$0002                                                       ;A0EF4D;
-    dw InitAI_Torizo                                                     ;A0EF51;
-    dw $0001,$0000                                                       ;A0EF53;
-    dw MainAI_BombTorizo                                                 ;A0EF57;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EF59;
-    dw HurtAI_BombTorizo                                                 ;A0EF5B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EF5D;
-    dw $0000                                                             ;A0EF5F;
-    dw $0000                                                             ;A0EF61;
-    dd $00000000                                                         ;A0EF63;
-    dw $0000,$0000                                                       ;A0EF67;
-    dd $00000000                                                         ;A0EF6B;
-    dw EnemyTouch_Torizo                                                 ;A0EF6F;
-    dw EnemyShot_Torizo_Normal                                           ;A0EF71;
-    dw $0000                                                             ;A0EF73;
-    dl Tiles_BombTorizo_GoldenTorizo                                     ;A0EF75;
-    db $05                                                               ;A0EF78;
-    dw EnemyDropChances_BombTorizoOrb                                    ;A0EF79;
-    dw EnemyVulnerabilities_BombTorizo_BombTorizoOrb                     ;A0EF7B;
-    dw $0000                                                             ;A0EF7D;
-
-EnemyHeaders_GoldenTorizo:
-    dw $2000                                                             ;A0EF7F;
-    dw Palette_Torizo_OrbProjectile                                      ;A0EF81;
-    dw $34BC,$00A0,$0012,$0030                                           ;A0EF83;
-    db $AA,$08                                                           ;A0EF8B;
-    dw $0027,$0002                                                       ;A0EF8D;
-    dw InitAI_Torizo                                                     ;A0EF91;
-    dw $0001,$0000                                                       ;A0EF93;
-    dw MainAI_GoldenTorizo                                               ;A0EF97;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EF99;
-    dw HurtAI_GoldenTorizo                                               ;A0EF9B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EF9D;
-    dw $0000                                                             ;A0EF9F;
-    dw $0000                                                             ;A0EFA1;
-    dd $00000000                                                         ;A0EFA3;
-    dw $0000,$0000                                                       ;A0EFA7;
-    dd $00000000                                                         ;A0EFAB;
-    dw EnemyTouch_Torizo                                                 ;A0EFAF;
-    dw ShotReaction_GoldenTorizo_Normal                                  ;A0EFB1;
-    dw $0000                                                             ;A0EFB3;
-    dl Tiles_BombTorizo_GoldenTorizo                                     ;A0EFB5;
-    db $05                                                               ;A0EFB8;
-    dw EnemyDropChances_GoldenTorizo                                     ;A0EFB9;
-    dw EnemyVulnerabilities_GoldenTorizo_GoldenTorizoOrb                 ;A0EFBB;
-    dw $0000                                                             ;A0EFBD;
-
-EnemyHeaders_GoldenTorizoOrb:
-    dw $2000                                                             ;A0EFBF;
-    dw Palette_Torizo_OrbProjectile                                      ;A0EFC1;
-    dw $34BC,$00A0,$0012,$0030                                           ;A0EFC3;
-    db $AA,$08                                                           ;A0EFCB;
-    dw $0027,$0002                                                       ;A0EFCD;
-    dw InitAI_Torizo                                                     ;A0EFD1;
-    dw $0001,$0000                                                       ;A0EFD3;
-    dw MainAI_GoldenTorizo                                               ;A0EFD7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0EFD9;
-    dw HurtAI_GoldenTorizo                                               ;A0EFDB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0EFDD;
-    dw $0000                                                             ;A0EFDF;
-    dw $0000                                                             ;A0EFE1;
-    dd $00000000                                                         ;A0EFE3;
-    dw $0000,$0000                                                       ;A0EFE7;
-    dd $00000000                                                         ;A0EFEB;
-    dw EnemyTouch_Torizo                                                 ;A0EFEF;
-    dw ShotReaction_GoldenTorizo_Normal                                  ;A0EFF1;
-    dw $0000                                                             ;A0EFF3;
-    dl Tiles_BombTorizo_GoldenTorizo                                     ;A0EFF5;
-    db $05                                                               ;A0EFF8;
-    dw EnemyDropChances_GoldenTorizoOrb                                  ;A0EFF9;
-    dw EnemyVulnerabilities_GoldenTorizo_GoldenTorizoOrb                 ;A0EFFB;
-    dw $0000                                                             ;A0EFFD;
-
-EnemyHeaders_TourianStatue:
-    dw $1600                                                             ;A0EFFF;
-    dw Palettes_TourianStatue_Ridley                                     ;A0F001;
-    dw $0BB8,$0BB8,$0000,$0000                                           ;A0F003;
-    db $AA,$00                                                           ;A0F00B;
-    dw $0000,$0000                                                       ;A0F00D;
-    dw InitAI_TourianStatue                                              ;A0F011;
-    dw $0001,$0000                                                       ;A0F013;
-    dw MainAI_TourianStatue                                              ;A0F017;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F019;
-    dw RTL_AA804C                                                        ;A0F01B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F01D;
-    dw $0000                                                             ;A0F01F;
-    dw $0000                                                             ;A0F021;
-    dd $00000000                                                         ;A0F023;
-    dw RTL_A0804C                                                        ;A0F027;
-    dw $0000                                                             ;A0F029;
-    dd $00000000                                                         ;A0F02B;
-    dw RTL_AA804C                                                        ;A0F02F;
-    dw RTL_AA804C                                                        ;A0F031;
-    dw $0000                                                             ;A0F033;
-    dl Tiles_TourianStatue                                               ;A0F035;
-    db $06                                                               ;A0F038;
-    dw $0000                                                             ;A0F039;
-    dw EnemyVulnerabilities_Default                                      ;A0F03B;
-    dw $0000                                                             ;A0F03D;
-
-EnemyHeaders_TourianStatueGhost:
-    dw $8600                                                             ;A0F03F;
-    dw Palettes_TourianStatue_Ridley                                     ;A0F041;
-    dw $0BB8,$0BB8,$0000,$0000                                           ;A0F043;
-    db $AA,$00                                                           ;A0F04B;
-    dw $0000,$0000                                                       ;A0F04D;
-    dw RTL_AA804C                                                        ;A0F051;
-    dw $0001,$0000                                                       ;A0F053;
-    dw RTL_AA804C                                                        ;A0F057;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F059;
-    dw RTL_AA804C                                                        ;A0F05B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F05D;
-    dw $0000                                                             ;A0F05F;
-    dw $0000                                                             ;A0F061;
-    dd $00000000                                                         ;A0F063;
-    dw RTL_A0804C                                                        ;A0F067;
-    dw $0000                                                             ;A0F069;
-    dd $00000000                                                         ;A0F06B;
-    dw RTL_AA804C                                                        ;A0F06F;
-    dw RTL_AA804C                                                        ;A0F071;
-    dw $0000                                                             ;A0F073;
-    dl Tiles_TourianStatuesSoul                                          ;A0F075;
-    db $06                                                               ;A0F078;
-    dw $0000                                                             ;A0F079;
-    dw EnemyVulnerabilities_Default                                      ;A0F07B;
-    dw $0000                                                             ;A0F07D;
-
-EnemyHeaders_Shaktool:
-    dw $0400                                                             ;A0F07F;
-    dw Palette_Shaktool                                                  ;A0F081;
-    dw $012C,$0078,$0006,$0006                                           ;A0F083;
-    db $AA,$08                                                           ;A0F08B;
-    dw $0069,$0000                                                       ;A0F08D;
-    dw InitAI_Shaktool                                                   ;A0F091;
-    dw $0007,$0000                                                       ;A0F093;
-    dw MainAI_HurtAI_Shaktool                                            ;A0F097;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F099;
-    dw MainAI_HurtAI_Shaktool                                            ;A0F09B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F09D;
-    dw $0000                                                             ;A0F09F;
-    dw $0004                                                             ;A0F0A1;
-    dd $00000000                                                         ;A0F0A3;
-    dw $0000,$0000                                                       ;A0F0A7;
-    dd $00000000                                                         ;A0F0AB;
-    dw EnemyTouch_Shaktool                                               ;A0F0AF;
-    dw EnemyShot_Shaktool                                                ;A0F0B1;
-    dw $0000                                                             ;A0F0B3;
-    dl Tiles_Shaktool                                                    ;A0F0B5;
-    db $05                                                               ;A0F0B8;
-    dw EnemyDropChances_Shaktool                                         ;A0F0B9;
-    dw EnemyVulnerabilities_Shaktool                                     ;A0F0BB;
-    dw EnemyName_GoldenTorizo                                            ;A0F0BD;
-
-EnemyHeaders_NoobTubeCrack:
-    dw $1800                                                             ;A0F0BF;
-    dw Palette_NoobTubeCrack_Initial                                     ;A0F0C1;
-    dw $0014,$0028,$0000,$0000                                           ;A0F0C3;
-    db $AA,$00                                                           ;A0F0CB;
-    dw $0000,$0000                                                       ;A0F0CD;
-    dw InitAI_NoobTubeCrack                                              ;A0F0D1;
-    dw $0001,$0000                                                       ;A0F0D3;
-    dw RTL_AA804C                                                        ;A0F0D7;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F0D9;
-    dw RTL_AA804C                                                        ;A0F0DB;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F0DD;
-    dw $0000                                                             ;A0F0DF;
-    dw $0000                                                             ;A0F0E1;
-    dd $00000000                                                         ;A0F0E3;
-    dw $0000,$0000                                                       ;A0F0E7;
-    dd $00000000                                                         ;A0F0EB;
-    dw RTL_AA804C                                                        ;A0F0EF;
-    dw RTL_AA804C                                                        ;A0F0F1;
-    dw $0000                                                             ;A0F0F3;
-    dl Tiles_NoobTubeCrack                                               ;A0F0F5;
-    db $05                                                               ;A0F0F8;
-    dw EnemyDropChances_NoobTubeCrack_Chozo                              ;A0F0F9;
-    dw EnemyVulnerabilities_Default                                      ;A0F0FB;
-    dw $0000                                                             ;A0F0FD;
-
-EnemyHeaders_Chozo:
-    dw $1200                                                             ;A0F0FF;
-    dw Palette_Chozo_WreckedShip_SpritePalette1                          ;A0F101;
-    dw $0014,$0028,$0010,$0024                                           ;A0F103;
-    db $AA,$00                                                           ;A0F10B;
-    dw $0000,$0000                                                       ;A0F10D;
-    dw InitAI_Chozo                                                      ;A0F111;
-    dw $0001,$0000                                                       ;A0F113;
-    dw MainAI_Chozo                                                      ;A0F117;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F119;
-    dw RTL_AA804C                                                        ;A0F11B;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F11D;
-    dw $0000                                                             ;A0F11F;
-    dw $0000                                                             ;A0F121;
-    dd $00000000                                                         ;A0F123;
-    dw $0000,$0000                                                       ;A0F127;
-    dd $00000000                                                         ;A0F12B;
-    dw RTL_AAE7DB                                                        ;A0F12F;
-    dw RTL_AAE7DC                                                        ;A0F131;
-    dw $0000                                                             ;A0F133;
-    dl Tiles_Chozo                                                       ;A0F135;
-    db $05                                                               ;A0F138;
-    dw EnemyDropChances_NoobTubeCrack_Chozo                              ;A0F139;
-    dw EnemyVulnerabilities_Indestructible                               ;A0F13B;
-    dw $0000                                                             ;A0F13D;
+EnemyHeaders_Stoke:                                                      ;A0CEFF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Stoke),
+    %health(20),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Stoke>>16),
+    %hurtAITime(0),
+    %cry($0053),
+    %bossID(0),
+    %initAI(InitAI_Stoke),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Stoke),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Stoke),
+    %layer(5),
+    %drops(EnemyDropChances_Stoke),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Stoke))
+
+EnemyHeaders_MamaTurtle:                                                 ;A0CF3F;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_MamaTurtle_BabyTurtle),
+    %health(20000),
+    %damage(200),
+    %width(20),
+    %height(16),
+    %bank(InitAI_MamaTurtle>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_MamaTurtle),
+    %parts(5),
+    %unused(0),
+    %mainAI(MainAI_MamaTurtle),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_MamaTurtle),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_MamaTurtle_BabyTurtle),
+    %layer(5),
+    %drops(EnemyDropChances_MamaTurtle_BabyTurtle),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_MamaTurtle))
+
+EnemyHeaders_BabyTurtle:                                                 ;A0CF7F;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_MamaTurtle_BabyTurtle),
+    %health(20000),
+    %damage(0),
+    %width(8),
+    %height(5),
+    %bank(InitAI_BabyTurtle>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_BabyTurtle),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_BabyTurtle),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_BabyTurtle),
+    %enemyShot(EnemyShot_BabyTurtle),
+    %spritemap(0),
+    %tileData(Tiles_MamaTurtle_BabyTurtle),
+    %layer(5),
+    %drops(EnemyDropChances_MamaTurtle_BabyTurtle),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(0))
+
+EnemyHeaders_Puyo:                                                       ;A0CFBF;
+    %EnemyHeader(\
+    %tileDataSize($0200),
+    %palette(Palette_Puyo),
+    %health(100),
+    %damage(60),
+    %width(8),
+    %height(4),
+    %bank(InitAI_Puyo>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Puyo),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Puyo),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Puyo),
+    %layer(5),
+    %drops(EnemyDropChances_Puyo),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Puyo))
+
+EnemyHeaders_Cacatac:                                                    ;A0CFFF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Cacatac),
+    %health(60),
+    %damage(20),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Cacatac>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Cacatac),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Cacatac),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Cacatac),
+    %layer(5),
+    %drops(EnemyDropChances_Cacatac),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Cacatac))
+
+EnemyHeaders_Owtch:                                                      ;A0D03F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Owtch),
+    %health(20),
+    %damage(100),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Owtch>>16),
+    %hurtAITime(0),
+    %cry($003E),
+    %bossID(0),
+    %initAI(InitAI_Owtch),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Owtch),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Owtch),
+    %spritemap(0),
+    %tileData(Tiles_Owtch),
+    %layer(5),
+    %drops(EnemyDropChances_Owtch),
+    %vulnerabilities(EnemyVulnerabilities_Owtch),
+    %name(EnemyName_Owtch))
+
+EnemyHeaders_ShipTop:                                                    ;A0D07F;
+    %EnemyHeader(\
+    %tileDataSize($1000),
+    %palette(Palette_Ship),
+    %health(20),
+    %damage(40),
+    %width($5C),
+    %height($28),
+    %bank(InitAI_ShipTop>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_ShipTop),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_ShipTop),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A2804C),
+    %enemyShot(RTL_A2804C),
+    %spritemap(0),
+    %tileData(Tiles_Ship),
+    %layer(2),
+    %drops(EnemyDropChances_ShipTop_ShipBottomEntrance),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(0))
+
+EnemyHeaders_ShipBottomEntrance:                                         ;A0D0BF;
+    %EnemyHeader(\
+    %tileDataSize($0200),
+    %palette(Palette_Ship),
+    %health(20),
+    %damage(40),
+    %width($60),
+    %height($28),
+    %bank(InitAI_ShipBottomEntrance>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_ShipBottomEntrance),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_A2804C),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(RTL_A2804C),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A2804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A2804C),
+    %enemyShot(RTL_A2804C),
+    %spritemap(0),
+    %tileData(Tiles_Ship),
+    %layer(2),
+    %drops(EnemyDropChances_ShipTop_ShipBottomEntrance),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(0))
+
+EnemyHeaders_Mellow:                                                     ;A0D0FF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Mellow),
+    %health(9),
+    %damage(8),
+    %width(8),
+    %height(4),
+    %bank(InitAI_Mellow_Mella_Menu>>16),
+    %hurtAITime(0),
+    %cry($0020),
+    %bossID(0),
+    %initAI(InitAI_Mellow_Mella_Menu),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Mellow_Mella_Menu),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(InstList_Mellow_Mella_Menu),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(UNUSED_FlySpritemapPointers_A2B204),
+    %tileData(Tiles_Mellow),
+    %layer(5),
+    %drops(EnemyDropChances_Mellow),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Mellow))
+
+EnemyHeaders_Mella:                                                      ;A0D13F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Mella),
+    %health(30),
+    %damage(16),
+    %width(8),
+    %height(4),
+    %bank(InitAI_Mellow_Mella_Menu>>16),
+    %hurtAITime(0),
+    %cry($0020),
+    %bossID(0),
+    %initAI(InitAI_Mellow_Mella_Menu),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Mellow_Mella_Menu),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(UNUSED_PointerToUnusedData_A2B22C),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(UNUSED_SpritemapPointers_Mella_A2B25C),
+    %tileData(Tiles_Mella),
+    %layer(5),
+    %drops(EnemyDropChances_Mella),
+    %vulnerabilities(EnemyVulnerabilities_Mella),
+    %name(EnemyName_Mella))
+
+EnemyHeaders_Menu:                                                       ;A0D17F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Menu),
+    %health(100),
+    %damage(60),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Mellow_Mella_Menu>>16),
+    %hurtAITime(0),
+    %cry($0020),
+    %bossID(0),
+    %initAI(InitAI_Mellow_Mella_Menu),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Mellow_Mella_Menu),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(UNUSED_DataPointer_A2B284),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(UNUSED_SpritemapPointers_Menu_A2B2B4),
+    %tileData(Tiles_Menu),
+    %layer(5),
+    %drops(EnemyDropChances_Menu),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Menu))
+
+EnemyHeaders_Multiviola:                                                 ;A0D1BF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Multiviola),
+    %health(90),
+    %damage(50),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Multiviola>>16),
+    %hurtAITime(0),
+    %cry($003E),
+    %bossID(0),
+    %initAI(InitAI_Multiviola),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Multiviola),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(InstList_Multiviola),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Multiviola),
+    %layer(5),
+    %drops(EnemyDropChances_Multiviola),
+    %vulnerabilities(EnemyVulnerabilities_Multiviola),
+    %name(EnemyName_Multiviola))
+
+EnemyHeaders_LavaRocks:                                                  ;A0D1FF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Polyp_Rinka),
+    %health(1),
+    %damage(4),
+    %width(4),
+    %height(4),
+    %bank(InitAI_Polyp>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Polyp),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Polyp),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Polyp_Rinka),
+    %layer(5),
+    %drops(EnemyDropChances_Polyp),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Polyp))
+
+EnemyHeaders_Rinka:                                                      ;A0D23F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Polyp_Rinka),
+    %health(10),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Rinka>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Rinka),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Rinka),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(FrozenAI_Rinka),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_Rinka),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Rinka),
+    %enemyShot(EnemyShot_Rinka),
+    %spritemap(0),
+    %tileData(Tiles_Polyp_Rinka),
+    %layer(2),
+    %drops(EnemyDropChances_Rinka),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Rinka))
+
+EnemyHeaders_Rio:                                                        ;A0D27F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Rio),
+    %health(45),
+    %damage(15),
+    %width(16),
+    %height(7),
+    %bank(InitAI_Rio>>16),
+    %hurtAITime(0),
+    %cry($0036),
+    %bossID(0),
+    %initAI(InitAI_Rio),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Rio),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Rio),
+    %layer(5),
+    %drops(EnemyDropChances_Rio),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Rio))
+
+EnemyHeaders_Squeept:                                                    ;A0D2BF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Squeept),
+    %health(300),
+    %damage(50),
+    %width(8),
+    %height(12),
+    %bank(InitAI_Squeept>>16),
+    %hurtAITime(0),
+    %cry($0036),
+    %bossID(0),
+    %initAI(InitAI_Squeept),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_Squeept),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Squeept),
+    %layer(5),
+    %drops(EnemyDropChances_Squeept),
+    %vulnerabilities(EnemyVulnerabilities_Squeept_Ripper2_Ripper_Tripper),
+    %name(EnemyName_Squeept))
+
+EnemyHeaders_Geruta:                                                     ;A0D2FF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Geruta),
+    %health(120),
+    %damage(60),
+    %width(16),
+    %height(9),
+    %bank(InitAI_Geruta>>16),
+    %hurtAITime(0),
+    %cry($0036),
+    %bossID(0),
+    %initAI(InitAI_Geruta),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_Geruta),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Geruta),
+    %layer(5),
+    %drops(EnemyDropChances_Geruta),
+    %vulnerabilities(EnemyVulnerabilities_Geruta),
+    %name(EnemyName_Geruta))
+
+EnemyHeaders_Holtz:                                                      ;A0D33F;
+    %EnemyHeader(\
+    %tileDataSize($0800),
+    %palette(Palette_Holtz),
+    %health(900),
+    %damage(120),
+    %width(16),
+    %height(10),
+    %bank(InitAI_Holtz>>16),
+    %hurtAITime(0),
+    %cry($005F),
+    %bossID(0),
+    %initAI(InitAI_Holtz),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_Holtz),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Holtz),
+    %layer(5),
+    %drops(EnemyDropChances_Holtz),
+    %vulnerabilities(EnemyVulnerabilities_Holtz),
+    %name(EnemyName_Holtz))
+
+EnemyHeaders_Oum:                                                        ;A0D37F;
+    %EnemyHeader(\
+    %tileDataSize($0800),
+    %palette(Palette_Oum),
+    %health(300),
+    %damage(100),
+    %width(16),
+    %height(16),
+    %bank(InitAI_Oum>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Oum),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Oum),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Oum_DoesNotHurtSamus),
+    %enemyShot(EnemyShot_Oum),
+    %spritemap(0),
+    %tileData(Tiles_Oum),
+    %layer(5),
+    %drops(EnemyDropChances_Oum),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Oum))
+
+EnemyHeaders_Choot:                                                      ;A0D3BF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Choot),
+    %health(100),
+    %damage(80),
+    %width(16),
+    %height(5),
+    %bank(InitAI_Choot>>16),
+    %hurtAITime(0),
+    %cry($0022),
+    %bossID(0),
+    %initAI(InitAI_Choot),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Choot),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Choot),
+    %layer(5),
+    %drops(EnemyDropChances_Choot),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Choot))
+
+EnemyHeaders_GRipper:                                                    ;A0D3FF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_GRipper),
+    %health(200),
+    %damage(10),
+    %width(8),
+    %height(8),
+    %bank(InitAI_GRipper>>16),
+    %hurtAITime(0),
+    %cry($003E),
+    %bossID(0),
+    %initAI(InitAI_GRipper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_GRipper),
+    %grappleAI(Common_GrappleAI_SamusLatchesOn),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_GRipper_Ripper2),
+    %spritemap(0),
+    %tileData(Tiles_Ripper),
+    %layer(5),
+    %drops(EnemyDropChances_GRipper_Ripper2),
+    %vulnerabilities(EnemyVulnerabilities_GRipper),
+    %name(EnemyName_GRipper_Ripper2))
+
+EnemyHeaders_Ripper2:                                                    ;A0D43F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Ripper2),
+    %health(200),
+    %damage(10),
+    %width(8),
+    %height(4),
+    %bank(InitAI_Ripper2>>16),
+    %hurtAITime(0),
+    %cry($003E),
+    %bossID(0),
+    %initAI(InitAI_Ripper2),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Ripper2),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(InstList_Ripper_MovingRight),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_GRipper_Ripper2),
+    %spritemap(0),
+    %tileData(Tiles_Ripper),
+    %layer(5),
+    %drops(EnemyDropChances_GRipper_Ripper2),
+    %vulnerabilities(EnemyVulnerabilities_Squeept_Ripper2_Ripper_Tripper),
+    %name(EnemyName_GRipper_Ripper2))
+
+EnemyHeaders_Ripper:                                                     ;A0D47F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Ripper),
+    %health(200),
+    %damage(5),
+    %width(8),
+    %height(4),
+    %bank(InitAI_Ripper>>16),
+    %hurtAITime(0),
+    %cry($003E),
+    %bossID(0),
+    %initAI(InitAI_Ripper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Ripper),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(InstList_Ripper_MovingRight),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(SpritemapPointers_Ripper),
+    %tileData(Tiles_Ripper),
+    %layer(5),
+    %drops(EnemyDropChances_Ripper),
+    %vulnerabilities(EnemyVulnerabilities_Squeept_Ripper2_Ripper_Tripper),
+    %name(EnemyName_Ripper))
+
+EnemyHeaders_Dragon:                                                     ;A0D4BF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Dragon),
+    %health(300),
+    %damage(24),
+    %width(8),
+    %height($1C),
+    %bank(InitAI_Dragon>>16),
+    %hurtAITime(0),
+    %cry($0036),
+    %bossID(0),
+    %initAI(InitAI_Dragon),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_Dragon),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Dragon),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Dragon),
+    %enemyShot(EnemyShot_Dragon),
+    %spritemap(0),
+    %tileData(Tiles_Dragon),
+    %layer(5),
+    %drops(EnemyDropChances_Dragon),
+    %vulnerabilities(EnemyVulnerabilities_Dragon),
+    %name(EnemyName_Dragon))
+
+EnemyHeaders_ShutterGrowing:                                             ;A0D4FF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Shutters),
+    %health(20),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_ShutterGrowing>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_ShutterGrowing),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_ShutterGrowing),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A2804C),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Shutter),
+    %layer(5),
+    %drops(EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene),
+    %vulnerabilities(EnemyVulnerabilities_NonDestructibleShutter),
+    %name(EnemyName_ShutterGrowing))
+
+EnemyHeaders_ShutterShootable:                                           ;A0D53F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Shutters),
+    %health(20),
+    %damage(40),
+    %width(8),
+    %height($20),
+    %bank(InitAI_ShutterShootable_ShutterDestroyable>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_ShutterShootable_ShutterDestroyable),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_ShutterShootable_ShutterDestroyable_Kamer),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_ShutterShootable_ShutterDestroyable_Kamer),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_ShutterShootable_ShutterDestroyable_Kamer),
+    %enemyShot(EnemyShot_ShutterShootable_Kamer),
+    %spritemap(0),
+    %tileData(Tiles_Shutter),
+    %layer(5),
+    %drops(EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene),
+    %vulnerabilities(EnemyVulnerabilities_NonDestructibleShutter),
+    %name(EnemyName_Shutter2_Kamer))
+
+EnemyHeaders_ShutterHorizShootable:                                      ;A0D57F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Shutters),
+    %health(20),
+    %damage(40),
+    %width($20),
+    %height(8),
+    %bank(InitAI_ShutterHorizShootable>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_ShutterHorizShootable),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_ShutterHorizShootable),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_CommonReaction_HorizontalShutter),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_ShutterHorizShootable),
+    %enemyShot(EnemyShot_ShutterHorizShootable),
+    %spritemap(0),
+    %tileData(Tiles_Shutter),
+    %layer(5),
+    %drops(EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene),
+    %vulnerabilities(EnemyVulnerabilities_NonDestructibleShutter),
+    %name(EnemyName_Shutter2_Kamer))
+
+EnemyHeaders_ShutterDestroyable:                                         ;A0D5BF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Shutters),
+    %health(20),
+    %damage(40),
+    %width(8),
+    %height($20),
+    %bank(InitAI_ShutterShootable_ShutterDestroyable>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_ShutterShootable_ShutterDestroyable),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_ShutterShootable_ShutterDestroyable_Kamer),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_ShutterShootable_ShutterDestroyable_Kamer),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_ShutterShootable_ShutterDestroyable_Kamer),
+    %enemyShot(EnemyTouch_ShutterDestroyable),
+    %spritemap(0),
+    %tileData(Tiles_Shutter),
+    %layer(5),
+    %drops(EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene),
+    %vulnerabilities(EnemyVulnerabilities_ShutterDestroyable),
+    %name(EnemyName_Shutter2_Kamer))
+
+EnemyHeaders_Kamer:                                                      ;A0D5FF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Kamer),
+    %health(20),
+    %damage(40),
+    %width(16),
+    %height(8),
+    %bank(InitAI_Kamer>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Kamer),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_ShutterShootable_ShutterDestroyable_Kamer),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_ShutterShootable_ShutterDestroyable_Kamer),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_ShutterShootable_ShutterDestroyable_Kamer),
+    %enemyShot(EnemyShot_ShutterShootable_Kamer),
+    %spritemap(0),
+    %tileData(Tiles_Kamer),
+    %layer(5),
+    %drops(EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene),
+    %vulnerabilities(EnemyVulnerabilities_NonDestructibleShutter),
+    %name(EnemyName_Shutter2_Kamer))
+
+EnemyHeaders_Waver:                                                      ;A0D63F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Waver),
+    %health(30),
+    %damage(10),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Waver>>16),
+    %hurtAITime(0),
+    %cry($0047),
+    %bossID(0),
+    %initAI(InitAI_Waver),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Waver),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Waver),
+    %layer(5),
+    %drops(EnemyDropChances_Waver),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Waver))
+
+EnemyHeaders_Metaree:                                                    ;A0D67F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Metaree),
+    %health(50),
+    %damage(50),
+    %width(8),
+    %height(12),
+    %bank(InitAI_Metaree>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_Metaree),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Metaree),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Metaree),
+    %spritemap(0),
+    %tileData(Tiles_Metaree),
+    %layer(5),
+    %drops(EnemyDropChances_Metaree),
+    %vulnerabilities(EnemyVulnerabilities_Metaree),
+    %name(EnemyName_Metaree))
+
+EnemyHeaders_Fireflea:                                                   ;A0D6BF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Fireflea),
+    %health(20),
+    %damage(4),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Fireflea>>16),
+    %hurtAITime(0),
+    %cry($0020),
+    %bossID(0),
+    %initAI(InitAI_Fireflea),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Fireflea),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_Fireflea),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Fireflea),
+    %enemyShot(EnemyShot_Fireflea),
+    %spritemap(0),
+    %tileData(Tiles_Fireflea),
+    %layer(5),
+    %drops(EnemyDropChances_Fireflea),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Fireflea))
+
+EnemyHeaders_Skultera:                                                   ;A0D6FF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Skultera),
+    %health(300),
+    %damage(80),
+    %width(13),
+    %height(11),
+    %bank(InitAI_Skultera>>16),
+    %hurtAITime(0),
+    %cry($0049),
+    %bossID(0),
+    %initAI(InitAI_Skultera),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Skultera),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(UNUSED_SpritemapPointers_Skultera),
+    %tileData(Tiles_Skultera),
+    %layer(5),
+    %drops(EnemyDropChances_Skultera),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Skultera))
+
+EnemyHeaders_Elevator:                                                   ;A0D73F;
+    %EnemyHeader(\
+    %tileDataSize(0),
+    %palette(0),
+    %health(40),
+    %damage(15),
+    %width(16),
+    %height(8),
+    %bank(InitAI_Elevator>>16),
+    %hurtAITime(0),
+    %cry($0059),
+    %bossID(0),
+    %initAI(InitAI_Elevator),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_GrappleAI_FrozenAI_Elevator),
+    %grappleAI(MainAI_GrappleAI_FrozenAI_Elevator),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(MainAI_GrappleAI_FrozenAI_Elevator),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A3804C),
+    %enemyShot(RTL_A3804C),
+    %spritemap(0),
+    %tileData(0),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(0),
+    %name(0))
+
+EnemyHeaders_Sciser:                                                     ;A0D77F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Sciser),
+    %health(200),
+    %damage(120),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Sciser>>16),
+    %hurtAITime(0),
+    %cry($0049),
+    %bossID(0),
+    %initAI(InitAI_Sciser),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Crawlers),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Sciser),
+    %layer(5),
+    %drops(EnemyDropChances_Sciser),
+    %vulnerabilities(EnemyVulnerabilities_Sciser_Zero),
+    %name(EnemyName_Sciser))
+
+EnemyHeaders_Zero:                                                       ;A0D7BF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Zero),
+    %health(50),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Zero>>16),
+    %hurtAITime(0),
+    %cry($0023),
+    %bossID(0),
+    %initAI(InitAI_Zero),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Crawlers),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Zero),
+    %layer(5),
+    %drops(EnemyDropChances_Zero),
+    %vulnerabilities(EnemyVulnerabilities_Sciser_Zero),
+    %name(EnemyName_Zero))
+
+EnemyHeaders_Tripper:                                                    ;A0D7FF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Tripper),
+    %health(20),
+    %damage(40),
+    %width(16),
+    %height(8),
+    %bank(InitAI_Tripper>>16),
+    %hurtAITime(0),
+    %cry($003E),
+    %bossID(0),
+    %initAI(InitAI_Tripper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Tripper_Kamer2),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_A39F07),
+    %enemyShot(EnemyShot_Tripper),
+    %spritemap(0),
+    %tileData(Tiles_Tripper),
+    %layer(5),
+    %drops(EnemyDropChances_Tripper_Kamer2),
+    %vulnerabilities(EnemyVulnerabilities_Squeept_Ripper2_Ripper_Tripper),
+    %name(EnemyName_Tripper))
+
+EnemyHeaders_Kamer2:                                                     ;A0D83F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Kamer2),
+    %health(20),
+    %damage(40),
+    %width(16),
+    %height(8),
+    %bank(InitAI_Kamer2>>16),
+    %hurtAITime(0),
+    %cry($003E),
+    %bossID(0),
+    %initAI(InitAI_Kamer2),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Tripper_Kamer2),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_A39F07),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Kamer),
+    %layer(5),
+    %drops(EnemyDropChances_Tripper_Kamer2),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Tripper))
+
+EnemyHeaders_Sbug:                                                       ;A0D87F;
+    %EnemyHeader(\
+    %tileDataSize($0200),
+    %palette(Palette_Sbug),
+    %health(20),
+    %damage(40),
+    %width(4),
+    %height(4),
+    %bank(InitAI_Sbug>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Sbug),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Sbug),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Sbug),
+    %layer(5),
+    %drops(EnemyDropChances_Sbug_Sbug2),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Sbug))
+
+EnemyHeaders_Sbug2:                                                      ;A0D8BF;
+    %EnemyHeader(\
+    %tileDataSize($8200),
+    %palette(Palette_Sbug),
+    %health(20),
+    %damage(40),
+    %width(4),
+    %height(4),
+    %bank(InitAI_Sbug>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Sbug),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Sbug),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Sbug),
+    %layer(5),
+    %drops(EnemyDropChances_Sbug_Sbug2),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Sbug))
+
+EnemyHeaders_Mochtroid:                                                  ;A0D8FF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Mochtroid),
+    %health(100),
+    %damage(90),
+    %width(10),
+    %height(12),
+    %bank(InitAI_Mochtroid>>16),
+    %hurtAITime(0),
+    %cry($0058),
+    %bossID(0),
+    %initAI(InitAI_Mochtroid),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Mochtroid),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Mochtroid),
+    %enemyShot(EnemyShot_Mochtroid),
+    %spritemap(0),
+    %tileData(Tiles_Mochtroid),
+    %layer(5),
+    %drops(EnemyDropChances_Mochtroid),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Mochtroid))
+
+EnemyHeaders_Sidehopper:                                                 ;A0D93F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Sidehopper),
+    %health(60),
+    %damage(20),
+    %width(16),
+    %height(13),
+    %bank(InitAI_Hopper>>16),
+    %hurtAITime(0),
+    %cry($0023),
+    %bossID(0),
+    %initAI(InitAI_Hopper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Hopper),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Sidehopper),
+    %layer(5),
+    %drops(EnemyDropChances_Sidehopper),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Sidehopper))
+
+EnemyHeaders_Dessgeega:                                                  ;A0D97F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Dessgeega),
+    %health(120),
+    %damage(80),
+    %width(16),
+    %height(13),
+    %bank(InitAI_Hopper>>16),
+    %hurtAITime(0),
+    %cry($005F),
+    %bossID(0),
+    %initAI(InitAI_Hopper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Hopper),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(3),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Dessgeega),
+    %layer(5),
+    %drops(EnemyDropChances_Dessgeega),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Dessgeega))
+
+EnemyHeaders_SidehopperLarge:                                            ;A0D9BF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_SidehopperLarge),
+    %health(320),
+    %damage(80),
+    %width($18),
+    %height($14),
+    %bank(InitAI_Hopper>>16),
+    %hurtAITime(0),
+    %cry($0023),
+    %bossID(0),
+    %initAI(InitAI_Hopper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Hopper),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(1),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_SidehopperLarge),
+    %layer(5),
+    %drops(EnemyDropChances_SidehopperLarge_SidehopperTourian),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_SidehopperLarge_SidehopperTourian))
+
+EnemyHeaders_SidehopperTourian:                                          ;A0D9FF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_SidehopperTourian),
+    %health(1500),
+    %damage(120),
+    %width($18),
+    %height($14),
+    %bank(InitAI_Hopper>>16),
+    %hurtAITime(0),
+    %cry($0023),
+    %bossID(0),
+    %initAI(InitAI_Hopper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Hopper),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(1),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_SidehopperLarge),
+    %layer(5),
+    %drops(EnemyDropChances_SidehopperLarge_SidehopperTourian),
+    %vulnerabilities(EnemyVulnerabilities_SidehopperTourian),
+    %name(EnemyName_SidehopperLarge_SidehopperTourian))
+
+EnemyHeaders_DessgeegaLarge:                                             ;A0DA3F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_DessgeegaLarge),
+    %health(800),
+    %damage(160),
+    %width($18),
+    %height($14),
+    %bank(InitAI_Hopper>>16),
+    %hurtAITime(0),
+    %cry($0030),
+    %bossID(0),
+    %initAI(InitAI_Hopper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Hopper),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(2),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_DessgeegaLarge),
+    %layer(5),
+    %drops(EnemyDropChances_DessgeegaLarge),
+    %vulnerabilities(EnemyVulnerabilities_DessgeegaLarge),
+    %name(EnemyName_DessgeegaLarge))
+
+EnemyHeaders_Zoa:                                                        ;A0DA7F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Zoa),
+    %health(40),
+    %damage(15),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Zoa>>16),
+    %hurtAITime(0),
+    %cry($0049),
+    %bossID(0),
+    %initAI(InitAI_Zoa),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Zoa),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Zoa),
+    %layer(5),
+    %drops(EnemyDropChances_Zoa),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Zoa))
+
+EnemyHeaders_Viola:                                                      ;A0DABF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Viola),
+    %health(30),
+    %damage(15),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Viola>>16),
+    %hurtAITime(0),
+    %cry($005F),
+    %bossID(0),
+    %initAI(InitAI_Viola),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Crawlers),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(InstList_Viola_UpsideDown),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Viola),
+    %layer(5),
+    %drops(EnemyDropChances_Viola),
+    %vulnerabilities(EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer),
+    %name(EnemyName_Viola))
+
+EnemyHeaders_Respawn:                                                    ;A0DAFF;
+    %EnemyHeader(\
+    %tileDataSize(0),
+    %palette(NOPNOP_A38069),
+    %health(0),
+    %damage(0),
+    %width(8),
+    %height(8),
+    %bank(RTL_A3804C>>16),
+    %hurtAITime(0),
+    %cry($0059),
+    %bossID(0),
+    %initAI(RTL_A3804C),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_A3804C),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(RTL_A3804C),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_A3804C),
+    %enemyShot(RTL_A3804C),
+    %spritemap(0),
+    %tileData(Tiles_Metroid),
+    %layer(0),
+    %drops(0),
+    %vulnerabilities(0),
+    %name(0))
+
+EnemyHeaders_Bang:                                                       ;A0DB3F;
+    %EnemyHeader(\
+    %tileDataSize($1000),
+    %palette(Palette_Bang),
+    %health(10),
+    %damage(4),
+    %width(16),
+    %height(16),
+    %bank(InitAI_Bang>>16),
+    %hurtAITime(0),
+    %cry($0056),
+    %bossID(0),
+    %initAI(InitAI_Bang),
+    %parts(3),
+    %unused(0),
+    %mainAI(MainAI_Bang),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Bang),
+    %spritemap(0),
+    %tileData(Tiles_Bang),
+    %layer(5),
+    %drops(EnemyDropChances_Bang),
+    %vulnerabilities(EnemyVulnerabilities_Bang),
+    %name(EnemyName_Bang))
+
+EnemyHeaders_Skree:                                                      ;A0DB7F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Skree),
+    %health(15),
+    %damage(10),
+    %width(8),
+    %height(12),
+    %bank(InitAI_Skree>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_Skree),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Skree),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Skree),
+    %spritemap(0),
+    %tileData(Tiles_Skree),
+    %layer(5),
+    %drops(EnemyDropChances_Skree),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Skree))
+
+EnemyHeaders_Yard:                                                       ;A0DBBF;
+    %EnemyHeader(\
+    %tileDataSize($0800),
+    %palette(Palette_Yard),
+    %health(10),
+    %damage(100),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Yard>>16),
+    %hurtAITime(0),
+    %cry($003E),
+    %bossID(0),
+    %initAI(InitAI_Yard),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Yard),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Yard),
+    %enemyShot(EnemyShot_Yard),
+    %spritemap(0),
+    %tileData(Tiles_Yard),
+    %layer(5),
+    %drops(EnemyDropChances_Yard),
+    %vulnerabilities(EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer),
+    %name(EnemyName_Yard))
+
+EnemyHeaders_Reflec:                                                     ;A0DBFF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Reflec),
+    %health(200),
+    %damage(30),
+    %width(16),
+    %height(16),
+    %bank(InitAI_Reflec>>16),
+    %hurtAITime(0),
+    %cry($0057),
+    %bossID(0),
+    %initAI(InitAI_Reflec),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_A3DC1B),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_A3804C),
+    %enemyShot(EnemyShot_Reflec),
+    %spritemap(0),
+    %tileData(Tiles_Reflec),
+    %layer(5),
+    %drops(EnemyDropChances_Reflec),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Reflec))
+
+EnemyHeaders_HZoomer:                                                    ;A0DC3F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_HZoomer),
+    %health(15),
+    %damage(5),
+    %width(8),
+    %height(8),
+    %bank(InitAI_HZoomer>>16),
+    %hurtAITime(0),
+    %cry($0023),
+    %bossID(0),
+    %initAI(InitAI_HZoomer),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_HZoomer),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Zoomer),
+    %layer(5),
+    %drops(EnemyDropChances_HZoomer),
+    %vulnerabilities(EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer),
+    %name(EnemyName_HZoomer))
+
+EnemyHeaders_Zeela:                                                      ;A0DC7F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Zeela),
+    %health(30),
+    %damage(10),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Zeela>>16),
+    %hurtAITime(0),
+    %cry($0023),
+    %bossID(0),
+    %initAI(InitAI_Zeela),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Crawlers),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Zeela),
+    %layer(5),
+    %drops(EnemyDropChances_Zeela),
+    %vulnerabilities(EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer),
+    %name(EnemyName_Zeela))
+
+EnemyHeaders_Sova:                                                       ;A0DCBF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Sova),
+    %health(40),
+    %damage(20),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Sova>>16),
+    %hurtAITime(0),
+    %cry($0023),
+    %bossID(0),
+    %initAI(InitAI_Sova),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Crawlers),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Sova),
+    %layer(5),
+    %drops(EnemyDropChances_Sova),
+    %vulnerabilities(EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer),
+    %name(EnemyName_Sova))
+
+EnemyHeaders_Zoomer:                                                     ;A0DCFF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Zoomer),
+    %health(15),
+    %damage(5),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Zoomer_MZoomer>>16),
+    %hurtAITime(0),
+    %cry($0023),
+    %bossID(0),
+    %initAI(InitAI_Zoomer_MZoomer),
+    %parts(1),
+    %unused(1),
+    %mainAI(MainAI_Crawlers),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Zoomer),
+    %layer(5),
+    %drops(EnemyDropChances_Zoomer),
+    %vulnerabilities(EnemyVulnerabilities_Viola_Yard_HZoomer_Zeela_Sova_Zoomer),
+    %name(EnemyName_Zoomer))
+
+EnemyHeaders_MZoomer:                                                    ;A0DD3F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_MZoomer),
+    %health(15),
+    %damage(5),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Zoomer_MZoomer>>16),
+    %hurtAITime(0),
+    %cry($0023),
+    %bossID(0),
+    %initAI(InitAI_Zoomer_MZoomer),
+    %parts(1),
+    %unused(1),
+    %mainAI(MainAI_Crawlers),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Zoomer),
+    %layer(5),
+    %drops(EnemyDropChances_MZoomer),
+    %vulnerabilities(EnemyVulnerabilities_MZoomer),
+    %name(EnemyName_MZoomer))
+
+EnemyHeaders_Metroid:                                                    ;A0DD7F;
+    %EnemyHeader(\
+    %tileDataSize($1000),
+    %palette(Palette_Metroid),
+    %health(500),
+    %damage(120),
+    %width(10),
+    %height(10),
+    %bank(InitAI_Metroid>>16),
+    %hurtAITime(0),
+    %cry($005A),
+    %bossID(0),
+    %initAI(InitAI_Metroid),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Metroid),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(HurtAI_Metroid),
+    %frozenAI(FrozenAI_Metroid),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Metroid),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Metroid),
+    %enemyShot(EnemyShot_Metroid),
+    %spritemap(0),
+    %tileData(Tiles_Metroid),
+    %layer(5),
+    %drops(EnemyDropChances_Metroid),
+    %vulnerabilities(EnemyVulnerabilities_Metroid),
+    %name(EnemyName_Metroid))
+
+EnemyHeaders_Crocomire:                                                  ;A0DDBF;
+    %EnemyHeader(\
+    %tileDataSize($A600),
+    %palette(Palette_Crocomire),
+    %health(32767),
+    %damage(40),
+    %width($30),
+    %height($38),
+    %bank(InitAI_Crocomire>>16),
+    %hurtAITime(0),
+    %cry($0005),
+    %bossID(6),
+    %initAI(InitAI_Crocomire),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Crocomire),
+    %grappleAI(Common_GrappleAI_SamusLatchesOn),
+    %hurtAI(HurtAI_Crocomire),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_Crocomire),
+    %variantIndex(0),
+    %enemyTouch(RTL_A4B950),
+    %enemyShot(0),
+    %spritemap(0),
+    %tileData(Tiles_Crocomire),
+    %layer(5),
+    %drops(EnemyDropChances_Crocomire),
+    %vulnerabilities(EnemyVulnerabilities_Crocomire_CrocomireTongue),
+    %name(0))
+
+EnemyHeaders_CrocomireTongue:                                            ;A0DDFF;
+    %EnemyHeader(\
+    %tileDataSize($2000),
+    %palette(Palette_Crocomire),
+    %health(32767),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_CrocomireTongue>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(6),
+    %initAI(InitAI_CrocomireTongue),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_CrocomireTongue),
+    %grappleAI(Common_GrappleAI_SamusLatchesOn),
+    %hurtAI(RTL_A4804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Crocomire),
+    %layer(5),
+    %drops(EnemyDropChances_CrocomireTongue),
+    %vulnerabilities(EnemyVulnerabilities_Crocomire_CrocomireTongue),
+    %name(0))
+
+EnemyHeaders_DraygonBody:                                                ;A0DE3F;
+    %EnemyHeader(\
+    %tileDataSize($2000),
+    %palette(Palette_Draygon_Sprite7),
+    %health(6000),
+    %damage(160),
+    %width($40),
+    %height($40),
+    %bank(InitAI_DraygonBody>>16),
+    %hurtAITime(4),
+    %cry(0),
+    %bossID(8),
+    %initAI(InitAI_DraygonBody),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_DraygonBody),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(HurtAI_Draygon),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_Draygon),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Draygon),
+    %enemyShot(EnemyShot_Draygon),
+    %spritemap(0),
+    %tileData(Tiles_Draygon),
+    %layer(5),
+    %drops(EnemyDropChances_DraygonBody_DraygonTail_DraygonArms),
+    %vulnerabilities(EnemyVulnerabilities_Draygon_Body_Eye_Tail_Arms),
+    %name(0))
+
+EnemyHeaders_DraygonEye:                                                 ;A0DE7F;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(NOPNOP_A58069),
+    %health(6000),
+    %damage(160),
+    %width(2),
+    %height(2),
+    %bank(InitAI_DraygonEye>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_DraygonEye),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_DraygonEye),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A5804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A5804C),
+    %enemyShot(RTL_A5804C),
+    %spritemap(0),
+    %tileData(Tiles_Draygon),
+    %layer(5),
+    %drops(EnemyDropChances_DraygonEye),
+    %vulnerabilities(EnemyVulnerabilities_Draygon_Body_Eye_Tail_Arms),
+    %name(0))
+
+EnemyHeaders_DraygonTail:                                                ;A0DEBF;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_Draygon_Sprite7),
+    %health(6000),
+    %damage(160),
+    %width($10),
+    %height($20),
+    %bank(InitAI_DraygonTail>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_DraygonTail),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_A5C5AA),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A5804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Draygon),
+    %layer(5),
+    %drops(EnemyDropChances_DraygonBody_DraygonTail_DraygonArms),
+    %vulnerabilities(EnemyVulnerabilities_Draygon_Body_Eye_Tail_Arms),
+    %name(0))
+
+EnemyHeaders_DraygonArms:                                                ;A0DEFF;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_Draygon_Sprite7),
+    %health(6000),
+    %damage(160),
+    %width($18),
+    %height($18),
+    %bank(InitAI_DraygonArms>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_DraygonArms),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_A5C5C4),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A5804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A5804C),
+    %enemyShot(RTL_A5804C),
+    %spritemap(0),
+    %tileData(Tiles_Draygon),
+    %layer(5),
+    %drops(EnemyDropChances_DraygonBody_DraygonTail_DraygonArms),
+    %vulnerabilities(EnemyVulnerabilities_Draygon_Body_Eye_Tail_Arms),
+    %name(0))
+
+EnemyHeaders_SporeSpawn:                                                 ;A0DF3F;
+    %EnemyHeader(\
+    %tileDataSize($0E00),
+    %palette(Palette_SporeSpawn),
+    %health(960),
+    %damage(12),
+    %width($30),
+    %height($20),
+    %bank(InitAI_SporeSpawn>>16),
+    %hurtAITime(4),
+    %cry($002C),
+    %bossID(4),
+    %initAI(InitAI_SporeSpawn),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_SporeSpawn),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A5804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_SporeSpawn),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SporeSpawn),
+    %enemyShot(EnemyShot_SporeSpawn_Vulnerable),
+    %spritemap(0),
+    %tileData(Tiles_SporeSpawn),
+    %layer(2),
+    %drops(EnemyDropChances_SporeSpawn),
+    %vulnerabilities(EnemyVulnerabilities_SporeSpawn),
+    %name(0))
+
+EnemyHeaders_SporeSpawnStalk:                                            ;A0DF7F;
+    %EnemyHeader(\
+    %tileDataSize($0E00),
+    %palette(Palette_SporeSpawn),
+    %health(960),
+    %damage(12),
+    %width($13),
+    %height($13),
+    %bank(InitAI_SporeSpawn>>16),
+    %hurtAITime(8),
+    %cry(0),
+    %bossID(4),
+    %initAI(InitAI_SporeSpawn),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_SporeSpawn),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A5804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SporeSpawn),
+    %enemyShot(EnemyShot_SporeSpawn_Vulnerable),
+    %spritemap(0),
+    %tileData(Tiles_SporeSpawn),
+    %layer(5),
+    %drops(EnemyDropChances_SporeSpawnStalk),
+    %vulnerabilities(EnemyVulnerabilities_SporeSpawn),
+    %name(0))
+
+EnemyHeaders_Boulder:                                                    ;A0DFBF;
+    %EnemyHeader(\
+    %tileDataSize($1000),
+    %palette(Palette_Boulder),
+    %health(20),
+    %damage(40),
+    %width(16),
+    %height(16),
+    %bank(InitAI_Boulder>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Boulder),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Boulder),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A6804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Boulder),
+    %layer(5),
+    %drops(EnemyDropChances_Boulder),
+    %vulnerabilities(EnemyVulnerabilities_Boulder),
+    %name(EnemyName_Boulder))
+
+EnemyHeaders_KzanTop:                                                    ;A0DFFF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Kzan),
+    %health(500),
+    %damage(200),
+    %width(16),
+    %height(12),
+    %bank(InitAI_KzanTop>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_KzanTop),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_KzanTop),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A6804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(RTL_A6804C),
+    %spritemap(0),
+    %tileData(Tiles_Kzan),
+    %layer(5),
+    %drops(EnemyDropChances_KzanTop_KzanBottom),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_KzanTop))
+
+EnemyHeaders_KzanBottom:                                                 ;A0E03F;
+    %EnemyHeader(\
+    %tileDataSize($0200),
+    %palette(Palette_Kzan),
+    %health(500),
+    %damage(200),
+    %width(16),
+    %height(2),
+    %bank(InitAI_KzanBottom>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_KzanBottom),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KzanBottom),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A6804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(RTL_A6804C),
+    %spritemap(0),
+    %tileData(Tiles_Kzan),
+    %layer(5),
+    %drops(EnemyDropChances_KzanTop_KzanBottom),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(0))
+
+EnemyHeaders_Hibashi:                                                    ;A0E07F;
+    %EnemyHeader(\
+    %tileDataSize($0800),
+    %palette(Palette_Hibashi),
+    %health(20),
+    %damage(30),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Hibashi>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Hibashi),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_Hibashi),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A6804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(RTL_A6804C),
+    %spritemap(0),
+    %tileData(Tiles_Hibashi_Puromi),
+    %layer(5),
+    %drops(EnemyDropChances_Hibashi),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Hibashi))
+
+EnemyHeaders_Puromi:                                                     ;A0E0BF;
+    %EnemyHeader(\
+    %tileDataSize($0800),
+    %palette(Palette_Puromi),
+    %health(40),
+    %damage(50),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Puromi>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Puromi),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Puromi),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(RTL_A6804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(RTL_A6804C),
+    %spritemap(0),
+    %tileData(Tiles_Hibashi_Puromi),
+    %layer(5),
+    %drops(EnemyDropChances_Puromi),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Puromi))
+
+EnemyHeaders_MiniKraid:                                                  ;A0E0FF;
+    %EnemyHeader(\
+    %tileDataSize($1000),
+    %palette(Palette_MiniKraid),
+    %health(400),
+    %damage(100),
+    %width($20),
+    %height($18),
+    %bank(InitAI_MiniKraid>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_MiniKraid),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_MiniKraid),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A6804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(3),
+    %powerBombReaction(EnemyShot_PowerBombReaction_MiniKraid),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_MiniKraid),
+    %enemyShot(EnemyShot_PowerBombReaction_MiniKraid),
+    %spritemap(0),
+    %tileData(Tiles_MiniKraid),
+    %layer(5),
+    %drops(EnemyDropChances_MiniKraid),
+    %vulnerabilities(EnemyVulnerabilities_MiniKraid),
+    %name(EnemyName_MiniKraid))
+
+EnemyHeaders_RidleyCeres:                                                ;A0E13F;
+    %EnemyHeader(\
+    %tileDataSize($2000),
+    %palette(Palette_Ridley),
+    %health(32767),
+    %damage(5),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Ridley>>16),
+    %hurtAITime(8),
+    %cry(0),
+    %bossID(1),
+    %initAI(InitAI_Ridley),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_RidleyCeres),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(HurtAI_RidleyCeres),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_Ridley),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Ridley),
+    %spritemap(0),
+    %tileData(Tiles_Ridley_0),
+    %layer(5),
+    %drops(EnemyDropChances_Ridley_RidleyCeres),
+    %vulnerabilities(EnemyVulnerabilities_Ridley_RidleyCeres),
+    %name(0))
+
+EnemyHeaders_Ridley:                                                     ;A0E17F;
+    %EnemyHeader(\
+    %tileDataSize($2000),
+    %palette(Palette_Ridley),
+    %health(18000),
+    %damage(160),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Ridley>>16),
+    %hurtAITime(8),
+    %cry(0),
+    %bossID(5),
+    %initAI(InitAI_Ridley),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Ridley),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(HurtAI_Ridley),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(TimeIsFrozenAI_Ridley),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_Ridley),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Ridley),
+    %spritemap(0),
+    %tileData(Tiles_Ridley_0),
+    %layer(2),
+    %drops(EnemyDropChances_Ridley_RidleyCeres),
+    %vulnerabilities(EnemyVulnerabilities_Ridley_RidleyCeres),
+    %name(0))
+
+EnemyHeaders_RidleyExplosion:                                            ;A0E1BF;
+    %EnemyHeader(\
+    %tileDataSize($8400),
+    %palette(Palette_RidleyExplosion_0),
+    %health(18000),
+    %damage(160),
+    %width(8),
+    %height(8),
+    %bank(InitAI_RidleyExplosion>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_RidleyExplosion),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_RidleyExplosion),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A6804C),
+    %frozenAI(RTL_A6804C),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A6804C),
+    %enemyShot(RTL_A6804C),
+    %spritemap(0),
+    %tileData(Tiles_RidleyExplosion),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(0))
+
+EnemyHeaders_Steam:                                                      ;A0E1FF;
+    %EnemyHeader(\
+    %tileDataSize(0),
+    %palette(Palette_CeresSteam),
+    %health(32767),
+    %damage(0),
+    %width(8),
+    %height(8),
+    %bank(InitAI_CeresSteam>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_CeresSteam),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_CeresSteam),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A6804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_CeresSteam),
+    %enemyShot(RTL_A6804C),
+    %spritemap(0),
+    %tileData(EnemyHeaders_CeresDoor),
+    %layer(5),
+    %drops(EnemyDropChances_Steam_Dachora_DachoraEscape),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(0))
+
+EnemyHeaders_CeresDoor:                                                  ;A0E23F;
+    %EnemyHeader(\
+    %tileDataSize($8600),
+    %palette(Palette_CeresDoor_BeforeEscape),
+    %health(40),
+    %damage(15),
+    %width(8),
+    %height($20),
+    %bank(InitAI_CeresDoor>>16),
+    %hurtAITime(0),
+    %cry($0059),
+    %bossID(0),
+    %initAI(InitAI_CeresDoor),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_CeresDoor),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A6804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(InstListPointers_CeresDoor),
+    %enemyTouch(RTL_A6F920),
+    %enemyShot(RTL_A6F920),
+    %spritemap(InitAI_Zebetite),
+    %tileData(Tiles_CeresDoor_0),
+    %layer(2),
+    %drops(0),
+    %vulnerabilities(0),
+    %name(0))
+
+EnemyHeaders_Zebetite:                                                   ;A0E27F;
+    %EnemyHeader(\
+    %tileDataSize(0),
+    %palette(0),
+    %health(1000),
+    %damage(0),
+    %width(8),
+    %height($18),
+    %bank(InitAI_Zebetite>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Zebetite),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Zebetite),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A6804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Zebetite),
+    %enemyShot(EnemyShot_Zebetite),
+    %spritemap(0),
+    %tileData(Tiles_MotherBrainHead),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Zebetite),
+    %name(0))
+
+EnemyHeaders_Kraid:                                                      ;A0E2BF;
+    %EnemyHeader(\
+    %tileDataSize($1E00),
+    %palette(Palette_Kraid),
+    %health(1000),
+    %damage(20),
+    %width($38),
+    %height($90),
+    %bank(InitAI_Kraid>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(3),
+    %initAI(InitAI_Kraid),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Kraid),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(Common_NormalEnemyPowerBombAI_NoDeathCheck),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Kraid),
+    %enemyShot(RTL_A7804C),
+    %spritemap(0),
+    %tileData(Tiles_Kraid),
+    %layer(5),
+    %drops(EnemyDropChances_Kraid),
+    %vulnerabilities(EnemyVulnerabilities_Kraid),
+    %name(0))
+
+EnemyHeaders_KraidArm:                                                   ;A0E2FF;
+    %EnemyHeader(\
+    %tileDataSize($1E00),
+    %palette(Palette_Kraid),
+    %health(1000),
+    %damage(20),
+    %width($30),
+    %height($30),
+    %bank(InitAI_KraidArm>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_KraidArm),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KraidArm),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_KraidArm),
+    %enemyShot(RTL_A794B5),
+    %spritemap(0),
+    %tileData(Tiles_Kraid),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_KraidArm_KraidFoot),
+    %name(0))
+
+EnemyHeaders_KraidLintTop:                                               ;A0E33F;
+    %EnemyHeader(\
+    %tileDataSize($1E00),
+    %palette(Palette_Kraid),
+    %health(1000),
+    %damage(10),
+    %width($18),
+    %height(8),
+    %bank(InitAI_KraidLintTop>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_KraidLintTop),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KraidLintTop),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_A7948F),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Kraid),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Kraid_LintTop_LintMiddle_LintBottom),
+    %name(0))
+
+EnemyHeaders_KraidLintMiddle:                                            ;A0E37F;
+    %EnemyHeader(\
+    %tileDataSize($1E00),
+    %palette(Palette_Kraid),
+    %health(1000),
+    %damage(10),
+    %width($18),
+    %height(8),
+    %bank(InitAI_KraidLintMiddle>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_KraidLintMiddle),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KraidLintMiddle),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_A7948F),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Kraid),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Kraid_LintTop_LintMiddle_LintBottom),
+    %name(0))
+
+EnemyHeaders_KraidLintBottom:                                            ;A0E3BF;
+    %EnemyHeader(\
+    %tileDataSize($1E00),
+    %palette(Palette_Kraid),
+    %health(1000),
+    %damage(10),
+    %width($18),
+    %height(8),
+    %bank(InitAI_KraidLintBottom>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_KraidLintBottom),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KraidLintBottom),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_A7948F),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Kraid),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Kraid_LintTop_LintMiddle_LintBottom),
+    %name(0))
+
+EnemyHeaders_KraidFoot:                                                  ;A0E3FF;
+    %EnemyHeader(\
+    %tileDataSize($1E00),
+    %palette(Palette_Kraid),
+    %health(1000),
+    %damage(20),
+    %width(8),
+    %height(8),
+    %bank(InitAI_KraidFoot>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_KraidFoot),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KraidFoot),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_A7948F),
+    %enemyShot(RTL_A794B5),
+    %spritemap(0),
+    %tileData(Tiles_Kraid),
+    %layer(5),
+    %drops(EnemyDropChances_KraidNail_KraidFoot),
+    %vulnerabilities(EnemyVulnerabilities_KraidArm_KraidFoot),
+    %name(0))
+
+EnemyHeaders_KraidNail:                                                  ;A0E43F;
+    %EnemyHeader(\
+    %tileDataSize($1E00),
+    %palette(Palette_Kraid),
+    %health(10),
+    %damage(10),
+    %width(8),
+    %height(8),
+    %bank(InitAI_KraidNail>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_KraidNail),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KraidNail),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_KraidNail),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Kraid),
+    %layer(5),
+    %drops(EnemyDropChances_KraidNail_KraidFoot),
+    %vulnerabilities(EnemyVulnerabilities_KraidNail_KraidNailBad),
+    %name(0))
+
+EnemyHeaders_KraidNailBad:                                               ;A0E47F;
+    %EnemyHeader(\
+    %tileDataSize($1E00),
+    %palette(Palette_Kraid),
+    %health(10),
+    %damage(10),
+    %width(8),
+    %height(8),
+    %bank(InitAI_KraidNailBad>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_KraidNailBad),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KraidNailBad),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_KraidNailBad),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Kraid),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_KraidNail_KraidNailBad),
+    %name(0))
+
+EnemyHeaders_PhantoonBody:                                               ;A0E4BF;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Phantoon),
+    %health(2500),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_PhantoonBody>>16),
+    %hurtAITime(8),
+    %cry(0),
+    %bossID(7),
+    %initAI(InitAI_PhantoonBody),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Phantoon),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(HurtAI_Phantoon),
+    %frozenAI(RTL_A7804C),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A7DD9A),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Phantoon),
+    %enemyShot(EnemyShot_Phantoon),
+    %spritemap(0),
+    %tileData(Tiles_Phantoon),
+    %layer(5),
+    %drops(EnemyDropChances_Phantoon_Body_Tentacles_Mouth),
+    %vulnerabilities(EnemyVulnerabilities_Phantoon_Body_Eye_Tentacles_Mouth),
+    %name(0))
+
+EnemyHeaders_PhantoonEye:                                                ;A0E4FF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Phantoon),
+    %health(2500),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Phantoon_Eye_Tentacles_Mouth>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Phantoon_Eye_Tentacles_Mouth),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_A7804C),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(RTL_A7804C),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A7804C),
+    %enemyShot(RTL_A7804C),
+    %spritemap(0),
+    %tileData(Tiles_Phantoon),
+    %layer(5),
+    %drops(EnemyDropChances_PhantoonEye),
+    %vulnerabilities(EnemyVulnerabilities_Phantoon_Body_Eye_Tentacles_Mouth),
+    %name(0))
+
+EnemyHeaders_PhantoonTentacles:                                          ;A0E53F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Phantoon),
+    %health(2500),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Phantoon_Eye_Tentacles_Mouth>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Phantoon_Eye_Tentacles_Mouth),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_A7E011),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(RTL_A7804C),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A7804C),
+    %enemyShot(RTL_A7804C),
+    %spritemap(0),
+    %tileData(Tiles_Phantoon),
+    %layer(5),
+    %drops(EnemyDropChances_Phantoon_Body_Tentacles_Mouth),
+    %vulnerabilities(EnemyVulnerabilities_Phantoon_Body_Eye_Tentacles_Mouth),
+    %name(0))
+
+EnemyHeaders_PhantoonMouth:                                              ;A0E57F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Phantoon),
+    %health(2500),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Phantoon_Eye_Tentacles_Mouth>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Phantoon_Eye_Tentacles_Mouth),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_A7E011),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(RTL_A7804C),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A7804C),
+    %enemyShot(RTL_A7804C),
+    %spritemap(0),
+    %tileData(Tiles_Phantoon),
+    %layer(5),
+    %drops(EnemyDropChances_Phantoon_Body_Tentacles_Mouth),
+    %vulnerabilities(EnemyVulnerabilities_Phantoon_Body_Eye_Tentacles_Mouth),
+    %name(0))
+
+EnemyHeaders_Etecoon:                                                    ;A0E5BF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Etecoon),
+    %health(32767),
+    %damage(0),
+    %width(6),
+    %height(7),
+    %bank(InitAI_Etecoon>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Etecoon),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Etecoon),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A7804C),
+    %enemyShot(RTL_A7804C),
+    %spritemap(0),
+    %tileData(Tiles_Etecoon),
+    %layer(5),
+    %drops(EnemyDropChances_Etecoon_EtecoonEscape),
+    %vulnerabilities(0),
+    %name(0))
+
+EnemyHeaders_Dachora:                                                    ;A0E5FF;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Dachora),
+    %health(32767),
+    %damage(0),
+    %width(8),
+    %height($18),
+    %bank(InitAI_Dachora>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Dachora),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Dachora),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(RTL_A7804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A7804C),
+    %enemyShot(RTL_A7804C),
+    %spritemap(0),
+    %tileData(Tiles_Dachora),
+    %layer(5),
+    %drops(EnemyDropChances_Steam_Dachora_DachoraEscape),
+    %vulnerabilities(0),
+    %name(0))
+
+EnemyHeaders_Evir:                                                       ;A0E63F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Evir),
+    %health(300),
+    %damage(100),
+    %width($10),
+    %height($14),
+    %bank(InitAI_Evir>>16),
+    %hurtAITime(0),
+    %cry($004A),
+    %bossID(0),
+    %initAI(InitAI_Evir),
+    %parts(3),
+    %unused(0),
+    %mainAI(MainAI_Evir),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Evir),
+    %variantIndex(0),
+    %enemyTouch(EnemyShot_Evir),
+    %enemyShot(EnemyTouch_Evir),
+    %spritemap(0),
+    %tileData(Tiles_Evir),
+    %layer(5),
+    %drops(EnemyDropChances_Evir_EvirProjectile),
+    %vulnerabilities(EnemyVulnerabilities_Evir),
+    %name(EnemyName_Evir))
+
+EnemyHeaders_EvirProjectile:                                             ;A0E67F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Evir),
+    %health(300),
+    %damage(100),
+    %width(8),
+    %height(8),
+    %bank(InitAI_EvirProjectile>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_EvirProjectile),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_EvirProjectile),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(RTL_A8804C),
+    %spritemap(0),
+    %tileData(Tiles_Evir),
+    %layer(5),
+    %drops(EnemyDropChances_Evir_EvirProjectile),
+    %vulnerabilities(EnemyVulnerabilities_EvirProjectile),
+    %name(0))
+
+EnemyHeaders_Eye:                                                        ;A0E6BF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Eye),
+    %health(20),
+    %damage(0),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Eye>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Eye),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_Eye),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(RTL_A8804C),
+    %spritemap(0),
+    %tileData(Tiles_Eye),
+    %layer(5),
+    %drops(EnemyDropChances_Eye),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Eye))
+
+EnemyHeaders_Fune:                                                       ;A0E6FF;
+    %EnemyHeader(\
+    %tileDataSize($0800),
+    %palette(Palette_Fune),
+    %health(20),
+    %damage(10),
+    %width(16),
+    %height(16),
+    %bank(InitAI_Fune_Namihe>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Fune_Namihe),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Fune_Namihe),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Fune_Namihe),
+    %layer(5),
+    %drops(EnemyDropChances_Fune),
+    %vulnerabilities(EnemyVulnerabilities_Fune_Magdollite),
+    %name(EnemyName_Fune))
+
+EnemyHeaders_Namihe:                                                     ;A0E73F;
+    %EnemyHeader(\
+    %tileDataSize($0800),
+    %palette(Palette_Namihe),
+    %health(20),
+    %damage(10),
+    %width(16),
+    %height(16),
+    %bank(InitAI_Fune_Namihe>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Fune_Namihe),
+    %parts(3),
+    %unused(0),
+    %mainAI(MainAI_Fune_Namihe),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Fune_Namihe),
+    %layer(5),
+    %drops(EnemyDropChances_Namihe),
+    %vulnerabilities(EnemyVulnerabilities_Namihe),
+    %name(EnemyName_Namihe))
+
+EnemyHeaders_Coven:                                                      ;A0E77F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Coven),
+    %health(300),
+    %damage(60),
+    %width(16),
+    %height(16),
+    %bank(InitAI_Coven>>16),
+    %hurtAITime(0),
+    %cry($0051),
+    %bossID(0),
+    %initAI(InitAI_Coven),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Coven),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Coven),
+    %layer(5),
+    %drops(EnemyDropChances_Coven),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Coven))
+
+EnemyHeaders_YappingMaw:                                                 ;A0E7BF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_YappingMaw),
+    %health(20),
+    %damage(30),
+    %width(8),
+    %height(8),
+    %bank(InitAI_YappingMaw>>16),
+    %hurtAITime(0),
+    %cry($003E),
+    %bossID(0),
+    %initAI(InitAI_YappingMaw),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_YappingMaw),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(FrozenAI_YappingMaw),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_YappingMaw),
+    %enemyShot(EnemyShot_YappingMaw),
+    %spritemap(0),
+    %tileData(Tiles_YappingMaw),
+    %layer(5),
+    %drops(EnemyDropChances_YappingMaw),
+    %vulnerabilities(EnemyVulnerabilities_YappingMaw),
+    %name(EnemyName_YappingMaw))
+
+EnemyHeaders_Kago:                                                       ;A0E7FF;
+    %EnemyHeader(\
+    %tileDataSize($0800),
+    %palette(Palette_Kago),
+    %health(1600),
+    %damage(0),
+    %width(16),
+    %height(16),
+    %bank(InitAI_Kago>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Kago),
+    %parts(9),
+    %unused(0),
+    %mainAI(MainAI_Kago),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Kago),
+    %spritemap(0),
+    %tileData(Tiles_Kago),
+    %layer(5),
+    %drops(EnemyDropChances_Kago),
+    %vulnerabilities(EnemyVulnerabilities_Kago),
+    %name(EnemyName_Kago))
+
+EnemyHeaders_Magdollite:                                                 ;A0E83F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Magdollite),
+    %health(20),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Magdollite>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Magdollite),
+    %parts(3),
+    %unused(0),
+    %mainAI(MainAI_Magdollite),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Magdollite),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Magdollite),
+    %enemyShot(EnemyShot_Magdollite),
+    %spritemap(0),
+    %tileData(Tiles_Magdollite),
+    %layer(5),
+    %drops(EnemyDropChances_Magdollite),
+    %vulnerabilities(EnemyVulnerabilities_Fune_Magdollite),
+    %name(EnemyName_Magdollite))
+
+EnemyHeaders_Beetom:                                                     ;A0E87F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Beetom),
+    %health(60),
+    %damage(10),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Beetom>>16),
+    %hurtAITime(0),
+    %cry($0055),
+    %bossID(0),
+    %initAI(InitAI_Beetom),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Beetom),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Beetom),
+    %enemyShot(EnemyShot_Beetom),
+    %spritemap(0),
+    %tileData(Tiles_Beetom),
+    %layer(5),
+    %drops(EnemyDropChances_Beetom),
+    %vulnerabilities(EnemyVulnerabilities_Beetom),
+    %name(EnemyName_Beetom))
+
+EnemyHeaders_Powamp:                                                     ;A0E8BF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Powamp),
+    %health(10),
+    %damage(100),
+    %width(8),
+    %height(16),
+    %bank(InitAI_Powamp>>16),
+    %hurtAITime(0),
+    %cry($006A),
+    %bossID(0),
+    %initAI(InitAI_Powamp),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_Powamp),
+    %grappleAI(Common_GrappleAI_SamusLatchesOn_NoInvincibility),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(PowerBombReaction_Powamp),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Powamp),
+    %enemyShot(EnemyShot_Powamp),
+    %spritemap(0),
+    %tileData(Tiles_Powamp),
+    %layer(5),
+    %drops(EnemyDropChances_Powamp),
+    %vulnerabilities(EnemyVulnerabilities_Powamp),
+    %name(EnemyName_Powamp))
+
+EnemyHeaders_Robot:                                                      ;A0E8FF;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Robot),
+    %health(800),
+    %damage(80),
+    %width(12),
+    %height($20),
+    %bank(InitAI_Robot>>16),
+    %hurtAITime(0),
+    %cry($0068),
+    %bossID(0),
+    %initAI(InitAI_Robot),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Robot),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Robot),
+    %enemyShot(EnemyShot_Robot),
+    %spritemap(0),
+    %tileData(Tiles_Robot),
+    %layer(5),
+    %drops(EnemyDropChances_Robot),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Robot))
+
+EnemyHeaders_RobotNoPower:                                               ;A0E93F;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Robot),
+    %health(450),
+    %damage(80),
+    %width(12),
+    %height($20),
+    %bank(InitAI_RobotNoPower>>16),
+    %hurtAITime(0),
+    %cry($0068),
+    %bossID(0),
+    %initAI(InitAI_RobotNoPower),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_A8CC66),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Robot),
+    %enemyShot(EnemyShot_RobotNoPower),
+    %spritemap(0),
+    %tileData(Tiles_Robot),
+    %layer(5),
+    %drops(EnemyDropChances_RobotNoPower),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_RobotNoPower))
+
+EnemyHeaders_Bull:                                                       ;A0E97F;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_Bull),
+    %health(100),
+    %damage(10),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Bull>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Bull),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Bull),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Bull),
+    %spritemap(0),
+    %tileData(Tiles_Bull),
+    %layer(5),
+    %drops(EnemyDropChances_Bull),
+    %vulnerabilities(EnemyVulnerabilities_Bull),
+    %name(EnemyName_Bull))
+
+EnemyHeaders_Alcoon:                                                     ;A0E9BF;
+    %EnemyHeader(\
+    %tileDataSize($0800),
+    %palette(Palette_Alcoon),
+    %health(200),
+    %damage(50),
+    %width(8),
+    %height($18),
+    %bank(InitAI_Alcoon>>16),
+    %hurtAITime(0),
+    %cry($005F),
+    %bossID(0),
+    %initAI(InitAI_Alcoon),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Alcoon),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Alcoon),
+    %layer(5),
+    %drops(EnemyDropChances_Alcoon),
+    %vulnerabilities(EnemyVulnerabilities_Alcoon),
+    %name(EnemyName_Alcoon))
+
+EnemyHeaders_Atomic:                                                     ;A0E9FF;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Atomic),
+    %health(250),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Atomic>>16),
+    %hurtAITime(0),
+    %cry($003E),
+    %bossID(0),
+    %initAI(InitAI_Atomic),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Atomic),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(2),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Atomic),
+    %layer(5),
+    %drops(EnemyDropChances_Atomic),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Atomic))
+
+EnemyHeaders_Spark:                                                      ;A0EA3F;
+    %EnemyHeader(\
+    %tileDataSize($0200),
+    %palette(Palette_Spark),
+    %health(80),
+    %damage(30),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Spark>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Spark),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Spark),
+    %grappleAI(Common_GrappleAI_HurtSamus),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Spark),
+    %spritemap(0),
+    %tileData(Tiles_Spark),
+    %layer(5),
+    %drops(EnemyDropChances_Spark),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_Spark))
+
+EnemyHeaders_FaceBlock:                                                  ;A0EA7F;
+    %EnemyHeader(\
+    %tileDataSize($0200),
+    %palette(Palette_FaceBlock),
+    %health(20),
+    %damage(0),
+    %width(8),
+    %height(8),
+    %bank(InitAI_FaceBlock>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_FaceBlock),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_FaceBlock),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_A8804C),
+    %enemyShot(EnemyShot_FaceBlock),
+    %spritemap(0),
+    %tileData(Tiles_FaceBlock),
+    %layer(2),
+    %drops(EnemyDropChances_FaceBlock),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(EnemyName_FaceBlock))
+
+EnemyHeaders_KihunterGreen:                                              ;A0EABF;
+    %EnemyHeader(\
+    %tileDataSize($1000),
+    %palette(Palette_KihunterGreen),
+    %health(60),
+    %damage(20),
+    %width(8),
+    %height($12),
+    %bank(InitAI_Kihunter>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_Kihunter),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_Kihunter),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Kihunter),
+    %spritemap(0),
+    %tileData(Tiles_Kihunter),
+    %layer(5),
+    %drops(EnemyDropChances_KihunterGreen_KihunterGreenWings),
+    %vulnerabilities(EnemyVulnerabilities_KihunterGreen_KihunterGreenWings),
+    %name(EnemyName_KihunterGreen))
+
+EnemyHeaders_KihunterGreenWings:                                         ;A0EAFF;
+    %EnemyHeader(\
+    %tileDataSize($0200),
+    %palette(Palette_KihunterGreen),
+    %health(60),
+    %damage(20),
+    %width(10),
+    %height(10),
+    %bank(InitAI_KihunterWings>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_KihunterWings),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KihunterWings),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A8804C),
+    %enemyShot(RTL_A8804C),
+    %spritemap(0),
+    %tileData(Tiles_Kihunter),
+    %layer(5),
+    %drops(EnemyDropChances_KihunterGreen_KihunterGreenWings),
+    %vulnerabilities(EnemyVulnerabilities_KihunterGreen_KihunterGreenWings),
+    %name(0))
+
+EnemyHeaders_KihunterYellow:                                             ;A0EB3F;
+    %EnemyHeader(\
+    %tileDataSize($1000),
+    %palette(Palette_KihunterYellow),
+    %health(360),
+    %damage(60),
+    %width(8),
+    %height($12),
+    %bank(InitAI_Kihunter>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_Kihunter),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_Kihunter),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Kihunter),
+    %spritemap(0),
+    %tileData(Tiles_Kihunter),
+    %layer(5),
+    %drops(EnemyDropChances_KihunterYellow_KihunterYellowWings),
+    %vulnerabilities(EnemyVulnerabilities_KihunterYellow_KihunterYellowWings),
+    %name(EnemyName_KihunterYellow))
+
+EnemyHeaders_KihunterYellowWings:                                        ;A0EB7F;
+    %EnemyHeader(\
+    %tileDataSize($0200),
+    %palette(Palette_KihunterYellow),
+    %health(360),
+    %damage(60),
+    %width(10),
+    %height(10),
+    %bank(InitAI_KihunterWings>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_KihunterWings),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KihunterWings),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A8804C),
+    %enemyShot(RTL_A8804C),
+    %spritemap(0),
+    %tileData(Tiles_Kihunter),
+    %layer(5),
+    %drops(EnemyDropChances_KihunterYellow_KihunterYellowWings),
+    %vulnerabilities(EnemyVulnerabilities_KihunterYellow_KihunterYellowWings),
+    %name(0))
+
+EnemyHeaders_KihunterRed:                                                ;A0EBBF;
+    %EnemyHeader(\
+    %tileDataSize($1000),
+    %palette(Palette_KihunterRed),
+    %health(1800),
+    %damage(200),
+    %width(8),
+    %height($12),
+    %bank(InitAI_Kihunter>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_Kihunter),
+    %parts(2),
+    %unused(0),
+    %mainAI(MainAI_Kihunter),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(EnemyShot_Kihunter),
+    %spritemap(0),
+    %tileData(Tiles_Kihunter),
+    %layer(5),
+    %drops(EnemyDropChances_KihunterRed_KihunterRedWings),
+    %vulnerabilities(EnemyVulnerabilities_KihunterRed_KihunterRedWings),
+    %name(EnemyName_KihunterRed))
+
+EnemyHeaders_KihunterRedWings:                                           ;A0EBFF;
+    %EnemyHeader(\
+    %tileDataSize($0200),
+    %palette(Palette_KihunterRed),
+    %health(1800),
+    %damage(200),
+    %width(10),
+    %height(10),
+    %bank(InitAI_KihunterWings>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_KihunterWings),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_KihunterWings),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A8804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_A8804C),
+    %enemyShot(RTL_A8804C),
+    %spritemap(0),
+    %tileData(Tiles_Kihunter),
+    %layer(5),
+    %drops(EnemyDropChances_KihunterRed_KihunterRedWings),
+    %vulnerabilities(EnemyVulnerabilities_KihunterRed_KihunterRedWings),
+    %name(0))
+
+EnemyHeaders_MotherBrainHead:                                            ;A0EC3F;
+    %EnemyHeader(\
+    %tileDataSize($1000),
+    %palette(Palette_MotherBrain),
+    %health(18000),
+    %damage(120),
+    %width($10),
+    %height($10),
+    %bank(InitAI_MotherBrainHead>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID($A),
+    %initAI(InitAI_MotherBrainHead),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_HurtAI_MotherBrainHead),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(MainAI_HurtAI_MotherBrainHead),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_MotherBrain),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_MotherBrainHead),
+    %enemyShot(EnemyShot_MotherBrainHead),
+    %spritemap(0),
+    %tileData(Tiles_MotherBrainHead),
+    %layer(5),
+    %drops(EnemyDropChances_MotherBrainHead),
+    %vulnerabilities(EnemyVulnerabilities_MotherBrainHead),
+    %name(0))
+
+EnemyHeaders_MotherBrainBody:                                            ;A0EC7F;
+    %EnemyHeader(\
+    %tileDataSize($8600),
+    %palette(Palette_MotherBrain),
+    %health(18000),
+    %damage(120),
+    %width(8),
+    %height(8),
+    %bank(InitAI_MotherBrainBody>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_MotherBrainBody),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_HurtAI_MotherBrainBody),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(MainAI_HurtAI_MotherBrainBody),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_MotherBrain),
+    %variantIndex(0),
+    %enemyTouch(RTL_A9B5C5),
+    %enemyShot(EnemyShot_MotherBrainBody),
+    %spritemap(0),
+    %tileData(Tiles_MotherBrainBody),
+    %layer(5),
+    %drops(EnemyDropChances_MotherBrainBody_BombTorizo),
+    %vulnerabilities(EnemyVulnerabilities_MotherBrainBody),
+    %name(0))
+
+EnemyHeaders_BabyMetroidCutscene:                                        ;A0ECBF;
+    %EnemyHeader(\
+    %tileDataSize(0),
+    %palette(Palette_BabyMetroid),
+    %health(3200),
+    %damage(40),
+    %width($24),
+    %height($24),
+    %bank(InitAI_BabyMetroidCutscene>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_BabyMetroidCutscene),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_BabyMetroidCutscene),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A9804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_BabyMetroidCutscene),
+    %enemyShot(RTL_A9804C),
+    %spritemap(0),
+    %tileData(Tiles_BabyMetroid),
+    %layer(2),
+    %drops(EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(0))
+
+EnemyHeaders_MotherBrainTubes:                                           ;A0ECFF;
+    %EnemyHeader(\
+    %tileDataSize(0),
+    %palette(Palette_MotherBrain),
+    %health(1000),
+    %damage(0),
+    %width(0),
+    %height(0),
+    %bank(InitAI_MotherBrainTubes>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_MotherBrainTubes),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_MotherBrainTubes),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A9804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_A9804C),
+    %enemyShot(RTL_A9804C),
+    %spritemap(0),
+    %tileData(Tiles_MotherBrainHead),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(0))
+
+EnemyHeaders_CorpseTorizo:                                               ;A0ED3F;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_CorpseTorizo),
+    %health(1000),
+    %damage(0),
+    %width($10),
+    %height($28),
+    %bank(InitAI_CorpseTorizo>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_CorpseTorizo),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_CorpseTorizo),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A9804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_CorpseTorizo),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_EnemyShot_CorpseTorizo),
+    %enemyShot(EnemyTouch_EnemyShot_CorpseTorizo),
+    %spritemap(0),
+    %tileData(Tiles_CorpseTorizo),
+    %layer(5),
+    %drops(EnemyDropChances_Shutter_Kamer_BabyMetroidCutscene),
+    %vulnerabilities(EnemyVulnerabilities_Corpse_BabyMetroid),
+    %name(0))
+
+EnemyHeaders_CorpseSidehopper:                                           ;A0ED7F;
+    %EnemyHeader(\
+    %tileDataSize($0E00),
+    %palette(Palette_CorpseCommon),
+    %health(320),
+    %damage(80),
+    %width($16),
+    %height(12),
+    %bank(InitAI_CorpseSidehopper>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_CorpseSidehopper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_HurtAI_CorpseEnemies),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(MainAI_HurtAI_CorpseEnemies),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_CorpseSidehopper),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_CorpseSidehopper),
+    %enemyShot(EnemyShot_CorpseSidehopper),
+    %spritemap(0),
+    %tileData(Tiles_Corpse_Sidehopper_Zoomer_Ripper_Skree),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Corpse_BabyMetroid),
+    %name(0))
+
+EnemyHeaders_CorpseSidehopper2:                                          ;A0EDBF;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_CorpseSidehopper2),
+    %health(320),
+    %damage(80),
+    %width($16),
+    %height(12),
+    %bank(InitAI_CorpseSidehopper>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_CorpseSidehopper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_HurtAI_CorpseEnemies),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A9804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(EnemyShot_CorpseSidehopper),
+    %variantIndex(0),
+    %enemyTouch(EnemyShot_CorpseSidehopper),
+    %enemyShot(EnemyShot_CorpseSidehopper),
+    %spritemap(0),
+    %tileData(Tiles_SidehopperLarge),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Corpse_BabyMetroid),
+    %name(0))
+
+EnemyHeaders_CorpseZoomer:                                               ;A0EDFF;
+    %EnemyHeader(\
+    %tileDataSize(0),
+    %palette(Palette_CorpseCommon),
+    %health(1000),
+    %damage(0),
+    %width(10),
+    %height(8),
+    %bank(InitAI_CorpseZoomer>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_CorpseZoomer),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_HurtAI_CorpseEnemies),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A9804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_CorpseZoomer),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_EnemyShot_CorpseZoomer),
+    %enemyShot(EnemyTouch_EnemyShot_CorpseZoomer),
+    %spritemap(0),
+    %tileData(Tiles_Corpse_Sidehopper_Zoomer_Ripper_Skree),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Corpse_BabyMetroid),
+    %name(0))
+
+EnemyHeaders_CorpseRipper:                                               ;A0EE3F;
+    %EnemyHeader(\
+    %tileDataSize(0),
+    %palette(Palette_CorpseCommon),
+    %health(1000),
+    %damage(0),
+    %width(11),
+    %height(6),
+    %bank(InitAI_CorpseRipper>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_CorpseRipper),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_HurtAI_CorpseEnemies),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A9804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_CorpseRipper),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_EnemyShot_CorpseRipper),
+    %enemyShot(EnemyTouch_EnemyShot_CorpseRipper),
+    %spritemap(0),
+    %tileData(Tiles_Corpse_Sidehopper_Zoomer_Ripper_Skree),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Corpse_BabyMetroid),
+    %name(0))
+
+EnemyHeaders_CorpseSkree:                                                ;A0EE7F;
+    %EnemyHeader(\
+    %tileDataSize(0),
+    %palette(Palette_CorpseCommon),
+    %health(1000),
+    %damage(0),
+    %width(12),
+    %height($10),
+    %bank(InitAI_CorpseSkree>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_CorpseSkree),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_HurtAI_CorpseEnemies),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A9804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_CorpseSkree),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_EnemyShot_CorpseSkree),
+    %enemyShot(EnemyTouch_EnemyShot_CorpseSkree),
+    %spritemap(0),
+    %tileData(Tiles_Corpse_Sidehopper_Zoomer_Ripper_Skree),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Corpse_BabyMetroid),
+    %name(0))
+
+EnemyHeaders_BabyMetroid:                                                ;A0EEBF;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_BabyMetroid),
+    %health(3200),
+    %damage(40),
+    %width($28),
+    %height($28),
+    %bank(InitAI_BabyMetroid>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_BabyMetroid),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_BabyMetroid),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_A9804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_BabyMetroid),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_BabyMetroid),
+    %enemyShot(EnemyShot_BabyMetroid),
+    %spritemap(0),
+    %tileData(Tiles_BabyMetroid),
+    %layer(2),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Corpse_BabyMetroid),
+    %name(0))
+
+EnemyHeaders_BombTorizo:                                                 ;A0EEFF;
+    %EnemyHeader(\
+    %tileDataSize($2000),
+    %palette(Palette_Torizo_OrbProjectile),
+    %health(800),
+    %damage(8),
+    %width($12),
+    %height($30),
+    %bank(InitAI_Torizo>>16),
+    %hurtAITime(8),
+    %cry($0027),
+    %bossID(2),
+    %initAI(InitAI_Torizo),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_BombTorizo),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(HurtAI_BombTorizo),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Torizo),
+    %enemyShot(EnemyShot_Torizo_Normal),
+    %spritemap(0),
+    %tileData(Tiles_BombTorizo_GoldenTorizo),
+    %layer(5),
+    %drops(EnemyDropChances_MotherBrainBody_BombTorizo),
+    %vulnerabilities(EnemyVulnerabilities_BombTorizo_BombTorizoOrb),
+    %name(0))
+
+EnemyHeaders_BombTorizoOrb:                                              ;A0EF3F;
+    %EnemyHeader(\
+    %tileDataSize($2000),
+    %palette(Palette_Torizo_OrbProjectile),
+    %health(800),
+    %damage(8),
+    %width($12),
+    %height($30),
+    %bank(InitAI_Torizo>>16),
+    %hurtAITime(8),
+    %cry($0027),
+    %bossID(2),
+    %initAI(InitAI_Torizo),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_BombTorizo),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(HurtAI_BombTorizo),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Torizo),
+    %enemyShot(EnemyShot_Torizo_Normal),
+    %spritemap(0),
+    %tileData(Tiles_BombTorizo_GoldenTorizo),
+    %layer(5),
+    %drops(EnemyDropChances_BombTorizoOrb),
+    %vulnerabilities(EnemyVulnerabilities_BombTorizo_BombTorizoOrb),
+    %name(0))
+
+EnemyHeaders_GoldenTorizo:                                               ;A0EF7F;
+    %EnemyHeader(\
+    %tileDataSize($2000),
+    %palette(Palette_Torizo_OrbProjectile),
+    %health(13500),
+    %damage(160),
+    %width($12),
+    %height($30),
+    %bank(InitAI_Torizo>>16),
+    %hurtAITime(8),
+    %cry($0027),
+    %bossID(2),
+    %initAI(InitAI_Torizo),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_GoldenTorizo),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(HurtAI_GoldenTorizo),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Torizo),
+    %enemyShot(ShotReaction_GoldenTorizo_Normal),
+    %spritemap(0),
+    %tileData(Tiles_BombTorizo_GoldenTorizo),
+    %layer(5),
+    %drops(EnemyDropChances_GoldenTorizo),
+    %vulnerabilities(EnemyVulnerabilities_GoldenTorizo_GoldenTorizoOrb),
+    %name(0))
+
+EnemyHeaders_GoldenTorizoOrb:                                            ;A0EFBF;
+    %EnemyHeader(\
+    %tileDataSize($2000),
+    %palette(Palette_Torizo_OrbProjectile),
+    %health(13500),
+    %damage(160),
+    %width($12),
+    %height($30),
+    %bank(InitAI_Torizo>>16),
+    %hurtAITime(8),
+    %cry($0027),
+    %bossID(2),
+    %initAI(InitAI_Torizo),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_GoldenTorizo),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(HurtAI_GoldenTorizo),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Torizo),
+    %enemyShot(ShotReaction_GoldenTorizo_Normal),
+    %spritemap(0),
+    %tileData(Tiles_BombTorizo_GoldenTorizo),
+    %layer(5),
+    %drops(EnemyDropChances_GoldenTorizoOrb),
+    %vulnerabilities(EnemyVulnerabilities_GoldenTorizo_GoldenTorizoOrb),
+    %name(0))
+
+EnemyHeaders_TourianStatue:                                              ;A0EFFF;
+    %EnemyHeader(\
+    %tileDataSize($1600),
+    %palette(Palettes_TourianStatue_Ridley),
+    %health(3000),
+    %damage(3000),
+    %width(0),
+    %height(0),
+    %bank(InitAI_TourianStatue>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_TourianStatue),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_TourianStatue),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_AA804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_AA804C),
+    %enemyShot(RTL_AA804C),
+    %spritemap(0),
+    %tileData(Tiles_TourianStatue),
+    %layer(6),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(0))
+
+EnemyHeaders_TourianStatueGhost:                                         ;A0F03F;
+    %EnemyHeader(\
+    %tileDataSize($8600),
+    %palette(Palettes_TourianStatue_Ridley),
+    %health(3000),
+    %damage(3000),
+    %width(0),
+    %height(0),
+    %bank(RTL_AA804C>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(RTL_AA804C),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_AA804C),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_AA804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_AA804C),
+    %enemyShot(RTL_AA804C),
+    %spritemap(0),
+    %tileData(Tiles_TourianStatuesSoul),
+    %layer(6),
+    %drops(0),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(0))
+
+EnemyHeaders_Shaktool:                                                   ;A0F07F;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Shaktool),
+    %health(300),
+    %damage(120),
+    %width(6),
+    %height(6),
+    %bank(InitAI_Shaktool>>16),
+    %hurtAITime(8),
+    %cry($0069),
+    %bossID(0),
+    %initAI(InitAI_Shaktool),
+    %parts(7),
+    %unused(0),
+    %mainAI(MainAI_HurtAI_Shaktool),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(MainAI_HurtAI_Shaktool),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Shaktool),
+    %enemyShot(EnemyShot_Shaktool),
+    %spritemap(0),
+    %tileData(Tiles_Shaktool),
+    %layer(5),
+    %drops(EnemyDropChances_Shaktool),
+    %vulnerabilities(EnemyVulnerabilities_Shaktool),
+    %name(EnemyName_GoldenTorizo))
+
+EnemyHeaders_NoobTubeCrack:                                              ;A0F0BF;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_NoobTubeCrack_Initial),
+    %health(20),
+    %damage(40),
+    %width(0),
+    %height(0),
+    %bank(InitAI_NoobTubeCrack>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_NoobTubeCrack),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_AA804C),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_AA804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_AA804C),
+    %enemyShot(RTL_AA804C),
+    %spritemap(0),
+    %tileData(Tiles_NoobTubeCrack),
+    %layer(5),
+    %drops(EnemyDropChances_NoobTubeCrack_Chozo),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(0))
+
+EnemyHeaders_Chozo:                                                      ;A0F0FF;
+    %EnemyHeader(\
+    %tileDataSize($1200),
+    %palette(Palette_Chozo_WreckedShip_SpritePalette1),
+    %health(20),
+    %damage(40),
+    %width($10),
+    %height($24),
+    %bank(InitAI_Chozo>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_Chozo),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Chozo),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_AA804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(RTL_AAE7DB),
+    %enemyShot(RTL_AAE7DC),
+    %spritemap(0),
+    %tileData(Tiles_Chozo),
+    %layer(5),
+    %drops(EnemyDropChances_NoobTubeCrack_Chozo),
+    %vulnerabilities(EnemyVulnerabilities_Indestructible),
+    %name(0))
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_BunchOf2s_A0F13F:
@@ -13932,697 +14706,837 @@ UNUSED_BunchOf2s_A0F13F:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 ; Weirdo discontinuity, enemy banks jump from $A2..AA to $B2..B3
-UNUSED_EnemyHeaders_SpinningTurtleEye_A0F153:
-    dw $0200                                                             ;A0F153;
-    dw UNUSED_Palette_SpinningTurtleEye_B38687                           ;A0F155;
-    dw $0014,$0028,$0008,$0008                                           ;A0F157;
-    db $B3,$00                                                           ;A0F15F;
-    dw $0000,$0000                                                       ;A0F161;
-    dw UNUSED_InitAI_SpinningTurtleEye_B386FB                            ;A0F165;
-    dw $0001,$0000                                                       ;A0F167;
-    dw UNUSED_MainAI_SpinningTurtleEye_B3870E                            ;A0F16B;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F16D;
-    dw RTL_B3804C                                                        ;A0F16F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F171;
-    dw $0000                                                             ;A0F173;
-    dw $0000                                                             ;A0F175;
-    dd $00000000                                                         ;A0F177;
-    dw $0000,$0000                                                       ;A0F17B;
-    dd $00000000                                                         ;A0F17F;
-    dw Common_NormalEnemyTouchAI                                         ;A0F183;
-    dw Common_NormalEnemyShotAI                                          ;A0F185;
-    dw $0000                                                             ;A0F187;
-    dl UNUSED_Tiles_SpinningTurtleEye_B7FB00                             ;A0F189;
-    db $05                                                               ;A0F18C;
-    dw $0000                                                             ;A0F18D;
-    dw $0000                                                             ;A0F18F;
-    dw $0000                                                             ;A0F191;
+UNUSED_EnemyHeaders_SpinningTurtleEye_A0F153:                            ;A0F153;
+    %EnemyHeader(\
+    %tileDataSize($0200),
+    %palette(UNUSED_Palette_SpinningTurtleEye_B38687),
+    %health(20),
+    %damage(40),
+    %width(8),
+    %height(8),
+    %bank(UNUSED_InitAI_SpinningTurtleEye_B386FB>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(UNUSED_InitAI_SpinningTurtleEye_B386FB),
+    %parts(1),
+    %unused(0),
+    %mainAI(UNUSED_MainAI_SpinningTurtleEye_B3870E),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(UNUSED_Tiles_SpinningTurtleEye_B7FB00),
+    %layer(5),
+    %drops(0),
+    %vulnerabilities(0),
+    %name(0))
 
-EnemyHeaders_Zeb:
-    dw $0400                                                             ;A0F193;
-    dw Palette_Zeb                                                       ;A0F195;
-    dw $0009,$0006,$0008,$0008                                           ;A0F197;
-    db $B3,$00                                                           ;A0F19F;
-    dw $0022,$0000                                                       ;A0F1A1;
-    dw InitAI_Zeb_Zebbo                                                  ;A0F1A5;
-    dw $0001,$0000                                                       ;A0F1A7;
-    dw MainAI_Zeb_Zebbo                                                  ;A0F1AB;
-    dw Common_GrappleAI_KillEnemy                                        ;A0F1AD;
-    dw RTL_B3804C                                                        ;A0F1AF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F1B1;
-    dw $0000                                                             ;A0F1B3;
-    dw $0000                                                             ;A0F1B5;
-    dd $00000000                                                         ;A0F1B7;
-    dw $0000,$0000                                                       ;A0F1BB;
-    dd $00000000                                                         ;A0F1BF;
-    dw Common_NormalEnemyTouchAI                                         ;A0F1C3;
-    dw Common_NormalEnemyShotAI                                          ;A0F1C5;
-    dw $0000                                                             ;A0F1C7;
-    dl Tiles_Zeb                                                         ;A0F1C9;
-    db $05                                                               ;A0F1CC;
-    dw EnemyDropChances_Zeb                                              ;A0F1CD;
-    dw EnemyVulnerabilities_Default                                      ;A0F1CF;
-    dw EnemyName_Zeb                                                     ;A0F1D1;
+EnemyHeaders_Zeb:                                                        ;A0F193;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Zeb),
+    %health(9),
+    %damage(6),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Zeb_Zebbo>>16),
+    %hurtAITime(0),
+    %cry($0022),
+    %bossID(0),
+    %initAI(InitAI_Zeb_Zebbo),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Zeb_Zebbo),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_B3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Zeb),
+    %layer(5),
+    %drops(EnemyDropChances_Zeb),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Zeb))
 
-EnemyHeaders_Zebbo:
-    dw $0400                                                             ;A0F1D3;
-    dw Palette_Zebbo                                                     ;A0F1D5;
-    dw $001E,$0014,$0008,$0008                                           ;A0F1D7;
-    db $B3,$00                                                           ;A0F1DF;
-    dw $0022,$0000                                                       ;A0F1E1;
-    dw InitAI_Zeb_Zebbo                                                  ;A0F1E5;
-    dw $0001,$0000                                                       ;A0F1E7;
-    dw MainAI_Zeb_Zebbo                                                  ;A0F1EB;
-    dw Common_GrappleAI_KillEnemy                                        ;A0F1ED;
-    dw RTL_B3804C                                                        ;A0F1EF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F1F1;
-    dw $0000                                                             ;A0F1F3;
-    dw $0000                                                             ;A0F1F5;
-    dd $00000000                                                         ;A0F1F7;
-    dw $0000,$0000                                                       ;A0F1FB;
-    dd $00000000                                                         ;A0F1FF;
-    dw Common_NormalEnemyTouchAI                                         ;A0F203;
-    dw Common_NormalEnemyShotAI                                          ;A0F205;
-    dw $0000                                                             ;A0F207;
-    dl Tiles_Zebbo                                                       ;A0F209;
-    db $05                                                               ;A0F20C;
-    dw EnemyDropChances_Zebbo                                            ;A0F20D;
-    dw EnemyVulnerabilities_Default                                      ;A0F20F;
-    dw EnemyName_Zebbo                                                   ;A0F211;
+EnemyHeaders_Zebbo:                                                      ;A0F1D3;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Zebbo),
+    %health(30),
+    %damage(20),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Zeb_Zebbo>>16),
+    %hurtAITime(0),
+    %cry($0022),
+    %bossID(0),
+    %initAI(InitAI_Zeb_Zebbo),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Zeb_Zebbo),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_B3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Zebbo),
+    %layer(5),
+    %drops(EnemyDropChances_Zebbo),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Zebbo))
 
-EnemyHeaders_Gamet:
-    dw $0400                                                             ;A0F213;
-    dw Palette_Gamet                                                     ;A0F215;
-    dw $0014,$0010,$0008,$0008                                           ;A0F217;
-    db $B3,$00                                                           ;A0F21F;
-    dw $0022,$0000                                                       ;A0F221;
-    dw InitAI_Gamet                                                      ;A0F225;
-    dw $0005,$0000                                                       ;A0F227;
-    dw MainAI_Gamet                                                      ;A0F22B;
-    dw Common_GrappleAI_KillEnemy                                        ;A0F22D;
-    dw RTL_B3804C                                                        ;A0F22F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F231;
-    dw $0000                                                             ;A0F233;
-    dw $0000                                                             ;A0F235;
-    dd $00000000                                                         ;A0F237;
-    dw $0000,$0000                                                       ;A0F23B;
-    dd $00000000                                                         ;A0F23F;
-    dw Common_NormalEnemyTouchAI                                         ;A0F243;
-    dw Common_NormalEnemyShotAI                                          ;A0F245;
-    dw $0000                                                             ;A0F247;
-    dl Tiles_Gamet                                                       ;A0F249;
-    db $05                                                               ;A0F24C;
-    dw EnemyDropChances_Gamet                                            ;A0F24D;
-    dw EnemyVulnerabilities_Default                                      ;A0F24F;
-    dw EnemyName_Gamet                                                   ;A0F251;
+EnemyHeaders_Gamet:                                                      ;A0F213;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Gamet),
+    %health(20),
+    %damage(16),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Gamet>>16),
+    %hurtAITime(0),
+    %cry($0022),
+    %bossID(0),
+    %initAI(InitAI_Gamet),
+    %parts(5),
+    %unused(0),
+    %mainAI(MainAI_Gamet),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_B3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Gamet),
+    %layer(5),
+    %drops(EnemyDropChances_Gamet),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Gamet))
 
-EnemyHeaders_Geega:
-    dw $0400                                                             ;A0F253;
-    dw Palette_Geega                                                     ;A0F255;
-    dw $000A,$000A,$0008,$0008                                           ;A0F257;
-    db $B3,$00                                                           ;A0F25F;
-    dw $0022,$0000                                                       ;A0F261;
-    dw InitAI_Geega                                                      ;A0F265;
-    dw $0001,$0000                                                       ;A0F267;
-    dw MainAI_Geega                                                      ;A0F26B;
-    dw Common_GrappleAI_KillEnemy                                        ;A0F26D;
-    dw RTL_B3804C                                                        ;A0F26F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F271;
-    dw $0000                                                             ;A0F273;
-    dw $0000                                                             ;A0F275;
-    dd $00000000                                                         ;A0F277;
-    dw $0000,$0000                                                       ;A0F27B;
-    dd $00000000                                                         ;A0F27F;
-    dw Common_NormalEnemyTouchAI                                         ;A0F283;
-    dw Common_NormalEnemyShotAI                                          ;A0F285;
-    dw $0000                                                             ;A0F287;
-    dl Tiles_Geega                                                       ;A0F289;
-    db $05                                                               ;A0F28C;
-    dw EnemyDropChances_Geega                                            ;A0F28D;
-    dw EnemyVulnerabilities_Default                                      ;A0F28F;
-    dw EnemyName_Geega                                                   ;A0F291;
+EnemyHeaders_Geega:                                                      ;A0F253;
+    %EnemyHeader(\
+    %tileDataSize($0400),
+    %palette(Palette_Geega),
+    %health(10),
+    %damage(10),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Geega>>16),
+    %hurtAITime(0),
+    %cry($0022),
+    %bossID(0),
+    %initAI(InitAI_Geega),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Geega),
+    %grappleAI(Common_GrappleAI_KillEnemy),
+    %hurtAI(RTL_B3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(Common_NormalEnemyTouchAI),
+    %enemyShot(Common_NormalEnemyShotAI),
+    %spritemap(0),
+    %tileData(Tiles_Geega),
+    %layer(5),
+    %drops(EnemyDropChances_Geega),
+    %vulnerabilities(EnemyVulnerabilities_Default),
+    %name(EnemyName_Geega))
 
-EnemyHeaders_Botwoon:
-    dw $1800                                                             ;A0F293;
-    dw Palette_Botwoon                                                   ;A0F295;
-    dw $0BB8,$0078,$0008,$0008                                           ;A0F297;
-    db $B3,$00                                                           ;A0F29F;
-    dw $005F,$0009                                                       ;A0F2A1;
-    dw InitAI_Botwoon                                                    ;A0F2A5;
-    dw $0001,$0000                                                       ;A0F2A7;
-    dw MainAI_Botwoon                                                    ;A0F2AB;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F2AD;
-    dw RTL_B3804C                                                        ;A0F2AF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F2B1;
-    dw $0000                                                             ;A0F2B3;
-    dw $0000                                                             ;A0F2B5;
-    dd $00000000                                                         ;A0F2B7;
-    dw PowerBombReaction_Botwoon                                         ;A0F2BB;
-    dw $0000                                                             ;A0F2BD;
-    dd $00000000                                                         ;A0F2BF;
-    dw EnemyTouch_Botwoon                                                ;A0F2C3;
-    dw EnemyShot_Botwoon                                                 ;A0F2C5;
-    dw $0000                                                             ;A0F2C7;
-    dl Tiles_Botwoon                                                     ;A0F2C9;
-    db $05                                                               ;A0F2CC;
-    dw EnemyDropChances_Botwoon                                          ;A0F2CD;
-    dw EnemyVulnerabilities_Botwoon                                      ;A0F2CF;
-    dw EnemyName_Botwoon                                                 ;A0F2D1;
+EnemyHeaders_Botwoon:                                                    ;A0F293;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_Botwoon),
+    %health(3000),
+    %damage(120),
+    %width(8),
+    %height(8),
+    %bank(InitAI_Botwoon>>16),
+    %hurtAITime(0),
+    %cry($005F),
+    %bossID(9),
+    %initAI(InitAI_Botwoon),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_Botwoon),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(PowerBombReaction_Botwoon),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_Botwoon),
+    %enemyShot(EnemyShot_Botwoon),
+    %spritemap(0),
+    %tileData(Tiles_Botwoon),
+    %layer(5),
+    %drops(EnemyDropChances_Botwoon),
+    %vulnerabilities(EnemyVulnerabilities_Botwoon),
+    %name(EnemyName_Botwoon))
 
-EnemyHeaders_EtecoonEscape:
-    dw $0600                                                             ;A0F2D3;
-    dw Palette_EtecoonEscape                                             ;A0F2D5;
-    dw $0BB8,$0BB8,$0006,$0008                                           ;A0F2D7;
-    db $B3,$00                                                           ;A0F2DF;
-    dw $0000,$0000                                                       ;A0F2E1;
-    dw InitAI_EtecoonEscape                                              ;A0F2E5;
-    dw $0001,$0000                                                       ;A0F2E7;
-    dw MainAI_EtecoonEscape                                              ;A0F2EB;
-    dw Common_GrappleAI_NoInteraction                                    ;A0F2ED;
-    dw RTL_B3804C                                                        ;A0F2EF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F2F1;
-    dw $0000                                                             ;A0F2F3;
-    dw $0000                                                             ;A0F2F5;
-    dd $00000000                                                         ;A0F2F7;
-    dw RTL_A0804C                                                        ;A0F2FB;
-    dw $0000                                                             ;A0F2F9;
-    dd $00000000                                                         ;A0F2FF;
-    dw RTL_B3804C                                                        ;A0F303;
-    dw RTL_B3804C                                                        ;A0F305;
-    dw $0000                                                             ;A0F307;
-    dl Tiles_Etecoon                                                     ;A0F309;
-    db $05                                                               ;A0F30C;
-    dw EnemyDropChances_Etecoon_EtecoonEscape                            ;A0F30D;
-    dw $0000                                                             ;A0F30F;
-    dw $0000                                                             ;A0F311;
+EnemyHeaders_EtecoonEscape:                                              ;A0F2D3;
+    %EnemyHeader(\
+    %tileDataSize($0600),
+    %palette(Palette_EtecoonEscape),
+    %health(3000),
+    %damage(3000),
+    %width(6),
+    %height(8),
+    %bank(InitAI_EtecoonEscape>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_EtecoonEscape),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_EtecoonEscape),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(RTL_B3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_B3804C),
+    %enemyShot(RTL_B3804C),
+    %spritemap(0),
+    %tileData(Tiles_Etecoon),
+    %layer(5),
+    %drops(EnemyDropChances_Etecoon_EtecoonEscape),
+    %vulnerabilities(0),
+    %name(0))
 
-EnemyHeaders_DachoraEscape:
-    dw $0C00                                                             ;A0F313;
-    dw Palette_DachoraEscape                                             ;A0F315;
-    dw $0BB8,$0BB8,$0008,$0018                                           ;A0F317;
-    db $B3,$00                                                           ;A0F31F;
-    dw $0000,$0000                                                       ;A0F321;
-    dw InitAI_DachoraEscape                                              ;A0F325;
-    dw $0001,$0000                                                       ;A0F327;
-    dw RTL_B3EB1A                                                        ;A0F32B;
-    dw Common_GrappleAI_NoInteraction                                    ;A0F32D;
-    dw RTL_B3804C                                                        ;A0F32F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F331;
-    dw $0000                                                             ;A0F333;
-    dw $0000                                                             ;A0F335;
-    dd $00000000                                                         ;A0F337;
-    dw RTL_A0804C                                                        ;A0F33B;
-    dw $0000                                                             ;A0F339;
-    dd $00000000                                                         ;A0F33F;
-    dw RTL_B3804C                                                        ;A0F343;
-    dw RTL_B3804C                                                        ;A0F345;
-    dw $0000                                                             ;A0F347;
-    dl Tiles_Dachora                                                     ;A0F349;
-    db $05                                                               ;A0F34C;
-    dw EnemyDropChances_Steam_Dachora_DachoraEscape                      ;A0F34D;
-    dw $0000                                                             ;A0F34F;
-    dw $0000                                                             ;A0F351;
+EnemyHeaders_DachoraEscape:                                              ;A0F313;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_DachoraEscape),
+    %health(3000),
+    %damage(3000),
+    %width(8),
+    %height($18),
+    %bank(InitAI_DachoraEscape>>16),
+    %hurtAITime(0),
+    %cry(0),
+    %bossID(0),
+    %initAI(InitAI_DachoraEscape),
+    %parts(1),
+    %unused(0),
+    %mainAI(RTL_B3EB1A),
+    %grappleAI(Common_GrappleAI_NoInteraction),
+    %hurtAI(RTL_B3804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(0),
+    %powerBombReaction(RTL_A0804C),
+    %variantIndex(0),
+    %enemyTouch(RTL_B3804C),
+    %enemyShot(RTL_B3804C),
+    %spritemap(0),
+    %tileData(Tiles_Dachora),
+    %layer(5),
+    %drops(EnemyDropChances_Steam_Dachora_DachoraEscape),
+    %vulnerabilities(0),
+    %name(0))
 
-EnemyHeaders_PirateGreyWall:
-    dw $0C00                                                             ;A0F353;
-    dw Palette_Pirate_Grey                                               ;A0F355;
-    dw $0014,$000F,$0010,$0018                                           ;A0F357;
-    db $B2,$00                                                           ;A0F35F;
-    dw $0021,$0000                                                       ;A0F361;
-    dw InitAI_PirateWall                                                 ;A0F365;
-    dw $0001,$0000                                                       ;A0F367;
-    dw MainAI_PirateWall                                                 ;A0F36B;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F36D;
-    dw RTL_B2804C                                                        ;A0F36F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F371;
-    dw $0000                                                             ;A0F373;
-    dw $0004                                                             ;A0F375;
-    dd $00000000                                                         ;A0F377;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F37B;
-    dw $0000                                                             ;A0F37D;
-    dd $00000000                                                         ;A0F37F;
-    dw EnemyTouch_SpacePirate                                            ;A0F383;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F385;
-    dw $0000                                                             ;A0F387;
-    dl Tiles_SpacePirate                                                 ;A0F389;
-    db $05                                                               ;A0F38C;
-    dw EnemyDropChances_PirateGreyWall                                   ;A0F38D;
-    dw EnemyVulnerabilities_PirateGreyWall                               ;A0F38F;
-    dw EnemyName_PirateGreyWall                                          ;A0F391;
+EnemyHeaders_PirateGreyWall:                                             ;A0F353;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Grey),
+    %health(20),
+    %damage(15),
+    %width($10),
+    %height($18),
+    %bank(InitAI_PirateWall>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateWall),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWall),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateGreyWall),
+    %vulnerabilities(EnemyVulnerabilities_PirateGreyWall),
+    %name(EnemyName_PirateGreyWall))
 
-EnemyHeaders_PirateGreenWall:
-    dw $0C00                                                             ;A0F393;
-    dw Palette_Pirate_Green                                              ;A0F395;
-    dw $005A,$0014,$0010,$0018                                           ;A0F397;
-    db $B2,$00                                                           ;A0F39F;
-    dw $0021,$0000                                                       ;A0F3A1;
-    dw InitAI_PirateWall                                                 ;A0F3A5;
-    dw $0001,$0000                                                       ;A0F3A7;
-    dw MainAI_PirateWall                                                 ;A0F3AB;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F3AD;
-    dw RTL_B2804C                                                        ;A0F3AF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F3B1;
-    dw $0000                                                             ;A0F3B3;
-    dw $0004                                                             ;A0F3B5;
-    dd $00000000                                                         ;A0F3B7;
-    dw $0000,$0000                                                       ;A0F3BB;
-    dd $00000000                                                         ;A0F3BF;
-    dw EnemyTouch_SpacePirate                                            ;A0F3C3;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F3C5;
-    dw $0000                                                             ;A0F3C7;
-    dl Tiles_SpacePirate                                                 ;A0F3C9;
-    db $05                                                               ;A0F3CC;
-    dw EnemyDropChances_PirateGreenWall                                  ;A0F3CD;
-    dw EnemyVulnerabilities_PirateGreyWall                               ;A0F3CF;
-    dw EnemyName_PirateGreenWall                                         ;A0F3D1;
+EnemyHeaders_PirateGreenWall:                                            ;A0F393;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Green),
+    %health(90),
+    %damage(20),
+    %width($10),
+    %height($18),
+    %bank(InitAI_PirateWall>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateWall),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWall),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateGreenWall),
+    %vulnerabilities(EnemyVulnerabilities_PirateGreyWall),
+    %name(EnemyName_PirateGreenWall))
 
-EnemyHeaders_PirateRedWall:
-    dw $0C00                                                             ;A0F3D3;
-    dw Palette_Pirate_Red                                                ;A0F3D5;
-    dw $00C8,$0050,$0010,$0018                                           ;A0F3D7;
-    db $B2,$00                                                           ;A0F3DF;
-    dw $0021,$0000                                                       ;A0F3E1;
-    dw InitAI_PirateWall                                                 ;A0F3E5;
-    dw $0001,$0000                                                       ;A0F3E7;
-    dw MainAI_PirateWall                                                 ;A0F3EB;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F3ED;
-    dw RTL_B2804C                                                        ;A0F3EF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F3F1;
-    dw $0000                                                             ;A0F3F3;
-    dw $0004                                                             ;A0F3F5;
-    dd $00000000                                                         ;A0F3F7;
-    dw $0000,$0000                                                       ;A0F3FB;
-    dd $00000000                                                         ;A0F3FF;
-    dw EnemyTouch_SpacePirate                                            ;A0F403;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F405;
-    dw $0000                                                             ;A0F407;
-    dl Tiles_SpacePirate                                                 ;A0F409;
-    db $05                                                               ;A0F40C;
-    dw EnemyDropChances_PirateRedWall                                    ;A0F40D;
-    dw EnemyVulnerabilities_PirateRedWall                                ;A0F40F;
-    dw EnemyName_PirateRedWall                                           ;A0F411;
+EnemyHeaders_PirateRedWall:                                              ;A0F3D3;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Red),
+    %health(200),
+    %damage(80),
+    %width($10),
+    %height($18),
+    %bank(InitAI_PirateWall>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateWall),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWall),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateRedWall),
+    %vulnerabilities(EnemyVulnerabilities_PirateRedWall),
+    %name(EnemyName_PirateRedWall))
 
-EnemyHeaders_PirateGoldWall:
-    dw $0C00                                                             ;A0F413;
-    dw Palette_Pirate_Gold_NonNinja                                      ;A0F415;
-    dw $0384,$00C8,$0010,$0018                                           ;A0F417;
-    db $B2,$00                                                           ;A0F41F;
-    dw $0021,$0000                                                       ;A0F421;
-    dw InitAI_PirateWall                                                 ;A0F425;
-    dw $0001,$0000                                                       ;A0F427;
-    dw MainAI_PirateWall                                                 ;A0F42B;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F42D;
-    dw RTL_B2804C                                                        ;A0F42F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F431;
-    dw $0000                                                             ;A0F433;
-    dw $0004                                                             ;A0F435;
-    dd $00000000                                                         ;A0F437;
-    dw $0000,$0000                                                       ;A0F43B;
-    dd $00000000                                                         ;A0F43F;
-    dw EnemyTouch_SpacePirate                                            ;A0F443;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F445;
-    dw $0000                                                             ;A0F447;
-    dl Tiles_SpacePirate                                                 ;A0F449;
-    db $05                                                               ;A0F44C;
-    dw EnemyDropChances_PirateGoldWall                                   ;A0F44D;
-    dw EnemyVulnerabilities_PirateGoldWall_PirateGoldWalking             ;A0F44F;
-    dw EnemyName_PirateGoldWall                                          ;A0F451;
+EnemyHeaders_PirateGoldWall:                                             ;A0F413;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Gold_NonNinja),
+    %health(900),
+    %damage(200),
+    %width($10),
+    %height($18),
+    %bank(InitAI_PirateWall>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateWall),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWall),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateGoldWall),
+    %vulnerabilities(EnemyVulnerabilities_PirateGoldWall_PirateGoldWalking),
+    %name(EnemyName_PirateGoldWall))
 
-EnemyHeaders_PirateMagentaWall:
-    dw $0C00                                                             ;A0F453;
-    dw Palette_Pirate_Magenta                                            ;A0F455;
-    dw $012C,$00A0,$0010,$0018                                           ;A0F457;
-    db $B2,$00                                                           ;A0F45F;
-    dw $0021,$0000                                                       ;A0F461;
-    dw InitAI_PirateWall                                                 ;A0F465;
-    dw $0001,$0000                                                       ;A0F467;
-    dw MainAI_PirateWall                                                 ;A0F46B;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F46D;
-    dw RTL_B2804C                                                        ;A0F46F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F471;
-    dw $0000                                                             ;A0F473;
-    dw $0004                                                             ;A0F475;
-    dd $00000000                                                         ;A0F477;
-    dw $0000,$0000                                                       ;A0F47B;
-    dd $00000000                                                         ;A0F47F;
-    dw EnemyTouch_SpacePirate                                            ;A0F483;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F485;
-    dw $0000                                                             ;A0F487;
-    dl Tiles_SpacePirate                                                 ;A0F489;
-    db $05                                                               ;A0F48C;
-    dw EnemyDropChances_PirateMagentaWall                                ;A0F48D;
-    dw EnemyVulnerabilities_PirateMagentaWall                            ;A0F48F;
-    dw EnemyName_PirateMagentaWall                                       ;A0F491;
+EnemyHeaders_PirateMagentaWall:                                          ;A0F453;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Magenta),
+    %health(300),
+    %damage(160),
+    %width($10),
+    %height($18),
+    %bank(InitAI_PirateWall>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateWall),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWall),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateMagentaWall),
+    %vulnerabilities(EnemyVulnerabilities_PirateMagentaWall),
+    %name(EnemyName_PirateMagentaWall))
 
-EnemyHeaders_PirateSilverWall:
-    dw $0C00                                                             ;A0F493;
-    dw Palette_Pirate_Silver_GoldNinja                                   ;A0F495;
-    dw $01F4,$000F,$0010,$0018                                           ;A0F497;
-    db $B2,$00                                                           ;A0F49F;
-    dw $0021,$0000                                                       ;A0F4A1;
-    dw InitAI_PirateWall                                                 ;A0F4A5;
-    dw $0001,$0000                                                       ;A0F4A7;
-    dw MainAI_PirateWall                                                 ;A0F4AB;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F4AD;
-    dw RTL_B2804C                                                        ;A0F4AF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F4B1;
-    dw $0000                                                             ;A0F4B3;
-    dw $0004                                                             ;A0F4B5;
-    dd $00000000                                                         ;A0F4B7;
-    dw $0000,$0000                                                       ;A0F4BB;
-    dd $00000000                                                         ;A0F4BF;
-    dw EnemyTouch_SpacePirate                                            ;A0F4C3;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F4C5;
-    dw $0000                                                             ;A0F4C7;
-    dl Tiles_SpacePirate                                                 ;A0F4C9;
-    db $05                                                               ;A0F4CC;
-    dw EnemyDropChances_PirateSilverWall                                 ;A0F4CD;
-    dw EnemyVulnerabilities_PirateSilverWall_PirateSilverWalking         ;A0F4CF;
-    dw EnemyName_PirateSilverWall                                        ;A0F4D1;
+EnemyHeaders_PirateSilverWall:                                           ;A0F493;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Silver_GoldNinja),
+    %health(500),
+    %damage(15),
+    %width($10),
+    %height($18),
+    %bank(InitAI_PirateWall>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateWall),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWall),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(0),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateSilverWall),
+    %vulnerabilities(EnemyVulnerabilities_PirateSilverWall_PirateSilverWalking),
+    %name(EnemyName_PirateSilverWall))
 
-EnemyHeaders_PirateGreyNinja:
-    dw $1800                                                             ;A0F4D3;
-    dw Palette_Pirate_Grey                                               ;A0F4D5;
-    dw $0014,$000F,$0010,$0020                                           ;A0F4D7;
-    db $B2,$00                                                           ;A0F4DF;
-    dw $0021,$0000                                                       ;A0F4E1;
-    dw InitAI_PirateNinja                                                ;A0F4E5;
-    dw $0001,$0000                                                       ;A0F4E7;
-    dw MainAI_PirateNinja                                                ;A0F4EB;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F4ED;
-    dw RTL_B2804C                                                        ;A0F4EF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F4F1;
-    dw $0000                                                             ;A0F4F3;
-    dw $0004                                                             ;A0F4F5;
-    dd $00000000                                                         ;A0F4F7;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F4FB;
-    dw $0000                                                             ;A0F4FD;
-    dd $00000000                                                         ;A0F4FF;
-    dw EnemyTouch_SpacePirate                                            ;A0F503;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F505;
-    dw $0000                                                             ;A0F507;
-    dl Tiles_SpacePirate                                                 ;A0F509;
-    db $05                                                               ;A0F50C;
-    dw EnemyDropChances_PirateGreyNinja                                  ;A0F50D;
-    dw EnemyVulnerabilities_PirateNinja_Grey_Green_Red_Magenta           ;A0F50F;
-    dw EnemyName_PirateGreyNinja                                         ;A0F511;
+EnemyHeaders_PirateGreyNinja:                                            ;A0F4D3;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_Pirate_Grey),
+    %health(20),
+    %damage(15),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateNinja>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateNinja),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateNinja),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateGreyNinja),
+    %vulnerabilities(EnemyVulnerabilities_PirateNinja_Grey_Green_Red_Magenta),
+    %name(EnemyName_PirateGreyNinja))
 
-EnemyHeaders_PirateGreenNinja:
-    dw $1800                                                             ;A0F513;
-    dw Palette_Pirate_Green                                              ;A0F515;
-    dw $005A,$0014,$0010,$0020                                           ;A0F517;
-    db $B2,$00                                                           ;A0F51F;
-    dw $0021,$0000                                                       ;A0F521;
-    dw InitAI_PirateNinja                                                ;A0F525;
-    dw $0001,$0000                                                       ;A0F527;
-    dw MainAI_PirateNinja                                                ;A0F52B;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F52D;
-    dw RTL_B2804C                                                        ;A0F52F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F531;
-    dw $0000                                                             ;A0F533;
-    dw $0004                                                             ;A0F535;
-    dd $00000000                                                         ;A0F537;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F53B;
-    dw $0000                                                             ;A0F53D;
-    dd $00000000                                                         ;A0F53F;
-    dw EnemyTouch_SpacePirate                                            ;A0F543;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F545;
-    dw $0000                                                             ;A0F547;
-    dl Tiles_SpacePirate                                                 ;A0F549;
-    db $05                                                               ;A0F54C;
-    dw EnemyDropChances_PirateGreenNinja                                 ;A0F54D;
-    dw EnemyVulnerabilities_PirateNinja_Grey_Green_Red_Magenta           ;A0F54F;
-    dw EnemyName_PirateGreenNinja                                        ;A0F551;
+EnemyHeaders_PirateGreenNinja:                                           ;A0F513;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_Pirate_Green),
+    %health(90),
+    %damage(20),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateNinja>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateNinja),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateNinja),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateGreenNinja),
+    %vulnerabilities(EnemyVulnerabilities_PirateNinja_Grey_Green_Red_Magenta),
+    %name(EnemyName_PirateGreenNinja))
 
-EnemyHeaders_PirateRedNinja:
-    dw $1800                                                             ;A0F553;
-    dw Palette_Pirate_Red                                                ;A0F555;
-    dw $00C8,$0050,$0010,$0020                                           ;A0F557;
-    db $B2,$00                                                           ;A0F55F;
-    dw $0021,$0000                                                       ;A0F561;
-    dw InitAI_PirateNinja                                                ;A0F565;
-    dw $0001,$0001                                                       ;A0F567;
-    dw MainAI_PirateNinja                                                ;A0F56B;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F56D;
-    dw RTL_B2804C                                                        ;A0F56F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F571;
-    dw $0000                                                             ;A0F573;
-    dw $0004                                                             ;A0F575;
-    dd $00000000                                                         ;A0F577;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F57B;
-    dw $0000                                                             ;A0F57D;
-    dd $00000000                                                         ;A0F57F;
-    dw EnemyTouch_SpacePirate                                            ;A0F583;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F585;
-    dw $0000                                                             ;A0F587;
-    dl Tiles_SpacePirate                                                 ;A0F589;
-    db $05                                                               ;A0F58C;
-    dw EnemyDropChances_PirateRedNinja                                   ;A0F58D;
-    dw EnemyVulnerabilities_PirateNinja_Grey_Green_Red_Magenta           ;A0F58F;
-    dw EnemyName_PirateRedNinja                                          ;A0F591;
+EnemyHeaders_PirateRedNinja:                                             ;A0F553;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_Pirate_Red),
+    %health(200),
+    %damage(80),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateNinja>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateNinja),
+    %parts(1),
+    %unused(1),
+    %mainAI(MainAI_PirateNinja),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateRedNinja),
+    %vulnerabilities(EnemyVulnerabilities_PirateNinja_Grey_Green_Red_Magenta),
+    %name(EnemyName_PirateRedNinja))
 
-EnemyHeaders_PirateGoldNinja:
-    dw $1800                                                             ;A0F593;
-    dw Palette_Pirate_Silver_GoldNinja                                   ;A0F595;
-    dw $0708,$0064,$0010,$0020                                           ;A0F597;
-    db $B2,$00                                                           ;A0F59F;
-    dw $0021,$0000                                                       ;A0F5A1;
-    dw InitAI_PirateNinja                                                ;A0F5A5;
-    dw $0001,$0000                                                       ;A0F5A7;
-    dw MainAI_PirateNinja                                                ;A0F5AB;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F5AD;
-    dw RTL_B2804C                                                        ;A0F5AF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F5B1;
-    dw $0000                                                             ;A0F5B3;
-    dw $0004                                                             ;A0F5B5;
-    dd $00000000                                                         ;A0F5B7;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F5BB;
-    dw $0000                                                             ;A0F5BD;
-    dd $00000000                                                         ;A0F5BF;
-    dw EnemyTouch_SpacePirate                                            ;A0F5C3;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F5C5;
-    dw $0000                                                             ;A0F5C7;
-    dl Tiles_SpacePirate                                                 ;A0F5C9;
-    db $05                                                               ;A0F5CC;
-    dw EnemyDropChances_PirateGoldNinja                                  ;A0F5CD;
-    dw EnemyVulnerabilities_PirateGoldNinja                              ;A0F5CF;
-    dw EnemyName_PirateGoldNinja                                         ;A0F5D1;
+EnemyHeaders_PirateGoldNinja:                                            ;A0F593;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_Pirate_Silver_GoldNinja),
+    %health(1800),
+    %damage(100),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateNinja>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateNinja),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateNinja),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateGoldNinja),
+    %vulnerabilities(EnemyVulnerabilities_PirateGoldNinja),
+    %name(EnemyName_PirateGoldNinja))
 
-EnemyHeaders_PirateMagentaNinja:
-    dw $1800                                                             ;A0F5D3;
-    dw Palette_Pirate_Magenta                                            ;A0F5D5;
-    dw $012C,$00A0,$0010,$0020                                           ;A0F5D7;
-    db $B2,$00                                                           ;A0F5DF;
-    dw $0021,$0000                                                       ;A0F5E1;
-    dw InitAI_PirateNinja                                                ;A0F5E5;
-    dw $0001,$0000                                                       ;A0F5E7;
-    dw MainAI_PirateNinja                                                ;A0F5EB;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F5ED;
-    dw RTL_B2804C                                                        ;A0F5EF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F5F1;
-    dw $0000                                                             ;A0F5F3;
-    dw $0004                                                             ;A0F5F5;
-    dd $00000000                                                         ;A0F5F7;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F5FB;
-    dw $0000                                                             ;A0F5FD;
-    dd $00000000                                                         ;A0F5FF;
-    dw EnemyTouch_SpacePirate                                            ;A0F603;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F605;
-    dw $0000                                                             ;A0F607;
-    dl Tiles_SpacePirate                                                 ;A0F609;
-    db $05                                                               ;A0F60C;
-    dw EnemyDropChances_PirateMagentaNinja                               ;A0F60D;
-    dw EnemyVulnerabilities_PirateNinja_Grey_Green_Red_Magenta           ;A0F60F;
-    dw EnemyName_PirateMagentaNinja                                      ;A0F611;
+EnemyHeaders_PirateMagentaNinja:                                         ;A0F5D3;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_Pirate_Magenta),
+    %health(300),
+    %damage(160),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateNinja>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateNinja),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateNinja),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateMagentaNinja),
+    %vulnerabilities(EnemyVulnerabilities_PirateNinja_Grey_Green_Red_Magenta),
+    %name(EnemyName_PirateMagentaNinja))
 
-EnemyHeaders_PirateSilverNinja:
-    dw $1800                                                             ;A0F613;
-    dw Palette_Pirate_Silver_GoldNinja                                   ;A0F615;
-    dw $01F4,$000F,$0010,$0020                                           ;A0F617;
-    db $B2,$00                                                           ;A0F61F;
-    dw $0021,$0000                                                       ;A0F621;
-    dw InitAI_PirateNinja                                                ;A0F625;
-    dw $0001,$0000                                                       ;A0F627;
-    dw MainAI_PirateNinja                                                ;A0F62B;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F62D;
-    dw RTL_B2804C                                                        ;A0F62F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F631;
-    dw $0000                                                             ;A0F633;
-    dw $0004                                                             ;A0F635;
-    dd $00000000                                                         ;A0F637;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F63B;
-    dw $0000                                                             ;A0F63D;
-    dd $00000000                                                         ;A0F63F;
-    dw EnemyTouch_SpacePirate                                            ;A0F643;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F645;
-    dw $0000                                                             ;A0F647;
-    dl Tiles_SpacePirate                                                 ;A0F649;
-    db $05                                                               ;A0F64C;
-    dw EnemyDropChances_PirateSilverNinja                                ;A0F64D;
-    dw EnemyVulnerabilities_PirateSilverNinja                            ;A0F64F;
-    dw EnemyName_PirateSilverNinja                                       ;A0F651;
+EnemyHeaders_PirateSilverNinja:                                          ;A0F613;
+    %EnemyHeader(\
+    %tileDataSize($1800),
+    %palette(Palette_Pirate_Silver_GoldNinja),
+    %health(500),
+    %damage(15),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateNinja>>16),
+    %hurtAITime(0),
+    %cry($0021),
+    %bossID(0),
+    %initAI(InitAI_PirateNinja),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateNinja),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateSilverNinja),
+    %vulnerabilities(EnemyVulnerabilities_PirateSilverNinja),
+    %name(EnemyName_PirateSilverNinja))
 
-EnemyHeaders_PirateGreyWalking:
-    dw $0C00                                                             ;A0F653;
-    dw Palette_Pirate_Grey                                               ;A0F655;
-    dw $0014,$000F,$0010,$0020                                           ;A0F657;
-    db $B2,$00                                                           ;A0F65F;
-    dw $0066,$0000                                                       ;A0F661;
-    dw InitAI_PirateWalking                                              ;A0F665;
-    dw $0001,$0000                                                       ;A0F667;
-    dw MainAI_PirateWalking                                              ;A0F66B;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F66D;
-    dw RTL_B2804C                                                        ;A0F66F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F671;
-    dw $0000                                                             ;A0F673;
-    dw $0004                                                             ;A0F675;
-    dd $00000000                                                         ;A0F677;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F67B;
-    dw $0000                                                             ;A0F67D;
-    dd $00000000                                                         ;A0F67F;
-    dw EnemyTouch_SpacePirate                                            ;A0F683;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F685;
-    dw $0000                                                             ;A0F687;
-    dl Tiles_SpacePirate                                                 ;A0F689;
-    db $05                                                               ;A0F68C;
-    dw EnemyDropChances_PirateGreyWalking                                ;A0F68D;
-    dw EnemyVulnerabilities_PirateGreyWalking                            ;A0F68F;
-    dw EnemyName_PirateGreyWalking                                       ;A0F691;
+EnemyHeaders_PirateGreyWalking:                                          ;A0F653;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Grey),
+    %health(20),
+    %damage(15),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateWalking>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_PirateWalking),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWalking),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateGreyWalking),
+    %vulnerabilities(EnemyVulnerabilities_PirateGreyWalking),
+    %name(EnemyName_PirateGreyWalking))
 
-EnemyHeaders_PirateGreenWalking:
-    dw $0C00                                                             ;A0F693;
-    dw Palette_Pirate_Green                                              ;A0F695;
-    dw $005A,$0014,$0010,$0020                                           ;A0F697;
-    db $B2,$00                                                           ;A0F69F;
-    dw $0066,$0000                                                       ;A0F6A1;
-    dw InitAI_PirateWalking                                              ;A0F6A5;
-    dw $0001,$0000                                                       ;A0F6A7;
-    dw MainAI_PirateWalking                                              ;A0F6AB;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F6AD;
-    dw RTL_B2804C                                                        ;A0F6AF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F6B1;
-    dw $0000                                                             ;A0F6B3;
-    dw $0004                                                             ;A0F6B5;
-    dd $00000000                                                         ;A0F6B7;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F6BB;
-    dw $0000                                                             ;A0F6BD;
-    dd $00000000                                                         ;A0F6BF;
-    dw EnemyTouch_SpacePirate                                            ;A0F6C3;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F6C5;
-    dw $0000                                                             ;A0F6C7;
-    dl Tiles_SpacePirate                                                 ;A0F6C9;
-    db $05                                                               ;A0F6CC;
-    dw EnemyDropChances_PirateGreenWalking                               ;A0F6CD;
-    dw EnemyVulnerabilities_PirateGreenWalking                           ;A0F6CF;
-    dw EnemyName_PirateGreenWalking                                      ;A0F6D1;
+EnemyHeaders_PirateGreenWalking:                                         ;A0F693;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Green),
+    %health(90),
+    %damage(20),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateWalking>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_PirateWalking),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWalking),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateGreenWalking),
+    %vulnerabilities(EnemyVulnerabilities_PirateGreenWalking),
+    %name(EnemyName_PirateGreenWalking))
 
-EnemyHeaders_PirateRedWalking:
-    dw $0C00                                                             ;A0F6D3;
-    dw Palette_Pirate_Red                                                ;A0F6D5;
-    dw $00C8,$0050,$0010,$0020                                           ;A0F6D7;
-    db $B2,$00                                                           ;A0F6DF;
-    dw $0066,$0000                                                       ;A0F6E1;
-    dw InitAI_PirateWalking                                              ;A0F6E5;
-    dw $0001,$0000                                                       ;A0F6E7;
-    dw MainAI_PirateWalking                                              ;A0F6EB;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F6ED;
-    dw RTL_B2804C                                                        ;A0F6EF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F6F1;
-    dw $0000                                                             ;A0F6F3;
-    dw $0004                                                             ;A0F6F5;
-    dd $00000000                                                         ;A0F6F7;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F6FB;
-    dw $0000                                                             ;A0F6FD;
-    dd $00000000                                                         ;A0F6FF;
-    dw EnemyTouch_SpacePirate                                            ;A0F703;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F705;
-    dw $0000                                                             ;A0F707;
-    dl Tiles_SpacePirate                                                 ;A0F709;
-    db $05                                                               ;A0F70C;
-    dw EnemyDropChances_PirateRedWalking                                 ;A0F70D;
-    dw EnemyVulnerabilities_PirateRedWalking                             ;A0F70F;
-    dw EnemyName_PirateRedWalking                                        ;A0F711;
+EnemyHeaders_PirateRedWalking:                                           ;A0F6D3;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Red),
+    %health(200),
+    %damage(80),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateWalking>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_PirateWalking),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWalking),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateRedWalking),
+    %vulnerabilities(EnemyVulnerabilities_PirateRedWalking),
+    %name(EnemyName_PirateRedWalking))
 
-EnemyHeaders_PirateGoldWalking:
-    dw $0C00                                                             ;A0F713;
-    dw Palette_Pirate_Gold_NonNinja                                      ;A0F715;
-    dw $0384,$00C8,$0010,$0020                                           ;A0F717;
-    db $B2,$00                                                           ;A0F71F;
-    dw $0066,$0000                                                       ;A0F721;
-    dw InitAI_PirateWalking                                              ;A0F725;
-    dw $0001,$0000                                                       ;A0F727;
-    dw MainAI_PirateWalking                                              ;A0F72B;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F72D;
-    dw RTL_B2804C                                                        ;A0F72F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F731;
-    dw $0000                                                             ;A0F733;
-    dw $0004                                                             ;A0F735;
-    dd $00000000                                                         ;A0F737;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F73B;
-    dw $0000                                                             ;A0F73D;
-    dd $00000000                                                         ;A0F73F;
-    dw EnemyTouch_SpacePirate                                            ;A0F743;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F745;
-    dw $0000                                                             ;A0F747;
-    dl Tiles_SpacePirate                                                 ;A0F749;
-    db $05                                                               ;A0F74C;
-    dw EnemyDropChances_PirateGoldWalking                                ;A0F74D;
-    dw EnemyVulnerabilities_PirateGoldWall_PirateGoldWalking             ;A0F74F;
-    dw EnemyName_PirateGoldWalking                                       ;A0F751;
+EnemyHeaders_PirateGoldWalking:                                          ;A0F713;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Gold_NonNinja),
+    %health(900),
+    %damage(200),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateWalking>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_PirateWalking),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWalking),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateGoldWalking),
+    %vulnerabilities(EnemyVulnerabilities_PirateGoldWall_PirateGoldWalking),
+    %name(EnemyName_PirateGoldWalking))
 
-EnemyHeaders_PirateMagentaWalking:
-    dw $0C00                                                             ;A0F753;
-    dw Palette_Pirate_Magenta                                            ;A0F755;
-    dw $012C,$00A0,$0010,$0020                                           ;A0F757;
-    db $B2,$00                                                           ;A0F75F;
-    dw $0066,$0000                                                       ;A0F761;
-    dw InitAI_PirateWalking                                              ;A0F765;
-    dw $0001,$0000                                                       ;A0F767;
-    dw MainAI_PirateWalking                                              ;A0F76B;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F76D;
-    dw RTL_B2804C                                                        ;A0F76F;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F771;
-    dw $0000                                                             ;A0F773;
-    dw $0004                                                             ;A0F775;
-    dd $00000000                                                         ;A0F777;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F77B;
-    dw $0000                                                             ;A0F77D;
-    dd $00000000                                                         ;A0F77F;
-    dw EnemyTouch_SpacePirate                                            ;A0F783;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F785;
-    dw $0000                                                             ;A0F787;
-    dl Tiles_SpacePirate                                                 ;A0F789;
-    db $05                                                               ;A0F78C;
-    dw EnemyDropChances_PirateMagentaWalking                             ;A0F78D;
-    dw EnemyVulnerabilities_PirateMagentaWalking                         ;A0F78F;
-    dw EnemyName_PirateMagentaWalking                                    ;A0F791;
+EnemyHeaders_PirateMagentaWalking:                                       ;A0F753;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Magenta),
+    %health(300),
+    %damage(160),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateWalking>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_PirateWalking),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWalking),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateMagentaWalking),
+    %vulnerabilities(EnemyVulnerabilities_PirateMagentaWalking),
+    %name(EnemyName_PirateMagentaWalking))
 
-EnemyHeaders_PirateSilverWalking:
-    dw $0C00                                                             ;A0F793;
-    dw Palette_Pirate_Silver_GoldNinja                                   ;A0F795;
-    dw $01F4,$000F,$0010,$0020                                           ;A0F797;
-    db $B2,$00                                                           ;A0F79F;
-    dw $0066,$0000                                                       ;A0F7A1;
-    dw InitAI_PirateWalking                                              ;A0F7A5;
-    dw $0001,$0000                                                       ;A0F7A7;
-    dw MainAI_PirateWalking                                              ;A0F7AB;
-    dw Common_GrappleAI_CancelGrappleBeam                                ;A0F7AD;
-    dw RTL_B2804C                                                        ;A0F7AF;
-    dw Common_NormalEnemyFrozenAI                                        ;A0F7B1;
-    dw $0000                                                             ;A0F7B3;
-    dw $0004                                                             ;A0F7B5;
-    dd $00000000                                                         ;A0F7B7;
-    dw PowerBombReaction_Ninja_Walking_GreyWall                          ;A0F7BB;
-    dw $0000                                                             ;A0F7BD;
-    dd $00000000                                                         ;A0F7BF;
-    dw EnemyTouch_SpacePirate                                            ;A0F7C3;
-    dw EnemyShot_SpacePirate_Normal                                      ;A0F7C5;
-    dw $0000                                                             ;A0F7C7;
-    dl Tiles_SpacePirate                                                 ;A0F7C9;
-    db $05                                                               ;A0F7CC;
-    dw EnemyDropChances_PirateSilverWalking                              ;A0F7CD;
-    dw EnemyVulnerabilities_PirateSilverWall_PirateSilverWalking         ;A0F7CF;
-    dw EnemyName_PirateSilverWalking                                     ;A0F7D1;
+EnemyHeaders_PirateSilverWalking:                                        ;A0F793;
+    %EnemyHeader(\
+    %tileDataSize($0C00),
+    %palette(Palette_Pirate_Silver_GoldNinja),
+    %health(500),
+    %damage(15),
+    %width($10),
+    %height($20),
+    %bank(InitAI_PirateWalking>>16),
+    %hurtAITime(0),
+    %cry($0066),
+    %bossID(0),
+    %initAI(InitAI_PirateWalking),
+    %parts(1),
+    %unused(0),
+    %mainAI(MainAI_PirateWalking),
+    %grappleAI(Common_GrappleAI_CancelGrappleBeam),
+    %hurtAI(RTL_B2804C),
+    %frozenAI(Common_NormalEnemyFrozenAI),
+    %timeIsFrozen(0),
+    %deathAnimation(4),
+    %powerBombReaction(PowerBombReaction_Ninja_Walking_GreyWall),
+    %variantIndex(0),
+    %enemyTouch(EnemyTouch_SpacePirate),
+    %enemyShot(EnemyShot_SpacePirate_Normal),
+    %spritemap(0),
+    %tileData(Tiles_SpacePirate),
+    %layer(5),
+    %drops(EnemyDropChances_PirateSilverWalking),
+    %vulnerabilities(EnemyVulnerabilities_PirateSilverWall_PirateSilverWalking),
+    %name(EnemyName_PirateSilverWalking))
 
 
 Freespace_BankA0_F7D3:                                                   ;A0F7D3;

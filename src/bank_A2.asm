@@ -12809,7 +12809,7 @@ Function_HorizontalShutter_MovingLeft:
     LDA.W #Function_HorizontalShutter_StoppedMovingLeft                  ;A2F2D5;
     STA.W ShutterHorizShootable.function,X                               ;A2F2D8;
     BRA .return                                                          ;A2F2DB;
-+   LDA.W #EnemyTouch_ShutterHorizShootable                              ;A2F2DD;
++   LDA.W #RTS_A2F3D4                                                    ;A2F2DD;
     STA.W ShutterHorizShootable.function,X                               ;A2F2E0;
 
   .return:
@@ -12859,7 +12859,7 @@ Function_HorizontalShutter_MovingRight:
     STA.W ShutterHorizShootable.function,X                               ;A2F34A;
     BRA .return                                                          ;A2F34D;
 
-+   LDA.W #EnemyTouch_ShutterHorizShootable                              ;A2F34F;
++   LDA.W #RTS_A2F3D4                                                    ;A2F34F;
     STA.W ShutterHorizShootable.function,X                               ;A2F352;
 
   .return:
@@ -12939,16 +12939,16 @@ Function_HorizontalShutter_StoppedMovingRight:
 
 
 ;;; $F3D4: Horizontal shutter function - nothing ;;;
-EnemyTouch_ShutterHorizShootable:
+RTS_A2F3D4:
     LDX.W EnemyIndex                                                     ;A2F3D4;
     RTS                                                                  ;A2F3D7;
 
 
 ;;; $F3D8: Enemy touch - enemy $D57F (horizontal shutter) ;;;
-EnemyTouch_HorizShootableShutter:
+EnemyTouch_ShutterHorizShootable:
     LDX.W EnemyIndex                                                     ;A2F3D8;
     LDA.W ShutterHorizShootable.function,X                               ;A2F3DB;
-    CMP.W #EnemyTouch_ShutterHorizShootable                              ;A2F3DE;
+    CMP.W #RTS_A2F3D4                                                    ;A2F3DE;
     BNE .return                                                          ;A2F3E1;
     LDA.W SamusXPosition                                                 ;A2F3E3;
     CMP.W Enemy.XPosition,X                                              ;A2F3E6;

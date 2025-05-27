@@ -29,11 +29,11 @@ macro PLMPopEntry(ID, X, Y, Param)
     dw <Param>
 endmacro
 
-macro EnemyHeader(label, tileDataSize, health, damage, width, height, hurtAITime, cry, bossID, parts, grappleAI, hurtAI, frozenAI, timeIsFrozen, deathAnimation, powerBombReaction, variantIndex, enemyTouch, enemyShot, layer, drops, vulnerabilities, name)
+macro EnemyHeader(tileDataSize, palette, health, damage, width, height, bank, hurtAITime, cry, bossID, initAI, parts, unused, mainAI, grappleAI, hurtAI, frozenAI, timeIsFrozen, deathAnimation, powerBombReaction, variantIndex, enemyTouch, enemyShot, spritemap, tileData, layer, drops, vulnerabilities, name)
   .tileDataSize
     <tileDataSize>
   .palette
-    dw Palette_<label>
+    <palette>
   .health
     <health>
   .damage
@@ -43,7 +43,7 @@ macro EnemyHeader(label, tileDataSize, health, damage, width, height, hurtAITime
   .height
     <height>
   .bank
-    db InitAI_<label>>>16
+    <bank>
   .hurtAITime
     <hurtAITime>
   .cry
@@ -51,12 +51,13 @@ macro EnemyHeader(label, tileDataSize, health, damage, width, height, hurtAITime
   .bossID
     <bossID>
   .initAI
-    dw InitAI_<label>
+    <initAI>
   .parts
     <parts>
-    dw $0000 ; unused
+  .unused
+    <unused>
   .mainAI
-    dw MainAI_<label>
+    <mainAI>
   .grappleAI
     <grappleAI>
   .hurtAI
@@ -77,9 +78,10 @@ macro EnemyHeader(label, tileDataSize, health, damage, width, height, hurtAITime
     <enemyTouch>
   .enemyShot
     <enemyShot>
-    dw $0000 ; unused
+  .spritemap
+    <spritemap>
   .tileData
-    dl Tiles_<label>
+    <tileData>
   .layer
     <layer>
   .drops
@@ -91,6 +93,10 @@ macro EnemyHeader(label, tileDataSize, health, damage, width, height, hurtAITime
 endmacro
 
 macro tileDataSize(arg)
+    dw <arg>
+endmacro
+
+macro palette(arg)
     dw <arg>
 endmacro
 
@@ -110,6 +116,10 @@ macro height(arg)
     dw <arg>
 endmacro
 
+macro bank(arg)
+    db <arg>
+endmacro
+
 macro hurtAITime(arg)
     db <arg>
 endmacro
@@ -122,7 +132,19 @@ macro bossID(arg)
     dw <arg>
 endmacro
 
+macro initAI(arg)
+    dw <arg>
+endmacro
+
 macro parts(arg)
+    dw <arg>
+endmacro
+
+macro unused(arg)
+    dw <arg>
+endmacro
+
+macro mainAI(arg)
     dw <arg>
 endmacro
 
@@ -160,6 +182,14 @@ endmacro
 
 macro enemyShot(arg)
     dw <arg>
+endmacro
+
+macro spritemap(arg)
+    dw <arg>
+endmacro
+
+macro tileData(arg)
+    dl <arg>
 endmacro
 
 macro layer(arg)
