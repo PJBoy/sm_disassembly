@@ -207,3 +207,48 @@ endmacro
 macro name(arg)
     dw <arg>
 endmacro
+
+macro DoorHeader(destination, elevator, direction, doorPos, screenPos, spawnDistance, doorASM)
+  .destination
+    <destination>
+  .elevator
+    <elevator>
+  .direction
+    <direction>
+  .doorPositions
+    <doorPos>
+  .screenPositions
+    <screenPos>
+  .spawnDistance
+    <spawnDistance>
+  .doorASM
+    <doorASM>
+endmacro
+
+macro destination(arg)
+    dw <arg>
+endmacro
+
+macro elevator(arg)
+    db <arg>
+endmacro
+
+macro direction(arg)
+    db <arg>
+endmacro
+
+macro doorPos(X, Y)
+    db <X>, <Y>
+endmacro
+
+macro screenPos(X, Y)
+    db <X>, <Y>
+endmacro
+
+macro spawnDistance(arg)
+    dw <arg>
+endmacro
+
+macro doorASM(arg)
+    dw <arg>
+endmacro

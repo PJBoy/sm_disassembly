@@ -6,3 +6,5 @@ $A9BCA6 Should be 16bit data
 $8F986B Should be 8bit, 8bit, 16bit repeating with to 8bit zero terminator
 $8BF6B8 Should be 16bit data
 $A0F13F Should be 8bit data
+$838CE8 Should be 8bit data
+$838FAC Should be 8bit data

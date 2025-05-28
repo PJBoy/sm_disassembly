@@ -698,969 +698,1855 @@ FXHeader_LNSave:
 Door_VariousRooms_Elevator:
     db $00,$00                                                           ;8388FC;
 
-Door_LandingSite_LandingCutscene:
-    dw RoomHeader_LandingSite                                            ;8388FE;
-    db $00,$03,$00,$00,$04,$00                                           ;838900;
-    dw $8000,$0000                                                       ;838906;
-
-Door_DemoSet3_0_2_4:
-    dw RoomHeader_LandingSite                                            ;83890A;
-    db $00,$03,$00,$00,$04,$02                                           ;83890C;
-    dw $8000,$0000                                                       ;838912;
-
-Door_LandingSite_0:
-    dw RoomHeader_Parlor                                                 ;838916;
-    db $00,$05,$4E,$06,$04,$00                                           ;838918;
-    dw $8000,$0000                                                       ;83891E;
-
-Door_LandingSite_1:
-    dw RoomHeader_CrateriaTube                                           ;838922;
-    db $00,$00,$00,$00,$00,$00                                           ;838924;
-    dw $8000,$0000                                                       ;83892A;
-
-Door_LandingSite_2:
-    dw RoomHeader_GauntletEntrance                                       ;83892E;
-    db $00,$05,$4E,$06,$04,$00                                           ;838930;
-    dw $8000,$0000                                                       ;838936;
-
-Door_LandingSite_3:
-    dw RoomHeader_CrateriaPowerBombs                                     ;83893A;
-    db $00,$04,$01,$06,$00,$00                                           ;83893C;
-    dw $8000,$0000                                                       ;838942;
-
-Door_GauntletEntrance_0:
-    dw RoomHeader_LandingSite                                            ;838946;
-    db $00,$04,$01,$26,$00,$02                                           ;838948;
-    dw $8000                                                             ;83894E;
-    dw DoorASM_Scroll_13_Blue                                            ;838950;
-
-Door_GauntletEntrance_1:
-    dw RoomHeader_GauntletETank                                          ;838952;
-    db $00,$05,$5E,$06,$05,$00                                           ;838954;
-    dw $8000,$0000                                                       ;83895A;
-
-Door_Parlor_0:
-    dw RoomHeader_Terminator                                             ;83895E;
-    db $00,$05,$5E,$06,$05,$00                                           ;838960;
-    dw $8000,$0000                                                       ;838966;
-
-Door_Parlor_1:
-    dw RoomHeader_LandingSite                                            ;83896A;
-    db $00,$04,$01,$46,$00,$04                                           ;83896C;
-    dw $8000,$0000                                                       ;838972;
-
-Door_Parlor_2:
-    dw RoomHeader_PreMapFlyway                                           ;838976;
-    db $00,$04,$01,$06,$00,$00                                           ;838978;
-    dw $8000,$0000                                                       ;83897E;
-
-Door_Parlor_3:
-    dw RoomHeader_Flyway                                                 ;838982;
-    db $00,$04,$01,$06,$00,$00                                           ;838984;
-    dw $8000,$0000                                                       ;83898A;
-
-Door_Parlor_4:
-    dw RoomHeader_Climb                                                  ;83898E;
-    db $00,$06,$16,$02,$01,$00                                           ;838990;
-    dw $8000,$0000                                                       ;838996;
-
-Door_Parlor_5:
-    dw RoomHeader_CrateriaSave                                           ;83899A;
-    db $00,$05,$0E,$06,$00,$00                                           ;83899C;
-    dw $8000,$0000                                                       ;8389A2;
-
-Door_Parlor_6:
-    dw RoomHeader_FinalMissileBombway                                    ;8389A6;
-    db $00,$05,$1E,$06,$01,$00                                           ;8389A8;
-    dw $8000,$0000                                                       ;8389AE;
-
-Door_CrateriaPowerBombs_0:
-    dw RoomHeader_LandingSite                                            ;8389B2;
-    db $00,$05,$8E,$16,$08,$01                                           ;8389B4;
-    dw $8000,$0000                                                       ;8389BA;
-
-Door_CrateriaSave_0:
-    dw RoomHeader_Parlor                                                 ;8389BE;
-    db $00,$04,$11,$26,$01,$02                                           ;8389C0;
-    dw $8000                                                             ;8389C6;
-    dw DoorASM_Scroll_6_Green                                            ;8389C8;
-
-Door_WestOcean_0:
-    dw RoomHeader_Moat                                                   ;8389CA;
-    db $00,$05,$1E,$06,$01,$00                                           ;8389CC;
-    dw $8000,$0000                                                       ;8389D2;
-
-Door_WestOcean_1:
-    dw RoomHeader_WreckedShipEntrance                                    ;8389D6;
-    db $50,$04,$01,$06,$00,$00                                           ;8389D8;
-    dw $8000                                                             ;8389DE;
-    dw DoorASM_StartWreckedShipTreadmillWestEntrance                     ;8389E0;
-
-Door_WestOcean_2:
-    dw RoomHeader_BowlingAlleyPath                                       ;8389E2;
-    db $00,$04,$01,$06,$00,$00                                           ;8389E4;
-    dw $8000,$0000                                                       ;8389EA;
-
-Door_WestOcean_3:
-    dw RoomHeader_Attic                                                  ;8389EE;
-    db $40,$04,$01,$06,$00,$00                                           ;8389F0;
-    dw $8000,$0000                                                       ;8389F6;
-
-Door_WestOcean_4:
-    dw RoomHeader_BowlingAlley                                           ;8389FA;
-    db $40,$04,$21,$06,$02,$00                                           ;8389FC;
-    dw $8000                                                             ;838A02;
-    dw DoorASM_Scroll_8_9_A_B_Red                                        ;838A04;
-
-Door_WestOcean_5:
-    dw RoomHeader_GravitySuit                                            ;838A06;
-    db $40,$04,$01,$06,$00,$00                                           ;838A08;
-    dw $8000,$0000                                                       ;838A0E;
-
-Door_BowlingAlleyPath_0:
-    dw RoomHeader_WestOcean                                              ;838A12;
-    db $00,$05,$2E,$26,$02,$02                                           ;838A14;
-    dw $8000,$0000                                                       ;838A1A;
-
-Door_BowlingAlleyPath_1:
-    dw RoomHeader_PreBowling                                             ;838A1E;
-    db $00,$04,$01,$06,$00,$00                                           ;838A20;
-    dw $8000,$0000                                                       ;838A26;
-
-Door_CrateriaKihunter_0:
-    dw RoomHeader_CrateriaTube                                           ;838A2A;
-    db $00,$01,$00,$00,$00,$00                                           ;838A2C;
-    dw $8000,$0000                                                       ;838A32;
-
-Door_CrateriaKihunter_1:
-    dw RoomHeader_Moat                                                   ;838A36;
-    db $00,$04,$01,$06,$00,$00                                           ;838A38;
-    dw $8000,$0000                                                       ;838A3E;
-
-Door_CrateriaKihunter_2:
-    dw RoomHeader_RedBinstarElev                                         ;838A42;
-    db $00,$06,$06,$02,$00,$00                                           ;838A44;
-    dw $8000,$0000                                                       ;838A4A;
-
-Door_ForgottenHighwayElev_0:
-    dw RoomHeader_ForgottenHighwayElbow                                  ;838A4E;
-    db $00,$07,$06,$0D,$00,$00                                           ;838A50;
-    dw $01C0,$0000                                                       ;838A56;
-
-Door_ForgottenHighwayElev_1:
-    dw RoomHeader_MaridiaElev                                            ;838A5A;
-    db $D0,$02,$00,$00,$00,$00                                           ;838A5C;
-    dw $0000,$0000                                                       ;838A62;
-
-Door_EastOcean_0:
-    dw RoomHeader_ElectricDeath                                          ;838A66;
-    db $40,$05,$0E,$16,$00,$01                                           ;838A68;
-    dw $8000,$0000                                                       ;838A6E;
-
-Door_EastOcean_1:
-    dw RoomHeader_ForgottenHighwayKagos                                  ;838A72;
-    db $00,$04,$01,$06,$00,$00                                           ;838A74;
-    dw $8000,$0000                                                       ;838A7A;
-
-Door_ForgottenHighwayKagos_0:
-    dw RoomHeader_EastOcean                                              ;838A7E;
-    db $00,$05,$6E,$46,$06,$04                                           ;838A80;
-    dw $8000,$0000                                                       ;838A86;
-
-Door_ForgottenHighwayKagos_1:
-    dw RoomHeader_CrabMaze                                               ;838A8A;
-    db $00,$06,$36,$02,$03,$00                                           ;838A8C;
-    dw $8000,$0000                                                       ;838A92;
-
-Door_CrabMaze_0:
-    dw RoomHeader_ForgottenHighwayKagos                                  ;838A96;
-    db $00,$07,$06,$3D,$00,$03                                           ;838A98;
-    dw $01C0,$0000                                                       ;838A9E;
-
-Door_ForgottenHighwayElbow_0:
-    dw RoomHeader_CrabMaze                                               ;838AA2;
-    db $00,$04,$01,$16,$00,$01                                           ;838AA4;
-    dw $8000,$0000                                                       ;838AAA;
-
-Door_CrabMaze_1:
-    dw RoomHeader_ForgottenHighwayElbow                                  ;838AAE;
-    db $00,$05,$0E,$06,$00,$00                                           ;838AB0;
-    dw $8000,$0000                                                       ;838AB6;
-
-Door_ForgottenHighwayElbow_1:
-    dw RoomHeader_ForgottenHighwayElev                                   ;838ABA;
-    db $00,$06,$06,$02,$00,$00                                           ;838ABC;
-    dw $8000,$0000                                                       ;838AC2;
-
-Door_CrateriaTube_0:
-    dw RoomHeader_LandingSite                                            ;838AC6;
-    db $00,$05,$8E,$46,$08,$04                                           ;838AC8;
-    dw $8000,$0000                                                       ;838ACE;
-
-Door_CrateriaTube_1:
-    dw RoomHeader_CrateriaKihunter                                       ;838AD2;
-    db $00,$04,$01,$06,$00,$00                                           ;838AD4;
-    dw $8000,$0000                                                       ;838ADA;
-
-Door_Moat_0:
-    dw RoomHeader_CrateriaKihunter                                       ;838ADE;
-    db $00,$05,$2E,$06,$02,$00                                           ;838AE0;
-    dw $8000,$0000                                                       ;838AE6;
-
-Door_Moat_1:
-    dw RoomHeader_WestOcean                                              ;838AEA;
-    db $00,$04,$01,$46,$00,$04                                           ;838AEC;
-    dw $8000,$0000                                                       ;838AF2;
-
-Door_RedBinstarElev_0:
-    dw RoomHeader_CrateriaKihunter                                       ;838AF6;
-    db $00,$07,$16,$2D,$01,$02                                           ;838AF8;
-    dw $01C0                                                             ;838AFE;
-    dw DoorASM_Scroll_1_4_Green                                          ;838B00;
-
-Door_RedBinstarElev_1:
-    dw RoomHeader_Caterpillar                                            ;838B02;
-    db $E0,$02,$00,$00,$00,$00                                           ;838B04;
-    dw $0000                                                             ;838B0A;
-    dw DoorASM_Scroll_6_Green_duplicate                                  ;838B0C;
-
-Door_GauntletETank_0:
-    dw RoomHeader_GauntletEntrance                                       ;838B0E;
-    db $00,$04,$01,$06,$00,$00                                           ;838B10;
-    dw $8000,$0000                                                       ;838B16;
-
-Door_GauntletETank_1:
-    dw RoomHeader_GreenPiratesShaft                                      ;838B1A;
-    db $00,$05,$0E,$06,$00,$00                                           ;838B1C;
-    dw $8000                                                             ;838B22;
-    dw DoorASM_Scroll_3_Green                                            ;838B24;
-
-Door_PreBowling_0:
-    dw RoomHeader_BowlingAlleyPath                                       ;838B26;
-    db $00,$05,$1E,$06,$01,$00                                           ;838B28;
-    dw $8000,$0000                                                       ;838B2E;
-
-Door_PreBowling_1:
-    dw RoomHeader_BowlingAlley                                           ;838B32;
-    db $40,$04,$01,$16,$00,$01                                           ;838B34;
-    dw $00A0                                                             ;838B3A;
-    dw DoorASM_Scroll_2_3_4_5_B_C_D_11_Red                               ;838B3C;
-
-Door_Climb_0:
-    dw RoomHeader_Parlor                                                 ;838B3E;
-    db $00,$07,$16,$4D,$01,$04                                           ;838B40;
-    dw $01C0                                                             ;838B46;
-    dw DoorASM_Scroll_6_Green                                            ;838B48;
-
-Door_Climb_1:
-    dw RoomHeader_CrateriaSuper                                          ;838B4A;
-    db $00,$04,$01,$06,$00,$00                                           ;838B4C;
-    dw $8000,$0000                                                       ;838B52;
-
-Door_Climb_2:
-    dw RoomHeader_CrateriaSuper                                          ;838B56;
-    db $00,$04,$01,$76,$00,$07                                           ;838B58;
-    dw $8000,$0000                                                       ;838B5E;
-
-Door_Climb_3:
-    dw RoomHeader_Pit                                                    ;838B62;
-    db $00,$04,$01,$06,$00,$00                                           ;838B64;
-    dw $8000,$0000                                                       ;838B6A;
-
-Door_Climb_4:
-    dw RoomHeader_TourianEscape4                                         ;838B6E;
-    db $00,$05,$2E,$16,$02,$01                                           ;838B70;
-    dw $8000,$0000                                                       ;838B76;
-
-Door_Pit_0:
-    dw RoomHeader_Climb                                                  ;838B7A;
-    db $00,$05,$1E,$86,$01,$08                                           ;838B7C;
-    dw $8000,$0000                                                       ;838B82;
-
-Door_Pit_1:
-    dw RoomHeader_ElevToBlueBrinstar                                     ;838B86;
-    db $00,$04,$01,$06,$00,$00                                           ;838B88;
-    dw $8000,$0000                                                       ;838B8E;
-
-Door_ElevToBlueBrinstar_0:
-    dw RoomHeader_Pit                                                    ;838B92;
-    db $00,$05,$2E,$06,$02,$00                                           ;838B94;
-    dw $8000,$0000                                                       ;838B9A;
-
-Door_ElevToBlueBrinstar_1:
-    dw RoomHeader_MorphBall                                              ;838B9E;
-    db $F0,$02,$00,$00,$05,$00                                           ;838BA0;
-    dw $0000,$0000                                                       ;838BA6;
-
-Door_BombTorizo_0:
-    dw RoomHeader_Flyway                                                 ;838BAA;
-    db $00,$05,$2E,$06,$02,$00                                           ;838BAC;
-    dw $8000,$0000                                                       ;838BB2;
-
-Door_Flyway_0:
-    dw RoomHeader_Parlor                                                 ;838BB6;
-    db $00,$05,$3E,$26,$03,$02                                           ;838BB8;
-    dw $8000                                                             ;838BBE;
-    dw DoorASM_Scroll_4_Red_8_Green                                      ;838BC0;
-
-Door_Flyway_1:
-    dw RoomHeader_BombTorizo                                             ;838BC2;
-    db $00,$04,$01,$06,$00,$00                                           ;838BC4;
-    dw $8000,$0000                                                       ;838BCA;
-
-Door_PreMapFlyway_0:
-    dw RoomHeader_Parlor                                                 ;838BCE;
-    db $00,$05,$1E,$36,$01,$03                                           ;838BD0;
-    dw $8000                                                             ;838BD6;
-    dw DoorASM_Scroll_6_Green                                            ;838BD8;
-
-Door_PreMapFlyway_1:
-    dw RoomHeader_CrateriaMap                                            ;838BDA;
-    db $00,$04,$01,$06,$00,$00                                           ;838BDC;
-    dw $8000,$0000                                                       ;838BE2;
-
-Door_Terminator_0:
-    dw RoomHeader_GreenPiratesShaft                                      ;838BE6;
-    db $00,$05,$0E,$46,$00,$04                                           ;838BE8;
-    dw $8000,$0000                                                       ;838BEE;
-
-Door_Terminator_1:
-    dw RoomHeader_Parlor                                                 ;838BF2;
-    db $00,$04,$01,$06,$00,$00                                           ;838BF4;
-    dw $8000                                                             ;838BFA;
-    dw DoorASM_Scroll_0_Blue                                             ;838BFC;
-
-Door_GreenBrinstarElev_0:
-    dw RoomHeader_LowerMushrooms                                         ;838BFE;
-    db $00,$04,$01,$06,$00,$00                                           ;838C00;
-    dw $8000,$0000                                                       ;838C06;
-
-Door_GreenBrinstarElev_1:
-    dw RoomHeader_GreenBrinstarMainShaft                                 ;838C0A;
-    db $C0,$02,$00,$00,$00,$00                                           ;838C0C;
-    dw $0000                                                             ;838C12;
-    dw DoorASM_Scroll_1D_Blue                                            ;838C14;
-
-Door_LowerMushrooms_0:
-    dw RoomHeader_GreenPiratesShaft                                      ;838C16;
-    db $00,$04,$01,$66,$00,$06                                           ;838C18;
-    dw $8000,$0000                                                       ;838C1E;
-
-Door_LowerMushrooms_1:
-    dw RoomHeader_GreenBrinstarElev                                      ;838C22;
-    db $00,$05,$0E,$06,$00,$00                                           ;838C24;
-    dw $8000,$0000                                                       ;838C2A;
-
-Door_CrateriaMap_0:
-    dw RoomHeader_PreMapFlyway                                           ;838C2E;
-    db $00,$05,$2E,$06,$02,$00                                           ;838C30;
-    dw $8000,$0000                                                       ;838C36;
-
-Door_GreenPiratesShaft_0:
-    dw RoomHeader_Terminator                                             ;838C3A;
-    db $00,$04,$01,$26,$00,$02                                           ;838C3C;
-    dw $8000,$0000                                                       ;838C42;
-
-Door_GreenPiratesShaft_1:
-    dw RoomHeader_LowerMushrooms                                         ;838C46;
-    db $00,$05,$3E,$06,$03,$00                                           ;838C48;
-    dw $8000,$0000                                                       ;838C4E;
-
-Door_GreenPiratesShaft_2:
-    dw RoomHeader_StatuesHallway                                         ;838C52;
-    db $00,$04,$01,$06,$00,$00                                           ;838C54;
-    dw $8000,$0000                                                       ;838C5A;
-
-Door_GreenPiratesShaft_3:
-    dw RoomHeader_GauntletETank                                          ;838C5E;
-    db $00,$04,$01,$06,$00,$00                                           ;838C60;
-    dw $8000                                                             ;838C66;
-    dw DoorASM_Scroll_4_Blue                                             ;838C68;
-
-Door_CrateriaSuper_0:
-    dw RoomHeader_Climb                                                  ;838C6A;
-    db $00,$05,$2E,$06,$02,$00                                           ;838C6C;
-    dw $8000                                                             ;838C72;
-    dw DoorASM_Scroll_2_Blue                                             ;838C74;
-
-Door_CrateriaSuper_1:
-    dw RoomHeader_Climb                                                  ;838C76;
-    db $00,$05,$2E,$76,$02,$07                                           ;838C78;
-    dw $8000                                                             ;838C7E;
-    dw DoorASM_Scroll_17_Blue                                            ;838C80;
-
-Door_FinalMissileBombway_0:
-    dw RoomHeader_FinalMissile                                           ;838C82;
-    db $00,$05,$0E,$06,$00,$00                                           ;838C84;
-    dw $8000,$0000                                                       ;838C8A;
-
-Door_FinalMissileBombway_1:
-    dw RoomHeader_Parlor                                                 ;838C8E;
-    db $00,$04,$11,$36,$01,$03                                           ;838C90;
-    dw $8000                                                             ;838C96;
-    dw DoorASM_Scroll_6_Green                                            ;838C98;
-
-Door_FinalMissile_0:
-    dw RoomHeader_FinalMissileBombway                                    ;838C9A;
-    db $00,$04,$01,$06,$00,$00                                           ;838C9C;
-    dw $8000,$0000                                                       ;838CA2;
-
-Door_GreenBrinstarMainShaft_0:
-    dw RoomHeader_GreenBrinstarElev                                      ;838CA6;
-    db $D0,$03,$00,$00,$00,$00                                           ;838CA8;
-    dw $0000                                                             ;838CAE;
-    dw DoorASM_Scroll_2_Green                                            ;838CB0;
-
-Door_GreenBrinstarMainShaft_1:
-    dw RoomHeader_BrinstarPreMap                                         ;838CB2;
-    db $00,$05,$2E,$06,$02,$00                                           ;838CB4;
-    dw $8000,$0000                                                       ;838CBA;
-
-Door_GreenBrinstarMainShaft_2:
-    dw RoomHeader_GreenBrinstarBeetoms                                   ;838CBE;
-    db $00,$05,$0E,$06,$00,$00                                           ;838CC0;
-    dw $8000,$0000                                                       ;838CC6;
-
-Door_GreenBrinstarMainShaft_3:
-    dw RoomHeader_GreenBrinstarFirefleas                                 ;838CCA;
-    db $00,$05,$2E,$06,$02,$00                                           ;838CCC;
-    dw $8000,$0000                                                       ;838CD2;
-
-Door_GreenBrinstarMainShaft_4:
-    dw RoomHeader_EarlySupers                                            ;838CD6;
-    db $00,$04,$01,$16,$00,$01                                           ;838CD8;
-    dw $8000,$0000                                                       ;838CDE;
-
-Door_GreenBrinstarMainShaft_5:
-    dw RoomHeader_Dachora                                                ;838CE2;
-    db $00,$04,$01,$06                                                   ;838CE4;
-    dw $0000,$8000                                                       ;838CE8;
-    dw DoorASM_Scroll_4_Red                                              ;838CEC;
-
-Door_GreenBrinstarMainShaft_6:
-    dw RoomHeader_GreenBrinstarMainShaft                                 ;838CEE;
-    db $00,$04,$01,$76,$01,$07                                           ;838CF0;
-    dw $8000                                                             ;838CF6;
-    dw DoorASM_Scroll_1D_Blue                                            ;838CF8;
-
-Door_GreenBrinstarMainShaft_7:
-    dw RoomHeader_EtecoonETank                                           ;838CFA;
-    db $00,$05,$4E,$16,$04,$01                                           ;838CFC;
-    dw $8000                                                             ;838D02;
-    dw DoorASM_Scroll_5_6_Blue                                           ;838D04;
-
-Door_GreenBrinstarMainShaft_8:
-    dw RoomHeader_GreenBrinstarMainShaft                                 ;838D06;
-    db $00,$05,$0E,$76,$00,$07                                           ;838D08;
-    dw $8000                                                             ;838D0E;
-    dw DoorASM_Scroll_18_1C_Green                                        ;838D10;
-
-Door_GreenBrinstarMainShaft_A:
-    dw RoomHeader_GreenBrinstarSave                                      ;838D12;
-    db $00,$05,$0E,$06,$00,$00                                           ;838D14;
-    dw $8000,$0000                                                       ;838D1A;
-
-Door_SporeSpawnSuper_0:
-    dw RoomHeader_SporeSpawnFarming                                      ;838D1E;
-    db $00,$05,$2E,$06,$02,$00                                           ;838D20;
-    dw $8000,$0000                                                       ;838D26;
-
-Door_SporeSpawnSuper_1:
-    dw RoomHeader_SporeSpawn                                             ;838D2A;
-    db $00,$05,$0E,$06,$00,$00                                           ;838D2C;
-    dw $8000,$0000                                                       ;838D32;
-
-Door_BrinstarPreMap_0:
-    dw RoomHeader_GreenBrinstarMap                                       ;838D36;
-    db $00,$05,$0E,$06,$00,$00                                           ;838D38;
-    dw $8000,$0000                                                       ;838D3E;
-
-Door_BrinstarPreMap_1:
-    dw RoomHeader_GreenBrinstarMainShaft                                 ;838D42;
-    db $00,$04,$01,$46,$00,$04                                           ;838D44;
-    dw $8000,$0000                                                       ;838D4A;
-
-Door_EarlySupers_0:
-    dw RoomHeader_GreenBrinstarMainShaft                                 ;838D4E;
-    db $00,$05,$0E,$46,$00,$04                                           ;838D50;
-    dw $8000,$0000                                                       ;838D56;
-
-Door_EarlySupers_1:
-    dw RoomHeader_BrinstarReserveTank                                    ;838D5A;
-    db $00,$04,$01,$06,$00,$00                                           ;838D5C;
-    dw $8000,$0000                                                       ;838D62;
-
-Door_BrinstarReserveTank_0:
-    dw RoomHeader_EarlySupers                                            ;838D66;
-    db $00,$05,$2E,$16,$02,$01                                           ;838D68;
-    dw $8000,$0000                                                       ;838D6E;
-
-Door_GreenBrinstarMap_0:
-    dw RoomHeader_BrinstarPreMap                                         ;838D72;
-    db $00,$04,$01,$06,$00,$00                                           ;838D74;
-    dw $8000,$0000                                                       ;838D7A;
-
-Door_GreenBrinstarFirefleas_0:
-    dw RoomHeader_GreenBrinstarMissileRefill                             ;838D7E;
-    db $00,$05,$0E,$06,$00,$00                                           ;838D80;
-    dw $8000,$0000                                                       ;838D86;
-
-Door_GreenBrinstarFirefleas_1:
-    dw RoomHeader_GreenBrinstarMainShaft                                 ;838D8A;
-    db $00,$04,$01,$66,$00,$06                                           ;838D8C;
-    dw $8000,$0000                                                       ;838D92;
-
-Door_GreenBrinstarMissileRefill_0:
-    dw RoomHeader_GreenBrinstarFirefleas                                 ;838D96;
-    db $00,$04,$01,$16,$00,$01                                           ;838D98;
-    dw $8000,$0000                                                       ;838D9E;
-
-Door_Dachora_0:
-    dw RoomHeader_GreenBrinstarMainShaft                                 ;838DA2;
-    db $00,$05,$0E,$66,$00,$06                                           ;838DA4;
-    dw $8000,$0000                                                       ;838DAA;
-
-Door_Dachora_1:
-    dw RoomHeader_BigPink                                                ;838DAE;
-    db $00,$04,$21,$26,$02,$02                                           ;838DB0;
-    dw $8000,$0000                                                       ;838DB6;
-
-Door_Dachora_2:
-    dw RoomHeader_DachoraEnergyRefill                                    ;838DBA;
-    db $00,$05,$0E,$06,$00,$00                                           ;838DBC;
-    dw $8000,$0000                                                       ;838DC2;
-
-Door_BigPink_0:
-    dw RoomHeader_SporeSpawnKihunters                                    ;838DC6;
-    db $00,$04,$01,$06,$00,$00                                           ;838DC8;
-    dw $8000,$0000                                                       ;838DCE;
-
-Door_BigPink_1:
-    dw RoomHeader_Dachora                                                ;838DD2;
-    db $00,$05,$6E,$06,$06,$00                                           ;838DD4;
-    dw $8000,$0000                                                       ;838DDA;
-
-Door_BigPink_2:
-    dw RoomHeader_PinkBrinstarPowerBombs                                 ;838DDE;
-    db $00,$05,$1E,$16,$01,$01                                           ;838DE0;
-    dw $8000                                                             ;838DE6;
-    dw DoorASM_Scroll_2_3_Green                                          ;838DE8;
-
-Door_BigPink_3:
-    dw RoomHeader_GreenHillZone                                          ;838DEA;
-    db $00,$04,$01,$06,$00,$00                                           ;838DEC;
-    dw $8000,$0000                                                       ;838DF2;
-
-Door_BigPink_4:
-    dw RoomHeader_BigPinkSaveRoom                                        ;838DF6;
-    db $00,$05,$0E,$06,$00,$00                                           ;838DF8;
-    dw $8000,$0000                                                       ;838DFE;
-
-Door_BigPink_5:
-    dw RoomHeader_PinkBrinstarPowerBombs                                 ;838E02;
-    db $00,$01,$1E,$06,$01,$00                                           ;838E04;
-    dw $8000,$0000                                                       ;838E0A;
-
-Door_BigPink_6:
-    dw RoomHeader_WaterwayETank                                          ;838E0E;
-    db $00,$05,$6E,$06,$06,$00                                           ;838E10;
-    dw $8000,$0000                                                       ;838E16;
-
-Door_BigPink_7:
-    dw RoomHeader_PinkBrinstarHoppers                                    ;838E1A;
-    db $00,$04,$01,$16,$00,$01                                           ;838E1C;
-    dw $8000,$0000                                                       ;838E22;
-
-Door_BigPink_8:
-    dw RoomHeader_SporeSpawnFarming                                      ;838E26;
-    db $00,$04,$01,$06,$00,$00                                           ;838E28;
-    dw $8000,$0000                                                       ;838E2E;
-
-Door_SporeSpawnKihunters_0:
-    dw RoomHeader_BigPink                                                ;838E32;
-    db $00,$05,$3E,$06,$03,$00                                           ;838E34;
-    dw $8000,$0000                                                       ;838E3A;
-
-Door_SporeSpawnKihunters_1:
-    dw RoomHeader_SporeSpawn                                             ;838E3E;
-    db $00,$07,$06,$2E,$00,$02                                           ;838E40;
-    dw $8000,$0000                                                       ;838E46;
-
-Door_SporeSpawn_0:
-    dw RoomHeader_SporeSpawnSuper                                        ;838E4A;
-    db $00,$04,$01,$06,$00,$00                                           ;838E4C;
-    dw $8000                                                             ;838E52;
-    dw DoorASM_Scroll_1_Blue_3_Red                                       ;838E54;
-
-Door_SporeSpawn_1:
-    dw RoomHeader_SporeSpawnKihunters                                    ;838E56;
-    db $00,$06,$36,$03,$03,$00                                           ;838E58;
-    dw $8000,$0000                                                       ;838E5E;
-
-Door_PinkBrinstarPowerBombs_0:
-    dw RoomHeader_BigPink                                                ;838E62;
-    db $00,$00,$00,$00,$02,$03                                           ;838E64;
-    dw $8000,$0000                                                       ;838E6A;
-
-Door_PinkBrinstarPowerBombs_1:
-    dw RoomHeader_BigPink                                                ;838E6E;
-    db $00,$04,$21,$46,$02,$04                                           ;838E70;
-    dw $8000,$0000                                                       ;838E76;
-
-Door_GreenHillZone_0:
-    dw RoomHeader_BigPink                                                ;838E7A;
-    db $00,$05,$3E,$66,$03,$06                                           ;838E7C;
-    dw $8000,$0000                                                       ;838E82;
-
-Door_GreenHillZone_1:
-    dw RoomHeader_MorphBall                                              ;838E86;
-    db $00,$04,$01,$26,$00,$02                                           ;838E88;
-    dw $8000,$0000                                                       ;838E8E;
-
-Door_GreenHillZone_2:
-    dw RoomHeader_NoobBridge                                             ;838E92;
-    db $00,$04,$01,$06,$00,$00                                           ;838E94;
-    dw $8000,$0000                                                       ;838E9A;
-
-Door_MorphBall_0:
-    dw RoomHeader_GreenHillZone                                          ;838E9E;
-    db $00,$05,$1E,$06,$01,$00                                           ;838EA0;
-    dw $8000,$0000                                                       ;838EA6;
-
-Door_MorphBall_1:
-    dw RoomHeader_ConstructionZone                                       ;838EAA;
-    db $00,$04,$01,$06,$00,$00                                           ;838EAC;
-    dw $8000,$0000                                                       ;838EB2;
-
-Door_MorphBall_2:
-    dw RoomHeader_ElevToBlueBrinstar                                     ;838EB6;
-    db $E0,$03,$00,$00,$00,$00                                           ;838EB8;
-    dw $0000,$0000                                                       ;838EBE;
-
-Door_ConstructionZone_0:
-    dw RoomHeader_MorphBall                                              ;838EC2;
-    db $00,$05,$7E,$26,$07,$02                                           ;838EC4;
-    dw $8000,$0000                                                       ;838ECA;
-
-Door_ConstructionZone_1:
-    dw RoomHeader_BlueBrinstarETank                                      ;838ECE;
-    db $00,$04,$01,$26,$00,$02                                           ;838ED0;
-    dw $8000,$0000                                                       ;838ED6;
-
-Door_ConstructionZone_2:
-    dw RoomHeader_FirstMissile                                           ;838EDA;
-    db $00,$05,$0E,$06,$00,$00                                           ;838EDC;
-    dw $8000,$0000                                                       ;838EE2;
-
-Door_BlueBrinstarETank_0:
-    dw RoomHeader_ConstructionZone                                       ;838EE6;
-    db $00,$05,$0E,$06,$00,$00                                           ;838EE8;
-    dw $8000,$0000                                                       ;838EEE;
-
-Door_BlueBrinstarETank_1:
-    dw RoomHeader_BlueBrinstarBoulders                                   ;838EF2;
-    db $00,$05,$1E,$06,$01,$00                                           ;838EF4;
-    dw $8000,$0000                                                       ;838EFA;
-
-Door_NoobBridge_0:
-    dw RoomHeader_GreenHillZone                                          ;838EFE;
-    db $00,$05,$7E,$36,$07,$03                                           ;838F00;
-    dw $8000,$0000                                                       ;838F06;
-
-Door_NoobBridge_1:
-    dw RoomHeader_RedTower                                               ;838F0A;
-    db $00,$04,$01,$46,$00,$04                                           ;838F0C;
-    dw $8000,$0000                                                       ;838F12;
-
-Door_GreenBrinstarBeetoms_0:
-    dw RoomHeader_GreenBrinstarMainShaft                                 ;838F16;
-    db $00,$04,$01,$A6,$00,$0A                                           ;838F18;
-    dw $8000                                                             ;838F1E;
-    dw DoorASM_Scroll_18_1C_Green                                        ;838F20;
-
-Door_GreenBrinstarBeetoms_1:
-    dw RoomHeader_EtecoonETank                                           ;838F22;
-    db $00,$05,$1E,$06,$01,$00                                           ;838F24;
-    dw $8000,$0000                                                       ;838F2A;
-
-Door_EtecoonETank_0:
-    dw RoomHeader_GreenBrinstarBeetoms                                   ;838F2E;
-    db $00,$04,$01,$06,$00,$00                                           ;838F30;
-    dw $8000,$0000                                                       ;838F36;
-
-Door_EtecoonETank_1:
-    dw RoomHeader_EtecoonSuper                                           ;838F3A;
-    db $00,$05,$0E,$06,$00,$00                                           ;838F3C;
-    dw $8000,$0000                                                       ;838F42;
-
-Door_EtecoonETank_2:
-    dw RoomHeader_GreenBrinstarMainShaft                                 ;838F46;
-    db $00,$04,$21,$B6,$02,$0B                                           ;838F48;
-    dw $8000                                                             ;838F4E;
-    dw DoorASM_Scroll_1D_Blue                                            ;838F50;
-
-Door_EtecoonETank_3:
-    dw RoomHeader_EtecoonSave                                            ;838F52;
-    db $00,$05,$0E,$06,$00,$00                                           ;838F54;
-    dw $8000,$0000                                                       ;838F5A;
-
-Door_EtecoonSuper_0:
-    dw RoomHeader_EtecoonETank                                           ;838F5E;
-    db $00,$04,$01,$06,$00,$00                                           ;838F60;
-    dw $8000,$0000                                                       ;838F66;
-
-Door_DachoraEnergyRefill_0:
-    dw RoomHeader_Dachora                                                ;838F6A;
-    db $00,$04,$01,$66,$00,$06                                           ;838F6C;
-    dw $8000                                                             ;838F72;
-    dw DoorASM_Scroll_B_Green                                            ;838F74;
-
-Door_SporeSpawnFarming_0:
-    dw RoomHeader_SporeSpawnSuper                                        ;838F76;
-    db $00,$04,$01,$86,$00,$08                                           ;838F78;
-    dw $8000,$0000                                                       ;838F7E;
-
-Door_SporeSpawnFarming_1:
-    dw RoomHeader_BigPink                                                ;838F82;
-    db $00,$05,$4E,$56,$04,$05                                           ;838F84;
-    dw $8000                                                             ;838F8A;
-    dw DoorASM_Scroll_Scroll_1C_Red_1D_Blue                              ;838F8C;
-
-Door_WaterwayETank_0:
-    dw RoomHeader_BigPink                                                ;838F8E;
-    db $00,$04,$01,$96,$00,$09                                           ;838F90;
-    dw $8000                                                             ;838F96;
-    dw DoorASM_Scroll_20_24_25_Green                                     ;838F98;
-
-Door_WaterwayETank_1:
-    dw RoomHeader_KraidRefill                                            ;838F9A;
-    db $00,$06,$16,$03,$01,$00                                           ;838F9C;
-    dw $8000,$0000                                                       ;838FA2;
-
-Door_FirstMissile_0:
-    dw RoomHeader_ConstructionZone                                       ;838FA6;
-    db $00,$04,$01,$16                                                   ;838FA8;
-    dw $0100,$8000                                                       ;838FAC;
-    dw DoorASM_Scroll_0_Green_1_Blue                                     ;838FB0;
-
-Door_PinkBrinstarHoppers_0:
-    dw RoomHeader_BigPink                                                ;838FB2;
-    db $00,$05,$3E,$46,$03,$04                                           ;838FB4;
-    dw $8000,$0000                                                       ;838FBA;
-
-Door_PinkBrinstarHoppers_1:
-    dw RoomHeader_HopperETank                                            ;838FBE;
-    db $00,$04,$01,$06,$00,$00                                           ;838FC0;
-    dw $8000,$0000                                                       ;838FC6;
-
-Door_HopperETank_0:
-    dw RoomHeader_PinkBrinstarHoppers                                    ;838FCA;
-    db $00,$05,$1E,$16,$01,$01                                           ;838FCC;
-    dw $8000,$0000                                                       ;838FD2;
-
-Door_BigPinkSaveRoom_0:
-    dw RoomHeader_BigPink                                                ;838FD6;
-    db $00,$04,$11,$06,$01,$00                                           ;838FD8;
-    dw $8000                                                             ;838FDE;
-    dw DoorASM_Scroll_1_Green                                            ;838FE0;
-
-Door_BlueBrinstarBoulders_0:
-    dw RoomHeader_BlueBrinstarETank                                      ;838FE2;
-    db $00,$04,$21,$06,$02,$00                                           ;838FE4;
-    dw $8000                                                             ;838FEA;
-    dw DoorASM_Scroll_2_Blue_duplicate                                   ;838FEC;
-
-Door_BlueBrinstarBoulders_1:
-    dw RoomHeader_BillyMays                                              ;838FEE;
-    db $00,$05,$0E,$06,$00,$00                                           ;838FF0;
-    dw $8000,$0000                                                       ;838FF6;
-
-Door_BillyMays_0:
-    dw RoomHeader_BlueBrinstarBoulders                                   ;838FFA;
-    db $00,$04,$01,$06,$00,$00                                           ;838FFC;
-    dw $8000,$0000                                                       ;839002;
-
-Door_GreenBrinstarSave_0:
-    dw RoomHeader_GreenBrinstarMainShaft                                 ;839006;
-    db $00,$04,$01,$56,$00,$05                                           ;839008;
-    dw $8000,$0000                                                       ;83900E;
-
-Door_EtecoonSave_0:
-    dw RoomHeader_EtecoonETank                                           ;839012;
-    db $00,$04,$01,$16,$00,$01                                           ;839014;
-    dw $8000                                                             ;83901A;
-    dw DoorASM_Scroll_5_6_Blue                                           ;83901C;
-
-Door_RedTower_0:
-    dw RoomHeader_Hellway                                                ;83901E;
-    db $00,$04,$01,$06,$00,$00                                           ;839020;
-    dw $8000,$0000                                                       ;839026;
-
-Door_RedTower_1:
-    dw RoomHeader_NoobBridge                                             ;83902A;
-    db $00,$05,$5E,$06,$05,$00                                           ;83902C;
-    dw $8000,$0000                                                       ;839032;
-
-Door_RedTower_2:
-    dw RoomHeader_RedBrinstarFirefleas                                   ;839036;
-    db $00,$05,$7E,$06,$07,$00                                           ;839038;
-    dw $8000,$0000                                                       ;83903E;
-
-Door_RedTower_3:
-    dw RoomHeader_SkreeBoost                                             ;839042;
-    db $00,$04,$01,$06,$00,$00                                           ;839044;
-    dw $8000,$0000                                                       ;83904A;
-
-Door_RedTower_4:
-    dw RoomHeader_RedTowerRefill                                         ;83904E;
-    db $00,$05,$0E,$06,$00,$00                                           ;839050;
-    dw $8000,$0000                                                       ;839056;
-
-Door_RedBrinstarFirefleas_0:
-    dw RoomHeader_XrayScope                                              ;83905A;
-    db $00,$05,$1E,$06,$01,$00                                           ;83905C;
-    dw $8000,$0000                                                       ;839062;
-
-Door_RedBrinstarFirefleas_1:
-    dw RoomHeader_RedTower                                               ;839066;
-    db $00,$04,$01,$66,$00,$06                                           ;839068;
-    dw $8000,$0000                                                       ;83906E;
-
-Door_XrayScope_0:
-    dw RoomHeader_RedBrinstarFirefleas                                   ;839072;
-    db $00,$04,$01,$06,$00,$00                                           ;839074;
-    dw $8000,$0000                                                       ;83907A;
-
-Door_Hellway_0:
-    dw RoomHeader_RedTower                                               ;83907E;
-    db $00,$05,$0E,$06,$00,$00                                           ;839080;
-    dw $8000,$0000                                                       ;839086;
-
-Door_Hellway_1:
-    dw RoomHeader_Caterpillar                                            ;83908A;
-    db $00,$04,$01,$56,$00,$05                                           ;83908C;
-    dw $8000                                                             ;839092;
-    dw DoorASM_Scroll_6_Green_duplicate_again                            ;839094;
-
-Door_Caterpillar_0:
-    dw RoomHeader_AlphaPowerBomb                                         ;839096;
-    db $00,$05,$2E,$06,$02,$00                                           ;839098;
-    dw $8000,$0000                                                       ;83909E;
-
-Door_Caterpillar_1:
-    dw RoomHeader_BetaPowerBomb                                          ;8390A2;
-    db $00,$05,$1E,$06,$01,$00                                           ;8390A4;
-    dw $8000,$0000                                                       ;8390AA;
-
-Door_Caterpillar_2:
-    dw RoomHeader_Hellway                                                ;8390AE;
-    db $00,$05,$2E,$06,$02,$00                                           ;8390B0;
-    dw $8000,$0000                                                       ;8390B6;
-
-Door_Caterpillar_3:
-    dw RoomHeader_RedBinstarElev                                         ;8390BA;
-    db $F0,$03,$00,$00,$00,$00                                           ;8390BC;
-    dw $0000,$0000                                                       ;8390C2;
-
-Door_Caterpillar_4:
-    dw RoomHeader_RedFish                                                ;8390C6;
-    db $40,$04,$01,$06,$00,$00                                           ;8390C8;
-    dw $8000                                                             ;8390CE;
-    dw DoorASM_Scroll_1_Blue_2_Red                                       ;8390D0;
-
-Door_Caterpillar_6:
-    dw RoomHeader_RedBrinstarSave                                        ;8390D2;
-    db $00,$04,$01,$06,$00,$00                                           ;8390D4;
-    dw $8000,$0000                                                       ;8390DA;
-
-Door_BetaPowerBomb_0:
-    dw RoomHeader_Caterpillar                                            ;8390DE;
-    db $00,$04,$01,$36,$00,$03                                           ;8390E0;
-    dw $8000,$0000                                                       ;8390E6;
-
-Door_AlphaPowerBomb_0:
-    dw RoomHeader_Caterpillar                                            ;8390EA;
-    db $00,$04,$01,$76,$00,$07                                           ;8390EC;
-    dw $8000                                                             ;8390F2;
-    dw DoorASM_Scroll_F_12_Green                                         ;8390F4;
-
-Door_SkreeBoost_0:
-    dw RoomHeader_RedTower                                               ;8390F6;
-    db $00,$05,$0E,$96,$00,$09                                           ;8390F8;
-    dw $8000                                                             ;8390FE;
-    dw DoorASM_Scroll_6_7_Green                                          ;839100;
-
-Door_SkreeBoost_1:
-    dw RoomHeader_BelowSpazer                                            ;839102;
-    db $00,$04,$01,$16,$00,$01                                           ;839104;
-    dw $8000,$0000                                                       ;83910A;
-
-Door_BelowSpazer_0:
-    dw RoomHeader_SkreeBoost                                             ;83910E;
-    db $00,$05,$1E,$06,$01,$00                                           ;839110;
-    dw $8000,$0000                                                       ;839116;
-
-Door_BelowSpazer_1:
-    dw RoomHeader_WestTunnel                                             ;83911A;
-    db $40,$04,$01,$06,$00,$00                                           ;83911C;
-    dw $8000,$0000                                                       ;839122;
-
-Door_BelowSpazer_2:
-    dw RoomHeader_Spazer                                                 ;839126;
-    db $00,$04,$01,$06,$00,$00                                           ;839128;
-    dw $8000,$0000                                                       ;83912E;
-
-Door_Spazer_0:
-    dw RoomHeader_BelowSpazer                                            ;839132;
-    db $00,$05,$1E,$06,$01,$00                                           ;839134;
-    dw $8000                                                             ;83913A;
-    dw DoorASM_Scroll_0_1_Green                                          ;83913C;
-
-Door_WarehouseZeela_0:
-    dw RoomHeader_WarehouseEntrance                                      ;83913E;
-    db $00,$05,$2E,$06,$02,$00                                           ;839140;
-    dw $8000                                                             ;839146;
-    dw DoorASM_Scroll_0_Red_1_Green                                      ;839148;
-
-Door_WarehouseZeela_1:
-    dw RoomHeader_WarehouseETank                                         ;83914A;
-    db $00,$05,$0E,$06,$00,$00                                           ;83914C;
-    dw $8000,$0000                                                       ;839152;
-
-Door_WarehouseZeela_2:
-    dw RoomHeader_WarehouseKihunter                                      ;839156;
-    db $00,$07,$06,$0C,$00,$00                                           ;839158;
-    dw $0240,$0000                                                       ;83915E;
-
-Door_WarehouseETank_0:
-    dw RoomHeader_WarehouseZeela                                         ;839162;
-    db $00,$04,$01,$16,$00,$01                                           ;839164;
-    dw $8000,$0000                                                       ;83916A;
-
-Door_WarehouseKihunter_0:
-    dw RoomHeader_WarehouseZeela                                         ;83916E;
-    db $00,$06,$16,$13,$01,$01                                           ;839170;
-    dw $01C0,$0000                                                       ;839176;
-
-Door_WarehouseKihunter_1:
-    dw RoomHeader_MiniKraid                                              ;83917A;
-    db $00,$04,$01,$06,$00,$00                                           ;83917C;
-    dw $8000,$0000                                                       ;839182;
-
-Door_WarehouseKihunter_2:
-    dw RoomHeader_WarehouseSave                                          ;839186;
-    db $00,$04,$01,$06,$00,$00                                           ;839188;
-    dw $8000,$0000                                                       ;83918E;
-
-Door_MiniKraid_0:
-    dw RoomHeader_WarehouseKihunter                                      ;839192;
-    db $00,$05,$1E,$16,$01,$01                                           ;839194;
-    dw $8000,$0000                                                       ;83919A;
-
-Door_MiniKraid_1:
-    dw RoomHeader_KraidEyeDoor                                           ;83919E;
-    db $00,$04,$01,$16,$00,$01                                           ;8391A0;
-    dw $8000,$0000                                                       ;8391A6;
+Door_LandingSite_LandingCutscene:                                        ;8388FE;
+    %DoorHeader(\
+    %destination(RoomHeader_LandingSite),
+    %elevator(0),
+    %direction(3),
+    %doorPos(0, 0),
+    %screenPos(4, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_DemoSet3_0_2_4:                                                     ;83890A;
+    %DoorHeader(\
+    %destination(RoomHeader_LandingSite),
+    %elevator(0),
+    %direction(3),
+    %doorPos(0, 0),
+    %screenPos(4, 2),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_LandingSite_0:                                                      ;838916;
+    %DoorHeader(\
+    %destination(RoomHeader_Parlor),
+    %elevator(0),
+    %direction(5),
+    %doorPos($4E, 6),
+    %screenPos(4, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_LandingSite_1:                                                      ;838922;
+    %DoorHeader(\
+    %destination(RoomHeader_CrateriaTube),
+    %elevator(0),
+    %direction(0),
+    %doorPos(0, 0),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_LandingSite_2:                                                      ;83892E;
+    %DoorHeader(\
+    %destination(RoomHeader_GauntletEntrance),
+    %elevator(0),
+    %direction(5),
+    %doorPos($4E, 6),
+    %screenPos(4, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_LandingSite_3:                                                      ;83893A;
+    %DoorHeader(\
+    %destination(RoomHeader_CrateriaPowerBombs),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GauntletEntrance_0:                                                 ;838946;
+    %DoorHeader(\
+    %destination(RoomHeader_LandingSite),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $26),
+    %screenPos(0, 2),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_13_Blue))
+
+Door_GauntletEntrance_1:                                                 ;838952;
+    %DoorHeader(\
+    %destination(RoomHeader_GauntletETank),
+    %elevator(0),
+    %direction(5),
+    %doorPos($5E, 6),
+    %screenPos(5, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Parlor_0:                                                           ;83895E;
+    %DoorHeader(\
+    %destination(RoomHeader_Terminator),
+    %elevator(0),
+    %direction(5),
+    %doorPos($5E, 6),
+    %screenPos(5, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Parlor_1:                                                           ;83896A;
+    %DoorHeader(\
+    %destination(RoomHeader_LandingSite),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $46),
+    %screenPos(0, 4),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Parlor_2:                                                           ;838976;
+    %DoorHeader(\
+    %destination(RoomHeader_PreMapFlyway),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Parlor_3:                                                           ;838982;
+    %DoorHeader(\
+    %destination(RoomHeader_Flyway),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Parlor_4:                                                           ;83898E;
+    %DoorHeader(\
+    %destination(RoomHeader_Climb),
+    %elevator(0),
+    %direction(6),
+    %doorPos($16, 2),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Parlor_5:                                                           ;83899A;
+    %DoorHeader(\
+    %destination(RoomHeader_CrateriaSave),
+    %elevator(0),
+    %direction(5),
+    %doorPos($E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Parlor_6:                                                           ;8389A6;
+    %DoorHeader(\
+    %destination(RoomHeader_FinalMissileBombway),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_CrateriaPowerBombs_0:                                               ;8389B2;
+    %DoorHeader(\
+    %destination(RoomHeader_LandingSite),
+    %elevator(0),
+    %direction(5),
+    %doorPos($8E, $16),
+    %screenPos(8, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_CrateriaSave_0:                                                     ;8389BE;
+    %DoorHeader(\
+    %destination(RoomHeader_Parlor),
+    %elevator(0),
+    %direction(4),
+    %doorPos($11, $26),
+    %screenPos(1, 2),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_6_Green))
+
+Door_WestOcean_0:                                                        ;8389CA;
+    %DoorHeader(\
+    %destination(RoomHeader_Moat),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_WestOcean_1:                                                        ;8389D6;
+    %DoorHeader(\
+    %destination(RoomHeader_WreckedShipEntrance),
+    %elevator($50),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_StartWreckedShipTreadmillWestEntrance))
+
+Door_WestOcean_2:                                                        ;8389E2;
+    %DoorHeader(\
+    %destination(RoomHeader_BowlingAlleyPath),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_WestOcean_3:                                                        ;8389EE;
+    %DoorHeader(\
+    %destination(RoomHeader_Attic),
+    %elevator($40),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_WestOcean_4:                                                        ;8389FA;
+    %DoorHeader(\
+    %destination(RoomHeader_BowlingAlley),
+    %elevator($40),
+    %direction(4),
+    %doorPos($21, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_8_9_A_B_Red))
+
+Door_WestOcean_5:                                                        ;838A06;
+    %DoorHeader(\
+    %destination(RoomHeader_GravitySuit),
+    %elevator($40),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BowlingAlleyPath_0:                                                 ;838A12;
+    %DoorHeader(\
+    %destination(RoomHeader_WestOcean),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, $26),
+    %screenPos(2, 2),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BowlingAlleyPath_1:                                                 ;838A1E;
+    %DoorHeader(\
+    %destination(RoomHeader_PreBowling),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_CrateriaKihunter_0:                                                 ;838A2A;
+    %DoorHeader(\
+    %destination(RoomHeader_CrateriaTube),
+    %elevator(0),
+    %direction(1),
+    %doorPos(0, 0),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_CrateriaKihunter_1:                                                 ;838A36;
+    %DoorHeader(\
+    %destination(RoomHeader_Moat),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_CrateriaKihunter_2:                                                 ;838A42;
+    %DoorHeader(\
+    %destination(RoomHeader_RedBinstarElev),
+    %elevator(0),
+    %direction(6),
+    %doorPos(6, 2),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_ForgottenHighwayElev_0:                                             ;838A4E;
+    %DoorHeader(\
+    %destination(RoomHeader_ForgottenHighwayElbow),
+    %elevator(0),
+    %direction(7),
+    %doorPos(6, $0D),
+    %screenPos(0, 0),
+    %spawnDistance($01C0),
+    %doorASM(0))
+
+Door_ForgottenHighwayElev_1:                                             ;838A5A;
+    %DoorHeader(\
+    %destination(RoomHeader_MaridiaElev),
+    %elevator($D0),
+    %direction(2),
+    %doorPos(0, 0),
+    %screenPos(0, 0),
+    %spawnDistance(0),
+    %doorASM(0))
+
+Door_EastOcean_0:                                                        ;838A66;
+    %DoorHeader(\
+    %destination(RoomHeader_ElectricDeath),
+    %elevator($40),
+    %direction(5),
+    %doorPos($0E, $16),
+    %screenPos(0, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_EastOcean_1:                                                        ;838A72;
+    %DoorHeader(\
+    %destination(RoomHeader_ForgottenHighwayKagos),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_ForgottenHighwayKagos_0:                                            ;838A7E;
+    %DoorHeader(\
+    %destination(RoomHeader_EastOcean),
+    %elevator(0),
+    %direction(5),
+    %doorPos($6E, $46),
+    %screenPos(6, 4),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_ForgottenHighwayKagos_1:                                            ;838A8A;
+    %DoorHeader(\
+    %destination(RoomHeader_CrabMaze),
+    %elevator(0),
+    %direction(6),
+    %doorPos($36, 2),
+    %screenPos(3, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_CrabMaze_0:                                                         ;838A96;
+    %DoorHeader(\
+    %destination(RoomHeader_ForgottenHighwayKagos),
+    %elevator(0),
+    %direction(7),
+    %doorPos(6, $3D),
+    %screenPos(0, 3),
+    %spawnDistance($01C0),
+    %doorASM(0))
+
+Door_ForgottenHighwayElbow_0:                                            ;838AA2;
+    %DoorHeader(\
+    %destination(RoomHeader_CrabMaze),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $16),
+    %screenPos(0, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_CrabMaze_1:                                                         ;838AAE;
+    %DoorHeader(\
+    %destination(RoomHeader_ForgottenHighwayElbow),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_ForgottenHighwayElbow_1:                                            ;838ABA;
+    %DoorHeader(\
+    %destination(RoomHeader_ForgottenHighwayElev),
+    %elevator(0),
+    %direction(6),
+    %doorPos(6, 2),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_CrateriaTube_0:                                                     ;838AC6;
+    %DoorHeader(\
+    %destination(RoomHeader_LandingSite),
+    %elevator(0),
+    %direction(5),
+    %doorPos($8E, $46),
+    %screenPos(8, 4),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_CrateriaTube_1:                                                     ;838AD2;
+    %DoorHeader(\
+    %destination(RoomHeader_CrateriaKihunter),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Moat_0:                                                             ;838ADE;
+    %DoorHeader(\
+    %destination(RoomHeader_CrateriaKihunter),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Moat_1:                                                             ;838AEA;
+    %DoorHeader(\
+    %destination(RoomHeader_WestOcean),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $46),
+    %screenPos(0, 4),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_RedBinstarElev_0:                                                   ;838AF6;
+    %DoorHeader(\
+    %destination(RoomHeader_CrateriaKihunter),
+    %elevator(0),
+    %direction(7),
+    %doorPos($16, $2D),
+    %screenPos(1, 2),
+    %spawnDistance($01C0),
+    %doorASM(DoorASM_Scroll_1_4_Green))
+
+Door_RedBinstarElev_1:                                                   ;838B02;
+    %DoorHeader(\
+    %destination(RoomHeader_Caterpillar),
+    %elevator($E0),
+    %direction(2),
+    %doorPos(0, 0),
+    %screenPos(0, 0),
+    %spawnDistance(0),
+    %doorASM(DoorASM_Scroll_6_Green_duplicate))
+
+Door_GauntletETank_0:                                                    ;838B0E;
+    %DoorHeader(\
+    %destination(RoomHeader_GauntletEntrance),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GauntletETank_1:                                                    ;838B1A;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenPiratesShaft),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_3_Green))
+
+Door_PreBowling_0:                                                       ;838B26;
+    %DoorHeader(\
+    %destination(RoomHeader_BowlingAlleyPath),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_PreBowling_1:                                                       ;838B32;
+    %DoorHeader(\
+    %destination(RoomHeader_BowlingAlley),
+    %elevator($40),
+    %direction(4),
+    %doorPos(1, $16),
+    %screenPos(0, 1),
+    %spawnDistance($00A0),
+    %doorASM(DoorASM_Scroll_2_3_4_5_B_C_D_11_Red))
+
+Door_Climb_0:                                                            ;838B3E;
+    %DoorHeader(\
+    %destination(RoomHeader_Parlor),
+    %elevator(0),
+    %direction(7),
+    %doorPos($16, $4D),
+    %screenPos(1, 4),
+    %spawnDistance($01C0),
+    %doorASM(DoorASM_Scroll_6_Green))
+
+Door_Climb_1:                                                            ;838B4A;
+    %DoorHeader(\
+    %destination(RoomHeader_CrateriaSuper),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Climb_2:                                                            ;838B56;
+    %DoorHeader(\
+    %destination(RoomHeader_CrateriaSuper),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $76),
+    %screenPos(0, 7),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Climb_3:                                                            ;838B62;
+    %DoorHeader(\
+    %destination(RoomHeader_Pit),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Climb_4:                                                            ;838B6E;
+    %DoorHeader(\
+    %destination(RoomHeader_TourianEscape4),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, $16),
+    %screenPos(2, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Pit_0:                                                              ;838B7A;
+    %DoorHeader(\
+    %destination(RoomHeader_Climb),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, $86),
+    %screenPos(1, 8),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Pit_1:                                                              ;838B86;
+    %DoorHeader(\
+    %destination(RoomHeader_ElevToBlueBrinstar),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_ElevToBlueBrinstar_0:                                               ;838B92;
+    %DoorHeader(\
+    %destination(RoomHeader_Pit),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_ElevToBlueBrinstar_1:                                               ;838B9E;
+    %DoorHeader(\
+    %destination(RoomHeader_MorphBall),
+    %elevator($F0),
+    %direction(2),
+    %doorPos(0, 0),
+    %screenPos(5, 0),
+    %spawnDistance(0),
+    %doorASM(0))
+
+Door_BombTorizo_0:                                                       ;838BAA;
+    %DoorHeader(\
+    %destination(RoomHeader_Flyway),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Flyway_0:                                                           ;838BB6;
+    %DoorHeader(\
+    %destination(RoomHeader_Parlor),
+    %elevator(0),
+    %direction(5),
+    %doorPos($3E, $26),
+    %screenPos(3, 2),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_4_Red_8_Green))
+
+Door_Flyway_1:                                                           ;838BC2;
+    %DoorHeader(\
+    %destination(RoomHeader_BombTorizo),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_PreMapFlyway_0:                                                     ;838BCE;
+    %DoorHeader(\
+    %destination(RoomHeader_Parlor),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, $36),
+    %screenPos(1, 3),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_6_Green))
+
+Door_PreMapFlyway_1:                                                     ;838BDA;
+    %DoorHeader(\
+    %destination(RoomHeader_CrateriaMap),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Terminator_0:                                                       ;838BE6;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenPiratesShaft),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, $46),
+    %screenPos(0, 4),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Terminator_1:                                                       ;838BF2;
+    %DoorHeader(\
+    %destination(RoomHeader_Parlor),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_0_Blue))
+
+Door_GreenBrinstarElev_0:                                                ;838BFE;
+    %DoorHeader(\
+    %destination(RoomHeader_LowerMushrooms),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarElev_1:                                                ;838C0A;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMainShaft),
+    %elevator($C0),
+    %direction(2),
+    %doorPos(0, 0),
+    %screenPos(0, 0),
+    %spawnDistance(0),
+    %doorASM(DoorASM_Scroll_1D_Blue))
+
+Door_LowerMushrooms_0:                                                   ;838C16;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenPiratesShaft),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $66),
+    %screenPos(0, 6),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_LowerMushrooms_1:                                                   ;838C22;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarElev),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_CrateriaMap_0:                                                      ;838C2E;
+    %DoorHeader(\
+    %destination(RoomHeader_PreMapFlyway),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenPiratesShaft_0:                                                ;838C3A;
+    %DoorHeader(\
+    %destination(RoomHeader_Terminator),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $26),
+    %screenPos(0, 2),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenPiratesShaft_1:                                                ;838C46;
+    %DoorHeader(\
+    %destination(RoomHeader_LowerMushrooms),
+    %elevator(0),
+    %direction(5),
+    %doorPos($3E, 6),
+    %screenPos(3, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenPiratesShaft_2:                                                ;838C52;
+    %DoorHeader(\
+    %destination(RoomHeader_StatuesHallway),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenPiratesShaft_3:                                                ;838C5E;
+    %DoorHeader(\
+    %destination(RoomHeader_GauntletETank),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_4_Blue))
+
+Door_CrateriaSuper_0:                                                    ;838C6A;
+    %DoorHeader(\
+    %destination(RoomHeader_Climb),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_2_Blue))
+
+Door_CrateriaSuper_1:                                                    ;838C76;
+    %DoorHeader(\
+    %destination(RoomHeader_Climb),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, $76),
+    %screenPos(2, 7),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_17_Blue))
+
+Door_FinalMissileBombway_0:                                              ;838C82;
+    %DoorHeader(\
+    %destination(RoomHeader_FinalMissile),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_FinalMissileBombway_1:                                              ;838C8E;
+    %DoorHeader(\
+    %destination(RoomHeader_Parlor),
+    %elevator(0),
+    %direction(4),
+    %doorPos($11, $36),
+    %screenPos(1, 3),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_6_Green))
+
+Door_FinalMissile_0:                                                     ;838C9A;
+    %DoorHeader(\
+    %destination(RoomHeader_FinalMissileBombway),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarMainShaft_0:                                           ;838CA6;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarElev),
+    %elevator($D0),
+    %direction(3),
+    %doorPos(0, 0),
+    %screenPos(0, 0),
+    %spawnDistance(0),
+    %doorASM(DoorASM_Scroll_2_Green))
+
+Door_GreenBrinstarMainShaft_1:                                           ;838CB2;
+    %DoorHeader(\
+    %destination(RoomHeader_BrinstarPreMap),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarMainShaft_2:                                           ;838CBE;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarBeetoms),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarMainShaft_3:                                           ;838CCA;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarFirefleas),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarMainShaft_4:                                           ;838CD6;
+    %DoorHeader(\
+    %destination(RoomHeader_EarlySupers),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $16),
+    %screenPos(0, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarMainShaft_5:                                           ;838CE2;
+    %DoorHeader(\
+    %destination(RoomHeader_Dachora),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_4_Red))
+
+Door_GreenBrinstarMainShaft_6:                                           ;838CEE;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMainShaft),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $76),
+    %screenPos(1, 7),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_1D_Blue))
+
+Door_GreenBrinstarMainShaft_7:                                           ;838CFA;
+    %DoorHeader(\
+    %destination(RoomHeader_EtecoonETank),
+    %elevator(0),
+    %direction(5),
+    %doorPos($4E, $16),
+    %screenPos(4, 1),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_5_6_Blue))
+
+Door_GreenBrinstarMainShaft_8:                                           ;838D06;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMainShaft),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, $76),
+    %screenPos(0, 7),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_18_1C_Green))
+
+Door_GreenBrinstarMainShaft_A:                                           ;838D12;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarSave),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_SporeSpawnSuper_0:                                                  ;838D1E;
+    %DoorHeader(\
+    %destination(RoomHeader_SporeSpawnFarming),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_SporeSpawnSuper_1:                                                  ;838D2A;
+    %DoorHeader(\
+    %destination(RoomHeader_SporeSpawn),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BrinstarPreMap_0:                                                   ;838D36;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMap),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BrinstarPreMap_1:                                                   ;838D42;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMainShaft),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $46),
+    %screenPos(0, 4),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_EarlySupers_0:                                                      ;838D4E;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMainShaft),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, $46),
+    %screenPos(0, 4),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_EarlySupers_1:                                                      ;838D5A;
+    %DoorHeader(\
+    %destination(RoomHeader_BrinstarReserveTank),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BrinstarReserveTank_0:                                              ;838D66;
+    %DoorHeader(\
+    %destination(RoomHeader_EarlySupers),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, $16),
+    %screenPos(2, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarMap_0:                                                 ;838D72;
+    %DoorHeader(\
+    %destination(RoomHeader_BrinstarPreMap),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarFirefleas_0:                                           ;838D7E;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMissileRefill),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarFirefleas_1:                                           ;838D8A;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMainShaft),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $66),
+    %screenPos(0, 6),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarMissileRefill_0:                                       ;838D96;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarFirefleas),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $16),
+    %screenPos(0, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Dachora_0:                                                          ;838DA2;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMainShaft),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, $66),
+    %screenPos(0, 6),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Dachora_1:                                                          ;838DAE;
+    %DoorHeader(\
+    %destination(RoomHeader_BigPink),
+    %elevator(0),
+    %direction(4),
+    %doorPos($21, $26),
+    %screenPos(2, 2),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Dachora_2:                                                          ;838DBA;
+    %DoorHeader(\
+    %destination(RoomHeader_DachoraEnergyRefill),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BigPink_0:                                                          ;838DC6;
+    %DoorHeader(\
+    %destination(RoomHeader_SporeSpawnKihunters),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BigPink_1:                                                          ;838DD2;
+    %DoorHeader(\
+    %destination(RoomHeader_Dachora),
+    %elevator(0),
+    %direction(5),
+    %doorPos($6E, 6),
+    %screenPos(6, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BigPink_2:                                                          ;838DDE;
+    %DoorHeader(\
+    %destination(RoomHeader_PinkBrinstarPowerBombs),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, $16),
+    %screenPos(1, 1),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_2_3_Green))
+
+Door_BigPink_3:                                                          ;838DEA;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenHillZone),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BigPink_4:                                                          ;838DF6;
+    %DoorHeader(\
+    %destination(RoomHeader_BigPinkSaveRoom),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BigPink_5:                                                          ;838E02;
+    %DoorHeader(\
+    %destination(RoomHeader_PinkBrinstarPowerBombs),
+    %elevator(0),
+    %direction(1),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BigPink_6:                                                          ;838E0E;
+    %DoorHeader(\
+    %destination(RoomHeader_WaterwayETank),
+    %elevator(0),
+    %direction(5),
+    %doorPos($6E, 6),
+    %screenPos(6, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BigPink_7:                                                          ;838E1A;
+    %DoorHeader(\
+    %destination(RoomHeader_PinkBrinstarHoppers),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $16),
+    %screenPos(0, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BigPink_8:                                                          ;838E26;
+    %DoorHeader(\
+    %destination(RoomHeader_SporeSpawnFarming),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_SporeSpawnKihunters_0:                                              ;838E32;
+    %DoorHeader(\
+    %destination(RoomHeader_BigPink),
+    %elevator(0),
+    %direction(5),
+    %doorPos($3E, 6),
+    %screenPos(3, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_SporeSpawnKihunters_1:                                              ;838E3E;
+    %DoorHeader(\
+    %destination(RoomHeader_SporeSpawn),
+    %elevator(0),
+    %direction(7),
+    %doorPos(6, $2E),
+    %screenPos(0, 2),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_SporeSpawn_0:                                                       ;838E4A;
+    %DoorHeader(\
+    %destination(RoomHeader_SporeSpawnSuper),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_1_Blue_3_Red))
+
+Door_SporeSpawn_1:                                                       ;838E56;
+    %DoorHeader(\
+    %destination(RoomHeader_SporeSpawnKihunters),
+    %elevator(0),
+    %direction(6),
+    %doorPos($36, 3),
+    %screenPos(3, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_PinkBrinstarPowerBombs_0:                                           ;838E62;
+    %DoorHeader(\
+    %destination(RoomHeader_BigPink),
+    %elevator(0),
+    %direction(0),
+    %doorPos(0, 0),
+    %screenPos(2, 3),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_PinkBrinstarPowerBombs_1:                                           ;838E6E;
+    %DoorHeader(\
+    %destination(RoomHeader_BigPink),
+    %elevator(0),
+    %direction(4),
+    %doorPos($21, $46),
+    %screenPos(2, 4),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenHillZone_0:                                                    ;838E7A;
+    %DoorHeader(\
+    %destination(RoomHeader_BigPink),
+    %elevator(0),
+    %direction(5),
+    %doorPos($3E, $66),
+    %screenPos(3, 6),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenHillZone_1:                                                    ;838E86;
+    %DoorHeader(\
+    %destination(RoomHeader_MorphBall),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $26),
+    %screenPos(0, 2),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenHillZone_2:                                                    ;838E92;
+    %DoorHeader(\
+    %destination(RoomHeader_NoobBridge),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_MorphBall_0:                                                        ;838E9E;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenHillZone),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_MorphBall_1:                                                        ;838EAA;
+    %DoorHeader(\
+    %destination(RoomHeader_ConstructionZone),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_MorphBall_2:                                                        ;838EB6;
+    %DoorHeader(\
+    %destination(RoomHeader_ElevToBlueBrinstar),
+    %elevator($E0),
+    %direction(3),
+    %doorPos(0, 0),
+    %screenPos(0, 0),
+    %spawnDistance(0),
+    %doorASM(0))
+
+Door_ConstructionZone_0:                                                 ;838EC2;
+    %DoorHeader(\
+    %destination(RoomHeader_MorphBall),
+    %elevator(0),
+    %direction(5),
+    %doorPos($7E, $26),
+    %screenPos(7, 2),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_ConstructionZone_1:                                                 ;838ECE;
+    %DoorHeader(\
+    %destination(RoomHeader_BlueBrinstarETank),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $26),
+    %screenPos(0, 2),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_ConstructionZone_2:                                                 ;838EDA;
+    %DoorHeader(\
+    %destination(RoomHeader_FirstMissile),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BlueBrinstarETank_0:                                                ;838EE6;
+    %DoorHeader(\
+    %destination(RoomHeader_ConstructionZone),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BlueBrinstarETank_1:                                                ;838EF2;
+    %DoorHeader(\
+    %destination(RoomHeader_BlueBrinstarBoulders),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_NoobBridge_0:                                                       ;838EFE;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenHillZone),
+    %elevator(0),
+    %direction(5),
+    %doorPos($7E, $36),
+    %screenPos(7, 3),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_NoobBridge_1:                                                       ;838F0A;
+    %DoorHeader(\
+    %destination(RoomHeader_RedTower),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $46),
+    %screenPos(0, 4),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarBeetoms_0:                                             ;838F16;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMainShaft),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $A6),
+    %screenPos(0, $0A),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_18_1C_Green))
+
+Door_GreenBrinstarBeetoms_1:                                             ;838F22;
+    %DoorHeader(\
+    %destination(RoomHeader_EtecoonETank),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_EtecoonETank_0:                                                     ;838F2E;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarBeetoms),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_EtecoonETank_1:                                                     ;838F3A;
+    %DoorHeader(\
+    %destination(RoomHeader_EtecoonSuper),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_EtecoonETank_2:                                                     ;838F46;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMainShaft),
+    %elevator(0),
+    %direction(4),
+    %doorPos($21, $B6),
+    %screenPos(2, $0B),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_1D_Blue))
+
+Door_EtecoonETank_3:                                                     ;838F52;
+    %DoorHeader(\
+    %destination(RoomHeader_EtecoonSave),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_EtecoonSuper_0:                                                     ;838F5E;
+    %DoorHeader(\
+    %destination(RoomHeader_EtecoonETank),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_DachoraEnergyRefill_0:                                              ;838F6A;
+    %DoorHeader(\
+    %destination(RoomHeader_Dachora),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $66),
+    %screenPos(0, 6),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_B_Green))
+
+Door_SporeSpawnFarming_0:                                                ;838F76;
+    %DoorHeader(\
+    %destination(RoomHeader_SporeSpawnSuper),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $86),
+    %screenPos(0, 8),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_SporeSpawnFarming_1:                                                ;838F82;
+    %DoorHeader(\
+    %destination(RoomHeader_BigPink),
+    %elevator(0),
+    %direction(5),
+    %doorPos($4E, $56),
+    %screenPos(4, 5),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_Scroll_1C_Red_1D_Blue))
+
+Door_WaterwayETank_0:                                                    ;838F8E;
+    %DoorHeader(\
+    %destination(RoomHeader_BigPink),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $96),
+    %screenPos(0, 9),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_20_24_25_Green))
+
+Door_WaterwayETank_1:                                                    ;838F9A;
+    %DoorHeader(\
+    %destination(RoomHeader_KraidRefill),
+    %elevator(0),
+    %direction(6),
+    %doorPos($16, 3),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_FirstMissile_0:                                                     ;838FA6;
+    %DoorHeader(\
+    %destination(RoomHeader_ConstructionZone),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $16),
+    %screenPos(0, 1),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_0_Green_1_Blue))
+
+Door_PinkBrinstarHoppers_0:                                              ;838FB2;
+    %DoorHeader(\
+    %destination(RoomHeader_BigPink),
+    %elevator(0),
+    %direction(5),
+    %doorPos($3E, $46),
+    %screenPos(3, 4),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_PinkBrinstarHoppers_1:                                              ;838FBE;
+    %DoorHeader(\
+    %destination(RoomHeader_HopperETank),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_HopperETank_0:                                                      ;838FCA;
+    %DoorHeader(\
+    %destination(RoomHeader_PinkBrinstarHoppers),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, $16),
+    %screenPos(1, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BigPinkSaveRoom_0:                                                  ;838FD6;
+    %DoorHeader(\
+    %destination(RoomHeader_BigPink),
+    %elevator(0),
+    %direction(4),
+    %doorPos($11, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_1_Green))
+
+Door_BlueBrinstarBoulders_0:                                             ;838FE2;
+    %DoorHeader(\
+    %destination(RoomHeader_BlueBrinstarETank),
+    %elevator(0),
+    %direction(4),
+    %doorPos($21, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_2_Blue_duplicate))
+
+Door_BlueBrinstarBoulders_1:                                             ;838FEE;
+    %DoorHeader(\
+    %destination(RoomHeader_BillyMays),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BillyMays_0:                                                        ;838FFA;
+    %DoorHeader(\
+    %destination(RoomHeader_BlueBrinstarBoulders),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_GreenBrinstarSave_0:                                                ;839006;
+    %DoorHeader(\
+    %destination(RoomHeader_GreenBrinstarMainShaft),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $56),
+    %screenPos(0, 5),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_EtecoonSave_0:                                                      ;839012;
+    %DoorHeader(\
+    %destination(RoomHeader_EtecoonETank),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $16),
+    %screenPos(0, 1),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_5_6_Blue))
+
+Door_RedTower_0:                                                         ;83901E;
+    %DoorHeader(\
+    %destination(RoomHeader_Hellway),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_RedTower_1:                                                         ;83902A;
+    %DoorHeader(\
+    %destination(RoomHeader_NoobBridge),
+    %elevator(0),
+    %direction(5),
+    %doorPos($5E, 6),
+    %screenPos(5, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_RedTower_2:                                                         ;839036;
+    %DoorHeader(\
+    %destination(RoomHeader_RedBrinstarFirefleas),
+    %elevator(0),
+    %direction(5),
+    %doorPos($7E, 6),
+    %screenPos(7, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_RedTower_3:                                                         ;839042;
+    %DoorHeader(\
+    %destination(RoomHeader_SkreeBoost),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_RedTower_4:                                                         ;83904E;
+    %DoorHeader(\
+    %destination(RoomHeader_RedTowerRefill),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_RedBrinstarFirefleas_0:                                             ;83905A;
+    %DoorHeader(\
+    %destination(RoomHeader_XrayScope),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_RedBrinstarFirefleas_1:                                             ;839066;
+    %DoorHeader(\
+    %destination(RoomHeader_RedTower),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $66),
+    %screenPos(0, 6),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_XrayScope_0:                                                        ;839072;
+    %DoorHeader(\
+    %destination(RoomHeader_RedBrinstarFirefleas),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Hellway_0:                                                          ;83907E;
+    %DoorHeader(\
+    %destination(RoomHeader_RedTower),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Hellway_1:                                                          ;83908A;
+    %DoorHeader(\
+    %destination(RoomHeader_Caterpillar),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $56),
+    %screenPos(0, 5),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_6_Green_duplicate_again))
+
+Door_Caterpillar_0:                                                      ;839096;
+    %DoorHeader(\
+    %destination(RoomHeader_AlphaPowerBomb),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Caterpillar_1:                                                      ;8390A2;
+    %DoorHeader(\
+    %destination(RoomHeader_BetaPowerBomb),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Caterpillar_2:                                                      ;8390AE;
+    %DoorHeader(\
+    %destination(RoomHeader_Hellway),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Caterpillar_3:                                                      ;8390BA;
+    %DoorHeader(\
+    %destination(RoomHeader_RedBinstarElev),
+    %elevator($F0),
+    %direction(3),
+    %doorPos(0, 0),
+    %screenPos(0, 0),
+    %spawnDistance(0),
+    %doorASM(0))
+
+Door_Caterpillar_4:                                                      ;8390C6;
+    %DoorHeader(\
+    %destination(RoomHeader_RedFish),
+    %elevator($40),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_1_Blue_2_Red))
+
+Door_Caterpillar_6:                                                      ;8390D2;
+    %DoorHeader(\
+    %destination(RoomHeader_RedBrinstarSave),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BetaPowerBomb_0:                                                    ;8390DE;
+    %DoorHeader(\
+    %destination(RoomHeader_Caterpillar),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $36),
+    %screenPos(0, 3),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_AlphaPowerBomb_0:                                                   ;8390EA;
+    %DoorHeader(\
+    %destination(RoomHeader_Caterpillar),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $76),
+    %screenPos(0, 7),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_F_12_Green))
+
+Door_SkreeBoost_0:                                                       ;8390F6;
+    %DoorHeader(\
+    %destination(RoomHeader_RedTower),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, $96),
+    %screenPos(0, 9),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_6_7_Green))
+
+Door_SkreeBoost_1:                                                       ;839102;
+    %DoorHeader(\
+    %destination(RoomHeader_BelowSpazer),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $16),
+    %screenPos(0, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BelowSpazer_0:                                                      ;83910E;
+    %DoorHeader(\
+    %destination(RoomHeader_SkreeBoost),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BelowSpazer_1:                                                      ;83911A;
+    %DoorHeader(\
+    %destination(RoomHeader_WestTunnel),
+    %elevator($40),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_BelowSpazer_2:                                                      ;839126;
+    %DoorHeader(\
+    %destination(RoomHeader_Spazer),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_Spazer_0:                                                           ;839132;
+    %DoorHeader(\
+    %destination(RoomHeader_BelowSpazer),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, 6),
+    %screenPos(1, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_0_1_Green))
+
+Door_WarehouseZeela_0:                                                   ;83913E;
+    %DoorHeader(\
+    %destination(RoomHeader_WarehouseEntrance),
+    %elevator(0),
+    %direction(5),
+    %doorPos($2E, 6),
+    %screenPos(2, 0),
+    %spawnDistance($8000),
+    %doorASM(DoorASM_Scroll_0_Red_1_Green))
+
+Door_WarehouseZeela_1:                                                   ;83914A;
+    %DoorHeader(\
+    %destination(RoomHeader_WarehouseETank),
+    %elevator(0),
+    %direction(5),
+    %doorPos($0E, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_WarehouseZeela_2:                                                   ;839156;
+    %DoorHeader(\
+    %destination(RoomHeader_WarehouseKihunter),
+    %elevator(0),
+    %direction(7),
+    %doorPos(6, $0C),
+    %screenPos(0, 0),
+    %spawnDistance($0240),
+    %doorASM(0))
+
+Door_WarehouseETank_0:                                                   ;839162;
+    %DoorHeader(\
+    %destination(RoomHeader_WarehouseZeela),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $16),
+    %screenPos(0, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_WarehouseKihunter_0:                                                ;83916E;
+    %DoorHeader(\
+    %destination(RoomHeader_WarehouseZeela),
+    %elevator(0),
+    %direction(6),
+    %doorPos($16, $13),
+    %screenPos(1, 1),
+    %spawnDistance($01C0),
+    %doorASM(0))
+
+Door_WarehouseKihunter_1:                                                ;83917A;
+    %DoorHeader(\
+    %destination(RoomHeader_MiniKraid),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_WarehouseKihunter_2:                                                ;839186;
+    %DoorHeader(\
+    %destination(RoomHeader_WarehouseSave),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, 6),
+    %screenPos(0, 0),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_MiniKraid_0:                                                        ;839192;
+    %DoorHeader(\
+    %destination(RoomHeader_WarehouseKihunter),
+    %elevator(0),
+    %direction(5),
+    %doorPos($1E, $16),
+    %screenPos(1, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+Door_MiniKraid_1:                                                        ;83919E;
+    %DoorHeader(\
+    %destination(RoomHeader_KraidEyeDoor),
+    %elevator(0),
+    %direction(4),
+    %doorPos(1, $16),
+    %screenPos(0, 1),
+    %spawnDistance($8000),
+    %doorASM(0))
 
 Door_KraidEyeDoor_0:
     dw RoomHeader_MiniKraid                                              ;8391AA;
