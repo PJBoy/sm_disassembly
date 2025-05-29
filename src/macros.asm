@@ -252,3 +252,41 @@ endmacro
 macro doorASM(arg)
     dw <arg>
 endmacro
+
+macro RoomHeader(room, area, positions, dimensions, scrollers, CRE, doorList)
+    <room>
+    <area>
+    <positions>
+    <dimensions>
+    <scrollers>
+    <CRE>
+    <doorList>
+endmacro
+
+macro room(arg)
+    db <arg>
+endmacro
+
+macro area(arg)
+    db <arg>
+endmacro
+
+macro positions(X, Y)
+    db <X>, <Y>
+endmacro
+
+macro dimensions(width, height)
+    db <width>, <height>
+endmacro
+
+macro scrollers(up, down)
+    db <up>, <down>
+endmacro
+
+macro CRE(arg)
+    db <arg>
+endmacro
+
+macro doorList(arg)
+    dw <arg>
+endmacro
