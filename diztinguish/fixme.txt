@@ -8,4 +8,4 @@ $8BF6B8 Should be 16bit data
 $A0F13F Should be 8bit data
 $838CE8 Should be 8bit data
 $838FAC Should be 8bit data
-$8FAAE7 Should be 16bit pointers
+$8FAAE7 Should be 16bit pointers in bank $8F

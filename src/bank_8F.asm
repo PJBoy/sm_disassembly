@@ -1460,7 +1460,7 @@ RTS_8F91BC:
 
 
 ;;; $91BD: Room setup ASM - scrolling sky land, shake screen ;;;
-SetupASM_ShakeScreenAndCall88A7D8DuringEscape:
+SetupASM_ShakeScreenAndCallFX20DuringEscape:
 ; Room $91F8, state $9261. Landing site, Zebes timebomb set
     LDA.W #$0006                                                         ;8F91BD;
     STA.W EarthquakeType                                                 ;8F91C0;
@@ -1754,69 +1754,74 @@ RoomHeader_LandingSite:                                                  ;8F91F8
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_LandingSite))
-    dw RoomStateCheck_EventHasBeenSet : db $0E                           ;8F9203;
-    dw RoomState_LandingSite_3                                           ;8F9206;
-    dw RoomStateCheck_PowerBombs                                         ;8F9208;
-    dw RoomState_LandingSite_2                                           ;8F920A;
-    dw RoomStateCheck_EventHasBeenSet : db $00                           ;8F920C;
-    dw RoomState_LandingSite_1                                           ;8F920F;
-    dw Use_StatePointer_inX                                              ;8F9211;
+    %stateChecks(3,
+    %stateCheckEventSet($0E, RoomState_LandingSite_3),
+    %stateCheckPowerBombs(RoomState_LandingSite_2),
+    %stateCheckEventSet(0, RoomState_LandingSite_1))
 
-RoomState_LandingSite_0:
-    dl LevelData_LandingSite                                             ;8F9213;
-    db $00,$06,$05                                                       ;8F9216;
-    dw FXHeader_LandingSite_State0_1                                     ;8F9219;
-    dw EnemyPopulations_LandingSite_0_1_2                                ;8F921B;
-    dw EnemySets_LandingSite_0_1_2                                       ;8F921D;
-    db $81,$01
-    dw RoomScrolls_LandingSite
-    dw $0000
-    dw MainASM_ScrollingSkyLand                                          ;8F9225;
-    dw PLMPopulation_LandingSite_State0_1_2                              ;8F9227;
-    dw LibBG_ScrollingSky_Tilemaps_LandingSite                           ;8F9229;
-    dw SetupASM_ScrollingSkyLand                                         ;8F922B;
+RoomState_LandingSite_0:                                                 ;8F9213;
+    %StateHeader(\
+    %levelData(LevelData_LandingSite),
+    %tileset(0),
+    %music(6, 5),
+    %FX(FXHeader_LandingSite_State0_1),
+    %enemyPop(EnemyPopulations_LandingSite_0_1_2),
+    %enemySet(EnemySets_LandingSite_0_1_2),
+    %layer2Scrolls($81, 1),
+    %scrollPointer(RoomScrolls_LandingSite),
+    %specialXray(0),
+    %mainASM(MainASM_ScrollingSkyLand),
+    %PLMPop(PLMPopulation_LandingSite_State0_1_2),
+    %libraryBG(LibBG_ScrollingSky_Tilemaps_LandingSite),
+    %setupASM(SetupASM_ScrollingSkyLand))
 
-RoomState_LandingSite_1:
-    dl LevelData_LandingSite                                             ;8F922D;
-    db $00,$06,$06                                                       ;8F9230;
-    dw FXHeader_LandingSite_State0_1                                     ;8F9233;
-    dw EnemyPopulations_LandingSite_0_1_2                                ;8F9235;
-    dw EnemySets_LandingSite_0_1_2                                       ;8F9237;
-    db $81,$01
-    dw RoomScrolls_LandingSite
-    dw $0000
-    dw MainASM_ScrollingSkyLand                                          ;8F923F;
-    dw PLMPopulation_LandingSite_State0_1_2                              ;8F9241;
-    dw LibBG_ScrollingSky_Tilemaps_LandingSite                           ;8F9243;
-    dw SetupASM_ScrollingSkyLand                                         ;8F9245;
+RoomState_LandingSite_1:                                                 ;8F922D;
+    %StateHeader(\
+    %levelData(LevelData_LandingSite),
+    %tileset(0),
+    %music(6, 6),
+    %FX(FXHeader_LandingSite_State0_1),
+    %enemyPop(EnemyPopulations_LandingSite_0_1_2),
+    %enemySet(EnemySets_LandingSite_0_1_2),
+    %layer2Scrolls($81, 1),
+    %scrollPointer(RoomScrolls_LandingSite),
+    %specialXray(0),
+    %mainASM(MainASM_ScrollingSkyLand),
+    %PLMPop(PLMPopulation_LandingSite_State0_1_2),
+    %libraryBG(LibBG_ScrollingSky_Tilemaps_LandingSite),
+    %setupASM(SetupASM_ScrollingSkyLand))
 
-RoomState_LandingSite_2:
-    dl LevelData_LandingSite                                             ;8F9247;
-    db $00,$0C,$05                                                       ;8F924A;
-    dw FXHeader_LandingSite_State2                                       ;8F924D;
-    dw EnemyPopulations_LandingSite_0_1_2                                ;8F924F;
-    dw EnemySets_LandingSite_0_1_2                                       ;8F9251;
-    db $81,$01
-    dw RoomScrolls_LandingSite
-    dw $0000
-    dw MainASM_ScrollingSkyLand                                          ;8F9259;
-    dw PLMPopulation_LandingSite_State0_1_2                              ;8F925B;
-    dw LibBG_ScrollingSky_Tilemaps_LandingSite                           ;8F925D;
-    dw SetupASM_ScrollingSkyLand                                         ;8F925F;
+RoomState_LandingSite_2:                                                 ;8F9247;
+    %StateHeader(\
+    %levelData(LevelData_LandingSite),
+    %tileset(0),
+    %music($0C, 5),
+    %FX(FXHeader_LandingSite_State2),
+    %enemyPop(EnemyPopulations_LandingSite_0_1_2),
+    %enemySet(EnemySets_LandingSite_0_1_2),
+    %layer2Scrolls($81, 1),
+    %scrollPointer(RoomScrolls_LandingSite),
+    %specialXray(0),
+    %mainASM(MainASM_ScrollingSkyLand),
+    %PLMPop(PLMPopulation_LandingSite_State0_1_2),
+    %libraryBG(LibBG_ScrollingSky_Tilemaps_LandingSite),
+    %setupASM(SetupASM_ScrollingSkyLand))
 
-RoomState_LandingSite_3:
-    dl LevelData_LandingSite                                             ;8F9261;
-    db $00,$00,$00                                                       ;8F9264;
-    dw FXHeader_LandingSite_State3                                       ;8F9267;
-    dw EnemyPopulations_LandingSite_3                                    ;8F9269;
-    dw EnemySets_LandingSite_3                                           ;8F926B;
-    db $81,$01
-    dw RoomScrolls_LandingSite
-    dw $0000
-    dw MainASM_ScrollingSkyLand_ZebesTimebombSet                         ;8F9273;
-    dw PLMPopulation_LandingSite_State3                                  ;8F9275;
-    dw LibBG_ScrollingSky_Tilemaps_LandingSite                           ;8F9277;
-    dw SetupASM_ShakeScreenAndCall88A7D8DuringEscape                     ;8F9279;
+RoomState_LandingSite_3:                                                 ;8F9261;
+    %StateHeader(\
+    %levelData(LevelData_LandingSite),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_LandingSite_State3),
+    %enemyPop(EnemyPopulations_LandingSite_3),
+    %enemySet(EnemySets_LandingSite_3),
+    %layer2Scrolls($81, 1),
+    %scrollPointer(RoomScrolls_LandingSite),
+    %specialXray(0),
+    %mainASM(MainASM_ScrollingSkyLand_ZebesTimebombSet),
+    %PLMPop(PLMPopulation_LandingSite_State3),
+    %libraryBG(LibBG_ScrollingSky_Tilemaps_LandingSite),
+    %setupASM(SetupASM_ShakeScreenAndCallFX20DuringEscape))
 
 RoomDoors_LandingSite:
     dw Door_LandingSite_0                                                ;8F927B;
@@ -1841,9 +1846,8 @@ RoomHeader_GauntletEntrance:                                             ;8F92B3
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GauntletEntrance))
-    dw RoomStateCheck_EventHasBeenSet : db $00                           ;8F92BE;
-    dw RoomState_GauntletEntrance_1                                      ;8F92C1;
-    dw Use_StatePointer_inX                                              ;8F92C3;
+    %stateChecks(1,
+    %stateCheckEventSet(0, RoomState_GauntletEntrance_1))
 
 RoomState_GauntletEntrance_0:
     dl LevelData_GauntletEntrance                                        ;8F92C5;

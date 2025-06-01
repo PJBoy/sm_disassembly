@@ -238,11 +238,17 @@ macro direction(arg)
 endmacro
 
 macro doorPos(X, Y)
-    db <X>, <Y>
+  ..X
+    db <X>
+  ..Y
+    db <Y>
 endmacro
 
 macro screenPos(X, Y)
-    db <X>, <Y>
+  ..X
+    db <X>
+  ..Y
+    db <Y>
 endmacro
 
 macro spawnDistance(arg)
@@ -254,12 +260,33 @@ macro doorASM(arg)
 endmacro
 
 macro RoomHeader(room, area, positions, dimensions, scrollers, CRE, doorList)
+; Room header format:
+;      __________________________________________ Room index
+;     |   _______________________________________ Area index
+;     |  |    ___________________________________ X position (of top left corner) on the map
+;     |  |   |   ________________________________ Y position (of top left corner) on the map
+;     |  |   |  |    ____________________________ Room width (in units of screens = 16 blocks = 256 pixels)
+;     |  |   |  |   |   _________________________ Room height (in units of screens = 16 blocks = 256 pixels)
+;     |  |   |  |   |  |    _____________________ Up scroller
+;     |  |   |  |   |  |   |   __________________ Down scroller
+;     |  |   |  |   |  |   |  |    ______________ CRE bitset
+;     |  |   |  |   |  |   |  |   |    __________ Door list pointer
+;     |  |   |  |   |  |   |  |   |   |      ____ State conditions list
+;     |  |   |  |   |  |   |  |   |   |     |
+;     ii,aa, xx,yy, ww,hh, uu,dd, cc, dddd, [...]
+  .room
     <room>
+  .area
     <area>
+  .position
     <positions>
+  .dimensions
     <dimensions>
+  .scrollers
     <scrollers>
+  .CREBitset
     <CRE>
+  .doorList
     <doorList>
 endmacro
 
@@ -272,15 +299,24 @@ macro area(arg)
 endmacro
 
 macro positions(X, Y)
-    db <X>, <Y>
+  ..X
+    db <X>
+  ..Y
+    db <Y>
 endmacro
 
 macro dimensions(width, height)
-    db <width>, <height>
+  ..width
+    db <width>
+  ..height
+    db <height>
 endmacro
 
 macro scrollers(up, down)
-    db <up>, <down>
+  ..up
+    db <up>
+  ..down
+    db <down>
 endmacro
 
 macro CRE(arg)
@@ -288,5 +324,143 @@ macro CRE(arg)
 endmacro
 
 macro doorList(arg)
+    dw <arg>
+endmacro
+
+macro stateChecks(count, ...)
+if <count> > 0
+    <0>
+endif
+if <count> > 1
+    <1>
+endif
+if <count> > 2
+    <2>
+endif
+    dw Use_StatePointer_inX
+endmacro
+
+macro stateCheckDoor(arg)
+    dw UNUSED_RoomStateCheck_Door_8FE5EB, <arg>
+endmacro
+
+macro stateCheckMainBoss(boss, state)
+    dw RoomStateCheck_MainAreaBossIsDead
+    db <boss>
+    dw <state
+endmacro
+
+macro stateCheckEventSet(event, state)
+    dw RoomStateCheck_EventHasBeenSet
+    db <event>
+    dw <state>
+endmacro
+
+macro stateCheckBossDead(boss, state)
+    dw RoomStateCheck_BossIsDead
+    db <boss>
+    dw <state>
+endmacro
+
+macro stateCheckMorph(arg)
+    dw UNUSED_RoomStateCheck_Morphball_8FE640, <arg>
+endmacro
+
+macro stateCheckMorphMissiles(arg)
+    dw RoomStateCheck_MorphballAndMissiles, <arg>
+endmacro
+
+macro stateCheckPowerBombs(arg)
+    dw RoomStateCheck_PowerBombs, <arg>
+endmacro
+
+macro stateCheckSpeedBooster(arg)
+    dw UNUSED_RoomStateCheck_SpeedBooster_8FE678, <arg>
+endmacro
+
+macro StateHeader(levelData, tileset, music, FX, enemyPop, enemySet, layer2Scrolls, scrollPointer, specialXray, mainASM, PLMPop, libraryBG, setupASM)
+  .levelData
+    <levelData>
+  .tileset
+    <tileset>
+  .music
+    <music>
+  .FX
+    <FX>
+  .enemyPop
+    <enemyPop>
+  .enemySet
+    <enemySet>
+  .layer2Scrolls
+    <layer2Scrolls>
+  .scrollPointer
+    <scrollPointer>
+  .specialXray
+    <specialXray>
+  .mainASM
+    <mainASM>
+  .PLMPop
+    <PLMPop>
+  .libraryBG
+    <libraryBG>
+  .setupASM
+    <setupASM>
+endmacro
+
+macro levelData(arg)
+    dl <arg>
+endmacro
+
+macro tileset(arg)
+    db <arg>
+endmacro
+
+macro music(dataIndex, track)
+  ..dataIndex
+    db <dataIndex>
+  ..track
+    db <track>
+endmacro
+
+macro FX(arg)
+    dw <arg>
+endmacro
+
+macro enemyPop(arg)
+    dw <arg>
+endmacro
+
+macro enemySet(arg)
+    dw <arg>
+endmacro
+
+macro layer2Scrolls(X, Y)
+  ..X
+    db <X>
+  ..Y
+    db <Y>
+endmacro
+
+macro scrollPointer(arg)
+    dw <arg>
+endmacro
+
+macro specialXray(arg)
+    dw <arg>
+endmacro
+
+macro mainASM(arg)
+    dw <arg>
+endmacro
+
+macro PLMPop(arg)
+    dw <arg>
+endmacro
+
+macro libraryBG(arg)
+    dw <arg>
+endmacro
+
+macro setupASM(arg)
     dw <arg>
 endmacro
