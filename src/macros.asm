@@ -327,15 +327,15 @@ macro doorList(arg)
     dw <arg>
 endmacro
 
-macro stateChecks(count, ...)
-if <count> > 0
-    <0>
-endif
-if <count> > 1
+macro stateChecks(...)
+if <0> > 0
     <1>
 endif
-if <count> > 2
+if <0> > 1
     <2>
+endif
+if <0> > 2
+    <3>
 endif
     dw Use_StatePointer_inX
 endmacro

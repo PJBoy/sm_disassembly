@@ -1995,7 +1995,7 @@ RoomHeader_CrateriaPowerBombs:                                           ;8F93AA
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrateriaPowerBombs))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrateriaPowerBombs:                                            ;8F93B7;
     %StateHeader(\
@@ -2028,7 +2028,7 @@ RoomHeader_CrateriaSave:                                                 ;8F93D5
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrateriaSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrateriaSave:                                                  ;8F93E2;
     %StateHeader(\
@@ -2058,7 +2058,7 @@ RoomHeader_WestOcean:                                                    ;8F93FE
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_WestOcean))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WestOcean:                                                     ;8F940B;
     %StateHeader(\
@@ -2098,7 +2098,7 @@ RoomHeader_BowlingAlleyPath:                                             ;8F9461
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BowlingAlleyPath))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BowlingAlleyPath:                                              ;8F946E;
     %StateHeader(\
@@ -2129,7 +2129,7 @@ RoomHeader_CrateriaKihunter:                                             ;8F948C
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrateriaKihunter))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrateriaKihunter:                                              ;8F9499;
     %StateHeader(\
@@ -2170,7 +2170,7 @@ RoomHeader_ForgottenHighwayElev:                                         ;8F94CC
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_ForgottenHighwayElev))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_ForgottenHighwayElev:                                          ;8F94D9;
     %StateHeader(\
@@ -2208,7 +2208,7 @@ RoomHeader_EastOcean:                                                    ;8F94FD
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EastOcean))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EastOcean:                                                     ;8F950A;
     %StateHeader(\
@@ -2244,7 +2244,7 @@ RoomHeader_ForgottenHighwayKagos:                                        ;8F9552
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_ForgottenHighwayKagos))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_ForgottenHighwayKagos:                                         ;8F955F;
     %StateHeader(\
@@ -2275,7 +2275,7 @@ RoomHeader_CrabMaze:                                                     ;8F957D
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrabMaze))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrabMaze:                                                      ;8F958A;
     %StateHeader(\
@@ -2306,7 +2306,7 @@ RoomHeader_ForgottenHighwayElbow:                                        ;8F95A8
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_ForgottenHighwayElbow))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_ForgottenHighwayElbow:                                         ;8F95B5;
     %StateHeader(\
@@ -2340,7 +2340,7 @@ RoomHeader_CrateriaTube:                                                 ;8F95D4
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrateriaTube))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrateriaTube:                                                  ;8F95E1;
     %StateHeader(\
@@ -2371,7 +2371,7 @@ RoomHeader_Moat:                                                         ;8F95FF
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_Moat))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Moat:                                                          ;8F960C;
     %StateHeader(\
@@ -2402,7 +2402,7 @@ RoomHeader_RedBinstarElev:                                               ;8F962A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_RedBinstarElev))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RedBinstarElev:                                                ;8F9637;
     %StateHeader(\
@@ -2440,7 +2440,7 @@ RoomHeader_GauntletETank:                                                ;8F965B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GauntletETank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GauntletETank:                                                 ;8F9668;
     %StateHeader(\
@@ -2477,7 +2477,7 @@ RoomHeader_PreBowling:                                                   ;8F968F
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PreBowling))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PreBowling:                                                    ;8F969C;
     %StateHeader(\
@@ -2851,7 +2851,7 @@ RoomHeader_PreMapFlyway:                                                 ;8F98E2
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PreMapFlyway))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PreMapFlyway:                                                  ;8F98EF;
     %StateHeader(\
@@ -2882,7 +2882,7 @@ RoomHeader_Terminator:                                                   ;8F990D
     %scrollers($A0, $A0),
     %CRE(0),
     %doorList(RoomDoors_Terminator))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Terminator:                                                    ;8F991A;
     %StateHeader(\
@@ -2913,7 +2913,7 @@ RoomHeader_GreenBrinstarElev:                                            ;8F9938
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GreenBrinstarElev))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GreenBrinstarElev:                                             ;8F9945;
     %StateHeader(\
@@ -2951,7 +2951,7 @@ RoomHeader_LowerMushrooms:                                               ;8F9969
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_LowerMushrooms))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_LowerMushrooms:                                                ;8F9976;
     %StateHeader(\
@@ -2982,7 +2982,7 @@ RoomHeader_CrateriaMap:                                                  ;8F9994
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrateriaMap))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrateriaMap:                                                   ;8F99A1;
     %StateHeader(\
@@ -3012,7 +3012,7 @@ RoomHeader_GreenPiratesShaft:                                            ;8F99BD
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GreenPiratesShaft))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GreenPiratesShaft:                                             ;8F99CA;
     %StateHeader(\
@@ -3054,7 +3054,7 @@ RoomHeader_CrateriaSuper:                                                ;8F99F9
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrateriaSuper))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrateriaSuper:                                                 ;8F9A06;
     %StateHeader(\
@@ -3190,7 +3190,7 @@ RoomHeader_GreenBrinstarMainShaft:                                       ;8F9AD9
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GreenBrinstarMainShaft))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GreenBrinstarMainShaft:                                        ;8F9AE6;
     %StateHeader(\
@@ -3244,7 +3244,7 @@ RoomHeader_SporeSpawnSuper:                                              ;8F9B5B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_SporeSpawnSuper))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_SporeSpawnSuper:                                               ;8F9B68;
     %StateHeader(\
@@ -3282,7 +3282,7 @@ RoomHeader_BrinstarPreMap:                                               ;8F9B9D
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BrinstarPreMap))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BrinstarPreMap:                                                ;8F9BAA;
     %StateHeader(\
@@ -3313,7 +3313,7 @@ RoomHeader_EarlySupers:                                                  ;8F9BC8
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EarlySupers))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EarlySupers:                                                   ;8F9BD5;
     %StateHeader(\
@@ -3353,7 +3353,7 @@ RoomHeader_BrinstarReserveTank:                                          ;8F9C07
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BrinstarReserveTank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BrinstarReserveTank:                                           ;8F9C14;
     %StateHeader(\
@@ -3389,7 +3389,7 @@ RoomHeader_GreenBrinstarMap:                                             ;8F9C35
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GreenBrinstarMap))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GreenBrinstarMap:                                              ;8F9C42;
     %StateHeader(\
@@ -3419,7 +3419,7 @@ RoomHeader_GreenBrinstarFirefleas:                                       ;8F9C5E
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GreenBrinstarFirefleas))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GreenBrinstarFirefleas:                                        ;8F9C6B;
     %StateHeader(\
@@ -3450,7 +3450,7 @@ RoomHeader_GreenBrinstarMissileRefill:                                   ;8F9C89
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GreenBrinstarMissileRefill))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GreenBrinstarMissileRefill:                                    ;8F9C96;
     %StateHeader(\
@@ -3483,7 +3483,7 @@ RoomHeader_Dachora:                                                      ;8F9CB3
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Dachora))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Dachora:
     dl LevelData_Dachora                                                 ;8F9CC0;
@@ -3525,7 +3525,7 @@ RoomHeader_BigPink:                                                      ;8F9D19
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BigPink))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BigPink:                                                       ;8F9D26;
     %StateHeader(\
@@ -3587,7 +3587,7 @@ RoomHeader_SporeSpawnKihunters:                                          ;8F9D9C
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_SporeSpawnKihunters))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_SporeSpawnKihunters:                                           ;8F9DA9;
     %StateHeader(\
@@ -3666,7 +3666,7 @@ RoomHeader_PinkBrinstarPowerBombs:                                       ;8F9E11
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PinkBrinstarPowerBombs))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PinkBrinstarPowerBombs:                                        ;8F9E1E;
     %StateHeader(\
@@ -3706,7 +3706,7 @@ RoomHeader_GreenHillZone:                                                ;8F9E52
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GreenHillZone))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GreenHillZone:                                                 ;8F9E5F;
     %StateHeader(\
@@ -3917,7 +3917,7 @@ RoomHeader_NoobBridge:                                                   ;8F9FBA
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_NoobBridge))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_NoobBridge:                                                    ;8F9FC7;
     %StateHeader(\
@@ -3948,7 +3948,7 @@ RoomHeader_GreenBrinstarBeetoms:                                         ;8F9FE5
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GreenBrinstarBeetoms))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GreenBrinstarBeetoms:                                          ;8F9FF2;
     %StateHeader(\
@@ -3982,7 +3982,7 @@ RoomHeader_EtecoonETank:                                                 ;8FA011
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EtecoonETank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EtecoonETank:                                                  ;8FA01E;
     %StateHeader(\
@@ -4021,7 +4021,7 @@ RoomHeader_EtecoonSuper:                                                 ;8FA051
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EtecoonSuper))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EtecoonSuper:                                                  ;8FA05E;
     %StateHeader(\
@@ -4054,7 +4054,7 @@ RoomHeader_DachoraEnergyRefill:                                          ;8FA07B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_DachoraEnergyRefill))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_DachoraEnergyRefill:                                           ;8FA088;
     %StateHeader(\
@@ -4084,7 +4084,7 @@ RoomHeader_SporeSpawnFarming:                                            ;8FA0A4
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_SporeSpawnFarming))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_SporeSpawnFarming:                                             ;8FA0B1;
     %StateHeader(\
@@ -4118,7 +4118,7 @@ RoomHeader_WaterwayETank:                                                ;8FA0D2
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WaterwayETank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WaterwayETank:                                                 ;8FA0DF;
     %StateHeader(\
@@ -4155,7 +4155,7 @@ RoomHeader_FirstMissile:                                                 ;8FA107
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_FirstMissile))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_FirstMissile:                                                  ;8FA114;
     %StateHeader(\
@@ -4185,7 +4185,7 @@ RoomHeader_PinkBrinstarHoppers:                                          ;8FA130
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PinkBrinstarHoppers))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PinkBrinstarHoppers:                                           ;8FA13D;
     %StateHeader(\
@@ -4216,7 +4216,7 @@ RoomHeader_HopperETank:                                                  ;8FA15B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_HopperETank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_HopperETank:                                                   ;8FA168;
     %StateHeader(\
@@ -4246,7 +4246,7 @@ RoomHeader_BigPinkSaveRoom:                                              ;8FA184
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BigPinkSaveRoom))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BigPinkSaveRoom:                                               ;8FA191;
     %StateHeader(\
@@ -4276,7 +4276,7 @@ RoomHeader_BlueBrinstarBoulders:                                         ;8FA1AD
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BlueBrinstarBoulders))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BlueBrinstarBoulders:                                          ;8FA1BA;
     %StateHeader(\
@@ -4307,7 +4307,7 @@ RoomHeader_BillyMays:                                                    ;8FA1D8
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BillyMays))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BillyMays:                                                     ;8FA1E5;
     %StateHeader(\
@@ -4337,7 +4337,7 @@ RoomHeader_GreenBrinstarSave:                                            ;8FA201
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GreenBrinstarSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GreenBrinstarSave:                                             ;8FA20E;
     %StateHeader(\
@@ -4367,7 +4367,7 @@ RoomHeader_EtecoonSave:                                                  ;8FA22A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EtecoonSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EtecoonSave:                                                   ;8FA237;
     %StateHeader(\
@@ -4397,7 +4397,7 @@ RoomHeader_RedTower:                                                     ;8FA253
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_RedTower))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RedTower:                                                      ;8FA260;
     %StateHeader(\
@@ -4437,7 +4437,7 @@ RoomHeader_RedBrinstarFirefleas:                                         ;8FA293
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_RedBrinstarFirefleas))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RedBrinstarFirefleas:                                          ;8FA2A0;
     %StateHeader(\
@@ -4471,7 +4471,7 @@ RoomHeader_XrayScope:                                                    ;8FA2CE
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_XrayScope))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_XrayScope:                                                     ;8FA2DB;
     %StateHeader(\
@@ -4501,7 +4501,7 @@ RoomHeader_Hellway:                                                      ;8FA2F7
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Hellway))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Hellway:                                                       ;8FA304;
     %StateHeader(\
@@ -4532,7 +4532,7 @@ RoomHeader_Caterpillar:                                                  ;8FA322
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Caterpillar))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Caterpillar:                                                   ;8FA32F;
     %StateHeader(\
@@ -4581,7 +4581,7 @@ RoomHeader_BetaPowerBomb:                                                ;8FA37C
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BetaPowerBomb))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BetaPowerBomb:                                                 ;8FA389;
     %StateHeader(\
@@ -4617,7 +4617,7 @@ RoomHeader_AlphaPowerBomb:                                               ;8FA3AE
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_AlphaPowerBomb))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_AlphaPowerBomb:                                                ;8FA3BB;
     %StateHeader(\
@@ -4653,7 +4653,7 @@ RoomHeader_SkreeBoost:                                                   ;8FA3DD
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_SkreeBoost))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_SkreeBoost:                                                    ;8FA3EA;
     %StateHeader(\
@@ -4684,7 +4684,7 @@ RoomHeader_BelowSpazer:                                                  ;8FA408
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BelowSpazer))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BelowSpazer:                                                   ;8FA415;
     %StateHeader(\
@@ -4725,7 +4725,7 @@ RoomHeader_Spazer:                                                       ;8FA447
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Spazer))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Spazer:                                                        ;8FA454;
     %StateHeader(\
@@ -4758,7 +4758,7 @@ RoomHeader_WarehouseZeela:                                               ;8FA471
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WarehouseZeela))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WarehouseZeela:                                                ;8FA47E;
     %StateHeader(\
@@ -4802,7 +4802,7 @@ RoomHeader_WarehouseETank:                                               ;8FA4B1
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WarehouseETank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WarehouseETank:                                                ;8FA4BE;
     %StateHeader(\
@@ -4832,7 +4832,7 @@ RoomHeader_WarehouseKihunter:                                            ;8FA4DA
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WarehouseKihunter))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WarehouseKihunter:                                             ;8FA4E7;
     %StateHeader(\
@@ -4927,7 +4927,7 @@ RoomHeader_KraidEyeDoor:                                                 ;8FA56B
     %scrollers($70, $A0),
     %CRE(2),
     %doorList(RoomDoors_KraidEyeDoor))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_KraidEyeDoor:                                                  ;8FA578;
     %StateHeader(\
@@ -5016,7 +5016,7 @@ RoomHeader_StatuesHallway:                                               ;8FA5ED
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_StatuesHallway))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_StatuesHallway:                                                ;8FA5FA;
     %StateHeader(\
@@ -5047,7 +5047,7 @@ RoomHeader_RedTowerRefill:                                               ;8FA618
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_RedTowerRefill))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RedTowerRefill:                                                ;8FA625;
     %StateHeader(\
@@ -5077,7 +5077,7 @@ RoomHeader_KraidRefill:                                                  ;8FA641
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_KraidRefill))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_KraidRefill:                                                   ;8FA64E;
     %StateHeader(\
@@ -5107,7 +5107,7 @@ RoomHeader_Statues:                                                      ;8FA66A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Statues))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Statues:                                                       ;8FA677;
     %StateHeader(\
@@ -5150,7 +5150,7 @@ RoomHeader_WarehouseEntrance:                                            ;8FA6A1
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WarehouseEntrance))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WarehouseEntrance:                                             ;8FA6AE;
     %StateHeader(\
@@ -5198,7 +5198,7 @@ RoomHeader_VariaSuit:                                                    ;8FA6E2
     %scrollers($70, $A0),
     %CRE(2),
     %doorList(RoomDoors_VariaSuit))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_VariaSuit:                                                     ;8FA6EF;
     %StateHeader(\
@@ -5228,7 +5228,7 @@ RoomHeader_WarehouseSave:                                                ;8FA70B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WarehouseSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WarehouseSave:                                                 ;8FA718;
     %StateHeader(\
@@ -5258,7 +5258,7 @@ RoomHeader_RedBrinstarSave:                                              ;8FA734
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_RedBrinstarSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RedBrinstarSave:                                               ;8FA741;
     %StateHeader(\
@@ -5288,7 +5288,7 @@ RoomHeader_IceBeamAcid:                                                  ;8FA75D
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_IceBeamAcid))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_IceBeamAcid:                                                   ;8FA76A;
     %StateHeader(\
@@ -5319,7 +5319,7 @@ RoomHeader_Cathedral:                                                    ;8FA788
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Cathedral))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Cathedral:                                                     ;8FA795;
     %StateHeader(\
@@ -5350,7 +5350,7 @@ RoomHeader_CathedralEntrance:                                            ;8FA7B3
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CathedralEntrance))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CathedralEntrance:                                             ;8FA7C0;
     %StateHeader(\
@@ -5381,7 +5381,7 @@ RoomHeader_BusinessCenter:                                               ;8FA7DE
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BusinessCenter))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BusinessCenter:                                                ;8FA7EB;
     %StateHeader(\
@@ -5418,7 +5418,7 @@ RoomHeader_IceBeamGate:                                                  ;8FA815
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_IceBeamGate))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_IceBeamGate:                                                   ;8FA822;
     %StateHeader(\
@@ -5458,7 +5458,7 @@ RoomHeader_IceBeamTutorial:                                              ;8FA865
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_IceBeamTutorial))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_IceBeamTutorial:                                               ;8FA872;
     %StateHeader(\
@@ -5489,7 +5489,7 @@ RoomHeader_IceBeam:                                                      ;8FA890
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_IceBeam))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_IceBeam:                                                       ;8FA89D;
     %StateHeader(\
@@ -5519,7 +5519,7 @@ RoomHeader_IceBeamSnake:                                                 ;8FA8B9
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_IceBeamSnake))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_IceBeamSnake:                                                  ;8FA8C6;
     %StateHeader(\
@@ -5566,7 +5566,7 @@ RoomHeader_CrumbleShaft:                                                 ;8FA8F8
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrumbleShaft))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrumbleShaft:                                                  ;8FA905;
     %StateHeader(\
@@ -5597,7 +5597,7 @@ RoomHeader_CrocomireSpeedway:                                            ;8FA923
     %scrollers($70, $A0),
     %CRE(2),
     %doorList(RoomDoors_CrocomireSpeedway))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrocomireSpeedway:                                             ;8FA930;
     %StateHeader(\
@@ -5709,7 +5709,7 @@ RoomHeader_HiJumpBoots:                                                  ;8FA9E5
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_HiJumpBoots))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_HiJumpBoots:                                                   ;8FA9F2;
     %StateHeader(\
@@ -5739,7 +5739,7 @@ RoomHeader_CrocomireEscape:                                              ;8FAA0E
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrocomireEscape))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrocomireEscape:                                               ;8FAA1B;
     %StateHeader(\
@@ -5773,7 +5773,7 @@ RoomHeader_HiJumpETank:                                                  ;8FAA41
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_HiJumpETank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_HiJumpETank:                                                   ;8FAA4E;
     %StateHeader(\
@@ -5819,7 +5819,7 @@ RoomHeader_PostCrocFarming:                                              ;8FAA82
     %scrollers($90, $A0),
     %CRE(2),
     %doorList(RoomDoors_PostCrocFarming))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PostCrocFarming:                                               ;8FAA8F;
     %StateHeader(\
@@ -5855,7 +5855,7 @@ RoomHeader_PostCrocSave:                                                 ;8FAAB5
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PostCrocSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PostCrocSave:                                                  ;8FAAC2;
     %StateHeader(\
@@ -5885,7 +5885,7 @@ RoomHeader_PostCrocPowerBombs:                                           ;8FAADE
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PostCrocPowerBombs))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PostCrocPowerBombs:                                            ;8FAAEB;
     %StateHeader(\
@@ -5915,7 +5915,7 @@ RoomHeader_PostCrocShaft:                                                ;8FAB07
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_PostCrocShaft))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PostCrocShaft:                                                 ;8FAB14;
     %StateHeader(\
@@ -5951,7 +5951,7 @@ RoomHeader_PostCrocMissile:                                              ;8FAB3B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PostCrocMissile))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PostCrocMissile:                                               ;8FAB48;
     %StateHeader(\
@@ -5981,7 +5981,7 @@ RoomHeader_GrappleTutorial3:                                             ;8FAB64
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_GrappleTutorial3))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GrappleTutorial3:                                              ;8FAB71;
     %StateHeader(\
@@ -6012,7 +6012,7 @@ RoomHeader_PostCrocJump:                                                 ;8FAB8F
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_PostCrocJump))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PostCrocJump:                                                  ;8FAB9C;
     %StateHeader(\
@@ -6047,7 +6047,7 @@ RoomHeader_GrappleTutorial2:                                             ;8FABD2
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_GrappleTutorial2))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GrappleTutorial2:                                              ;8FABDF;
     %StateHeader(\
@@ -6081,7 +6081,7 @@ RoomHeader_GrappleTutorial1:                                             ;8FAC00
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GrappleTutorial1))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GrappleTutorial1:                                              ;8FAC0D;
     %StateHeader(\
@@ -6112,7 +6112,7 @@ RoomHeader_GrappleBeam:                                                  ;8FAC2B
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_GrappleBeam))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GrappleBeam:                                                   ;8FAC38;
     %StateHeader(\
@@ -6146,7 +6146,7 @@ RoomHeader_NorfairReserveTank:                                           ;8FAC5A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_NorfairReserveTank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_NorfairReserveTank:                                            ;8FAC67;
     %StateHeader(\
@@ -6176,7 +6176,7 @@ RoomHeader_GreenBubblesMissiles:                                         ;8FAC83
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GreenBubblesMissiles))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GreenBubblesMissiles:                                          ;8FAC90;
     %StateHeader(\
@@ -6213,7 +6213,7 @@ RoomHeader_BubbleMountain:                                               ;8FACB3
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_BubbleMountain))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BubbleMountain:                                                ;8FACC0;
     %StateHeader(\
@@ -6252,7 +6252,7 @@ RoomHeader_SpeedBoosterHall:                                             ;8FACF0
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_SpeedBoosterHall))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_SpeedBoosterHall:                                              ;8FACFD;
     %StateHeader(\
@@ -6283,7 +6283,7 @@ RoomHeader_SpeedBooster:                                                 ;8FAD1B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_SpeedBooster))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_SpeedBooster:                                                  ;8FAD28;
     %StateHeader(\
@@ -6329,7 +6329,7 @@ RoomHeader_SingleChamber:                                                ;8FAD5E
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_SingleChamber))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_SingleChamber:                                                 ;8FAD6B;
     %StateHeader(\
@@ -6373,7 +6373,7 @@ RoomHeader_DoubleChamber:                                                ;8FADAD
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_DoubleChamber))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_DoubleChamber:                                                 ;8FADBA;
     %StateHeader(\
@@ -6408,7 +6408,7 @@ RoomHeader_WaveBeam:                                                     ;8FADDE
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WaveBeam))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WaveBeam:                                                      ;8FADEB;
     %StateHeader(\
@@ -6438,7 +6438,7 @@ RoomHeader_SpikyPlatformsTunnel:                                         ;8FAE07
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_SpikyPlatformsTunnel))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_SpikyPlatformsTunnel:                                          ;8FAE14;
     %StateHeader(\
@@ -6469,7 +6469,7 @@ RoomHeader_Volcano:                                                      ;8FAE32
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Volcano))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Volcano:                                                       ;8FAE3F;
     %StateHeader(\
@@ -6515,7 +6515,7 @@ RoomHeader_KronicBoost:                                                  ;8FAE74
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_KronicBoost))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_KronicBoost:                                                   ;8FAE81;
     %StateHeader(\
@@ -6560,7 +6560,7 @@ RoomHeader_MagdolliteTunnel:                                             ;8FAEB4
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MagdolliteTunnel))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MagdolliteTunnel:                                              ;8FAEC1;
     %StateHeader(\
@@ -6591,7 +6591,7 @@ RoomHeader_PurpleShaft:                                                  ;8FAEDF
     %scrollers($A0, $A0),
     %CRE(0),
     %doorList(RoomDoors_PurpleShaft))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PurpleShaft:                                                   ;8FAEEC;
     %StateHeader(\
@@ -6629,7 +6629,7 @@ RoomHeader_LavaDive:                                                     ;8FAF14
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_LavaDive))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_LavaDive:                                                      ;8FAF21;
     %StateHeader(\
@@ -6660,7 +6660,7 @@ RoomHeader_LowerNorfairElev:                                             ;8FAF3F
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_LowerNorfairElev))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_LowerNorfairElev:                                              ;8FAF4C;
     %StateHeader(\
@@ -6699,7 +6699,7 @@ RoomHeader_UpperNorfairFarming:                                          ;8FAF72
     %scrollers($A0, $A0),
     %CRE(0),
     %doorList(RoomDoors_UpperNorfairFarming))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_UpperNorfairFarming:                                           ;8FAF7F;
     %StateHeader(\
@@ -6734,7 +6734,7 @@ RoomHeader_RisingTide:                                                   ;8FAFA3
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_RisingTide))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RisingTide:                                                    ;8FAFB0;
     %StateHeader(\
@@ -6765,7 +6765,7 @@ RoomHeader_AcidSnakesTunnel:                                             ;8FAFCE
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_AcidSnakesTunnel))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_AcidSnakesTunnel:                                              ;8FAFDB;
     %StateHeader(\
@@ -6797,7 +6797,7 @@ RoomHeader_SpikyAcidSnakesTunnel:                                        ;8FAFFB
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_SpikyAcidSnakesTunnel))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_SpikyAcidSnakesTunnel:                                         ;8FB008;
     %StateHeader(\
@@ -6828,7 +6828,7 @@ RoomHeader_UpperNorfairRefill:                                           ;8FB026
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_UpperNorfairRefill))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_UpperNorfairRefill:                                            ;8FB033;
     %StateHeader(\
@@ -6859,7 +6859,7 @@ RoomHeader_PurpleFarming:                                                ;8FB051
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PurpleFarming))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PurpleFarming:                                                 ;8FB05E;
     %StateHeader(\
@@ -6889,7 +6889,7 @@ RoomHeader_BatCave:                                                      ;8FB07A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BatCave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BatCave:                                                       ;8FB087;
     %StateHeader(\
@@ -6932,7 +6932,7 @@ RoomHeader_NorfairMap:                                                   ;8FB0B4
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_NorfairMap))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_NorfairMap:                                                    ;8FB0C1;
     %StateHeader(\
@@ -6962,7 +6962,7 @@ RoomHeader_BubbleMountainSave:                                           ;8FB0DD
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BubbleMountainSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BubbleMountainSave:                                            ;8FB0EA;
     %StateHeader(\
@@ -6992,7 +6992,7 @@ RoomHeader_FrogSpeedway:                                                 ;8FB106
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_FrogSpeedway))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_FrogSpeedway:                                                  ;8FB113;
     %StateHeader(\
@@ -7026,7 +7026,7 @@ RoomHeader_RedPirateShaft:                                               ;8FB139
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_RedPirateShaft))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RedPirateShaft:                                                ;8FB146;
     %StateHeader(\
@@ -7060,7 +7060,7 @@ RoomHeader_FrogSave:                                                     ;8FB167
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_FrogSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_FrogSave:                                                      ;8FB174;
     %StateHeader(\
@@ -7091,7 +7091,7 @@ RoomHeader_CrocomireSave:                                                ;8FB192
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrocomireSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrocomireSave:                                                 ;8FB19F;
     %StateHeader(\
@@ -7121,7 +7121,7 @@ RoomHeader_LNElevSave:                                                   ;8FB1BB
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_LNElevSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_LNElevSave:                                                    ;8FB1C8;
     %StateHeader(\
@@ -7154,7 +7154,7 @@ RoomHeader_AcidStatue:                                                   ;8FB1E5
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_AcidStatue))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_AcidStatue:                                                    ;8FB1F2;
     %StateHeader(\
@@ -7199,7 +7199,7 @@ RoomHeader_MainHall:                                                     ;8FB236
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MainHall))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MainHall:                                                      ;8FB243;
     %StateHeader(\
@@ -7296,7 +7296,7 @@ RoomHeader_FastRipper:                                                   ;8FB2DA
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_FastRipper))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_FastRipper:                                                    ;8FB2E7;
     %StateHeader(\
@@ -7327,7 +7327,7 @@ RoomHeader_GTEnergyRefill:                                               ;8FB305
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GTEnergyRefill))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GTEnergyRefill:                                                ;8FB312;
     %StateHeader(\
@@ -7408,7 +7408,7 @@ RoomHeader_LNFarming:                                                    ;8FB37A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_LNFarming))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_LNFarming:                                                     ;8FB387;
     %StateHeader(\
@@ -7439,7 +7439,7 @@ RoomHeader_FastPillarsSetup:                                             ;8FB3A5
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_FastPillarsSetup))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_FastPillarsSetup:                                              ;8FB3B2;
     %StateHeader(\
@@ -7483,7 +7483,7 @@ UNUSED_RoomHeader_8FB3E1:
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(UNUSED_RoomDoors_8FB408))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 UNUSED_RoomState_8FB3EE:                                                 ;8FB3EE;
     %StateHeader(\
@@ -7514,7 +7514,7 @@ RoomHeader_MickeyMouse:                                                  ;8FB40A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MickeyMouse))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MickeyMouse:                                                   ;8FB417;
     %StateHeader(\
@@ -7566,7 +7566,7 @@ RoomHeader_Pillar:                                                       ;8FB457
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Pillar))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Pillar:                                                        ;8FB464;
     %StateHeader(\
@@ -7628,7 +7628,7 @@ RoomHeader_WorstRoomInTheGame:                                           ;8FB4AD
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WorstRoomInTheGame))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WorstRoomInTheGame:                                            ;8FB4BA;
     %StateHeader(\
@@ -7666,7 +7666,7 @@ RoomHeader_Amphitheatre:                                                 ;8FB4E5
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Amphitheatre))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Amphitheatre:                                                  ;8FB4F2;
     %StateHeader(\
@@ -7697,7 +7697,7 @@ RoomHeader_LNSpringBallMaze:                                             ;8FB510
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_LNSpringBallMaze))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_LNSpringBallMaze:                                              ;8FB51D;
     %StateHeader(\
@@ -7741,7 +7741,7 @@ RoomHeader_LNEscapePowerBombs:                                           ;8FB55A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_LNEscapePowerBombs))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_LNEscapePowerBombs:                                            ;8FB567;
     %StateHeader(\
@@ -7772,7 +7772,7 @@ RoomHeader_RedKihunterShaft:                                             ;8FB585
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_RedKihunterShaft))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RedKihunterShaft:                                              ;8FB592;
     %StateHeader(\
@@ -7820,7 +7820,7 @@ RoomHeader_Wasteland:                                                    ;8FB5D5
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Wasteland))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Wasteland:                                                     ;8FB5E2;
     %StateHeader(\
@@ -7876,7 +7876,7 @@ RoomHeader_MetalPirates:                                                 ;8FB62B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MetalPirates))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MetalPirates:                                                  ;8FB638;
     %StateHeader(\
@@ -7907,7 +7907,7 @@ RoomHeader_ThreeMusketeers:                                              ;8FB656
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_ThreeMusketeers))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_ThreeMusketeers:                                               ;8FB663;
     %StateHeader(\
@@ -7950,7 +7950,7 @@ RoomHeader_RidleyETank:                                                  ;8FB698
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_RidleyETank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RidleyETank:                                                   ;8FB6A5;
     %StateHeader(\
@@ -7980,7 +7980,7 @@ RoomHeader_ScrewAttack:                                                  ;8FB6C1
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_ScrewAttack))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_ScrewAttack:                                                   ;8FB6CE;
     %StateHeader(\
@@ -8012,7 +8012,7 @@ RoomHeader_LNFireflea:                                                   ;8FB6EE
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_LNFireflea))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_LNFireflea:                                                    ;8FB6FB;
     %StateHeader(\
@@ -8060,7 +8060,7 @@ RoomHeader_LNSave:                                                       ;8FB741
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_LNSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_LNSave:                                                        ;8FB74E;
     %StateHeader(\
@@ -11042,7 +11042,7 @@ RoomHeader_GlassTunnelSave:                                              ;8FCED2
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_GlassTunnelSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_GlassTunnelSave:
     dl LevelData_SaveStation_LeftSideDoor                                ;8FCEDF;
@@ -11125,7 +11125,7 @@ RoomHeader_WestTunnel:                                                   ;8FCF54
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WestTunnel))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WestTunnel:
     dl LevelData_WestTunnel                                              ;8FCF61;
@@ -11157,7 +11157,7 @@ RoomHeader_EastTunnel:                                                   ;8FCF80
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EastTunnel))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EastTunnel:
     dl LevelData_EastTunnel                                              ;8FCF8D;
@@ -11202,7 +11202,7 @@ RoomHeader_MainStreet:                                                   ;8FCFC9
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MainStreet))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MainStreet:
     dl LevelData_MainStreet                                              ;8FCFD6;
@@ -11241,7 +11241,7 @@ RoomHeader_FishTank:                                                     ;8FD017
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_FishTank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_FishTank:
     dl LevelData_FishTank                                                ;8FD024;
@@ -11278,7 +11278,7 @@ RoomHeader_MamaTurtle:                                                   ;8FD055
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MamaTurtle))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MamaTurtle:
     dl LevelData_MamaTurtle                                              ;8FD062;
@@ -11309,7 +11309,7 @@ RoomHeader_CrabTunnel:                                                   ;8FD08A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrabTunnel))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrabTunnel:
     dl LevelData_CrabTunnel                                              ;8FD097;
@@ -11341,7 +11341,7 @@ RoomHeader_MtEverest:                                                    ;8FD0B9
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_MtEverest))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MtEverest:
     dl LevelData_MtEverest                                               ;8FD0C6;
@@ -11378,7 +11378,7 @@ RoomHeader_RedFish:                                                      ;8FD104
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_RedFish))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RedFish:
     dl LevelData_RedFish                                                 ;8FD111;
@@ -11416,7 +11416,7 @@ RoomHeader_WateringHole:                                                 ;8FD13B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WateringHole))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WateringHole:
     dl LevelData_WateringHole                                            ;8FD148;
@@ -11450,7 +11450,7 @@ RoomHeader_NWestMaridiaBug:                                              ;8FD16D
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_NWestMaridiaBug))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_NWestMaridiaBug:
     dl LevelData_NWestMaridiaBug                                         ;8FD17A;
@@ -11485,7 +11485,7 @@ RoomHeader_CrabShaft:                                                    ;8FD1A3
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrabShaft))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrabShaft:
     dl LevelData_CrabShaft                                               ;8FD1B0;
@@ -11521,7 +11521,7 @@ RoomHeader_PseudoPlasmaSpark:                                            ;8FD1DD
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PseudoPlasmaSpark))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PseudoPlasmaSpark:
     dl LevelData_PseudoPlasmaSpark                                       ;8FD1EA;
@@ -11560,7 +11560,7 @@ RoomHeader_CrabHole:                                                     ;8FD21C
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_CrabHole))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_CrabHole:
     dl LevelData_CrabHole                                                ;8FD229;
@@ -11597,7 +11597,7 @@ RoomHeader_WestSandHallTunnel:                                           ;8FD252
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WestSandHallTunnel))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WestSandHallTunnel:
     dl LevelData_WestSandHallTunnel                                      ;8FD25F;
@@ -11629,7 +11629,7 @@ RoomHeader_PlasmaTutorial:                                               ;8FD27E
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PlasmaTutorial))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PlasmaTutorial:
     dl LevelData_PlasmaTutorial                                          ;8FD28B;
@@ -11661,7 +11661,7 @@ RoomHeader_Plasma:                                                       ;8FD2AA
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Plasma))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Plasma:
     dl LevelData_Plasma                                                  ;8FD2B7;
@@ -11692,7 +11692,7 @@ RoomHeader_ThreadTheNeedle:                                              ;8FD2D9
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_ThreadTheNeedle))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_ThreadTheNeedle:
     dl LevelData_ThreadTheNeedle                                         ;8FD2E6;
@@ -11724,7 +11724,7 @@ RoomHeader_MaridiaElev:                                                  ;8FD30B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MaridiaElev))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MaridiaElev:
     dl LevelData_MaridiaElev                                             ;8FD318;
@@ -11758,7 +11758,7 @@ RoomHeader_PlasmaSpark:                                                  ;8FD340
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PlasmaSpark))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PlasmaSpark:
     dl LevelData_PlasmaSpark                                             ;8FD34D;
@@ -11793,7 +11793,7 @@ RoomHeader_Kassiuz:                                                      ;8FD387
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Kassiuz))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Kassiuz:
     dl LevelData_Kassiuz                                                 ;8FD394;
@@ -11825,7 +11825,7 @@ RoomHeader_MaridiaMap:                                                   ;8FD3B6
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MaridiaMap))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MaridiaMap:
     dl LevelData_MapStation_LeftSideDoor                                 ;8FD3C3;
@@ -11853,7 +11853,7 @@ RoomHeader_ForgottenHighwaySave:                                         ;8FD3DF
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_ForgottenHighwaySave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_ForgottenHighwaySave:
     dl LevelData_SaveStation_LeftSideDoor                                ;8FD3EC;
@@ -11881,7 +11881,7 @@ RoomHeader_Toilet:                                                       ;8FD408
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Toilet))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Toilet:
     dl LevelData_Toilet                                                  ;8FD415;
@@ -11910,7 +11910,7 @@ RoomHeader_BugSandHole:                                                  ;8FD433
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BugSandHole))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BugSandHole:
     dl LevelData_BugSandHole                                             ;8FD440;
@@ -11943,7 +11943,7 @@ RoomHeader_WestSandHall:                                                 ;8FD461
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WestSandHall))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WestSandHall:
     dl LevelData_WestSandHall                                            ;8FD46E;
@@ -11973,7 +11973,7 @@ RoomHeader_Oasis:                                                        ;8FD48E
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Oasis))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Oasis:
     dl LevelData_Oasis                                                   ;8FD49B;
@@ -12009,7 +12009,7 @@ RoomHeader_EastSandHall:                                                 ;8FD4C2
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EastSandHall))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EastSandHall:
     dl LevelData_EastSandHall                                            ;8FD4CF;
@@ -12039,7 +12039,7 @@ RoomHeader_WestSandHole:                                                 ;8FD4EF
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WestSandHole))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WestSandHole:
     dl LevelData_WestSandHole                                            ;8FD4FC;
@@ -12071,7 +12071,7 @@ RoomHeader_EastSandHole:                                                 ;8FD51E
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EastSandHole))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EastSandHole:
     dl LevelData_EastSandHole                                            ;8FD52B;
@@ -12103,7 +12103,7 @@ RoomHeader_WestAqueductQuicksand:                                        ;8FD54D
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WestAqueductQuicksand))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WestAqueductQuicksand:
     dl LevelData_WestAqueductQuicksand                                   ;8FD55A;
@@ -12135,7 +12135,7 @@ RoomHeader_EastAqueductQuicksand:                                        ;8FD57A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EastAqueductQuicksand))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EastAqueductQuicksand:
     dl LevelData_EastAqueductQuicksand                                   ;8FD587;
@@ -12167,7 +12167,7 @@ RoomHeader_Aqueduct:                                                     ;8FD5A7
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_Aqueduct))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Aqueduct:
     dl LevelData_Aqueduct                                                ;8FD5B4;
@@ -12204,7 +12204,7 @@ RoomHeader_Butterfly:                                                    ;8FD5EC
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Butterfly))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Butterfly:
     dl LevelData_Butterfly                                               ;8FD5F9;
@@ -12233,7 +12233,7 @@ RoomHeader_BotwoonHallway:                                               ;8FD617
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BotwoonHallway))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BotwoonHallway:
     dl LevelData_BotwoonHallway                                          ;8FD624;
@@ -12265,7 +12265,7 @@ RoomHeader_Pants:                                                        ;8FD646
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Pants))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Pants:
     dl LevelData_Pants                                                   ;8FD653;
@@ -12308,7 +12308,7 @@ RoomHeader_EastPants:                                                    ;8FD69A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EastPants))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EastPants:
     dl LevelData_EastPants                                               ;8FD6A7;
@@ -12346,7 +12346,7 @@ RoomHeader_Springball:                                                   ;8FD6D0
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Springball))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Springball:
     dl LevelData_Springball                                              ;8FD6DD;
@@ -12377,7 +12377,7 @@ RoomHeader_BelowBotwoonETank:                                            ;8FD6FD
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BelowBotwoonETank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BelowBotwoonETank:
     dl LevelData_BelowBotwoonETank                                       ;8FD70A;
@@ -12408,7 +12408,7 @@ RoomHeader_Colosseum:                                                    ;8FD72A
     %scrollers($90, $A0),
     %CRE(0),
     %doorList(RoomDoors_Colosseum))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Colosseum:
     dl LevelData_Colosseum                                               ;8FD737;
@@ -12441,7 +12441,7 @@ RoomHeader_AqueductSave:                                                 ;8FD765
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_AqueductSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_AqueductSave:
     dl LevelData_SaveStation_RightSideDoor                               ;8FD772;
@@ -12522,7 +12522,7 @@ RoomHeader_BotwoonETank:                                                 ;8FD7E4
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BotwoonETank))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BotwoonETank:
     dl LevelData_BotwoonETank                                            ;8FD7F1;
@@ -12556,7 +12556,7 @@ RoomHeader_DraygonSave:                                                  ;8FD81A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_DraygonSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_DraygonSave:
     dl LevelData_SaveStation_BothDoors                                   ;8FD827;
@@ -12585,7 +12585,7 @@ RoomHeader_MaridiaMissileRefill:                                         ;8FD845
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MaridiaMissileRefill))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MaridiaMissileRefill:
     dl LevelData_MissileRefill_LeftSideDoor                              ;8FD852;
@@ -12613,7 +12613,7 @@ RoomHeader_PlasmaBeachQuicksand:                                         ;8FD86E
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_PlasmaBeachQuicksand))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_PlasmaBeachQuicksand:
     dl LevelData_PlasmaBeachQuicksand                                    ;8FD87B;
@@ -12644,7 +12644,7 @@ RoomHeader_BotwoonQuicksand:                                             ;8FD898
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_BotwoonQuicksand))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_BotwoonQuicksand:
     dl LevelData_BotwoonQuicksand                                        ;8FD8A5;
@@ -12723,7 +12723,7 @@ RoomHeader_HalfieClimb:                                                  ;8FD913
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_HalfieClimb))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_HalfieClimb:
     dl LevelData_HalfieClimb                                             ;8FD920;
@@ -12813,7 +12813,7 @@ RoomHeader_SpaceJump:                                                    ;8FD9AA
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_SpaceJump))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_SpaceJump:
     dl LevelData_SpaceJump                                               ;8FD9B7;
@@ -12844,7 +12844,7 @@ RoomHeader_MaridiaEnergyRefill:                                          ;8FD9D4
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MaridiaEnergyRefill))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MaridiaEnergyRefill:
     dl LevelData_EnergyRefill_LeftSideDoor                               ;8FD9E1;
@@ -12875,7 +12875,7 @@ RoomHeader_WestCactusAlley:                                              ;8FD9FE
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_WestCactusAlley))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_WestCactusAlley:
     dl LevelData_WestCactusAlley                                         ;8FDA0B;
@@ -12907,7 +12907,7 @@ RoomHeader_EastCactusAlley:                                              ;8FDA2B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_EastCactusAlley))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_EastCactusAlley:
     dl LevelData_EastCactusAlley                                         ;8FDA38;
@@ -12986,7 +12986,7 @@ RoomHeader_TourianFirst:                                                 ;8FDAAE
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_TourianFirst))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_TourianFirst:
     dl LevelData_TourianFirst                                            ;8FDABB;
@@ -13349,7 +13349,7 @@ RoomHeader_Seaweed:                                                      ;8FDCFF
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Seaweed))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Seaweed:
     dl LevelData_Seaweed                                                 ;8FDD0C;
@@ -13382,7 +13382,7 @@ RoomHeader_TourianRecharge:                                              ;8FDD2E
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_TourianRecharge))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_TourianRecharge:
     dl LevelData_RefillStation_RightSideDoor                             ;8FDD3B;
@@ -13475,7 +13475,7 @@ RoomHeader_TourianEyeDoor:                                               ;8FDDC4
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_TourianEyeDoor))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_TourianEyeDoor:
     dl LevelData_TourianEyeDoor                                          ;8FDDD1;
@@ -13507,7 +13507,7 @@ RoomHeader_RinkaShaft:                                                   ;8FDDF3
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_RinkaShaft))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_RinkaShaft:
     dl LevelData_RinkaShaft                                              ;8FDE00;
@@ -13540,7 +13540,7 @@ RoomHeader_MotherBrainSave:                                              ;8FDE23
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_MotherBrainSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_MotherBrainSave:
     dl LevelData_SaveStation_RightSideDoor                               ;8FDE30;
@@ -13571,7 +13571,7 @@ RoomHeader_TourianEscape1:                                               ;8FDE4D
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_TourianEscape1))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_TourianEscape1:
     dl LevelData_TourianEscape1                                          ;8FDE5A;
@@ -13603,7 +13603,7 @@ RoomHeader_TourianEscape2:                                               ;8FDE7A
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_TourianEscape2))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_TourianEscape2:
     dl LevelData_TourianEscape2                                          ;8FDE87;
@@ -13635,7 +13635,7 @@ RoomHeader_TourianEscape3:                                               ;8FDEA7
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_TourianEscape3))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_TourianEscape3:
     dl LevelData_TourianEscape3                                          ;8FDEB4;
@@ -13667,7 +13667,7 @@ RoomHeader_TourianEscape4:                                               ;8FDEDE
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_TourianEscape4))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_TourianEscape4:
     dl LevelData_TourianEscape4                                          ;8FDEEB;
@@ -13700,7 +13700,7 @@ RoomHeader_UpperTourianSave:                                             ;8FDF1B
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_UpperTourianSave))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_UpperTourianSave:
     dl LevelData_SaveStation_LeftSideDoor                                ;8FDF28;
@@ -15119,7 +15119,7 @@ RoomHeader_Debug:
     %scrollers($70, $A0),
     %CRE(0),
     %doorList(RoomDoors_Debug))
-    %stateChecks(0, 0)
+    %stateChecks(0)
 
 RoomState_Debug:                                                         ;8FE839;
 ; Room $E82C, state $E839: Header
