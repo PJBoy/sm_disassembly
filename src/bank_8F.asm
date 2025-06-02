@@ -1849,33 +1849,37 @@ RoomHeader_GauntletEntrance:                                             ;8F92B3
     %stateChecks(1,
     %stateCheckEventSet(0, RoomState_GauntletEntrance_1))
 
-RoomState_GauntletEntrance_0:
-    dl LevelData_GauntletEntrance                                        ;8F92C5;
-    db $00,$00,$00                                                       ;8F92C8;
-    dw FXHeader_GauntletEntrance_State0_1                                ;8F92CB;
-    dw EnemyPopulations_GauntletEntrance                                 ;8F92CD;
-    dw EnemySets_GauntletEntrance                                        ;8F92CF;
-    db $C1,$C1                                                           ;8F92D1;
-    dw $0000                                                             ;8F92D3;
-    dw $0000                                                             ;8F92D5;
-    dw $0000                                                             ;8F92D7;
-    dw PLMPopulation_GauntletEntrance_State0_1                           ;8F92D9;
-    dw LibBG_Crateria_0_HorizontalPatternRocks                           ;8F92DB;
-    dw RTS_8F91D3                                                        ;8F92DD;
+RoomState_GauntletEntrance_0:                                            ;8F92C5;
+    %StateHeader(\
+    %levelData(LevelData_GauntletEntrance),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_GauntletEntrance_State0_1),
+    %enemyPop(EnemyPopulations_GauntletEntrance),
+    %enemySet(EnemySets_GauntletEntrance),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GauntletEntrance_State0_1),
+    %libraryBG(LibBG_Crateria_0_HorizontalPatternRocks),
+    %setupASM(RTS_8F91D3))
 
-RoomState_GauntletEntrance_1:
-    dl LevelData_GauntletEntrance                                        ;8F92DF;
-    db $00,$09,$05                                                       ;8F92E2;
-    dw FXHeader_GauntletEntrance_State0_1                                ;8F92E5;
-    dw EnemyPopulations_GauntletEntrance                                 ;8F92E7;
-    dw EnemySets_GauntletEntrance                                        ;8F92E9;
-    db $C1,$C1                                                           ;8F92EB;
-    dw $0000                                                             ;8F92ED;
-    dw $0000                                                             ;8F92EF;
-    dw $0000                                                             ;8F92F1;
-    dw PLMPopulation_GauntletEntrance_State0_1                           ;8F92F3;
-    dw LibBG_Crateria_0_HorizontalPatternRocks                           ;8F92F5;
-    dw RTS_8F91D3                                                        ;8F92F7;
+RoomState_GauntletEntrance_1:                                            ;8F92DF;
+    %StateHeader(\
+    %levelData(LevelData_GauntletEntrance),
+    %tileset(0),
+    %music(9, 5),
+    %FX(FXHeader_GauntletEntrance_State0_1),
+    %enemyPop(EnemyPopulations_GauntletEntrance),
+    %enemySet(EnemySets_GauntletEntrance),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GauntletEntrance_State0_1),
+    %libraryBG(LibBG_Crateria_0_HorizontalPatternRocks),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_GauntletEntrance:
     dw Door_GauntletEntrance_0                                           ;8F92F9;
@@ -1894,47 +1898,53 @@ RoomHeader_Parlor:                                                       ;8F92FD
     %stateCheckEventSet($0E, RoomState_Parlor_2),
     %stateCheckEventSet(0, RoomState_Parlor_1))
 
-RoomState_Parlor_0:
-    dl LevelData_Parlor                                                  ;8F9314;
-    db $00,$00,$00                                                       ;8F9317;
-    dw FXHeader_Parlor_State0                                            ;8F931A;
-    dw EnemyPopulations_Parlor_0                                         ;8F931C;
-    dw EnemySets_Parlor_0                                                ;8F931E;
-    db $C1,$C1                                                           ;8F9320;
-    dw RoomScrolls_Parlor                                                ;8F9322;
-    dw $0000                                                             ;8F9324;
-    dw $0000                                                             ;8F9326;
-    dw PLMPopulation_Parlor_State0_1                                     ;8F9328;
-    dw LibBG_Crateria_0_Rocks                                            ;8F932A;
-    dw RTS_8F91D3                                                        ;8F932C;
+RoomState_Parlor_0:                                                      ;8F9314;
+    %StateHeader(\
+    %levelData(LevelData_Parlor),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_Parlor_State0),
+    %enemyPop(EnemyPopulations_Parlor_0),
+    %enemySet(EnemySets_Parlor_0),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_Parlor),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Parlor_State0_1),
+    %libraryBG(LibBG_Crateria_0_Rocks),
+    %setupASM(RTS_8F91D3))
 
-RoomState_Parlor_1:
-    dl LevelData_Parlor                                                  ;8F932E;
-    db $00,$09,$05                                                       ;8F9331;
-    dw FXHeader_Parlor_State1                                            ;8F9334;
-    dw EnemyPopulations_Parlor_1                                         ;8F9336;
-    dw EnemySets_Parlor_1                                                ;8F9338;
-    db $C1,$C1                                                           ;8F933A;
-    dw RoomScrolls_Parlor                                                ;8F933C;
-    dw $0000                                                             ;8F933E;
-    dw $0000                                                             ;8F9340;
-    dw PLMPopulation_Parlor_State0_1                                     ;8F9342;
-    dw LibBG_Crateria_0_Rocks                                            ;8F9344;
-    dw RTS_8F91BC                                                        ;8F9346;
+RoomState_Parlor_1:                                                      ;8F932E;
+    %StateHeader(\
+    %levelData(LevelData_Parlor),
+    %tileset(0),
+    %music(9, 5),
+    %FX(FXHeader_Parlor_State1),
+    %enemyPop(EnemyPopulations_Parlor_1),
+    %enemySet(EnemySets_Parlor_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_Parlor),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Parlor_State0_1),
+    %libraryBG(LibBG_Crateria_0_Rocks),
+    %setupASM(RTS_8F91BC))
 
-RoomState_Parlor_2:
-    dl LevelData_Parlor                                                  ;8F9348;
-    db $00,$00,$00                                                       ;8F934B;
-    dw FXHeader_Parlor_State2                                            ;8F934E;
-    dw EnemyPopulations_Parlor_2                                         ;8F9350;
-    dw EnemySets_Parlor_2                                                ;8F9352;
-    db $C1,$C1                                                           ;8F9354;
-    dw RoomScrolls_Parlor                                                ;8F9356;
-    dw $0000                                                             ;8F9358;
-    dw MainASM_SetScreenShaking_GenerateRandomExplosions                 ;8F935A;
-    dw PLMPopulation_Parlor_State2                                       ;8F935C;
-    dw LibBG_Crateria_0_Rocks                                            ;8F935E;
-    dw SetupASM_ClearBlocksAfterSavingAnimalsAndShakeScreen              ;8F9360;
+RoomState_Parlor_2:                                                      ;8F9348;
+    %StateHeader(\
+    %levelData(LevelData_Parlor),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_Parlor_State2),
+    %enemyPop(EnemyPopulations_Parlor_2),
+    %enemySet(EnemySets_Parlor_2),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_Parlor),
+    %specialXray(0),
+    %mainASM(MainASM_SetScreenShaking_GenerateRandomExplosions),
+    %PLMPop(PLMPopulation_Parlor_State2),
+    %libraryBG(LibBG_Crateria_0_Rocks),
+    %setupASM(SetupASM_ClearBlocksAfterSavingAnimalsAndShakeScreen))
 
 RoomDoors_Parlor:
     dw Door_Parlor_0                                                     ;8F9362;
@@ -1987,19 +1997,21 @@ RoomHeader_CrateriaPowerBombs:                                           ;8F93AA
     %doorList(RoomDoors_CrateriaPowerBombs))
     %stateChecks(0, 0)
 
-RoomState_CrateriaPowerBombs:
-    dl LevelData_CrateriaPowerBombs                                      ;8F93B7;
-    db $00,$00,$00                                                       ;8F93BA;
-    dw FXHeader_CrateriaPowerBombs                                       ;8F93BD;
-    dw EnemyPopulations_CrateriaPowerBombs                               ;8F93BF;
-    dw EnemySets_CrateriaPowerBombs                                      ;8F93C1;
-    db $C1,$C1                                                           ;8F93C3;
-    dw RoomScrolls_CrateriaPowerBomb                                     ;8F93C5;
-    dw $0000                                                             ;8F93C7;
-    dw MainASM_ScrollingSkyLand                                          ;8F93C9;
-    dw PLMPopulation_CrateriaPowerBombs                                  ;8F93CB;
-    dw LibBG_Crateria_0_Rocks                                            ;8F93CD;
-    dw RTS_8F91D3                                                        ;8F93CF;
+RoomState_CrateriaPowerBombs:                                            ;8F93B7;
+    %StateHeader(\
+    %levelData(LevelData_CrateriaPowerBombs),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_CrateriaPowerBombs),
+    %enemyPop(EnemyPopulations_CrateriaPowerBombs),
+    %enemySet(EnemySets_CrateriaPowerBombs),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_CrateriaPowerBomb),
+    %specialXray(0),
+    %mainASM(MainASM_ScrollingSkyLand),
+    %PLMPop(PLMPopulation_CrateriaPowerBombs),
+    %libraryBG(LibBG_Crateria_0_Rocks),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_CrateriaPowerBombs:
     dw Door_CrateriaPowerBombs_0                                         ;8F93D1;
@@ -2018,19 +2030,21 @@ RoomHeader_CrateriaSave:                                                 ;8F93D5
     %doorList(RoomDoors_CrateriaSave))
     %stateChecks(0, 0)
 
-RoomState_CrateriaSave:
-    dl LevelData_SaveStation_RightSideDoor                               ;8F93E2;
-    db $19,$09,$05                                                       ;8F93E5;
-    dw FXHeader_CrateriaSave                                             ;8F93E8;
-    dw EnemyPopulations_CrateriaSave                                     ;8F93EA;
-    dw EnemySets_CrateriaSave                                            ;8F93EC;
-    db $00,$00                                                           ;8F93EE;
-    dw $0000                                                             ;8F93F0;
-    dw $0000                                                             ;8F93F2;
-    dw $0000                                                             ;8F93F4;
-    dw PLMPopulation_CrateriaSave                                        ;8F93F6;
-    dw $0000                                                             ;8F93F8;
-    dw RTS_8F91D3                                                        ;8F93FA;
+RoomState_CrateriaSave:                                                  ;8F93E2;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_RightSideDoor),
+    %tileset($19),
+    %music(9, 5),
+    %FX(FXHeader_CrateriaSave),
+    %enemyPop(EnemyPopulations_CrateriaSave),
+    %enemySet(EnemySets_CrateriaSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CrateriaSave),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_CrateriaSave:
     dw Door_CrateriaSave_0                                               ;8F93FC;
@@ -2046,19 +2060,21 @@ RoomHeader_WestOcean:                                                    ;8F93FE
     %doorList(RoomDoors_WestOcean))
     %stateChecks(0, 0)
 
-RoomState_WestOcean:
-    dl LevelData_WestOcean                                               ;8F940B;
-    db $00,$0C,$05                                                       ;8F940E;
-    dw FXHeader_WestOcean                                                ;8F9411;
-    dw EnemyPopulations_WestOcean                                        ;8F9413;
-    dw EnemySets_WestOcean                                               ;8F9415;
-    db $81,$01                                                           ;8F9417;
-    dw RoomScrolls_WestOcean                                             ;8F9419;
-    dw $0000                                                             ;8F941B;
-    dw MainASM_ScrollingSkyOcean                                         ;8F941D;
-    dw PLMPopulation_WestOcean                                           ;8F941F;
-    dw LibBG_ScrollingSky_Tilemaps_WreckedShipEntrance                   ;8F9421;
-    dw SetupASM_ScrollingSkyOcean                                        ;8F9423;
+RoomState_WestOcean:                                                     ;8F940B;
+    %StateHeader(\
+    %levelData(LevelData_WestOcean),
+    %tileset(0),
+    %music($0C, 5),
+    %FX(FXHeader_WestOcean),
+    %enemyPop(EnemyPopulations_WestOcean),
+    %enemySet(EnemySets_WestOcean),
+    %layer2Scrolls($81, 1),
+    %scrollPointer(RoomScrolls_WestOcean),
+    %specialXray(0),
+    %mainASM(MainASM_ScrollingSkyOcean),
+    %PLMPop(PLMPopulation_WestOcean),
+    %libraryBG(LibBG_ScrollingSky_Tilemaps_WreckedShipEntrance),
+    %setupASM(SetupASM_ScrollingSkyOcean))
 
 RoomDoors_WestOcean:
     dw Door_WestOcean_0                                                  ;8F9425;
@@ -2084,19 +2100,21 @@ RoomHeader_BowlingAlleyPath:                                             ;8F9461
     %doorList(RoomDoors_BowlingAlleyPath))
     %stateChecks(0, 0)
 
-RoomState_BowlingAlleyPath:
-    dl LevelData_BowlingAlleyPath                                        ;8F946E;
-    db $00,$00,$00                                                       ;8F9471;
-    dw FXHeader_BowlingAlleyPath                                         ;8F9474;
-    dw EnemyPopulations_BowlingAlleyPath                                 ;8F9476;
-    dw EnemySets_BowlingAlleyPath                                        ;8F9478;
-    db $C1,$C1                                                           ;8F947A;
-    dw $0000                                                             ;8F947C;
-    dw $0000                                                             ;8F947E;
-    dw $0000                                                             ;8F9480;
-    dw PLMPopulation_BowlingAlleyPath                                    ;8F9482;
-    dw LibBG_Crateria_0_HorizontalPatternRocks                           ;8F9484;
-    dw RTS_8F91D3                                                        ;8F9486;
+RoomState_BowlingAlleyPath:                                              ;8F946E;
+    %StateHeader(\
+    %levelData(LevelData_BowlingAlleyPath),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_BowlingAlleyPath),
+    %enemyPop(EnemyPopulations_BowlingAlleyPath),
+    %enemySet(EnemySets_BowlingAlleyPath),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BowlingAlleyPath),
+    %libraryBG(LibBG_Crateria_0_HorizontalPatternRocks),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_BowlingAlleyPath:
     dw Door_BowlingAlleyPath_0                                           ;8F9488;
@@ -2113,19 +2131,21 @@ RoomHeader_CrateriaKihunter:                                             ;8F948C
     %doorList(RoomDoors_CrateriaKihunter))
     %stateChecks(0, 0)
 
-RoomState_CrateriaKihunter:
-    dl LevelData_CrateriaKihunter                                        ;8F9499;
-    db $00,$00,$05                                                       ;8F949C;
-    dw FXHeader_CrateriaKihunters                                        ;8F949F;
-    dw EnemyPopulations_CrateriaKihunter                                 ;8F94A1;
-    dw EnemySets_CrateriaKihunter                                        ;8F94A3;
-    db $C1,$C1                                                           ;8F94A5;
-    dw RoomScroll_CrateriaKihunter                                       ;8F94A7;
-    dw $0000                                                             ;8F94A9;
-    dw $0000                                                             ;8F94AB;
-    dw PLMPopulation_CrateriaKihunter                                    ;8F94AD;
-    dw LibBG_Crateria_0_Rocks                                            ;8F94AF;
-    dw RTS_8F91D3                                                        ;8F94B1;
+RoomState_CrateriaKihunter:                                              ;8F9499;
+    %StateHeader(\
+    %levelData(LevelData_CrateriaKihunter),
+    %tileset(0),
+    %music(0, 5),
+    %FX(FXHeader_CrateriaKihunters),
+    %enemyPop(EnemyPopulations_CrateriaKihunter),
+    %enemySet(EnemySets_CrateriaKihunter),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScroll_CrateriaKihunter),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CrateriaKihunter),
+    %libraryBG(LibBG_Crateria_0_Rocks),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_CrateriaKihunter:
     dw Door_CrateriaKihunter_0                                           ;8F94B3;
@@ -2152,19 +2172,21 @@ RoomHeader_ForgottenHighwayElev:                                         ;8F94CC
     %doorList(RoomDoors_ForgottenHighwayElev))
     %stateChecks(0, 0)
 
-RoomState_ForgottenHighwayElev:
-    dl LevelData_ForgottenHighwayElev                                    ;8F94D9;
-    db $02,$09,$03                                                       ;8F94DC;
-    dw FXHeader_ForgottenHighwayElev                                     ;8F94DF;
-    dw EnemyPopulations_ForgottenHighwayElev                             ;8F94E1;
-    dw EnemySets_ForgottenHighwayElev                                    ;8F94E3;
-    db $C1,$C1                                                           ;8F94E5;
-    dw RoomScrolls_ForgottenHighwayElev                                  ;8F94E7;
-    dw $0000                                                             ;8F94E9;
-    dw $0000                                                             ;8F94EB;
-    dw PLMPopulation_ForgottenHighwayElev                                ;8F94ED;
-    dw LibBG_Crateria_2_Elevator                                         ;8F94EF;
-    dw RTS_8F91D3                                                        ;8F94F1;
+RoomState_ForgottenHighwayElev:                                          ;8F94D9;
+    %StateHeader(\
+    %levelData(LevelData_ForgottenHighwayElev),
+    %tileset(2),
+    %music(9, 3),
+    %FX(FXHeader_ForgottenHighwayElev),
+    %enemyPop(EnemyPopulations_ForgottenHighwayElev),
+    %enemySet(EnemySets_ForgottenHighwayElev),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_ForgottenHighwayElev),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_ForgottenHighwayElev),
+    %libraryBG(LibBG_Crateria_2_Elevator),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_ForgottenHighwayElev:
     dw Door_ForgottenHighwayElev_0                                       ;8F94F3;
@@ -2188,19 +2210,21 @@ RoomHeader_EastOcean:                                                    ;8F94FD
     %doorList(RoomDoors_EastOcean))
     %stateChecks(0, 0)
 
-RoomState_EastOcean:
-    dl LevelData_EastOcean                                               ;8F950A;
-    db $00,$0C,$05                                                       ;8F950D;
-    dw FXHeader_EastOcean                                                ;8F9510;
-    dw EnemyPopulations_EastOcean                                        ;8F9512;
-    dw EnemySets_EastOcean                                               ;8F9514;
-    db $81,$01                                                           ;8F9516;
-    dw RoomScrolls_EastOcean                                             ;8F9518;
-    dw $0000                                                             ;8F951A;
-    dw MainASM_ScrollingSkyOcean                                         ;8F951C;
-    dw PLMPopulation_EastOcean                                           ;8F951E;
-    dw LibBG_ScrollingSky_Tilemaps_EastOcean                             ;8F9520;
-    dw SetupASM_ScrollingSkyOcean                                        ;8F9522;
+RoomState_EastOcean:                                                     ;8F950A;
+    %StateHeader(\
+    %levelData(LevelData_EastOcean),
+    %tileset(0),
+    %music($0C, 5),
+    %FX(FXHeader_EastOcean),
+    %enemyPop(EnemyPopulations_EastOcean),
+    %enemySet(EnemySets_EastOcean),
+    %layer2Scrolls($81, $01),
+    %scrollPointer(RoomScrolls_EastOcean),
+    %specialXray(0),
+    %mainASM(MainASM_ScrollingSkyOcean),
+    %PLMPop(PLMPopulation_EastOcean),
+    %libraryBG(LibBG_ScrollingSky_Tilemaps_EastOcean),
+    %setupASM(SetupASM_ScrollingSkyOcean))
 
 RoomDoors_EastOcean:
     dw Door_EastOcean_0                                                  ;8F9524;
@@ -2222,19 +2246,21 @@ RoomHeader_ForgottenHighwayKagos:                                        ;8F9552
     %doorList(RoomDoors_ForgottenHighwayKagos))
     %stateChecks(0, 0)
 
-RoomState_ForgottenHighwayKagos:
-    dl LevelData_ForgottenHighwayKagos                                   ;8F955F;
-    db $00,$00,$00                                                       ;8F9562;
-    dw FXHeader_ForgottenHighwayKagos                                    ;8F9565;
-    dw EnemyPopulations_ForgottenHighwayKagos                            ;8F9567;
-    dw EnemySets_ForgottenHighwayKagos                                   ;8F9569;
-    db $C1,$C1                                                           ;8F956B;
-    dw $0001                                                             ;8F956D;
-    dw $0000                                                             ;8F956F;
-    dw $0000                                                             ;8F9571;
-    dw PLMPopulation_ForgottenHighwayKagos                               ;8F9573;
-    dw LibBG_Crateria_0_VerticalPatternRocks                             ;8F9575;
-    dw RTS_8F91D3                                                        ;8F9577;
+RoomState_ForgottenHighwayKagos:                                         ;8F955F;
+    %StateHeader(\
+    %levelData(LevelData_ForgottenHighwayKagos),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_ForgottenHighwayKagos),
+    %enemyPop(EnemyPopulations_ForgottenHighwayKagos),
+    %enemySet(EnemySets_ForgottenHighwayKagos),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(1),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_ForgottenHighwayKagos),
+    %libraryBG(LibBG_Crateria_0_VerticalPatternRocks),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_ForgottenHighwayKagos:
     dw Door_ForgottenHighwayKagos_0                                      ;8F9579;
@@ -2251,19 +2277,21 @@ RoomHeader_CrabMaze:                                                     ;8F957D
     %doorList(RoomDoors_CrabMaze))
     %stateChecks(0, 0)
 
-RoomState_CrabMaze:
-    dl LevelData_CrabMaze                                                ;8F958A;
-    db $00,$00,$00                                                       ;8F958D;
-    dw FXHeader_CrabMaze                                                 ;8F9590;
-    dw EnemyPopulations_CrabMaze                                         ;8F9592;
-    dw EnemySets_CrabMaze                                                ;8F9594;
-    db $C1,$C1                                                           ;8F9596;
-    dw $0001                                                             ;8F9598;
-    dw $0000                                                             ;8F959A;
-    dw $0000                                                             ;8F959C;
-    dw PLMPopulation_CrabMaze                                            ;8F959E;
-    dw LibBG_Crateria_0_Rocks                                            ;8F95A0;
-    dw RTS_8F91D3                                                        ;8F95A2;
+RoomState_CrabMaze:                                                      ;8F958A;
+    %StateHeader(\
+    %levelData(LevelData_CrabMaze),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_CrabMaze),
+    %enemyPop(EnemyPopulations_CrabMaze),
+    %enemySet(EnemySets_CrabMaze),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(1),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CrabMaze),
+    %libraryBG(LibBG_Crateria_0_Rocks),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_CrabMaze:
     dw Door_CrabMaze_0                                                   ;8F95A4;
@@ -2280,19 +2308,21 @@ RoomHeader_ForgottenHighwayElbow:                                        ;8F95A8
     %doorList(RoomDoors_ForgottenHighwayElbow))
     %stateChecks(0, 0)
 
-RoomState_ForgottenHighwayElbow:
-    dl LevelData_ForgottenHighwayElbow                                   ;8F95B5;
-    db $00,$00,$05                                                       ;8F95B8;
-    dw FXHeader_ForgottenHighwayElbow                                    ;8F95BB;
-    dw EnemyPopulations_ForgottenHighwayElbow                            ;8F95BD;
-    dw EnemySets_ForgottenHighwayElbow                                   ;8F95BF;
-    db $C1,$C1                                                           ;8F95C1;
-    dw RoomScrolls_ForgottenHighwayElbow                                 ;8F95C3;
-    dw $0000                                                             ;8F95C5;
-    dw $0000                                                             ;8F95C7;
-    dw PLMPopulation_ForgottenHighwayElbow                               ;8F95C9;
-    dw LibBG_Crateria_0_VerticalPatternRocks                             ;8F95CB;
-    dw RTS_8F91D3                                                        ;8F95CD;
+RoomState_ForgottenHighwayElbow:                                         ;8F95B5;
+    %StateHeader(\
+    %levelData(LevelData_ForgottenHighwayElbow),
+    %tileset(0),
+    %music(0, 5),
+    %FX(FXHeader_ForgottenHighwayElbow),
+    %enemyPop(EnemyPopulations_ForgottenHighwayElbow),
+    %enemySet(EnemySets_ForgottenHighwayElbow),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_ForgottenHighwayElbow),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_ForgottenHighwayElbow),
+    %libraryBG(LibBG_Crateria_0_VerticalPatternRocks),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_ForgottenHighwayElbow:
     dw Door_ForgottenHighwayElbow_0                                      ;8F95CF;
@@ -2312,19 +2342,21 @@ RoomHeader_CrateriaTube:                                                 ;8F95D4
     %doorList(RoomDoors_CrateriaTube))
     %stateChecks(0, 0)
 
-RoomState_CrateriaTube:
-    dl LevelData_CrateriaTube                                            ;8F95E1;
-    db $00,$00,$00                                                       ;8F95E4;
-    dw FXHeader_CrateriaTube                                             ;8F95E7;
-    dw EnemyPopulations_CrateriaTube                                     ;8F95E9;
-    dw EnemySets_CrateriaTube                                            ;8F95EB;
-    db $00,$00                                                           ;8F95ED;
-    dw $0000                                                             ;8F95EF;
-    dw $0000                                                             ;8F95F1;
-    dw $0000                                                             ;8F95F3;
-    dw PLMPopulation_CrateriaTube                                        ;8F95F5;
-    dw $0000                                                             ;8F95F7;
-    dw RTS_8F91D3                                                        ;8F95F9;
+RoomState_CrateriaTube:                                                  ;8F95E1;
+    %StateHeader(\
+    %levelData(LevelData_CrateriaTube),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_CrateriaTube),
+    %enemyPop(EnemyPopulations_CrateriaTube),
+    %enemySet(EnemySets_CrateriaTube),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CrateriaTube),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_CrateriaTube:
     dw Door_CrateriaTube_0                                               ;8F95FB;
@@ -2341,19 +2373,21 @@ RoomHeader_Moat:                                                         ;8F95FF
     %doorList(RoomDoors_Moat))
     %stateChecks(0, 0)
 
-RoomState_Moat:
-    dl LevelData_Moat                                                    ;8F960C;
-    db $00,$00,$00                                                       ;8F960F;
-    dw FXHeader_Moat                                                     ;8F9612;
-    dw EnemyPopulations_Moat                                             ;8F9614;
-    dw EnemySets_Moat                                                    ;8F9616;
-    db $C1,$C1                                                           ;8F9618;
-    dw $0000                                                             ;8F961A;
-    dw $0000                                                             ;8F961C;
-    dw $0000                                                             ;8F961E;
-    dw PLMPopulation_Moat                                                ;8F9620;
-    dw LibBG_Crateria_0_Rocks                                            ;8F9622;
-    dw RTS_8F91D3                                                        ;8F9624;
+RoomState_Moat:                                                          ;8F960C;
+    %StateHeader(\
+    %levelData(LevelData_Moat),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_Moat),
+    %enemyPop(EnemyPopulations_Moat),
+    %enemySet(EnemySets_Moat),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Moat),
+    %libraryBG(LibBG_Crateria_0_Rocks),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_Moat:
     dw Door_Moat_0                                                       ;8F9626;
@@ -2370,19 +2404,21 @@ RoomHeader_RedBinstarElev:                                               ;8F962A
     %doorList(RoomDoors_RedBinstarElev))
     %stateChecks(0, 0)
 
-RoomState_RedBinstarElev:
-    dl LevelData_RedBinstarElev                                          ;8F9637;
-    db $02,$00,$03                                                       ;8F963A;
-    dw FXHeader_RedBrinstarElev                                          ;8F963D;
-    dw EnemyPopulations_RedBinstarElev                                   ;8F963F;
-    dw EnemySets_RedBinstarElev                                          ;8F9641;
-    db $C1,$C1                                                           ;8F9643;
-    dw RoomScrolls_RedBinstarElev                                        ;8F9645;
-    dw $0000                                                             ;8F9647;
-    dw $0000                                                             ;8F9649;
-    dw PLMPopulation_RedBinstarElev                                      ;8F964B;
-    dw LibBG_Crateria_2_Elevator                                         ;8F964D;
-    dw RTS_8F91D3                                                        ;8F964F;
+RoomState_RedBinstarElev:                                                ;8F9637;
+    %StateHeader(\
+    %levelData(LevelData_RedBinstarElev),
+    %tileset(2),
+    %music(0, 3),
+    %FX(FXHeader_RedBrinstarElev),
+    %enemyPop(EnemyPopulations_RedBinstarElev),
+    %enemySet(EnemySets_RedBinstarElev),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_RedBinstarElev),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_RedBinstarElev),
+    %libraryBG(LibBG_Crateria_2_Elevator),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_RedBinstarElev:
     dw Door_RedBinstarElev_0                                             ;8F9651;
@@ -2406,19 +2442,21 @@ RoomHeader_GauntletETank:                                                ;8F965B
     %doorList(RoomDoors_GauntletETank))
     %stateChecks(0, 0)
 
-RoomState_GauntletETank:
-    dl LevelData_GauntletETank                                           ;8F9668;
-    db $00,$00,$00                                                       ;8F966B;
-    dw FXHeader_GauntletETank                                            ;8F966E;
-    dw EnemyPopulations_GauntletETank                                    ;8F9670;
-    dw EnemySets_GauntletETank                                           ;8F9672;
-    db $C1,$C1                                                           ;8F9674;
-    dw RoomScrolls_GauntletETank                                         ;8F9676;
-    dw $0000                                                             ;8F9678;
-    dw $0000                                                             ;8F967A;
-    dw PLMPopulation_GauntletETank                                       ;8F967C;
-    dw LibBG_Crateria_0_HorizontalPatternRocks                           ;8F967E;
-    dw RTS_8F91D3                                                        ;8F9680;
+RoomState_GauntletETank:                                                 ;8F9668;
+    %StateHeader(\
+    %levelData(LevelData_GauntletETank),
+    %tileset(0),
+    %music(0, 0),
+    %FX(FXHeader_GauntletETank),
+    %enemyPop(EnemyPopulations_GauntletETank),
+    %enemySet(EnemySets_GauntletETank),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_GauntletETank),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GauntletETank),
+    %libraryBG(LibBG_Crateria_0_HorizontalPatternRocks),
+    %setupASM(RTS_8F91D3))
 
 RoomDoors_GauntletETank:
     dw Door_GauntletETank_0                                              ;8F9682;
@@ -2441,19 +2479,21 @@ RoomHeader_PreBowling:                                                   ;8F968F
     %doorList(RoomDoors_PreBowling))
     %stateChecks(0, 0)
 
-RoomState_PreBowling:
-    dl LevelData_PreBowling                                              ;8F969C;
-    db $00,$0C,$05                                                       ;8F969F;
-    dw FXHeader_PreBowling                                               ;8F96A2;
-    dw EnemyPopulations_PreBowling                                       ;8F96A4;
-    dw EnemySets_PreBowling                                              ;8F96A6;
-    db $81,$01                                                           ;8F96A8;
-    dw $0000                                                             ;8F96AA;
-    dw $0000                                                             ;8F96AC;
-    dw MainASM_ScrollingSkyOcean                                         ;8F96AE;
-    dw PLMPopulation_PreBowling                                          ;8F96B0;
-    dw LibBG_ScrollingSky_Tilemaps_BowlingAlley                          ;8F96B2;
-    dw SetupASM_ScrollingSkyOcean                                        ;8F96B4;
+RoomState_PreBowling:                                                    ;8F969C;
+    %StateHeader(\
+    %levelData(LevelData_PreBowling),
+    %tileset(0),
+    %music($0C, 5),
+    %FX(FXHeader_PreBowling),
+    %enemyPop(EnemyPopulations_PreBowling),
+    %enemySet(EnemySets_PreBowling),
+    %layer2Scrolls($81, 1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(MainASM_ScrollingSkyOcean),
+    %PLMPop(PLMPopulation_PreBowling),
+    %libraryBG(LibBG_ScrollingSky_Tilemaps_BowlingAlley),
+    %setupASM(SetupASM_ScrollingSkyOcean))
 
 RoomDoors_PreBowling:
     dw Door_PreBowling_0                                                 ;8F96B6;
@@ -2472,47 +2512,53 @@ RoomHeader_Climb:                                                        ;8F96BA
     %stateCheckEventSet($0E, RoomState_Climb_2),
     %stateCheckEventSet(0, RoomState_Climb_1))
 
-RoomState_Climb_0:
-    dl LevelData_Climb                                                   ;8F96D1;
-    db $03,$00,$00                                                       ;8F96D4;
-    dw FXHeader_Climb_State0                                             ;8F96D7;
-    dw EnemyPopulations_Climb_0                                          ;8F96D9;
-    dw EnemySets_Climb_0                                                 ;8F96DB;
-    db $C1,$C1                                                           ;8F96DD;
-    dw RoomScrolls_Climb                                                 ;8F96DF;
-    dw $0000                                                             ;8F96E1;
-    dw $0000                                                             ;8F96E3;
-    dw PLMPopulation_Climb_State_0_1                                     ;8F96E5;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F96E7;
-    dw RTS_8F91D4                                                        ;8F96E9;
+RoomState_Climb_0:                                                       ;8F96D1;
+    %StateHeader(\
+    %levelData(LevelData_Climb),
+    %tileset(3),
+    %music(0, 0),
+    %FX(FXHeader_Climb_State0),
+    %enemyPop(EnemyPopulations_Climb_0),
+    %enemySet(EnemySets_Climb_0),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_Climb),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Climb_State_0_1),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(RTS_8F91D4))
 
-RoomState_Climb_1:
-    dl LevelData_Climb                                                   ;8F96EB;
-    db $02,$09,$05                                                       ;8F96EE;
-    dw FXHeader_Climb_State1                                             ;8F96F1;
-    dw EnemyPopulations_Climb_1                                          ;8F96F3;
-    dw EnemySets_Climb_1                                                 ;8F96F5;
-    db $C1,$C1                                                           ;8F96F7;
-    dw RoomScrolls_Climb                                                 ;8F96F9;
-    dw $0000                                                             ;8F96FB;
-    dw $0000                                                             ;8F96FD;
-    dw PLMPopulation_Climb_State_0_1                                     ;8F96FF;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F9701;
-    dw RTS_8F91BC                                                        ;8F9703;
+RoomState_Climb_1:                                                       ;8F96EB;
+    %StateHeader(\
+    %levelData(LevelData_Climb),
+    %tileset(2),
+    %music(9, 5),
+    %FX(FXHeader_Climb_State1),
+    %enemyPop(EnemyPopulations_Climb_1),
+    %enemySet(EnemySets_Climb_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_Climb),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Climb_State_0_1),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(RTS_8F91BC))
 
-RoomState_Climb_2:
-    dl LevelData_Climb                                                   ;8F9705;
-    db $02,$24,$07                                                       ;8F9708;
-    dw FXHeader_Climb_State2                                             ;8F970B;
-    dw EnemyPopulations_Climb_2                                          ;8F970D;
-    dw EnemySets_Climb_2                                                 ;8F970F;
-    db $C1,$C1                                                           ;8F9711;
-    dw RoomScrolls_Climb                                                 ;8F9713;
-    dw $0000                                                             ;8F9715;
-    dw MainASM_SetScreenShaking_GenerateRandomExplosions                 ;8F9717;
-    dw PLMPopulation_Climb_State2                                        ;8F9719;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F971B;
-    dw SetupASM_AutoDestroyWallDuringEscape                              ;8F971D;
+RoomState_Climb_2:                                                       ;8F9705;
+    %StateHeader(\
+    %levelData(LevelData_Climb),
+    %tileset(2),
+    %music($24, 7),
+    %FX(FXHeader_Climb_State2),
+    %enemyPop(EnemyPopulations_Climb_2),
+    %enemySet(EnemySets_Climb_2),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_Climb),
+    %specialXray(0),
+    %mainASM(MainASM_SetScreenShaking_GenerateRandomExplosions),
+    %PLMPop(PLMPopulation_Climb_State2),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(SetupASM_AutoDestroyWallDuringEscape))
 
 RoomDoors_Climb:
     dw Door_Climb_0                                                      ;8F971F;
@@ -2561,33 +2607,37 @@ RoomHeader_Pit:                                                          ;8F975C
     %stateChecks(1,
     %stateCheckMorphMissiles(RoomState_Pit_1))
 
-RoomState_Pit_0:
-    dl LevelData_Pit                                                     ;8F976D;
-    db $03,$00,$05                                                       ;8F9770;
-    dw FXHeader_Pit_State0                                               ;8F9773;
-    dw EnemyPopulations_Pit_0                                            ;8F9775;
-    dw EnemySets_Pit_0                                                   ;8F9777;
-    db $C1,$C1                                                           ;8F9779;
-    dw RoomScrolls_Pit                                                   ;8F977B;
-    dw $0000                                                             ;8F977D;
-    dw $0000                                                             ;8F977F;
-    dw PLMPopulation_Pit_0                                               ;8F9781;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F9783;
-    dw RTS_8F91D4                                                        ;8F9785;
+RoomState_Pit_0:                                                         ;8F976D;
+    %StateHeader(\
+    %levelData(LevelData_Pit),
+    %tileset(3),
+    %music(0, 5),
+    %FX(FXHeader_Pit_State0),
+    %enemyPop(EnemyPopulations_Pit_0),
+    %enemySet(EnemySets_Pit_0),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_Pit),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Pit_0),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(RTS_8F91D4))
 
-RoomState_Pit_1:
-    dl LevelData_Pit                                                     ;8F9787;
-    db $02,$09,$05                                                       ;8F978A;
-    dw FXHeader_Pit_State1                                               ;8F978D;
-    dw EnemyPopulations_Pit_1                                            ;8F978F;
-    dw EnemySets_Pit_1                                                   ;8F9791;
-    db $C1,$C1                                                           ;8F9793;
-    dw RoomScrolls_Pit                                                   ;8F9795;
-    dw $0000                                                             ;8F9797;
-    dw $0000                                                             ;8F9799;
-    dw PLMPopulation_Pit_1                                               ;8F979B;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F979D;
-    dw RTS_8F91BC                                                        ;8F979F;
+RoomState_Pit_1:                                                         ;8F9787;
+    %StateHeader(\
+    %levelData(LevelData_Pit),
+    %tileset(2),
+    %music(9, 5),
+    %FX(FXHeader_Pit_State1),
+    %enemyPop(EnemyPopulations_Pit_1),
+    %enemySet(EnemySets_Pit_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_Pit),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Pit_1),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(RTS_8F91BC))
 
 RoomDoors_Pit:
     dw Door_Pit_0                                                        ;8F97A1;
@@ -2614,33 +2664,37 @@ RoomHeader_ElevToBlueBrinstar:                                           ;8F97B5
     %stateChecks(1,
     %stateCheckMorphMissiles(RoomState_ElevToBlueBrinstar_1))
 
-RoomState_ElevToBlueBrinstar_0:
-    dl LevelData_ElevToBlueBrinstar                                      ;8F97C6;
-    db $02,$06,$05                                                       ;8F97C9;
-    dw FXHeader_ElevToBlueBrinstar_State0                                ;8F97CC;
-    dw EnemyPopulations_ElevToBlueBrinstar                               ;8F97CE;
-    dw EnemySets_ElevToBlueBrinstar                                      ;8F97D0;
-    db $00,$00                                                           ;8F97D2;
-    dw RoomScrolls_ElevToBlueBrinstar                                    ;8F97D4;
-    dw $0000                                                             ;8F97D6;
-    dw $0000                                                             ;8F97D8;
-    dw PLMPopulation_ElevToBlueBrinstar_State0_1                         ;8F97DA;
-    dw $0000                                                             ;8F97DC;
-    dw RTS_8F91D4                                                        ;8F97DE;
+RoomState_ElevToBlueBrinstar_0:                                          ;8F97C6;
+    %StateHeader(\
+    %levelData(LevelData_ElevToBlueBrinstar),
+    %tileset(2),
+    %music(6, 5),
+    %FX(FXHeader_ElevToBlueBrinstar_State0),
+    %enemyPop(EnemyPopulations_ElevToBlueBrinstar),
+    %enemySet(EnemySets_ElevToBlueBrinstar),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_ElevToBlueBrinstar),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_ElevToBlueBrinstar_State0_1),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D4))
 
-RoomState_ElevToBlueBrinstar_1:
-    dl LevelData_ElevToBlueBrinstar                                      ;8F97E0;
-    db $02,$00,$03                                                       ;8F97E3;
-    dw FXHeader_ElevToBlueBrinstar_State1                                ;8F97E6;
-    dw EnemyPopulations_ElevToBlueBrinstar                               ;8F97E8;
-    dw EnemySets_ElevToBlueBrinstar                                      ;8F97EA;
-    db $00,$00                                                           ;8F97EC;
-    dw RoomScrolls_ElevToBlueBrinstar                                    ;8F97EE;
-    dw $0000                                                             ;8F97F0;
-    dw $0000                                                             ;8F97F2;
-    dw PLMPopulation_ElevToBlueBrinstar_State0_1                         ;8F97F4;
-    dw $0000                                                             ;8F97F6;
-    dw RTS_8F91BC                                                        ;8F97F8;
+RoomState_ElevToBlueBrinstar_1:                                          ;8F97E0;
+    %StateHeader(\
+    %levelData(LevelData_ElevToBlueBrinstar),
+    %tileset(2),
+    %music(0, 3),
+    %FX(FXHeader_ElevToBlueBrinstar_State1),
+    %enemyPop(EnemyPopulations_ElevToBlueBrinstar),
+    %enemySet(EnemySets_ElevToBlueBrinstar),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_ElevToBlueBrinstar),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_ElevToBlueBrinstar_State0_1),
+    %libraryBG(0),
+    %setupASM(RTS_8F91BC))
 
 RoomDoors_ElevToBlueBrinstar:
     dw Door_ElevToBlueBrinstar_0                                         ;8F97FA;
@@ -2666,47 +2720,53 @@ RoomHeader_BombTorizo:                                                   ;8F9804
     %stateCheckEventSet($0E, RoomState_BombTorizo_2),
     %stateCheckBossDead(4, RoomState_BombTorizo_1))
 
-RoomState_BombTorizo_0:
-    dl LevelData_BombTorizo                                              ;8F981B;
-    db $02,$24,$03                                                       ;8F981E;
-    dw FXHeader_BombTorizo_State0_1                                      ;8F9821;
-    dw EnemyPopulations_BombTorizo_0_1                                   ;8F9823;
-    dw EnemySets_BombTorizo_0_1                                          ;8F9825;
-    db $C1,$C1                                                           ;8F9827;
-    dw $0000                                                             ;8F9829;
-    dw $0000                                                             ;8F982B;
-    dw $0000                                                             ;8F982D;
-    dw PLMPopulation_BombTorizo_State0_1                                 ;8F982F;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F9831;
-    dw RTS_8F91D4                                                        ;8F9833;
+RoomState_BombTorizo_0:                                                  ;8F981B;
+    %StateHeader(\
+    %levelData(LevelData_BombTorizo),
+    %tileset(2),
+    %music($24, 3),
+    %FX(FXHeader_BombTorizo_State0_1),
+    %enemyPop(EnemyPopulations_BombTorizo_0_1),
+    %enemySet(EnemySets_BombTorizo_0_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BombTorizo_State0_1),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(RTS_8F91D4))
 
-RoomState_BombTorizo_1:
-    dl LevelData_BombTorizo                                              ;8F9835;
-    db $02,$00,$03                                                       ;8F9838;
-    dw FXHeader_BombTorizo_State0_1                                      ;8F983B;
-    dw EnemyPopulations_BombTorizo_0_1                                   ;8F983D;
-    dw EnemySets_BombTorizo_0_1                                          ;8F983F;
-    db $C1,$C1                                                           ;8F9841;
-    dw $0000                                                             ;8F9843;
-    dw $0000                                                             ;8F9845;
-    dw $0000                                                             ;8F9847;
-    dw PLMPopulation_BombTorizo_State0_1                                 ;8F9849;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F984B;
-    dw RTS_8F91D4                                                        ;8F984D;
+RoomState_BombTorizo_1:                                                  ;8F9835;
+    %StateHeader(\
+    %levelData(LevelData_BombTorizo),
+    %tileset(2),
+    %music(0, 3),
+    %FX(FXHeader_BombTorizo_State0_1),
+    %enemyPop(EnemyPopulations_BombTorizo_0_1),
+    %enemySet(EnemySets_BombTorizo_0_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BombTorizo_State0_1),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(RTS_8F91D4))
 
-RoomState_BombTorizo_2:
-    dl LevelData_BombTorizo                                              ;8F984F;
-    db $02,$00,$00                                                       ;8F9852;
-    dw FXHeader_BombTorizo_State2                                        ;8F9855;
-    dw EnemyPopulations_BombTorizo_2                                     ;8F9857;
-    dw EnemySets_BombTorizo_2                                            ;8F9859;
-    db $C1,$C1                                                           ;8F985B;
-    dw $0000                                                             ;8F985D;
-    dw RoomVar_BombTorizo                                                ;8F985F;
-    dw MainASM_SetScreenShaking_GenerateRandomExplosions                 ;8F9861;
-    dw PLMPopulation_BombTorizo_State2                                   ;8F9863;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F9865;
-    dw SetupASM_TurnWallIntoShotBlocksDuringEscape                       ;8F9867;
+RoomState_BombTorizo_2:                                                  ;8F984F;
+    %StateHeader(\
+    %levelData(LevelData_BombTorizo),
+    %tileset(2),
+    %music(0, 0),
+    %FX(FXHeader_BombTorizo_State2),
+    %enemyPop(EnemyPopulations_BombTorizo_2),
+    %enemySet(EnemySets_BombTorizo_2),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(RoomVar_BombTorizo),
+    %mainASM(MainASM_SetScreenShaking_GenerateRandomExplosions),
+    %PLMPop(PLMPopulation_BombTorizo_State2),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(SetupASM_TurnWallIntoShotBlocksDuringEscape))
 
 RoomDoors_BombTorizo:
     dw Door_BombTorizo_0                                                 ;8F9869;
@@ -2730,47 +2790,53 @@ RoomHeader_Flyway:                                                       ;8F9879
     %stateCheckEventSet($0E, RoomState_Flyway_2),
     %stateCheckBossDead(4, RoomState_Flyway_1))
 
-RoomState_Flyway_0:
-    dl LevelData_Flyway                                                  ;8F9890;
-    db $02,$09,$05                                                       ;8F9893;
-    dw FXHeader_Flyway_State0_1                                          ;8F9896;
-    dw EnemyPopulations_Flyway_0_1                                       ;8F9898;
-    dw EnemySets_Flyway_0_1                                              ;8F989A;
-    db $C1,$C1                                                           ;8F989C;
-    dw $0000                                                             ;8F989E;
-    dw $0000                                                             ;8F98A0;
-    dw $0000                                                             ;8F98A2;
-    dw PLMPopulation_Flyway_State0_1                                     ;8F98A4;
-    dw LibBG_Crateria_2_BrickRoom_WallArt_Dark                           ;8F98A6;
-    dw RTS_8F91D4                                                        ;8F98A8;
+RoomState_Flyway_0:                                                      ;8F9890;
+    %StateHeader(\
+    %levelData(LevelData_Flyway),
+    %tileset(2),
+    %music(9, 5),
+    %FX(FXHeader_Flyway_State0_1),
+    %enemyPop(EnemyPopulations_Flyway_0_1),
+    %enemySet(EnemySets_Flyway_0_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Flyway_State0_1),
+    %libraryBG(LibBG_Crateria_2_BrickRoom_WallArt_Dark),
+    %setupASM(RTS_8F91D4))
 
-RoomState_Flyway_1:
-    dl LevelData_Flyway                                                  ;8F98AA;
-    db $02,$09,$05                                                       ;8F98AD;
-    dw FXHeader_Flyway_State0_1                                          ;8F98B0;
-    dw EnemyPopulations_Flyway_0_1                                       ;8F98B2;
-    dw EnemySets_Flyway_0_1                                              ;8F98B4;
-    db $C1,$C1                                                           ;8F98B6;
-    dw $0000                                                             ;8F98B8;
-    dw $0000                                                             ;8F98BA;
-    dw $0000                                                             ;8F98BC;
-    dw PLMPopulation_Flyway_State0_1                                     ;8F98BE;
-    dw LibBG_Crateria_2_BrickRoom_WallArt_Dark                           ;8F98C0;
-    dw RTS_8F91D4                                                        ;8F98C2;
+RoomState_Flyway_1:                                                      ;8F98AA;
+    %StateHeader(\
+    %levelData(LevelData_Flyway),
+    %tileset(2),
+    %music(9, 5),
+    %FX(FXHeader_Flyway_State0_1),
+    %enemyPop(EnemyPopulations_Flyway_0_1),
+    %enemySet(EnemySets_Flyway_0_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Flyway_State0_1),
+    %libraryBG(LibBG_Crateria_2_BrickRoom_WallArt_Dark),
+    %setupASM(RTS_8F91D4))
 
-RoomState_Flyway_2:
-    dl LevelData_Flyway                                                  ;8F98C4;
-    db $02,$24,$07                                                       ;8F98C7;
-    dw FXHeader_Flyway_State2                                            ;8F98CA;
-    dw EnemyPopulations_Flyway_2                                         ;8F98CC;
-    dw EnemySets_Flyway_2                                                ;8F98CE;
-    db $C1,$C1                                                           ;8F98D0;
-    dw $0000                                                             ;8F98D2;
-    dw $0000                                                             ;8F98D4;
-    dw MainASM_SetScreenShaking_GenerateRandomExplosions                 ;8F98D6;
-    dw PLMPopulation_Flyway_State2                                       ;8F98D8;
-    dw LibBG_Crateria_2_BrickRoom_WallArt_Dark                           ;8F98DA;
-    dw RTS_8F91BB                                                        ;8F98DC;
+RoomState_Flyway_2:                                                      ;8F98C4;
+    %StateHeader(\
+    %levelData(LevelData_Flyway),
+    %tileset(2),
+    %music($24, 7),
+    %FX(FXHeader_Flyway_State2),
+    %enemyPop(EnemyPopulations_Flyway_2),
+    %enemySet(EnemySets_Flyway_2),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(MainASM_SetScreenShaking_GenerateRandomExplosions),
+    %PLMPop(PLMPopulation_Flyway_State2),
+    %libraryBG(LibBG_Crateria_2_BrickRoom_WallArt_Dark),
+    %setupASM(RTS_8F91BB))
 
 RoomDoors_Flyway:
     dw Door_Flyway_0                                                     ;8F98DE;
@@ -2787,19 +2853,21 @@ RoomHeader_PreMapFlyway:                                                 ;8F98E2
     %doorList(RoomDoors_PreMapFlyway))
     %stateChecks(0, 0)
 
-RoomState_PreMapFlyway:
-    dl LevelData_PreMapFlyway                                            ;8F98EF;
-    db $02,$00,$00                                                       ;8F98F2;
-    dw FXHeader_VariousRooms_8381C2                                      ;8F98F5;
-    dw EnemyPopulations_PreMapFlyway                                     ;8F98F7;
-    dw EnemySets_PreMapFlyway                                            ;8F98F9;
-    db $C1,$C1                                                           ;8F98FB;
-    dw $0000                                                             ;8F98FD;
-    dw $0000                                                             ;8F98FF;
-    dw $0000                                                             ;8F9901;
-    dw PLMPopulation_PreMapFlyway                                        ;8F9903;
-    dw LibBG_Crateria_2_BrickRoom_WallArt                                ;8F9905;
-    dw RTS_8F91D4                                                        ;8F9907;
+RoomState_PreMapFlyway:                                                  ;8F98EF;
+    %StateHeader(\
+    %levelData(LevelData_PreMapFlyway),
+    %tileset(2),
+    %music(0, 0),
+    %FX(FXHeader_VariousRooms_8381C2),
+    %enemyPop(EnemyPopulations_PreMapFlyway),
+    %enemySet(EnemySets_PreMapFlyway),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PreMapFlyway),
+    %libraryBG(LibBG_Crateria_2_BrickRoom_WallArt),
+    %setupASM(RTS_8F91D4))
 
 RoomDoors_PreMapFlyway:
     dw Door_PreMapFlyway_0                                               ;8F9909;
@@ -2816,19 +2884,21 @@ RoomHeader_Terminator:                                                   ;8F990D
     %doorList(RoomDoors_Terminator))
     %stateChecks(0, 0)
 
-RoomState_Terminator:
-    dl LevelData_Terminator                                              ;8F991A;
-    db $02,$00,$00                                                       ;8F991D;
-    dw FXHeader_VariousRooms_8381C2                                      ;8F9920;
-    dw EnemyPopulations_Terminator                                       ;8F9922;
-    dw EnemySets_Terminator                                              ;8F9924;
-    db $C1,$C1                                                           ;8F9926;
-    dw $0000                                                             ;8F9928;
-    dw $0000                                                             ;8F992A;
-    dw $0000                                                             ;8F992C;
-    dw PLMPopulation_Terminator                                          ;8F992E;
-    dw LibBG_Crateria_2_PurpleRocks                                      ;8F9930;
-    dw RTS_8F91D4                                                        ;8F9932;
+RoomState_Terminator:                                                    ;8F991A;
+    %StateHeader(\
+    %levelData(LevelData_Terminator),
+    %tileset(2),
+    %music(0, 0),
+    %FX(FXHeader_VariousRooms_8381C2),
+    %enemyPop(EnemyPopulations_Terminator),
+    %enemySet(EnemySets_Terminator),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Terminator),
+    %libraryBG(LibBG_Crateria_2_PurpleRocks),
+    %setupASM(RTS_8F91D4))
 
 RoomDoors_Terminator:
     dw Door_Terminator_0                                                 ;8F9934;
@@ -2845,19 +2915,21 @@ RoomHeader_GreenBrinstarElev:                                            ;8F9938
     %doorList(RoomDoors_GreenBrinstarElev))
     %stateChecks(0, 0)
 
-RoomState_GreenBrinstarElev:
-    dl LevelData_GreenBrinstarElev                                       ;8F9945;
-    db $02,$09,$03                                                       ;8F9948;
-    dw FXHeader_VariousRooms_8381C2                                      ;8F994B;
-    dw EnemyPopulations_GreenBrinstarElev                                ;8F994D;
-    dw EnemySets_GreenBrinstarElev                                       ;8F994F;
-    db $00,$00                                                           ;8F9951;
-    dw RoomScrolls_GreenBrinstarElev                                     ;8F9953;
-    dw $0000                                                             ;8F9955;
-    dw $0000                                                             ;8F9957;
-    dw PLMPopulation_GreenBrinstarElev                                   ;8F9959;
-    dw $0000                                                             ;8F995B;
-    dw RTS_8F91D4                                                        ;8F995D;
+RoomState_GreenBrinstarElev:                                             ;8F9945;
+    %StateHeader(\
+    %levelData(LevelData_GreenBrinstarElev),
+    %tileset(2),
+    %music(9, 3),
+    %FX(FXHeader_VariousRooms_8381C2),
+    %enemyPop(EnemyPopulations_GreenBrinstarElev),
+    %enemySet(EnemySets_GreenBrinstarElev),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_GreenBrinstarElev),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GreenBrinstarElev),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D4))
 
 RoomDoors_GreenBrinstarElev:
     dw Door_GreenBrinstarElev_0                                          ;8F995F;
@@ -2881,19 +2953,21 @@ RoomHeader_LowerMushrooms:                                               ;8F9969
     %doorList(RoomDoors_LowerMushrooms))
     %stateChecks(0, 0)
 
-RoomState_LowerMushrooms:
-    dl LevelData_LowerMushrooms                                          ;8F9976;
-    db $02,$00,$05                                                       ;8F9979;
-    dw FXHeader_VariousRooms_8381C2                                      ;8F997C;
-    dw EnemyPopulations_LowerMushrooms                                   ;8F997E;
-    dw EnemySets_LowerMushrooms                                          ;8F9980;
-    db $C1,$C1                                                           ;8F9982;
-    dw $0000                                                             ;8F9984;
-    dw $0000                                                             ;8F9986;
-    dw $0000                                                             ;8F9988;
-    dw PLMPopulation_LowerMushrooms                                      ;8F998A;
-    dw LibBG_Crateria_2_PurpleRocks                                      ;8F998C;
-    dw RTS_8F91D4                                                        ;8F998E;
+RoomState_LowerMushrooms:                                                ;8F9976;
+    %StateHeader(\
+    %levelData(LevelData_LowerMushrooms),
+    %tileset(2),
+    %music(0, 5),
+    %FX(FXHeader_VariousRooms_8381C2),
+    %enemyPop(EnemyPopulations_LowerMushrooms),
+    %enemySet(EnemySets_LowerMushrooms),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_LowerMushrooms),
+    %libraryBG(LibBG_Crateria_2_PurpleRocks),
+    %setupASM(RTS_8F91D4))
 
 RoomDoors_LowerMushrooms:
     dw Door_LowerMushrooms_0                                             ;8F9990;
@@ -2910,19 +2984,21 @@ RoomHeader_CrateriaMap:                                                  ;8F9994
     %doorList(RoomDoors_CrateriaMap))
     %stateChecks(0, 0)
 
-RoomState_CrateriaMap:
-    dl LevelData_MapStation_LeftSideDoor                                 ;8F99A1;
-    db $15,$00,$00                                                       ;8F99A4;
-    dw FXHeader_VariousRooms_8381C2                                      ;8F99A7;
-    dw EnemyPopulations_CrateriaMap                                      ;8F99A9;
-    dw EnemySets_CrateriaMap                                             ;8F99AB;
-    db $00,$00                                                           ;8F99AD;
-    dw $0000                                                             ;8F99AF;
-    dw $0000                                                             ;8F99B1;
-    dw $0000                                                             ;8F99B3;
-    dw PLMPopulation_CrateriaMap                                         ;8F99B5;
-    dw $0000                                                             ;8F99B7;
-    dw RTS_8F91D4                                                        ;8F99B9;
+RoomState_CrateriaMap:                                                   ;8F99A1;
+    %StateHeader(\
+    %levelData(LevelData_MapStation_LeftSideDoor),
+    %tileset($15),
+    %music(0, 0),
+    %FX(FXHeader_VariousRooms_8381C2),
+    %enemyPop(EnemyPopulations_CrateriaMap),
+    %enemySet(EnemySets_CrateriaMap),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CrateriaMap),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D4))
 
 RoomDoors_CrateriaMap:
     dw Door_CrateriaMap_0                                                ;8F99BB;
@@ -2938,19 +3014,21 @@ RoomHeader_GreenPiratesShaft:                                            ;8F99BD
     %doorList(RoomDoors_GreenPiratesShaft))
     %stateChecks(0, 0)
 
-RoomState_GreenPiratesShaft:
-    dl LevelData_GreenPiratesShaft                                       ;8F99CA;
-    db $02,$00,$05                                                       ;8F99CD;
-    dw FXHeader_VariousRooms_8381C2                                      ;8F99D0;
-    dw EnemyPopulations_GreenPiratesShaft                                ;8F99D2;
-    dw EnemySets_GreenPiratesShaft                                       ;8F99D4;
-    db $01,$C1                                                           ;8F99D6;
-    dw RoomScrolls_GreenPiratesShaft                                     ;8F99D8;
-    dw $0000                                                             ;8F99DA;
-    dw $0000                                                             ;8F99DC;
-    dw PLMPopulation_GreenPiratesShaft                                   ;8F99DE;
-    dw LibBG_Crateria_2_BrickRoom                                        ;8F99E0;
-    dw RTS_8F91D4                                                        ;8F99E2;
+RoomState_GreenPiratesShaft:                                             ;8F99CA;
+    %StateHeader(\
+    %levelData(LevelData_GreenPiratesShaft),
+    %tileset(2),
+    %music(0, 5),
+    %FX(FXHeader_VariousRooms_8381C2),
+    %enemyPop(EnemyPopulations_GreenPiratesShaft),
+    %enemySet(EnemySets_GreenPiratesShaft),
+    %layer2Scrolls(1, $C1),
+    %scrollPointer(RoomScrolls_GreenPiratesShaft),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GreenPiratesShaft),
+    %libraryBG(LibBG_Crateria_2_BrickRoom),
+    %setupASM(RTS_8F91D4))
 
 RoomDoors_GreenPiratesShaft:
     dw Door_GreenPiratesShaft_0                                          ;8F99E4;
@@ -2978,19 +3056,21 @@ RoomHeader_CrateriaSuper:                                                ;8F99F9
     %doorList(RoomDoors_CrateriaSuper))
     %stateChecks(0, 0)
 
-RoomState_CrateriaSuper:
-    dl LevelData_CrateriaSuper                                           ;8F9A06;
-    db $02,$00,$00                                                       ;8F9A09;
-    dw FXHeader_CrateriaSuper                                            ;8F9A0C;
-    dw EnemyPopulations_CrateriaSuper                                    ;8F9A0E;
-    dw EnemySets_CrateriaSuper                                           ;8F9A10;
-    db $C1,$C1                                                           ;8F9A12;
-    dw RoomScrolls_CrateriaSuper                                         ;8F9A14;
-    dw $0000                                                             ;8F9A16;
-    dw $0000                                                             ;8F9A18;
-    dw PLMPopulation_CrateriaSuper                                       ;8F9A1A;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F9A1C;
-    dw RTS_8F91D4                                                        ;8F9A1E;
+RoomState_CrateriaSuper:                                                 ;8F9A06;
+    %StateHeader(\
+    %levelData(LevelData_CrateriaSuper),
+    %tileset(2),
+    %music(0, 0),
+    %FX(FXHeader_CrateriaSuper),
+    %enemyPop(EnemyPopulations_CrateriaSuper),
+    %enemySet(EnemySets_CrateriaSuper),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_CrateriaSuper),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CrateriaSuper),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(RTS_8F91D4))
 
 RoomDoors_CrateriaSuper:
     dw Door_CrateriaSuper_0                                              ;8F9A20;
@@ -3012,33 +3092,37 @@ RoomHeader_FinalMissileBombway:                                          ;8F9A44
     %stateChecks(1,
     %stateCheckEventSet(0, RoomState_FinalMissileBombway_1))
 
-RoomState_FinalMissileBombway_0:
-    dl LevelData_FinalMissileBombway                                     ;8F9A56;
-    db $02,$00,$00                                                       ;8F9A59;
-    dw FXHeader_FinalMissileBombway_State0                               ;8F9A5C;
-    dw EnemyPopulations_FinalMissileBombway_0                            ;8F9A5E;
-    dw EnemySets_FinalMissileBombway_0                                   ;8F9A60;
-    db $C1,$C1                                                           ;8F9A62;
-    dw RoomScrolls_FinalMissileBombway                                   ;8F9A64;
-    dw $0000                                                             ;8F9A66;
-    dw $0000                                                             ;8F9A68;
-    dw PLMPopulation_FinalMissileBombway_State0                          ;8F9A6A;
-    dw LibBG_Crateria_2_BrickRoom                                        ;8F9A6C;
-    dw RTS_8F91D4                                                        ;8F9A6E;
+RoomState_FinalMissileBombway_0:                                         ;8F9A56;
+    %StateHeader(\
+    %levelData(LevelData_FinalMissileBombway),
+    %tileset(2),
+    %music(0, 0),
+    %FX(FXHeader_FinalMissileBombway_State0),
+    %enemyPop(EnemyPopulations_FinalMissileBombway_0),
+    %enemySet(EnemySets_FinalMissileBombway_0),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_FinalMissileBombway),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_FinalMissileBombway_State0),
+    %libraryBG(LibBG_Crateria_2_BrickRoom),
+    %setupASM(RTS_8F91D4))
 
-RoomState_FinalMissileBombway_1:
-    dl LevelData_FinalMissileBombway                                     ;8F9A70;
-    db $02,$00,$00                                                       ;8F9A73;
-    dw FXHeader_FinalMissileBombway_State1                               ;8F9A76;
-    dw EnemyPopulations_FinalMissileBombway_1                            ;8F9A78;
-    dw EnemySets_FinalMissileBombway_1                                   ;8F9A7A;
-    db $C1,$C1                                                           ;8F9A7C;
-    dw RoomScrolls_FinalMissileBombway                                   ;8F9A7E;
-    dw $0000                                                             ;8F9A80;
-    dw $0000                                                             ;8F9A82;
-    dw PLMPopulation_FinalMissileBombway_State1                          ;8F9A84;
-    dw LibBG_Crateria_2_BrickRoom                                        ;8F9A86;
-    dw RTS_8F91D4                                                        ;8F9A88;
+RoomState_FinalMissileBombway_1:                                         ;8F9A70;
+    %StateHeader(\
+    %levelData(LevelData_FinalMissileBombway),
+    %tileset(2),
+    %music(0, 0),
+    %FX(FXHeader_FinalMissileBombway_State1),
+    %enemyPop(EnemyPopulations_FinalMissileBombway_1),
+    %enemySet(EnemySets_FinalMissileBombway_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_FinalMissileBombway),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_FinalMissileBombway_State1),
+    %libraryBG(LibBG_Crateria_2_BrickRoom),
+    %setupASM(RTS_8F91D4))
 
 RoomDoors_FinalMissileBombway:
     dw Door_FinalMissileBombway_0                                        ;8F9A8A;
@@ -3059,33 +3143,37 @@ RoomHeader_FinalMissile:                                                 ;8F9A90
     %stateChecks(1,
     %stateCheckEventSet(0, RoomState_FinalMissile_1))
 
-RoomState_FinalMissile_0:
-    dl LevelData_FinalMissile                                            ;8F9AA2;
-    db $02,$00,$00                                                       ;8F9AA5;
-    dw FXHeader_FinalMissile_State0                                      ;8F9AA8;
-    dw EnemyPopulations_FinalMissile_0                                   ;8F9AAA;
-    dw EnemySets_FinalMissile_0                                          ;8F9AAC;
-    db $C1,$C1                                                           ;8F9AAE;
-    dw RoomScrolls_FinalMissile                                          ;8F9AB0;
-    dw $0000                                                             ;8F9AB2;
-    dw $0000                                                             ;8F9AB4;
-    dw PLMPopulation_FinalMissile_State0                                 ;8F9AB6;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F9AB8;
-    dw RTS_8F91D4                                                        ;8F9ABA;
+RoomState_FinalMissile_0:                                                ;8F9AA2;
+    %StateHeader(\
+    %levelData(LevelData_FinalMissile),
+    %tileset(2),
+    %music(0, 0),
+    %FX(FXHeader_FinalMissile_State0),
+    %enemyPop(EnemyPopulations_FinalMissile_0),
+    %enemySet(EnemySets_FinalMissile_0),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_FinalMissile),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_FinalMissile_State0),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(RTS_8F91D4))
 
-RoomState_FinalMissile_1:
-    dl LevelData_FinalMissile                                            ;8F9ABC;
-    db $02,$00,$00                                                       ;8F9ABF;
-    dw FXHeader_FinalMissile_State1                                      ;8F9AC2;
-    dw EnemyPopulations_FinalMissile_1                                   ;8F9AC4;
-    dw EnemySets_FinalMissile_1                                          ;8F9AC6;
-    db $C1,$C1                                                           ;8F9AC8;
-    dw RoomScrolls_FinalMissile                                          ;8F9ACA;
-    dw $0000                                                             ;8F9ACC;
-    dw $0000                                                             ;8F9ACE;
-    dw PLMPopulation_FinalMissile_State1                                 ;8F9AD0;
-    dw LibBG_Crateria_2_3_Mechanical                                     ;8F9AD2;
-    dw RTS_8F91D4                                                        ;8F9AD4;
+RoomState_FinalMissile_1:                                                ;8F9ABC;
+    %StateHeader(\
+    %levelData(LevelData_FinalMissile),
+    %tileset(2),
+    %music(0, 0),
+    %FX(FXHeader_FinalMissile_State1),
+    %enemyPop(EnemyPopulations_FinalMissile_1),
+    %enemySet(EnemySets_FinalMissile_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_FinalMissile),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_FinalMissile_State1),
+    %libraryBG(LibBG_Crateria_2_3_Mechanical),
+    %setupASM(RTS_8F91D4))
 
 RoomDoors_FinalMissile:
     dw Door_FinalMissile_0                                               ;8F9AD6;
@@ -3104,19 +3192,21 @@ RoomHeader_GreenBrinstarMainShaft:                                       ;8F9AD9
     %doorList(RoomDoors_GreenBrinstarMainShaft))
     %stateChecks(0, 0)
 
-RoomState_GreenBrinstarMainShaft:
-    dl LevelData_GreenBrinstarMainShaft                                  ;8F9AE6;
-    db $06,$0F,$05                                                       ;8F9AE9;
-    dw FXHeader_GreenBrinstarMainShaft                                   ;8F9AEC;
-    dw EnemyPopulations_GreenBrinstarMainShaft                           ;8F9AEE;
-    dw EnemySets_GreenBrinstarMainShaft                                  ;8F9AF0;
-    db $00,$C0                                                           ;8F9AF2;
-    dw RoomScrolls_GreenBrinstarMainShaft                                ;8F9AF4;
-    dw $0000                                                             ;8F9AF6;
-    dw $0000                                                             ;8F9AF8;
-    dw PLMPopulation_GreenBrinstarMainShaft                              ;8F9AFA;
-    dw LibBG_Brinstar_6_Vertical_GlowPatches                             ;8F9AFC;
-    dw RTS_8F91D5                                                        ;8F9AFE;
+RoomState_GreenBrinstarMainShaft:                                        ;8F9AE6;
+    %StateHeader(\
+    %levelData(LevelData_GreenBrinstarMainShaft),
+    %tileset(6),
+    %music($0F, 5),
+    %FX(FXHeader_GreenBrinstarMainShaft),
+    %enemyPop(EnemyPopulations_GreenBrinstarMainShaft),
+    %enemySet(EnemySets_GreenBrinstarMainShaft),
+    %layer2Scrolls(0, $C0),
+    %scrollPointer(RoomScrolls_GreenBrinstarMainShaft),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GreenBrinstarMainShaft),
+    %libraryBG(LibBG_Brinstar_6_Vertical_GlowPatches),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_GreenBrinstarMainShaft:
     dw Door_GreenBrinstarMainShaft_0                                     ;8F9B00;
@@ -3156,19 +3246,21 @@ RoomHeader_SporeSpawnSuper:                                              ;8F9B5B
     %doorList(RoomDoors_SporeSpawnSuper))
     %stateChecks(0, 0)
 
-RoomState_SporeSpawnSuper:
-    dl LevelData_SporeSpawnSuper                                         ;8F9B68;
-    db $06,$00,$03                                                       ;8F9B6B;
-    dw FXHeader_SporeSpawnSuper                                          ;8F9B6E;
-    dw EnemyPopulations_SporeSpawnSuper                                  ;8F9B70;
-    dw EnemySets_SporeSpawnSuper                                         ;8F9B72;
-    db $C1,$C1                                                           ;8F9B74;
-    dw RoomScrolls_SporeSpawnSuper                                       ;8F9B76;
-    dw $0000                                                             ;8F9B78;
-    dw $0000                                                             ;8F9B7A;
-    dw PLMPopulation_SporeSpawnSuper                                     ;8F9B7C;
-    dw LibBG_Brinstar_6_SmallPattern                                     ;8F9B7E;
-    dw RTS_8F91D5                                                        ;8F9B80;
+RoomState_SporeSpawnSuper:                                               ;8F9B68;
+    %StateHeader(\
+    %levelData(LevelData_SporeSpawnSuper),
+    %tileset(6),
+    %music(0, 3),
+    %FX(FXHeader_SporeSpawnSuper),
+    %enemyPop(EnemyPopulations_SporeSpawnSuper),
+    %enemySet(EnemySets_SporeSpawnSuper),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_SporeSpawnSuper),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SporeSpawnSuper),
+    %libraryBG(LibBG_Brinstar_6_SmallPattern),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_SporeSpawnSuper:
     dw Door_SporeSpawnSuper_0                                            ;8F9B82;
@@ -3192,19 +3284,21 @@ RoomHeader_BrinstarPreMap:                                               ;8F9B9D
     %doorList(RoomDoors_BrinstarPreMap))
     %stateChecks(0, 0)
 
-RoomState_BrinstarPreMap:
-    dl LevelData_BrinstarPreMap                                          ;8F9BAA;
-    db $06,$00,$00                                                       ;8F9BAD;
-    dw FXHeader_BrinstarPreMap                                           ;8F9BB0;
-    dw EnemyPopulations_BrinstarPreMap                                   ;8F9BB2;
-    dw EnemySets_BrinstarPreMap                                          ;8F9BB4;
-    db $C1,$C1                                                           ;8F9BB6;
-    dw $0000                                                             ;8F9BB8;
-    dw $0000                                                             ;8F9BBA;
-    dw $0000                                                             ;8F9BBC;
-    dw PLMPopulation_BrinstarPreMap                                      ;8F9BBE;
-    dw LibBG_Brinstar_6_MediumHorizontalPattern                          ;8F9BC0;
-    dw RTS_8F91D5                                                        ;8F9BC2;
+RoomState_BrinstarPreMap:                                                ;8F9BAA;
+    %StateHeader(\
+    %levelData(LevelData_BrinstarPreMap),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_BrinstarPreMap),
+    %enemyPop(EnemyPopulations_BrinstarPreMap),
+    %enemySet(EnemySets_BrinstarPreMap),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BrinstarPreMap),
+    %libraryBG(LibBG_Brinstar_6_MediumHorizontalPattern),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_BrinstarPreMap:
     dw Door_BrinstarPreMap_0                                             ;8F9BC4;
@@ -3221,19 +3315,21 @@ RoomHeader_EarlySupers:                                                  ;8F9BC8
     %doorList(RoomDoors_EarlySupers))
     %stateChecks(0, 0)
 
-RoomState_EarlySupers:
-    dl LevelData_EarlySupers                                             ;8F9BD5;
-    db $06,$00,$05                                                       ;8F9BD8;
-    dw FXHeader_EarlySupers                                              ;8F9BDB;
-    dw EnemyPopulations_EarlySupers                                      ;8F9BDD;
-    dw EnemySets_EarlySupers                                             ;8F9BDF;
-    db $C1,$C1                                                           ;8F9BE1;
-    dw RoomScrolls_EarlySupers                                           ;8F9BE3;
-    dw $0000                                                             ;8F9BE5;
-    dw $0000                                                             ;8F9BE7;
-    dw PLMPopulation_EarlySupers                                         ;8F9BE9;
-    dw LibBG_Brinstar_6_ThinHorizontalPattern                            ;8F9BEB;
-    dw RTS_8F91D5                                                        ;8F9BED;
+RoomState_EarlySupers:                                                   ;8F9BD5;
+    %StateHeader(\
+    %levelData(LevelData_EarlySupers),
+    %tileset(6),
+    %music(0, 5),
+    %FX(FXHeader_EarlySupers),
+    %enemyPop(EnemyPopulations_EarlySupers),
+    %enemySet(EnemySets_EarlySupers),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_EarlySupers),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_EarlySupers),
+    %libraryBG(LibBG_Brinstar_6_ThinHorizontalPattern),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_EarlySupers:
     dw Door_EarlySupers_0                                                ;8F9BEF;
@@ -3259,19 +3355,21 @@ RoomHeader_BrinstarReserveTank:                                          ;8F9C07
     %doorList(RoomDoors_BrinstarReserveTank))
     %stateChecks(0, 0)
 
-RoomState_BrinstarReserveTank:
-    dl LevelData_BrinstarReserveTank                                     ;8F9C14;
-    db $06,$00,$03                                                       ;8F9C17;
-    dw FXHeader_BrinstarReserveTank                                      ;8F9C1A;
-    dw EnemyPopulations_BrinstarReserveTank                              ;8F9C1C;
-    dw EnemySets_BrinstarReserveTank                                     ;8F9C1E;
-    db $C1,$C1                                                           ;8F9C20;
-    dw RoomScrolls_BrinstarReserveTank                                   ;8F9C22;
-    dw $0000                                                             ;8F9C24;
-    dw $0000                                                             ;8F9C26;
-    dw PLMPopulation_BrinstarReserveTank                                 ;8F9C28;
-    dw LibBG_Brinstar_6_LargeHorizontalPattern                           ;8F9C2A;
-    dw RTS_8F91D5                                                        ;8F9C2C;
+RoomState_BrinstarReserveTank:                                           ;8F9C14;
+    %StateHeader(\
+    %levelData(LevelData_BrinstarReserveTank),
+    %tileset(6),
+    %music(0, 3),
+    %FX(FXHeader_BrinstarReserveTank),
+    %enemyPop(EnemyPopulations_BrinstarReserveTank),
+    %enemySet(EnemySets_BrinstarReserveTank),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_BrinstarReserveTank),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BrinstarReserveTank),
+    %libraryBG(LibBG_Brinstar_6_LargeHorizontalPattern),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_BrinstarReserveTank:
     dw Door_BrinstarReserveTank_0                                        ;8F9C2E;
@@ -3293,19 +3391,21 @@ RoomHeader_GreenBrinstarMap:                                             ;8F9C35
     %doorList(RoomDoors_GreenBrinstarMap))
     %stateChecks(0, 0)
 
-RoomState_GreenBrinstarMap:
-    dl LevelData_MapStation_RightSideDoor                                ;8F9C42;
-    db $15,$00,$00                                                       ;8F9C45;
-    dw FXHeader_GreenBrinstarMap                                         ;8F9C48;
-    dw EnemyPopulations_GreenBrinstarMap                                 ;8F9C4A;
-    dw EnemySets_GreenBrinstarMap                                        ;8F9C4C;
-    db $00,$00                                                           ;8F9C4E;
-    dw $0000                                                             ;8F9C50;
-    dw $0000                                                             ;8F9C52;
-    dw $0000                                                             ;8F9C54;
-    dw PLMPopulation_GreenBrinstarMap                                    ;8F9C56;
-    dw $0000                                                             ;8F9C58;
-    dw RTS_8F91D5                                                        ;8F9C5A;
+RoomState_GreenBrinstarMap:                                              ;8F9C42;
+    %StateHeader(\
+    %levelData(LevelData_MapStation_RightSideDoor),
+    %tileset($15),
+    %music(0, 0),
+    %FX(FXHeader_GreenBrinstarMap),
+    %enemyPop(EnemyPopulations_GreenBrinstarMap),
+    %enemySet(EnemySets_GreenBrinstarMap),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GreenBrinstarMap),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_GreenBrinstarMap:
     dw Door_GreenBrinstarMap_0                                           ;8F9C5C;
@@ -3321,19 +3421,21 @@ RoomHeader_GreenBrinstarFirefleas:                                       ;8F9C5E
     %doorList(RoomDoors_GreenBrinstarFirefleas))
     %stateChecks(0, 0)
 
-RoomState_GreenBrinstarFirefleas:
-    dl LevelData_GreenBrinstarFirefleas                                  ;8F9C6B;
-    db $06,$00,$00                                                       ;8F9C6E;
-    dw FXHeader_GreenBrinstarFirefleas                                   ;8F9C71;
-    dw EnemyPopulations_GreenBrinstarFirefleas                           ;8F9C73;
-    dw EnemySets_GreenBrinstarFirefleas                                  ;8F9C75;
-    db $00,$00                                                           ;8F9C77;
-    dw $0000                                                             ;8F9C79;
-    dw $0000                                                             ;8F9C7B;
-    dw $0000                                                             ;8F9C7D;
-    dw PLMPopulation_GreenBrinstarFirefleas                              ;8F9C7F;
-    dw $0000                                                             ;8F9C81;
-    dw RTS_8F91D5                                                        ;8F9C83;
+RoomState_GreenBrinstarFirefleas:                                        ;8F9C6B;
+    %StateHeader(\
+    %levelData(LevelData_GreenBrinstarFirefleas),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_GreenBrinstarFirefleas),
+    %enemyPop(EnemyPopulations_GreenBrinstarFirefleas),
+    %enemySet(EnemySets_GreenBrinstarFirefleas),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GreenBrinstarFirefleas),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_GreenBrinstarFirefleas:
     dw Door_GreenBrinstarFirefleas_0                                     ;8F9C85;
@@ -3350,19 +3452,21 @@ RoomHeader_GreenBrinstarMissileRefill:                                   ;8F9C89
     %doorList(RoomDoors_GreenBrinstarMissileRefill))
     %stateChecks(0, 0)
 
-RoomState_GreenBrinstarMissileRefill:
-    dl LevelData_MissileRefill_RightSideDoor                             ;8F9C96;
-    db $18,$00,$00                                                       ;8F9C99;
-    dw FXHeader_GreenBrinstarMissileRefill                               ;8F9C9C;
-    dw EnemyPopulations_GreenBrinstarMissileRefill                       ;8F9C9E;
-    dw EnemySets_GreenBrinstarMissileRefill                              ;8F9CA0;
-    db $00,$00                                                           ;8F9CA2;
-    dw RoomScrolls_GreenBrinstarMissileRefill                            ;8F9CA4;
-    dw $0000                                                             ;8F9CA6;
-    dw $0000                                                             ;8F9CA8;
-    dw PLMPopulation_GreenBrinstarMissileRefill                          ;8F9CAA;
-    dw $0000                                                             ;8F9CAC;
-    dw RTS_8F91D5                                                        ;8F9CAE;
+RoomState_GreenBrinstarMissileRefill:                                    ;8F9C96;
+    %StateHeader(\
+    %levelData(LevelData_MissileRefill_RightSideDoor),
+    %tileset($18),
+    %music(0, 0),
+    %FX(FXHeader_GreenBrinstarMissileRefill),
+    %enemyPop(EnemyPopulations_GreenBrinstarMissileRefill),
+    %enemySet(EnemySets_GreenBrinstarMissileRefill),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_GreenBrinstarMissileRefill),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GreenBrinstarMissileRefill),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_GreenBrinstarMissileRefill:
     dw Door_GreenBrinstarMissileRefill_0                                 ;8F9CB0;
@@ -3401,20 +3505,10 @@ RoomDoors_Dachora:
     dw Door_Dachora_2                                                    ;8F9CDE;
 
 RoomScrolls_Dachora:
-    dl $010101                                                           ;8F9CE0;
-    db $01,$01,$01                                                       ;8F9CE3;
-    dw $0001                                                             ;8F9CE6;
-    dw $0000                                                             ;8F9CE8;
-    dw $0000                                                             ;8F9CEA;
-    db $00,$00                                                           ;8F9CEC;
-    dw $0000                                                             ;8F9CEE;
-    dw $0000                                                             ;8F9CF0;
-    dw $0002                                                             ;8F9CF2;
-    dw $0000                                                             ;8F9CF4;
-    dw $0000                                                             ;8F9CF6;
-    dw $0200                                                             ;8F9CF8;
-    db $00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$00,$00,$00,$02,$00,$00   ;8F9CFA;
-    db $02,$02,$02,$02,$02,$00,$00                                       ;8F9D0A;
+    db $01,$01,$01,$01,$01,$01,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;8F9CE0;
+    db $00,$00,$02,$00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$00,$00,$00   ;8F9CF0;
+    db $02,$00,$00,$00,$00,$00,$00,$02,$00,$00,$02,$02,$02,$02,$02,$00   ;8F9D00;
+    db $00                                                               ;8F9D10;
 
 RoomPLM_Dachora_6:
     db $0B,$02, $80                                                      ;8F9D11;
@@ -3433,19 +3527,21 @@ RoomHeader_BigPink:                                                      ;8F9D19
     %doorList(RoomDoors_BigPink))
     %stateChecks(0, 0)
 
-RoomState_BigPink:
-    dl LevelData_BigPink                                                 ;8F9D26;
-    db $06,$0F,$05                                                       ;8F9D29;
-    dw FXHeader_BigPink                                                  ;8F9D2C;
-    dw EnemyPopulations_BigPink                                          ;8F9D2E;
-    dw EnemySets_BigPink                                                 ;8F9D30;
-    db $C1,$C1                                                           ;8F9D32;
-    dw RoomScrolls_BigPink                                               ;8F9D34;
-    dw $0000                                                             ;8F9D36;
-    dw $0000                                                             ;8F9D38;
-    dw PLMPopulation_BigPink                                             ;8F9D3A;
-    dw LibBG_Brinstar_6_DarkPattern                                      ;8F9D3C;
-    dw RTS_8F91D5                                                        ;8F9D3E;
+RoomState_BigPink:                                                       ;8F9D26;
+    %StateHeader(\
+    %levelData(LevelData_BigPink),
+    %tileset(6),
+    %music($0F, 5),
+    %FX(FXHeader_BigPink),
+    %enemyPop(EnemyPopulations_BigPink),
+    %enemySet(EnemySets_BigPink),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_BigPink),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BigPink),
+    %libraryBG(LibBG_Brinstar_6_DarkPattern),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_BigPink:
     dw Door_BigPink_0                                                    ;8F9D40;
@@ -3493,19 +3589,21 @@ RoomHeader_SporeSpawnKihunters:                                          ;8F9D9C
     %doorList(RoomDoors_SporeSpawnKihunters))
     %stateChecks(0, 0)
 
-RoomState_SporeSpawnKihunters:
-    dl LevelData_SporeSpawnKihunters                                     ;8F9DA9;
-    db $06,$0F,$05                                                       ;8F9DAC;
-    dw FXHeader_SporeSpawnKihunters                                      ;8F9DAF;
-    dw EnemyPopulations_SporeSpawnKihunters                              ;8F9DB1;
-    dw EnemySets_SporeSpawnKihunters                                     ;8F9DB3;
-    db $C1,$C1                                                           ;8F9DB5;
-    dw $0000                                                             ;8F9DB7;
-    dw $0000                                                             ;8F9DB9;
-    dw $0000                                                             ;8F9DBB;
-    dw PLMPopulation_SporeSpawnKihunters                                 ;8F9DBD;
-    dw LibBG_Brinstar_6_Horizontal_GlowPatches                           ;8F9DBF;
-    dw RTS_8F91D5                                                        ;8F9DC1;
+RoomState_SporeSpawnKihunters:                                           ;8F9DA9;
+    %StateHeader(\
+    %levelData(LevelData_SporeSpawnKihunters),
+    %tileset(6),
+    %music($0F, 5),
+    %FX(FXHeader_SporeSpawnKihunters),
+    %enemyPop(EnemyPopulations_SporeSpawnKihunters),
+    %enemySet(EnemySets_SporeSpawnKihunters),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SporeSpawnKihunters),
+    %libraryBG(LibBG_Brinstar_6_Horizontal_GlowPatches),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_SporeSpawnKihunters:
     dw Door_SporeSpawnKihunters_0                                        ;8F9DC3;
@@ -3523,33 +3621,37 @@ RoomHeader_SporeSpawn:                                                   ;8F9DC7
     %stateChecks(1,
     %stateCheckBossDead(2, RoomState_SporeSpawn_1))
 
-RoomState_SporeSpawn_0:
-    dl LevelData_SporeSpawn                                              ;8F9DD9;
-    db $06,$2A,$05                                                       ;8F9DDC;
-    dw FXHeader_SporeSpawn_State0_1                                      ;8F9DDF;
-    dw EnemyPopulations_SporeSpawn                                       ;8F9DE1;
-    dw EnemySets_SporeSpawn                                              ;8F9DE3;
-    db $00,$00                                                           ;8F9DE5;
-    dw $0001                                                             ;8F9DE7;
-    dw $0000                                                             ;8F9DE9;
-    dw $0000                                                             ;8F9DEB;
-    dw PLMPopulation_SporeSpawn_State0_1                                 ;8F9DED;
-    dw $0000                                                             ;8F9DEF;
-    dw RTS_8F91D5                                                        ;8F9DF1;
+RoomState_SporeSpawn_0:                                                  ;8F9DD9;
+    %StateHeader(\
+    %levelData(LevelData_SporeSpawn),
+    %tileset(6),
+    %music($2A, 5),
+    %FX(FXHeader_SporeSpawn_State0_1),
+    %enemyPop(EnemyPopulations_SporeSpawn),
+    %enemySet(EnemySets_SporeSpawn),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(1),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SporeSpawn_State0_1),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
-RoomState_SporeSpawn_1:
-    dl LevelData_SporeSpawn                                              ;8F9DF3;
-    db $06,$00,$03                                                       ;8F9DF6;
-    dw FXHeader_SporeSpawn_State0_1                                      ;8F9DF9;
-    dw EnemyPopulations_SporeSpawn                                       ;8F9DFB;
-    dw EnemySets_SporeSpawn                                              ;8F9DFD;
-    db $00,$00                                                           ;8F9DFF;
-    dw $0001                                                             ;8F9E01;
-    dw $0000                                                             ;8F9E03;
-    dw $0000                                                             ;8F9E05;
-    dw PLMPopulation_SporeSpawn_State0_1                                 ;8F9E07;
-    dw $0000                                                             ;8F9E09;
-    dw RTS_8F91D5                                                        ;8F9E0B;
+RoomState_SporeSpawn_1:                                                  ;8F9DF3;
+    %StateHeader(\
+    %levelData(LevelData_SporeSpawn),
+    %tileset(6),
+    %music(0, 3),
+    %FX(FXHeader_SporeSpawn_State0_1),
+    %enemyPop(EnemyPopulations_SporeSpawn),
+    %enemySet(EnemySets_SporeSpawn),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(1),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SporeSpawn_State0_1),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_SporeSpawn:
     dw Door_SporeSpawn_0                                                 ;8F9E0D;
@@ -3566,19 +3668,21 @@ RoomHeader_PinkBrinstarPowerBombs:                                       ;8F9E11
     %doorList(RoomDoors_PinkBrinstarPowerBombs))
     %stateChecks(0, 0)
 
-RoomState_PinkBrinstarPowerBombs:
-    dl LevelData_PinkBrinstarPowerBombs                                  ;8F9E1E;
-    db $06,$00,$00                                                       ;8F9E21;
-    dw FXHeader_PinkBrinstarPowerBombs                                   ;8F9E24;
-    dw EnemyPopulations_PinkBrinstarPowerBombs                           ;8F9E26;
-    dw EnemySets_PinkBrinstarPowerBombs                                  ;8F9E28;
-    db $C1,$C1                                                           ;8F9E2A;
-    dw RoomScrolls_PinkBrinstarPowerBombs                                ;8F9E2C;
-    dw $0000                                                             ;8F9E2E;
-    dw $0000                                                             ;8F9E30;
-    dw PLMPopulation_PinkBrinstarPowerBombs                              ;8F9E32;
-    dw LibBG_Brinstar_6_ThinHorizontalPattern                            ;8F9E34;
-    dw RTS_8F91D5                                                        ;8F9E36;
+RoomState_PinkBrinstarPowerBombs:                                        ;8F9E1E;
+    %StateHeader(\
+    %levelData(LevelData_PinkBrinstarPowerBombs),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_PinkBrinstarPowerBombs),
+    %enemyPop(EnemyPopulations_PinkBrinstarPowerBombs),
+    %enemySet(EnemySets_PinkBrinstarPowerBombs),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_PinkBrinstarPowerBombs),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PinkBrinstarPowerBombs),
+    %libraryBG(LibBG_Brinstar_6_ThinHorizontalPattern),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_PinkBrinstarPowerBombs:
     dw Door_PinkBrinstarPowerBombs_0                                     ;8F9E38;
@@ -3604,19 +3708,21 @@ RoomHeader_GreenHillZone:                                                ;8F9E52
     %doorList(RoomDoors_GreenHillZone))
     %stateChecks(0, 0)
 
-RoomState_GreenHillZone:
-    dl LevelData_GreenHillZone                                           ;8F9E5F;
-    db $06,$0F,$05                                                       ;8F9E62;
-    dw FXHeader_GreenHillZone                                            ;8F9E65;
-    dw EnemyPopulations_GreenHillZone                                    ;8F9E67;
-    dw EnemySets_GreenHillZone                                           ;8F9E69;
-    db $C1,$C1                                                           ;8F9E6B;
-    dw RoomScrolls_GreenHillZone                                         ;8F9E6D;
-    dw $0000                                                             ;8F9E6F;
-    dw $0000                                                             ;8F9E71;
-    dw PLMPopulation_GreenHillZone                                       ;8F9E73;
-    dw LibBG_Brinstar_6_SpheresPattern                                   ;8F9E75;
-    dw RTS_8F91D5                                                        ;8F9E77;
+RoomState_GreenHillZone:                                                 ;8F9E5F;
+    %StateHeader(\
+    %levelData(LevelData_GreenHillZone),
+    %tileset(6),
+    %music($0F, 5),
+    %FX(FXHeader_GreenHillZone),
+    %enemyPop(EnemyPopulations_GreenHillZone),
+    %enemySet(EnemySets_GreenHillZone),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_GreenHillZone),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GreenHillZone),
+    %libraryBG(LibBG_Brinstar_6_SpheresPattern),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_GreenHillZone:
     dw Door_GreenHillZone_0                                              ;8F9E79;
@@ -3639,33 +3745,37 @@ RoomHeader_MorphBall:                                                    ;8F9E9F
     %stateChecks(1,
     %stateCheckEventSet(0, RoomState_MorphBall_1))
 
-RoomState_MorphBall_0:
-    dl LevelData_MorphBall                                               ;8F9EB1;
-    db $06,$06,$07                                                       ;8F9EB4;
-    dw FXHeader_MorphBall_State0                                         ;8F9EB7;
-    dw EnemyPopulations_MorphBall_0                                      ;8F9EB9;
-    dw EnemySets_MorphBall_0                                             ;8F9EBB;
-    db $C1,$C1                                                           ;8F9EBD;
-    dw RoomScrolls_MorphBall                                             ;8F9EBF;
-    dw $0000                                                             ;8F9EC1;
-    dw $0000                                                             ;8F9EC3;
-    dw PLMPopulation_MorphBall_State0                                    ;8F9EC5;
-    dw LibBG_Brinstar_6_SmallPattern_Variety_0                           ;8F9EC7;
-    dw RTS_8F91D5                                                        ;8F9EC9;
+RoomState_MorphBall_0:                                                   ;8F9EB1;
+    %StateHeader(\
+    %levelData(LevelData_MorphBall),
+    %tileset(6),
+    %music(6, 7),
+    %FX(FXHeader_MorphBall_State0),
+    %enemyPop(EnemyPopulations_MorphBall_0),
+    %enemySet(EnemySets_MorphBall_0),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_MorphBall),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_MorphBall_State0),
+    %libraryBG(LibBG_Brinstar_6_SmallPattern_Variety_0),
+    %setupASM(RTS_8F91D5))
 
-RoomState_MorphBall_1:
-    dl LevelData_MorphBall                                               ;8F9ECB;
-    db $06,$09,$05                                                       ;8F9ECE;
-    dw FXHeader_VariousRooms_8381F4                                      ;8F9ED1;
-    dw EnemyPopulations_MorphBall_1                                      ;8F9ED3;
-    dw EnemySets_MorphBall_1                                             ;8F9ED5;
-    db $C1,$C1                                                           ;8F9ED7;
-    dw RoomScrolls_MorphBall                                             ;8F9ED9;
-    dw $0000                                                             ;8F9EDB;
-    dw $0000                                                             ;8F9EDD;
-    dw PLMPopulation_MorphBall_State1                                    ;8F9EDF;
-    dw LibBG_Brinstar_6_SmallPattern_Variety_0                           ;8F9EE1;
-    dw RTS_8F91BC                                                        ;8F9EE3;
+RoomState_MorphBall_1:                                                   ;8F9ECB;
+    %StateHeader(\
+    %levelData(LevelData_MorphBall),
+    %tileset(6),
+    %music(9, 5),
+    %FX(FXHeader_VariousRooms_8381F4),
+    %enemyPop(EnemyPopulations_MorphBall_1),
+    %enemySet(EnemySets_MorphBall_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_MorphBall),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_MorphBall_State1),
+    %libraryBG(LibBG_Brinstar_6_SmallPattern_Variety_0),
+    %setupASM(RTS_8F91BC))
 
 RoomDoors_MorphBall:
     dw Door_MorphBall_0                                                  ;8F9EE5;
@@ -3701,33 +3811,37 @@ RoomHeader_ConstructionZone:                                             ;8F9F11
     %stateChecks(1,
     %stateCheckEventSet(0, RoomState_ConstructionZone_1))
 
-RoomState_ConstructionZone_0:
-    dl LevelData_ConstructionZone                                        ;8F9F23;
-    db $06,$00,$00                                                       ;8F9F26;
-    dw FXHeader_ConstructionZone_State0                                  ;8F9F29;
-    dw EnemyPopulations_ConstructionZone_0                               ;8F9F2B;
-    dw EnemySets_ConstructionZone_0                                      ;8F9F2D;
-    db $C1,$C1                                                           ;8F9F2F;
-    dw RoomScrolls_ConstructionZone                                      ;8F9F31;
-    dw $0000                                                             ;8F9F33;
-    dw $0000                                                             ;8F9F35;
-    dw PLMPopulation_ConstructionZone_State0_1                           ;8F9F37;
-    dw LibBG_Brinstar_6_SmallPattern                                     ;8F9F39;
-    dw RTS_8F91D5                                                        ;8F9F3B;
+RoomState_ConstructionZone_0:                                            ;8F9F23;
+    %StateHeader(\
+    %levelData(LevelData_ConstructionZone),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_ConstructionZone_State0),
+    %enemyPop(EnemyPopulations_ConstructionZone_0),
+    %enemySet(EnemySets_ConstructionZone_0),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_ConstructionZone),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_ConstructionZone_State0_1),
+    %libraryBG(LibBG_Brinstar_6_SmallPattern),
+    %setupASM(RTS_8F91D5))
 
-RoomState_ConstructionZone_1:
-    dl LevelData_ConstructionZone                                        ;8F9F3D;
-    db $06,$00,$00                                                       ;8F9F40;
-    dw FXHeader_VariousRooms_8381F4                                      ;8F9F43;
-    dw EnemyPopulations_ConstructionZone_1                               ;8F9F45;
-    dw EnemySets_ConstructionZone_1                                      ;8F9F47;
-    db $C1,$C1                                                           ;8F9F49;
-    dw RoomScrolls_ConstructionZone                                      ;8F9F4B;
-    dw $0000                                                             ;8F9F4D;
-    dw $0000                                                             ;8F9F4F;
-    dw PLMPopulation_ConstructionZone_State0_1                           ;8F9F51;
-    dw LibBG_Brinstar_6_SmallPattern                                     ;8F9F53;
-    dw RTS_8F91BC                                                        ;8F9F55;
+RoomState_ConstructionZone_1:                                            ;8F9F3D;
+    %StateHeader(\
+    %levelData(LevelData_ConstructionZone),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_VariousRooms_8381F4),
+    %enemyPop(EnemyPopulations_ConstructionZone_1),
+    %enemySet(EnemySets_ConstructionZone_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_ConstructionZone),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_ConstructionZone_State0_1),
+    %libraryBG(LibBG_Brinstar_6_SmallPattern),
+    %setupASM(RTS_8F91BC))
 
 RoomDoors_ConstructionZone:
     dw Door_ConstructionZone_0                                           ;8F9F57;
@@ -3752,33 +3866,37 @@ RoomHeader_BlueBrinstarETank:                                            ;8F9F64
     %stateChecks(1,
     %stateCheckEventSet(0, RoomState_BlueBrinstarETank_1))
 
-RoomState_BlueBrinstarETank_0:
-    dl LevelData_BlueBrinstarETank                                       ;8F9F76;
-    db $06,$00,$00                                                       ;8F9F79;
-    dw FXHeader_BlueBrinstarETank_State0                                 ;8F9F7C;
-    dw EnemyPopulations_BlueBrinstarETank_0                              ;8F9F7E;
-    dw EnemySets_BlueBrinstarETank_0                                     ;8F9F80;
-    db $C1,$C1                                                           ;8F9F82;
-    dw RoomScrolls_BlueBrinstarETank                                     ;8F9F84;
-    dw $0000                                                             ;8F9F86;
-    dw $0000                                                             ;8F9F88;
-    dw PLMPopulation_BlueBrinstarETank_State0_1                          ;8F9F8A;
-    dw LibBG_Brinstar_6_SmallPattern_Variety_0                           ;8F9F8C;
-    dw RTS_8F91D5                                                        ;8F9F8E;
+RoomState_BlueBrinstarETank_0:                                           ;8F9F76;
+    %StateHeader(\
+    %levelData(LevelData_BlueBrinstarETank),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_BlueBrinstarETank_State0),
+    %enemyPop(EnemyPopulations_BlueBrinstarETank_0),
+    %enemySet(EnemySets_BlueBrinstarETank_0),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_BlueBrinstarETank),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BlueBrinstarETank_State0_1),
+    %libraryBG(LibBG_Brinstar_6_SmallPattern_Variety_0),
+    %setupASM(RTS_8F91D5))
 
-RoomState_BlueBrinstarETank_1:
-    dl LevelData_BlueBrinstarETank                                       ;8F9F90;
-    db $06,$00,$00                                                       ;8F9F93;
-    dw FXHeader_VariousRooms_8381F4                                      ;8F9F96;
-    dw EnemyPopulations_BlueBrinstarETank_1                              ;8F9F98;
-    dw EnemySets_BlueBrinstarETank_1                                     ;8F9F9A;
-    db $C1,$C1                                                           ;8F9F9C;
-    dw RoomScrolls_BlueBrinstarETank                                     ;8F9F9E;
-    dw $0000                                                             ;8F9FA0;
-    dw $0000                                                             ;8F9FA2;
-    dw PLMPopulation_BlueBrinstarETank_State0_1                          ;8F9FA4;
-    dw LibBG_Brinstar_6_SmallPattern_Variety_0                           ;8F9FA6;
-    dw RTS_8F91BC                                                        ;8F9FA8;
+RoomState_BlueBrinstarETank_1:                                           ;8F9F90;
+    %StateHeader(\
+    %levelData(LevelData_BlueBrinstarETank),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_VariousRooms_8381F4),
+    %enemyPop(EnemyPopulations_BlueBrinstarETank_1),
+    %enemySet(EnemySets_BlueBrinstarETank_1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_BlueBrinstarETank),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BlueBrinstarETank_State0_1),
+    %libraryBG(LibBG_Brinstar_6_SmallPattern_Variety_0),
+    %setupASM(RTS_8F91BC))
 
 RoomDoors_BlueBrinstarETank:
     dw Door_BlueBrinstarETank_0                                          ;8F9FAA;
@@ -3801,19 +3919,21 @@ RoomHeader_NoobBridge:                                                   ;8F9FBA
     %doorList(RoomDoors_NoobBridge))
     %stateChecks(0, 0)
 
-RoomState_NoobBridge:
-    dl LevelData_NoobBridge                                              ;8F9FC7;
-    db $06,$0F,$05                                                       ;8F9FCA;
-    dw FXHeader_NoobBridge                                               ;8F9FCD;
-    dw EnemyPopulations_NoobBridge                                       ;8F9FCF;
-    dw EnemySets_NoobBridge                                              ;8F9FD1;
-    db $C1,$C1                                                           ;8F9FD3;
-    dw $0000                                                             ;8F9FD5;
-    dw $0000                                                             ;8F9FD7;
-    dw $0000                                                             ;8F9FD9;
-    dw PLMPopulation_NoobBridge                                          ;8F9FDB;
-    dw LibBG_Brinstar_6_Horizontal_GlowPatches                           ;8F9FDD;
-    dw RTS_8F91D5                                                        ;8F9FDF;
+RoomState_NoobBridge:                                                    ;8F9FC7;
+    %StateHeader(\
+    %levelData(LevelData_NoobBridge),
+    %tileset(6),
+    %music($0F, 5),
+    %FX(FXHeader_NoobBridge),
+    %enemyPop(EnemyPopulations_NoobBridge),
+    %enemySet(EnemySets_NoobBridge),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_NoobBridge),
+    %libraryBG(LibBG_Brinstar_6_Horizontal_GlowPatches),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_NoobBridge:
     dw Door_NoobBridge_0                                                 ;8F9FE1;
@@ -3830,19 +3950,21 @@ RoomHeader_GreenBrinstarBeetoms:                                         ;8F9FE5
     %doorList(RoomDoors_GreenBrinstarBeetoms))
     %stateChecks(0, 0)
 
-RoomState_GreenBrinstarBeetoms:
-    dl LevelData_GreenBrinstarBeetoms                                    ;8F9FF2;
-    db $06,$00,$00                                                       ;8F9FF5;
-    dw FXHeader_GreenBrinstarBeetoms                                     ;8F9FF8;
-    dw EnemyPopulations_GreenBrinstarBeetoms                             ;8F9FFA;
-    dw EnemySets_GreenBrinstarBeetoms                                    ;8F9FFC;
-    db $01,$01                                                           ;8F9FFE;
-    dw RoomScrolls_GreenBrinstarBeetoms                                  ;8FA000;
-    dw $0000                                                             ;8FA002;
-    dw $0000                                                             ;8FA004;
-    dw PLMPopulation_GreenBrinstarBeetoms                                ;8FA006;
-    dw LibBG_Brinstar_6_Horizontal_GlowPatches                           ;8FA008;
-    dw RTS_8F91D5                                                        ;8FA00A;
+RoomState_GreenBrinstarBeetoms:                                          ;8F9FF2;
+    %StateHeader(\
+    %levelData(LevelData_GreenBrinstarBeetoms),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_GreenBrinstarBeetoms),
+    %enemyPop(EnemyPopulations_GreenBrinstarBeetoms),
+    %enemySet(EnemySets_GreenBrinstarBeetoms),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(RoomScrolls_GreenBrinstarBeetoms),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GreenBrinstarBeetoms),
+    %libraryBG(LibBG_Brinstar_6_Horizontal_GlowPatches),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_GreenBrinstarBeetoms:
     dw Door_GreenBrinstarBeetoms_0                                       ;8FA00C;
@@ -3862,19 +3984,21 @@ RoomHeader_EtecoonETank:                                                 ;8FA011
     %doorList(RoomDoors_EtecoonETank))
     %stateChecks(0, 0)
 
-RoomState_EtecoonETank:
-    dl LevelData_EtecoonETank                                            ;8FA01E;
-    db $06,$00,$00                                                       ;8FA021;
-    dw FXHeader_EtecoonETank                                             ;8FA024;
-    dw EnemyPopulations_EtecoonETank                                     ;8FA026;
-    dw EnemySets_EtecoonETank                                            ;8FA028;
-    db $C1,$C1                                                           ;8FA02A;
-    dw RoomScrolls_EtecoonETank                                          ;8FA02C;
-    dw $0000                                                             ;8FA02E;
-    dw $0000                                                             ;8FA030;
-    dw PLMPopulation_EtecoonETank                                        ;8FA032;
-    dw LibBG_Brinstar_6_Horizontal_GlowPatches                           ;8FA034;
-    dw RTS_8F91D5                                                        ;8FA036;
+RoomState_EtecoonETank:                                                  ;8FA01E;
+    %StateHeader(\
+    %levelData(LevelData_EtecoonETank),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_EtecoonETank),
+    %enemyPop(EnemyPopulations_EtecoonETank),
+    %enemySet(EnemySets_EtecoonETank),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_EtecoonETank),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_EtecoonETank),
+    %libraryBG(LibBG_Brinstar_6_Horizontal_GlowPatches),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_EtecoonETank:
     dw Door_EtecoonETank_0                                               ;8FA038;
@@ -3899,19 +4023,21 @@ RoomHeader_EtecoonSuper:                                                 ;8FA051
     %doorList(RoomDoors_EtecoonSuper))
     %stateChecks(0, 0)
 
-RoomState_EtecoonSuper:
-    dl LevelData_EtecoonSuper                                            ;8FA05E;
-    db $06,$00,$00                                                       ;8FA061;
-    dw FXHeader_EtecoonSuper                                             ;8FA064;
-    dw EnemyPopulations_EtecoonSuper                                     ;8FA066;
-    dw EnemySets_EtecoonSuper                                            ;8FA068;
-    db $01,$01                                                           ;8FA06A;
-    dw RoomScrolls_EtecoonSuper                                          ;8FA06C;
-    dw $0000                                                             ;8FA06E;
-    dw $0000                                                             ;8FA070;
-    dw PLMPopulation_EtecoonSuper                                        ;8FA072;
-    dw LibBG_Brinstar_6_Horizontal_GlowPatches                           ;8FA074;
-    dw RTS_8F91D5                                                        ;8FA076;
+RoomState_EtecoonSuper:                                                  ;8FA05E;
+    %StateHeader(\
+    %levelData(LevelData_EtecoonSuper),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_EtecoonSuper),
+    %enemyPop(EnemyPopulations_EtecoonSuper),
+    %enemySet(EnemySets_EtecoonSuper),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(RoomScrolls_EtecoonSuper),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_EtecoonSuper),
+    %libraryBG(LibBG_Brinstar_6_Horizontal_GlowPatches),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_EtecoonSuper:
     dw Door_EtecoonSuper_0                                               ;8FA078;
@@ -3930,19 +4056,21 @@ RoomHeader_DachoraEnergyRefill:                                          ;8FA07B
     %doorList(RoomDoors_DachoraEnergyRefill))
     %stateChecks(0, 0)
 
-RoomState_DachoraEnergyRefill:
-    dl LevelData_EnergyRefill_RightSideDoor                              ;8FA088;
-    db $17,$00,$00                                                       ;8FA08B;
-    dw FXHeader_DachoraEnergyRefill                                      ;8FA08E;
-    dw EnemyPopulations_DachoraEnergyRefill                              ;8FA090;
-    dw EnemySets_DachoraEnergyRefill                                     ;8FA092;
-    db $00,$00                                                           ;8FA094;
-    dw $0000                                                             ;8FA096;
-    dw $0000                                                             ;8FA098;
-    dw $0000                                                             ;8FA09A;
-    dw PLMPopulation_DachoraEnergyRefill                                 ;8FA09C;
-    dw $0000                                                             ;8FA09E;
-    dw RTS_8F91D5                                                        ;8FA0A0;
+RoomState_DachoraEnergyRefill:                                           ;8FA088;
+    %StateHeader(\
+    %levelData(LevelData_EnergyRefill_RightSideDoor),
+    %tileset($17),
+    %music(0, 0),
+    %FX(FXHeader_DachoraEnergyRefill),
+    %enemyPop(EnemyPopulations_DachoraEnergyRefill),
+    %enemySet(EnemySets_DachoraEnergyRefill),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_DachoraEnergyRefill),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_DachoraEnergyRefill:
     dw Door_DachoraEnergyRefill_0                                        ;8FA0A2;
@@ -3958,19 +4086,21 @@ RoomHeader_SporeSpawnFarming:                                            ;8FA0A4
     %doorList(RoomDoors_SporeSpawnFarming))
     %stateChecks(0, 0)
 
-RoomState_SporeSpawnFarming:
-    dl LevelData_SporeSpawnFarming                                       ;8FA0B1;
-    db $06,$0F,$05                                                       ;8FA0B4;
-    dw FXHeader_SporeSpawnFarming                                        ;8FA0B7;
-    dw EnemyPopulations_SporeSpawnFarming                                ;8FA0B9;
-    dw EnemySets_SporeSpawnFarming                                       ;8FA0BB;
-    db $C0,$00                                                           ;8FA0BD;
-    dw RoomScrolls_SporeSpawnFarming                                     ;8FA0BF;
-    dw $0000                                                             ;8FA0C1;
-    dw $0000                                                             ;8FA0C3;
-    dw PLMPopulation_SporeSpawnFarming                                   ;8FA0C5;
-    dw $0000                                                             ;8FA0C7;
-    dw RTS_8F91D5                                                        ;8FA0C9;
+RoomState_SporeSpawnFarming:                                             ;8FA0B1;
+    %StateHeader(\
+    %levelData(LevelData_SporeSpawnFarming),
+    %tileset(6),
+    %music($0F, 5),
+    %FX(FXHeader_SporeSpawnFarming),
+    %enemyPop(EnemyPopulations_SporeSpawnFarming),
+    %enemySet(EnemySets_SporeSpawnFarming),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(RoomScrolls_SporeSpawnFarming),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SporeSpawnFarming),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_SporeSpawnFarming:
     dw Door_SporeSpawnFarming_0                                          ;8FA0CB;
@@ -3990,19 +4120,21 @@ RoomHeader_WaterwayETank:                                                ;8FA0D2
     %doorList(RoomDoors_WaterwayETank))
     %stateChecks(0, 0)
 
-RoomState_WaterwayETank:
-    dl LevelData_WaterwayETank                                           ;8FA0DF;
-    db $06,$00,$00                                                       ;8FA0E2;
-    dw FXHeader_WaterwayETank                                            ;8FA0E5;
-    dw EnemyPopulations_WaterwayETank                                    ;8FA0E7;
-    dw EnemySets_WaterwayETank                                           ;8FA0E9;
-    db $C1,$01                                                           ;8FA0EB;
-    dw RoomScrolls_WaterwayETank                                         ;8FA0ED;
-    dw $0000                                                             ;8FA0EF;
-    dw $0000                                                             ;8FA0F1;
-    dw PLMPopulation_WaterwayETank                                       ;8FA0F3;
-    dw LibBG_Brinstar_6_ThinHorizontalPattern                            ;8FA0F5;
-    dw RTS_8F91D5                                                        ;8FA0F7;
+RoomState_WaterwayETank:                                                 ;8FA0DF;
+    %StateHeader(\
+    %levelData(LevelData_WaterwayETank),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_WaterwayETank),
+    %enemyPop(EnemyPopulations_WaterwayETank),
+    %enemySet(EnemySets_WaterwayETank),
+    %layer2Scrolls($C1, 1),
+    %scrollPointer(RoomScrolls_WaterwayETank),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_WaterwayETank),
+    %libraryBG(LibBG_Brinstar_6_ThinHorizontalPattern),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_WaterwayETank:
     dw Door_WaterwayETank_0                                              ;8FA0F9;
@@ -4025,19 +4157,21 @@ RoomHeader_FirstMissile:                                                 ;8FA107
     %doorList(RoomDoors_FirstMissile))
     %stateChecks(0, 0)
 
-RoomState_FirstMissile:
-    dl LevelData_FirstMissile                                            ;8FA114;
-    db $06,$00,$00                                                       ;8FA117;
-    dw FXHeader_FirstMissile                                             ;8FA11A;
-    dw EnemyPopulations_FirstMissile                                     ;8FA11C;
-    dw EnemySets_FirstMissile                                            ;8FA11E;
-    db $01,$01                                                           ;8FA120;
-    dw $0000                                                             ;8FA122;
-    dw $0000                                                             ;8FA124;
-    dw $0000                                                             ;8FA126;
-    dw PLMPopulation_FirstMissile                                        ;8FA128;
-    dw LibBG_Brinstar_6_SmallPattern                                     ;8FA12A;
-    dw RTS_8F91D5                                                        ;8FA12C;
+RoomState_FirstMissile:                                                  ;8FA114;
+    %StateHeader(\
+    %levelData(LevelData_FirstMissile),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_FirstMissile),
+    %enemyPop(EnemyPopulations_FirstMissile),
+    %enemySet(EnemySets_FirstMissile),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_FirstMissile),
+    %libraryBG(LibBG_Brinstar_6_SmallPattern),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_FirstMissile:
     dw Door_FirstMissile_0                                               ;8FA12E;
@@ -4053,19 +4187,21 @@ RoomHeader_PinkBrinstarHoppers:                                          ;8FA130
     %doorList(RoomDoors_PinkBrinstarHoppers))
     %stateChecks(0, 0)
 
-RoomState_PinkBrinstarHoppers:
-    dl LevelData_PinkBrinstarHoppers                                     ;8FA13D;
-    db $06,$00,$00                                                       ;8FA140;
-    dw FXHeader_PinkBrinstarHoppers                                      ;8FA143;
-    dw EnemyPopulations_PinkBrinstarHoppers                              ;8FA145;
-    dw EnemySets_PinkBrinstarHoppers                                     ;8FA147;
-    db $C1,$C1                                                           ;8FA149;
-    dw $0000                                                             ;8FA14B;
-    dw $0000                                                             ;8FA14D;
-    dw $0000                                                             ;8FA14F;
-    dw PLMPopulation_PinkBrinstarHoppers                                 ;8FA151;
-    dw LibBG_Brinstar_6_ThinHorizontalPattern                            ;8FA153;
-    dw RTS_8F91D5                                                        ;8FA155;
+RoomState_PinkBrinstarHoppers:                                           ;8FA13D;
+    %StateHeader(\
+    %levelData(LevelData_PinkBrinstarHoppers),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_PinkBrinstarHoppers),
+    %enemyPop(EnemyPopulations_PinkBrinstarHoppers),
+    %enemySet(EnemySets_PinkBrinstarHoppers),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PinkBrinstarHoppers),
+    %libraryBG(LibBG_Brinstar_6_ThinHorizontalPattern),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_PinkBrinstarHoppers:
     dw Door_PinkBrinstarHoppers_0                                        ;8FA157;
@@ -4082,19 +4218,21 @@ RoomHeader_HopperETank:                                                  ;8FA15B
     %doorList(RoomDoors_HopperETank))
     %stateChecks(0, 0)
 
-RoomState_HopperETank:
-    dl LevelData_HopperETank                                             ;8FA168;
-    db $06,$00,$00                                                       ;8FA16B;
-    dw FXHeader_HopperETank                                              ;8FA16E;
-    dw EnemyPopulations_HopperETank                                      ;8FA170;
-    dw EnemySets_HopperETank                                             ;8FA172;
-    db $00,$00                                                           ;8FA174;
-    dw $0000                                                             ;8FA176;
-    dw $0000                                                             ;8FA178;
-    dw $0000                                                             ;8FA17A;
-    dw PLMPopulation_HopperETank                                         ;8FA17C;
-    dw $0000                                                             ;8FA17E;
-    dw RTS_8F91D5                                                        ;8FA180;
+RoomState_HopperETank:                                                   ;8FA168;
+    %StateHeader(\
+    %levelData(LevelData_HopperETank),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_HopperETank),
+    %enemyPop(EnemyPopulations_HopperETank),
+    %enemySet(EnemySets_HopperETank),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_HopperETank),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_HopperETank:
     dw Door_HopperETank_0                                                ;8FA182;
@@ -4110,19 +4248,21 @@ RoomHeader_BigPinkSaveRoom:                                              ;8FA184
     %doorList(RoomDoors_BigPinkSaveRoom))
     %stateChecks(0, 0)
 
-RoomState_BigPinkSaveRoom:
-    dl LevelData_SaveStation_RightSideDoor                               ;8FA191;
-    db $19,$0F,$05                                                       ;8FA194;
-    dw FXHeader_BigPinkSaveRoom                                          ;8FA197;
-    dw EnemyPopulations_BigPinkSaveRoom                                  ;8FA199;
-    dw EnemySets_BigPinkSaveRoom                                         ;8FA19B;
-    db $00,$00                                                           ;8FA19D;
-    dw $0000                                                             ;8FA19F;
-    dw $0000                                                             ;8FA1A1;
-    dw $0000                                                             ;8FA1A3;
-    dw PLMPopulation_BigPinkSaveRoom                                     ;8FA1A5;
-    dw $0000                                                             ;8FA1A7;
-    dw RTS_8F91D5                                                        ;8FA1A9;
+RoomState_BigPinkSaveRoom:                                               ;8FA191;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_RightSideDoor),
+    %tileset($19),
+    %music($0F, 5),
+    %FX(FXHeader_BigPinkSaveRoom),
+    %enemyPop(EnemyPopulations_BigPinkSaveRoom),
+    %enemySet(EnemySets_BigPinkSaveRoom),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BigPinkSaveRoom),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_BigPinkSaveRoom:
     dw Door_BigPinkSaveRoom_0                                            ;8FA1AB;
@@ -4138,19 +4278,21 @@ RoomHeader_BlueBrinstarBoulders:                                         ;8FA1AD
     %doorList(RoomDoors_BlueBrinstarBoulders))
     %stateChecks(0, 0)
 
-RoomState_BlueBrinstarBoulders:
-    dl LevelData_BlueBrinstarBoulders                                    ;8FA1BA;
-    db $06,$00,$00                                                       ;8FA1BD;
-    dw FXHeader_BlueBrinstarBoulders                                     ;8FA1C0;
-    dw EnemyPopulations_BlueBrinstarBoulders                             ;8FA1C2;
-    dw EnemySets_BlueBrinstarBoulders                                    ;8FA1C4;
-    db $C1,$01                                                           ;8FA1C6;
-    dw $0000                                                             ;8FA1C8;
-    dw $0000                                                             ;8FA1CA;
-    dw $0000                                                             ;8FA1CC;
-    dw PLMPopulation_BlueBrinstarBoulders                                ;8FA1CE;
-    dw LibBG_Brinstar_6_SmallPattern_Variety_0                           ;8FA1D0;
-    dw RTS_8F91D5                                                        ;8FA1D2;
+RoomState_BlueBrinstarBoulders:                                          ;8FA1BA;
+    %StateHeader(\
+    %levelData(LevelData_BlueBrinstarBoulders),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_BlueBrinstarBoulders),
+    %enemyPop(EnemyPopulations_BlueBrinstarBoulders),
+    %enemySet(EnemySets_BlueBrinstarBoulders),
+    %layer2Scrolls($C1, 1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BlueBrinstarBoulders),
+    %libraryBG(LibBG_Brinstar_6_SmallPattern_Variety_0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_BlueBrinstarBoulders:
     dw Door_BlueBrinstarBoulders_0                                       ;8FA1D4;
@@ -4167,19 +4309,21 @@ RoomHeader_BillyMays:                                                    ;8FA1D8
     %doorList(RoomDoors_BillyMays))
     %stateChecks(0, 0)
 
-RoomState_BillyMays:
-    dl LevelData_BillyMays                                               ;8FA1E5;
-    db $06,$00,$00                                                       ;8FA1E8;
-    dw FXHeader_BillyMays                                                ;8FA1EB;
-    dw EnemyPopulations_BillyMays                                        ;8FA1ED;
-    dw EnemySets_BillyMays                                               ;8FA1EF;
-    db $01,$01                                                           ;8FA1F1;
-    dw $0000                                                             ;8FA1F3;
-    dw $0000                                                             ;8FA1F5;
-    dw $0000                                                             ;8FA1F7;
-    dw PLMPopulation_BillyMays                                           ;8FA1F9;
-    dw LibBG_Brinstar_6_SmallPattern_Variety_0                           ;8FA1FB;
-    dw RTS_8F91D5                                                        ;8FA1FD;
+RoomState_BillyMays:                                                     ;8FA1E5;
+    %StateHeader(\
+    %levelData(LevelData_BillyMays),
+    %tileset(6),
+    %music(0, 0),
+    %FX(FXHeader_BillyMays),
+    %enemyPop(EnemyPopulations_BillyMays),
+    %enemySet(EnemySets_BillyMays),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BillyMays),
+    %libraryBG(LibBG_Brinstar_6_SmallPattern_Variety_0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_BillyMays:
     dw Door_BillyMays_0                                                  ;8FA1FF;
@@ -4195,19 +4339,21 @@ RoomHeader_GreenBrinstarSave:                                            ;8FA201
     %doorList(RoomDoors_GreenBrinstarSave))
     %stateChecks(0, 0)
 
-RoomState_GreenBrinstarSave:
-    dl LevelData_SaveStation_RightSideDoor                               ;8FA20E;
-    db $19,$0F,$05                                                       ;8FA211;
-    dw FXHeader_GreenBrinstarSave                                        ;8FA214;
-    dw EnemyPopulations_GreenBrinstarSave                                ;8FA216;
-    dw EnemySets_GreenBrinstarSave                                       ;8FA218;
-    db $00,$00                                                           ;8FA21A;
-    dw $0000                                                             ;8FA21C;
-    dw $0000                                                             ;8FA21E;
-    dw $0000                                                             ;8FA220;
-    dw PLMPopulation_GreenBrinstarSave                                   ;8FA222;
-    dw $0000                                                             ;8FA224;
-    dw RTS_8F91D5                                                        ;8FA226;
+RoomState_GreenBrinstarSave:                                             ;8FA20E;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_RightSideDoor),
+    %tileset($19),
+    %music($0F, 5),
+    %FX(FXHeader_GreenBrinstarSave),
+    %enemyPop(EnemyPopulations_GreenBrinstarSave),
+    %enemySet(EnemySets_GreenBrinstarSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GreenBrinstarSave),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_GreenBrinstarSave:
     dw Door_GreenBrinstarSave_0                                          ;8FA228;
@@ -4223,19 +4369,21 @@ RoomHeader_EtecoonSave:                                                  ;8FA22A
     %doorList(RoomDoors_EtecoonSave))
     %stateChecks(0, 0)
 
-RoomState_EtecoonSave:
-    dl LevelData_SaveStation_RightSideDoor                               ;8FA237;
-    db $19,$0F,$05                                                       ;8FA23A;
-    dw FXHeader_EtecoonSave                                              ;8FA23D;
-    dw EnemyPopulations_EtecoonSave                                      ;8FA23F;
-    dw EnemySets_EtecoonSave                                             ;8FA241;
-    db $00,$00                                                           ;8FA243;
-    dw $0000                                                             ;8FA245;
-    dw $0000                                                             ;8FA247;
-    dw $0000                                                             ;8FA249;
-    dw PLMPopulation_EtecoonSave                                         ;8FA24B;
-    dw $0000                                                             ;8FA24D;
-    dw RTS_8F91D5                                                        ;8FA24F;
+RoomState_EtecoonSave:                                                   ;8FA237;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_RightSideDoor),
+    %tileset($19),
+    %music($0F, 5),
+    %FX(FXHeader_EtecoonSave),
+    %enemyPop(EnemyPopulations_EtecoonSave),
+    %enemySet(EnemySets_EtecoonSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_EtecoonSave),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D5))
 
 RoomDoors_EtecoonSave:
     dw Door_EtecoonSave_0                                                ;8FA251;
@@ -4251,19 +4399,21 @@ RoomHeader_RedTower:                                                     ;8FA253
     %doorList(RoomDoors_RedTower))
     %stateChecks(0, 0)
 
-RoomState_RedTower:
-    dl LevelData_RedTower                                                ;8FA260;
-    db $07,$12,$05                                                       ;8FA263;
-    dw FXHeader_RedTower                                                 ;8FA266;
-    dw EnemyPopulations_RedTower                                         ;8FA268;
-    dw EnemySets_RedTower                                                ;8FA26A;
-    db $C1,$C1                                                           ;8FA26C;
-    dw RoomScrolls_RedTower                                              ;8FA26E;
-    dw $0000                                                             ;8FA270;
-    dw $0000                                                             ;8FA272;
-    dw PLMPopulation_RedTower                                            ;8FA274;
-    dw LibBG_Brinstar_7_WideVerticalTower_Brick_0                        ;8FA276;
-    dw RTS_8F91D6                                                        ;8FA278;
+RoomState_RedTower:                                                      ;8FA260;
+    %StateHeader(\
+    %levelData(LevelData_RedTower),
+    %tileset(7),
+    %music($12, 5),
+    %FX(FXHeader_RedTower),
+    %enemyPop(EnemyPopulations_RedTower),
+    %enemySet(EnemySets_RedTower),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_RedTower),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_RedTower),
+    %libraryBG(LibBG_Brinstar_7_WideVerticalTower_Brick_0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_RedTower:
     dw Door_RedTower_0                                                   ;8FA27A;
@@ -4289,19 +4439,21 @@ RoomHeader_RedBrinstarFirefleas:                                         ;8FA293
     %doorList(RoomDoors_RedBrinstarFirefleas))
     %stateChecks(0, 0)
 
-RoomState_RedBrinstarFirefleas:
-    dl LevelData_RedBrinstarFirefleas                                    ;8FA2A0;
-    db $07,$00,$05                                                       ;8FA2A3;
-    dw FXHeader_RedBrinstarFirefleas                                     ;8FA2A6;
-    dw EnemyPopulations_RedBrinstarFirefleas                             ;8FA2A8;
-    dw EnemySets_RedBrinstarFirefleas                                    ;8FA2AA;
-    db $00,$00                                                           ;8FA2AC;
-    dw RoomScrolls_RedBrinstarFirefleas                                  ;8FA2AE;
-    dw $0000                                                             ;8FA2B0;
-    dw $0000                                                             ;8FA2B2;
-    dw PLMPopulation_RedBrinstarFirefleas                                ;8FA2B4;
-    dw $0000                                                             ;8FA2B6;
-    dw RTS_8F91D6                                                        ;8FA2B8;
+RoomState_RedBrinstarFirefleas:                                          ;8FA2A0;
+    %StateHeader(\
+    %levelData(LevelData_RedBrinstarFirefleas),
+    %tileset(7),
+    %music(0, 5),
+    %FX(FXHeader_RedBrinstarFirefleas),
+    %enemyPop(EnemyPopulations_RedBrinstarFirefleas),
+    %enemySet(EnemySets_RedBrinstarFirefleas),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_RedBrinstarFirefleas),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_RedBrinstarFirefleas),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_RedBrinstarFirefleas:
     dw Door_RedBrinstarFirefleas_0                                       ;8FA2BA;
@@ -4321,19 +4473,21 @@ RoomHeader_XrayScope:                                                    ;8FA2CE
     %doorList(RoomDoors_XrayScope))
     %stateChecks(0, 0)
 
-RoomState_XrayScope:
-    dl LevelData_XrayScope                                               ;8FA2DB;
-    db $07,$00,$03                                                       ;8FA2DE;
-    dw FXHeader_XrayScope                                                ;8FA2E1;
-    dw EnemyPopulations_XrayScope                                        ;8FA2E3;
-    dw EnemySets_XrayScope                                               ;8FA2E5;
-    db $C1,$C1                                                           ;8FA2E7;
-    dw $0000                                                             ;8FA2E9;
-    dw $0000                                                             ;8FA2EB;
-    dw $0000                                                             ;8FA2ED;
-    dw PLMPopulation_XrayScope                                           ;8FA2EF;
-    dw LibBG_Brinstar_7_MechanicalRoom_SpikeFloor                        ;8FA2F1;
-    dw RTS_8F91D6                                                        ;8FA2F3;
+RoomState_XrayScope:                                                     ;8FA2DB;
+    %StateHeader(\
+    %levelData(LevelData_XrayScope),
+    %tileset(7),
+    %music(0, 3),
+    %FX(FXHeader_XrayScope),
+    %enemyPop(EnemyPopulations_XrayScope),
+    %enemySet(EnemySets_XrayScope),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_XrayScope),
+    %libraryBG(LibBG_Brinstar_7_MechanicalRoom_SpikeFloor),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_XrayScope:
     dw Door_XrayScope_0                                                  ;8FA2F5;
@@ -4349,19 +4503,21 @@ RoomHeader_Hellway:                                                      ;8FA2F7
     %doorList(RoomDoors_Hellway))
     %stateChecks(0, 0)
 
-RoomState_Hellway:
-    dl LevelData_Hellway                                                 ;8FA304;
-    db $07,$00,$00                                                       ;8FA307;
-    dw FXHeader_Hellway                                                  ;8FA30A;
-    dw EnemyPopulations_Hellway                                          ;8FA30C;
-    dw EnemySets_Hellway                                                 ;8FA30E;
-    db $C1,$C1                                                           ;8FA310;
-    dw $0000                                                             ;8FA312;
-    dw $0000                                                             ;8FA314;
-    dw $0000                                                             ;8FA316;
-    dw PLMPopulation_Hellway                                             ;8FA318;
-    dw LibBG_Brinstar_7_VerticalTower                                    ;8FA31A;
-    dw RTS_8F91D6                                                        ;8FA31C;
+RoomState_Hellway:                                                       ;8FA304;
+    %StateHeader(\
+    %levelData(LevelData_Hellway),
+    %tileset(7),
+    %music(0, 0),
+    %FX(FXHeader_Hellway),
+    %enemyPop(EnemyPopulations_Hellway),
+    %enemySet(EnemySets_Hellway),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Hellway),
+    %libraryBG(LibBG_Brinstar_7_VerticalTower),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_Hellway:
     dw Door_Hellway_0                                                    ;8FA31E;
@@ -4378,19 +4534,21 @@ RoomHeader_Caterpillar:                                                  ;8FA322
     %doorList(RoomDoors_Caterpillar))
     %stateChecks(0, 0)
 
-RoomState_Caterpillar:
-    dl LevelData_Caterpillar                                             ;8FA32F;
-    db $07,$12,$05                                                       ;8FA332;
-    dw FXHeader_Caterpillar                                              ;8FA335;
-    dw EnemyPopulations_Caterpillar                                      ;8FA337;
-    dw EnemySets_Caterpillar                                             ;8FA339;
-    db $00,$00                                                           ;8FA33B;
-    dw RoomScrolls_Caterpillar                                           ;8FA33D;
-    dw $0000                                                             ;8FA33F;
-    dw $0000                                                             ;8FA341;
-    dw PLMPopulation_Caterpillar                                         ;8FA343;
-    dw $0000                                                             ;8FA345;
-    dw RTS_8F91D6                                                        ;8FA347;
+RoomState_Caterpillar:                                                   ;8FA32F;
+    %StateHeader(\
+    %levelData(LevelData_Caterpillar),
+    %tileset(7),
+    %music($12, 5),
+    %FX(FXHeader_Caterpillar),
+    %enemyPop(EnemyPopulations_Caterpillar),
+    %enemySet(EnemySets_Caterpillar),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_Caterpillar),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Caterpillar),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_Caterpillar:
     dw Door_Caterpillar_0                                                ;8FA349;
@@ -4425,19 +4583,21 @@ RoomHeader_BetaPowerBomb:                                                ;8FA37C
     %doorList(RoomDoors_BetaPowerBomb))
     %stateChecks(0, 0)
 
-RoomState_BetaPowerBomb:
-    dl LevelData_BetaPowerBomb                                           ;8FA389;
-    db $07,$00,$00                                                       ;8FA38C;
-    dw FXHeader_BetaPowerBomb                                            ;8FA38F;
-    dw EnemyPopulations_BetaPowerBomb                                    ;8FA391;
-    dw EnemySets_BetaPowerBomb                                           ;8FA393;
-    db $C1,$C1                                                           ;8FA395;
-    dw RoomScrolls_BetaPowerBomb                                         ;8FA397;
-    dw $0000                                                             ;8FA399;
-    dw $0000                                                             ;8FA39B;
-    dw PLMPopulation_BetaPowerBomb                                       ;8FA39D;
-    dw LibBG_Brinstar_7_NarrowVerticalTower_Brick                        ;8FA39F;
-    dw RTS_8F91D6                                                        ;8FA3A1;
+RoomState_BetaPowerBomb:                                                 ;8FA389;
+    %StateHeader(\
+    %levelData(LevelData_BetaPowerBomb),
+    %tileset(7),
+    %music(0, 0),
+    %FX(FXHeader_BetaPowerBomb),
+    %enemyPop(EnemyPopulations_BetaPowerBomb),
+    %enemySet(EnemySets_BetaPowerBomb),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_BetaPowerBomb),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BetaPowerBomb),
+    %libraryBG(LibBG_Brinstar_7_NarrowVerticalTower_Brick),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_BetaPowerBomb:
     dw Door_BetaPowerBomb_0                                              ;8FA3A3;
@@ -4459,19 +4619,21 @@ RoomHeader_AlphaPowerBomb:                                               ;8FA3AE
     %doorList(RoomDoors_AlphaPowerBomb))
     %stateChecks(0, 0)
 
-RoomState_AlphaPowerBomb:
-    dl LevelData_AlphaPowerBomb                                          ;8FA3BB;
-    db $07,$00,$03                                                       ;8FA3BE;
-    dw FXHeader_AlphaPowerBomb                                           ;8FA3C1;
-    dw EnemyPopulations_AlphaPowerBomb                                   ;8FA3C3;
-    dw EnemySets_AlphaPowerBomb                                          ;8FA3C5;
-    db $C1,$C1                                                           ;8FA3C7;
-    dw RoomScrolls_AlphaPowerBomb                                        ;8FA3C9;
-    dw $0000                                                             ;8FA3CB;
-    dw $0000                                                             ;8FA3CD;
-    dw PLMPopulation_AlphaPowerBomb                                      ;8FA3CF;
-    dw LibBG_Brinstar_7_BlueGridBlocks                                   ;8FA3D1;
-    dw RTS_8F91D6                                                        ;8FA3D3;
+RoomState_AlphaPowerBomb:                                                ;8FA3BB;
+    %StateHeader(\
+    %levelData(LevelData_AlphaPowerBomb),
+    %tileset(7),
+    %music(0, 3),
+    %FX(FXHeader_AlphaPowerBomb),
+    %enemyPop(EnemyPopulations_AlphaPowerBomb),
+    %enemySet(EnemySets_AlphaPowerBomb),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_AlphaPowerBomb),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_AlphaPowerBomb),
+    %libraryBG(LibBG_Brinstar_7_BlueGridBlocks),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_AlphaPowerBomb:
     dw Door_AlphaPowerBomb_0                                             ;8FA3D5;
@@ -4493,19 +4655,21 @@ RoomHeader_SkreeBoost:                                                   ;8FA3DD
     %doorList(RoomDoors_SkreeBoost))
     %stateChecks(0, 0)
 
-RoomState_SkreeBoost:
-    dl LevelData_SkreeBoost                                              ;8FA3EA;
-    db $07,$00,$00                                                       ;8FA3ED;
-    dw FXHeader_SkreeBoost                                               ;8FA3F0;
-    dw EnemyPopulations_SkreeBoost                                       ;8FA3F2;
-    dw EnemySets_SkreeBoost                                              ;8FA3F4;
-    db $C1,$C1                                                           ;8FA3F6;
-    dw $0000                                                             ;8FA3F8;
-    dw $0000                                                             ;8FA3FA;
-    dw $0000                                                             ;8FA3FC;
-    dw PLMPopulation_SkreeBoost                                          ;8FA3FE;
-    dw LibBG_Brinstar_7_NarrowVerticalTower_Brick                        ;8FA400;
-    dw RTS_8F91D6                                                        ;8FA402;
+RoomState_SkreeBoost:                                                    ;8FA3EA;
+    %StateHeader(\
+    %levelData(LevelData_SkreeBoost),
+    %tileset(7),
+    %music(0, 0),
+    %FX(FXHeader_SkreeBoost),
+    %enemyPop(EnemyPopulations_SkreeBoost),
+    %enemySet(EnemySets_SkreeBoost),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SkreeBoost),
+    %libraryBG(LibBG_Brinstar_7_NarrowVerticalTower_Brick),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_SkreeBoost:
     dw Door_SkreeBoost_0                                                 ;8FA404;
@@ -4522,19 +4686,21 @@ RoomHeader_BelowSpazer:                                                  ;8FA408
     %doorList(RoomDoors_BelowSpazer))
     %stateChecks(0, 0)
 
-RoomState_BelowSpazer:
-    dl LevelData_BelowSpazer                                             ;8FA415;
-    db $07,$00,$05                                                       ;8FA418;
-    dw FXHeader_BelowSpazer                                              ;8FA41B;
-    dw EnemyPopulations_BelowSpazer                                      ;8FA41D;
-    dw EnemySets_BelowSpazer                                             ;8FA41F;
-    db $C1,$C1                                                           ;8FA421;
-    dw RoomScrolls_BelowSpazer                                           ;8FA423;
-    dw $0000                                                             ;8FA425;
-    dw $0000                                                             ;8FA427;
-    dw PLMPopulation_BelowSpazer                                         ;8FA429;
-    dw LibBG_Brinstar_7_VerticalBrick_0                                  ;8FA42B;
-    dw RTS_8F91D6                                                        ;8FA42D;
+RoomState_BelowSpazer:                                                   ;8FA415;
+    %StateHeader(\
+    %levelData(LevelData_BelowSpazer),
+    %tileset(7),
+    %music(0, 5),
+    %FX(FXHeader_BelowSpazer),
+    %enemyPop(EnemyPopulations_BelowSpazer),
+    %enemySet(EnemySets_BelowSpazer),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_BelowSpazer),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BelowSpazer),
+    %libraryBG(LibBG_Brinstar_7_VerticalBrick_0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_BelowSpazer:
     dw Door_BelowSpazer_0                                                ;8FA42F;
@@ -4561,19 +4727,21 @@ RoomHeader_Spazer:                                                       ;8FA447
     %doorList(RoomDoors_Spazer))
     %stateChecks(0, 0)
 
-RoomState_Spazer:
-    dl LevelData_Spazer                                                  ;8FA454;
-    db $07,$00,$03                                                       ;8FA457;
-    dw FXHeader_Spazer                                                   ;8FA45A;
-    dw EnemyPopulations_Spazer                                           ;8FA45C;
-    dw EnemySets_Spazer                                                  ;8FA45E;
-    db $C1,$C1                                                           ;8FA460;
-    dw RoomScrolls_Spazer                                                ;8FA462;
-    dw $0000                                                             ;8FA464;
-    dw $0000                                                             ;8FA466;
-    dw PLMPopulation_Spazer                                              ;8FA468;
-    dw LibBG_Brinstar_7_BlueGridBlocks                                   ;8FA46A;
-    dw RTS_8F91D6                                                        ;8FA46C;
+RoomState_Spazer:                                                        ;8FA454;
+    %StateHeader(\
+    %levelData(LevelData_Spazer),
+    %tileset(7),
+    %music(0, 3),
+    %FX(FXHeader_Spazer),
+    %enemyPop(EnemyPopulations_Spazer),
+    %enemySet(EnemySets_Spazer),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_Spazer),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Spazer),
+    %libraryBG(LibBG_Brinstar_7_BlueGridBlocks),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_Spazer:
     dw Door_Spazer_0                                                     ;8FA46E;
@@ -4592,19 +4760,21 @@ RoomHeader_WarehouseZeela:                                               ;8FA471
     %doorList(RoomDoors_WarehouseZeela))
     %stateChecks(0, 0)
 
-RoomState_WarehouseZeela:
-    dl LevelData_WarehouseZeela                                          ;8FA47E;
-    db $07,$00,$05                                                       ;8FA481;
-    dw FXHeader_VariousRooms_8383D2                                      ;8FA484;
-    dw EnemyPopulations_WarehouseZeela                                   ;8FA486;
-    dw EnemySets_WarehouseZeela                                          ;8FA488;
-    db $C0,$00                                                           ;8FA48A;
-    dw RoomScrolls_WarehouseZeela                                        ;8FA48C;
-    dw $0000                                                             ;8FA48E;
-    dw $0000                                                             ;8FA490;
-    dw PLMPopulation_WarehouseZeela                                      ;8FA492;
-    dw $0000                                                             ;8FA494;
-    dw RTS_8F91D6                                                        ;8FA496;
+RoomState_WarehouseZeela:                                                ;8FA47E;
+    %StateHeader(\
+    %levelData(LevelData_WarehouseZeela),
+    %tileset(7),
+    %music(0, 5),
+    %FX(FXHeader_VariousRooms_8383D2),
+    %enemyPop(EnemyPopulations_WarehouseZeela),
+    %enemySet(EnemySets_WarehouseZeela),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(RoomScrolls_WarehouseZeela),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_WarehouseZeela),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_WarehouseZeela:
     dw Door_WarehouseZeela_0                                             ;8FA498;
@@ -4634,19 +4804,21 @@ RoomHeader_WarehouseETank:                                               ;8FA4B1
     %doorList(RoomDoors_WarehouseETank))
     %stateChecks(0, 0)
 
-RoomState_WarehouseETank:
-    dl LevelData_WarehouseETank                                          ;8FA4BE;
-    db $07,$00,$00                                                       ;8FA4C1;
-    dw FXHeader_VariousRooms_8383D2                                      ;8FA4C4;
-    dw EnemyPopulations_WarehouseETank                                   ;8FA4C6;
-    dw EnemySets_WarehouseETank                                          ;8FA4C8;
-    db $C0,$00                                                           ;8FA4CA;
-    dw $0000                                                             ;8FA4CC;
-    dw $0000                                                             ;8FA4CE;
-    dw $0000                                                             ;8FA4D0;
-    dw PLMPopulation_WarehouseETank                                      ;8FA4D2;
-    dw $0000                                                             ;8FA4D4;
-    dw RTS_8F91D6                                                        ;8FA4D6;
+RoomState_WarehouseETank:                                                ;8FA4BE;
+    %StateHeader(\
+    %levelData(LevelData_WarehouseETank),
+    %tileset(7),
+    %music(0, 0),
+    %FX(FXHeader_VariousRooms_8383D2),
+    %enemyPop(EnemyPopulations_WarehouseETank),
+    %enemySet(EnemySets_WarehouseETank),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_WarehouseETank),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_WarehouseETank:
     dw Door_WarehouseETank_0                                             ;8FA4D8;
@@ -4662,19 +4834,21 @@ RoomHeader_WarehouseKihunter:                                            ;8FA4DA
     %doorList(RoomDoors_WarehouseKihunter))
     %stateChecks(0, 0)
 
-RoomState_WarehouseKihunter:
-    dl LevelData_WarehouseKihunter                                       ;8FA4E7;
-    db $07,$12,$05                                                       ;8FA4EA;
-    dw FXHeader_VariousRooms_8383D2                                      ;8FA4ED;
-    dw EnemyPopulations_WarehouseKihunter                                ;8FA4EF;
-    dw EnemySets_WarehouseKihunter                                       ;8FA4F1;
-    db $C0,$00                                                           ;8FA4F3;
-    dw RoomScrolls_WarehouseKihunter                                     ;8FA4F5;
-    dw $0000                                                             ;8FA4F7;
-    dw $0000                                                             ;8FA4F9;
-    dw PLMPopulation_WarehouseKihunter                                   ;8FA4FB;
-    dw $0000                                                             ;8FA4FD;
-    dw RTS_8F91D6                                                        ;8FA4FF;
+RoomState_WarehouseKihunter:                                             ;8FA4E7;
+    %StateHeader(\
+    %levelData(LevelData_WarehouseKihunter),
+    %tileset(7),
+    %music($12, 5),
+    %FX(FXHeader_VariousRooms_8383D2),
+    %enemyPop(EnemyPopulations_WarehouseKihunter),
+    %enemySet(EnemySets_WarehouseKihunter),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(RoomScrolls_WarehouseKihunter),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_WarehouseKihunter),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_WarehouseKihunter:
     dw Door_WarehouseKihunter_0                                          ;8FA501;
@@ -4708,33 +4882,37 @@ RoomHeader_MiniKraid:                                                    ;8FA521
     %stateChecks(1,
     %stateCheckBossDead(1, RoomState_MiniKraid_1))
 
-RoomState_MiniKraid_0:
-    dl LevelData_MiniKraid                                               ;8FA533;
-    db $07,$27,$06                                                       ;8FA536;
-    dw FXHeader_MiniKraid_State0_1                                       ;8FA539;
-    dw EnemyPopulations_MiniKraid                                        ;8FA53B;
-    dw EnemySets_MiniKraid                                               ;8FA53D;
-    db $C1,$C1                                                           ;8FA53F;
-    dw $0000                                                             ;8FA541;
-    dw $0000                                                             ;8FA543;
-    dw $0000                                                             ;8FA545;
-    dw PLMPopulation_MiniKraid_State0_1                                  ;8FA547;
-    dw LibBG_Brinstar_7_NarrowVerticalTower_Brick_Vines_0                ;8FA549;
-    dw RTS_8F91D6                                                        ;8FA54B;
+RoomState_MiniKraid_0:                                                   ;8FA533;
+    %StateHeader(\
+    %levelData(LevelData_MiniKraid),
+    %tileset(7),
+    %music($27, 6),
+    %FX(FXHeader_MiniKraid_State0_1),
+    %enemyPop(EnemyPopulations_MiniKraid),
+    %enemySet(EnemySets_MiniKraid),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_MiniKraid_State0_1),
+    %libraryBG(LibBG_Brinstar_7_NarrowVerticalTower_Brick_Vines_0),
+    %setupASM(RTS_8F91D6))
 
-RoomState_MiniKraid_1:
-    dl LevelData_MiniKraid                                               ;8FA54D;
-    db $07,$27,$03                                                       ;8FA550;
-    dw FXHeader_MiniKraid_State0_1                                       ;8FA553;
-    dw EnemyPopulations_MiniKraid                                        ;8FA555;
-    dw EnemySets_MiniKraid                                               ;8FA557;
-    db $C1,$C1                                                           ;8FA559;
-    dw $0000                                                             ;8FA55B;
-    dw $0000                                                             ;8FA55D;
-    dw $0000                                                             ;8FA55F;
-    dw PLMPopulation_MiniKraid_State0_1                                  ;8FA561;
-    dw LibBG_Brinstar_7_NarrowVerticalTower_Brick_Vines_0                ;8FA563;
-    dw RTS_8F91D6                                                        ;8FA565;
+RoomState_MiniKraid_1:                                                   ;8FA54D;
+    %StateHeader(\
+    %levelData(LevelData_MiniKraid),
+    %tileset(7),
+    %music($27, 3),
+    %FX(FXHeader_MiniKraid_State0_1),
+    %enemyPop(EnemyPopulations_MiniKraid),
+    %enemySet(EnemySets_MiniKraid),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_MiniKraid_State0_1),
+    %libraryBG(LibBG_Brinstar_7_NarrowVerticalTower_Brick_Vines_0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_MiniKraid:
     dw Door_MiniKraid_0                                                  ;8FA567;
@@ -4751,19 +4929,21 @@ RoomHeader_KraidEyeDoor:                                                 ;8FA56B
     %doorList(RoomDoors_KraidEyeDoor))
     %stateChecks(0, 0)
 
-RoomState_KraidEyeDoor:
-    dl LevelData_KraidEyeDoor                                            ;8FA578;
-    db $07,$00,$00                                                       ;8FA57B;
-    dw FXHeader_KraidEyeDoor                                             ;8FA57E;
-    dw EnemyPopulations_KraidEyeDoor                                     ;8FA580;
-    dw EnemySets_KraidEyeDoor                                            ;8FA582;
-    db $00,$00                                                           ;8FA584;
-    dw RoomScrolls_KraidEyeDoor                                          ;8FA586;
-    dw $0000                                                             ;8FA588;
-    dw $0000                                                             ;8FA58A;
-    dw PLMPopulation_KraidEyeDoor                                        ;8FA58C;
-    dw $0000                                                             ;8FA58E;
-    dw RTS_8F91D6                                                        ;8FA590;
+RoomState_KraidEyeDoor:                                                  ;8FA578;
+    %StateHeader(\
+    %levelData(LevelData_KraidEyeDoor),
+    %tileset(7),
+    %music(0, 0),
+    %FX(FXHeader_KraidEyeDoor),
+    %enemyPop(EnemyPopulations_KraidEyeDoor),
+    %enemySet(EnemySets_KraidEyeDoor),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_KraidEyeDoor),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_KraidEyeDoor),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_KraidEyeDoor:
     dw Door_KraidEyeDoor_0                                               ;8FA592;
@@ -4788,33 +4968,37 @@ RoomHeader_Kraid:                                                        ;8FA59F
     %stateChecks(1,
     %stateCheckBossDead(1, RoomState_Kraid_1))
 
-RoomState_Kraid_0:
-    dl LevelData_Kraid                                                   ;8FA5B1;
-    db $1A,$27,$06                                                       ;8FA5B4;
-    dw FXHeader_Kraid_State0                                             ;8FA5B7;
-    dw EnemyPopulations_Kraid                                            ;8FA5B9;
-    dw EnemySets_Kraid                                                   ;8FA5BB;
-    db $01,$01                                                           ;8FA5BD;
-    dw RoomScrolls_Kraid                                                 ;8FA5BF;
-    dw $0000                                                             ;8FA5C1;
-    dw $0000                                                             ;8FA5C3;
-    dw PLMPopulation_Kraid_State0_1                                      ;8FA5C5;
-    dw LibBG_Brinstar_1A_Kraid_Upper_Lower                               ;8FA5C7;
-    dw RTS_8F91D6                                                        ;8FA5C9;
+RoomState_Kraid_0:                                                       ;8FA5B1;
+    %StateHeader(\
+    %levelData(LevelData_Kraid),
+    %tileset($1A),
+    %music($27, 6),
+    %FX(FXHeader_Kraid_State0),
+    %enemyPop(EnemyPopulations_Kraid),
+    %enemySet(EnemySets_Kraid),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(RoomScrolls_Kraid),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Kraid_State0_1),
+    %libraryBG(LibBG_Brinstar_1A_Kraid_Upper_Lower),
+    %setupASM(RTS_8F91D6))
 
-RoomState_Kraid_1:
-    dl LevelData_Kraid                                                   ;8FA5CB;
-    db $1A,$00,$00                                                       ;8FA5CE;
-    dw FXHeader_Kraid_State0                                             ;8FA5D1;
-    dw EnemyPopulations_Kraid                                            ;8FA5D3;
-    dw EnemySets_Kraid                                                   ;8FA5D5;
-    db $01,$01                                                           ;8FA5D7;
-    dw RoomScrolls_Kraid                                                 ;8FA5D9;
-    dw $0000                                                             ;8FA5DB;
-    dw $0000                                                             ;8FA5DD;
-    dw PLMPopulation_Kraid_State0_1                                      ;8FA5DF;
-    dw LibBG_Standard_BG3_Tiles                                          ;8FA5E1;
-    dw RTS_8F91D6                                                        ;8FA5E3;
+RoomState_Kraid_1:                                                       ;8FA5CB;
+    %StateHeader(\
+    %levelData(LevelData_Kraid),
+    %tileset($1A),
+    %music(0, 0),
+    %FX(FXHeader_Kraid_State0),
+    %enemyPop(EnemyPopulations_Kraid),
+    %enemySet(EnemySets_Kraid),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(RoomScrolls_Kraid),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Kraid_State0_1),
+    %libraryBG(LibBG_Standard_BG3_Tiles),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_Kraid:
     dw Door_Kraid_0                                                      ;8FA5E5;
@@ -4834,19 +5018,21 @@ RoomHeader_StatuesHallway:                                               ;8FA5ED
     %doorList(RoomDoors_StatuesHallway))
     %stateChecks(0, 0)
 
-RoomState_StatuesHallway:
-    dl LevelData_StatuesHallway                                          ;8FA5FA;
-    db $08,$00,$04                                                       ;8FA5FD;
-    dw FXHeader_Kraid_State1                                             ;8FA600;
-    dw EnemyPopulations_StatuesHallway                                   ;8FA602;
-    dw EnemySets_StatuesHallway                                          ;8FA604;
-    db $C1,$C1                                                           ;8FA606;
-    dw $0000                                                             ;8FA608;
-    dw $0000                                                             ;8FA60A;
-    dw $0000                                                             ;8FA60C;
-    dw PLMPopulation_StatuesHallway                                      ;8FA60E;
-    dw LibBG_Brinstar_8_NarrowVerticalTower_Brick_Grey_0                 ;8FA610;
-    dw RTS_8F91D6                                                        ;8FA612;
+RoomState_StatuesHallway:                                                ;8FA5FA;
+    %StateHeader(\
+    %levelData(LevelData_StatuesHallway),
+    %tileset(8),
+    %music(0, 4),
+    %FX(FXHeader_Kraid_State1),
+    %enemyPop(EnemyPopulations_StatuesHallway),
+    %enemySet(EnemySets_StatuesHallway),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_StatuesHallway),
+    %libraryBG(LibBG_Brinstar_8_NarrowVerticalTower_Brick_Grey_0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_StatuesHallway:
     dw Door_StatuesHallway_0                                             ;8FA614;
@@ -4863,19 +5049,21 @@ RoomHeader_RedTowerRefill:                                               ;8FA618
     %doorList(RoomDoors_RedTowerRefill))
     %stateChecks(0, 0)
 
-RoomState_RedTowerRefill:
-    dl LevelData_EnergyRefill_RightSideDoor                              ;8FA625;
-    db $17,$00,$00                                                       ;8FA628;
-    dw FXHeader_RedTowerRefill                                           ;8FA62B;
-    dw EnemyPopulations_RedTowerRefill                                   ;8FA62D;
-    dw EnemySets_RedTowerRefill                                          ;8FA62F;
-    db $00,$00                                                           ;8FA631;
-    dw $0000                                                             ;8FA633;
-    dw $0000                                                             ;8FA635;
-    dw $0000                                                             ;8FA637;
-    dw PLMPopulation_RedTowerRefill                                      ;8FA639;
-    dw $0000                                                             ;8FA63B;
-    dw RTS_8F91D6                                                        ;8FA63D;
+RoomState_RedTowerRefill:                                                ;8FA625;
+    %StateHeader(\
+    %levelData(LevelData_EnergyRefill_RightSideDoor),
+    %tileset($17),
+    %music(0, 0),
+    %FX(FXHeader_RedTowerRefill),
+    %enemyPop(EnemyPopulations_RedTowerRefill),
+    %enemySet(EnemySets_RedTowerRefill),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_RedTowerRefill),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_RedTowerRefill:
     dw Door_RedTowerRefill_0                                             ;8FA63F;
@@ -4891,19 +5079,21 @@ RoomHeader_KraidRefill:                                                  ;8FA641
     %doorList(RoomDoors_KraidRefill))
     %stateChecks(0, 0)
 
-RoomState_KraidRefill:
-    dl LevelData_RefillStation_LeftSideDoor                              ;8FA64E;
-    db $18,$00,$00                                                       ;8FA651;
-    dw FXHeader_KraidRefill                                              ;8FA654;
-    dw EnemyPopulations_KraidRefill                                      ;8FA656;
-    dw EnemySets_KraidRefill                                             ;8FA658;
-    db $00,$00                                                           ;8FA65A;
-    dw $0000                                                             ;8FA65C;
-    dw $0000                                                             ;8FA65E;
-    dw $0000                                                             ;8FA660;
-    dw PLMPopulation_KraidRefill                                         ;8FA662;
-    dw $0000                                                             ;8FA664;
-    dw RTS_8F91D6                                                        ;8FA666;
+RoomState_KraidRefill:                                                   ;8FA64E;
+    %StateHeader(\
+    %levelData(LevelData_RefillStation_LeftSideDoor),
+    %tileset($18),
+    %music(0, 0),
+    %FX(FXHeader_KraidRefill),
+    %enemyPop(EnemyPopulations_KraidRefill),
+    %enemySet(EnemySets_KraidRefill),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_KraidRefill),
+    %libraryBG(0),
+    %setupASM(RTS_8F91D6))
 
 RoomDoors_KraidRefill:
     dw Door_KraidRefill_0                                                ;8FA668;
@@ -4919,19 +5109,21 @@ RoomHeader_Statues:                                                      ;8FA66A
     %doorList(RoomDoors_Statues))
     %stateChecks(0, 0)
 
-RoomState_Statues:
-    dl LevelData_Statues                                                 ;8FA677;
-    db $15,$09,$06                                                       ;8FA67A;
-    dw FXHeader_Statues                                                  ;8FA67D;
-    dw EnemyPopulations_Statues                                          ;8FA67F;
-    dw EnemySets_Statues                                                 ;8FA681;
-    db $81,$01                                                           ;8FA683;
-    dw RoomScrolls_Statues                                               ;8FA685;
-    dw $0000                                                             ;8FA687;
-    dw $0000                                                             ;8FA689;
-    dw PLMPopulation_Statues                                             ;8FA68B;
-    dw LibBG_Tourian_15_Statues                                          ;8FA68D;
-    dw SetupASM_RunStatueUnlockingAnimations                             ;8FA68F;
+RoomState_Statues:                                                       ;8FA677;
+    %StateHeader(\
+    %levelData(LevelData_Statues),
+    %tileset($15),
+    %music(9, 6),
+    %FX(FXHeader_Statues),
+    %enemyPop(EnemyPopulations_Statues),
+    %enemySet(EnemySets_Statues),
+    %layer2Scrolls($81, 1),
+    %scrollPointer(RoomScrolls_Statues),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Statues),
+    %libraryBG(LibBG_Tourian_15_Statues),
+    %setupASM(SetupASM_RunStatueUnlockingAnimations))
 
 RoomDoors_Statues:
     dw Door_Statues_0                                                    ;8FA691;
@@ -4960,19 +5152,21 @@ RoomHeader_WarehouseEntrance:                                            ;8FA6A1
     %doorList(RoomDoors_WarehouseEntrance))
     %stateChecks(0, 0)
 
-RoomState_WarehouseEntrance:
-    dl LevelData_WarehouseEntrance                                       ;8FA6AE;
-    db $07,$12,$03                                                       ;8FA6B1;
-    dw FXHeader_WarehouseEntrance                                        ;8FA6B4;
-    dw EnemyPopulations_WarehouseEntrance                                ;8FA6B6;
-    dw EnemySets_WarehouseEntrance                                       ;8FA6B8;
-    db $C1,$C1                                                           ;8FA6BA;
-    dw RoomScrolls_WarehouseEntrance                                     ;8FA6BC;
-    dw $0000                                                             ;8FA6BE;
-    dw $0000                                                             ;8FA6C0;
-    dw PLMPopulation_WarehouseEntrance                                   ;8FA6C2;
-    dw LibBG_Brinstar_7_MechanicalRoom                                   ;8FA6C4;
-    dw RTS_8F91F4                                                        ;8FA6C6;
+RoomState_WarehouseEntrance:                                             ;8FA6AE;
+    %StateHeader(\
+    %levelData(LevelData_WarehouseEntrance),
+    %tileset(7),
+    %music($12, 3),
+    %FX(FXHeader_WarehouseEntrance),
+    %enemyPop(EnemyPopulations_WarehouseEntrance),
+    %enemySet(EnemySets_WarehouseEntrance),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_WarehouseEntrance),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_WarehouseEntrance),
+    %libraryBG(LibBG_Brinstar_7_MechanicalRoom),
+    %setupASM(RTS_8F91F4))
 
 RoomDoors_WarehouseEntrance:
     dw Door_WarehouseEntrance_0                                          ;8FA6C8;
@@ -5006,19 +5200,21 @@ RoomHeader_VariaSuit:                                                    ;8FA6E2
     %doorList(RoomDoors_VariaSuit))
     %stateChecks(0, 0)
 
-RoomState_VariaSuit:
-    dl LevelData_VariaSuit                                               ;8FA6EF;
-    db $07,$00,$03                                                       ;8FA6F2;
-    dw FXHeader_VariaSuit                                                ;8FA6F5;
-    dw EnemyPopulations_VariaSuit                                        ;8FA6F7;
-    dw EnemySets_VariaSuit                                               ;8FA6F9;
-    db $00,$00                                                           ;8FA6FB;
-    dw $0000                                                             ;8FA6FD;
-    dw $0000                                                             ;8FA6FF;
-    dw $0000                                                             ;8FA701;
-    dw PLMPopulation_VariaSuit                                           ;8FA703;
-    dw $0000                                                             ;8FA705;
-    dw RTS_8F91F4                                                        ;8FA707;
+RoomState_VariaSuit:                                                     ;8FA6EF;
+    %StateHeader(\
+    %levelData(LevelData_VariaSuit),
+    %tileset(7),
+    %music(0, 3),
+    %FX(FXHeader_VariaSuit),
+    %enemyPop(EnemyPopulations_VariaSuit),
+    %enemySet(EnemySets_VariaSuit),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_VariaSuit),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F4))
 
 RoomDoors_VariaSuit:
     dw Door_VariaSuit_0                                                  ;8FA709;
@@ -5034,19 +5230,21 @@ RoomHeader_WarehouseSave:                                                ;8FA70B
     %doorList(RoomDoors_WarehouseSave))
     %stateChecks(0, 0)
 
-RoomState_WarehouseSave:
-    dl LevelData_SaveStation_LeftSideDoor                                ;8FA718;
-    db $19,$12,$05                                                       ;8FA71B;
-    dw FXHeader_WarehouseSave                                            ;8FA71E;
-    dw EnemyPopulations_WarehouseSave                                    ;8FA720;
-    dw EnemySets_WarehouseSave                                           ;8FA722;
-    db $00,$00                                                           ;8FA724;
-    dw $0000                                                             ;8FA726;
-    dw $0000                                                             ;8FA728;
-    dw $0000                                                             ;8FA72A;
-    dw PLMPopulation_WarehouseSave                                       ;8FA72C;
-    dw $0000                                                             ;8FA72E;
-    dw RTS_8F91F4                                                        ;8FA730;
+RoomState_WarehouseSave:                                                 ;8FA718;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_LeftSideDoor),
+    %tileset($19),
+    %music($12, 5),
+    %FX(FXHeader_WarehouseSave),
+    %enemyPop(EnemyPopulations_WarehouseSave),
+    %enemySet(EnemySets_WarehouseSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_WarehouseSave),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F4))
 
 RoomDoors_WarehouseSave:
     dw Door_WarehouseSave_0                                              ;8FA732;
@@ -5062,19 +5260,21 @@ RoomHeader_RedBrinstarSave:                                              ;8FA734
     %doorList(RoomDoors_RedBrinstarSave))
     %stateChecks(0, 0)
 
-RoomState_RedBrinstarSave:
-    dl LevelData_SaveStation_LeftSideDoor                                ;8FA741;
-    db $19,$12,$05                                                       ;8FA744;
-    dw FXHeader_RedBrinstarSave                                          ;8FA747;
-    dw EnemyPopulations_RedBrinstarSave                                  ;8FA749;
-    dw EnemySets_RedBrinstarSave                                         ;8FA74B;
-    db $00,$00                                                           ;8FA74D;
-    dw $0000                                                             ;8FA74F;
-    dw $0000                                                             ;8FA751;
-    dw $0000                                                             ;8FA753;
-    dw PLMPopulation_RedBrinstarSave                                     ;8FA755;
-    dw $0000                                                             ;8FA757;
-    dw RTS_8F91F4                                                        ;8FA759;
+RoomState_RedBrinstarSave:                                               ;8FA741;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_LeftSideDoor),
+    %tileset($19),
+    %music($12, 5),
+    %FX(FXHeader_RedBrinstarSave),
+    %enemyPop(EnemyPopulations_RedBrinstarSave),
+    %enemySet(EnemySets_RedBrinstarSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_RedBrinstarSave),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F4))
 
 RoomDoors_RedBrinstarSave:
     dw Door_RedBrinstarSave_0                                            ;8FA75B;
@@ -5090,19 +5290,21 @@ RoomHeader_IceBeamAcid:                                                  ;8FA75D
     %doorList(RoomDoors_IceBeamAcid))
     %stateChecks(0, 0)
 
-RoomState_IceBeamAcid:
-    dl LevelData_IceBeamAcid                                             ;8FA76A;
-    db $09,$00,$00                                                       ;8FA76D;
-    dw FXHeader_IceBeamAcid                                              ;8FA770;
-    dw EnemyPopulations_IceBeamAcid                                      ;8FA772;
-    dw EnemySets_IceBeamAcid                                             ;8FA774;
-    db $C1,$C1                                                           ;8FA776;
-    dw $0000                                                             ;8FA778;
-    dw $0000                                                             ;8FA77A;
-    dw $0000                                                             ;8FA77C;
-    dw PLMPopulation_IceBeamAcid                                         ;8FA77E;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright                  ;8FA780;
-    dw RTS_8F91F5                                                        ;8FA782;
+RoomState_IceBeamAcid:                                                   ;8FA76A;
+    %StateHeader(\
+    %levelData(LevelData_IceBeamAcid),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_IceBeamAcid),
+    %enemyPop(EnemyPopulations_IceBeamAcid),
+    %enemySet(EnemySets_IceBeamAcid),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_IceBeamAcid),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright),
+    %setupASM(RTS_8F91F5))
 
 RoomDoors_IceBeamAcid:
     dw Door_IceBeamAcid_0                                                ;8FA784;
@@ -5119,19 +5321,21 @@ RoomHeader_Cathedral:                                                    ;8FA788
     %doorList(RoomDoors_Cathedral))
     %stateChecks(0, 0)
 
-RoomState_Cathedral:
-    dl LevelData_Cathedral                                               ;8FA795;
-    db $09,$00,$00                                                       ;8FA798;
-    dw FXHeader_Cathedral                                                ;8FA79B;
-    dw EnemyPopulations_Cathedral                                        ;8FA79D;
-    dw EnemySets_Cathedral                                               ;8FA79F;
-    db $00,$00                                                           ;8FA7A1;
-    dw $0000                                                             ;8FA7A3;
-    dw $0000                                                             ;8FA7A5;
-    dw $0000                                                             ;8FA7A7;
-    dw PLMPopulation_Cathedral                                           ;8FA7A9;
-    dw $0000                                                             ;8FA7AB;
-    dw RTS_8F91F5                                                        ;8FA7AD;
+RoomState_Cathedral:                                                     ;8FA795;
+    %StateHeader(\
+    %levelData(LevelData_Cathedral),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_Cathedral),
+    %enemyPop(EnemyPopulations_Cathedral),
+    %enemySet(EnemySets_Cathedral),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Cathedral),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F5))
 
 RoomDoors_Cathedral:
     dw Door_Cathedral_0                                                  ;8FA7AF;
@@ -5148,19 +5352,21 @@ RoomHeader_CathedralEntrance:                                            ;8FA7B3
     %doorList(RoomDoors_CathedralEntrance))
     %stateChecks(0, 0)
 
-RoomState_CathedralEntrance:
-    dl LevelData_CathedralEntrance                                       ;8FA7C0;
-    db $09,$00,$00                                                       ;8FA7C3;
-    dw FXHeader_CathedralEntrance                                        ;8FA7C6;
-    dw EnemyPopulations_CathedralEntrance                                ;8FA7C8;
-    dw EnemySets_CathedralEntrance                                       ;8FA7CA;
-    db $00,$00                                                           ;8FA7CC;
-    dw $0000                                                             ;8FA7CE;
-    dw $0000                                                             ;8FA7D0;
-    dw $0000                                                             ;8FA7D2;
-    dw PLMPopulation_CathedralEntrance                                   ;8FA7D4;
-    dw $0000                                                             ;8FA7D6;
-    dw RTS_8F91F5                                                        ;8FA7D8;
+RoomState_CathedralEntrance:                                             ;8FA7C0;
+    %StateHeader(\
+    %levelData(LevelData_CathedralEntrance),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_CathedralEntrance),
+    %enemyPop(EnemyPopulations_CathedralEntrance),
+    %enemySet(EnemySets_CathedralEntrance),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CathedralEntrance),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F5))
 
 RoomDoors_CathedralEntrance:
     dw Door_CathedralEntrance_0                                          ;8FA7DA;
@@ -5177,19 +5383,21 @@ RoomHeader_BusinessCenter:                                               ;8FA7DE
     %doorList(RoomDoors_BusinessCenter))
     %stateChecks(0, 0)
 
-RoomState_BusinessCenter:
-    dl LevelData_BusinessCenter                                          ;8FA7EB;
-    db $0A,$15,$05                                                       ;8FA7EE;
-    dw FXHeader_BusinessCenter                                           ;8FA7F1;
-    dw EnemyPopulations_BusinessCenter                                   ;8FA7F3;
-    dw EnemySets_BusinessCenter                                          ;8FA7F5;
-    db $C1,$C1                                                           ;8FA7F7;
-    dw $0000                                                             ;8FA7F9;
-    dw $0000                                                             ;8FA7FB;
-    dw $0000                                                             ;8FA7FD;
-    dw PLMPopulation_BusinessCenter                                      ;8FA7FF;
-    dw LibBG_Norfair_9_A_CavernVertical                                  ;8FA801;
-    dw RTS_8F91F5                                                        ;8FA803;
+RoomState_BusinessCenter:                                                ;8FA7EB;
+    %StateHeader(\
+    %levelData(LevelData_BusinessCenter),
+    %tileset($0A),
+    %music($15, 5),
+    %FX(FXHeader_BusinessCenter),
+    %enemyPop(EnemyPopulations_BusinessCenter),
+    %enemySet(EnemySets_BusinessCenter),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BusinessCenter),
+    %libraryBG(LibBG_Norfair_9_A_CavernVertical),
+    %setupASM(RTS_8F91F5))
 
 RoomDoors_BusinessCenter:
     dw Door_BusinessCenter_0                                             ;8FA805;
@@ -5212,19 +5420,21 @@ RoomHeader_IceBeamGate:                                                  ;8FA815
     %doorList(RoomDoors_IceBeamGate))
     %stateChecks(0, 0)
 
-RoomState_IceBeamGate:
-    dl LevelData_IceBeamGate                                             ;8FA822;
-    db $0A,$00,$00                                                       ;8FA825;
-    dw FXHeader_IceBeamGate                                              ;8FA828;
-    dw EnemyPopulations_IceBeamGate                                      ;8FA82A;
-    dw EnemySets_IceBeamGate                                             ;8FA82C;
-    db $C1,$C1                                                           ;8FA82E;
-    dw RoomScrolls_IceBeamGate                                           ;8FA830;
-    dw $0000                                                             ;8FA832;
-    dw $0000                                                             ;8FA834;
-    dw PLMPopulation_IceBeamGate                                         ;8FA836;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_0                       ;8FA838;
-    dw RTS_8F91F5                                                        ;8FA83A;
+RoomState_IceBeamGate:                                                   ;8FA822;
+    %StateHeader(\
+    %levelData(LevelData_IceBeamGate),
+    %tileset($0A),
+    %music(0, 0),
+    %FX(FXHeader_IceBeamGate),
+    %enemyPop(EnemyPopulations_IceBeamGate),
+    %enemySet(EnemySets_IceBeamGate),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_IceBeamGate),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_IceBeamGate),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_0),
+    %setupASM(RTS_8F91F5))
 
 RoomDoors_IceBeamGate:
     dw Door_IceBeamGate_0                                                ;8FA83C;
@@ -5250,19 +5460,21 @@ RoomHeader_IceBeamTutorial:                                              ;8FA865
     %doorList(RoomDoors_IceBeamTutorial))
     %stateChecks(0, 0)
 
-RoomState_IceBeamTutorial:
-    dl LevelData_IceBeamTutorial                                         ;8FA872;
-    db $09,$00,$00                                                       ;8FA875;
-    dw FXHeader_IceBeamTutorial                                          ;8FA878;
-    dw EnemyPopulations_IceBeamTutorial                                  ;8FA87A;
-    dw EnemySets_IceBeamTutorial                                         ;8FA87C;
-    db $C1,$C1                                                           ;8FA87E;
-    dw $0000                                                             ;8FA880;
-    dw $0000                                                             ;8FA882;
-    dw $0000                                                             ;8FA884;
-    dw PLMPopulation_IceBeamTutorial                                     ;8FA886;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright                  ;8FA888;
-    dw RTS_8F91F5                                                        ;8FA88A;
+RoomState_IceBeamTutorial:                                               ;8FA872;
+    %StateHeader(\
+    %levelData(LevelData_IceBeamTutorial),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_IceBeamTutorial),
+    %enemyPop(EnemyPopulations_IceBeamTutorial),
+    %enemySet(EnemySets_IceBeamTutorial),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_IceBeamTutorial),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright),
+    %setupASM(RTS_8F91F5))
 
 RoomDoors_IceBeamTutorial:
     dw Door_IceBeamTutorial_0                                            ;8FA88C;
@@ -5279,19 +5491,21 @@ RoomHeader_IceBeam:                                                      ;8FA890
     %doorList(RoomDoors_IceBeam))
     %stateChecks(0, 0)
 
-RoomState_IceBeam:
-    dl LevelData_IceBeam                                                 ;8FA89D;
-    db $0A,$00,$03                                                       ;8FA8A0;
-    dw FXHeader_IceBeam                                                  ;8FA8A3;
-    dw EnemyPopulations_IceBeam                                          ;8FA8A5;
-    dw EnemySets_IceBeam                                                 ;8FA8A7;
-    db $01,$01                                                           ;8FA8A9;
-    dw $0000                                                             ;8FA8AB;
-    dw $0000                                                             ;8FA8AD;
-    dw $0000                                                             ;8FA8AF;
-    dw PLMPopulation_IceBeam                                             ;8FA8B1;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_0                       ;8FA8B3;
-    dw RTS_8F91F5                                                        ;8FA8B5;
+RoomState_IceBeam:                                                       ;8FA89D;
+    %StateHeader(\
+    %levelData(LevelData_IceBeam),
+    %tileset($0A),
+    %music(0, 3),
+    %FX(FXHeader_IceBeam),
+    %enemyPop(EnemyPopulations_IceBeam),
+    %enemySet(EnemySets_IceBeam),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_IceBeam),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_0),
+    %setupASM(RTS_8F91F5))
 
 RoomDoors_IceBeam:
     dw Door_IceBeam_0                                                    ;8FA8B7;
@@ -5307,19 +5521,21 @@ RoomHeader_IceBeamSnake:                                                 ;8FA8B9
     %doorList(RoomDoors_IceBeamSnake))
     %stateChecks(0, 0)
 
-RoomState_IceBeamSnake:
-    dl LevelData_IceBeamSnake                                            ;8FA8C6;
-    db $09,$00,$05                                                       ;8FA8C9;
-    dw FXHeader_IceBeamSnake                                             ;8FA8CC;
-    dw EnemyPopulations_IceBeamSnake                                     ;8FA8CE;
-    dw EnemySets_IceBeamSnake                                            ;8FA8D0;
-    db $C1,$C1                                                           ;8FA8D2;
-    dw RoomScrolls_IceBeamSnake                                          ;8FA8D4;
-    dw $0000                                                             ;8FA8D6;
-    dw $0000                                                             ;8FA8D8;
-    dw PLMPopulation_IceBeamSnake                                        ;8FA8DA;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_0                       ;8FA8DC;
-    dw RTS_8F91F5                                                        ;8FA8DE;
+RoomState_IceBeamSnake:                                                  ;8FA8C6;
+    %StateHeader(\
+    %levelData(LevelData_IceBeamSnake),
+    %tileset(9),
+    %music(0, 5),
+    %FX(FXHeader_IceBeamSnake),
+    %enemyPop(EnemyPopulations_IceBeamSnake),
+    %enemySet(EnemySets_IceBeamSnake),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_IceBeamSnake),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_IceBeamSnake),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_0),
+    %setupASM(RTS_8F91F5))
 
 RoomDoors_IceBeamSnake:
     dw Door_IceBeamSnake_0                                               ;8FA8E0;
@@ -5352,19 +5568,21 @@ RoomHeader_CrumbleShaft:                                                 ;8FA8F8
     %doorList(RoomDoors_CrumbleShaft))
     %stateChecks(0, 0)
 
-RoomState_CrumbleShaft:
-    dl LevelData_CrumbleShaft                                            ;8FA905;
-    db $09,$00,$00                                                       ;8FA908;
-    dw FXHeader_CrumbleShaft                                             ;8FA90B;
-    dw EnemyPopulations_CrumbleShaft                                     ;8FA90D;
-    dw EnemySets_CrumbleShaft                                            ;8FA90F;
-    db $C1,$C1                                                           ;8FA911;
-    dw $0000                                                             ;8FA913;
-    dw $0000                                                             ;8FA915;
-    dw $0000                                                             ;8FA917;
-    dw PLMPopulation_CrumbleShaft                                        ;8FA919;
-    dw LibBG_Norfair_9_A_CavernVertical                                  ;8FA91B;
-    dw RTS_8F91F5                                                        ;8FA91D;
+RoomState_CrumbleShaft:                                                  ;8FA905;
+    %StateHeader(\
+    %levelData(LevelData_CrumbleShaft),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_CrumbleShaft),
+    %enemyPop(EnemyPopulations_CrumbleShaft),
+    %enemySet(EnemySets_CrumbleShaft),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CrumbleShaft),
+    %libraryBG(LibBG_Norfair_9_A_CavernVertical),
+    %setupASM(RTS_8F91F5))
 
 RoomDoors_CrumbleShaft:
     dw Door_CrumbleShaft_0                                               ;8FA91F;
@@ -5381,19 +5599,21 @@ RoomHeader_CrocomireSpeedway:                                            ;8FA923
     %doorList(RoomDoors_CrocomireSpeedway))
     %stateChecks(0, 0)
 
-RoomState_CrocomireSpeedway:
-    dl LevelData_CrocomireSpeedway                                       ;8FA930;
-    db $09,$15,$05                                                       ;8FA933;
-    dw FXHeader_CrocomireSpeedway                                        ;8FA936;
-    dw EnemyPopulations_CrocomireSpeedway                                ;8FA938;
-    dw EnemySets_CrocomireSpeedway                                       ;8FA93A;
-    db $C1,$C1                                                           ;8FA93C;
-    dw RoomScrolls_CrocomireSpeedway                                     ;8FA93E;
-    dw $0000                                                             ;8FA940;
-    dw $0000                                                             ;8FA942;
-    dw PLMPopulation_CrocomireSpeedway                                   ;8FA944;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_0                       ;8FA946;
-    dw RTS_8F91F5                                                        ;8FA948;
+RoomState_CrocomireSpeedway:                                             ;8FA930;
+    %StateHeader(\
+    %levelData(LevelData_CrocomireSpeedway),
+    %tileset(9),
+    %music($15, 5),
+    %FX(FXHeader_CrocomireSpeedway),
+    %enemyPop(EnemyPopulations_CrocomireSpeedway),
+    %enemySet(EnemySets_CrocomireSpeedway),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_CrocomireSpeedway),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CrocomireSpeedway),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_0),
+    %setupASM(RTS_8F91F5))
 
 RoomDoors_CrocomireSpeedway:
     dw Door_CrocomireSpeedway_0                                          ;8FA94A;
@@ -5433,33 +5653,37 @@ RoomHeader_Crocomire:                                                    ;8FA98D
     %stateChecks(1,
     %stateCheckBossDead(2, RoomState_Crocomire_1))
 
-RoomState_Crocomire_0:
-    dl LevelData_Crocomire                                               ;8FA99F;
-    db $1B,$27,$05                                                       ;8FA9A2;
-    dw FXHeader_Crocomire_State0_1                                       ;8FA9A5;
-    dw EnemyPopulations_Crocomire                                        ;8FA9A7;
-    dw EnemySets_Crocomire                                               ;8FA9A9;
-    db $01,$01                                                           ;8FA9AB;
-    dw RoomScrolls_Crocomire                                             ;8FA9AD;
-    dw $0000                                                             ;8FA9AF;
-    dw MainASM_CrocomiresRoomShaking                                     ;8FA9B1;
-    dw PLMPopulation_Crocomire_State0_1                                  ;8FA9B3;
-    dw LibBG_Crocomire_State0                                            ;8FA9B5;
-    dw RTS_8F91F6                                                        ;8FA9B7;
+RoomState_Crocomire_0:                                                   ;8FA99F;
+    %StateHeader(\
+    %levelData(LevelData_Crocomire),
+    %tileset($1B),
+    %music($27, 5),
+    %FX(FXHeader_Crocomire_State0_1),
+    %enemyPop(EnemyPopulations_Crocomire),
+    %enemySet(EnemySets_Crocomire),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(RoomScrolls_Crocomire),
+    %specialXray(0),
+    %mainASM(MainASM_CrocomiresRoomShaking),
+    %PLMPop(PLMPopulation_Crocomire_State0_1),
+    %libraryBG(LibBG_Crocomire_State0),
+    %setupASM(RTS_8F91F6))
 
-RoomState_Crocomire_1:
-    dl LevelData_Crocomire                                               ;8FA9B9;
-    db $1B,$00,$00                                                       ;8FA9BC;
-    dw FXHeader_Crocomire_State0_1                                       ;8FA9BF;
-    dw EnemyPopulations_Crocomire                                        ;8FA9C1;
-    dw EnemySets_Crocomire                                               ;8FA9C3;
-    db $01,$01                                                           ;8FA9C5;
-    dw RoomScrolls_Crocomire                                             ;8FA9C7;
-    dw $0000                                                             ;8FA9C9;
-    dw MainASM_CrocomiresRoomShaking                                     ;8FA9CB;
-    dw PLMPopulation_Crocomire_State0_1                                  ;8FA9CD;
-    dw LibBG_Crocomire_State1                                            ;8FA9CF;
-    dw RTS_8F91F6                                                        ;8FA9D1;
+RoomState_Crocomire_1:                                                   ;8FA9B9;
+    %StateHeader(\
+    %levelData(LevelData_Crocomire),
+    %tileset($1B),
+    %music(0, 0),
+    %FX(FXHeader_Crocomire_State0_1),
+    %enemyPop(EnemyPopulations_Crocomire),
+    %enemySet(EnemySets_Crocomire),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(RoomScrolls_Crocomire),
+    %specialXray(0),
+    %mainASM(MainASM_CrocomiresRoomShaking),
+    %PLMPop(PLMPopulation_Crocomire_State0_1),
+    %libraryBG(LibBG_Crocomire_State1),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_Crocomire:
     dw Door_Crocomire_0                                                  ;8FA9D3;
@@ -5487,19 +5711,21 @@ RoomHeader_HiJumpBoots:                                                  ;8FA9E5
     %doorList(RoomDoors_HiJumpBoots))
     %stateChecks(0, 0)
 
-RoomState_HiJumpBoots:
-    dl LevelData_HiJumpBoots                                             ;8FA9F2;
-    db $0A,$00,$03                                                       ;8FA9F5;
-    dw FXHeader_HiJumpBoots                                              ;8FA9F8;
-    dw EnemyPopulations_HiJumpBoots                                      ;8FA9FA;
-    dw EnemySets_HiJumpBoots                                             ;8FA9FC;
-    db $C1,$C1                                                           ;8FA9FE;
-    dw $0000                                                             ;8FAA00;
-    dw $0000                                                             ;8FAA02;
-    dw $0000                                                             ;8FAA04;
-    dw PLMPopulation_HiJumpBoots                                         ;8FAA06;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright                  ;8FAA08;
-    dw RTS_8F91F6                                                        ;8FAA0A;
+RoomState_HiJumpBoots:                                                   ;8FA9F2;
+    %StateHeader(\
+    %levelData(LevelData_HiJumpBoots),
+    %tileset($0A),
+    %music(0, 3),
+    %FX(FXHeader_HiJumpBoots),
+    %enemyPop(EnemyPopulations_HiJumpBoots),
+    %enemySet(EnemySets_HiJumpBoots),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_HiJumpBoots),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_HiJumpBoots:
     dw Door_HiJumpBoots_0                                                ;8FAA0C;
@@ -5515,19 +5741,21 @@ RoomHeader_CrocomireEscape:                                              ;8FAA0E
     %doorList(RoomDoors_CrocomireEscape))
     %stateChecks(0, 0)
 
-RoomState_CrocomireEscape:
-    dl LevelData_CrocomireEscape                                         ;8FAA1B;
-    db $09,$00,$00                                                       ;8FAA1E;
-    dw FXHeader_CrocomireEscape                                          ;8FAA21;
-    dw EnemyPopulations_CrocomireEscape                                  ;8FAA23;
-    dw EnemySets_CrocomireEscape                                         ;8FAA25;
-    db $C0,$00                                                           ;8FAA27;
-    dw RoomScrolls_CrocomireEscape                                       ;8FAA29;
-    dw $0000                                                             ;8FAA2B;
-    dw $0000                                                             ;8FAA2D;
-    dw PLMPopulation_CrocomireEscape                                     ;8FAA2F;
-    dw $0000                                                             ;8FAA31;
-    dw RTS_8F91F6                                                        ;8FAA33;
+RoomState_CrocomireEscape:                                               ;8FAA1B;
+    %StateHeader(\
+    %levelData(LevelData_CrocomireEscape),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_CrocomireEscape),
+    %enemyPop(EnemyPopulations_CrocomireEscape),
+    %enemySet(EnemySets_CrocomireEscape),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(RoomScrolls_CrocomireEscape),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CrocomireEscape),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_CrocomireEscape:
     dw Door_CrocomireEscape_0                                            ;8FAA35;
@@ -5547,19 +5775,21 @@ RoomHeader_HiJumpETank:                                                  ;8FAA41
     %doorList(RoomDoors_HiJumpETank))
     %stateChecks(0, 0)
 
-RoomState_HiJumpETank:
-    dl LevelData_HiJumpETank                                             ;8FAA4E;
-    db $0A,$00,$05                                                       ;8FAA51;
-    dw FXHeader_HiJumpETank                                              ;8FAA54;
-    dw EnemyPopulations_HiJumpETank                                      ;8FAA56;
-    dw EnemySets_HiJumpETank                                             ;8FAA58;
-    db $C0,$00                                                           ;8FAA5A;
-    dw RoomScrolls_HiJumpETank                                           ;8FAA5C;
-    dw $0000                                                             ;8FAA5E;
-    dw $0000                                                             ;8FAA60;
-    dw PLMPopulation_HiJumpETank                                         ;8FAA62;
-    dw $0000                                                             ;8FAA64;
-    dw RTS_8F91F6                                                        ;8FAA66;
+RoomState_HiJumpETank:                                                   ;8FAA4E;
+    %StateHeader(\
+    %levelData(LevelData_HiJumpETank),
+    %tileset($0A),
+    %music(0, 5),
+    %FX(FXHeader_HiJumpETank),
+    %enemyPop(EnemyPopulations_HiJumpETank),
+    %enemySet(EnemySets_HiJumpETank),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(RoomScrolls_HiJumpETank),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_HiJumpETank),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_HiJumpETank:
     dw Door_HiJumpETank_0                                                ;8FAA68;
@@ -5591,19 +5821,21 @@ RoomHeader_PostCrocFarming:                                              ;8FAA82
     %doorList(RoomDoors_PostCrocFarming))
     %stateChecks(0, 0)
 
-RoomState_PostCrocFarming:
-    dl LevelData_PostCrocFarming                                         ;8FAA8F;
-    db $09,$15,$05                                                       ;8FAA92;
-    dw FXHeader_PostCrocFarming                                          ;8FAA95;
-    dw EnemyPopulations_PostCrocFarming                                  ;8FAA97;
-    dw EnemySets_PostCrocFarming                                         ;8FAA99;
-    db $00,$00                                                           ;8FAA9B;
-    dw RoomScrolls_PostCrocFarming                                       ;8FAA9D;
-    dw $0000                                                             ;8FAA9F;
-    dw $0000                                                             ;8FAAA1;
-    dw PLMPopulation_PostCrocFarming                                     ;8FAAA3;
-    dw $0000                                                             ;8FAAA5;
-    dw RTS_8F91F6                                                        ;8FAAA7;
+RoomState_PostCrocFarming:                                               ;8FAA8F;
+    %StateHeader(\
+    %levelData(LevelData_PostCrocFarming),
+    %tileset(9),
+    %music($15, 5),
+    %FX(FXHeader_PostCrocFarming),
+    %enemyPop(EnemyPopulations_PostCrocFarming),
+    %enemySet(EnemySets_PostCrocFarming),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_PostCrocFarming),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PostCrocFarming),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_PostCrocFarming:
     dw Door_PostCrocFarming_0                                            ;8FAAA9;
@@ -5625,19 +5857,21 @@ RoomHeader_PostCrocSave:                                                 ;8FAAB5
     %doorList(RoomDoors_PostCrocSave))
     %stateChecks(0, 0)
 
-RoomState_PostCrocSave:
-    dl LevelData_SaveStation_LeftSideDoor                                ;8FAAC2;
-    db $19,$15,$05                                                       ;8FAAC5;
-    dw FXHeader_PostCrocSave                                             ;8FAAC8;
-    dw EnemyPopulations_PostCrocSave                                     ;8FAACA;
-    dw EnemySets_PostCrocSave                                            ;8FAACC;
-    db $00,$00                                                           ;8FAACE;
-    dw $0000                                                             ;8FAAD0;
-    dw $0000                                                             ;8FAAD2;
-    dw $0000                                                             ;8FAAD4;
-    dw PLMPopulation_PostCrocSave                                        ;8FAAD6;
-    dw $0000                                                             ;8FAAD8;
-    dw RTS_8F91F6                                                        ;8FAADA;
+RoomState_PostCrocSave:                                                  ;8FAAC2;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_LeftSideDoor),
+    %tileset($19),
+    %music($15, 5),
+    %FX(FXHeader_PostCrocSave),
+    %enemyPop(EnemyPopulations_PostCrocSave),
+    %enemySet(EnemySets_PostCrocSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PostCrocSave),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_PostCrocSave:
     dw Door_PostCrocSave_0                                               ;8FAADC;
@@ -5653,19 +5887,21 @@ RoomHeader_PostCrocPowerBombs:                                           ;8FAADE
     %doorList(RoomDoors_PostCrocPowerBombs))
     %stateChecks(0, 0)
 
-RoomState_PostCrocPowerBombs:
-    dl LevelData_PostCrocPowerBombs                                      ;8FAAEB;
-    db $09,$00,$00                                                       ;8FAAEE;
-    dw FXHeader_PostCrocPowerBombs                                       ;8FAAF1;
-    dw EnemyPopulations_PostCrocPowerBombs                               ;8FAAF3;
-    dw EnemySets_PostCrocPowerBombs                                      ;8FAAF5;
-    db $C1,$C1                                                           ;8FAAF7;
-    dw $0000                                                             ;8FAAF9;
-    dw $0000                                                             ;8FAAFB;
-    dw $0000                                                             ;8FAAFD;
-    dw PLMPopulation_PostCrocPowerBombs                                  ;8FAAFF;
-    dw LibBG_Norfair_9_A_CavernStalagtites                               ;8FAB01;
-    dw RTS_8F91F6                                                        ;8FAB03;
+RoomState_PostCrocPowerBombs:                                            ;8FAAEB;
+    %StateHeader(\
+    %levelData(LevelData_PostCrocPowerBombs),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_PostCrocPowerBombs),
+    %enemyPop(EnemyPopulations_PostCrocPowerBombs),
+    %enemySet(EnemySets_PostCrocPowerBombs),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PostCrocPowerBombs),
+    %libraryBG(LibBG_Norfair_9_A_CavernStalagtites),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_PostCrocPowerBombs:
     dw Door_PostCrocPowerBombs_0                                         ;8FAB05;
@@ -5681,19 +5917,21 @@ RoomHeader_PostCrocShaft:                                                ;8FAB07
     %doorList(RoomDoors_PostCrocShaft))
     %stateChecks(0, 0)
 
-RoomState_PostCrocShaft:
-    dl LevelData_PostCrocShaft                                           ;8FAB14;
-    db $0A,$00,$00                                                       ;8FAB17;
-    dw FXHeader_PostCrocShaft                                            ;8FAB1A;
-    dw EnemyPopulations_PostCrocShaft                                    ;8FAB1C;
-    dw EnemySets_PostCrocShaft                                           ;8FAB1E;
-    db $C1,$C1                                                           ;8FAB20;
-    dw RoomScrolls_PostCrocShaft                                         ;8FAB22;
-    dw $0000                                                             ;8FAB24;
-    dw $0000                                                             ;8FAB26;
-    dw PLMPopulation_PostCrocShaft                                       ;8FAB28;
-    dw LibBG_Norfair_9_A_CavernVertical                                  ;8FAB2A;
-    dw RTS_8F91F6                                                        ;8FAB2C;
+RoomState_PostCrocShaft:                                                 ;8FAB14;
+    %StateHeader(\
+    %levelData(LevelData_PostCrocShaft),
+    %tileset($0A),
+    %music(0, 0),
+    %FX(FXHeader_PostCrocShaft),
+    %enemyPop(EnemyPopulations_PostCrocShaft),
+    %enemySet(EnemySets_PostCrocShaft),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_PostCrocShaft),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PostCrocShaft),
+    %libraryBG(LibBG_Norfair_9_A_CavernVertical),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_PostCrocShaft:
     dw Door_PostCrocShaft_0                                              ;8FAB2E;
@@ -5715,19 +5953,21 @@ RoomHeader_PostCrocMissile:                                              ;8FAB3B
     %doorList(RoomDoors_PostCrocMissile))
     %stateChecks(0, 0)
 
-RoomState_PostCrocMissile:
-    dl LevelData_PostCrocMissile                                         ;8FAB48;
-    db $0A,$00,$00                                                       ;8FAB4B;
-    dw FXHeader_PostCrocMissile                                          ;8FAB4E;
-    dw EnemyPopulations_PostCrocMissile                                  ;8FAB50;
-    dw EnemySets_PostCrocMissile                                         ;8FAB52;
-    db $C1,$C1                                                           ;8FAB54;
-    dw $0000                                                             ;8FAB56;
-    dw $0000                                                             ;8FAB58;
-    dw $0000                                                             ;8FAB5A;
-    dw PLMPopulation_PostCrocMissile                                     ;8FAB5C;
-    dw LibBG_Norfair_9_A_CavernStalagtites                               ;8FAB5E;
-    dw RTS_8F91F6                                                        ;8FAB60;
+RoomState_PostCrocMissile:                                               ;8FAB48;
+    %StateHeader(\
+    %levelData(LevelData_PostCrocMissile),
+    %tileset($0A),
+    %music(0, 0),
+    %FX(FXHeader_PostCrocMissile),
+    %enemyPop(EnemyPopulations_PostCrocMissile),
+    %enemySet(EnemySets_PostCrocMissile),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PostCrocMissile),
+    %libraryBG(LibBG_Norfair_9_A_CavernStalagtites),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_PostCrocMissile:
     dw Door_PostCrocMissile_0                                            ;8FAB62;
@@ -5743,19 +5983,21 @@ RoomHeader_GrappleTutorial3:                                             ;8FAB64
     %doorList(RoomDoors_GrappleTutorial3))
     %stateChecks(0, 0)
 
-RoomState_GrappleTutorial3:
-    dl LevelData_GrappleTutorial3                                        ;8FAB71;
-    db $0A,$00,$00                                                       ;8FAB74;
-    dw FXHeader_GrappleTutorial3                                         ;8FAB77;
-    dw EnemyPopulations_GrappleTutorial3                                 ;8FAB79;
-    dw EnemySets_GrappleTutorial3                                        ;8FAB7B;
-    db $C1,$C1                                                           ;8FAB7D;
-    dw $0000                                                             ;8FAB7F;
-    dw $0000                                                             ;8FAB81;
-    dw $0000                                                             ;8FAB83;
-    dw PLMPopulation_GrappleTutorial3                                    ;8FAB85;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_0                       ;8FAB87;
-    dw RTS_8F91F6                                                        ;8FAB89;
+RoomState_GrappleTutorial3:                                              ;8FAB71;
+    %StateHeader(\
+    %levelData(LevelData_GrappleTutorial3),
+    %tileset($0A),
+    %music(0, 0),
+    %FX(FXHeader_GrappleTutorial3),
+    %enemyPop(EnemyPopulations_GrappleTutorial3),
+    %enemySet(EnemySets_GrappleTutorial3),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GrappleTutorial3),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_GrappleTutorial3:
     dw Door_GrappleTutorial3_0                                           ;8FAB8B;
@@ -5772,19 +6014,21 @@ RoomHeader_PostCrocJump:                                                 ;8FAB8F
     %doorList(RoomDoors_PostCrocJump))
     %stateChecks(0, 0)
 
-RoomState_PostCrocJump:
-    dl LevelData_PostCrocJump                                            ;8FAB9C;
-    db $0A,$00,$05                                                       ;8FAB9F;
-    dw FXHeader_PostCrocJump                                             ;8FABA2;
-    dw EnemyPopulations_PostCrocJump                                     ;8FABA4;
-    dw EnemySets_PostCrocJump                                            ;8FABA6;
-    db $C0,$00                                                           ;8FABA8;
-    dw RoomScrolls_PostCrocJump                                          ;8FABAA;
-    dw $0000                                                             ;8FABAC;
-    dw $0000                                                             ;8FABAE;
-    dw PLMPopulation_PostCrocJump                                        ;8FABB0;
-    dw $0000                                                             ;8FABB2;
-    dw RTS_8F91F6                                                        ;8FABB4;
+RoomState_PostCrocJump:                                                  ;8FAB9C;
+    %StateHeader(\
+    %levelData(LevelData_PostCrocJump),
+    %tileset($0A),
+    %music(0, 5),
+    %FX(FXHeader_PostCrocJump),
+    %enemyPop(EnemyPopulations_PostCrocJump),
+    %enemySet(EnemySets_PostCrocJump),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(RoomScrolls_PostCrocJump),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PostCrocJump),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_PostCrocJump:
     dw Door_PostCrocJump_0                                               ;8FABB6;
@@ -5805,19 +6049,21 @@ RoomHeader_GrappleTutorial2:                                             ;8FABD2
     %doorList(RoomDoors_GrappleTutorial2))
     %stateChecks(0, 0)
 
-RoomState_GrappleTutorial2:
-    dl LevelData_GrappleTutorial2                                        ;8FABDF;
-    db $0A,$00,$00                                                       ;8FABE2;
-    dw FXHeader_GrappleTutorial2                                         ;8FABE5;
-    dw EnemyPopulations_GrappleTutorial2                                 ;8FABE7;
-    dw EnemySets_GrappleTutorial2                                        ;8FABE9;
-    db $C1,$C1                                                           ;8FABEB;
-    dw RoomScrolls_GrappleTutorial2                                      ;8FABED;
-    dw $0000                                                             ;8FABEF;
-    dw $0000                                                             ;8FABF1;
-    dw PLMPopulation_GrappleTutorial2                                    ;8FABF3;
-    dw LibBG_Norfair_9_A_CavernVertical                                  ;8FABF5;
-    dw RTS_8F91F6                                                        ;8FABF7;
+RoomState_GrappleTutorial2:                                              ;8FABDF;
+    %StateHeader(\
+    %levelData(LevelData_GrappleTutorial2),
+    %tileset($0A),
+    %music(0, 0),
+    %FX(FXHeader_GrappleTutorial2),
+    %enemyPop(EnemyPopulations_GrappleTutorial2),
+    %enemySet(EnemySets_GrappleTutorial2),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_GrappleTutorial2),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GrappleTutorial2),
+    %libraryBG(LibBG_Norfair_9_A_CavernVertical),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_GrappleTutorial2:
     dw Door_GrappleTutorial2_0                                           ;8FABF9;
@@ -5837,19 +6083,21 @@ RoomHeader_GrappleTutorial1:                                             ;8FAC00
     %doorList(RoomDoors_GrappleTutorial1))
     %stateChecks(0, 0)
 
-RoomState_GrappleTutorial1:
-    dl LevelData_GrappleTutorial1                                        ;8FAC0D;
-    db $0A,$00,$05                                                       ;8FAC10;
-    dw FXHeader_GrappleTutorial1                                         ;8FAC13;
-    dw EnemyPopulations_GrappleTutorial1                                 ;8FAC15;
-    dw EnemySets_GrappleTutorial1                                        ;8FAC17;
-    db $C1,$C1                                                           ;8FAC19;
-    dw $0000                                                             ;8FAC1B;
-    dw $0000                                                             ;8FAC1D;
-    dw $0000                                                             ;8FAC1F;
-    dw PLMPopulation_GrappleTutorial1                                    ;8FAC21;
-    dw LibBG_Norfair_9_A_CavernStalagtites                               ;8FAC23;
-    dw RTS_8F91F6                                                        ;8FAC25;
+RoomState_GrappleTutorial1:                                              ;8FAC0D;
+    %StateHeader(\
+    %levelData(LevelData_GrappleTutorial1),
+    %tileset($0A),
+    %music(0, 5),
+    %FX(FXHeader_GrappleTutorial1),
+    %enemyPop(EnemyPopulations_GrappleTutorial1),
+    %enemySet(EnemySets_GrappleTutorial1),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GrappleTutorial1),
+    %libraryBG(LibBG_Norfair_9_A_CavernStalagtites),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_GrappleTutorial1:
     dw Door_GrappleTutorial1_0                                           ;8FAC27;
@@ -5866,19 +6114,21 @@ RoomHeader_GrappleBeam:                                                  ;8FAC2B
     %doorList(RoomDoors_GrappleBeam))
     %stateChecks(0, 0)
 
-RoomState_GrappleBeam:
-    dl LevelData_GrappleBeam                                             ;8FAC38;
-    db $0A,$00,$03                                                       ;8FAC3B;
-    dw FXHeader_GrappleBeam                                              ;8FAC3E;
-    dw EnemyPopulations_GrappleBeam                                      ;8FAC40;
-    dw EnemySets_GrappleBeam                                             ;8FAC42;
-    db $C1,$C1                                                           ;8FAC44;
-    dw RoomScrolls_GrappleBeam                                           ;8FAC46;
-    dw $0000                                                             ;8FAC48;
-    dw $0000                                                             ;8FAC4A;
-    dw PLMPopulation_GrappleBeam                                         ;8FAC4C;
-    dw LibBG_Norfair_9_A_CavernVertical                                  ;8FAC4E;
-    dw RTS_8F91F6                                                        ;8FAC50;
+RoomState_GrappleBeam:                                                   ;8FAC38;
+    %StateHeader(\
+    %levelData(LevelData_GrappleBeam),
+    %tileset($0A),
+    %music(0, 3),
+    %FX(FXHeader_GrappleBeam),
+    %enemyPop(EnemyPopulations_GrappleBeam),
+    %enemySet(EnemySets_GrappleBeam),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_GrappleBeam),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GrappleBeam),
+    %libraryBG(LibBG_Norfair_9_A_CavernVertical),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_GrappleBeam:
     dw Door_GrappleBeam_0                                                ;8FAC52;
@@ -5898,19 +6148,21 @@ RoomHeader_NorfairReserveTank:                                           ;8FAC5A
     %doorList(RoomDoors_NorfairReserveTank))
     %stateChecks(0, 0)
 
-RoomState_NorfairReserveTank:
-    dl LevelData_NorfairReserveTank                                      ;8FAC67;
-    db $09,$00,$00                                                       ;8FAC6A;
-    dw FXHeader_NorfairReserveTank                                       ;8FAC6D;
-    dw EnemyPopulations_NorfairReserveTank                               ;8FAC6F;
-    dw EnemySets_NorfairReserveTank                                      ;8FAC71;
-    db $C1,$C1                                                           ;8FAC73;
-    dw $0000                                                             ;8FAC75;
-    dw $0000                                                             ;8FAC77;
-    dw $0000                                                             ;8FAC79;
-    dw PLMPopulation_NorfairReserveTank                                  ;8FAC7B;
-    dw LibBG_Norfair_9_PurplePatches                                     ;8FAC7D;
-    dw RTS_8F91F6                                                        ;8FAC7F;
+RoomState_NorfairReserveTank:                                            ;8FAC67;
+    %StateHeader(\
+    %levelData(LevelData_NorfairReserveTank),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_NorfairReserveTank),
+    %enemyPop(EnemyPopulations_NorfairReserveTank),
+    %enemySet(EnemySets_NorfairReserveTank),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_NorfairReserveTank),
+    %libraryBG(LibBG_Norfair_9_PurplePatches),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_NorfairReserveTank:
     dw Door_NorfairReserveTank                                           ;8FAC81;
@@ -5926,19 +6178,21 @@ RoomHeader_GreenBubblesMissiles:                                         ;8FAC83
     %doorList(RoomDoors_GreenBubblesMissiles))
     %stateChecks(0, 0)
 
-RoomState_GreenBubblesMissiles:
-    dl LevelData_GreenBubblesMissiles                                    ;8FAC90;
-    db $09,$00,$00                                                       ;8FAC93;
-    dw FXHeader_GreenBubblesMissiles                                     ;8FAC96;
-    dw EnemyPopulations_GreenBubblesMissiles                             ;8FAC98;
-    dw EnemySets_GreenBubblesMissiles                                    ;8FAC9A;
-    db $C1,$C1                                                           ;8FAC9C;
-    dw RoomScrolls_GreenBubblesMissiles                                  ;8FAC9E;
-    dw $0000                                                             ;8FACA0;
-    dw $0000                                                             ;8FACA2;
-    dw PLMPopulation_GreenBubblesMissiles                                ;8FACA4;
-    dw LibBG_Norfair_9_Bubbles                                           ;8FACA6;
-    dw RTS_8F91F6                                                        ;8FACA8;
+RoomState_GreenBubblesMissiles:                                          ;8FAC90;
+    %StateHeader(\
+    %levelData(LevelData_GreenBubblesMissiles),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_GreenBubblesMissiles),
+    %enemyPop(EnemyPopulations_GreenBubblesMissiles),
+    %enemySet(EnemySets_GreenBubblesMissiles),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_GreenBubblesMissiles),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GreenBubblesMissiles),
+    %libraryBG(LibBG_Norfair_9_Bubbles),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_GreenBubblesMissiles:
     dw Door_GreenBubblesMissiles_0                                       ;8FACAA;
@@ -5961,19 +6215,21 @@ RoomHeader_BubbleMountain:                                               ;8FACB3
     %doorList(RoomDoors_BubbleMountain))
     %stateChecks(0, 0)
 
-RoomState_BubbleMountain:
-    dl LevelData_BubbleMountain                                          ;8FACC0;
-    db $09,$00,$00                                                       ;8FACC3;
-    dw FXHeader_BubbleMountain                                           ;8FACC6;
-    dw EnemyPopulations_BubbleMountain                                   ;8FACC8;
-    dw EnemySets_BubbleMountain                                          ;8FACCA;
-    db $C1,$C1                                                           ;8FACCC;
-    dw RoomScrolls_BubbleMountain                                        ;8FACCE;
-    dw $0000                                                             ;8FACD0;
-    dw $0000                                                             ;8FACD2;
-    dw PLMPopulation_BubbleMountain                                      ;8FACD4;
-    dw LibBG_Norfair_9_Bubbles                                           ;8FACD6;
-    dw RTS_8F91F6                                                        ;8FACD8;
+RoomState_BubbleMountain:                                                ;8FACC0;
+    %StateHeader(\
+    %levelData(LevelData_BubbleMountain),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_BubbleMountain),
+    %enemyPop(EnemyPopulations_BubbleMountain),
+    %enemySet(EnemySets_BubbleMountain),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_BubbleMountain),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BubbleMountain),
+    %libraryBG(LibBG_Norfair_9_Bubbles),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_BubbleMountain:
     dw Door_BubbleMountain_0                                             ;8FACDA;
@@ -5998,19 +6254,21 @@ RoomHeader_SpeedBoosterHall:                                             ;8FACF0
     %doorList(RoomDoors_SpeedBoosterHall))
     %stateChecks(0, 0)
 
-RoomState_SpeedBoosterHall:
-    dl LevelData_SpeedBoosterHall                                        ;8FACFD;
-    db $09,$00,$05                                                       ;8FAD00;
-    dw FXHeader_SpeedBoosterHall                                         ;8FAD03;
-    dw EnemyPopulations_SpeedBoosterHall                                 ;8FAD05;
-    dw EnemySets_SpeedBoosterHall                                        ;8FAD07;
-    db $C1,$C1                                                           ;8FAD09;
-    dw $0000                                                             ;8FAD0B;
-    dw $0000                                                             ;8FAD0D;
-    dw $0000                                                             ;8FAD0F;
-    dw PLMPopulation_SpeedBoosterHall                                    ;8FAD11;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_0                       ;8FAD13;
-    dw RTS_8F91F6                                                        ;8FAD15;
+RoomState_SpeedBoosterHall:                                              ;8FACFD;
+    %StateHeader(\
+    %levelData(LevelData_SpeedBoosterHall),
+    %tileset(9),
+    %music(0, 5),
+    %FX(FXHeader_SpeedBoosterHall),
+    %enemyPop(EnemyPopulations_SpeedBoosterHall),
+    %enemySet(EnemySets_SpeedBoosterHall),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SpeedBoosterHall),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_SpeedBoosterHall:
     dw Door_SpeedBoosterHall_0                                           ;8FAD17;
@@ -6027,19 +6285,21 @@ RoomHeader_SpeedBooster:                                                 ;8FAD1B
     %doorList(RoomDoors_SpeedBooster))
     %stateChecks(0, 0)
 
-RoomState_SpeedBooster:
-    dl LevelData_SpeedBooster                                            ;8FAD28;
-    db $09,$00,$03                                                       ;8FAD2B;
-    dw FXHeader_SpeedBooster                                             ;8FAD2E;
-    dw EnemyPopulations_SpeedBooster                                     ;8FAD30;
-    dw EnemySets_SpeedBooster                                            ;8FAD32;
-    db $C1,$C1                                                           ;8FAD34;
-    dw $0000                                                             ;8FAD36;
-    dw $0000                                                             ;8FAD38;
-    dw $0000                                                             ;8FAD3A;
-    dw PLMPopulation_SpeedBooster                                        ;8FAD3C;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright                  ;8FAD3E;
-    dw RTS_8F91F6                                                        ;8FAD40;
+RoomState_SpeedBooster:                                                  ;8FAD28;
+    %StateHeader(\
+    %levelData(LevelData_SpeedBooster),
+    %tileset(9),
+    %music(0, 3),
+    %FX(FXHeader_SpeedBooster),
+    %enemyPop(EnemyPopulations_SpeedBooster),
+    %enemySet(EnemySets_SpeedBooster),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SpeedBooster),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright),
+    %setupASM(RTS_8F91F6))
 
 if !FEATURE_KEEP_UNREFERENCED
 UNUSED_RoomState_8FAD42:
@@ -6071,19 +6331,21 @@ RoomHeader_SingleChamber:                                                ;8FAD5E
     %doorList(RoomDoors_SingleChamber))
     %stateChecks(0, 0)
 
-RoomState_SingleChamber:
-    dl LevelData_SingleChamber                                           ;8FAD6B;
-    db $09,$15,$05                                                       ;8FAD6E;
-    dw FXHeader_SingleChamber                                            ;8FAD71;
-    dw EnemyPopulations_SingleChamber                                    ;8FAD73;
-    dw EnemySets_SingleChamber                                           ;8FAD75;
-    db $C0,$C0                                                           ;8FAD77;
-    dw RoomScrolls_SingleChamber                                         ;8FAD79;
-    dw $0000                                                             ;8FAD7B;
-    dw $0000                                                             ;8FAD7D;
-    dw PLMPopulation_SingleChamber                                       ;8FAD7F;
-    dw $0000                                                             ;8FAD81;
-    dw RTS_8F91F6                                                        ;8FAD83;
+RoomState_SingleChamber:                                                 ;8FAD6B;
+    %StateHeader(\
+    %levelData(LevelData_SingleChamber),
+    %tileset(9),
+    %music($15, 5),
+    %FX(FXHeader_SingleChamber),
+    %enemyPop(EnemyPopulations_SingleChamber),
+    %enemySet(EnemySets_SingleChamber),
+    %layer2Scrolls($C0, $C0),
+    %scrollPointer(RoomScrolls_SingleChamber),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SingleChamber),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_SingleChamber:
     dw Door_SingleChamber_0                                              ;8FAD85;
@@ -6113,19 +6375,21 @@ RoomHeader_DoubleChamber:                                                ;8FADAD
     %doorList(RoomDoors_DoubleChamber))
     %stateChecks(0, 0)
 
-RoomState_DoubleChamber:
-    dl LevelData_DoubleChamber                                           ;8FADBA;
-    db $09,$00,$05                                                       ;8FADBD;
-    dw FXHeader_DoubleChamber                                            ;8FADC0;
-    dw EnemyPopulations_DoubleChamber                                    ;8FADC2;
-    dw EnemySets_DoubleChamber                                           ;8FADC4;
-    db $C0,$00                                                           ;8FADC6;
-    dw RoomScrolls_DoubleChamber                                         ;8FADC8;
-    dw $0000                                                             ;8FADCA;
-    dw $0000                                                             ;8FADCC;
-    dw PLMPopulation_DoubleChamber                                       ;8FADCE;
-    dw $0000                                                             ;8FADD0;
-    dw RTS_8F91F6                                                        ;8FADD2;
+RoomState_DoubleChamber:                                                 ;8FADBA;
+    %StateHeader(\
+    %levelData(LevelData_DoubleChamber),
+    %tileset(9),
+    %music(0, 5),
+    %FX(FXHeader_DoubleChamber),
+    %enemyPop(EnemyPopulations_DoubleChamber),
+    %enemySet(EnemySets_DoubleChamber),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(RoomScrolls_DoubleChamber),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_DoubleChamber),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_DoubleChamber:
     dw Door_DoubleChamber_0                                              ;8FADD4;
@@ -6146,19 +6410,21 @@ RoomHeader_WaveBeam:                                                     ;8FADDE
     %doorList(RoomDoors_WaveBeam))
     %stateChecks(0, 0)
 
-RoomState_WaveBeam:
-    dl LevelData_WaveBeam                                                ;8FADEB;
-    db $09,$00,$03                                                       ;8FADEE;
-    dw FXHeader_WaveBeam                                                 ;8FADF1;
-    dw EnemyPopulations_WaveBeam                                         ;8FADF3;
-    dw EnemySets_WaveBeam                                                ;8FADF5;
-    db $C1,$C1                                                           ;8FADF7;
-    dw $0000                                                             ;8FADF9;
-    dw $0000                                                             ;8FADFB;
-    dw $0000                                                             ;8FADFD;
-    dw PLMPopulation_WaveBeam                                            ;8FADFF;
-    dw LibBG_Norfair_9_A_CavernStalagtites                               ;8FAE01;
-    dw RTS_8F91F6                                                        ;8FAE03;
+RoomState_WaveBeam:                                                      ;8FADEB;
+    %StateHeader(\
+    %levelData(LevelData_WaveBeam),
+    %tileset(9),
+    %music(0, 3),
+    %FX(FXHeader_WaveBeam),
+    %enemyPop(EnemyPopulations_WaveBeam),
+    %enemySet(EnemySets_WaveBeam),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_WaveBeam),
+    %libraryBG(LibBG_Norfair_9_A_CavernStalagtites),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_WaveBeam:
     dw Door_WaveBeam_0                                                   ;8FAE05;
@@ -6174,19 +6440,21 @@ RoomHeader_SpikyPlatformsTunnel:                                         ;8FAE07
     %doorList(RoomDoors_SpikyPlatformsTunnel))
     %stateChecks(0, 0)
 
-RoomState_SpikyPlatformsTunnel:
-    dl LevelData_SpikyPlatformsTunnel                                    ;8FAE14;
-    db $09,$00,$00                                                       ;8FAE17;
-    dw FXHeader_SpikyPlatformsTunnel                                     ;8FAE1A;
-    dw EnemyPopulations_SpikyPlatformsTunnel                             ;8FAE1C;
-    dw EnemySets_SpikyPlatformsTunnel                                    ;8FAE1E;
-    db $C1,$C1                                                           ;8FAE20;
-    dw $0000                                                             ;8FAE22;
-    dw $0000                                                             ;8FAE24;
-    dw $0000                                                             ;8FAE26;
-    dw PLMPopulation_SpikyPlatformsTunnel                                ;8FAE28;
-    dw LibBG_Norfair_9_A_CavernStalagtites                               ;8FAE2A;
-    dw RTS_8F91F6                                                        ;8FAE2C;
+RoomState_SpikyPlatformsTunnel:                                          ;8FAE14;
+    %StateHeader(\
+    %levelData(LevelData_SpikyPlatformsTunnel),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_SpikyPlatformsTunnel),
+    %enemyPop(EnemyPopulations_SpikyPlatformsTunnel),
+    %enemySet(EnemySets_SpikyPlatformsTunnel),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SpikyPlatformsTunnel),
+    %libraryBG(LibBG_Norfair_9_A_CavernStalagtites),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_SpikyPlatformsTunnel:
     dw Door_SpikyPlatformsTunnel_0                                       ;8FAE2E;
@@ -6203,19 +6471,21 @@ RoomHeader_Volcano:                                                      ;8FAE32
     %doorList(RoomDoors_Volcano))
     %stateChecks(0, 0)
 
-RoomState_Volcano:
-    dl LevelData_Volcano                                                 ;8FAE3F;
-    db $09,$00,$00                                                       ;8FAE42;
-    dw FXHeader_Volcano                                                  ;8FAE45;
-    dw EnemyPopulations_Volcano                                          ;8FAE47;
-    dw EnemySets_Volcano                                                 ;8FAE49;
-    db $00,$00                                                           ;8FAE4B;
-    dw RoomScrolls_Volcano                                               ;8FAE4D;
-    dw $0000                                                             ;8FAE4F;
-    dw $0000                                                             ;8FAE51;
-    dw PLMPopulation_Volcano                                             ;8FAE53;
-    dw $0000                                                             ;8FAE55;
-    dw RTS_8F91F6                                                        ;8FAE57;
+RoomState_Volcano:                                                       ;8FAE3F;
+    %StateHeader(\
+    %levelData(LevelData_Volcano),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_Volcano),
+    %enemyPop(EnemyPopulations_Volcano),
+    %enemySet(EnemySets_Volcano),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_Volcano),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Volcano),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_Volcano:
     dw Door_Volcano_0                                                    ;8FAE59;
@@ -6247,19 +6517,21 @@ RoomHeader_KronicBoost:                                                  ;8FAE74
     %doorList(RoomDoors_KronicBoost))
     %stateChecks(0, 0)
 
-RoomState_KronicBoost:
-    dl LevelData_KronicBoost                                             ;8FAE81;
-    db $09,$00,$00                                                       ;8FAE84;
-    dw FXHeader_KronicBoost                                              ;8FAE87;
-    dw EnemyPopulations_KronicBoost                                      ;8FAE89;
-    dw EnemySets_KronicBoost                                             ;8FAE8B;
-    db $00,$00                                                           ;8FAE8D;
-    dw RoomScrolls_KronicBoost                                           ;8FAE8F;
-    dw $0000                                                             ;8FAE91;
-    dw $0000                                                             ;8FAE93;
-    dw PLMPopulation_KronicBoost                                         ;8FAE95;
-    dw $0000                                                             ;8FAE97;
-    dw RTS_8F91F6                                                        ;8FAE99;
+RoomState_KronicBoost:                                                   ;8FAE81;
+    %StateHeader(\
+    %levelData(LevelData_KronicBoost),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_KronicBoost),
+    %enemyPop(EnemyPopulations_KronicBoost),
+    %enemySet(EnemySets_KronicBoost),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_KronicBoost),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_KronicBoost),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_KronicBoost:
     dw Door_KronicBoost_0                                                ;8FAE9B;
@@ -6290,19 +6562,21 @@ RoomHeader_MagdolliteTunnel:                                             ;8FAEB4
     %doorList(RoomDoors_MagdolliteTunnel))
     %stateChecks(0, 0)
 
-RoomState_MagdolliteTunnel:
-    dl LevelData_MagdolliteTunnel                                        ;8FAEC1;
-    db $09,$00,$00                                                       ;8FAEC4;
-    dw FXHeader_MagdolliteTunnel                                         ;8FAEC7;
-    dw EnemyPopulations_MagdolliteTunnel                                 ;8FAEC9;
-    dw EnemySets_MagdolliteTunnel                                        ;8FAECB;
-    db $C1,$C1                                                           ;8FAECD;
-    dw $0000                                                             ;8FAECF;
-    dw $0000                                                             ;8FAED1;
-    dw $0000                                                             ;8FAED3;
-    dw PLMPopulation_MagdolliteTunnel                                    ;8FAED5;
-    dw LibBG_Norfair_9_A_CavernStalagtites                               ;8FAED7;
-    dw RTS_8F91F6                                                        ;8FAED9;
+RoomState_MagdolliteTunnel:                                              ;8FAEC1;
+    %StateHeader(\
+    %levelData(LevelData_MagdolliteTunnel),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_MagdolliteTunnel),
+    %enemyPop(EnemyPopulations_MagdolliteTunnel),
+    %enemySet(EnemySets_MagdolliteTunnel),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_MagdolliteTunnel),
+    %libraryBG(LibBG_Norfair_9_A_CavernStalagtites),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_MagdolliteTunnel:
     dw Door_MagdolliteTunnel_0                                           ;8FAEDB;
@@ -6319,19 +6593,21 @@ RoomHeader_PurpleShaft:                                                  ;8FAEDF
     %doorList(RoomDoors_PurpleShaft))
     %stateChecks(0, 0)
 
-RoomState_PurpleShaft:
-    dl LevelData_PurpleShaft                                             ;8FAEEC;
-    db $09,$00,$00                                                       ;8FAEEF;
-    dw FXHeader_PurpleShaft                                              ;8FAEF2;
-    dw EnemyPopulations_PurpleShaft                                      ;8FAEF4;
-    dw EnemySets_PurpleShaft                                             ;8FAEF6;
-    db $C1,$C1                                                           ;8FAEF8;
-    dw RoomScrolls_PurpleShaft                                           ;8FAEFA;
-    dw $0000                                                             ;8FAEFC;
-    dw $0000                                                             ;8FAEFE;
-    dw PLMPopulation_PurpleShaft                                         ;8FAF00;
-    dw LibBG_Norfair_9_PurplePatches                                     ;8FAF02;
-    dw RTS_8F91F6                                                        ;8FAF04;
+RoomState_PurpleShaft:                                                   ;8FAEEC;
+    %StateHeader(\
+    %levelData(LevelData_PurpleShaft),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_PurpleShaft),
+    %enemyPop(EnemyPopulations_PurpleShaft),
+    %enemySet(EnemySets_PurpleShaft),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_PurpleShaft),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PurpleShaft),
+    %libraryBG(LibBG_Norfair_9_PurplePatches),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_PurpleShaft:
     dw Door_PurpleShaft_0                                                ;8FAF06;
@@ -6355,19 +6631,21 @@ RoomHeader_LavaDive:                                                     ;8FAF14
     %doorList(RoomDoors_LavaDive))
     %stateChecks(0, 0)
 
-RoomState_LavaDive:
-    dl LevelData_LavaDive                                                ;8FAF21;
-    db $09,$00,$05                                                       ;8FAF24;
-    dw FXHeader_LavaDive                                                 ;8FAF27;
-    dw EnemyPopulations_LavaDive                                         ;8FAF29;
-    dw EnemySets_LavaDive                                                ;8FAF2B;
-    db $C1,$C1                                                           ;8FAF2D;
-    dw $0000                                                             ;8FAF2F;
-    dw $0000                                                             ;8FAF31;
-    dw $0000                                                             ;8FAF33;
-    dw PLMPopulation_LavaDive                                            ;8FAF35;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_0                       ;8FAF37;
-    dw RTS_8F91F6                                                        ;8FAF39;
+RoomState_LavaDive:                                                      ;8FAF21;
+    %StateHeader(\
+    %levelData(LevelData_LavaDive),
+    %tileset(9),
+    %music(0, 5),
+    %FX(FXHeader_LavaDive),
+    %enemyPop(EnemyPopulations_LavaDive),
+    %enemySet(EnemySets_LavaDive),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_LavaDive),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_LavaDive:
     dw Door_LavaDive_0                                                   ;8FAF3B;
@@ -6384,19 +6662,21 @@ RoomHeader_LowerNorfairElev:                                             ;8FAF3F
     %doorList(RoomDoors_LowerNorfairElev))
     %stateChecks(0, 0)
 
-RoomState_LowerNorfairElev:
-    dl LevelData_LowerNorfairElev                                        ;8FAF4C;
-    db $09,$15,$05                                                       ;8FAF4F;
-    dw FXHeader_LowerNorfairElev                                         ;8FAF52;
-    dw EnemyPopulations_LowerNorfairElev                                 ;8FAF54;
-    dw EnemySets_LowerNorfairElev                                        ;8FAF56;
-    db $C1,$C1                                                           ;8FAF58;
-    dw RoomScrolls_LowerNorfairElev                                      ;8FAF5A;
-    dw $0000                                                             ;8FAF5C;
-    dw $0000                                                             ;8FAF5E;
-    dw PLMPopulation_LowerNorfairElev                                    ;8FAF60;
-    dw LibBG_Norfair_9_A_CavernStalagtites                               ;8FAF62;
-    dw RTS_8F91F6                                                        ;8FAF64;
+RoomState_LowerNorfairElev:                                              ;8FAF4C;
+    %StateHeader(\
+    %levelData(LevelData_LowerNorfairElev),
+    %tileset(9),
+    %music($15, 5),
+    %FX(FXHeader_LowerNorfairElev),
+    %enemyPop(EnemyPopulations_LowerNorfairElev),
+    %enemySet(EnemySets_LowerNorfairElev),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_LowerNorfairElev),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_LowerNorfairElev),
+    %libraryBG(LibBG_Norfair_9_A_CavernStalagtites),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_LowerNorfairElev:
     dw Door_LowerNorfairElev_0                                           ;8FAF66;
@@ -6421,19 +6701,21 @@ RoomHeader_UpperNorfairFarming:                                          ;8FAF72
     %doorList(RoomDoors_UpperNorfairFarming))
     %stateChecks(0, 0)
 
-RoomState_UpperNorfairFarming:
-    dl LevelData_UpperNorfairFarming                                     ;8FAF7F;
-    db $09,$00,$00                                                       ;8FAF82;
-    dw FXHeader_UpperNorfairFarming                                      ;8FAF85;
-    dw EnemyPopulations_UpperNorfairFarming                              ;8FAF87;
-    dw EnemySets_UpperNorfairFarming                                     ;8FAF89;
-    db $C0,$00                                                           ;8FAF8B;
-    dw RoomScrolls_UpperNorfairFarming                                   ;8FAF8D;
-    dw $0000                                                             ;8FAF8F;
-    dw $0000                                                             ;8FAF91;
-    dw PLMPopulation_UpperNorfairFarming                                 ;8FAF93;
-    dw $0000                                                             ;8FAF95;
-    dw RTS_8F91F6                                                        ;8FAF97;
+RoomState_UpperNorfairFarming:                                           ;8FAF7F;
+    %StateHeader(\
+    %levelData(LevelData_UpperNorfairFarming),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_UpperNorfairFarming),
+    %enemyPop(EnemyPopulations_UpperNorfairFarming),
+    %enemySet(EnemySets_UpperNorfairFarming),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(RoomScrolls_UpperNorfairFarming),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_UpperNorfairFarming),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_UpperNorfairFarming:
     dw Door_UpperNorfairFarming_0                                        ;8FAF99;
@@ -6454,19 +6736,21 @@ RoomHeader_RisingTide:                                                   ;8FAFA3
     %doorList(RoomDoors_RisingTide))
     %stateChecks(0, 0)
 
-RoomState_RisingTide:
-    dl LevelData_RisingTide                                              ;8FAFB0;
-    db $09,$00,$00                                                       ;8FAFB3;
-    dw FXHeader_RisingTide                                               ;8FAFB6;
-    dw EnemyPopulations_RisingTide                                       ;8FAFB8;
-    dw EnemySets_RisingTide                                              ;8FAFBA;
-    db $C1,$C1                                                           ;8FAFBC;
-    dw $0000                                                             ;8FAFBE;
-    dw $0000                                                             ;8FAFC0;
-    dw $0000                                                             ;8FAFC2;
-    dw PLMPopulation_RisingTide                                          ;8FAFC4;
-    dw LibBG_Norfair_9_A_CavernStalagtites                               ;8FAFC6;
-    dw RTS_8F91F6                                                        ;8FAFC8;
+RoomState_RisingTide:                                                    ;8FAFB0;
+    %StateHeader(\
+    %levelData(LevelData_RisingTide),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_RisingTide),
+    %enemyPop(EnemyPopulations_RisingTide),
+    %enemySet(EnemySets_RisingTide),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_RisingTide),
+    %libraryBG(LibBG_Norfair_9_A_CavernStalagtites),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_RisingTide:
     dw Door_RisingTide_0                                                 ;8FAFCA;
@@ -6483,19 +6767,21 @@ RoomHeader_AcidSnakesTunnel:                                             ;8FAFCE
     %doorList(RoomDoors_AcidSnakesTunnel))
     %stateChecks(0, 0)
 
-RoomState_AcidSnakesTunnel:
-    dl LevelData_AcidSnakesTunnel                                        ;8FAFDB;
-    db $09,$00,$00                                                       ;8FAFDE;
-    dw FXHeader_AcidSnakesTunnel                                         ;8FAFE1;
-    dw EnemyPopulations_AcidSnakesTunnel                                 ;8FAFE3;
-    dw EnemySets_AcidSnakesTunnel                                        ;8FAFE5;
-    db $C1,$C1                                                           ;8FAFE7;
-    dw $0000                                                             ;8FAFE9;
-    dw $0000                                                             ;8FAFEB;
-    dw $0000                                                             ;8FAFED;
-    dw PLMPopulation_AcidSnakesTunnel                                    ;8FAFEF;
-    dw LibBG_Norfair_9_A_CavernStalagtites                               ;8FAFF1;
-    dw RTS_8F91F6                                                        ;8FAFF3;
+RoomState_AcidSnakesTunnel:                                              ;8FAFDB;
+    %StateHeader(\
+    %levelData(LevelData_AcidSnakesTunnel),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_AcidSnakesTunnel),
+    %enemyPop(EnemyPopulations_AcidSnakesTunnel),
+    %enemySet(EnemySets_AcidSnakesTunnel),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_AcidSnakesTunnel),
+    %libraryBG(LibBG_Norfair_9_A_CavernStalagtites),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_AcidSnakesTunnel:
     dw Door_AcidSnakesTunnel_0                                           ;8FAFF5;
@@ -6513,19 +6799,21 @@ RoomHeader_SpikyAcidSnakesTunnel:                                        ;8FAFFB
     %doorList(RoomDoors_SpikyAcidSnakesTunnel))
     %stateChecks(0, 0)
 
-RoomState_SpikyAcidSnakesTunnel:
-    dl LevelData_SpikyAcidSnakesTunnel                                   ;8FB008;
-    db $09,$00,$00                                                       ;8FB00B;
-    dw FXHeader_SpikyAcidSnakesTunnel                                    ;8FB00E;
-    dw EnemyPopulations_SpikyAcidSnakesTunnel                            ;8FB010;
-    dw EnemySets_SpikyAcidSnakesTunnel                                   ;8FB012;
-    db $C1,$C1                                                           ;8FB014;
-    dw $0000                                                             ;8FB016;
-    dw $0000                                                             ;8FB018;
-    dw $0000                                                             ;8FB01A;
-    dw PLMPopulation_SpikyAcidSnakesTunnel                               ;8FB01C;
-    dw LibBG_Norfair_9_A_CavernStalagtites                               ;8FB01E;
-    dw RTS_8F91F6                                                        ;8FB020;
+RoomState_SpikyAcidSnakesTunnel:                                         ;8FB008;
+    %StateHeader(\
+    %levelData(LevelData_SpikyAcidSnakesTunnel),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_SpikyAcidSnakesTunnel),
+    %enemyPop(EnemyPopulations_SpikyAcidSnakesTunnel),
+    %enemySet(EnemySets_SpikyAcidSnakesTunnel),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_SpikyAcidSnakesTunnel),
+    %libraryBG(LibBG_Norfair_9_A_CavernStalagtites),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_SpikyAcidSnakesTunnel:
     dw Door_SpikyAcidSnakesTunnel_0                                      ;8FB022;
@@ -6542,19 +6830,21 @@ RoomHeader_UpperNorfairRefill:                                           ;8FB026
     %doorList(RoomDoors_UpperNorfairRefill))
     %stateChecks(0, 0)
 
-RoomState_UpperNorfairRefill:
-    dl LevelData_EnergyRefeill_BothDoors                                 ;8FB033;
-    db $17,$00,$00                                                       ;8FB036;
-    dw FXHeader_UpperNorfairRefill                                       ;8FB039;
-    dw EnemyPopulations_UpperNorfairRefill                               ;8FB03B;
-    dw EnemySets_UpperNorfairRefill                                      ;8FB03D;
-    db $00,$00                                                           ;8FB03F;
-    dw $0000                                                             ;8FB041;
-    dw $0000                                                             ;8FB043;
-    dw $0000                                                             ;8FB045;
-    dw PLMPopulation_UpperNorfairRefill                                  ;8FB047;
-    dw $0000                                                             ;8FB049;
-    dw RTS_8F91F6                                                        ;8FB04B;
+RoomState_UpperNorfairRefill:                                            ;8FB033;
+    %StateHeader(\
+    %levelData(LevelData_EnergyRefeill_BothDoors),
+    %tileset($17),
+    %music(0, 0),
+    %FX(FXHeader_UpperNorfairRefill),
+    %enemyPop(EnemyPopulations_UpperNorfairRefill),
+    %enemySet(EnemySets_UpperNorfairRefill),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_UpperNorfairRefill),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_UpperNorfairRefill:
     dw Door_UpperNorfairRefill_0                                         ;8FB04D;
@@ -6571,19 +6861,21 @@ RoomHeader_PurpleFarming:                                                ;8FB051
     %doorList(RoomDoors_PurpleFarming))
     %stateChecks(0, 0)
 
-RoomState_PurpleFarming:
-    dl LevelData_PurpleFarming                                           ;8FB05E;
-    db $09,$00,$00                                                       ;8FB061;
-    dw FXHeader_PurpleFarming                                            ;8FB064;
-    dw EnemyPopulations_PurpleFarming                                    ;8FB066;
-    dw EnemySets_PurpleFarming                                           ;8FB068;
-    db $01,$01                                                           ;8FB06A;
-    dw $0000                                                             ;8FB06C;
-    dw $0000                                                             ;8FB06E;
-    dw $0000                                                             ;8FB070;
-    dw PLMPopulation_PurpleFarming                                       ;8FB072;
-    dw LibBG_Norfair_9_PurplePatches                                     ;8FB074;
-    dw RTS_8F91F6                                                        ;8FB076;
+RoomState_PurpleFarming:                                                 ;8FB05E;
+    %StateHeader(\
+    %levelData(LevelData_PurpleFarming),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_PurpleFarming),
+    %enemyPop(EnemyPopulations_PurpleFarming),
+    %enemySet(EnemySets_PurpleFarming),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_PurpleFarming),
+    %libraryBG(LibBG_Norfair_9_PurplePatches),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_PurpleFarming:
     dw Door_PurpleFarming_0                                              ;8FB078;
@@ -6599,19 +6891,21 @@ RoomHeader_BatCave:                                                      ;8FB07A
     %doorList(RoomDoors_BatCave))
     %stateChecks(0, 0)
 
-RoomState_BatCave:
-    dl LevelData_BatCave                                                 ;8FB087;
-    db $09,$00,$05                                                       ;8FB08A;
-    dw FXHeader_BatCave                                                  ;8FB08D;
-    dw EnemyPopulations_BatCave                                          ;8FB08F;
-    dw EnemySets_BatCave                                                 ;8FB091;
-    db $00,$00                                                           ;8FB093;
-    dw RoomScrolls_BatCave                                               ;8FB095;
-    dw $0000                                                             ;8FB097;
-    dw $0000                                                             ;8FB099;
-    dw PLMPopulation_BatCave                                             ;8FB09B;
-    dw $0000                                                             ;8FB09D;
-    dw RTS_8F91F6                                                        ;8FB09F;
+RoomState_BatCave:                                                       ;8FB087;
+    %StateHeader(\
+    %levelData(LevelData_BatCave),
+    %tileset(9),
+    %music(0, 5),
+    %FX(FXHeader_BatCave),
+    %enemyPop(EnemyPopulations_BatCave),
+    %enemySet(EnemySets_BatCave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_BatCave),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BatCave),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_BatCave:
     dw Door_BatCave_0                                                    ;8FB0A1;
@@ -6640,19 +6934,21 @@ RoomHeader_NorfairMap:                                                   ;8FB0B4
     %doorList(RoomDoors_NorfairMap))
     %stateChecks(0, 0)
 
-RoomState_NorfairMap:
-    dl LevelData_MapStation_RightSideDoor                                ;8FB0C1;
-    db $15,$00,$00                                                       ;8FB0C4;
-    dw FXHeader_NorfairMap                                               ;8FB0C7;
-    dw EnemyPopulations_NorfairMap                                       ;8FB0C9;
-    dw EnemySets_NorfairMap                                              ;8FB0CB;
-    db $00,$00                                                           ;8FB0CD;
-    dw $0000                                                             ;8FB0CF;
-    dw $0000                                                             ;8FB0D1;
-    dw $0000                                                             ;8FB0D3;
-    dw PLMPopulation_NorfairMap                                          ;8FB0D5;
-    dw $0000                                                             ;8FB0D7;
-    dw RTS_8F91F6                                                        ;8FB0D9;
+RoomState_NorfairMap:                                                    ;8FB0C1;
+    %StateHeader(\
+    %levelData(LevelData_MapStation_RightSideDoor),
+    %tileset($15),
+    %music(0, 0),
+    %FX(FXHeader_NorfairMap),
+    %enemyPop(EnemyPopulations_NorfairMap),
+    %enemySet(EnemySets_NorfairMap),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_NorfairMap),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_NorfairMap:
     dw Door_NorfairMap_0                                                 ;8FB0DB;
@@ -6668,19 +6964,21 @@ RoomHeader_BubbleMountainSave:                                           ;8FB0DD
     %doorList(RoomDoors_BubbleMountainSave))
     %stateChecks(0, 0)
 
-RoomState_BubbleMountainSave:
-    dl LevelData_SaveStation_RightSideDoor                               ;8FB0EA;
-    db $19,$15,$05                                                       ;8FB0ED;
-    dw FXHeader_BubbleMountainSave                                       ;8FB0F0;
-    dw EnemyPopulations_BubbleMountainSave                               ;8FB0F2;
-    dw EnemySets_BubbleMountainSave                                      ;8FB0F4;
-    db $00,$00                                                           ;8FB0F6;
-    dw $0000                                                             ;8FB0F8;
-    dw $0000                                                             ;8FB0FA;
-    dw $0000                                                             ;8FB0FC;
-    dw PLMPopulation_BubbleMountainSave                                  ;8FB0FE;
-    dw $0000                                                             ;8FB100;
-    dw RTS_8F91F6                                                        ;8FB102;
+RoomState_BubbleMountainSave:                                            ;8FB0EA;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_RightSideDoor),
+    %tileset($19),
+    %music($15, 5),
+    %FX(FXHeader_BubbleMountainSave),
+    %enemyPop(EnemyPopulations_BubbleMountainSave),
+    %enemySet(EnemySets_BubbleMountainSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_BubbleMountainSave),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_BubbleMountainSave:
     dw Door_BubbleMountainSave_0                                         ;8FB104;
@@ -6696,19 +6994,21 @@ RoomHeader_FrogSpeedway:                                                 ;8FB106
     %doorList(RoomDoors_FrogSpeedway))
     %stateChecks(0, 0)
 
-RoomState_FrogSpeedway:
-    dl LevelData_FrogSpeedway                                            ;8FB113;
-    db $0A,$00,$00                                                       ;8FB116;
-    dw FXHeader_FrogSpeedway                                             ;8FB119;
-    dw EnemyPopulations_FrogSpeedway                                     ;8FB11B;
-    dw EnemySets_FrogSpeedway                                            ;8FB11D;
-    db $C1,$01                                                           ;8FB11F;
-    dw RoomScrolls_FrogSpeedway                                          ;8FB121;
-    dw $0000                                                             ;8FB123;
-    dw $0000                                                             ;8FB125;
-    dw PLMPopulation_FrogSpeedway                                        ;8FB127;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright                  ;8FB129;
-    dw RTS_8F91F6                                                        ;8FB12B;
+RoomState_FrogSpeedway:                                                  ;8FB113;
+    %StateHeader(\
+    %levelData(LevelData_FrogSpeedway),
+    %tileset($0A),
+    %music(0, 0),
+    %FX(FXHeader_FrogSpeedway),
+    %enemyPop(EnemyPopulations_FrogSpeedway),
+    %enemySet(EnemySets_FrogSpeedway),
+    %layer2Scrolls($C1, 1),
+    %scrollPointer(RoomScrolls_FrogSpeedway),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_FrogSpeedway),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_Bright),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_FrogSpeedway:
     dw Door_FrogSpeedway_0                                               ;8FB12D;
@@ -6728,19 +7028,21 @@ RoomHeader_RedPirateShaft:                                               ;8FB139
     %doorList(RoomDoors_RedPirateShaft))
     %stateChecks(0, 0)
 
-RoomState_RedPirateShaft:
-    dl LevelData_RedPirateShaft                                          ;8FB146;
-    db $09,$00,$00                                                       ;8FB149;
-    dw FXHeader_RedPirateShaft                                           ;8FB14C;
-    dw EnemyPopulations_RedPirateShaft                                   ;8FB14E;
-    dw EnemySets_RedPirateShaft                                          ;8FB150;
-    db $01,$C1                                                           ;8FB152;
-    dw RoomScrolls_RedPirateShaft                                        ;8FB154;
-    dw $0000                                                             ;8FB156;
-    dw $0000                                                             ;8FB158;
-    dw PLMPopulation_RedPirateShaft                                      ;8FB15A;
-    dw LibBG_Norfair_9_A_CavernVertical                                  ;8FB15C;
-    dw RTS_8F91F6                                                        ;8FB15E;
+RoomState_RedPirateShaft:                                                ;8FB146;
+    %StateHeader(\
+    %levelData(LevelData_RedPirateShaft),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_RedPirateShaft),
+    %enemyPop(EnemyPopulations_RedPirateShaft),
+    %enemySet(EnemySets_RedPirateShaft),
+    %layer2Scrolls(1, $C1),
+    %scrollPointer(RoomScrolls_RedPirateShaft),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_RedPirateShaft),
+    %libraryBG(LibBG_Norfair_9_A_CavernVertical),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_RedPirateShaft:
     dw Door_RedPirateShaft_0                                             ;8FB160;
@@ -6760,19 +7062,21 @@ RoomHeader_FrogSave:                                                     ;8FB167
     %doorList(RoomDoors_FrogSave))
     %stateChecks(0, 0)
 
-RoomState_FrogSave:
-    dl LevelData_SaveStation_BothDoors                                   ;8FB174;
-    db $19,$15,$05                                                       ;8FB177;
-    dw FXHeader_FrogSave                                                 ;8FB17A;
-    dw EnemyPopulations_FrogSave                                         ;8FB17C;
-    dw EnemySets_FrogSave                                                ;8FB17E;
-    db $00,$00                                                           ;8FB180;
-    dw $0000                                                             ;8FB182;
-    dw $0000                                                             ;8FB184;
-    dw $0000                                                             ;8FB186;
-    dw PLMPopulation_FrogSave                                            ;8FB188;
-    dw $0000                                                             ;8FB18A;
-    dw RTS_8F91F6                                                        ;8FB18C;
+RoomState_FrogSave:                                                      ;8FB174;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_BothDoors),
+    %tileset($19),
+    %music($15, 5),
+    %FX(FXHeader_FrogSave),
+    %enemyPop(EnemyPopulations_FrogSave),
+    %enemySet(EnemySets_FrogSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_FrogSave),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_FrogSave:
     dw Door_FrogSave_0                                                   ;8FB18E;
@@ -6789,19 +7093,21 @@ RoomHeader_CrocomireSave:                                                ;8FB192
     %doorList(RoomDoors_CrocomireSave))
     %stateChecks(0, 0)
 
-RoomState_CrocomireSave:
-    dl LevelData_SaveStation_LeftSideDoor                                ;8FB19F;
-    db $19,$15,$05                                                       ;8FB1A2;
-    dw FXHeader_CrocomireSave                                            ;8FB1A5;
-    dw EnemyPopulations_CrocomireSave                                    ;8FB1A7;
-    dw EnemySets_CrocomireSave                                           ;8FB1A9;
-    db $00,$00                                                           ;8FB1AB;
-    dw $0000                                                             ;8FB1AD;
-    dw $0000                                                             ;8FB1AF;
-    dw $0000                                                             ;8FB1B1;
-    dw PLMPopulation_CrocomireSave                                       ;8FB1B3;
-    dw $0000                                                             ;8FB1B5;
-    dw RTS_8F91F6                                                        ;8FB1B7;
+RoomState_CrocomireSave:                                                 ;8FB19F;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_LeftSideDoor),
+    %tileset($19),
+    %music($15, 5),
+    %FX(FXHeader_CrocomireSave),
+    %enemyPop(EnemyPopulations_CrocomireSave),
+    %enemySet(EnemySets_CrocomireSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_CrocomireSave),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F6))
 
 RoomDoors_CrocomireSave:
     dw Door_CrocomireSave_0                                              ;8FB1B9;
@@ -6817,19 +7123,21 @@ RoomHeader_LNElevSave:                                                   ;8FB1BB
     %doorList(RoomDoors_LNElevSave))
     %stateChecks(0, 0)
 
-RoomState_LNElevSave:
-    dl LevelData_SaveStation_RightSideDoor                               ;8FB1C8;
-    db $19,$15,$05                                                       ;8FB1CB;
-    dw FXHeader_LNElevSave                                               ;8FB1CE;
-    dw EnemyPopulations_LNElevSave                                       ;8FB1D0;
-    dw EnemySets_LNElevSave                                              ;8FB1D2;
-    db $00,$00                                                           ;8FB1D4;
-    dw RoomScrolls_LNElevSave                                            ;8FB1D6;
-    dw $0000                                                             ;8FB1D8;
-    dw $0000                                                             ;8FB1DA;
-    dw PLMPopulation_LNElevSave                                          ;8FB1DC;
-    dw $0000                                                             ;8FB1DE;
-    dw $0000                                                             ;8FB1E0;
+RoomState_LNElevSave:                                                    ;8FB1C8;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_RightSideDoor),
+    %tileset($19),
+    %music($15, 5),
+    %FX(FXHeader_LNElevSave),
+    %enemyPop(EnemyPopulations_LNElevSave),
+    %enemySet(EnemySets_LNElevSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_LNElevSave),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_LNElevSave),
+    %libraryBG(0),
+    %setupASM(0))
 
 RoomDoors_LNElevSave:
     dw Door_LNElevSave_0                                                 ;8FB1E2;
@@ -6848,19 +7156,21 @@ RoomHeader_AcidStatue:                                                   ;8FB1E5
     %doorList(RoomDoors_AcidStatue))
     %stateChecks(0, 0)
 
-RoomState_AcidStatue:
-    dl LevelData_AcidStatue                                              ;8FB1F2;
-    db $09,$18,$05                                                       ;8FB1F5;
-    dw FXHeader_AcidStatue                                               ;8FB1F8;
-    dw EnemyPopulations_AcidStatue                                       ;8FB1FA;
-    dw EnemySets_AcidStatue                                              ;8FB1FC;
-    db $C1,$C1                                                           ;8FB1FE;
-    dw RoomScrolls_AcidStatue                                            ;8FB200;
-    dw $0000                                                             ;8FB202;
-    dw $0000                                                             ;8FB204;
-    dw PLMPopulation_AcidStatue                                          ;8FB206;
-    dw LibBG_Norfair_9_CavernRoomPillars                                 ;8FB208;
-    dw RTS_8F91F7                                                        ;8FB20A;
+RoomState_AcidStatue:                                                    ;8FB1F2;
+    %StateHeader(\
+    %levelData(LevelData_AcidStatue),
+    %tileset(9),
+    %music($18, 5),
+    %FX(FXHeader_AcidStatue),
+    %enemyPop(EnemyPopulations_AcidStatue),
+    %enemySet(EnemySets_AcidStatue),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_AcidStatue),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_AcidStatue),
+    %libraryBG(LibBG_Norfair_9_CavernRoomPillars),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_AcidStatue:
     dw Door_AcidStatue_0                                                 ;8FB20C;
@@ -6891,19 +7201,21 @@ RoomHeader_MainHall:                                                     ;8FB236
     %doorList(RoomDoors_MainHall))
     %stateChecks(0, 0)
 
-RoomState_MainHall:
-    dl LevelData_MainHall                                                ;8FB243;
-    db $09,$18,$05                                                       ;8FB246;
-    dw FXHeader_MainHall                                                 ;8FB249;
-    dw EnemyPopulations_MainHall                                         ;8FB24B;
-    dw EnemySets_MainHall                                                ;8FB24D;
-    db $C1,$01                                                           ;8FB24F;
-    dw RoomScrolls_MainHall                                              ;8FB251;
-    dw $0000                                                             ;8FB253;
-    dw $0000                                                             ;8FB255;
-    dw PLMPopulation_MainHall                                            ;8FB257;
-    dw LibBG_Norfair_9_CavernVerticalRuins                               ;8FB259;
-    dw RTS_8F91F7                                                        ;8FB25B;
+RoomState_MainHall:                                                      ;8FB243;
+    %StateHeader(\
+    %levelData(LevelData_MainHall),
+    %tileset(9),
+    %music($18, 5),
+    %FX(FXHeader_MainHall),
+    %enemyPop(EnemyPopulations_MainHall),
+    %enemySet(EnemySets_MainHall),
+    %layer2Scrolls($C1, 1),
+    %scrollPointer(RoomScrolls_MainHall),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_MainHall),
+    %libraryBG(LibBG_Norfair_9_CavernVerticalRuins),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_MainHall:
     dw Door_MainHall_0                                                   ;8FB25D;
@@ -6933,33 +7245,37 @@ RoomHeader_GoldenTorizo:                                                 ;8FB283
     %stateChecks(1,
     %stateCheckBossDead(4, RoomState_GoldenTorizo_1))
 
-RoomState_GoldenTorizo_0:
-    dl LevelData_GoldenTorizo                                            ;8FB295;
-    db $09,$24,$03                                                       ;8FB298;
-    dw FXHeader_GoldenTorizo_State0_1                                    ;8FB29B;
-    dw EnemyPopulations_GoldenTorizo                                     ;8FB29D;
-    dw EnemySets_GoldenTorizo                                            ;8FB29F;
-    db $C0,$00                                                           ;8FB2A1;
-    dw RoomScrolls_GoldenTorizo                                          ;8FB2A3;
-    dw $0000                                                             ;8FB2A5;
-    dw $0000                                                             ;8FB2A7;
-    dw PLMPopulation_GoldenTorizo_State0_1                               ;8FB2A9;
-    dw $0000                                                             ;8FB2AB;
-    dw RTS_8F91F7                                                        ;8FB2AD;
+RoomState_GoldenTorizo_0:                                                ;8FB295;
+    %StateHeader(\
+    %levelData(LevelData_GoldenTorizo),
+    %tileset(9),
+    %music($24, 3),
+    %FX(FXHeader_GoldenTorizo_State0_1),
+    %enemyPop(EnemyPopulations_GoldenTorizo),
+    %enemySet(EnemySets_GoldenTorizo),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(RoomScrolls_GoldenTorizo),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GoldenTorizo_State0_1),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F7))
 
-RoomState_GoldenTorizo_1:
-    dl LevelData_GoldenTorizo                                            ;8FB2AF;
-    db $09,$00,$03                                                       ;8FB2B2;
-    dw FXHeader_GoldenTorizo_State0_1                                    ;8FB2B5;
-    dw EnemyPopulations_GoldenTorizo                                     ;8FB2B7;
-    dw EnemySets_GoldenTorizo                                            ;8FB2B9;
-    db $C0,$00                                                           ;8FB2BB;
-    dw RoomScrolls_GoldenTorizo                                          ;8FB2BD;
-    dw $0000                                                             ;8FB2BF;
-    dw $0000                                                             ;8FB2C1;
-    dw PLMPopulation_GoldenTorizo_State0_1                               ;8FB2C3;
-    dw $0000                                                             ;8FB2C5;
-    dw RTS_8F91F7                                                        ;8FB2C7;
+RoomState_GoldenTorizo_1:                                                ;8FB2AF;
+    %StateHeader(\
+    %levelData(LevelData_GoldenTorizo),
+    %tileset(9),
+    %music(0, 3),
+    %FX(FXHeader_GoldenTorizo_State0_1),
+    %enemyPop(EnemyPopulations_GoldenTorizo),
+    %enemySet(EnemySets_GoldenTorizo),
+    %layer2Scrolls($C0, 0),
+    %scrollPointer(RoomScrolls_GoldenTorizo),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GoldenTorizo_State0_1),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_GoldenTorizo:
     dw Door_GoldenTorizo_0                                               ;8FB2C9;
@@ -6982,19 +7298,21 @@ RoomHeader_FastRipper:                                                   ;8FB2DA
     %doorList(RoomDoors_FastRipper))
     %stateChecks(0, 0)
 
-RoomState_FastRipper:
-    dl LevelData_FastRipper                                              ;8FB2E7;
-    db $09,$18,$05                                                       ;8FB2EA;
-    dw FXHeader_FastRipper                                               ;8FB2ED;
-    dw EnemyPopulations_FastRipper                                       ;8FB2EF;
-    dw EnemySets_FastRipper                                              ;8FB2F1;
-    db $C1,$C1                                                           ;8FB2F3;
-    dw $0000                                                             ;8FB2F5;
-    dw $0000                                                             ;8FB2F7;
-    dw $0000                                                             ;8FB2F9;
-    dw PLMPopulation_FastRipper                                          ;8FB2FB;
-    dw LibBG_Norfair_9_CavernVerticalRuins                               ;8FB2FD;
-    dw RTS_8F91F7                                                        ;8FB2FF;
+RoomState_FastRipper:                                                    ;8FB2E7;
+    %StateHeader(\
+    %levelData(LevelData_FastRipper),
+    %tileset(9),
+    %music($18, 5),
+    %FX(FXHeader_FastRipper),
+    %enemyPop(EnemyPopulations_FastRipper),
+    %enemySet(EnemySets_FastRipper),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_FastRipper),
+    %libraryBG(LibBG_Norfair_9_CavernVerticalRuins),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_FastRipper:
     dw Door_FastRipper_0                                                 ;8FB301;
@@ -7011,19 +7329,21 @@ RoomHeader_GTEnergyRefill:                                               ;8FB305
     %doorList(RoomDoors_GTEnergyRefill))
     %stateChecks(0, 0)
 
-RoomState_GTEnergyRefill:
-    dl LevelData_EnergyRefill_LeftSideDoor                               ;8FB312;
-    db $17,$00,$03                                                       ;8FB315;
-    dw FXHeader_GTEnergyRefill                                           ;8FB318;
-    dw EnemyPopulations_GTEnergyRefill                                   ;8FB31A;
-    dw EnemySets_GTEnergyRefill                                          ;8FB31C;
-    db $00,$00                                                           ;8FB31E;
-    dw $0000                                                             ;8FB320;
-    dw $0000                                                             ;8FB322;
-    dw $0000                                                             ;8FB324;
-    dw PLMPopulation_GTEnergyRefill                                      ;8FB326;
-    dw $0000                                                             ;8FB328;
-    dw RTS_8F91F7                                                        ;8FB32A;
+RoomState_GTEnergyRefill:                                                ;8FB312;
+    %StateHeader(\
+    %levelData(LevelData_EnergyRefill_LeftSideDoor),
+    %tileset($17),
+    %music(0, 3),
+    %FX(FXHeader_GTEnergyRefill),
+    %enemyPop(EnemyPopulations_GTEnergyRefill),
+    %enemySet(EnemySets_GTEnergyRefill),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_GTEnergyRefill),
+    %libraryBG(0),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_GTEnergyRefill:
     dw Door_GTEnergyRefill_0                                             ;8FB32C;
@@ -7040,33 +7360,37 @@ RoomHeader_Ridley:                                                       ;8FB32E
     %stateChecks(1,
     %stateCheckBossDead(1, RoomState_Ridley_1))
 
-RoomState_Ridley_0:
-    dl LevelData_Ridley                                                  ;8FB340;
-    db $09,$24,$04                                                       ;8FB343;
-    dw FXHeader_Ridley_State0_1                                          ;8FB346;
-    dw EnemyPopulations_Ridley                                           ;8FB348;
-    dw EnemySets_Ridley                                                  ;8FB34A;
-    db $01,$C1                                                           ;8FB34C;
-    dw RoomScrolls_Ridley                                                ;8FB34E;
-    dw $0000                                                             ;8FB350;
-    dw MainASM_RidleysRoomShaking                                        ;8FB352;
-    dw PLMPopulation_Ridley_State0_1                                     ;8FB354;
-    dw LibBG_Norfair_9_CavernRoomPillars                                 ;8FB356;
-    dw RTS_8F91F7                                                        ;8FB358;
+RoomState_Ridley_0:                                                      ;8FB340;
+    %StateHeader(\
+    %levelData(LevelData_Ridley),
+    %tileset(9),
+    %music($24, 4),
+    %FX(FXHeader_Ridley_State0_1),
+    %enemyPop(EnemyPopulations_Ridley),
+    %enemySet(EnemySets_Ridley),
+    %layer2Scrolls(1, $C1),
+    %scrollPointer(RoomScrolls_Ridley),
+    %specialXray(0),
+    %mainASM(MainASM_RidleysRoomShaking),
+    %PLMPop(PLMPopulation_Ridley_State0_1),
+    %libraryBG(LibBG_Norfair_9_CavernRoomPillars),
+    %setupASM(RTS_8F91F7))
 
-RoomState_Ridley_1:
-    dl LevelData_Ridley                                                  ;8FB35A;
-    db $09,$00,$03                                                       ;8FB35D;
-    dw FXHeader_Ridley_State0_1                                          ;8FB360;
-    dw EnemyPopulations_Ridley                                           ;8FB362;
-    dw EnemySets_Ridley                                                  ;8FB364;
-    db $01,$C1                                                           ;8FB366;
-    dw RoomScrolls_Ridley                                                ;8FB368;
-    dw $0000                                                             ;8FB36A;
-    dw MainASM_RidleysRoomShaking                                        ;8FB36C;
-    dw PLMPopulation_Ridley_State0_1                                     ;8FB36E;
-    dw LibBG_Norfair_9_CavernRoomPillars                                 ;8FB370;
-    dw RTS_8F91F7                                                        ;8FB372;
+RoomState_Ridley_1:                                                      ;8FB35A;
+    %StateHeader(\
+    %levelData(LevelData_Ridley),
+    %tileset(9),
+    %music(0, 3),
+    %FX(FXHeader_Ridley_State0_1),
+    %enemyPop(EnemyPopulations_Ridley),
+    %enemySet(EnemySets_Ridley),
+    %layer2Scrolls(1, $C1),
+    %scrollPointer(RoomScrolls_Ridley),
+    %specialXray(0),
+    %mainASM(MainASM_RidleysRoomShaking),
+    %PLMPop(PLMPopulation_Ridley_State0_1),
+    %libraryBG(LibBG_Norfair_9_CavernRoomPillars),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_Ridley:
     dw Door_Ridley_0                                                     ;8FB374;
@@ -7086,19 +7410,21 @@ RoomHeader_LNFarming:                                                    ;8FB37A
     %doorList(RoomDoors_LNFarming))
     %stateChecks(0, 0)
 
-RoomState_LNFarming:
-    dl LevelData_LNFarming                                               ;8FB387;
-    db $09,$18,$05                                                       ;8FB38A;
-    dw FXHeader_LNFarming                                                ;8FB38D;
-    dw EnemyPopulations_LNFarming                                        ;8FB38F;
-    dw EnemySets_LNFarming                                               ;8FB391;
-    db $C1,$C1                                                           ;8FB393;
-    dw $0000                                                             ;8FB395;
-    dw $0000                                                             ;8FB397;
-    dw $0000                                                             ;8FB399;
-    dw PLMPopulation_LNFarming                                           ;8FB39B;
-    dw LibBG_Norfair_9_RoomStatues                                       ;8FB39D;
-    dw RTS_8F91F7                                                        ;8FB39F;
+RoomState_LNFarming:                                                     ;8FB387;
+    %StateHeader(\
+    %levelData(LevelData_LNFarming),
+    %tileset(9),
+    %music($18, 5),
+    %FX(FXHeader_LNFarming),
+    %enemyPop(EnemyPopulations_LNFarming),
+    %enemySet(EnemySets_LNFarming),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_LNFarming),
+    %libraryBG(LibBG_Norfair_9_RoomStatues),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_LNFarming:
     dw Door_LNFarming_0                                                  ;8FB3A1;
@@ -7115,19 +7441,21 @@ RoomHeader_FastPillarsSetup:                                             ;8FB3A5
     %doorList(RoomDoors_FastPillarsSetup))
     %stateChecks(0, 0)
 
-RoomState_FastPillarsSetup:
-    dl LevelData_FastPillarsSetup                                        ;8FB3B2;
-    db $09,$00,$00                                                       ;8FB3B5;
-    dw FXHeader_FastPillarsSetup                                         ;8FB3B8;
-    dw EnemyPopulations_FastPillarsSetup                                 ;8FB3BA;
-    dw EnemySets_FastPillarsSetup                                        ;8FB3BC;
-    db $C1,$C1                                                           ;8FB3BE;
-    dw RoomScrolls_FastPillarsSetup                                      ;8FB3C0;
-    dw $0000                                                             ;8FB3C2;
-    dw $0000                                                             ;8FB3C4;
-    dw PLMPopulation_FastPillarsSetup                                    ;8FB3C6;
-    dw LibBG_Norfair_9_VerticalPatternBrick                              ;8FB3C8;
-    dw RTS_8F91F7                                                        ;8FB3CA;
+RoomState_FastPillarsSetup:                                              ;8FB3B2;
+    %StateHeader(\
+    %levelData(LevelData_FastPillarsSetup),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_FastPillarsSetup),
+    %enemyPop(EnemyPopulations_FastPillarsSetup),
+    %enemySet(EnemySets_FastPillarsSetup),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_FastPillarsSetup),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_FastPillarsSetup),
+    %libraryBG(LibBG_Norfair_9_VerticalPatternBrick),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_FastPillarsSetup:
     dw Door_FastPillarsSetup_0                                           ;8FB3CC;
@@ -7157,19 +7485,21 @@ UNUSED_RoomHeader_8FB3E1:
     %doorList(UNUSED_RoomDoors_8FB408))
     %stateChecks(0, 0)
 
-UNUSED_RoomState_8FB3EE:
-    dl UNUSED_LevelData_C8F40B                                           ;8FB3EE;
-    db $09,$00,$00                                                       ;8FB3F1;
-    dw UNUSED_FXHeader_8387EC                                            ;8FB3F4;
-    dw UNUSED_EnemyPopulations_8FB3EE_A1AD06                             ;8FB3F6;
-    dw UNUSED_EnemySets_State8FB3EE_B48899                               ;8FB3F8;
-    db $C1,$C1                                                           ;8FB3FA;
-    dw $0000                                                             ;8FB3FC;
-    dw $0000                                                             ;8FB3FE;
-    dw $0000                                                             ;8FB400;
-    dw UNUSED_PLMPopulation_8FB3EE                                       ;8FB402;
-    dw LibBG_Norfair_9_HorizontalPatternBrick                            ;8FB404;
-    dw RTS_8F91F7                                                        ;8FB406;
+UNUSED_RoomState_8FB3EE:                                                 ;8FB3EE;
+    %StateHeader(\
+    %levelData(UNUSED_LevelData_C8F40B),
+    %tileset(9),
+    %music(0, 0),
+    %FX(UNUSED_FXHeader_8387EC),
+    %enemyPop(UNUSED_EnemyPopulations_8FB3EE_A1AD06),
+    %enemySet(UNUSED_EnemySets_State8FB3EE_B48899),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(UNUSED_PLMPopulation_8FB3EE),
+    %libraryBG(LibBG_Norfair_9_HorizontalPatternBrick),
+    %setupASM(RTS_8F91F7))
 
 UNUSED_RoomDoors_8FB408:
     dw UNUSED_Door_83991E                                                ;8FB408;
@@ -7186,19 +7516,21 @@ RoomHeader_MickeyMouse:                                                  ;8FB40A
     %doorList(RoomDoors_MickeyMouse))
     %stateChecks(0, 0)
 
-RoomState_MickeyMouse:
-    dl LevelData_MickeyMouse                                             ;8FB417;
-    db $09,$00,$00                                                       ;8FB41A;
-    dw FXHeader_MickeyMouse                                              ;8FB41D;
-    dw EnemyPopulations_MickeyMouse                                      ;8FB41F;
-    dw EnemySets_MickeyMouse                                             ;8FB421;
-    db $C1,$C1                                                           ;8FB423;
-    dw RoomScrolls_MickeyMouse                                           ;8FB425;
-    dw $0000                                                             ;8FB427;
-    dw $0000                                                             ;8FB429;
-    dw PLMPopulation_MickeyMouse                                         ;8FB42B;
-    dw LibBG_Norfair_9_PurplePatches                                     ;8FB42D;
-    dw RTS_8F91F7                                                        ;8FB42F;
+RoomState_MickeyMouse:                                                   ;8FB417;
+    %StateHeader(\
+    %levelData(LevelData_MickeyMouse),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_MickeyMouse),
+    %enemyPop(EnemyPopulations_MickeyMouse),
+    %enemySet(EnemySets_MickeyMouse),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_MickeyMouse),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_MickeyMouse),
+    %libraryBG(LibBG_Norfair_9_PurplePatches),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_MickeyMouse:
     dw Door_MickeyMouse_0                                                ;8FB431;
@@ -7236,19 +7568,21 @@ RoomHeader_Pillar:                                                       ;8FB457
     %doorList(RoomDoors_Pillar))
     %stateChecks(0, 0)
 
-RoomState_Pillar:
-    dl LevelData_Pillar                                                  ;8FB464;
-    db $09,$00,$00                                                       ;8FB467;
-    dw FXHeader_Pillar                                                   ;8FB46A;
-    dw EnemyPopulations_Pillar                                           ;8FB46C;
-    dw EnemySets_Pillar                                                  ;8FB46E;
-    db $C1,$C1                                                           ;8FB470;
-    dw $0000                                                             ;8FB472;
-    dw $0000                                                             ;8FB474;
-    dw $0000                                                             ;8FB476;
-    dw PLMPopulation_Pillar                                              ;8FB478;
-    dw LibBG_Norfair_9_CavernVerticalRuins                               ;8FB47A;
-    dw RTS_8F91F7                                                        ;8FB47C;
+RoomState_Pillar:                                                        ;8FB464;
+    %StateHeader(\
+    %levelData(LevelData_Pillar),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_Pillar),
+    %enemyPop(EnemyPopulations_Pillar),
+    %enemySet(EnemySets_Pillar),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Pillar),
+    %libraryBG(LibBG_Norfair_9_CavernVerticalRuins),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_Pillar:
     dw Door_Pillar_0                                                     ;8FB47E;
@@ -7265,19 +7599,21 @@ RoomHeader_Plowerhouse:                                                  ;8FB482
     %doorList(RoomDoors_Plowerhouse))
     dw Use_StatePointer_inX                                              ;8FB48D;
 
-RoomState_Plowerhouse:
-    dl LevelData_Plowerhouse                                             ;8FB48F;
-    db $09,$00,$00                                                       ;8FB492;
-    dw FXHeader_Plowerhouse                                              ;8FB495;
-    dw EnemyPopulations_Plowerhouse                                      ;8FB497;
-    dw EnemySets_Plowerhouse                                             ;8FB499;
-    db $C1,$C1                                                           ;8FB49B;
-    dw $0000                                                             ;8FB49D;
-    dw $0000                                                             ;8FB49F;
-    dw $0000                                                             ;8FB4A1;
-    dw PLMPopulation_Plowerhouse                                         ;8FB4A3;
-    dw LibBG_Norfair_9_RoomStatues                                       ;8FB4A5;
-    dw RTS_8F91F7                                                        ;8FB4A7;
+RoomState_Plowerhouse:                                                   ;8FB48F;
+    %StateHeader(\
+    %levelData(LevelData_Plowerhouse),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_Plowerhouse),
+    %enemyPop(EnemyPopulations_Plowerhouse),
+    %enemySet(EnemySets_Plowerhouse),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Plowerhouse),
+    %libraryBG(LibBG_Norfair_9_RoomStatues),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_Plowerhouse:
     dw Door_Plowerhouse_0                                                ;8FB4A9;
@@ -7294,19 +7630,21 @@ RoomHeader_WorstRoomInTheGame:                                           ;8FB4AD
     %doorList(RoomDoors_WorstRoomInTheGame))
     %stateChecks(0, 0)
 
-RoomState_WorstRoomInTheGame:
-    dl LevelData_WorstRoomInTheGame                                      ;8FB4BA;
-    db $09,$00,$00                                                       ;8FB4BD;
-    dw FXHeader_WorstRoomInTheGame                                       ;8FB4C0;
-    dw EnemyPopulations_WorstRoomInTheGame                               ;8FB4C2;
-    dw EnemySets_WorstRoomInTheGame                                      ;8FB4C4;
-    db $C1,$C1                                                           ;8FB4C6;
-    dw RoomScrolls_WorstRoomInTheGame                                    ;8FB4C8;
-    dw $0000                                                             ;8FB4CA;
-    dw $0000                                                             ;8FB4CC;
-    dw PLMPopulation_WorstRoomInTheGame                                  ;8FB4CE;
-    dw LibBG_Norfair_9_CavernHorizontalRuins                             ;8FB4D0;
-    dw RTS_8F91F7                                                        ;8FB4D2;
+RoomState_WorstRoomInTheGame:                                            ;8FB4BA;
+    %StateHeader(\
+    %levelData(LevelData_WorstRoomInTheGame),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_WorstRoomInTheGame),
+    %enemyPop(EnemyPopulations_WorstRoomInTheGame),
+    %enemySet(EnemySets_WorstRoomInTheGame),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_WorstRoomInTheGame),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_WorstRoomInTheGame),
+    %libraryBG(LibBG_Norfair_9_CavernHorizontalRuins),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_WorstRoomInTheGame:
     dw Door_WorstRoomInTheGame_0                                         ;8FB4D4;
@@ -7330,19 +7668,21 @@ RoomHeader_Amphitheatre:                                                 ;8FB4E5
     %doorList(RoomDoors_Amphitheatre))
     %stateChecks(0, 0)
 
-RoomState_Amphitheatre:
-    dl LevelData_Amphitheatre                                            ;8FB4F2;
-    db $09,$00,$00                                                       ;8FB4F5;
-    dw FXHeader_Amphitheatre                                             ;8FB4F8;
-    dw EnemyPopulations_Amphitheatre                                     ;8FB4FA;
-    dw EnemySets_Amphitheatre                                            ;8FB4FC;
-    db $C1,$C1                                                           ;8FB4FE;
-    dw $0000                                                             ;8FB500;
-    dw $0000                                                             ;8FB502;
-    dw $0000                                                             ;8FB504;
-    dw PLMPopulation_Amphitheatre                                        ;8FB506;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_0                       ;8FB508;
-    dw RTS_8F91F7                                                        ;8FB50A;
+RoomState_Amphitheatre:                                                  ;8FB4F2;
+    %StateHeader(\
+    %levelData(LevelData_Amphitheatre),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_Amphitheatre),
+    %enemyPop(EnemyPopulations_Amphitheatre),
+    %enemySet(EnemySets_Amphitheatre),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Amphitheatre),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_0),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_Amphitheatre:
     dw Door_Amphitheatre_0                                               ;8FB50C;
@@ -7359,19 +7699,21 @@ RoomHeader_LNSpringBallMaze:                                             ;8FB510
     %doorList(RoomDoors_LNSpringBallMaze))
     %stateChecks(0, 0)
 
-RoomState_LNSpringBallMaze:
-    dl LevelData_LNSpringBallMaze                                        ;8FB51D;
-    db $09,$00,$05                                                       ;8FB520;
-    dw FXHeader_LNSpringballMaze                                         ;8FB523;
-    dw EnemyPopulations_LNSpringBallMaze                                 ;8FB525;
-    dw EnemySets_LNSpringBallMaze                                        ;8FB527;
-    db $C1,$C1                                                           ;8FB529;
-    dw RoomScrolls_LNSpringBallMaze                                      ;8FB52B;
-    dw $0000                                                             ;8FB52D;
-    dw $0000                                                             ;8FB52F;
-    dw PLMPopulation_LNSpringBallMaze                                    ;8FB531;
-    dw LibBG_Norfair_9_PurplePatches                                     ;8FB533;
-    dw RTS_8F91F7                                                        ;8FB535;
+RoomState_LNSpringBallMaze:                                              ;8FB51D;
+    %StateHeader(\
+    %levelData(LevelData_LNSpringBallMaze),
+    %tileset(9),
+    %music(0, 5),
+    %FX(FXHeader_LNSpringballMaze),
+    %enemyPop(EnemyPopulations_LNSpringBallMaze),
+    %enemySet(EnemySets_LNSpringBallMaze),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_LNSpringBallMaze),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_LNSpringBallMaze),
+    %libraryBG(LibBG_Norfair_9_PurplePatches),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_LNSpringBallMaze:
     dw Door_LNSpringBallMaze_0                                           ;8FB537;
@@ -7401,19 +7743,21 @@ RoomHeader_LNEscapePowerBombs:                                           ;8FB55A
     %doorList(RoomDoors_LNEscapePowerBombs))
     %stateChecks(0, 0)
 
-RoomState_LNEscapePowerBombs:
-    dl LevelData_LNEscapePowerBombs                                      ;8FB567;
-    db $09,$00,$00                                                       ;8FB56A;
-    dw FXHeader_LNEscapePowerBombs                                       ;8FB56D;
-    dw EnemyPopulations_LNEscapePowerBombs                               ;8FB56F;
-    dw EnemySets_LNEscapePowerBombs                                      ;8FB571;
-    db $C1,$C1                                                           ;8FB573;
-    dw $0000                                                             ;8FB575;
-    dw $0000                                                             ;8FB577;
-    dw $0000                                                             ;8FB579;
-    dw PLMPopulation_LNEscapePowerBombs                                  ;8FB57B;
-    dw LibBG_Norfair_9_CavernRoomPillars                                 ;8FB57D;
-    dw RTS_8F91F7                                                        ;8FB57F;
+RoomState_LNEscapePowerBombs:                                            ;8FB567;
+    %StateHeader(\
+    %levelData(LevelData_LNEscapePowerBombs),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_LNEscapePowerBombs),
+    %enemyPop(EnemyPopulations_LNEscapePowerBombs),
+    %enemySet(EnemySets_LNEscapePowerBombs),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_LNEscapePowerBombs),
+    %libraryBG(LibBG_Norfair_9_CavernRoomPillars),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_LNEscapePowerBombs:
     dw Door_LNEscapePowerBombs_0                                         ;8FB581;
@@ -7430,19 +7774,21 @@ RoomHeader_RedKihunterShaft:                                             ;8FB585
     %doorList(RoomDoors_RedKihunterShaft))
     %stateChecks(0, 0)
 
-RoomState_RedKihunterShaft:
-    dl LevelData_RedKihunterShaft                                        ;8FB592;
-    db $09,$00,$00                                                       ;8FB595;
-    dw FXHeader_RedKihunterShaft                                         ;8FB598;
-    dw EnemyPopulations_RedKihunterShaft                                 ;8FB59A;
-    dw EnemySets_RedKihunterShaft                                        ;8FB59C;
-    db $C1,$C1                                                           ;8FB59E;
-    dw RoomScrolls_RedKihunterShaft                                      ;8FB5A0;
-    dw $0000                                                             ;8FB5A2;
-    dw $0000                                                             ;8FB5A4;
-    dw PLMPopulation_RedKihunterShaft                                    ;8FB5A6;
-    dw LibBG_Norfair_9_A_SmallPatternBrownPurple_0                       ;8FB5A8;
-    dw RTS_8F91F7                                                        ;8FB5AA;
+RoomState_RedKihunterShaft:                                              ;8FB592;
+    %StateHeader(\
+    %levelData(LevelData_RedKihunterShaft),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_RedKihunterShaft),
+    %enemyPop(EnemyPopulations_RedKihunterShaft),
+    %enemySet(EnemySets_RedKihunterShaft),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_RedKihunterShaft),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_RedKihunterShaft),
+    %libraryBG(LibBG_Norfair_9_A_SmallPatternBrownPurple_0),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_RedKihunterShaft:
     dw Door_RedKihunterShaft_0                                           ;8FB5AC;
@@ -7476,19 +7822,21 @@ RoomHeader_Wasteland:                                                    ;8FB5D5
     %doorList(RoomDoors_Wasteland))
     %stateChecks(0, 0)
 
-RoomState_Wasteland:
-    dl LevelData_Wasteland                                               ;8FB5E2;
-    db $09,$00,$00                                                       ;8FB5E5;
-    dw FXHeader_Wasteland                                                ;8FB5E8;
-    dw EnemyPopulations_Wasteland                                        ;8FB5EA;
-    dw EnemySets_Wasteland                                               ;8FB5EC;
-    db $C1,$C1                                                           ;8FB5EE;
-    dw RoomScrolls_Wasteland                                             ;8FB5F0;
-    dw $0000                                                             ;8FB5F2;
-    dw $0000                                                             ;8FB5F4;
-    dw PLMPopulation_Wasteland                                           ;8FB5F6;
-    dw LibBG_Norfair_9_CavernRoomPillars                                 ;8FB5F8;
-    dw RTS_8F91F7                                                        ;8FB5FA;
+RoomState_Wasteland:                                                     ;8FB5E2;
+    %StateHeader(\
+    %levelData(LevelData_Wasteland),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_Wasteland),
+    %enemyPop(EnemyPopulations_Wasteland),
+    %enemySet(EnemySets_Wasteland),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_Wasteland),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_Wasteland),
+    %libraryBG(LibBG_Norfair_9_CavernRoomPillars),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_Wasteland:
     dw Door_Wasteland_0                                                  ;8FB5FC;
@@ -7530,19 +7878,21 @@ RoomHeader_MetalPirates:                                                 ;8FB62B
     %doorList(RoomDoors_MetalPirates))
     %stateChecks(0, 0)
 
-RoomState_MetalPirates:
-    dl LevelData_MetalPirates                                            ;8FB638;
-    db $09,$00,$00                                                       ;8FB63B;
-    dw FXHeader_MetalPirates                                             ;8FB63E;
-    dw EnemyPopulations_MetalPirates                                     ;8FB640;
-    dw EnemySets_MetalPirates                                            ;8FB642;
-    db $C1,$C1                                                           ;8FB644;
-    dw $0000                                                             ;8FB646;
-    dw $0000                                                             ;8FB648;
-    dw $0000                                                             ;8FB64A;
-    dw PLMPopulation_MetalPirates                                        ;8FB64C;
-    dw LibBG_Norfair_9_RoomStatues                                       ;8FB64E;
-    dw RTS_8F91F7                                                        ;8FB650;
+RoomState_MetalPirates:                                                  ;8FB638;
+    %StateHeader(\
+    %levelData(LevelData_MetalPirates),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_MetalPirates),
+    %enemyPop(EnemyPopulations_MetalPirates),
+    %enemySet(EnemySets_MetalPirates),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_MetalPirates),
+    %libraryBG(LibBG_Norfair_9_RoomStatues),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_MetalPirates:
     dw Door_MetalPirates_0                                               ;8FB652;
@@ -7559,19 +7909,21 @@ RoomHeader_ThreeMusketeers:                                              ;8FB656
     %doorList(RoomDoors_ThreeMusketeers))
     %stateChecks(0, 0)
 
-RoomState_ThreeMusketeers:
-    dl LevelData_ThreeMusketeers                                         ;8FB663;
-    db $09,$18,$05                                                       ;8FB666;
-    dw FXHeader_ThreeMusketeers                                          ;8FB669;
-    dw EnemyPopulations_ThreeMusketeers                                  ;8FB66B;
-    dw EnemySets_ThreeMusketeers                                         ;8FB66D;
-    db $C1,$C1                                                           ;8FB66F;
-    dw RoomScrolls_ThreeMusketeers                                       ;8FB671;
-    dw $0000                                                             ;8FB673;
-    dw $0000                                                             ;8FB675;
-    dw PLMPopulation_ThreeMusketeers                                     ;8FB677;
-    dw LibBG_Norfair_9_PurplePatches                                     ;8FB679;
-    dw RTS_8F91F7                                                        ;8FB67B;
+RoomState_ThreeMusketeers:                                               ;8FB663;
+    %StateHeader(\
+    %levelData(LevelData_ThreeMusketeers),
+    %tileset(9),
+    %music($18, 5),
+    %FX(FXHeader_ThreeMusketeers),
+    %enemyPop(EnemyPopulations_ThreeMusketeers),
+    %enemySet(EnemySets_ThreeMusketeers),
+    %layer2Scrolls($C1, $C1),
+    %scrollPointer(RoomScrolls_ThreeMusketeers),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_ThreeMusketeers),
+    %libraryBG(LibBG_Norfair_9_PurplePatches),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_ThreeMusketeers:
     dw Door_ThreeMusketeers_0                                            ;8FB67D;
@@ -7600,19 +7952,21 @@ RoomHeader_RidleyETank:                                                  ;8FB698
     %doorList(RoomDoors_RidleyETank))
     %stateChecks(0, 0)
 
-RoomState_RidleyETank:
-    dl LevelData_RidleyETank                                             ;8FB6A5;
-    db $09,$00,$00                                                       ;8FB6A8;
-    dw FXHeader_RidleyETank                                              ;8FB6AB;
-    dw EnemyPopulations_RidleyETank                                      ;8FB6AD;
-    dw EnemySets_RidleyETank                                             ;8FB6AF;
-    db $01,$01                                                           ;8FB6B1;
-    dw $0000                                                             ;8FB6B3;
-    dw $0000                                                             ;8FB6B5;
-    dw $0000                                                             ;8FB6B7;
-    dw PLMPopulation_RidleyETank                                         ;8FB6B9;
-    dw LibBG_Norfair_9_CavernRoomPillars                                 ;8FB6BB;
-    dw RTS_8F91F7                                                        ;8FB6BD;
+RoomState_RidleyETank:                                                   ;8FB6A5;
+    %StateHeader(\
+    %levelData(LevelData_RidleyETank),
+    %tileset(9),
+    %music(0, 0),
+    %FX(FXHeader_RidleyETank),
+    %enemyPop(EnemyPopulations_RidleyETank),
+    %enemySet(EnemySets_RidleyETank),
+    %layer2Scrolls(1, 1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_RidleyETank),
+    %libraryBG(LibBG_Norfair_9_CavernRoomPillars),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_RidleyETank:
     dw Door_RidleyETank_0                                                ;8FB6BF;
@@ -7628,19 +7982,21 @@ RoomHeader_ScrewAttack:                                                  ;8FB6C1
     %doorList(RoomDoors_ScrewAttack))
     %stateChecks(0, 0)
 
-RoomState_ScrewAttack:
-    dl LevelData_ScrewAttack                                             ;8FB6CE;
-    db $09,$00,$03                                                       ;8FB6D1;
-    dw FXHeader_ScrewAttack                                              ;8FB6D4;
-    dw EnemyPopulations_ScrewAttack                                      ;8FB6D6;
-    dw EnemySets_ScrewAttack                                             ;8FB6D8;
-    db $01,$C1                                                           ;8FB6DA;
-    dw $0000                                                             ;8FB6DC;
-    dw $0000                                                             ;8FB6DE;
-    dw $0000                                                             ;8FB6E0;
-    dw PLMPopulation_ScrewAttack                                         ;8FB6E2;
-    dw LibBG_Norfair_9_CavernRoomPillars                                 ;8FB6E4;
-    dw RTS_8F91F7                                                        ;8FB6E6;
+RoomState_ScrewAttack:                                                   ;8FB6CE;
+    %StateHeader(\
+    %levelData(LevelData_ScrewAttack),
+    %tileset(9),
+    %music(0, 3),
+    %FX(FXHeader_ScrewAttack),
+    %enemyPop(EnemyPopulations_ScrewAttack),
+    %enemySet(EnemySets_ScrewAttack),
+    %layer2Scrolls(1, $C1),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_ScrewAttack),
+    %libraryBG(LibBG_Norfair_9_CavernRoomPillars),
+    %setupASM(RTS_8F91F7))
 
 RoomDoors_ScrewAttack:
     dw Door_ScrewAttack_0                                                ;8FB6E8;
@@ -7658,19 +8014,21 @@ RoomHeader_LNFireflea:                                                   ;8FB6EE
     %doorList(RoomDoors_LNFireflea))
     %stateChecks(0, 0)
 
-RoomState_LNFireflea:
-    dl LevelData_LNFireflea                                              ;8FB6FB;
-    db $0A,$18,$05                                                       ;8FB6FE;
-    dw FXHeader_LNFireflea                                               ;8FB701;
-    dw EnemyPopulations_LNFireflea                                       ;8FB703;
-    dw EnemySets_LNFireflea                                              ;8FB705;
-    db $00,$00                                                           ;8FB707;
-    dw RoomScrolls_LNFireflea                                            ;8FB709;
-    dw $0000                                                             ;8FB70B;
-    dw $0000                                                             ;8FB70D;
-    dw PLMPopulation_LNFireflea                                          ;8FB70F;
-    dw $0000                                                             ;8FB711;
-    dw $0000                                                             ;8FB713;
+RoomState_LNFireflea:                                                    ;8FB6FB;
+    %StateHeader(\
+    %levelData(LevelData_LNFireflea),
+    %tileset($0A),
+    %music($18, 5),
+    %FX(FXHeader_LNFireflea),
+    %enemyPop(EnemyPopulations_LNFireflea),
+    %enemySet(EnemySets_LNFireflea),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(RoomScrolls_LNFireflea),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_LNFireflea),
+    %libraryBG(0),
+    %setupASM(0))
 
 RoomDoors_LNFireflea:
     dw Door_LNFireflea_0                                                 ;8FB715;
@@ -7704,19 +8062,21 @@ RoomHeader_LNSave:                                                       ;8FB741
     %doorList(RoomDoors_LNSave))
     %stateChecks(0, 0)
 
-RoomState_LNSave:
-    dl LevelData_SaveStation_LeftSideDoor                                ;8FB74E;
-    db $19,$18,$05                                                       ;8FB751;
-    dw FXHeader_LNSave                                                   ;8FB754;
-    dw EnemyPopulations_LNSave                                           ;8FB756;
-    dw EnemySets_LNSave                                                  ;8FB758;
-    db $00,$00                                                           ;8FB75A;
-    dw $0000                                                             ;8FB75C;
-    dw $0000                                                             ;8FB75E;
-    dw $0000                                                             ;8FB760;
-    dw PLMPopulation_LNSave                                              ;8FB762;
-    dw $0000                                                             ;8FB764;
-    dw $0000                                                             ;8FB766;
+RoomState_LNSave:                                                        ;8FB74E;
+    %StateHeader(\
+    %levelData(LevelData_SaveStation_LeftSideDoor),
+    %tileset($19),
+    %music($18, 5),
+    %FX(FXHeader_LNSave),
+    %enemyPop(EnemyPopulations_LNSave),
+    %enemySet(EnemySets_LNSave),
+    %layer2Scrolls(0, 0),
+    %scrollPointer(0),
+    %specialXray(0),
+    %mainASM(0),
+    %PLMPop(PLMPopulation_LNSave),
+    %libraryBG(0),
+    %setupASM(0))
 
 RoomDoors_LNSave:
     dw Door_LNSave_0                                                     ;8FB768;

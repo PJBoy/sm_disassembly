@@ -7423,6 +7423,7 @@
 8885F1,UNUSED_Instruction_HDMAObject_GotoY_Y_8885F1,
 8885FF,.highByte,
 888602,+,
+888607,UNUSED_Inst_HDMAObject_DecTimer_GotoY_IfNonZero_88860,
 88860F,UNUSED_Instruction_HDMAObject_DecTimer_GotoYIfNonZero_88860F,
 888616,UNUSED_Instruction_HDMAObject_TimerInY_888616,
 888622,UNUSED_Instruction_HDMAObject_HDMAControlInY_888622,
