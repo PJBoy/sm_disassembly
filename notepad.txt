@@ -1,13 +1,33 @@
 
 
-    %RoomState(\
+    %DoorHeader(\
+    %destination(),
+    %elevator(),
+    %direction(),
+    %doorPos(, ),
+    %screenPos(, ),
+    %spawnDistance($8000),
+    %doorASM(0))
+
+
+    %RoomHeader(\
+    %room(),
+    %area(6),
+    %positions(, ),
+    %dimensions(, ),
+    %scrollers($70, $A0),
+    %CRE(0),
+    %doorList())
+
+
+    %StateHeader(\
     %levelData(),
     %tileset(),
     %music(, ),
     %FX(),
     %enemyPop(),
-    %enemyset(),
-    %layer2scrolls($, ),
+    %enemySet(),
+    %layer2Scrolls($, ),
     %scrollPointer(),
     %specialXray(0),
     %mainASM(),

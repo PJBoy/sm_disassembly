@@ -344,10 +344,9 @@ macro stateCheckDoor(arg)
     dw UNUSED_RoomStateCheck_Door_8FE5EB, <arg>
 endmacro
 
-macro stateCheckMainBoss(boss, state)
+macro stateCheckMainBoss(arg)
     dw RoomStateCheck_MainAreaBossIsDead
-    db <boss>
-    dw <state
+    dw <arg>
 endmacro
 
 macro stateCheckEventSet(event, state)
