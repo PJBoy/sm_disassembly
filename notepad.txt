@@ -47,10 +47,10 @@
 
 
     %FXHeader(\
-    %door(),
-    %baseY(),
-    %targetY(),
-    %velocity(),
+    %door(0),
+    %baseY($),
+    %targetY($),
+    %velocity($),
     %timer(),
     %FXType(),
     %layerBlendConfig(, ),

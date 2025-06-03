@@ -110,7 +110,7 @@ FXHeader_Climb_State1:                                                   ;838060
     %velocity($FF80),
     %timer($20),
     %FXType(2),
-    %layerBlendConfig(2, $1e),
+    %layerBlendConfig(2, $1E),
     %liquidOptions($0B),
     %paletteFX($1F),
     %animTiles(1),
@@ -426,29 +426,89 @@ FXHeader_Flyway_State0_1:
 FXHeader_VariousRooms_8381C2:
     dw $FFFF                                                             ;8381C2;
 
-FXHeader_CrateriaSuper:
-    dw $0000,$07E0,$FFFF,$0000                                           ;8381C4;
-    db $00,$04,$02,$1E,$40,$00,$02,$48                                   ;8381CC;
+FXHeader_CrateriaSuper:                                                  ;8381C4;
+    %FXHeader(\
+    %door(0),
+    %baseY($07E0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($40),
+    %paletteFX(0),
+    %animTiles(2),
+    %paletteBlend($48))
 
-FXHeader_FinalMissileBombway_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8381D4;
-    db $00,$00,$28,$02,$00,$00,$00,$62                                   ;8381DC;
+FXHeader_FinalMissileBombway_State0:                                     ;8381D4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($28, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($62))
 
-FXHeader_FinalMissile_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8381E4;
-    db $00,$00,$28,$02,$00,$00,$00,$62                                   ;8381EC;
+FXHeader_FinalMissile_State0:                                            ;8381E4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($28, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($62))
 
-FXHeader_VariousRooms_8381F4:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8381F4;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;8381FC;
+FXHeader_VariousRooms_8381F4:                                            ;8381F4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_GreenBrinstarMainShaft:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838204;
-    db $00,$00,$02,$02,$00,$01,$00,$00                                   ;83820C;
+FXHeader_GreenBrinstarMainShaft:                                         ;838204;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_SporeSpawnSuper:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838214;
-    db $00,$08,$02,$0A,$00,$00,$00,$00                                   ;83821C;
+FXHeader_SporeSpawnSuper:                                                ;838214;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(8),
+    %layerBlendConfig(2, $0A),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
 FXHeader_BrinstarPreMap:
     dw $FFFF                                                             ;838224;
@@ -462,81 +522,241 @@ FXHeader_BrinstarReserveTank:
 FXHeader_GreenBrinstarMap:
     dw $FFFF                                                             ;83822A;
 
-FXHeader_GreenBrinstarFirefleas:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83822C;
-    db $00,$24,$02,$02,$00,$00,$00,$00                                   ;838234;
+FXHeader_GreenBrinstarFirefleas:                                         ;83822C;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType($24),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
 FXHeader_GreenBrinstarMissileRefill:
     dw $FFFF                                                             ;83823C;
 
-FXHeader_Dachora:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83823E;
-    db $00,$08,$02,$0A,$00,$00,$00,$00                                   ;838246;
+FXHeader_Dachora:                                                        ;83823E;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(8),
+    %layerBlendConfig(2, $0A),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_BigPink:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83824E;
-    db $00,$08,$02,$0A,$00,$00,$01,$00                                   ;838256;
+FXHeader_BigPink:                                                        ;83824E;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(8),
+    %layerBlendConfig(2, $0A),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(1),
+    %paletteBlend(0))
 
-FXHeader_SporeSpawnKihunters:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83825E;
-    db $00,$00,$02,$02,$00,$01,$00,$00                                   ;838266;
+FXHeader_SporeSpawnKihunters:                                            ;83825E;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_SporeSpawn_State0_1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83826E;
-    db $00,$00,$02,$02,$00,$08,$00,$00                                   ;838276;
+FXHeader_SporeSpawn_State0_1:                                            ;83826E;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(8),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_PinkBrinstarPowerBombs:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83827E;
-    db $00,$00,$02,$02,$00,$00,$02,$00                                   ;838286;
+FXHeader_PinkBrinstarPowerBombs:                                         ;83827E;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(2),
+    %paletteBlend(0))
 
 FXHeader_GreenHillZone:
     dw $FFFF                                                             ;83828E;
 
-FXHeader_MorphBall_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838290;
-    db $00,$00,$2A,$02,$00,$00,$00,$00                                   ;838298;
+FXHeader_MorphBall_State0:                                               ;838290;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($2A, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_ConstructionZone_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8382A0;
-    db $00,$00,$2A,$02,$00,$00,$00,$00                                   ;8382A8;
+FXHeader_ConstructionZone_State0:                                        ;8382A0;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($2A, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_BlueBrinstarETank_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8382B0;
-    db $00,$00,$2A,$02,$00,$00,$00,$00                                   ;8382B8;
+FXHeader_BlueBrinstarETank_State0:                                       ;8382B0;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($2A, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_NoobBridge:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8382C0;
-    db $00,$00,$02,$02,$00,$01,$02,$00                                   ;8382C8;
+FXHeader_NoobBridge:                                                     ;8382C0;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(2),
+    %paletteBlend(0))
 
 FXHeader_GreenBrinstarBeetoms:
     dw $FFFF                                                             ;8382D0;
 
-FXHeader_EtecoonETank:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8382D2;
-    db $00,$00,$02,$02,$00,$01,$00,$00                                   ;8382DA;
+FXHeader_EtecoonETank:                                                   ;8382D2;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_EtecoonSuper:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8382E2;
-    db $00,$00,$02,$02,$00,$01,$00,$00                                   ;8382EA;
+FXHeader_EtecoonSuper:                                                   ;8382E2;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend(0))
 
 FXHeader_DachoraEnergyRefill:
     dw $FFFF                                                             ;8382F2;
 
-FXHeader_SporeSpawnFarming:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8382F4;
-    db $00,$08,$02,$0A,$00,$00,$00,$00                                   ;8382FC;
+FXHeader_SporeSpawnFarming:                                              ;8382F4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(8),
+    %layerBlendConfig(2, $0A),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_WaterwayETank:
-    dw $0000,$00A8,$FFFF,$0000                                           ;838304;
-    db $00,$06,$02,$18,$03,$00,$00,$48                                   ;83830C;
+FXHeader_WaterwayETank:                                                  ;838304;
+    %FXHeader(\
+    %door(0),
+    %baseY($00A8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $18),
+    %liquidOptions(3),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($48))
 
-FXHeader_FirstMissile:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838314;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;83831C;
+FXHeader_FirstMissile:                                                   ;838314;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_PinkBrinstarHoppers:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838324;
-    db $00,$00,$02,$02,$00,$01,$03,$00                                   ;83832C;
+FXHeader_PinkBrinstarHoppers:                                            ;838324;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(3),
+    %paletteBlend(0))
 
 FXHeader_HopperETank:
     dw $FFFF                                                             ;838334;
@@ -544,9 +764,19 @@ FXHeader_HopperETank:
 FXHeader_BigPinkSaveRoom:
     dw $FFFF                                                             ;838336;
 
-FXHeader_BlueBrinstarBoulders:
-    dw $0000,$00B0,$FFFF,$0000                                           ;838338;
-    db $00,$06,$02,$18,$83,$00,$02,$48                                   ;838340;
+FXHeader_BlueBrinstarBoulders:                                           ;838338;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $18),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(2),
+    %paletteBlend($48))
 
 FXHeader_BillyMays:
     dw $FFFF                                                             ;838348;
@@ -557,51 +787,151 @@ FXHeader_GreenBrinstarSave:
 FXHeader_EtecoonSave:
     dw $FFFF                                                             ;83834C;
 
-FXHeader_RedTower:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83834E;
-    db $00,$00,$02,$02,$00,$06,$03,$00                                   ;838356;
+FXHeader_RedTower:                                                       ;83834E;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(6),
+    %animTiles(3),
+    %paletteBlend(0))
 
-FXHeader_RedBrinstarFirefleas:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83835E;
-    db $00,$24,$02,$02,$00,$00,$02,$00                                   ;838366;
+FXHeader_RedBrinstarFirefleas:                                           ;83835E;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType($24),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(2),
+    %paletteBlend(0))
 
 FXHeader_XrayScope:
     dw $FFFF                                                             ;83836E;
 
-FXHeader_Hellway:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838370;
-    db $00,$00,$02,$02,$00,$02,$04,$00                                   ;838378;
+FXHeader_Hellway:                                                        ;838370;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(4),
+    %paletteBlend(0))
 
-FXHeader_Caterpillar:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838380;
-    db $00,$00,$02,$02,$00,$06,$00,$00                                   ;838388;
+FXHeader_Caterpillar:                                                    ;838380;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(6),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_BetaPowerBomb:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838390;
-    db $00,$00,$02,$02,$00,$00,$04,$00                                   ;838398;
+FXHeader_BetaPowerBomb:                                                  ;838390;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(4),
+    %paletteBlend(0))
 
-FXHeader_AlphaPowerBomb:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8383A0;
-    db $00,$00,$02,$02,$00,$00,$04,$00                                   ;8383A8;
+FXHeader_AlphaPowerBomb:                                                 ;8383A0;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(4),
+    %paletteBlend(0))
 
-FXHeader_SkreeBoost:
-    dw $0000,$00BE,$FFFF,$0000                                           ;8383B0;
-    db $00,$06,$02,$18,$03,$00,$00,$48                                   ;8383B8;
+FXHeader_SkreeBoost:                                                     ;8383B0;
+    %FXHeader(\
+    %door(0),
+    %baseY($00BE),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $18),
+    %liquidOptions(3),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($48))
 
-FXHeader_BelowSpazer:
-    dw $0000,$01BE,$FFFF,$0000                                           ;8383C0;
-    db $00,$06,$02,$18,$03,$00,$01,$48                                   ;8383C8;
+FXHeader_BelowSpazer:                                                    ;8383C0;
+    %FXHeader(\
+    %door(0),
+    %baseY($01BE),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $18),
+    %liquidOptions(3),
+    %paletteFX(0),
+    %animTiles(1),
+    %paletteBlend($48))
 
 FXHeader_Spazer:
     dw $FFFF                                                             ;8383D0;
 
-FXHeader_VariousRooms_8383D2:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8383D2;
-    db $00,$00,$02,$02,$00,$04,$00,$00                                   ;8383DA;
+FXHeader_VariousRooms_8383D2:                                            ;8383D2;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(4),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_MiniKraid_State0_1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8383E2;
-    db $00,$00,$02,$02,$00,$00,$02,$00                                   ;8383EA;
+FXHeader_MiniKraid_State0_1:                                             ;8383E2;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(2),
+    %paletteBlend(0))
 
 FXHeader_KraidEyeDoor:
     dw $FFFF                                                             ;8383F2;
@@ -609,9 +939,19 @@ FXHeader_KraidEyeDoor:
 FXHeader_Kraid_State0:
     dw $FFFF                                                             ;8383F4;
 
-FXHeader_Kraid_State1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8383F6;
-    db $00,$0C,$02,$30,$00,$80,$00,$62                                   ;8383FE;
+FXHeader_Kraid_State1:                                                   ;8383F6;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType($0C),
+    %layerBlendConfig(2, $30),
+    %liquidOptions(0),
+    %paletteFX($80),
+    %animTiles(0),
+    %paletteBlend($62))
 
 FXHeader_RedTowerRefill:
     dw $FFFF                                                             ;838406;
@@ -619,13 +959,33 @@ FXHeader_RedTowerRefill:
 FXHeader_KraidRefill:
     dw $FFFF                                                             ;838408;
 
-FXHeader_Statues:
-    dw $0000,$00B0,$01FF,$0000                                           ;83840A;
-    db $00,$26,$02,$18,$01,$00,$00,$48                                   ;838412;
+FXHeader_Statues:                                                        ;83840A;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B0),
+    %targetY($01FF),
+    %velocity(0),
+    %timer(0),
+    %FXType($26),
+    %layerBlendConfig(2, $18),
+    %liquidOptions(1),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($48))
 
-FXHeader_WarehouseEntrance:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83841A;
-    db $00,$00,$2A,$02,$00,$00,$00,$00                                   ;838422;
+FXHeader_WarehouseEntrance:                                              ;83841A;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($2A, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
 FXHeader_VariaSuit:
     dw $FFFF                                                             ;83842A;
@@ -636,73 +996,243 @@ FXHeader_WarehouseSave:
 FXHeader_RedBrinstarSave:
     dw $FFFF                                                             ;83842E;
 
-FXHeader_IceBeamAcid:
-    dw $0000,$00B8,$FFFF,$0000                                           ;838430;
-    db $00,$02,$02,$1E,$0B,$1F,$02,$02                                   ;838438;
+FXHeader_IceBeamAcid:                                                    ;838430;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(2))
 
-FXHeader_Cathedral:
-    dw $0000,$01B1,$FFFF,$0000                                           ;838440;
-    db $00,$02,$02,$1E,$0B,$1F,$00,$02                                   ;838448;
+FXHeader_Cathedral:                                                      ;838440;
+    %FXHeader(\
+    %door(0),
+    %baseY($01B1),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_CathedralEntrance:
-    dw $0000,$01D0,$FFFF,$0000                                           ;838450;
-    db $00,$02,$02,$1E,$0B,$1F,$03,$02                                   ;838458;
+FXHeader_CathedralEntrance:                                              ;838450;
+    %FXHeader(\
+    %door(0),
+    %baseY($01D0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(3),
+    %paletteBlend(2))
 
-FXHeader_BusinessCenter:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838460;
-    db $00,$02,$02,$1E,$00,$00,$00,$02                                   ;838468;
+FXHeader_BusinessCenter:                                                 ;838460;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_IceBeamGate:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838470;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;838478;
+FXHeader_IceBeamGate:                                                    ;838470;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_IceBeamTutorial:
-    dw $0000,$00B2,$FFFF,$0000                                           ;838480;
-    db $00,$02,$02,$1E,$0B,$1F,$00,$02                                   ;838488;
+FXHeader_IceBeamTutorial:                                                ;838480;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B2),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_IceBeam:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838490;
-    db $00,$02,$02,$1E,$00,$00,$00,$02                                   ;838498;
+FXHeader_IceBeam:                                                        ;838490;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_IceBeamSnake:
-    dw $0000,$02B8,$FFFF,$0000                                           ;8384A0;
-    db $00,$02,$02,$1E,$03,$1F,$03,$02                                   ;8384A8;
+FXHeader_IceBeamSnake:                                                   ;8384A0;
+    %FXHeader(\
+    %door(0),
+    %baseY($02B8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(3),
+    %paletteBlend(2))
 
-FXHeader_CrumbleShaft:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8384B0;
-    db $00,$02,$02,$1E,$03,$1F,$00,$02                                   ;8384B8;
+FXHeader_CrumbleShaft:                                                   ;8384B0;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_CrocomireSpeedway:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8384C0;
-    db $00,$02,$02,$1E,$0B,$1F,$02,$02                                   ;8384C8;
+FXHeader_CrocomireSpeedway:                                              ;8384C0;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(2))
 
-FXHeader_Crocomire_State0_1:
-    dw $0000,$00C6,$FFFF,$0000                                           ;8384D0;
-    db $00,$04,$02,$1E,$81,$00,$01,$02                                   ;8384D8;
+FXHeader_Crocomire_State0_1:                                             ;8384D0;
+    %FXHeader(\
+    %door(0),
+    %baseY($00C6),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($81),
+    %paletteFX(0),
+    %animTiles(1),
+    %paletteBlend(2))
 
-FXHeader_HiJumpBoots:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8384E0;
-    db $00,$02,$02,$1E,$01,$00,$00,$02                                   ;8384E8;
+FXHeader_HiJumpBoots:                                                    ;8384E0;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_CrocomireEscape:
-    dw $0000,$01B8,$FFFF,$0000                                           ;8384F0;
-    db $00,$02,$02,$1E,$0B,$1F,$00,$02                                   ;8384F8;
+FXHeader_CrocomireEscape:                                                ;8384F0;
+    %FXHeader(\
+    %door(0),
+    %baseY($01B8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_HiJumpETank:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838500;
-    db $00,$02,$02,$1E,$01,$00,$00,$02                                   ;838508;
+FXHeader_HiJumpETank:                                                    ;838500;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_PostCrocFarming:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838510;
-    db $00,$00,$02,$02,$03,$00,$00,$02                                   ;838518;
+FXHeader_PostCrocFarming:                                                ;838510;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(3),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_PostCrocSave:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838520;
-    db $00,$02,$02,$1E,$01,$00,$00,$02                                   ;838528;
+FXHeader_PostCrocSave:                                                   ;838520;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_PostCrocPowerBombs:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838530;
-    db $00,$02,$02,$1E,$03,$1F,$00,$02                                   ;838538;
+FXHeader_PostCrocPowerBombs:                                             ;838530;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
 FXHeader_PostCrocShaft:
     dw $0000,$FFFF,$FFFF,$0000                                           ;838540;
