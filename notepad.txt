@@ -44,3 +44,17 @@
     %stateCheckMainBoss($, )
     %stateCheckMorphMissiles()
     %stateCheckPowerBombs()
+
+
+    %FXHeader(\
+    %door(),
+    %baseY(),
+    %targetY(),
+    %velocity(),
+    %timer(),
+    %FXType(),
+    %layerBlendConfig(, ),
+    %liquidOptions(),
+    %paletteFX(),
+    %animTiles(),
+    %paletteBlend())

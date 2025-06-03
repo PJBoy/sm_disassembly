@@ -463,3 +463,75 @@ endmacro
 macro setupASM(arg)
     dw <arg>
 endmacro
+
+macro FXHeader(door, baseY, targetY, velocity, timer, FXType, layerBlendConfig, liquidOptions, paletteFX, animTiles, paletteBlend)
+  .door
+    <door>
+  .baseY
+    <baseY>
+  .targetY
+    <targetY>
+  .velocity
+    <velocity>
+  .timer
+    <timer>
+  .FXType
+    <FXType>
+  .layerBlendConfig
+    <layerBlendConfig>
+  .liquidOptions
+    <liquidOptions>
+  .paletteFX
+    <paletteFX>
+  .animTiles
+    <animTiles>
+  .paletteBlend
+    <paletteBlend>
+endmacro
+
+macro door(arg)
+    dw <arg>
+endmacro
+
+macro baseY(arg)
+    dw <arg>
+endmacro
+
+macro targetY(arg)
+    dw <arg>
+endmacro
+
+macro velocity(arg)
+    dw <arg>
+endmacro
+
+macro timer(arg)
+    db <arg>
+endmacro
+
+macro FXType(arg)
+    db <arg>
+endmacro
+
+macro layerBlendConfig(A, B)
+  ..default
+    db <A>
+  ..layer3
+    db <B>
+endmacro
+
+macro liquidOptions(arg)
+    db <arg>
+endmacro
+
+macro paletteFX(arg)
+    db <arg>
+endmacro
+
+macro animTiles(arg)
+    db <arg>
+endmacro
+
+macro paletteBlend(arg)
+    db <arg>
+endmacro
